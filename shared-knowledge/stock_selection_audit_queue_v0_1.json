@@ -626,7 +626,7 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING",
+      "readiness": "V820_PRODUCTION_VERIFIED_QUALITY_TRANSPORT_REPAIR_LIVE_VERIFIED_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING",
       "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
       "remainingDelta": [
         "first legitimate post-deploy V8.20 genuine Formal→C1 binding receipt",
@@ -717,7 +717,30 @@
         "firstScheduledEvidenceRun": 37495670280,
         "firstScheduledEvidenceDisposition": "INELIGIBLE_PARENT_MISSING_FORMAL_SCAN_NOT_CONFIRMED",
         "firstScheduledEvidenceRootCause": "OFFICIAL_QUALITY_MOPS_FULL_MARKET_BODY_TIMEOUT_FINANCIAL_QUARTER_EPS_MISSING",
-        "qualityRepair": "TARGETED_MOPSOV_NODE_STANDARD_HTTPS_TRANSPORT_CANDIDATE_EXACT_HEAD_CI_PENDING",
+        "qualityRepair": "TARGETED_MOPSOV_NODE_STANDARD_HTTPS_TRANSPORT_MERGED_EXACT_HEAD_CI_PASS_QUALITY_LIVE_VERIFIED",
+        "qualityRepairPr": 770,
+        "qualityRepairHead": "9a00f072064110d256537ee7cf322f34aae0abcf",
+        "qualityRepairMergeSha": "52c6ea8a8900869504482fc6133f4bf88a2e19ec",
+        "qualityRepairExactHeadRuns": [
+          {
+            "id": 37565552370,
+            "name": "V8 Repair CI",
+            "conclusion": "success"
+          },
+          {
+            "id": 37565552380,
+            "name": "System1 C1 C2 isolated offline repair review",
+            "conclusion": "success"
+          },
+          {
+            "id": 37565552413,
+            "name": "V8 Regression Tests",
+            "conclusion": "success"
+          }
+        ],
+        "qualityRepairLiveRun": 37565793586,
+        "qualityRepairLiveAttempt": 3,
+        "qualityRepairLiveDisposition": "FINANCIAL_1881_READY_QUARTER_EPS_ZERO_READY_NO_SELECTION_PLAN_TRADE_PUSH",
         "deadlineRepairPr": 769,
         "deadlineRepairMergeSha": "d13ff8a40007a3e7e8f8ab0fdfb0970c73fd0d08",
         "deadlineRepairLiveRun": 37563414217,

@@ -2,11 +2,12 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const readJson=async p=>JSON.parse(await readFile(new URL("../"+p,import.meta.url),"utf8"));
-const [queue,registry,contract,oracle]=await Promise.all([
+const [queue,registry,contract,oracle,qualityRepair]=await Promise.all([
   readJson("shared-knowledge/stock_selection_audit_queue_v0_1.json"),
   readJson("shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json"),
   readJson("research/sda016_system1_formal_c1_binding_contract_v0_1.json"),
-  readJson("research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json")
+  readJson("research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json"),
+  readJson("research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json")
 ]);
 const dashboard=await readFile(new URL("../shared-knowledge/STOCK_SELECTION_AUDIT_DASHBOARD_V0_1.md",import.meta.url),"utf8");
 
@@ -29,11 +30,30 @@ assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_
 assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PRODUCTION_AUTHORITY_ESTABLISHED");
 assert.equal(issue.formalC1Binding?.appendOnlyLedgerImplementation,"MERGED_DEPLOYED_PRODUCTION_VERIFIED");
 assert.equal(issue.formalC1Binding?.genuineBindingReadback,"FIRST_SCHEDULED_DATE_INELIGIBLE_C1_GENERATION_NOT_FOUND_GENUINE_PENDING");
-assert.equal(issue.formalC1Binding?.qualityRepair,"TARGETED_MOPSOV_NODE_STANDARD_HTTPS_TRANSPORT_CANDIDATE_EXACT_HEAD_CI_PENDING");
+assert.equal(issue.formalC1Binding?.qualityRepair,"TARGETED_MOPSOV_NODE_STANDARD_HTTPS_TRANSPORT_MERGED_EXACT_HEAD_CI_PASS_QUALITY_LIVE_VERIFIED");
+assert.equal(issue.formalC1Binding?.qualityRepairPr,770);
+assert.equal(issue.formalC1Binding?.qualityRepairHead,"9a00f072064110d256537ee7cf322f34aae0abcf");
+assert.equal(issue.formalC1Binding?.qualityRepairMergeSha,"52c6ea8a8900869504482fc6133f4bf88a2e19ec");
+assert.equal(issue.formalC1Binding?.qualityRepairExactHeadRuns?.length,3);
+assert.ok(issue.formalC1Binding.qualityRepairExactHeadRuns.every(x=>x.conclusion==="success"));
+assert.equal(issue.formalC1Binding?.qualityRepairLiveRun,37565793586);
+assert.equal(issue.formalC1Binding?.qualityRepairLiveAttempt,3);
+assert.equal(issue.formalC1Binding?.qualityRepairLiveDisposition,"FINANCIAL_1881_READY_QUARTER_EPS_ZERO_READY_NO_SELECTION_PLAN_TRADE_PUSH");
 assert.equal(issue.formalC1Binding?.deadlineRepairPr,769);
 assert.equal(issue.formalC1Binding?.deadlineRepairLiveRun,37563414217);
 assert.equal(issue.formalC1Binding?.nodeHttpsTransportEvidenceRun,37565002528);
 assert.equal(issue.formalC1Binding?.firstScheduledEvidenceRootCause,"OFFICIAL_QUALITY_MOPS_FULL_MARKET_BODY_TIMEOUT_FINANCIAL_QUARTER_EPS_MISSING");
+assert.equal(qualityRepair.status,"MERGED_EXACT_HEAD_CI_PASS_QUALITY_LIVE_READBACK_PASS_GENUINE_FORMAL_C1_READBACK_PENDING");
+assert.equal(qualityRepair.evidence.repairHead,issue.formalC1Binding.qualityRepairHead);
+assert.equal(qualityRepair.evidence.repairMergeSha,issue.formalC1Binding.qualityRepairMergeSha);
+assert.equal(qualityRepair.evidence.qualityLiveReadback.run,issue.formalC1Binding.qualityRepairLiveRun);
+assert.equal(qualityRepair.evidence.qualityLiveReadback.financial.ready,true);
+assert.equal(qualityRepair.evidence.qualityLiveReadback.financial.count,1881);
+assert.equal(qualityRepair.evidence.qualityLiveReadback.quarterEps.ready,true);
+assert.equal(qualityRepair.evidence.qualityLiveReadback.quarterEps.count,0);
+assert.equal(qualityRepair.historicalDisposition.historicalBindingBackfillAllowed,false);
+assert.equal(qualityRepair.formalCoreImpact,"NONE");
+assert.equal(qualityRepair.system2Impact,"NONE");
 assert.ok([
   "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED",
   "MERGED_DEPLOYED_PRODUCTION_VERIFIED"

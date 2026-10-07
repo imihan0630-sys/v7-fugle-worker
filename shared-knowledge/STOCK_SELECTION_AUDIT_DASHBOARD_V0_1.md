@@ -1,6 +1,6 @@
 # Stock Selection Audit Dashboard V0.1
 
-Updated: 2026-10-06 Asia/Taipei
+Updated: 2026-10-07 Asia/Taipei
 Status: ACTIVE_REMEDIATION_AND_VALIDATION
 Owner: 00｜研究總控室
 Formal Core impact: NONE
@@ -38,7 +38,7 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 | SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING |
 | SDA-014 | HIGH | VALIDATION_PENDING | D14 | RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING |
 | SDA-015 | HIGH | REMEDIATION_IN_PROGRESS | D15 | PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING |
-| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_GENUINE_READBACK_SHARED_AUTHORITY_PENDING |
+| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_5_58_TEST_ORACLE_V820_PRODUCTION_VERIFIED_QUALITY_TRANSPORT_REPAIR_LIVE_VERIFIED_GENUINE_BINDING_SHARED_AUTHORITY_PENDING |
 | SDA-017 | CRITICAL | REMEDIATION_IN_PROGRESS | D18 | ROOM11_V0_3_48_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_CONTRACT_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING |
 | SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING |
 | SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
@@ -204,6 +204,18 @@ The 2026-10-06 date remains research-ineligible and cannot be backfilled.
 Genuine Formal↔C1 binding readback remains pending a future ordinary scheduled
 session. Receipt:
 `research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json`.
+
+PR #770 subsequently passed all three applicable exact-head checks at
+`9a00f072064110d256537ee7cf322f34aae0abcf` and merged as
+`52c6ea8a8900869504482fc6133f4bf88a2e19ec`. Quality-only run
+`37565793586` attempt 3 succeeded: `FINANCIAL` is ready with 1881 records and
+`QUARTER_EPS` is ready with an accepted zero-record dataset, both as of
+`2026-10-06`. Its final gate also proves `noSelection`, `noPlanChanges`,
+`noTrade` and `noPush`.
+
+This verifies the official-quality transport repair only. It does not turn
+the ineligible 2026-10-06 incident into a Formal or C1 sample. Genuine
+Formal↔C1 acceptance still requires the next ordinary scheduled session.
 
 Formal Core impact: NONE.
 

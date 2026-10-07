@@ -1,7 +1,7 @@
 {
   "schemaVersion": "SYSTEM1_OFFICIAL_QUALITY_MOPS_DEADLINE_REPAIR_V0_1",
-  "updatedAt": "2026-10-07T11:05:00+08:00",
-  "status": "IMPLEMENTED_CANDIDATE_EXACT_HEAD_CI_PENDING_LIVE_READBACK_PENDING",
+  "updatedAt": "2026-10-07T11:37:00+08:00",
+  "status": "MERGED_EXACT_HEAD_CI_PASS_QUALITY_LIVE_READBACK_PASS_GENUINE_FORMAL_C1_READBACK_PENDING",
   "incidentDate": "2026-10-06",
   "causalChain": [
     "MOPS_FULL_MARKET_FINANCIAL_BODY_TIMEOUT",
@@ -31,6 +31,45 @@
       "status": 200,
       "bytes": 50742,
       "milliseconds": 7411
+    },
+    "repairPr": 770,
+    "repairHead": "9a00f072064110d256537ee7cf322f34aae0abcf",
+    "repairMergeSha": "52c6ea8a8900869504482fc6133f4bf88a2e19ec",
+    "exactHeadChecks": [
+      {
+        "id": 37565552370,
+        "name": "V8 Repair CI",
+        "conclusion": "success"
+      },
+      {
+        "id": 37565552380,
+        "name": "System1 C1 C2 isolated offline repair review",
+        "conclusion": "success"
+      },
+      {
+        "id": 37565552413,
+        "name": "V8 Regression Tests",
+        "conclusion": "success"
+      }
+    ],
+    "qualityLiveReadback": {
+      "run": 37565793586,
+      "successfulAttempt": 3,
+      "conclusion": "success",
+      "financial": {
+        "ready": true,
+        "count": 1881,
+        "asOfDate": "2026-10-06"
+      },
+      "quarterEps": {
+        "ready": true,
+        "count": 0,
+        "asOfDate": "2026-10-06"
+      },
+      "noSelection": true,
+      "noPlanChanges": true,
+      "noTrade": true,
+      "noPush": true
     },
     "defaultBodyRetryAlreadyPresent": true,
     "defaultAttemptsExhausted": 3,

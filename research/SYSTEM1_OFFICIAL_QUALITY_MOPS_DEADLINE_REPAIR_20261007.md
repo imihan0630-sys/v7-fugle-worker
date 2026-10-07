@@ -1,6 +1,7 @@
 # System1｜Official-quality MOPS deadline repair — 2026-10-07
 
-Status: IMPLEMENTED_CANDIDATE / EXACT_HEAD_CI_PENDING / LIVE_READBACK_PENDING
+Status: MERGED / EXACT_HEAD_CI_PASS / QUALITY_LIVE_READBACK_PASS /
+GENUINE_FORMAL_C1_READBACK_PENDING
 
 Formal Core: LOCKED / impact NONE
 
@@ -84,3 +85,32 @@ genuine prospective Formal↔C1 sample. The repair can only be accepted
 operationally after a future ordinary scheduled session completes official
 quality, Formal publication, exact immutable C1 generation creation and V8.20
 binding readback.
+
+## Accepted implementation and quality-only live readback
+
+PR #770 was validated at exact head
+`9a00f072064110d256537ee7cf322f34aae0abcf`. All three applicable,
+path-filtered checks passed:
+
+- V8 Repair CI `37565552370`;
+- System1 C1 C2 isolated offline repair review `37565552380`;
+- V8 Regression Tests `37565552413`.
+
+The PR merged to `main` as
+`52c6ea8a8900869504482fc6133f4bf88a2e19ec`. Quality-only live run
+`37565793586`, attempt 3, then completed successfully. The immutable final
+gate reported:
+
+- `FINANCIAL ready=true`, count `1881`, as-of `2026-10-06`;
+- `QUARTER_EPS ready=true`, count `0`, as-of `2026-10-06`;
+- `noSelection=true`, `noPlanChanges=true`, `noTrade=true`, `noPush=true`.
+
+The zero EPS count is an accepted ready dataset receipt, not a zero-pick or
+Formal result. This run repaired and verified official-quality availability
+only. It did not create, reconstruct or backfill a historical Formal decision,
+C1 generation or Formal↔C1 binding for `2026-10-06`.
+
+The transport repair is therefore operationally verified. The separate
+genuine binding acceptance remains pending the next ordinary scheduled
+session and must be proven from its actual Formal parent, immutable C1
+generation and binding-ledger readback.

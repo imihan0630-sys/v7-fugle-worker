@@ -547,3 +547,18 @@ The candidate adds no provider call, no D1 table, no scheduler and no Formal dec
   Node 22 `fetch`/undici 切到 Node standard HTTPS；官方 URL、參數、完整 body、解析、
   3 次上限、401/403 fail-closed、品質門檻及 Formal Core 均不變。
 - Receipt：`research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json`。
+
+### 2026-10-07 — PR #770 merged and quality-only live readback accepted
+
+- PR #770 candidate head `9a00f072064110d256537ee7cf322f34aae0abcf` 的 3 個 applicable
+  exact-head checks 全部成功：V8 Repair CI `37565552370`、System1 C1 C2 isolated
+  offline repair review `37565552380`、V8 Regression Tests `37565552413`。
+- PR #770 合併為 `52c6ea8a8900869504482fc6133f4bf88a2e19ec`。
+- quality-only live run `37565793586` attempt 3 成功；最終 gate 證實
+  `FINANCIAL ready=true/count=1881` 與 `QUARTER_EPS ready=true/count=0`，且
+  `noSelection/noPlanChanges/noTrade/noPush` 全為 true。
+- 這是官方品質 transport repair 的 live acceptance，不是歷史 Formal/C1 回填。
+  2026-10-06 仍 research-ineligible；genuine Formal→C1 binding readback 等待
+  下一個正常排程 session。
+- Formal Core、A/B、Top6/3+3、資金、15m、生命週期、push/order 與 System2 policy
+  均未修改。
