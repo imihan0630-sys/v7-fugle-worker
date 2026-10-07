@@ -3008,3 +3008,28 @@ Exact next SC-084:
 consume the next live capture seeded from the durable 168-version union; do not redo the first three captures. Require captureCount >= 4 and continue accumulating trailing identical transitions with zero payload conflict. Separately resolve month-shard/source semantics before expectedMopsKeysetComplete can be reviewed. noRevisionGapThroughCut remains false until post-parent reconciliation.
 
 Formal Core unchanged.
+
+
+## SC-085 — D10-13 post-freeze BIS null policy observation (2026-10-08)
+
+Artifact:
+- `research/SC085_D10_13_BIS_POST_FREEZE_NULL_20261008_V0_1.md`
+
+Bounded official-source readback at 2026-10-08T05:51:34+08:00:
+- BIS News/Updates latest visible item = 2026-10-02 administrative enforcement settlement;
+- Federal Register BIS agency recent-publication list latest visible publication = 2026-09-30;
+- no new post-SC-047 BIS rule/list/license vintage was observed in the bounded official scope;
+- 2026-09-24 polysilicon stockpiling rule is a historical exclusion control and is not relabeled as a new post-freeze event.
+
+Frozen:
+`NO_EVENT_DATE_IS_DATA`.
+`NO_NEW_POLICY_IN_BOUNDED_OFFICIAL_SCOPE != PROOF_NO_RELEVANT_POLICY_ANYWHERE`.
+
+D10-13 remains L3/60.
+No L4 promotion.
+No stock outcome.
+
+Exact next SC-086:
+continue the same prospective official BIS/Federal Register observation contract. Freeze the first genuinely new post-freeze rule/list/license publication with publication/effective/expiry clocks and keep issuer exposure UNKNOWN absent contemporaneous issuer-native evidence.
+
+Formal Core unchanged.
