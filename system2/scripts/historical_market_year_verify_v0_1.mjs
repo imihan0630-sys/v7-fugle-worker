@@ -353,8 +353,7 @@ const sourceReconciliationBase=reconcileHistoricalSourceRowsV0_1({
 });
 
 let revisionLineage=null;
-if(sourceReconciliationBase.sourceRowHashMismatchCount>0
-  || sourceReconciliationBase.canonicalA1ValueMismatchCount>0){
+if(sourceReconciliationBase.canonicalRevisionLineageRequired){
   const persistedRevisionRows=await db.rawQuery(
     `SELECT * FROM s2_historical_a1_bars
       WHERE market=? AND market_date>=? AND market_date<=? AND price_space='RAW'
