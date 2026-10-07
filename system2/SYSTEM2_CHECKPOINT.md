@@ -2969,3 +2969,51 @@ Important optimization:
 10. After this launch-critical chain is cleared, return to the preserved S2-07 MOPS stabilization cursor.
 
 No strategy thresholds/weights/ranking, capacity policy, System1 Formal Core/runtime, final selection, live push, capital or order authority are changed.
+
+
+## 2026-10-08 06:02 BUILD_LANE cursor advance — CORR-005/006 closed; CORR-007 is the remaining pre-physical promotion firewall
+
+Observed main before write:
+`29c72720abf7baae27da2b7269626836cf548579`.
+
+Independent closure:
+- `S2-CORR-20261007-005 = VERIFIED_CLOSED`;
+- `S2-CORR-20261007-006 = VERIFIED_CLOSED`;
+- durable verification:
+  `system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json`
+  @ `ae31dcc258469a3200926d4a8ba8942635379879`.
+- PR #841 merged as `d56f05fbc5986d00adbc81392b9dc0711de5043e`;
+- exact-head and merged-main Research / NC-T01 / continuity / V8 / fingerprint checks PASS.
+- this closure fixes code firewalls only; physical NC-T01 remains pending.
+
+New HIGH correction:
+`S2-CORR-20261008-007` — BUILD_LANE.
+
+Reason:
+CLEAR_NO_ACTION promotion currently checks `suspensionCoverageByExchange.TWSE=COMPLETE` but does not require the exact bounded suspension/TWTAWU completeness receipt digest to be source-ref-bound.
+A status string alone must not be promotable as negative-suspension evidence.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`
+@ `cef80ec06e9ea9448f98dfdbadec4e0915b1be43`.
+
+### Current exact BUILD_LANE continuation
+
+1. Implement CORR-007 as a bounded promotion/provenance firewall.
+2. Make exchange-scoped suspension completeness evidence first-class:
+   - exact interval;
+   - immutable receipt/artifact digest;
+   - source family/version;
+   - observation/availability timing.
+3. Bind the suspension evidence identity into the corporate-action completeness receipt hash.
+4. Require a matching TWSE suspension sourceEvidenceRef in
+   `buildNct01TwseClearNoActionPromotionReceiptV0_1`;
+   missing/mismatch/late => `CONTINUITY_UNKNOWN`.
+5. Preserve the three existing corporate-action historical range refs separately.
+6. Regress string-only COMPLETE, missing digest, interval mismatch, ref missing/mismatch, late evidence, and positive complete control.
+7. Run exact-head System2 Research CI + applicable continuity/V8 tests; merge after PASS.
+8. In parallel, DATA_LANE produces the real bounded TWTAWU receipt.
+9. After both converge, execute one real read-only/artifact-only NC-T01 and let 00 recompute S22-T11..T16.
+10. Preserve the older S2-07 MOPS cursor for post-NC-T01 continuation.
+
+No strategy/ranking/capacity/System1 Formal/final-selection/live-push/capital/order semantics change.
