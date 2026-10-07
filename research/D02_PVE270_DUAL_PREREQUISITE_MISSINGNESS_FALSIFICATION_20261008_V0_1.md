@@ -1,0 +1,31 @@
+# D02 PVE-270 — dual prerequisite and informative-missingness falsification
+Date: 2026-10-08 Asia/Taipei
+Room: 02｜價量研究室
+Status: RESEARCH_ONLY / OUTCOME_BLIND / NO_FORMAL_CHANGE
+
+## Authoritative prior evidence
+Latest main checkpoint PVE-269 and D02 tracker exactNext=PVE-270. On 2026-10-07 2454 11:45, persisted same-slot baselineAsOfDate=2026-10-05 while a 2026-10-06 11:45 provider bar was physically verified; validSessions=80 cannot override a one-session freshness hole. PVE-260 requires REFRESH_REQUIRED. The 2026-10-07 23:35/23:55 after-market family was physically entered but execution failed on the account-wide D1 write quota. PVE-264 measured 126,498 account rowsWritten (SYSTEM2_DB=124,629; V7_DB=1,869), and PVE-269 classified INVOKED_EXECUTION_FAILED_D1_QUOTA. These are separate data-quality and infrastructure failures, not evidence of H001 economic failure.
+
+## Dual-prerequisite contract
+(A) PVE-261 owner-gated Class-B baseline-refresh remediation must be deployed *before* a future feature capture and physically prove baselineAsOfDate equals independently sourced expectedLatestComparableSlotDate, same symbol/marketDate/exact slot, >=20 valid same-slot observations, complete provider raw hash, corporate-action/reset continuity, no current/future leakage, and decisionImpact=0.
+(B) Existing S2-CORR-20261007-003, owned by System2 REMEDIATION_LANE with AUDIT_LANE closure authority, must physically prove account-level UTC-day write budgeting and a System1 after-market reserve. A later real trading date must have exactly one successful after-market business scan, a persisted normal receipt, no quota rejection, and independently observed primary/recovery invocation. No separate-database quota-isolation assumption is allowed.
+A PASS from (A) cannot substitute for (B); neither can be satisfied retrospectively by the 2026-10-07 observations. Production merge/deploy/queue mutation are outside D02 authority.
+
+## Clock-separation falsification
+An 11:45 feature must only use information known by its decisionCutoff. The 23:35/23:55 scan occurs later: it may certify *post-session dataset operational integrity* but may not be inserted into the 11:45 predictor or rewrite a failed decision-time baseline. A future pre-decision feature gate and post-session dataset audit are distinct stages. An upstream pass flag without immutable physical receipt and independent guard replay is self-attestation, not accepted proof.
+
+## Newly identified selection-bias risk
+Let A denote admission after both operational gates, X the preregistered price-volume state, and Y a future outcome. A naive estimate conditional on A=1 need not identify the target unconditional effect, because shared quota exhaustion, provider missingness and baseline freshness can depend on workload/date/regime. It is a hypothesis, not established fact, that high market volume or volatility increases write load; an alternative explanation is unrelated scheduled System2 historical ingestion. Both mechanisms can select a non-representative subset of dates. Before opening outcomes, freeze the *planned* marketDate × symbol × exact-slot denominator and classify BASELINE_STALE, QUOTA_BLOCKED, PROVIDER_BLOCKED, SESSION_NOT_TRADABLE and UNKNOWN (multi-cause allowed). Preserve UTC quota-day separate from Taiwan marketDate. Compare admission rates across pre-decision volume/volatility/liquidity/regime strata and bulk-writer schedule. Do not assign zero returns to missing observations, infer an inverse-probability correction without positivity, or choose strata using future outcomes.
+
+## H001 / H20 / H003 parallel research
+H001 support mechanism: fresh same-slot normalization removes intraday volume seasonality. Counterevidence: 80 sessions with a stale latest date are not clean. Alternative: missing prior slot may reflect suspension/provider outage rather than refresh logic; verify authoritative comparable-session provenance. Fail if baseline freshness, raw source, corporate-action continuity or common support is UNKNOWN/FAIL.
+H20 support mechanism: volume conditional on the same D01-owned breakout event might add continuation information beyond price geometry. Counterevidence: volume can reflect crowded reversal, and price/volume transforms may be redundant. Alternative: apparent gain is operational-date selection. Fail if D01 event IDs differ, comparator common support differs, or date-cluster independence is invented. Primary B2 equal-date Brier-loss comparison remains frozen; B1/B4 cannot rescue it.
+H003 support mechanism: participation-versus-response may add information on the active Acceptance lifecycle beyond a price-only parent. Counterevidence: response geometry can merely re-encode trend/volatility/spread. Alternative: absence of a terminal event is administrative censoring. Fail if PRE_EVENT expiry/UNKNOWN is coded as failure, same-bar features leak into future outcome, or H003 borrows H001/H20 counts. Outcome is first terminal success/failure or 13:00 censor.
+
+## Mandatory evidence controls
+PIT and first-known clocks, OOS/purged walk-forward, selection bias, look-ahead, data snooping, multiple testing, overfitting, factor redundancy, independent-date clustering, effective sample, market-state and sector concentration, transaction costs, liquidity/spread/depth, and competing mechanisms remain compulsory. Missing evidence is UNKNOWN, not 0/BAD. No historical Shadow, no fabricated 2026-10-08 intraday observation, no numeric effect-target invention, no D16 self-certification, and no outcome access.
+
+## Conclusion and continuation
+PVE-270 closes a *research design* gap only. The two production prerequisites are still unproven; clean H001 prospective dates=0, all 12 D02 modules L3, maturity=60.0%, Gate7 CLOSED, Formal Core LOCKED, FORMAL_OPTIMIZATION_CANDIDATE=NONE. No economic hypothesis supported/rejected.
+
+Exact next: PVE-271 — independently replay upstream immutable PVE-261/PVE-268/PVE-269 physical receipts rather than trust asserted pass booleans; freeze an outcome-blind planned-opportunity and UTC-quota-day missingness denominator for H001/H20/H003. Wait for owner-authorized baseline refresh and independently verified System2 quota remediation; only future post-remediation market sessions can be considered.
