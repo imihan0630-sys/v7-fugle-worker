@@ -3106,3 +3106,75 @@ No maturity change:
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 live session resolution + source-acquisition observation mechanism
+
+New:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RESOLUTION_20261007_V0_1.json`;
+- `research/D16_SOURCE_ACQUISITION_COARSENING_ADDENDUM_20261007_V0_1.md`;
+- `research/D16_SOURCE_ACQUISITION_COARSENING_ADDENDUM_20261007_V0_1.json`.
+
+### Opportunity resolution
+
+07:28:12 Taipei premarket UNKNOWN remains immutable.
+
+Official TWSE MIS direct same-day activity at 09:14:30 / query 09:15:09 resolves:
+`2026-10-07 = VERIFIED_TRADING_SESSION`.
+
+Current state:
+- expectedTradingOpportunityN includes 2026-10-07;
+- expected System1 C1 scheduled attempt = 2026-10-08 00:10 Taipei;
+- coverage state = PENDING_EXPECTED_SCHEDULED_ATTEMPT;
+- do not count a gap before expected window closes;
+- no C1 evidence yet.
+
+### Observation-mechanism split
+
+For every required source/date preserve:
+- PROVIDER_PUBLICATION_STATE;
+- TRANSPORT_ACCESS_STATE;
+- BODY_COMPLETION_STATE;
+- PARSE_STATE;
+- SEMANTIC_VALIDATION_STATE;
+- PERSISTENCE_READBACK_STATE;
+- RESEARCH_ADMISSION_STATE.
+
+Current real witness:
+run `37556241467`
+=
+`OBSERVATION_CHANNEL_CENSORED / MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED`.
+
+Do not relabel transport failure as source-data absence.
+
+FINANCIAL:
+- publication unknown from this run;
+- transport/body failed;
+- parse/semantic/persistence not reached;
+- readiness not ready.
+
+QUARTER_EPS:
+- not independently tested;
+- downstream blocked by FINANCIAL stage.
+
+Internal retries do not add independent N.
+
+Any future missingness weighting requires pre-outcome attempt-clock covariates + positivity/support.
+Zero support cannot be repaired by extreme IPW.
+
+Supplemental mapping:
+T28/T31/T33/T39 only.
+Canonical SDA016 remains 58 tests.
+
+Exact next:
+1. re-read latest main for third System1 quality-transport remediation;
+2. if FINANCIAL later succeeds, preserve prior failed acquisition episodes and require actual quality-status readback;
+3. then separately evaluate QUARTER_EPS;
+4. on 2026-10-08 after expected scheduled window, reconcile the 2026-10-07 market opportunity to its first scheduled attempt;
+5. immediately switch if System2 policy fingerprint / NC-T01 / physical Stage-1 evaluation / T48 / genuine Formal↔C1 lands first.
+
+Outcomes CLOSED.
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
