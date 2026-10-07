@@ -4455,3 +4455,125 @@ S1 effective-share denominator replay remains blocked.
 3. Independently validate source date/capture/row-hash and custom-override branch accounting.
 4. Then attach the separate shared effective-share denominator authority for S1.
 5. Freeze size buckets only after deterministic S1 replay and before any outcome inspection.
+
+
+## 2026-10-08 NC-T01 strategy-executable witness firewall / CORR-006
+
+New durable artifacts:
+- `research/D16_SDA022_NCT01_STRATEGY_EXECUTABLE_WITNESS_FIREWALL_20261008_V0_1.md`;
+- `research/d16_sda022_nct01_strategy_executable_witness_oracle_20261008_v0_1.json`.
+
+Canonical correction:
+`S2-CORR-20261007-006` HIGH / OPEN / BUILD_LANE.
+
+### Defect
+
+Current `nct01_physical_receipt_v0_1.mjs` can promote:
+- requiredInputsState=READY;
+- executionState=EXECUTED;
+- candidateGenerationExecutable=true;
+- LEGITIMATE_ZERO_PICK;
+- PHYSICALLY_INDEPENDENT_PATH_OBSERVED
+
+from a continuity-ready witness even when strategy-required evidence is incomplete.
+
+The current executableWitness predicate checks:
+- ACCOUNTED;
+- replay READY;
+- continuity READY;
+- zero continuity blockers;
+
+but not required strategy-evidence completeness.
+
+### Critical semantic correction
+
+`CONTINUITY_READY != STRATEGY_EVIDENCE_COMPLETE`.
+
+Also:
+`NON_INCOMPLETE_STRATEGY_VALIDITY != REQUIRED_EVIDENCE_COMPLETE`.
+
+Independent readback of `strategy_evaluator.mjs` shows hard invalidation is applied before the missing-required-evidence branch.
+
+Therefore `strategyValidity=INVALIDATED` can coexist with missing required evidence.
+
+Room11 initially treated INVALIDATED as necessarily evidence-complete, then corrected that interpretation immediately after evaluator-order readback.
+
+Canonical completeness must be an independent machine predicate:
+`requiredEvidenceComplete=true`
+with
+`missingRequiredEvidenceCount=0`
+or an exact frozen contract-equivalent proof.
+
+### Witness layers
+
+W0:
+`CONTINUITY_READY_WITNESS`.
+
+W1:
+`STRATEGY_EXECUTABLE_WITNESS`.
+
+W1 requires:
+- W0;
+- explicit requiredEvidenceComplete=true;
+- missingRequiredEvidenceCount=0 or exact equivalent;
+- strategy evaluation identity/hash bound to the same factor/replay/continuity evidence cut;
+- strategyValidity != INCOMPLETE.
+
+W2:
+`RANK_ELIGIBLE_WITNESS`.
+
+W2 is later ranking admission and must not be confused with W1 physical execution.
+
+### Validity-state handling
+
+- VALID: may be W1 only with explicit requiredEvidenceComplete proof.
+- WEAKENING: may be W1 only with explicit requiredEvidenceComplete proof.
+- INVALIDATED: may be W1 only with explicit requiredEvidenceComplete proof; the label alone is insufficient.
+- INCOMPLETE: never W1.
+
+This prevents favorable-state conditioning while also preventing missing inputs from becoming evaluated rejections.
+
+### Zero-pick rule
+
+LEGITIMATE_ZERO_PICK requires at least one W1 witness actually evaluated under the frozen strategy contract.
+
+All W0 continuity-ready but W1-incomplete:
+- requiredInputsState=INCOMPLETE;
+- executionState=BLOCKED_INPUTS;
+- candidateGenerationExecutable=false;
+- zeroPickDisposition=INPUT_INCOMPLETE;
+- resultClassification=EVIDENCE_INCOMPLETE.
+
+A generated candidate must trace to a W1 witness on the same coherent evidence cut.
+
+### Machine oracle
+
+The corrected oracle freezes SR-T01 through SR-T12 plus explicit INVALIDATED-with-missing-required-evidence coverage.
+
+Key rules:
+- continuity cannot promote incomplete strategy evidence;
+- validity label cannot substitute for required-evidence completeness;
+- candidate identity must bind to W1;
+- hidden-fallback and real continuity remain separate mandatory gates.
+
+### D16 implications
+
+D16-09:
+broad coverage/zero-pick framework remains L4, but the NC-T01 zero-pick subclaim is blocked until CORR-006 physical acceptance.
+
+D16-14:
+remains L3/60.
+S22-T06~T10 are canonical, but T13/T14/T16 are now jointly blocked by:
+- real CLEAR_NO_ACTION continuity;
+- CORR-005;
+- CORR-006.
+
+No maturity promotion.
+
+### Exact next continuation
+
+1. Observe BUILD_LANE CORR-006 implementation.
+2. Require explicit requiredEvidenceComplete / missingRequiredEvidenceCount provenance.
+3. Re-run SR-T01~T12.
+4. In parallel keep CORR-005 hidden-fallback and DATA_LANE real continuity gates.
+5. Only when all three gates pass may one coherent physical NC-T01 evidence cut be evaluated for S22-T11~T16.
