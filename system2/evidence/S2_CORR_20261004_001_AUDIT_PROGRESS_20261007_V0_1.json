@@ -5,7 +5,7 @@
   "auditRole": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
   "canonicalMainShaAtAudit": "34455da7f47016ee149ffeaa963f798251e9fe3d",
   "scope": "Historical daily-market backfill / 2023 TPEx acceptance and canonical DATA_LANE synchronization",
-  "findingState": "PHYSICAL_ACCEPTANCE_CONFIRMED_CANONICAL_DATA_ARTIFACT_SYNC_PENDING",
+  "findingState": "2023_TPEX_SYNC_RESOLVED_2021_TPEX_RECOVERY_IMPLEMENTATION_FIX_REQUIRED",
   "physicalAcceptance": {
     "market": "TPEX",
     "year": 2023,
@@ -73,5 +73,45 @@
     "system2StrategyRankingAuthority": "UNCHANGED",
     "productionPush": "UNCHANGED",
     "capitalOrderBehavior": "UNCHANGED"
+  },
+  "revisionRecoveryAudit": {
+    "checkedAt": "2026-10-07T08:40:00+08:00",
+    "recoveryWorkflowRun": {
+      "runId": 37552411600,
+      "runNumber": 1,
+      "conclusion": "failure",
+      "migrate": "PASS",
+      "recoveryStep": "FAIL",
+      "physicalReverify": "SKIPPED",
+      "system1Isolation": "PASS"
+    },
+    "observedFailure": {
+      "sourceRowHashMismatchCount": 780,
+      "canonicalA1ValueMismatchCount": 0,
+      "previousFrozenCanonicalA1ValueMismatchCount": 698,
+      "assertion": "expected 698 canonical A1 revisions but current fresh source returned 0",
+      "interpretation": "The official source has changed again: full-row source identity still differs from cold baseline, while current canonical A1 values now match the immutable cold baseline."
+    },
+    "verifierSemantics": {
+      "currentVerifier": "V0.5",
+      "sourceRevisionOnlyDataCoverage": "PASS-capable when missing/extra rows are zero and canonical A1 mismatches are zero",
+      "sourceVersionState": "SOURCE_REVISION_OBSERVED_CANONICAL_A1_STABLE",
+      "implication": "A canonical revision overlay is not required when the current official canonical A1 values equal the cold baseline; source revision provenance must remain explicit."
+    },
+    "defectClassification": "STALE_FROZEN_REVISION_SIGNATURE_IN_RECOVERY_OVERLAY",
+    "blockingType": "IMPLEMENTATION_FIX_REQUIRED_NOT_WAITING_FOR_EXTERNAL_DEPENDENCY",
+    "safeNextAction": [
+      "DATA_LANE should update historical_tpex_2021_revision_overlay_v0_1.mjs so the frozen 698-canonical-change path is one accepted observed branch, not the only accepted branch.",
+      "Add a fail-closed branch for the currently observed signature: 780 source-row revisions, 0 canonical A1 revisions, 780 source-revision-only rows, one revised market date.",
+      "When canonical A1 mismatch count is zero, do not persist a synthetic canonical overlay; preserve immutable cold baseline and current source-version provenance, then allow V0.5 physical verification to adjudicate coverage.",
+      "Add regression tests covering both the historical 698-canonical-change observation and the current source-revision-only observation, while rejecting any unrecognized signature.",
+      "Fresh-dispatch the dedicated 2021 TPEx recovery workflow from latest main only after CI passes.",
+      "Advance to 2024 TWSE only after the 2021 TPEx recovery reaches terminal physical verification."
+    ],
+    "protectedBoundaries": {
+      "coldHistoryOverwrite": "PROHIBITED",
+      "system1FormalCore": "UNCHANGED",
+      "system1ProductionRuntime": "UNCHANGED"
+    }
   }
 }
