@@ -1498,8 +1498,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）」。正式主責為 industry × explicit product/geographic market definition × vintage（產業×明確產品／地理市場定義×版本）的產業結構狀態：競爭強度、市占水準／分布、進入障礙、替代威脅、供應商／客戶議價力、產業產能／價格／毛利結構。公司特定策略行動與其 announcement→commitment→implementation→outcome（公告→承諾→執行→結果）生命週期由 D09-14 主責。共享的市占、產能、價格、毛利、客戶與供應商觀測只建立一份 parent evidence receipt（母證據憑證），不得因 D09-13／D09-14 同時引用而重複算票；D10 實體供應鏈／產能傳導與 D11／D17 事件時鐘維持各自主責。每個結論必須保存 PIT（時點一致性）、市場定義版本、反證／失效條件、資料品質、冗餘、成本與對 System 1／System 2 的可驗證增量價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / 3189_2025_SUBSTRATE_UPPER_BOUND_FROZEN_82P11 / 8046_2025_BROAD_CIRCUIT_BOARD_UPPER_BOUND_FROZEN_97P23 / PROJECTED_ABF_PROJECT_SALES_NOT_REALIZED_REVENUE / ABF_SPECIFIC_REALIZED_NUMERATOR_STILL_UNKNOWN / APPLICATION_VS_PRODUCT_AND_FORECAST_VS_REALIZED_FIREWALL / OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
-          "next": "BR-059B continue issuer-native 2025-2026 annual-report/investor-presentation search for actual realized mutually-exclusive ABF/PP/product mix for 3189 and 8046. Treat project expected-sales value, capacity, shipment, roadmap and application exposure as non-revenue evidence; preserve realized ABF numerator UNKNOWN when no compatible disclosure exists. No composite structure score before OOS/redundancy tests."
+          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / 3189_2025_SUBSTRATE_UPPER_BOUND_82P11 / 8046_2025_BROAD_CIRCUIT_BOARD_UPPER_BOUND_97P23 / APPLICATION_MIX_NOT_PRODUCT_MIX / ABF_TECH_OR_CAPACITY_NOT_REALIZED_REVENUE / 3189_8046_REALIZED_ABF_NUMERATOR_UNKNOWN / OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
+          "next": "BR-059D wait/prospectively capture issuer-native realized mutually-exclusive ABF/BT/general-PCB product revenue split or directly reconcilable ABF realized revenue amount. Reject application mix, capacity/utilization, roadmap, customer qualification, project expected sales, market-share estimates and analyst-estimated mix as realized ABF numerator."
         },
         {
           "id": "D09-14",
@@ -1560,8 +1560,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「產能／擴產／稼動率」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / TSMC_CSC_POSITIVE_CASES / GLOBALWAFERS_UNKNOWN_CONTROL / UTILIZATION_NOT_SYNTHESIZED / OUTCOMES_CLOSED",
-          "next": "SC-053 prospectively append issuer-native capacity/production/HVM vintages; seek an issuer-disclosed true utilization-rate case and a delay/cancellation/low-utilization control before any L4 outcome test."
+          "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / UMC_ISSUER_NATIVE_TRUE_UTILIZATION_65_70_78_79_85 / LOW_UTILIZATION_CONTROL_2024Q1_65 / SHIPMENT_GROWTH_NOT_HIGH_UTILIZATION / SC069_2026Q3_GT90_GUIDANCE_PREREGISTERED / 20261028_REALIZATION_PENDING / OUTCOMES_CLOSED",
+          "next": "SC-070 on first official UMC 2026Q3 release: capture issuer-native utilization with sourcePublishedAt/capturedAt, evaluate only the preregistered >90% guidance threshold, preserve unavailable fields as UNKNOWN, keep stock outcomes closed, then assess bounded D16 handoff eligibility. A second-issuer true-utilization control remains optional."
         },
         {
           "id": "D10-05",
