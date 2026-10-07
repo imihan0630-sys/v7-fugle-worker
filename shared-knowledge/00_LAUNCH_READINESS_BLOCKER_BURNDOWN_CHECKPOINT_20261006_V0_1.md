@@ -1543,3 +1543,110 @@ Owner authorization interpretation:
 the 2026-10-07 direction authorizes expedited implementation/testing and guarded production advisory/monitoring activation once formal Stage-1 acceptance gates pass. It does not authorize automatic orders, real-money capital, actual-holdings import, arbitrary thresholds or System1 fallback.
 
 Formal Core remains LOCKED.
+
+
+## 2026-10-07 deep-dive supersession — SHORT_MOMENTUM narrow Stage-1 burn-down
+
+This section supersedes earlier same-file launch facts where they conflict with newer runtime/main evidence. Historical entries remain preserved as chronology.
+
+### Removed as global Stage-1 blockers
+
+1. **Assessor policy not frozen — REMOVED**
+   - latest `daily_shadow_assessor_readiness_v0_1.mjs` is `0.2-LAUNCH`;
+   - registered SHORT_MOMENTUM and SWING_GROWTH policies both resolve `state=READY`;
+   - permission remains `AUTHORIZED_SHADOW_EVALUATION_ONLY`; final selection/push/capital/order remain false.
+
+2. **All symbols must have 60 prior sessions — REMOVED**
+   - latest history reader classifies insufficient history / continuity / revision issues per symbol;
+   - `globalIntegrityState` depends on current-universe accounting/source-wide integrity, not 100% symbol history completeness;
+   - preflight may truthfully return `READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS`;
+   - eligible symbols may proceed while blocked symbols remain denominator-accounted and non-admitted.
+
+3. **Partial denominator blocks capacity/resonance — REMOVED**
+   - S2-CORR-20261004-004 = VERIFIED_CLOSED;
+   - S2-CORR-20261005-001 = VERIFIED_CLOSED;
+   - clean admissions under PARTIAL coverage can create monitorable capacity with durable denominator provenance;
+   - PARTIAL + no legitimate admission cannot claim zeroPick and persists no fake capacity row.
+
+4. **B2 / SWING_GROWTH must be ready before any Stage-1 launch path — REMOVED**
+   - SHORT_MOMENTUM does not require the SWING_GROWTH INDUSTRY_THESIS / FUNDAMENTAL_QUALITY family;
+   - dynamic tri-lane directive allows the narrower single-independent-strategy path rather than forced symmetry;
+   - SDA-022 S22-T13 requires at least one independently executable System2 strategy path when its own inputs are READY.
+
+5. **Regime must be known before policy evaluation — REMOVED for narrow policy-only Stage-1 evidence**
+   - current D18 boundary permits authorized Stage-1 policy evaluation and SDA-022 independence evidence while regime remains UNKNOWN;
+   - no strategy×regime evidence may be claimed until regime is decision-time known.
+
+6. **Complete long-horizon annual history is an automatic Stage-1 veto — REMOVED**
+   - DATA_LANE annual completion remains important for replay/validation;
+   - Stage-1 launch is blocked only by strategy-required current/PIT lookback and integrity, not unrelated old-year incompleteness.
+
+### Current true hard gates — SHORT_MOMENTUM narrow path
+
+#### G1 — Current/prospective A1 readiness
+State: BLOCKED / HIGH.
+- `S2-CORR-20261007-001` OPEN / DATA_LANE.
+- 2026-10-07 terminal prospective run `37577209442` never reached current-day A1 gate READY.
+- TWSE and TPEx failure classes are now separated:
+  - TWSE later live diagnostic = valid JSON but prior-date payload;
+  - TPEx later live diagnostic = valid complete current-date JSON, so earlier NON_JSON_RESPONSE is transient acquisition/body-integrity risk.
+- Required next: current/prospective A1 repair + later real-trading-date physical receipt.
+
+#### G2 — System2 SDA-022 fingerprints S22-T06~T10 canonicalization
+State: ACCEPTED CONTENT / NOT CANONICAL.
+- PR #762 old-head content/checks passed;
+- current main has materially advanced;
+- BUILD_LANE must rebuild/rebase exact fingerprint delta on latest main and rerun exact-head checks before merge.
+
+#### G3 — Physical NC-T01 S22-T11~T16
+State: PENDING.
+- no accepted physical NC-T01 receipt yet;
+- first target should be SHORT_MOMENTUM;
+- remove System1 Top6/rank inputs and prove no hidden fallback;
+- S22-T13 executes only when SHORT_MOMENTUM's own required inputs are READY.
+
+#### G4 — First genuine strategy evaluation -> ranking/capacity receipt
+State: PENDING BEHIND G1 / BUILD WIRING.
+- frozen assessor may evaluate only eligible symbols;
+- partial denominator is allowed with durable provenance;
+- fake zero-pick remains prohibited;
+- first genuine immutable `s2_capacity_runs` receipt is still missing.
+
+#### G5 — Guarded advisory/notification promotion
+State: DISABLED / FINAL STAGE-1 PROMOTION GATE.
+- bounded pool, Daily Resonance and institutional read/UI plumbing already have verified infrastructure;
+- current-session freshness and partial-denominator provenance protections are independently closed;
+- once a genuine capacity source exists, downstream monitor/resonance plumbing does not require a redesign;
+- formal advisory/notification authority still requires launch acceptance; orders/capital/actual holdings remain later protected stages.
+
+### Shortest truthful critical path
+
+`G1 A1 current readiness`
++
+`G2 canonical fingerprints`
+-> `G3 physical NC-T01 SHORT_MOMENTUM`
+-> `G4 genuine evaluation/ranking/capacity`
+-> reuse already-verified bounded pool / resonance / institutional UI
+-> `G5 guarded advisory/notification promotion`.
+
+G1 and G2 are parallelizable.
+G3/G4 ordering may be combined by BUILD_LANE when the physical NC-T01 harness exercises the genuine SHORT_MOMENTUM evaluation path, but neither may be replaced by synthetic output.
+
+### Parallel but non-veto work
+
+- SWING_GROWTH B2 repair and later genuine evidence;
+- DATA_LANE 2024 TPEx annual continuation under CORR-001;
+- S2-07 MOPS repeated-capture membership stabilization;
+- broader research/curriculum maturity;
+- System1 sentinel tasks unless escalation criteria trigger.
+
+### Authority boundary
+
+No item in this supersession:
+- changes SHORT_MOMENTUM/SWING_GROWTH policy thresholds;
+- grants final selection/live push;
+- grants capital/order authority;
+- claims actual holdings;
+- changes System1 Formal Core.
+
+Formal Core remains LOCKED.
