@@ -7303,3 +7303,159 @@ After both:
 execute one real artifact-only SHORT_MOMENTUM NC-T01 and require T11~T16 PASS on one coherent immutable evidence cut.
 
 General open-boundary lifecycle correctness remains a separate post-CORR004 issue.
+
+
+## 2026-10-08 D03 — TI-1423~1440 indicator-L3 gate ownership split + CORR-006 W0/W1/W2 consumer semantics
+
+Canonical D03 artifact:
+- `research/d03_indicator_l3_vs_nct01_physical_gate_ownership_split_20261008_v0_1.json`.
+
+Cross-lane sources:
+- `S2-CORR-20261007-005` = HIGH / OPEN / BUILD_LANE;
+- `S2-CORR-20261007-006` = HIGH / OPEN / BUILD_LANE;
+- `research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json`;
+- `research/d16_sda022_nct01_strategy_executable_witness_oracle_20261008_v0_1.json`;
+- official TWSE TWTAWU page `https://www.twse.com.tw/zh/trading/historical/twtawu.html`.
+
+### TI-1423~1426 — W0 / W1 / W2 claims are distinct
+
+D03 adopts the D16 witness-layer separation:
+
+- W0 = `CONTINUITY_READY_WITNESS`;
+- W1 = `STRATEGY_EXECUTABLE_WITNESS`;
+- W2 = `RANK_ELIGIBLE_WITNESS`.
+
+W0 proves an exact-session-selected technical window has source-honest continuity certification under the required market-data source/lifecycle evidence.
+It may support technical-window PIT feasibility and deterministic indicator replay.
+
+W0 does NOT prove:
+- SHORT_MOMENTUM required strategy evidence is complete;
+- legitimate zero-pick;
+- System2 physical independence;
+- rank eligibility;
+- predictive alpha.
+
+W1 additionally requires explicit strategy-required evidence completeness:
+- `requiredEvidenceComplete=true`;
+- `missingRequiredEvidenceCount=0` or exact equivalent;
+- matched evaluation identity;
+- strategyValidity not INCOMPLETE.
+
+W2 is a later ranking/candidate-stage claim and is not part of D03 L3 technical-feasibility admission.
+
+### TI-1427~1430 — CORR-006 is a real NC-T01 defect but not an indicator-formula defect
+
+Current merged NC-T01 receipt path can promote a continuity-ready symbol even when strategy-required evidence remains incomplete.
+This can falsely convert input incompleteness into:
+- `requiredInputsState=READY`;
+- `executionState=EXECUTED`;
+- candidateGenerationExecutable;
+- legitimate zero-pick;
+- later physical-independence claims.
+
+D03 accepts CORR-006 as HIGH / real / BUILD_LANE-owned.
+
+However the defect concerns the transition:
+W0 continuity-ready -> W1 strategy-executable.
+
+It does not invalidate the underlying W0 technical window merely because SHORT_MOMENTUM has some other missing required evidence.
+
+Hard rule:
+`CONTINUITY_READY_DOES_NOT_IMPLY_STRATEGY_EXECUTABLE`.
+
+Equal hard rule:
+`STRATEGY_INCOMPLETE_DOES_NOT_RETROACTIVELY_INVALIDATE_AN_OTHERWISE_VALID_TECHNICAL_CONTINUITY_WINDOW`.
+
+### TI-1431~1434 — D03 L3 technical feasibility vs NC-T01 physical independence
+
+D03 L3 means Taiwan PIT data feasibility.
+
+Therefore D03-09 / D03-10 technical-feasibility hard gates remain technical-data claims:
+- exact expected-vs-observed eligible-session identity;
+- lifecycle boundary authority for every excluded session;
+- bounded negative completeness when an absence claim is used;
+- real post-replay hash-bound technical-continuity receipt;
+- D03 PIT source-version / known-at causality;
+- genuine Formal-to-C1 parent when same-parent admission is required;
+- complete expected-parent reconciliation;
+- indicator-specific formula/replay guards.
+
+System2 NC-T01 physical-independence gates are separate:
+- S22-T11~T16 one coherent immutable evidence cut;
+- CORR-005 five-dimensional hidden-fallback static + runtime absence proof;
+- `HIDDEN_FALLBACK_AUDIT_SHA256`;
+- CORR-006 at least one W1 strategy-executable witness;
+- artifact-only physical run;
+- no System1 Top6/rank fallback.
+
+Consequences:
+- CORR-005 may block NC-T01 physical independence without invalidating a source-honest D03 technical-continuity receipt;
+- CORR-006 may block strategy execution / zero-pick without invalidating W0 technical PIT feasibility;
+- an NC-T01 physical PASS still does not prove D03 predictive incrementality;
+- D03 L3 technical feasibility still does not prove System2 physical independence.
+
+This removes governance over-gating from the D03 module-promotion path without relaxing any physical-independence rule.
+
+### TI-1435~1437 — TWTAWU representation-parity feasibility is official, export contract still unpinned
+
+Independent primary-page readback confirms the TWSE TWTAWU official page:
+- supports bounded date-period queries;
+- supports a security code or all-listed scope;
+- states data availability from 2011-10-03 onward;
+- exposes both Print/HTML and CSV Download controls.
+
+D03 therefore accepts:
+`BOUNDED_OFFICIAL_REPRESENTATION_PARITY_FEASIBLE_IN_PRINCIPLE`.
+
+But:
+- the actual official CSV/HTML export request contract has not been captured;
+- its response completeness / pagination / truncation semantics are not yet pinned;
+- no export URL is guessed;
+- empty JSON cannot be promoted to `NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`.
+
+Current state:
+`FEASIBLE_NOT_PINNED`.
+
+### TI-1438 — lifecycle open-boundary remains distinct
+
+D16 post-CORR004 review confirms:
+- STOP + no positively certified RESUME/termination/active-through proof cannot be allowed to delete sessions through an arbitrary `coverageTo`;
+- a bare query end is not lifecycle boundary authority.
+
+This remains a general history-reader correctness issue and is independent of CORR-006.
+
+For D03:
+- Bollinger exact 20-session support cannot be shortened by uncertified open STOP intervals;
+- ADX ordered H/L/C recursion cannot skip resumed sessions based on uncertified open STOPs.
+
+### TI-1439 — module immediate path is shortened
+
+D03-10 remains the first promotion target.
+
+Its immediate technical-feasibility path is now:
+1. real exact-window TWSE bounded suspension/source completeness;
+2. real post-replay hash-bound technical continuity receipt;
+3. genuine V8.20 parent / exact 20 eligible sessions / Layer-C known-at / formula-source and parent reconciliation.
+
+It does NOT need to wait for CORR-005 or CORR-006 merely to evaluate W0 technical L3 admission.
+
+D03-09 follows the same W0 path, then additionally requires canonical Wilder FULL_REPLAY / replay-certified trusted prior state.
+
+CORR-005 / CORR-006 continue in parallel for System2 physical NC-T01 and cannot be used to manufacture D03 maturity.
+
+### TI-1440 — maturity / inventory / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- active modules = 12;
+- 10 at current L3/60 milestone;
+- D03-09 / D03-10 = L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact D03 next:
+1. prioritize the first real W0 technical-continuity receipt for an exact-session-ready TWSE witness under bounded source completeness;
+2. if W0 is valid, evaluate D03-10 L3 under its own preregistered technical gates immediately rather than waiting for CORR-005/CORR-006;
+3. keep CORR-005/CORR-006 as parallel System2 physical-independence gates;
+4. keep annual V0.6, raw third session, genuine V8.20 parent, T48, S2-07, D03 dedup/redundancy and D16 predictive incrementality independent.
