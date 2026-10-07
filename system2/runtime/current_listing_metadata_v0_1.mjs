@@ -207,7 +207,7 @@ async function fetchText(url, fetchImpl, timeoutMs, retryAttempts, retryDelayMs)
     }
   }
   throw new Error(
-    `listing metadata transport exhausted after ${retryAttempts} attempts: ${String(lastError?.message || lastError)}`,
+    "listing metadata transport exhausted for "+url+" after "+retryAttempts+" attempts: "+String(lastError?.message || lastError),
   );
 }
 
