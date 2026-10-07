@@ -2689,3 +2689,26 @@ Re-read external blockers. If unchanged, execute the deterministic admission art
 3. Preserve any official multi-day transition window; never collapse staged rebalancing into one effective-day shock.
 4. If prospective source timing is clean and replayable, reassess D06-11 for L3 Taiwan PIT/source feasibility.
 5. In parallel, 2026-10-07 D06-14 still needs T2_FINAL for tradeDate 2026-10-05 and T1_REVISED for tradeDate 2026-10-06 after the relevant source workflow becomes observable.
+
+
+## 2026-10-07 D06 — IC-095 D06-18 genuine in-slot TWSE live lending receipt
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable receipt: `research/d06_18_twse_sbl_live_slot_20261007_v0_1.json`.
+- Preregistered 15:20 ±5 minute live slot completed between 15:15:02 and 15:21:05 Asia/Taipei.
+- Frozen pilot 1101 / 2451 / 3532 / 6187 / 9941 all matched requested identities and visible page date 2026-10-07.
+- Genuine non-null rate example: 3532 台勝科 competitive-bid 3-day recall, match 14:57:19.04, qty 13, latest fee 4.00%, displayed lend/borrow qty 0/0.
+- Negotiated totals remained a separate evidence object: 1101=11,234; 2451=211; 3532=12; 6187=0; 9941=0.
+- Frozen semantic guards remain: borrow fee != bearish conviction; negotiated lending volume != short-sale volume; displayed zero depth != zero total supply; five-symbol pilot != market representation.
+- D06-18 promotes L2/40 -> L3/60 for bounded TWSE borrow-cost/displayed-availability PIT/source feasibility.
+- True utilization remains UNKNOWN because verified total lendable inventory is absent. TPEx parity and predictive alpha remain unvalidated.
+- D06 aggregate maturity: 52.2% -> 53.3%. Global 356-module maturity remains 46.8% after rounding.
+- Cross-room handoff created: `research/D06_18_TO_D20_13_LIVE_RECEIPT_HANDOFF_20261007_V0_1.md`; Room 13 owns any D20-13 reassessment.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. D06-18: accumulate independent in-slot trading dates under the same frozen schema; do not cherry-pick symbols after observing desired fee/depth states.
+2. D06-18: true utilization remains UNKNOWN until a verified total-lendable-inventory denominator exists.
+3. D06-18 L4 path: preregister OOS/Shadow residual incrementality against D06-09 actual-SBL-short, liquidity, direct price-volume, passive/index flow and market-regime controls.
+4. D06-14: later on 2026-10-07, after TPEx T+1/T+2 workflow is plausibly complete, rerun canonical row-level parser for tradeDate 20261005 and 20261006 before assigning T2_FINAL/T1_REVISED.
+5. D06-05 remains blocked by `sameGenerationJoin=false`; D06-06 remains blocked by compatible shared price-volume parent.
