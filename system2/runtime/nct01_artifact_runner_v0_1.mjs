@@ -46,13 +46,7 @@ export async function runNcT01ArtifactOnlyV0_1({
   policyFingerprintReceipt,
   sharedRawSourceRefs = [],
   historyPrefetchEvidence = null,
-  hiddenFallbackAudit = {
-    cachedSystem1SelectionUsed:false,
-    persistedSystem1SelectionUsed:false,
-    aliasReconstructionUsed:false,
-    crossProjectFallbackUsed:false,
-    staleSharedStateUsed:false,
-  },
+  hiddenFallbackAuditEvidence = null,
   orchestrator = runDailyLimitedShadowOrchestratorV0_1,
 } = {}) {
   const id=requiredText(runId,"runId");
@@ -121,7 +115,7 @@ export async function runNcT01ArtifactOnlyV0_1({
     orchestration,
     policyFingerprintReceipt,
     sharedRawSourceRefs:rawRefs,
-    hiddenFallbackAudit,
+    hiddenFallbackAuditEvidence,
     generatedAt:captured,
     notes:[
       "NC_T01_ARTIFACT_ONLY_RUNNER_V0_1",
@@ -135,7 +129,35 @@ export async function runNcT01ArtifactOnlyV0_1({
   });
 
   const continuityReadySymbols=orchestration.perSymbolDiagnostics
-    .filter((x)=>x.continuityBindingState==="READY")
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.replayState==="READY"
+      && x.continuityBindingState==="READY"
+      && Array.isArray(x.continuityBlockerCodes)
+      && x.continuityBlockerCodes.length===0
+    )
+    .map((x)=>String(x.symbol))
+    .sort();
+  const requiredEvidenceCompleteSymbols=orchestration.perSymbolDiagnostics
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.requiredEvidenceComplete===true
+      && Number(x.missingRequiredEvidenceCount||0)===0
+    )
+    .map((x)=>String(x.symbol))
+    .sort();
+  const strategyExecutableSymbols=orchestration.perSymbolDiagnostics
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.replayState==="READY"
+      && x.continuityBindingState==="READY"
+      && Array.isArray(x.continuityBlockerCodes)
+      && x.continuityBlockerCodes.length===0
+      && x.requiredEvidenceComplete===true
+      && Number(x.missingRequiredEvidenceCount||0)===0
+      && ["VALID","WEAKENING","INVALIDATED"].includes(x.strategyValidity)
+      && typeof x.assessmentHash==="string"
+    )
     .map((x)=>String(x.symbol))
     .sort();
   const incompleteSymbols=orchestration.perSymbolDiagnostics
@@ -157,6 +179,18 @@ export async function runNcT01ArtifactOnlyV0_1({
     continuityReceiptInputCount:continuityMap.size,
     continuityReadySymbolCount:continuityReadySymbols.length,
     continuityReadySymbols:Object.freeze(continuityReadySymbols),
+    requiredEvidenceCompleteSymbolCount:requiredEvidenceCompleteSymbols.length,
+    requiredEvidenceCompleteSymbols:Object.freeze(requiredEvidenceCompleteSymbols),
+    strategyExecutableSymbolCount:strategyExecutableSymbols.length,
+    strategyExecutableSymbols:Object.freeze(strategyExecutableSymbols),
+    hiddenFallbackAuditState:hiddenFallbackAuditEvidence?.auditState||"EVIDENCE_INCOMPLETE",
+    hiddenFallbackAuditDigest:hiddenFallbackAuditEvidence?.auditDigest||null,
+    hiddenFallbackRunnerHeadSha:hiddenFallbackAuditEvidence?.runnerHeadSha||null,
+    hiddenFallbackTransitiveManifestHash:hiddenFallbackAuditEvidence?.transitiveManifestHash||null,
+    hiddenFallbackRuntimeForbiddenAccessCount:
+      Number.isInteger(hiddenFallbackAuditEvidence?.runtimeEvidence?.runtimeForbiddenAccessCount)
+        ? hiddenFallbackAuditEvidence.runtimeEvidence.runtimeForbiddenAccessCount
+        : null,
     incompleteSymbolCount:incompleteSymbols.length,
     generatedCandidateCount:receipt.generatedCandidates.length,
     generatedCandidates:receipt.generatedCandidates,
