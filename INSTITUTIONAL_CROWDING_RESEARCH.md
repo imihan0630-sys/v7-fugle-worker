@@ -2771,3 +2771,28 @@ Maturity impact: NONE. D06-05 remains L3/60. The corporate-action/denominator pr
 
 Exact next:
 build the first complete pair-level corporate-action mask across both markets, join security-identity/delisting/share-exchange continuity, freeze the final clean common support, and only then preregister vintage-clustered OOS/Shadow residual incrementality. No price/return/MFE/MAE/ranking outcome opens before that support is frozen.
+
+
+---
+
+## IC-100 — D06-05 corporate-action and denominator continuity guard
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: CORPORATE_ACTION_DENOMINATOR_GUARD_FROZEN / PIT_EVENT_SOURCE_REGISTRY_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_ownership_denominator_corporate_action_guard_v0_1.json`;
+- `research/d06_05_weekly_pair_clean_support_audit_20260924_20261002_v0_1.json`;
+- `research/d06_05_corporate_action_source_registry_v0_1.json`.
+
+For the 2026-09-24 -> 2026-10-02 TDCC pair, 2,962 ordinary four-digit securities are common. 2,783 (93.96%) have exact grade-17 denominator continuity and 179 (6.04%) change denominator.
+
+The changed-denominator group has a median absolute 400-lot-plus concentration move of 0.1625pp versus 0.0193pp in the exact-stable group, about 8.42x. Extreme moves are also enriched: the incidence ratio versus stable-denominator names is about 5.98x for >=3pp, 6.22x for >=5pp and 15.55x for >=10pp.
+
+Official-event counterexamples prove that denominator continuity and event masking are separate controls. 2601 crosses a deficit-offset capital-reduction / share-exchange suspension window and shows about -16.29% grade-17 denominator change with +68.41pp concentration change. 6550 also crosses a deficit-offset capital-reduction/new-share exchange, but its observed grade-17 denominator is unchanged while concentration falls about 25.67pp. Therefore exact denominator equality alone is not sufficient.
+
+Primary L4 clean support is now fail-closed: same security identity, full 17-grade integrity, exact grade-17 denominator continuity, and no PIT-known hard share-count/identity corporate action touching the pair. Cash-dividend-only is not automatically a share-denominator contamination event.
+
+PIT clocks remain separate: announcement first-known time is not the same as effective/share-exchange time. A later-discovered event may diagnose data quality but may not silently rewrite historical decision eligibility.
+
+Maturity impact: NONE. D06-05 remains L3/60. The next prerequisite is a complete replayable TWSE+TPEx pair-level corporate-action mask plus security-identity continuity, followed by clean-support freeze before any outcome columns open.
