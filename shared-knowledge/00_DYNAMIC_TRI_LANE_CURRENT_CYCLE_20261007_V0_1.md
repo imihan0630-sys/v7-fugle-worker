@@ -1220,3 +1220,102 @@ BUILD_LANE may prepare continuity-binding code/regressions in parallel, but must
 Formal Core remains LOCKED.
 No final selection, live push, capital or order authority is enabled.
 
+
+
+## 00 deep continuation delta — CORR-004 PR #817 content audit + exact-window witness compression (2026-10-07 22:10 Asia/Taipei)
+
+Observed latest main before write:
+`d5dad29ed249acc5a92f71b7fd83044b4a8108ea`.
+
+### New launch-critical blocker accepted into the critical path
+
+`S2-CORR-20261007-004` is HIGH / OPEN / DATA_LANE.
+
+The defect is upstream of continuity:
+current long-listed Daily Shadow history readiness can accept 60 observed rows even if one required recent eligible symbol-session is missing and an older row silently substitutes for it.
+
+Therefore a continuity receipt must never promote a symbol until the exact PIT history/session window itself is proven.
+
+### PR #817 independent 00 content audit
+
+PR:
+`#817 fix(system2-data): reconcile exact Daily Shadow symbol sessions`.
+
+Audited head:
+`43784e500f678be6ee95710822fdafd2af50ac50`.
+
+Old-head checks:
+- run `37627845551` verify PASS;
+- run `37627845505` regression PASS;
+- run `37627845383` verify PASS.
+
+Independent codepath findings:
+- long-listed missing-required-session + older-substitution regression fails closed;
+- clean long-listed exact-window control exists;
+- certified lifecycle-gap control exists;
+- new-listing short-window control exists;
+- exact expected and observed session hashes are exposed;
+- factor loading recomputes the actual loaded-window hash and rejects `EXPECTED_SESSION_HASH_MISMATCH`;
+- missing/unexpected sessions remain symbol-local;
+- no whole-universe history veto is restored;
+- TWSE lifecycle uses positive certified intervals only;
+- empty lifecycle lookup does not become NO_EVENT;
+- TPEx does not inherit TWSE source semantics;
+- no historical OHLC mutation or System1 Formal/runtime change.
+
+Disposition:
+`CONTENT_PASS_CANDIDATE / CANONICAL_AND_PHYSICAL_ACCEPTANCE_PENDING`.
+
+The branch is diverged from current main, so old-head green checks are historical only.
+DATA_LANE must rebuild/rebase on then-latest main, rerun exact-head checks, canonically merge, then execute merged-main read-only preflight.
+
+Durable audit:
+`system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_CONTENT_AUDIT_20261007_V0_1.json`.
+
+### Important critical-path compression
+
+The first NC-T01 TWSE history/session witness does NOT require:
+- a broad annual market-year rerun;
+- a D1 historical write;
+- completion of the wider DATA_LANE annual sequence.
+
+The existing exact-window contracts plus read-only TWSE lifecycle source allow the first witness to be evaluated as:
+
+real current A1
++ exact prior PIT rows
++ official trading dates
++ PIT listing boundary
++ positive certified TWSE no-trading intervals where applicable
++ exact expected-vs-observed session/hash reconciliation.
+
+Therefore CORR-003 D1 write-budget governance remains critical before persisted strategy/rank/capacity work, but it is no longer a prerequisite for the first read-only NC-T01 history/session witness.
+
+### Remaining separation of gates
+
+PR #817 closes only the exact-session/history-readiness defect after physical acceptance.
+
+It does NOT itself close continuity promotion:
+- first witness still requires post-replay hash-bound `CLEAR_NO_ACTION`;
+- the continuity receipt must match the exact selected PIT replay window;
+- RAW + `ADJUSTED_CONTINUITY` remains prohibited.
+
+### Updated shortest truthful critical path
+
+Parallel pre-NC-T01:
+1. BUILD_LANE — rebuild/canonicalize #762 S22-T06~T10.
+2. DATA_LANE — rebuild/canonicalize #817 and obtain one merged-main real TWSE exact-window history witness read-only.
+3. DATA_LANE — build the exact-window TWSE corporate-action/lifecycle evidence package read-only.
+4. BUILD_LANE — implement replay-first hash-bound continuity promotion certifier.
+
+Then:
+5. execute real read-only/artifact-only NC-T01;
+6. 00 independently verify S22-T11~T16;
+7. REMEDIATION_LANE CORR-003 secures truthful D1 write-budget/headroom;
+8. persisted SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`;
+9. bounded pool -> Candidate Board -> Daily Resonance -> guarded advisory/notification review.
+
+Nonblocking watchlist:
+a combined newly-listed + certified-suspension regression is not separately identified in PR #817. The first launch witness should use a long-listed TWSE symbol, so this is hardening rather than a first-witness blocker.
+
+Formal Core remains LOCKED.
+Final selection, live push, capital and real orders remain disabled.
