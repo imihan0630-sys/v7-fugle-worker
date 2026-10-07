@@ -24144,3 +24144,38 @@ New durable artifacts:
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
 
+# DL-065 — Structural response vs corporate-action price discontinuity / continuity spaces (2026-10-07)
+
+DL-065 prevents corporate-action reference resets from being misread as chart structure.
+
+The repository already has a canonical Corporate Actions lane, so D01 deliberately does not implement its own factor engine. It consumes explicit semantic spaces: RAW_EXECUTION for the traded tape, TECHNICAL_CONTINUITY for chart geometry across verified resets, PRICE_INDEX_COMPARABLE for price-index comparisons and TOTAL_RETURN_COMPARABLE for total-return research.
+
+That distinction matters on ex-dividend, ex-right, capital-reduction, par-value-change and related dates. The exchange can legitimately reset the opening-auction reference. A five-dollar raw drop can therefore be a mechanical adjustment rather than a bearish gap through support. Conversely, a large raw upward jump after capital-unit changes can be mechanical rather than a breakout.
+
+The hard falsifier is raw versus continuity geometry. D01 records whether RAW says breakout/gap/support break while TECHNICAL_CONTINUITY says no-cross/mechanical reset, as well as cases where both semantic spaces agree. These disagreements are evidence of semantic contamination, not alpha.
+
+A pre-event structural root is not automatically destroyed. If canonical corporate-action receipts certify only a mechanical price-unit/reference reset and causal structural lineage survives, the root receives a CORPORATE_ACTION_CONTINUITY_VERSION. That remains the same root, not a new independent pattern.
+
+Raw execution remains indispensable. Actual fills, slippage and the day's observed OHLC live in RAW_EXECUTION. D01 never pretends a transformed continuity price was directly tradable. At the same time, chart geometry cannot safely use raw discontinuities when a verified mechanical reset crosses the analysis window.
+
+All event/factor use is point-in-time. The event version, firstKnownAt, finalScheduleKnownAt, effectiveDate, technicalPriceFactor and factorVersion must be available under replay. A provider-adjusted history that may have been rewritten on a later adjustment basis is not admissible for historical decision replay without a point-in-time adjustment-vintage receipt.
+
+Reference provenance is also preserved instead of collapsed: previousRawClose, economicAdjustmentReference, exchangeOpeningReference, providerAdjustedAnchor and dailyChangeReference can have different meanings. Any conflict relevant to the research question fails closed.
+
+Price and volume semantics are independent. A verified price factor does not automatically tell D01 how to transform volume. D01 consumes Corporate Actions volume modes NONE, UNIT_SCALE, SUPPLY_CHANGE or UNKNOWN. Unresolved volume comparability remains blocked.
+
+Later fill-dividend/fill-right performance is an outcome, not adjustment truth. It cannot choose the factor or retroactively decide whether the ex-date discontinuity was mechanical.
+
+Taiwan's current exchange data explicitly expose ex-right/ex-dividend reference-price components, while 2026 Taiwan evidence finds meaningful pre-ex-date appreciation/activity and incomplete post-event reversal. That reinforces the separation between mechanical reference reset and later economic price behavior.
+
+Twenty adversarial cases are authored. They enforce canonical ownership, point-in-time factors, raw/continuity divergence, reference-conflict fail-closed behavior, independent volume semantics, one information root across semantic spaces, unsafe-provider-history rejection and same-root continuity versioning.
+
+New durable artifacts:
+- research/PATTERN_CORPORATE_ACTION_CONTINUITY_FIREWALL_V0_1.md
+- research/pattern_corporate_action_continuity_firewall_v0_1.json
+- research/pattern_corporate_action_continuity_firewall_v0_1.mjs
+- research/test_pattern_corporate_action_continuity_firewall_v0_1.mjs
+- research/PATTERN_CORPORATE_ACTION_CONTINUITY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+

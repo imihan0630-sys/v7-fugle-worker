@@ -4530,3 +4530,110 @@ No maturity or Formal change is authorized by this routing.
 7. Next D01 science: separate structural response from ex-dividend/ex-right reference-price adjustments and corporate-action price discontinuities near structural zones.
 8. No outcome join / no runtime wiring / no Formal change.
 
+## Continuation update — DL-065 (2026-10-07)
+
+### DL-065 — Structural response vs corporate-action price discontinuity / continuity spaces
+- DL-064 separated structural response from daily price-limit and cross-session queue mechanics.
+- DL-065 freezes corporate-action semantic-space attribution:
+  RAW_EXECUTION;
+  TECHNICAL_CONTINUITY;
+  PRICE_INDEX_COMPARABLE;
+  TOTAL_RETURN_COMPARABLE.
+- Corporate Actions lane remains canonical owner of adjustment factors, event lifecycle/version provenance, suspension/resumption interaction and cross-space semantics.
+- D01 consumes those receipts fail-closed and does not build an independent adjustment engine.
+- TWSE official data/rules provide dedicated ex-right/ex-dividend reference-price semantics, including prior close, adjusted reference price, rights/dividend values, opening reference and price limits.
+- Capital reduction, cash-refund capital reduction, demerger and par-value changes can mechanically rescale reference prices.
+- Therefore raw-price discontinuity may be a mechanical reset rather than a genuine traversal through support/resistance.
+- Required distinction:
+  RAW_MECHANICAL_GAP = raw discontinuity explained by verified action reset;
+  CONTINUITY_GAP = residual gap after canonical TECHNICAL_CONTINUITY transform.
+- Only continuity-space geometry may support technical gap/breakout claims across a verified price-reset event.
+- A pre-event structural root does not automatically die.
+  If the action is a mechanical price-unit/reference reset and causal lineage remains valid:
+  CORPORATE_ACTION_CONTINUITY_VERSION.
+  This is a version of the same root, not a new independent root.
+- RAW_EXECUTION remains mandatory for actual tradable open/high/low/close and cost/slippage semantics.
+  Adjusted/continuity prices are not executable prices.
+- Prohibited mechanical Pattern evidence includes:
+  cash-dividend drop as bearish gap;
+  capital-reduction reference jump as bullish breakout;
+  par-value change as reversal;
+  mechanically relocated high/low as a fresh structural level.
+- Corporate action event versions must preserve firstKnownAt/finalScheduleKnownAt/effectiveDate/eventVersion/factorVersion/replaySafe.
+  Historical replay uses only versions known by predictorFreezeAt.
+- Missing technicalPriceFactor is DATA_BLOCKED; factor=1 is never a missing-data default.
+- Provider-adjusted history without point-in-time adjustment-vintage evidence is replay-unsafe.
+- Reference fields remain separate:
+  previousRawClose;
+  economicAdjustmentReference;
+  exchangeOpeningReference;
+  providerAdjustedAnchor;
+  dailyChangeReference.
+  Conflicts fail closed rather than being collapsed.
+- Price adjustment does not automatically define volume adjustment.
+  D01 consumes Corporate Actions volume modes:
+  NONE;
+  UNIT_SCALE;
+  SUPPLY_CHANGE;
+  UNKNOWN.
+- Fill-right/fill-dividend behavior is later outcome, not evidence for choosing the adjustment factor.
+- Verified suspension sessions are removed from expected symbol-session continuity only under canonical provenance.
+  Unknown suspension provenance stays blocked; no pseudo-bars are inserted.
+- RAW_EXECUTION and TECHNICAL_CONTINUITY are two semantic views of one PRICE_OHLC parent and do not create two independent confirmations.
+- Primary comparator:
+  G0 CORPORATE_ACTION_EVENT_AWAY_FROM_STRUCTURAL_ZONE;
+  G1 CORPORATE_ACTION_EVENT_AT_STRUCTURAL_ZONE.
+- Required raw-vs-continuity falsifier reports:
+  RAW cross / CONTINUITY no-cross;
+  RAW gap / CONTINUITY mechanical reset;
+  RAW support break / CONTINUITY preserved;
+  both spaces agree.
+- Taiwan 2026 ex-dividend evidence also finds pre-ex-date appreciation/activity and incomplete reversal after the event, reinforcing that post-event price behavior is an empirical outcome and not part of mechanical adjustment truth.
+- Future D16 ladder:
+  C0 RAW_PRICE_ZONE_RESPONSE;
+  C1 CORPORATE_ACTION_EVENT_IDENTIFIED;
+  C2 POINT_IN_TIME_EVENT_VERSION_CONTROLLED;
+  C3 TECHNICAL_CONTINUITY_FACTOR_VERIFIED;
+  C4 RAW_VS_CONTINUITY_GEOMETRY_SEPARATED;
+  C5 SYMBOL_SESSION_SUSPENSION_CONTROLLED;
+  C6 VOLUME_SEMANTICS_CONTROLLED;
+  C7 REFERENCE_CONFLICTS_EXCLUDED_OR_STRATIFIED;
+  C8 GENERIC_CORPORATE_ACTION_COMPARATOR_CONTROLLED;
+  C9 PROVIDER_ADJUSTMENT_VINTAGE_CONTROLLED;
+  C10 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  C11 MULTI_ACTION_MULTI_DATE_MULTI_SYMBOL_REPLICATION.
+- Interpretation states:
+  Q0 MECHANICAL_REFERENCE_RESET_EXPLANATION;
+  Q1 CORPORATE_ACTION_GAP_EXPLANATION;
+  Q2 CAPITAL_UNIT_RESCALE_EXPLANATION;
+  Q3 SUSPENSION_RESUMPTION_EXPLANATION;
+  Q4 PROVIDER_ADJUSTMENT_LOOKAHEAD_EXPLANATION;
+  Q5 VOLUME_SEMANTIC_CONTAMINATION;
+  Q6 REFERENCE_CONFLICT;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 EVENT_COVERAGE_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_CORPORATE_ACTION_CONTINUITY_FIREWALL_V0_1.md
+  - research/pattern_corporate_action_continuity_firewall_v0_1.json
+  - research/pattern_corporate_action_continuity_firewall_v0_1.mjs
+  - research/test_pattern_corporate_action_continuity_firewall_v0_1.mjs
+  - research/PATTERN_CORPORATE_ACTION_CONTINUITY_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-065
+
+1. Reconcile the DL-065 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-065 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Consume Corporate Actions lane receipts; never build a second D01 adjustment engine.
+4. Preserve RAW_EXECUTION and TECHNICAL_CONTINUITY simultaneously and keep volume semantics independent from price factors.
+5. Hand C0-C11 / Q0-Q9 continuity-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from suspension/resumption stale-price anchoring and reopening price discovery after multi-session no-trade intervals.
+8. No outcome join / no runtime wiring / no Formal change.
+
