@@ -1070,3 +1070,35 @@ Correction consequence:
 - merged V8 Regression `37639311568` PASS; Stage1 Assessor `37639310904` PASS; later descendant/main System2 Research CI `37640265444` PASS.
 - closure scope is history/session reconciliation only. It does not certify continuity and does not authorize strategy selection, live push, capital or orders.
 - verifiedAt: 2026-10-07T23:05:43+08:00
+
+
+### S2-CORR-20261007-005 — NC-T01 hidden-fallback audit defaults missing evidence to false
+
+- createdAt: 2026-10-07T23:45:41+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
+- observed problem:
+  - merged PR #830 adds the artifact-only NC-T01 runner core;
+  - `nct01_physical_receipt_v0_1.mjs::hiddenAudit(input={})` maps missing cached/persisted/alias/cross-project/stale audit fields to false;
+  - the receipt builder defaults `hiddenFallbackAudit={}`;
+  - the artifact runner defaults the five audit fields to false;
+  - therefore missing audit evidence can become indistinguishable from machine-proven absence.
+- launch risk:
+  a future caller could reach `PHYSICALLY_INDEPENDENT_PATH_OBSERVED` without satisfying SDA-022 S22-T12 explicit hidden-fallback evidence.
+- required repair:
+  1. all five audit dimensions explicit for physical PASS; missing/unknown = fail-closed;
+  2. machine audit the exact physical runner head/transitive System2 path;
+  3. bind its digest into the receipt dependency graph, preferably `HIDDEN_FALLBACK_AUDIT_SHA256:<digest>`;
+  4. require that typed digest for physical independent classification;
+  5. regress missing object / missing field / missing digest / any true dependency / full clean audit;
+  6. keep the runner artifact-only/read-only and preserve all trading/System1 boundaries.
+- current disposition:
+  - #830 core remains useful and need not be rolled back;
+  - no false physical independence receipt has been observed yet;
+  - S22-T12/S22-T16 remain blocked pending this repair plus the real continuity witness.
+- evidence:
+  `system2/evidence/S2_STAGE1_PR830_INDEPENDENT_REVIEW_20261007_V0_1.json`.
+- finalDisposition: PENDING
