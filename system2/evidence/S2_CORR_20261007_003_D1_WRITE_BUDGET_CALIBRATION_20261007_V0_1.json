@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION_V0_1",
+  "recordedAt": "2026-10-07T19:36:30+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "officialFreeLimit": {
+    "accountRowsWrittenPerUtcDay": 100000,
+    "accountRowsReadPerUtcDay": 5000000,
+    "resetAtUtc": "00:00"
+  },
+  "measuredWriters": [
+    {
+      "workflow": "System2 Recent A1 Hot History Warmup",
+      "runId": 37550201160,
+      "event": "push",
+      "startedAt": "2026-10-07T00:06:31Z",
+      "conclusion": "SUCCESS",
+      "maxDatesPerRun": 5,
+      "readyDateCountAfter": 28,
+      "insertedBarsPerMarketDatePairs": [
+        1062,
+        866,
+        1062,
+        866,
+        1062,
+        865,
+        1062,
+        866,
+        1063,
+        866
+      ],
+      "insertedBarCountTotal": 9640,
+      "rowsWritten": 57880,
+      "rowsWrittenPerInsertedBar": 6.0041493776,
+      "rowsWrittenPerPlannedDateApprox": 11576,
+      "freeDailyWriteShare": 0.5788,
+      "interpretation": "DOMINANT_KNOWN_WRITER; index-amplified historical A1 persistence"
+    },
+    {
+      "workflow": "System2 Daily Shadow Diagnostic",
+      "runId": 37609474459,
+      "event": "schedule",
+      "startedAt": "2026-10-07T10:45:13Z",
+      "conclusion": "SUCCESS",
+      "prospectiveA1Rows": 1973,
+      "rowsWritten": 13130,
+      "freeDailyWriteShare": 0.1313,
+      "interpretation": "PROTECTED_DAILY_OPERATIONAL_EVIDENCE"
+    },
+    {
+      "workflow": "System2 Historical Pack Annual Backfill",
+      "runId": 37564954928,
+      "event": "workflow_dispatch",
+      "conclusion": "SUCCESS",
+      "market": "TWSE",
+      "year": 2024,
+      "insertedManifestCount": 1038,
+      "rowsWritten": 7358,
+      "freeDailyWriteShare": 0.07358,
+      "interpretation": "TYPICAL_ANNUAL_COLD_PACK_WRITER"
+    }
+  ],
+  "comparisonAnnualSamples": [
+    {
+      "runId": 37537013825,
+      "market": "TPEX",
+      "year": 2023,
+      "insertedManifestCount": 824,
+      "rowsWritten": 5842
+    },
+    {
+      "runId": 37473405416,
+      "market": "TPEX",
+      "year": 2022,
+      "insertedManifestCount": 815,
+      "rowsWritten": 5779
+    },
+    {
+      "runId": 37467099680,
+      "market": "TWSE",
+      "year": 2022,
+      "insertedManifestCount": 985,
+      "rowsWritten": 6983
+    }
+  ],
+  "knownThreeWriterTotal": {
+    "rowsWritten": 78368,
+    "freeDailyWriteShare": 0.78368,
+    "theoreticalRemainingBeforeOtherAccountWriters": 21632,
+    "caveat": "This is only a lower-bound accounting subset; D1 Free quota is account-wide and other databases/workflows may consume writes."
+  },
+  "warmupTriggerAudit": {
+    "workflowPath": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+    "currentTriggers": [
+      "workflow_dispatch",
+      "schedule@08:30UTC",
+      "push-on-seven-warmup-source-paths"
+    ],
+    "pushPerformsPhysicalD1Mutation": true,
+    "pushIsNotTestOnly": true,
+    "observedPushRunRowsWritten": 57880,
+    "laterScheduledRunId": 37595978423,
+    "laterScheduledRunStartedAt": "2026-10-07T08:46:06Z",
+    "laterScheduledRunConclusion": "FAILURE_BEFORE_PERSISTENCE",
+    "laterScheduledFailure": "TPEX source transport terminated on first planned date",
+    "riskCounterfactual": "Had the scheduled run completed another comparable 5-date write batch after the earlier push batch, warmup alone could approach 115,760 rowsWritten in one UTC quota day, already above the 100,000 account-wide Free ceiling."
+  },
+  "disprovenHypothesis": {
+    "hypothesis": "Repeated provision_system2_d1.mjs executions were the primary quota consumer.",
+    "disposition": "DISPROVEN_AS_PRIMARY_CAUSE",
+    "evidence": "On an already-existing schema, provision replays idempotent DDL and explicitly inserts two infrastructure sentinel rows; removing redundant provision remains correct hygiene but does not explain the measured 57,880-row dominant write burst.",
+    "consequence": "Do not mark CORR-003 solved by annual migrate removal or UI deploy READ_ONLY_FAST_PATH."
+  },
+  "remediationPriority": [
+    {
+      "priority": "P0",
+      "requirement": "High-write Recent A1 warmup must not physically mutate D1 on ordinary push events.",
+      "safeDirection": "Push may execute tests/planning/read-only evidence only; physical warmup requires schedule/manual plus the global account-level quota gate."
+    },
+    {
+      "priority": "P0",
+      "requirement": "Introduce one UTC-day account-level budget/reservation gate before high-write workloads.",
+      "safeDirection": "Reserve protected daily evidence first; reject/defer high-write batch when conservative known usage + requested reservation breaches the budget."
+    },
+    {
+      "priority": "P0",
+      "requirement": "Budget by measured rowsWritten rather than logical row count.",
+      "safeDirection": "Use D1 meta rows_written; observed A1 hot-history amplification is ~6.00x logical inserted bars."
+    },
+    {
+      "priority": "P1",
+      "requirement": "Make warmup batch size quota-adaptive.",
+      "safeDirection": "Do not blindly use maxDates=5; cap planned physical dates by remaining conservative write reservation and recent measured rowsWritten-per-date."
+    },
+    {
+      "priority": "P1",
+      "requirement": "Persist an auditable quota-day ledger/receipt without creating a self-defeating high-write ledger.",
+      "safeDirection": "One compact immutable reservation/result record per writer run; UTC-day key; actual rowsWritten reconciles estimate."
+    }
+  ],
+  "protectedBoundaries": [
+    "No paid-plan upgrade or billing mutation",
+    "No weakening of Stage-1 data readiness",
+    "No System1 Formal/runtime changes",
+    "No strategy/ranking/final-selection/push/capital/order authority changes",
+    "No rewriting immutable historical data"
+  ]
+}
