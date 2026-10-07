@@ -1740,3 +1740,36 @@ The room now uses gate-based prioritization rather than broad module cycling:
 6. never replay already-counted historical evidence merely to raise progress.
 
 No maturity change from this governance artifact.
+
+
+## BR-043 — D09-09 first live dispersion receipt narrowed to row-export access (2026-10-08)
+
+Artifacts:
+- `research/BR043_D09_09_LIVE_SECTOR_DISPERSION_ROW_ACCESS_READINESS_20261008_V0_1.md`
+- `research/BR043_D09_09_A1_ROW_EXPORT_DATA_LANE_DEPENDENCY_20261008.md`
+
+Current evidence:
+- 2026-10-07 System2 Daily Shadow run `37609474459` physically persisted and read back the current full-market A1 population;
+- TWSE = 1,086 rows;
+- TPEx = 887 rows;
+- total = 1,973 rows;
+- artifact = `11476921489`;
+- prospectiveHistory = `PROSPECTIVE_HISTORY_READBACK_VERIFIED`;
+- availability basis = `PROSPECTIVE_OBSERVATION`;
+- B5 current listing/industry metadata is prospectively usable under the current-classification contract.
+
+The blocker is no longer source readiness or classification feasibility.
+
+Exact blocker:
+`DATA_EXISTS_AND_READBACK_VERIFIED / RESEARCH_ROW_PAYLOAD_NOT_EXPOSED`.
+
+The diagnostic artifact preserves aggregate persistence receipts but does not expose the 1,973 row-level A1 payload. Existing read-only SQL capability against `s2_historical_a1_bars` is proven, but no accepted current workflow exports the full requested-date rows for Room07 research consumption.
+
+DATA_LANE dependency requests one read-only immutable 2026-10-07 A1 export plus same-observation current B5 symbol->industry mapping.
+
+Once returned, Room07 applies the already-frozen BR-041/042 computation:
+CSSD / CSAD / IQR / MAD / upside-downside dispersion / top-1 and top-3 trade-value-leader removal.
+
+D09-09 remains L3/60.
+No L4 promotion.
+Formal Core unchanged.
