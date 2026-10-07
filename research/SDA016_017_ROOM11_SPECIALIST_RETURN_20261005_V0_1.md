@@ -1356,3 +1356,76 @@ No maturity change:
 - D16 = 60%;
 - D18 = 52%;
 - Formal Core LOCKED.
+
+
+## 2026-10-07 System1 quality verification harness authority audit
+
+Canonical:
+- `research/D16_SYSTEM1_QUALITY_VERIFICATION_HARNESS_AUDIT_20261007_V0_1.md`;
+- `research/D16_SYSTEM1_QUALITY_VERIFICATION_HARNESS_AUDIT_20261007_V0_1.json`.
+
+PR #763:
+`420094e95adba8366c6e2f96ecf45e028cd64e41`.
+
+Dedicated quality-verification run:
+- run `37555765564`;
+- job `112581505705`;
+- first offline contract step = FAILURE;
+- live official-quality recovery = SKIPPED;
+- FINANCIAL / QUARTER_EPS readiness readback = SKIPPED;
+- no artifact.
+
+Failure:
+`V8.9.7+ runtime required`.
+
+### Build-authority model resolved
+
+Latest root `Worker.js` version:
+`7.5.26-q1-statement-column-validation`.
+
+This is an intentional repository baseline, not proof of V8.20 source regression.
+
+Evidence:
+- `scripts/apply_v7_5_27.py` explicitly expects the 7.5.26 baseline;
+- canonical deploy/repair workflows then apply the sequential V7→V8 patch chain;
+- `scripts/apply_v8_20_0.py` is the final V8.20 binding step;
+- accepted effective Production version remains `8.20.0-formal-c1-binding-ledger`.
+
+The dedicated quality-verification workflow omitted the canonical build chain and did not set `V7_TEST_WORKER_PATH`.
+The offline V8 recovery test therefore read the legitimate 7.5.26 baseline and failed before live source checks.
+
+Canonical defect:
+`BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS`.
+
+Not:
+- main-source version regression;
+- FINANCIAL live-source failure;
+- QUARTER_EPS live-source failure;
+- successful quality repair.
+
+### Evidence interpretation
+
+For run 37555765564:
+- FINANCIAL = `UNKNOWN_NOT_TESTED_BY_RUN_37555765564`;
+- QUARTER_EPS = `UNKNOWN_NOT_TESTED_BY_RUN_37555765564`;
+- no prospective evidence;
+- no zero-pick;
+- no strategy failure;
+- no negative outcome.
+
+Preserve the failed harness attempt as operational failure provenance.
+
+System1 engineering owner must repair harness authority and rerun.
+Room11 does not modify System1 runtime.
+
+Required post-fix chain:
+1. test effective V8 candidate;
+2. actually execute recovery-only official quality transport;
+3. verify FINANCIAL readiness;
+4. verify QUARTER_EPS readiness;
+5. preserve no after-market scan / no plan mutation / no trade / no push.
+
+No maturity change.
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
