@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { buildHistoricalA1PacksResearchV0_1 } from "../runtime/historical_pack_research_v0_1.mjs";
+import { loadHistoricalBarsFromColdPacksV0_1 } from "../runtime/historical_cold_pack_store_v0_1.mjs";
 import {
   executeHistoricalSegmentPackSetV0_1,
   loadHistoricalBarsFromSegmentsV0_1,
@@ -19,6 +20,10 @@ class FakeStatement {
     return null;
   }
   async all(){
+    if(this.sql.includes("FROM s2_historical_a1_pack_manifests")&&this.sql.includes("year BETWEEN")){
+      const [market,symbol,priceSpace,fromYear,toYear]=this.params;
+      return {results:this.db.annualManifests.filter((x)=>x.market===market&&x.symbol===symbol&&x.price_space===priceSpace&&Number(x.year)>=Number(fromYear)&&Number(x.year)<=Number(toYear))};
+    }
     if(this.sql.includes("FROM s2_historical_a1_segment_manifests")&&this.sql.includes("symbol IN")){
       const [market,year,month,priceSpace,...symbols]=this.params;
       return {results:this.db.manifests.filter((x)=>x.market===market&&Number(x.year)===Number(year)&&Number(x.month)===Number(month)&&x.price_space===priceSpace&&symbols.includes(x.symbol))};
@@ -50,7 +55,7 @@ class FakeStatement {
   }
 }
 class FakeDb {
-  constructor(){this.manifests=[];this.receipts=[];this.checkpoints=[];}
+  constructor(){this.manifests=[];this.annualManifests=[];this.receipts=[];this.checkpoints=[];}
   prepare(sql){return new FakeStatement(this,sql);}
   async batch(statements){
     return statements.map((statement)=>{
@@ -133,6 +138,25 @@ const loaded=await loadHistoricalBarsFromSegmentsV0_1({
 assert.equal(loaded.rowCount,3);
 assert.equal(loaded.sourceMode,"R2_SEGMENTED_COLD_OBJECT_WITH_D1_MANIFEST");
 assert.equal(loaded.rows[0].marketDate,"2026-09-01");
+
+const hybridFromSegments=await loadHistoricalBarsFromColdPacksV0_1({
+  db,objectStore:store,market:"TWSE",symbol:"2330",
+  fromDate:"2026-09-01",toDate:"2026-09-30",
+});
+assert.equal(hybridFromSegments.rowCount,3);
+assert.equal(hybridFromSegments.segmentPackCount,1);
+assert.equal(hybridFromSegments.annualSupersedesSegmentsForSameYear,true);
+assert.equal(hybridFromSegments.packRefs[0].sourceKind,"SEGMENT");
+
+db.annualManifests.push({...db.manifests.find((x)=>x.symbol==="2330")});
+const hybridAnnualPreferred=await loadHistoricalBarsFromColdPacksV0_1({
+  db,objectStore:store,market:"TWSE",symbol:"2330",
+  fromDate:"2026-09-01",toDate:"2026-09-30",
+});
+assert.equal(hybridAnnualPreferred.rowCount,3);
+assert.equal(hybridAnnualPreferred.segmentPackCount,0);
+assert.deepEqual(hybridAnnualPreferred.annualPackYears,[2026]);
+assert.equal(hybridAnnualPreferred.packRefs[0].sourceKind,"ANNUAL");
 
 const changedRows=rows.map((row)=>row.symbol==="2330"&&row.marketDate==="2026-09-03"
   ?{...row,close:9999,high:10000}:row);
