@@ -1845,3 +1845,79 @@ No open implementation PR was observed yet for CORR-005, CORR-006 or the TWTAWU 
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
 No final selection, live push, capital or real orders are authorized.
+
+
+## 00 2026-10-08 rollover delta — CORR-006 W1 witness gate + matrix V0.2
+
+Observed latest main before write:
+`3600388c49d8f88e646fa96abf1ea3e7e3d5ab21`.
+
+00 independently reproduced the NC-T01 strategy-readiness false-promotion defect already opened as:
+`S2-CORR-20261007-006` — HIGH / OPEN / BUILD_LANE.
+
+### Independent confirmation
+
+Current `nct01_physical_receipt_v0_1.mjs` still defines `executableWitnesses` from:
+- ACCOUNTED;
+- replay READY;
+- continuity READY;
+- zero continuity blockers.
+
+It does NOT require:
+- `strategyValidity != INCOMPLETE`;
+- `missingRequiredEvidence.length === 0`;
+- or another exact contract-level `requiredEvidenceComplete` proof.
+
+Canonical strategy-evaluator semantics independently prove:
+- missing REQUIRED evidence -> INCOMPLETE;
+- however hard-invalidation precedence can assign INVALIDATED before missing-required-evidence disposition;
+- therefore `strategyValidity !== INCOMPLETE` alone is also insufficient.
+
+00 accepts D16's W0/W1/W2 separation:
+- W0 = continuity-ready witness;
+- W1 = strategy-executable witness with required evidence complete;
+- W2 = later rank-eligible witness.
+
+NC-T01 physical independence requires at least one W1.
+RANK-01 later requires W2.
+
+### Physical acceptance matrix superseded
+
+New matrix:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json`
+(commit `9b38a4583c04dea42fb4ee9759f019a9d2fc7070`).
+
+Key changes:
+- T13 now blocked by both the real source-honest continuity receipt and CORR-006;
+- T14 legitimate zero-pick requires at least one W1 strategy-executable witness;
+- continuity-ready but strategy-INCOMPLETE observations remain input-incomplete, never zero-pick;
+- INVALIDATED / WEAKENING / VALID count as evaluated W1 states only when requiredEvidenceComplete=true;
+- candidate-universe provenance must separate continuity-ready and strategy-executable witness counts.
+
+### T15 universe-provenance audit
+
+No additional correction is opened for the current candidate-universe roster identity.
+
+The physical receipt's provenance is sufficiently composed from:
+- `A1_BATCH_SHA256` — full current A1 universe source identity;
+- `SHADOW_ACCOUNTING_SHA256` — full eligible/accounted symbol-account state;
+- `ORCHESTRATION_SHA256` — exclusions map, per-symbol diagnostics, execution inputs and counts.
+
+Therefore equal counts/version strings on different underlying universes cannot silently produce the same complete typed physical receipt identity when the mandatory chain is verified.
+
+### Current pre-physical blockers
+
+BUILD_LANE:
+1. CORR-005 — exact-head static + runtime forbidden-access audit, digest-bound.
+2. CORR-006 — W1 required-evidence-complete witness admission + zero-pick firewall.
+3. real artifact-only physical wrapper after both corrections.
+
+DATA_LANE:
+1. exact replay-window TWTAWU bounded completeness via verified official representation parity/network capture;
+2. three TWSE corporate-action exact-range families;
+3. first real hash-bound CLEAR_NO_ACTION continuity receipt.
+
+Only after both lanes converge on one coherent physical evidence cut may 00 evaluate S22-T11~T16.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
