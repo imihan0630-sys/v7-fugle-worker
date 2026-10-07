@@ -706,3 +706,37 @@ Repository validation:
 Current disposition: REPOSITORY_READY / PHYSICAL_EXECUTION_PENDING.
 
 Do not physically run this 2026 path until both 2025 markets are resolved and no annual writer owns the isolated D1/R2 writer lane. The first physical 2026 execution must run TWSE first, verify segment receipts/object hashes/readback, then TPEX, with explicit evidence before aggregate current-year history is considered usable for replay.
+
+
+## 2026-10-07 2024 TPEx transport failure / resilient fresh reverify ready
+
+Annual run `37587943578` / #28 used confirmed inputs `year=2024 / market=TPEX` and failed twice before any market-year physical acceptance.
+
+Attempt 1:
+- annual backfill stopped on TPEx PRIMARY transport timeout for `2024-04-26`;
+- legacy `不含定價` fallback remained forbidden;
+- Physical verify was skipped;
+- System1 isolation PASS.
+
+Attempt 2:
+- failed-job rerun was permitted only as an execution-equivalent transient retry on the same old head;
+- annual backfill stopped on TPEx PRIMARY transport timeout for a different date, `2024-01-15`;
+- Physical verify was skipped;
+- System1 isolation PASS.
+
+The date shift proves an intermittent GitHub-runner ↔ TPEx PRIMARY transport failure rather than a deterministic corrupt market date. Blind reruns of #28 are stopped.
+
+Transport-resilience remediation is now on main:
+- `system2/runtime/official_historical_backfill_source_v0_1.mjs` adds one bounded range-level recovery round only after inner PRIMARY transport exhaustion;
+- data-integrity/schema/date/OHLC failures remain fail-closed and are never retried into success;
+- TPEx legacy endpoint remains canonical-ineligible;
+- receipt exposes `transportRecoveryRound` / `transportRecoveryCount` and policy `PRIMARY_ONLY_RETRY_AFTER_TRANSPORT_EXHAUSTION`;
+- regression proves the first PRIMARY round may exhaust and the second round may recover while every request stays on PRIMARY.
+
+Validation: System2 Research CI `37590871628` SUCCESS on head `e46f3a2049cc774a64b15eea360a4f6ea79fe494`.
+
+Disposition: 2024 TPEx remains PENDING / NOT ACCEPTED. Old run #28 must not be rerun again because it is bound to pre-fix head `9dff76fb235e8da38e8f07c38e355c7be6046d5a`.
+
+Exact next execution: fresh workflow_dispatch from latest main, `year=2024`, `market=TPEX`. Acceptance still requires annual backfill PASS + Physical verify PASS + artifact + System1 isolation PASS.
+
+Workflow: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml
