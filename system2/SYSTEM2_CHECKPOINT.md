@@ -2843,3 +2843,40 @@ Readiness truth:
 - therefore `ACTUAL_POSITION_MONITOR_VERIFIED=false` remains authoritative.
 
 After this bounded Owner-directed change is completed and merged, BUILD_LANE returns to the pre-existing S2-07 continuation cursor without discarding it.
+
+## 2026-10-07 Physical implementation acceptance
+
+Implementation:
+- PR #775 merged as `28a42d5d49dce00a42dacf18797b45a904fc6dc3`.
+- Dedicated Actual Holdings workflow run `37587329198` / job `112680392792`: PASS.
+- System2 Research CI run `37587329275`: PASS.
+- V8 Regression run `37587329189`: PASS.
+- physical contract artifact `11466623799`, digest `sha256:ba59fa9a0d0a23ebf42f52f493a11da2c4193f03876ba5b0fdf3e7350e08404b`.
+- additive SQLite migration verification: PASS; 52 isolated `s2_` tables; global schema remains 1.1.
+
+Accepted implementation truth:
+- `USER_UPLOADED_BROKER_SCREENSHOT` is the Owner-authorized current Actual Holdings source.
+- validation / confirmation / immutable snapshot / idempotency / reconciliation / read-model separation are code-tested.
+- `s2_positions` remains virtual/simulated only.
+- low confidence / ambiguity remains `REVIEW_REQUIRED`; invalid core values can fail as `REJECTED`; unresolved review issues cannot be persisted as Actual Holdings.
+- snapshot reconciliation never invents exact trade price, trade time or broker order ID.
+
+Important physical limitation:
+- verification used synthetic structured fixtures only;
+- no real Owner broker screenshot was imported;
+- guarded isolated-D1 provisioning was not invoked by this acceptance workflow, so migration 0009 is code/schema validated and wired into the provisioner but not claimed physically applied here;
+- therefore `ACTUAL_OWNER_SNAPSHOT_IMPORTED=false` and `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+
+Permanent current authority boundary:
+- broker API = NOT AUTHORIZED;
+- broker adapter/token/certificate = NOT AUTHORIZED / NOT REQUIRED;
+- real orders = DISABLED;
+- live capital authority = DISABLED;
+- broker order routing = NOT AUTHORIZED;
+- System 1 holdings auto-import = NOT AUTHORIZED.
+
+Durable evidence:
+`system2/evidence/S2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1_PHYSICAL_20261007.json`.
+
+Next holdings-specific physical gate:
+`FIRST_REAL_OWNER_SCREENSHOT_CONFIRM_PERSIST_READBACK`.
