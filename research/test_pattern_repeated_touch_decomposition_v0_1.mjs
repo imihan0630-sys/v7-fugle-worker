@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {dedupeTouches,classifyLiquidityMechanism,classifyTouchShape,validateTouchClock,buildTouchLineage} from "./pattern_repeated_touch_decomposition_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7201 duplicate execution not new touch",()=>assert.equal(dedupeTouches({touches:[{executionOrMatchId:"a"},{executionOrMatchId:"a"}]}).independentTouchCount,1));
+t("D7202 unique executions count",()=>assert.equal(dedupeTouches({touches:[{executionOrMatchId:"a"},{executionOrMatchId:"b"}]}).independentTouchCount,2));
+t("D7203 depletion state",()=>assert.equal(classifyLiquidityMechanism({depthBefore:100,depthAfter:50,replenishmentObserved:false,adverseSelectionContext:false}).status,"RESTING_LIQUIDITY_DEPLETION"));
+t("D7204 replenishment state",()=>assert.equal(classifyLiquidityMechanism({depthBefore:100,depthAfter:120,replenishmentObserved:true,adverseSelectionContext:false}).status,"STIMULATED_REPLENISHMENT"));
+t("D7205 nonmonotone allowed",()=>assert.equal(classifyTouchShape({shape:"INVERTED_U"}).monotoneAssumed,false));
+t("D7206 unknown shape remains unidentified",()=>assert.equal(classifyTouchShape({shape:"ALWAYS_STRONGER"}).status,"NOT_IDENTIFIED"));
+t("D7207 future touch cannot backfill",()=>assert.equal(validateTouchClock({firstObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"TOUCH_NOT_KNOWN_AT_FREEZE"));
+t("D7208 future outcome stays blind",()=>assert.equal(validateTouchClock({firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",outcomeAvailableAt:"2026-10-07T10:00:00+08:00"}).status,"VALID_OUTCOME_BLIND"));
+t("D7209 price touch family one root",()=>assert.equal(buildTouchLineage({priceDerivedCount:4,liquidityContextPresent:true}).effectiveIndependentEvidenceCount,1));
+t("D7210 missing depth blocked",()=>assert.equal(classifyLiquidityMechanism({depthBefore:null,depthAfter:50}).status,"LIQUIDITY_RECEIPT_UNKNOWN"));
+console.log(`SUMMARY ${p}/10 PASS`);
