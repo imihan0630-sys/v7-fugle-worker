@@ -1151,3 +1151,51 @@ Correction consequence:
 - Current `executableWitnesses` still promotes from ACCOUNTED + replay READY + continuity READY + no continuity blockers without requiring `requiredEvidenceComplete=true` or excluding strategy INCOMPLETE.
 - Current tests still lack the continuity-ready/strategy-INCOMPLETE and INVALIDATED-plus-missing-required-evidence fail-closed cases.
 - Minimal CORR-005/006 hardening does not overlap the 11 hard-bound policy fingerprint sources; S22-T06~T10 canonical fingerprints need not be regenerated unless BUILD changes one of those 11 artifacts.
+
+
+#### 2026-10-08 05:58 independent closure — CORR-005 / CORR-006
+
+Implementation:
+- PR #841 merged as `d56f05fbc5986d00adbc81392b9dc0711de5043e`;
+- combined BUILD patch implements both HIGH corrections on one exact head.
+
+Exact-head PR checks PASS:
+- System2 Research CI `37692800933`;
+- NC-T01 Artifact Runner `37692801039`;
+- SDA-022 Policy Fingerprints `37692801017`;
+- V8 Regression `37692801025`;
+- NC-T01 Continuity Replay Binding `37692800978`.
+
+Merged-main checks PASS:
+- NC-T01 Artifact Runner `37693224252`;
+- SDA-022 Policy Fingerprints `37693224237`;
+- NC-T01 Continuity Replay Binding `37693224292`;
+- V8 Regression `37693224321`;
+- System2 Research CI `37693224267`.
+
+Merged-main correction audit artifact:
+- artifact `11513234786`;
+- artifact digest `sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb`;
+- exact runner head = merge commit;
+- 24 transitive System2 runtime blobs bound;
+- all five hidden-fallback dimensions = `PROVEN_ABSENT`;
+- runtime forbidden access count = 0;
+- auditDigest = `474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037`.
+
+Because #841 changed fingerprint-bound `daily_shadow_orchestrator_v0_1.mjs`, BUILD correctly regenerated SDA-022 fingerprints:
+- SHORT_MOMENTUM = `2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd`;
+- SWING_GROWTH = `727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af`;
+- merged-main fingerprint artifact `11514650165`, digest `sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555`.
+
+Independent AUDIT_LANE receipt:
+`system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json`
+@ `ae31dcc258469a3200926d4a8ba8942635379879`.
+
+Disposition:
+- `S2-CORR-20261007-005 = VERIFIED_CLOSED`;
+- `S2-CORR-20261007-006 = VERIFIED_CLOSED`.
+
+Important boundary:
+the correction CI artifact explicitly sets `physicalAcceptanceEligible=false`.
+Therefore this closure fixes the code firewalls but does **not** credit physical S22-T11..T16.
+A real source-honest continuity receipt plus one coherent artifact-only NC-T01 run are still required.
