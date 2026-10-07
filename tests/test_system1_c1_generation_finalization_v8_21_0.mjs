@@ -100,6 +100,9 @@ assert.match(source,/WHERE EXISTS \(SELECT 1 FROM trade_research_c1_generations 
   "chunk insert must not create orphan chunks when finalized generation header insert is rejected");
 assert.match(source,/date!==shiftDateString\(today,-1\)/,"finalizer must remain previous-calendar-date prospective only");
 assert.match(source,/C1_FINALIZATION_NOT_PROSPECTIVE_PREVIOUS_DATE/);
+const finalizerBody=source.slice(source.indexOf("async function finalizeC1GenerationSetSafe"),source.indexOf("async function readC1PopulationReceipt"));
+assert.doesNotMatch(finalizerBody,/threeMin|dailyReport|push|deliveryState/i,
+  "C1 set finalization must not depend on external delivery/push state");
 assert.doesNotMatch(source,/C1_FINALIZATION.*14\*86400000/,"finalization must not inherit 14-day operational recovery");
 assert.doesNotMatch(source,/UPDATE trade_research_c1_generation_finalizations/);
 assert.doesNotMatch(source,/DELETE FROM trade_research_c1_generation_finalizations/);
