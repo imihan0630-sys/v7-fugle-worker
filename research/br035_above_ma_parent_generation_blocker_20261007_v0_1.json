@@ -1,0 +1,43 @@
+{
+  "version": "0.1",
+  "id": "BR-035",
+  "date": "2026-10-07 Asia/Taipei",
+  "module": "D09-05 Above-MA廣度",
+  "status": "BR035_BLOCKED_BY_PARENT_GENERATION",
+  "workflow": {
+    "name": "System 1 C1 Prospective Evidence",
+    "runId": 37495670280,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37495670280",
+    "conclusion": "failure",
+    "artifactId": 11426824056,
+    "artifactName": "system1-c1-evidence-37495670280"
+  },
+  "readiness": {
+    "scanDate": "2026-10-06",
+    "category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "mayCountAsZeroPick": false,
+    "eligibleForResearch": false,
+    "receiptError": "C1_GENERATION_NOT_FOUND",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "formalScanDate": "2026-09-29",
+    "formalPipelineComplete": false,
+    "institutionDate": "2026-10-06",
+    "institutionReady": true,
+    "qualityDate": "2026-10-06",
+    "qualityReady": false,
+    "missingQuality": [
+      "FINANCIAL",
+      "QUARTER_EPS"
+    ]
+  },
+  "interpretation": "PARENT_GENERATION_MISSING_NOT_ABOVE_MA_RESULT",
+  "outcomesOpened": false,
+  "formalCoreChanged": false,
+  "maturityDecision": {
+    "module": "D09-05",
+    "level": "L2",
+    "maturityPct": 40,
+    "promote": false
+  },
+  "exactNext": "First complete verified same-generation C1 parent -> run above_ma_breadth_receipt_v0_1.mjs -> freeze no-outcome live receipt."
+}
