@@ -12,6 +12,8 @@ assert.match(reader,/SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT/);
 assert.match(reader,/expectedSessionHash/);
 assert.match(reader,/observedSessionHash/);
 assert.match(reader,/exactSessionReconciliationReady/);
+assert.match(reader,/EXPECTED_SESSION_HASH_MISMATCH/);
+assert.match(reader,/minimumMarketDate/);
 assert.match(reader,/certifiedNoTradingIntervals/);
 assert.ok(!reader.includes("const ageBoundaryMatches = !ageLimited"),"old long-listed boundary shortcut must be removed");
 
