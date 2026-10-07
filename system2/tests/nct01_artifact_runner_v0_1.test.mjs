@@ -178,6 +178,41 @@ assert.equal(pass.evidence.finalSelectionEnabled,false);
 assert.equal(pass.evidence.system1RuntimeUsed,false);
 assert.ok(pass.receipt.notes.includes("HISTORY_PREFETCH_SHA256:"+h("f")));
 
+const sameCutOrder=[];
+const sameCut=await runNcT01ArtifactOnlyV0_1({
+  ...common,
+  receiptId:"NC-T01-RECEIPT-SAME-CUT",
+  hiddenFallbackAuditEvidence:null,
+  hiddenFallbackAuditEvidenceFactory:async ({orchestration})=>{
+    sameCutOrder.push("AUDIT_FINALIZED_AFTER_ORCHESTRATION");
+    assert.equal(orchestration.strategyId,"SHORT_MOMENTUM");
+    assert.equal(orchestration.orchestrationHash,h("8"));
+    return cleanAudit;
+  },
+  continuityReceiptsBySymbol:{"1101":continuityReceipt},
+  orchestrator:async (args)=>{
+    sameCutOrder.push("ORCHESTRATION_EXECUTED");
+    return fakeOrchestratorFactory({withWitness:true})(args);
+  },
+});
+assert.deepEqual(sameCutOrder,[
+  "ORCHESTRATION_EXECUTED",
+  "AUDIT_FINALIZED_AFTER_ORCHESTRATION",
+]);
+assert.equal(sameCut.receipt.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.equal(sameCut.evidence.hiddenFallbackAuditIntegrityValid,true);
+
+await assert.rejects(
+  ()=>runNcT01ArtifactOnlyV0_1({
+    ...common,
+    receiptId:"NC-T01-BAD-DUAL-AUDIT",
+    hiddenFallbackAuditEvidenceFactory:async()=>cleanAudit,
+    continuityReceiptsBySymbol:{},
+    orchestrator:fakeOrchestratorFactory({withWitness:false}),
+  }),
+  /mutually exclusive/,
+);
+
 const blocked=await runNcT01ArtifactOnlyV0_1({
   ...common,
   receiptId:"NC-T01-RECEIPT-BLOCKED",

@@ -10,6 +10,9 @@ import { sha256Hex } from "../runtime/decision_archive.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const DEFAULT_ENTRY = "system2/runtime/nct01_artifact_runner_v0_1.mjs";
+const AUDIT_TOOLING_ONLY_PATHS = new Set([
+  "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs",
+]);
 const FORBIDDEN_SOURCE_FAMILY_VERSION = "S2-NCT01-FORBIDDEN-SOURCES-V0_1";
 
 function args(argv) {
@@ -128,8 +131,10 @@ async function buildGraph(entryRel) {
       ["aliasReconstructionUsed",/\bSYSTEM1_(?:ALIAS|COMPATIBILITY)_RECONSTRUCTION\b/g],
       ["staleSharedStateUsed",/\b(?:STALE|PRIOR)_SYSTEM1_(?:SELECTION|STATE)\b/g],
     ];
-    for(const [dimension,re] of productionTokens){
-      if(re.test(code)) addFinding(dimension,"FORBIDDEN_EXECUTABLE_TOKEN:"+String(re));
+    if(!AUDIT_TOOLING_ONLY_PATHS.has(rel)){
+      for(const [dimension,re] of productionTokens){
+        if(re.test(code)) addFinding(dimension,"FORBIDDEN_EXECUTABLE_TOKEN:"+String(re));
+      }
     }
 
     for(const spec of importSpecifiers(source)){

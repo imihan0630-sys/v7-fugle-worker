@@ -1,0 +1,200 @@
+name: System2 NC-T01 Physical Readonly V0.1
+
+on:
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: "YYYY-MM-DD; blank uses latest completed Taipei calendar day heuristic"
+        required: false
+        type: string
+      decision_timestamp:
+        description: "Optional exact ISO decision timestamp for replay/receipt binding"
+        required: false
+        type: string
+      continuity_receipt_path:
+        description: "Optional repo-local real continuity receipt JSON path"
+        required: false
+        type: string
+      batch_size:
+        description: "Remote D1 PIT prefetch batch size"
+        required: false
+        default: "25"
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
+      - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/runtime/daily_shadow_readonly_context_v0_1.mjs"
+      - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
+      - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
+      - "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs"
+      - "system2/evidence/SDA022_SYSTEM2_SHORT_MOMENTUM_POLICY_FINGERPRINT_V0_1.json"
+      - ".github/workflows/system2-nct01-physical-readonly-v0-1.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-nct01-physical-readonly
+  cancel-in-progress: true
+
+jobs:
+  physical-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-research
+    steps:
+      - name: Checkout exact execution head
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Resolve bounded run inputs
+        id: inputs
+        env:
+          INPUT_MARKET_DATE: ${{ inputs.market_date }}
+          INPUT_DECISION_TIMESTAMP: ${{ inputs.decision_timestamp }}
+          INPUT_CONTINUITY_RECEIPT_PATH: ${{ inputs.continuity_receipt_path }}
+          INPUT_BATCH_SIZE: ${{ inputs.batch_size }}
+        run: |
+          set -euo pipefail
+          market_date="$INPUT_MARKET_DATE"
+          if [ -z "$market_date" ]; then
+            taipei_hour="$(TZ=Asia/Taipei date +%H)"
+            if [ "$taipei_hour" -lt 15 ]; then
+              market_date="$(TZ=Asia/Taipei date -d 'yesterday' +%F)"
+            else
+              market_date="$(TZ=Asia/Taipei date +%F)"
+            fi
+          fi
+          [[ "$market_date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+          batch_size="${INPUT_BATCH_SIZE:-25}"
+          [[ "$batch_size" =~ ^[0-9]+$ ]]
+          test "$batch_size" -ge 1
+          test "$batch_size" -le 100
+          {
+            echo "market_date=$market_date"
+            echo "decision_timestamp=$INPUT_DECISION_TIMESTAMP"
+            echo "continuity_receipt_path=$INPUT_CONTINUITY_RECEIPT_PATH"
+            echo "batch_size=$batch_size"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Guard read-only and System1-isolated scope
+        run: |
+          set -euo pipefail
+          files=(
+            system2/runtime/nct01_artifact_runner_v0_1.mjs
+            system2/runtime/nct01_physical_receipt_v0_1.mjs
+            system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs
+            system2/runtime/daily_shadow_readonly_context_v0_1.mjs
+            system2/runtime/daily_shadow_history_prefetch_v0_1.mjs
+            system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs
+          )
+          ! grep -Ein 'executeSystem2PersistenceBatch|persistDailyProspectiveHistory|wrangler[[:space:]]+(deploy|delete)|secret[[:space:]]+put|PUSH_WEBHOOK_URL|V7_DB|STOCKS_KV' "${files[@]}"
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          echo "NC-T01 physical read-only guard PASS"
+
+      - name: Run real A1 plus isolated-D1 NC-T01 artifact path
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          MARKET_DATE: ${{ steps.inputs.outputs.market_date }}
+          DECISION_TIMESTAMP: ${{ steps.inputs.outputs.decision_timestamp }}
+          CONTINUITY_RECEIPT_PATH: ${{ steps.inputs.outputs.continuity_receipt_path }}
+          BATCH_SIZE: ${{ steps.inputs.outputs.batch_size }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          args=(
+            --market-date "$MARKET_DATE"
+            --batch-size "$BATCH_SIZE"
+            --output system2/evidence/nct01-physical-readonly-output.json
+          )
+          if [ -n "$DECISION_TIMESTAMP" ]; then
+            args+=(--decision-timestamp "$DECISION_TIMESTAMP")
+          fi
+          if [ -n "$CONTINUITY_RECEIPT_PATH" ]; then
+            args+=(--continuity-receipt-path "$CONTINUITY_RECEIPT_PATH")
+          fi
+          node system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs "${args[@]}"             | tee /tmp/system2-nct01-physical-readonly.log
+
+      - name: Verify physical output fail-closed boundaries
+        env:
+          EXPECTED_CONTINUITY_PATH: ${{ steps.inputs.outputs.continuity_receipt_path }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const d=JSON.parse(fs.readFileSync("system2/evidence/nct01-physical-readonly-output.json","utf8"));
+          const rowsWritten=d.d1Metrics?.rowsWritten ?? d.rowsWritten;
+          if(rowsWritten!==0) throw new Error("physical read-only path wrote D1");
+          if(d.safety && d.safety.databaseName!=="system2-research") throw new Error("wrong D1");
+          const safety=d.safety||d;
+          if(safety.system1RuntimeUsed!==false) throw new Error("System1 runtime boundary mismatch");
+          if(safety.finalSelectionEnabled!==false||safety.livePushEnabled!==false) throw new Error("selection/push authority mismatch");
+          if(safety.capitalImpact!==false||safety.orderImpact!==false) throw new Error("capital/order authority mismatch");
+
+          if(d.executionResult==="PASS"){
+            const p=d.physicalEvidence;
+            const r=d.physicalReceipt;
+            if(!p||!r) throw new Error("missing physical evidence/receipt");
+            if(p.d1PersistenceExecuted!==false) throw new Error("persistence execution mismatch");
+            if(p.hiddenFallbackAuditIntegrityValid!==true) throw new Error("hidden fallback audit integrity mismatch");
+            if(p.hiddenFallbackReauditRequired!==false) throw new Error("unexpected hidden fallback reaudit");
+            if(p.hiddenFallbackRuntimeForbiddenAccessCount!==0) throw new Error("forbidden runtime access observed");
+            if(!/^[a-f0-9]{64}$/.test(p.hiddenFallbackAuditDigest||"")) throw new Error("hidden audit digest missing");
+            if(!d.hiddenFallbackAudit?.audit?.auditedBlobIdentities?.length) throw new Error("transitive audit manifest missing");
+            if(d.hiddenFallbackAudit.audit.runnerHeadSha!==process.env.GITHUB_SHA) throw new Error("audit HEAD mismatch");
+            if(d.hiddenFallbackAudit.audit.auditState!=="CLEAN_PROVEN_ABSENT") throw new Error("audit not clean");
+            if(r.system1Top6InputAvailable!==false||r.system1RankInputAvailable!==false) throw new Error("System1 input mismatch");
+            if(d.acceptanceState==="PENDING_00_INDEPENDENT_REVIEW"){
+              if(d.continuityReceiptInput?.supplied!==true) throw new Error("physical pass without real continuity receipt input");
+              if((p.strategyExecutableSymbolCount||0)<1) throw new Error("physical pass without W1");
+              if(r.resultClassification!=="PHYSICALLY_INDEPENDENT_PATH_OBSERVED") throw new Error("physical classification mismatch");
+            } else {
+              if(d.acceptanceState!=="EVIDENCE_INCOMPLETE") throw new Error("unsupported acceptance state");
+              if(r.resultClassification==="PHYSICALLY_INDEPENDENT_PATH_OBSERVED") throw new Error("incomplete run cannot claim physical independence");
+            }
+          } else if(d.executionResult!=="EVIDENCE_INCOMPLETE"){
+            throw new Error("unsupported execution result: "+d.executionResult);
+          }
+
+          console.log(JSON.stringify({
+            result:"PASS",
+            executionResult:d.executionResult,
+            acceptanceState:d.acceptanceState||"EVIDENCE_INCOMPLETE",
+            marketDate:d.marketDate,
+            continuityReceiptCount:d.continuityReceiptInput?.count??d.continuityReceiptCount??0,
+            currentUniverseCount:d.preflight?.currentUniverseCount??0,
+            historyReadyCount:d.preflight?.historyReadyCount??0,
+            continuityReadyCount:d.preflight?.continuityReadyCount??0,
+            strategyExecutableSymbolCount:d.physicalEvidence?.strategyExecutableSymbolCount??0,
+            rowsRead:d.d1Metrics?.rowsRead??0,
+            rowsWritten,
+          },null,2));
+          NODE
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
+
+      - name: Upload physical NC-T01 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-nct01-physical-readonly-v0-1
+          path: |
+            system2/evidence/nct01-physical-readonly-output.json
+            /tmp/system2-nct01-physical-readonly.log
+          if-no-files-found: error
+          retention-days: 30
