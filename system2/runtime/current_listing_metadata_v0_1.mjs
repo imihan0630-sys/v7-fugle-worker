@@ -74,6 +74,14 @@ function parseDate(value) {
   throw new Error("unsupported listing date: " + text);
 }
 
+function firstObjectValue(object, keys) {
+  for (const key of keys) {
+    const value=object?.[key];
+    if (value!==undefined && value!==null && String(value).trim()!=="") return value;
+  }
+  return null;
+}
+
 function parseMarketObjects({ market, objects }) {
   const source = CURRENT_LISTING_METADATA_SOURCES[market];
   if (!source) throw new Error("unsupported market: " + market);
@@ -81,15 +89,27 @@ function parseMarketObjects({ market, objects }) {
   const out = [];
   for (const object of objects) {
     if (!object || typeof object !== "object" || Array.isArray(object)) continue;
-    const symbol = String(object["公司代號"] ?? object["公司代號 "] ?? "").trim();
+    const symbol = String(firstObjectValue(object, [
+      "公司代號","公司代號 ","SecuritiesCompanyCode","Code",
+    ]) ?? "").trim();
     if (!/^[1-9][0-9]{3}$/.test(symbol)) continue;
-    const listingDate = parseDate(object[source.listingDateField]);
+    const listingDateRaw=firstObjectValue(object, [
+      source.listingDateField,
+      market==="TPEX" ? "DateOfListing" : "上市日期",
+      "ListingDate",
+    ]);
+    if (!listingDateRaw) continue;
+    const listingDate = parseDate(String(listingDateRaw));
     if (!listingDate) continue;
     out.push({
       market,
       symbol,
-      companyName: String(object["公司名稱"] ?? "").trim() || null,
-      industry: String(object["產業別"] ?? "").trim() || null,
+      companyName: String(firstObjectValue(object, [
+        "公司名稱","CompanyName",
+      ]) ?? "").trim() || null,
+      industry: String(firstObjectValue(object, [
+        "產業別","SecuritiesIndustryCode","Industry",
+      ]) ?? "").trim() || null,
       listingDate,
       sourceId: source.sourceId,
       sourceName: source.sourceName,
