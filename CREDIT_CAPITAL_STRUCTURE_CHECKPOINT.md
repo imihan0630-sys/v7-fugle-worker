@@ -596,3 +596,32 @@ Therefore D22-04 and D22-06 remain L2 / 40%.
 4. Only if >=20 anchors remain mature after baseline pairing may the historical outcome join open once under the frozen Stage-A preregistration.
 5. While D07 baseline dependency is blocked, continue the nonconflicting D22-04/D22-06 public TPEx fair-value multi-date transport search; never substitute fair value for actual trade.
 
+
+
+## 2026-10-08 04:10 continuation｜D22-04/06 historical fair-value transport falsification
+
+### Canonical state refresh
+- Latest tracker: aggregate 22 domains / 356 modules / 47.4%; D22 remains 51.7%.
+- D22-05 remains L3 / 60%; durable 22-anchor baseline receipt ledger exists with baselineFrozenAnchors=0, maturePairedAnchors=0, unknownBlockedAnchors=22. Do not rebuild the ledger and do not open outcomes.
+- D22-04 and D22-06 remain L2 / 40%.
+
+### New source falsification
+- TPEx first-party materials confirm its own corporate-bond/financial-debenture fair-value series has been supplied daily since 2022-01-03 and is downloadable free of charge.
+- The historical 2022-12-30 security-level fair-value PDF remains directly discoverable and includes bond code, maturity, coupon, reference curve, fair value and yield.
+- Direct retrieval attempts for adjacent guessed archive names 2022-12-29, 2023-01-03 and 2023-01-04 were not accessible in this execution environment. Therefore the evidence supports historical-file existence but does NOT yet prove a deterministic filename/date transport rule or multi-date replayability.
+- Fair value/reference yield remains model/reference evidence, never actual transaction evidence. Missing actual trade/quote history remains UNKNOWN.
+
+### Hypothesis / counterevidence / failure conditions
+- Support: a first-party daily fair-value program plus at least one old security-level archive means historical reference-price replay is plausible and the blocker is narrower than “no history exists”.
+- Counterevidence: one archived date plus inaccessible adjacent guessed dates can arise from indexing/transport limitations, archive renaming, or access controls; it does not establish a stable public historical endpoint.
+- Alternative explanation: search-engine discovery may expose isolated indexed files without exposing a complete archive denominator.
+- Failure condition: if a reproducible multi-date issuer-security panel cannot be obtained with date provenance and staleness/optionality controls, D22-04/06 stay L2 and no issuer spread/refinance-gap candidate is promoted.
+
+### Exact next continuation
+1. Discover the TPEx report/API/download request used by the fair-value page rather than guessing archive filenames.
+2. Replay at least three non-adjacent historical dates and preserve request URL/parameters, observedAt, report date and file hash.
+3. Join repeated bond codes across dates; keep actual trade, quote, reference and fair value as separate provenance classes.
+4. Only after stable multi-date replay, match currency/remnant-maturity sovereign benchmarks and test staleness/optionality; keep outcomes CLOSED.
+5. In parallel, D22-05 should fill the existing 22-anchor baseline ledger from exact pre-event D07/D13/size-liquidity/D11 receipts; missing evidence stays UNKNOWN.
+
+Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE is created.
