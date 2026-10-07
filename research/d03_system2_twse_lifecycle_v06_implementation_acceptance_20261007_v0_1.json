@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "D03_SYSTEM2_TWSE_LIFECYCLE_V06_IMPLEMENTATION_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-07T21:04:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "READ_ONLY_CROSS_LANE_IMPLEMENTATION_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "8242f5ccd9e5ed25961e58b9b05fdbc999d2fa37",
+  "implementationCommit": "8885e60ceb46d07180946940a63f2262c345ee15",
+  "acceptedImplementationFacts": {
+    "twseRegulatoryLifecycleRuntime": "system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs",
+    "verifier": "system2/scripts/historical_market_year_verify_v0_1.mjs",
+    "verifierSchema": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_6",
+    "targetedLookup": "ONLY_BASELINE_UNKNOWN_SYMBOLS",
+    "officialSource": "TWSE announcement list + announcement detail",
+    "coldOhlcvMutation": false,
+    "absenceCertifiesNoEvent": false,
+    "layerCKnownAtProven": false
+  },
+  "d03ContractParity": {
+    "halfOpenIntervals": "SUPPORTED_BY suspendedFrom + resumedOn coverage semantics",
+    "positiveOfficialEvidenceOnly": true,
+    "marginFinancingOnlyNotNoTrading": true,
+    "sourceRowHash": true,
+    "sourcePayloadHash": true,
+    "eventIdentityHash": true,
+    "beforeAfterUnknownCounts": true,
+    "beforeAfterMissingReasonCounts": true,
+    "conflictCount": true,
+    "reclassifiedUnknownBars": true,
+    "layerCSeparated": true
+  },
+  "boundedLimitations": [
+    "TWSE repository implementation is not a physical annual rerun.",
+    "TPEx lifecycle expansion remains unresolved and must not inherit TWSE source semantics.",
+    "Historical sourceReportedAt remains null; sourceReportedDate alone does not prove exact historical availability time.",
+    "Announcement-list absence is not NO_EVENT proof.",
+    "The implementation commit's broad System2 Research CI was cancelled by subsequent repository movement, so D03 requires an exact-main dedicated read-only acceptance run."
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "layerB": "TWSE_IMPLEMENTATION_LANDED_DEDICATED_ACCEPTANCE_PENDING",
+    "layerC": "NOT_PROVEN",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
