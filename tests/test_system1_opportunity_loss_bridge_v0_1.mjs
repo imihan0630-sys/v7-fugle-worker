@@ -83,7 +83,6 @@ assert.equal(out.formalCoreImpact,false);
 
 // Missing C3/lifecycle evidence must remain explicit capture gaps, never zero.
 const noEntry=buildSystem1OpportunityLossBridge({c1Diagnosis:c1,c5Diagnostic:c5});
-assert.equal(h.call({hypotheses:noEntry.hypotheses},"H4_B_RETEST_CONFIRMATION_DELAY"),undefined);
 const h2=id=>noEntry.hypotheses.find(x=>x.id===id);
 assert.equal(h2("H4_B_RETEST_CONFIRMATION_DELAY").structuralN,null);
 assert.equal(h2("H4_B_RETEST_CONFIRMATION_DELAY").evidenceState,"C3_CAPTURE_NOT_AVAILABLE");
