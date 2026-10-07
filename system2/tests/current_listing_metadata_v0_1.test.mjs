@@ -57,3 +57,39 @@ assert.equal(incomplete.state, "INCOMPLETE");
 assert.ok(incomplete.blockerCodes.includes("TWSE:LISTING_METADATA_COVERAGE_LOW"));
 
 console.log("System2 current listing metadata adapter tests passed");
+
+
+let retryCalls = 0;
+const retried = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  minimumByMarket: { TWSE: 2, TPEX: 2 },
+  retryAttempts: 3,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => {
+    retryCalls += 1;
+    if (retryCalls === 1) throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
+    return {
+      ok: true,
+      status: 200,
+      text: async () => String(url).includes("t187ap03_L.csv") ? listed : otc,
+    };
+  },
+});
+assert.equal(retried.state, "READY");
+assert.ok(retryCalls >= 3, "one transient timeout plus both market fetches should be observed");
+
+let exhaustedCalls = 0;
+await assert.rejects(
+  () => fetchCurrentListingMetadataV0_1({
+    observedAt: "2026-10-03T05:00:00.000Z",
+    minimumByMarket: { TWSE: 2, TPEX: 2 },
+    retryAttempts: 2,
+    retryDelayMs: 0,
+    fetchImpl: async () => {
+      exhaustedCalls += 1;
+      throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
+    },
+  }),
+  /listing metadata transport exhausted after 2 attempts/,
+);
+assert.equal(exhaustedCalls, 4, "both markets must fail closed after their own retry budgets");
