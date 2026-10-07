@@ -93,3 +93,25 @@ await assert.rejects(
   /listing metadata transport exhausted after 2 attempts/,
 );
 assert.equal(exhaustedCalls, 4, "both markets must fail closed after their own retry budgets");
+
+
+let bodyRetryCalls = 0;
+const bodyRetried = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  minimumByMarket: { TWSE: 2, TPEX: 2 },
+  retryAttempts: 3,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => ({
+    ok: true,
+    status: 200,
+    async text() {
+      bodyRetryCalls += 1;
+      if (bodyRetryCalls === 1) {
+        throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
+      }
+      return String(url).includes("t187ap03_L.csv") ? listed : otc;
+    },
+  }),
+});
+assert.equal(bodyRetried.state, "READY");
+assert.ok(bodyRetryCalls >= 3, "body-read timeout must be retried inside adapter");
