@@ -2732,3 +2732,77 @@ Exact next:
 SC-072 capture the first genuinely prospective future issuer pricing event under the unchanged SC-032 state vector with native sourcePublishedAt/capturedAt frozen before any later ASP/margin or stock outcome.
 
 Formal Core unchanged.
+
+
+## SC-073 — policy-to-capacity realized support and scope-reset control (2026-10-07)
+
+Artifact:
+- `research/SC073_POLICY_TO_CAPACITY_REALIZATION_AND_SCOPE_RESET_CONTROL_20261007_V0_1.md`
+
+### GlobalWafers 6488 positive realization
+
+Fresh issuer-native evidence materially closes the prior SC-048 gaps.
+
+2026Q1:
+- U.S. subsidiaries, principally GlobalWafers America, received approximately US$317.8 million from AMIC / other government subsidies;
+- the Italy project received its first approved government-support payment of nearly EUR30 million in March 2026.
+
+2026Q2:
+- Sherman, Texas obtained qualifications from multiple Tier-1 customers;
+- Micron added a long-term agreement / strategic funding support relationship;
+- St. Peters 12-inch SOI products were progressively entering volume production;
+- Utsunomiya new capacity was fully online with high utilization.
+
+Therefore policy lifecycle states now separately observe:
+`ACTUAL_FINANCIAL_SUPPORT_REALIZED`,
+`CUSTOMER_QUALIFICATION_PASSED`,
+`VOLUME_PRODUCTION_ENTERING`,
+and `CAPACITY_ONLINE_HIGH_UTILIZATION`.
+
+### Hon Hai / Foxconn Wisconsin negative control
+
+Official WEDC history provides a policy-support scope-reset control:
+- original project framing: up to US$10 billion and approximately 13,000 direct jobs;
+- 2021 amended contract: US$672 million planned investment / 1,454 jobs;
+- 2025 amended contract: total US$1.2 billion planned investment / 2,616 jobs through 2029;
+- by end-2024 WEDC verified nearly US$717 million investment / 1,242 jobs.
+
+This is classified as:
+`SCOPE_RESET / ORIGINAL_SCALE_NOT_REALIZED_AS_ORIGINALLY_FRAMED`,
+not total cancellation.
+
+Frozen rules:
+- `POLICY_AWARD != ORIGINAL_PROJECT_SCALE_GUARANTEE`;
+- `CONTRACT_RENEGOTIATION_IS_A_STATE_CHANGE_NOT_A_DATA_ERROR`;
+- award, disbursement, capex, qualification, production and utilization remain separate clocks/states.
+
+D10-14 remains L3/60.
+No stock outcome or Formal change.
+
+Exact next:
+SC-074 capture the next genuinely new policy/disbursement/project-scope event under the expanded lifecycle; no policy headline may be promoted directly into capacity or earnings exposure.
+
+## SC-075 — first post-SC047 BIS prospective null denominator (2026-10-07)
+
+Artifact:
+- `research/SC075_D10_13_FIRST_POST_SC047_POLICY_NULL_OBSERVATION_20261007_V0_1.md`
+
+SC-047 froze the prospective boundary at 2026-10-04T09:54+08:00.
+
+At the 2026-10-07T22:12+08:00 capture, the latest visible BIS Federal Register notice remained dated 2026-09-24, before the freeze.
+
+Therefore:
+- no qualifying post-SC047 BIS rule/list/license vintage was observed;
+- the 2026-09-24 polysilicon measure remains historical relative to the prospective boundary;
+- it cannot be promoted merely because it is newly re-discovered.
+
+Frozen rules:
+- `NEW_TO_RESEARCH != NEW_AFTER_FREEZE`;
+- `NO_NEW_POLICY_VINTAGE_DATE_IS_DATA`.
+
+D10-13 remains L3/60.
+
+Exact next:
+SC-076 capture the first official BIS rule/list/license publication strictly after the SC-047 freeze, preserving publication/effective/expiry clocks and issuer exposure as UNKNOWN unless compatible issuer-native evidence exists.
+
+Formal Core unchanged.
