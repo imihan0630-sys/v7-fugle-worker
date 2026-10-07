@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T09:02:00+08:00",
+  "updatedAt": "2026-10-07T09:53:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and both 2023 markets. 2021 TPEx remains BLOCKED, but the prior diagnosis of 698 canonical A1 source revisions has been superseded: those values match the non-equivalent TPEx legacy '不含定價' fallback that was incorrectly treated as canonical-equivalent when primary transport failed. Canonical TPEx A1 is now PRIMARY_ONLY_FAIL_CLOSED; latest PRIMARY reconciliation returns 0 canonical A1 mismatches against immutable cold history. Fresh post-fix Physical re-verification is still required before 2021 TPEx can move to PASS/PARTIAL. CORR-001 stays FIX_IN_PROGRESS for this fresh reverify, 2024+ market-years, 2026 incremental history and final full-market PIT replay.",
+      "observedProblem": "Historical raw A1 data coverage is physically accepted through both 2023 markets, including 2021 TPEx. The former 2021 TPEx blocker is resolved after fresh primary-only physical re-verification; Data Coverage is PASS and Replay Readiness is PARTIAL. CORR-001 remains FIX_IN_PROGRESS for 2024+ market-years, the 2026 incremental path, aggregate completion and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -134,7 +134,11 @@
         "Run #18 retained canonical mismatch samples match the legacy '不含定價' values, establishing a false canonical-revision signal caused by fallback transport semantics.",
         "Canonical TPEx A1 transport policy is fixed to PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY; legacy fallback is diagnostic-only and cannot satisfy canonical ingestion.",
         "System2 Research CI run 37554545204 PASSed after the source-policy and recovery changes.",
-        "Durable root-cause evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json."
+        "Durable root-cause evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json.",
+        "2021 TPEx recovery run 37555975307 (#3) completed SUCCESS with Physical verifier V0.5 and System1 isolation PASS.",
+        "2021 TPEx full-year reconciliation: 191643 cold rows = 191643 fresh official rows; zero missing, extra, source-row and canonical A1 mismatches.",
+        "2021 TPEx coverage accepted: 244 sessions, expected 192055 bars, actual 191643, 412 explicit UNKNOWN gaps, unexpectedBars=0, Data Coverage PASS / Replay Readiness PARTIAL.",
+        "Accepted evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json; artifact 11455912132."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -201,7 +205,8 @@
         "Annual continuation may proceed to 2022 TPEx while 2021 TPEx remains explicit BLOCKED, because CORR-001 acceptance permits each later market-year to be completed or explicitly blocked/deferred.",
         "2023 TWSE historical-universe reconstruction fix is live-verified and accepted; annual continuation advances to 2023 TPEx while 2021 TPEx remains explicit BLOCKED.",
         "2023 TPEx canonical DATA_LANE sync is complete; annual continuation advances to 2024 TWSE while 2021 TPEx remains explicit BLOCKED.",
-        "2021 TPEx blocker is reclassified from canonical-source revision to non-equivalent TPEx fallback semantics; fresh primary-only recovery reverify remains the acceptance gate."
+        "2021 TPEx blocker is reclassified from canonical-source revision to non-equivalent TPEx fallback semantics; fresh primary-only recovery reverify remains the acceptance gate.",
+        "2021 TPEx active annual-history blocker resolved; continuation returns to 2024 TWSE while CORR-001 stays FIX_IN_PROGRESS."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
