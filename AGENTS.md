@@ -1,5 +1,23 @@
 # V8 project continuity and safety
 
+## MANDATORY user-visible reply epilogue gate
+
+This repository uses a fail-closed reply footer rule for every project chat, including a brand-new or replacement room.
+
+Before sending **any user-visible project reply** (not only formal reports), the assistant MUST verify that the reply ends with exactly one current Taipei timestamp line in this format:
+
+`日期：YYYY/MM/DD｜台北時間：HH:mm`
+
+Rules:
+- timezone: `Asia/Taipei`;
+- 24-hour clock;
+- use the time of the current reply, never a stale checkpoint/chat/commit timestamp;
+- applies to first-room recovery messages, short acknowledgements, status updates, progress reports, conclusions, engineering/research/audit replies, and completion messages;
+- no new-room exception, no brevity exception, no "already shown above" exception;
+- if the footer is missing, the reply is incomplete and MUST NOT be sent until corrected.
+
+Canonical source: `shared-knowledge/ROOM_BOOTSTRAP.md` section 13 and `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`.
+
 Read `VERSIONING.md` before assigning any new version number. Version level is determined by architecture vs feature vs bug-fix scope, not by commit count.\n\nFor a new/replacement ChatGPT thread, use `shared-knowledge/ROOM_BOOTSTRAP.md` first. For System 1, read the current requirement/checkpoint state before loading history. Read `PROJECT_HISTORY.md` only when the current checkpoint/spec is insufficient or historical rationale is materially needed; do not load the full chronology for routine continuation. GitHub/runtime evidence overrides remembered chat state.\n\nRead REQUIREMENTS_30.md in full before changes. It records the user's latest authoritative specification and explicit incomplete acceptance items. Older Worker comments and prior versions are not the specification.
 
 - Thousand-price pool: official close >=1000, at most3. Non-thousand: official close <1000, at most3. No cross-pool filling, no forced six. Official close <10 excludes; =10 may qualify.
