@@ -5310,3 +5310,98 @@ No maturity or Formal change is authorized by this routing.
 6. Hand root-survival heterogeneity to D16 with prospective/OOS validation.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. No Formal Core change.
+
+
+## Continuation update — DL-081~086 (2026-10-07)
+
+### DL-081 — Discontinuity vs gradual-drift root survival
+- Abrupt discontinuity and gradual drift are now separate structural-root survival problems.
+- Event gaps, price-limit catch-up, suspension/resumption repricing, corporate-action mechanical resets, liquidity gaps, market-wide gaps and symbol-specific information repricing are not pooled.
+- Every pre-existing root remains in the denominator across a break.
+- Break date does not reset root history.
+- D16 ladder D0-D11 frozen.
+- 8 adversarial tests authored and 8/8 PASS under V8-equivalent deterministic execution.
+
+### DL-082 — D01-02 single-candle morphology PIT contract
+- Traditional candle names are deterministic aliases over normalized OHLC morphology.
+- body/range, wick/range, close-location, gap, tick and session state are explicit replay-safe features.
+- Completed-bar first-observable semantics are frozen.
+- Zero-trade, synthetic, price-limit, corporate-action, suspension and few-tick illiquidity contamination are explicit.
+- Named-candle value must be tested against raw normalized OHLC geometry.
+- D01-02 PIT data contract = FEASIBLE.
+- 8 adversarial tests authored and 8/8 PASS.
+
+### DL-083 — D01-03 multi-candle sequence PIT contract
+- Named multi-bar patterns are aliases over sourceBarIds and normalized inter-bar relations.
+- Sliding-window overlap is measured and deduped.
+- firstObservableAt is the close/availability of the final required bar, not pattern start.
+- Failed and unresolved sequences remain in the denominator.
+- Named sequence value must beat raw N-bar geometry.
+- D01-03 PIT data contract = FEASIBLE.
+- 8 adversarial tests authored and 8/8 PASS.
+
+### DL-084 — D01-07 cup/base/handle PIT contract
+- Cup/base/handle is now an online lifecycle, not a retrospective template.
+- Candidate, left-side, trough, right-side, rim-retest, handle, breakout, confirmed, failed, expired and blocked states are preserved.
+- Backpainting completed cups to the left edge is prohibited.
+- Parameter families must be preregistered.
+- Failed/expired bases remain in the denominator.
+- Pattern-specific value must beat prior trend, range compression and generic breakout baselines.
+- D01-07 PIT data contract = FEASIBLE.
+- 8 adversarial tests authored and 8/8 PASS.
+
+### DL-085 — D01-09 gap / price-limit PIT contract
+- Gap taxonomy now separates ordinary opening gaps, market-wide gaps, symbol-event gaps, mechanical corporate-action gaps, suspension/resumption gaps, price-limit delayed discovery, liquidity gaps and vendor/data gaps.
+- Gap fill is an outcome, not predictor-time information.
+- The full gap denominator retains never-filled/censored/mechanical/price-limit/data-blocked cases.
+- Taiwan price-limit/session mechanics and earlier D01 continuity firewalls are explicit upstream controls.
+- D01-09 PIT data contract = FEASIBLE.
+- 8 adversarial tests authored and 8/8 PASS.
+
+### DL-086 — Remaining L2 to L3 PIT promotion audit
+- D01-02, D01-03, D01-07 and D01-09 now each satisfy:
+  mechanism + falsifiers;
+  predictor-time receipt;
+  firstObservableAt / predictorFreezeAt;
+  no-lookahead lifecycle;
+  deterministic executable contract;
+  Taiwan trading/continuity routing;
+  raw-price/redundancy controls;
+  explicit evidence boundary for L4/L5.
+- Promotion recommendation:
+  D01-02 L2/40 -> L3/60;
+  D01-03 L2/40 -> L3/60;
+  D01-07 L2/40 -> L3/60;
+  D01-09 L2/40 -> L3/60.
+- Recommended D01 maturity after tracker governance = 60.0%.
+- This is PIT-feasibility promotion only; alpha remains UNKNOWN.
+
+### Deterministic execution evidence
+- DL-068~080 cumulative: 138/138 PASS under V8-equivalent execution.
+- DL-081~085: 40/40 PASS.
+- DL-068~085 cumulative: 178/178 PASS.
+- Native Node environment parity remains unclaimed.
+
+### Evidence / governance
+- New evidence ledger:
+  research/D01_DL081_085_EVIDENCE_LEDGER_V0_1.md
+- New execution evidence:
+  research/D01_DL081_085_TEST_EXECUTION_EVIDENCE_20261007_V0_1.md
+- Promotion audit:
+  research/D01_DL086_L2_TO_L3_PIT_PROMOTION_AUDIT_V0_1.md
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Pattern alpha UNKNOWN.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-086
+
+1. Apply the four L2->L3 PIT promotions to the canonical tracker from latest main after this research tranche is merged.
+2. Start DL-087: D01 L3-to-L4 empirical validation portfolio.
+3. Prioritize D01-02/D01-03/D01-07/D01-09 with identical Taiwan PIT universe and common benchmark controls.
+4. Freeze outcome horizons, transaction-cost treatment, multiplicity correction, walk-forward splits and no-winner policy before historical outcome joins.
+5. Require raw-OHLC/raw-sequence/generic-breakout controls before pattern-specific claims.
+6. Hand statistical incrementality to D16; no pattern promotion without OOS evidence.
+7. Keep SDA-001/SDA-002 open.
+8. No Formal Core change.

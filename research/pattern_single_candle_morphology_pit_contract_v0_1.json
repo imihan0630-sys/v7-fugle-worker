@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "pattern-single-candle-morphology-pit-contract-v0.1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "candleNameEqualsNewAlpha": false,
+  "multipleNamesOneBarEqualMultipleVotes": false,
+  "incompleteBarMayBeClassifiedCompleted": false,
+  "contextFreeDirectionalityAssumed": false,
+  "d01_02_PIT_DataContract": "FEASIBLE",
+  "outcomeJoin": "CLOSED"
+}

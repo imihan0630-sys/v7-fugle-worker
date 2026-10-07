@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import {classifyDiscontinuity,preserveRootSurvivalDenominator,validateDiscontinuityClock,classifySurvivalMechanism} from "./pattern_discontinuity_root_survival_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8101 corporate action separate",()=>assert.equal(classifyDiscontinuity({corporateAction:true}).status,"CORPORATE_ACTION_MECHANICAL_RESET"));
+t("D8102 limit catchup separate",()=>assert.equal(classifyDiscontinuity({priceLimitCatchup:true}).status,"PRICE_LIMIT_CATCHUP"));
+t("D8103 multiple causes not collapsed",()=>assert.equal(classifyDiscontinuity({eventGap:true,marketWide:true}).status,"MULTI_CAUSE_DISCONTINUITY"));
+t("D8104 denominator not reset",()=>assert.equal(preserveRootSurvivalDenominator({eligibleRoots:100,survivedReacted:20,survivedNoRevisit:30,crossedNoReaction:20,mechanicallyRebased:10,temporarilyBlocked:5,invalidatedNewPriceDiscovery:10,dataBlocked:5}).breakResetsDenominator,false));
+t("D8105 future event unavailable",()=>assert.equal(validateDiscontinuityClock({eventFirstObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true}).status,"EVENT_NOT_KNOWN_AT_FREEZE"));
+t("D8106 mechanical reset not structural failure",()=>assert.equal(classifySurvivalMechanism({mechanicalReset:true}).status,"MECHANICAL_RESET_ONLY"));
+t("D8107 liquidity artifact distinct",()=>assert.equal(classifySurvivalMechanism({liquidityArtifact:true}).status,"LIQUIDITY_GAP_ARTIFACT"));
+t("D8108 genuine survival remains candidate",()=>assert.equal(classifySurvivalMechanism({}).status,"ROOT_SURVIVAL_REQUIRES_VALIDATION"));
+console.log(`SUMMARY ${p}/8 PASS`);
