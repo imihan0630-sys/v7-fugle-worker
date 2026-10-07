@@ -160,4 +160,27 @@ assert.equal(
   "LATEST_AVAILABLE_REVISION_BY_AVAILABLE_AT_FAIL_CLOSED_ON_SAME_AVAILABILITY_CONFLICT",
 );
 
+const legacyClearRows = batch.rows.map((row) => ({ ...row, continuityState: "CLEAR_NO_ACTION" }));
+const legacyAdjustedRows = batch.rows.map((row) => ({ ...row, continuityState: "ADJUSTED_CONTINUITY" }));
+
+const legacyClearReplay = await buildPitReplayWindow({
+  replayId: "PIT-2330-LEGACY-CLEAR",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-09-29T10:10:00Z",
+  lookbackSessions: 61,
+  historicalBars: legacyClearRows,
+});
+const legacyAdjustedReplay = await buildPitReplayWindow({
+  replayId: "PIT-2330-LEGACY-ADJUSTED",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-09-29T10:10:00Z",
+  lookbackSessions: 61,
+  historicalBars: legacyAdjustedRows,
+});
+assert.ok(legacyClearReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
+assert.ok(legacyAdjustedReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
+assert.equal(legacyClearReplay.replayHash, legacyAdjustedReplay.replayHash);
+
 console.log("System2 PIT replay v0.1 tests passed");

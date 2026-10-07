@@ -363,4 +363,33 @@ assert.notEqual(preRevisionReplay.bars[0].sourceId, postRevisionReplay.bars[0].s
 assert.notEqual(preRevisionReplay.bars[0].sourceRowHash, postRevisionReplay.bars[0].sourceRowHash);
 assert.notEqual(preRevisionReplay.bars[0].barHash, postRevisionReplay.bars[0].barHash);
 
+const legacyLabelRows = await makeRows();
+const legacyClearReplayForIdentity = await buildPitReplayWindow({
+  replayId: "NCT01-LEGACY-LABEL-CLEAR",
+  symbol,
+  marketDate,
+  decisionTimestamp,
+  priceSpace: "RAW",
+  lookbackSessions: 61,
+  historicalBars: legacyLabelRows.map((row) => ({ ...row, continuityState: "CLEAR_NO_ACTION" })),
+});
+const legacyAdjustedReplayForIdentity = await buildPitReplayWindow({
+  replayId: "NCT01-LEGACY-LABEL-ADJUSTED",
+  symbol,
+  marketDate,
+  decisionTimestamp,
+  priceSpace: "RAW",
+  lookbackSessions: 61,
+  historicalBars: legacyLabelRows.map((row) => ({ ...row, continuityState: "ADJUSTED_CONTINUITY" })),
+});
+assert.ok(legacyClearReplayForIdentity.bars.every((x) => x.continuityState === "UNVERIFIED"));
+assert.ok(legacyAdjustedReplayForIdentity.bars.every((x) => x.continuityState === "UNVERIFIED"));
+const legacyClearIdentity = await buildNct01ReplaySourceIdentityV0_1({
+  replayWindow: legacyClearReplayForIdentity,
+});
+const legacyAdjustedIdentity = await buildNct01ReplaySourceIdentityV0_1({
+  replayWindow: legacyAdjustedReplayForIdentity,
+});
+assert.equal(legacyClearIdentity.sourceHistoryHash, legacyAdjustedIdentity.sourceHistoryHash);
+
 console.log("System2 NC-T01 replay continuity binding v0.1 tests passed");
