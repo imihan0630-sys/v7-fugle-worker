@@ -5,7 +5,7 @@
   "auditRole": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
   "canonicalMainShaAtAudit": "34455da7f47016ee149ffeaa963f798251e9fe3d",
   "scope": "Historical daily-market backfill / 2023 TPEx acceptance and canonical DATA_LANE synchronization",
-  "findingState": "2024_TPEX_PENDING_AFTER_RUN29_JOB_TIMEOUT",
+  "findingState": "2024_TPEX_PENDING_AFTER_RUN30_D1_FREE_TIER_QUOTA_BLOCK",
   "physicalAcceptance": {
     "market": "TPEX",
     "year": 2023,
@@ -245,6 +245,29 @@
       "Coverage artifact must be present.",
       "System1 production isolation must PASS.",
       "If 120 minutes still expires, do not keep increasing timeout blindly; DATA_LANE should add bounded resumable/chunked source acquisition."
+    ]
+  },
+  "run30Audit": {
+    "checkedAt": "2026-10-07T19:16:52+08:00",
+    "runId": 37611914140,
+    "runNumber": 30,
+    "headSha": "cd99cd22f2019a8666c3fc25347d0e6fbbd2c595",
+    "terminalState": "FAILURE",
+    "migrate": "FAILED_D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT",
+    "backfill": "SKIPPED",
+    "physicalVerify": "SKIPPED",
+    "artifact": "NONE",
+    "failureMessage": "Cloudflare D1 HTTP 400: Your account has exceeded D1's free tier daily row write limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue.",
+    "dataIntegrityInterpretation": "NO_2024_TPEX_ACCEPTANCE; NO_BACKFILL_STARTED; NOT_A_SOURCE_OR_TIMEOUT_FAILURE",
+    "resetNotBeforeUtc": "2026-10-08T00:00:00Z",
+    "resetNotBeforeTaipei": "2026-10-08T08:00:00+08:00",
+    "paidUpgradeAuthorized": false,
+    "relatedCrossLaneCorrection": "S2-CORR-20261007-003",
+    "nextAcceptanceGuard": [
+      "Do not classify run #30 as a 2024 TPEx data/source failure because backfill never started.",
+      "Do not upgrade Cloudflare plan or incur paid billing without explicit owner approval.",
+      "After free-tier reset, a fresh 2024/TPEX run remains required for CORR-001 physical acceptance.",
+      "Cross-workflow recurrence is separately routed to REMEDIATION_LANE under S2-CORR-20261007-003."
     ]
   }
 }
