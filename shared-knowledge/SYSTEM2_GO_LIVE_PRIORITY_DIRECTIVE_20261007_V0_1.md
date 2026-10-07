@@ -1,10 +1,28 @@
 # System 2 Go-Live Priority Directive — 2026-10-07 V0.1
 
-Status: OWNER_DIRECTIVE_ACTIVE / PROJECT_P0 / SYSTEM2_GO_LIVE_FAST_TRACK
+Status: SYSTEM2_GO_LIVE_NORTH_STAR_ACTIVE / PROJECT_PRIORITY_SEMANTICS_SUPERSEDED
 Authority: explicit owner direction on 2026-10-07 Asia/Taipei
 Repository: imihan0630-sys/v7-fugle-worker
 Authoritative branch: main
 Observed main at directive creation: `c57c4a07fa51b59be003f9f16f0f455f82e6ee23`
+
+## Priority-semantics supersession
+
+The System 2 Stage-1 go-live objective in this directive remains ACTIVE.
+
+Its former project-wide single-lane priority semantics are superseded by:
+
+`shared-knowledge/PROJECT_EXECUTION_DYNAMIC_TRI_LANE_PRIORITY_DIRECTIVE_20261007_V0_1.md`
+
+Canonical execution model:
+`DYNAMIC_TRI_LANE_LAUNCH_CRITICAL_PRIORITY`
+
+Meaning:
+- System 2 build/go-live, 01–15 research, and System 2 DATA_LANE remain concurrently active;
+- attention is allocated dynamically by current launch-critical blocker impact, not fixed round-robin;
+- System 1 is DEFAULT_LAST / SENTINEL_ONLY unless an explicit escalation condition applies.
+
+The Stage-1 System 2 target and safety boundaries below remain valid.
 
 ## Objective
 
