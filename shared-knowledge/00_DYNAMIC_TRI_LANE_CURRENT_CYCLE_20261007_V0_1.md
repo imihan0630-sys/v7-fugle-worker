@@ -1029,3 +1029,57 @@ Must complete before physical NC-T01 S22-T13:
 5. then execute artifact-only NC-T01 and independently verify S22-T11~T16.
 
 Formal Core remains LOCKED. No final selection, live push, capital or order authority is enabled.
+
+## 00 critical-path supersession — CORR-004 must precede continuity promotion (2026-10-07 21:00:32 Asia/Taipei)
+
+Observed latest main before write:
+`ecefbac4e34281591ba0a5efd41d9c3ba63a95c8`.
+
+A new formal correction is now canonical:
+`S2-CORR-20261007-004` = HIGH / OPEN / DATA_LANE.
+
+### Why this changes NC-T01 ordering
+
+Current `daily_shadow_history_reader_v0_1.mjs` marks long-listed symbols history-ready when:
+- no revision ambiguity; and
+- at least the required count of PIT rows exists.
+
+For long-listed symbols, it does not reconcile those selected dates to the exact expected eligible symbol-session set. A missing recent required session can therefore be replaced by an older row while the count stays 60.
+
+The 51 symbols reported `historyReady=true` in run `37609474459` must therefore be interpreted as:
+`COUNT_READY / NOT_EXACT_SESSION_CERTIFIED`.
+
+They are not yet valid witnesses for NC-T01 S22-T13 merely because they have 60 rows.
+
+### Formal dependency order
+
+The shortest truthful first-witness path is now:
+
+1. BUILD_LANE canonicalizes System2 SDA-022 fingerprints S22-T06~T10 from PR #762 on latest main.
+2. DATA_LANE implements/accepts CORR-004 exact expected eligible symbol-session reconciliation.
+3. A physical real-date readback identifies at least one TWSE symbol whose exact required PIT session set reconciles with no older-row substitution.
+4. DATA_LANE supplies the exact-window corporate-action/session evidence package for that witness.
+5. BUILD_LANE validates the continuity receipt AFTER replay selection and binds `continuityReceiptId/sourceHistoryHash/continuityTransformHash` to the exact live PIT window.
+6. First NC-T01 permits only `CLEAR_NO_ACTION`; RAW history + `ADJUSTED_CONTINUITY` remains prohibited.
+7. Full-universe read-only/artifact-only NC-T01 executes with at least one certified READY witness while all uncertified symbols remain INCOMPLETE and denominator-accounted.
+8. 00 independently verifies S22-T11~T16.
+9. CORR-003 quota reservation then protects the first persisted genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs` attempt.
+10. Existing bounded pool / Candidate Board / Daily Resonance / institutional surfaces are reused before any guarded advisory/notification promotion review.
+
+### Observability requirement added by CORR-004
+
+The next physical history-readiness evidence must expose immutable per-symbol:
+- expected eligible session set/count/hash;
+- selected PIT session set/count/hash;
+- missing expected sessions;
+- unexpected/older substitute sessions;
+- lifecycle exclusions and their source receipts;
+- exact decision cutoff and selected revision/source-row identities.
+
+A boolean `historyReady` alone is no longer sufficient evidence for the first NC-T01 witness.
+
+No whole-universe perfection requirement is reintroduced. CORR-004 remains symbol-local.
+
+Formal Core remains LOCKED.
+Final selection, live push, capital and orders remain disabled.
+
