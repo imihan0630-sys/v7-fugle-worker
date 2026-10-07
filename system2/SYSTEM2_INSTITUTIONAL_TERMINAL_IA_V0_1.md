@@ -66,11 +66,18 @@ The visual surface exists, but TAIEX/TPEx breadth, turnover, cross-market, secto
 
 ### Actual holdings
 
-The UI is explicitly locked:
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`;
-- `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+Authorized source:
+- `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT`;
+- `CHAT_ASSISTED_HOLDINGS_IMPORT_READY=CODE_TESTED_PENDING_REAL_OWNER_SNAPSHOT`;
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false` until a real Owner screenshot completes confirmation + persistence/readback.
 
-Signals, suggested shares, plans or simulated fills cannot be shown as actual holdings.
+The Actual Holdings panel is separate from Virtual Positions, Candidates, Watchlist and Simulated Fills. Signals, suggested shares, plans, candidates, simulated fills and virtual positions cannot be shown as actual holdings.
+
+Current display before the first real import:
+- Source: USER_UPLOADED_BROKER_SCREENSHOT;
+- Last verified: NO VERIFIED SNAPSHOT;
+- broker API: NOT AUTHORIZED;
+- real orders: DISABLED.
 
 ### Performance
 
