@@ -150,7 +150,10 @@
         "Bounded PRIMARY-only transport recovery is implemented in system2/runtime/official_historical_backfill_source_v0_1.mjs; legacy TPEx '不含定價' fallback remains canonical-ineligible and data-integrity failures remain fail-closed.",
         "System2 Research CI 37590871628 SUCCESS on head e46f3a2049cc774a64b15eea360a4f6ea79fe494 with PRIMARY-only transport recovery regression.",
         "2026 current-year segmented cold path is repository-ready but physical execution remains pending until both 2025 markets are resolved and writer lane is free; checkpoint documents the isolated monthly immutable design.",
-        "2024 TPEx fresh run 37593983170 (#29) used fix-bearing head 5c50a246bf91f9b1bc37c99f082bdfec467d5f09 and confirmed inputs 2024/TPEX, but the backfill job was cancelled at the configured 60-minute timeout before source-range completion; Physical verify was skipped, no coverage artifact was produced, and System1 isolation PASSed. Annual script fetches the full official range before pack/persistence, so source acquisition has no durable resume checkpoint."
+        "2024 TPEx fresh run 37593983170 (#29) used fix-bearing head 5c50a246bf91f9b1bc37c99f082bdfec467d5f09 and confirmed inputs 2024/TPEX, but the backfill job was cancelled at the configured 60-minute timeout before source-range completion; Physical verify was skipped, no coverage artifact was produced, and System1 isolation PASSed. Annual script fetches the full official range before pack/persistence, so source acquisition has no durable resume checkpoint.",
+        "Fresh annual run 37611914140 (#30) failed in migrate before backfill because Cloudflare D1 returned HTTP 400 free-tier daily row-write limit exceeded; backfill/physical verify were skipped and no coverage artifact was produced.",
+        "Run #30 blocker resets no earlier than 2026-10-08T00:00:00Z = 2026-10-08 08:00 Asia/Taipei per Cloudflare error; no paid-plan upgrade is authorized.",
+        "Run #30 is not evidence of 2024 TPEx source/data failure because annual backfill never started; cross-workflow quota recurrence is separately routed to S2-CORR-20261007-003."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -274,12 +277,12 @@
         "Independent audit evidence system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json @ 19dc73ca3f0723f602700b82b28bd93fd460e499 classifies the change REPOSITORY_HARDENING_PASS_PHYSICAL_ACCEPTANCE_PENDING; no post-hardening 2024/TPEX physical acceptance exists yet."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T18:43:00+08:00",
+      "updatedAt": "2026-10-07T19:16:52+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": "2024 TPEx annual source acquisition exceeds the current 60-minute job budget after bounded PRIMARY transport recovery; the full-year source-fetch phase has no durable resume checkpoint."
+      "blockedBy": "Current 2024 TPEx physical retry is blocked until the Cloudflare D1 free-tier daily row-write quota resets at 2026-10-08 08:00 Asia/Taipei. Repository timeout hardening is ready, but run #30 never reached backfill because migrate hit the quota ceiling. No paid upgrade is authorized."
     },
     {
       "directiveId": "S2-CORR-20261004-002",
