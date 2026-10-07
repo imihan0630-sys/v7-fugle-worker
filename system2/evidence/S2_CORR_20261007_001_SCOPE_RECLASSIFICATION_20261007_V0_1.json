@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "S2_CORR_20261007_001_SCOPE_RECLASSIFICATION_V0_1",
+  "recordedAt": "2026-10-07T19:15:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-001",
+  "conclusion": "CURRENT_STAGE1_A1_INGESTION_PHYSICALLY_READY; REMAINING_DEFECT_IS_PROSPECTIVE_CLOCK_COLLECTOR_DIVERGENCE",
+  "physicalEvidence": {
+    "workflowRunId": 37609474459,
+    "workflowName": "System2 Daily Shadow Diagnostic",
+    "runNumber": 22,
+    "event": "schedule",
+    "headSha": "4854ca2a00b1d8536ad26cbb07c73b7e84109cf2",
+    "conclusion": "SUCCESS",
+    "marketDate": "2026-10-07",
+    "decisionTimestamp": "2026-10-07T10:46:51.142Z",
+    "state": "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS",
+    "preflightCapacityWriteAuthorized": true,
+    "prospectiveHistoryState": "PROSPECTIVE_HISTORY_READBACK_VERIFIED",
+    "prospectiveHistoryRowCount": 1973,
+    "persistenceState": "IMMUTABLE_D1_READBACK_VERIFIED",
+    "system1RuntimeUsed": false,
+    "strategyEvaluation": "ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED",
+    "capacity": "NOT_PRODUCED",
+    "zeroPickDay": null,
+    "d1Metrics": {
+      "requestCount": 797,
+      "rowsRead": 583256,
+      "rowsWritten": 13130
+    },
+    "artifact": {
+      "id": 11476921489,
+      "digest": "sha256:fcce5882ba1a49a9c50e1523d65ed351c5dd5c850db4e292dd2de6cde126fa91"
+    }
+  },
+  "sourceTransports": {
+    "TWSE": {
+      "primary": {
+        "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+        "httpStatus": 200,
+        "reportedDates": [
+          "1151006"
+        ],
+        "targetDateReady": false
+      },
+      "selected": {
+        "sourceId": "A1_TWSE_MI_INDEX_EXACT_DATE_PROSPECTIVE",
+        "selection": "EXACT_DATE_FALLBACK",
+        "sourceUrl": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20261007&type=ALLBUT0999",
+        "sourceDateEvidence": "2026-10-07",
+        "normalizedRowCount": 1086,
+        "payloadHash": "10ccc43bdf99775cb8c5be2fd801a24435e97013fbb52fb2929cf2878afd65cc"
+      }
+    },
+    "TPEX": {
+      "primary": {
+        "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+        "httpStatus": 200,
+        "errorCode": "NON_JSON_RESPONSE",
+        "targetDateReady": false
+      },
+      "selected": {
+        "sourceId": "A1_TPEX_DAILY_QUOTES_EXACT_DATE_PROSPECTIVE",
+        "selection": "EXACT_DATE_FALLBACK",
+        "sourceUrl": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2026%2F10%2F07",
+        "sourceDateEvidence": "2026-10-07",
+        "normalizedRowCount": 887,
+        "payloadHash": "816902c3b670026ec9c0979d346b88705e4215c7d31c4af46338f8820457529d"
+      }
+    }
+  },
+  "repositoryReadback": {
+    "stage1SourceModule": "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
+    "stage1ExactDateFallbackImplementedSince": "2026-10-03",
+    "prospectiveClockProbeModule": "system2/runtime/official_source_probes.mjs",
+    "prospectiveClockProbeUsesExactDateFallback": false,
+    "prospectiveClockProbeBehavior": "single latest-OpenAPI GET per source/attempt"
+  },
+  "reclassification": {
+    "priorSeverity": "HIGH",
+    "newSeverity": "MEDIUM",
+    "priorScopeIncluded": "Stage-1 prospective A1 ingestion / SHORT_MOMENTUM launch-critical path",
+    "newScope": "Prospective Decision Clock/source-arrival evidence collector consistency and timing measurement",
+    "reason": [
+      "The current Stage-1 A1 ingestion path physically succeeded on 2026-10-07 using exact-date official fallback for both markets.",
+      "Stage-1 preflight reported capacityWriteAuthorized=true; the current absence of strategy/capacity output is downstream wiring, not A1 acquisition failure.",
+      "The old prospective clock collector still lacks the exact-date fallback and therefore can understate same-day A1 readiness relative to the real Stage-1 source path.",
+      "This remaining divergence matters for timing evidence and future clock research but does not currently prove a Stage-1 launch blocker."
+    ]
+  },
+  "acceptanceCriteria": [
+    "Prospective source-arrival collector and Stage-1 A1 ingestion must share a versioned source-selection contract or prove intentional differences.",
+    "A real trading-date mixed case with stale/non-JSON primary and valid exact-date official source must be measured without falsely reporting A1 unavailable.",
+    "firstReadyAt/availableAt must remain actual observed upper bounds; no historical close-finality backdating.",
+    "Source identity, primary/fallback reason, date evidence, row coverage and errors remain explicit.",
+    "No strategy/ranking/final-selection/push/capital/order/System1 authority changes."
+  ]
+}
