@@ -1,0 +1,39 @@
+{
+  "schemaVersion":"0.1",
+  "id":"D07-26-INCOME-TAX-DEFERRED-TAX-FOUNDATION-V0-1",
+  "createdAt":"2026-10-06T20:43:00+08:00",
+  "owner":"06｜基本面與估值研究室",
+  "module":"D07-26",
+  "status":"MECHANISM_AND_FALSIFICATION_DEFINED / PIT_CONTRACT_DEFINED / TAX_SHIELD_NOT_STATUTORY_RATE / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "formalCoreImpact":"NONE",
+  "mechanism":[
+    "current tax 與 deferred tax 必須分流；deferred tax 來自 temporary differences 與符合認列條件的 unused tax losses/credits。",
+    "effective tax rate 是永久性差異、暫時性差異、轄區組合、稅額抵減與一次性項目的合成結果，不得直接當品質方向。",
+    "interest tax shield usability 取決於同一 taxable entity/jurisdiction 在相容期間是否有可利用 taxable profit；statutory rate 不是自動可用稅盾。",
+    "D07-18 只能消費 D07-26 的 taxStatusKnownAt/taxShieldUsabilityState 父收據，不得自行推定完整法定稅盾。"
+  ],
+  "counterEvidence":[
+    "低有效稅率不必然代表高品質或永久節稅能力；可能來自稅額抵減、虧損抵減、轄區組合或一次性項目。",
+    "高有效稅率不必然代表基本面惡化；可能來自一次性補稅、未認列遞延所得稅資產或轄區組合。",
+    "遞延所得稅資產增加不必然正面；若未來 taxable profit 不足，其可回收性本身就是風險。",
+    "有利息費用不代表完整利息稅盾可立即利用；虧損、限制規則與課稅主體分離可使稅盾部分或不可用。"
+  ],
+  "falsification":[
+    "若有效稅率在控制永久/暫時差異、虧損、轄區與一次性項目後無增量資訊，降為解釋/驗證用途。",
+    "若 tax shield usability 無法在 as-of 時點以來源證明，記 UNKNOWN，不得以後來獲利回填。",
+    "若合理稅率/反轉時程假設使 D07-18 WACC 排序頻繁翻轉，標記 MODEL_UNSTABLE。",
+    "若稅務資料只在年報附註出現，不得假定季度決策時已知。"
+  ],
+  "pitContract":{
+    "requiredFields":["reportPeriod","filingFirstKnownAt","currentTaxExpense","deferredTaxExpenseOrBenefit","currentTaxAssetLiability","deferredTaxAsset","deferredTaxLiability","unusedTaxLossOrCreditDisclosure","taxRateOrLawVersionKnownAt","taxShieldUsabilityState","jurisdictionOrTaxEntityScope","restatementOrCorrectionVersion"],
+    "taxShieldUsabilityEnum":["AVAILABLE_EVIDENCED","PARTIAL_EVIDENCED","UNAVAILABLE_EVIDENCED","UNKNOWN"],
+    "noLookAhead":true,
+    "revisionsAppendOnly":true,
+    "missingEvidence":"UNKNOWN",
+    "outcomeJoin":false
+  },
+  "sourceBasis":["IFRS Foundation IAS 12 Income Taxes","IAS 12 paragraphs 28-34 unused tax losses/credits recognition","IAS 12 Pillar Two temporary exception/version-state consideration"],
+  "maturityDecision":{"from":"L0/0","to":"L2/40","reason":"完成機制、反證、失效條件、PIT/版本契約與 D07-18 稅盾依賴邊界；尚無台股實體多公司/多日期稅務欄位重播，故不得升 L3。"},
+  "formalOptimizationCandidate":"NONE",
+  "exactNext":"建立台股一般產業所得稅/遞延所得稅 PIT 欄位映射與多公司多日期 source receipt；驗證未使用虧損/抵減、遞延所得稅資產可回收性、current/deferred tax expense 分流與 filing first-known。通過實體收據後，才允許 D07-18 消費 taxShieldUsabilityState；報酬保持關閉。"
+}
