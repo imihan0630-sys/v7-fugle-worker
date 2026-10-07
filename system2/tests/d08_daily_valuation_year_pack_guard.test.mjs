@@ -3,7 +3,8 @@ import { readFile } from "node:fs/promises";
 const s=await readFile(new URL("../scripts/d08_twse_daily_valuation_year_pack_capture_v0_1.mjs",import.meta.url),"utf8");
 const w=await readFile(new URL("../../.github/workflows/d08-twse-daily-valuation-year-pack.yml",import.meta.url),"utf8");
 
-assert.match(s,/buildOfficialTradingDatesV0_1/);
+assert.match(s,/fetchHistoricalTwseMonthlyTradingDatesV0_1/);
+assert.match(s,/TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL/);
 assert.match(s,/fetchOfficialHistoricalA6ValuationDateV0_1/);
 assert.match(s,/createRemoteR2S3Adapter/);
 assert.match(s,/D08_YEAR_PACK_RECEIPT/);
