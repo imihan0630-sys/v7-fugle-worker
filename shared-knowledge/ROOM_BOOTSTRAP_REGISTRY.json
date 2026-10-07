@@ -43,7 +43,7 @@
     "systemwideLaunchReadinessGovernanceAudit": "shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md",
     "systemwideLaunchReadinessGovernanceAuditMachine": "shared-knowledge/systemwide_launch_readiness_governance_audit_20261006_v0_1.json",
     "room00LaunchReadinessCheckpoint": "shared-knowledge/00_LAUNCH_READINESS_BLOCKER_BURNDOWN_CHECKPOINT_20261006_V0_1.md",
-    "projectReplyTimestampPolicy": "MANDATORY_TAIPEI_TIMESTAMP_AT_END",
+    "projectReplyTimestampPolicy": "MANDATORY_TAIPEI_TIMESTAMP_AT_END_FAIL_CLOSED",
     "projectReplyTimestampPolicySource": "shared-knowledge/ROOM_BOOTSTRAP.md",
     "projectReplyTimestampFormat": "日期：YYYY/MM/DD｜台北時間：HH:mm",
     "projectReplyTimestampTimezone": "Asia/Taipei",
@@ -70,7 +70,19 @@
     ],
     "multiDomainRoomRequiresPerDomainAndRoomTotal": true,
     "nonLearningRoomModuleCountFallback": "USE_CANONICAL_ROOM_WORK_UNIT_INVENTORY_OR_MODULE_COUNT_NOT_CANONICALLY_DEFINED",
-    "moduleCountAppliesToNewRooms": true
+    "moduleCountAppliesToNewRooms": true,
+    "projectReplyTimestampAppliesToEveryUserVisibleProjectReply": true,
+    "projectReplyTimestampPreResponseGate": "RESPONSE_EPILOGUE_GATE",
+    "projectReplyTimestampGateFailure": "RESPONSE_EPILOGUE_GATE_FAIL",
+    "projectReplyTimestampNoExceptions": [
+      "NEW_ROOM",
+      "SHORT_ACK",
+      "STATUS_UPDATE",
+      "PROGRESS_REPORT",
+      "FINAL_REPORT",
+      "MODE_SWITCH"
+    ],
+    "projectReplyTimestampMustBeFinalLine": true
   },
   "identities": [
     {
