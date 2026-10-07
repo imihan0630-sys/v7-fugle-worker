@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T06:20:00+08:00",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "40f28c11cf76fa9a0b0fb88070c4e553ad5d5a74",
+  "correction": "S2-CORR-20261008-007",
+  "status": "MINIMAL_BUILD_DATA_INTERFACE_FROZEN_IMPLEMENTATION_PENDING",
+  "purpose": "Close the gap where TWSE suspensionCoverageByExchange=COMPLETE can promote CLEAR_NO_ACTION without immutable exact-window suspension evidence bound into archive and sourceEvidenceRefs.",
+  "currentRuntimeFacts": {
+    "archiveBuilder": "system2/runtime/corporate_action_continuity_archive_v0_1.mjs::buildCorporateActionCompletenessReceiptV0_1",
+    "promotionBuilder": "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs::buildNct01TwseClearNoActionPromotionReceiptV0_1",
+    "currentWeakField": "suspensionCoverageByExchange",
+    "currentWeakSemantics": "plain status map; COMPLETE currently has no mandatory immutable receipt identity/digest",
+    "existingRefSchema": "sourceEvidenceRefs already normalizes sourceId,digest,observedAt,availableAt,availabilitySemantics and enforces decision-clock timing",
+    "existingCorporateActionRefs": "three TWSE HISTORICAL_ACTUAL_RESULT_RANGE source families remain independently mandatory"
+  },
+  "minimalArchiveInput": {
+    "suggestedField": "suspensionEvidenceByExchange",
+    "namingIsBinding": false,
+    "TWSERequiredWhenComplete": [
+      "exchange=TWSE",
+      "coverageState=COMPLETE",
+      "requestedStartDate exactly equals completeness receipt startDate",
+      "requestedEndDate exactly equals completeness receipt endDate",
+      "sourceId non-empty and stable",
+      "sourceFamily/sourceContractVersion non-empty and versioned",
+      "receiptDigest is 64-hex immutable bounded suspension/parity receipt digest",
+      "observedAt valid timestamp",
+      "availabilitySemantics in PROSPECTIVE_OBSERVED / VERIFIED_SOURCE_TIMESTAMP",
+      "PROSPECTIVE_OBSERVED observedAt <= decision/evidence cut where promotion is evaluated",
+      "VERIFIED_SOURCE_TIMESTAMP requires availableAt and availableAt <= decision/evidence cut",
+      "response/scope completeness already proven by DATA receipt; BUILD must not infer this from empty rows"
+    ],
+    "rule": "TWSE COMPLETE string without a valid matching evidence object must compute suspensionCoverageComplete=false for physical promotion semantics."
+  },
+  "minimalArchiveOutput": [
+    "normalized immutable suspensionEvidenceByExchange included in completeness receipt",
+    "TWSE suspension evidence identity/digest survives deep-freeze/readback",
+    "receipt hash changes when suspension receipt digest/source identity/interval/timing changes",
+    "symbolSessionCompletenessEvidenceReady cannot become true from status-only COMPLETE"
+  ],
+  "promotionBinding": {
+    "existingRefSchemaReuse": true,
+    "requiredRule": [
+      "Read normalized TWSE suspension evidence from archiveReceipt.",
+      "Require archive interval == replay firstSelectedDate/lastSelectedDate as already enforced.",
+      "Require one normalized sourceEvidenceRef whose sourceId equals TWSE suspension evidence sourceId AND digest equals its receiptDigest.",
+      "Apply existing sourceEvidenceRef timing validation; do not create a weaker timing path for suspension.",
+      "Missing evidence object => CONTINUITY_UNKNOWN.",
+      "Invalid/missing digest => CONTINUITY_UNKNOWN.",
+      "Interval mismatch => CONTINUITY_UNKNOWN.",
+      "Missing suspension sourceEvidenceRef => CONTINUITY_UNKNOWN.",
+      "sourceId or digest mismatch => CONTINUITY_UNKNOWN.",
+      "Late evidence under prospective semantics => CONTINUITY_UNKNOWN.",
+      "Keep matching refs for all three existing TWSE corporate-action source contracts separately mandatory."
+    ],
+    "resultingHashChain": "bounded suspension receipt digest -> corporate-action completeness receipt content/hash -> sourceEvidenceHash -> continuity receiptHash -> continuity binding hash -> factor/persistence/orchestration/NC-T01 receipt chain"
+  },
+  "dataBuildInterface": {
+    "dataLaneMustProduce": [
+      "exact replay-window startDate/endDate",
+      "sourceId/source family/version",
+      "immutable bounded TWTAWU/parity receipt digest",
+      "official response/artifact hashes retained inside DATA receipt",
+      "observedAt and availability semantics/timestamp",
+      "coverageState only COMPLETE after positive-control parity + exact-window completeness proof"
+    ],
+    "buildLaneMustNotDo": [
+      "derive COMPLETE from empty TWTAWU rows",
+      "invent/guess CSV URL or export contract",
+      "hard-code 1101 or any witness",
+      "replace the three corporate-action source refs with the suspension ref",
+      "weaken PIT/decision-clock timing"
+    ]
+  },
+  "requiredTests": [
+    "status-only TWSE COMPLETE + no suspensionEvidenceByExchange => symbolSessionCompletenessEvidenceReady=false and promotion CONTINUITY_UNKNOWN",
+    "suspension evidence receiptDigest missing/non-64hex => fail closed",
+    "suspension evidence exact interval mismatch => fail closed",
+    "valid archive suspension evidence but no matching sourceEvidenceRef => fail closed",
+    "matching sourceId but digest mismatch => fail closed",
+    "matching digest but sourceId mismatch => fail closed",
+    "PROSPECTIVE_OBSERVED after decision => fail closed through existing ref timing semantics",
+    "VERIFIED_SOURCE_TIMESTAMP availableAt after decision => fail closed",
+    "three CA refs + valid exact-window suspension evidence + matching ref + exact-session evidence preserves CLEAR_NO_ACTION_ELIGIBLE",
+    "change only suspension receipt digest => archive receipt hash and final continuity receiptHash change"
+  ],
+  "implementationScope": [
+    "system2/runtime/corporate_action_continuity_archive_v0_1.mjs",
+    "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs",
+    "system2/tests/corporate_action_continuity_archive_v0_1.test.mjs",
+    "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs",
+    "only directly necessary continuity test/workflow guards"
+  ],
+  "orderingWithPr844": [
+    "Implement and merge CORR-007 separately first unless a newer BUILD owner explicitly chooses an equivalent conflict-safe integration.",
+    "In parallel #844 may harden its runner-local pre-transport D1/network runtime ledger without changing continuity semantics.",
+    "After CORR-007 canonical merge, rebase #844 on latest main and rerun exact-head checks.",
+    "Do not merge #844 before both CORR-007 provenance binding and the runtime guard acceptance refinement are present."
+  ],
+  "acceptance": [
+    "Exact-head continuity/archive tests PASS.",
+    "System2 Research CI PASS.",
+    "Applicable V8 Regression PASS.",
+    "System1 production/Formal diff remains empty.",
+    "No strategy/ranking/capacity/final-selection/push/capital/order authority change.",
+    "Correction may be code-closed after independent readback, but S22-T13/T15/T16 remain physically pending until DATA supplies real bounded suspension evidence and a real NC-T01 consumes it."
+  ],
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "System1 runtime unchanged",
+    "No fabricated no-suspension state",
+    "No historical OHLC mutation",
+    "No witness hard-coding",
+    "No physical NC-T01 credit from synthetic fixtures"
+  ],
+  "exactNext": [
+    "BUILD_LANE opens bounded CORR-007 patch from latest main using this interface.",
+    "DATA_LANE continues TWTAWU V0.2 actual official-export capture and real bounded receipt independently.",
+    "00 independently audits CORR-007 exact-head implementation.",
+    "Merge CORR-007 after PASS.",
+    "Rebase/harden PR #844 with runtime guard ledger and post-CORR-007 main.",
+    "Then execute real physical NC-T01 only after DATA receipt exists."
+  ]
+}
