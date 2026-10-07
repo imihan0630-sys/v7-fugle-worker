@@ -236,7 +236,14 @@ export async function runDailyShadowDiagnosticV0_1({
       sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
     } : null,
     regime: { state: "UNKNOWN", reason: "VALIDATED_REGIME_SOURCES_NOT_WIRED", labels: [] },
-    strategyEvaluation: "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN", ranking: "NOT_EXECUTED",
+    strategyEvaluation: !preflight
+      ? "NOT_EVALUATED_DIAGNOSTIC_ONLY"
+      : preflight.assessorReady !== true
+        ? "BLOCKED_ASSESSOR_POLICY_NOT_READY"
+        : preflight.globalInputsReady !== true
+          ? "BLOCKED_INPUTS_NOT_READY"
+          : "ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED",
+    ranking: "NOT_EXECUTED",
     capacity: "NOT_PRODUCED", predictionSnapshot: "NOT_PRODUCED", zeroPickDay: null,
     capacityRunId: null, selectedCount: null, finalSelectionEnabled: false,
     generalCaptureEnabled: false, livePushEnabled: false, capitalImpact: false, orderImpact: false,
