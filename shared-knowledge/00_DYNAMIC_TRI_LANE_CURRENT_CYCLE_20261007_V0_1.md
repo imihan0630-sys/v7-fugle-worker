@@ -1470,3 +1470,85 @@ Nonblockers for the first physical witness:
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
 No final selection, live push, capital or real orders are authorized.
+
+
+## 00 late-session NC-T01 runner audit — #830 merged, CORR-005 opened (2026-10-07 23:45 Asia/Taipei)
+
+Observed latest main before write:
+`5c8f05d8a2b78a411d63b9006e10d69af4084fb8`.
+
+### BUILD_LANE runner core advanced
+
+PR #830 `system2: add NC-T01 artifact-only runner core` merged as:
+`d2050fbc3379dfe618447f88f8104b31e494a633`.
+
+Accepted core semantics:
+- artifact-only SHORT_MOMENTUM runner uses canonical contract/spec/assessor;
+- replay-first continuity binding is consumed;
+- bounded PIT prefetch reuses canonical per-symbol select and expectedSessionHash validation;
+- uncertified symbols remain INCOMPLETE and denominator-accounted;
+- persistence batch is dry-built but not executed;
+- typed source-generation refs bind policy/A1/replay/source-history/continuity/factor/persistence/orchestration/accounting;
+- no real continuity receipt => EVIDENCE_INCOMPLETE / BLOCKED_INPUTS;
+- the merged workflow remains a core/test workflow, not yet a physical NC-T01 evidence run.
+
+Durable independent review:
+`system2/evidence/S2_STAGE1_PR830_INDEPENDENT_REVIEW_20261007_V0_1.json`.
+
+### New HIGH correction — S2-CORR-20261007-005
+
+Merged receipt code currently allows absent hidden-fallback audit evidence to become all-false values:
+
+- `hiddenAudit(input={})` maps omitted fields via `=== true`;
+- receipt builder defaults `hiddenFallbackAudit={}`;
+- artifact runner defaults all five audit flags to false.
+
+This violates the fail-closed evidence meaning required by SDA-022 S22-T12:
+absence of an audit is not proof of no cached/persisted/alias/cross-project/stale fallback.
+
+Correction:
+`S2-CORR-20261007-005`
+- severity: HIGH;
+- status: OPEN;
+- lane: BUILD_LANE;
+- ownerDecisionRequired: false;
+- no false physical independence receipt observed yet.
+
+Minimum required repair:
+1. all five hidden-fallback dimensions explicit for any physical PASS;
+2. missing/unknown audit dimension => EVIDENCE_INCOMPLETE;
+3. produce a machine audit over the exact physical runner head/transitive System2 path;
+4. bind its immutable digest into the receipt dependency graph, preferably as `HIDDEN_FALLBACK_AUDIT_SHA256`;
+5. require the digest for `PHYSICALLY_INDEPENDENT_PATH_OBSERVED`;
+6. regress missing object, missing field, missing digest, any true dependency and full clean audit.
+
+No rollback of #830 is required.
+No strategy/trading semantics are changed.
+
+### Current two parallel pre-physical gates
+
+DATA_LANE:
+- exact-session witness exists;
+- must prove bounded TWSE negative suspension completeness over the exact replay window;
+- combine with the three exact-range TWSE corporate-action families;
+- produce the first real hash-bound CLEAR_NO_ACTION receipt or remain CONTINUITY_UNKNOWN.
+
+BUILD_LANE:
+- harden #830 under CORR-005;
+- prepare the real workflow wrapper that consumes canonical #828 fingerprint + real A1/PIT + real continuity receipt;
+- workflow must emit artifact-only physical receipt, not merely run unit tests.
+
+### Updated exact path
+
+1. DATA_LANE bounded TWTAWU completeness proof for the exact witness window.
+2. DATA_LANE real corporate-action completeness + CLEAR_NO_ACTION receipt.
+3. BUILD_LANE CORR-005 hidden-fallback machine-audit hardening.
+4. BUILD_LANE real artifact-only NC-T01 runner execution.
+5. 00 recomputes/validates S22-T11~T16 and full typed hash chain.
+6. After physical independence, CORR-003 becomes the persistence blocker before genuine SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs.
+
+Still not blockers for first NC-T01:
+TPEx parity, broad annual history completion, MARKET_REGIME, SWING_GROWTH, D1 write quota.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
