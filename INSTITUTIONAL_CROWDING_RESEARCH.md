@@ -2577,3 +2577,32 @@ borrow-cost/depth and D06-09 actual SBL-short quantities remain separate transfo
 
 Exact next:
 accumulate independent in-slot trading dates and naturally occurring source-state diversity without symbol cherry-picking. Before L4, preregister OOS/Shadow residual incrementality against D06-09 actual-SBL-short, liquidity, direct price-volume, passive/index flow and market-regime controls. True utilization stays UNKNOWN until a verified total-lendable-inventory denominator exists.
+
+
+---
+
+## IC-096 — D06-19 direct-retail source exclusion matrix closes proxy shortcuts, not the source gap
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: OFFICIAL_SOURCE_RESCAN_COMPLETE / DIRECT_DOMESTIC_RETAIL_STOCK_DATE_FEED_UNVERIFIED / PROXY_SUBSTITUTIONS_REJECTED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_19_direct_retail_source_exclusion_matrix_20261007_v0_1.json`.
+
+The source search was rerun against current official TWSE and TPEx public/data-store surfaces with the target construct frozen as domestic natural-person × stock × date × buy/sell direction.
+
+Results:
+- TWSE full broker trading reports expose security × broker × price × buy/sell quantity, but broker/branch execution is not beneficial-owner identity and cannot identify domestic natural persons.
+- TWSE has an explicit foreign-natural-person buy/sell amount product, but it is aggregate market-level context rather than stock-level domestic-natural-person direction.
+- TWSE foreign-investor stock-level buy/sell data have the required stock/date direction grain but the wrong investor identity.
+- TWSE historical order/execution products exist, but the public product contract reviewed here does not establish a domestic-natural-person identity field; therefore they remain UNVERIFIED for D06-19 rather than being assumed usable.
+- TPEx public/post-close product surfaces and market-structure reports provide natural-person aggregate context, but no verified domestic-natural-person × stock × date directional feed was found.
+- personal investor record-query systems provide a person's own records and are not a marketwide research feed.
+
+Falsification / anti-proxy result:
+margin, day trading, odd-lot, broker/branch flow, total-minus-institution residual, market-level natural-person share and foreign-natural-person flow are all explicitly rejected as substitutes for the target construct. Emerging-stock trade-side labels are also trade-side semantics, not investor identity.
+
+Maturity impact: NONE. D06-19 remains L2/40%. The module is more defensible because the negative source boundary is now explicit, but source absence does not become maturity.
+
+Exact next:
+only reopen source discovery when an official or authorized field contract explicitly exposes domestic-natural-person identity at stock×date buy/sell grain. Any paid/custom product requires exact field-definition and PIT/replay verification before purchase/contact. Otherwise retail direction stays UNKNOWN and proxies remain separately named constructs.
