@@ -1533,3 +1533,37 @@ SDA-009 remains interrupt priority:
 the first genuine System1 R3A1 receipt must immediately preempt this parallel lane and trigger the frozen V0.6 acceptance path.
 
 Formal Core unchanged.
+
+
+## BR-064 — fifth frozen D09-14 strategic action (2026-10-07)
+
+Artifact:
+- `research/BR064_VIS_VSMC_PROSPECTIVE_CAPITAL_INJECTION_STRATEGIC_ACTION_20261007_V0_1.md`
+
+New post-freeze action:
+- issuer: VIS / 世界先進 5347;
+- vehicle: VSMC Singapore JV;
+- MOPS clocks: 17:18 / 17:19 Asia/Taipei on 2026-10-07;
+- JV-level cash capital increase: US$100 million;
+- all shares subscribed by existing shareholders;
+- stated purpose: operating needs.
+
+Cohort state:
+- frozen actions: 5;
+- issuers: 4.
+
+Dedup firewall:
+`CAPITAL_INJECTION_ACTION != PHYSICAL_CAPACITY_VOTE`.
+D10 remains owner of physical capacity, qualification, production ramp and utilization.
+
+VIS-specific subscription amount remains UNKNOWN absent direct shareholder-allocation disclosure.
+
+D09-14 remains L3/60.
+D09 aggregate maturity unchanged.
+
+Exact next:
+BR-065 native milestone surveillance across all five frozen actions; future stock/economic outcomes remain closed pending D16 preregistration/common support.
+
+SDA-009 remains interrupt-priority if a genuine System1 R3A1 receipt appears.
+
+Formal Core unchanged.
