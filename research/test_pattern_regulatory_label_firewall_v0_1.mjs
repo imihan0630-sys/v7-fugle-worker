@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {classifyLabelClock,classifyRegulatoryEpisode,classifyWindow,classifyTriggerConfounding,classifyLabelComparator,buildLabelLineage} from "./pattern_regulatory_label_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D6901 missing publication clock unknown",()=>assert.equal(classifyLabelClock({predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true}).status,"REGULATORY_LABEL_CLOCK_UNKNOWN"));
+t("D6902 future publication cannot backfill",()=>assert.equal(classifyLabelClock({publiclyObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true}).status,"LABEL_NOT_KNOWN_AT_FREEZE"));
+t("D6903 label known before mechanism gives label-only window",()=>{const r=classifyLabelClock({publiclyObservableAt:"2026-10-06T18:00:00+08:00",effectiveStartAt:"2026-10-08T09:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true});assert.equal(r.mechanismKnownAndEffective,false);});
+t("D6904 repeated notice does not multiply episode",()=>assert.equal(classifyRegulatoryEpisode({regulatoryRootId:"R",regulatoryEpisodeId:"E",extensionOrdinal:2}).repeatedNoticeCreatesIndependentEpisode,false));
+t("D6905 pre-label window separated",()=>assert.equal(classifyWindow({labelKnown:false,mechanismEffective:false}).status,"PRE_LABEL"));
+t("D6906 label-only window separated",()=>assert.equal(classifyWindow({labelKnown:true,mechanismEffective:false}).status,"LABEL_ONLY_WINDOW"));
+t("D6907 mechanism window separated",()=>assert.equal(classifyWindow({labelKnown:true,mechanismEffective:true}).status,"LABEL_PLUS_MECHANISM_WINDOW"));
+t("D6908 unmatched abnormal path unresolved",()=>assert.equal(classifyTriggerConfounding({priorAbnormalPathMatched:false,triggerFamilyMatched:true}).status,"TRIGGER_CONFOUNDING_UNRESOLVED"));
+t("D6909 matched trigger path controlled",()=>assert.equal(classifyTriggerConfounding({priorAbnormalPathMatched:true,triggerFamilyMatched:true}).status,"TRIGGER_PATH_CONTROLLED"));
+t("D6910 at-zone comparator explicit",()=>assert.equal(classifyLabelComparator({atStructuralZone:true,labelClockVerified:true}).status,"C1_LABEL_EVENT_AT_STRUCTURAL_ZONE"));
+t("D6911 away-zone comparator explicit",()=>assert.equal(classifyLabelComparator({atStructuralZone:false,labelClockVerified:true}).status,"C0_LABEL_EVENT_AWAY_FROM_STRUCTURAL_ZONE"));
+t("D6912 price outputs remain one root",()=>assert.equal(buildLabelLineage({patternPresent:true,labelWindowPriceMovePresent:true,breakoutPresent:true}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/12 PASS`);
