@@ -556,3 +556,17 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## 2026-10-07 Room-06 D07-19 promotion checkpoint
+
+- Canonical base: `8737aafacd4b61b138bdf0df9fd9695e634d059d`.
+- D07-19 evidence: `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`.
+- Maturity: **L0/0 -> L2/40**.
+- D07 weighted maturity: **17.6%**.
+- Room-06 D07+D08 weighted maturity: **21.1%**.
+- Ownership: D07-19 = project economics; D21-07 = management allocation/governance.
+- L3 remains blocked pending Taiwan project-level PIT replay across at least two industries.
+- D08 exact-session archive correction is already canonical on main via PR #798.
+- Separate D08 universe provenance drift is localized to reconciled listing-start semantics, especially 6873 泓德能源; V0.1 remains immutable and requires a versioned V0.2 receipt before raw valuation capture resumes.
+- Room-06 census: D07 34 + D08 19 = 53 modules; >=L2 **26/53**; L0 **27/53**.
+- Formal Core unchanged; outcomes CLOSED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.

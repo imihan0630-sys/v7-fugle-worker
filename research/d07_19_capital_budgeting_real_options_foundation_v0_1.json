@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "D07_19_CAPITAL_BUDGETING_REAL_OPTIONS_FOUNDATION_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "module": "D07-19",
+  "frozenAtAsiaTaipei": "2026-10-07T19:22:00+08:00",
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED",
+  "formalCoreImpact": "NONE",
+  "outcomeDataUsed": false,
+  "objective": "Define capital-budgeting/project-economics semantics for stock-selection research without duplicating management-allocation governance evidence.",
+  "corePrinciple": "Project economics and management allocation quality are different layers. D07-19 owns ex-ante project cash-flow economics and flexibility value; D21-07 owns managerial incentives, approval/process quality and realized allocation behavior.",
+  "projectEconomics": {
+    "primaryDecisionMetric": "NPV is the primary value-additivity metric when project cash flows and a risk-consistent discount rate are specified.",
+    "irrRole": "IRR is descriptive/supportive only. It can mis-rank mutually exclusive projects, produce multiple/no solutions for non-conventional cash flows, and embeds reinvestment/scale assumptions that can conflict with value maximization.",
+    "mirrRole": "MIRR may be used as a diagnostic when reinvestment assumptions matter, but it does not replace NPV as the value-additivity anchor.",
+    "cashFlowRules": [
+      "Use incremental after-tax cash flows attributable to the project.",
+      "Exclude sunk costs already incurred before the decision clock.",
+      "Include opportunity costs of resources consumed by the project.",
+      "Include cannibalization and cross-project spillovers when economically attributable.",
+      "Keep financing cash flows out of operating project cash flow when discounting FCFF at WACC; do not double-count financing effects in both cash flow and discount rate.",
+      "Match nominal cash flows with nominal discount rates and real cash flows with real discount rates.",
+      "Terminal value assumptions must have explicit horizon, reinvestment and competitive-fade logic rather than perpetual extrapolation by default."
+    ],
+    "mutuallyExclusiveProjects": [
+      "When projects are mutually exclusive, compare incremental cash-flow NPV under a common decision date and consistent risk treatment.",
+      "Do not choose the highest IRR when scale or timing differences cause NPV disagreement."
+    ]
+  },
+  "realOptions": {
+    "eligibleStates": [
+      "DEFER_OR_WAIT",
+      "EXPAND",
+      "CONTRACT",
+      "ABANDON",
+      "STAGE_OR_SEQUENTIAL_INVESTMENT"
+    ],
+    "admissionRule": "Real-option value is admitted only when management has an actual decision right, uncertainty resolves over time, and the right can change future cash flows or commitment. Narrative flexibility without a concrete decision right is not an option.",
+    "doubleCountGuard": [
+      "Do not add a generic real-option premium on top of forecast cash flows that already embed the same expansion/abandonment scenario.",
+      "Do not count market volatility as option value unless the uncertainty maps to project cash-flow dispersion and a valid decision right.",
+      "Do not treat strategic optimism, TAM size or management optionality language as measured option value without observable exercise states."
+    ]
+  },
+  "pitContract": {
+    "asOfRule": "All opportunity-set, project-cost, demand, price, volume, margin, capacity, tax, discount-rate and timing assumptions must have knownAt <= projectDecisionKnownAt.",
+    "vintages": [
+      "projectDecisionKnownAt",
+      "boardApprovalKnownAt_if_public",
+      "capexBudgetKnownAt",
+      "capacityPlanKnownAt",
+      "demandForecastKnownAt",
+      "priceVolumeMarginAssumptionKnownAt",
+      "taxAssumptionKnownAt",
+      "discountRateInputsKnownAt",
+      "constructionStartKnownAt",
+      "expectedCommercializationKnownAt",
+      "laterRevisionKnownAt"
+    ],
+    "revisionRule": "Later guidance, cost overruns, utilization, margins, impairments or realized returns are appended as later vintages and may be outcomes; they may not rewrite the original ex-ante project state.",
+    "unknownRule": "Missing project-specific assumptions remain UNKNOWN. Do not infer NPV/IRR from later realized capex or from management adjectives."
+  },
+  "ownershipBoundary": {
+    "D07_19": [
+      "project cash-flow forecast economics",
+      "NPV/IRR/MIRR mechanics and limitations",
+      "hurdle/discount-rate consistency",
+      "opportunity cost, sunk cost and cannibalization treatment",
+      "real-option defer/expand/contract/abandon/stage semantics",
+      "project-level scenario and sensitivity design"
+    ],
+    "D21_07": [
+      "management incentive design",
+      "board/committee decision process",
+      "capital-allocation governance quality",
+      "managerial implementation behavior",
+      "realized allocation pattern and stewardship"
+    ],
+    "D07_18": "Owns enterprise WACC/cost-of-capital composite; D07-19 consumes a fit-for-project discount rate but does not independently recreate macro/risk-free/debt-cost inputs as separate alpha votes.",
+    "D07_20_D07_23": "Three-statement, driver and scenario forecasting modules may supply project assumptions; D07-19 owns the investment-decision transformation, not duplicate forecasts.",
+    "D08": "Valuation modules may use project economics as an input to firm value but must not create a second independent project-quality vote from the same forecast cash flows."
+  },
+  "divergentStates": [
+    {
+      "state": "ATTRACTIVE_PROJECTS_POOR_ALLOCATION",
+      "description": "Positive project NPVs can coexist with poor managerial sequencing, financing, empire-building or overcommitment. D07-19 may be positive while D21-07 is negative."
+    },
+    {
+      "state": "WEAK_OPPORTUNITY_SET_GOOD_GOVERNANCE",
+      "description": "Management can display disciplined governance by rejecting weak projects or returning capital. D07-19 opportunity-set state can be weak while D21-07 is positive."
+    },
+    {
+      "state": "HIGH_IRR_LOW_VALUE",
+      "description": "A small project can show a high IRR but create less absolute value than a larger lower-IRR project; mutually exclusive choice follows NPV."
+    },
+    {
+      "state": "NEGATIVE_STATIC_NPV_VALID_OPTION",
+      "description": "A staged/deferable project can have negative static NPV yet positive expanded NPV if a real, exercisable flexibility right is economically material and not double-counted."
+    }
+  ],
+  "falsification": [
+    "Reject a universal high-IRR-is-better rule if project rankings reverse under NPV because of scale/timing.",
+    "Reject a universal capex-growth-is-good rule; capex amount alone does not establish positive NPV.",
+    "Reject inferred project quality when the opportunity set and project assumptions are not observable at decision time.",
+    "Reject real-option claims when no concrete exercise right, uncertainty-resolution path or decision boundary is observable.",
+    "Mark REDUNDANT if D07-19-derived state adds no information beyond D07-18 cost of capital, D07-20/21 forecasts, D21-07 allocation behavior and D08 valuation controls.",
+    "Do not promote if effects are concentrated in one industry, one mega-cap issuer, one capex cycle or one narrative-heavy disclosure regime.",
+    "Do not promote if later realized utilization/margins are needed to reconstruct the original project economics."
+  ],
+  "researchHypotheses": [
+    "H1: Explicit project-economics quality may improve downside/MAE or false-growth filtering beyond raw capex growth.",
+    "H2: NPV-consistent opportunity-set quality may add more to long-horizon selection than short-horizon D1/D3 returns.",
+    "H3: Staged/defer/abandon flexibility should matter more in high-uncertainty, high-irreversibility industries than in routine replacement capex.",
+    "H4: Poor project economics and poor management allocation are correlated but not identical; incremental tests must residualize one against the other.",
+    "H5: Project-economics evidence may be most useful as context/validation rather than a standalone stock-selection score."
+  ],
+  "taiwanSourceFeasibilityPlan": [
+    "MOPS/TWSE material information for board-approved capex, acquisitions/disposals and major capacity projects where amount/purpose/timing are disclosed.",
+    "Issuer annual reports and financial reports for cash-flow statements, PPE additions, commitments, segment/capacity notes and later impairment/utilization context.",
+    "Issuer investor-conference materials for contemporaneous project assumptions only when publication timestamp is preserved.",
+    "D07-18 cost-of-capital receipts for risk-consistent discount-rate inputs.",
+    "Prospective observer should preserve original disclosure payload/hash and later revisions append-only."
+  ],
+  "decisionRole": {
+    "primary": "CONTEXT_AND_VALIDATION",
+    "secondary": [
+      "SUPPORTIVE",
+      "EXPLANATORY"
+    ],
+    "standaloneBuySignal": false
+  },
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "maturityPct": 40,
+    "rationale": "Mechanism, ownership boundary, falsification, PIT semantics and divergent states are now explicitly defined. Taiwan project-level replay is not yet physically validated, so L3 remains closed."
+  },
+  "l3Gate": [
+    "At least two Taiwan-listed issuers from materially different industries.",
+    "Historically replayable project decision disclosures with original knownAt/firstObservedAt.",
+    "At least one project with later revision/cost-overrun/utilization or cancellation path to prove append-only vintage handling.",
+    "A case where project economics and D21-07 governance/allocation state diverge.",
+    "Project-specific discount-rate assumption or a documented fail-closed UNKNOWN when unavailable.",
+    "No outcome leakage from later operating results into decision-time project state."
+  ],
+  "l4Gate": [
+    "Preregistered OOS/prospective Shadow join.",
+    "Controls for size, industry, growth, leverage, valuation, regime and pre-existing trend/RS.",
+    "Independent dates and multiple project families.",
+    "Incrementality versus capex growth, ROIC, WACC and D21-07 allocation-quality features.",
+    "Coverage/missingness and transaction-cost relevance."
+  ],
+  "sourceReferences": [
+    {
+      "title": "Aswath Damodaran — Investment Analysis / capital budgeting materials",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/cfread.htm",
+      "use": "NPV/IRR, incremental cash flow, opportunity cost, real-options mechanism."
+    },
+    {
+      "title": "Aswath Damodaran — Chapter 5 derivations",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/AppldCF/derivn/ch5deriv.html",
+      "use": "Nominal/real consistency and NPV-versus-IRR decision logic."
+    },
+    {
+      "title": "Aswath Damodaran — Chapter 6 project options",
+      "url": "https://pages.stern.nyu.edu/~adamodar/pdfiles/acf3E/book/ch6.pdf",
+      "use": "Delay, expand and abandon option taxonomy."
+    },
+    {
+      "title": "Taiwan MOPS",
+      "url": "https://mops.twse.com.tw/",
+      "use": "Taiwan filing, material-information and financial-statement source-family feasibility."
+    }
+  ],
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
