@@ -167,6 +167,13 @@ assert.equal(cmodePositive.state,"POSITIVE_SESSION_SOURCE_OBSERVED");
 assert.equal(cmodePositive.rowCount,3);
 assert.equal(cmodePositive.positiveStopCount,1);
 assert.equal(cmodePositive.absenceCertifiesNoStop,false);
+
+const cmodeUnknownMarker=parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate:"2023-04-10",coverageTo:"2023-12-31",sourceHash:"9".repeat(64),
+  payload:{reportDate:"112/04/10",aaData:[["4806","昇華","","","","","N/A","","",""]]},
+});
+assert.equal(cmodeUnknownMarker.positiveStopCount,0);
+assert.equal(cmodeUnknownMarker.intervals.length,0);
 assert.match(cmodePositive.intervals[0].sourceRowHash,/^[a-f0-9]{64}$/);
 assert.equal(cmodePositive.intervals[0].sourcePayloadHash,"c".repeat(64));
 assert.deepEqual(cmodePositive.intervals.map(x=>({
