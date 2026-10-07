@@ -764,3 +764,28 @@ DATA_LANE hardening:
 - regression guard now requires the bounded 120-minute annual timeout so the transport-recovery path cannot silently regress to the known 60-minute cutoff.
 
 After this hardening is merged and CI is green, the exact physical continuation is a new fresh workflow_dispatch from latest main with `year=2024 / market=TPEX`. Do not rerun #29 because it is bound to the pre-timeout-hardening head. Acceptance still requires annual backfill PASS + Physical verify PASS + artifact + System1 isolation PASS.
+
+
+## 2026-10-07 2024 TPEx run #30 D1 daily-write quota blocker / annual quota hardening
+
+Fresh annual run `37611914140` / #30 used latest `main` head `cd99cd22f2019a8666c3fc25347d0e6fbbd2c595` with the repaired 120-minute backfill timeout, but it never entered backfill.
+
+Terminal facts:
+- checkout: PASS;
+- migrate job failed inside `system2/deploy/provision_system2_d1.mjs`;
+- Cloudflare D1 returned HTTP 400 `daily row write limit exceeded`;
+- backfill was skipped;
+- Physical verify and artifact generation were never reached;
+- no 2024 TPEx market-year acceptance is claimed from run #30.
+
+The annual workflow was unnecessarily re-running the full isolated-D1 provisioning path before every historical backfill. That path replays DDL and writes infrastructure sentinel rows even though the historical backfill script already fail-closes when `s2_schema_meta.schema_version != 1.1`.
+
+DATA_LANE quota hardening:
+- remove the redundant `migrate` provisioning job from the annual historical workflow;
+- remove `needs: migrate`;
+- retain the backfill script's read-only schema-version gate as the fail-closed readiness check;
+- preserve the finite 120-minute annual backfill timeout;
+- add regression guards forbidding annual-workflow calls to `provision_system2_d1.mjs` and future reintroduction of `needs: migrate`;
+- keep dedicated provisioning/migration tooling intact for explicit schema changes.
+
+This reduces avoidable D1 writes but does not bypass the Cloudflare free-tier daily quota. A not-yet-complete market-year still needs legitimate D1 manifest/checkpoint/receipt writes, so fresh physical execution must occur only after the quota resets. System1 Formal Core/runtime, strategy/ranking, capital/order, broker routing and production push behavior remain unchanged.
