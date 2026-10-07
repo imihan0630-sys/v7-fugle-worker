@@ -1921,3 +1921,115 @@ Only after both lanes converge on one coherent physical evidence cut may 00 eval
 
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
+
+
+## 00 rollover checkpoint — combined CORR-005/006 + real TWTAWU positive control (2026-10-08 00:09 Asia/Taipei)
+
+Observed latest main before write:
+`f4ffbd0d2f054aaaf281328eea00f63ac098130b`.
+
+### NC-T01 acceptance matrix upgraded to V0.2
+
+Durable matrix:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json`
+(commit `9b38a4583c04dea42fb4ee9759f019a9d2fc7070`).
+
+New mandatory distinction:
+- W0 = continuity-ready witness;
+- W1 = strategy-executable witness with exact required-evidence completeness;
+- W2 = later rank-eligible witness.
+
+NC-T01 S22-T13/T14 requires at least one W1.
+W0 alone may not promote requiredInputsState / executionState / candidateGenerationExecutable / legitimate zero-pick.
+
+### CORR-006 independently accepted by 00
+
+`S2-CORR-20261007-006` HIGH / OPEN / BUILD_LANE is independently reproduced.
+
+Key defect:
+current receipt builder promotes from `executableWitnesses` that check replay/continuity readiness but not strategy-required-evidence completeness.
+
+Canonical evaluator proves:
+- required UNKNOWN -> INCOMPLETE;
+- hard invalidation can precede missing-required-evidence disposition;
+- therefore non-INCOMPLETE validity label alone is not sufficient.
+
+CORR-006 must carry explicit `requiredEvidenceComplete` / `missingRequiredEvidenceCount` semantics.
+
+### CORR-005 + CORR-006 one-patch engineering handoff
+
+Durable combined handoff:
+`system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json`
+(commit `97cac22a24f28593679092b03819a47fa3d89752`).
+
+The corrections remain logically separate but SHOULD be implemented in one exact-head patch because both modify:
+- `nct01_physical_receipt_v0_1.mjs`;
+- `nct01_artifact_runner_v0_1.mjs`;
+- `daily_shadow_orchestrator_v0_1.mjs`;
+- NC-T01 regressions/workflow.
+
+Combined patch must:
+1. fail closed on missing hidden-fallback audit evidence;
+2. bind exact-head static + runtime no-forbidden-access evidence via `HIDDEN_FALLBACK_AUDIT_SHA256`;
+3. separate W0 from W1;
+4. derive execution/zero-pick only from W1;
+5. preserve read-only/artifact-only semantics.
+
+No new independence architecture is required.
+
+### T15 full-universe provenance — no new correction
+
+00 independently rejected a suspected roster-identity gap.
+
+The mandatory typed chain already composes:
+- `A1_BATCH_SHA256` for full current A1 universe source identity;
+- `SHADOW_ACCOUNTING_SHA256` for eligible/accounted symbol state;
+- `ORCHESTRATION_SHA256` for exclusions map, per-symbol diagnostics, execution inputs and counts.
+
+Therefore no extra standalone universe-roster hash is launch-critical for first NC-T01 when the entire typed chain is verified.
+
+### TWTAWU bounded parity upgraded with a real positive control
+
+Durable DATA handoff:
+`system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261008_V0_2.json`
+(commit `786e5d70e0bbbf01d5978ec15b6ccfc2f3899565`).
+
+The prior physical workflow run `37488505236` / job `112354734503` logged real official TWSE TWTAWU rows.
+
+Frozen real positive control:
+- symbol: 1218;
+- suspendedFrom: 2026-08-13;
+- resumedOn: 2026-08-14;
+- sourceRowHash: `40fbafe3fac0f7bafc60f08ca7cb873da716cdce846decfadcd5122ff8197927`;
+- sourceArtifactHash: `10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857`;
+- original bounded all-listed query: 2026-04-05..2026-10-02, 383 rows.
+
+DATA_LANE must first prove JSON-vs-official-export parity on a bounded all-listed interval containing that real 1218 positive row.
+Only after positive parity passes may the same frozen request/export contract be used on the actual NC-T01 witness replay window for negative suspension completeness.
+
+Synthetic fixture 1563 is explicitly NOT accepted as the parity positive control.
+
+### Current exact continuation
+
+BUILD_LANE:
+- implement one combined CORR-005 + CORR-006 exact-head patch;
+- exact-head regressions + System2 Research CI + applicable V8;
+- merged-main readback.
+
+DATA_LANE:
+- discover/capture the real official TWTAWU export request contract;
+- positive parity using real 1218 row;
+- freeze bounded completeness contract;
+- apply it unchanged to actual replay-window witness;
+- compose three TWSE corporate-action exact-range families;
+- emit first real source-honest CLEAR_NO_ACTION receipt or remain CONTINUITY_UNKNOWN.
+
+Then:
+- one real artifact-only SHORT_MOMENTUM NC-T01;
+- 00 independently recomputes Matrix V0.2 T11~T16;
+- CORR-003 becomes the next persistence blocker only after physical independence.
+
+No current open PR was observed for the combined BUILD patch or TWTAWU producer at this checkpoint.
+
+Formal Core remains LOCKED.
+System1 remains sentinel-only.
