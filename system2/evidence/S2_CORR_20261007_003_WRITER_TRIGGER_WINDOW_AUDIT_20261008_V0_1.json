@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_V0_1",
+  "recordedAt": "2026-10-08T05:36:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "e9214c5303d8a26be968e46ddfa2b9ebf65908d4",
+  "directiveId": "S2-CORR-20261007-003",
+  "officialQuotaReset": {
+    "utc": "00:00",
+    "taipei": "08:00",
+    "currentAuditBeforeReset": true
+  },
+  "sharedWriterInventory": {
+    "concurrencyGroup": "system2-isolated-d1-writer",
+    "workflowCount": 12,
+    "workflows": [
+      {
+        "path": ".github/workflows/system2-daily-shadow-diagnostic.yml",
+        "push": true,
+        "schedule": true,
+        "cronUtc": "35 10 * * 1-5",
+        "taipei": "18:35 weekdays",
+        "physicalD1MutationOnPush": true
+      },
+      {
+        "path": ".github/workflows/system2-fugle-raw-hot-history-bootstrap.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-current-year-segment-backfill.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-d1-bounded-smoke.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-d1-physical-smoke.yml",
+        "push": true,
+        "schedule": false,
+        "manual": true,
+        "physicalD1MutationOnPush": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-pack-2017-backfill.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-pack-real-source-smoke.yml",
+        "push": true,
+        "schedule": false,
+        "manual": true,
+        "physicalD1MutationOnPush": true
+      },
+      {
+        "path": ".github/workflows/system2-historical-tpex-2021-revision-recovery.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-hot-history-bootstrap.yml",
+        "push": true,
+        "schedule": false,
+        "manual": true,
+        "physicalD1MutationOnPush": true
+      },
+      {
+        "path": ".github/workflows/system2-isolated-d1-provision.yml",
+        "push": false,
+        "schedule": false,
+        "manual": true
+      },
+      {
+        "path": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+        "push": true,
+        "schedule": true,
+        "cronUtc": "30 8 * * *",
+        "taipei": "16:30 daily",
+        "physicalD1MutationOnPush": true
+      },
+      {
+        "path": ".github/workflows/system2-resonance-deploy.yml",
+        "push": true,
+        "schedule": false,
+        "manual": true,
+        "d1ReadinessFastPath": true
+      }
+    ]
+  },
+  "resetWindowFinding": {
+    "scheduledQuietWindowAfterReset": "08:00-16:30 Asia/Taipei has no fixed high-write schedule among the audited writers.",
+    "caveat": "The window is not quota-safe because multiple writer workflows may still trigger from ordinary main pushes at any time.",
+    "firstScheduledHighWrite": "Recent A1 Hot History Warmup at 16:30 Asia/Taipei.",
+    "scheduledDailyShadow": "18:35 Asia/Taipei weekdays.",
+    "annualBackfill": "manual workflow_dispatch only."
+  },
+  "remediationImplications": [
+    "Do not rely on time-of-day alone as the D1 budget guard.",
+    "Push-triggered physical writers must either be made read-only/test-only on push or pass the same account-level reservation gate before mutation.",
+    "A post-reset manual annual backfill can be prioritized in the morning window only if push writers cannot consume its protected reservation.",
+    "Recent A1 warmup should remain lower priority than protected launch-critical/daily evidence and explicitly reserved historical work.",
+    "Quota deferral must name the writer class and reservation decision; concurrency ordering alone is insufficient.",
+    "No paid-plan upgrade is authorized."
+  ],
+  "protectedBoundaries": [
+    "No System1 mutation",
+    "No strategy/ranking/final-selection changes",
+    "No automatic billing change",
+    "No weakening of D1/history/PIT integrity"
+  ],
+  "implementationPerformedByAudit": false
+}
