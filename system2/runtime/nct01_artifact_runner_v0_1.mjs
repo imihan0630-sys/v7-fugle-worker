@@ -4,6 +4,7 @@ import { findLimitedShadowSpec } from "./limited_shadow_v0_1.mjs";
 import { assessStage1StrategyV0_1 } from "./stage1_assessor_policies_v0_1.mjs";
 import { runDailyLimitedShadowOrchestratorV0_1 } from "./daily_shadow_orchestrator_v0_1.mjs";
 import { buildNcT01ReceiptFromOrchestrationV0_1 } from "./nct01_physical_receipt_v0_1.mjs";
+import { validateNcT01HiddenFallbackAuditV0_1 } from "./nct01_hidden_fallback_audit_v0_1.mjs";
 
 export const NCT01_ARTIFACT_RUNNER_VERSION_V0_1 = "0.1-RESEARCH";
 
@@ -46,13 +47,7 @@ export async function runNcT01ArtifactOnlyV0_1({
   policyFingerprintReceipt,
   sharedRawSourceRefs = [],
   historyPrefetchEvidence = null,
-  hiddenFallbackAudit = {
-    cachedSystem1SelectionUsed:false,
-    persistedSystem1SelectionUsed:false,
-    aliasReconstructionUsed:false,
-    crossProjectFallbackUsed:false,
-    staleSharedStateUsed:false,
-  },
+  hiddenFallbackAuditEvidence = null,
   orchestrator = runDailyLimitedShadowOrchestratorV0_1,
 } = {}) {
   const id=requiredText(runId,"runId");
@@ -116,12 +111,16 @@ export async function runNcT01ArtifactOnlyV0_1({
     ],
   });
 
+  const hiddenFallbackAuditView=await validateNcT01HiddenFallbackAuditV0_1(
+    hiddenFallbackAuditEvidence,
+  );
+
   const receipt=await buildNcT01ReceiptFromOrchestrationV0_1({
     receiptId:requiredText(receiptId,"receiptId"),
     orchestration,
     policyFingerprintReceipt,
     sharedRawSourceRefs:rawRefs,
-    hiddenFallbackAudit,
+    hiddenFallbackAuditEvidence,
     generatedAt:captured,
     notes:[
       "NC_T01_ARTIFACT_ONLY_RUNNER_V0_1",
@@ -135,7 +134,35 @@ export async function runNcT01ArtifactOnlyV0_1({
   });
 
   const continuityReadySymbols=orchestration.perSymbolDiagnostics
-    .filter((x)=>x.continuityBindingState==="READY")
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.replayState==="READY"
+      && x.continuityBindingState==="READY"
+      && Array.isArray(x.continuityBlockerCodes)
+      && x.continuityBlockerCodes.length===0
+    )
+    .map((x)=>String(x.symbol))
+    .sort();
+  const requiredEvidenceCompleteSymbols=orchestration.perSymbolDiagnostics
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.requiredEvidenceComplete===true
+      && Number(x.missingRequiredEvidenceCount||0)===0
+    )
+    .map((x)=>String(x.symbol))
+    .sort();
+  const strategyExecutableSymbols=orchestration.perSymbolDiagnostics
+    .filter((x)=>
+      x.state==="ACCOUNTED"
+      && x.replayState==="READY"
+      && x.continuityBindingState==="READY"
+      && Array.isArray(x.continuityBlockerCodes)
+      && x.continuityBlockerCodes.length===0
+      && x.requiredEvidenceComplete===true
+      && Number(x.missingRequiredEvidenceCount||0)===0
+      && ["VALID","WEAKENING","INVALIDATED"].includes(x.strategyValidity)
+      && typeof x.assessmentHash==="string"
+    )
     .map((x)=>String(x.symbol))
     .sort();
   const incompleteSymbols=orchestration.perSymbolDiagnostics
@@ -157,6 +184,20 @@ export async function runNcT01ArtifactOnlyV0_1({
     continuityReceiptInputCount:continuityMap.size,
     continuityReadySymbolCount:continuityReadySymbols.length,
     continuityReadySymbols:Object.freeze(continuityReadySymbols),
+    requiredEvidenceCompleteSymbolCount:requiredEvidenceCompleteSymbols.length,
+    requiredEvidenceCompleteSymbols:Object.freeze(requiredEvidenceCompleteSymbols),
+    strategyExecutableSymbolCount:strategyExecutableSymbols.length,
+    strategyExecutableSymbols:Object.freeze(strategyExecutableSymbols),
+    hiddenFallbackAuditState:hiddenFallbackAuditView.auditState,
+    hiddenFallbackAuditDigest:hiddenFallbackAuditView.auditDigest,
+    hiddenFallbackRunnerHeadSha:hiddenFallbackAuditView.runnerHeadSha,
+    hiddenFallbackTransitiveManifestHash:hiddenFallbackAuditView.transitiveManifestHash,
+    hiddenFallbackAuditIntegrityValid:hiddenFallbackAuditView.auditIntegrityValid,
+    hiddenFallbackReauditRequired:hiddenFallbackAuditView.reauditRequired,
+    hiddenFallbackRuntimeForbiddenAccessCount:
+      Number.isInteger(hiddenFallbackAuditEvidence?.runtimeEvidence?.runtimeForbiddenAccessCount)
+        ? hiddenFallbackAuditEvidence.runtimeEvidence.runtimeForbiddenAccessCount
+        : null,
     incompleteSymbolCount:incompleteSymbols.length,
     generatedCandidateCount:receipt.generatedCandidates.length,
     generatedCandidates:receipt.generatedCandidates,

@@ -8,7 +8,7 @@ const SOURCE_ARTIFACTS = Object.freeze([
   { path:"system2/runtime/strategy_contracts_v0_1.mjs", contentSha:"2a5038ce2310aa18035e691db1a3bee7d5b22ae5" },
   { path:"system2/runtime/stage1_assessor_policies_v0_1.mjs", contentSha:"694a46e13b02b7b9df0a9242eb9e3a3932769c0a" },
   { path:"system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs", contentSha:"bf0dc9e6dac11fc22beaf28506597c471211c35c" },
-  { path:"system2/runtime/daily_shadow_orchestrator_v0_1.mjs", contentSha:"79bebce21cca3cdf3b40affd6043ffa6b1f84c0e" },
+  { path:"system2/runtime/daily_shadow_orchestrator_v0_1.mjs", contentSha:"35997dbde5ca0a97567f3a346268fd767007202c" },
   { path:"system2/runtime/daily_shadow_a1_source_v0_1.mjs", contentSha:"995ac5f592bca08a28046482426eab0bbec6d493" },
   { path:"system2/runtime/daily_shadow_history_reader_v0_1.mjs", contentSha:"47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1" },
   { path:"system2/runtime/strategy_local_ranking_baseline.mjs", contentSha:"f31194bd6fc95f79b479cb770526bb1ac44f20e5" },

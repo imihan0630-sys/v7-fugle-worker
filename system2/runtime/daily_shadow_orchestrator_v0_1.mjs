@@ -334,6 +334,21 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
     }
 
     const assessment = buildStrategyStateAssessment(contract, assessmentInput);
+    const missingRequiredEvidenceCount = Array.isArray(assessment.missingRequiredEvidence)
+      ? assessment.missingRequiredEvidence.length
+      : 0;
+    const requiredEvidenceComplete = missingRequiredEvidenceCount === 0;
+    const assessmentHash = await sha256Hex({
+      symbol,
+      decisionTimestamp: clock,
+      strategyId: assessment.strategyId,
+      strategyVersion: assessment.strategyVersion,
+      strategyValidity: assessment.strategyValidity,
+      entryReadiness: assessment.entryReadiness,
+      missingRequiredEvidence: assessment.missingRequiredEvidence,
+      matchedHardInvalidations: assessment.matchedHardInvalidations,
+      familyAssessments: assessment.familyAssessments,
+    });
     const decisionId = `${runId}|DECISION|${symbol}`;
     if (importantRejected && assessment.strategyValidity === "INVALIDATED") {
       importantRejectedDecisionIds.push(decisionId);
@@ -402,6 +417,9 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       continuityTransformHash: continuityBinding?.continuityTransformHash || null,
       continuityBlockerCodes: Object.freeze([...(continuityBinding?.blockerCodes || [])]),
       factorBundleHash: factorBundle.bundleHash,
+      assessmentHash,
+      missingRequiredEvidenceCount,
+      requiredEvidenceComplete,
       strategyValidity: assessment.strategyValidity,
       entryReadiness: assessment.entryReadiness,
     }));

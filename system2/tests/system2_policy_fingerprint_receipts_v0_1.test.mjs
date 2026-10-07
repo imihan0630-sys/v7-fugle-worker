@@ -15,8 +15,8 @@ assert.deepEqual(staticSet,rebuilt);
 assert.deepEqual(staticSm,rebuilt.fingerprints.find(x=>x.strategyId==="SHORT_MOMENTUM"));
 assert.deepEqual(staticSg,rebuilt.fingerprints.find(x=>x.strategyId==="SWING_GROWTH"));
 
-assert.equal(staticSm.fingerprintHash,"115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3");
-assert.equal(staticSg.fingerprintHash,"a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b");
+assert.equal(staticSm.fingerprintHash,"2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd");
+assert.equal(staticSg.fingerprintHash,"727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af");
 assert.equal(staticSet.sda022.physicalIndependentDiscovery,false);
 assert.equal(staticSet.sda022.ncT01Required,true);
 assert.equal(staticSet.finalSelectionEnabled,false);
