@@ -7,6 +7,9 @@ const verifier=await readFile("system2/scripts/historical_market_year_verify_v0_
 
 assert.match(workflow,/name:\s+System2 Historical Pack Annual Backfill/);
 assert.match(workflow,/backfill:\s*[\s\S]*?timeout-minutes:\s*120/,"annual backfill must preserve bounded 120-minute headroom for transport recovery + physical verify");
+assert.match(workflow,/Read-only annual resume preflight/);
+assert.match(workflow,/historical_annual_resume_preflight_v0_1\.mjs/);
+assert.ok(workflow.indexOf("historical_annual_resume_preflight_v0_1.mjs") < workflow.indexOf("historical_pack_year_backfill_v0_1.mjs"),"resume preflight must run before annual backfill");
 assert.ok(!workflow.includes("Migrate isolated System2 D1"),"annual backfill must use its schema-version gate instead of full provisioning");
 assert.match(workflow,/year:\s*\n\s+description:/);
 for(const year of ["2017","2018","2019","2020","2021","2022","2023","2024","2025"]){
@@ -14,7 +17,7 @@ for(const year of ["2017","2018","2019","2020","2021","2022","2023","2024","2025
 }
 assert.ok(!workflow.includes('- "2026"'),"current year must not use completed-year annual workflow");
 assert.ok(!workflow.includes('SYSTEM2_HISTORY_YEAR: "2017"'),"workflow must not hard-code 2017");
-assert.equal((workflow.match(/SYSTEM2_HISTORY_YEAR: \$\{\{ inputs\.year \}\}/g)||[]).length,3);
+assert.equal((workflow.match(/SYSTEM2_HISTORY_YEAR: \$\{\{ inputs\.year \}\}/g)||[]).length,4);
 assert.match(workflow,/Persist bounded 2021 TPEx PIT revision lineage/);
 assert.match(workflow,/inputs\.year == '2021' && inputs\.market == 'TPEX'/);
 assert.match(workflow,/historical_tpex_2021_revision_overlay_v0_1\.mjs/);

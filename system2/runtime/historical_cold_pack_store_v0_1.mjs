@@ -314,10 +314,27 @@ export async function executeHistoricalColdPackSetV0_1({
       throw new Error("IMMUTABLE_CONFLICT historical cold receipt: " + id);
     }
     await verifyHistoricalColdReceiptV0_1({ db, objectStore:store, receipt:priorReceipt });
+    const checkpointAlreadyComplete = Boolean(
+      priorCheckpoint
+      && priorCheckpoint.state === "COMPLETE"
+      && Number(priorCheckpoint.object_ready_count) === packSet.packCount
+      && Number(priorCheckpoint.manifest_committed_count) === packSet.packCount
+      && Number(priorCheckpoint.next_pack_index) === packSet.packCount
+    );
+    if (!checkpointAlreadyComplete) {
+      await writeCheckpoint(db, {
+        checkpoint_id:"S2HCP-" + (await sha256Hex({ batchId:id, market, year })),
+        batch_id:id,market,year,expected_pack_count:packSet.packCount,expected_bar_count:packSet.barCount,
+        object_ready_count:packSet.packCount,manifest_committed_count:packSet.packCount,
+        next_pack_index:packSet.packCount,rolling_hash:rollingHash,state:"COMPLETE",
+        updated_at:completedAt,schema_version:"S2_HISTORICAL_COLD_BACKFILL_CHECKPOINT_V0_1",
+      });
+    }
     return deepFreeze({
       batchId:id,market,year,packCount:packSet.packCount,barCount:packSet.barCount,
       insertedObjectCount:0,identicalObjectCount:packSet.packCount,
       insertedManifestCount:0,identicalManifestCount:packSet.packCount,
+      checkpointRepairPerformed:!checkpointAlreadyComplete,
       rollingHash,state:"ALREADY_COMPLETE",receiptId:priorReceipt.receipt_id,
       schemaVersion:"S2_HISTORICAL_COLD_PACK_STORE_RESULT_V0_1",
     });

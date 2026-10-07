@@ -789,3 +789,40 @@ DATA_LANE quota hardening:
 - keep dedicated provisioning/migration tooling intact for explicit schema changes.
 
 This reduces avoidable D1 writes but does not bypass the Cloudflare free-tier daily quota. A not-yet-complete market-year still needs legitimate D1 manifest/checkpoint/receipt writes, so fresh physical execution must occur only after the quota resets. System1 Formal Core/runtime, strategy/ranking, capital/order, broker routing and production push behavior remain unchanged.
+
+
+## 2026-10-07 post-quota read-only annual resume audit / preflight hardening
+
+DATA_LANE performed a no-write audit after 2024 TPEx runs #28-#30.
+
+Observed execution facts:
+- run #28 failed during TPEx PRIMARY source acquisition before market-year persistence;
+- canonical correction evidence for run #29 states the 60-minute cancellation occurred before source-range completion;
+- annual script sequencing is full official range fetch -> deterministic pack build -> cold persistence, so source acquisition itself has no durable per-date resume checkpoint;
+- run #30 failed in the former provisioning step before annual backfill started;
+- therefore no 2024 TPEx COMPLETE receipt / physical acceptance may be inferred from #28-#30, and no partial source-range progress may be relabeled as durable market-year history.
+
+Cold-store resume semantics revalidated:
+- pack payload/object identity excludes `capturedAt`; a later retry with identical official bars produces the same payload/object hashes;
+- `captured_at` is provenance metadata and is intentionally excluded from immutable manifest equality;
+- existing identical manifests/R2 objects are reused rather than rewritten;
+- changed source content or a changed expected checkpoint rolling hash fails closed as `IMMUTABLE_CONFLICT`;
+- an interrupted manifest batch can therefore resume safely when the rebuilt official pack identity is unchanged.
+
+New repository hardening:
+- `system2/runtime/historical_annual_resume_preflight_v0_1.mjs` classifies CLEAN_START, PARTIAL_RESUME_CANDIDATE, COMPLETE_RECEIPT_PRESENT, COMPLETE_RECEIPT_CHECKPOINT_REPAIR_REQUIRED and BLOCKED_DURABLE_STATE_INCONSISTENT without authorizing D1 writes;
+- `system2/scripts/historical_annual_resume_preflight_v0_1.mjs` reads only schema/receipt/checkpoint/manifests plus R2 HEAD metadata and emits an explicit resume receipt before annual backfill;
+- annual workflow runs this read-only preflight before source/backfill;
+- a receipt-before-final-checkpoint crash window is repaired: when an immutable COMPLETE receipt is valid but the final checkpoint was not sealed, the retry finalizes that checkpoint exactly once; already-complete retries do not add the repair write;
+- regressions cover clean start, partial resume, complete state, checkpoint-repair state, R2-head failure and checkpoint finalization.
+
+2025 continuation was also statically revalidated on the current annual path:
+- 2025 remains an explicit completed-year option for TWSE/TPEX;
+- 2026 remains excluded from the annual path;
+- redundant annual D1 provisioning remains removed;
+- 120-minute bounded timeout remains required;
+- execution order stays 2024 TPEx acceptance -> 2025 TWSE -> 2025 TPEx -> 2026 segmented -> aggregate replay qualification.
+
+No physical D1/R2 mutation was performed by this audit. System1 Formal Core/runtime, strategy/ranking, final selection, capital/order and broker authority remain unchanged.
+
+Exact next physical continuation after quota reset: fresh latest-main `2024 / TPEX`; first consume the read-only resume preflight result, then allow source/backfill only if the durable state is not blocked.
