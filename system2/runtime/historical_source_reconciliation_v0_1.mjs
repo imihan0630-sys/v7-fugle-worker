@@ -140,7 +140,7 @@ export function reconcileHistoricalSourceRowsV0_1({
     canonicalA1ValueFields:CANONICAL_HISTORICAL_A1_VALUE_FIELDS,
     semantics:deepFreeze({
       sourceRowHashMismatch:"The official full source row changed between captures; this is preserved as source revision evidence.",
-      canonicalA1ValueMismatch:"At least one canonical A1 value used by System2 changed; data coverage must remain blocked.",
+      canonicalA1ValueMismatch:"At least one canonical A1 value used by System2 changed; this reconciliation remains blocked unless a separate physically verified PIT revision-lineage contract proves immutable baseline preservation and deterministic as-of revision selection.",
       sourceRevisionOnly:"The official full source row changed while canonical A1 values remained identical; data coverage may pass but source-version lineage remains explicit.",
     }),
     schemaVersion:"S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1",
