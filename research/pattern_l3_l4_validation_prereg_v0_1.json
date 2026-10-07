@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "pattern-l3-l4-validation-prereg-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "primaryHorizonsEligibleSessions": [
+    1,
+    5,
+    20
+  ],
+  "minimumTrainYears": 3,
+  "testYearsPerFold": 1,
+  "minimumPurgeSessions": 20,
+  "finalHoldoutLocked": true,
+  "primaryMultiplicity": "HIERARCHICAL_BENJAMINI_YEKUTIELI",
+  "noWinnerAllowed": true,
+  "firstWave": [
+    "D01-02",
+    "D01-03",
+    "D01-07",
+    "D01-09"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
