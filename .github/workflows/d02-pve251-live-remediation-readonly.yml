@@ -1,5 +1,7 @@
 name: D02 PVE-251 Live Remediation Readonly
 
+# post-natural-family-readback 2026-10-08; read-only trigger only
+
 on:
   push:
     paths:
