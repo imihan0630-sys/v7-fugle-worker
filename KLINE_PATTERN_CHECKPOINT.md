@@ -4637,3 +4637,81 @@ No maturity or Formal change is authorized by this routing.
 7. Next D01 science: separate structural response from suspension/resumption stale-price anchoring and reopening price discovery after multi-session no-trade intervals.
 8. No outcome join / no runtime wiring / no Formal change.
 
+
+
+## Continuation update — DL-066 (2026-10-07)
+
+### DL-066 — Suspension/resumption stale-anchor and reopening price-discovery firewall
+- DL-065 separated structural response from corporate-action mechanical price resets.
+- DL-066 freezes suspension/resumption attribution:
+  - pre-suspension last trade is an execution fact, not proof of current fair value during a no-trade interval;
+  - no-trade sessions must not be forward-filled into pseudo-bars;
+  - first reopening auction is a price-discovery event, not an automatically confirmed breakout;
+  - reopening raw gap can jointly reflect accumulated information, cross-market catch-up, corporate-action reset, exchange reference mechanics, auction imbalance, liquidity scarcity, price-limit constraint and residual structural response.
+- Required separated anchors:
+  - LAST_EXECUTED_PRICE_BEFORE_SUSPENSION;
+  - LAST_CONTINUITY_STRUCTURAL_ANCHOR;
+  - EXCHANGE_REOPENING_REFERENCE;
+  - FIRST_REOPENING_AUCTION_PRICE;
+  - FIRST_CONTINUOUS_TRADE_AFTER_REOPENING;
+  - REOPENING_DISCOVERY_INTERVAL;
+  - POST_REOPENING_STABILIZED_REFERENCE.
+- Structural causal persistence does not imply executable freshness.
+- Suspension strata remain distinct:
+  - SAME_SESSION_SHORT_HALT;
+  - ONE_BUSINESS_DAY_SUSPENSION;
+  - MULTI_SESSION_SUSPENSION;
+  - EXTENDED_SUSPENSION;
+  - SUSPENSION_STATE_UNKNOWN.
+- No arbitrary stale-anchor decay score is frozen.
+- DL-064 price-limit firewall and DL-065 corporate-action continuity firewall remain upstream controls.
+- D04/D05 own auction/depth/liquidity microstructure; D08 owns event/news context; D09/D12 own routed cross-market/overnight context; D16 owns residual inference.
+- SDA-001 remains open:
+  reopening gap, first-auction breakout and early momentum inherit PRICE_OHLC ancestry unless independently demonstrated otherwise.
+- SDA-002 remains open:
+  suspension/resumption receipts and reopening confirmations require replay-safe first-known/confirmation clocks.
+- Future D16 ladder:
+  R0 PRE_SUSPENSION_RAW_ZONE_RESPONSE;
+  R1 SUSPENSION_INTERVAL_IDENTIFIED;
+  R2 POINT_IN_TIME_SUSPENSION_RECEIPT_CONTROLLED;
+  R3 NO_TRADE_INTERVAL_EXCLUDED_FROM_PATTERN_GEOMETRY;
+  R4 CORPORATE_ACTION_OVERLAP_CONTROLLED;
+  R5 REOPENING_REFERENCE_MECHANICS_CONTROLLED;
+  R6 PRICE_LIMIT_CONSTRAINT_CONTROLLED;
+  R7 BENCHMARK_AND_INDUSTRY_GAP_CONTROLLED;
+  R8 EVENT_NEWS_CONTEXT_CONTROLLED;
+  R9 OPENING_AUCTION_DISCOVERY_CONTROLLED;
+  R10 POST_REOPENING_DISCOVERY_WINDOW_CONTROLLED;
+  R11 STALE_ANCHOR_FRESHNESS_STRATIFIED;
+  R12 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  R13 MULTI_DURATION_MULTI_REASON_MULTI_REGIME_REPLICATION.
+- Interpretation states:
+  Q0 STALE_PRICE_ANCHOR_EXPLANATION;
+  Q1 INFORMATION_ACCUMULATION_EXPLANATION;
+  Q2 CROSS_MARKET_CATCHUP_EXPLANATION;
+  Q3 CORPORATE_ACTION_RESET_EXPLANATION;
+  Q4 REOPENING_AUCTION_IMBALANCE_EXPLANATION;
+  Q5 PRICE_LIMIT_CONSTRAINT_EXPLANATION;
+  Q6 LIQUIDITY_SCARCITY_EXPLANATION;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 SUSPENSION_DATA_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_SUSPENSION_REOPENING_FIREWALL_V0_1.md
+  - research/pattern_suspension_reopening_firewall_v0_1.json
+  - research/PATTERN_SUSPENSION_REOPENING_D16_HANDOFF_V0_1.md
+- Deterministic helper/tests are not yet authored in this tranche.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-066
+
+1. Add deterministic suspension-session exclusion / stale-anchor / reopening classifier and adversarial tests.
+2. Test pseudo-bar contamination, stale-anchor persistence, benchmark catch-up, corporate-action overlap, reopening price-limit constraint and first-auction false-breakout cases.
+3. Keep R0-R13 / Q0-Q9 residual inference owned by D16.
+4. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+5. Next D01 science: define and falsify structural-anchor freshness/half-life without inventing arbitrary calendar-time decay; compare session-count, information-arrival and volatility-scaled freshness definitions.
+6. No outcome join / no runtime wiring / no Formal change.
