@@ -7459,3 +7459,77 @@ Exact D03 next:
 2. if W0 is valid, evaluate D03-10 L3 under its own preregistered technical gates immediately rather than waiting for CORR-005/CORR-006;
 3. keep CORR-005/CORR-006 as parallel System2 physical-independence gates;
 4. keep annual V0.6, raw third session, genuine V8.20 parent, T48, S2-07, D03 dedup/redundancy and D16 predictive incrementality independent.
+
+
+## 2026-10-08 D03 — TI-1441~1458 physical parent attempt classification
+
+Canonical artifact:
+`research/d03_system1_parent_attempt_20261007_v0_1.json`
+
+Physical System1 evidence:
+- workflow `System 1 C1 Prospective Evidence`;
+- run `37652129851`, job `112897875757`;
+- market date `2026-10-07`;
+- run created `2026-10-08 00:27:08 Asia/Taipei`;
+- artifact `11496544209`;
+- artifact ZIP digest `sha256:90291db1aa7b2d5ec4be397235ec217313777707ca610c4ddf28b1e51c8925a2`.
+
+### TI-1441~1446 — physical parent attempt occurred and failed before parent creation
+The scheduled attempt physically ran.
+Generation-inventory validation = PASS.
+V8.20 Formal-C1 binding readback validation = PASS.
+Immutable C1 population read/verify = FAIL.
+
+Preserved readiness:
+`scanDate=2026-10-07`;
+`FORMAL_SCAN_NOT_CONFIRMED`;
+`C1_GENERATION_NOT_FOUND`;
+`formalScanDate=2026-09-29`;
+`formalPipelineComplete=false`;
+`institutionReady=true`;
+`qualityReady=false`;
+`missingQuality=[QUARTER_EPS]`;
+`eligibleForResearch=false`;
+`mayCountAsZeroPick=false`.
+
+Frozen interpretation:
+`PARENT_GENERATION_ABSENT != V8_20_BINDING_LEDGER_DEFECT`.
+There was no genuine 2026-10-07 C1 generation available for authoritative binding.
+
+### TI-1447~1451 — blocker narrowed but D03 does not promote
+Earlier scheduled evidence had missing quality `FINANCIAL + QUARTER_EPS`.
+This physical attempt has only `QUARTER_EPS`.
+The upstream quality blocker set therefore narrowed from two families to one.
+
+Run `37565002528` separately proves Node standard-HTTPS MOPSOV transport feasibility in a read-only GitHub runner.
+It does not prove Production deployment/live-readback of that transport repair for the failed parent attempt.
+
+T48 remains separate completeness debt and is not the immediate cause of a generation that never existed.
+
+### TI-1452~1455 — anti-shortcut
+- missing C1 parent is not zero-pick;
+- workflow failure is not negative technical-indicator evidence;
+- later recovery cannot synthesize a missing decision-time parent;
+- V8.20 engineering/readback semantics PASS does not imply genuine parent existence.
+
+W0 technical-continuity research remains independent of the parent-generation failure.
+
+### TI-1456~1457 — D03-10 admission machinery is already executable
+`research/d03_bollinger_l3_acceptance_v0_2.mjs` already enforces exact 20 eligible sessions, exact date-set equality, source/bar identities and hashes, technical/corporate-action continuity, causal source clocks, zero unresolved sessions/events, no pseudo bars, population standard deviation and deterministic state/window hashes.
+
+`research/d03_parent_continuity_binding_v0_2.mjs` already binds parent cutoff/known-at, evidence cut, continuity receipt, sourceHistoryHash, continuityTransformHash and exact eligible date-set identity.
+
+Therefore D03-10 is:
+`ACCEPTANCE_ORACLE_READY / PHYSICAL_INPUTS_PENDING`.
+
+D03-09 reuses that parent/continuity path but still additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted prior state.
+
+### TI-1458 — maturity and exact next
+No promotion:
+D03 56.7%; 12 active modules; 10 at current L3/60 milestone; D03-09 / D03-10 L2/40; raw source-version gate 2/3; outcomes CLOSED; Formal Core LOCKED.
+
+Exact next is dual-track:
+1. W0: first real exact-window source-honest technical-continuity receipt under bounded TWSE suspension/corporate-action completeness. CORR-005/CORR-006 do not block D03 W0.
+2. Parent: next actual ordinary-session C1 artifact containing a genuine immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after upstream official-quality repair has Production/live-readback evidence.
+
+When W0 and genuine parent both pass, execute the existing D03-10 L3 and parent-binding oracles immediately.
