@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T11:55:29+08:00",
+  "updatedAt": "2026-10-07T15:41:59+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -263,14 +263,12 @@
         "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-06T00:12:00+08:00",
+      "updatedAt": "2026-10-07T15:41:59+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": [
-        "2021 TPEx official-source canonical A1 revision on 2021-01-14 requires explicit revision-lineage/as-of handling before that market-year can be accepted"
-      ]
+      "blockedBy": null
     },
     {
       "directiveId": "S2-CORR-20261004-002",
