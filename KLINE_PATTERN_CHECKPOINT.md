@@ -5180,3 +5180,52 @@ No maturity or Formal change is authorized by this routing.
 6. Hand confluence incrementality and merge/split sensitivity to D16.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. No Formal Core change.
+
+
+## Continuation update — DL-078 (2026-10-07)
+
+### DL-078 — Structural confluence vs geometric coincidence firewall
+- Raw confluence count is no longer treated as independent evidence count.
+- Nearby prior highs, necklines, moving averages, round numbers, prior swings and gaps must preserve object/root/episode lineage.
+- Same-root overlapping zones and deterministic transforms merge into one uncertainty object under preregistered topology rules.
+- Merge preserves all parent lineage but does not multiply evidence count.
+- Split is allowed only under preregistered rules with predictor-time observable distinct roots; outcome-based split is prohibited.
+- Genuine confluence requires independently generated, owner-certified roots.
+- Price-only overlap remains one PRICE_OHLC family unless independent root evidence exists.
+- Topology metrics frozen:
+  overlapTicks;
+  overlapBps;
+  overlapVolatilityUnits;
+  centerDistanceTicks;
+  unionWidthTicks;
+  intersectionWidthTicks;
+  rootCount;
+  effectiveIndependentRootCount.
+- No arbitrary CONFLUENCE_SCORE is defined.
+- D16 ladder C0-C11 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+- New files:
+  - research/PATTERN_CONFLUENCE_TOPOLOGY_FIREWALL_V0_1.md
+  - research/pattern_confluence_topology_firewall_v0_1.mjs
+  - research/test_pattern_confluence_topology_firewall_v0_1.mjs
+  - research/pattern_confluence_topology_firewall_v0_1.json
+  - research/PATTERN_CONFLUENCE_TOPOLOGY_D16_HANDOFF_V0_1.md
+  - research/D01_DL078_EVIDENCE_LEDGER_V0_1.md
+- This tranche directly advances SDA-001 but does not close it.
+- SDA-002 remains open.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-078
+
+1. Execute DL-068~078 research Node tests independently; keep TEST_EXECUTION_PENDING until actual execution evidence exists.
+2. Start DL-079: cluster-level topology persistence and zone migration.
+3. Preserve root lineage when zones drift, widen, narrow, merge or split through time.
+4. Prevent a moving zone from being reissued as a new independent root each session.
+5. Separate genuine new price discovery from deterministic moving-window drift.
+6. Hand migration persistence and root-renewal sensitivity to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. No Formal Core change.

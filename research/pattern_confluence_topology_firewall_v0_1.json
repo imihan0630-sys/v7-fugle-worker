@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pattern-confluence-topology-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "rawConfluenceCountEqualsIndependentEvidenceCount": false,
+  "zoneOverlapEqualsDistinctConfirmation": false,
+  "samePriceHistoryMayCreateMultipleVotes": false,
+  "exPostMergeSplitAllowed": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}

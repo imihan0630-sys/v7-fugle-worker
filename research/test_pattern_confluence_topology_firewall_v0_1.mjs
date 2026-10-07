@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {classifyConfluence,classifyOverlap,classifyMerge,validateSplit,classifyDistinctRoot} from "./pattern_confluence_topology_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7801 same price root objects count once",()=>assert.equal(classifyConfluence({objects:[{informationRoot:"PRICE_OHLC"},{informationRoot:"PRICE_OHLC"}]}).effectiveIndependentRootCount,1));
+t("D7802 distinct certified roots count separately",()=>assert.equal(classifyConfluence({objects:[{informationRoot:"PRICE_OHLC"},{informationRoot:"EVENT_ROOT"}]}).effectiveIndependentRootCount,2));
+t("D7803 overlap detected",()=>assert.equal(classifyOverlap({aLower:99,aUpper:101,bLower:100,bUpper:102}).status,"ZONES_OVERLAP"));
+t("D7804 disjoint zones detected",()=>assert.equal(classifyOverlap({aLower:99,aUpper:100,bLower:101,bUpper:102}).status,"ZONES_DISJOINT"));
+t("D7805 same-root same-episode overlap merges",()=>assert.equal(classifyMerge({sameInformationRoot:true,sameEpisode:true,deterministicTransform:false,zonesOverlap:true}).status,"TOPOLOGICAL_MERGE"));
+t("D7806 deterministic transform overlap merges",()=>assert.equal(classifyMerge({sameInformationRoot:true,sameEpisode:false,deterministicTransform:true,zonesOverlap:true}).evidenceMultiplier,1));
+t("D7807 distinct roots need validation",()=>assert.equal(classifyMerge({sameInformationRoot:false,sameEpisode:false,deterministicTransform:false,zonesOverlap:true}).status,"DISTINCTNESS_REQUIRES_VALIDATION"));
+t("D7808 ex-post split blocked",()=>assert.equal(validateSplit({rulePreregistered:true,usesFutureOutcome:true,distinctRootsObservable:true}).status,"MERGE_SPLIT_SELECTION_BIAS"));
+t("D7809 preregistered split eligible only with distinct roots",()=>assert.equal(validateSplit({rulePreregistered:true,usesFutureOutcome:false,distinctRootsObservable:true}).status,"SPLIT_ELIGIBLE"));
+t("D7810 price plus certified non-price root can be distinct",()=>assert.equal(classifyDistinctRoot({priceRootPresent:true,independentNonPriceRootCertified:true}).effectiveIndependentRootCount,2));
+console.log(`SUMMARY ${p}/10 PASS`);
