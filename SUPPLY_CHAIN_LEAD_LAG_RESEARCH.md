@@ -2409,3 +2409,21 @@ Exact remaining topology delta:
 8. commit `research/COV06_D10_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## SC-057 — TSMC qualified multi-source topology receipt (2026-10-07)
+
+Artifact:
+- `research/SC057_TSMC_QUALIFIED_MULTISOURCE_TOPOLOGY_RECEIPT_20261007_V0_1.md`
+
+Result:
+- official TSMC annual-report evidence supports raw-wafer multiple sourcing plus stringent supplier quality certification/specification conformance;
+- this is sufficient for a bounded `QUALIFIED_ACTIVE_MULTISOURCE` state at anonymized supplier-class level;
+- anonymized identities, unknown spare capacity/switch time and hidden tier-2/tier-3 dependencies prevent a replayable articulation-point claim;
+- therefore `D10-01` remains L2/40 and articulation remains `UNKNOWN`;
+- no stock outcome, ranking, Formal gate, capital or signal behavior is changed.
+
+Exact next:
+- SC-058 seek an issuer-native graph with distinguishable supplier/site/path identities sufficient to test whether alternatives are actually disjoint after one node/edge removal;
+- require one explicit qualification/switching constraint and effective-dated capture clocks;
+- if public disclosure remains anonymized, freeze the negative conclusion that qualified multi-source state is observable but replayable articulation topology is not.
