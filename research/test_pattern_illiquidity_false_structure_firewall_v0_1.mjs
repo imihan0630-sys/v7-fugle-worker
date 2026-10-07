@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {classifyBarTouch,classifyTickCluster,classifyGapCross,buildRevisitDenominator,classifyFreshnessClock,buildStructureLineage} from "./pattern_illiquidity_false_structure_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7001 zero-trade bar not touch",()=>assert.equal(classifyBarTouch({tradeCount:0,carriedPriceFlag:false}).status,"NOT_A_STRUCTURAL_TOUCH"));
+t("D7002 carried price not touch",()=>assert.equal(classifyBarTouch({tradeCount:1,carriedPriceFlag:true,independentExecutionIds:["x"]}).reason,"STALE_PRINT_CONTAMINATION"));
+t("D7003 duplicate execution id counts once",()=>assert.equal(classifyBarTouch({tradeCount:2,carriedPriceFlag:false,independentExecutionIds:["x","x"]}).independentTouchCount,1));
+t("D7004 distinct execution ids count distinctly",()=>assert.equal(classifyBarTouch({tradeCount:2,carriedPriceFlag:false,independentExecutionIds:["x","y"]}).independentTouchCount,2));
+t("D7005 tick width normalized",()=>assert.equal(classifyTickCluster({legalTickSize:0.5,zoneWidth:2,price:100,roundIncrement:10}).zoneWidthTicks,4));
+t("D7006 round cluster is context not alpha",()=>assert.equal(classifyTickCluster({legalTickSize:0.5,zoneWidth:2,price:100,roundIncrement:10}).structuralAlphaProven,false));
+t("D7007 certified book gap cross not breakout strength",()=>assert.equal(classifyGapCross({zoneCrossed:true,ownerCertifiedLiquidityGap:true}).breakoutStrengthProven,false));
+t("D7008 non-gap zone cross unresolved",()=>assert.equal(classifyGapCross({zoneCrossed:true,ownerCertifiedLiquidityGap:false}).status,"ZONE_CROSS_ATTRIBUTION_UNRESOLVED"));
+t("D7009 revisit denominator preserves no-revisit roots",()=>assert.equal(buildRevisitDenominator({eligibleRoots:100,revisited:40,bounced:20,crossed:20,expired:50,dataBlocked:10}).survivorOnlyRateProhibited,true));
+t("D7010 eligible-session clock requires preregistration",()=>assert.equal(classifyFreshnessClock({clockType:"ELIGIBLE_SESSION_COUNT",preregistered:false}).status,"FRESHNESS_CLOCK_NOT_PREREGISTERED"));
+t("D7011 calendar half-life not assumed",()=>assert.equal(classifyFreshnessClock({clockType:"VOLATILITY_DISTANCE_TRAVELED",preregistered:true}).calendarHalfLifeAssumed,false));
+t("D7012 price representations remain one root",()=>assert.equal(buildStructureLineage({}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/12 PASS`);
