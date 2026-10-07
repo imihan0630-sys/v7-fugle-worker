@@ -3244,3 +3244,30 @@ Exact next:
 6. if System2 fingerprint / NC-T01 / T48 / genuine Formal↔C1 lands first, switch immediately;
 7. on 2026-10-08 after expected C1 attempt window, reconcile the 2026-10-07 opportunity;
 8. outcomes remain CLOSED.
+
+
+## 2026-10-07 regime-label measurement-error firewall
+
+New durable note:
+- research/D16_D18_REGIME_LABEL_MEASUREMENT_ERROR_CHECKPOINT_20261007.md
+
+Frozen conclusions:
+- decision-time replayability does not by itself prove regime classification accuracy or policy value;
+- UNKNOWN/ambiguous/transition coverage remains explicit and never becomes BAD/0;
+- differential label error can create, attenuate, or reverse Strategy × Regime interaction;
+- label-error sensitivity family must be preregistered before protected outcomes open;
+- negative controls include transition exclusion, fixed adjacent-state contamination stress, component-drop sensitivity, static baseline, and exposure-matched non-regime control;
+- taxonomy/transition/persistence/error-stress/component-drop/strategy/horizon/policy-map choices belong to one multiplicity family;
+- ex-post future-informed reference labels are diagnostic only, not policy-validation truth;
+- no maturity or Formal Core change.
+
+Current formal maturity:
+D16=60%.
+D18=52%.
+
+Exact next:
+1. re-read latest main;
+2. if first physical System2 Stage-1 strategy evaluation lands, validate policy id/version and denominator provenance;
+3. if decision-time Regime is also KNOWN, require frozen regime vector/version, component states, transition/ambiguity/UNKNOWN semantics and source generation before outcome use;
+4. if prospective Strategy × Regime receipts accumulate, preregister label-error sensitivity before protected outcomes open;
+5. otherwise continue next executable D16/D18 module; no retrospective label repair or historical Shadow fabrication.
