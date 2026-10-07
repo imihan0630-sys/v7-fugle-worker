@@ -90,7 +90,7 @@ await assert.rejects(
       throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
     },
   }),
-  /listing metadata transport exhausted after 2 attempts/,
+  /listing metadata transport exhausted for .* after 2 attempts/,
 );
 assert.equal(exhaustedCalls, 4, "both markets must fail closed after their own retry budgets");
 
