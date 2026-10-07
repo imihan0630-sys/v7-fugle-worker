@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 46.9
+    "maturityWeightedPct": 47.1
   },
   "domains": [
     {
@@ -45,7 +45,7 @@
         "KLINE_PATTERN_RESEARCH.md",
         "TARGET_RESISTANCE_RR_RESEARCH.md"
       ],
-      "maturityPct": 52.7,
+      "maturityPct": 60,
       "modules": [
         {
           "id": "D01-01",
@@ -58,18 +58,18 @@
         {
           "id": "D01-02",
           "name": "單根K線型態",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「單根K線型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12（酒田／傳統K線）合併後，本模組承接其單根傳統K線 taxonomy（分類）、形成條件與反證；命名型態不得自行形成獨立 Alpha 或額外投票。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D01-03",
           "name": "多根K線組合",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「多根K線組合」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12 合併後，本模組承接其多根K線序列／組合語意與反證；必須與原始OHLC、價量、趨勢及其他型態做冗餘控制。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D01-04",
@@ -98,10 +98,10 @@
         {
           "id": "D01-07",
           "name": "杯柄／碗型／底部基地",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「杯柄／碗型／底部基地」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D01-08",
@@ -114,10 +114,10 @@
         {
           "id": "D01-09",
           "name": "缺口與漲跌停限制型態",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「缺口與漲跌停限制型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12 合併後，本模組承接傳統缺口／跳空與漲跌停限制下的相關K線語意；既有 Sakata/candlestick 研究檔與 System 2 解釋能力永久保留。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D01-10",

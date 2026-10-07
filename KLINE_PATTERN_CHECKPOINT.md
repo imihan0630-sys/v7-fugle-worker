@@ -5405,3 +5405,32 @@ No maturity or Formal change is authorized by this routing.
 6. Hand statistical incrementality to D16; no pattern promotion without OOS evidence.
 7. Keep SDA-001/SDA-002 open.
 8. No Formal Core change.
+
+
+## Tracker governance update — D01 L3 PIT promotion applied (2026-10-07)
+
+- Canonical tracker promotion applied after DL-086 audit:
+  - D01-02: L2 / 40 -> L3 / 60
+  - D01-03: L2 / 40 -> L3 / 60
+  - D01-07: L2 / 40 -> L3 / 60
+  - D01-09: L2 / 40 -> L3 / 60
+- D01 canonical maturity:
+  - before: 52.7%
+  - after: 60.0%
+- All 11 D01 modules are now L3.
+- This promotion means Taiwan PIT data feasibility only.
+- It does NOT establish historical alpha, OOS/prospective value, Shadow readiness, SDA closure, or Formal Core promotion.
+- Cumulative deterministic V8-equivalent execution through DL-085 remains 178 / 178 PASS.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after tracker promotion
+
+1. DL-087: preregister D01 L3-to-L4 empirical validation portfolio.
+2. Use one Taiwan PIT universe and synchronized outcome windows for all 11 D01 modules.
+3. Prioritize D01-02, D01-03, D01-07 and D01-09 because they were the last PIT-feasibility promotions.
+4. Freeze transaction costs, benchmark controls, multiple-testing correction, walk-forward folds, common-support rules and NO_WINNER policy before outcome joins.
+5. Require pattern-specific incrementality over raw OHLC / raw N-bar geometry / generic compression / generic breakout controls.
+6. Route statistical inference to D16.
+7. No Formal Core change.
