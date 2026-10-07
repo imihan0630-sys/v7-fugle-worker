@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "D08_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_CONTRACT_V0_2",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "frozenAtAsiaTaipei": "2026-10-07T23:55:00+08:00",
+  "status": "OUTCOME_BLIND_PERCENTILE_MATERIALIZATION_CONTRACT",
+  "supersedesForNewMaterialization": "research/d08_historical_valuation_percentile_snapshot_contract_v0_1.json",
+  "prerequisites": [
+    "research/d08_twse_daily_valuation_archive_manifest_20261007_v0_1.json",
+    "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json",
+    "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json",
+    "research/d08_twse_raw_valuation_r2_capture_receipt_20261007_v0_3.json",
+    "system2/runtime/d08_historical_valuation_percentile_engine_v0_1.mjs",
+    "system2/runtime/d08_historical_valuation_percentile_snapshot_v0_1.mjs"
+  ],
+  "sourcePins": {
+    "dailyArchivePackBundleHash": "540617710149de3713d2c8e574f90dc39c6800d87b19c0d95763eac78f0bae31",
+    "universeSemanticSnapshotBundleHash": "00a8b11b3df7d6af74b4787c12bbac3e731cdbed9d636f347e65790f2acb6052",
+    "semanticRegistryHash": "41d6d24a93be846fb324204129ef106cf3ff6e95eee2695af4976a467e4d29c7",
+    "rawValuationObjectBundleHash": "7031b42608194c798f68f27852997618961c173883767df91b472652777a7240"
+  },
+  "scanDates": {
+    "count": 44,
+    "startMonth": "2023-01",
+    "endMonth": "2026-08",
+    "rule": "Use the already frozen last actual TWSE session for each month."
+  },
+  "historyBoundary": {
+    "cohortEffectiveFrom": "Controls scan-date cohort membership only.",
+    "valuationHistoryStart": "Use official listingDate when known; otherwise firstTradingDate fallback; never clamp long-listed issuers to the 2023 cohort start.",
+    "archiveFloor": "2005-09-02 official machine-readable floor.",
+    "symbolReuse": "History must remain inside the active listing episode; no pre-episode leakage."
+  },
+  "percentileWindows": {
+    "PE": [
+      "TRAILING_252_VALID_SESSIONS",
+      "TRAILING_756_VALID_SESSIONS",
+      "TRAILING_1260_VALID_SESSIONS",
+      "EXPANDING_SINCE_AVAILABLE"
+    ],
+    "PB": [
+      "TRAILING_252_VALID_SESSIONS",
+      "TRAILING_756_VALID_SESSIONS",
+      "TRAILING_1260_VALID_SESSIONS",
+      "EXPANDING_SINCE_AVAILABLE"
+    ],
+    "tieRule": "AVERAGE_RANK_PERCENT_RANK",
+    "currentObservation": "Include the scan-date value in valid history when known.",
+    "minimumHistory": "252/756/1260 exact valid counts; expanding requires at least 252 valid observations.",
+    "insufficient": "UNKNOWN"
+  },
+  "currentValueCrosscheck": {
+    "authority": "research/d08_twse_raw_valuation_r2_capture_receipt_20261007_v0_3.json and its immutable R2 objects",
+    "rule": "Daily archive scan-date observation presence, PE, PB and fiscal period must exactly match raw V0.3 for every cohort member.",
+    "mismatch": "DATA_BLOCKED"
+  },
+  "materialization": {
+    "objectSchema": "D08_TWSE_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_V0_1",
+    "objectPrefix": "research/d08/twse-historical-valuation-percentile-snapshot-v0.1/",
+    "storage": "isolated System2 research R2 only",
+    "immutable": true,
+    "readbackRequired": true
+  },
+  "invariants": [
+    "every cohort member appears exactly once per scan date",
+    "no silent row drops",
+    "PE UNKNOWN does not suppress PB",
+    "future history rows are excluded",
+    "current scan-date values exactly cross-check raw V0.3",
+    "daily year-pack bytes and payload hashes must match the frozen archive manifest",
+    "raw snapshot bytes and payload hashes must match the frozen V0.3 receipt",
+    "live rebuild is admitted only when frozen V0.2 semantic/source hashes still match",
+    "true expanding requires the complete frozen 2005-2026 archive manifest",
+    "no return or outcome data may be read"
+  ],
+  "snapshotBundleHash": {
+    "algorithm": "SHA-256",
+    "canonicalOrder": "ascending scanDate",
+    "canonicalLine": "scanDate|snapshotPayloadHash|memberCount|pe252KnownCount|pe756KnownCount|pe1260KnownCount|peExpandingKnownCount|pb252KnownCount|pb756KnownCount|pb1260KnownCount|pbExpandingKnownCount"
+  },
+  "auditCoverage": [
+    "SDA-008 financial/valuation PIT-vintage guard",
+    "historical-universe survivorship guard",
+    "UNKNOWN missingness preservation",
+    "source/readback provenance"
+  ],
+  "outcomeGate": "CLOSED",
+  "nextGate": "CONTROL_SNAPSHOT_FREEZE_THEN_PREREGISTERED_SHADOW_OUTCOME_JOIN",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
