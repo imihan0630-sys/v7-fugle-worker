@@ -71,7 +71,9 @@ The owner-approved target architecture supports both actual and simulated positi
 - `ACTUAL_POSITION_MONITOR_VERIFIED=false`: no UI/API/runtime may claim current Owner holdings are physically monitored until a real screenshot import has persisted and read back successfully.
 - Broker API/account-token integration and System 1 holdings import are not authorized by this source contract.
 
-Detailed contract: `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`.
+Detailed contracts:
+- `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`;
+- `system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`.
 
 ### L9 Performance/Research
 Frozen decision snapshots, simulated fills, costs/slippage, outcomes, attribution, OOS and version comparison.
