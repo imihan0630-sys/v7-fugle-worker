@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T15:41:59+08:00",
+  "updatedAt": "2026-10-07T16:05:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Historical raw A1 data coverage is physically accepted through both 2023 markets, including 2021 TPEx. The former 2021 TPEx blocker is resolved after fresh primary-only physical re-verification; Data Coverage is PASS and Replay Readiness is PARTIAL. CORR-001 remains FIX_IN_PROGRESS for 2024+ market-years, the 2026 incremental path, aggregate completion and final full-market PIT replay.",
+      "observedProblem": "Historical raw A1 data coverage is physically accepted through TWSE 2024 and TPEx 2023, including the resolved 2021 TPEx transport-semantics case. 2024 TPEx remains PENDING after annual run #28 failed twice on different intermittent TPEx PRIMARY transport timeouts before Physical verify. A bounded PRIMARY-only transport-exhaustion recovery fix is CI-PASS on latest main; fresh latest-main 2024/TPEX dispatch is required. CORR-001 also remains FIX_IN_PROGRESS for both 2025 markets, 2026 segmented current-year physical acceptance, aggregate machine-readable completion and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -143,7 +143,13 @@
         "2024 TWSE run 37564954928 (#26) completed SUCCESS on head 6f50f29de3fd90259dadcb94a3964917af4b13c3 with confirmed inputs year=2024 market=TWSE.",
         "2024 TWSE storage/source verification PASS: 1038 packs / 246037 bars / 1038 R2 HEAD + byte checks; 246037 cold rows == 246037 fresh official rows; zero missing-from-cold, absent-from-fresh, source-row and canonical A1 mismatches; sourceVersionState STABLE.",
         "2024 TWSE historical-universe denominator 246515 versus 246037 actual bars leaves 478 explicit UNKNOWN_SYMBOL_SESSION_GAP rows; unexpectedBars=0; data coverage PASS / replay readiness PARTIAL.",
-        "2024 TWSE durable evidence: system2/evidence/S2_HISTORICAL_TWSE_2024_PHYSICAL_VERIFICATION_V0_1.json; artifact 11460055754 digest sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b."
+        "2024 TWSE durable evidence: system2/evidence/S2_HISTORICAL_TWSE_2024_PHYSICAL_VERIFICATION_V0_1.json; artifact 11460055754 digest sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b.",
+        "2024 TPEx annual run 37587943578 (#28) confirmed inputs year=2024 market=TPEX; attempt 1 failed on TPEx PRIMARY timeout at 2024-04-26 before Physical verify; System1 isolation PASS.",
+        "Run #28 attempt 2 failed on a different TPEx PRIMARY timeout date 2024-01-15 before Physical verify; System1 isolation PASS. The shifted date supports intermittent transport failure rather than deterministic source-data corruption.",
+        "Blind reruns of old run #28 are stopped because it is bound to pre-resilience head 9dff76fb235e8da38e8f07c38e355c7be6046d5a.",
+        "Bounded PRIMARY-only transport recovery is implemented in system2/runtime/official_historical_backfill_source_v0_1.mjs; legacy TPEx '不含定價' fallback remains canonical-ineligible and data-integrity failures remain fail-closed.",
+        "System2 Research CI 37590871628 SUCCESS on head e46f3a2049cc774a64b15eea360a4f6ea79fe494 with PRIMARY-only transport recovery regression.",
+        "2026 current-year segmented cold path is repository-ready but physical execution remains pending until both 2025 markets are resolved and writer lane is free; checkpoint documents the isolated monthly immutable design."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -212,7 +218,8 @@
         "2023 TPEx canonical DATA_LANE sync is complete; annual continuation advances to 2024 TWSE while 2021 TPEx remains explicit BLOCKED.",
         "2021 TPEx blocker is reclassified from canonical-source revision to non-equivalent TPEx fallback semantics; fresh primary-only recovery reverify remains the acceptance gate.",
         "2021 TPEx active annual-history blocker resolved; continuation returns to 2024 TWSE while CORR-001 stays FIX_IN_PROGRESS.",
-        "2024 TWSE is physically accepted as PASS_DATA_PARTIAL_REPLAY; annual continuation advances to 2024 TPEX while CORR-001 stays FIX_IN_PROGRESS."
+        "2024 TWSE is physically accepted as PASS_DATA_PARTIAL_REPLAY; annual continuation advances to 2024 TPEX while CORR-001 stays FIX_IN_PROGRESS.",
+        "2024 TPEx transport resiliency fix is CI-PASS; next acceptance action is fresh latest-main 2024/TPEX dispatch, not rerun of #28."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
