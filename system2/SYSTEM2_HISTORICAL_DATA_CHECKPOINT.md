@@ -1214,3 +1214,25 @@ If DATA finishes parity before BUILD finishes CORR-007, preserve the result as:
 `SUSPENSION_BOUNDED_COMPLETENESS_EVIDENCE_READY / FINAL_CLEAR_NO_ACTION_PROMOTION_BLOCKED_CORR007`.
 
 No D1 mutation is required for this read-only evidence task.
+
+
+## 2026-10-08 06:22 DATA/BUILD interface refinement for CORR-007
+
+DATA_LANE source work remains independent of the BUILD correction, but its real bounded suspension receipt must expose the immutable identity BUILD now requires.
+
+Canonical interface:
+`system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json`.
+
+For the eventual exact replay-window TWSE suspension receipt, preserve:
+- exact startDate/endDate;
+- stable sourceId and source family/version;
+- immutable bounded/parity receipt digest;
+- underlying official response/artifact hashes;
+- observedAt;
+- availability semantics and availableAt where applicable;
+- COMPLETE only after the frozen positive-control parity + exact-window completeness contract passes.
+
+Do not infer no suspension from empty rows alone.
+Do not guess the official export URL.
+Do not hard-code the witness.
+No D1 mutation is required for this evidence task.
