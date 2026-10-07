@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T05:36:00+08:00",
+  "updatedAt": "2026-10-08T05:58:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1359,7 +1359,7 @@
       "directiveId": "S2-CORR-20261007-005",
       "createdAt": "2026-10-07T23:45:41+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "VERIFIED_CLOSED",
       "title": "NC-T01 hidden-fallback audit defaults missing evidence to false",
       "affectedScope": [
         "System2 physical NC-T01 S22-T12/S22-T16",
@@ -1415,7 +1415,14 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": null,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #841 merged to main as d56f05fbc5986d00adbc81392b9dc0711de5043e.",
+        "Exact-head PR checks PASS: System2 Research CI 37692800933; NC-T01 Artifact Runner 37692801039; SDA-022 Fingerprints 37692801017; V8 Regression 37692801025; Continuity Replay Binding 37692800978.",
+        "Merged-main checks PASS on d56f05fbc5986d00adbc81392b9dc0711de5043e: NC-T01 Artifact Runner 37693224252; SDA-022 Fingerprints 37693224237; Continuity Replay Binding 37693224292; V8 Regression 37693224321; System2 Research CI 37693224267.",
+        "Merged-main exact-head audit artifact 11513234786 digest sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb; auditDigest 474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037; 24 transitive System2 runtime blobs; all five hidden-fallback dimensions PROVEN_ABSENT; runtimeForbiddenAccessCount=0.",
+        "Merged-main audit artifact explicitly physicalAcceptanceEligible=false; this closure does not credit S22-T11..T16.",
+        "Because #841 changed the fingerprint-bound daily_shadow_orchestrator_v0_1.mjs blob, SDA-022 fingerprints were correctly regenerated: SHORT_MOMENTUM 2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd; SWING_GROWTH 727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af. Merged-main fingerprint artifact 11514650165 digest sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555."
+      ],
       "verificationEvidence": [
         "D16 blocking oracle frozen at research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json @ commit 230ae2a2c455bfd1127cd79fa734abd4884abfa0.",
         "D16 HF-T01..HF-T12 independently confirm: missing audit object/dimension/digest => EVIDENCE_INCOMPLETE; any PRESENT dimension => HIDDEN_SYSTEM1_DEPENDENCY; audit/head/manifest drift => re-audit; shared raw market data alone is allowed; same-stock overlap is not failure by itself.",
@@ -1423,16 +1430,23 @@
         "00 minimal implementation contract: system2/evidence/S2_CORR_20261007_005_MINIMAL_HARDENING_HANDOFF_V0_1.json.",
         "Latest 00 drift audit found 19/21 files from the prior static audit unchanged; daily_shadow_orchestrator_v0_1.mjs and pit_replay_v0_1.mjs changed, and the NC-T01 runner/receipt/prefetch/continuity-binding files must be added to the exact-head closure.",
         "00 combined minimal build handoff: system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json @ commit 97cac22a24f28593679092b03819a47fa3d89752.",
-        "Latest-main independent reconfirmation: system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json @ 8770e51a023439ecadd7cf289f82fd056dff1f27; PR #830 remains the last change to affected receipt/runner/tests, and both CORR-005/006 defects remain present."
+        "Latest-main independent reconfirmation: system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json @ 8770e51a023439ecadd7cf289f82fd056dff1f27; PR #830 remains the last change to affected receipt/runner/tests, and both CORR-005/006 defects remain present.",
+        "PR #841 merged to main as d56f05fbc5986d00adbc81392b9dc0711de5043e.",
+        "Exact-head PR checks PASS: System2 Research CI 37692800933; NC-T01 Artifact Runner 37692801039; SDA-022 Fingerprints 37692801017; V8 Regression 37692801025; Continuity Replay Binding 37692800978.",
+        "Merged-main checks PASS on d56f05fbc5986d00adbc81392b9dc0711de5043e: NC-T01 Artifact Runner 37693224252; SDA-022 Fingerprints 37693224237; Continuity Replay Binding 37693224292; V8 Regression 37693224321; System2 Research CI 37693224267.",
+        "Merged-main exact-head audit artifact 11513234786 digest sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb; auditDigest 474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037; 24 transitive System2 runtime blobs; all five hidden-fallback dimensions PROVEN_ABSENT; runtimeForbiddenAccessCount=0.",
+        "Merged-main audit artifact explicitly physicalAcceptanceEligible=false; this closure does not credit S22-T11..T16.",
+        "Because #841 changed the fingerprint-bound daily_shadow_orchestrator_v0_1.mjs blob, SDA-022 fingerprints were correctly regenerated: SHORT_MOMENTUM 2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd; SWING_GROWTH 727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af. Merged-main fingerprint artifact 11514650165 digest sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555.",
+        "00 independent closure verification: system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json @ ae31dcc258469a3200926d4a8ba8942635379879."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T05:36:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — missing/UNKNOWN hidden-fallback evidence now fails closed; exact-head static plus runtime forbidden-access evidence and HIDDEN_FALLBACK_AUDIT_SHA256 binding are enforced. This closes the code firewall only. Physical S22-T12/T16 still require a real coherent NC-T01 run and are not credited by the CI correction artifact.",
+      "updatedAt": "2026-10-08T05:58:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-006",
       "createdAt": "2026-10-07T23:59:18+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "VERIFIED_CLOSED",
       "title": "NC-T01 continuity-ready witness can promote physical execution while strategy validity is incomplete",
       "affectedScope": [
         "System2 physical NC-T01 S22-T13/S22-T14/S22-T16",
@@ -1485,7 +1499,14 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": null,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #841 merged to main as d56f05fbc5986d00adbc81392b9dc0711de5043e.",
+        "Exact-head PR checks PASS: System2 Research CI 37692800933; NC-T01 Artifact Runner 37692801039; SDA-022 Fingerprints 37692801017; V8 Regression 37692801025; Continuity Replay Binding 37692800978.",
+        "Merged-main checks PASS on d56f05fbc5986d00adbc81392b9dc0711de5043e: NC-T01 Artifact Runner 37693224252; SDA-022 Fingerprints 37693224237; Continuity Replay Binding 37693224292; V8 Regression 37693224321; System2 Research CI 37693224267.",
+        "Merged-main exact-head audit artifact 11513234786 digest sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb; auditDigest 474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037; 24 transitive System2 runtime blobs; all five hidden-fallback dimensions PROVEN_ABSENT; runtimeForbiddenAccessCount=0.",
+        "Merged-main audit artifact explicitly physicalAcceptanceEligible=false; this closure does not credit S22-T11..T16.",
+        "Because #841 changed the fingerprint-bound daily_shadow_orchestrator_v0_1.mjs blob, SDA-022 fingerprints were correctly regenerated: SHORT_MOMENTUM 2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd; SWING_GROWTH 727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af. Merged-main fingerprint artifact 11514650165 digest sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555."
+      ],
       "verificationEvidence": [
         "D16 independent blocking oracle research/d16_sda022_nct01_strategy_executable_witness_oracle_20261008_v0_1.json @ commit 8c31de2aeebd95e861d3cd05be5e188ef491121e.",
         "D16 W0/W1/W2 separation confirms CONTINUITY_READY does not imply STRATEGY_EXECUTABLE and SR-T01 requires all-continuity-ready/all-strategy-incomplete => INCOMPLETE_BLOCKED_INPUTS_NOT_ZERO_PICK.",
@@ -1495,10 +1516,17 @@
         "00 superseding physical acceptance matrix: system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json @ commit 9b38a4583c04dea42fb4ee9759f019a9d2fc7070.",
         "00 accepts D16 W0/W1/W2 semantics for NC-T01: physical independence requires at least one W1 STRATEGY_EXECUTABLE_WITNESS; W0 continuity-ready alone cannot promote requiredInputsState/executionState/legitimate-zero-pick.",
         "00 combined minimal build handoff: system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json @ commit 97cac22a24f28593679092b03819a47fa3d89752.",
-        "Latest-main independent reconfirmation: system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json @ 8770e51a023439ecadd7cf289f82fd056dff1f27; PR #830 remains the last change to affected receipt/runner/tests, and both CORR-005/006 defects remain present."
+        "Latest-main independent reconfirmation: system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json @ 8770e51a023439ecadd7cf289f82fd056dff1f27; PR #830 remains the last change to affected receipt/runner/tests, and both CORR-005/006 defects remain present.",
+        "PR #841 merged to main as d56f05fbc5986d00adbc81392b9dc0711de5043e.",
+        "Exact-head PR checks PASS: System2 Research CI 37692800933; NC-T01 Artifact Runner 37692801039; SDA-022 Fingerprints 37692801017; V8 Regression 37692801025; Continuity Replay Binding 37692800978.",
+        "Merged-main checks PASS on d56f05fbc5986d00adbc81392b9dc0711de5043e: NC-T01 Artifact Runner 37693224252; SDA-022 Fingerprints 37693224237; Continuity Replay Binding 37693224292; V8 Regression 37693224321; System2 Research CI 37693224267.",
+        "Merged-main exact-head audit artifact 11513234786 digest sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb; auditDigest 474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037; 24 transitive System2 runtime blobs; all five hidden-fallback dimensions PROVEN_ABSENT; runtimeForbiddenAccessCount=0.",
+        "Merged-main audit artifact explicitly physicalAcceptanceEligible=false; this closure does not credit S22-T11..T16.",
+        "Because #841 changed the fingerprint-bound daily_shadow_orchestrator_v0_1.mjs blob, SDA-022 fingerprints were correctly regenerated: SHORT_MOMENTUM 2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd; SWING_GROWTH 727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af. Merged-main fingerprint artifact 11514650165 digest sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555.",
+        "00 independent closure verification: system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json @ ae31dcc258469a3200926d4a8ba8942635379879."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T05:36:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — W0 continuity-ready is separated from W1 strategy-executable; explicit requiredEvidenceComplete/missingRequiredEvidenceCount/assessment identity govern execution promotion and legitimate zero-pick. This closes the code firewall only. Physical S22-T13/T14/T16 still require a real coherent NC-T01 run and are not credited by the CI correction artifact.",
+      "updatedAt": "2026-10-08T05:58:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
