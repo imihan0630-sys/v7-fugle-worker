@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T20:46:00+08:00",
+  "updatedAt": "2026-10-07T21:19:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1248,7 +1248,7 @@
       "directiveId": "S2-CORR-20261007-004",
       "createdAt": "2026-10-07T20:48:25+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "FIX_IN_PROGRESS",
       "title": "Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session",
       "affectedScope": [
         "System2 S2-07 Daily Shadow PIT history readiness",
@@ -1304,7 +1304,16 @@
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
       "blockedBy": null,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "DATA_LANE PR #817 opened from latest-main-compatible branch system2-data/corr004-exact-session-reconciliation-20261007.",
+        "daily_shadow_history_reader_v0_1.mjs v0.4-RESEARCH replaces count-only long-listed readiness with exact expected eligible symbol-session reconciliation.",
+        "Per-symbol diagnostics now expose expected/observed session counts, missing/unexpected counts and samples, expectedSessionHash/observedSessionHash, lifecycle-excluded count, and explicit SYMBOL_LOCAL_EXPECTED_SESSION_MISSING / SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT blockers.",
+        "loadPitPriorA1BarsV0_1 now supports minimum listing boundary and expectedSessionHash; factor-history loading fails closed on EXPECTED_SESSION_HASH_MISMATCH.",
+        "Daily Shadow diagnostic and read-only preflight use official prior trading dates plus current listing metadata and target only full-count TWSE exact-session mismatches for positive official lifecycle evidence; TPEx parity remains fail-closed.",
+        "Diagnostic persistence adds HISTORY_LIFECYCLE_EVIDENCE shard binding official lifecycle intervals/source receipts to immutable run evidence.",
+        "Regressions include long-listed clean exact window, missing-recent-session plus older substitution, legitimate certified lifecycle gap, new-listing age-aware path, missing exact-session contract, and probe-to-load session-hash mismatch.",
+        "Physical read-only acceptance remains pending merged-main System2 Daily Shadow Input Preflight Readonly; do not self-close HIGH correction."
+      ],
       "verificationEvidence": [
         "Independent current-main codepath verification confirms daily_shadow_history_reader_v0_1.mjs v0.3-RESEARCH ranks available PIT rows and accepts count>=required for long-listed symbols with ageBoundaryMatches=true, without exact expected symbol-session reconciliation.",
         "Existing tests cover insufficient count, continuity incomplete, age-aware new listing, mixed-universe local blocking and global corruption, but do not cover long-listed missing-expected-session + older-row substitution.",
@@ -1312,7 +1321,7 @@
         "Physical run 37609474459 had historyReadyCount=51 but continuityReadyCount=0/evaluationInputEligibleSymbolCount=0, so no immediate strategy misuse is proven; repair remains required before NC-T01 S22-T13 continuity promotion can make any symbol executable."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T20:46:00+08:00"
+      "updatedAt": "2026-10-07T21:19:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
