@@ -1,0 +1,107 @@
+name: System2 Actual Holdings Screenshot Import V0.1 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md"
+      - "system2/SYSTEM2_MASTER.md"
+      - "system2/SYSTEM2_ARCHITECTURE.md"
+      - "system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md"
+      - "system2/SYSTEM2_STORAGE_SCHEMA.md"
+      - "system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md"
+      - "system2/SYSTEM2_BUILD_PROGRESS_MAP.md"
+      - "system2/SYSTEM2_CHECKPOINT.md"
+      - "system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md"
+      - "system2/SYSTEM2_INSTITUTIONAL_TERMINAL_IA_V0_1.md"
+      - "system2/runtime/actual_holdings_*.mjs"
+      - "system2/sql/0009_actual_holdings_screenshot_import.sql"
+      - "system2/deploy/terminal_page.mjs"
+      - "system2/deploy/provision_system2_d1.mjs"
+      - "system2/tests/actual_holdings_*.test.mjs"
+      - "system2/tests/position_monitor_capability_semantics.test.mjs"
+      - "system2/tests/institutional_terminal_page_v0_1.test.mjs"
+      - "system2/scripts/probe_actual_holdings_screenshot_import_readonly_v0_1.mjs"
+      - ".github/workflows/system2-actual-holdings-screenshot-import-v0-1-readonly.yml"
+      - ".github/workflows/system2-resonance-deploy.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/**actual_holdings**"
+      - "system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md"
+      - "system2/deploy/terminal_page.mjs"
+      - "system2/deploy/provision_system2_d1.mjs"
+      - ".github/workflows/system2-actual-holdings-screenshot-import-v0-1-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Targeted holdings tests
+        run: |
+          set -euo pipefail
+          node system2/tests/actual_holdings_screenshot_import_v0_1.test.mjs
+          node system2/tests/actual_holdings_persistence_v0_1.test.mjs
+          node system2/tests/position_monitor_capability_semantics.test.mjs
+          node system2/tests/institutional_terminal_page_v0_1.test.mjs
+
+      - name: Synthetic fail-closed physical contract probe
+        run: node system2/scripts/probe_actual_holdings_screenshot_import_readonly_v0_1.mjs
+
+      - name: Validate additive isolated schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import sqlite3
+          from pathlib import Path
+          con=sqlite3.connect(":memory:")
+          try:
+              for path in sorted(Path("system2/sql").glob("*.sql")):
+                  con.executescript(path.read_text(encoding="utf-8"))
+              tables={r[0] for r in con.execute("SELECT name FROM sqlite_schema WHERE type='table' AND name LIKE 's2_%'")}
+              required={
+                  "s2_positions",
+                  "s2_actual_holdings_imports",
+                  "s2_actual_holdings_snapshots",
+                  "s2_actual_holdings_rows",
+                  "s2_actual_holdings_reconciliation_events",
+              }
+              missing=sorted(required-tables)
+              if missing:
+                  raise SystemExit(f"missing actual-holdings tables: {missing}")
+              version=con.execute("SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version'").fetchone()
+              if not version or version[0]!="1.1":
+                  raise SystemExit(f"unexpected global System2 schema version: {version}")
+              print(f"Actual Holdings schema PASS; tables={len(tables)}; global_schema={version[0]}")
+          finally:
+              con.close()
+          PY
+
+      - name: Broker and order authority guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "USER_UPLOADED_BROKER_SCREENSHOT" system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md
+          grep -q "Broker API holdings integration: NOT AUTHORIZED" system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md
+          grep -q "Real orders: DISABLED" system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md
+          grep -q "System 2 virtual/simulated positions only; never owner actual holdings" system2/SYSTEM2_STORAGE_SCHEMA.md
+          ! grep -R --line-number --include='actual_holdings_*.mjs' -E 'fetch\(|WebSocket|Authorization:|Bearer |order.*submit|submit.*order|cancel.*order|replace.*order' system2/runtime
+          git diff origin/main...HEAD -- Worker.js wrangler.toml | grep -q '^$' || { echo "System1 production file changed"; exit 1; }
+
+      - name: Upload contract evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-actual-holdings-screenshot-import-v0-1
+          path: /tmp/S2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1_PHYSICAL_20261007.json
+          retention-days: 14
