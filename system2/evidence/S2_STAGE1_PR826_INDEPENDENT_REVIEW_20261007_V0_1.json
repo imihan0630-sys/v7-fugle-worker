@@ -7,7 +7,7 @@
   "title": "system2: firewall legacy continuity before NC-T01 replay certification",
   "headSha": "93ce711c91692d789f96d61a2d0bcd9624f658bd",
   "baseSha": "da8a816536b2d2a944554e1cc00dd117c33afa4f",
-  "disposition": "CONTENT_PASS_MERGE_CANDIDATE_CANONICAL_MAIN_READBACK_REQUIRED",
+  "disposition": "MERGED_MAIN_READBACK_PASS_PHYSICAL_NCT01_STILL_PENDING",
   "codepathFindings": [
     "Default buildPitReplayWindow semantics remain PRESERVE_INPUT, protecting existing PIT replay/backtest behavior.",
     "Only the Daily Shadow path using resolveContinuityEvidence requests UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION.",
@@ -56,11 +56,11 @@
     ]
   },
   "orderingConsequence": [
-    "Merge/canonicalize #826 before rebuilding/final-freezing #762.",
-    "#762 hard-pins daily_shadow_orchestrator_v0_1.mjs, which #826 modifies.",
-    "After #826 merge, BUILD_LANE must regenerate #762 fingerprints from the then-current source blobs.",
-    "Old #762 receipts remain non-canonical and may not satisfy S22-T06~T10.",
-    "After fingerprints merge, the physical NC-T01 runner/receipt still remains required for S22-T11~T16."
+    "PR #826 is now merged and canonical.",
+    "BUILD_LANE must rebuild/regenerate #762 fingerprints only after this merged state because #762 hard-pins daily_shadow_orchestrator_v0_1.mjs.",
+    "Current #762 has 9/11 exact source-artifact matches; daily_shadow_orchestrator_v0_1.mjs and daily_shadow_history_reader_v0_1.mjs are stale.",
+    "Old #762 receipts may not satisfy S22-T06~T10.",
+    "After rebuilt fingerprints merge, the physical NC-T01 runner/receipt remains required for S22-T11~T16."
   ],
   "protectedBoundaries": [
     "No System1 Formal Core/runtime mutation",
@@ -68,5 +68,16 @@
     "No historical D1 rewrite",
     "No final selection/live push/capital/order authority"
   ],
-  "implementationPerformedByAudit": false
+  "implementationPerformedByAudit": false,
+  "mergedMain": {
+    "merged": true,
+    "mergedAt": "2026-10-07T15:22:37Z",
+    "mergeCommit": "bf7cb670341c212c093785253654b1edf1728313",
+    "mainOrchestratorBlob": "79bebce21cca3cdf3b40affd6043ffa6b1f84c0e",
+    "mainPitReplayBlob": "7069e216a12f11d4143fb7512311193d9fffb6c1",
+    "orchestratorSanitizeModePresent": true,
+    "pitReplaySanitizeModePresent": true,
+    "interpretation": "The NC-T01 continuity firewall is now canonical on main. Physical NC-T01 acceptance remains pending and must use the merged-main path."
+  },
+  "updatedAt": "2026-10-07T22:41:00+08:00"
 }
