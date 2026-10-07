@@ -113,16 +113,33 @@ PRICE_RESET_REQUIRED + DENOMINATOR_RELEVANT.
 Reason:
 can produce a large unit/price reset while changing share count without changing enterprise value.
 
-### SPLIT / REVERSE_SPLIT
+### SECURITY-UNIT SPLIT / CONSOLIDATION — domestic ordinary common equity scope
 
 Role:
 PRICE_RESET_REQUIRED + DENOMINATOR_RELEVANT.
 
-Current disposition:
-`CURRENT_SHARED_OFFICIAL_ARCHIVE_COVERAGE_SCOPE_UNPROVEN`
-unless the shared owner explicitly proves these cases are canonically represented by PAR_VALUE_CHANGE or another frozen family.
+Updated disposition:
+`DOMESTIC_ORDINARY_COMMON_EQUITY_MECHANICAL_UNIT_CHANGE_MAPPED_TO_PAR_VALUE_CHANGE`.
 
-Provider documentation/research capability is not enough to silently promote the official shared archive.
+Official TWSE/TPEX market rules make the mapping explicit for stock par-value changes:
+- share-exchange ratio = old par value / new par value;
+- the same ratio = post-change issued shares / pre-change issued shares;
+- the resumed-trading reference-price framework is mechanically based on that ratio.
+
+Therefore, for the bounded D18 ordinary-common-equity price-space claim, a separate generic "stock split" family is not required when the economic event is an official stock-par-value change already captured by the canonical PAR_VALUE_CHANGE family.
+
+Important scope limits:
+- this mapping is for security-unit changes in domestic ordinary common equity;
+- ETF beneficiary-certificate split/reverse-split is a separate exchange process and is outside the ordinary-equity U2B universe;
+- foreign/TDR/other security-class unit changes are not silently inherited;
+- legal COMPANY_DEMERGER / business split is NOT a stock-unit split and remains an identity/pair-comparability problem.
+
+Official anchors:
+- TWSE stock par-value change reference-price calculator/rules;
+- TWSE Operating Rules Article 67-2;
+- TPEx stock par-value-change announcement table.
+
+This resolves the domestic ordinary-equity split-like unit-change alias question without creating a new provider family.
 
 ### SUSPENSION / RESUMPTION
 
@@ -242,8 +259,8 @@ Strengths:
 - bounded TWTAWU negative-suspension proof path frozen.
 
 Remaining:
-- explicit split/reverse-split mapping/coverage adequacy;
 - exact V0.1 treatment of merger/share-conversion/identifier transitions;
+- non-domestic / non-ordinary-security unit-change scope remains fail-closed rather than inherited;
 - first real bounded CLEAR_NO_ACTION receipt;
 - machine receipt proving the family-set version actually used.
 
@@ -265,7 +282,33 @@ This packet removes semantic ambiguity; it does not create executable Taiwan rep
 
 ## Exact next
 
-1. Shared continuity owner explicitly maps split/reverse-split and identity-transition handling into a versioned PRICE_RESET_FAMILY_SET.
-2. DATA_LANE produces first real bounded TWTAWU + price-reset-family complete CLEAR_NO_ACTION receipt.
-3. Room11 builds/validates U2B row/aggregate receipt using that exact family-set version.
-4. D18-06 separately waits for effective-share denominator replay; do not borrow U2B completeness.
+1. Freeze the domestic ordinary-equity PAR_VALUE_CHANGE mapping in the versioned PRICE_RESET_FAMILY_SET and keep non-domestic/non-ordinary security classes fail-closed.
+2. Resolve merger/share-conversion/delisting/identifier-transition treatment as pair-comparability blockers unless an explicit transformation exists.
+3. DATA_LANE produces first real bounded TWTAWU + price-reset-family complete CLEAR_NO_ACTION receipt.
+4. Room11 builds/validates U2B row/aggregate receipt using that exact family-set version.
+5. D18-06 separately waits for effective-share denominator replay; do not borrow U2B completeness.
+
+
+## 2026-10-08 official-market clarification — par-value change is the domestic ordinary-share unit-change family
+
+External official-source readback adds a scoped semantic clarification.
+
+TWSE's stock par-value-change calculator states:
+`exchangeRatio = oldParValue / newParValue = postChangeIssuedShares / preChangeIssuedShares`.
+
+TWSE Operating Rules Article 67-2 likewise sets the resumed-trading price-limit/reference basis from the pre-change last close divided by the post-/pre-change issued-share ratio.
+
+TPEx's stock par-value-change announcement table publishes the same exchange-ratio identity.
+
+Research consequence:
+- a mechanical share-unit expansion/contraction caused by stock par-value change is already a PAR_VALUE_CHANGE event in the ordinary domestic-equity price-space ontology;
+- do not create a duplicate generic SPLIT_REVERSE_SPLIT family for the same event;
+- legal corporate demerger / company split remains distinct and may involve reduction, exchange, suspension and identity change;
+- ETF split/reverse-split is a distinct security-class process and is outside the ordinary-equity U2B baseline.
+
+This is semantic/source-scope progress only; it does not create the first physical CLEAR_NO_ACTION receipt.
+
+Official source anchors:
+- https://www.twse.com.tw/zh/announcement/change/cal.html
+- https://twse-regulation.twse.com.tw/tw/law/DOC01.aspx?FLCODE=FL007304&FLNO=67-2
+- https://www.tpex.org.tw/zh-tw/announce/market/change.html
