@@ -139,3 +139,24 @@ const jsonFetched = await fetchCurrentListingMetadataV0_1({
 assert.equal(jsonFetched.state, "READY");
 assert.equal(jsonFetched.byMarketSymbol["TWSE|2330"].listingDate, "1994-09-05");
 assert.equal(jsonFetched.byMarketSymbol["TPEX|6488"].listingDate, "2015-09-25");
+
+
+let tpexOnlyCalls = 0;
+const tpexOnly = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  markets: ["TPEX"],
+  minimumByMarket: { TPEX: 2 },
+  retryAttempts: 1,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => {
+    tpexOnlyCalls += 1;
+    assert.match(String(url), /t187ap03_O/);
+    return { ok: true, status: 200, text: async () => otcJson };
+  },
+});
+assert.equal(tpexOnly.state, "READY");
+assert.deepEqual(tpexOnly.counts, { TWSE: 0, TPEX: 2 });
+assert.deepEqual(tpexOnly.requestedMarkets, ["TPEX"]);
+assert.equal(tpexOnlyCalls, 1);
+assert.equal(tpexOnly.byMarketSymbol["TWSE|2330"], undefined);
+assert.equal(tpexOnly.byMarketSymbol["TPEX|6488"].listingDate, "2015-09-25");
