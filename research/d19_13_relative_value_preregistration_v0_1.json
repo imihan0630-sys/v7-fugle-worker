@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "D19_RELATIVE_VALUE_PREREG_V0_1",
+  "moduleId": "D19-13",
+  "stage": 16,
+  "status": "PREREGISTRATION_SPEC_ONLY_NO_L3_PROMOTION",
+  "family": "RELATIVE_VALUE",
+  "frozenBeforeOutcomeInspection": true,
+  "mandatoryDesign": {
+    "universeReceipt": "survivorship-safe PIT universe with market/listing/delisting/session vintage",
+    "pairSearchRule": "fixed candidate-generation rule and exact search breadth",
+    "modelVersion": "fixed pair/model/version and estimation method",
+    "formationWindow": "fixed before outcomes",
+    "hedgeRatio": "versioned estimator and window",
+    "structuralBreakRule": "predefined break test and treatment",
+    "neutralization": "market/beta/industry/style controls with vintage",
+    "twoLegTradability": "both legs must be tradable at decision/execution clock",
+    "borrowability": "short-leg borrowability evidence; missing remains UNKNOWN",
+    "costs": "two-leg commissions/tax/slippage/impact/borrow cost with evidence quality",
+    "capacity": "participation/turnover/impact envelope",
+    "overlap": "pair overlap and repeated-symbol dependence preserved",
+    "multipleTesting": "entire searched pair/model/window family is the testing denominator, not only selected winners"
+  },
+  "failClosed": [
+    "No post-outcome pair selection or threshold tuning.",
+    "No missing borrowability/cost field may be coerced to zero.",
+    "Gross mean reversion is not tradable alpha until two-leg costs and capacity are applied.",
+    "Common market/industry/factor exposure must not be relabeled independent relative-value alpha.",
+    "Search breadth is part of the multiple-testing ledger."
+  ],
+  "requiredChain": [
+    "universeReceipt",
+    "returnReceipt",
+    "factorInputReceipt",
+    "neutralizationReceipt",
+    "costReceipt",
+    "replayReceipt"
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Preregistration only; no executable Taiwan PIT pair replay receipt yet."
+  },
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
