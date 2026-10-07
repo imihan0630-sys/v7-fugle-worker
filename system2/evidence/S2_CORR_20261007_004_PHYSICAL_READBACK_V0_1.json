@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1",
+  "recordedAt": "2026-10-07T22:48:00+08:00",
+  "owner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "directiveId": "S2-CORR-20261007-004",
+  "status": "PHYSICAL_IMPLEMENTATION_ACCEPTANCE_PASS_AUDIT_CLOSURE_PENDING",
+  "mergedImplementation": {
+    "pr": 817,
+    "mergeCommit": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "historyReaderVersion": "0.4-RESEARCH",
+    "exactSessionReconciliation": true,
+    "probeToLoadSessionHashBinding": true
+  },
+  "physicalRun": {
+    "workflow": "System2 Daily Shadow Input Preflight Readonly",
+    "runId": 37639310919,
+    "jobId": 112853723927,
+    "headSha": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "event": "push",
+    "conclusion": "success",
+    "marketDate": "2026-10-07",
+    "ordinarySymbolCount": 1973,
+    "historyReadyCountBeforeCorrectionReference": 51,
+    "exactSessionHistoryReadyCount": 46,
+    "exactSessionReconciliationEnabled": true,
+    "continuityReadyCount": 0,
+    "preflightState": "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS",
+    "lifecycleState": "OBSERVED_POSITIVE_EVENTS_UNCERTIFIED_ABSENCE",
+    "lifecycleQueriedSymbolCount": 2,
+    "lifecycleIntervalCount": 0,
+    "d1RowsWritten": 0,
+    "system1Isolation": "PASS"
+  },
+  "witness": {
+    "symbol": "1101",
+    "market": "TWSE",
+    "physicalReasonCodes": [
+      "SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED"
+    ],
+    "interpretation": "Exact-session history gate passed for the witness; the only remaining symbol-local blocker is continuity certification. No INSUFFICIENT_PIT_HISTORY or expected-session missing blocker was present."
+  },
+  "acceptanceInterpretation": [
+    "The exact-session repair changed physical readiness from 51 to 46 history-ready symbols, demonstrating that count-only readiness had admitted symbols that do not survive exact expected-session reconciliation.",
+    "At least one real TWSE witness (1101) passes exact-window history readiness on merged main.",
+    "No D1 mutation occurred in the physical readback (rowsWritten=0).",
+    "Continuity remains fail-closed for all symbols (continuityReadyCount=0); this DATA_LANE fix does not self-promote continuity or NC-T01 execution readiness.",
+    "TWSE lifecycle source absence remains non-certifying; lifecycleIntervalCount=0 for the two queried exact-session mismatch candidates did not wash those gaps into PASS.",
+    "System1 production isolation passed."
+  ],
+  "governance": {
+    "implementationLaneMayMark": "FIX_IMPLEMENTED",
+    "independentAuditRequiredFor": "VERIFIED_CLOSED",
+    "selfClosurePerformed": false
+  },
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime change",
+    "No strategy/ranking policy change",
+    "No synthetic OHLC",
+    "No continuity-state rewrite",
+    "No final selection/live push/capital/order authority"
+  ]
+}
