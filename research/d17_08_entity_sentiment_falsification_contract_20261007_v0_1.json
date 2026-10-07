@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "D17",
+  "module": "D17-08",
+  "title": "Entity-level news sentiment falsification contract",
+  "createdAt": "2026-10-07T18:32:00+08:00",
+  "status": "RESEARCH_CONTRACT_ONLY_KEEP_L2",
+  "formalCoreImpact": "NONE",
+  "analysisUnit": "economic_event_cluster x target_entity x content_version",
+  "hypotheses": [
+    "Article-level single sentiment can mislabel multi-entity news with conflicting entity impacts.",
+    "Sentiment effect may be conditional on novelty/unusualness rather than an independent directional factor.",
+    "Volume/volatility response around news may partly reflect investor disagreement rather than sentiment alpha."
+  ],
+  "supportingEvidence": [
+    "SEntFiN-style entity-level financial-news datasets motivate target-entity sentiment rather than one label per article.",
+    "Glasserman-Mamaysky unusual-news evidence shows sentiment interacts with unusualness in forecasting volatility.",
+    "Li-Luan news-based disagreement evidence shows disagreement contains return information after controls for news heterogeneity and volume/volatility channels."
+  ],
+  "falsificationAndAlternativeExplanations": [
+    "Accurate text classification does not imply incremental Taiwan stock-selection alpha.",
+    "Novelty, disagreement, direct exposure, expectation surprise, sector state, price/volume, volatility and liquidity can absorb apparent sentiment effects.",
+    "English financial-news evidence cannot be assumed valid for Traditional Chinese Taiwan news.",
+    "Republished or updated articles must not restart an economic-event clock unless new economic information is present."
+  ],
+  "pitRules": {
+    "requiredClocks": [
+      "sourcePublishedAt",
+      "sourceUpdatedAt",
+      "interfaceFirstObservedAt",
+      "capturedAt"
+    ],
+    "availabilityRule": "Never backdate strategy availability to source publication time without authenticated prospective first-observation evidence.",
+    "versionRule": "Append versions; never overwrite early text with later corrected/expanded text.",
+    "missingRule": "Missing source/text/entity/version evidence is UNKNOWN, never zero/BAD."
+  },
+  "preregisteredMeasurement": {
+    "labels": [
+      "positive",
+      "negative",
+      "neutral",
+      "conflicted",
+      "unknown"
+    ],
+    "separateDimensions": [
+      "uncertainty",
+      "negation_scope",
+      "novelty",
+      "source_lineage"
+    ],
+    "annotation": "Traditional-Chinese Taiwan target-entity double-blind human benchmark before any outcome join.",
+    "outcomesClosed": true
+  },
+  "redundancyControls": [
+    "D17-04 direct beneficiary/victim exposure",
+    "D17-06 expectation surprise",
+    "D17-09 event clustering/deduplication",
+    "D17-10 independent source lineage",
+    "D17-11 sector propagation",
+    "price/volume, volatility, liquidity, market regime",
+    "news-based investor disagreement proxy"
+  ],
+  "promotionGate": [
+    "licensed/authorized general-news text scope verified",
+    "Traditional-Chinese entity-level annotation reliability established without return labels",
+    "prospective PIT event clusters accumulated",
+    "OOS and walk-forward incremental tests pass",
+    "multiple-testing, overfit, date/event clustering, costs and regime dependence pass",
+    "incremental value remains after redundancy controls"
+  ],
+  "formalOptimizationCandidate": false,
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Mechanism and falsification contract strengthened, but licensed Taiwan general-news text, prospective PIT cohort and OOS incremental evidence remain absent."
+  },
+  "exactNextContinuationPoint": "Persist this contract, then stop adding sentiment theory. Validate licensed Traditional-Chinese general-news text scope; build target-entity double-blind annotation benchmark with outcomes closed; only after measurement reliability build prospective PIT event clusters and preregister OOS/walk-forward incremental tests versus novelty, disagreement and existing D17 controls.",
+  "sources": [
+    "https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/abs/does-unusual-news-forecast-market-stress/8B880FAB1CA3036F6403DD353F380CC0",
+    "https://econpapers.repec.org/article/sprreaccs/v_3a30_3ay_3a2025_3ai_3a3_3ad_3a10.1007_5fs11142-025-09897-1.htm"
+  ]
+}
