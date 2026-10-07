@@ -1,0 +1,378 @@
+{
+  "schemaVersion": "D06_15_PUBLIC_BANK_PROXY_SOURCE_CONTRACT_20261007_V0_1",
+  "updatedAt": "2026-10-07T18:58:02+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-15",
+  "sourceMainShaAtStart": "4f885c4e6f717f7cafcfe33e716342090bbda0f2",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "construct": {
+    "admitted": "PUBLIC_BANK_AFFILIATED_BROKER_EXECUTION_FLOW_CONTEXT",
+    "forbiddenWithoutIndependentEvidence": [
+      "government policy intervention",
+      "National Stabilization Fund activity",
+      "public-bank proprietary investment position",
+      "government-fund beneficial ownership",
+      "bullish or bearish direction inferred from proxy flow"
+    ],
+    "role": "CONTEXT_ONLY / WARNING_MODIFIER"
+  },
+  "officialEightBankSet": {
+    "members": [
+      "臺灣銀行",
+      "臺灣土地銀行",
+      "合作金庫商業銀行",
+      "第一商業銀行",
+      "華南商業銀行",
+      "彰化商業銀行",
+      "兆豐國際商業銀行",
+      "臺灣中小企業銀行"
+    ],
+    "authoritySources": [
+      "https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/71681",
+      "https://www.moea.gov.tw/Mns/Populace/news/News.aspx?kind=1&menu_id=40&news_id=119815"
+    ],
+    "guard": "Eight-bank commercial-bank set is distinct from the Ministry-of-Finance broader nine public-financial-institution set that also includes Export-Import Bank."
+  },
+  "currentTwseBrokerMembership": {
+    "observedDate": "2026-10-07",
+    "authority": "TWSE current broker information pages",
+    "listUrl": "https://www.twse.com.tw/zh/products/broker/infomation/list.html",
+    "headOfficeCountAcrossEight": 8,
+    "currentBranchCountAcrossEight": 151,
+    "currentExecutionIdentifierCountIncludingHeads": 159,
+    "families": [
+      {
+        "bank": "合作金庫商業銀行",
+        "brokerBrand": "合庫",
+        "headCode": "1020",
+        "branchCount": 13,
+        "branchCodes": [
+          "1021",
+          "1022",
+          "1023",
+          "1024",
+          "1025",
+          "1028",
+          "1029",
+          "102A",
+          "102C",
+          "102E",
+          "102F",
+          "102G",
+          "102Q"
+        ]
+      },
+      {
+        "bank": "臺灣土地銀行",
+        "brokerBrand": "土銀",
+        "headCode": "1030",
+        "branchCount": 13,
+        "branchCodes": [
+          "1031",
+          "1032",
+          "1033",
+          "1034",
+          "1035",
+          "1036",
+          "1037",
+          "1038",
+          "1039",
+          "103A",
+          "103B",
+          "103C",
+          "103F"
+        ]
+      },
+      {
+        "bank": "臺灣銀行",
+        "brokerBrand": "臺銀證券",
+        "headCode": "1040",
+        "branchCount": 6,
+        "branchCodes": [
+          "1042",
+          "1043",
+          "1045",
+          "104A",
+          "104C",
+          "104D"
+        ]
+      },
+      {
+        "bank": "臺灣中小企業銀行",
+        "brokerBrand": "台灣企銀",
+        "headCode": "1110",
+        "branchCount": 14,
+        "branchCodes": [
+          "1111",
+          "1112",
+          "1113",
+          "1114",
+          "1115",
+          "1116",
+          "1117",
+          "1118",
+          "1119",
+          "111A",
+          "111B",
+          "111E",
+          "111F",
+          "111G"
+        ]
+      },
+      {
+        "bank": "彰化商業銀行",
+        "brokerBrand": "彰銀",
+        "headCode": "1230",
+        "branchCount": 2,
+        "branchCodes": [
+          "1232",
+          "1233"
+        ]
+      },
+      {
+        "bank": "第一商業銀行",
+        "brokerBrand": "第一金",
+        "headCode": "5380",
+        "branchCount": 22,
+        "branchCodes": [
+          "5381",
+          "5382",
+          "5383",
+          "5384",
+          "5385",
+          "5386",
+          "5387",
+          "5389",
+          "538A",
+          "538B",
+          "538C",
+          "538D",
+          "538E",
+          "538F",
+          "538I",
+          "538M",
+          "538N",
+          "538P",
+          "538W",
+          "538Y",
+          "538a",
+          "538j"
+        ]
+      },
+      {
+        "bank": "兆豐國際商業銀行",
+        "brokerBrand": "兆豐",
+        "headCode": "7000",
+        "branchCount": 41,
+        "branchCodes": [
+          "7001",
+          "7003",
+          "7005",
+          "7006",
+          "7007",
+          "7008",
+          "700B",
+          "700C",
+          "700D",
+          "700F",
+          "700G",
+          "700H",
+          "700I",
+          "700J",
+          "700K",
+          "700L",
+          "700M",
+          "700N",
+          "700P",
+          "700R",
+          "700S",
+          "700U",
+          "700V",
+          "700W",
+          "700X",
+          "700Z",
+          "700a",
+          "700b",
+          "700c",
+          "700d",
+          "700f",
+          "700g",
+          "700h",
+          "700i",
+          "700j",
+          "700k",
+          "700m",
+          "700p",
+          "700r",
+          "700s",
+          "700w"
+        ]
+      },
+      {
+        "bank": "華南商業銀行",
+        "brokerBrand": "華南永昌",
+        "headCode": "9300",
+        "branchCount": 40,
+        "branchCodes": [
+          "9302",
+          "9303",
+          "9305",
+          "9306",
+          "9307",
+          "9308",
+          "9309",
+          "9312",
+          "9314",
+          "9315",
+          "9316",
+          "9317",
+          "9319",
+          "9322",
+          "9323",
+          "9324",
+          "9325",
+          "9326",
+          "9327",
+          "9328",
+          "9329",
+          "9331",
+          "9332",
+          "9333",
+          "9334",
+          "9337",
+          "9339",
+          "9343",
+          "9347",
+          "9349",
+          "9352",
+          "9358",
+          "9359",
+          "9362",
+          "9363",
+          "9366",
+          "9369",
+          "9377",
+          "9386",
+          "9399"
+        ]
+      }
+    ],
+    "membershipRule": "Use an explicit dated active-code set from TWSE broker master/detail pages. Do not infer membership from one fixed numeric prefix length.",
+    "criticalCounterexample": "Hua Nan Yong Chang current branches span 930x through 939x. A 930*-only rule omits valid branches.",
+    "versioningRule": "Persist observedAt, member-set hash/version, head codes, active branch codes, additions/closures, and source URLs. Historical reconstruction must not substitute the current active set for an earlier trade date."
+  },
+  "twseTradingReportSemantics": {
+    "officialProduct": "買賣日報表",
+    "sourceUrls": [
+      "https://eshop.twse.com.tw/zh/category/sub/29",
+      "https://eshop.twse.com.tw/zh/product/detail/34e615c34c4e4ca3b23fc732bd736f94"
+    ],
+    "fields": [
+      "security code",
+      "securities trader",
+      "execution price",
+      "buy shares",
+      "sell shares"
+    ],
+    "productionClock": "16:10 current-day regular report for all non-warrant securities; separate block-trade file later",
+    "keySemantics": [
+      "broker-security buy/sell combines brokerage customer orders and securities-firm proprietary activity",
+      "when a broker has head office and branches, proprietary activity is merged into head-office data in the TWSE product",
+      "execution intermediary identity is not beneficial-owner identity"
+    ]
+  },
+  "providerProduct": {
+    "provider": "FinMind",
+    "dataset": "TaiwanStockGovernmentBankBuySell",
+    "endpoint": "https://api.finmindtrade.com/api/v4/data",
+    "requiredParameters": [
+      "dataset=TaiwanStockGovernmentBankBuySell",
+      "start_date=YYYY-MM-DD"
+    ],
+    "tier": "Sponsor",
+    "documentedRangeStart": "2021-06-30",
+    "queryGranularity": "one trading day per request",
+    "documentedUpdateClock": "Monday-Friday 23:30; actual API availability controls first-known",
+    "fields": [
+      "date",
+      "stock_id",
+      "buy_amount",
+      "sell_amount",
+      "buy",
+      "sell",
+      "bank_name"
+    ],
+    "documentedMissingDates": [
+      "2023-01-11",
+      "2023-03-16",
+      "2023-04-06",
+      "2023-10-25",
+      "2025-03-26"
+    ],
+    "docs": [
+      "https://finmind.github.io/tutor/TaiwanMarket/Chip/",
+      "https://api.finmindtrade.com/docs"
+    ],
+    "publicCatalogCorroboration": {
+      "source": "https://finha.rockmanagent.com/datasets",
+      "description": "八大公股行庫每日買賣超由 TWSE 分點券商明細依公股 prefix 聚合，含各股 buy/sell 股數",
+      "rangeShown": "2021-06 ~ 2026-07",
+      "frequency": "daily"
+    }
+  },
+  "authorizationProbe": {
+    "observedAt": "2026-10-07T18:58:02+08:00",
+    "request": "dataset=TaiwanStockGovernmentBankBuySell&start_date=2023-01-17 without sponsor credential",
+    "responseStatus": 400,
+    "responseMeaning": "Current tool session has free-level access and is not authorized to retrieve the Sponsor dataset.",
+    "actualGovernmentBankRowsObtained": false
+  },
+  "freeBrokerMasterProbe": {
+    "dataset": "TaiwanSecuritiesTraderInfo",
+    "endpointStatus": 200,
+    "observedRowCount": 1044,
+    "use": "schema/member-history context only, not current-active authority",
+    "driftExamples": [
+      "1041 appears in the free master but is absent from the current TWSE 1040 branch list",
+      "111C appears in the free master but is absent from the current TWSE 1110 branch list",
+      "7009 and 700q appear in the free master but are absent from the current TWSE 7000 branch list",
+      "separate T-suffixed or bank/票券 codes exist and must not be auto-included in the eight execution families"
+    ]
+  },
+  "lineageAndAntiDoubleCount": {
+    "primitiveType": "BROKER_BRANCH_EXECUTION",
+    "canonicalOwner": "D06-13",
+    "d06_15Role": "metadata/context classification over the same execution receipt",
+    "rule": "D06-15 does not create an independent directional vote from the same broker-flow receipt. Government/public-proxy classification remains a consumer transform unless independent beneficial-owner or mandate evidence exists.",
+    "unknownStates": [
+      "beneficial owner",
+      "customer-vs-proprietary split within aggregate proxy",
+      "government-fund identity",
+      "policy/stabilization motive"
+    ]
+  },
+  "l3GateReview": {
+    "resolved": [
+      "official eight-bank set",
+      "current head-office mapping",
+      "current active branch-code membership and versioning rule",
+      "TWSE broker-report customer/proprietary mixture semantics",
+      "provider dataset identity/schema/date range/update schedule/missing-date contract",
+      "historical single-day replay interface definition"
+    ],
+    "unresolved": [
+      "one legally authorized Sponsor-level TaiwanStockGovernmentBankBuySell receipt",
+      "distinct bank_name membership observed from a real receipt and matched to the eight-bank set",
+      "same-date cross-check of provider government-bank rows against underlying broker-family aggregation",
+      "actual firstKnownAt observation for a prospective trading date"
+    ],
+    "decision": "NO_PROMOTION",
+    "maturity": "L2/40 remains",
+    "reason": "Source contract is materially resolved, but no authorized real provider receipt has been observed. Documentation and denied-access probes cannot substitute for prospective replay evidence."
+  },
+  "status": "SOURCE_PRODUCT_CONTRACT_RESOLVED / CURRENT_ACTIVE_BROKER_MEMBERSHIP_FROZEN / PREFIX_SHORTCUT_FALSIFIED / SPONSOR_AUTHORIZED_RECEIPT_PENDING / BENEFICIAL_OWNER_UNKNOWN / POLICY_INTENT_UNKNOWN / CONTEXT_ONLY / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "On a future valid trading date, obtain one legally authorized FinMind Sponsor receipt after actual publication availability. Preserve observedAt/firstKnownAt, enumerate distinct bank_name values, compare them with the official eight-bank set, and cross-check at least a bounded same-date sample against the versioned TWSE broker-family aggregation. Only then reopen D06-15 L3 source/PIT/replay promotion review."
+}
