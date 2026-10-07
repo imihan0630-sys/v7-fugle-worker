@@ -787,3 +787,10 @@ Latest-main physical run `37548011614` PASS observed 161 exact versions and cove
 
 V1.6 is accepted as a prospective exact-version observation layer only. `expectedMopsKeysetComplete`, `noRevisionGapThroughCut`, pre-parent readiness, symbol-session completeness, TECHNICAL_CONTINUITY and all trading authorities remain false. Next BUILD_LANE gate is repeated-capture union/stability reconciliation with earliest-observed preservation.
 
+## 2026-10-07 Actual Holdings screenshot-import boundary
+
+PR #775 / merge `28a42d5d49dce00a42dacf18797b45a904fc6dc3` establishes the Owner-authorized `USER_UPLOADED_BROKER_SCREENSHOT` Actual Holdings source contract with fail-closed validation, explicit confirmation, immutable snapshots, idempotency, reconciliation and a dedicated read model. Dedicated workflow `37587329198`, System2 Research CI `37587329275` and V8 Regression `37587329189` all PASS.
+
+This implementation does not mean the Owner's current holdings are already loaded. No real Owner screenshot was used in the acceptance fixture and isolated-D1 migration 0009 was not physically applied by the acceptance workflow. `ACTUAL_POSITION_MONITOR_VERIFIED=false` remains authoritative until the first real screenshot completes confirm/persist/readback.
+
+Broker API holdings, broker adapter/token/certificate, System1 holdings import, real orders, live capital authority and broker order routing remain NOT AUTHORIZED / DISABLED.
