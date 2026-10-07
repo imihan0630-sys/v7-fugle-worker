@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T20:48:25+08:00",
+  "updatedAt": "2026-10-07T20:46:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1305,9 +1305,14 @@
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
       "blockedBy": null,
       "implementationEvidence": [],
-      "verificationEvidence": [],
+      "verificationEvidence": [
+        "Independent current-main codepath verification confirms daily_shadow_history_reader_v0_1.mjs v0.3-RESEARCH ranks available PIT rows and accepts count>=required for long-listed symbols with ageBoundaryMatches=true, without exact expected symbol-session reconciliation.",
+        "Existing tests cover insufficient count, continuity incomplete, age-aware new listing, mixed-universe local blocking and global corruption, but do not cover long-listed missing-expected-session + older-row substitution.",
+        "Durable verification: system2/evidence/S2_CORR_20261007_004_INDEPENDENT_CODEPATH_VERIFICATION_20261007_V0_1.json @ a585f31ecd0108f245aaf78b120d6a847fe5cde6.",
+        "Physical run 37609474459 had historyReadyCount=51 but continuityReadyCount=0/evaluationInputEligibleSymbolCount=0, so no immediate strategy misuse is proven; repair remains required before NC-T01 S22-T13 continuity promotion can make any symbol executable."
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T20:48:25+08:00"
+      "updatedAt": "2026-10-07T20:46:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
