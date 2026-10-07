@@ -4058,3 +4058,58 @@ Current research state:
 
 Exact next continuation point:
 PVE-256 — first, outcome-blindly trace and implement/consume the authoritative derivation for sameSlotBaselineClean so the existing 20-history/finite-RVOL 2026-10-07 receipt can be classified PASS or UNKNOWN without using outcomes. Separately, after the natural 23:35/23:55 family executes, rerun the merged read-only workflow and require physical primary/recovery rows with at-most-one successful business execution. Keep PR #743 owner-gated and unmerged/un-deployed unless separately approved.
+
+
+## PVE-256 continuation — authoritative same-slot baseline-clean derivation traced and tri-state research guard frozen (2026-10-07)
+
+Status: TRI_STATE_BASELINE_CLEAN_GUARD_FROZEN / NULL_COERCION_FALSIFIED / PVE255_BASELINE_CLEAN_UNKNOWN / OUTCOME_ACCESS_INCIDENT_QUARANTINED / H001_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Canonical derivation trace:
+- PVE-067 requires finite `pvSlotRvol20`, `slotHistoryCount>=20`, completed/PIT-valid same-slot common support, and clean cohort/source semantics.
+- PVE-083/PVE-095 make baseline freshness a separate mandatory dimension: `baselineAsOfDate` must agree with the latest expected comparable prior symbol/session/slot under explicit missing-session and suspension policy; unknown gaps cannot be treated as clean.
+- PVE-089 proves the existing snapshot field `coverage.baselineAsOfDate` is the v0.1 salvage field for exact-slot freshness. Baseline-table `lastMarketDate` is baseline-wide and must not be substituted for exact-slot freshness.
+- current-session required-slot continuity remains a separate H001 common-support gate and is not collapsed into `sameSlotBaselineClean`.
+- corporate-action/reset and exact-slot validity remain explicit provenance dimensions; absence of proof stays UNKNOWN.
+
+Runtime trace:
+- `pvBaselineStats()` already derives exact-slot `baselineAsOfDate` from the last 20 prior sessions containing the requested `slotKey`.
+- intraday snapshot `coverage` persists `baselineAsOfDate`, `slotHistoryCount`, `coverageReasons` and `corporateActionResetAt`.
+- Production does not materialize `coverage.sameSlotBaselineClean`.
+- PVE-251 therefore reads a field that is absent in current Production snapshots and receives `null`; this is a research/readback contract gap, not proof of clean=false.
+- the D1 baseline row already stores full normalized session payload in `slot_stats_json`, so an isolated read-only research diagnostic can reconstruct the exact-slot last-20 date list without querying outcomes or mutating Production.
+
+Research-only guard frozen:
+- `research/d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs`
+- `tests/test_d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs`
+- guard commit `1521cfe960f6f7165117fcc3bd1b9718ae51042b`
+- fixture commit `d5dad29ed249acc5a92f71b7fd83044b4a8108ea`
+- local Node validation: 10 assertions PASS.
+- first draft exposed and rejected a null-coercion defect: `Number(null)` becomes zero, so finite-value checks must require an original finite numeric type rather than coercing missing values.
+
+Frozen tri-state semantics:
+- PASS only when count, finite RVOL, strict-prior exact-slot baseline date, expected-comparable-slot freshness, corporate-action continuity and same-slot history validity are all positively proven.
+- FAIL only for an explicit known violation.
+- UNKNOWN for missing proof.
+- `null` is never silently converted to false/zero and UNKNOWN is never admitted to H001.
+
+PVE-255 classification under the new guard:
+- persisted facts still prove `slotHistoryCount=20` and finite `pvSlotRvol20`.
+- the durable PVE-255 report does not surface the exact persisted `coverage.baselineAsOfDate`, expected latest comparable slot date, corporate-action continuity classification, or exact-slot validity classification required by the guard.
+- therefore `sameSlotBaselineClean` remains UNKNOWN, not PASS.
+- clean prospective H001 date count remains 0 and Gate 7 remains CLOSED.
+
+Outcome-access quarantine:
+- during a support-data lookup intended only to verify prior-session availability, a broad connected price/volume response also exposed current-day post-feature outcome-bearing daily price fields while `OUTCOME_ACCESS_CLOSED`.
+- those outcome values are deliberately not recorded in this checkpoint, not interpreted, not used for threshold/model/slot/horizon selection, and not used to classify PVE-256.
+- the 2026-10-07 H001 candidate was already inadmissible because baseline-clean proof is incomplete; it remains inadmissible.
+- future PVE baseline-quality diagnostics must avoid broad same-day outcome-bearing queries and should use the persisted read-only provenance/baseline payload instead.
+
+Governance:
+- no Production runtime mutation;
+- no Formal selection/ranking/capital/push/trade change;
+- PR #743 remains draft/unmerged/un-deployed and owner-gated;
+- D02 remains 60.0%;
+- Formal Core remains LOCKED.
+
+Exact next continuation point:
+PVE-257 — create an isolated read-only baseline-clean diagnostic that surfaces the persisted snapshot `baselineAsOfDate`, `coverageReasons`, baseline `corporateActionResetAt`, the exact-slot last-20 ordered date list and a deterministic content fingerprint from persisted D1 baseline sessions, then feed only those pre-outcome fields into the PVE-256 tri-state guard. The latest expected comparable slot date must come from an authoritative exchange/symbol-session plus suspension/missing-slot provenance source; if that proof is absent, remain UNKNOWN. Separately, only after the natural 2026-10-07 23:35/23:55 family is due may the merged PVE-251 read-only workflow evaluate physical primary/recovery delivery. PR #743 remains owner-gated.
