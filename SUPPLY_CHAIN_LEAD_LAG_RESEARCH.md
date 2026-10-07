@@ -2427,3 +2427,30 @@ Exact next:
 - SC-058 seek an issuer-native graph with distinguishable supplier/site/path identities sufficient to test whether alternatives are actually disjoint after one node/edge removal;
 - require one explicit qualification/switching constraint and effective-dated capture clocks;
 - if public disclosure remains anonymized, freeze the negative conclusion that qualified multi-source state is observable but replayable articulation topology is not.
+
+
+## SC-058 — TSMC named raw-wafer first-tier node-removal topology (2026-10-07)
+
+Artifact:
+- `research/SC058_TSMC_NAMED_WAFER_FIRST_TIER_NODE_REMOVAL_TOPOLOGY_20261007_V0_1.md`
+
+Official TSMC 2022 annual-report evidence identifies six major raw-wafer suppliers and simultaneously requires stringent wafer-supplier quality certification/specification conformance.
+
+Bounded conclusion:
+- distinct first-tier supplier identities are observable;
+- multiple qualified first-tier procurement routes are source-supported;
+- removal of any one named first-tier supplier does not remove all disclosed first-tier connectivity;
+- therefore `FIRST_TIER_REDUNDANCY_SUPPORTED`.
+
+Critical firewall:
+- hidden common upstream dependencies, spare capacity, allocation, switching time and tier-2/tier-3 topology remain unknown;
+- therefore `FULL_NETWORK_ARTICULATION_UNKNOWN`;
+- `FIRST_TIER_NODE_REDUNDANCY != FULL_NETWORK_RESILIENCE`.
+
+Maturity:
+- `D10-01` remains L2/40;
+- exact original publication/knownAt clock is not yet verified for historical PIT replay;
+- no Formal change and no outcome opening.
+
+Exact next:
+- SC-059 seek a deeper-layer/common-mode Taiwan witness that can falsify naive first-tier redundancy: shared material/site/geography/utility/logistics/process dependency, or an alternate-source qualification/switching-delay constraint.
