@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_MINIMAL_PHYSICAL_EXECUTION_CONTRACT_V0_1",
+  "recordedAt": "2026-10-07T19:28:11+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "920c54198bcc1ac3e2bb0ca3260f359d9be49bce",
+  "finding": "NC_T01_IS_IMPLEMENTATION_READY_AS_A_THIN_PHYSICAL_RUNNER_AFTER_CANONICAL_POLICY_FINGERPRINT",
+  "canonicalOracle": {
+    "schema": "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
+    "tests": {
+      "S22_T11": "System1 Top6 and rank inputs unavailable",
+      "S22_T12": "No cached/persisted/alias/cross-project/stale hidden fallback",
+      "S22_T13": "At least one System2 strategy candidate-generation path physically executes when its own required inputs are READY",
+      "S22_T14": "Legitimate zero-pick is distinguishable from missing data/dependency/runtime/capacity unresolved",
+      "S22_T15": "Receipt binds exact source generation/version, strategy identity, decision clock, universe provenance and result hash",
+      "S22_T16": "Synthetic fixtures alone cannot upgrade physicalIndependentDiscovery"
+    }
+  },
+  "existingMainComponents": {
+    "contract": "system2/runtime/strategy_contracts_v0_1.mjs::SHORT_MOMENTUM_CONTRACT_V0_1",
+    "shadowSpec": "system2/runtime/limited_shadow_v0_1.mjs::S2-SM-LS-001",
+    "assessor": "system2/runtime/stage1_assessor_policies_v0_1.mjs::assessStage1StrategyV0_1",
+    "orchestrator": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs::runDailyLimitedShadowOrchestratorV0_1",
+    "a1Source": "system2/runtime/daily_shadow_a1_source_v0_1.mjs::fetchDailyShadowA1SnapshotV0_1",
+    "historyReader": "system2/runtime/daily_shadow_history_reader_v0_1.mjs::loadPitPriorA1BarsV0_1",
+    "historyCoverage": "system2/runtime/daily_shadow_history_reader_v0_1.mjs::probePitHistoryCoverageV0_1",
+    "preflight": "system2/runtime/daily_shadow_input_preflight_v0_1.mjs::buildDailyShadowInputPreflightV0_1",
+    "sourceReceipt": "system2/runtime/shadow_source_session_receipt.mjs::buildShadowSourceSessionReceipt",
+    "regimeSnapshot": "system2/runtime/factor_snapshot.mjs::buildMarketRegimeSnapshot",
+    "persistenceBatch": "runDailyLimitedShadowOrchestratorV0_1 result.bundle.persistenceBatch",
+    "persistenceExecutor": "system2/runtime/persistence_executor.mjs::executeSystem2PersistenceBatch"
+  },
+  "physicalEvidenceAlreadyAvailableForInputLayer": {
+    "workflowRunId": 37609474459,
+    "marketDate": "2026-10-07",
+    "state": "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS",
+    "symbolCount": 1973,
+    "preflightCapacityWriteAuthorized": true,
+    "prospectiveHistoryState": "PROSPECTIVE_HISTORY_READBACK_VERIFIED",
+    "persistenceState": "IMMUTABLE_D1_READBACK_VERIFIED",
+    "a1SourceSelection": {
+      "TWSE": "A1_TWSE_MI_INDEX_EXACT_DATE_PROSPECTIVE",
+      "TPEX": "A1_TPEX_DAILY_QUOTES_EXACT_DATE_PROSPECTIVE"
+    },
+    "system1RuntimeUsed": false,
+    "strategyEvaluation": "ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED"
+  },
+  "keyAuditFindings": [
+    "Current daily diagnostic deliberately stops before strategy execution; it is not an NC-T01 physical receipt.",
+    "runDailyLimitedShadowOrchestratorV0_1 is a real strategy-run assembler and is currently referenced by module/tests rather than an active scheduled physical caller.",
+    "SHORT_MOMENTUM Stage-1 policy does not require MARKET_REGIME to be KNOWN for launch evaluation; MARKET_REGIME is non-blocking/supportive under the frozen assessor policy.",
+    "SWING_GROWTH readiness is not required for the first NC-T01 proof because the oracle requires at least one independent System2 strategy path.",
+    "The orchestrator already accepts a caller-provided assessSymbol callback; the thin runner should bind it directly to assessStage1StrategyV0_1 for SHORT_MOMENTUM rather than inventing a second evaluator.",
+    "The existing orchestrator produces immutable decision snapshots, factor rows, rankingInputs, run receipt, prediction snapshot, persistence batch and orchestrationHash while keeping finalSelectionEnabled=false.",
+    "NC-T01 does not require RANK-01 or capacity persistence to PASS S22-T11~T16; those are the immediate next Stage-1 integration steps after physical independence is proven.",
+    "A real physical run must use real official A1/PIT history and must not use fixture-generated strategy output."
+  ],
+  "minimalBuildLaneDelta": {
+    "type": "THIN_ADAPTER_PLUS_WORKFLOW_AND_RECEIPT_BUILDER",
+    "proposedUnits": [
+      "One NC-T01 runner/script that reads current official A1 + isolated PIT history, binds SHORT_MOMENTUM contract/spec/assessor and invokes runDailyLimitedShadowOrchestratorV0_1.",
+      "One NC-T01 receipt builder conforming exactly to shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json and hashing all receipt fields except receiptHash before finalization.",
+      "One workflow_dispatch-only physical workflow, isolated to System2 research credentials/binding, with System1 Top6/rank inputs deliberately absent and an explicit hidden-fallback audit.",
+      "Regression tests for hidden fallback rejection, input incomplete, runtime failure, legitimate zero-pick, non-empty candidate path, and immutable receipt hash/readback."
+    ],
+    "reuseDoNotRewrite": [
+      "SHORT_MOMENTUM contract",
+      "Stage-1 assessor policy",
+      "Limited Shadow spec",
+      "A1 exact-date official source path",
+      "PIT history reader",
+      "factor primitive engine",
+      "daily limited Shadow orchestrator",
+      "persistence batch/executor"
+    ]
+  },
+  "requiredPhysicalRunSemantics": {
+    "strategyId": "SHORT_MOMENTUM",
+    "strategyVersion": "V0.1-CONTRACT",
+    "assessorPolicyId": "S2-ASSESSOR-SM-LAUNCH-001",
+    "assessorPolicyVersion": "0.1-LAUNCH",
+    "shadowSpecId": "S2-SM-LS-001",
+    "system1Top6InputAvailable": false,
+    "system1RankInputAvailable": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "allowedResultPaths": [
+      "PHYSICALLY_INDEPENDENT_PATH_OBSERVED with generatedCandidates possibly empty or non-empty when requiredInputsState=READY and executionState=EXECUTED",
+      "EVIDENCE_INCOMPLETE when physical input or lineage proof is incomplete",
+      "HIDDEN_SYSTEM1_DEPENDENCY if any prohibited fallback is detected"
+    ],
+    "zeroPickRule": "A zero candidate set may PASS physical independence only when the strategy path EXECUTED with READY required inputs and is explicitly classified LEGITIMATE_ZERO_PICK; missing input/dependency/runtime/capacity uncertainty may not be called zero-pick."
+  },
+  "sequencing": {
+    "prerequisite": "Canonical latest-main System2 fingerprint acceptance S22-T06~T10 (#762 replacement/rebase) because NC-T01 S22-T15 must bind exact current policy/source generation identities.",
+    "then": [
+      "Run physical NC-T01 S22-T11~T16",
+      "Independently verify receipt and hidden-fallback audit",
+      "Wire genuine daily SHORT_MOMENTUM execution into strategy-local RANK-01",
+      "Persist first truthful s2_capacity_runs receipt with denominator provenance",
+      "Feed authorized bounded pool / Candidate Board / Daily Resonance"
+    ]
+  },
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime mutation",
+    "No System1 Top6/rank dependency or hidden fallback",
+    "No new weights/thresholds/universal score",
+    "No final selection authority",
+    "No live push/capital/order/broker routing",
+    "UNKNOWN/PIT/provenance remains fail-closed"
+  ],
+  "correctionClassification": "EXPECTED_BUILD_LANE_CONTINUATION_NOT_NEW_CORRECTION",
+  "reasonNoNewCorrection": "The missing physical runner is already the explicitly preregistered next BUILD_LANE milestone, not an unexpected defect or false-completion claim."
+}
