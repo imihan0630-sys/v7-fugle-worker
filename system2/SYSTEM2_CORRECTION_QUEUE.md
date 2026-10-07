@@ -831,3 +831,34 @@ This closure does not resolve `S2-CORR-20261006-004`, which is a separate curren
 - verificationEvidence: []
 - finalDisposition: PENDING
 - updatedAt: 2026-10-07T16:27:32+08:00
+
+
+### S2-CORR-20261007-001 independent secondary-source diagnosis
+
+00 performed a second read-only diagnostic channel after the terminal prospective run. This evidence is diagnostic only and does not substitute for the canonical prospective collector.
+
+- TWSE `STOCK_DAY_ALL`:
+  - HTTP 200;
+  - content type `application/json`;
+  - complete valid JSON;
+  - 1,381 rows;
+  - observed date remained `1151006` = 2026-10-06.
+  - Interpretation: at that observation, TWSE failure class is genuine target-date publication/readiness lag, not JSON transport failure.
+
+- TPEx `tpex_mainboard_daily_close_quotes`:
+  - HTTP 200;
+  - content type `application/json`;
+  - complete valid JSON;
+  - approximately 4.67 MB / 12,245 rows;
+  - observed date `1151007` = 2026-10-07.
+  - Interpretation: current-day TPEx data did exist by the later observation; earlier GitHub-runner `NON_JSON_RESPONSE` events are consistent with transient acquisition/body-integrity failure, not absence of current-day publication.
+
+- Official TWSE E-shop states its daily-closing product is produced approximately at 14:00, 15:30 and 17:30 each trading day.
+  - This does NOT prove the exact free `STOCK_DAY_ALL` OpenAPI endpoint follows the same publication schedule.
+  - It DOES prohibit treating a collector that exhausts before 17:30 as proof of end-of-day source unavailability.
+
+Correction consequence:
+- TWSE: prioritize later observation/finality semantics; retries alone cannot turn a genuinely prior-date payload into current-date data.
+- TPEx: test bounded fail-closed acquisition/body-completeness retry while retaining target-date/schema/coverage/PIT guards.
+- Do not apply one undifferentiated transport fix to both failure classes.
+
