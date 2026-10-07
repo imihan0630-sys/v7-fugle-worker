@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_HIDDEN_SYSTEM1_DEPENDENCY_STATIC_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T19:47:44+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "purpose": "Pre-physical static audit for SDA-022 NC-T01 S22-T12 hidden cross-system fallback risk.",
+  "scope": {
+    "rootPath": "SHORT_MOMENTUM Stage-1 assessor -> Limited Shadow orchestrator -> run assembler -> ranking-input/persistence primitives",
+    "fileCount": 21,
+    "files": [
+      {
+        "file": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+        "blobSha": "e046b3b4146c9c9a652f2505bfc79d3537c147f7"
+      },
+      {
+        "file": "system2/runtime/stage1_assessor_policies_v0_1.mjs",
+        "blobSha": "694a46e13b02b7b9df0a9242eb9e3a3932769c0a"
+      },
+      {
+        "file": "system2/runtime/limited_shadow_v0_1.mjs",
+        "blobSha": "8fa5e9df49f404a81983f7a446262517cc43b44a"
+      },
+      {
+        "file": "system2/runtime/strategy_contracts_v0_1.mjs",
+        "blobSha": "2a5038ce2310aa18035e691db1a3bee7d5b22ae5"
+      },
+      {
+        "file": "system2/runtime/strategy_local_ranking_baseline.mjs",
+        "blobSha": "f31194bd6fc95f79b479cb770526bb1ac44f20e5"
+      },
+      {
+        "file": "system2/runtime/shadow_source_session_receipt.mjs",
+        "blobSha": "cce9a8a756a79e8b0213246a3dc441520344d2bd"
+      },
+      {
+        "file": "system2/runtime/factor_snapshot.mjs",
+        "blobSha": "f11112b1531eae13710e41247084af69e77a1783"
+      },
+      {
+        "file": "system2/runtime/decision_archive.mjs",
+        "blobSha": "ffc96bb4f0a7fdb375c3cb3f3dbc8089b4cb52c0"
+      },
+      {
+        "file": "system2/runtime/pit_replay_v0_1.mjs",
+        "blobSha": "bd1f2a6b9bfe84743558d8ad26cb84a3ec6e98fe"
+      },
+      {
+        "file": "system2/runtime/a1_history_primitives_v0_1.mjs",
+        "blobSha": "158fdc7c9a7384b97b6ad34976d0ab07632b63a7"
+      },
+      {
+        "file": "system2/runtime/strategy_evaluator.mjs",
+        "blobSha": "56f89e0c2525270ed0c082266d0fb4e31317d172"
+      },
+      {
+        "file": "system2/runtime/limited_shadow_run_assembler_v0_1.mjs",
+        "blobSha": "decaff1bc62c3eafa71ef78ec0adeb7d0e5e3bb3"
+      },
+      {
+        "file": "system2/runtime/strategy_source_readiness.mjs",
+        "blobSha": "242f7c160235eaadf996c0dcf07a337091f15783"
+      },
+      {
+        "file": "system2/runtime/strategy_contract.mjs",
+        "blobSha": "2cb7051ea9658bd36612b57c50a357055f004892"
+      },
+      {
+        "file": "system2/runtime/historical_revision_lineage_v0_1.mjs",
+        "blobSha": "586bf7e528e779d3e9ddab0e01130dd7cffcb2f3"
+      },
+      {
+        "file": "system2/runtime/shadow_run_receipt.mjs",
+        "blobSha": "3b301c4724e8b2c35ac868d0139f15cfd2b318da"
+      },
+      {
+        "file": "system2/runtime/shadow_run_fingerprint.mjs",
+        "blobSha": "13e4eaa3439d082709f5e964dc1ed8c4f004e850"
+      },
+      {
+        "file": "system2/runtime/prediction_snapshot_v0_1.mjs",
+        "blobSha": "2f56a6c65779d77ba171d94ca76bc4f478e4dfe8"
+      },
+      {
+        "file": "system2/runtime/storage_rows.mjs",
+        "blobSha": "424949c370e91bf4b4b34ab4fddc48ed1fbfab40"
+      },
+      {
+        "file": "system2/runtime/persistence_batch.mjs",
+        "blobSha": "edb7bcd93067c5cbad9da15660817b7d72c4d1a0"
+      },
+      {
+        "file": "system2/runtime/persistence_executor.mjs",
+        "blobSha": "3353bfedb511cb62275f682ec63345ed3ba75bea"
+      }
+    ]
+  },
+  "forbiddenMarkersScanned": [
+    "System1/SYSTEM1/system1",
+    "Top6/TOP6",
+    "Worker.js",
+    "V7_DB",
+    "STOCKS_KV",
+    "System1 candidateOutput/rankOutput/selectedList",
+    "System1 Formal A/B dependency markers"
+  ],
+  "findings": {
+    "forbiddenRuntimeImportOrCallCount": 0,
+    "system1ProductionFileImportCount": 0,
+    "system1CandidateOrRankInputImportCount": 0,
+    "onlySystem1Top6TextHit": {
+      "file": "system2/runtime/stage1_assessor_policies_v0_1.mjs",
+      "classification": "NEGATIVE_GUARD_TEXT_NOT_DEPENDENCY",
+      "examples": [
+        "NO_SYSTEM1_AB_OR_TOP6_DEPENDENCY"
+      ]
+    },
+    "transitiveRuntimeImportsRemainWithinSystem2Runtime": true,
+    "staticHiddenFallbackState": "NO_STATIC_SYSTEM1_TOP6_OR_RANK_DEPENDENCY_FOUND_IN_BOUND_SCOPE"
+  },
+  "ncT01Interpretation": {
+    "s22T12DesignLayer": "STATIC_PASS_WITH_BOUND_SCOPE",
+    "physicalIndependentDiscovery": "NOT_YET_PROVEN",
+    "reason": "S22-T16 explicitly requires physical execution evidence. Static source inspection can rule out visible dependency edges but cannot prove absence of runtime/environment/cache fallback outside the bound code path.",
+    "physicalRunnerMustStillProve": [
+      "system1Top6InputAvailable=false",
+      "system1RankInputAvailable=false",
+      "no cached API response reconstructing System1 selected list",
+      "no persisted System1 selected list",
+      "no alias/cross-project/stale shared-state fallback",
+      "real A1/PIT inputs used",
+      "strategy path actually EXECUTED"
+    ]
+  },
+  "buildLaneConsequence": [
+    "Do not add a new System1 isolation architecture for NC-T01; current core path is statically isolated in the audited scope.",
+    "The thin physical runner should import only the audited System2 components plus isolated source/history adapters.",
+    "Bind the exact source blob identities into the NC-T01 receipt or its sourceGenerationRefs so later drift invalidates stale evidence.",
+    "Any runner import of Worker.js, V7_DB, STOCKS_KV, System1 candidate/rank API, or selected-list cache must fail the hiddenFallbackAudit."
+  ],
+  "protectedBoundaries": [
+    "No System1 mutation",
+    "No final selection/live push/capital/order authority",
+    "No claim that static audit alone proves physical independence"
+  ]
+}
