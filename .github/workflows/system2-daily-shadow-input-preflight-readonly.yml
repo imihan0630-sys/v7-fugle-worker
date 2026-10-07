@@ -9,6 +9,8 @@ on:
       - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
       - "system2/runtime/stage1_assessor_policies_v0_1.mjs"
       - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
+      - "system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
       - "system2/scripts/run_daily_shadow_input_preflight_readonly.mjs"
       - ".github/workflows/system2-daily-shadow-input-preflight-readonly.yml"
   workflow_dispatch:
@@ -42,6 +44,11 @@ jobs:
           )
           ! grep -Ein '\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER)\b' "${files[@]}"
           ! grep -Ein 'wrangler[[:space:]]+(deploy|delete)|secret[[:space:]]+put|PUSH_WEBHOOK_URL|V7_DB|STOCKS_KV' "${files[@]}"
+          source_files=(
+            system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs
+            system2/runtime/official_historical_backfill_source_v0_1.mjs
+          )
+          ! grep -Ein 'db\.prepare|db\.batch|executeSystem2PersistenceBatch|persistDailyProspectiveHistory|wrangler[[:space:]]+(deploy|delete)|PUSH_WEBHOOK_URL|V7_DB|STOCKS_KV' "${source_files[@]}"
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
           echo "Read-only/System1 isolation guard PASS"
 
@@ -76,6 +83,12 @@ jobs:
             historyState:d.preflight.history.state,
             historyReadyCount:d.preflight.history.historyReadyCount,
             continuityReadyCount:d.preflight.history.continuityReadyCount,
+            exactSessionReconciliationEnabled:d.exactSessionEvidence?.history?.exactSessionReconciliationEnabled===true,
+            exactSessionHistoryReadyCount:d.exactSessionEvidence?.history?.historyReadyCount??0,
+            exactSessionSymbolLocalIncompleteCount:d.exactSessionEvidence?.history?.symbolLocalIncompleteCount??0,
+            lifecycleState:d.exactSessionEvidence?.lifecycle?.state??null,
+            lifecycleQueriedSymbolCount:d.exactSessionEvidence?.lifecycle?.queriedSymbolCount??0,
+            lifecycleIntervalCount:d.exactSessionEvidence?.lifecycle?.intervalCount??0,
             assessorStates:d.preflight.assessors.map(x=>({strategyId:x.strategyId,state:x.state})),
             rowsRead:d.d1Metrics.rowsRead,
             rowsWritten:d.d1Metrics.rowsWritten,

@@ -36,16 +36,30 @@ const snapshotBatch = {
   },
 };
 
+const exactDates60 = [];
+for (let d = new Date("2026-08-02T00:00:00Z"); d < new Date("2026-10-01T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 1)) {
+  exactDates60.push(d.toISOString().slice(0, 10));
+}
+assert.equal(exactDates60.length, 60);
+const exactListingMetadata = {
+  state: "READY",
+  byMarketSymbol: Object.fromEntries([
+    ["TWSE","A"],["TWSE","B"],["TPEX","C"],["TPEX","D"],
+  ].map(([market,symbol]) => [`${market}|${symbol}`, { market, symbol, listingDate: "2000-01-01" }])),
+};
+
 const historyCoverage = await probePitHistoryCoverageV0_1({
   db: fakeDb([
-    { symbol: "A", market: "TWSE", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 60, first_selected_date: "2026-07-10", last_selected_date: "2026-09-30" },
-    { symbol: "B", market: "TWSE", selected_date_count: 5, ambiguous_date_count: 0, continuity_eligible_count: 5, first_selected_date: "2026-09-24", last_selected_date: "2026-09-30" },
-    { symbol: "C", market: "TPEX", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 59, first_selected_date: "2026-07-10", last_selected_date: "2026-09-30" },
-    { symbol: "D", market: "TPEX", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 60, first_selected_date: "2026-07-10", last_selected_date: "2026-09-30" },
+    { symbol: "A", market: "TWSE", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 60, first_selected_date: exactDates60[0], last_selected_date: exactDates60.at(-1), selected_dates_csv: exactDates60.join(",") },
+    { symbol: "B", market: "TWSE", selected_date_count: 5, ambiguous_date_count: 0, continuity_eligible_count: 5, first_selected_date: exactDates60.at(-5), last_selected_date: exactDates60.at(-1), selected_dates_csv: exactDates60.slice(-5).join(",") },
+    { symbol: "C", market: "TPEX", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 59, first_selected_date: exactDates60[0], last_selected_date: exactDates60.at(-1), selected_dates_csv: exactDates60.join(",") },
+    { symbol: "D", market: "TPEX", selected_date_count: 60, ambiguous_date_count: 0, continuity_eligible_count: 60, first_selected_date: exactDates60[0], last_selected_date: exactDates60.at(-1), selected_dates_csv: exactDates60.join(",") },
   ]),
   snapshotBatch,
   decisionTimestamp,
   requiredPriorSessions: 60,
+  listingMetadata: exactListingMetadata,
+  priorTradingDates: exactDates60,
 });
 
 assert.equal(historyCoverage.state, "HISTORY_COVERAGE_INCOMPLETE");

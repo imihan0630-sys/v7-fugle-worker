@@ -11,6 +11,7 @@ import { buildSystem2PersistenceBatch } from "./persistence_batch.mjs";
 import { executeSystem2PersistenceBatch } from "./persistence_executor.mjs";
 import { persistDailyProspectiveHistoryV0_1 } from "./daily_shadow_prospective_history_v0_1.mjs";
 import { buildOfficialTradingDatesV0_1 } from "./official_historical_backfill_source_v0_1.mjs";
+import { fetchTwseRegulatoryLifecycleForSymbolsV0_1 } from "./twse_regulatory_lifecycle_source_v0_1.mjs";
 
 export const DAILY_SHADOW_DIAGNOSTIC_VERSION = "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1";
 export const DAILY_SHADOW_DIAGNOSTIC_CHECK_TYPE = "DAILY_SHADOW_DIAGNOSTIC_COMPLETE_V0_1";
@@ -74,6 +75,16 @@ export async function runDailyShadowDiagnosticV0_1({
   let preflight = null;
   let sourceSession = null;
   let listingAgeCalendar = null;
+  let historyLifecycle = {
+    state: "NOT_EVALUATED",
+    queriedSymbolCount: 0,
+    intervalCount: 0,
+    eventCount: 0,
+    partialSymbolCount: 0,
+    candidateSymbols: [],
+    certifiedNoTradingIntervals: [],
+    absenceCertifiesNoEvent: false,
+  };
   let prospectiveHistory = { state: "NOT_OBSERVED", rowCount: 0 };
   let state;
   const shards = [];
@@ -123,7 +134,84 @@ export async function runDailyShadowDiagnosticV0_1({
           decisionTimestamp: clock,
           listingMetadata: source.listingMetadata || null,
           priorTradingDates: listingAgeCalendar?.tradingDates || null,
+          certifiedNoTradingIntervals: [],
         }) : null;
+
+        if (history?.diagnostics?.length && listingAgeCalendar?.tradingDates?.length) {
+          const lifecycleCandidates = history.diagnostics
+            .filter((row) =>
+              row.market === "TWSE"
+              && Number(row.selectedDateCount || 0) >= Number(row.requiredPriorSessionsForSymbol || 0)
+              && Number(row.missingExpectedSessionCount || 0) > 0
+              && row.sessionReconciliationState === "EXACT_EXPECTED_SESSION_SET_AVAILABLE"
+            )
+            .map((row) => row.symbol)
+            .sort();
+
+          if (lifecycleCandidates.length) {
+            try {
+              const lifecycle = await fetchTwseRegulatoryLifecycleForSymbolsV0_1({
+                symbols: lifecycleCandidates,
+                fromDate: listingAgeCalendar.tradingDates[0],
+                toDate: listingAgeCalendar.tradingDates.at(-1),
+                observedAt: source.observedAt,
+                fetchImpl,
+              });
+              historyLifecycle = {
+                state: lifecycle.state,
+                queriedSymbolCount: lifecycle.queriedSymbolCount,
+                intervalCount: lifecycle.intervalCount,
+                eventCount: lifecycle.eventCount,
+                partialSymbolCount: lifecycle.partialSymbolCount,
+                candidateSymbols: lifecycleCandidates,
+                certifiedNoTradingIntervals: lifecycle.intervals,
+                conflicts: lifecycle.conflicts,
+                symbolReceipts: lifecycle.symbolReceipts,
+                absenceCertifiesNoEvent: false,
+                knownAtState: lifecycle.knownAtState,
+                schemaVersion: lifecycle.schemaVersion,
+              };
+              if (lifecycle.intervals.length) {
+                history = await historyProbe({
+                  db,
+                  snapshotBatch: source.snapshotBatch,
+                  decisionTimestamp: clock,
+                  listingMetadata: source.listingMetadata || null,
+                  priorTradingDates: listingAgeCalendar.tradingDates,
+                  certifiedNoTradingIntervals: lifecycle.intervals,
+                });
+              }
+            } catch (error) {
+              historyLifecycle = {
+                state: "TWSE_LIFECYCLE_SOURCE_PARTIAL",
+                queriedSymbolCount: lifecycleCandidates.length,
+                intervalCount: 0,
+                eventCount: 0,
+                partialSymbolCount: lifecycleCandidates.length,
+                candidateSymbols: lifecycleCandidates,
+                certifiedNoTradingIntervals: [],
+                conflicts: [],
+                symbolReceipts: [],
+                absenceCertifiesNoEvent: false,
+                knownAtState: "HISTORICAL_SOURCE_DATE_ONLY_LAYER_C_NOT_PROVEN",
+                message: String(error?.message || error).slice(0, 300),
+              };
+            }
+          } else {
+            historyLifecycle = {
+              state: "NO_TWSE_EXACT_SESSION_MISMATCH_CANDIDATES",
+              queriedSymbolCount: 0,
+              intervalCount: 0,
+              eventCount: 0,
+              partialSymbolCount: 0,
+              candidateSymbols: [],
+              certifiedNoTradingIntervals: [],
+              conflicts: [],
+              symbolReceipts: [],
+              absenceCertifiesNoEvent: false,
+            };
+          }
+        }
       } catch { history = null; }
       history ||= {
         marketDate, decisionTimestamp: clock, state: "NOT_EVALUATED_OR_HISTORY_SOURCE_ERROR",
@@ -149,8 +237,18 @@ export async function runDailyShadowDiagnosticV0_1({
           let priorBars = [];
           let historyError = null;
           try {
-            if (coverage.get(symbol)?.historyReady) {
-              priorBars = await historyLoad({ db, symbol, market: current.market, marketDate, decisionTimestamp: clock });
+            const historyDiagnostic = coverage.get(symbol) || null;
+            if (historyDiagnostic?.historyReady) {
+              priorBars = await historyLoad({
+                db,
+                symbol,
+                market: current.market,
+                marketDate,
+                decisionTimestamp: clock,
+                lookbackSessions: historyDiagnostic.requiredPriorSessionsForSymbol || 60,
+                minimumMarketDate: historyDiagnostic.listingDate || null,
+                expectedSessionHash: historyDiagnostic.expectedSessionHash || null,
+              });
               if (priorBars.some(x => x.marketDate >= marketDate || !x.pitReplayEligible ||
                 !x.availableAt || Date.parse(x.availableAt) > Date.parse(clock))) throw new Error("PIT_HISTORY_REJECTED");
             }
@@ -187,6 +285,11 @@ export async function runDailyShadowDiagnosticV0_1({
         batchMetadata: source.snapshotBatch ? { ...source.snapshotBatch, markets: undefined, bySymbol: undefined, symbols: undefined } : null,
         marketMetadata: source.snapshotBatch ? Object.fromEntries(Object.entries(source.snapshotBatch.markets).map(([key, value]) => [key, { ...value, snapshots: undefined }])) : null,
         history: { ...history, diagnostics: undefined },
+        historyLifecycle: {
+          ...historyLifecycle,
+          certifiedNoTradingIntervals: undefined,
+          symbolReceipts: undefined,
+        },
         listingAgeCalendar: listingAgeCalendar ? {
           state: listingAgeCalendar.state,
           firstTradingDate: listingAgeCalendar.tradingDates?.[0] || null,
@@ -195,6 +298,18 @@ export async function runDailyShadowDiagnosticV0_1({
           sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
         } : null,
         sourceSession }];
+      if (historyLifecycle.queriedSymbolCount > 0) {
+        payloads.push({
+          kind: "HISTORY_LIFECYCLE_EVIDENCE",
+          state: historyLifecycle.state,
+          candidateSymbols: historyLifecycle.candidateSymbols,
+          intervals: historyLifecycle.certifiedNoTradingIntervals,
+          conflicts: historyLifecycle.conflicts || [],
+          symbolReceipts: historyLifecycle.symbolReceipts || [],
+          absenceCertifiesNoEvent: false,
+          knownAtState: historyLifecycle.knownAtState || null,
+        });
+      }
       for (let i = 0; i < (history.diagnostics || []).length; i += 100) {
         payloads.push({ kind: "HISTORY_COVERAGE", rows: history.diagnostics.slice(i, i + 100) });
       }
@@ -221,6 +336,17 @@ export async function runDailyShadowDiagnosticV0_1({
     calendar: calendar || null, preflight, prospectiveHistory, symbolCount, knownFactorCount, unknownFactorCount, factorFailureCount,
     sourceSessionHash: sourceSession?.sourceSessionHash || null,
     sourceTransports: source?.transports || null,
+    historyLifecycle: {
+      state: historyLifecycle.state,
+      queriedSymbolCount: historyLifecycle.queriedSymbolCount,
+      intervalCount: historyLifecycle.intervalCount,
+      eventCount: historyLifecycle.eventCount,
+      partialSymbolCount: historyLifecycle.partialSymbolCount,
+      candidateSymbols: historyLifecycle.candidateSymbols,
+      conflictCount: historyLifecycle.conflicts?.length || 0,
+      absenceCertifiesNoEvent: false,
+      knownAtState: historyLifecycle.knownAtState || null,
+    },
     listingMetadata: source?.listingMetadata ? {
       state: source.listingMetadata.state,
       counts: source.listingMetadata.counts,

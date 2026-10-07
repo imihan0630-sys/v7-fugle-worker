@@ -150,22 +150,39 @@ await assert.rejects(
   /REVISION_AMBIGUITY/,
 );
 
+const exactDates60 = [];
+for (let d = new Date("2026-08-02T00:00:00Z"); d < new Date("2026-10-01T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 1)) {
+  exactDates60.push(d.toISOString().slice(0, 10));
+}
+assert.equal(exactDates60.length, 60);
+const coverageListingMetadata = {
+  state: "READY",
+  byMarketSymbol: {
+    "TWSE|2330": { market: "TWSE", symbol: "2330", listingDate: "1994-09-05" },
+    "TPEX|6488": { market: "TPEX", symbol: "6488", listingDate: "2015-09-25" },
+  },
+};
+
 const coverage = await probePitHistoryCoverageV0_1({
   db: fakeDb({ coverageRows: [
     {
       symbol: "2330", market: "TWSE", selected_date_count: 60,
       ambiguous_date_count: 0, continuity_eligible_count: 60,
-      first_selected_date: "2026-07-10", last_selected_date: "2026-09-30",
+      first_selected_date: exactDates60[0], last_selected_date: exactDates60.at(-1),
+      selected_dates_csv: exactDates60.join(","),
     },
     {
       symbol: "6488", market: "TPEX", selected_date_count: 60,
       ambiguous_date_count: 0, continuity_eligible_count: 59,
-      first_selected_date: "2026-07-10", last_selected_date: "2026-09-30",
+      first_selected_date: exactDates60[0], last_selected_date: exactDates60.at(-1),
+      selected_dates_csv: exactDates60.join(","),
     },
   ] }),
   snapshotBatch: source.snapshotBatch,
   decisionTimestamp: source.decisionTimestamp,
   requiredPriorSessions: 60,
+  listingMetadata: coverageListingMetadata,
+  priorTradingDates: exactDates60,
 });
 assert.equal(coverage.state, "CONTINUITY_NOT_VERIFIED");
 assert.equal(coverage.globalIntegrityState, "READY");
@@ -197,6 +214,7 @@ const ageAware = await probePitHistoryCoverageV0_1({
     symbol: "7777", market: "TPEX", selected_date_count: 3,
     ambiguous_date_count: 0, continuity_eligible_count: 0,
     first_selected_date: "2026-09-29", last_selected_date: "2026-10-01",
+    selected_dates_csv: "2026-09-29,2026-09-30,2026-10-01",
   }] }),
   snapshotBatch: newListingSnapshot,
   decisionTimestamp: source.decisionTimestamp,
@@ -219,6 +237,7 @@ const ageAwareMissing = await probePitHistoryCoverageV0_1({
     symbol: "7777", market: "TPEX", selected_date_count: 2,
     ambiguous_date_count: 0, continuity_eligible_count: 0,
     first_selected_date: "2026-09-30", last_selected_date: "2026-10-01",
+    selected_dates_csv: "2026-09-30,2026-10-01",
   }] }),
   snapshotBatch: newListingSnapshot,
   decisionTimestamp: source.decisionTimestamp,

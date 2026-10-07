@@ -4,6 +4,8 @@ import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs"
 import { fetchDailyShadowA1SnapshotV0_1 } from "../runtime/daily_shadow_a1_source_v0_1.mjs";
 import { probePitHistoryCoverageV0_1 } from "../runtime/daily_shadow_history_reader_v0_1.mjs";
 import { buildDailyShadowInputPreflightV0_1 } from "../runtime/daily_shadow_input_preflight_v0_1.mjs";
+import { buildOfficialTradingDatesV0_1 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
+import { fetchTwseRegulatoryLifecycleForSymbolsV0_1 } from "../runtime/twse_regulatory_lifecycle_source_v0_1.mjs";
 
 function taipeiDate(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -48,14 +50,113 @@ export async function runDailyShadowInputPreflightReadonly({
   });
 
   let history;
+  let listingAgeCalendar = null;
+  let lifecycle = {
+    state: "NOT_EVALUATED",
+    queriedSymbolCount: 0,
+    intervalCount: 0,
+    eventCount: 0,
+    partialSymbolCount: 0,
+    candidateSymbols: [],
+    absenceCertifiesNoEvent: false,
+  };
   if (a1.snapshotBatch) {
+    if (a1.listingMetadata?.state === "READY") {
+      const from = new Date(`${marketDate}T00:00:00.000Z`);
+      from.setUTCDate(from.getUTCDate() - 180);
+      const to = new Date(`${marketDate}T00:00:00.000Z`);
+      to.setUTCDate(to.getUTCDate() - 1);
+      try {
+        listingAgeCalendar = await buildOfficialTradingDatesV0_1({
+          fromDate: from.toISOString().slice(0, 10),
+          toDate: to.toISOString().slice(0, 10),
+          fetchImpl,
+        });
+      } catch {
+        listingAgeCalendar = null;
+      }
+    }
+
     history = await probePitHistoryCoverageV0_1({
       db,
       snapshotBatch: a1.snapshotBatch,
       decisionTimestamp: a1.decisionTimestamp,
       requiredPriorSessions: 60,
       priceSpace: "RAW",
+      listingMetadata: a1.listingMetadata || null,
+      priorTradingDates: listingAgeCalendar?.tradingDates || null,
+      certifiedNoTradingIntervals: [],
     });
+
+    const lifecycleCandidates = listingAgeCalendar?.tradingDates?.length
+      ? history.diagnostics
+          .filter((row) =>
+            row.market === "TWSE"
+            && Number(row.selectedDateCount || 0) >= Number(row.requiredPriorSessionsForSymbol || 0)
+            && Number(row.missingExpectedSessionCount || 0) > 0
+            && row.sessionReconciliationState === "EXACT_EXPECTED_SESSION_SET_AVAILABLE"
+          )
+          .map((row) => row.symbol)
+          .sort()
+      : [];
+
+    if (lifecycleCandidates.length) {
+      try {
+        const evidence = await fetchTwseRegulatoryLifecycleForSymbolsV0_1({
+          symbols: lifecycleCandidates,
+          fromDate: listingAgeCalendar.tradingDates[0],
+          toDate: listingAgeCalendar.tradingDates.at(-1),
+          observedAt: a1.observedAt,
+          fetchImpl,
+        });
+        lifecycle = {
+          state: evidence.state,
+          queriedSymbolCount: evidence.queriedSymbolCount,
+          intervalCount: evidence.intervalCount,
+          eventCount: evidence.eventCount,
+          partialSymbolCount: evidence.partialSymbolCount,
+          candidateSymbols: lifecycleCandidates,
+          conflictCount: evidence.conflicts.length,
+          absenceCertifiesNoEvent: false,
+          knownAtState: evidence.knownAtState,
+        };
+        if (evidence.intervals.length) {
+          history = await probePitHistoryCoverageV0_1({
+            db,
+            snapshotBatch: a1.snapshotBatch,
+            decisionTimestamp: a1.decisionTimestamp,
+            requiredPriorSessions: 60,
+            priceSpace: "RAW",
+            listingMetadata: a1.listingMetadata || null,
+            priorTradingDates: listingAgeCalendar.tradingDates,
+            certifiedNoTradingIntervals: evidence.intervals,
+          });
+        }
+      } catch (error) {
+        lifecycle = {
+          state: "TWSE_LIFECYCLE_SOURCE_PARTIAL",
+          queriedSymbolCount: lifecycleCandidates.length,
+          intervalCount: 0,
+          eventCount: 0,
+          partialSymbolCount: lifecycleCandidates.length,
+          candidateSymbols: lifecycleCandidates,
+          conflictCount: 0,
+          absenceCertifiesNoEvent: false,
+          message: String(error?.message || error).slice(0, 300),
+        };
+      }
+    } else {
+      lifecycle = {
+        state: "NO_TWSE_EXACT_SESSION_MISMATCH_CANDIDATES",
+        queriedSymbolCount: 0,
+        intervalCount: 0,
+        eventCount: 0,
+        partialSymbolCount: 0,
+        candidateSymbols: [],
+        conflictCount: 0,
+        absenceCertifiesNoEvent: false,
+      };
+    }
   } else {
     history = {
       version: "0.1-RESEARCH",
@@ -91,6 +192,23 @@ export async function runDailyShadowInputPreflightReadonly({
     decisionTimestamp: a1.decisionTimestamp,
     decisionClockMode: a1.decisionClockMode,
     preflight,
+    exactSessionEvidence: {
+      listingAgeCalendar: listingAgeCalendar ? {
+        state: listingAgeCalendar.state,
+        firstTradingDate: listingAgeCalendar.tradingDates?.[0] || null,
+        lastTradingDate: listingAgeCalendar.tradingDates?.at(-1) || null,
+        tradingDateCount: listingAgeCalendar.tradingDates?.length || 0,
+        sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
+      } : null,
+      lifecycle,
+      history: {
+        version: history?.version || null,
+        exactSessionReconciliationEnabled: history?.exactSessionReconciliationEnabled === true,
+        historyReadyCount: history?.historyReadyCount || 0,
+        continuityReadyCount: history?.continuityReadyCount || 0,
+        symbolLocalIncompleteCount: history?.symbolLocalIncompleteCount || 0,
+      },
+    },
     d1Metrics: {
       requestCount: db.metrics.requestCount,
       rowsRead: db.metrics.rowsRead,
