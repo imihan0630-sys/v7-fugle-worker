@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "D06_14_DAYTRADE_L3_DECISION_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "decisionAt": "2026-10-07T15:49:23+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "evidence": [
+    "research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json",
+    "research/d06_14_tpex_daytrade_t1_revised_20261005_captured_20261006_v0_1.json",
+    "research/d06_14_tpex_daytrade_t2_final_20261005_captured_20261007_v0_1.json",
+    "research/d06_14_tpex_daytrade_tprelim_capture_20261006_v0_1.json",
+    "research/d06_14_tpex_daytrade_t1_revised_20261006_captured_20261007_v0_1.json",
+    "research/d06_14_daytrade_revision_comparison_contract_v0_1.json"
+  ],
+  "preregisteredGate": "L3 deferred until same-trade-date T_PRELIM -> T1_REVISED -> T2_FINAL revision lineage is observed and PIT-safe through an authorized official route.",
+  "observations": {
+    "firstCompleteChain": {
+      "tradeDate": "2026-10-05",
+      "tPrelimRows": 841,
+      "t1Rows": 841,
+      "t2Rows": 841,
+      "tPrelimToT1Changed": 0,
+      "tPrelimToT2Changed": 0,
+      "t1ToT2Changed": 0
+    },
+    "secondDatePartialReplication": {
+      "tradeDate": "2026-10-06",
+      "tPrelimRows": 843,
+      "t1Rows": 843,
+      "tPrelimToT1Changed": 0,
+      "t2DueDate": "2026-10-08"
+    },
+    "crossDateUniverseGuard": "841 -> 843 is cross-trade-date population drift and is not a revision."
+  },
+  "maturityDecision": {
+    "previousLevel": "L2",
+    "previousMaturityPct": 40,
+    "newLevel": "L3",
+    "newMaturityPct": 60,
+    "rationale": "Official TPEx semantics, date-pinned replay, preserved publication/revision clocks, one complete prospective T/T+1/T+2 chain and a second independent T->T+1 chain now demonstrate Taiwan PIT/source/replay feasibility. Zero revision is observed evidence, not assumed immutability.",
+    "scope": "SOURCE_PIT_REPLAY_FEASIBILITY_ONLY",
+    "notProven": [
+      "predictive alpha",
+      "retail identity",
+      "motive",
+      "directional sign",
+      "standalone day-trading score",
+      "60% surveillance threshold as alpha threshold"
+    ]
+  },
+  "l4Gate": [
+    "Accumulate more independent trade dates and revision-state diversity.",
+    "Preregister OOS/Shadow residual incrementality versus liquidity, direct price-volume, institutional flow, leverage/shorting, passive/index flow and market regime.",
+    "Cluster inference by trade date and preserve T/T+1/T+2 vintages append-only.",
+    "Do not interpret day-trading turnover as retail identity or overnight inventory."
+  ],
+  "status": "D06_14_L3_SOURCE_PIT_REPLAY_READY / FIRST_COMPLETE_T_T1_T2_CHAIN_ZERO_REVISION / SECOND_DATE_T1_ZERO_REVISION / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "On 2026-10-08 capture T2_FINAL for tradeDate 2026-10-06. Thereafter source replication alone does not increase maturity; next material gate is preregistered OOS/Shadow residual incrementality with common-support controls."
+}
