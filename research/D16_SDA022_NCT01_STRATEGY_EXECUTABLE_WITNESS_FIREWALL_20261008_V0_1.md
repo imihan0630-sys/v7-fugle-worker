@@ -1,7 +1,7 @@
 # D16 SDA-022 NC-T01 Strategy-Executable Witness Firewall 2026-10-08 V0.1
 
 Updated: 2026-10-08 Asia/Taipei
-Status: RESEARCH_ONLY / STRATEGY_READINESS_FALSE_PROMOTION_CONFIRMED / CORRECTION_ACCEPTANCE_FROZEN
+Status: RESEARCH_ONLY / STRATEGY_READINESS_FALSE_PROMOTION_CONFIRMED / REQUIRED_EVIDENCE_COMPLETENESS_SEPARATED_FROM_VALIDITY / CORR006_ACCEPTANCE_FROZEN
 Owner room: 11｜統計驗證與策略市場狀態研究室
 Audit family: SDA-022
 Affected oracle: S22-T13 / S22-T14 / S22-T16
@@ -64,31 +64,44 @@ Canonical strategy evaluator states:
 
 Interpretation for NC-T01 evidence completeness:
 
-### VALID
-Required evidence is complete and no hard invalidation/adverse-primary override blocks validity.
+### Critical correction after evaluator-order readback
 
-`EVIDENCE_COMPLETE_STRATEGY_EVALUATED = true`.
+`strategyValidity` alone is NOT an input-completeness proof.
+
+Current `strategy_evaluator.mjs` applies matched hard invalidations before the missing-required-evidence branch. Therefore an `INVALIDATED` label can coexist with missing required evidence.
+
+The canonical completeness predicate must be independent:
+
+`requiredEvidenceComplete = (missingRequiredEvidence.length === 0)`
+
+or an exact contract-equivalent machine proof.
+
+Then interpret validity states only after completeness is known.
+
+### VALID
+Normally compatible with complete required evidence, but NC-T01 still binds the explicit `requiredEvidenceComplete=true` proof rather than inferring completeness from the label.
 
 ### WEAKENING
-Required evidence is complete; adverse primary evidence weakens the thesis.
+Normally compatible with complete required evidence, but likewise requires explicit `requiredEvidenceComplete=true`.
 
-`EVIDENCE_COMPLETE_STRATEGY_EVALUATED = true`.
-
-This is not rank-equivalent to VALID.
+This state is evaluated but not rank-equivalent to VALID.
 
 ### INVALIDATED
-Required evidence is complete enough to hit a hard invalidation.
+May be:
+- an evidence-complete hard rejection; or
+- a hard invalidation observed while other required evidence is still missing.
 
-`EVIDENCE_COMPLETE_STRATEGY_EVALUATED = true`.
-
-This can be a legitimate evaluated rejection.
+Therefore INVALIDATED counts as an executable evaluated rejection only when:
+`requiredEvidenceComplete=true`.
 
 ### INCOMPLETE
-Required evidence is missing/unknown.
+Always not executable for NC-T01.
 
-`EVIDENCE_COMPLETE_STRATEGY_EVALUATED = false`.
+`requiredEvidenceComplete=false`
+or missing completeness proof => no W1 witness.
 
-This state may never become a legitimate zero-pick witness.
+Core rule:
+`NON_INCOMPLETE_VALIDITY != REQUIRED_EVIDENCE_COMPLETE`.
 
 ## 3. Three witness layers
 
@@ -105,11 +118,14 @@ W0 proves replay/continuity admissibility only.
 ### W1 — STRATEGY_EXECUTABLE_WITNESS
 
 Requires W0 plus:
+- explicit `requiredEvidenceComplete=true`;
+- explicit `missingRequiredEvidenceCount=0` or contract-equivalent exact proof;
 - strategyValidity in {VALID, WEAKENING, INVALIDATED};
 - strategyValidity != INCOMPLETE;
 - strategy evaluation object produced under the frozen strategy contract;
-- missing-required-evidence count = 0 or equivalent frozen proof;
 - evaluation identity/hash bound to the same symbol/replay/factor snapshot.
+
+The explicit completeness proof is authoritative; the validity label is not used as a proxy for it.
 
 W1 proves the strategy could actually be evaluated from its own required inputs.
 
@@ -179,9 +195,12 @@ requires:
 - the evaluator emitted a terminal non-INCOMPLETE strategyValidity state;
 - evaluation identity belongs to the same coherent evidence cut.
 
-If every W0 witness is strategy INCOMPLETE:
+If every W0 witness has `requiredEvidenceComplete=false` or UNKNOWN:
 - executionState = BLOCKED_INPUTS;
 - candidateGenerationExecutable = false.
+
+This includes the edge case:
+`strategyValidity=INVALIDATED` while missing required evidence remains non-empty.
 
 ## 8. Legitimate zero-pick semantics
 
@@ -195,9 +214,11 @@ A zero-pick day is legitimate only when:
 - all applicable physical evidence gates pass.
 
 Examples of legitimate evaluated zero-pick:
-- all W1 witnesses INVALIDATED;
-- all W1 witnesses WEAKENING/WATCH under frozen policy;
-- VALID witnesses exist but none meet the frozen entry/admission state.
+- all W1 witnesses are evidence-complete INVALIDATED;
+- all W1 witnesses are evidence-complete WEAKENING/WATCH under frozen policy;
+- evidence-complete VALID witnesses exist but none meet the frozen entry/admission state.
+
+An INVALIDATED label with missing required evidence is NOT W1 and cannot justify zero-pick.
 
 Examples that are NOT zero-pick:
 - all continuity-ready witnesses are INCOMPLETE;
@@ -238,11 +259,17 @@ Expected:
 - strategyExecutableWitnessCount >= 1;
 - physical execution may proceed subject to all other gates.
 
-### SR-T03 mixed W0, one INVALIDATED W1
+### SR-T03 mixed W0, one INVALIDATED + requiredEvidenceComplete=true W1
 Expected:
 - strategy execution is proven;
 - zero candidate can be legitimate if all other gates pass;
 - do not relabel as data failure.
+
+### SR-T03B INVALIDATED + missingRequiredEvidenceCount>0
+Expected:
+- NOT W1;
+- required evidence remains incomplete;
+- cannot promote execution or zero-pick.
 
 ### SR-T04 mixed W0, one WEAKENING W1
 Expected:
@@ -323,7 +350,8 @@ D16-09 remains L4/80 historically for its broader coverage framework, but this n
 
 1. Route/observe the engineering correction without Room11 modifying runtime.
 2. Verify W0/W1/W2 counts are distinct.
-3. Verify strategyValidity=INCOMPLETE can never promote requiredInputsState/executionState.
-4. Verify INVALIDATED/WEAKENING are evaluated states but not rank-equivalent to VALID.
-5. Combine with CORR-005 hidden-fallback evidence and real CLEAR_NO_ACTION continuity.
-6. Recompute S22-T13/T14/T16 on one coherent immutable physical cut.
+3. Verify explicit requiredEvidenceComplete/missingRequiredEvidenceCount is bound and cannot be inferred solely from strategyValidity.
+4. Verify INCOMPLETE never promotes; verify INVALIDATED with missing required evidence also never promotes.
+5. Verify evidence-complete INVALIDATED/WEAKENING are evaluated states but not rank-equivalent to VALID.
+6. Combine with CORR-005 hidden-fallback evidence and real CLEAR_NO_ACTION continuity.
+7. Recompute S22-T13/T14/T16 on one coherent immutable physical cut.
