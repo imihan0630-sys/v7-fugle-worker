@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T22:48:00+08:00",
+  "updatedAt": "2026-10-07T23:05:43+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1251,7 +1251,7 @@
       "directiveId": "S2-CORR-20261007-004",
       "createdAt": "2026-10-07T20:48:25+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session",
       "affectedScope": [
         "System2 S2-07 Daily Shadow PIT history readiness",
@@ -1332,10 +1332,15 @@
         "PR #817 exact-head independent review PASS at 43784e500f678be6ee95710822fdafd2af50ac50; functional exact-session regressions cover clean long-listed, older-substitution fail-closed, certified lifecycle gap, new listing, contract unavailable and detail-loader session-hash mismatch.",
         "PR #817 exact-head CI: System2 Research CI 37627845551 SUCCESS; V8 Regression 37627845505 SUCCESS.",
         "Main advanced 70 commits from PR #817 base but changed-path overlap with the PR's 10 files is zero; no stale-base path collision was found.",
-        "Durable review: system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_REVIEW_20261007_V0_1.json @ c99eacedbaf34b0b17b6a0e05c6bf6ac2a77dfa0; PR comment 6040451918 records repository PASS / post-merge physical pending."
+        "Durable review: system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_REVIEW_20261007_V0_1.json @ c99eacedbaf34b0b17b6a0e05c6bf6ac2a77dfa0; PR comment 6040451918 records repository PASS / post-merge physical pending.",
+        "Independent AUDIT_LANE physical verification PASS: system2/evidence/S2_CORR_20261007_004_INDEPENDENT_VERIFICATION_20261007_V0_1.json @ b8e519f7b70718fc6fbb161f69c13a8d799e4e69.",
+        "Merged-main readonly run 37639310919 SUCCESS at implementation merge 625ea3d0bda28fcd06df4c3163a054573c3982f7 with rowsWritten=0, exactSessionReconciliationEnabled=true, 46 exact-session history-ready symbols, continuityReadyCount=0, and System1 production isolation PASS.",
+        "Real positive witness: 1101/TWSE remains historyReady with only SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED. Real negative witnesses including 1213/1218 remain fail-closed with expected/unexpected session blockers.",
+        "Acceptance audit confirms long-listed older-row substitution fails closed, clean exact windows remain ready, new-listing behavior remains valid, positive lifecycle intervals are handled without synthetic OHLC, expected/observed session provenance is hash-bound, and protected authorities remain unchanged.",
+        "Merged V8 Regression 37639311568 SUCCESS; Stage1 Assessor 37639310904 SUCCESS; later descendant/main System2 Research CI 37640265444 SUCCESS includes the merged correction."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — merged-main exact-session reconciliation passed physical read-only acceptance; independent AUDIT_LANE closure remains required.",
-      "updatedAt": "2026-10-07T22:48:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — exact expected eligible symbol-session reconciliation is merged, regression-tested and physically verified on real 2026-10-07 Daily Shadow readback. CORR-004 history/session scope is closed. Continuity certification remains a separate NC-T01 gate; this closure does not promote continuity, strategy selection, push, capital or orders.",
+      "updatedAt": "2026-10-07T23:05:43+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
