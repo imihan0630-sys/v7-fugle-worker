@@ -3041,3 +3041,68 @@ No maturity change:
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 System1 official-quality live transport — MOPS financial retry exhausted
+
+Canonical:
+- `research/D16_SYSTEM1_OFFICIAL_QUALITY_LIVE_TRANSPORT_VALIDATION_20261007_V0_1.md`;
+- `research/D16_SYSTEM1_OFFICIAL_QUALITY_LIVE_TRANSPORT_VALIDATION_20261007_V0_1.json`.
+
+Causal stages:
+1. run `37555765564`: `BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS`; no live source tested.
+2. PR #765 / run `37556241467`: harness fixed and effective Worker built; live source reached; MOPS batch-financial transport exhausted configured retries.
+
+Attempt 2:
+- PR #765 merge `28c3f6ac3798cdba7c697c32a4908f8237922789`;
+- regression `37556241514` PASS;
+- build effective V8.20 PASS;
+- offline recovery contract PASS;
+- quality-only live recovery FAIL;
+- final FINANCIAL/QUARTER_EPS readiness step SKIPPED.
+
+Starting quality state:
+- INDEX 45 ready;
+- TDCC 2958 ready;
+- VALUATION 1971 ready;
+- ANNOUNCEMENTS 95 ready;
+- FINANCIAL 0 / not ready;
+- QUARTER_EPS 0 / not ready.
+
+Live failure:
+`MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED`
+at
+`/mops/web/ajax_t163sb04`.
+
+Transport helper proves:
+- 3 attempts;
+- 45s timeout each;
+- timeout/aborted retryable;
+- full body inside retry boundary.
+
+Current:
+- FINANCIAL = NOT_READY_LIVE_TRANSPORT_BLOCKED;
+- QUARTER_EPS = NOT_READY_UPSTREAM_FINANCIAL_STAGE_BLOCKED;
+- QUARTER_EPS independent source failure NOT proven.
+
+Exact next:
+1. re-read latest main for System1 transport remediation;
+2. validate next run from effective-runtime build through live source;
+3. require actual FINANCIAL ingestion + quality-status readback before declaring FINANCIAL PASS;
+4. only after FINANCIAL succeeds can QUARTER_EPS transport/readiness be independently evaluated;
+5. preserve attempts 1 and 2 append-only;
+6. never backfill 2026-10-06 into prospective evidence.
+
+Parallel blockers unchanged:
+- genuine Formal↔C1 N=0;
+- SDA016 T48 pending;
+- System2 SDA022 fingerprints pending;
+- physical NC-T01 pending;
+- first Stage-1 strategy evaluation pending;
+- decision-time Regime wiring pending;
+- outcomes CLOSED.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
