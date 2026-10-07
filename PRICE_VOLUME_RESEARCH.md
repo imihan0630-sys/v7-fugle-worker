@@ -13981,3 +13981,33 @@ D14 cost provenance remains incomplete for universal after-cost MDE construction
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+
+# PVE-261~269 research synthesis — freshness, execution and resource capacity are separate validity dimensions (2026-10-08)
+
+This round closes three forms of false equivalence that could otherwise contaminate D02 prospective evidence.
+
+First, **sample sufficiency is not baseline freshness**. A same-slot baseline can have far more than 20 usable observations and still be stale if the latest expected comparable prior slot is missing. PVE-261 therefore freezes a future Production-remediation acceptance contract where exact-slot freshness is non-bypassable by count sufficiency.
+
+Second, **schedule configuration is not execution success**, and **missing D1 audit rows are not automatically missing triggers**. The 2026-10-07 after-market family was configured and independently entered: the primary path left a failed `V7_LAST_SCAN_ATTEMPT` at 23:36 and the recovery path updated its lease at 23:55. The business execution failed because the account-wide D1 write quota had already been exhausted. PVE-269 now fuses independent schedule evidence so an unavailable audit sink cannot erase invocation evidence.
+
+Third, **separate D1 databases are not separate Free account quotas**. PVE-264 measured 126,498 account rowsWritten on UTC 2026-10-07, of which SYSTEM2_DB contributed 124,629 and V7_DB only 1,869. The resulting System1 after-market failure is therefore a cross-system resource externality. Existing `S2-CORR-20261007-003` already owns the account-level quota defect, so D02 contributes evidence and acceptance requirements without opening a duplicate correction or taking remediation ownership.
+
+PVE-266 adds physical write-family context: 18,460 `s2_historical_a1_bars` rows were captured during the UTC day while `s2_resonance_snapshots` contributed zero rows. This aligns with the independent CORR-003 calibration that indexed Recent A1 history can amplify logical inserts to roughly six D1 rowsWritten per logical bar. The evidence supports prioritizing historical/bulk writer budgeting, but it does not assign every physical account write to one workflow.
+
+The practical D02 implication is methodological rather than alpha-positive:
+
+`feature validity = semantic validity × temporal freshness × provenance × execution observability × infrastructure availability`.
+
+A zero in any mandatory component invalidates admission even if the feature value itself is numerically computable.
+
+This round therefore improves false-positive resistance and future evidence quality but creates no economic support/rejection result.
+
+D02 remains 60.0%.
+All 12 modules remain L3.
+Clean prospective H001 dates remain 0.
+Gate 7 remains CLOSED.
+Formal Core remains LOCKED.
+
+Next:
+PVE-270 keeps baseline remediation and cross-system quota remediation as two independent future physical prerequisites. Only a genuinely prospective post-remediation trading date can reopen H001 admission.
