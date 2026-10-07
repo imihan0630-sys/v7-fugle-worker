@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "D03_CORR004_PHYSICAL_NCT01_REPLAY_BINDING_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-07T23:38:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_CROSS_LANE_PHYSICAL_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "4153fe15f938039d0e7919c35e0c840cdeddeb0d",
+  "exactSessionClosure": {
+    "correction": "S2-CORR-20261007-004",
+    "finalDisposition": "VERIFIED_CLOSED",
+    "mergeCommit": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "physicalRunId": 37639310919,
+    "physicalJobId": 112853723927,
+    "marketDate": "2026-10-07",
+    "ordinarySymbolCount": 1973,
+    "preCorrectionHistoryReadyCount": 51,
+    "postCorrectionExactSessionReadyCount": 46,
+    "removedCountOnlyReadySymbols": 5,
+    "readyCountReductionPct": 9.803921568627452,
+    "rowsWritten": 0,
+    "system1Isolation": "PASS",
+    "expectedObservedSessionProvenance": "PASS_HASH_AND_COUNTS",
+    "positiveWitness": {
+      "symbol": "1101",
+      "market": "TWSE",
+      "exactSessionHistoryReady": true,
+      "remainingBlocker": "SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED"
+    },
+    "negativeWitnesses": [
+      {
+        "symbol": "1213",
+        "state": "FAIL_CLOSED_EXPECTED_AND_UNEXPECTED_SESSION"
+      },
+      {
+        "symbol": "1218",
+        "state": "FAIL_CLOSED_EXPECTED_AND_UNEXPECTED_SESSION"
+      }
+    ],
+    "d03Interpretation": "Exact eligible symbol-session identity is now a physically closed prerequisite for the witnessed TWSE path. Count-only N-row readiness is rejected."
+  },
+  "replayContinuityBinding": {
+    "mergeCommit": "885ddf080d0ff0918aaf68eb237b679750d09fcc",
+    "runtime": "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs",
+    "implemented": true,
+    "acceptedMechanics": [
+      "BUILD_RAW_PIT_REPLAY_BEFORE_CONTINUITY_RESOLUTION",
+      "SOURCE_HISTORY_HASH_BINDS_ORDERED_SELECTED_BAR_IDENTITIES_AND_VALUES",
+      "CONTINUITY_RECEIPT_HASH_MUST_RECOMPUTE_EXACTLY",
+      "SYMBOL_ASOF_DECISION_CLOCK_MUST_MATCH_REPLAY",
+      "CONTINUITY_CAPTURE_MUST_NOT_BE_AFTER_DECISION",
+      "SOURCE_HISTORY_HASH_AND_REPLAY_HASH_MUST_MATCH_SELECTED_REPLAY",
+      "EXPECTED_ELIGIBLE_DATE_SET_MUST_MATCH_SELECTED_REPLAY",
+      "UNRESOLVED_MISSING_SESSIONS_AND_RELEVANT_EVENTS_MUST_BE_ZERO",
+      "RAW_ADJUSTED_CONTINUITY_IS_FORBIDDEN",
+      "ONLY_CLEAR_NO_ACTION_ELIGIBLE_CAN_MAP_TO_CLEAR_NO_ACTION"
+    ],
+    "firstTwseRequiredCorporateActionFamilies": [
+      "CAPITAL_REDUCTION",
+      "EX_RIGHT_DIVIDEND",
+      "PAR_VALUE_CHANGE"
+    ],
+    "realReceiptObserved": false
+  },
+  "legacyContinuityFirewall": {
+    "mergeCommit": "bf7cb670341c212c093785253654b1edf1728313",
+    "implemented": true,
+    "rule": "On the NC-T01 RAW replay path, persisted legacy CLEAR_NO_ACTION or ADJUSTED_CONTINUITY labels are sanitized to UNVERIFIED until post-replay certification.",
+    "identityConsequence": "Legacy continuity labels cannot alter the RAW replay/sourceHistory identity or manufacture physical continuity readiness."
+  },
+  "policyFingerprintState": {
+    "canonicalAcceptanceCommit": "df39a5f315d48b91cff34a2a2ce6b1251cf9be43",
+    "shortMomentumFingerprint": "115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3",
+    "swingGrowthFingerprint": "a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b",
+    "exactMainSourceBindings": "11_OF_11",
+    "S22_T06_T10": "PASS_CANONICAL",
+    "S22_T11_T16": "PENDING_PHYSICAL_NC_T01"
+  },
+  "remainingRealGap": {
+    "state": "REAL_CLEAR_NO_ACTION_RECEIPT_NOT_YET_OBSERVED",
+    "requiredNext": "DATA_LANE must produce one real read-only exact-window TWSE corporate-action/lifecycle evidence package for an exact-session-ready witness such as 1101 and emit or fail closed a hash-bound continuity receipt. Fixture receipts do not count.",
+    "physicalNcT01RunnerObserved": false,
+    "tpexParityRequiredForFirstTwseWitness": false,
+    "fullAnnualMarketYearCompletionRequiredForFirstTwseWitness": false
+  },
+  "moduleImpact": {
+    "D03-10": {
+      "level": "L2",
+      "maturityPct": 40,
+      "exactSessionPrerequisite": "PHYSICALLY_CLOSED_FOR_REAL_TWSE_WITNESS_PATH",
+      "nextBlockingGate": "REAL_HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY_RECEIPT",
+      "laterGates": [
+        "GENUINE_V8_20_FORMAL_C1_PARENT",
+        "LAYER_C_REVISION_KNOWN_AT",
+        "EXACT_20_ELIGIBLE_SESSIONS_ON_PARENT",
+        "FORMULA_SOURCE_GUARDS",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    },
+    "D03-09": {
+      "level": "L2",
+      "maturityPct": 40,
+      "exactSessionPrerequisite": "PHYSICALLY_CLOSED_FOR_REAL_TWSE_WITNESS_PATH",
+      "nextBlockingGate": "REAL_HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY_RECEIPT",
+      "laterGates": [
+        "GENUINE_V8_20_FORMAL_C1_PARENT",
+        "LAYER_C_REVISION_KNOWN_AT",
+        "CANONICAL_WILDER_FULL_REPLAY_OR_TRUSTED_STATE",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    }
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "maturityPromotion": false,
+    "reason": "One upstream prerequisite and the replay-binding implementation are now physically/engineering closed, but no real continuity receipt has certified the selected replay window and neither D03-09 nor D03-10 has reached its L3 admission gate.",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Primary next: consume the first real hash-bound CLEAR_NO_ACTION continuity receipt for an exact-session-ready TWSE witness such as 1101, or accept a fail-closed result and move to another real witness. The receipt must match the exact selected PIT replay sourceHistoryHash/replayHash/date set and complete TWSE corporate-action/lifecycle source evidence before the read-only artifact-only NC-T01 runner may physically execute S22-T11~T16. Keep the annual TWSE V0.6 lifecycle receipt, third D03 raw source-version session, genuine V8.20 parent, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent."
+}
