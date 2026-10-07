@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "S2_CORR_20261007_004_INDEPENDENT_CODEPATH_VERIFICATION_V0_1",
+  "recordedAt": "2026-10-07T20:46:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-004",
+  "observedMain": "8242f5ccd9e5ed25961e58b9b05fdbc999d2fa37",
+  "disposition": "CONFIRMED_CURRENT_RUNTIME_DEFECT_DATA_LANE_REPAIR_REQUIRED",
+  "runtimeReadback": {
+    "file": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+    "version": "0.3-RESEARCH",
+    "coverageSqlBehavior": [
+      "per_date groups available PIT-eligible rows by symbol/market/date",
+      "ranked assigns ROW_NUMBER ordered market_date DESC",
+      "coverage SELECT keeps rn <= requiredPriorSessions",
+      "no join/reconciliation is performed against an exact expected symbol-session set"
+    ],
+    "longListedBranch": {
+      "ageLimited": false,
+      "ageBoundaryMatches": "true unconditionally",
+      "historyReadyFormula": "ambiguousDateCount===0 && selectedDateCount>=requiredForSymbol && ageBoundaryMatches",
+      "consequence": "A missing required recent eligible session can be silently replaced by an older available row while selectedDateCount remains 60."
+    },
+    "newListingBranch": {
+      "ageLimited": true,
+      "boundaryCheck": "selectedDateCount + expectedFirstDate + expectedLastDate",
+      "note": "Even this branch checks window boundaries/count rather than exact internal date-set equality; lifecycle-aware exact eligible-session reconciliation is the safer common contract."
+    },
+    "detailLoader": {
+      "function": "loadPitPriorA1BarsV0_1",
+      "behavior": "returns latest distinct PIT-eligible dates up to limit after revision ambiguity guard",
+      "expectedSessionReconciliation": false
+    }
+  },
+  "regressionReadback": {
+    "files": [
+      "system2/tests/mixed_universe_shadow_readiness_v0_1.test.mjs",
+      "system2/tests/daily_shadow_input_preflight_v0_1.test.mjs"
+    ],
+    "coveredCases": [
+      "selected_date_count below required -> INSUFFICIENT_PIT_HISTORY",
+      "continuity_eligible_count below required -> continuity incomplete",
+      "new-listing age-aware count/boundary behavior",
+      "symbol-local incompleteness does not globally veto otherwise ready symbols",
+      "source-wide/global integrity failure still blocks globally"
+    ],
+    "missingCase": "No regression supplies 60 observed rows where one expected recent eligible session is missing and one older row fills the count for a long-listed symbol.",
+    "missingBlockerCode": "SYMBOL_LOCAL_EXPECTED_SESSION_MISSING does not exist on current main."
+  },
+  "counterexample": {
+    "requiredEligibleSessions": "D1..D60",
+    "storedPitEligibleSessions": "D0,D1..D54,D56..D60",
+    "selectedLatestCount": 60,
+    "missingExpected": "D55",
+    "olderReplacement": "D0",
+    "currentLongListedOutcome": "historyReady=true if ambiguity=0 because count remains 60 and ageBoundaryMatches=true",
+    "requiredOutcome": "historyReady=false / evaluationInputReady=false with explicit expected-session-missing provenance"
+  },
+  "currentPhysicalRiskBoundary": {
+    "workflowRunId": 37609474459,
+    "marketDate": "2026-10-07",
+    "currentUniverseCount": 1973,
+    "historyReadyCount": 51,
+    "continuityReadyCount": 0,
+    "evaluationInputEligibleSymbolCount": 0,
+    "immediateStrategyMisuseObserved": false,
+    "interpretation": "The current continuity gate prevents immediate strategy execution from the 51 historyReady names. The defect becomes launch-critical when a continuity witness/promotion layer is added, so it must be repaired before NC-T01 S22-T13 physical acceptance."
+  },
+  "repairConstraints": [
+    "Keep symbol-local defects symbol-local; do not restore a whole-universe veto.",
+    "Derive exact required eligible sessions per symbol from official trading dates plus PIT listing membership and certified lifecycle no-trading intervals.",
+    "Compare exact date set/hash, not only count or first/last boundaries.",
+    "An older row may never substitute for a missing required eligible session.",
+    "Certified suspension/non-trading intervals must be excluded from the expected set; do not synthesize OHLC.",
+    "Expose expectedSessionCount, observedExpectedSessionCount, missingExpectedSessions (or bounded hash/count provenance), and unexpectedSession diagnostics sufficient for independent audit.",
+    "Keep revision ambiguity fail-closed.",
+    "Add long-listed substitution regression, clean long-listed control, new-listing control, and certified lifecycle-gap control.",
+    "Perform real Daily Shadow readback after repair before any continuity promotion can make a symbol evaluationInputReady."
+  ],
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime unchanged",
+    "No strategy threshold/weight/ranking mutation",
+    "No synthetic history rows",
+    "No final selection/live push/capital/order authority",
+    "No global completeness threshold"
+  ],
+  "implementationPerformedByAudit": false
+}
