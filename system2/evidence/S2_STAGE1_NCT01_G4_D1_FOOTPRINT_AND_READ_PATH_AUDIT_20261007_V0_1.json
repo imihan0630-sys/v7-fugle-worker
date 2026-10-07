@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_G4_D1_FOOTPRINT_AND_READ_PATH_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T20:29:59+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "370d8d62f57c9e142cd3159afee47f7ed4ff0055",
+  "purpose": "Quantify the remaining D1 read/write execution footprint for the shortest SHORT_MOMENTUM Stage-1 path without changing strategy, assessor, ranking, capacity, or authority semantics.",
+  "physicalSeed": {
+    "workflowRunId": 37609474459,
+    "marketDate": "2026-10-07",
+    "currentA1OrdinarySymbolCount": 1973,
+    "preflightState": "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS",
+    "preflightCapacityWriteAuthorized": true,
+    "prospectiveHistoryState": "PROSPECTIVE_HISTORY_READBACK_VERIFIED",
+    "d1Metrics": {
+      "requestCount": 797,
+      "rowsRead": 583256,
+      "rowsWritten": 13130
+    },
+    "system1RuntimeUsed": false,
+    "note": "The seed diagnostic did not execute strategy assessment and is not NC-T01."
+  },
+  "ncT01ReadPathAudit": {
+    "currentOrchestrator": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs::runDailyLimitedShadowOrchestratorV0_1",
+    "currentHistoryLoader": "system2/runtime/daily_shadow_history_reader_v0_1.mjs::loadPitPriorA1BarsV0_1",
+    "currentRemoteAdapter": "system2/deploy/remote_d1_rest_adapter.mjs",
+    "observedBehavior": [
+      "The orchestrator awaits loadPriorHistoricalBars once for every non-excluded base-universe symbol.",
+      "loadPitPriorA1BarsV0_1 performs one per-symbol SELECT against s2_historical_a1_bars.",
+      "remote_d1_rest_adapter .all() calls queryOne(), which performs one REST POST per statement.",
+      "At the 2026-10-07 observed universe size, a naive all-symbol path could therefore approach 1,973 serial REST requests before other reads.",
+      "No canonical all-universe/bulk PIT prior-history reader was found on latest main during this audit.",
+      "The remote adapter already supports db.batch(), so this does not require a new storage model or altered PIT semantics."
+    ],
+    "tableIndexes": [
+      "idx_s2_historical_a1_symbol_date ON (symbol, market_date, price_space)",
+      "idx_s2_historical_a1_pit_window ON (symbol, price_space, market_date, available_at, pit_replay_eligible)"
+    ],
+    "diagnosis": "NETWORK_ROUND_TRIP_RISK_NOT_SQL_INDEX_GAP",
+    "cloudflareConstraints": {
+      "clientApiGlobalRateLimit": "1200 requests / 5 minutes per user/account token",
+      "maximumQueryDurationSeconds": 30,
+      "maximumBoundParametersPerQuery": 100,
+      "batchSemantics": "Multiple prepared statements may be sent in one D1 batch; statements execute sequentially and batch reduces network round trips.",
+      "authority": "Cloudflare official documentation",
+      "caution": "Workers per-invocation D1 query limits are not directly relabeled as REST API batch limits; the GitHub runner uses the REST adapter. The 30-second request limit and global Client API rate limit remain directly relevant."
+    },
+    "buildLaneConstraint": [
+      "Do not create a new strategy evaluator or rewrite PIT history semantics.",
+      "Add a transport-only bounded batch/prefetch layer that issues the existing per-symbol PIT SELECT semantics through db.batch() in bounded chunks.",
+      "Materialize results into an in-memory symbol/market map and feed the existing orchestrator callback.",
+      "Do not freeze a permanent chunk size from this audit alone; physical acceptance must record batch count, REST request count, rowsRead, max batch duration and any rate-limit/timeout evidence.",
+      "Any ambiguous/missing/revision-conflicting symbol remains fail-closed exactly as today."
+    ],
+    "correctionClassification": "EXPECTED_BUILD_LANE_EXECUTION_CONSTRAINT_NOT_NEW_CORRECTION",
+    "reasonNoNewCorrection": "The physical NC-T01 runner is already an expected BUILD_LANE milestone and has not falsely claimed completion. This audit narrows its efficient implementation path."
+  },
+  "g4WriteFootprintAudit": {
+    "premise": "runDailyLimitedShadowOrchestratorV0_1 includes every non-excluded current-universe symbol in the Limited Shadow candidate/accounting bundle, not only BUY_ELIGIBLE symbols.",
+    "observedUniverseN": 1973,
+    "estimatedIndexedWriteAccounting": {
+      "s2_source_session_receipts": {
+        "fixedLogicalRows": 1,
+        "estimatedRowsWrittenPerInsert": 4
+      },
+      "s2_market_regime_snapshots": {
+        "fixedLogicalRows": 1,
+        "estimatedRowsWrittenPerInsert": 3
+      },
+      "s2_symbol_factor_snapshots": {
+        "logicalRowsFormula": "N",
+        "estimatedRowsWrittenPerInsert": 5
+      },
+      "s2_decisions": {
+        "logicalRowsFormula": "N",
+        "estimatedRowsWrittenPerInsert": 6
+      },
+      "s2_shadow_runs": {
+        "fixedLogicalRows": 1,
+        "estimatedRowsWrittenPerInsert": 3
+      },
+      "s2_shadow_run_fingerprints": {
+        "fixedLogicalRows": 1,
+        "estimatedRowsWrittenPerInsert": 4
+      }
+    },
+    "limitedShadowEstimatedRowsWrittenFloor": 21717,
+    "oneStrategyCapacityExtra": {
+      "strategyOrderingReceiptCount": 2,
+      "estimatedRowsWrittenPerOrderingInsert": 4,
+      "capacityRunCount": 1,
+      "estimatedRowsWrittenPerCapacityInsert": 4,
+      "estimatedRowsWritten": 12
+    },
+    "limitedShadowPlusOneStrategyCapacityEstimatedFloor": 21729,
+    "interpretation": [
+      "This is a planning estimate derived from current table/index topology; Cloudflare D1 meta.rows_written from physical execution remains authoritative.",
+      "The estimate shows a first full SHORT_MOMENTUM evaluation+capacity attempt is plausibly feasible under the Free 100,000 rows-written/day contract if protected budget is reserved.",
+      "It is unsafe to co-schedule that attempt after discretionary high-write warmup without current-day headroom evidence.",
+      "The previously observed hot-history warmup consumed 57,880 rowsWritten and the 2026-10-07 Daily Shadow diagnostic consumed 13,130 rowsWritten; launch-critical capacity work therefore needs priority/reservation under S2-CORR-20261007-003."
+    ],
+    "calibrationCandidate": {
+      "suggestedProtectedReservationRowsWritten": "25,000-30,000 for first one-strategy Limited Shadow + capacity physical attempt",
+      "status": "PLANNING_CANDIDATE_NOT_FROZEN_POLICY",
+      "physicalRule": "Actual D1 meta.rows_written from the first bounded run overrides the estimate before recurring scheduling."
+    }
+  },
+  "revisedCriticalPath": [
+    "Canonicalize latest-main System2 fingerprints S22-T06~T10 (#762 rebuild/rebase).",
+    "Execute read-only/artifact-only NC-T01 with real A1 + real PIT history, using bounded batch history prefetch to avoid naive per-symbol REST fanout.",
+    "Independently verify S22-T11~T16 receipt and hidden-fallback audit.",
+    "When D1 write headroom is truthfully reserved, execute genuine SHORT_MOMENTUM Limited Shadow persistence.",
+    "Run strategy-local RANK-01 and persist first truthful s2_capacity_runs receipt.",
+    "Feed the already-built bounded pool / Candidate Board / Daily Resonance surfaces.",
+    "Only then evaluate guarded advisory/notification promotion."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime mutation",
+    "No System1 Top6/rank fallback",
+    "No strategy/assessor threshold or weight change",
+    "No final-selection/live-push/capital/order authority",
+    "No paid Cloudflare upgrade authorization",
+    "No weakening of PIT/revision/UNKNOWN fail-closed semantics"
+  ]
+}
