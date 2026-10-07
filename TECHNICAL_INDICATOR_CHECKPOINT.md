@@ -6063,3 +6063,80 @@ No promotion:
 
 Exact next:
 route the earliest-observed persistence defect and month-shard membership churn to System2 BUILD_LANE. D03 consumes only a future physical receipt proving append-only union persistence, immutable earliest-observed preservation, query-path provenance and bounded stabilization. Continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the cutoff-bearing C1 parent.
+
+
+## 2026-10-07 D03 — TI-1239~1248 System2 S2-07 V1.7 append-only union acceptance
+
+Canonical D03 artifact:
+- `research/d03_system2_s207_v17_append_only_union_acceptance_20261007_v0_1.json`.
+
+Accepted System2 physical evidence:
+- merge `14f67ddba88604e73a2488d4a561a571393f026b`;
+- workflow `37579422400`;
+- job `112655458121`;
+- artifact `11464480276`;
+- artifact digest `sha256:3c3c2da61bfa1cced784a9c28daf214dcc1e3e8b4726a49601db70c16230fe85`;
+- workflow conclusion SUCCESS.
+
+### TI-1239~1242 — prior provenance defect is physically repaired
+
+The V1.7 reconciliation of the three accepted V1.6 prospective artifacts now produces:
+- captureCount = 3;
+- unionVersionKeyCount = 168;
+- latestCaptureVersionKeyCount = 163;
+- unionMissingFromLatestCount = 5;
+- earliestObservedPreserved = true;
+- latestObservedPreserved = true;
+- payloadConflictCount = 0.
+
+D03 accepts that the previous cross-capture `firstObservedAt` reset defect is repaired at the V1.7 reconciliation layer.
+The append-only union preserves the earliest genuine prospective observation clock and separates later re-observation via `latestObservedAt`.
+
+### TI-1243~1245 — repair is not completeness
+
+The same physical receipt correctly remains:
+- state = `MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING`;
+- trailingIdenticalTransitions = 0;
+- boundedStabilizationCandidate = false;
+- expectedMopsKeysetComplete = false;
+- noRevisionGapThroughCut = false;
+- monthOnlyDriftVersionCount = 21.
+
+Therefore:
+- provenance mechanics improved;
+- population completeness is not yet certified;
+- five version keys already in the union are absent from the latest capture;
+- month-shard membership instability remains unresolved.
+
+### TI-1246~1247 — causal / evidence boundary
+
+Accepted:
+- append-only prospective identity union;
+- earliest-observed preservation;
+- latest-observed separation;
+- payload conflict count zero.
+
+Not accepted:
+- historical pre-cutoff availability;
+- complete expected MOPS keyset;
+- no revision gap through cutoff;
+- symbol-session completeness;
+- technical continuity;
+- OOS/walk-forward evidence;
+- transaction-cost/fillability evidence;
+- independent D03 alpha root.
+
+A repaired clock/provenance mechanism cannot be promoted into predictive evidence.
+
+### TI-1248 — maturity and exact next
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED.
+
+Exact next:
+continue bounded V1.7 repeated captures until the frozen stabilization rule is physically satisfied without payload conflicts, preserving append-only union identity and earliest-observed clocks. Only after stabilization may `expectedMopsKeysetComplete` be reviewed. `noRevisionGapThroughCut` must remain false until post-parent revision reconciliation. Continue in parallel waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion and the cutoff-bearing C1 parent.
