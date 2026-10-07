@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 19:30:51 Asia/Taipei
+Updated: 2026-10-07 19:43:05 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -987,6 +987,11 @@ Correction consequence:
   - repo-wide writer workflows share `system2-isolated-d1-writer`, which serializes mutations but does not reserve/budget finite daily writes;
   - only local quota protection exists for the Fugle hot-history bootstrap; no System2-wide budget/priority contract exists.
 - evidence:
+  - Measured dominant writer: Recent A1 Hot History Warmup run `37550201160` was triggered by `push`, inserted 9,640 logical A1 bars across five dates, and reported `rowsWritten=57,880` (~6.00x logical-row amplification), consuming 57.88% of the official 100,000 rowsWritten/day Free ceiling in one run.
+  - Current warmup workflow permits `workflow_dispatch + schedule + push`, and the push path performs physical D1 mutation. Later same-UTC-day schedule run `37595978423` started another warmup; it failed on TPEx transport before persistence. A comparable second physical five-date batch could by itself push warmup usage above the 100k/day account ceiling.
+  - Known measured subset on 2026-10-07: warmup 57,880 + Daily Shadow 13,130 + 2024 TWSE annual 7,358 = 78,368 rowsWritten (78.368% of Free daily ceiling), before other account/database writers.
+  - Annual cold-pack samples are materially smaller: 2023 TPEx 5,842; 2022 TPEx 5,779; 2022 TWSE 6,983 rowsWritten. Redundant annual provision removal remains valid hygiene but is not the primary measured quota cause.
+  - Durable calibration: `system2/evidence/S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION_20261007_V0_1.json` @ `80103589902232f04cd973b3ab946181884fd9f0`.
   - Historical PR #653 (`System2: skip D1 writes for UI-only deploys`) is superseded by canonical main `b2ae3488309df83bf9a6399c81ec5b1321ce2be2`; current `ensure_system2_d1_ready.mjs` already uses `READ_ONLY_FAST_PATH` with `schemaMutationPerformed=false` and `writeReadVerification=SKIPPED_ALREADY_READY` when schema 1.1 is ready.
   - PR #653 was independently closed as SUPERSEDED after audit comment `6037043870`; do not reintroduce its stale workflow-specific schema gate as the remaining quota fix.
   - Residual CORR-003 scope is the account-wide multi-writer 100k/day budget/reservation/priority problem, not UI-only schema suppression.
@@ -998,25 +1003,29 @@ Correction consequence:
 - riskIfUnfixed:
   High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the free daily quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to buy a paid tier despite explicit cost-control preference.
 - requiredCorrection:
-  1. Implement one System2-wide UTC-day D1 quota-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.
-  2. Anchor Free-plan governance to the official account-wide ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset at 00:00 UTC, unless newer vendor evidence changes the contract.
-  3. Classify writer intents and define free-tier-safe reservation/priority behavior for scheduled evidence, historical bulk work, bootstrap/smoke/provision and deploy tasks.
-  4. Before large writers begin, emit explicit `QUOTA_BUDGET_DEFERRED`/blocked evidence when known usage plus conservative reservations would exceed available budget.
-  5. Use D1 query meta and dashboard/GraphQL analytics where available; when exact account-wide remaining usage cannot be proven, use conservative known-write accounting and reservations rather than inventing headroom.
-  6. Account for index-amplified written rows in reservation estimates.
-  7. Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.
-  8. Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.
-  9. No automatic paid-tier upgrade or billing change; any paid change is separately `OWNER_DECISION_REQUIRED`.
+  1. **P0:** ordinary push events must not execute physical high-write Recent A1 Hot History warmup. Push may run tests/planning/read-only evidence only; physical warmup requires schedule/manual plus the global account-level quota gate.
+  2. **P0:** implement one UTC-day D1 account-level budget/reservation/priority contract spanning isolated writer workflows; concurrency alone is insufficient.
+  3. **P0:** budget using measured D1 `rowsWritten`, not logical inserted rows. Current physical A1 warmup evidence shows ~6.00x write amplification.
+  4. Anchor Free-plan governance to official account-wide ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, unless newer vendor evidence changes the contract.
+  5. Reserve protected Daily Shadow / launch-critical evidence before discretionary bulk/warmup work; lower-priority high-write work must defer when conservative usage + reservation would breach budget.
+  6. Make physical warmup batch size quota-adaptive rather than blindly using five dates; recent measured rowsWritten-per-date must inform the reservation.
+  7. Use D1 query meta and dashboard/GraphQL analytics where available; unknown account-wide usage must be handled conservatively, never invented.
+  8. Persist one compact UTC-day reservation/result receipt per physical writer run and reconcile estimate to actual rowsWritten without creating a high-write ledger.
+  9. Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.
+  10. No automatic paid-tier upgrade or billing change; any paid change remains `OWNER_DECISION_REQUIRED`.
 - acceptanceCriteria:
-  - multiple System2 writer classes on the same UTC quota day are coordinated by one auditable account-level budget/priority contract rather than concurrency only;
-  - contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, with vendor-version/source provenance;
-  - a later bulk workflow can defer before predictable free-tier exhaustion using conservative evidence;
-  - quota deferral is explicit and cannot be mislabeled data/source failure;
-  - regression covers known writes/reservations, index-amplified estimates, insufficient-headroom defer, unknown remaining quota fail-safe behavior and UTC-day rollover;
+  - ordinary push of Recent A1 warmup implementation/source/workflow files cannot physically mutate D1 history; push-path regression proves test/read-only behavior;
+  - schedule/manual physical warmup is guarded by the same account-level UTC-day budget/reservation contract used by other high-write System2 writers;
+  - contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC;
+  - budget/reservation uses measured rowsWritten and covers the observed ~6x A1-history amplification case;
+  - bulk/warmup work can explicitly `QUOTA_BUDGET_DEFER` before predictable exhaustion, and deferral cannot be mislabeled source/data failure;
+  - protected Daily Shadow / launch-critical evidence has explicit priority/reservation over discretionary history warming without changing trading/data semantics;
+  - warmup max physical dates can shrink below five when quota headroom is insufficient;
+  - unknown account-wide usage fails conservatively; no exact remaining quota is invented;
   - no paid-plan upgrade, System1 change, strategy/ranking/final-selection/push/capital/order authority change;
-  - independent audit verifies implementation and at least one physical multi-writer day or equivalent bounded evidence without quota-collision failure.
+  - independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without quota-collision failure.
 - ownerDecisionRequired: false
 - implementationEvidence: []
 - verificationEvidence: []
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T19:30:51+08:00
+- updatedAt: 2026-10-07T19:43:05+08:00
