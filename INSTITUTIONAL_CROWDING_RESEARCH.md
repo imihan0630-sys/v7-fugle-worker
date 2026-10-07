@@ -2547,3 +2547,33 @@ SDA-007 impact:
 
 Exact next:
 use the precommitted 2026-11 official review calendar to capture issuer AUM/units/holdings prospectively around a real public result, preserving exact observedAt/firstKnownAt and any staged transition window. If the source clock is clean, reassess D06-11 for L3 Taiwan PIT feasibility.
+
+
+---
+
+## IC-095 — 2026-10-07 in-slot TWSE lending receipt clears D06-18 bounded L3 PIT gate
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: LIVE_SLOT_PASS / DATE_CERTIFIED / FIRST_NON_NULL_COMPETITIVE_FEE_CAPTURED / D06_18_L3_BOUNDED_TWSE_PIT / TRUE_UTILIZATION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_18_twse_sbl_live_slot_20261007_v0_1.json`.
+
+The preregistered 15:20 ±5 minute live slot was successfully executed on a genuine 2026-10-07 trading day. The frozen five-symbol pilot `1101 / 2451 / 3532 / 6187 / 9941` was re-read between 15:15:02 and 15:21:05 Asia/Taipei through the official TWSE rendered route. All five selected-security identities matched and the page visibly certified 2026-10-07, removing the prior date-certification blocker.
+
+The frozen transaction-family and recall-term schema remained intact. Fixed-rate and most competitive-bid fields were zero/NULL in this pilot. A genuine non-null competitive-bid example appeared in 3532 台勝科 under the 3-day recall term: match time 14:57:19.04, total/executed quantity 13, latest executed fee 4.00%, and displayed lend/borrow quantities both 0 at capture. Negotiated totals were separately observed as 1101=11,234, 2451=211, 3532=12, 6187=0, 9941=0.
+
+Interpretation remains bounded. The 3532 fee is a verified TWSE borrow-cost observation, not bearish conviction. Zero displayed depth after matching is not zero total lendable supply. Negotiated lending volume is not short-sale volume. The five-symbol pilot is source-feasibility evidence only and is not a representative market sample.
+
+Maturity decision:
+- D06-18 L2/40 -> L3/60;
+- the promoted construct is bounded to TWSE displayed borrow-cost / displayed availability-demand / transaction-family and recall-term-specific lending economics;
+- true utilization remains UNKNOWN because verified total lendable inventory is still absent;
+- TPEx parity, market-wide scarcity and predictive alpha remain unvalidated;
+- no Formal Core change.
+
+SDA-007 implication:
+borrow-cost/depth and D06-09 actual SBL-short quantities remain separate transforms/consumers and may not manufacture duplicate bearish votes. One underlying lending state may have many allowed consumers but only one primitive receipt identity.
+
+Exact next:
+accumulate independent in-slot trading dates and naturally occurring source-state diversity without symbol cherry-picking. Before L4, preregister OOS/Shadow residual incrementality against D06-09 actual-SBL-short, liquidity, direct price-volume, passive/index flow and market-regime controls. True utilization stays UNKNOWN until a verified total-lendable-inventory denominator exists.
