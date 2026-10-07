@@ -1,0 +1,73 @@
+name: System2 S2-07 MOPS Incremental Union Stability V1.7.1 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_mops_incremental_union_stability_v1_7_1.mjs"
+      - "system2/tests/s2_07_mops_incremental_union_stability_v1_7_1.test.mjs"
+      - "system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7.md"
+      - ".github/workflows/system2-s2-07-mops-incremental-union-stability-v1-7-1-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_mops_incremental_union_stability_v1_7_1.mjs"
+      - "system2/tests/s2_07_mops_incremental_union_stability_v1_7_1.test.mjs"
+      - "system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7.md"
+      - ".github/workflows/system2-s2-07-mops-incremental-union-stability-v1-7-1-readonly.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: V1.7.1 incremental union tests
+        run: node system2/tests/s2_07_mops_incremental_union_stability_v1_7_1.test.mjs
+
+      - name: Download accepted V1.7 union seed
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v171/seed
+          curl --fail --silent --show-error --location \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11464480276/zip" \
+            -o /tmp/v171/seed.zip
+          unzip -q /tmp/v171/seed.zip -d /tmp/v171/seed
+          test -f /tmp/v171/seed/S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL_20261007.json
+
+      - name: Capture one fresh V1.6 exact-version population
+        run: node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
+
+      - name: Extend durable union seed with fresh capture
+        run: node system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs
+
+      - name: No mutation scheduler or System1 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy|cron' system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Upload V1.7.1 physical evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-07-mops-incremental-union-stability-v1-7-1
+          path: /tmp/S2_07_MOPS_INCREMENTAL_UNION_STABILITY_V1_7_1_PHYSICAL_20261007.json
+          retention-days: 14
