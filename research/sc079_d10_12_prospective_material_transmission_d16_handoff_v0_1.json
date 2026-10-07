@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "SC079_D10_12_D16_HANDOFF_V0_1",
+  "status": "OUTCOME_BLIND_D16_HANDOFF",
+  "observedMainBeforeWrite": "5ad5f761a7aeaef0cb5e9ffbcd0dfef568374aab",
+  "module": "D10-12",
+  "prospectiveEvents": [
+    {
+      "id": "E1",
+      "sourceMonth": "2026-08",
+      "capturedAt": "2026-09-30T05:43:00+08:00",
+      "vector": "SCRAP_UP/BILLET_DOWN/H_BEAM_FLAT",
+      "outcomesOpened": false
+    },
+    {
+      "id": "E2",
+      "sourceMonth": "2026-09",
+      "capturedAt": "2026-10-02T16:23:00+08:00",
+      "vector": "SCRAP_UP/BILLET_UP/H_BEAM_FLAT",
+      "outcomesOpened": false
+    }
+  ],
+  "independentUnit": "MATERIAL_EVENT_VINTAGE",
+  "exposedRoute": "2006_TUNG_HO_EAF_HIGH_SCRAP_RELEVANCE",
+  "controlRoute": "2002_CSC_BF_BOF_DIFFERENT_ROUTE_NOT_ZERO_EXPOSURE",
+  "primaryEconomicEndpoints": [
+    "LAG0_OUTPUT_PASS_THROUGH",
+    "LAG1_OUTPUT_PASS_THROUGH",
+    "LAG2_OUTPUT_PASS_THROUGH",
+    "FIRST_COMPATIBLE_REALIZED_SELLING_PRICE_MIX",
+    "FIRST_COMPATIBLE_MARGIN_DIRECTION",
+    "SECOND_COMPATIBLE_REPORT_STATE"
+  ],
+  "secondaryMarketEndpoints": [
+    "D5",
+    "D20",
+    "D60"
+  ],
+  "outcomeMaturityAsOf": "2026-10-08T00:04:00+08:00",
+  "maturedCells": [
+    "E1/D5"
+  ],
+  "openedOutcomeCells": [],
+  "prospectiveEventN": 2,
+  "maturedIndependentD5EventN": 1,
+  "inferenceReadiness": "POWER_INSUFFICIENT",
+  "requiredD16Guards": [
+    "EVENT_VINTAGE_DEPENDENCE",
+    "COMMON_SUPPORT_PRE_OUTCOME",
+    "NO_POOLED_ROW_IID",
+    "NO_POST_OUTCOME_ROUTE_REMAP",
+    "UNKNOWN_PRESERVATION",
+    "NO_LAG_OR_HORIZON_RESELECTION",
+    "MULTIPLICITY_D5_D20_D60_PLUS_ECONOMIC_ENDPOINTS",
+    "POWER_INSUFFICIENT_FAIL_CLOSED"
+  ],
+  "maturity": {
+    "level": "L3",
+    "maturityPct": 60,
+    "promoteToL4": false
+  },
+  "formalCoreChanged": false,
+  "exactNext": "D16 freezes event-level method receipt before any E1/D5 value is opened; E2 D5 matures naturally; accumulate independent event vintages."
+}
