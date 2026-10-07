@@ -1620,8 +1620,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「供應鏈事件PIT時間戳」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_PIT_FEASIBLE / PROSPECTIVE_MOPS_EXACT_VERSION_CAPTURE_WORKS / COMMON_VERSION_PAYLOAD_STABLE / SOURCE_REPORTED_CLOCK_SEMANTICS_CERTIFIED / EVENT_POPULATION_COMPLETENESS_PENDING / MEMBERSHIP_DRIFT_OBSERVED / KEEP_L3",
-          "next": "SC-081 consume next independent prospective MOPS exact-version capture; certify bounded expected-keyset completeness, versioned membership drift, firstObservedAt distinct from sourceReportedAt, append-only revision chains and no revision gap through cut; require real event plus NULL observation under same contract; no L4 until event-universe completeness is prospectively supported."
+          "status": "L3_PIT_FEASIBLE / THREE_GENUINE_PROSPECTIVE_MOPS_CAPTURES / V17_APPEND_ONLY_EARLIEST_OBSERVATION_REPAIR_PHYSICAL_PASS / UNION_168 / LATEST_163 / 5_MISSING_FROM_LATEST / PAYLOAD_CONFLICT_0 / TRAILING_IDENTICAL_TRANSITIONS_0 / STABILIZATION_NOT_MET / EXPECTED_KEYSET_INCOMPLETE / KEEP_L3",
+          "next": "SC-084 consume next live capture from durable 168-version union seed; do not redo first three captures. Require captureCount>=4, preserve earliest firstObservedAt/latestObservedAt, accumulate trailing identical transitions with zero payload conflict, and separately resolve month-shard/source semantics. Only after both stabilization and source-semantics gates pass may expectedMopsKeysetComplete be reviewed; noRevisionGapThroughCut stays false until post-parent reconciliation."
         },
         {
           "id": "D10-12",
