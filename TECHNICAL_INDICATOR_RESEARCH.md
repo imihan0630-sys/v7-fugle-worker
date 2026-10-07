@@ -3720,3 +3720,12 @@ Counterevidence is preserved: the global clock remains valid for genuinely cross
 D03 owns only the inference firewall; BUILD_LANE owns correction implementation. D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes remain CLOSED; Formal Core remains LOCKED.
 
 Exact next remains the Layer-B physical lifecycle-event-union rehabilitation receipt. In parallel, accept the strategy-clock correction only after a genuine mixed-dependency receipt proves strategy-specific readiness while universal integrity still fails closed and pre-fix defect rows remain immutable.
+
+
+## TI-1345 through TI-1360 — TWSE V0.6 physical receipt preregistered acceptance oracle (2026-10-07)
+
+The first physical annual V0.6 receipt is still absent. D03 therefore preregisters outcome-independent acceptance before inspecting it. The 18-case executable oracle requires same TWSE market/year/schema; exact UNKNOWN and missingReasonCounts arithmetic; one unique market|symbol|date identity per reclassification; valid event/source hashes; zero unresolved conflicts and partial-source symbols; no cold OHLCV mutation; no absence-based NO_EVENT inference; and no Layer-C known-at leakage.
+
+All 18 deterministic cases pass. A complete zero-delta annual run is accepted only as negative evidence and cannot promote Layer B or maturity. OOS, walk-forward, costs, fillability, market-state and alpha remain UNKNOWN. D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next: consume the first physical TWSE annual V0.6 receipt and validate it against this oracle. Keep TPEx parity, Layer-C known-at, exact-window continuity binding, genuine V8.20 parent, T48, S2-07, consumer dedup and D16 incrementality independent.
