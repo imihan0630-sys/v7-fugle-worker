@@ -1,0 +1,37 @@
+name: D03 System2 TWSE Lifecycle V0.6 Acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_system2_twse_lifecycle_v06_implementation_acceptance_20261007_v0_1.json"
+      - ".github/workflows/d03-system2-twse-lifecycle-v06-acceptance.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify D03 acceptance contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e 'const fs=require("fs"); const x=JSON.parse(fs.readFileSync("research/d03_system2_twse_lifecycle_v06_implementation_acceptance_20261007_v0_1.json","utf8")); if(x.maturityDecision.d03MaturityPct!==56.7||x.maturityDecision.layerC!=="NOT_PROVEN") process.exit(1); console.log("D03 acceptance contract PASS")'
+      - name: Run TWSE regulatory lifecycle source tests
+        run: node system2/tests/twse_regulatory_lifecycle_source_v0_1.test.mjs
+      - name: Run market-year lifecycle verifier guard
+        run: node system2/tests/historical_market_year_lifecycle_verify_guard.test.mjs
+      - name: Confirm read-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState' research/d03_system2_twse_lifecycle_v06_implementation_acceptance_20261007_v0_1.json
+          echo "D03 TWSE lifecycle acceptance isolation PASS"
