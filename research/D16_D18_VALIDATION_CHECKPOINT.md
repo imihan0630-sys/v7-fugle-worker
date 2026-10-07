@@ -3244,3 +3244,85 @@ Exact next:
 6. if System2 fingerprint / NC-T01 / T48 / genuine Formal↔C1 lands first, switch immediately;
 7. on 2026-10-08 after expected C1 attempt window, reconcile the 2026-10-07 opportunity;
 8. outcomes remain CLOSED.
+
+
+## 2026-10-07 selection-aware validation chain + SDA-016 T48 Class-B proposal validation
+
+New durable research:
+- `research/D16_D18_SELECTION_AWARE_VALIDATION_CHAIN_20261007_V0_1.md`;
+- `research/d16_d18_selection_family_receipt_contract_20261007_v0_1.json`;
+- `research/D16_SDA016_T48_CLASSB_PROPOSAL_VALIDATION_20261007_V0_1.md`.
+
+### Selection-aware validation advance
+
+Room11 now freezes one unified chain for post-selection validation:
+SEARCH FAMILY -> NESTED CHRONOLOGICAL SELECTION -> FAMILY-LEVEL DATA-SNOOPING DIAGNOSTICS -> UNTOUCHED OOS / PROSPECTIVE POLICY VALUE.
+
+Method roles are separated:
+- White Reality Check = family-level benchmark-relative data-snooping diagnostic;
+- Hansen SPA = family-level superior-predictive-ability diagnostic;
+- PBO/PBO-style = selection-process fragility diagnostic;
+- DSR = post-selection Sharpe/performance-ratio diagnostic.
+
+None may repair PIT failure, contaminated outer OOS, incomplete search-family accounting, common-support failure or retrospective Regime relabeling.
+
+Outer evidence state is now explicitly frozen as:
+- OUTER_UNTOUCHED;
+- OUTER_CONSUMED;
+- FAMILY_EXPANDED_POST_OUTCOME;
+- REQUIRES_NEW_FORWARD_EVIDENCE.
+
+D18 policy search degrees of freedom must retain the full taxonomy/window/hysteresis/strategy/action/exposure/horizon family rather than reporting only the winner.
+
+This directly strengthens:
+- SDA-016 repeated-OOS/self-confirmation firewall;
+- SDA-017 post-hoc Regime mining firewall;
+- SDA-022 cross-system pseudo-diversification validation.
+
+### T48 new main event
+
+Merged proposal:
+`research/SYSTEM1_SDA016_T48_CLASS_B_PROPOSAL_20261007.md`.
+
+D16 validation result:
+`PROPOSAL_SEMANTICS_ACCEPTABLE / RUNTIME_EVIDENCE_NOT_YET_AVAILABLE / T48_REMAINS_OPEN`.
+
+Accepted proposal controls:
+- append-only unique scanDate finalization receipt;
+- explicit producer-registry version;
+- no historical backfill;
+- post-rollover finalization only after producer windows close;
+- every Formal->C1 binding must lie inside the canonical finalized set;
+- post-finalization generation becomes explicit research provenance violation;
+- protected exact readback.
+
+T48 is NOT PASS because implementation, migration/readback, effective-runtime tests and first genuine post-deploy receipt do not yet exist.
+
+Additional D16 acceptance conditions:
+- previous trading session must be official-session proven, not calendar-minus-one;
+- unknown/pending recovery execution blocks finalization;
+- any newly discovered active producer versions the registry forward;
+- duplicate finalizer invocation cannot create a second logical finalization;
+- research failure cannot change Formal business behavior.
+
+### Current maturity
+
+No maturity change:
+- D16 = 60%;
+- D18 = 52%;
+- global tracker = 46.8% across 356 modules.
+
+Reason:
+the methodology and T48 proposal semantics advanced substantially, but no new Taiwan PIT replay/prospective economic evidence was created.
+
+Economic outcomes remain CLOSED.
+Formal Core LOCKED.
+
+### Exact next continuation
+
+1. If T48 Class-B implementation is owner-authorized and lands, validate implementation + first genuine finalization receipt immediately.
+2. Bind finalizedGenerationSetDigest into SelectionFamilyReceipt / holdout-use identity.
+3. If System2 Stage-1 physical strategy evaluation, SDA022 fingerprint, NC-T01 or genuine Formal<->C1 evidence lands first, switch immediately.
+4. Continue FINANCIAL -> QUARTER_EPS nested acquisition validation on the next genuine quality run; preserve prior failed episode.
+5. On 2026-10-08 after the expected 00:10 C1 window, reconcile the 2026-10-07 opportunity.
+6. Outcomes remain CLOSED until explicit opening gates pass.
