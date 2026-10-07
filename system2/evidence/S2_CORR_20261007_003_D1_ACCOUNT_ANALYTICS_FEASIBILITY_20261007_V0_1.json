@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_D1_ACCOUNT_ANALYTICS_FEASIBILITY_V0_1",
+  "recordedAt": "2026-10-07T19:52:02+08:00",
+  "observedMain": "7d2cc2f0108f4bb124761ed4eee706096e892b15",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "officialContract": {
+    "source": "Cloudflare D1 Metrics and analytics",
+    "url": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+    "lastUpdatedObserved": "2026-04-21",
+    "facts": [
+      "D1 analytics can inspect query volume, query latency and storage across all and/or each database in an account.",
+      "Cloudflare dashboard D1 charts are sourced from the GraphQL Analytics API.",
+      "D1 GraphQL datasets include d1AnalyticsAdaptiveGroups, d1StorageAdaptiveGroups and d1QueriesAdaptiveGroups.",
+      "D1 exported metric field names include rowsRead and rowsWritten.",
+      "D1 GraphQL datasets require an accountTag filter using the Cloudflare Account ID.",
+      "GraphQL API supports introspection; Settings can be used to discover per-dataset limits/availability.",
+      "D1 analytics metrics are retained for 31 days."
+    ]
+  },
+  "billingContract": {
+    "source": "Cloudflare D1 Billing",
+    "url": "https://developers.cloudflare.com/d1/observability/billing/",
+    "facts": [
+      "D1 billing analytics track rows read, rows written and total storage across all databases in an account.",
+      "The Cloudflare Billing > Billable Usage surface exposes total account D1 usage on daily or month-to-date windows."
+    ]
+  },
+  "currentProjectState": {
+    "accountWideAnalyticsReaderFoundInRepo": false,
+    "perRunD1MetaReaderFound": true,
+    "perRunAdapter": "system2/deploy/remote_d1_rest_adapter.mjs",
+    "knownLowerBoundRowsWrittenFor20261007": 78368,
+    "unknownAccountWideResidualBeforeHardLimit": 21632,
+    "residualClassification": "UNKNOWN_NOT_ATTRIBUTED",
+    "note": "The known 78,368 subset is not a complete account total. Do not attribute the remaining usage to System1 or another database without account analytics evidence."
+  },
+  "recommendedReadOnlyProbe": {
+    "endpoint": "https://api.cloudflare.com/client/v4/graphql",
+    "scope": "ACCOUNT",
+    "accountFilter": "accountTag = CLOUDFLARE_ACCOUNT_ID",
+    "preferredDataset": "d1AnalyticsAdaptiveGroups",
+    "requiredMetricFields": [
+      "rowsWritten",
+      "rowsRead"
+    ],
+    "dimensions": [
+      "date",
+      "databaseId when per-database attribution is needed"
+    ],
+    "discoveryBeforeAssumption": [
+      "Use GraphQL introspection and/or account Settings node to verify the token can see the D1 dataset and the exact sum field shape.",
+      "Do not hard-code undocumented field nesting if introspection contradicts documentation examples."
+    ],
+    "mutation": false
+  },
+  "authorizationBoundary": {
+    "existingSystem2ApiTokenAnalyticsPermission": "UNKNOWN",
+    "noNewPermissionRequiredForSafeFallback": true,
+    "behaviorIfAnalyticsAllowed": "Use account-wide daily rowsWritten/rowsRead as the primary budget observation, plus conservative reservation for in-flight work.",
+    "behaviorIfAnalyticsDeniedOrUnavailable": "Set accountUsageState=UNKNOWN_HEADROOM and fail/defer discretionary high-write writers. Protected bounded operational writers may proceed only within explicitly reserved conservative policy; never infer unused headroom from System2-local logs.",
+    "reason": "The correction must not require a new secret or permission merely to remain safe."
+  },
+  "budgetModelRefinement": {
+    "hardDailyWriteCeiling": 100000,
+    "hardDailyReadCeiling": 5000000,
+    "resetAtUtc": "00:00",
+    "preferredObservedUsage": "ACCOUNT_WIDE_GRAPHQL_ROWS_WRITTEN",
+    "fallbackObservedUsage": "KNOWN_LOCAL_WRITES_LOWER_BOUND_ONLY",
+    "fallbackHeadroomState": "UNKNOWN_HEADROOM",
+    "prohibitedInference": "100000 - known System2 rowsWritten is NOT exact remaining account quota when account-wide analytics is unavailable.",
+    "reservationPriority": [
+      "PROTECTED_DAILY_SHADOW_AND_LAUNCH_CRITICAL_EVIDENCE",
+      "REQUIRED_PHYSICAL_ACCEPTANCE_OR_REPAIR_RUN",
+      "HISTORICAL_ANNUAL_BOUNDED_WRITER",
+      "DISCRETIONARY_RECENT_A1_WARMUP"
+    ]
+  },
+  "acceptanceImplications": [
+    "REMEDIATION must provide an account-usage probe abstraction with explicit OBSERVED_ACCOUNT_USAGE versus UNKNOWN_HEADROOM states.",
+    "Analytics-token denial must be a normal fail-safe state, not a workflow crash that tempts permission expansion.",
+    "Recent A1 warmup push mutation remains prohibited regardless of analytics availability.",
+    "No quota gate may infer System1's exact write contribution unless account analytics resolves database attribution.",
+    "No paid Cloudflare plan, secret, or permission change is authorized by this evidence."
+  ],
+  "protectedBoundaries": [
+    "No new Cloudflare permission or secret is required to remain fail-safe",
+    "No paid plan upgrade",
+    "No System1 Formal/runtime mutation",
+    "No strategy/ranking/final-selection/push/capital/order authority changes"
+  ]
+}
