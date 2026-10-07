@@ -7737,3 +7737,76 @@ A. first real exact-window source-honest W0 technical-continuity receipt under f
 B. next genuine ordinary-session immutable C1 generation + authoritative V8.20 Formal-to-C1 binding after Production/live-readback official-quality repair.
 
 When both exist on admissible evidence cuts, immediately run the existing D03-10 Bollinger L3 + parent-binding oracles.
+
+
+## 2026-10-08 D03 — TI-1475~1494 CORR-007 suspension provenance promotion firewall
+
+Canonical D03 artifacts:
+- `research/D03_CORR007_SUSPENSION_PROVENANCE_PROMOTION_FIREWALL_20261008_V0_1.md`;
+- `research/d03_corr007_suspension_provenance_acceptance_cases_20261008_v0_1.json`;
+- `research/test_d03_corr007_suspension_provenance_acceptance_v0_1.mjs`.
+
+Upstream finding:
+- `S2-CORR-20261008-007` = HIGH / OPEN / BUILD_LANE;
+- canonical audit = `system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`.
+
+### TI-1475~1480 — current CLEAR_NO_ACTION path has an additive suspension-provenance gap
+
+Latest-main code accepts `suspensionCoverageByExchange.TWSE=COMPLETE` as a plain status inside the corporate-action completeness receipt. Promotion then validates sourceEvidenceRefs only against the three TWSE corporate-action exact-range source contracts. A bounded TWTAWU suspension-completeness receipt identity/digest is not independently mandatory.
+
+Therefore:
+- three valid corporate-action refs do not prove suspension completeness;
+- hashing an unproven COMPLETE string does not prove source lineage;
+- exact-session readiness does not prove negative suspension completeness;
+- a real positive suspension row proves parser/representation behavior only, not complete absence over a different replay window.
+
+This defect is directly relevant to D03-09/D03-10 because a false `CLEAR_NO_ACTION_ELIGIBLE` receipt could admit contaminated RAW bars as technical continuity.
+
+### TI-1481~1487 — D03 promotion firewall
+
+D03 accepts a W0 CLEAR_NO_ACTION receipt only when all of the following are jointly bound:
+1. exchange = TWSE and suspension interval exactly equals the selected replay interval;
+2. first-class bounded suspension evidence includes a 64-hex digest, source family/version and receipt version;
+3. one matching suspension sourceEvidenceRef is additive to the three corporate-action refs;
+4. evidence timing is causal: prospective observedAt or verified availableAt is no later than the decision cutoff;
+5. zero partial-source rows and zero unresolved lifecycle conflicts;
+6. source absence alone does not certify NO_EVENT;
+7. exact-session reconciliation is ready;
+8. archive/completeness hash changes when the suspension receipt digest changes.
+
+Missing, mismatched, late or unbound suspension evidence must resolve to `CONTINUITY_UNKNOWN`, never CLEAR_NO_ACTION.
+
+Ownership remains separated:
+- BUILD_LANE implements the binding firewall;
+- DATA_LANE produces the real bounded TWTAWU receipt;
+- D03 owns only the inference/promotion guard and later readback.
+
+### TI-1488~1491 — executable falsification matrix
+
+The 20-case oracle passes. It rejects missing evidence, invalid/mismatched digest, wrong interval/exchange, partial coverage, missing source ref, post-cutoff observation, insufficient corporate-action refs, exact-session failure, archive-hash nonbinding, missing versions, absence inference, conflicts and partial-source execution.
+
+Observed:
+`status=PASS; cases=20; plainCompleteRejected=true; digestMutationChangesBoundInput=true; d03MaturityPct=56.7; formalCoreImpact=NONE_LOCKED`.
+
+Counterevidence is preserved:
+- the oracle proves contract mechanics only;
+- CORR-007 remains OPEN until merged-main implementation and independent verification;
+- no real bounded suspension receipt exists yet;
+- no W0 technical-continuity receipt exists yet;
+- OOS, walk-forward, multiple testing, cost, fillability, market-state and alpha evidence remain UNKNOWN.
+
+### TI-1492~1494 — maturity and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 L3/60 + 2 L2/40;
+- D03-09 / D03-10 remain L2/40;
+- outcomes CLOSED;
+- Formal Core LOCKED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next is still dual-track but W0 is refined:
+A. first accept merged-main CORR-007 implementation/independent verification, then consume a real exact-window bounded TWTAWU receipt whose immutable digest/source/timing is bound additively with all three corporate-action refs into the archive and continuity receipt; only then may CLEAR_NO_ACTION qualify;
+B. independently consume the next genuine ordinary-session immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback official-quality repair.
+
+When both admissible inputs exist, execute the existing D03-10 Bollinger L3 and parent-binding oracles. D03-09 remains second and additionally requires canonical Wilder H/L/C full replay or replay-certified trusted state.
