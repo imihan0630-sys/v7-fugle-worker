@@ -1660,3 +1660,40 @@ Workflow green alone is insufficient; acceptance requires:
 `PARENT_COMPLETE && READBACK_VERIFIED && ELIGIBLE_FOR_RESEARCH`.
 
 No alternate universe, historical backfill or selected-only denominator is authorized.
+
+
+## BR-068B — actual scheduled C1 parent failure confirmed (2026-10-08)
+
+Artifact:
+- `research/BR068B_D09_05_ACTUAL_SCHEDULED_C1_FAILURE_20261008_V0_1.md`
+
+Run:
+- workflow = `System 1 C1 Prospective Evidence`;
+- run = `37652129851`;
+- created = 2026-10-08 00:27:08 Asia/Taipei;
+- event = schedule;
+- conclusion = FAILURE;
+- artifact id = `11496544209`;
+- artifact digest = `sha256:90291db1aa7b2d5ec4be397235ec217313777707ca610c4ddf28b1e51c8925a2`.
+
+Job result:
+- V8.19 generation-inventory semantics = PASS;
+- V8.20 Formal-C1 binding readback semantics = PASS;
+- immutable C1 population read/verify = FAIL.
+
+Collector state:
+- scanDate = 2026-10-07;
+- category = `FORMAL_SCAN_NOT_CONFIRMED`;
+- verificationFailure = `C1_GENERATION_NOT_FOUND`;
+- mayCountAsZeroPick = false;
+- noPlanChanges = true.
+
+BR-068A scheduler-latency guard is now empirically confirmed and no longer the active uncertainty.
+
+D09-05 remains L2/40.
+Active blocker is genuine parent absence, not scheduler timing.
+
+Exact next:
+wait for a later ordinary-session scheduled C1 artifact after upstream official-quality transport repair is production/live-readback verified. Accept only a complete/readback-verified/research-eligible parent, then run the frozen MA20/MA60 builder outcome-blind.
+
+Formal Core unchanged.
