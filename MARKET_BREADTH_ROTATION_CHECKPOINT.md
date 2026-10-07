@@ -1567,3 +1567,51 @@ BR-065 native milestone surveillance across all five frozen actions; future stoc
 SDA-009 remains interrupt-priority if a genuine System1 R3A1 receipt appears.
 
 Formal Core unchanged.
+
+
+## BR-066 — D09-12 promoted to L3 on bounded same-date joint receipt (2026-10-07)
+
+Artifacts:
+- `research/BR066_D09_12_SAME_DAY_BREADTH_REGIME_JOINT_RECEIPT_20261007_V0_1.md`
+- `research/br066_d09_12_same_day_breadth_regime_joint_receipt_20261007_v0_1.json`
+
+Decision cutoff:
+`2026-10-07T23:55:26+08:00`.
+
+Frozen same-date known scope:
+- TAIEX context = KNOWN;
+- TWSE stock-direction breadth = KNOWN;
+- TPEx same-clock breadth = UNKNOWN;
+- outcomes = CLOSED.
+
+D09-12 maturity:
+`L2 / 40% -> L3 / 60%`.
+
+D09 aggregate maturity:
+`57.1% -> 58.6%`.
+
+Interpretation remains bounded:
+- cap-weighted index direction is not equal-stock breadth;
+- one-day divergence direction is not predictive Alpha;
+- missing TPEx scope remains UNKNOWN;
+- no canonical broad-positive/broad-negative label is authorized from this receipt alone.
+
+Exact next:
+BR-067 accumulate independent same-clock receipts, ideally dual-market and continuity-certified.
+
+## D09-05 remaining blocker after BR-066
+
+D09-05 is now the only remaining L2 module in D09.
+
+Latest authoritative parent evidence still reports:
+- `C1_GENERATION_NOT_FOUND`;
+- eligibleForResearch=false;
+- latest confirmed Formal scan date = 2026-09-29;
+- missing quality families = FINANCIAL / QUARTER_EPS.
+
+Do not manually rebuild a substitute universe.
+
+The normal `System 1 C1 Prospective Evidence` schedule is 00:10 Asia/Taipei after the 23:35 production scan. Room07 must consume the next genuine successful same-generation parent receipt when it appears; do not rerun a schedule-event job merely to force evidence because the workflow's scheduled path may register C3 research state.
+
+D09-05 remains L2/40.
+Formal Core unchanged.
