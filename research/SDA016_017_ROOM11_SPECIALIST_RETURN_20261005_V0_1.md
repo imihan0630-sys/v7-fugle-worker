@@ -1599,3 +1599,89 @@ No maturity change.
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 nested acquisition missingness / upstream-block propagation
+
+New canonical artifacts:
+- `research/D16_NESTED_ACQUISITION_MISSINGNESS_CONTRACT_20261007_V0_1.md`;
+- `research/D16_NESTED_ACQUISITION_MISSINGNESS_CONTRACT_20261007_V0_1.json`;
+- `research/D16_NESTED_ACQUISITION_EPISODE_37556241467_V0_1.json`.
+
+Trigger:
+System1 quality live run `37556241467`.
+
+Executable-path readback proves:
+- FINANCIAL acquisition executes before QUARTER_EPS;
+- successful FINANCIAL creates `financialSnapshot`;
+- QUARTER_EPS subsequently consumes that snapshot in parts of its validation logic;
+- when FINANCIAL transport failed, QUARTER_EPS stage was not reached.
+
+Therefore current run is not:
+two independent source failures.
+
+Canonical interpretation:
+- FINANCIAL = `ROOT_OBSERVED_FAILURE`;
+- terminal = `MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED`;
+- independent episode credit = 1.
+- QUARTER_EPS = `DERIVED_DOWNSTREAM_BLOCK`;
+- terminal = `DOWNSTREAM_NOT_REACHED_UPSTREAM_BLOCKED`;
+- attempted = false;
+- independent episode credit = 0.
+
+### Denominator firewall
+
+Keep separate:
+- acquisitionAttemptedDatasetN;
+- acquisitionObservedFailureN;
+- downstreamNotReachedN;
+- independentAcquisitionEpisodeN;
+- blockedDatasetN;
+- recoveredDatasetN.
+
+Current physical witness:
+- acquisitionAttemptedDatasetN = 1;
+- acquisitionObservedFailureN = 1;
+- downstreamNotReachedN = 1;
+- independentAcquisitionEpisodeN = 1;
+- blockedDatasetN = 2.
+
+Do not convert blockedDatasetN=2 into failureN=2.
+
+### Estimand split
+
+Source-conditional QUARTER_EPS transport reliability may only use:
+`QUARTER_EPS_STAGE_ACTUALLY_ATTEMPTED`.
+
+End-to-end pipeline availability for QUARTER_EPS is a separate estimand:
+`PIPELINE_END_TO_END_DATASET_AVAILABILITY`.
+
+Do not label the latter as source transport reliability.
+
+### Positivity
+
+Because QUARTER_EPS is only observed after upstream FINANCIAL success in the current path, the FINANCIAL-failed stratum has zero direct support for QUARTER_EPS source reliability.
+
+Therefore:
+- no automatic IPW;
+- no extreme-weight rescue;
+- no marginal reliability inference from conditional observations;
+- current disposition = `ACQUISITION_POSITIVITY_NOT_ESTABLISHED`.
+
+### Recovery
+
+If a future run recovers FINANCIAL and actually reaches QUARTER_EPS:
+- create a new acquisition episode;
+- retain the old FINANCIAL failure;
+- retain the old QUARTER_EPS NOT_REACHED state;
+- only the new QUARTER_EPS attempt can establish independent source success/failure;
+- no retrospective repair of 2026-10-06 prospective evidence.
+
+Supplemental mapping only:
+SDA016-T28 / T31 / T33 / T39.
+Canonical SDA016 remains 58 tests.
+
+No maturity change.
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
