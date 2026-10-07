@@ -879,6 +879,14 @@ Correction consequence:
 - TPEx `tpex_mainboard_daily_close_quotes`: payload date `1151007` (2026-10-07) was visible. Firecrawl warned that the page was too long to process in full; therefore Firecrawl truncation is a client/tool processing limitation and must NOT be cited as proof that the official TPEx response itself was truncated.
 - Consequence: canonical collector must independently establish complete-body parse integrity. TWSE publication lag and TPEx acquisition/body-integrity handling remain separate failure classes.
 
+### 2026-10-07 18:43 alternate official A1 source diagnosis
+
+- TWSE `STOCK_DAY_ALL` still exposed `1151006`, but official `MI_INDEX?date=20261007&type=ALLBUT0999` simultaneously returned HTTP 200 / JSON / `stat=OK` with an explicit 2026-10-07 daily-close table. Therefore the market's current-day official close data existed; the current prospective endpoint was lagging.
+- TPEx official `afterTrading/dailyQuotes?date=2026/10/07` simultaneously returned HTTP 200 / JSON with explicit 2026-10-07 success and per-stock daily-close rows. This is already System 2's accepted historical A1 primary source for TPEx.
+- Repository readback confirms TWSE `MI_INDEX` and TPEx `dailyQuotes` historical A1 parsers already enforce requested-date matching, ordinary-symbol uniqueness, OHLC integrity and normalized RAW fields.
+- Important PIT boundary: historical receipts explicitly state `historicalPublicationTimestampProven=false`. Their fixed `SESSION_CLOSE_FINALITY` availableAt is historical replay semantics, NOT proof of prospective publication time and must not be backdated into firstKnownAt.
+- Required repair direction: evaluate a versioned prospective A1 contract over these already-validated official one-date sources; prove same-date canonical-field / ordinary-symbol coverage equivalence before switching/fallback; collect actual first-READY timestamps on future real trading dates; preserve fail-closed date/schema/PIT guards.
+
 ### S2-CORR-20261007-002 — Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies
 
 - createdAt: 2026-10-07T16:40:34+08:00
