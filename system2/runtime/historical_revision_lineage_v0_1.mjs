@@ -35,11 +35,15 @@ function normalizeRow(row){
     tradeValue:value(row,"tradeValue","trade_value")??null,
     transactions:value(row,"transactions","transactions")??null,
     change:value(row,"change","change_value")??null,
+    sourceId:text(value(row,"sourceId","source_id"))||null,
+    sourceName:text(value(row,"sourceName","source_name"))||null,
     sourceRowHash:text(value(row,"sourceRowHash","source_row_hash"))||null,
     availableAt:text(value(row,"availableAt","available_at"))||null,
     observedAt:text(value(row,"observedAt","observed_at"))||null,
     capturedAt:text(value(row,"capturedAt","captured_at"))||null,
     availabilityBasis:text(value(row,"availabilityBasis","availability_basis"))||null,
+    pitAvailabilityClass:text(value(row,"pitAvailabilityClass","pit_availability_class"))||null,
+    continuityState:text(value(row,"continuityState","continuity_state"))||"UNVERIFIED",
     pitReplayEligible:
       value(row,"pitReplayEligible","pit_replay_eligible")===true
       || value(row,"pitReplayEligible","pit_replay_eligible")===1
