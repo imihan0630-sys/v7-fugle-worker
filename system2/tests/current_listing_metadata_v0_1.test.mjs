@@ -122,8 +122,8 @@ const listedJson = JSON.stringify([
   {"出表日期":"20261003","公司代號":"1101","公司名稱":"台灣水泥股份有限公司","公司簡稱":"台泥","產業別":"水泥工業","上市日期":"1962/02/09"}
 ]);
 const otcJson = JSON.stringify([
-  {"出表日期":"20261003","公司代號":"6488","公司名稱":"環球晶圓股份有限公司","公司簡稱":"環球晶","產業別":"半導體業","上櫃日期":"2015/09/25"},
-  {"出表日期":"20261003","公司代號":"7777","公司名稱":"測試新櫃公司","公司簡稱":"新櫃","產業別":"其他","上櫃日期":"115/09/29"}
+  {"Date":"1151003","SecuritiesCompanyCode":"6488","CompanyName":"環球晶圓股份有限公司","CompanyAbbreviation":"環球晶","SecuritiesIndustryCode":"24","DateOfListing":"20150925"},
+  {"Date":"1151003","SecuritiesCompanyCode":"7777","CompanyName":"測試新櫃公司","CompanyAbbreviation":"新櫃","SecuritiesIndustryCode":"99","DateOfListing":"20260929"}
 ]);
 const jsonFetched = await fetchCurrentListingMetadataV0_1({
   observedAt: "2026-10-03T05:00:00.000Z",
