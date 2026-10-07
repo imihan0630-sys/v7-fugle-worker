@@ -711,3 +711,14 @@ Exact remaining pre-outcome gate:
 5. only then unlock the Historical-Valuation Shadow outcome join.
 
 D08-03 remains L3/60. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+
+
+## 2026-10-08 D08-03 — 44-date outcome-blind percentile snapshots physically materialized
+
+The source-only percentile layer is now physically complete for the preregistered TWSE monthly scan clock. Run `37648084681` materialized and read back all 44 immutable snapshots using the frozen 2005-2026 daily archive, universe V0.2 and raw valuation V0.3. This closes the percentile-materialization gate, not the outcome gate.
+
+Coverage across 45,305 cohort-member/date rows is intentionally asymmetric: PE has 35,737 current known observations versus PB 45,054. The materializer preserves this missingness rather than turning PE N/A into a cheap/expensive numeric state. Exact eligible-window totals are PE 252=34452, 756=32436, 1260=30567, expanding=34452; PB 252=43548, 756=41237, 1260=39489, expanding=43548.
+
+The durable semantic bundle is `2b16513f237ca1c45b1658d5eaa35b5b45d7f23766b87aff7b8a85aec11f1c91`; the stored-object bundle is `235f2c43281846aa8be65f26829935a0193875ee92fe5169784f3f73c355a077`. Every object passed byte-level readback and canonical payload hash verification. The run also revalidated each source year-pack and each raw V0.3 month-end object before deriving percentiles, so the result is chained to frozen provenance rather than to current mutable source rows.
+
+Interpretation remains conservative: a percentile is a historically relative valuation state, not a directional alpha claim. Fiscal denominator transitions, listing history, missing valuation states, industry/peer context and common-support controls remain potential confounders. Therefore D08-03 stays L3/60 and the return outcome gate stays CLOSED. The next admissible step is the already-preregistered outcome-blind control snapshot freeze; only after that layer passes coverage/readback may Historical-Valuation Shadow outcomes be joined.
