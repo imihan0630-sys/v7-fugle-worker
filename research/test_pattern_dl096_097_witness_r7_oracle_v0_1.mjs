@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import {compareWitnessIdentity,canCrossCreditReceipt,validateR7,validateModuleRoot} from "./pattern_dl096_097_witness_r7_oracle_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+const h="a".repeat(64);
+const upstream={R1:"PASS",R2:"PASS",R3:"PASS",R4:"PASS",R5:"PASS",R6:"PASS"};
+const base={moduleId:"D01-02",market:"TWSE",symbol:"1101",targetDate:"2021-06-15",predictorFreezeAt:"2021-06-15T14:30:00+08:00",firstObservableAt:"2021-06-15T14:30:00+08:00",requiredSourceBarIds:["b1"],exactSessionHash:h,sourceHistoryHash:h,featureState:"NO_STRUCTURE",deterministicFeatureHash:h,replaySafe:true,outcomeFieldsPresent:false,informationRoot:"PRICE_OHLC"};
+
+t("D9601 same symbol different date is non-equivalent",()=>assert.equal(compareWitnessIdentity({market:"TWSE",symbol:"1101",targetDate:"2021-06-15"},{market:"TWSE",symbol:"1101",targetDate:"2026-10-07"}).status,"CROSS_WITNESS_NON_EQUIVALENT"));
+t("D9602 different source-history hash is non-equivalent",()=>assert.equal(compareWitnessIdentity({market:"TWSE",symbol:"1101",targetDate:"2021-06-15",sourceHistoryHash:h},{market:"TWSE",symbol:"1101",targetDate:"2021-06-15",sourceHistoryHash:"b".repeat(64)}).status,"CROSS_WITNESS_NON_EQUIVALENT"));
+t("D9603 exact identity permits identity-level cross-credit eligibility",()=>assert.equal(canCrossCreditReceipt({sourceWitness:{market:"TWSE",symbol:"1101",targetDate:"2021-06-15",interfaceCutoffAt:"c",exactSessionHash:h,sourceHistoryHash:h},targetWitness:{market:"TWSE",symbol:"1101",targetDate:"2021-06-15",interfaceCutoffAt:"c",exactSessionHash:h,sourceHistoryHash:h}}).status,"CROSS_CREDIT_IDENTITY_ELIGIBLE"));
+t("D9701 missing upstream R6 blocks R7",()=>assert.equal(validateR7(base,{...upstream,R6:"PENDING"}).status,"R7_EMISSION_BLOCKED"));
+t("D9702 first-wave no-structure R7 is admissible",()=>assert.equal(validateR7(base,upstream).status,"R7_ADMITTED"));
+t("D9703 non-first-wave module rejected in first wave",()=>assert.equal(validateR7({...base,moduleId:"D01-04"},upstream).status,"R7_MODULE_NOT_FIRST_WAVE"));
+t("D9704 future-observed feature rejected",()=>assert.equal(validateR7({...base,firstObservableAt:"2021-06-16T00:00:00+08:00"},upstream).status,"R7_LOOKAHEAD"));
+t("D9705 outcome contamination rejected",()=>assert.equal(validateR7({...base,outcomeFieldsPresent:true},upstream).status,"R7_OUTCOME_CONTAMINATED"));
+t("D9706 duplicate source bars rejected",()=>assert.equal(validateR7({...base,requiredSourceBarIds:["b1","b1"]},upstream).status,"R7_SOURCE_BARS_DUPLICATED"));
+t("D9707 invalid feature hash rejected",()=>assert.equal(validateR7({...base,deterministicFeatureHash:"decorative"},upstream).status,"R7_FEATURE_HASH_INVALID"));
+t("D9708 D01-02 must stay PRICE_OHLC-rooted",()=>assert.equal(validateModuleRoot({...base,informationRoot:"NAMED_CANDLE_LABEL"}).status,"R7_INFORMATION_ROOT_MISMATCH"));
+t("D9709 D01-09 requires R5 context pass",()=>assert.equal(validateModuleRoot({...base,moduleId:"D01-09",priceLimitContextPass:false}).status,"R7_D0109_R5_CONTEXT_REQUIRED"));
+t("D9710 D01-07 retrospective backpaint rejected",()=>assert.equal(validateModuleRoot({...base,moduleId:"D01-07",retrospectiveBackpaint:true}).status,"R7_D0107_BACKPAINT_PROHIBITED"));
+t("D9711 D01-07 online lifecycle root accepted",()=>assert.equal(validateModuleRoot({...base,moduleId:"D01-07",retrospectiveBackpaint:false}).status,"R7_MODULE_ROOT_VALID"));
+console.log(`SUMMARY ${p}/14 PASS`);
