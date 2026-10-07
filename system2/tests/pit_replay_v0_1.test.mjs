@@ -56,6 +56,7 @@ assert.equal(window.selectedSessionCount, 61);
 assert.equal(window.lastSelectedDate, "2026-09-29");
 assert.equal(window.bars.at(-1).close, 169);
 assert.equal(window.blockerCodes.length, 0);
+assert.equal(window.bars.at(-1).continuityState, "CLEAR_NO_ACTION");
 
 const unavailableTargetBatch = await buildHistoricalStoreIngestBatch({
   batchId: "PIT-UNAVAILABLE-TARGET",
@@ -182,5 +183,53 @@ const legacyAdjustedReplay = await buildPitReplayWindow({
 assert.ok(legacyClearReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
 assert.ok(legacyAdjustedReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
 assert.equal(legacyClearReplay.replayHash, legacyAdjustedReplay.replayHash);
+
+const legacyClearRows = batch.rows.map((row) => ({
+  ...row,
+  continuityState: "CLEAR_NO_ACTION",
+}));
+const legacyAdjustedRows = batch.rows.map((row) => ({
+  ...row,
+  continuityState: "ADJUSTED_CONTINUITY",
+}));
+
+const legacyClearReplay = await buildPitReplayWindow({
+  replayId: "PIT-2330-NCT01-SANITIZED",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-09-29T10:10:00Z",
+  lookbackSessions: 61,
+  historicalBars: legacyClearRows,
+  continuityMode: "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION",
+});
+const legacyAdjustedReplay = await buildPitReplayWindow({
+  replayId: "PIT-2330-NCT01-SANITIZED",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-09-29T10:10:00Z",
+  lookbackSessions: 61,
+  historicalBars: legacyAdjustedRows,
+  continuityMode: "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION",
+});
+assert.ok(legacyClearReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
+assert.ok(legacyAdjustedReplay.bars.every((x) => x.continuityState === "UNVERIFIED"));
+assert.equal(
+  legacyClearReplay.continuityMode,
+  "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION",
+);
+assert.equal(legacyClearReplay.replayHash, legacyAdjustedReplay.replayHash);
+
+await assert.rejects(
+  () => buildPitReplayWindow({
+    replayId: "PIT-2330-BAD-CONTINUITY-MODE",
+    symbol: "2330",
+    marketDate: "2026-09-29",
+    decisionTimestamp: "2026-09-29T10:10:00Z",
+    lookbackSessions: 61,
+    historicalBars: batch.rows,
+    continuityMode: "UNKNOWN_MODE",
+  }),
+  /unsupported continuityMode/,
+);
 
 console.log("System2 PIT replay v0.1 tests passed");
