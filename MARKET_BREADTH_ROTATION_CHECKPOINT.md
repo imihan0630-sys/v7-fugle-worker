@@ -1810,3 +1810,46 @@ BR-040 and BR-066 consume the same 2026-10-07 TWSE stock-direction root. Consume
 
 D09-04 remains L3/60.
 No L4 promotion; continue independent dates and add TPEx only under accepted same-clock denominator semantics.
+
+
+## BR-045 — first full-universe official TWSE industry rank baseline (source date 2026-10-07)
+
+Artifact:
+- `research/br045_twse_full_industry_rank_baseline_20261007_v0_1.json`
+
+The official TWSE MI_INDEX industry total-return block is frozen into a 34-index append-only rank universe before the next Taiwan regular session.
+
+Frozen rank contract:
+- retain all 34 published industry total-return indices;
+- daily total-return pct descending;
+- rank 1 = strongest;
+- percentile = `100 * (N - midRank)/(N - 1)`;
+- exact ties use mid-rank;
+- no Top-N optimization;
+- composite parent rows `化學生技醫療` and `電子工業` are retained but flagged as overlapping, not independent child-sector causal votes.
+
+2026-10-07 strongest three:
+- 玻璃陶瓷 +8.98%;
+- 塑膠 +6.85%;
+- 油電燃氣 +4.97%.
+
+Weakest three:
+- 其他電子 -0.62%;
+- 電腦及週邊設備 -1.28%;
+- 電子零組件 -1.39%.
+
+BR-044 bounded seven-sector continuity under the SAME seven-sector denominator:
+- 綠能環保 rank 7 -> 2 (+5);
+- 數位雲端 6 -> 3 (+3);
+- 電子零組件 2 -> 7 (-5);
+- 航運 3 -> 6 (-3);
+- 油電燃氣 1 -> 1;
+- 金融保險 4 -> 4;
+- 半導體 5 -> 5.
+
+This is rank-transition evidence, not persistence/Alpha evidence.
+
+D09-06 remains L3/60.
+Exact next: append the next independent official 34-index receipt under the same taxonomy/rank contract, then compute comparable deltaPercentileRank/rotationVelocity; member breadth/concentration remains required before leadership interpretation.
+
+Formal Core unchanged.
