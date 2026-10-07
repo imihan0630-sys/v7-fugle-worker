@@ -4852,3 +4852,90 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from disposition-security periodic matching / altered matching cadence, where apparent persistence may be a microstructure artifact.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-068~070 (2026-10-07)
+
+### DL-068 — Disposition-security periodic matching / altered cadence
+- Official TWSE attention/disposition rules were re-read live.
+- Disposition can alter matching cadence, prepayment/full-payment, margin/short-sale constraints, broker order caps and in severe cases trading status.
+- Periodic matching != continuous matching.
+- WALL_CLOCK_TIME and MATCHING_OPPORTUNITY_COUNT are separate clocks.
+- Fewer prints do not prove low information arrival.
+- Repeated same-price auction prints do not automatically strengthen support/resistance.
+- Volume concentrated at periodic call auctions requires cadence normalization.
+- Disposition assignment is endogenous to prior abnormal price/volume/turnover path; naive before/after design is selection-biased.
+- Primary comparator separates matched abnormal/attention securities with continuous matching from disposition securities with periodic matching.
+- D16 ladder P0-P12 frozen.
+- 12 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### DL-069 — Attention/disposition public-label effect
+- PRE_LABEL_ABNORMAL_PATH, PUBLIC_LABEL_EVENT and TRADING_MECHANISM_INTERVENTION are now distinct causal objects/clocks.
+- Regulatory label is not a directional technical signal.
+- Public salience/broker warnings/financing constraints may change behavior after publication.
+- Post-label breakout/reversal cannot be attributed to the prior structural level without controlling the abnormal trigger path.
+- Repeated notices/extensions under one surveillance chain keep one regulatoryRootId; notices do not multiply N.
+- Three future estimands are separated:
+  A label increment;
+  B mechanism increment;
+  C structural-zone increment.
+- D16 ladder L0-L12 frozen.
+- 12 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### DL-070 — Sparse-liquidity / stale-print / price-clustering false structure
+- Research literature was deep-read across support/resistance memory, liquidity-gap price changes, liquidity crises, price clustering and call-auction formation.
+- Measurable support/resistance memory and microstructure artifacts can coexist; neither literature cancels the other.
+- REPEATED_BAR_PRICE != REPEATED_EXECUTION.
+- Zero-trade bars, carried prices, duplicate vendor prints and one auction split into multiple bars are prohibited as independent touches.
+- Tick size, zone width in ticks and round-price clustering are explicit controls.
+- Certified order-book-gap crossing is LIQUIDITY_GAP_CROSSING, not breakout strength.
+- Bounce denominator must retain all eligible roots, including no-revisit, crossed, expired and data-blocked roots.
+- Arbitrary calendar half-life is rejected.
+- Competing future freshness clocks frozen:
+  ELIGIBLE_SESSION_COUNT;
+  INDEPENDENT_EXECUTION_COUNT;
+  INFORMATION_EVENT_COUNT;
+  VOLATILITY_DISTANCE_TRAVELED;
+  LIQUIDITY_OPPORTUNITY_COUNT.
+- D16 ladder I0-I12 frozen.
+- 12 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### Evidence / governance
+- New evidence ledger:
+  research/D01_DL068_070_EVIDENCE_LEDGER_V0_1.md
+- New DL-068 files:
+  research/PATTERN_DISPOSITION_PERIODIC_MATCHING_FIREWALL_V0_1.md
+  research/pattern_disposition_periodic_matching_firewall_v0_1.json
+  research/pattern_disposition_periodic_matching_firewall_v0_1.mjs
+  research/test_pattern_disposition_periodic_matching_firewall_v0_1.mjs
+  research/PATTERN_DISPOSITION_PERIODIC_MATCHING_D16_HANDOFF_V0_1.md
+- New DL-069 files:
+  research/PATTERN_REGULATORY_LABEL_FIREWALL_V0_1.md
+  research/pattern_regulatory_label_firewall_v0_1.json
+  research/pattern_regulatory_label_firewall_v0_1.mjs
+  research/test_pattern_regulatory_label_firewall_v0_1.mjs
+  research/PATTERN_REGULATORY_LABEL_D16_HANDOFF_V0_1.md
+- New DL-070 files:
+  research/PATTERN_ILLIQUIDITY_FALSE_STRUCTURE_FIREWALL_V0_1.md
+  research/pattern_illiquidity_false_structure_firewall_v0_1.json
+  research/pattern_illiquidity_false_structure_firewall_v0_1.mjs
+  research/test_pattern_illiquidity_false_structure_firewall_v0_1.mjs
+  research/PATTERN_ILLIQUIDITY_FALSE_STRUCTURE_D16_HANDOFF_V0_1.md
+- SDA-001 remains open.
+- SDA-002 remains open.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-070
+
+1. Execute DL-068/069/070 research Node adversarial tests independently; until then keep TEST_EXECUTION_PENDING.
+2. Reconcile branch against latest main before merge; current main drift observed during the tranche is System2-only and does not touch D01 files.
+3. Start DL-071: structural-level freshness tournament.
+4. Pre-register competing freshness clocks (eligible sessions, independent executions, information events, volatility distance, liquidity opportunities) before any outcome join.
+5. Define root-level denominator and negative controls so expired/no-revisit roots remain in the population.
+6. Hand freshness-model comparison to D16; no best-after-outcome clock selection.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. No Formal Core change.
