@@ -7,6 +7,10 @@ on:
       - "system2/runtime/system2_policy_fingerprint_v0_1.mjs"
       - "system2/scripts/generate_sda022_system2_policy_fingerprints_v0_1.mjs"
       - "system2/tests/system2_policy_fingerprint_v0_1.test.mjs"
+      - "system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs"
+      - "system2/evidence/SDA022_SYSTEM2_SHORT_MOMENTUM_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_SWING_GROWTH_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_STAGE1_POLICY_FINGERPRINT_SET_V0_1.json"
       - ".github/workflows/system2-sda022-policy-fingerprint-v0-1.yml"
   push:
     branches: [main]
@@ -14,6 +18,10 @@ on:
       - "system2/runtime/system2_policy_fingerprint_v0_1.mjs"
       - "system2/scripts/generate_sda022_system2_policy_fingerprints_v0_1.mjs"
       - "system2/tests/system2_policy_fingerprint_v0_1.test.mjs"
+      - "system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs"
+      - "system2/evidence/SDA022_SYSTEM2_SHORT_MOMENTUM_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_SWING_GROWTH_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_STAGE1_POLICY_FINGERPRINT_SET_V0_1.json"
       - ".github/workflows/system2-sda022-policy-fingerprint-v0-1.yml"
 
 permissions:
@@ -33,6 +41,9 @@ jobs:
 
       - name: Contract tests
         run: node system2/tests/system2_policy_fingerprint_v0_1.test.mjs
+
+      - name: Static receipt exact-rebuild test
+        run: node system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs
 
       - name: Generate source-bound fingerprints
         env:
