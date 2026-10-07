@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "S2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T15:10:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditedImplementation": {
+    "pullRequest": 775,
+    "mergeCommit": "28a42d5d49dce00a42dacf18797b45a904fc6dc3",
+    "acceptanceCommit": "9dff76fb235e8da38e8f07c38e355c7be6046d5a",
+    "sourceType": "USER_UPLOADED_BROKER_SCREENSHOT"
+  },
+  "findingState": "PASS_WITH_EXPLICIT_OPERATIONAL_GAP",
+  "authorityBoundary": {
+    "brokerApiAuthorized": false,
+    "brokerAdapterAuthorized": false,
+    "brokerTokenOrCertificateRequired": false,
+    "realOrdersEnabled": false,
+    "liveCapitalAuthority": false,
+    "brokerOrderRoutingAuthorized": false,
+    "system1HoldingsAutoImportAuthorized": false,
+    "result": "PASS"
+  },
+  "implementationReadback": {
+    "validationRuntime": true,
+    "immutableSnapshotRuntime": true,
+    "reconciliationRuntime": true,
+    "persistenceRuntime": true,
+    "readModelRuntime": true,
+    "actualVsVirtualStorageSeparated": true,
+    "idempotencyImplemented": true,
+    "lowConfidenceFailClosed": true,
+    "unresolvedReviewBlocksPersistence": true,
+    "tradePriceTimeOrderIdNotInvented": true,
+    "result": "PASS_CODE_PATH"
+  },
+  "uiTruthfulness": {
+    "sourceShownAs": "USER_UPLOADED_BROKER_SCREENSHOT",
+    "actualHoldingsState": "PENDING",
+    "noVerifiedOwnerSnapshotShown": true,
+    "actualPositionMonitorVerified": false,
+    "realOrdersDisabledShown": true,
+    "result": "PASS_NO_FALSE_COMPLETION"
+  },
+  "operationalGap": {
+    "realOwnerScreenshotPhysicallyImported": false,
+    "actualOwnerSnapshotImported": false,
+    "isolatedD1Migration0009PhysicallyAppliedByAcceptance": false,
+    "chatImageToSystem2LiveIngestionEndpointFound": false,
+    "workflowAcceptingRealStructuredHoldingsPayloadFound": false,
+    "actualPositionMonitorVerified": false,
+    "interpretation": "The repository contains the deterministic backend contract/runtime for a screenshot-derived structured payload, but no verified live bridge from a ChatGPT-uploaded image to System2 persistence was found. The acceptance workflow is readonly/test-oriented and uses synthetic structured fixtures.",
+    "nextGate": "FIRST_REAL_OWNER_SCREENSHOT_CONFIRM_PERSIST_READBACK"
+  },
+  "correctionDecision": {
+    "newCorrectionRequired": false,
+    "reason": "Canonical docs and UI explicitly disclose the operational gap and do not claim that a real Owner screenshot has been imported or that Actual Position Monitor is verified. Create a correction only if later surfaces promote CODE_TESTED/PENDING into current operational capability without physical image-to-persistence evidence."
+  },
+  "independentAuditGuardrails": [
+    "Do not treat synthetic structured fixture success as proof of image extraction integration.",
+    "Do not mark Actual Holdings operational until migration/persistence/readback is physically verified in isolated System2 storage.",
+    "Do not infer broker connectivity or order authority from holdings monitoring.",
+    "Keep s2_positions virtual/simulated only.",
+    "The next physical acceptance must use an Owner-provided screenshot or equivalent explicitly authorized real input and preserve confirmation/fail-closed semantics."
+  ]
+}
