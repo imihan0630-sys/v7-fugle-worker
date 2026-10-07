@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "D03_CORR004_EXACT_SYMBOL_SESSION_WINDOW_CONSUMER_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-07T22:18:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_CROSS_LANE_CONSUMER_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "correction": "S2-CORR-20261007-004",
+  "correctionState": "HIGH_OPEN_DATA_LANE",
+  "pr817": {
+    "number": 817,
+    "title": "fix(system2-data): reconcile exact Daily Shadow symbol sessions",
+    "headSha": "43784e500f678be6ee95710822fdafd2af50ac50",
+    "state": "OPEN_DIVERGED_FROM_MAIN",
+    "contentAudit": "CONTENT_PASS_CANDIDATE_CANONICAL_AND_PHYSICAL_ACCEPTANCE_PENDING",
+    "historicalChecks": [
+      "37627845551 PASS",
+      "37627845505 PASS",
+      "37627845383 PASS"
+    ]
+  },
+  "rootCause": {
+    "priorReadiness": "LATEST_REQUIRED_COUNT_OBSERVED_ROWS",
+    "defect": "A missing expected recent eligible symbol-session can be silently replaced by an older row while selectedDateCount still equals the required count.",
+    "canonicalCounterexample": "Expected D1..D60, D55 missing, D0 present -> count remains 60 but exact required session set is wrong.",
+    "d03Classification": "WINDOW_MEMBERSHIP_IDENTITY_DEFECT_NOT_A_SIMPLE_ROW_COUNT_DEFECT"
+  },
+  "d03FrozenRules": [
+    "COUNT_EQUALITY_DOES_NOT_PROVE_ELIGIBLE_SESSION_SET_EQUALITY",
+    "WINDOW_ACCEPTANCE_REQUIRES_EXACT_EXPECTED_VS_OBSERVED_SYMBOL_SESSION_SET_RECONCILIATION",
+    "OLDER_OBSERVATION_CANNOT_SUBSTITUTE_FOR_MISSING_REQUIRED_RECENT_SESSION",
+    "CERTIFIED_NO_TRADING_INTERVALS_ARE_REMOVED_FROM_EXPECTED_SET_NOT_FILLED_WITH_SYNTHETIC_OHLC",
+    "MISSING_OR_UNEXPECTED_SESSIONS_REMAIN_SYMBOL_LOCAL_AND_FAIL_CLOSED",
+    "EMPTY_LIFECYCLE_LOOKUP_DOES_NOT_CERTIFY_NO_EVENT",
+    "TPEx_LIFECYCLE_PARITY_REMAINS_SEPARATE_FROM_TWSE",
+    "EXACT_SESSION_WINDOW_PRECEDES_CONTINUITY_PROMOTION",
+    "CONTINUITY_RECEIPT_MUST_BIND_THE_EXACT_SELECTED_PIT_WINDOW",
+    "RAW_PLUS_ADJUSTED_CONTINUITY_LABEL_WITHOUT_TRANSFORMED_BARS_IS_REJECTED"
+  ],
+  "indicatorConsequences": {
+    "bollinger": {
+      "module": "D03-10",
+      "requirement": "The exact 20 eligible symbol-sessions must match the expected certified set. Twenty observed rows are insufficient when one required recent session is missing and an older row substitutes.",
+      "rejectionExample": "19 correct recent eligible sessions + 1 older substitute = REJECT even though rowCount=20.",
+      "lifecycleHandling": "Certified official no-trading sessions are excluded from the expected set before exact-set reconciliation; no synthetic close carry-forward.",
+      "promotionState": "BLOCKED_PENDING_CANONICAL_PHYSICAL_EXACT_WINDOW_RECEIPT"
+    },
+    "adx": {
+      "module": "D03-09",
+      "requirement": "The ordered H/L/C recursion chain must match the exact expected eligible session sequence. A missing recent session plus older replacement invalidates recursive lineage even if count and final ADX value look plausible.",
+      "rejectionExample": "One missing eligible session changes TR/DM smoothing ancestry; an older bar cannot repair the chain.",
+      "lifecycleHandling": "Official non-trading intervals do not generate TR/DM rows. Resume/restart or transformed continuity remains separately certified.",
+      "promotionState": "BLOCKED_PENDING_CANONICAL_PHYSICAL_EXACT_WINDOW_RECEIPT_AND_WILDER_FULL_REPLAY"
+    },
+    "directTrendMomentum": {
+      "modules": [
+        "D03-01",
+        "D03-02",
+        "D03-03",
+        "D03-04"
+      ],
+      "requirement": "MA/retN/persistence windows must be exact eligible-session suffixes, not merely N latest observed rows.",
+      "maturityImpact": "NO_DOWNGRADE_TO_ACCEPTED_L3_FEASIBILITY; FUTURE_EMPIRICAL_AND_RUNTIME_RECEIPTS_MUST_USE_EXACT_SET_SEMANTICS"
+    }
+  },
+  "acceptanceBoundary": {
+    "engineeringContentCanBeAcceptedBeforeMerge": true,
+    "maturityPromotionBeforeCanonicalMerge": false,
+    "requiredBeforePhysicalCredit": [
+      "PR817 refreshed on then-latest main",
+      "exact-head CI passes",
+      "canonical merge",
+      "merged-main read-only Daily Shadow preflight",
+      "at least one real TWSE witness with exact expected/observed session hashes",
+      "rowsWritten=0 for the read-only witness",
+      "no unresolved expected-session missingness",
+      "positive lifecycle evidence only where applicable"
+    ]
+  },
+  "rawThirdSessionCapture": {
+    "workflowPrepared": ".github/workflows/d03-third-raw-session-capture-readonly.yml",
+    "physicalRunObserved": false,
+    "credit": "NONE",
+    "reason": "GitHub connector cannot dispatch a new workflow and connector-origin contents commits did not trigger the workflow; local direct official-source curl was infrastructure-rate-limited. No raw receipt was fabricated or inferred."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "layerB": "TWSE_IMPLEMENTATION_MACHINE_ACCEPTED_EXACT_SESSION_CORR004_CONTENT_PASS_CANDIDATE_PHYSICAL_PENDING",
+    "layerC": "NOT_PROVEN",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Consume the canonical merged-main CORR-004 physical exact-session witness before any continuity promotion. Require expectedSessionHash/observedSessionHash or equivalent exact set identity and reject older-row substitution. Then bind post-replay CLEAR_NO_ACTION continuity to that exact selected window. Separately consume the first physical annual TWSE V0.6 lifecycle receipt, the third D03 raw source-version receipt when receipt-equivalent execution becomes available, the genuine V8.20 Formal-to-C1 parent receipt, T48 finalization, S2-07 stabilization, D03 dedup/redundancy and D16 incrementality."
+}
