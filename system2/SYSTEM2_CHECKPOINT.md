@@ -2882,16 +2882,16 @@ Next holdings-specific physical gate:
 `FIRST_REAL_OWNER_SCREENSHOT_CONFIRM_PERSIST_READBACK`.
 
 
-## 2026-10-07 Physical implementation acceptance
+## 2026-10-07 Physical implementation acceptance — final merged head
 
-PR #772 merged as `14f67ddba88604e73a2488d4a561a571393f026b`. Dedicated workflow run `37578018310` / job `112651161422` completed successfully and uploaded artifact `11464046556` with digest `sha256:644ee13013df713e91403e6a790e509c3f61e59528cc41977359429241e2dc6a`.
+PR #772 merged as `14f67ddba88604e73a2488d4a561a571393f026b`. Final merged implementation head `5ce2c1bffc514405dd5ce5129f436e0933c37830` passed dedicated workflow run `37579261319` / job `112654963433`, artifact `11463608550`, digest `sha256:4552781daf18eddfb9cd8595a941a144be9c64d394cefd962ee2f7b594280f16`. Earlier run `37578018310` belonged to a superseded PR head that still performed a fourth live recapture and is retained only as historical provenance, not final-code acceptance.
 
 Accepted physical result:
 - state = `MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING`;
-- captureCount = 4;
+- captureCount = 3;
 - unionVersionKeyCount = 168;
-- latestCaptureVersionKeyCount = 168;
-- unionMissingFromLatestCount = 0;
+- latestCaptureVersionKeyCount = 163;
+- unionMissingFromLatestCount = 5;
 - earliestObservedPreserved = true;
 - latestObservedPreserved = true;
 - payloadConflictCount = 0;

@@ -1,30 +1,36 @@
 {
   "schemaVersion": "S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL",
   "recordedDate": "2026-10-07",
-  "recordedAt": "2026-10-07T16:53:00+08:00",
-  "source": {
-    "pullRequest": 772,
+  "correctedAt": "2026-10-07T17:00:00+08:00",
+  "acceptanceAuthority": {
+    "finalMergedImplementationPullRequest": 772,
+    "finalMergedImplementationHead": "5ce2c1bffc514405dd5ce5129f436e0933c37830",
     "mergeCommit": "14f67ddba88604e73a2488d4a561a571393f026b",
-    "workflowRunId": 37578018310,
-    "workflowJobId": 112651161422,
-    "workflowConclusion": "success",
-    "artifactId": 11464046556,
-    "artifactDigest": "sha256:644ee13013df713e91403e6a790e509c3f61e59528cc41977359429241e2dc6a"
+    "finalHeadDedicatedWorkflowRunId": 37579261319,
+    "finalHeadWorkflowJobId": 112654963433,
+    "finalHeadWorkflowConclusion": "success",
+    "finalHeadArtifactId": 11463608550,
+    "finalHeadArtifactDigest": "sha256:4552781daf18eddfb9cd8595a941a144be9c64d394cefd962ee2f7b594280f16",
+    "supersededEarlyRun": {
+      "workflowRunId": 37578018310,
+      "artifactId": 11464046556,
+      "reason": "Earlier PR head still included a fourth live recapture. Later commits removed live recapture and changed the final merged V1.7 physical contract to reconcile only the three accepted immutable V1.6 artifacts."
+    }
   },
   "result": {
     "result": "S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_COMPLETE",
     "state": "MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING",
-    "captureCount": 4,
+    "captureCount": 3,
     "unionVersionKeyCount": 168,
-    "latestCaptureVersionKeyCount": 168,
-    "unionMissingFromLatestCount": 0,
+    "latestCaptureVersionKeyCount": 163,
+    "unionMissingFromLatestCount": 5,
     "earliestObservedPreserved": true,
     "latestObservedPreserved": true,
     "payloadConflictCount": 0,
     "monthOnlyDriftVersionCount": 21,
     "trailingIdenticalTransitions": 0,
     "boundedStabilizationCandidate": false,
-    "unionHash": "2f599d5599f383eedc71de8f3b0ec039e6dbac3689a43bd7dd620153120521ff",
+    "unionHash": "2c82abd1f195b8a7b0b0b023ed3150edc2f8e9d5e93714d6b25e2ed9c38cdfb0",
     "expectedMopsKeysetComplete": false,
     "noRevisionGapThroughCut": false,
     "nextGate": "CONTINUE_BOUNDED_REPEATED_CAPTURE_STABILIZATION"
@@ -42,9 +48,10 @@
     "system1FormalCoreImpact": false
   },
   "interpretation": [
-    "Append-only cross-capture union and earliest/latest observation preservation are physically verified.",
-    "The fourth accepted capture equals the current 168-version union, but trailing-identical-transition count is still zero under the configured bounded-stability rule.",
-    "Month-path membership drift remains observed across the four-capture evidence set; absence is not treated as nonexistence.",
+    "Final merged-code acceptance is bound to run 37579261319 on head 5ce2c1bffc514405dd5ce5129f436e0933c37830.",
+    "Append-only cross-capture union and earliest/latest observation preservation are physically verified across the three accepted immutable V1.6 receipts.",
+    "Five versions in the 168-version union are absent from the latest 163-version capture; absence is not treated as nonexistence.",
+    "Month-path membership drift remains observed and bounded stabilization is not yet satisfied.",
     "V1.7 does not authorize expected-keyset completeness, revision-gap closure, technical continuity, selection, capital, push or order authority."
   ]
 }
