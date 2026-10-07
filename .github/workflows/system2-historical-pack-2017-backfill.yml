@@ -55,7 +55,9 @@ jobs:
   backfill:
     needs: migrate
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Annual TPEx can legitimately exceed 60 minutes when bounded PRIMARY transport recovery is exercised.
+    # Keep this finite: enough for annual ingest + physical verification, without permitting an unbounded writer.
+    timeout-minutes: 120
     environment: system2-research
     steps:
       - name: Checkout
