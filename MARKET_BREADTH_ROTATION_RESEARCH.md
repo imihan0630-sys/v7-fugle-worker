@@ -2416,3 +2416,59 @@ Exact next:
 continue issuer-native numerator search, prioritizing ABF/substrate-specific numeric revenue evidence for 3189/8046; preserve application-vs-product taxonomy separation and keep missing ABF magnitude UNKNOWN.
 
 Formal Core unchanged.
+
+
+## BR-059C — realized ABF numerator disclosure audit (2026-10-07)
+
+Artifact:
+- `research/BR059C_ABF_REALIZED_NUMERATOR_DISCLOSURE_AUDIT_20261007_V0_1.md`
+
+Current issuer-native disclosures for 3189 Kinsus and 8046 Nan Ya PCB were re-audited under the existing denominator/taxonomy firewall.
+
+### 8046 Nan Ya PCB
+
+The latest official investor presentation provides application-revenue categories and separately discusses ABF substrate, BT substrate and general PCB product development.
+
+Therefore:
+`APPLICATION_REVENUE_MIX != PRODUCT_REVENUE_MIX`.
+
+Networking/communication or AI/HPC application shares cannot be relabeled as ABF revenue shares.
+
+Current realized ABF numerator/share remains UNKNOWN.
+
+### 3189 Kinsus
+
+Current issuer-native strategy disclosure supports:
+- high-end FCBGA / SiP focus;
+- large-area high-layer-count ABF development;
+- capacity/customer-certification progress;
+- 2026 ABF market-recovery expectation.
+
+But it does not disclose a realized mutually exclusive ABF revenue amount/share.
+
+Therefore:
+`ABF_TECHNOLOGY_OR_CAPACITY_DISCLOSURE != REALIZED_ABF_REVENUE`.
+
+Current realized ABF numerator/share remains UNKNOWN.
+
+### Evidence taxonomy
+
+Four axes remain separate:
+1. application mix;
+2. product-family mix;
+3. capacity/technology state;
+4. realized product revenue numerator.
+
+Only axis 4 may populate the realized ABF revenue numerator.
+
+No application share, capacity share, project expected-sales value, roadmap or analyst estimate may substitute for it.
+
+Maturity:
+- D09-13 remains L3/60;
+- D09 aggregate maturity unchanged;
+- no composite structure score and no stock outcome.
+
+Exact next:
+BR-059D wait for or prospectively capture an issuer-native realized mutually exclusive ABF/BT/general-PCB product revenue split or a directly reconcilable ABF revenue amount. Preserve UNKNOWN otherwise.
+
+Formal Core unchanged.
