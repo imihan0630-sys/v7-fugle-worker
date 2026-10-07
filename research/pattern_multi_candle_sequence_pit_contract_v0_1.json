@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "pattern-multi-candle-sequence-pit-contract-v0.1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "sequenceNameEqualsIndependentAlpha": false,
+  "overlappingWindowsEqualIndependentSamples": false,
+  "patternStartEqualsFirstObservable": false,
+  "failedSequencesMayBeDropped": false,
+  "d01_03_PIT_DataContract": "FEASIBLE",
+  "outcomeJoin": "CLOSED"
+}
