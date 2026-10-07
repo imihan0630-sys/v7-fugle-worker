@@ -16,6 +16,7 @@ import { reconcileHistoricalSourceRowsV0_1 } from "../runtime/historical_source_
 import { buildHistoricalStoreIngestBatch } from "../runtime/historical_store_v0_1.mjs";
 import { executeHistoricalIngestBatchBulkV0_1 } from "../runtime/historical_bulk_persistence_v0_1.mjs";
 import { evaluateHistoricalRevisionLineageV0_1 } from "../runtime/historical_revision_lineage_v0_1.mjs";
+import { classifyHistoricalTpex2021RevisionSignatureV0_1 } from "../runtime/historical_tpex_2021_revision_signature_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
@@ -117,22 +118,12 @@ const reconciliation=reconcileHistoricalSourceRowsV0_1({
   freshOfficialRows:fresh.rows,
   sampleLimit:1000,
 });
-assert.equal(reconciliation.missingFromColdCount,0,"revision overlay refuses missing cold rows");
-assert.equal(reconciliation.absentFromFreshOfficialCount,0,"revision overlay refuses rows absent from fresh official source");
-assert.equal(fresh.transportMode,"PRIMARY",
-  "2021 TPEx recovery requires canonical PRIMARY transport");
-assert.equal(reconciliation.sourceRowHashMismatchCount,780,
-  "2021 TPEx source-row revision signature changed: expected 780 rows");
-assert.equal(reconciliation.sourceRevisionDateCount,1,
-  "2021 TPEx recovery expects exactly one source-row revision date");
-assert.equal(reconciliation.sourceRevisionByDate?.[0]?.marketDate,targetDate,
-  "2021 TPEx source-row revision date changed from the frozen blocker date");
-assert.equal(reconciliation.sourceRevisionByDate?.[0]?.count,780,
-  "2021 TPEx source-row revision-date count changed from the frozen blocker signature");
+const acceptedObservedSignature=classifyHistoricalTpex2021RevisionSignatureV0_1({
+  reconciliation,
+  transportMode:fresh.transportMode,
+});
 
-if(reconciliation.canonicalA1ValueMismatchCount===0){
-  assert.equal(reconciliation.sourceRevisionOnlyCount,780,
-    "PRIMARY canonical equality expects all 780 differences to be source-row-only");
+if(!acceptedObservedSignature.canonicalOverlayRequired){
   const output={
     result:"PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY",
     market,year,targetDate,
@@ -165,6 +156,7 @@ if(reconciliation.canonicalA1ValueMismatchCount===0){
       legacyEndpointSemantic:"上櫃股票每日收盤行情(不含定價)",
       action:"DO_NOT_PERSIST_REVISION_OVERLAY; REVERIFY_WITH_PRIMARY_ONLY_CANONICAL_SOURCE",
     },
+    acceptedObservedSignature,
     persistedRevisionRowsWritten:0,
     coldHistoryMutated:false,
     system1RuntimeChanged:false,
@@ -175,11 +167,6 @@ if(reconciliation.canonicalA1ValueMismatchCount===0){
   console.log(json);
   process.exit(0);
 }
-
-assert.equal(reconciliation.canonicalA1ValueMismatchCount,698,
-  "unexpected canonical A1 revision count; frozen lineage path expects 698");
-assert.equal(reconciliation.sourceRevisionOnlyCount,82,
-  "unexpected source-only revision count; frozen lineage path expects 82");
 
 const changedKeys=new Set([
   ...reconciliation.sourceRowHashMismatchSample,
@@ -308,6 +295,7 @@ const output={
     sourceRevisionOnlyCount:reconciliation.sourceRevisionOnlyCount,
     sourceVersionState:reconciliation.sourceVersionState,
   },
+  acceptedObservedSignature,
   overlay:{
     baselineBatchId,
     revisionBatchId,
