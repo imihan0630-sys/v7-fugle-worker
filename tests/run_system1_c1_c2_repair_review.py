@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py","scripts/apply_v8_19_1_pve250_prod_stamp.py","scripts/apply_v8_20_0.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py","scripts/apply_v8_19_1_pve250_prod_stamp.py","scripts/apply_v8_20_0.py","scripts/apply_v8_21_0.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -29,6 +29,8 @@ if "scripts/apply_v8_19_1_pve250_prod_stamp.py" in scripts:
 v8191_candidate=Path('Worker.js').read_text(encoding='utf-8')
 if "scripts/apply_v8_20_0.py" in scripts:
     subprocess.run([sys.executable,'scripts/apply_v8_20_0.py'],check=True)
+if "scripts/apply_v8_21_0.py" in scripts:
+    subprocess.run([sys.executable,'scripts/apply_v8_21_0.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -68,6 +70,8 @@ if "scripts/apply_v8_15_3.py" in scripts:
     allowed.update({'c1ProjectFeature','c1DerivedState'})
 if "scripts/apply_v8_15_4.py" in scripts:
     allowed.update({'buildC1PopulationReceipt'})
+if "scripts/apply_v8_21_0.py" in scripts:
+    allowed.update({'ensureD1Schema','persistC1PopulationReceipt'})
 if set(changed)-allowed: raise SystemExit('Unexpected protected function changes: '+str(sorted(set(changed)-allowed)))
 selector=after['selectTomorrowCandidates'].replace(',env.V7_VALUATION_SOURCE_VINTAGE);',');').replace(
     '  let c1ZeroPickContext=null;\n'
@@ -98,6 +102,7 @@ Path('artifacts').mkdir(exist_ok=True)
 receipt={'schemaVersion':'SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1','passed':sum(r['exitCode']==0 for r in results),
   'scanOriginInventoryChangedFunctions':v819_changed,'valuationVintageChangedFunctions':v818_changed,'shadowCohortChangedFunctions':v817_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
   'formalC1BindingCandidate':"8.20.0-formal-c1-binding-ledger" if "scripts/apply_v8_20_0.py" in scripts else None,
+  'generationSetFinalizationCandidate':"8.21.0-c1-generation-set-finalization" if "scripts/apply_v8_21_0.py" in scripts else None,
   'total':len(results),'changedFunctions':changed,'protectedFunctionCount':len(before)-len(changed),
   'selectorUnchangedExceptCaptureFirewall':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
 Path('artifacts/system1-c1-c2-repair-review.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
