@@ -570,3 +570,17 @@ Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PEN
 - PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, overruns, impairments and realized returns append as later vintages/outcomes only.
 - Maturity: **L0/0 -> L2/40**. L3 remains blocked pending at least two Taiwan-listed issuers from materially different industries with project-level PIT replay and an explicit D07-19 vs D21-07 divergent case.
 - Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-08 Room-06 D07-20 三大財報聯動預測基礎
+
+Status: **D07-20 L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED**
+
+- Canonical machine contract: `research/d07_20_integrated_three_statement_forecast_foundation_v0_1.json`.
+- D07-20 owns integrated statement reconciliation and forecast-vintage integrity; D07-21 owns revenue/margin/OPEX drivers, D07-22 owns working-capital/CAPEX/FCF detail, D07-23 owns scenarios, D08 consumes forecast outputs for valuation.
+- Three-statement closure is a consistency/data-quality state, not standalone alpha and not an independent valuation vote.
+- Required reconciliation: balance sheet equation; cash-flow bridge; equity/retained-earnings roll-forward; debt/interest/funding consistency; depreciation-CAPEX-PPE consistency; working-capital/revenue linkage.
+- PIT guard: management guidance, consensus and model assumptions are separate provenance lanes; later filings, restatements, guidance revisions and realized outcomes append only.
+- IFRS 18 transition is treated as a presentation vintage; line-item/subtotal changes cannot be interpreted as economic improvement without comparable mapping.
+- Maturity: **L0/0 -> L2/40**. L3 remains blocked pending Taiwan historical PIT replay across >=3 issuers and >=2 materially different industries, including financing/circularity and presentation/reclassification cases.
+- Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
