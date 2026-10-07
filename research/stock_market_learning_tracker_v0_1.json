@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 46.9
+    "maturityWeightedPct": 47
   },
   "domains": [
     {
@@ -1022,12 +1022,12 @@
         {
           "id": "D07-19",
           "name": "Capital Budgeting／NPV／IRR／Real Options資本預算與實質選擇權",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Capital Budgeting／NPV／IRR／Real Options資本預算與實質選擇權」。研究企業財務、三表預測與鑑識會計。所有假設必須區分管理層指引、分析師估計與模型自建假設，保留 PIT（時點一致性）first-known（首次已知）時間、情境敏感度與財報品質反證，禁止用事後實績回填歷史預測。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D07-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PENDING / D21_07_BOUNDARY_FROZEN / OUTCOMES_CLOSED",
+          "next": "建立台股專案級資本支出／產能投資的 PIT 重播：至少兩產業、原始 knownAt、後續修正 append-only，並證明 D07-19 專案經濟與 D21-07 資本配置治理可出現分歧狀態；完成前維持 L2。"
         },
         {
           "id": "D07-20",
