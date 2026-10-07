@@ -1,0 +1,31 @@
+name: D03 Layer-B Gap Event-Source Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_layer_b_symbol_session_gap_event_source_blind_spot_20261007_v0_1.json"
+      - "research/test_d03_layer_b_symbol_session_gap_event_source_blind_spot_v0_1.mjs"
+      - ".github/workflows/d03-layer-b-gap-event-source-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Layer-B lifecycle event-source tests
+        run: node research/test_d03_layer_b_symbol_session_gap_event_source_blind_spot_v0_1.mjs
+      - name: Confirm isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'fetch\(|wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState' research/test_d03_layer_b_symbol_session_gap_event_source_blind_spot_v0_1.mjs
+          echo "D03 Layer-B event-source isolation PASS"
