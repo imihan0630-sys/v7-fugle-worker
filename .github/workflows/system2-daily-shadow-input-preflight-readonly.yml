@@ -7,6 +7,7 @@ on:
       - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_reader_v0_1.mjs"
       - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
+      - "system2/runtime/stage1_assessor_policies_v0_1.mjs"
       - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
       - "system2/scripts/run_daily_shadow_input_preflight_readonly.mjs"
       - ".github/workflows/system2-daily-shadow-input-preflight-readonly.yml"
@@ -35,6 +36,7 @@ jobs:
             system2/runtime/daily_shadow_a1_source_v0_1.mjs
             system2/runtime/daily_shadow_history_reader_v0_1.mjs
             system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
+            system2/runtime/stage1_assessor_policies_v0_1.mjs
             system2/runtime/daily_shadow_input_preflight_v0_1.mjs
             system2/scripts/run_daily_shadow_input_preflight_readonly.mjs
           )
@@ -59,9 +61,10 @@ jobs:
           if(d.result!=="PASS")throw new Error("preflight result mismatch");
           if(d.databaseName!=="system2-research")throw new Error("wrong D1");
           if(d.d1Metrics?.rowsWritten!==0)throw new Error("read-only preflight wrote D1");
-          if(d.preflight?.capacityWriteAuthorized!==false)throw new Error("assessor firewall unexpectedly authorized capacity");
-          if(d.preflight?.zeroPickMayBeClaimed!==false)throw new Error("preflight must not relabel missing assessor authority as zero-pick");
-          if(d.preflight?.finalSelectionEnabled!==false||d.preflight?.orderImpact!==false)throw new Error("authority boundary mismatch");
+          if(!Array.isArray(d.preflight?.assessors)||d.preflight.assessors.some(x=>x.state!=="READY"))throw new Error("assessor policy not READY");
+          if(d.preflight.assessors.some(x=>x.system1RuntimeRequired!==false||x.system1Top6Required!==false||x.system1RankRequired!==false))throw new Error("System1 dependency firewall mismatch");
+          if(d.preflight?.selectionDenominatorComplete!==true&&d.preflight?.zeroPickMayBeClaimed!==false)throw new Error("partial denominator cannot claim zero-pick");
+          if(d.preflight?.finalSelectionEnabled!==false||d.preflight?.livePushEnabled!==false||d.preflight?.capitalImpact!==false||d.preflight?.orderImpact!==false)throw new Error("authority boundary mismatch");
           if(d.preflight?.system1RuntimeUsed!==false)throw new Error("System1 runtime boundary mismatch");
           console.log(JSON.stringify({
             result:"PASS",
