@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "S2_CORR_20261007_002_REJECTION_VERIFICATION_V0_1",
+  "recordedAt": "2026-10-07T18:43:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-002",
+  "disposition": "REJECTED_WITH_EVIDENCE",
+  "originalHypothesis": "Global Decision Clock A1+B2+A5 requiredReady is an active Stage-1 launch/capacity gate that over-gates SHORT_MOMENTUM.",
+  "verifiedFacts": {
+    "globalDecisionClockArtifact": {
+      "a1Required": true,
+      "b2Required": true,
+      "a5RequiredByCandidate": true,
+      "exists": true,
+      "note": "The global research/review clock really has broader dependencies than SHORT_MOMENTUM."
+    },
+    "stage1Preflight": {
+      "file": "system2/runtime/daily_shadow_input_preflight_v0_1.mjs",
+      "globalInputsReadyDefinition": "A1 source READY AND PIT history global integrity READY",
+      "b2Dependency": false,
+      "a5Dependency": false,
+      "globalDecisionClockRequiredReadyDependency": false,
+      "capacityWriteAuthorizedDefinition": "globalInputsReady AND assessorReady"
+    },
+    "shortMomentumPolicy": {
+      "file": "system2/runtime/stage1_assessor_policies_v0_1.mjs",
+      "requiredFamilies": [
+        "TECHNICAL_STRUCTURE",
+        "PRICE_VOLUME",
+        "RISK_FRICTION"
+      ],
+      "marketRegimeLaunchRequired": false,
+      "b2LaunchRequired": false,
+      "a5LaunchRequired": false
+    },
+    "limitedShadowStrategyRun": {
+      "file": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+      "requiresA1Batch": true,
+      "requiresPitHistory": true,
+      "requiresStrategyContractAndAssessor": true,
+      "acceptsRegimeObject": true,
+      "b2Dependency": false,
+      "a5Dependency": false,
+      "globalDecisionClockRequiredReadyDependency": false
+    },
+    "capacityOrchestrator": {
+      "file": "system2/runtime/daily_shadow_capacity_orchestrator_v0_1.mjs",
+      "input": "completed strategyRuns sharing marketDate/decisionTimestamp",
+      "b2Dependency": false,
+      "a5Dependency": false,
+      "globalDecisionClockRequiredReadyDependency": false,
+      "persistsCapacityFromStrategyRunAccounting": true
+    },
+    "exactCoreRuntimeStringScan": {
+      "files": [
+        "system2/runtime/daily_shadow_input_preflight_v0_1.mjs",
+        "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+        "system2/runtime/daily_shadow_capacity_orchestrator_v0_1.mjs",
+        "system2/runtime/stage1_assessor_policies_v0_1.mjs",
+        "system2/runtime/limited_shadow_run_assembler_v0_1.mjs",
+        "system2/runtime/strategy_evaluator.mjs"
+      ],
+      "absentTerms": [
+        "B2_INDUSTRY_THESIS_PROSPECTIVE",
+        "A5_QUARTERLY_FINANCIALS",
+        "requiredReady",
+        "buildDecisionClockDailyEvidence",
+        "decision_clock_daily_evidence",
+        "candidateTimestamp"
+      ]
+    }
+  },
+  "regressionEvidence": [
+    {
+      "file": "system2/tests/daily_shadow_input_preflight_v0_1.test.mjs",
+      "proof": "With A1 READY, PIT history globally READY and assessors READY, capacityWriteAuthorized is true; symbol-local incomplete coverage can remain partial without global blocking. Explicit source-wide/global integrity BLOCKED makes globalInputsReady/capacityWriteAuthorized false."
+    },
+    {
+      "file": "system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs",
+      "proof": "SHORT_MOMENTUM-only strategyRuns can produce CAPACITY_READY_PARTIAL_COVERAGE and persist s2_capacity_runs when a legitimate admission exists; incomplete memberships remain blocked. Capacity does not require B2/A5/global Decision Clock evidence."
+    }
+  ],
+  "researchArtifactReconciliation": {
+    "d16MismatchFindingStillValid": true,
+    "interpretation": "GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET remains a valid research observation about the global review clock, but it does not prove a current runtime launch-path defect because that broader clock is not wired into the Stage-1 strategy/capacity gate.",
+    "priorResearchOvergatingClaims": "SUPERSEDED_FOR_CURRENT_RUNTIME_DEFECT_CLASSIFICATION",
+    "watchlist": "If BUILD_LANE later wires the global Decision Clock into Stage-1 evaluation/capacity, it must preserve strategy-stage dependency semantics and must not make B2/A5 universal SHORT_MOMENTUM gates."
+  },
+  "whyOriginalDirectiveIsDisproven": [
+    "The original directive inferred a runtime coupling that is not present in the current Stage-1 execution chain.",
+    "Existing runtime and tests already exhibit the intended per-strategy behavior without a correction.",
+    "No implementation change is required to remove B2/A5 from SHORT_MOMENTUM Stage-1 capacity because they are not in that path.",
+    "Keeping the HIGH correction open would create unnecessary BUILD_LANE work and risk introducing a second readiness architecture."
+  ],
+  "remainingRealBlockers": [
+    "Current/prospective A1 source readiness and source-contract repair under S2-CORR-20261007-001.",
+    "Physical genuine strategy evaluation/capacity evidence and other existing Stage-1 launch gates.",
+    "Any future shared-selection dependency must be explicitly versioned and independently audited."
+  ],
+  "protectedBoundariesUnchanged": {
+    "system1FormalCore": true,
+    "system2FrozenAssessorPolicies": true,
+    "rankingCapacitySemantics": true,
+    "finalSelectionAuthority": true,
+    "livePushAuthority": true,
+    "capitalAuthority": true,
+    "orderAuthority": true
+  },
+  "implementationPerformed": false
+}
