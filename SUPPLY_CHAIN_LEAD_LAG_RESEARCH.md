@@ -3052,3 +3052,31 @@ Required upstream delta:
 This is a BUILD_LANE engineering dependency, not a Room07 implementation task.
 
 D10-10 remains L3/60 until the returned receipt plus source/keyset semantics satisfy the frozen L4 gates.
+
+
+## SC-087 — D10-14 CHIPS post-freeze null policy/milestone observation (2026-10-08)
+
+Artifact:
+- `research/SC087_D10_14_CHIPS_POST_FREEZE_NULL_20261008_V0_1.md`
+
+Bounded official NIST CHIPS readback at 2026-10-08T05:55:08+08:00:
+- latest visible CHIPS News & Releases item = 2026-09-16 Anderon final R&D award;
+- no 2026-10-04 through 2026-10-08 new award/disbursement/project-scope press release observed in the bounded official news surface;
+- the materials/equipment NOFO remains an ongoing application window through 2026-11-01, not a new award event;
+- funding-recipient catalog presence is not relabeled as a new disbursement.
+
+Frozen lifecycle firewall:
+`AWARD != DISBURSEMENT != CAPEX != FACILITY != QUALIFICATION != HVM != UTILIZATION`.
+
+Also:
+`NO_EVENT_DATE_IS_DATA`.
+`NO_NEW_EVENT_IN_BOUNDED_OFFICIAL_SCOPE != PROOF_NO_RELEVANT_POLICY_EVENT_ANYWHERE`.
+
+D10-14 remains L3/60.
+No L4 promotion.
+No stock outcome.
+
+Exact next SC-088:
+continue prospective official NIST/Commerce CHIPS observation for the first genuinely new award/disbursement/project-scope/qualification/HVM/utilization milestone. Freeze sourcePublishedAt/capturedAt and keep issuer-specific realized capacity/earnings UNKNOWN unless directly evidenced.
+
+Formal Core unchanged.
