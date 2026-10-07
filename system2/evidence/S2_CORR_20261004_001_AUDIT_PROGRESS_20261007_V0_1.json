@@ -210,5 +210,41 @@
       "Legacy non-equivalent TPEx fallback remains forbidden.",
       "A fresh fix-bearing run must still reach annual backfill PASS, Physical verify PASS, artifact, and System1 isolation PASS before 2024 TPEX acceptance."
     ]
+  },
+  "run29TimeoutHardeningAudit": {
+    "checkedAt": "2026-10-07T18:43:00+08:00",
+    "implementationCommit": "211b84fa2e1b8dbf7090c4e48df5ce51beee3596",
+    "change": {
+      "backfillTimeoutMinutesBefore": 60,
+      "backfillTimeoutMinutesAfter": 120,
+      "isolatedWriterOnly": true,
+      "sourceFetchResumeCheckpointAdded": false,
+      "dataIntegrityGuardsWeakened": false,
+      "system1Mutation": false
+    },
+    "ci": {
+      "system2ResearchCi": {
+        "runId": 37610316535,
+        "conclusion": "SUCCESS"
+      },
+      "v8Regression": {
+        "runId": 37610316546,
+        "conclusion": "SUCCESS"
+      }
+    },
+    "auditDisposition": "REPOSITORY_HARDENING_PASS_PHYSICAL_ACCEPTANCE_PENDING",
+    "limitations": [
+      "120 minutes is bounded and materially exceeds the known 60-minute cutoff, but the repository does not prove that 120 minutes covers every bounded-retry worst case.",
+      "The source-range fetch remains non-resumable before pack/persistence; a future timeout can still discard source-fetch progress.",
+      "No fresh post-hardening 2024/TPEX annual run exists at this audit point."
+    ],
+    "nextPhysicalAcceptance": [
+      "Fresh workflow_dispatch from a fix-bearing latest main with year=2024 and market=TPEX.",
+      "Annual backfill must complete.",
+      "Physical verifier must PASS source/storage/hash/coverage checks.",
+      "Coverage artifact must be present.",
+      "System1 production isolation must PASS.",
+      "If 120 minutes still expires, do not keep increasing timeout blindly; DATA_LANE should add bounded resumable/chunked source acquisition."
+    ]
   }
 }
