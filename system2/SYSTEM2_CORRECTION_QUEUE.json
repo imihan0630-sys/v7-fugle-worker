@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T19:43:05+08:00",
+  "updatedAt": "2026-10-07T20:48:25+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1243,6 +1243,71 @@
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-07T19:43:05+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261007-004",
+      "createdAt": "2026-10-07T20:48:25+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session",
+      "affectedScope": [
+        "System2 S2-07 Daily Shadow PIT history readiness",
+        "SHORT_MOMENTUM MA60/ret60 and continuity-sensitive A1 factor windows",
+        "NC-T01 S22-T13 own-required-input readiness",
+        "future genuine strategy evaluation / ranking / capacity admission"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "A symbol may be marked history-ready for a strategy lookback only when the exact required eligible symbol-session set is present and PIT-safe. Missing expected eligible sessions must remain explicit; an older observation may not silently substitute for a missing newer required session. Legitimate listing/suspension/delisting/non-trading intervals must be resolved from certified symbol-session lifecycle evidence rather than naive market-calendar assumptions.",
+      "observedProblem": "In system2/runtime/daily_shadow_history_reader_v0_1.mjs the query ranks available historical rows by market_date and keeps the latest required count. For long-listed symbols, ageLimited=false makes ageBoundaryMatches=true unconditionally. historyReady then requires only ambiguousDateCount===0 and selectedDateCount>=requiredForSymbol. Therefore a missing expected recent eligible symbol-session can be silently replaced by an older row while selectedDateCount remains 60, producing historyReady=true. The strict expectedFirstDate/expectedLastDate equality check is applied only to age-limited newly listed symbols. Repository search found no regression that falsifies a long-listed symbol with one missing expected session plus one older replacement row.",
+      "evidence": [
+        "system2/runtime/daily_shadow_history_reader_v0_1.mjs: ranked CTE orders per symbol/market by market_date DESC and counts rn<=required; it does not join the selected dates to an exact expected symbol-session set",
+        "For long-listed symbols ageLimited=false, so ageBoundaryMatches evaluates true without comparing selectedFirstDate/selectedLastDate to official priorTradingDates",
+        "historyReady = ambiguousDateCount===0 && selectedDateCount>=requiredForSymbol && ageBoundaryMatches",
+        "Synthetic counterexample implied directly by current logic: expected D1..D60, D55 missing, older D0 present -> latest 60 observed dates still count 60 and historyReady remains true for a long-listed symbol",
+        "Physical Daily Shadow run 37609474459 reports historyReadyCount=51 and continuityReadyCount=0 across a 1,973-symbol universe; examples 1101/1102/1103/1104 are historyReady=true but continuityReady=false. The current continuity block prevents immediate strategy misuse, but a future continuity overlay could expose this readiness defect unless repaired first.",
+        "research/d02_daily_volume_continuity_contract_20261003_v0_1.md independently freezes the principle that the exact expected prior symbol-session set must be verified and no expected source row may be silently missing",
+        "Latest D03 Layer-B lifecycle contract physically validates half-open suspension intervals, inclusive listing start, exclusive delisting boundary and fail-closed conflicts; these semantics must be consumed rather than treating every market session as an expected symbol session",
+        "No evidence shows System1 Formal Core/runtime is involved"
+      ],
+      "riskIfUnfixed": "A long-listed symbol with a missing required recent session can be falsely labeled historyReady and, once continuity evidence becomes available, could execute SHORT_MOMENTUM using a non-contiguous or stale-substituted MA60/ret60 window. That can invalidate NC-T01 S22-T13, strategy evaluation, ranking/capacity receipts and later performance evidence while appearing source-honest.",
+      "requiredCorrection": [
+        "Keep symbol-local incompleteness symbol-local; do not restore a whole-universe history veto.",
+        "Define the exact required eligible symbol-session set for each symbol/lookback from official trading dates plus PIT listing membership and certified lifecycle no-trading intervals.",
+        "For long-listed as well as age-limited symbols, require the selected PIT rows to reconcile exactly to the required eligible symbol-session window; an older row cannot substitute for a missing required session.",
+        "Emit explicit per-symbol missing/unexpected-session diagnostics and a distinct blocker such as SYMBOL_LOCAL_EXPECTED_SESSION_MISSING when reconciliation fails.",
+        "Preserve legitimate suspension/delisting/listing semantics; do not synthesize OHLC for official non-trading intervals.",
+        "Do not relabel raw historical continuity_state values merely to make the window pass.",
+        "Add a regression where a long-listed symbol has 60 observed rows only because one required recent session is missing and one older row is substituted; historyReady/evaluationInputReady must remain false.",
+        "Add a clean long-listed exact-window control and a legitimate lifecycle-gap control so the fix cannot collapse certified non-trading intervals into missing-data errors.",
+        "Re-run a real Daily Shadow readback and preserve exact per-symbol expected/observed window provenance before NC-T01 S22-T13 physical acceptance."
+      ],
+      "acceptanceCriteria": [
+        "Long-listed missing-session plus older-substitution regression fails closed",
+        "Clean exact-window long-listed regression remains ready",
+        "New-listing age-aware behavior remains correct",
+        "Certified lifecycle non-trading intervals are excluded from the expected eligible-session set rather than synthesized",
+        "Per-symbol expected-session and observed-session counts/hashes or equivalent immutable provenance are exposed for audit",
+        "Physical readback demonstrates at least one witness symbol with exact-window history readiness before any continuity overlay is allowed to make it evaluation-input-ready",
+        "No System1 runtime/Formal Core, strategy thresholds/weights, final-selection, live-push, capital or order authority changes"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core and runtime",
+        "System2 strategy/assessor/ranking policy",
+        "No synthetic OHLC",
+        "No global history coverage percentage threshold",
+        "No history mutation to manufacture completeness",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "DATA_LANE",
+      "assignedLane": "DATA_LANE",
+      "assignedRoom": "System 2｜歷史資料工程室",
+      "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+      "blockedBy": null,
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-07T20:48:25+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
