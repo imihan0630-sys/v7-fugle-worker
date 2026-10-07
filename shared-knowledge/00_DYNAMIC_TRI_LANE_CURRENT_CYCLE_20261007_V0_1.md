@@ -1552,3 +1552,126 @@ TPEx parity, broad annual history completion, MARKET_REGIME, SWING_GROWTH, D1 wr
 
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
+
+
+## 00 late continuation — NC-T01 final physical acceptance contract compressed (2026-10-07 late session)
+
+Observed latest main before write:
+`b9d150c469489ff8f5893abd86a6cc4a15824de3`.
+
+### CORR-005 repair scope compressed
+
+00 compared the prior 21-file hidden-System1-dependency static audit to current main.
+
+Result:
+- 19 / 21 previously audited runtime files retain identical blob SHAs;
+- only two prior audited files have drifted:
+  - `system2/runtime/daily_shadow_orchestrator_v0_1.mjs`
+    old `e046b3b4146c9c9a652f2505bfc79d3537c147f7`
+    -> current `79bebce21cca3cdf3b40affd6043ffa6b1f84c0e`;
+  - `system2/runtime/pit_replay_v0_1.mjs`
+    old `bd1f2a6b9bfe84743558d8ad26cb84a3ec6e98fe`
+    -> current `7069e216a12f11d4143fb7512311193d9fffb6c1`.
+- new NC-T01 closure units that must be included:
+  - `nct01_artifact_runner_v0_1.mjs`;
+  - `nct01_physical_receipt_v0_1.mjs`;
+  - `daily_shadow_history_prefetch_v0_1.mjs`;
+  - `nct01_continuity_replay_binding_v0_1.mjs`.
+
+Therefore BUILD_LANE does not need a new System2 independence architecture.
+It must regenerate the machine audit on the exact physical runner head, revalidate the two drifted prior units plus the new reachable NC-T01 units, and compute a fresh immutable digest over the complete exact-head closure.
+
+Durable minimal hardening contract:
+`system2/evidence/S2_CORR_20261007_005_MINIMAL_HARDENING_HANDOFF_V0_1.json`.
+
+### D16 independent oracle now aligns with CORR-005
+
+D16 added:
+`research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json`
+(commit `230ae2a2c455bfd1127cd79fa734abd4884abfa0`).
+
+HF-T01 through HF-T12 independently freeze:
+- missing audit object/dimension/digest -> EVIDENCE_INCOMPLETE;
+- any PRESENT hidden dependency -> HIDDEN_SYSTEM1_DEPENDENCY;
+- audit digest / transitive manifest / runner-head drift -> re-audit or proven blob equivalence;
+- static clean with runtime evidence missing -> EVIDENCE_INCOMPLETE;
+- runtime clean with static audit missing -> EVIDENCE_INCOMPLETE;
+- shared raw market data alone is allowed;
+- same-stock overlap is not a failure by itself and belongs to later incrementality validation.
+
+Physical S22-T12 therefore requires BOTH:
+1. exact-head transitive static audit;
+2. runtime forbidden-access evidence = zero.
+
+Both identities must bind into the final evidence cut.
+CORR-005 queue now carries this D16 oracle.
+
+### TWTAWU bounded negative-completeness path compressed
+
+Official TWSE public page proves that TWTAWU historical suspension information exposes:
+- explicit date-period query;
+- security code / blank-all-listed scope;
+- database history from 2011-10-03;
+- HTML/print and CSV download.
+
+Existing System2 physical JSON captures already prove:
+- HTTP/JSON parse success;
+- `stat=OK`;
+- the seven suspension/resumption fields;
+- bounded raw artifact hashes and positive intervals.
+
+But the current TWSE JSON contract does not preserve an authoritative `totalCount` comparable to TPEx `sprcHis`.
+Therefore existing semantics correctly retain:
+`absenceCertifiesNoSuspension=false`.
+
+The minimum launch candidate is now:
+same exact replay-window query -> official JSON + official CSV/HTML representation -> normalized row-set / scope parity receipt.
+
+Important:
+- do not guess the CSV URL;
+- physical DATA_LANE runner must capture the actual official page request or another verified TWSE download contract;
+- first prove parity on a positive bounded interval containing known suspension rows;
+- only then reuse the frozen contract on the witness exact replay interval;
+- any mismatch / pagination / truncation / scope ambiguity remains SUSPENSION_COVERAGE_UNKNOWN.
+
+Durable handoff:
+`system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261007_V0_1.json`.
+
+The old merged-main CORR-004 preflight exposed only aggregate exact-session counts; it did not emit per-witness expectedFirstDate/expectedLastDate/session hash.
+Therefore the TWTAWU bounded query interval MUST come from the real NC-T01 replay/prefetch evidence, not from a manually inferred 60-day range.
+
+### One-shot S22-T11~T16 acceptance matrix frozen
+
+Durable matrix:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261007_V0_1.json`.
+
+Current matrix state:
+- T11 = DESIGN_STATIC_PRECLEARED / physical pending;
+- T12 = BLOCKED by CORR-005;
+- T13 = BLOCKED by real source-honest CLEAR_NO_ACTION receipt;
+- T14 = runner semantics implemented / physical pending;
+- T15 = typed hash-chain contract frozen / physical pending;
+- T16 = NOT_YET_PROVEN.
+
+Physical PASS requires one coherent immutable evidence cut. Evidence from different runner heads/runs may not be mixed unless exact equivalence is proven.
+
+Required typed chain now includes:
+`HIDDEN_FALLBACK_AUDIT_SHA256`
+in addition to policy fingerprint, A1 batch, PIT replay, sourceHistory, continuity receipt/transform, factor snapshot, persistence batch, orchestration and shadow accounting hashes.
+
+### Exact next continuation
+
+Parallel:
+1. DATA_LANE implements/executes the exact-window TWTAWU bounded JSON-vs-official-export completeness proof, then the real TWSE corporate-action completeness / CLEAR_NO_ACTION receipt.
+2. BUILD_LANE implements CORR-005 exact-head hidden-fallback static+runtime evidence binding and real physical wrapper.
+
+Then:
+3. execute one real artifact-only SHORT_MOMENTUM NC-T01;
+4. 00 independently recomputes the full T11~T16 matrix and hash chain;
+5. only after physical independence does CORR-003 become the dominant persistence blocker before genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+
+No current open PR was observed for CORR-005 or the TWTAWU bounded completeness producer at this checkpoint.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
+No final selection, live push, capital or real orders are authorized.
