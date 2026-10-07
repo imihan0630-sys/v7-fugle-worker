@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "D03_SYSTEM2_S207_THREE_CAPTURE_UNION_STABILITY_READBACK_V0_1",
+  "updatedAt": "2026-10-07T09:01:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_PROSPECTIVE_THREE_CAPTURE_UNION_NEGATIVE_GATE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "source": {
+    "runs": [
+      {
+        "runId": 37547303476,
+        "artifactId": 11451296954,
+        "capturedAt": "2026-10-06T23:40:18.625Z",
+        "versionCount": 159,
+        "queryKeysetExactEventCount": 17,
+        "monthOnlyVersionCount": 9,
+        "yearOnlyVersionCount": 8
+      },
+      {
+        "runId": 37548011614,
+        "artifactId": 11451716945,
+        "capturedAt": "2026-10-06T23:47:34.076Z",
+        "versionCount": 161,
+        "queryKeysetExactEventCount": 21,
+        "monthOnlyVersionCount": 0,
+        "yearOnlyVersionCount": 7
+      },
+      {
+        "runId": 37549352244,
+        "artifactId": 11451992365,
+        "capturedAt": "2026-10-07T00:04:03.455Z",
+        "versionCount": 163,
+        "queryKeysetExactEventCount": 20,
+        "monthOnlyVersionCount": 3,
+        "yearOnlyVersionCount": 5
+      }
+    ],
+    "stableEventUniverseHash": "b7941323ed1969a17697bc58be3d549b7e244f4dfc45b81a0bc6d5645fc305b0"
+  },
+  "observed": {
+    "unionVersionKeyCount": 168,
+    "intersectionAllThreeVersionKeyCount": 147,
+    "latestMissingFromThreeCaptureUnion": 5,
+    "run1ToRun2": {
+      "added": 9,
+      "lost": 7,
+      "common": 152,
+      "jaccard": 0.9047619047619048
+    },
+    "run2ToRun3": {
+      "added": 7,
+      "lost": 5,
+      "common": 156,
+      "jaccard": 0.9285714285714286
+    },
+    "run1ToRun3": {
+      "added": 9,
+      "lost": 5,
+      "common": 154,
+      "jaccard": 0.9166666666666666
+    },
+    "commonThreePayloadMutationCount": 0,
+    "allRepeatedVersionFirstObservedAtChangedAcrossCaptures": true,
+    "repeatedVersionFirstObservedAtResetCount": 168,
+    "interpretationOfFirstObservedAt": "CURRENT_V1_6_ARTIFACT_RECOMPUTES_FIRST_OBSERVED_AT_PER_CAPTURE_INSTEAD_OF_PRESERVING_EARLIEST_CROSS_CAPTURE_OBSERVATION",
+    "run3Added": {
+      "count": 7,
+      "symbols": {
+        "1441": 1,
+        "3086": 6
+      },
+      "queryPathClass": "MONTH"
+    },
+    "run3Lost": {
+      "count": 5,
+      "symbols": {
+        "6461": 3,
+        "6550": 2
+      },
+      "queryPathClass": "MONTH"
+    },
+    "unionNotPresentInLatest": {
+      "count": 5,
+      "symbols": {
+        "6461": 3,
+        "6550": 2
+      },
+      "queryPathClass": "MONTH"
+    },
+    "latestStillExpectedMopsKeysetComplete": false,
+    "latestStillNoRevisionGapThroughCut": false
+  },
+  "d03Interpretation": {
+    "support": "Stable payload hashes for the 147 versions common to all three captures strengthen immutable content identity conditional on presence.",
+    "counterEvidence": "Three-capture membership continues to churn and the latest capture omits five versions already observed prospectively.",
+    "newImplementationGap": "firstObservedAt is not preserved across captures; every artifact reassigns it to the current observation clock. This fails the frozen earliest-observed preservation requirement.",
+    "queryPathFinding": "All run2-to-run3 additions and losses are month-query-path observations, localizing current membership instability to month-shard retrieval rather than payload mutation.",
+    "pit": "EARLIEST_GENUINE_OBSERVATION_MUST_BE_APPEND_ONLY_MIN_OVER_ALL_CAPTURES; CURRENT_V1_6_ARTIFACT_DOES_NOT_PERSIST_THIS",
+    "oos": "UNKNOWN_NOT_OPENED",
+    "walkForward": "UNKNOWN_NOT_OPENED",
+    "selectionBias": "FROZEN_23_EVENT_LOW_VOLUME_UNIVERSE",
+    "lookAhead": "NO_BACKDATING_ALLOWED; LATER_REOBSERVATION_CANNOT_REPLACE_EARLIEST_OBSERVED_AT",
+    "multipleTesting": "NO_OUTCOME_TEST",
+    "factorRedundancy": "PROVENANCE_ONLY_NO_NEW_ALPHA_ROOT"
+  },
+  "requiredNextMachineBehavior": [
+    "persist append-only union keyed by stock-code-scoped versionKey",
+    "preserve earliest firstObservedAt as min genuine observedAt across all captures",
+    "retain latestObservedAt separately from firstObservedAt",
+    "persist query-path provenance for every version observation",
+    "classify present/absent by query path without treating absence as nonexistence",
+    "require bounded stabilization before expectedMopsKeysetComplete can become true",
+    "keep noRevisionGapThroughCut=false until post-parent reconciliation proves closure"
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Route the earliest-observed persistence defect and month-shard membership churn to System2 BUILD_LANE. D03 should consume only a future physical receipt that proves append-only union persistence, immutable earliest-observed preservation, query-path provenance, and bounded stabilization. Continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, and cutoff-bearing C1 parent."
+}
