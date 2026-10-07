@@ -1102,3 +1102,30 @@ Correction consequence:
 - evidence:
   `system2/evidence/S2_STAGE1_PR830_INDEPENDENT_REVIEW_20261007_V0_1.json`.
 - finalDisposition: PENDING
+
+
+### S2-CORR-20261007-006 — NC-T01 continuity-ready witness can promote physical execution while strategy validity is incomplete
+
+- createdAt: 2026-10-07T23:59:18+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
+- observed problem:
+  - `nct01_physical_receipt_v0_1.mjs` defines executable witnesses from ACCOUNTED + replay READY + continuity READY + zero continuity blockers;
+  - it does **not** require `strategyValidity` to be non-INCOMPLETE;
+  - `requiredInputsState`, `executionState`, and `candidateGenerationExecutable` are then promoted when any such witness exists;
+  - continuity readiness and strategy validity are independent fields in the orchestrator.
+- risk:
+  a physical run can misclassify strategy-input incompleteness as a genuinely executable independent path or a legitimate zero-pick.
+- required repair:
+  1. require at least one strategy-executable witness, not merely a continuity-ready witness;
+  2. first physical witness should be `strategyValidity=VALID` unless another executable state is explicitly frozen;
+  3. keep `candidateGenerationExecutable=false` with no executable strategy witness;
+  4. split provenance counts for continuity-ready vs strategy-executable witnesses;
+  5. fail closed for all-continuity-ready-but-strategy-incomplete cases;
+  6. T14 legitimate zero-pick may not mask a T13 readiness failure.
+- evidence:
+  `system2/evidence/S2_STAGE1_NCT01_STRATEGY_READINESS_PROMOTION_AUDIT_20261007_V0_1.json`.
+- finalDisposition: PENDING
