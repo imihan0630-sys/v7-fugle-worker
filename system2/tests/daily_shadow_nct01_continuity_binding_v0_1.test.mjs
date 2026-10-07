@@ -234,7 +234,7 @@ async function run(receiptId) {
 }
 
 const first = await run("NCT01-CONT-2330-A");
-assert.equal(first.assessCalls, 1);
+assert.equal(first.assessCalls, 1, JSON.stringify(first.result.perSymbolDiagnostics));
 assert.equal(first.result.baseUniverseCount, 2);
 assert.equal(first.result.eligibleCount, 2);
 assert.equal(first.result.accountedCount, 2);
