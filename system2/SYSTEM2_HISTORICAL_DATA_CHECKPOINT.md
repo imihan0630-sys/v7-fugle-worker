@@ -1046,3 +1046,44 @@ DATA_LANE disposition:
 Because severity is HIGH, DATA_LANE does not self-close. Independent AUDIT_LANE verification is still required before `VERIFIED_CLOSED`.
 
 No System1 Formal Core/runtime, strategy thresholds/weights/ranking, historical OHLC, final selection, live push, capital or order authority changed.
+
+
+## 2026-10-07 TPEx historical cmode structured-source contract
+
+DATA_LANE pinned a date-scoped official TPEx structured source for the lifecycle blind spot not covered by `sprcHis`.
+
+Structured machine contract:
+- official dataset: 上櫃股票變更交易、分盤交易、管理股票與停止交易資訊;
+- historical endpoint:
+  `https://www.tpex.org.tw/web/stock/aftertrading/cmode/chtm_result.php?l=zh-tw&o=json&d=<ROC YYY/MM/DD>`;
+- response rows are carried by `aaData`;
+- historical date parameter `d` uses ROC `YYY/MM/DD`;
+- relevant fixed row position is the `停止交易` field;
+- current TPEx OpenAPI lineage exposes the corresponding `/tpex_cmode` dataset.
+
+Historical endpoint behavior is supported by a public reproducibility witness that queried this official endpoint across archived dates after 2018 and compared returned `aaData` rows against stored daily files. This establishes the historical date-scoped contract for repository implementation, but merged-main physical source acceptance is still required.
+
+Repository implementation on branch `system2-data/tpex-cmode-history-source-20261007`:
+- `tpexCmodeRocDateV0_1` converts ISO dates to the official ROC request date;
+- `parseTpexCmodePositiveStopSessionsV0_1` accepts only source-date-identified responses;
+- only an explicit whitelisted positive `停止交易` marker (or text carrying positive stop semantics) produces a one-session lifecycle interval; unknown/non-recognized markers remain unclassified;
+- each accepted row has an independent canonical SHA-256 row hash plus the enclosing payload hash;
+- source absence / empty markers never certify NO_EVENT;
+- coverage now emits unique `unknownSessionDates`, allowing targeted source lookup instead of scanning the whole calendar.
+
+Physical verifier v0.7 integration:
+1. run existing TPEx `sprcHis` positive interval pass;
+2. compute baseline market-year coverage;
+3. query cmode only for dates still containing `UNKNOWN_SYMBOL_SESSION_GAP`;
+4. union only positive cmode stop-session evidence;
+5. recompute coverage and emit before/after UNKNOWN counts plus bounded per-date source receipts.
+
+Transport/schema/date-identity failures remain PARTIAL and contribute no lifecycle interval. Cold OHLCV is never synthesized or rewritten.
+
+Known official positive witnesses remain consistent with this source class:
+- 4806 / 2023 regulatory stop interval candidate `[2023-04-10,2023-10-12)`;
+- 3089 / 2021 regulatory stop interval candidate `[2021-01-20,2021-07-20)`.
+
+These cases are not yet canonical reclassifications from this branch alone. First live acceptance is expected from the next TPEX Physical Verify on merged main; the already-required fresh `2024/TPEX` annual run after D1 quota reset can exercise the source without adding a separate D1 writer.
+
+No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.

@@ -10,7 +10,16 @@ assert.match(script,/reclassifiedUnknownBars/);
 assert.match(script,/beforeMissingReasonCounts/);
 assert.match(script,/afterMissingReasonCounts/);
 assert.match(script,/absenceCertifiesNoEvent:false/);
-assert.match(script,/HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_6/);
+assert.match(script,/fetchTpexCmodePositiveStopSessionsV0_1/);
+assert.match(script,/coverageBeforeLifecycle\.unknownSessionDates/);
+assert.match(script,/TPEX_CMODE_HISTORICAL_DATE_SCOPED/);
+assert.match(script,/absenceCertifiesNoStop:false/);
+assert.match(script,/combinedLifecycleIntervals/);
+assert.ok(
+  script.indexOf("const coverageBeforeLifecycle") < script.indexOf('if(market==="TPEX" && coverageBeforeLifecycle.unknownBars>0)'),
+  "TPEx cmode lookup must occur only after baseline sprcHis coverage",
+);
+assert.match(script,/HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_7/);
 assert.ok(
   script.indexOf("coverageBeforeLifecycle") < script.indexOf("fetchTwseRegulatoryLifecycleForSymbolsV0_1({"),
   "baseline coverage must be computed before targeted lifecycle-source lookup",
