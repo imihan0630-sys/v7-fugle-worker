@@ -2735,3 +2735,24 @@ Re-read external blockers. If unchanged, execute the deterministic admission art
 2. D06-05 remains blocked: repository has the TDCC parent and preregistered lineage fields, but no genuine 2026-10-05 concentration-consuming research rows; do not fabricate a retrospective same-generation join.
 3. D06-19 reopens only on an explicit official/authorized domestic-natural-person stock-date directional field contract.
 4. D06-18 remains L3/60; accumulate future in-slot dates but do not inflate maturity from source repetition alone.
+
+
+## 2026-10-07 Room11 — selection-aware validation chain / T48 governance
+
+- Durable artifacts:
+  - `research/D16_D18_SELECTION_AWARE_VALIDATION_CHAIN_20261007_V0_1.md`
+  - `research/d16_d18_selection_family_receipt_contract_20261007_v0_1.json`
+  - `research/D16_SDA016_T48_CLASSB_PROPOSAL_VALIDATION_20261007_V0_1.md`
+- Unified post-selection validation into one hierarchy: genuine prospective > untouched chronological OOS > nested walk-forward > family-level search-adjusted diagnostics > descriptive/in-sample.
+- White Reality Check, Hansen SPA, PBO-style and DSR are frozen as distinct diagnostics rather than substitute PASS gates.
+- Outer holdout states now distinguish OUTER_UNTOUCHED vs OUTER_CONSUMED and require new forward evidence after post-outcome family expansion.
+- D18 search degrees of freedom must preserve full regime/policy family history; winner-only reporting is invalid.
+- SDA-016 T48 Class-B proposal was validated as semantically acceptable but not implemented; T48 remains OPEN.
+- D16 remains 60%; D18 remains 52%; global tracker 46.8%; no maturity inflation.
+- Economic outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Validate T48 implementation/first genuine receipt if owner-authorized implementation lands.
+2. Bind finalized C1 generation-set digest into SelectionFamilyReceipt/holdout-use identity.
+3. Switch immediately to System2 physical Stage-1 / SDA022 / NC-T01 / genuine Formal-C1 evidence if any lands first.
+4. Otherwise continue the next genuine System1 quality-acquisition episode and the 2026-10-08 00:10 opportunity reconciliation.
