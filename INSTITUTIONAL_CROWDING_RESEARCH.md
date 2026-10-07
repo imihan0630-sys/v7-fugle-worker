@@ -2651,3 +2651,53 @@ L3 means Taiwan source/PIT/replay feasibility only. It does not validate predict
 
 Exact next:
 on 2026-10-08 capture T2_FINAL for tradeDate 2026-10-06. After that, more source replication alone does not increase maturity; L4 requires preregistered OOS/Shadow residual incrementality on common support against liquidity, direct price-volume, institutional flow, leverage/shorting, passive/index flow and market regime, with date-clustered inference.
+
+
+---
+
+## IC-098 — D06-05 fresh same-generation TDCC lineage clears bounded L3 ownership PIT gate
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: SAME_GENERATION_LINEAGE_PASS / AUTHORITATIVE_PARENT_HASH_EXACT_REPLAY / D06_05_L3_BOUNDED_OWNERSHIP_PIT / HOLDER_IDENTITY_UNKNOWN / PASSIVE_SHARE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_tdcc_same_generation_lineage_20261007_v0_1.json`;
+- `research/d06_05_tdcc_weekly_change_falsification_20260924_20261002_v0_1.json`;
+- `research/d06_05_ownership_l3_decision_20261007_v0_1.json`.
+
+The historical 2026-10-05 same-generation join remains false and is not rewritten. Instead, a new outcome-blind 2026-10-07 D06 research generation was created under the previously captured official TDCC 2026-10-02 parent receipt.
+
+Raw-content replay control:
+- authoritative official parent receipt: `D06-20261005-TDCC-WEEKLY`;
+- official parent fingerprint: `fnv1a64-utf8:ad1a265c0a3dcaf8`;
+- a public archive copy of the same raw weekly CSV was used only as a transport mirror because the current retrieval channel could not inline the official CSV;
+- after removing the UTF-8 BOM exactly as in the original parser, the mirror contains 2,375,414 characters and reproduces the official parent fingerprint exactly;
+- therefore the mirror adds no first-known authority and cannot create a new primitive receipt.
+
+Fresh same-generation child:
+- generation: `D06-20261007-TDCC-OWNERSHIP-LINEAGE-R1`;
+- 69,326 bracket rows -> 4,078 securities;
+- grade1..15 - grade16 adjustment = grade17 total passes 4,078/4,078;
+- missing grade sets = 0;
+- every child consumes the common immutable generation envelope carrying sourceDate, chipAsOfDate, chipDefinition, official parent receipt/hash and parser version;
+- canonical 4,078-row set hash = `fnv1a64-utf8:e48be87cc678e625`;
+- independent GitHub readback recomputed the same row-set hash exactly.
+
+Weekly-cadence falsification:
+2026-09-24 vs 2026-10-02 has 4,056 common securities, including 2,962 common ordinary four-digit securities. Among those ordinary names, 400-lot-plus concentration increased for 956, decreased for 873 and was unchanged for 1,133. Median absolute weekly change was 0.02 percentage points, p90 0.63 and p99 3.26.
+
+These statistics are source/cadence evidence only. Extreme weekly deltas are not automatically accumulation/distribution: capital changes, corporate actions, denominator changes and universe continuity can matter. Weekly ownership stock is also not daily institutional flow.
+
+Maturity decision:
+- D06-05 L2/40 -> L3/60;
+- the admitted construct is bounded to identity-agnostic large-holder ownership concentration stock;
+- one TDCC sourceDate/vintage remains one evidence unit regardless of how many later scanDates or downstream modules consume it;
+- beneficial-holder identity, active-institution share, passive/index-fund share, strategic-holder share and motive remain UNKNOWN;
+- no price/return/MFE/MAE/ranking outcome was joined;
+- no Formal Core change.
+
+SDA-007 implication:
+D06-05 and D06-06 may consume the same TDCC weekly primitive, but the shared ownership vintage contributes one primitive evidence unit. Renaming concentration as institutional ownership, passive ownership, smart-money ownership or main-force ownership is forbidden without an independent identity-bearing source.
+
+Exact next:
+wait for a genuinely new TDCC sourceDate and serialize it through the same immutable generation envelope. Before L4, freeze corporate-action/capital/denominator continuity controls and preregister TDCC-vintage-clustered OOS/Shadow residual incrementality versus institutional daily flow, passive/index events, price-volume, liquidity and market regime. Repeated scans of the 2026-10-02 vintage do not increase maturity.
