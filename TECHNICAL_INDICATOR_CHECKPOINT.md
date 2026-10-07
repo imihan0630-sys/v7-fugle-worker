@@ -6890,3 +6890,179 @@ Primary exact next:
 3. in parallel consume the first physical annual TWSE V0.6 lifecycle receipt;
 4. capture the third D03 raw source-version session only through receipt-equivalent execution;
 5. continue V8.20 genuine parent, T48, S2-07, D03 dedup/redundancy and D16 incrementality independently.
+
+
+## 2026-10-07 D03 — TI-1379~1396 CORR-004 physical closure + NC-T01 replay-first continuity binding accepted
+
+Canonical D03 artifact:
+- `research/d03_corr004_physical_nct01_replay_binding_acceptance_20261007_v0_1.json`.
+
+Cross-lane physical / implementation evidence:
+- `system2/evidence/S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1.json`;
+- `system2/evidence/S2_CORR_20261007_004_INDEPENDENT_VERIFICATION_20261007_V0_1.json`;
+- CORR-004 final state = `VERIFIED_CLOSED`;
+- exact-session merge = `625ea3d0bda28fcd06df4c3163a054573c3982f7`;
+- physical read-only run = `37639310919`, job `112853723927`, SUCCESS;
+- replay-first continuity binding merge = `885ddf080d0ff0918aaf68eb237b679750d09fcc`;
+- legacy continuity firewall merge = `bf7cb670341c212c093785253654b1edf1728313`;
+- canonical SDA-022 fingerprint acceptance = `df39a5f315d48b91cff34a2a2ce6b1251cf9be43`.
+
+### TI-1379~1383 — exact-session prerequisite is physically closed
+
+Merged-main real readback:
+- ordinary universe = 1,973;
+- pre-correction count-only history-ready reference = 51;
+- post-correction exact-session history-ready = 46;
+- five previously ready symbols no longer survive exact expected-session reconciliation;
+- reduction among the pre-correction ready set = 5/51 = 9.80%;
+- continuity-ready = 0;
+- D1 rows written = 0;
+- System1 production isolation = PASS.
+
+Interpretation:
+the physical delta proves the count-only defect was behaviorally real, not merely theoretical.
+It does NOT estimate a market-wide false-positive rate; it only shows that 5 of the 51 pre-correction history-ready symbols in this specific 2026-10-07 readback failed the stronger exact-session criterion.
+
+Positive witness:
+- 1101 / TWSE remains exact-session history-ready;
+- its only remaining local blocker is `SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED`;
+- no `INSUFFICIENT_PIT_HISTORY`, expected-session-missing or unexpected-session blocker remains.
+
+Negative witnesses:
+- 1213 / 1218 remain fail-closed with expected-session missing + unexpected older-session evidence.
+
+D03 therefore closes:
+`EXACT_ELIGIBLE_SESSION_SET_IDENTITY_PENDING`
+for the real TWSE witness path.
+
+### TI-1384~1388 — replay-first continuity binding is now implemented
+
+PR #825 merged a canonical NC-T01 continuity binding core.
+
+Accepted mechanics:
+1. build the RAW PIT replay window first;
+2. preserve selected revision/source provenance in that replay;
+3. derive a deterministic `sourceHistoryHash` over the ordered selected date/source/value identity;
+4. resolve continuity evidence only after the replay exists;
+5. recompute and verify the continuity receipt hash;
+6. require symbol, asOf, decisionTimestamp and capturedAt causal consistency;
+7. require `sourceHistoryHash` and `replayHash` equality with the exact selected replay;
+8. require exact eligible-date-set equality;
+9. require zero unresolved missing sessions / relevant events for `CLEAR_NO_ACTION`;
+10. reject `ADJUSTED_CONTINUITY_REQUIRED` on a RAW first-witness path.
+
+For the first TWSE no-action certifier, the source-completeness contract requires:
+- EX_RIGHT_DIVIDEND historical actual-result range;
+- CAPITAL_REDUCTION historical actual-result range;
+- PAR_VALUE_CHANGE historical actual-result range;
+plus exact TWSE suspension/session evidence.
+
+A valid receipt may return:
+- `CLEAR_NO_ACTION_ELIGIBLE`;
+- `ADJUSTED_CONTINUITY_REQUIRED`;
+- `CONTINUITY_UNKNOWN`.
+
+Only the first may bind to runtime `CLEAR_NO_ACTION` on the RAW first-witness path.
+
+### TI-1389~1391 — legacy continuity leakage firewall
+
+PR #826 prevents persisted historical labels from self-authorizing the NC-T01 replay.
+
+When the NC-T01 replay path is used:
+- legacy `CLEAR_NO_ACTION` rows are sanitized to `UNVERIFIED`;
+- legacy `ADJUSTED_CONTINUITY` rows are sanitized to `UNVERIFIED`;
+- replay/source-history identity becomes independent of those persisted legacy labels;
+- only a post-replay validated continuity receipt may promote the selected window.
+
+Therefore:
+`PERSISTED_LEGACY_CONTINUITY_LABEL != PROMOTION_GRADE_CONTINUITY_EVIDENCE`.
+
+This directly protects D03-09 / D03-10 from a false green state created by historical labels.
+
+### TI-1392~1393 — policy fingerprints are canonical again
+
+After CORR-004 / NC-T01 runtime changes, stale fingerprint PR #762 was superseded.
+PR #828 regenerated the 11 source-artifact bindings.
+
+Independent canonical acceptance:
+- exact-main source matches = 11/11;
+- SHORT_MOMENTUM fingerprint = `115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3`;
+- SWING_GROWTH fingerprint = `a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b`;
+- S22-T06~T10 = PASS_CANONICAL;
+- S22-T11~T16 remain PENDING_PHYSICAL_NC_T01.
+
+This removes policy-fingerprint staleness from the immediate D03 continuity path.
+
+### TI-1394 — remaining real gap
+
+Canonical audit state:
+`REAL_CLEAR_NO_ACTION_RECEIPT_NOT_YET_OBSERVED`.
+
+Current runtime has:
+- exact-session history reconciliation = merged / physical PASS;
+- replay-first continuity binding = merged;
+- legacy continuity sanitization = merged;
+- canonical policy fingerprints = accepted.
+
+But no real source-honest `CLEAR_NO_ACTION` continuity receipt has yet been observed.
+Fixture receipts prove contract mechanics only and do not satisfy physical independence.
+
+Shortest truthful next:
+DATA_LANE must produce one real read-only exact-window TWSE corporate-action/lifecycle evidence package for an exact-session-ready symbol such as 1101.
+It must prove complete source/event/session evidence or fail closed.
+If sufficient, it emits the versioned hash-bound continuity receipt.
+BUILD_LANE then consumes that receipt through the merged replay-first core and executes the artifact-only NC-T01 runner.
+
+### TI-1395 — D03-10 Bollinger status
+
+D03-10 remains L2/40, but one blocker is now closed.
+
+Closed for the first real TWSE witness path:
+- exact expected eligible-session identity;
+- no older-row substitution;
+- probe-to-load session-hash binding.
+
+Immediate remaining blocker:
+- first real post-replay hash-bound `CLEAR_NO_ACTION` continuity receipt.
+
+Later still required:
+- genuine V8.20 Formal-to-C1 parent;
+- exact 20 eligible sessions on that parent;
+- Layer-C revision-known-at;
+- formula/source guards;
+- COMPLETE expected-parent reconciliation.
+
+No L3 promotion yet.
+
+### TI-1396 — D03-09 ADX status / maturity / exact next
+
+D03-09 remains L2/40.
+
+Closed:
+- exact ordered eligible-session identity for the real TWSE witness path;
+- older-row substitution defect;
+- replay-first continuity binding engineering path.
+
+Immediate remaining blocker:
+- real hash-bound continuity receipt.
+
+Then ADX still additionally requires:
+- canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted prior state;
+- genuine V8.20 parent;
+- Layer-C revision-known-at;
+- complete parent reconciliation.
+
+D03 remains:
+- maturity = 56.7%;
+- 12 active modules;
+- 10 at current L3/60 milestone;
+- D03-09 and D03-10 at L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact next:
+1. consume the first real hash-bound TWSE `CLEAR_NO_ACTION` continuity receipt for an exact-session-ready witness such as 1101, or accept fail-closed evidence and move to another witness;
+2. verify exact replay/date-set/sourceHistoryHash/receiptHash identity;
+3. execute/consume the physical artifact-only NC-T01 S22-T11~T16 receipt;
+4. independently keep annual TWSE V0.6 lifecycle rehabilitation, third raw D03 source-version receipt, genuine V8.20 parent, T48, S2-07, System1/System2 D03 dedup/redundancy and D16 incrementality as separate gates.
