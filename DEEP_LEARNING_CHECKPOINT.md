@@ -2756,3 +2756,55 @@ Re-read external blockers. If unchanged, execute the deterministic admission art
 2. Bind finalized C1 generation-set digest into SelectionFamilyReceipt/holdout-use identity.
 3. Switch immediately to System2 physical Stage-1 / SDA022 / NC-T01 / genuine Formal-C1 evidence if any lands first.
 4. Otherwise continue the next genuine System1 quality-acquisition episode and the 2026-10-08 00:10 opportunity reconciliation.
+
+
+## 2026-10-07 D06 — IC-096~097 direct-retail source exclusions + D06-14 L3 revision-chain completion
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- IC-096 durable artifact: `research/d06_19_direct_retail_source_exclusion_matrix_20261007_v0_1.json`.
+- D06-19 current official TWSE/TPEx source rescan found no verified domestic-natural-person × stock × date × buy/sell directional feed.
+- Explicitly rejected as direct-retail substitutes: margin, day trading, odd lot, broker/branch flow, total-minus-institution residual, market-level natural-person share, foreign-natural-person flow and emerging-stock trade-side labels.
+- D06-19 remains L2/40; negative source evidence strengthens the fail-closed boundary but does not increase maturity.
+- D06-05 same-generation TDCC blocker was re-audited. The immutable parent `D06-20261005-TDCC-WEEKLY` exists with 4,078/4,078 reconciliation, but repository search still found no genuine 2026-10-05 concentration-consuming research rows carrying the required parent lineage. `sameGenerationJoin=false` remains correct; retrospective row fabrication is prohibited.
+
+### D06-14 revision-chain completion
+
+Durable receipts:
+- `research/d06_14_tpex_daytrade_t2_final_20261005_captured_20261007_v0_1.json`;
+- `research/d06_14_tpex_daytrade_t1_revised_20261006_captured_20261007_v0_1.json`;
+- `research/d06_14_daytrade_l3_decision_20261007_v0_1.json`.
+
+2026-10-05 complete same-trade-date chain:
+- T_PRELIM 841 rows;
+- T1_REVISED 841 rows;
+- T2_FINAL 841 rows;
+- 0 changed / 0 added / 0 removed rows;
+- totals unchanged at 563,183,000 day-trade shares / TWD 139,035,902,050 buy / TWD 139,484,441,280 sell;
+- canonical fingerprint remains `fnv1a64-utf8:48e8edf2952b9b40`.
+
+2026-10-06 second-date replication:
+- T_PRELIM 843 rows;
+- T1_REVISED 843 rows;
+- 0 changed / 0 added / 0 removed rows;
+- totals unchanged at 530,117,000 shares / TWD 136,109,936,790 buy / TWD 136,525,764,410 sell;
+- canonical fingerprint remains `fnv1a64-utf8:21c5de02d6096939`.
+
+Parser authority:
+- earlier extraction-layer 251/400 row counts are rejected;
+- official fully rendered tables and official CSV both resolve to 841/843 rows;
+- current official CSV was compared symbol-by-symbol and field-by-field against immutable T_PRELIM JSON receipts.
+
+Maturity:
+- D06-14 L2/40 -> L3/60 for Taiwan source/PIT/replay feasibility only;
+- D06 aggregate 53.3% -> 54.4%;
+- global 356-module tracker 46.8% -> 46.9%.
+- No predictive alpha, retail identity, motive, overnight-inventory or standalone day-trading score claim follows.
+- The 60% surveillance condition remains forbidden as an alpha threshold.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. On 2026-10-08 capture D06-14 T2_FINAL for tradeDate 2026-10-06; preserve the full append-only chain, but do not award more maturity merely for source replication.
+2. D06-14 L4 requires preregistered OOS/Shadow residual incrementality on common support against liquidity, direct price-volume, institutional flow, leverage/shorting, passive/index flow and market regime with date-clustered inference.
+3. D06-05 remains blocked by absence of genuine same-generation concentration-consuming research rows; do not fabricate a retrospective join.
+4. D06-19 remains UNKNOWN for direct domestic retail direction until an explicit official/authorized stock-date investor-identity field contract exists.
+5. D06-18 remains L3/60; future in-slot dates are replication, not automatic maturity increases.
