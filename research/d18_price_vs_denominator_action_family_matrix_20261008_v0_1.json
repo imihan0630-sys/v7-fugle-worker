@@ -5,7 +5,7 @@
   "familySets": {
     "priceResetFamilySet": {
       "purpose": "U2B_PRICE_SPACE_CONTINUITY",
-      "currentStatus": "PARTIAL_STRONG_BUT_NOT_COMPLETE",
+      "currentStatus": "PARTIAL_STRONG_IDENTITY_TRANSITION_AND_PHYSICAL_RECEIPT_PENDING",
       "families": [
         {
           "family": "EX_RIGHT_DIVIDEND",
@@ -23,9 +23,15 @@
           "sharedCoverage": "MATERIALLY_PRESENT"
         },
         {
-          "family": "SPLIT_REVERSE_SPLIT",
+          "family": "DOMESTIC_ORDINARY_COMMON_EQUITY_PAR_VALUE_UNIT_CHANGE",
           "role": "PRICE_RESET_REQUIRED_AND_DENOMINATOR_RELEVANT",
-          "sharedCoverage": "SCOPE_MAPPING_UNPROVEN"
+          "sharedCoverage": "MAPPED_TO_PAR_VALUE_CHANGE_FOR_DOMESTIC_ORDINARY_COMMON_EQUITY",
+          "scopeLimits": [
+            "ETF_SPLIT_REVERSE_SPLIT_SEPARATE_SECURITY_CLASS_OUTSIDE_BASELINE",
+            "FOREIGN_TDR_OTHER_SECURITY_CLASS_NOT_INHERITED",
+            "COMPANY_DEMERGER_NOT_A_SECURITY_UNIT_SPLIT"
+          ],
+          "officialSemantic": "OLD_PAR_VALUE_DIV_NEW_PAR_VALUE_EQUALS_POST_CHANGE_SHARES_DIV_PRE_CHANGE_SHARES"
         },
         {
           "family": "SUSPENSION_RESUMPTION",
@@ -89,5 +95,9 @@
     "shareDenominatorFamilySetVersion",
     "shareDenominatorCoverageReceiptHash"
   ],
-  "maturityImpact": "NONE"
+  "maturityImpact": "NONE",
+  "notes": [
+    "2026-10-08 official TWSE/TPEx rules resolve domestic ordinary-common-equity split-like unit changes through the PAR_VALUE_CHANGE mechanism; no duplicate generic split family is needed for that scoped universe.",
+    "Corporate demerger/company split remains an identity/pair-comparability event, not a par-value unit-change alias."
+  ]
 }
