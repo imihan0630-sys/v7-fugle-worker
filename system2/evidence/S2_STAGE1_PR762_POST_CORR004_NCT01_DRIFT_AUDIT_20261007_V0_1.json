@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_STAGE1_PR762_POST_CORR004_NCT01_DRIFT_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "da8a816536b2d2a944554e1cc00dd117c33afa4f",
+  "pullRequest": 762,
+  "pullRequestHead": "a5487086ba15f844d775e12bc7ce2c3852749644",
+  "priorAuditSuperseded": "system2/evidence/S2_STAGE1_PR762_DRIFT_AUDIT_20261007_V0_1.json",
+  "disposition": "REBUILD_REQUIRED_BEFORE_CANONICAL_FINGERPRINT_ACCEPTANCE",
+  "exactBindingAudit": {
+    "boundCount": 11,
+    "exactMainMatchCount": 9,
+    "drifted": [
+      {
+        "path": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+        "recordedBlob": "e046b3b4146c9c9a652f2505bfc79d3537c147f7",
+        "currentBlob": "8af7429efc4c2dfeda800b87225581691348e4d3",
+        "driftReason": "NC-T01 replay-first continuity binding merged via #825."
+      },
+      {
+        "path": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+        "recordedBlob": "560700e0d8cc5378136241b6dee233315fde321c",
+        "currentBlob": "47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1",
+        "driftReason": "CORR-004 exact expected-session reconciliation merged via #817."
+      }
+    ]
+  },
+  "interpretation": [
+    "The old #762 fingerprint receipts are no longer canonical for latest main because two hard-bound source artifact identities changed.",
+    "The policy-level identities (strategyId/version, assessor policy id/version, required evidence families, ranking/capacity semantics) are not shown by this audit to be conceptually invalid; the problem is exact source-artifact identity drift.",
+    "BUILD_LANE must regenerate fingerprints on current main after both CORR-004 and #825, then rerun exact-head fingerprint CI + System2 Research CI + V8 Regression.",
+    "Do not credit S22-T06~T10 from the old #762 head."
+  ],
+  "fingerprintBoundaryGuidance": {
+    "policyFingerprint": "Keep S22-T06~T10 focused on frozen strategy/policy/ranking/capacity identity. Regenerate every currently declared SOURCE_ARTIFACT blob against latest main.",
+    "ncT01SourceGeneration": "S22-T15 remains the stronger physical source-generation boundary and must bind the exact NC-T01 replay/continuity/source-generation identities used by the real physical run.",
+    "noAutomaticScopeExpansion": "This audit does not unilaterally require adding every newly imported runtime file into the policy fingerprint. If BUILD_LANE changes SOURCE_ARTIFACT scope, version the fingerprint contract and explain why."
+  },
+  "requiredNextAction": [
+    "BUILD_LANE rebuilds/rebases #762 or creates a replacement branch from latest main.",
+    "Regenerate all strategy fingerprint receipts from current source blobs.",
+    "Verify old receipt hashes change deterministically where source artifact identity changed.",
+    "Run exact-head System2 fingerprint workflow, System2 Research CI, and V8 Regression.",
+    "Merge only after all exact-head checks pass.",
+    "Then proceed to physical NC-T01; S22-T15 must bind exact source generation/version independently of the policy fingerprint."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime change",
+    "No strategy threshold/weight/ranking mutation",
+    "No final selection/live push/capital/order authority"
+  ],
+  "implementationPerformedByAudit": false
+}
