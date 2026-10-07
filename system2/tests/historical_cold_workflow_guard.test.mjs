@@ -14,7 +14,7 @@ assert.match(workflow,/SYSTEM2_HISTORY_YEAR_MARKET: \$\{\{ inputs\.market \}\}/)
 assert.doesNotMatch(workflow,/matrix:\s*[\s\S]*market:\s*\[TWSE, TPEX\]/,"2017 backfill must run one market at a time");
 assert.doesNotMatch(workflow,/^\s+push:/m,"cold backfill must not auto-run on repository push");
 assert.match(workflow,/environment: system2-research/);
-assert.doesNotMatch(workflow,/provision_system2_d1\\.mjs/,"annual history workflow must not reprovision or write schema sentinels on every backfill");
+assert.doesNotMatch(workflow,/provision_system2_d1\.mjs/,"annual history workflow must not reprovision or write schema sentinels on every backfill");
 assert.doesNotMatch(workflow,/needs:\s*migrate/,"annual history backfill must not depend on a redundant provisioning job");
 assert.match(workflow,/SYSTEM2_R2_ACCESS_KEY_ID/);
 assert.match(workflow,/SYSTEM2_R2_SECRET_ACCESS_KEY/);
