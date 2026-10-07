@@ -90,10 +90,18 @@ const sourceError = await runDailyShadowDiagnosticV0_1({ db: new Db(), ...base, 
 assert.equal(sourceError.state, "INPUTS_NOT_READY");
 assert.equal(sourceError.symbolCount, 0);
 assert.equal(sourceError.zeroPickDay, null);
-const missingPolicy = await runDailyShadowDiagnosticV0_1({ db: new Db(), ...base,
-  historyProbe: async () => ({ ...(await historyProbe()), state: "READY", historyReadyCount: 2, continuityReadyCount: 2, historyCoverage: 1, continuityCoverage: 1 }) });
-assert.equal(missingPolicy.state, "ASSESSOR_POLICY_BLOCKED");
-assert.equal(missingPolicy.zeroPickDay, null);
+const assessorReadyDiagnostic = await runDailyShadowDiagnosticV0_1({ db: new Db(), ...base,
+  historyProbe: async () => ({ ...(await historyProbe()), state: "READY", globalIntegrityState: "READY", historyReadyCount: 2, continuityReadyCount: 2, historyCoverage: 1, continuityCoverage: 1 }) });
+assert.equal(assessorReadyDiagnostic.state, "READY_FOR_AUTHORIZED_SHADOW_EVALUATION");
+assert.equal(assessorReadyDiagnostic.preflight.assessorReady, true);
+assert.equal(assessorReadyDiagnostic.strategyEvaluation, "ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED");
+assert.equal(assessorReadyDiagnostic.capacity, "NOT_PRODUCED");
+assert.equal(assessorReadyDiagnostic.zeroPickDay, null);
+assert.equal(assessorReadyDiagnostic.finalSelectionEnabled, false);
+assert.equal(assessorReadyDiagnostic.livePushEnabled, false);
+assert.equal(assessorReadyDiagnostic.capitalImpact, false);
+assert.equal(assessorReadyDiagnostic.orderImpact, false);
+assert.equal(assessorReadyDiagnostic.system1RuntimeUsed, false);
 await assert.rejects(() => runDailyShadowDiagnosticV0_1({ db: new Db(), ...base, historyProbe: async () => ({ ...(await historyProbe()), decisionTimestamp: "2099-01-01T00:00:00Z" }) }), /HISTORY_CLOCK_MISMATCH/);
 await assert.rejects(() => runDailyShadowDiagnosticV0_1({ db: new Db(), ...base, sourceFetch: async () => ({ ...(await sourceFetch({ marketDate: date, now })), decisionTimestamp: "2099-01-01T00:00:00Z" }) }), /SOURCE_CLOCK_MISMATCH/);
 await assert.rejects(() => readDailyShadowDiagnosticV0_1(db, { marketDate: "invalid" }), /marketDate/);

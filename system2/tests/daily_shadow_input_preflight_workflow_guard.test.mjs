@@ -25,8 +25,8 @@ const preflight = await readFile(
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /run_daily_shadow_input_preflight_readonly\.mjs/);
 assert.match(workflow, /rowsWritten!==0/);
-assert.match(workflow, /capacityWriteAuthorized!==false/);
-assert.match(workflow, /zeroPickMayBeClaimed!==false/);
+assert.match(workflow, /assessor policy not READY/);
+assert.match(workflow, /selectionDenominatorComplete!==true.*zeroPickMayBeClaimed!==false/s);
 assert.match(workflow, /System1 production files unchanged PASS/);
 assert.doesNotMatch(workflow, /wrangler\s+deploy|secret\s+put/);
 
@@ -35,8 +35,10 @@ assert.match(source, /buildA1SymbolSnapshotBatch/);
 assert.match(history, /pit_replay_eligible = 1/);
 assert.match(history, /available_at <= \?/);
 assert.match(history, /REVISION_AMBIGUITY/);
-assert.match(assessor, /ASSESSOR_POLICY_NOT_FROZEN/);
-assert.match(assessor, /NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS/);
+assert.match(assessor, /STAGE1_ASSESSOR_POLICIES_V0_1/);
+assert.match(assessor, /AUTHORIZED_SHADOW_EVALUATION_ONLY/);
+assert.match(assessor, /system1Top6Required: false/);
+assert.match(assessor, /system1RankRequired: false/);
 assert.match(preflight, /ASSESSOR_POLICY_BLOCKED/);
 assert.match(preflight, /zeroPickMayBeClaimed: globalInputsReady && assessorReady && selectionDenominatorComplete/);
 assert.match(preflight, /symbolLocalIncompleteCount/);

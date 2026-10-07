@@ -35,9 +35,10 @@ A failure at any layer must remain explicit. Global source/infrastructure failur
   - local history/continuity/revision gaps remain `INCOMPLETE` for that symbol, while source-wide/clock/universe-integrity failures remain global blockers.
 
 - `runtime/daily_shadow_assessor_readiness_v0_1.mjs`
-  - explicit firewall against invented strategy thresholds;
-  - SHORT_MOMENTUM and SWING_GROWTH are currently `ASSESSOR_POLICY_NOT_FROZEN`;
-  - no default MA/volume/fundamental threshold is allowed to create SUPPORTIVE/ADVERSE or BUY_ELIGIBLE.
+  - binds the separately versioned Stage-1 assessor policies;
+  - SHORT_MOMENTUM and SWING_GROWTH are `READY` for authorized Shadow evaluation only;
+  - System1 runtime / Top6 / rank remain explicit non-dependencies;
+  - final selection, live push, capital and orders remain disabled.
 
 - `runtime/daily_shadow_input_preflight_v0_1.mjs`
   - combines current source, global PIT-history integrity, symbol-local readiness and assessor readiness;
@@ -50,27 +51,20 @@ A failure at any layer must remain explicit. Global source/infrastructure failur
   - performs no D1 mutation;
   - when no exact capture clock is supplied, labels the clock `DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK`.
 
-## Why assessor policy is deliberately blocked
+## Stage-1 assessor policy boundary
 
-Existing strategy contracts define:
-- strategy thesis;
-- evidence families;
-- source-readiness requirements;
-- hard invalidation identifiers;
-- setup families;
-- horizon and governance.
+The 2026-10-07 owner P0 launch directive authorizes the smallest falsifiable launch-policy freeze without arbitrary threshold invention.
 
-They do **not** freeze exact setup-level numeric thresholds or a full mapping from raw observations to:
-- SUPPORTIVE / NEUTRAL / ADVERSE;
-- WATCH / NEAR_ENTRY / ACTIVE_ENTRY_MONITOR / BUY_ELIGIBLE.
+The authoritative mapping is now:
+`SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md`.
 
-Inventing those mappings inside engineering would silently create a strategy version without preregistration or owner review.
+The parent strategy contracts still define thesis/evidence/setup identity. The assessor policy is a separate versioned layer for raw/family/readiness mapping.
 
-Therefore V0.1 treats:
-- SHORT_MOMENTUM -> `ASSESSOR_POLICY_NOT_FROZEN`;
-- SWING_GROWTH -> `ASSESSOR_POLICY_NOT_FROZEN`.
+SHORT_MOMENTUM uses only source-honest relational references available from PIT A1 history; it does not introduce a weighted score or outcome-tuned numeric cutoff.
 
-This is a deliberate safety state, not an engineering failure.
+SWING_GROWTH requires PIT-valid INDUSTRY_THESIS and FUNDAMENTAL_QUALITY upstream assessments. A1 timing cannot synthesize missing growth evidence, so missing required thesis inputs still resolve to INCOMPLETE/BLOCKED.
+
+Assessor READY means **authorized Shadow evaluation only**. It does not imply final selection, live push, capital or order authority.
 
 ## Zero-pick firewall
 
@@ -86,7 +80,7 @@ Symbol-local history/continuity/provenance gaps do **not** globally block ready 
 
 No whole-market coverage percentage threshold (95%, 90%, 80%, etc.) is introduced by this rule.
 
-If assessor policy is missing, the state is **BLOCKED**, never "0 stocks selected".
+If an assessor policy is missing/unregistered, the state is **BLOCKED**, never "0 stocks selected". A registered READY policy still cannot produce a clean zero-pick unless the selection denominator is complete.
 
 ## Physical diagnostic workflow
 
@@ -110,8 +104,9 @@ After physical preflight readback:
 
 1. quantify current official A1 readiness and isolated D1 history/continuity gaps;
 2. repair/complete data coverage where the evidence shows an engineering/data issue;
-3. separately preregister the smallest falsifiable strategy assessor policy before it can emit strategy states;
-4. only then wire completed strategy runs into the already-built ranking/capacity assembler and isolated D1 persistence execution;
-5. retain final-selection, push, capital and order gates.
+3. use the frozen Stage-1 assessor policy to execute genuine strategy states on eligible symbols;
+4. wire completed strategy runs into the already-built ranking/capacity assembler and isolated D1 persistence execution;
+5. generate SDA-022 per-strategy fingerprints and physical NC-T01 independence evidence;
+6. retain final-selection, push, capital and order gates until their acceptance gates pass.
 
 No System 1 Formal behavior is changed by this work.
