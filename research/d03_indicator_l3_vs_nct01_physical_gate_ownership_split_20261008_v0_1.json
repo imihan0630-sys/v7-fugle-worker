@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "D03_INDICATOR_L3_VS_NCT01_PHYSICAL_GATE_OWNERSHIP_SPLIT_V0_1",
+  "updatedAt": "2026-10-08T00:08:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_GOVERNANCE_GATE_OWNERSHIP",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "4f9cbdfbfbc53fa8b57d4f1cae70814815f9eed6",
+  "corePrinciple": "INDICATOR_PIT_FEASIBILITY_AND_SYSTEM2_PHYSICAL_INDEPENDENCE_ARE_DISTINCT_CLAIMS_AND_MUST_NOT_SHARE_UNRELATED_HARD_GATES",
+  "witnessLayers": {
+    "W0": {
+      "name": "CONTINUITY_READY_WITNESS",
+      "definition": "Exact-session-ready selected PIT replay with source-honest technical continuity certification and required source/lifecycle completeness for the technical window.",
+      "canSupport": [
+        "D03 technical-window PIT feasibility evidence",
+        "indicator formula replay on the certified window",
+        "D03-10 exact eligible-session Bollinger reconstruction",
+        "D03-09 ordered H/L/C lineage input before Wilder replay"
+      ],
+      "cannotSupport": [
+        "System2 physical independent discovery",
+        "legitimate strategy zero-pick",
+        "strategy required-evidence completeness",
+        "rank eligibility",
+        "predictive alpha"
+      ]
+    },
+    "W1": {
+      "name": "STRATEGY_EXECUTABLE_WITNESS",
+      "definition": "W0 plus explicit strategy requiredEvidenceComplete=true, missingRequiredEvidenceCount=0 or exact equivalent, matched evaluation identity, and non-INCOMPLETE strategy evaluation.",
+      "canSupport": [
+        "NC-T01 strategy execution eligibility subject to all other physical gates",
+        "legitimate zero-pick assessment when all other physical gates pass"
+      ],
+      "cannotSupport": [
+        "rank eligibility by itself",
+        "predictive incrementality by itself"
+      ]
+    },
+    "W2": {
+      "name": "RANK_ELIGIBLE_WITNESS",
+      "definition": "W1 plus later ranking/candidate-stage requirements.",
+      "canSupport": [
+        "RANK-01 downstream evaluation"
+      ],
+      "cannotSupport": [
+        "D03 predictive incrementality without D16 outcome evidence"
+      ]
+    }
+  },
+  "indicatorL3HardGates": {
+    "common": [
+      "EXACT_EXPECTED_VS_OBSERVED_ELIGIBLE_SESSION_SET_IDENTITY",
+      "LIFECYCLE_BOUNDARY_AUTHORITY_FOR_EVERY_EXCLUDED_SESSION",
+      "BOUNDED_SOURCE_NEGATIVE_COMPLETENESS_WHEN_ABSENCE_IS_CLAIMED",
+      "REAL_POST_REPLAY_HASH_BOUND_TECHNICAL_CONTINUITY_RECEIPT",
+      "SOURCE_VERSION_AND_KNOWN_AT_CAUSALITY_REQUIRED_BY_D03_PIT_CONTRACT",
+      "GENUINE_V8_20_FORMAL_TO_C1_PARENT_WHERE_SAME_PARENT_ADMISSION_IS_REQUIRED",
+      "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+    ],
+    "D03-10": [
+      "EXACT_20_ELIGIBLE_SESSIONS_ON_ACCEPTED_PARENT",
+      "BOLLINGER_FORMULA_AND_SOURCE_GUARDS"
+    ],
+    "D03-09": [
+      "ORDERED_ELIGIBLE_HLC_SEQUENCE",
+      "CANONICAL_WILDER_FULL_REPLAY_OR_REPLAY_CERTIFIED_TRUSTED_PRIOR_STATE"
+    ]
+  },
+  "system2PhysicalIndependenceHardGates": [
+    "SDA022_T11_T16_ONE_COHERENT_IMMUTABLE_EVIDENCE_CUT",
+    "CORR005_EXPLICIT_HIDDEN_FALLBACK_STATIC_AND_RUNTIME_ABSENCE_PROOF",
+    "HIDDEN_FALLBACK_AUDIT_SHA256_BOUND_IN_FINAL_RECEIPT",
+    "CORR006_AT_LEAST_ONE_W1_STRATEGY_EXECUTABLE_WITNESS",
+    "REQUIRED_EVIDENCE_COMPLETE_EXPLICITLY_PROVEN",
+    "ARTIFACT_ONLY_NCT01_PHYSICAL_RUN",
+    "NO_SYSTEM1_TOP6_OR_RANK_FALLBACK"
+  ],
+  "antiOvergatingRules": [
+    "CORR005_MAY_BLOCK_NCT01_PHYSICAL_INDEPENDENCE_BUT_DOES_NOT_BY_ITSELF_INVALIDATE_A_SOURCE_HONEST_D03_TECHNICAL_CONTINUITY_RECEIPT",
+    "CORR006_MAY_BLOCK_STRATEGY_EXECUTION_OR_ZERO_PICK_BUT_DOES_NOT_BY_ITSELF_INVALIDATE_W0_TECHNICAL_WINDOW_PIT_FEASIBILITY",
+    "W0_TO_W1_IS_A_STRATEGY_EVIDENCE_TRANSITION_NOT_AN_INDICATOR_FORMULA_TRANSITION",
+    "NCT01_PHYSICAL_PASS_DOES_NOT_AUTO_PROVE_D03_PREDICTIVE_INCREMENTALITY",
+    "D03_L3_TECHNICAL_FEASIBILITY_DOES_NOT_AUTO_PROVE_SYSTEM2_PHYSICAL_INDEPENDENCE"
+  ],
+  "currentState": {
+    "exactSessionIdentity": "PHYSICAL_PASS_CORR004_VERIFIED_CLOSED",
+    "replayFirstContinuityBinding": "MERGED",
+    "legacyContinuitySanitization": "MERGED",
+    "realTechnicalContinuityReceipt": "PENDING",
+    "boundedTwtaWuNegativeCompleteness": "PENDING",
+    "corr005": "OPEN_SYSTEM2_PHYSICAL_ONLY",
+    "corr006": "OPEN_SYSTEM2_PHYSICAL_ONLY",
+    "physicalNcT01": "NOT_OBSERVED",
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED"
+  },
+  "immediateD03PromotionPath": {
+    "D03-10": "Do not wait for CORR005/CORR006 to validate W0 technical feasibility. First consume a real bounded-source, exact-window, hash-bound technical continuity receipt; then satisfy genuine parent, exact 20 eligible sessions, known-at and formula/parent reconciliation gates.",
+    "D03-09": "Do not wait for CORR005/CORR006 to validate W0 technical feasibility. First consume the same class of real technical continuity receipt; then additionally require canonical Wilder FULL_REPLAY/trusted state plus genuine parent, known-at and parent reconciliation."
+  },
+  "parallelSystem2Path": "Independently close CORR005 and CORR006, then execute one coherent artifact-only NC-T01 physical run for S22-T11~T16. These physical-independence gates must not be silently imported into D03 L3 technical-feasibility maturity.",
+  "maturityDecision": {
+    "promotion": false,
+    "reason": "This closes a governance over-gating ambiguity only. The real W0 continuity receipt and remaining indicator-specific PIT gates have not yet physically passed."
+  },
+  "exactNextContinuationPoint": "For D03 maturity, prioritize the first real exact-window source-honest hash-bound technical continuity receipt and indicator-specific parent/known-at gates without waiting for CORR005/CORR006. In parallel consume CORR005/CORR006 only for System2 NC-T01 physical-independence evidence. If a real W0 receipt lands first, evaluate D03-10 L3 admission immediately under its own preregistered indicator gates."
+}
