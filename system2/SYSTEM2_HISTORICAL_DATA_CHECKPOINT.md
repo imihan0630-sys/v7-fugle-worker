@@ -1172,3 +1172,45 @@ This is a physical official-source row, not a synthetic fixture.
 
 Priority rule:
 this read-only NC-T01 continuity evidence task is Stage-1 launch-critical and should be advanced ahead of nonblocking broad-history expansion when safe; annual history writer work remains preserved and resumes according to writer/quota governance.
+
+
+## 2026-10-08 06:03 CORR-007 cross-lane guard — DATA may prove suspension completeness but final CLEAR_NO_ACTION waits for provenance binding
+
+Observed main before write:
+`b5286bbc0b6d54bc37901a59d4a8437f8f1559fd`.
+
+New correction:
+`S2-CORR-20261008-007` — HIGH / BUILD_LANE.
+
+DATA_LANE ownership does not change:
+- capture the real TWTAWU export request contract;
+- prove positive JSON/export parity using the real 1218 witness;
+- freeze bounded completeness semantics;
+- apply to the exact replay window;
+- produce immutable raw/parity/bounded-suspension evidence;
+- continue the three TWSE corporate-action historical range families.
+
+New guard:
+until CORR-007 is merged and independently verified, DATA_LANE must **not** treat
+`suspensionCoverageByExchange.TWSE=COMPLETE`
+alone as sufficient for final `CLEAR_NO_ACTION` promotion.
+
+The DATA artifact should expose enough immutable identity for BUILD to bind:
+- exact interval;
+- sourceId / source family/version;
+- bounded suspension/parity receiptId;
+- 64-hex receipt/artifact digest;
+- raw official response hashes;
+- observedAt;
+- availability semantics / availableAt when applicable;
+- completeness state;
+- normalized event/interval classification.
+
+After CORR-007, the final promotion path must require that exact suspension evidence identity in both:
+1. the corporate-action completeness receipt hash; and
+2. a matching continuity `sourceEvidenceRef`.
+
+If DATA finishes parity before BUILD finishes CORR-007, preserve the result as:
+`SUSPENSION_BOUNDED_COMPLETENESS_EVIDENCE_READY / FINAL_CLEAR_NO_ACTION_PROMOTION_BLOCKED_CORR007`.
+
+No D1 mutation is required for this read-only evidence task.
