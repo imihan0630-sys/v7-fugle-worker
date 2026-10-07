@@ -1615,3 +1615,32 @@ The normal `System 1 C1 Prospective Evidence` schedule is 00:10 Asia/Taipei afte
 
 D09-05 remains L2/40.
 Formal Core unchanged.
+
+
+## BR-068 — D09-05 post-midnight parent-readiness reconciliation (2026-10-08)
+
+Artifact:
+- `research/BR068_D09_05_POST_MIDNIGHT_PARENT_READINESS_20261008_V0_1.md`
+
+Current disposition:
+- D09-05 remains L2 / 40%;
+- genuine same-generation C1 parent remains unproven;
+- the isolated Above-MA20/60 builder is already ready;
+- no substitute universe may be reconstructed.
+
+Latest upstream causal state:
+- V8.20 Formal→C1 binding semantics are production-verified;
+- prior C1 evidence attempt failed `FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`;
+- immediate causal blocker is official-quality acquisition: FINANCIAL was not ready and QUARTER_EPS was downstream-blocked;
+- the MOPSOV Node fetch/undici transport incompatibility has a native-HTTPS repair candidate, but Room07 has no production-deployed/live-readback proof for that repair yet;
+- SDA-016 T48 generation-set finalization remains separate research-completeness debt and is not treated as the immediate operational recovery blocker.
+
+2026-10-08 00:10 scheduled opportunity:
+- as of the bounded Room07 readback after 00:15 Asia/Taipei, no `System 1 C1 Prospective Evidence` run was yet visible in the repository Actions list;
+- state = `SCHEDULE_NOT_YET_OBSERVED`;
+- this is not FAILURE, MISSED, ZERO_PICK or NO_SIGNAL.
+
+Exact next:
+consume the first actual scheduled C1 run when it becomes observable; inspect its readiness/population evidence rather than workflow color alone. Require scanDate 2026-10-07, same-generation identity, complete/readback verified parent and research eligibility. If PASS, immediately run the frozen Above-MA20/60 builder outcome-blind. If blocked, append the new blocker and do not substitute another universe.
+
+Formal Core unchanged.
