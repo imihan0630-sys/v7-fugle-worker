@@ -6766,3 +6766,127 @@ Exact next:
 2. validate it against the preregistered 18-case oracle, including exact before/after counts, missing-reason reconciliation, unique market|symbol|date identities, source hashes, conflicts and partial-source state;
 3. treat a complete zero-delta run as negative evidence only, not promotion;
 4. keep TPEx lifecycle parity, Layer-C known-at, exact replay-window continuity binding, the genuine V8.20 parent, T48, S2-07, System1/System2 D03 dedup and D16 incrementality as independent gates.
+
+
+## 2026-10-07 D03 — TI-1361~1378 exact symbol-session window identity + CORR-004 consumer acceptance
+
+Canonical D03 artifact:
+- `research/d03_corr004_exact_symbol_session_window_consumer_acceptance_20261007_v0_1.json`.
+
+Cross-lane source:
+- `S2-CORR-20261007-004` = HIGH / OPEN / DATA_LANE;
+- PR #817 = `fix(system2-data): reconcile exact Daily Shadow symbol sessions`;
+- audited PR head = `43784e500f678be6ee95710822fdafd2af50ac50`;
+- independent 00 disposition = CONTENT_PASS_CANDIDATE / CANONICAL_AND_PHYSICAL_ACCEPTANCE_PENDING.
+
+### TI-1361~1365 — row count is not window identity
+
+Current pre-fix history readiness can select the latest N available PIT rows and, for long-listed symbols, accept `selectedDateCount >= required` without exact expected-session reconciliation.
+
+Frozen counterexample:
+- expected eligible set = D1..D60;
+- D55 is missing;
+- an older D0 is present;
+- latest 60 observed rows still have count=60;
+- count-only readiness can therefore pass while the exact required window is wrong.
+
+D03 classifies this as:
+`WINDOW_MEMBERSHIP_IDENTITY_DEFECT`,
+not a simple row-count insufficiency.
+
+Hard rule:
+`COUNT_EQUALITY_DOES_NOT_PROVE_ELIGIBLE_SESSION_SET_EQUALITY`.
+
+### TI-1366~1369 — exact-set semantics become D03-wide
+
+For all D03 N-session features:
+- the observed symbol-session set must reconcile exactly to the expected certified eligible-session set;
+- older rows may not substitute for missing required recent sessions;
+- certified official no-trading intervals are removed from the expected set before reconciliation;
+- missing/unexpected sessions remain symbol-local fail-closed;
+- no whole-universe veto is restored;
+- empty lifecycle lookup never proves NO_EVENT.
+
+This strengthens future runtime/empirical receipts for D03-01~04 without downgrading their already accepted L3 Taiwan-PIT feasibility status.
+
+### TI-1370~1372 — Bollinger consequence
+
+D03-10 requires exactly 20 certified eligible sessions.
+A window with:
+- 19 correct recent eligible sessions;
+- 1 older substitute;
+- rowCount=20
+is REJECTED.
+
+Official non-trading intervals are skipped from the expected session clock rather than filled with previous-close pseudo bars.
+
+Therefore:
+`20 observed rows != exact 20 eligible-session suffix`.
+
+### TI-1373~1375 — ADX consequence
+
+D03-09 requires the exact ordered eligible H/L/C sequence.
+One missing required recent session changes TR/DM/Wilder smoothing ancestry.
+An older observation cannot restore that recursion simply by keeping the count constant.
+
+Therefore:
+- exact expected-vs-observed session identity precedes continuity promotion;
+- post-replay continuity evidence must bind that exact selected window;
+- canonical Wilder FULL_REPLAY / replay-certified trusted state remains separately required.
+
+### TI-1376 — PR #817 evidence boundary
+
+PR #817 currently provides strong engineering content:
+- missing-required-session + older-substitution regression fail-closed;
+- clean long-listed exact-window control;
+- certified lifecycle-gap control;
+- new-listing short-window control;
+- expected/observed session hashes;
+- loaded-window hash recomputation with `EXPECTED_SESSION_HASH_MISMATCH` rejection;
+- symbol-local incompleteness;
+- TWSE positive lifecycle evidence only;
+- TPEx remains separate.
+
+But the branch is not canonical main and remains open/diverged.
+Historical green checks do not authorize maturity promotion.
+
+Physical D03 credit requires:
+1. refresh/rebase on then-latest main;
+2. exact-head CI;
+3. canonical merge;
+4. merged-main read-only preflight;
+5. at least one real TWSE exact-session witness;
+6. immutable expected/observed set/hash provenance;
+7. zero unresolved missing expected sessions for that witness.
+
+### TI-1377 — third raw receipt attempt remains uncredited
+
+A dedicated read-only workflow has been prepared:
+`.github/workflows/d03-third-raw-session-capture-readonly.yml`.
+
+No physical run exists.
+Connector-origin content commits did not trigger GitHub Actions, the GitHub connector exposes no workflow-dispatch action, and the local direct official-source curl path was infrastructure-rate-limited.
+
+Therefore:
+- raw source-version gate remains 2/3;
+- no receipt is inferred from System2 A1;
+- no same-date repeat is fabricated;
+- no outcome or maturity credit is granted.
+
+### TI-1378 — maturity and exact next
+
+D03 remains:
+- maturity = 56.7%;
+- active modules = 12;
+- current L3 milestone = 10 modules;
+- L2 = D03-09 ADX and D03-10 Bollinger;
+- raw source/version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Primary exact next:
+1. consume canonical merged-main CORR-004 real TWSE exact-session read-only witness;
+2. only then allow post-replay hash-bound `CLEAR_NO_ACTION` continuity to consume that exact window;
+3. in parallel consume the first physical annual TWSE V0.6 lifecycle receipt;
+4. capture the third D03 raw source-version session only through receipt-equivalent execution;
+5. continue V8.20 genuine parent, T48, S2-07, D03 dedup/redundancy and D16 incrementality independently.
