@@ -2472,3 +2472,36 @@ Exact next:
 BR-059D wait for or prospectively capture an issuer-native realized mutually exclusive ABF/BT/general-PCB product revenue split or a directly reconcilable ABF revenue amount. Preserve UNKNOWN otherwise.
 
 Formal Core unchanged.
+
+
+## BR-064 — VIS/VSMC prospective capital-injection strategic action (2026-10-07)
+
+Artifact:
+- `research/BR064_VIS_VSMC_PROSPECTIVE_CAPITAL_INJECTION_STRATEGIC_ACTION_20261007_V0_1.md`
+
+Taiwan MOPS provided a same-day, post-freeze strategic-action receipt for VIS 5347 / VSMC:
+- 2026-10-07 17:18 Asia/Taipei: VSMC board resolved a cash capital increase;
+- 2026-10-07 17:19 Asia/Taipei: VSMC announced the record date;
+- total amount: US$100 million;
+- 100,000,000 shares at US$1;
+- all shares subscribed by existing shareholders;
+- stated purpose: company operating needs.
+
+The parent strategic program is the VIS/NXP VSMC Singapore 300mm fab JV. The fab officially opened on 2026-09-28.
+
+This expands the frozen D09-14 action cohort:
+- action count: 4 -> 5;
+- issuer count: 3 -> 4.
+
+Critical dedup:
+- D09-14 owns the strategic capital action and implementation-state transition;
+- D10 owns physical capacity / qualification / ramp / utilization;
+- `CAPITAL_INJECTION_ACTION != PHYSICAL_CAPACITY_VOTE`.
+
+The disclosure does not state shareholder-specific subscription amounts in the observed MOPS text; VIS-specific US-dollar subscription remains UNKNOWN.
+
+D09-14 remains L3/60.
+No stock outcome or Formal change.
+
+Exact next:
+BR-065 continue native milestone surveillance across all five frozen actions; preserve issuer clustering and shared D10 lineage where physical milestones are consumed.
