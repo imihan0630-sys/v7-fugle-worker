@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "pattern-zone-migration-root-persistence-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "zoneVersionEqualsNewRoot": false,
+  "movingWindowDriftEqualsNewInformation": false,
+  "splitZoneEqualsMultipleIndependentRoots": false,
+  "mergedZoneErasesParentLineage": false,
+  "exPostRootRenewalAllowed": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
