@@ -3178,3 +3178,69 @@ No maturity change:
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 nested acquisition missingness firewall
+
+New:
+- `research/D16_NESTED_ACQUISITION_MISSINGNESS_CONTRACT_20261007_V0_1.md`;
+- `research/D16_NESTED_ACQUISITION_MISSINGNESS_CONTRACT_20261007_V0_1.json`;
+- `research/D16_NESTED_ACQUISITION_EPISODE_37556241467_V0_1.json`.
+
+Physical run:
+`37556241467`.
+
+Verified execution order:
+FINANCIAL -> financialSnapshot -> QUARTER_EPS.
+
+Current event:
+- FINANCIAL attempted = true;
+- FINANCIAL terminal = MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED;
+- FINANCIAL role = ROOT_OBSERVED_FAILURE;
+- QUARTER_EPS attempted = false;
+- QUARTER_EPS terminal = DOWNSTREAM_NOT_REACHED_UPSTREAM_BLOCKED;
+- QUARTER_EPS role = DERIVED_DOWNSTREAM_BLOCK.
+
+Current episode accounting:
+- attempted datasets = 1;
+- observed root failures = 1;
+- downstream not reached = 1;
+- independent acquisition episodes = 1;
+- blocked datasets = 2.
+
+Never treat blockedDatasetN=2 as two independent failure observations.
+
+Source-conditional QUARTER_EPS transport reliability requires actual QUARTER_EPS attempts.
+End-to-end QUARTER_EPS availability is a different estimand.
+
+Current positivity:
+`ACQUISITION_POSITIVITY_NOT_ESTABLISHED`
+for QUARTER_EPS source reliability in FINANCIAL-failed strata.
+
+Canonical SDA016 count unchanged:
+supplemental mapping only to T28/T31/T33/T39.
+
+Current external state:
+- 2026-10-07 market opportunity = VERIFIED_TRADING_SESSION;
+- expected System1 C1 attempt window remains 2026-10-08 00:10 Taipei;
+- genuine Formal↔C1 sample N=0;
+- T48 pending;
+- System2 Stage-1 physical strategy evaluation pending;
+- System2 SDA022 fingerprints pending;
+- NC-T01 pending;
+- economic outcomes CLOSED.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main;
+2. if next quality remediation lands, first verify FINANCIAL actual ingestion/readback;
+3. only if FINANCIAL succeeds, check whether QUARTER_EPS transport is physically reached;
+4. create a new nested acquisition episode for the new run; never overwrite run 37556241467;
+5. if first System2 Stage-1 physical evaluation lands, classify policy-only vs D18 strategy×Regime lane;
+6. if System2 fingerprint / NC-T01 / T48 / genuine Formal↔C1 lands first, switch immediately;
+7. on 2026-10-08 after expected C1 attempt window, reconcile the 2026-10-07 opportunity;
+8. outcomes remain CLOSED.
