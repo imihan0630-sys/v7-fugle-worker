@@ -68,7 +68,7 @@ assert.equal(batch.marketCounts.TPEX, 1);
 assert.equal(batch.rows[0].pitReplayEligible, false);
 assert.equal(batch.rows[1].pitAvailabilityClass, "CONSERVATIVE_SESSION_FINALITY");
 assert.equal(batch.immutable, true);
-assert.equal(batch.replayPolicy, "AVAILABLE_AT_LTE_DECISION_AND_NO_AMBIGUOUS_REVISION");
+assert.equal(batch.replayPolicy, "AVAILABLE_AT_LTE_DECISION_LATEST_AVAILABLE_REVISION_FAIL_CLOSED_ON_TIE");
 
 const replay = await buildHistoricalStoreIngestBatch({
   batchId: "HIST-A1-20260924",
