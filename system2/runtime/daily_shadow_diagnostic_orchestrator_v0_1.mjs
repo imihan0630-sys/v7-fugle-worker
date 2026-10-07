@@ -237,8 +237,18 @@ export async function runDailyShadowDiagnosticV0_1({
           let priorBars = [];
           let historyError = null;
           try {
-            if (coverage.get(symbol)?.historyReady) {
-              priorBars = await historyLoad({ db, symbol, market: current.market, marketDate, decisionTimestamp: clock });
+            const historyDiagnostic = coverage.get(symbol) || null;
+            if (historyDiagnostic?.historyReady) {
+              priorBars = await historyLoad({
+                db,
+                symbol,
+                market: current.market,
+                marketDate,
+                decisionTimestamp: clock,
+                lookbackSessions: historyDiagnostic.requiredPriorSessionsForSymbol || 60,
+                minimumMarketDate: historyDiagnostic.listingDate || null,
+                expectedSessionHash: historyDiagnostic.expectedSessionHash || null,
+              });
               if (priorBars.some(x => x.marketDate >= marketDate || !x.pitReplayEligible ||
                 !x.availableAt || Date.parse(x.availableAt) > Date.parse(clock))) throw new Error("PIT_HISTORY_REJECTED");
             }
