@@ -7217,3 +7217,89 @@ A. DATA_LANE bounded TWTAWU + real continuity receipt;
 B. BUILD_LANE CORR-005 hardening.
 After both pass, consume physical artifact-only NC-T01 S22-T11~T16.
 Keep the general lifecycle open-boundary correction separate from CORR-004 closure, and keep annual V0.6, raw-third-session, V8.20 genuine parent, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.
+
+
+## 2026-10-08 D03 — TI-1415~1422 coherent physical evidence cut + TWTAWU parity compression
+
+Canonical updated artifact:
+- `research/d03_negative_evidence_boundary_authority_firewall_20261007_v0_1.json`.
+
+00 canonical physical matrix:
+- `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261007_V0_1.json`.
+
+### TI-1415~1417 — S22-T11~T16 must share one coherent immutable cut
+
+Current physical matrix:
+- T11 = design/static precleared, physical pending;
+- T12 = blocked by CORR-005 hidden-fallback evidence;
+- T13 = blocked by first real source-honest continuity receipt;
+- T14 = runner core implemented, physical pending;
+- T15 = typed hash-chain frozen, physical pending;
+- T16 = not yet proven.
+
+D03 accepts the stronger cross-gate rule:
+all T11~T16 must PASS on one coherent immutable physical evidence cut.
+
+Evidence from different runner heads or different physical runs may not be combined into one PASS unless exact code/data/evidence-cut equivalence is independently proven.
+
+This mirrors D03 same-parent discipline:
+one valid fact from parent A and another valid fact from parent B do not jointly prove a claim about one immutable decision state.
+
+### TI-1418~1420 — bounded TWTAWU negative completeness shortest path
+
+Current TWSE TWTAWU JSON contract is useful for positive rows but lacks an authoritative total-count/range-completeness field strong enough to turn HTTP 200 + empty data into negative proof.
+
+Shortest truthful candidate:
+- derive the exact suspension query interval from the selected replay window;
+- capture official TWSE JSON for that exact query;
+- capture an independent official TWSE CSV/HTML representation of the same query/scope;
+- normalize both;
+- compare query scope and row-set parity.
+
+Before using an empty witness-window result as negative evidence, the parity contract must first physically succeed on a positive bounded interval containing known suspension rows.
+
+Rules:
+- never guess an export URL;
+- capture the actual official export/page request or another verified official representation;
+- row-set, scope, pagination, truncation or schema mismatch => `SUSPENSION_COVERAGE_UNKNOWN`;
+- only a frozen, already-positive-tested parity contract may support `NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`.
+
+This converts negative evidence from “nothing came back” to:
+“the same bounded official query is complete under independently matching representations, and the witness has zero relevant rows.”
+
+### TI-1421 — physical hash-chain completeness
+
+The physical NC-T01 typed chain now requires:
+- SYSTEM2_POLICY_FINGERPRINT_SHA256;
+- A1_BATCH_SHA256;
+- PIT_REPLAY_SHA256;
+- SOURCE_HISTORY_SHA256;
+- CONTINUITY_RECEIPT_SHA256;
+- CONTINUITY_TRANSFORM_SHA256;
+- FACTOR_SNAPSHOT_SHA256;
+- PERSISTENCE_BATCH_SHA256;
+- ORCHESTRATION_SHA256;
+- SHADOW_ACCOUNTING_SHA256;
+- HIDDEN_FALLBACK_AUDIT_SHA256.
+
+D03 treats any missing required typed digest as evidence incompleteness, not as an optional provenance field.
+
+### TI-1422 — maturity / exact next
+
+No D03 maturity promotion:
+- 56.7%;
+- 12 active modules;
+- 10 at L3/60 milestone;
+- D03-09 / D03-10 remain L2/40;
+- raw source/version = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Immediate parallel gates:
+A. DATA_LANE physically proves exact-window TWTAWU JSON-vs-official-export bounded parity and composes the three TWSE corporate-action exact-range sources into a real continuity receipt;
+B. BUILD_LANE closes CORR-005 using exact-head transitive static audit + runtime forbidden-access evidence and binds `HIDDEN_FALLBACK_AUDIT_SHA256`.
+
+After both:
+execute one real artifact-only SHORT_MOMENTUM NC-T01 and require T11~T16 PASS on one coherent immutable evidence cut.
+
+General open-boundary lifecycle correctness remains a separate post-CORR004 issue.
