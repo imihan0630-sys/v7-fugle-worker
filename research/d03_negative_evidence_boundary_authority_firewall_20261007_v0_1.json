@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "D03_NEGATIVE_EVIDENCE_BOUNDARY_AUTHORITY_FIREWALL_V0_1",
+  "updatedAt": "2026-10-07T23:57:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_CROSS_LANE_CAUSAL_EVIDENCE_FIREWALL",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "230ae2a2c455bfd1127cd79fa734abd4884abfa0",
+  "purpose": "Prevent two distinct absence claims from being silently coerced into positive certification: market-event absence and execution-fallback absence. Add explicit lifecycle boundary authority requirements before D03 eligible-session sets may exclude sessions.",
+  "orthogonalAbsenceClaims": {
+    "marketDataNegativeEvidence": {
+      "claim": "NO_SUSPENSION_OR_RELEVANT_LIFECYCLE_EVENT_IN_EXACT_WINDOW",
+      "insufficientEvidence": [
+        "HTTP_200_ONLY",
+        "EMPTY_DATA_ARRAY_WITHOUT_BOUNDED_COMPLETENESS",
+        "POSITIVE_ONLY_ANNOUNCEMENT_SEARCH_WITH_NO_MATCH",
+        "PARTIAL_OR_TRUNCATED_RESULTSET",
+        "STOP_WITH_NO_CERTIFIED_RESUME_OR_ACTIVE_THROUGH_BOUNDARY"
+      ],
+      "sufficientShape": [
+        "EXACT_REPLAY_WINDOW_BOUNDED_QUERY",
+        "MACHINE_VERIFIABLE_RESPONSE_RANGE_AND_SCHEMA_COMPLETENESS",
+        "SOURCE_IDENTITY_AND_RAW_BODY_HASH",
+        "CAUSAL_OBSERVATION_OR_VERIFIED_SOURCE_AVAILABILITY_CLOCK",
+        "UNAMBIGUOUS_EVENT_VERSION_RECONCILIATION"
+      ],
+      "allowedNegativeConclusion": "NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW"
+    },
+    "executionIndependenceNegativeEvidence": {
+      "claim": "NO_HIDDEN_SYSTEM1_SELECTION_FALLBACK",
+      "correction": "S2-CORR-20261007-005",
+      "dimensions": [
+        "CACHED_SYSTEM1_SELECTION_FALLBACK",
+        "PERSISTED_SYSTEM1_SELECTION_FALLBACK",
+        "ALIAS_OR_COMPATIBILITY_TO_SYSTEM1_SELECTION",
+        "CROSS_PROJECT_SYSTEM1_SELECTION_IMPORT",
+        "STALE_PRIOR_SYSTEM1_SELECTION_REUSE"
+      ],
+      "insufficientEvidence": [
+        "OMITTED_AUDIT_OBJECT",
+        "MISSING_DIMENSION_DEFAULTED_FALSE",
+        "ALL_FALSE_VALUES_WITHOUT_MACHINE_AUDIT_DIGEST",
+        "STATIC_ONLY_AUDIT_WITHOUT_RUNTIME_NO_ACCESS_EVIDENCE"
+      ],
+      "sufficientShape": [
+        "ALL_FIVE_DIMENSIONS_EXPLICITLY_PROVEN_ABSENT",
+        "EXACT_RUNNER_HEAD_TRANSITIVE_MANIFEST_BOUND",
+        "RUNTIME_NO_FORBIDDEN_ACCESS_EVIDENCE",
+        "HIDDEN_FALLBACK_AUDIT_SHA256_BOUND_IN_TYPED_SOURCE_GENERATION_REFS",
+        "FINAL_RECEIPT_HASH_DEPENDS_ON_AUDIT_DIGEST"
+      ]
+    },
+    "antiConflationRules": [
+      "MARKET_EVENT_ABSENCE_PROOF_DOES_NOT_PROVE_EXECUTION_INDEPENDENCE",
+      "EXECUTION_FALLBACK_ABSENCE_PROOF_DOES_NOT_PROVE_PRICE_CONTINUITY",
+      "EMPTY_RESULT_IS_NOT_NEGATIVE_EVIDENCE_WITHOUT_SOURCE_COMPLETENESS",
+      "MISSING_AUDIT_IS_NOT_FALSE",
+      "POSITIVE_EVENT_EVIDENCE_AND_NEGATIVE_COMPLETENESS_ARE_SEPARATE_FACTS"
+    ]
+  },
+  "lifecycleBoundaryAuthority": {
+    "currentRuntimeFinding": "twse_regulatory_lifecycle_source_v0_1.mjs can emit an open interval from STOP through coverageTo when no RESUME/termination is observed, while the source itself states absenceCertifiesNoEvent=false.",
+    "risk": "An uncertified open STOP interval could remove genuinely resumed sessions from the expected eligible-session set, manufacturing history readiness through denominator deletion rather than old-row substitution.",
+    "admissibleIntervalStates": [
+      {
+        "state": "CLOSED_POSITIVE_BOUNDARIES_CERTIFIED",
+        "rule": "STOP plus RESUME or terminal membership boundary are positively certified.",
+        "mayRemoveExpectedSessions": true
+      },
+      {
+        "state": "OPEN_ACTIVE_THROUGH_DATE_CERTIFIED",
+        "rule": "STOP is positively certified and a separate authoritative source proves the suspension remained active through the target date.",
+        "mayRemoveExpectedSessions": true
+      },
+      {
+        "state": "NOT_ADMISSIBLE_BOUNDARY_INCOMPLETE",
+        "rule": "STOP exists but closing/active-through boundary authority is incomplete or conflicting.",
+        "mayRemoveExpectedSessions": false
+      }
+    ],
+    "conflictRules": [
+      "POST_STOP_OBSERVED_TRADING_BEFORE_CERTIFIED_RESUME_REQUIRES_BOUNDARY_RESOLUTION",
+      "COVERAGE_TO_PARAMETER_IS_NOT_BOUNDARY_AUTHORITY",
+      "PARTIAL_DETAIL_TRANSPORT_CANNOT_CERTIFY_ACTIVE_THROUGH",
+      "EVERY_REMOVED_EXPECTED_SESSION_MUST_BE_COVERED_BY_AN_ADMISSIBLE_INTERVAL"
+    ],
+    "requiredProvenance": [
+      "symbol",
+      "market",
+      "intervalDisposition",
+      "suspendedFrom",
+      "resumedOn_or_activeThroughDate",
+      "sourceEventIdentities",
+      "sourceHashes",
+      "sourceCompletenessState",
+      "decisionTimeAdmissibilityState",
+      "boundaryAuthorityHash"
+    ]
+  },
+  "indicatorConsequences": {
+    "D03-10": {
+      "indicator": "BOLLINGER_BANDS",
+      "rule": "The exact 20 eligible-session denominator may exclude an official non-trading date only when the lifecycle interval covering that date is admissible under boundary authority. An uncertified open STOP may not shorten the 20-session expected set.",
+      "failureMode": "A false exclusion can replace a required resumed trading session with an older close while rowCount remains 20, distorting mean, standard deviation, band width and percent-B.",
+      "immediateGate": "REAL_HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY_RECEIPT_WITH_BOUNDED_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS"
+    },
+    "D03-09": {
+      "indicator": "ADX_WILDER_DMI",
+      "rule": "The ordered eligible H/L/C recursion may not omit sessions based on an uncertified open STOP. Only admissible lifecycle exclusions may alter the recursion clock.",
+      "failureMode": "Incorrectly deleting resumed sessions changes TR, +DM/-DM and Wilder smoothing ancestry even if the final sequence length appears valid.",
+      "immediateGate": "REAL_HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY_RECEIPT_THEN_CANONICAL_WILDER_FULL_REPLAY"
+    }
+  },
+  "ncT01State": {
+    "artifactRunnerCore": {
+      "mergeCommit": "d2050fbc3379dfe618447f88f8104b31e494a633",
+      "implemented": true,
+      "physicalRunObserved": false,
+      "acceptedSemantics": [
+        "SHORT_MOMENTUM_CANONICAL_CONTRACT_ASSESSOR",
+        "REPLAY_FIRST_CONTINUITY_CONSUMPTION",
+        "UNCERTIFIED_SYMBOLS_REMAIN_INCOMPLETE_AND_DENOMINATOR_ACCOUNTED",
+        "PERSISTENCE_DRY_BUILD_ONLY",
+        "TYPED_END_TO_END_HASH_CHAIN"
+      ]
+    },
+    "prePhysicalGates": [
+      "DATA_LANE_BOUNDED_TWTAWU_NEGATIVE_COMPLETENESS_AND_REAL_CONTINUITY_RECEIPT",
+      "BUILD_LANE_CORR005_HIDDEN_FALLBACK_MACHINE_AUDIT_HARDENING"
+    ],
+    "firstTwseWitnessNonBlockers": [
+      "TPEX_PARITY",
+      "FULL_ANNUAL_MARKET_YEAR_RERUN",
+      "ALL_HISTORY_TWTAWU_COMPLETENESS",
+      "D1_WRITE_QUOTA_FOR_ARTIFACT_ONLY_RUN",
+      "SWING_GROWTH_READINESS"
+    ]
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "maturityPromotion": false,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "reason": "The exact-session identity and replay-binding mechanics are stronger, but a real continuity receipt and physical independent NC-T01 remain absent. The open-boundary admissibility risk is newly isolated and must remain fail-closed."
+  },
+  "exactNextContinuationPoint": "Consume whichever lands first: (A) DATA_LANE exact-window TWTAWU bounded-completeness physical receipt plus three TWSE corporate-action exact-range sources, yielding a real CLEAR_NO_ACTION receipt or fail-closed result; or (B) BUILD_LANE CORR-005 hardening with exact-head transitive hidden-fallback audit digest bound into the NC-T01 receipt. After both pre-physical gates pass, consume the real artifact-only NC-T01 S22-T11~T16 receipt. Keep general open-boundary lifecycle correction separate from CORR-004 closure and keep V8.20/T48/S2-07/raw3/dedup/D16 incrementality independent."
+}
