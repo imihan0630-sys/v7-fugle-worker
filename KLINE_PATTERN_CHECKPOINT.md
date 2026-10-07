@@ -5867,3 +5867,58 @@ No maturity or Formal change is authorized by this routing.
 5. If no owner bundle exists, keep D01 blocked and continue only D01-owned pre-outcome science/governance; do not create duplicate System2/D05 collectors.
 6. After one R1-R7 composability witness passes, hand it to D16 under DL-087/DL-089; outcomes remain closed until then.
 7. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
+
+
+## Continuation update — DL-098~100 (2026-10-07)
+
+### DL-098 — R7 canonical feature payload
+- Repository-standard canonical JSON + SHA-256 semantics adopted for future R7 feature receipts.
+- D01-02 primary object = continuous normalized single-bar OHLC geometry.
+- D01-03 primary object = ordered N-bar OHLC/inter-bar geometry.
+- D01-07 primary object = online base lifecycle and price geometry; retrospective backpainting prohibited.
+- D01-09 primary object = raw gap plus legal reference/limit and event/suspension context.
+- Named labels remain metadata, not independent votes.
+- Volume context remains D02-owned rather than silently absorbed into D01.
+
+### DL-099 — common-parent comparator registry
+- D01-02 named candle must beat continuous single-bar OHLC geometry.
+- D01-03 named sequence must beat the same ordered N-bar geometry without the name.
+- D01-07 cup/base/handle must beat prior-trend + range-compression + generic-breakout geometry.
+- D01-09 named gap/limit subtype must beat raw gap + legal-limit/reference context.
+- Parent and child must use identical PIT universe, source/window identity, predictor freeze, blocked-row policy, OOS fold, horizons and cost treatment.
+- New thresholds/lookbacks/scales/subtypes/weights/interactions count as new experiments.
+- External literature remains mixed, so named-pattern incrementality remains UNKNOWN until Taiwan PIT OOS evidence beats the frozen parent.
+
+### DL-100 — denominator and alias dedup
+- Every module/date ends in exactly one state:
+  UPSTREAM_DATA_BLOCKED / R7_DATA_BLOCKED / NO_STRUCTURE / STRUCTURE_EMITTED.
+- Silent deletion is prohibited.
+- Multiple aliases over the same information root do not multiply sample size, votes, scores or degrees of freedom.
+- Overlapping sequences preserve dependency identities for D16.
+- NO_STRUCTURE and DATA_BLOCKED remain denominator-accounted.
+- NO_WINNER remains valid.
+
+### Test evidence
+- DL-098~100: 20/20 PASS.
+- Cumulative through DL-100: 297/297 PASS.
+- Native Node parity and OOS performance are not claimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 modules remain L3.
+- R7 canonical payload = FROZEN.
+- Common-parent registry = FROZEN.
+- Full denominator / alias dedup = FROZEN.
+- Exact 2021 R1-R6 physical bundle remains pending.
+- Physical R7 remains blocked.
+- Outcome join remains CLOSED.
+- SDA-001 / SDA-002 remain OPEN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-100
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue D01-owned pre-outcome work: scale/parameter-family stability diagnostics and first-wave cross-module redundancy graph.
+3. Do not use outcomes to choose scales, thresholds or labels.
+4. If R1-R6 appear, validate DL-095 first, then emit R7 under DL-097/DL-098.
+5. After one R1-R7 witness passes, hand to D16 under the frozen validation protocol.
+6. No L4 promotion or Formal Core change without actual OOS/prospective evidence.
