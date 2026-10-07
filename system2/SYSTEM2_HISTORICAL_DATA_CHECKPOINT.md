@@ -865,3 +865,30 @@ This readback confirms there is no hidden fourth annual market-year blocker. Exa
 `2024/TPEX -> 2025/TWSE -> 2025/TPEX -> 2026 segmented TWSE/TPEX -> aggregate present-scope replay qualification`.
 
 System1 Formal Core/runtime, strategy/ranking/final selection, capital/order, broker routing and production push authority remain unchanged.
+
+
+## 2026-10-07 2025 official-source retention boundary revalidation
+
+DATA_LANE performed a read-only live retention check against the canonical official historical A1 endpoints before any 2025 physical writer is authorized.
+
+Observed boundary samples:
+- TWSE 2025-01-02: official `MI_INDEX` historical JSON present; target-date marker + security-code + close-price + data-array markers PASS;
+- TWSE 2025-12-31: same markers PASS;
+- TPEx 2025-01-02: official `dailyQuotes` historical JSON present; target-date + code + close + data-array markers PASS;
+- TPEx 2025-12-31: same markers PASS.
+
+The retrieval transport for this diagnostic was Firecrawl, but source authority is the official TWSE/TPEx endpoint itself. No third-party payload is promoted as market truth.
+
+Interpretation:
+- 2025 annual ingestion is not merely repository-ready; both canonical official endpoints still expose historical payloads at the beginning/end of the target year;
+- this is a source-retention/schema preflight only, not a full-year completeness or physical-acceptance claim;
+- full acceptance still requires the canonical annual range fetch, immutable cold persistence, Physical Verify, artifact, and System1-isolation checks;
+- TPEx legacy `不含定價` remains canonical-ineligible.
+
+Durable evidence:
+`system2/evidence/S2_HISTORICAL_2025_OFFICIAL_SOURCE_RETENTION_PREFLIGHT_20261007_V0_1.json`.
+
+Physical execution order remains:
+`2024/TPEX -> 2025/TWSE -> 2025/TPEX -> 2026 segmented -> aggregate replay qualification`.
+
+No D1/R2 mutation, strategy/ranking/final-selection, System1 Formal/runtime, capital/order, broker routing or push authority change occurred.
