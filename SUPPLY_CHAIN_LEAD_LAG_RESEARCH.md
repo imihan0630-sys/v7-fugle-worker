@@ -2942,3 +2942,33 @@ Exact next:
 SC-081 consume the next independent prospective MOPS exact-version capture and test bounded keyset stability / revision-gap behavior outcome-blind.
 
 Formal Core unchanged.
+
+
+## SC-082 — D10-03 prospective inventory-cycle cohort preregistration (2026-10-08)
+
+Artifact:
+- `research/SC082_D10_03_PROSPECTIVE_INVENTORY_CYCLE_COHORT_PREREG_20261008_V0_1.md`
+
+The old SC-017 design debt is now concretely preregistered.
+
+Frozen prospective state family:
+- DEMAND_STRONG_INVENTORY_ABSORBING;
+- DEMAND_STRONG_INVENTORY_BUILDING;
+- DEMAND_WEAK_INVENTORY_BUILDING;
+- DEMAND_WEAK_INVENTORY_CLEARING;
+- MIXED_OR_UNKNOWN.
+
+The existing code-26 electronic-components state is historical calibration only and is not counted as a prospective cohort row.
+
+Permanent firewalls:
+- `INVENTORY_DOWN != AUTOMATIC_BULLISH`;
+- `INVENTORY_UP != AUTOMATIC_BEARISH`;
+- `NOMINAL_INVENTORY_VALUE_CHANGE != PHYSICAL_INVENTORY_CHANGE`;
+- `SAME_MONTH_SCOPE_ALIGNMENT_REQUIRED`.
+
+D10-03 remains L3/60.
+
+L4 requires at least two prospectively frozen independent monthly vintages under the same contract, one cross-industry/different-chain control, revision/source clocks preserved and D16 month-dependence/common-support method frozen before stock-return access.
+
+Exact next:
+SC-083 freeze the first future eligible monthly inventory row outcome-blind under SC-082.
