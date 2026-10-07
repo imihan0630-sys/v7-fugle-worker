@@ -550,3 +550,32 @@ TERMINAL_NEGATIVE_READINESS_EVIDENCE_ACCEPTED.
 It is a valid prospective source-availability/clock observation but NOT a strategy-performance sample and NOT a zero-pick day.
 
 Formal Core remains LOCKED.
+
+
+## 00 exact continuation after deep Stage-1 compression
+
+Current true state:
+- assessor policies are READY for authorized Shadow evaluation; old ASSESSOR_POLICY_NOT_FROZEN launch text is historical/stale;
+- 60-prior-session gaps are symbol-local when global universe accounting is intact; they do not globally block clean symbols;
+- PARTIAL denominator capacity -> pool -> resonance provenance is already verified and may monitor clean admissions; false zero-pick remains prohibited;
+- SHORT_MOMENTUM is the narrow Stage-1 lead path and does not wait for B2/SWING_GROWTH symmetry;
+- A1 current/prospective source readiness is the highest live-data blocker under `S2-CORR-20261007-001`;
+- PR #762 remains stale/open and non-canonical; latest-main rebuild is still required;
+- G4 middle-layer evaluation -> ranking -> capacity implementation already exists; remaining delta is genuine physical wiring/readback;
+- bounded pool / resonance / institutional read surfaces are already built and independently freshness/provenance guarded.
+
+Fresh DATA_LANE activity:
+- annual workflow run `37593983170` started via `workflow_dispatch` at 2026-10-07 16:28 Asia/Taipei on main head `5c50a246bf91f9b1bc37c99f082bdfec467d5f09`;
+- migrate PASS;
+- backfill currently IN_PROGRESS at this readback;
+- year/market inputs are not yet independently visible from the non-terminal API/log, so 00 does NOT yet label it 2024/TPEX.
+
+Exact next 00 actions:
+1. consume BUILD_LANE latest-main replacement of #762 if/when it appears; require exact-head checks before canonical fingerprint acceptance;
+2. consume terminal run `37593983170`; verify actual year/market + physical verify + artifact + System1 isolation before advancing DATA_LANE;
+3. track `S2-CORR-20261007-001` implementation without seizing DATA_LANE conflict units;
+4. if a later same-day TWSE source observation is taken, treat it as secondary diagnosis only; canonical promotion still requires the repaired prospective collector receipt;
+5. after A1 READY + canonical System2 fingerprints, require physical NC-T01 around genuine SHORT_MOMENTUM and reuse the existing evaluation/ranking/capacity middle layer where contract-safe;
+6. no B2/SWING_GROWTH symmetry wait, no synthetic zero-pick, no System1 fallback.
+
+Formal Core LOCKED.
