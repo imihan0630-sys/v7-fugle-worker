@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "S2_CORR_20261007_004_PR817_INDEPENDENT_CONTENT_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T22:10:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "201aee210311e93188a6a38bab8a4d103e769504",
+  "correctionId": "S2-CORR-20261007-004",
+  "pullRequest": {
+    "number": 817,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/817",
+    "head": "43784e500f678be6ee95710822fdafd2af50ac50",
+    "base": "7d8805504776c5944e31fac4589ec0ca38ca817f",
+    "state": "OPEN",
+    "driftAgainstObservedMain": {
+      "status": "DIVERGED",
+      "prAheadBy": 30,
+      "mainAheadBy": 16,
+      "mergeBase": "fa9cc211450dea407630efd8e5c97ffa917c4830"
+    }
+  },
+  "exactHeadChecks": [
+    {
+      "name": "verify",
+      "runId": 37627845551,
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "regression",
+      "runId": 37627845505,
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "verify",
+      "runId": 37627845383,
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "independentContentFindings": {
+    "longListedMissingRecentSessionOlderSubstitution": "FAIL_CLOSED_REGRESSION_PRESENT",
+    "cleanLongListedExactWindow": "PASS_CONTROL_PRESENT",
+    "certifiedLifecycleGap": "PASS_CONTROL_PRESENT",
+    "newListingShortWindow": "PASS_CONTROL_PRESENT",
+    "exactExpectedSessionHash": "PRESENT",
+    "observedSessionHash": "PRESENT",
+    "factorLoadHashBinding": "PRESENT_FAIL_CLOSED_EXPECTED_SESSION_HASH_MISMATCH",
+    "symbolLocalIncompletePreserved": true,
+    "wholeUniverseHistoryVetoRestored": false,
+    "lifecycleSourceSemantics": "TWSE_POSITIVE_CERTIFIED_INTERVALS_ONLY",
+    "emptyLifecycleLookupMeansNoEvent": false,
+    "tpexTwseSemanticInheritance": false,
+    "rawHistoricalOhlcMutation": false,
+    "system1RuntimeOrFormalMutation": false
+  },
+  "keyRuntimeEvidence": [
+    "daily_shadow_history_reader_v0_1.mjs V0.4 derives exact expected eligible session sets for long-listed and age-limited symbols.",
+    "historyReady requires exactSessionReconciliationReady, not count>=required.",
+    "missingExpectedSessions and unexpectedSelectedSessions are explicit per-symbol blockers.",
+    "loadPitPriorA1BarsV0_1 recomputes actual session hash from loaded factor rows and rejects mismatch against expectedSessionHash.",
+    "TWSE lifecycle intervals may remove positively certified no-trading sessions from the expected set; source absence does not certify a no-event state.",
+    "read-only preflight exposes exact-session evidence and is guarded against D1 mutation."
+  ],
+  "launchCriticalInterpretation": {
+    "pr817ContentDisposition": "CONTENT_PASS_CANDIDATE",
+    "canonicalAcceptance": "PENDING_LATEST_MAIN_REBUILD_AND_EXACT_HEAD_CHECKS",
+    "physicalAcceptance": "PENDING_MERGED_MAIN_READONLY_PREFLIGHT",
+    "firstWitnessNeedsAnnualMarketYearRerun": false,
+    "firstWitnessNeedsD1WriteMutation": false,
+    "rationale": "The first NC-T01 witness is one real TWSE symbol over its exact strategy replay window. Exact-session readiness and official lifecycle evidence can be evaluated read-only; broad annual physical rerun is useful for DATA_LANE completeness but is not a semantic prerequisite for the narrow witness.",
+    "continuityPromotionSolvedByPr817": false,
+    "continuityStillRequires": "post-replay hash-bound CLEAR_NO_ACTION receipt matching the exact selected PIT window"
+  },
+  "nonBlockingWatchlist": [
+    "A combined newly-listed-plus-certified-suspension regression is not separately identified in the current test set; current launch witness should use a long-listed TWSE symbol, so this is hardening rather than the first-witness blocker.",
+    "Old-head green checks are historical only after branch divergence."
+  ],
+  "requiredNext": [
+    "DATA_LANE rebuild/rebase PR #817 on then-latest main.",
+    "Rerun exact-head System2 Research / applicable regression/read-only guards and merge canonically.",
+    "Run merged-main System2 Daily Shadow Input Preflight Readonly with rowsWritten=0.",
+    "Require at least one real TWSE symbol to show exact-session history readiness with immutable expected/observed session provenance.",
+    "Build the exact-window TWSE corporate-action/lifecycle evidence package read-only; do not wait for an annual D1 rewrite.",
+    "BUILD_LANE then binds a CLEAR_NO_ACTION continuity receipt to that exact replay window before NC-T01 S22-T13."
+  ],
+  "finalDisposition": "CONTENT_PASS_CANDIDATE_CANONICAL_AND_PHYSICAL_ACCEPTANCE_PENDING",
+  "formalCoreImpact": "NONE_LOCKED"
+}
