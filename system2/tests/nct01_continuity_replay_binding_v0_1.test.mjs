@@ -167,7 +167,7 @@ assert.equal(replay.state, "READY");
 assert.equal(replay.selectedSessionCount, 61);
 
 const replayIdentity = await buildNct01ReplaySourceIdentityV0_1({ replayWindow: replay });
-assert.equal(replayIdentity.state, "READY");
+assert.equal(replayIdentity.state, "READY", JSON.stringify(replayIdentity.blockerCodes));
 assert.match(replayIdentity.sourceHistoryHash, /^[a-f0-9]{64}$/);
 assert.equal(replayIdentity.selectedDates.length, 61);
 
