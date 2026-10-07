@@ -5783,3 +5783,88 @@ No maturity or Formal change is authorized by this routing.
 6. Only if all pass may D01 generate R7 without opening outcomes.
 7. After one R1-R7 composability witness passes, hand to D16 for future R8/R9 OOS execution under the already frozen DL-087/DL-089 protocol.
 8. No L4 promotion / no outcome join / no Formal Core change until actual evidence exists.
+
+
+## Continuation update — DL-096~097 (2026-10-07)
+
+### DL-096 — cross-witness non-equivalence firewall
+- D01 historical composability witness remains:
+  TWSE / 1101 / 2021-06-15 / exact 60 prior eligible sessions + target.
+- System2 NC-T01 physical witness is a different object:
+  TWSE / 1101 / 2026-10-07.
+- Same symbol does not make the receipts fungible.
+- Cross-witness reuse is prohibited when target/asOf date, cutoff, exact date set, session hashes, replayHash, sourceHistoryHash, source-generation identity or market-mechanism state differ.
+- System2 2026 physical PASS, when it eventually exists, can validate shared machinery but cannot satisfy D01 2021 R1-R6.
+- Latest-main System2 evidence still reports:
+  REAL_CLEAR_NO_ACTION_RECEIPT_NOT_YET_OBSERVED.
+- The 2026 physical witness also has a durable per-symbol replay-identity export gap.
+- New bounded TWTAWU suspension-negative-completeness handoff is accepted as a shared semantic contract:
+  exact replay interval;
+  source/raw-body digest;
+  bounded completeness proof;
+  no HTTP-200/empty-array shortcut;
+  explicit NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW before negative coverage may be certified.
+- D01 reuses this semantic contract but does not build a duplicate System2 producer.
+
+### DL-097 — first-wave R7 pattern observability admission
+- D01-owned R7 schema is now frozen before the owner R1-R6 bundle arrives.
+- First-wave modules:
+  D01-02;
+  D01-03;
+  D01-07;
+  D01-09.
+- R7 requires R1-R6 PASS for the same witness and exact window.
+- Required common fields include:
+  module/version;
+  witness identity;
+  predictorFreezeAt;
+  firstObservableAt;
+  ordered requiredSourceBarIds;
+  exactSessionHash;
+  sourceHistoryHash;
+  informationRoot;
+  redundancyGroup;
+  featureState;
+  deterministicFeatureHash;
+  replaySafe.
+- Valid completed feature states:
+  NO_STRUCTURE;
+  STRUCTURE_EMITTED;
+  DATA_BLOCKED.
+- NO_STRUCTURE remains a valid denominator observation; a positive Pattern is not required.
+- firstObservableAt may equal predictorFreezeAt but may not be later.
+- D01-02/D01-03 remain PRICE_OHLC-rooted rather than named-label-rooted.
+- D01-07 retrospective backpainting is prohibited.
+- D01-09 requires R5 legal price-limit/reference context PASS.
+- Future-return/MFE/MAE/later-success fields are prohibited from R7.
+- Physical R7 emission remains BLOCKED until the exact 2021 R1-R6 owner bundle passes.
+
+### Deterministic execution evidence
+- DL-096~097:
+  14 / 14 PASS.
+- Cumulative through DL-097:
+  277 / 277 PASS.
+- Native Node parity remains unclaimed.
+
+### Governance
+- D01 canonical maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- CROSS_WITNESS_RECEIPT_REUSE = PROHIBITED.
+- SHARED_MACHINERY_REUSE = ALLOWED.
+- R7_SCHEMA_FROZEN = TRUE.
+- R7_PHYSICAL_EMISSION = BLOCKED_PENDING_R1_R6.
+- OUTCOME_JOIN = CLOSED.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-097
+
+1. Re-read latest main for a physical 1101/2021-06-15 R1-R6 owner bundle before any new D01 source implementation.
+2. Do not cross-credit System2 1101/2026-10-07 receipts into the 2021 D01 witness.
+3. If the 2021 owner bundle appears, validate DL-095 cross-receipt identity and clocks first.
+4. If R1-R6 pass, emit the first physical R7 using DL-097, allowing NO_STRUCTURE as a valid result.
+5. If no owner bundle exists, keep D01 blocked and continue only D01-owned pre-outcome science/governance; do not create duplicate System2/D05 collectors.
+6. After one R1-R7 composability witness passes, hand it to D16 under DL-087/DL-089; outcomes remain closed until then.
+7. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
