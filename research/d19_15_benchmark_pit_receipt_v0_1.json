@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "D19_BENCHMARK_PIT_RECEIPT_V0_1",
+  "moduleId": "D19-15",
+  "stage": 16,
+  "status": "PREREGISTRATION_SPEC_ONLY_NO_L3_PROMOTION",
+  "purpose": "Freeze benchmark point-in-time lineage before factor outcomes are inspected.",
+  "ownership": {
+    "owner": "D19-15",
+    "consumers": [
+      "D19-01",
+      "D19-10"
+    ],
+    "rule": "D19-15 constructs/version-controls benchmarks; D19-01 interprets benchmark-relative alpha/residuals; D19-10 performs exposure/redundancy/spanning diagnostics."
+  },
+  "clocks": [
+    "dataCutoffAt",
+    "announcementAt",
+    "effectiveFrom",
+    "observedAt"
+  ],
+  "mandatoryFields": [
+    "benchmarkId",
+    "methodologyVersion",
+    "dataCutoffAt",
+    "announcementAt",
+    "effectiveFrom",
+    "constituentVintage",
+    "weightVintage",
+    "returnType",
+    "corporateActionPolicy",
+    "listingDelistingPolicy",
+    "riskFreeSource",
+    "riskFreeKnownAt",
+    "factorSetVersion",
+    "industryVintage",
+    "sourceHash",
+    "resultHash"
+  ],
+  "failClosedRules": [
+    "Current constituents or weights MUST NOT be backfilled into historical dates.",
+    "announcementAt MUST NOT be treated as effectiveFrom.",
+    "Price-index and total-return-index semantics MUST NOT be mixed.",
+    "Missing mandatory provenance remains UNKNOWN.",
+    "Benchmark choice and returnType are frozen before factor outcomes; multiple benchmarks form one multiple-testing family.",
+    "Imported non-Taiwan factor returns are contextual evidence only until Taiwan-equivalence is separately demonstrated."
+  ],
+  "officialEvidence": [
+    {
+      "source": "TWSE / FTSE TWSE Taiwan Index Series Ground Rules v5.1 (Aug 2025)",
+      "url": "https://wwwc.twse.com.tw/downloads/en/products/indices/IndexSen19.pdf",
+      "observedAt": "2026-10-07T19:34:00+08:00",
+      "evidence": "Quarterly review uses data at close on Monday four weeks before effective date; changes are announced after first Friday close and implemented after third Friday close, effective Monday."
+    },
+    {
+      "source": "TWSE ETF information for 0050",
+      "url": "https://www.twse.com.tw/zh/ETFortune/etfInfo/0050",
+      "observedAt": "2026-10-07T19:34:00+08:00",
+      "evidence": "0050 tracks the FTSE TWSE Taiwan 50 Index; benchmark identity is explicit."
+    },
+    {
+      "source": "TWSE translated rule update for FTSE TWSE Taiwan Dividend+ Index",
+      "url": "https://www.twse.com.tw/downloads/zh/products/indices/IndexS34.pdf",
+      "observedAt": "2026-10-07T19:34:00+08:00",
+      "evidence": "Methodology revisions can have an explicit future effective review date; methodologyVersion/effectiveFrom must be versioned."
+    }
+  ],
+  "firstExecutableChainSelectionRule": "Select the first factor-layer PIT chain by upstream receipt completeness before inspecting factor outcomes, never by observed performance.",
+  "requiredChain": [
+    "universeReceipt",
+    "returnReceipt",
+    "factorInputReceipt",
+    "neutralizationReceipt",
+    "costReceipt",
+    "replayReceipt"
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Machine-readable preregistration and official methodology evidence improve provenance, but no historical constituent/weight-vintage deterministic Taiwan replay receipt exists yet."
+  },
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
