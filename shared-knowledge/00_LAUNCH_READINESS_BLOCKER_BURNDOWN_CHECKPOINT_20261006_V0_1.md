@@ -1502,3 +1502,44 @@ It does not pass PVE-247, does not create a clean H001 date, does not authorize 
 
 Central tracker was synchronized in commit:
 `b589234ea738ad358767f99a3ff7b7ff50f30157`.
+
+
+## System 2 owner-priority switch — 2026-10-07
+
+Owner direction:
+`SYSTEM2_GO_LIVE_PROJECT_P0`.
+
+Canonical directive:
+`shared-knowledge/SYSTEM2_GO_LIVE_PRIORITY_DIRECTIVE_20261007_V0_1.md`.
+
+00 priority is changed from broad five-lane balance to System 2 launch-first control.
+
+Stage-1 target:
+formal System 2 production advisory/monitoring operation:
+independent strategy assessment -> candidate generation -> ranking/capacity -> bounded monitor pool -> Daily Resonance -> institutional UI -> guarded live recommendations/notifications.
+
+Not required for Stage 1 unless a formal launch validator says otherwise:
+- complete all-year historical replay;
+- actual owner-holdings ingestion;
+- automatic capital deployment;
+- broker/order routing.
+
+Current highest-value launch blockers:
+1. SHORT_MOMENTUM and SWING_GROWTH assessor policies are still `ASSESSOR_POLICY_NOT_FROZEN`.
+2. Latest 2026-10-07 daily diagnostic remains `BLOCKED_ASSESSOR_POLICY_NOT_FROZEN`; no `s2_capacity_runs`.
+3. recent A1 hot-history window is 28 READY dates against required 60; current warmup blocker list is empty, but continuity remains UNVERIFIED.
+4. first genuine System 2 strategy evaluation -> ranking -> physical immutable capacity receipt is still missing.
+5. SDA-022 System2 fingerprints S22-T06~T10 and physical NC-T01 S22-T11~T16 are still pending.
+6. live/final recommendation authority remains disabled until promotion/independence acceptance is physically satisfied.
+
+Resource routing:
+- BUILD_LANE: launch chain first.
+- DATA_LANE: recent launch window + current continuity first; old-year work parallel/background unless explicitly launch-critical.
+- Room11/D16: launch evidence and SDA-022 first.
+- 00: immediate acceptance/closure of System2 launch gates; unrelated System1/general-curriculum work becomes secondary unless it directly blocks System2.
+- REMEDIATION_LANE: only formally routed active corrections.
+
+Owner authorization interpretation:
+the 2026-10-07 direction authorizes expedited implementation/testing and guarded production advisory/monitoring activation once formal Stage-1 acceptance gates pass. It does not authorize automatic orders, real-money capital, actual-holdings import, arbitrary thresholds or System1 fallback.
+
+Formal Core remains LOCKED.
