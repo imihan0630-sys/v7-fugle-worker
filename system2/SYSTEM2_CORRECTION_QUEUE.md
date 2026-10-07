@@ -987,6 +987,9 @@ Correction consequence:
   - repo-wide writer workflows share `system2-isolated-d1-writer`, which serializes mutations but does not reserve/budget finite daily writes;
   - only local quota protection exists for the Fugle hot-history bootstrap; no System2-wide budget/priority contract exists.
 - evidence:
+  - Historical PR #653 (`System2: skip D1 writes for UI-only deploys`) is superseded by canonical main `b2ae3488309df83bf9a6399c81ec5b1321ce2be2`; current `ensure_system2_d1_ready.mjs` already uses `READ_ONLY_FAST_PATH` with `schemaMutationPerformed=false` and `writeReadVerification=SKIPPED_ALREADY_READY` when schema 1.1 is ready.
+  - PR #653 was independently closed as SUPERSEDED after audit comment `6037043870`; do not reintroduce its stale workflow-specific schema gate as the remaining quota fix.
+  - Residual CORR-003 scope is the account-wide multi-writer 100k/day budget/reservation/priority problem, not UI-only schema suppression.
   - Official Cloudflare D1 Free contract verified 2026-10-07: account-wide 100,000 rows written/day, 5,000,000 rows read/day, reset 00:00 UTC; enforcement since 2026-09-01 rejects queries after the daily limit is exceeded. Durable evidence: `system2/evidence/S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_20261007_V0_1.json` @ `0ca1329925d253546e2eacc7958c55adb96c4498`.
   - run `37609474459`: SUCCESS; D1 metrics `requestCount=797 / rowsRead=583256 / rowsWritten=13130`;
   - run `37611914140`: FAILURE in migrate; backfill/verify skipped; Cloudflare explicitly reported free-tier daily row-write limit exceeded;
