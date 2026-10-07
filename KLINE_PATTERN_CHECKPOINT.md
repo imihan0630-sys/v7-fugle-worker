@@ -4939,3 +4939,56 @@ No maturity or Formal change is authorized by this routing.
 6. Hand freshness-model comparison to D16; no best-after-outcome clock selection.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. No Formal Core change.
+
+
+## Continuation update — DL-071 (2026-10-07)
+
+### DL-071 — Structural-level freshness tournament
+- DL-070 rejected arbitrary calendar half-life.
+- DL-071 freezes five competing preregistered freshness clocks before any outcome join:
+  ELIGIBLE_SESSION_COUNT;
+  INDEPENDENT_EXECUTION_COUNT;
+  INFORMATION_EVENT_COUNT;
+  VOLATILITY_DISTANCE_TRAVELED;
+  LIQUIDITY_OPPORTUNITY_COUNT.
+- Calendar elapsed time remains context, not an automatically valid decay law.
+- Every canonical structural root enters one append-only population and remains in the denominator even if never revisited, expired, crossed, rebased, overlapped by suspension/disposition, or data blocked.
+- Touch history is separate from freshness:
+  age clock;
+  revisit count;
+  bounce count;
+  cross count;
+  time since last interaction;
+  interaction sequence
+  are distinct fields.
+- Monotone decay is not assumed. Candidate shapes include MONOTONE_DECAY, HUMP_SHAPED, THRESHOLD_DECAY, NO_DECAY, NONMONOTONIC and NOT_IDENTIFIED.
+- The tournament must freeze transformation families, primary comparison metric, tie rule, minimum common support and multiple-testing plan before outcomes.
+- NO_WINNER is explicitly valid.
+- Future bounce/cross cannot enter clock construction.
+- Five clocks are alternate representations of one latent freshness concept, not five independent confirmation votes.
+- D16 ladder F0-F12 frozen.
+- 12 adversarial tests authored; TEST_EXECUTION_PENDING.
+- New files:
+  - research/PATTERN_STRUCTURAL_FRESHNESS_TOURNAMENT_V0_1.md
+  - research/pattern_structural_freshness_tournament_v0_1.json
+  - research/pattern_structural_freshness_tournament_v0_1.mjs
+  - research/test_pattern_structural_freshness_tournament_v0_1.mjs
+  - research/PATTERN_STRUCTURAL_FRESHNESS_D16_HANDOFF_V0_1.md
+- SDA-001 remains open.
+- SDA-002 remains open.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-071
+
+1. Execute DL-068~071 research Node tests independently; keep TEST_EXECUTION_PENDING until actual execution evidence exists.
+2. Start DL-072: repeated-touch strength decomposition.
+3. Separate familiarity/self-fulfilling memory from resting-liquidity depletion/consumption and adverse-selection migration.
+4. Never assume more historical touches monotonically strengthen a level.
+5. Preserve immutable root/touch lineage and one PRICE_OHLC information root unless independent evidence exists.
+6. Hand residual inference to D16 with same-root common support and prospective/OOS validation.
+7. Keep SDA-001/SDA-002 open.
+8. No Formal Core change.

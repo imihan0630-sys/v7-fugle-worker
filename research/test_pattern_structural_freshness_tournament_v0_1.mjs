@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {validateClockReceipt,preserveRootDenominator,validateTouchIndependence,classifyClockFamily,validateTournamentPlan,classifyOutcomeLeakage} from "./pattern_structural_freshness_tournament_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7101 session clock validates",()=>assert.equal(validateClockReceipt({clockType:"ELIGIBLE_SESSION_COUNT",value:5,knownAt:"2026-10-07T09:00:00+08:00",predictorFreezeAt:"2026-10-07T09:05:00+08:00",replaySafe:true}).status,"VALID"));
+t("D7102 future clock cannot backfill",()=>assert.equal(validateClockReceipt({clockType:"ELIGIBLE_SESSION_COUNT",value:5,knownAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:05:00+08:00",replaySafe:true}).status,"CLOCK_NOT_AVAILABLE_AT_FREEZE"));
+t("D7103 unknown event coverage stays unknown",()=>assert.equal(validateClockReceipt({clockType:"INFORMATION_EVENT_COUNT",value:0,coverageKnown:false,knownAt:"2026-10-07T09:00:00+08:00",predictorFreezeAt:"2026-10-07T09:05:00+08:00",replaySafe:true}).reason,"EVENT_COVERAGE_UNKNOWN"));
+t("D7104 invalid negative clock blocked",()=>assert.equal(validateClockReceipt({clockType:"VOLATILITY_DISTANCE_TRAVELED",value:-1,knownAt:"2026-10-07T09:00:00+08:00",predictorFreezeAt:"2026-10-07T09:05:00+08:00",replaySafe:true}).reason,"CLOCK_VALUE_INVALID"));
+t("D7105 no-revisit roots preserved",()=>assert.equal(preserveRootDenominator({eligibleRoots:100,revisited:40,crossed:20,expired:30,dataBlocked:10,neverRevisited:60}).survivorOnlyDataset,false));
+t("D7106 duplicate prints do not multiply execution count",()=>assert.equal(validateTouchIndependence({executionIds:["a","a","b"]}).independentCount,2));
+t("D7107 five clocks remain one latent family",()=>assert.equal(classifyClockFamily({clockTypes:["ELIGIBLE_SESSION_COUNT","INDEPENDENT_EXECUTION_COUNT","INFORMATION_EVENT_COUNT","VOLATILITY_DISTANCE_TRAVELED","LIQUIDITY_OPPORTUNITY_COUNT"]}).effectiveIndependentEvidenceCount,1));
+t("D7108 tournament requires preregistration",()=>assert.equal(validateTournamentPlan({preregistered:false,multipleTestingPlanFrozen:true,tieRuleFrozen:true,allowNoWinner:true}).status,"TOURNAMENT_NOT_PREREGISTERED"));
+t("D7109 no-winner must be legal",()=>assert.equal(validateTournamentPlan({preregistered:true,multipleTestingPlanFrozen:true,tieRuleFrozen:true,allowNoWinner:false}).status,"INVALID_PLAN"));
+t("D7110 valid tournament freezes all guards",()=>assert.equal(validateTournamentPlan({preregistered:true,multipleTestingPlanFrozen:true,tieRuleFrozen:true,allowNoWinner:true}).status,"TOURNAMENT_PREREGISTERED"));
+t("D7111 future bounce leakage invalid",()=>assert.equal(classifyOutcomeLeakage({usesFutureBounce:true,usesFutureCross:false,usesPostFreezeRevision:false}).status,"INVALID_FRESHNESS_CLOCK_LOOKAHEAD"));
+t("D7112 outcome-blind clock valid",()=>assert.equal(classifyOutcomeLeakage({usesFutureBounce:false,usesFutureCross:false,usesPostFreezeRevision:false}).status,"OUTCOME_BLIND"));
+console.log(`SUMMARY ${p}/12 PASS`);

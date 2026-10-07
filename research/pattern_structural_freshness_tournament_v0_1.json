@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "pattern-structural-freshness-tournament-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "clocks": [
+    "ELIGIBLE_SESSION_COUNT",
+    "INDEPENDENT_EXECUTION_COUNT",
+    "INFORMATION_EVENT_COUNT",
+    "VOLATILITY_DISTANCE_TRAVELED",
+    "LIQUIDITY_OPPORTUNITY_COUNT"
+  ],
+  "calendarAgeEqualsFreshness": false,
+  "moreTouchesAlwaysStronger": false,
+  "freshnessMustDecayMonotonically": false,
+  "clocksEqualIndependentVotes": false,
+  "noWinnerAllowed": true,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
