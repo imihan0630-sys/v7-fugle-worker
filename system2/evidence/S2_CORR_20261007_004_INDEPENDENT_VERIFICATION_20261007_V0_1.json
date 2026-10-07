@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "S2_CORR_20261007_004_INDEPENDENT_VERIFICATION_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-004",
+  "verificationState": "PASS_AWAITING_IMPLEMENTATION_OWNER_STATE_CANONICALIZATION",
+  "implementation": {
+    "pr": 817,
+    "mergeCommit": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "historyReaderBlob": "47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1",
+    "historyReaderVersion": "0.4-RESEARCH"
+  },
+  "targetedFailureMode": {
+    "original": "long-listed symbol can lose one required recent session and still reach count=60 by substituting an older row",
+    "repositoryRegression": "PASS_FAIL_CLOSED",
+    "physicalRealDataObservation": "PASS",
+    "proof": [
+      "pre-fix physical historyReadyCount=51",
+      "post-fix merged-main exactSessionHistoryReadyCount=46",
+      "real symbols such as 1213/1218 now carry SYMBOL_LOCAL_EXPECTED_SESSION_MISSING + SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT",
+      "real TWSE 1101 remains historyReady=true with only continuity-not-verified blocker"
+    ]
+  },
+  "acceptanceCriteriaAudit": {
+    "longListedSubstitutionFailsClosed": "PASS",
+    "cleanLongListedExactWindowReady": "PASS",
+    "newListingAgeAwareBehavior": "PASS",
+    "certifiedLifecycleNonTradingExclusion": "PASS_UNIT_INTEGRATION",
+    "expectedObservedSessionProvenance": "PASS_HASH_AND_COUNTS",
+    "physicalRealWitness": "PASS_1101_TWSE_AND_OTHERS",
+    "noSystem1OrAuthorityChanges": "PASS"
+  },
+  "physicalReadback": {
+    "workflow": "System2 Daily Shadow Input Preflight Readonly",
+    "runId": 37639310919,
+    "jobId": 112853723927,
+    "headSha": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "conclusion": "SUCCESS",
+    "marketDate": "2026-10-07",
+    "ordinarySymbolCount": 1973,
+    "exactSessionReconciliationEnabled": true,
+    "historyReadyCount": 46,
+    "continuityReadyCount": 0,
+    "rowsWritten": 0,
+    "system1ProductionIsolation": "PASS",
+    "lifecycleState": "OBSERVED_POSITIVE_EVENTS_UNCERTIFIED_ABSENCE",
+    "lifecycleQueriedSymbolCount": 2,
+    "lifecycleIntervalCount": 0
+  },
+  "negativeAndFailClosedEvidence": [
+    "Synthetic long-listed missing-session + older-substitution regression fails closed.",
+    "Missing expected-session contract fails closed.",
+    "Detail loader rejects EXPECTED_SESSION_HASH_MISMATCH.",
+    "Real 1213/1218 mismatch examples remain INCOMPLETE rather than being washed into READY.",
+    "Empty/uncertified lifecycle lookup does not certify NO_EVENT or create a no-trading exclusion.",
+    "TPEx lifecycle parity is not inferred from TWSE."
+  ],
+  "regressionEvidence": {
+    "pr817System2ResearchCi": {
+      "runId": 37627845551,
+      "conclusion": "SUCCESS"
+    },
+    "pr817V8Regression": {
+      "runId": 37627845505,
+      "conclusion": "SUCCESS"
+    },
+    "mergedV8Regression": {
+      "runId": 37639311568,
+      "conclusion": "SUCCESS"
+    },
+    "mergedStage1Assessor": {
+      "runId": 37639310904,
+      "conclusion": "SUCCESS"
+    },
+    "mergedResearchCiNote": "Merge-head run 37639310897 was cancelled by repository concurrency; later descendant/main System2 Research CI 37640265444 succeeded and necessarily includes merge commit 625ea3d0 plus subsequent audit-only commits."
+  },
+  "limitations": [
+    "continuityReadyCount remains 0; this is outside CORR-004 history/session scope and remains the next NC-T01 gate.",
+    "TPEx lifecycle parity remains fail-closed and is not required for the first TWSE history witness.",
+    "CORR-004 closure does not authorize strategy evaluation, final selection, push, capital or orders."
+  ],
+  "governance": {
+    "implementationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+    "ownerFixImplementationPr": 824,
+    "ownerFixImplementationHead": "9bd83815e719ac48dd014dc37e3c496f1fbee8c3",
+    "requiredBeforeQueueClosure": "PR #824 (or equivalent DATA_LANE durable FIX_IMPLEMENTED state) must be canonical on main.",
+    "verifierMayCloseAfterCanonicalFixImplemented": true
+  },
+  "finalAuditDisposition": "VERIFICATION_PASS; VERIFIED_CLOSED_ELIGIBLE_AFTER_CANONICAL_FIX_IMPLEMENTED_STATE",
+  "implementationPerformedByAudit": false
+}
