@@ -31,5 +31,21 @@ jobs:
               --write-out 'status=%{http_code} bytes=%{size_download} remote_ip=%{remote_ip} total=%{time_total}\n' \
               'https://mopsov.twse.com.tw/mops/web/t163sb04' || true
           done
+      - name: Probe MOPSOV with Node standard HTTPS (no secrets or writes)
+        run: |
+          node --input-type=module - <<'NODE'
+          import https from 'node:https';
+          const started=Date.now();
+          const result=await new Promise((resolve,reject)=>{
+            const request=https.get('https://mopsov.twse.com.tw/mops/web/t163sb04',{timeout:25000},response=>{
+              const chunks=[];
+              response.on('data',chunk=>chunks.push(chunk));
+              response.on('end',()=>resolve({status:response.statusCode,bytes:Buffer.concat(chunks).length,ms:Date.now()-started}));
+            });
+            request.on('timeout',()=>request.destroy(new Error('MOPSOV_HTTPS_TIMEOUT')));
+            request.on('error',reject);
+          });
+          console.log(JSON.stringify({mopsovNodeHttps:true,...result}));
+          NODE
       - name: Inspect public official source schemas (no secrets or writes)
         run: node tests/inspect_official_quality_sources.mjs
