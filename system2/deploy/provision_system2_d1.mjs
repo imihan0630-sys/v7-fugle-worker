@@ -101,6 +101,7 @@ const migrationFiles = [
   "../sql/0007_daily_resonance_integration.sql",
   "../sql/0008_historical_revision_lineage.sql",
   "../sql/0009_actual_holdings_screenshot_import.sql",
+  "../sql/0010_current_year_segmented_cold_store.sql",
 ];
 for (const migrationFile of migrationFiles) {
   const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
@@ -146,6 +147,9 @@ const requiredTables = [
   "s2_historical_universe_registry_receipts",
   "s2_historical_a1_revision_links",
   "s2_historical_revision_receipts",
+  "s2_historical_a1_segment_manifests",
+  "s2_historical_segment_backfill_checkpoints",
+  "s2_historical_segment_ingest_receipts",
   "s2_resonance_watch_pools",
   "s2_resonance_session_cache",
   "s2_resonance_runs",
