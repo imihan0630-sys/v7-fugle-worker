@@ -2701,3 +2701,43 @@ D06-05 and D06-06 may consume the same TDCC weekly primitive, but the shared own
 
 Exact next:
 wait for a genuinely new TDCC sourceDate and serialize it through the same immutable generation envelope. Before L4, freeze corporate-action/capital/denominator continuity controls and preregister TDCC-vintage-clustered OOS/Shadow residual incrementality versus institutional daily flow, passive/index events, price-volume, liquidity and market regime. Repeated scans of the 2026-10-02 vintage do not increase maturity.
+
+
+---
+
+## IC-099 — D06-15 public-bank proxy source contract resolves membership/version semantics but does not clear L3
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: SOURCE_PRODUCT_CONTRACT_RESOLVED / CURRENT_ACTIVE_BROKER_MEMBERSHIP_FROZEN / PREFIX_SHORTCUT_FALSIFIED / SPONSOR_AUTHORIZED_RECEIPT_PENDING / BENEFICIAL_OWNER_UNKNOWN / POLICY_INTENT_UNKNOWN / CONTEXT_ONLY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_15_public_bank_proxy_source_contract_20261007_v0_1.json`;
+- `research/d06_15_l3_promotion_review_20261007_v0_1.json`.
+
+The official eight-public-bank commercial set is frozen as Taiwan Bank, Land Bank, Taiwan Cooperative Bank, First Commercial Bank, Hua Nan Commercial Bank, Chang Hwa Commercial Bank, Mega International Commercial Bank and Taiwan Business Bank. This eight-bank commercial set must remain distinct from the broader public-financial-institution set that can also include Export-Import Bank.
+
+Current TWSE broker membership was audited directly from the 2026-10-07 broker master/detail pages. Across the eight public-bank-affiliated broker families there are 8 current head-office identifiers plus 151 current branches, for 159 active execution identifiers in this dated snapshot.
+
+A fixed three-character prefix rule is rejected. Hua Nan Yong Chang is the direct counterexample: current active branches span 930x through 939x. Therefore the canonical membership object is a dated explicit active-code set, not a timeless string-prefix shortcut.
+
+The free FinMind securities-trader master is useful for lineage/history context but cannot replace current-active authority. It retains rows absent from the current TWSE branch tables and separate T-suffixed/self or other banking/票券 identifiers. Membership therefore needs a dated TWSE active-set vintage and explicit inclusion rules.
+
+TWSE buy/sell-report semantics are also frozen. Broker-security buy/sell represents brokerage customer orders plus securities-firm proprietary activity. Where a broker has head office and branches, proprietary activity is merged into head-office data in the official product. Therefore broker identity is execution-channel evidence, not beneficial-owner identity.
+
+FinMind exposes a dedicated Sponsor product `TaiwanStockGovernmentBankBuySell` with one-day replay, fields date/stock_id/buy_amount/sell_amount/buy/sell/bank_name, history from 2021-06-30, a documented weekday update clock and explicit historical missing dates. FinHa independently describes its eight-public-bank dataset as a TWSE broker-branch aggregation by public-bank prefix.
+
+However the current tool session has only free access. A direct API probe returned an access-level denial and no government-bank rows. This denial is preserved as evidence of the authorization boundary, not promoted into source evidence.
+
+Maturity decision:
+- D06-15 remains L2/40%;
+- source membership/schema/version semantics are materially resolved;
+- the remaining L3 blocker is one legally authorized real provider receipt plus actual first-known observation and provider-vs-underlying aggregation cross-check;
+- paid-product existence or documentation is not equivalent to a prospective PIT receipt;
+- beneficial owner, government fund identity and policy/stabilization motive remain UNKNOWN;
+- no outcomes or Formal Core change.
+
+SDA-007 implication:
+D06-15 consumes D06-13 broker/branch execution evidence as public-bank-affiliated context. It may not create a second independent directional vote from the same broker-flow primitive. Public/proxy classification is metadata unless an independent beneficial-owner or mandate source exists.
+
+Exact next:
+on a future valid trading date, obtain one legally authorized Sponsor receipt after actual publication availability; preserve observedAt/firstKnownAt, enumerate distinct bank_name values, reconcile them with the official eight-bank set, and cross-check a bounded same-date sample against the versioned TWSE broker-family aggregation. Only then reopen D06-15 L3 source/PIT/replay review.
