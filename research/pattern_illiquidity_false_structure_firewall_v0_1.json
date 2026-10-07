@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "pattern-illiquidity-false-structure-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "repeatedBarPriceEqualsRepeatedExecution": false,
+  "roundNumberEqualsSupport": false,
+  "liquidityGapCrossingEqualsBreakoutStrength": false,
+  "noRevisitRootsMayBeDropped": false,
+  "calendarAgeEqualsLevelHalfLife": false,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
