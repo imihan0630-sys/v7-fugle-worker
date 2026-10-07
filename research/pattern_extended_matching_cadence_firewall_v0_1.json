@@ -1,0 +1,23 @@
+{
+  "schemaVersion":"pattern-extended-matching-cadence-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "officialIntervalExamplesMinutes":[2,10,25,45,60],
+  "noExecutionBetweenMatchesEqualsPriceAcceptance":false,
+  "indicativeComputedPriceEqualsExecutedTrade":false,
+  "staleLastPriceFlatnessEqualsSupport":false,
+  "periodicMatchGapEqualsContinuousBreakout":false,
+  "matchingCadenceChangeEqualsNewStructuralRoot":false,
+  "wallClockTimeEqualsExecutableOpportunityCount":false,
+  "informationRoot":"PRICE_OHLC",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "auditTickets":{
+    "SDA-001":"OPEN",
+    "SDA-002":"OPEN"
+  },
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
