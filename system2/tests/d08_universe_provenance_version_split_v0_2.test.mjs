@@ -16,6 +16,9 @@ assert.match(v02,/EARLIEST_SAME_COMPANY_CONTINUOUS_LISTING/);
 
 assert.match(capture,/D08_TWSE_UNIVERSE_PROVENANCE_V0_2/);
 assert.match(capture,/frozenV01RemainsImmutable:true/);
+assert.match(capture,/semanticSnapshotHash/);
+assert.match(capture,/semanticSnapshotBundleHash/);
+assert.match(capture,/semanticSnapshotHashExcludesCaptureClock:true/);
 assert.match(capture,/symbol:"6873"/);
 assert.doesNotMatch(capture,/createRemoteR2S3Adapter|createRemoteD1RestAdapter|s2_outcome|return outcome|Worker\.js/i);
 
