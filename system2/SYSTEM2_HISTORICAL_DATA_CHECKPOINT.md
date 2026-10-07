@@ -1087,3 +1087,88 @@ Known official positive witnesses remain consistent with this source class:
 These cases are not yet canonical reclassifications from this branch alone. First live acceptance is expected from the next TPEX Physical Verify on merged main; the already-required fresh `2024/TPEX` annual run after D1 quota reset can exercise the source without adding a separate D1 writer.
 
 No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.
+
+
+## 2026-10-08 05:54 DATA_LANE Stage-1 launch-critical parallel override — TWSE bounded continuity evidence
+
+Observed main before write:
+`41289fa941413887c04fa33456e5386bd79dc645`.
+
+This block does **not** cancel the durable annual historical critical path:
+`2024/TPEX -> 2025/TWSE -> 2025/TPEX -> 2026 segmented -> aggregate replay qualification`.
+
+It adds a higher marginal-impact Stage-1 launch task that is read-only/artifact-only and may proceed in parallel whenever it does not contend with an active D1/R2 writer.
+
+### Launch-critical DATA objective
+
+Produce the first real source-honest TWSE continuity evidence package that can support NC-T01:
+
+1. derive the exact query interval from the real NC-T01 replay/prefetch window;
+2. prove bounded TWSE suspension completeness for that exact interval;
+3. combine with the three existing TWSE exact-range corporate-action families;
+4. emit a real hash-bound `CLEAR_NO_ACTION` receipt if and only if all evidence is complete;
+5. otherwise preserve `CONTINUITY_UNKNOWN`.
+
+Canonical contracts:
+- `system2/evidence/S2_STAGE1_NCT01_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS_HANDOFF_20261007_V0_1.json`;
+- `system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261008_V0_2.json`.
+
+### Frozen TWTAWU positive control
+
+Prior physical run:
+- workflow: `System2 S2-07 Symbol Session Integration V0.8 Readonly`;
+- run: `37488505236`;
+- job: `112354734503`;
+- official bounded TWTAWU all-listed population: 383 rows;
+- sourceArtifactHash:
+  `10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857`.
+
+Real positive row:
+- symbol: `1218`;
+- suspendedFrom: `2026-08-13`;
+- resumedOn: `2026-08-14`;
+- sourceRowHash:
+  `40fbafe3fac0f7bafc60f08ca7cb873da716cdce846decfadcd5122ff8197927`.
+
+This is a physical official-source row, not a synthetic fixture.
+
+### Exact DATA_LANE continuation for this launch gate
+
+1. Capture the **actual official TWSE export request contract** used by the TWTAWU page for CSV/HTML export; do not guess the URL.
+2. First run bounded all-listed JSON-vs-official-export parity on an interval containing the real 1218 positive row.
+3. Require:
+   - identical requested interval/scope;
+   - accepted source-specific status/schema;
+   - normalized row-set parity or deterministic representation equivalence;
+   - no pagination/truncation ambiguity;
+   - immutable raw hashes for both representations;
+   - reproduction of the real 1218 row identity.
+4. Freeze the successful export/query contract **before** applying it to the actual NC-T01 witness.
+5. Use the exact replay-window start/end from the real prefetch/replay evidence; do not substitute a generic 60-day or annual window.
+6. If the bounded certified query has no overlapping suspension for the witness, classify:
+   `NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`.
+   Otherwise preserve the positive event or UNKNOWN state.
+7. Combine the bounded suspension receipt with:
+   - TWSE TWT49U ex-right/dividend actual-result range;
+   - TWSE TWTAUU capital-reduction actual/reference range;
+   - TWSE TWTB8U par-value-change actual/reference range.
+8. Only when the corporate-action completeness receipt is complete may
+   `buildNct01TwseClearNoActionPromotionReceiptV0_1`
+   emit the first real `CLEAR_NO_ACTION` receipt.
+9. Bind all official response hashes / parity receipt / exact replay identity into immutable sourceEvidenceRefs.
+10. No D1 mutation is required for this NC-T01 evidence task.
+
+### Fail-closed boundaries
+
+- page text saying CSV exists is not a machine completeness proof;
+- HTTP 200 or empty JSON/CSV alone is not enough;
+- uncertified export contract -> UNKNOWN;
+- representation mismatch -> UNKNOWN;
+- pagination/truncation/scope ambiguity -> UNKNOWN;
+- positive-only announcement absence is not no-event evidence;
+- do not backdate a later observation into the original decision clock;
+- no strategy/ranking/final-selection/push/capital/order mutation;
+- System1 Formal Core/runtime untouched.
+
+Priority rule:
+this read-only NC-T01 continuity evidence task is Stage-1 launch-critical and should be advanced ahead of nonblocking broad-history expansion when safe; annual history writer work remains preserved and resumes according to writer/quota governance.
