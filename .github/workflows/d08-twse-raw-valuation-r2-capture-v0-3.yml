@@ -1,0 +1,54 @@
+name: D08 TWSE Raw Valuation R2 Capture V0.3
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-raw-valuation-r2-capture-v0-3.yml"
+      - "system2/scripts/d08_twse_raw_valuation_r2_capture_v0_3.mjs"
+      - "system2/runtime/d08_twse_historical_universe_source_v0_2.mjs"
+      - "system2/runtime/official_historical_a6_valuation_v0_1.mjs"
+      - "system2/tests/d08_raw_valuation_r2_capture_v0_3_guard.test.mjs"
+      - "system2/tests/d08_historical_valuation_source_core.test.mjs"
+      - "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json"
+      - "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d08-twse-raw-valuation-r2-v03-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard D08 V0.3 research-only boundary
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_source_core.test.mjs
+          node system2/tests/d08_universe_provenance_version_split_v0_2.test.mjs
+          node system2/tests/d08_raw_valuation_r2_capture_v0_3_guard.test.mjs
+          node --check system2/scripts/d08_twse_raw_valuation_r2_capture_v0_3.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Capture 44 V0.3 valuation snapshots to isolated R2
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_raw_valuation_r2_capture_v0_3.mjs | tee /tmp/d08-raw-valuation-r2-v03.jsonl
+          grep '^D08_RAW_VALUATION_R2_RECEIPT=' /tmp/d08-raw-valuation-r2-v03.jsonl
+      - name: Production isolation guard
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "D08 V0.3 research-only R2 capture isolation PASS"
