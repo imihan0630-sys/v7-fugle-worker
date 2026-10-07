@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { gzipSync,gunzipSync } from "node:zlib";
-import { buildOfficialTradingDatesV0_1 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
+import { fetchHistoricalTwseMonthlyTradingDatesV0_1 } from "../runtime/historical_twse_calendar_v0_1.mjs";
 import { fetchOfficialHistoricalA6ValuationDateV0_1 } from "../runtime/official_historical_a6_valuation_v0_1.mjs";
 import { buildD08ValuationYearPackV0_1,validateD08ValuationYearPackV0_1 } from "../runtime/d08_twse_daily_valuation_year_pack_v0_1.mjs";
 import { createRemoteR2S3Adapter } from "../deploy/remote_r2_s3_adapter.mjs";
@@ -18,8 +18,22 @@ const secretAccessKey=process.env.SYSTEM2_R2_SECRET_ACCESS_KEY;
 const bucketName=String(process.env.SYSTEM2_R2_BUCKET||"system2-historical-research").trim();
 assert.ok(accountId&&accessKeyId&&secretAccessKey&&bucketName,"R2 credentials/bucket required");
 
-const trading=await buildOfficialTradingDatesV0_1({fromDate,toDate});
-assert.ok(trading.tradingDateCount>0,"no trading dates "+year);
+const monthStart=Number(fromDate.slice(5,7));
+const monthEnd=Number(toDate.slice(5,7));
+const exactTradingDates=[];
+for(let month=monthStart;month<=monthEnd;month+=1){
+  const monthly=await fetchHistoricalTwseMonthlyTradingDatesV0_1({year,month});
+  for(const date of monthly.tradingDates){
+    if(date>=fromDate&&date<=toDate) exactTradingDates.push(date);
+  }
+}
+const trading={
+  tradingDates:[...new Set(exactTradingDates)].sort(),
+  tradingDateCount:new Set(exactTradingDates).size,
+  source:"TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+};
+assert.ok(trading.tradingDateCount>0,"no exact trading dates "+year);
+assert.equal(trading.tradingDateCount,exactTradingDates.length,"duplicate exact trading dates "+year);
 
 const receipts=[];
 for(let i=0;i<trading.tradingDates.length;i+=1){
