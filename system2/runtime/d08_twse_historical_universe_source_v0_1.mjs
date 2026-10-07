@@ -162,8 +162,7 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
     companyLegalName:String(r["公司名稱"]??"").trim()||null,
     listingDate:parseD08TwseDateV0_1(r["股票上市買賣日期"]),raw:r,
   })).filter(x=>ordinary(x.symbol)&&x.listingDate);
-  const currentReconciliation=reconcileD08TwseCurrentListingStartsV0_1(currentBase,newRows);
-  const current=currentReconciliation.rows;
+  const current=currentBase;
 
   const delRows=d08TwseTableObjectsV0_1(delRaw.payload).map(r=>({
     symbol:String(r["上市編號"]??r["公司代號"]??"").trim(),
@@ -224,8 +223,6 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
     registry,
     sourceReceipt:deepFreeze({
       currentCount:current.length,newListingHistoryCount:newRows.length,
-      currentListingStartReconciledCount:currentReconciliation.adjustedCount,
-      currentListingStartReconciledSymbols:currentReconciliation.adjustedSymbols,
       delistedCount:delisted.length,datasetStartFallbackCount:unresolved.length,
       datasetStartFallbackSymbols:Object.freeze(unresolved.map(x=>x.symbol).sort()),
       datasetFirstTradingDate:firstTradingDate,
