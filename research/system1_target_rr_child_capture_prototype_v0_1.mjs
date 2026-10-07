@@ -86,7 +86,7 @@ function observerFeature(feature,parent){
   if(channel==="A"&&finite(entry)) f.support=entry/1.0065;
   return f;
 }
-function targetSemantics({audit,history,targetPrice,parent,source,generationId}){
+function targetSemantics({audit,history,targetPrice,parent,source,generationId,decisionAt}){
   if(!history.verified||!targetPrice.verified)
     return {state:"TARGET_UNKNOWN_SOURCE",reason:!history.verified?"HISTORY_SEARCH_SOURCE_NOT_VERIFIED":targetPrice.state,
       searchComplete:false,geometryQuality:"UNKNOWN",sourceVerified:false};
@@ -109,7 +109,7 @@ function targetSemantics({audit,history,targetPrice,parent,source,generationId})
     searchAlgorithmVersion:"FORMAL_NEAREST_REAL_RESISTANCE_V0_1",
     searchLookbackStart:history.lookbackStart,searchLookbackEnd:history.lookbackEnd,
     sourceReceiptIds:[source.sourceReceiptId,"C1_GENERATION:"+generationId],
-    knownAt:parent.knownAt||null};
+    knownAt:decisionAt,decisionAt};
   return audit.resistance?.targetNull===true
     ?{...common,state:"TARGET_NONE_SEARCH_COMPLETE",reason:null}
     :{...common,state:"TARGET_FOUND",reason:null,target:audit.resistance?.selectedTarget??null};
@@ -140,7 +140,7 @@ export async function buildTargetRrChildCapturePrototype({
     const audit=buildTargetRrAudit(observerFeature(f,parent),{channel,formalResult:formalInput(parent),minRewardRisk:2});
     if(!TARGET_STAGES.has(audit.formalStage)){preTarget.count++;inc(preTarget.reasons,audit.formalStage||"UNKNOWN");continue;}
     const history=historyState(f,parent,receipt.sessionDate),targetPrice=perSymbolTargetPriceSource(f,source);
-    const semantics=targetSemantics({audit,history,targetPrice,parent,source,generationId:receipt.generationId});
+    const semantics=targetSemantics({audit,history,targetPrice,parent,source,generationId:receipt.generationId,decisionAt:receipt.decisionAt});
     const pool=pools.has(parent.pricePool)?parent.pricePool:"UNKNOWN";
     const row={
       symbol:String(parent.symbol),pool,channel,formalStage:audit.formalStage,targetStateV2:semantics.state,
