@@ -36,7 +36,7 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
 }={}){
   const date=isoDate(marketDate);
   if(!payload||typeof payload!=="object"||Array.isArray(payload)) throw new Error("A6 payload must be object");
-  if(payload.stat!=="OK") throw new Error("A6 source stat not OK");
+  if(payload.stat!=="OK") throw new Error("A6 source stat not OK "+date+" stat="+String(payload.stat??"UNKNOWN"));
   if(!Array.isArray(payload.fields)||!Array.isArray(payload.data)) throw new Error("A6 fields/data invalid");
   const required=["證券代號","證券名稱","本益比","股價淨值比"];
   const missing=required.filter(h=>!payload.fields.includes(h));

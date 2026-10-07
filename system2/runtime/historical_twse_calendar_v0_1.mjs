@@ -188,6 +188,17 @@ async function fetchMonthlyFmtqik({
   throw lastError || new Error("TWSE FMTQIK request failed");
 }
 
+export async function fetchHistoricalTwseMonthlyTradingDatesV0_1({
+  year,
+  month,
+  fetchImpl = globalThis.fetch,
+} = {}) {
+  const y = requiredYear(year);
+  const m = requiredMonth(month);
+  if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
+  return fetchMonthlyFmtqik({year:y,month:m,fetchImpl});
+}
+
 export async function fetchHistoricalTwseFmtqikCalendarV0_1({
   year,
   fetchImpl = globalThis.fetch,

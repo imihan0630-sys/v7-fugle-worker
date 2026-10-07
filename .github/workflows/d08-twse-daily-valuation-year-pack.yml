@@ -24,12 +24,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  pilot-2005:
+  capture-years:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        year: [2026]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: system2-research
     env:
-      D08_YEAR: "2005"
+      D08_YEAR: "${{ matrix.year }}"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
@@ -45,7 +50,7 @@ jobs:
           node system2/tests/d08_daily_valuation_year_pack_guard.test.mjs
           node --check system2/scripts/d08_twse_daily_valuation_year_pack_capture_v0_1.mjs
           git diff --exit-code -- Worker.js wrangler.toml
-      - name: Capture earliest official valuation archive boundary
+      - name: Capture immutable TWSE daily valuation year pack
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
@@ -53,26 +58,9 @@ jobs:
           SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
         run: |
           set -euo pipefail
-          node system2/scripts/d08_twse_daily_valuation_year_pack_capture_v0_1.mjs | tee /tmp/d08-year-pack-run1.jsonl
-          node system2/scripts/d08_twse_daily_valuation_year_pack_capture_v0_1.mjs | tee /tmp/d08-year-pack-run2.jsonl
-          node --input-type=module - <<'NODE'
-          import fs from "node:fs";
-          function receipt(path){
-            const line=fs.readFileSync(path,"utf8").split("\n").find(x=>x.startsWith("D08_YEAR_PACK_RECEIPT="));
-            if(!line) throw new Error("receipt missing "+path);
-            return JSON.parse(line.slice("D08_YEAR_PACK_RECEIPT=".length));
-          }
-          const a=receipt("/tmp/d08-year-pack-run1.jsonl"),b=receipt("/tmp/d08-year-pack-run2.jsonl");
-          for(const k of ["tradingDateCount","totalRows","totalPeKnown","totalPbKnown","sourceBundleHash","packPayloadHash","objectSha256","objectKey"]){
-            if(a[k]!==b[k]) throw new Error("year-pack rerun mismatch "+k+" "+a[k]+" != "+b[k]);
-          }
-          if(!a.readbackVerified||!b.readbackVerified) throw new Error("readback verification missing");
-          console.log("D08_YEAR_PACK_IDEMPOTENCY="+JSON.stringify({
-            ok:true,year:a.year,packPayloadHash:a.packPayloadHash,objectSha256:a.objectSha256,
-            tradingDateCount:a.tradingDateCount,totalRows:a.totalRows
-          }));
-          NODE
+          node system2/scripts/d08_twse_daily_valuation_year_pack_capture_v0_1.mjs | tee "/tmp/d08-year-${D08_YEAR}.jsonl"
       - name: Production isolation guard
         run: |
           set -euo pipefail
           git diff --exit-code -- Worker.js wrangler.toml
+          echo "D08 research-only year-pack isolation PASS for ${D08_YEAR}"

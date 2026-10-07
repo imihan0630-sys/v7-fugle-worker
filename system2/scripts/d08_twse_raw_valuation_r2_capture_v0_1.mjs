@@ -26,6 +26,7 @@ assert.equal(universeReceipt.scanClock.snapshotCount,44);
 
 const expectedByDate=new Map(universeReceipt.scanClock.snapshots.map(x=>[x.scanDate,x]));
 const built=await buildD08TwseHistoricalUniverseSourceV0_1({observedAt});
+console.log("D08_UNIVERSE_LIVE_RECEIPT="+JSON.stringify(built.sourceReceipt));
 const registry=built.registry;
 const semanticUniverse=buildD08SemanticUniverseIdentityV0_1(registry);
 const semanticBySymbol=new Map(semanticUniverse.memberships.map(x=>[x.market+"|"+x.symbol,x]));
