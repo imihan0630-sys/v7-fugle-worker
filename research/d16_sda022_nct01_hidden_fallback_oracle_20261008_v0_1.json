@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "D16_SDA022_NCT01_HIDDEN_FALLBACK_ORACLE_V0_1",
+  "owner": "ROOM11_D16",
+  "auditFamily": "SDA-022",
+  "correction": "S2-CORR-20261007-005",
+  "status": "PRE_PHYSICAL_BLOCKING_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "dimensions": [
+    "CACHED_SYSTEM1_SELECTION_FALLBACK",
+    "PERSISTED_SYSTEM1_SELECTION_FALLBACK",
+    "ALIAS_OR_COMPATIBILITY_TO_SYSTEM1_SELECTION",
+    "CROSS_PROJECT_SYSTEM1_SELECTION_IMPORT",
+    "STALE_PRIOR_SYSTEM1_SELECTION_REUSE"
+  ],
+  "allowedDimensionStates": [
+    "PROVEN_ABSENT",
+    "PRESENT",
+    "UNKNOWN"
+  ],
+  "tests": [
+    {
+      "id": "HF-T01",
+      "case": "MISSING_AUDIT_OBJECT",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T02",
+      "case": "ONE_DIMENSION_MISSING",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T03",
+      "case": "ANY_DIMENSION_PRESENT",
+      "expect": "HIDDEN_SYSTEM1_DEPENDENCY"
+    },
+    {
+      "id": "HF-T04",
+      "case": "ALL_ABSENT_NO_AUDIT_DIGEST",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T05",
+      "case": "AUDIT_DIGEST_TRANSITIVE_MANIFEST_MISMATCH",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T06",
+      "case": "AUDIT_DIGEST_CHANGES",
+      "expect": "FINAL_RECEIPT_HASH_MUST_CHANGE"
+    },
+    {
+      "id": "HF-T07",
+      "case": "RUNNER_HEAD_CHANGES_AFTER_AUDIT",
+      "expect": "REQUIRE_REAUDIT_OR_PROVEN_BLOB_EQUIVALENCE"
+    },
+    {
+      "id": "HF-T08",
+      "case": "RUNTIME_FORBIDDEN_SOURCE_ACCESS_NONZERO",
+      "expect": "HIDDEN_SYSTEM1_DEPENDENCY"
+    },
+    {
+      "id": "HF-T09",
+      "case": "STATIC_AUDIT_CLEAN_RUNTIME_EVIDENCE_MISSING",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T10",
+      "case": "RUNTIME_NO_ACCESS_CLEAN_STATIC_AUDIT_MISSING",
+      "expect": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "HF-T11",
+      "case": "SHARED_RAW_MARKET_DATA_ONLY",
+      "expect": "ALLOWED_NO_SELECTION_DEPENDENCY"
+    },
+    {
+      "id": "HF-T12",
+      "case": "SAME_SYMBOL_SELECTED_BY_BOTH_SYSTEMS",
+      "expect": "NOT_FAILURE_BY_ITSELF_REQUIRE_LATER_INCREMENTALITY"
+    }
+  ],
+  "requiredAuditIdentity": [
+    "auditVersion",
+    "runnerEntryPoint",
+    "runnerHeadSha",
+    "transitiveManifestHash",
+    "forbiddenSourceFamilyVersion",
+    "auditedBlobIdentities",
+    "dynamicResolutionPolicy",
+    "auditGeneratedAt",
+    "perDimensionDisposition",
+    "auditDigest"
+  ],
+  "requiredTypedDigest": "HIDDEN_FALLBACK_AUDIT_SHA256",
+  "physicalPassRequires": [
+    "ALL_DIMENSIONS_PROVEN_ABSENT",
+    "EXACT_HEAD_TRANSITIVE_AUDIT_BOUND",
+    "RUNTIME_NO_FORBIDDEN_ACCESS_EVIDENCE",
+    "AUDIT_DIGEST_BOUND_IN_SOURCE_GENERATION_REFS",
+    "FINAL_RECEIPT_HASH_DEPENDS_ON_AUDIT_DIGEST",
+    "REAL_HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY_RECEIPT"
+  ],
+  "maturityImpact": "NONE"
+}
