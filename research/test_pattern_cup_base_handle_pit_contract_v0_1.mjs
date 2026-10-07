@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import {validateBaseLifecycle,validateTemplateSelection,classifyBaseComparator,preserveBaseDenominator,classifyHandleLineage} from "./pattern_cup_base_handle_pit_contract_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8401 candidate visible in time",()=>assert.equal(validateBaseLifecycle({status:"BASE_CANDIDATE",firstObservableAt:"2026-10-07T09:00:00+08:00",predictorFreezeAt:"2026-10-07T10:00:00+08:00"}).status,"BASE_STATE_VALID"));
+t("D8402 backpaint blocked",()=>assert.equal(validateBaseLifecycle({status:"BASE_CANDIDATE",firstObservableAt:"2026-10-07T11:00:00+08:00",predictorFreezeAt:"2026-10-07T10:00:00+08:00"}).status,"BASE_LOOKAHEAD"));
+t("D8403 future confirmation blocked",()=>assert.equal(validateBaseLifecycle({status:"CONFIRMED",firstObservableAt:"2026-10-07T09:00:00+08:00",confirmedAt:"2026-10-07T11:00:00+08:00",predictorFreezeAt:"2026-10-07T10:00:00+08:00"}).status,"CONFIRMATION_LOOKAHEAD"));
+t("D8404 outcome resize blocked",()=>assert.equal(validateTemplateSelection({parameterFamilyPreregistered:true,usesOutcomeForResize:true}).status,"TEMPLATE_HINDSIGHT"));
+t("D8405 preregistered template valid",()=>assert.equal(validateTemplateSelection({parameterFamilyPreregistered:true,usesOutcomeForResize:false}).status,"TEMPLATE_PREREGISTERED"));
+t("D8406 baseline controls required",()=>assert.equal(classifyBaseComparator({priorTrendControlled:true,rangeCompressionControlled:false,genericBreakoutControlled:true}).status,"BASELINE_CONTROLS_INCOMPLETE"));
+t("D8407 failed expired retained",()=>assert.equal(preserveBaseDenominator({candidates:100,confirmed:30,failed:40,expired:20,dataBlocked:10}).failedRetained,true));
+t("D8408 handle same base one vote",()=>assert.equal(classifyHandleLineage({sameBaseEpisode:true,independentRoot:false}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/8 PASS`);
