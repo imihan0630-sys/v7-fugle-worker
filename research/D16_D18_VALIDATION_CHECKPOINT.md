@@ -3517,3 +3517,191 @@ Economic outcomes CLOSED.
 3. Continue shared TECHNICAL_CONTINUITY/U2B dependency; no second corporate-action engine in D18.
 4. If A1 prospective source remediation lands, require versioned dual-source equivalence and first-known clocks before promotion.
 5. Switch immediately if T48, NC-T01, SDA-022 System2 fingerprint or genuine Formal<->C1 evidence lands.
+
+
+## 2026-10-07 current-runtime reclassification + NC-T01 evidence ladder + SDA-022 D5 method freeze + H1-H5 wiring validation
+
+New durable artifacts:
+- `research/D16_STRATEGY_CLOCK_OVERGATING_RECLASSIFICATION_20261007_V0_1.md`;
+- `research/D16_SDA022_INDEPENDENCE_EVIDENCE_LADDER_20261007_V0_1.md`;
+- `research/D16_SDA022_D5_MODEL_METHOD_FREEZE_20261007_V0_1.md`;
+- `research/d16_sda022_d5_model_method_receipt_20261007_v0_1.json`;
+- `research/D16_SYSTEM1_H1_H5_PROSPECTIVE_WIRING_VALIDATION_20261007_V0_1.md`.
+
+### Correction to prior Room11 strategy-clock interpretation
+
+Earlier Room11 work correctly identified:
+`GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`.
+
+Latest-main runtime evidence now disproves the stronger inference that the broader global Decision Clock is a current SHORT_MOMENTUM Stage-1 runtime/capacity gate.
+
+Canonical rejection evidence:
+`system2/evidence/S2_CORR_20261007_002_REJECTION_VERIFICATION_20261007_V0_1.json`.
+
+Verified:
+- Stage-1 preflight does not consume B2/A5/global requiredReady;
+- SHORT_MOMENTUM launch families remain TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION;
+- Limited Shadow strategy run does not consume B2/A5/global requiredReady;
+- capacity consumes completed strategy runs and does not consume the broad global clock.
+
+Current classification:
+`REVIEW_CLOCK_SEMANTIC_MISMATCH / NO_CURRENT_RUNTIME_OVERGATING_PROVEN / FUTURE_WIRING_WATCHLIST`.
+
+The prior over-gating artifact remains immutable historical research.
+Its CURRENT_RUNTIME_DEFECT interpretation is superseded, not deleted.
+
+### A1 Stage-1 input layer physically ready
+
+System2 Daily Shadow Diagnostic run `37609474459`:
+- marketDate 2026-10-07;
+- state READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS;
+- TWSE exact-date MI_INDEX fallback = 1086 ordinary rows;
+- TPEx exact-date dailyQuotes fallback = 887 ordinary rows;
+- total ordinary symbols = 1973;
+- prospective PIT history = VERIFIED;
+- immutable D1 readback = VERIFIED;
+- capacityWriteAuthorized = true;
+- System1 runtime used = false;
+- strategy evaluation = NOT EXECUTED;
+- capacity = NOT PRODUCED.
+
+Therefore S2-CORR-20261007-001 is no longer a Stage-1 ingestion blocker.
+Remaining issue is prospective source-arrival/clock collector divergence.
+
+### SDA-022 evidence ladder
+
+Room11 now freezes four non-substitutable evidence levels:
+
+A. STATIC DEPENDENCY INDEPENDENCE
+- current bounded SHORT_MOMENTUM source audit found no static System1 Top6/rank dependency.
+
+B. PHYSICAL EXECUTION INDEPENDENCE
+- requires real NC-T01 S22-T11~T16;
+- currently pending.
+
+C. STATISTICAL INCREMENTAL INFORMATION
+- D16-SDA022-01;
+- preregistered, outcomes closed.
+
+D. PORTFOLIO DIVERSIFICATION
+- separate future portfolio estimand;
+- not opened.
+
+No earlier layer can be promoted into a later claim.
+
+### NC-T01 current readiness
+
+Static hidden-dependency audit:
+`NO_STATIC_SYSTEM1_TOP6_OR_RANK_DEPENDENCY_FOUND_IN_BOUND_SCOPE`.
+
+But:
+static source inspection is not physical independence.
+
+Current physical seed proves only:
+- real A1 + PIT history ready;
+- System1 runtime unused;
+- assessor policies ready.
+
+Actual SHORT_MOMENTUM strategy execution is still pending.
+
+PR #762 System2 per-strategy fingerprint package remains non-canonical until latest-main rebuild/rebase/regeneration/exact-head verification/merge.
+Only merged-main evidence may credit S22-T06~T10.
+
+### D16-SDA022-01 model method now frozen
+
+Primary System1 state:
+- FORMAL_SELECTED;
+- FORMAL_QUALIFIED_NOT_SELECTED;
+- FORMAL_REJECTED;
+- FORMAL_UNKNOWN.
+
+Primary SHORT_MOMENTUM state:
+- SM_BUY_ELIGIBLE;
+- SM_ACTIVE_ENTRY_MONITOR;
+- SM_WATCH;
+- SM_INPUT_INCOMPLETE.
+
+Required inputs not READY may not be coerced to WATCH.
+
+Primary models:
+- baseline = one-hot System1 state;
+- augmented = baseline + one-hot SHORT_MOMENTUM state;
+- no interactions;
+- ridge logistic regression;
+- lambda 1.0 primary;
+- lambda 0.1 / 10.0 non-rescuing sensitivity;
+- identity/no-posthoc recalibration;
+- chronological matured-only refit;
+- no retrospective forecast backfill.
+
+Primary estimand remains:
+`DATE_BALANCED_BRIER_LOSS_IMPROVEMENT`.
+
+Primary uncertainty:
+- decision-date unit;
+- minimum five-official-session moving block for direct D5 overlap;
+- 10/20-session block sensitivities;
+- leave-one-replication-cluster-out when support exists;
+- no IID row bootstrap.
+
+Still-open pre-outcome method gate:
+`MDE_OR_PRECISION_TARGET_FROZEN`.
+
+Do not invent an arbitrary target merely to close the checklist.
+
+### System1 H1-H5 prospective wiring validation
+
+PR #803 merged:
+`8c83df8de10b9e21c71c2648b29cac581f26ef90`.
+
+PR-head success:
+- V8 Regression `37619201277`;
+- C1/C2 repair review `37619201349`;
+- V8 Repair CI `37619201358`;
+- H1-H5 Prospective Readiness Review `37619201262`.
+
+Merged-main V8 Regression:
+`37619379606` SUCCESS.
+
+First merge-triggered C1 prospective run:
+`37619379653`.
+
+Observed:
+- generation inventory validation SUCCESS;
+- Formal-C1 binding semantic validation SUCCESS;
+- immutable C1 population read/verify FAILURE;
+- H1-H5 postprocess SKIPPED;
+- blocker/evidence preservation SUCCESS.
+
+Artifact:
+`system1-c1-evidence-37619379653`,
+id `11481625837`,
+digest `sha256:e229c435cb4b3a59c8ef5044589a92525f83ff32000aa4a206d2200f0e9f1a60`.
+
+Interpretation:
+engineering instrumentation is accepted;
+no genuine H1-H5 empirical output was produced.
+
+Do not coerce the absent H1-H5 outputs to zero.
+
+### Current maturity
+
+No maturity change from this cycle:
+- D16 = 60%;
+- D18 = 52%.
+
+Reason:
+this cycle materially improved falsification, method preregistration and execution-readiness interpretation, but created no mature Taiwan D5 economic outcome series and no physical NC-T01 strategy execution.
+
+Formal Core LOCKED.
+Economic outcomes CLOSED.
+
+### Exact next continuation
+
+1. Re-read latest main.
+2. If System2 fingerprint replacement for PR #762 lands, validate S22-T06~T10 immediately.
+3. If physical NC-T01 lands, validate Layer B only: real execution, hidden fallback, zero-pick disposition and immutable lineage; do not call it predictive independence.
+4. If the next verified C1/C2 run reaches H1-H5 postprocess, validate genuine T0/T1 states and target provenance before interpreting counts.
+5. Freeze a justified SDA022 D5 MDE/precision target only from pre-outcome decision/precision logic; do not invent an arbitrary value.
+6. If a prospective common-cutoff pair receipt lands, bind it to the frozen SDA022 model method before any D5 outcome opening.
+7. Continue D18-04 U2B and D18-06 PIT size-vintage work when no higher-priority external trigger has landed.
