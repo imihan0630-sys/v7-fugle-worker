@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 19:16:52 Asia/Taipei
+Updated: 2026-10-07 19:30:51 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -979,7 +979,7 @@ Correction consequence:
   - free-tier cost and quota governance.
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement:
-  System2 parallel execution must not repeatedly collide with a known finite free-tier D1 daily row-write limit. Shared writer concurrency prevents simultaneous mutation but is not a quota budget. Cross-workflow writes must preserve headroom for prioritized required work, defer explicitly before predictable quota collision where possible, and never trigger/assume a paid-plan upgrade without explicit owner approval.
+  System2 parallel execution must not repeatedly collide with Cloudflare D1 Workers Free account-level daily limits. Current official contract is 100,000 rows written/day and 5,000,000 rows read/day, resetting at 00:00 UTC. Shared writer concurrency prevents simultaneous mutation but is not a finite-quota budget. Cross-workflow operations must preserve headroom for prioritized required work, defer explicitly before predictable quota collision where possible, and never trigger/assume a paid-plan upgrade without explicit owner approval.
 - observedProblem:
   - scheduled Daily Shadow Diagnostic run `37609474459` succeeded and reported `rowsWritten=13130`;
   - 22 minutes later annual historical run `37611914140` (#30) failed in `migrate` before backfill because Cloudflare returned HTTP 400 free-tier daily row-write limit exceeded;
@@ -987,6 +987,7 @@ Correction consequence:
   - repo-wide writer workflows share `system2-isolated-d1-writer`, which serializes mutations but does not reserve/budget finite daily writes;
   - only local quota protection exists for the Fugle hot-history bootstrap; no System2-wide budget/priority contract exists.
 - evidence:
+  - Official Cloudflare D1 Free contract verified 2026-10-07: account-wide 100,000 rows written/day, 5,000,000 rows read/day, reset 00:00 UTC; enforcement since 2026-09-01 rejects queries after the daily limit is exceeded. Durable evidence: `system2/evidence/S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_20261007_V0_1.json` @ `0ca1329925d253546e2eacc7958c55adb96c4498`.
   - run `37609474459`: SUCCESS; D1 metrics `requestCount=797 / rowsRead=583256 / rowsWritten=13130`;
   - run `37611914140`: FAILURE in migrate; backfill/verify skipped; Cloudflare explicitly reported free-tier daily row-write limit exceeded;
   - prior quota blocker: `system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json`;
@@ -994,22 +995,25 @@ Correction consequence:
 - riskIfUnfixed:
   High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the free daily quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to buy a paid tier despite explicit cost-control preference.
 - requiredCorrection:
-  1. Implement one System2-wide UTC-day D1 write-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.
-  2. Classify writer intents and define free-tier-safe reservation/priority behavior for scheduled evidence, historical bulk work, bootstrap/smoke/provision and deploy tasks.
-  3. Before a large writer starts, emit explicit `QUOTA_BUDGET_DEFERRED`/blocked evidence when conservative headroom is unavailable instead of starting predictable failing work.
-  4. Use known `rowsWritten` plus reservations/estimates conservatively; do not invent exact remaining Cloudflare quota if it is not directly observable.
-  5. Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.
-  6. Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.
-  7. No automatic paid-tier upgrade or billing change; any paid change is separately `OWNER_DECISION_REQUIRED`.
+  1. Implement one System2-wide UTC-day D1 quota-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.
+  2. Anchor Free-plan governance to the official account-wide ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset at 00:00 UTC, unless newer vendor evidence changes the contract.
+  3. Classify writer intents and define free-tier-safe reservation/priority behavior for scheduled evidence, historical bulk work, bootstrap/smoke/provision and deploy tasks.
+  4. Before large writers begin, emit explicit `QUOTA_BUDGET_DEFERRED`/blocked evidence when known usage plus conservative reservations would exceed available budget.
+  5. Use D1 query meta and dashboard/GraphQL analytics where available; when exact account-wide remaining usage cannot be proven, use conservative known-write accounting and reservations rather than inventing headroom.
+  6. Account for index-amplified written rows in reservation estimates.
+  7. Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.
+  8. Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.
+  9. No automatic paid-tier upgrade or billing change; any paid change is separately `OWNER_DECISION_REQUIRED`.
 - acceptanceCriteria:
-  - multiple System2 writer classes on the same UTC quota day are coordinated by one auditable budget/priority contract rather than concurrency only;
+  - multiple System2 writer classes on the same UTC quota day are coordinated by one auditable account-level budget/priority contract rather than concurrency only;
+  - contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, with vendor-version/source provenance;
   - a later bulk workflow can defer before predictable free-tier exhaustion using conservative evidence;
-  - quota deferral is explicit and cannot be mislabeled as data/source failure;
-  - regression covers known writes/reservations, insufficient-headroom defer, unknown remaining quota fail-safe behavior and UTC-day rollover;
+  - quota deferral is explicit and cannot be mislabeled data/source failure;
+  - regression covers known writes/reservations, index-amplified estimates, insufficient-headroom defer, unknown remaining quota fail-safe behavior and UTC-day rollover;
   - no paid-plan upgrade, System1 change, strategy/ranking/final-selection/push/capital/order authority change;
   - independent audit verifies implementation and at least one physical multi-writer day or equivalent bounded evidence without quota-collision failure.
 - ownerDecisionRequired: false
 - implementationEvidence: []
 - verificationEvidence: []
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T19:16:52+08:00
+- updatedAt: 2026-10-07T19:30:51+08:00
