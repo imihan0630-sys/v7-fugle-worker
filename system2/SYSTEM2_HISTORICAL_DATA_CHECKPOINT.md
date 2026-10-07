@@ -467,3 +467,29 @@ Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825
 Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825/artifacts/11448741341
 
 Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TWSE` from latest main. The separate 2021 TPEx canonical-revision blocker remains open in parallel.
+
+
+## 2026-10-07 2021 TPEx PIT revision recovery implementation ready
+
+The DATA_LANE priority is temporarily switched from 2024 annual population back to the explicit 2021 TPEx canonical-source revision blocker.
+
+Implementation now present on main:
+- additive isolated-D1 revision-lineage migration: `system2/sql/0008_historical_revision_lineage.sql` (global schema remains 1.1);
+- PIT revision evaluator / selector: `system2/runtime/historical_revision_lineage_v0_1.mjs`;
+- PIT replay resolves versions by `availableAt` and remains fail-closed on same-availability conflicts;
+- bounded overlay script: `system2/scripts/historical_tpex_2021_revision_overlay_v0_1.mjs`;
+- verifier V0.5 accepts canonical mismatch only when persisted pre/post PIT lineage is physically READY;
+- dedicated recovery workflow: `.github/workflows/system2-historical-tpex-2021-revision-recovery.yml`.
+
+The overlay is bounded to `2021 / TPEX / 2021-01-14` and asserts the frozen blocker signature before writing: 780 source-row revisions, 698 canonical A1 revisions, 82 source-only revisions, one revised market date. It preserves the immutable cold baseline and writes revised rows as `PROSPECTIVE_OBSERVATION` versions. Partial retries reuse the first persisted prospective availability timestamp instead of creating another revision version.
+
+Validation completed before physical execution:
+- System2 Research CI `37550297713`: SUCCESS on the idempotent overlay implementation;
+- earlier lineage / PIT pre-post selection tests: PASS;
+- System1 Formal Core / production files are not modified by the recovery workflow.
+
+Exact next action: run the dedicated recovery workflow from latest main. It will migrate the additive isolated-D1 tables, capture the 2021 TPEx revision overlay, then immediately run Physical verify V0.5. Do not run the generic annual backfill and do not overwrite/delete the 2021 cold packs.
+
+Recovery workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
+
+Acceptance gate: overlay result must be `PASS_TPEX_2021_REVISION_LINEAGE`, verifier must be terminal SUCCESS with `effectiveDataIntegrityState=PASS_WITH_PIT_REVISION_LINEAGE`, Data Coverage PASS, System1 isolation PASS. Only then may 2021 TPEx move from BLOCKED to PASS/PARTIAL and annual continuation return to 2024 TWSE.
