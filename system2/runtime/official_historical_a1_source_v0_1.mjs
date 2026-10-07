@@ -338,10 +338,14 @@ export async function fetchOfficialHistoricalA1DateV0_1({
   }
 
   const primaryUrl = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
+  // Canonical A1 must preserve one consistent market-statistics definition.
+  // TPEx legacy otc_quotes_no1430 explicitly reports "不含定價" and is not
+  // semantically equivalent to the primary dailyQuotes endpoint for volume,
+  // trade value and transactions. It remains discoverable via
+  // buildOfficialHistoricalA1FallbackUrlsV0_1() for diagnostics only, but is
+  // never allowed to satisfy canonical historical A1 ingestion.
   const candidates = [
     { url: primaryUrl, transportMode: "PRIMARY" },
-    ...buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate)
-      .map((url) => ({ url, transportMode: "LEGACY_JSON_FALLBACK" })),
   ];
   const transportErrors = [];
 
@@ -419,6 +423,10 @@ export function officialHistoricalA1SourceContractV0_1(market) {
     sourceDateMustMatchRequestedDate: true,
     rawPriceSpace: "RAW",
     continuityState: "UNVERIFIED",
+    canonicalTransportPolicy: market === "TPEX"
+      ? "PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY"
+      : "PRIMARY_ONLY_FAIL_CLOSED",
+    legacyFallbackCanonicalEligible: false,
   });
 }
 
