@@ -1,0 +1,90 @@
+name: System2 SDA-022 Policy Fingerprints V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/system2_policy_fingerprint_v0_1.mjs"
+      - "system2/scripts/generate_sda022_system2_policy_fingerprints_v0_1.mjs"
+      - "system2/tests/system2_policy_fingerprint_v0_1.test.mjs"
+      - "system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs"
+      - "system2/evidence/SDA022_SYSTEM2_SHORT_MOMENTUM_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_SWING_GROWTH_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_STAGE1_POLICY_FINGERPRINT_SET_V0_1.json"
+      - ".github/workflows/system2-sda022-policy-fingerprint-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/system2_policy_fingerprint_v0_1.mjs"
+      - "system2/scripts/generate_sda022_system2_policy_fingerprints_v0_1.mjs"
+      - "system2/tests/system2_policy_fingerprint_v0_1.test.mjs"
+      - "system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs"
+      - "system2/evidence/SDA022_SYSTEM2_SHORT_MOMENTUM_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_SWING_GROWTH_POLICY_FINGERPRINT_V0_1.json"
+      - "system2/evidence/SDA022_SYSTEM2_STAGE1_POLICY_FINGERPRINT_SET_V0_1.json"
+      - ".github/workflows/system2-sda022-policy-fingerprint-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Contract tests
+        run: node system2/tests/system2_policy_fingerprint_v0_1.test.mjs
+
+      - name: Static receipt exact-rebuild test
+        run: node system2/tests/system2_policy_fingerprint_receipts_v0_1.test.mjs
+
+      - name: Generate source-bound fingerprints
+        env:
+          SYSTEM2_FINGERPRINT_OUTPUT_DIR: /tmp/system2-sda022-fingerprints
+        run: node system2/scripts/generate_sda022_system2_policy_fingerprints_v0_1.mjs
+
+      - name: Validate pre-NC-T01 fail-closed boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require("fs");
+          const dir="/tmp/system2-sda022-fingerprints";
+          const names=[
+            "system2_short_momentum_policy_fingerprint_receipt_v0_1.json",
+            "system2_swing_growth_policy_fingerprint_receipt_v0_1.json",
+          ];
+          for(const name of names){
+            const x=JSON.parse(fs.readFileSync(dir+"/"+name,"utf8"));
+            if(x.systemId!=="SYSTEM2")throw new Error("wrong systemId");
+            if(x.candidateUniverseMode!=="NOT_PHYSICALLY_PROVEN")throw new Error("candidate source prematurely promoted");
+            if(x.requiresOtherSystemCandidateOutput!==false||x.requiresOtherSystemRankOutput!==false)throw new Error("System1 dependency mismatch");
+            if(x.capacityPolicy?.globalMax!==12||x.capacityPolicy?.perStrategyActiveMonitorMax!==3)throw new Error("capacity identity mismatch");
+            if(x.capacityPolicy?.forcedFill!==false||x.capacityPolicy?.implicitGlobalUniversalScore!==false)throw new Error("capacity firewall mismatch");
+            if(x.rankingPolicy?.rankingMechanism!=="STRATEGY_LOCAL_PARETO")throw new Error("ranking identity mismatch");
+            if(x.formalMutation!==false)throw new Error("Formal mutation mismatch");
+          }
+          const set=JSON.parse(fs.readFileSync(dir+"/system2_stage1_policy_fingerprint_set_v0_1.json","utf8"));
+          if(set.sda022?.S22_T06!==true||set.sda022?.S22_T07!==true||set.sda022?.S22_T08!==true||set.sda022?.S22_T09!==true||set.sda022?.S22_T10!==true)throw new Error("S22 T06-T10 contract mismatch");
+          if(set.sda022?.physicalIndependentDiscovery!==false||set.sda022?.ncT01Required!==true)throw new Error("NC-T01 boundary mismatch");
+          NODE
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          git diff --exit-code HEAD^1 HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
+
+      - name: Upload fingerprint receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-sda022-policy-fingerprints-v0-1
+          path: /tmp/system2-sda022-fingerprints
+          retention-days: 30
