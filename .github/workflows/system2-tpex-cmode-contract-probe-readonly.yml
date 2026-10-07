@@ -1,0 +1,53 @@
+name: System2 TPEx Cmode Contract Probe Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/system2-tpex-cmode-contract-probe-readonly.yml"
+      - "system2/scripts/tpex_cmode_contract_probe_v0_1.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-tpex-cmode-contract-probe-readonly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe TPEx cmode request-scoped contract
+        env:
+          SYSTEM2_TPEX_CMODE_PROBE_OUTPUT: /tmp/system2-tpex-cmode-contract-probe.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/tpex_cmode_contract_probe_v0_1.mjs | tee /tmp/system2-tpex-cmode-contract-probe.log
+      - name: Upload contract probe evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-tpex-cmode-contract-probe
+          path: |
+            /tmp/system2-tpex-cmode-contract-probe.json
+            /tmp/system2-tpex-cmode-contract-probe.log
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Confirm read-only and System1 isolation
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          ! grep -Ein 'CLOUDFLARE|SYSTEM2_R2|db\.prepare|wrangler[[:space:]]+(deploy|delete)' system2/scripts/tpex_cmode_contract_probe_v0_1.mjs
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Read-only/System1 isolation PASS"
