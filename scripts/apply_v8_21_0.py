@@ -18,7 +18,7 @@ source_path=Path("research/system1_c1_generation_finalization_v8_21_0.mjs")
 source=source_path.read_text(encoding="utf-8")
 raw=source.encode("utf-8")
 blob_sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
-expected="7c8e8c4fdf68c3cfdc5023fc193c40ec86a25576"
+expected="2c4bb310cc2194a73ed661baac9c2825e02bd0c9"
 if blob_sha!=expected:
     raise SystemExit("Frozen V8.21 C1 generation finalization module changed")
 module_source="\n".join(line for line in source.splitlines() if not line.startswith("import ")).replace("export ","")
