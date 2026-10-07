@@ -32,7 +32,7 @@ const fetched = await fetchCurrentListingMetadataV0_1({
     ok: true,
     status: 200,
     async text() {
-      return String(url).includes("t187ap03_L.csv") ? listed : otc;
+      return String(url).includes("t187ap03_L") ? listed : otc;
     },
   }),
 });
@@ -50,7 +50,7 @@ const incomplete = await fetchCurrentListingMetadataV0_1({
   fetchImpl: async (url) => ({
     ok: true,
     status: 200,
-    text: async () => String(url).includes("t187ap03_L.csv") ? listed : otc,
+    text: async () => String(url).includes("t187ap03_L") ? listed : otc,
   }),
 });
 assert.equal(incomplete.state, "INCOMPLETE");
@@ -71,7 +71,7 @@ const retried = await fetchCurrentListingMetadataV0_1({
     return {
       ok: true,
       status: 200,
-      text: async () => String(url).includes("t187ap03_L.csv") ? listed : otc,
+      text: async () => String(url).includes("t187ap03_L") ? listed : otc,
     };
   },
 });
@@ -109,9 +109,33 @@ const bodyRetried = await fetchCurrentListingMetadataV0_1({
       if (bodyRetryCalls === 1) {
         throw new DOMException("The operation was aborted due to timeout", "TimeoutError");
       }
-      return String(url).includes("t187ap03_L.csv") ? listed : otc;
+      return String(url).includes("t187ap03_L") ? listed : otc;
     },
   }),
 });
 assert.equal(bodyRetried.state, "READY");
 assert.ok(bodyRetryCalls >= 3, "body-read timeout must be retried inside adapter");
+
+
+const listedJson = JSON.stringify([
+  {"出表日期":"20261003","公司代號":"2330","公司名稱":"台灣積體電路製造股份有限公司","公司簡稱":"台積電","產業別":"半導體業","上市日期":"1994/09/05"},
+  {"出表日期":"20261003","公司代號":"1101","公司名稱":"台灣水泥股份有限公司","公司簡稱":"台泥","產業別":"水泥工業","上市日期":"1962/02/09"}
+]);
+const otcJson = JSON.stringify([
+  {"出表日期":"20261003","公司代號":"6488","公司名稱":"環球晶圓股份有限公司","公司簡稱":"環球晶","產業別":"半導體業","上櫃日期":"2015/09/25"},
+  {"出表日期":"20261003","公司代號":"7777","公司名稱":"測試新櫃公司","公司簡稱":"新櫃","產業別":"其他","上櫃日期":"115/09/29"}
+]);
+const jsonFetched = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  minimumByMarket: { TWSE: 2, TPEX: 2 },
+  retryAttempts: 1,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => ({
+    ok: true,
+    status: 200,
+    text: async () => String(url).includes("t187ap03_L") ? listedJson : otcJson,
+  }),
+});
+assert.equal(jsonFetched.state, "READY");
+assert.equal(jsonFetched.byMarketSymbol["TWSE|2330"].listingDate, "1994-09-05");
+assert.equal(jsonFetched.byMarketSymbol["TPEX|6488"].listingDate, "2015-09-25");
