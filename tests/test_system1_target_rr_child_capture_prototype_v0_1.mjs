@@ -147,6 +147,17 @@ assert.equal(Object.values(a.header.frameCounts).reduce((x,y)=>x+y,0),20);
 assert.deepEqual(a.children.map(x=>x.symbol),b.children.map(x=>x.symbol));
 assert.equal(a.header.childDigest,b.header.childDigest);
 assert.ok(Buffer.byteLength(JSON.stringify(a),"utf8")<250000);
+assert.equal(a.header.storageBudget.maxPerStratum,6);
+assert.equal(a.header.storageBudget.maxBundleBytes,5000000);
+
+const scaleFeatures=Array.from({length:500},(_,i)=>feature(String(3000+i)));
+const scaleParents=scaleFeatures.map(x=>parentRow(x));
+const scale=await buildTargetRrChildCapturePrototype({
+  c1Receipt:receipt(scaleParents),sameScanFeatures:scaleFeatures,sourceState:sourceNone,capPerStratum:6
+});
+assert.equal(scale.header.fullFrameN,500);
+assert.equal(scale.children.length,6);
+assert.ok(Buffer.byteLength(JSON.stringify(scale),"utf8")<5000000);
 
 await assert.rejects(()=>buildTargetRrChildCapturePrototype({
   c1Receipt:receipt([parentRow(fNull)]),sameScanFeatures:[fNull],
@@ -154,7 +165,7 @@ await assert.rejects(()=>buildTargetRrChildCapturePrototype({
 }),/SOURCE_NONE_CONTRACT|SOURCE_CONFIG_CONTRACT/);
 
 console.log(JSON.stringify({
-  ok:true,assertions:31,targetNoneRequiresCompleteSource:true,
+  ok:true,assertions:36,targetNoneRequiresCompleteSource:true,
   subsetAbsenceRemainsUnknown:true,presentUnprovenTargetRemainsUnknown:true,
   historyLevelsReplayed:true,parentTargetMismatchCaught:true,
   fullFrameBeforeSampling:true,deterministicOutcomeBlindSampling:true,
