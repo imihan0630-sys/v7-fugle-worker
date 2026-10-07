@@ -1531,7 +1531,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「上下游供應鏈圖譜」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SC062_PROSPECTIVE_CONTRACT_FROZEN / SC063_NULL_DENOMINATOR_PRESERVED / SC064_VERSIONED_KNOWNAT_EFFECTIVE_GRAPH / SC065_D10_PRODUCER_D17_REFERENCE_ONLY / SC066_ADMISSION_MATRIX_FROZEN / SDA010_BLOCKED_DEPENDENCY / WAIT_REAL_POST_FREEZE_RECEIPT / KEEP_L2",
+          "next": "Capture the first genuinely post-SC-062 authoritative topology mutation under SC-066; preserve knownAt vs effectiveFrom/effectiveTo, append-only graph version, capacity/common-mode UNKNOWN, and one shared D10 structural primitive for D17 reference-only consumption. No more D10-01 schema expansion without a real new receipt."
         },
         {
           "id": "D10-02",
@@ -1540,8 +1542,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「供應鏈Lead-Lag領先落後」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "SIX_STEEL_VINTAGES / PREFROZEN_1M_2M_3M / PHYSICAL_PCB_CHAIN_REPLAY / CU_TO_CCL_1M40_2M66.7_3M50 / CCL_TO_PCB_1M50_2M44.4_3M62.5 / NO_COMMON_STABLE_LAG / NATIVE_MONTHLY_PIT_CLOCK_PENDING / KEEP_L2",
-          "next": "SC-056 prospectively append the same copper-foil→CCL→PCB physical chain from native monthly MOEA releases with sourcePublishedAt/capturedAt frozen; keep the prefrozen 1M/2M/3M set and production-direction primary metric unchanged; continue steel vintages and reject generic fixed-lag timing if independent physical chains remain edge-specific/unstable."
+          "status": "SIX_STEEL_VINTAGES / PHYSICAL_PCB_CHAIN_REPLAY / PREFROZEN_1M_2M_3M / SC056_NATIVE_RELEASE_FRONTIER_FROZEN / LATEST_OFFICIAL_MONTH_2026_08 / 2026_09_SOURCE_NOT_YET_RELEASED_AT_20261007_CAPTURE / PRODUCT_SOURCE_PUBLISHEDAT_UNKNOWN / NO_COMMON_STABLE_LAG / KEEP_L2",
+          "next": "SC-067 on first official September 2026 native product-level release: prospectively capture 2433020/2630010/2630040 with source/capture clocks and displayed units, preserve explicit missing/error states, keep 1M/2M/3M and production-direction semantics unchanged, then append only newly enabled edge-wise direction rows."
         },
         {
           "id": "D10-03",
