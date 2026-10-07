@@ -1,0 +1,41 @@
+name: D02 PVE258 Prior Slot Availability Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve258_prior_slot_availability_readonly_v0_1.mjs"
+      - ".github/workflows/d02-pve258-prior-slot-availability-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d02-pve258-prior-slot-availability-readonly
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify prior-day exact-slot availability without outcome output
+        env:
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$FUGLE_API_KEY"
+          node research/d02_pve258_prior_slot_availability_readonly_v0_1.mjs
+      - name: Preserve sanitized PVE-258 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d02-pve258-prior-slot-availability-${{ github.run_id }}
+          path: artifacts/d02-pve258-prior-slot-availability.json
+          if-no-files-found: warn
+          retention-days: 30
