@@ -44,7 +44,7 @@ System 1 C1 Prospective Evidence now runs one additional offline step only after
 New artifacts:
 - system1-h1-h5-readiness.json
 - system1-c5-short.json
-- system1-opportunity-loss-v0.2.json
+- system1-opportunity-loss-v0.3.json
 
 No additional provider/network call is made by the postprocess. It reads only artifacts already produced in the same job.
 
@@ -56,3 +56,5 @@ No Worker/D1/runtime strategy mutation.
 No A/B, Top6/3+3, rank, capital, 15m semantics, maxChase, retest, signal, push, order or System2 behavior changes.
 
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Bridge V0.3 explicitly adapts canonical SYSTEM1_C5_SEMANTIC_REPAIR_V0_2 into the older V0.2 bridge compatibility schema without weakening either verifier. The adapter is research-only and preserves source schema identity.
