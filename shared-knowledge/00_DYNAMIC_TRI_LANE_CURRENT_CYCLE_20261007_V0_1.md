@@ -89,3 +89,69 @@ System1 remains DEFAULT_LAST / SENTINEL_ONLY.
 4. System1: sentinel only.
 
 Priority is critical-path based, not round-robin.
+
+
+## 00 re-entry readback delta — 2026-10-07 afternoon
+
+Observed latest main at re-entry:
+`f24183f5bed51ba145a5e830a090c446d7c03ac6`.
+
+### System2 BUILD_LANE
+
+PR #762 current state:
+- open / non-draft / GitHub mergeable=true;
+- head `a5487086ba15f844d775e12bc7ce2c3852749644`;
+- dedicated fingerprint run `37555568966` PASS;
+- V8 Regression `37555569004` PASS;
+- System2 Research CI `37555568971` PASS;
+- changed files remain limited to the eight System2 SDA-022 policy-fingerprint implementation/evidence/test files.
+
+However, independent compare from PR base `24a1404ca0d18110d0c6d0b67044261ccf67dcdd` to current latest main shows 84 newer commits.
+00 therefore retains the existing governance requirement:
+- do NOT canonical-merge the stale head merely because GitHub currently reports mergeable=true;
+- BUILD_LANE must rebuild/rebase the fingerprint delta on latest main;
+- rerun exact-head fingerprint CI + System2 Research CI + applicable V8 Regression;
+- only then canonical merge;
+- physical NC-T01 S22-T11~T16 is next immediately afterward.
+
+00 posted this exact audit requirement to PR #762.
+No NC-T01 physical receipt/workflow was accepted at this readback.
+
+### 01–15 / prospective research evidence
+
+Prospective clock run `37577209442` is still IN_PROGRESS, not stalled:
+- calendar = PASS;
+- safety = PASS;
+- A1 daily-arrival polling = IN_PROGRESS;
+- A5/B2 required-dependency polling = IN_PROGRESS;
+- workflow contract allows up to 180 minutes for each polling job;
+- polling configuration = 30 attempts x 300 seconds.
+
+Therefore 00 does not cancel, timeout-label, or pre-classify the 2026-10-07 sample.
+Consume only terminal immutable evidence.
+
+### DATA_LANE
+
+Run `37579384088` completed SUCCESS but is NOT 2024 TPEx.
+Independent readback proves:
+- market = TWSE;
+- year = 2024;
+- artifact `system2-historical-coverage-TWSE-2024`;
+- artifact id `11464492577`;
+- Production isolation PASS;
+- physical coverage shows 242/242 sessions, 1,038 historical-universe symbols, 246,037 actual bars, 478 explicit UNKNOWN symbol-session gaps, 0 unexpected bars.
+
+This is a later TWSE-2024 rerun/verification receipt only.
+It must not be misclassified as completion of the current DATA_LANE next action.
+
+Exact DATA_LANE next remains:
+fresh-dispatch 2024 TPEx annual backfill from latest main, followed by the same physical verify + artifact + System1-isolation acceptance standard.
+
+### Dynamic priority after re-entry readback
+
+1. System2 BUILD_LANE — latest-main rebuild/canonicalization of #762, then physical NC-T01.
+2. Research — allow `37577209442` to reach terminal state and consume the immutable prospective clock bundle immediately.
+3. DATA_LANE — 2024 TPEx annual continuation; TWSE-2024 rerun does not advance this cursor.
+4. System1 — DEFAULT_LAST / SENTINEL_ONLY.
+
+Formal Core remains LOCKED.
