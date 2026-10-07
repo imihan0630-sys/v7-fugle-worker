@@ -711,3 +711,12 @@ Exact remaining pre-outcome gate:
 5. only then unlock the Historical-Valuation Shadow outcome join.
 
 D08-03 remains L3/60. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+
+
+## 2026-10-08 D08-03 — 44-date outcome-blind percentile snapshots physically materialized
+
+Run `37648084681` physically materialized and read back all 44 preregistered TWSE monthly percentile snapshots from frozen 2005-2026 daily valuation packs, universe V0.2 and raw valuation V0.3. This closes the percentile-materialization gate only; the outcome gate remains CLOSED.
+
+Across 45305 cohort-member/date rows, PE current known=35737 and PB current known=45054. The asymmetry is preserved as missingness, never converted into a numeric cheap/expensive state. PE window coverage is 252=34452, 756=32436, 1260=30567, expanding=34452; PB is 252=43548, 756=41237, 1260=39489, expanding=43548.
+
+The semantic snapshot bundle is `2b16513f237ca1c45b1658d5eaa35b5b45d7f23766b87aff7b8a85aec11f1c91`; stored-object bundle is `235f2c43281846aa8be65f26829935a0193875ee92fe5169784f3f73c355a077`. Every object passed byte-level and canonical-payload readback, while upstream year packs and raw V0.3 objects were revalidated before derivation. D08-03 stays L3/60 because this is source/replay integrity, not OOS/prospective outcome evidence. Exact next: freeze PIT-safe control snapshots and coverage before any Historical-Valuation Shadow outcome join.
