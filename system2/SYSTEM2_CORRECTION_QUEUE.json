@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T23:45:41+08:00",
+  "updatedAt": "2026-10-07T23:27:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1387,7 +1387,8 @@
         "Require the hidden-fallback audit digest for PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
         "Add regressions: missing audit object; one missing field; missing audit digest; any true dependency flag; complete machine-bound clean audit.",
         "Keep artifact-only physical execution read-only; no D1 mutation or System1 runtime access.",
-        "Do not alter strategy thresholds/weights/ranking, capacity semantics, final selection, push, capital or order authority."
+        "Do not alter strategy thresholds/weights/ranking, capacity semantics, final selection, push, capital or order authority.",
+        "Physical S22-T12 must bind both exact-head transitive static audit and runtime forbidden-access evidence; static-clean/runtime-unknown or runtime-clean/static-unknown remain EVIDENCE_INCOMPLETE."
       ],
       "acceptanceCriteria": [
         "Omitted hiddenFallbackAudit cannot produce PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
@@ -1397,7 +1398,8 @@
         "Exact-head tests prove receiptHash changes when hidden-fallback audit digest changes.",
         "Physical workflow on merged main produces and binds the exact-head hidden-fallback audit before S22-T12/S22-T16 can pass.",
         "No false physicalIndependentDiscovery claim is made before the real continuity witness and machine audit both exist.",
-        "System1 Formal Core/runtime and all trading authorities remain unchanged."
+        "System1 Formal Core/runtime and all trading authorities remain unchanged.",
+        "Physical workflow emits runtime forbidden-access evidence proving zero System1 selection/cache/alias/cross-project/stale fallback access and binds it to the same exact-head hidden-fallback audit identity."
       ],
       "protectedBoundaries": [
         "System1 Formal Core and runtime",
@@ -1413,9 +1415,15 @@
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": null,
       "implementationEvidence": [],
-      "verificationEvidence": [],
+      "verificationEvidence": [
+        "D16 blocking oracle frozen at research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json @ commit 230ae2a2c455bfd1127cd79fa734abd4884abfa0.",
+        "D16 HF-T01..HF-T12 independently confirm: missing audit object/dimension/digest => EVIDENCE_INCOMPLETE; any PRESENT dimension => HIDDEN_SYSTEM1_DEPENDENCY; audit/head/manifest drift => re-audit; shared raw market data alone is allowed; same-stock overlap is not failure by itself.",
+        "D16 physical-pass contract additionally requires RUNTIME_NO_FORBIDDEN_ACCESS_EVIDENCE; static audit alone is insufficient.",
+        "00 minimal implementation contract: system2/evidence/S2_CORR_20261007_005_MINIMAL_HARDENING_HANDOFF_V0_1.json.",
+        "Latest 00 drift audit found 19/21 files from the prior static audit unchanged; daily_shadow_orchestrator_v0_1.mjs and pit_replay_v0_1.mjs changed, and the NC-T01 runner/receipt/prefetch/continuity-binding files must be added to the exact-head closure."
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T23:45:41+08:00"
+      "updatedAt": "2026-10-07T23:27:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
