@@ -23,7 +23,8 @@ await helpers.loadTradingCalendar({},Number(marketDate.slice(0,4)));
 assert.equal(helpers.isTradingDate(marketDate),true,'QUALITY_MARKET_DATE is not a trading day');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
-  return fetchBufferedOfficialSource(url,options);
+  const transport=new URL(url).hostname==='mopsov.twse.com.tw' ? 'node-https' : undefined;
+  return fetchBufferedOfficialSource(url,{...options,transport});
 }
 async function admin(path,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
