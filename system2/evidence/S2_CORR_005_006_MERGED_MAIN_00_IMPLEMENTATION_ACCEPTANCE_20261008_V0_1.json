@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "S2_CORR_005_006_MERGED_MAIN_00_IMPLEMENTATION_ACCEPTANCE_V0_1",
+  "recordedAt": "2026-10-08T06:03:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedLatestMain": "f629847e97814b0e326d887d03ceb174fd4632f1",
+  "implementation": {
+    "pullRequest": 841,
+    "mergeCommit": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+    "mergedAt": "2026-10-07T21:59:04Z",
+    "prHead": "b73ab494b9aef3af9970723602bd584e131b7db7",
+    "changedFileCount": 14
+  },
+  "governanceAncestry": {
+    "system2CheckpointOverride": "1db145cdadf62c16e423d62881473384f483aad6",
+    "buildProgressMapOverride": "f73ee06d3e9ac256b3c80039577d99234cdab62f",
+    "dataCheckpointOverride": "fc9a60308ec8d3c579c5cd25e22bb097a78ff6b1",
+    "allAreAncestorsOfMergeCommit": true
+  },
+  "mergedMainChecks": [
+    {
+      "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+      "runId": 37693224292,
+      "headSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "System2 SDA-022 Policy Fingerprints V0.1",
+      "runId": 37693224237,
+      "headSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "System2 NC-T01 Artifact Runner V0.1",
+      "runId": 37693224252,
+      "headSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "V8 Regression Tests",
+      "runId": 37693224321,
+      "headSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "System2 Research CI",
+      "runId": 37693224267,
+      "headSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "artifacts": {
+    "policyFingerprint": {
+      "id": 11514650165,
+      "digest": "sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555",
+      "shortMomentumFingerprint": "2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd",
+      "swingGrowthFingerprint": "727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af",
+      "sourceArtifactCount": 11,
+      "exactSourceBlobBindingVerified": true,
+      "physicalIndependentDiscovery": false,
+      "ncT01Required": true
+    },
+    "hiddenFallbackAudit": {
+      "id": 11513234786,
+      "digest": "sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb",
+      "runnerHeadSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "auditedBlobCount": 24,
+      "auditDigest": "474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037",
+      "transitiveManifestHash": "a4705275be3a94d2948686bc3bbb775f82537bfe9b181022064725d607ccd242",
+      "staticComplete": true,
+      "staticClean": true,
+      "runtimeComplete": true,
+      "runtimeClean": true,
+      "hiddenDependencyPresent": false,
+      "auditState": "CLEAN_PROVEN_ABSENT",
+      "physicalAcceptanceEligible": false,
+      "runtimeEvidenceType": "CI_CORRECTION_REGRESSION_ONLY_NO_FORBIDDEN_SYSTEM1_ACCESS",
+      "interpretation": "Contract/regression evidence only; not the final physical same-cut runtime forbidden-access observation."
+    }
+  },
+  "corr005": {
+    "implementationSemanticsAccepted": [
+      "missing/UNKNOWN/tampered hidden-fallback audit evidence fails closed",
+      "physical PASS requires bound HIDDEN_FALLBACK_AUDIT_SHA256",
+      "static transitive manifest and audit digest are deterministic and exact-head bound",
+      "runtime-evidence absence/incompleteness cannot produce PHYSICALLY_INDEPENDENT_PATH_OBSERVED"
+    ],
+    "remainingPhysicalAcceptance": [
+      "real NC-T01 physical wrapper must generate runtime forbidden-access evidence on the same actual execution cut",
+      "same physical cut must bind the exact merged-main audit identity",
+      "CI self-declared correction-regression payload is not final S22-T12 evidence"
+    ],
+    "implementationDisposition": "IMPLEMENTATION_ACCEPTED",
+    "closureDisposition": "PHYSICAL_VERIFICATION_PENDING"
+  },
+  "corr006": {
+    "implementationSemanticsAccepted": [
+      "W0 continuity-ready is separated from W1 strategy-executable",
+      "W1 requires requiredEvidenceComplete=true and missingRequiredEvidenceCount=0",
+      "W1 requires terminal VALID/WEAKENING/INVALIDATED plus assessmentHash",
+      "requiredInputsState/executionState/candidateGenerationExecutable derive from W1 count",
+      "generatedCandidates are restricted to W1 symbol set",
+      "W0-only strategy-INCOMPLETE population cannot become legitimate zero-pick"
+    ],
+    "remainingPhysicalAcceptance": [
+      "real source-honest W1 witness on actual NC-T01 cut",
+      "physical T13/T14/T16 recomputation by independent auditor"
+    ],
+    "implementationDisposition": "IMPLEMENTATION_ACCEPTED",
+    "closureDisposition": "PHYSICAL_VERIFICATION_PENDING"
+  },
+  "postMergeDrift": {
+    "commitsAfterMergeAtAudit": 9,
+    "changedFilesAfterMergeAtAudit": 11,
+    "overlapWith841ConflictFiles": 0,
+    "implementationSemanticsStillCurrent": true
+  },
+  "queueGovernance": {
+    "currentQueueStatusAtAudit": {
+      "corr005": "OPEN",
+      "corr006": "OPEN"
+    },
+    "statusChangePerformedBy00": false,
+    "reason": "Correction governance reserves FIX_IMPLEMENTED marking to the formally assigned implementation lane. 00 records independent implementation acceptance without impersonating BUILD_LANE.",
+    "buildLaneExactNext": "Attach merged-main implementation evidence and synchronize both directives to FIX_IMPLEMENTED; do not self-close."
+  },
+  "physicalGate": {
+    "matrix": "system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json",
+    "s22T11ToT16PhysicalPass": false,
+    "nextDependency": "DATA_LANE real source-honest CLEAR_NO_ACTION receipt plus one real artifact-only SHORT_MOMENTUM NC-T01 physical run"
+  },
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "System1 runtime/Formal unchanged",
+    "No final selection/live push/capital/order authority",
+    "No claim that CI correction evidence proves physical independence"
+  ],
+  "finalDisposition": "MERGED_MAIN_IMPLEMENTATION_ACCEPTED_HIGH_CORRECTIONS_NOT_CLOSED"
+}
