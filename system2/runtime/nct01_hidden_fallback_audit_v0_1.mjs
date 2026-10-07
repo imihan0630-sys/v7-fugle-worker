@@ -137,6 +137,100 @@ export async function buildNcT01HiddenFallbackAuditV0_1({
   return deepFreeze({ ...base, auditDigest });
 }
 
+export async function validateNcT01HiddenFallbackAuditV0_1(audit) {
+  if (!audit || typeof audit !== "object") {
+    return deepFreeze({
+      hiddenFallbackAudit: deepFreeze(Object.fromEntries(
+        NCT01_HIDDEN_FALLBACK_DIMENSIONS_V0_1.map((dimension) => [dimension, false]),
+      )),
+      auditDigest: null,
+      auditState: "EVIDENCE_INCOMPLETE",
+      staticComplete: false,
+      runtimeComplete: false,
+      hiddenDependencyPresent: false,
+      runnerHeadSha: null,
+      transitiveManifestHash: null,
+      auditIntegrityValid: false,
+      reauditRequired: true,
+    });
+  }
+
+  try {
+    const { auditDigest, ...hashBase } = audit;
+    const recomputedDigest = await sha256Hex(hashBase);
+    const expectedManifestHash = await sha256Hex({
+      runnerEntryPoint: audit.runnerEntryPoint,
+      runnerHeadSha: audit.runnerHeadSha,
+      auditedBlobIdentities: audit.auditedBlobIdentities,
+    });
+    const digestValid =
+      typeof auditDigest === "string" &&
+      SHA64.test(auditDigest) &&
+      auditDigest === recomputedDigest;
+    const manifestValid =
+      typeof audit.transitiveManifestHash === "string" &&
+      SHA64.test(audit.transitiveManifestHash) &&
+      audit.transitiveManifestHash === expectedManifestHash;
+    const headValid =
+      typeof audit.runnerHeadSha === "string" &&
+      SHA40.test(audit.runnerHeadSha);
+    const dimensions = normalizeDimensionRows(audit.perDimensionDisposition);
+    const runtime = normalizeRuntimeEvidence(audit.runtimeEvidence);
+    const staticComplete = Object.values(dimensions).every((value) => value !== "UNKNOWN");
+    const runtimeComplete =
+      runtime.instrumented === true &&
+      runtime.sameExecutionCut === true &&
+      Number.isInteger(runtime.runtimeForbiddenAccessCount) &&
+      runtime.runtimeEvidenceDigest !== null;
+    const hiddenDependencyPresent =
+      Object.values(dimensions).some((value) => value === "PRESENT") ||
+      Number(runtime.runtimeForbiddenAccessCount || 0) > 0;
+    const staticClean =
+      staticComplete &&
+      Object.values(dimensions).every((value) => value === "PROVEN_ABSENT");
+    const runtimeClean = runtimeComplete && runtime.runtimeForbiddenAccessCount === 0;
+    const integrityValid = digestValid && manifestValid && headValid;
+    const auditState = !integrityValid
+      ? "EVIDENCE_INCOMPLETE"
+      : hiddenDependencyPresent
+        ? "HIDDEN_DEPENDENCY_PRESENT"
+        : staticClean && runtimeClean
+          ? "CLEAN_PROVEN_ABSENT"
+          : "EVIDENCE_INCOMPLETE";
+    const bools = {};
+    for (const dimension of NCT01_HIDDEN_FALLBACK_DIMENSIONS_V0_1) {
+      bools[dimension] = dimensions[dimension] === "PRESENT";
+    }
+    return deepFreeze({
+      hiddenFallbackAudit: deepFreeze(bools),
+      auditDigest: integrityValid ? auditDigest : null,
+      auditState,
+      staticComplete,
+      runtimeComplete,
+      hiddenDependencyPresent,
+      runnerHeadSha: headValid ? audit.runnerHeadSha : null,
+      transitiveManifestHash: manifestValid ? audit.transitiveManifestHash : null,
+      auditIntegrityValid: integrityValid,
+      reauditRequired: !integrityValid,
+    });
+  } catch {
+    return deepFreeze({
+      hiddenFallbackAudit: deepFreeze(Object.fromEntries(
+        NCT01_HIDDEN_FALLBACK_DIMENSIONS_V0_1.map((dimension) => [dimension, false]),
+      )),
+      auditDigest: null,
+      auditState: "EVIDENCE_INCOMPLETE",
+      staticComplete: false,
+      runtimeComplete: false,
+      hiddenDependencyPresent: false,
+      runnerHeadSha: null,
+      transitiveManifestHash: null,
+      auditIntegrityValid: false,
+      reauditRequired: true,
+    });
+  }
+}
+
 export function ncT01HiddenFallbackAuditReceiptViewV0_1(audit) {
   const dimensions = normalizeDimensionRows(audit?.perDimensionDisposition);
   const bools = {};
