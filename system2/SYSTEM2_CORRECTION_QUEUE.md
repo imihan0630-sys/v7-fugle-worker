@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 16:54 Asia/Taipei
+Updated: 2026-10-07 18:43 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -28,12 +28,15 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - assignedLane: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
 - modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
-- blockedBy: NONE — 2021 TPEx blocker is resolved; DATA_LANE is actively continuing 2024+ market-years
+- blockedBy: 2024 TPEx annual source acquisition exceeds the current 60-minute job budget after bounded PRIMARY transport recovery; the full-year source-fetch phase has no durable resume checkpoint.
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Historical raw A1 data coverage is physically accepted through TWSE 2024 and TPEx 2023, including the resolved 2021 TPEx transport-semantics case. 2024 TPEx remains PENDING after annual run #28 failed twice on different intermittent TPEx PRIMARY transport timeouts before Physical verify. A bounded PRIMARY-only transport-exhaustion recovery fix is CI-PASS on latest main; fresh latest-main 2024/TPEX dispatch is required. CORR-001 also remains FIX_IN_PROGRESS for both 2025 markets, 2026 segmented current-year physical acceptance, aggregate machine-readable completion and final full-market PIT replay.
+- observedProblem: Historical raw A1 coverage is accepted through TWSE 2024 and TPEx 2023. 2024 TPEx remains unaccepted: run #28 failed twice on intermittent PRIMARY transport timeouts, and fix-bearing fresh run #29 then reached the workflow's configured 60-minute job timeout before full-year source acquisition completed. Because annual source acquisition precedes pack/persistence, run #29 produced no Physical verify or coverage artifact. CORR-001 remains FIX_IN_PROGRESS for a bounded DATA_LANE repair and subsequent fresh physical acceptance, then 2025/2026 continuation and aggregate replay qualification.
 - evidence:
+  - 2024 TPEx fresh run `37593983170` (#29) used fix-bearing head `5c50a246bf91f9b1bc37c99f082bdfec467d5f09` and confirmed `year=2024 / market=TPEX`.
+  - Run #29 backfill was cancelled at the configured `timeout-minutes: 60`; elapsed job time was approximately one hour. Physical verify was skipped, no coverage artifact was produced, and System1 isolation PASSed.
+  - Annual script fetches the full official market-year range before pack construction / R2 / D1 persistence, so the source-fetch stage currently has no durable resume checkpoint. Blind rerun is not accepted as a repair.
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
   - GitHub Actions run `36574839220`: 2017 TWSE reached the cold-object write path and failed on `R2 HEAD failed: HTTP 502`; migrate job passed and no completion receipt was produced.
@@ -830,7 +833,7 @@ This closure does not resolve `S2-CORR-20261006-004`, which is a separate curren
 - implementationEvidence: []
 - verificationEvidence: []
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T16:54:00+08:00
+- updatedAt: 2026-10-07T18:43:00+08:00
 
 
 ### S2-CORR-20261007-001 independent secondary-source diagnosis
@@ -869,6 +872,12 @@ Correction consequence:
 - TWSE `STOCK_DAY_ALL`: HTTP 200 / `application/json`; observed payload date remained `1151006` (2026-10-06). At this observation, target-date 2026-10-07 was still not published on this endpoint. This is source-readiness lag, not JSON transport failure.
 - TPEx `tpex_mainboard_daily_close_quotes`: HTTP 200 / `application/json`; observed date `1151007` (2026-10-07) was present, but the independent Firecrawl client reported a truncated body / invalid complete JSON. This is diagnostic evidence of acquisition/body-integrity variability; it does not prove source absence.
 - Consequence: keep TWSE publication-lag handling separate from TPEx bounded body/transport recovery. Do not solve both with one undifferentiated retry rule, and do not weaken target-date/schema/PIT checks.
+
+### 2026-10-07 18:43 independent late-session source readback
+
+- TWSE `STOCK_DAY_ALL`: HTTP 200 / `application/json`; payload date still `1151006` (2026-10-06). For this endpoint, 2026-10-07 remained genuinely NOT_READY at this observation.
+- TPEx `tpex_mainboard_daily_close_quotes`: payload date `1151007` (2026-10-07) was visible. Firecrawl warned that the page was too long to process in full; therefore Firecrawl truncation is a client/tool processing limitation and must NOT be cited as proof that the official TPEx response itself was truncated.
+- Consequence: canonical collector must independently establish complete-body parse integrity. TWSE publication lag and TPEx acquisition/body-integrity handling remain separate failure classes.
 
 ### S2-CORR-20261007-002 — Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies
 
