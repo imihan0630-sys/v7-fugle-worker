@@ -1640,8 +1640,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / SC047_CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION / SC075_POST_FREEZE_NULL_DENOMINATOR / NO_NEW_POST_20261004_BIS_VINTAGE_OBSERVED_THROUGH_20261007T2212 / HISTORICAL_20260924_RULE_NOT_PROSPECTIVE / OUTCOMES_CLOSED",
-          "next": "SC-076 capture the first official BIS rule/list/license vintage published strictly after the SC-047 freeze, preserving publication/effective/expiry clocks; issuer customer/destination/product exposure remains UNKNOWN without compatible issuer-native evidence; preregister outcome windows before any revenue/margin/stock test."
+          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / SC047_CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION / SC075_POST_FREEZE_NULL_DENOMINATOR / SC085_20261008_BOUNDED_BIS_NEWS_AND_FEDERAL_REGISTER_NULL / NO_NEW_POST_FREEZE_BIS_RULE_LIST_LICENSE_VINTAGE_OBSERVED / HISTORICAL_20260924_POLYSILICON_RULE_NOT_NEW_EVENT / OUTCOMES_CLOSED",
+          "next": "SC-086 continue prospective official BIS News/Federal Register observation for the first genuinely new post-SC047 rule/list/license vintage. Preserve no-event observations append-only. On first qualifying event freeze publication/effective/expiry clocks; issuer/customer/destination/product exposure remains UNKNOWN without compatible contemporaneous issuer-native evidence; preregister outcome windows before any revenue/margin/stock test."
         },
         {
           "id": "D10-14",
