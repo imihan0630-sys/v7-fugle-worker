@@ -647,3 +647,30 @@ Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/3756495
 Artifact digest: `sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b`.
 
 Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TPEX` from latest main. CORR-001 remains `FIX_IN_PROGRESS` until all required market-years are completed or explicitly blocked/deferred and independent closure criteria are satisfied.
+
+
+## 2026-10-07 2025 annual-history preflight ready
+
+2025 annual-history execution has been preflighted while 2024 TPEx run #28 remains active. No 2025 writer has been launched yet.
+
+Preflight facts:
+- annual workflow explicitly exposes `2025` for both TWSE and TPEx;
+- annual script allows completed calendar years through `taipeiCalendarYear - 1`; at 2026 runtime, 2025 is valid and 2026 remains excluded to the incremental path;
+- annual workflow semantics test explicitly guards years 2017-2025 and excludes 2026;
+- System2 Research CI on run #28 head `9dff76fb235e8da38e8f07c38e355c7be6046d5a`, run `37587792086`, completed SUCCESS;
+- TWSE verifier path continues to require the official current + NEWLISTING + DELISTING union with zero unknown starts and full replay-eligible membership before data-coverage acceptance;
+- TPEx verifier path remains intentionally `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`; it does not fabricate complete historical delisting coverage;
+- TPEx canonical historical A1 source policy is `PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY`; the legacy `不含定價` endpoint cannot satisfy canonical ingestion;
+- the bounded 2021 TPEx revision-lineage step is conditional on `year=2021 / market=TPEX` and will be skipped for 2025;
+- 2025 TWSE and 2025 TPEx coverage-matrix rows remain `PENDING`, as required before physical execution;
+- annual execution uses `system2-isolated-d1-writer` concurrency, so no 2025 annual writer should be launched while 2024 TPEx run #28 still owns the writer lane.
+
+Execution order after run #28 terminal acceptance:
+1. finish 2024 TPEx Physical verify / artifact / System1-isolation readback and canonical acceptance;
+2. fresh-dispatch `2025 / TWSE` from then-latest main;
+3. accept or explicitly block 2025 TWSE from physical evidence;
+4. fresh-dispatch `2025 / TPEX`;
+5. accept or explicitly block 2025 TPEx;
+6. only after both 2025 markets are resolved, advance to the separate 2026 incremental-history path and aggregate full-market replay qualification.
+
+This preflight does not claim 2025 data completion and does not modify System1 Formal Core or production runtime.
