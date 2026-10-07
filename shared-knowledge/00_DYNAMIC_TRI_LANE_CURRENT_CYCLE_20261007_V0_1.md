@@ -1319,3 +1319,37 @@ a combined newly-listed + certified-suspension regression is not separately iden
 
 Formal Core remains LOCKED.
 Final selection, live push, capital and real orders remain disabled.
+
+
+## 00 ordering supersession — CORR-004 must precede final SDA-022 fingerprint freeze (2026-10-07 22:18 Asia/Taipei)
+
+Observed latest main before write:
+`96b17854f1a19d98d1454242e490106640f07b0d`.
+
+This section supersedes any same-day shorthand that lists PR #762 and PR #817 as unordered/parallel canonical merge gates.
+
+Exact reason:
+- PR #762 hard-pins the blob SHA of `system2/runtime/daily_shadow_history_reader_v0_1.mjs`;
+- PR #817 changes that exact fingerprint-bound source artifact;
+- therefore a final #762 fingerprint frozen before #817 merges would become stale immediately after #817 lands.
+
+Canonical order is now:
+
+1. DATA_LANE refresh/rebase/rebuild PR #817 on then-latest main.
+2. Run exact-head checks and canonically merge #817.
+3. Execute merged-main Daily Shadow Input Preflight Readonly and require at least one real TWSE exact-session history witness with `rowsWritten=0`.
+4. BUILD_LANE then rebuilds/regenerates PR #762 fingerprints against the post-#817 source digests.
+5. Run exact-head fingerprint CI + System2 Research CI + V8 Regression and canonically merge S22-T06~T10.
+6. In parallel after the witness identity is known, DATA_LANE may build its exact-window TWSE corporate-action/lifecycle evidence package read-only.
+7. BUILD_LANE applies replay-first hash-bound `CLEAR_NO_ACTION` continuity validation and the typed end-to-end NC-T01 hash chain.
+8. Execute real artifact-only NC-T01 and let 00 verify S22-T11~T16.
+9. CORR-003 write-budget governance remains required before persisted SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+
+The older `S2_STAGE1_NCT01_END_TO_END_HASH_LINEAGE_AUDIT_20261007_V0_1.json` dependency-order list is historical for sequencing only; its typed hash-chain acceptance requirements remain valid and are not rewritten.
+
+No priority-starvation correction is opened at this time:
+- #817 is the current first canonical blocker and has an active DATA_LANE implementation candidate;
+- #762 is correctly waiting for the fingerprint-bound reader digest to stabilize after #817;
+- CORR-003 remains a post-NC-T01 persistence blocker, not a read-only witness blocker.
+
+Formal Core remains LOCKED.
