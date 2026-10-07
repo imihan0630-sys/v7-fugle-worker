@@ -2806,3 +2806,58 @@ Exact next:
 SC-076 capture the first official BIS rule/list/license publication strictly after the SC-047 freeze, preserving publication/effective/expiry clocks and issuer exposure as UNKNOWN unless compatible issuer-native evidence exists.
 
 Formal Core unchanged.
+
+
+## SC-077 / SC-078 — D10-01 and D10-02 canonical L3 maturity correction (2026-10-07)
+
+Artifacts:
+- `research/SC077_D10_01_BOUNDED_TAIWAN_TOPOLOGY_PIT_FEASIBILITY_PROMOTION_20261007_V0_1.md`
+- `research/SC078_D10_02_PHYSICAL_CHAIN_PIT_FEASIBILITY_PROMOTION_20261007_V0_1.md`
+
+Canonical maturity scale was re-applied consistently:
+- L3 means Taiwan PIT data source / semantics / replay feasibility validated;
+- L4, not L3, is the tier that requires prospective Shadow/OOS evidence.
+
+### D10-01 promotion
+
+D10-01 is promoted:
+`L2 / 40% -> L3 / 60%`.
+
+Basis:
+- Taiwan issuer-native named topology nodes/edges and qualification constraints exist;
+- TSMC and MediaTek provide cross-issuer controls;
+- effective-dated append-only graph, knownAt/effectiveFrom separation and UNKNOWN firewalls are frozen;
+- D10/D17 producer-consumer de-dup is frozen;
+- current official TWSE material-information observation capability was physically re-run read-only at 2026-10-07 23:30 Asia/Taipei and PASS.
+
+The rerun did not manufacture a new topology event. That is acceptable for L3 because the promotion is bounded PIT data/replay feasibility, not a prospective efficacy claim.
+
+SDA-010 remains BLOCKED_DEPENDENCY. H10/COV-06 owner gates and canonical implementation remain pending.
+
+### D10-02 promotion
+
+D10-02 is promoted:
+`L2 / 40% -> L3 / 60%`.
+
+Basis:
+- 1M/2M/3M lag candidates were prefrozen;
+- six Taiwan steel vintages are replayed;
+- independent copper-foil -> CCL -> PCB physical chain exists;
+- MOEA native product codes, units, production/inventory semantics and deterministic historical replay are verified;
+- current release frontier and SOURCE_NOT_YET_RELEASED semantics are frozen.
+
+The generic fixed-lag hypothesis remains unvalidated/falsified in its universal form. That does not block L3 data maturity.
+
+### Updated domain state
+
+All 13 D10 modules are now L3 / 60%.
+
+D10 maturity:
+`56.9% -> 60.0%`.
+
+Future work:
+- D10-01: genuine post-SC062 topology mutations remain L4/prospective validation debt;
+- D10-02: SC-067 September 2026 native monthly append remains the next prospective sample;
+- no L4, Alpha, Formal Core, ranking, capital or trading claim is created by these promotions.
+
+Formal Core unchanged.
