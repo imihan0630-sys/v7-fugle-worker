@@ -54,6 +54,11 @@ assert.equal(first.deduplicated,false);
 const replay=await persistC1GenerationFinalization(d1,receipt);
 assert.equal(replay.deduplicated,true);
 assert.equal((await readC1GenerationFinalization(d1,{scanDate:day})).status,"FINALIZED_VERIFIED");
+const replayGuard=await guardC1GenerationInsertAfterFinalization(d1,{
+  scanDate:day,generationId:"g1",observedAt:"2026-10-08T00:05:30.000Z"
+});
+assert.equal(replayGuard.allowed,true);
+assert.equal(replayGuard.finalizedReplay,true);
 
 await assert.rejects(()=>guardC1GenerationInsertAfterFinalization(d1,{
   scanDate:day,generationId:"late-g3",observedAt:"2026-10-08T00:06:00.000Z"
