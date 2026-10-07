@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {validateProtocol,validateFold,validateOutcomeHorizons,validatePromotionGate,classifyConclusion,classifyPatternEvidence} from "./pattern_l3_l4_validation_prereg_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8701 complete protocol passes",()=>assert.equal(validateProtocol({pitReplay:true,deterministicTests:true,commonParent:true,multiplicityPlan:true,fullDenominator:true,finalHoldoutLocked:true,noWinnerAllowed:true}).status,"PROTOCOL_PREREGISTERED"));
+t("D8702 missing multiplicity blocks",()=>assert.equal(validateProtocol({pitReplay:true,deterministicTests:true,commonParent:true,multiplicityPlan:false,fullDenominator:true,finalHoldoutLocked:true,noWinnerAllowed:true}).status,"PROTOCOL_INCOMPLETE"));
+t("D8703 train span minimum enforced",()=>assert.equal(validateFold({trainYears:2,testYears:1,purgeSessions:20,finalHoldoutUsedForTuning:false}).status,"TRAIN_SPAN_INSUFFICIENT"));
+t("D8704 purge 20 sessions enforced",()=>assert.equal(validateFold({trainYears:3,testYears:1,purgeSessions:10,finalHoldoutUsedForTuning:false}).status,"PURGE_INSUFFICIENT"));
+t("D8705 final holdout tuning blocked",()=>assert.equal(validateFold({trainYears:3,testYears:1,purgeSessions:20,finalHoldoutUsedForTuning:true}).status,"FINAL_HOLDOUT_CONTAMINATED"));
+t("D8706 frozen horizons accepted",()=>assert.equal(validateOutcomeHorizons({horizons:[20,1,5]}).status,"HORIZONS_FROZEN"));
+t("D8707 horizon search flagged",()=>assert.equal(validateOutcomeHorizons({horizons:[1,3,5,10,20]}).status,"HORIZON_SEARCH_RISK"));
+t("D8708 no OOS means no L4",()=>assert.equal(validatePromotionGate({pitReplay:true,deterministicTests:true,oosOrShadowComplete:false,commonParentIncremental:true,multiplicityHandled:true,fullDenominator:true,noPostHoldoutTuning:true}).status,"L4_NOT_ELIGIBLE"));
+t("D8709 allowed inconclusive state",()=>assert.equal(classifyConclusion({value:"INCONCLUSIVE"}).status,"INCONCLUSIVE"));
+t("D8710 nonincremental name stays redundant candidate",()=>assert.equal(classifyPatternEvidence({namedPatternIncrementalOverRawParent:false}).status,"PRESENTATION_OR_REDUNDANT_CANDIDATE"));
+console.log(`SUMMARY ${p}/10 PASS`);
