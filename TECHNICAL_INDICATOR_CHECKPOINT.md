@@ -6716,3 +6716,53 @@ Exact next:
 3. require post-replay exact-window continuity receipt binding for any promotion-grade D03/NC-T01 witness;
 4. consume first genuine V8.20 Formal->C1 parent receipt when available;
 5. continue T48 finalization, S2-07 stabilization, System1/System2 D03 dedup/redundancy and D16 incrementality gates independently.
+
+
+## 2026-10-07 D03 — TI-1345~1360 TWSE V0.6 annual physical receipt preregistered acceptance oracle
+
+Canonical artifacts:
+- `research/D03_TWSE_V06_PHYSICAL_RECEIPT_ACCEPTANCE_ORACLE_20261007_V0_1.md`;
+- `research/d03_twse_v06_physical_receipt_acceptance_cases_20261007_v0_1.json`;
+- `research/test_d03_twse_v06_physical_receipt_acceptance_v0_1.mjs`.
+
+### TI-1345~1352 — outcome-independent receipt acceptance frozen before the first annual result
+
+No physical annual V0.6 receipt exists on latest main at this checkpoint. D03 therefore does not fabricate or infer one. Instead, the acceptance rule is preregistered before the first result is inspected.
+
+A positive Layer-B receipt must bind the exact TWSE market/year window and V0.6 verifier schema, preserve a reconstructable before-state, and reconcile:
+- beforeUnknownBars - afterUnknownBars = reclassifiedUnknownBars;
+- the summed before/after missingReasonCounts delta to the same reclassified count;
+- one unique market|symbol|date identity for every reclassified bar;
+- valid event/source hashes;
+- zero unresolved lifecycle conflicts;
+- zero partial-source symbols;
+- cold OHLCV mutation = false;
+- absenceCertifiesNoEvent = false;
+- Layer-C known-at promotion = false.
+
+This separates actual event-driven rehabilitation from denominator/window drift, duplicate identity inflation, hidden source failure, cold-history mutation and historical availability leakage.
+
+### TI-1353~1357 — falsifiers and negative evidence
+
+The 18-case executable matrix rejects wrong schema/market/window, missing baseline, arithmetic mismatch, missing-reason mismatch, identity count/duplication, invalid hashes, unresolved conflicts, partial-source execution, cold-data mutation, absence-based NO_EVENT inference and Layer-C leakage.
+
+A zero-delta complete receipt is accepted only as negative evidence. It may falsify expected rehabilitation for that preregistered market/year window, but it cannot promote Layer B or D03 maturity. Source success alone also cannot prove PIT availability, OOS robustness, walk-forward stability, costs, fillability, market-state robustness or indicator alpha.
+
+Observed deterministic execution:
+`status=PASS; cases=18; positiveReceipt=ACCEPT_LAYER_B_RECEIPT; zeroDelta=NEGATIVE_EVIDENCE_ONLY; maturityPct=56.7; formalCoreImpact=NONE_LOCKED`.
+
+### TI-1358~1360 — maturity and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 at L3/60 and 2 at L2/40;
+- D03-09 and D03-10 remain L2/40;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED;
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+1. consume the first physical TWSE annual market-year verifier V0.6 receipt;
+2. validate it against the preregistered 18-case oracle, including exact before/after counts, missing-reason reconciliation, unique market|symbol|date identities, source hashes, conflicts and partial-source state;
+3. treat a complete zero-delta run as negative evidence only, not promotion;
+4. keep TPEx lifecycle parity, Layer-C known-at, exact replay-window continuity binding, the genuine V8.20 parent, T48, S2-07, System1/System2 D03 dedup and D16 incrementality as independent gates.
