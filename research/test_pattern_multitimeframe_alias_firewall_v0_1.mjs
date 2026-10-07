@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {classifyTimeframeAliasing,validateAggregationClock,classifyTimeframeSelection,classifyConflict,buildMultiscaleLineage} from "./pattern_multitimeframe_alias_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7701 nested timeframes one vote",()=>assert.equal(classifyTimeframeAliasing({sameEpisode:true,overlappingSourceTrades:true,independentNonPriceRoot:false}).effectiveIndependentEvidenceCount,1));
+t("D7702 independent root requires validation",()=>assert.equal(classifyTimeframeAliasing({sameEpisode:false,overlappingSourceTrades:false,independentNonPriceRoot:true}).status,"DISTINCTNESS_REQUIRES_VALIDATION"));
+t("D7703 incomplete daily bar blocked",()=>assert.equal(validateAggregationClock({barCloseAt:"2026-10-07T13:30:00+08:00",predictorFreezeAt:"2026-10-07T10:15:00+08:00",usesCompletedBar:true}).status,"INCOMPLETE_PARENT_LOOKAHEAD"));
+t("D7704 closed parent valid",()=>assert.equal(validateAggregationClock({barCloseAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T10:15:00+08:00",usesCompletedBar:true}).status,"AGGREGATION_CLOCK_VALID"));
+t("D7705 ex-post timeframe selection blocked",()=>assert.equal(classifyTimeframeSelection({preregistered:true,selectedAfterOutcome:true}).status,"TIMEFRAME_SELECTION_BIAS"));
+t("D7706 preregistered timeframe set valid",()=>assert.equal(classifyTimeframeSelection({preregistered:true,selectedAfterOutcome:false}).status,"TIMEFRAME_SET_PREREGISTERED"));
+t("D7707 incomplete parent conflict not counted",()=>assert.equal(classifyConflict({sameEpisode:true,distinctRoots:false,parentComplete:false}).status,"PARENT_INCOMPLETE"));
+t("D7708 same-episode conflict recognized",()=>assert.equal(classifyConflict({sameEpisode:true,distinctRoots:false,parentComplete:true}).status,"SAME_EPISODE_PHASE_CONFLICT"));
+t("D7709 distinct roots explicit",()=>assert.equal(classifyConflict({sameEpisode:false,distinctRoots:true,parentComplete:true}).status,"DISTINCT_STRUCTURAL_ROOTS"));
+t("D7710 three timeframe representations one root",()=>assert.equal(buildMultiscaleLineage({representations:["15m","60m","1d"]}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/10 PASS`);
