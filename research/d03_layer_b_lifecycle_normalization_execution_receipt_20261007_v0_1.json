@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "D03_LAYER_B_LIFECYCLE_NORMALIZATION_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-07T20:34:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "workflow": {
+    "name": "D03 Layer-B Lifecycle Normalization Readonly",
+    "runId": 37621773476,
+    "jobId": 112793527371,
+    "headSha": "0b067cda60156af0de1b542cafd9bb7bc0cd3222",
+    "conclusion": "success"
+  },
+  "spec": "research/d03_layer_b_lifecycle_event_normalization_contract_20261007_v0_1.json",
+  "test": "research/test_d03_layer_b_lifecycle_event_normalization_contract_v0_1.mjs",
+  "acceptedRules": [
+    "NO_TRADING_INTERVAL_IS_HALF_OPEN_START_INCLUSIVE_END_EXCLUSIVE",
+    "DELISTING_EFFECTIVE_DATE_IS_EXCLUSIVE_OLD_SYMBOL_MEMBERSHIP_BOUNDARY",
+    "LISTING_START_IS_INCLUSIVE_MEMBERSHIP_BOUNDARY",
+    "OVERLAPPING_NO_TRADING_INTERVALS_ARE_UNIONED_WITHOUT_DOUBLE_SUBTRACTION",
+    "SOURCE_CONFLICT_FAILS_CLOSED",
+    "NO_SYNTHETIC_OHLC_FOR_OFFICIAL_NON_TRADING_INTERVALS",
+    "LAYER_B_CLASSIFICATION_DOES_NOT_ADVANCE_LAYER_C_KNOWN_AT"
+  ],
+  "acceptanceCases": [
+    "TWSE_8101_2024",
+    "TWSE_1701_2024",
+    "TPEX_4806_2023",
+    "TPEX_3089_2021"
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "layerB": "CONTRACT_MACHINE_PASS_PHYSICAL_RERUN_PENDING",
+    "layerC": "NOT_PROVEN",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "exactNextContinuationPoint": "Await BUILD/DATA materialization of the lifecycle-event union and a physical historical coverage before/after receipt. D03 may credit Layer B only from that rerun. In parallel consume corrected strategy-specific readiness for S2-CORR-20261007-002, genuine V8.20 Formal-to-C1 parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy, D16 incrementality and raw-source observer completion."
+}
