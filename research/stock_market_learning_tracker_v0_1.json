@@ -708,7 +708,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「持股集中度／Ownership」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "D06_05_L3_SOURCE_PIT_REPLAY_READY / SAME_GENERATION_LINEAGE_PASS_20261007 / 4078_OF_4078_RECONCILED / ONE_TDCC_VINTAGE_ONE_EVIDENCE_UNIT / HOLDER_IDENTITY_UNKNOWN / PASSIVE_SHARE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "status": "D06_05_L3_SOURCE_PIT_REPLAY_READY / SAME_GENERATION_LINEAGE_PASS_20261007 / CORPORATE_ACTION_DENOMINATOR_GUARD_FROZEN / PIT_EVENT_SOURCE_REGISTRY_FROZEN / HOLDER_IDENTITY_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
           "next": "等待下一個真正新的 TDCC（集保結算所）sourceDate（來源日期）並用相同 immutable（不可變）generation envelope（世代封套）保存；同一 2026/10/02 版本被不同 scanDate（掃描日期）重用不得增加樣本數。L4（第4級）前先加入股本／公司行動／分母連續性防線，再預註冊按 TDCC（集保結算所）版本群聚的 OOS／Shadow（樣本外／影子）殘差增量驗證，控制法人日流、被動／指數事件、價量、流動性與市場狀態。持有人身分與被動占比維持 UNKNOWN（未知）。"
         },
         {
