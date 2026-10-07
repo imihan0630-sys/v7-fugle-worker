@@ -4243,3 +4243,99 @@ reported-vs-effective share vintage split remains unchanged; S0 source observabi
 5. Run/validate physical NC-T01 and recompute S22-T11~T16.
 6. Keep CORR-004 closed; route open STOP residual separately.
 7. If external gates do not land, continue D18-04 executable U2B row/aggregate design and D18-06 S0 provenance observer semantics.
+
+
+## 2026-10-08 D18 price-reset vs share-denominator family-set separation
+
+New durable artifacts:
+- `research/D18_PRICE_SPACE_VS_SHARE_DENOMINATOR_ACTION_FAMILY_ADEQUACY_20261008_V0_1.md`;
+- `research/d18_price_vs_denominator_action_family_matrix_20261008_v0_1.json`.
+
+### Core split
+
+One generic "corporate action complete" flag is no longer admissible for both D18-04 and D18-06.
+
+Two separate authorities are frozen:
+
+1. `PRICE_RESET_FAMILY_SET`
+   - consumer: D18-04 U2B price-return continuity;
+   - question: are current/prior raw prices in one coherent price space?
+
+2. `SHARE_DENOMINATOR_FAMILY_SET`
+   - consumer: D18-06 effective market-cap membership;
+   - question: what share denominator was economically effective on the target session?
+
+The sets overlap but are not aliases.
+
+### U2B price-reset family assessment
+
+Current strong shared coverage:
+- EX_RIGHT_DIVIDEND;
+- CAPITAL_REDUCTION;
+- PAR_VALUE_CHANGE.
+
+Additional required semantics:
+- suspension/resumption exact-window completeness;
+- split/reverse-split mapping;
+- merger/share-conversion/delisting/identifier transition handling.
+
+Current U2B family adequacy:
+`PARTIAL_STRONG_BUT_NOT_COMPLETE`.
+
+Split/reverse-split remains scope-unproven unless the shared owner explicitly binds it to PAR_VALUE_CHANGE or another frozen official family.
+
+Identity-changing events remain NOT_COMPARABLE for V0.1 unless a separate canonical transformation is proven.
+
+### D18-06 denominator-family assessment
+
+The denominator event set is broader.
+
+Relevant realized families can include:
+- stock-dividend/capitalization new-share listing;
+- cash-capital-increase/new-share listing;
+- capital reduction;
+- par-value/share-unit conversion;
+- treasury-share events depending on denominator definition;
+- realized CB/warrant conversion new shares;
+- employee/restricted-share issuance;
+- merger/share exchange.
+
+These events may change effective market-cap denominator even when no mechanical price reset occurs.
+
+Therefore:
+`PRICE_RESET_FAMILY_SET_PASS != SHARE_DENOMINATOR_CERTIFICATE`.
+
+Conversely:
+`SHARE_DENOMINATOR_FAMILY_SET_PASS != PRICE_CONTINUITY_CERTIFICATE`.
+
+### Important practical consequence
+
+A realized new-share listing can be denominator-relevant but not automatically a raw-price continuity break.
+
+An ex-right/dividend, capital reduction or par-value change can be a direct raw-price continuity break even before any size-denominator statistic is consumed.
+
+Using one combined gate creates either:
+- overblocking of valid U2B price returns; or
+- underblocking of mechanical price resets.
+
+### Required identities
+
+Future receipts must separately bind:
+- priceResetFamilySetVersion;
+- priceResetCoverageReceiptHash;
+- shareDenominatorFamilySetVersion;
+- shareDenominatorCoverageReceiptHash.
+
+No aliasing.
+
+### Maturity
+
+No level change:
+- D18-04 = L2/40;
+- D18-06 = L2/40.
+
+Exact next:
+1. first real bounded TWTAWU + hash-bound CLEAR_NO_ACTION receipt must expose a priceResetFamilySetVersion;
+2. explicit split/reverse-split + identity-transition scope must be resolved before U2B family completeness;
+3. D18-06 proceeds on its own broader denominator-family authority and effective-share vintage path;
+4. no executable Taiwan replay => no L3.
