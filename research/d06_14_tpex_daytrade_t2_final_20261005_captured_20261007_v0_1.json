@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_T2_FINAL_20261005_CAPTURED_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "vintageLabel": "T2_FINAL",
+  "revisionSequence": 2,
+  "isFinal": true,
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "pageUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261005",
+  "csvUrl": "https://www.tpex.org.tw/www/zh-tw/intraday/stat?type=Daily&date=2026%2F10%2F05&response=csv",
+  "capturedAtUpperBound": "2026-10-07T15:49:23+08:00",
+  "finalitySemantics": "TPEx provider rule freezes T+2 as final; this receipt preserves the T+2 readback for the same tradeDate rather than replacing earlier vintages.",
+  "parentPrelimReceipt": "research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json",
+  "parentT1Receipt": "research/d06_14_tpex_daytrade_t1_revised_20261005_captured_20261006_v0_1.json",
+  "current": {
+    "rowCount": 841,
+    "firstSymbol": "00411A",
+    "lastSymbol": "9962",
+    "totalDayTradeShares": 563183000,
+    "totalDayTradeBuyValue": 139035902050,
+    "totalDayTradeSellValue": 139484441280,
+    "canonicalFingerprint": "fnv1a64-utf8:48e8edf2952b9b40"
+  },
+  "comparisonToTPrelim": {
+    "unionSymbolCount": 841,
+    "commonSymbolCount": 841,
+    "addedRowCount": 0,
+    "removedRowCount": 0,
+    "changedRowCount": 0,
+    "unchangedRowCount": 841,
+    "sumAbsoluteDayTradeSharesRevision": 0,
+    "sumAbsoluteBuyValueRevision": 0,
+    "sumAbsoluteSellValueRevision": 0
+  },
+  "comparisonToT1": {
+    "unionSymbolCount": 841,
+    "commonSymbolCount": 841,
+    "addedRowCount": 0,
+    "removedRowCount": 0,
+    "changedRowCount": 0,
+    "unchangedRowCount": 841
+  },
+  "parserAuthority": "Official CSV rows were compared symbol-by-symbol and field-by-field against the immutable T_PRELIM JSON; page row count independently rendered 841.",
+  "status": "T2_FINAL_CAPTURED / 841_OF_841_UNCHANGED / ZERO_ROW_UNIVERSE_AND_NUMERIC_REVISION / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
