@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {buildEpisodeLineage,classifyNewRoot,validatePhaseClock,classifyValueSource,preserveFailureLifecycle} from "./pattern_structural_episode_alias_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7501 four aliases remain one vote",()=>{const r=buildEpisodeLineage({structuralEpisodeId:"E1",representations:["BREAKOUT","RETEST","RECLAIM","CONTINUATION"]});assert.equal(r.rawSignalCount,4);assert.equal(r.effectiveIndependentEvidenceCount,1);});
+t("D7502 missing episode id blocked",()=>assert.equal(buildEpisodeLineage({representations:["BREAKOUT"]}).status,"EPISODE_ID_UNKNOWN"));
+t("D7503 retest same episode no new root",()=>assert.equal(classifyNewRoot({priorEpisodeClosed:false,newRootFormed:false}).status,"SAME_EPISODE"));
+t("D7504 closed prior plus observable new root valid",()=>assert.equal(classifyNewRoot({priorEpisodeClosed:true,newRootFormed:true,newRootFirstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"GENUINE_NEW_ROOT"));
+t("D7505 future new root blocked",()=>assert.equal(classifyNewRoot({priorEpisodeClosed:true,newRootFormed:true,newRootFirstObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"NEW_ROOT_LOOKAHEAD"));
+t("D7506 future phase unavailable",()=>assert.equal(validatePhaseClock({phaseAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"PHASE_NOT_KNOWN_AT_FREEZE"));
+t("D7507 same episode better timing not new structure",()=>assert.equal(classifyValueSource({sameStructuralEpisode:true,entryTimingChanged:true,executionChanged:false,riskGeometryChanged:true}).structuralInformationChanged,false));
+t("D7508 failed breakout retained with reclaim",()=>{const r=preserveFailureLifecycle({states:["BREAKOUT_FAILED","RECLAIM","CONTINUATION"]});assert.equal(r.failedStateCount,1);});
+t("D7509 duplicate failure states deduped",()=>assert.equal(preserveFailureLifecycle({states:["BREAKOUT_FAILED","BREAKOUT_FAILED"]}).states.length,1));
+t("D7510 one alias still one vote",()=>assert.equal(buildEpisodeLineage({structuralEpisodeId:"E1",representations:["BREAKOUT"]}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/10 PASS`);

@@ -5124,3 +5124,59 @@ No maturity or Formal change is authorized by this routing.
 6. Hand episode-level residual inference to D16.
 7. Keep SDA-001/SDA-002 open.
 8. No Formal Core change.
+
+
+## Continuation update — DL-075~077 (2026-10-07)
+
+### DL-075 — Structural episode identity / multi-signal alias firewall
+- One structural price episode can emit breakout, retest, reclaim, continuation, higher-low, momentum and trend-filter representations.
+- These representations default to one immutable structuralEpisodeId and one PRICE_OHLC information root.
+- Raw signal count and effective independent evidence count are now explicitly separated.
+- A retest does not automatically create a new root.
+- New root requires prior episode completion/invalidation plus preregistered, replay-safe new-root formation.
+- Entry timing value, execution quality and risk geometry are separated from structural information value.
+- Failed breakout/retest states remain in lifecycle even if a later reclaim succeeds.
+- D16 ladder E0-E12 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### DL-076 — Retest path quality / confirmation-delay tradeoff
+- Retest-required entry is not assumed safer or superior.
+- The full breakout denominator must retain no-retest, retest-continue, retest-fail, immediate-fail, immediate-continue-without-retest and data-blocked episodes.
+- Conditioning only on observed retests is survivor/selection bias.
+- Confirmation latency, confirmation price distance, missed move, remaining reward distance and stop distance are distinct.
+- Any apparent retest advantage must be decomposed into structural reconfirmation, waiting/selection, better risk geometry, execution differences, opportunity cost and regime confounding.
+- D16 ladder R0-R12 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### DL-077 — Multi-timeframe structural aliasing firewall
+- Daily/hourly/15m/5m structural signals must trace to source-trade lineage.
+- Different bar aggregation does not create independent information.
+- Same episode + overlapping source trades + no independent non-price root defaults to one PRICE_OHLC vote.
+- Lower-timeframe signals may become observable before higher-timeframe bars close.
+- Incomplete higher-timeframe bars may not backfill earlier decisions.
+- Cross-timeframe conflict is classified as episode phase/root/staleness/incompleteness/regime-transition state, not automatically counted as two signals.
+- Timeframe sets must be preregistered; best-after-outcome timeframe selection is prohibited.
+- D16 ladder M0-M12 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### Evidence / governance
+- New evidence ledgers:
+  research/D01_DL075_076_EVIDENCE_LEDGER_V0_1.md
+  research/D01_DL077_EVIDENCE_LEDGER_V0_1.md
+- This tranche materially advances research remediation for SDA-001/SDA-002, but neither audit item is closed without D16 incrementality/readback and engineering closure evidence.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-077
+
+1. Execute DL-068~077 research Node tests independently; keep TEST_EXECUTION_PENDING until actual execution evidence exists.
+2. Start DL-078: structural confluence vs geometric coincidence among nearby zones.
+3. Define when two nearby zones are one merged uncertainty object versus genuinely distinct roots.
+4. Prevent support/resistance clustering, moving-average coincidence and prior-swing coincidence from multiplying votes without distinct information roots.
+5. Preserve zone topology and root lineage across merge/split operations.
+6. Hand confluence incrementality and merge/split sensitivity to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. No Formal Core change.
