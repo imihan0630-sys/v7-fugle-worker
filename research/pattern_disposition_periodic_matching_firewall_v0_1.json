@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "pattern-disposition-periodic-matching-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "periodicMatchingEqualsContinuousMatching": false,
+  "wallClockPersistenceEqualsIndependentTouchCount": false,
+  "dispositionLabelEqualsDirectionalSignal": false,
+  "abnormalTriggerSampleEqualsRandomSample": false,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
