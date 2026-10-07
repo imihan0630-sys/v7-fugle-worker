@@ -80,6 +80,22 @@ assert.deepEqual(unknown.missingBySymbol,[{
 }]);
 assert.equal(unknown.overallState,"PARTIAL");
 
+const delistingExclusive=buildHistoricalMarketYearCoverageV0_1({
+  market:"TWSE",year:2017,fromDate:"2017-01-01",toDate:"2017-12-31",
+  tradingDates:["2017-01-03","2017-01-04"],
+  registry:{memberships:[{
+    market:"TWSE",symbol:"1101",replayEligible:true,effectiveFrom:"2017-01-01",
+    effectiveTo:"2017-01-04",endBasis:"OFFICIAL_DELISTING_DATE",
+  }]},
+  rows:[bar("1101","2017-01-03")],
+  suspensionIntervals:[],
+});
+assert.equal(delistingExclusive.membershipSessionDenominator,1);
+assert.equal(delistingExclusive.actualBars,1);
+assert.equal(delistingExclusive.missingBars,0);
+assert.equal(delistingExclusive.unknownBars,0);
+assert.equal(delistingExclusive.symbolSessionReadiness,"PASS_CLASSIFIED");
+
 const tpexObserved=buildObservedIntervalUniverseRegistryV0_1({
   market:"TPEX",
   fromDate:"2017-01-01",
