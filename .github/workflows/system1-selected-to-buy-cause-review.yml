@@ -1,0 +1,27 @@
+name: System1 Selected-to-BUY Cause Review
+
+on:
+  pull_request:
+    paths:
+      - 'research/system1_selected_to_buy_cause_classifier_v0_1.mjs'
+      - 'tests/test_system1_selected_to_buy_cause_classifier_v0_1.mjs'
+      - 'research/SYSTEM1_SELECTED_TO_BUY_CAUSE_CLASSIFIER_CHECKPOINT_20261007.md'
+      - '.github/workflows/system1-selected-to-buy-cause-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run selected-to-BUY cause falsification
+        run: node tests/test_system1_selected_to_buy_cause_classifier_v0_1.mjs
+      - name: Syntax check classifier
+        run: node --check research/system1_selected_to_buy_cause_classifier_v0_1.mjs
