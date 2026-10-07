@@ -1,0 +1,235 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_END_TO_END_HASH_LINEAGE_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T21:07:54+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "85607461decf603fb7fffae24b19a792b092c309",
+  "status": "ACCEPTANCE_HASH_CHAIN_REFINED_BUILD_LANE_IMPLEMENTATION_PENDING",
+  "purpose": "Freeze the minimum end-to-end immutable hash chain that must bind a replay-certified CLEAR_NO_ACTION continuity witness to the physical SHORT_MOMENTUM NC-T01 result without changing existing decision/run schemas.",
+  "inspectedRuntime": [
+    "system2/runtime/a1_symbol_snapshot_adapter.mjs",
+    "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+    "system2/runtime/limited_shadow_run_assembler_v0_1.mjs",
+    "system2/runtime/decision_archive.mjs",
+    "system2/runtime/shadow_run_receipt.mjs",
+    "system2/runtime/shadow_run_fingerprint.mjs",
+    "system2/runtime/prediction_snapshot_v0_1.mjs",
+    "system2/runtime/persistence_batch.mjs",
+    "system2/runtime/storage_rows.mjs",
+    "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json"
+  ],
+  "currentHashTopology": {
+    "a1BatchHash": {
+      "binds": [
+        "marketDate/decisionTimestamp/observedAt",
+        "TWSE+TPEx normalized market batches",
+        "ordinarySymbolCount",
+        "full symbols array",
+        "full bySymbol normalized current-A1 rows",
+        "cross-market duplicate diagnostics and blocker state"
+      ],
+      "suitability": "FULL_CURRENT_A1_UNIVERSE_SOURCE_IDENTITY"
+    },
+    "factorSnapshotHash": {
+      "currentBuilder": "limited_shadow_run_assembler_v0_1.mjs::buildFactorSnapshot",
+      "binds": [
+        "symbol/clock",
+        "factor bundle version",
+        "core metrics",
+        "factor observations/interactions",
+        "source_manifest_json",
+        "unknowns/completeness",
+        "capturedAt"
+      ],
+      "continuityConsequence": "If replay/continuity immutable refs are inserted into sourceManifest before factor-snapshot hashing, snapshot_hash changes when the continuity receipt/replay identity changes."
+    },
+    "decisionHash": {
+      "currentBuilder": "decision_archive.mjs::buildFrozenDecisionSnapshot",
+      "binds": [
+        "evaluation including factorRefs/interactionRefs/reasons/warnings",
+        "entry plan",
+        "full factorObservations/interactions",
+        "regime",
+        "frozenAt"
+      ],
+      "doesNotDirectlyBind": [
+        "factorSnapshotId",
+        "factor snapshot_hash",
+        "factor source_manifest_json",
+        "continuityReceiptId/receiptHash unless separately threaded into decision input"
+      ],
+      "consequence": "Two different valid CLEAR_NO_ACTION continuity receipts producing identical factors/evaluation can share the same decisionHash."
+    },
+    "shadowAccountingHash": {
+      "builder": "shadow_run_fingerprint.mjs hashes the full shadowRunReceipt",
+      "binds": [
+        "strategy/run clock and universeVersion",
+        "base/excluded/eligible/accounted counts",
+        "symbolAccounts for evaluated eligible symbols",
+        "state counts/unaccounted/warnings"
+      ],
+      "caveat": "shadowRunReceipt does not preserve the explicit excludedSymbols list itself; orchestration-level exclusions and A1 batch identity remain stronger full-universe provenance."
+    },
+    "runFingerprintHash": {
+      "binds": [
+        "sourceSessionHash",
+        "shadowAccountingHash",
+        "decisionHashes",
+        "ordering/ranking/capacity/lifecycle hashes if supplied"
+      ],
+      "continuityConsequence": "Current runFingerprintHash is not sufficient proof of continuity-receipt identity when decision values are unchanged."
+    },
+    "predictionSnapshotHash": {
+      "binds": [
+        "decision records/hashes",
+        "source session receipt",
+        "shadow run receipts",
+        "run fingerprints",
+        "selection denominator/outcome-join state"
+      ],
+      "continuityConsequence": "It inherits the same limitation unless continuity identity alters the decision/run objects."
+    },
+    "persistenceBatchHash": {
+      "currentBuilder": "persistence_batch.mjs::buildSystem2PersistenceBatch",
+      "binds": "All persistence operations including complete factor snapshot rows and their source_manifest_json plus rowDigests.",
+      "continuityConsequence": "Once immutable replay/continuity refs are in factor sourceManifest, persistenceBatchHash cryptographically changes with those refs even if decisionHash remains identical."
+    },
+    "orchestrationHash": {
+      "currentBuilder": "daily_shadow_orchestrator_v0_1.mjs",
+      "binds": [
+        "a1BatchHash",
+        "sourceSessionHash",
+        "regimeSnapshotId",
+        "universe/accounting counts",
+        "full rankingInputs",
+        "predictionSnapshotHash",
+        "persistenceBatchHash",
+        "perSymbolDiagnostics",
+        "full exclusions map",
+        "run/strategy/version/clock"
+      ],
+      "conclusion": "PRIMARY_EXISTING_TOP_LEVEL_PHYSICAL_EXECUTION_IDENTITY_FOR_FIRST_NC_T01"
+    },
+    "ncT01ReceiptHash": {
+      "futureBuilderRequirement": "The frozen minimal physical contract requires hashing every schema field except receiptHash before finalization.",
+      "schemaAvailableFields": [
+        "sharedRawSourceRefs",
+        "candidateUniverseProvenance",
+        "sourceGenerationRefs",
+        "generatedCandidates",
+        "execution/result states and hidden-fallback audit"
+      ],
+      "conclusion": "Existing V0.1 schema is sufficient if immutable typed digest refs are required by acceptance; no new top-level field is launch-critical."
+    }
+  },
+  "riskIfUnrefined": "A physical runner could satisfy the JSON schema while placing only weak/free-text source identifiers or runFingerprintHash in sourceGenerationRefs. In that case a continuity receipt could change without changing the claimed physical result identity, weakening S22-T15 provenance despite apparently valid output.",
+  "frozenMinimumTypedSourceGenerationRefs": [
+    {
+      "refType": "SYSTEM2_POLICY_FINGERPRINT_SHA256",
+      "valueRule": "Canonical merged-main System2 per-strategy policy-fingerprint receipt hash for SHORT_MOMENTUM after S22-T06~T10 acceptance."
+    },
+    {
+      "refType": "A1_BATCH_SHA256",
+      "valueRule": "Exact current a1SymbolSnapshotBatch.batchHash used by the physical run."
+    },
+    {
+      "refType": "PIT_REPLAY_SHA256",
+      "valueRule": "Exact witness replayWindow.replayHash from the selected RAW PIT revisions/session set."
+    },
+    {
+      "refType": "SOURCE_HISTORY_SHA256",
+      "valueRule": "Shared D03-compatible sourceHistoryHash for the exact witness window."
+    },
+    {
+      "refType": "CONTINUITY_RECEIPT_SHA256",
+      "valueRule": "Exact validated CLEAR_NO_ACTION continuity receipt hash."
+    },
+    {
+      "refType": "CONTINUITY_TRANSFORM_SHA256",
+      "valueRule": "Exact continuityTransformHash. For first RAW CLEAR_NO_ACTION witness this must describe no price transform rather than an adjusted-series transform."
+    },
+    {
+      "refType": "FACTOR_SNAPSHOT_SHA256",
+      "valueRule": "Exact witness symbol factor snapshot_hash after continuity/replay refs are included in source_manifest_json."
+    },
+    {
+      "refType": "PERSISTENCE_BATCH_SHA256",
+      "valueRule": "Exact dry-built/read-only physical Limited Shadow persistenceBatch.batchHash whose factor rows contain the continuity/replay provenance."
+    },
+    {
+      "refType": "ORCHESTRATION_SHA256",
+      "valueRule": "Exact daily Limited Shadow orchestrationHash; this is the primary existing top-level execution/result identity."
+    },
+    {
+      "refType": "SHADOW_ACCOUNTING_SHA256",
+      "valueRule": "Exact shadowAccountingHash for the full eligible/accounted denominator."
+    }
+  ],
+  "candidateUniverseProvenanceMinimum": [
+    "marketDate",
+    "decisionTimestamp",
+    "universeVersion",
+    "A1 batch hash",
+    "ordinary/current base-universe count",
+    "full-universe/accounting hash reference",
+    "witness symbol and its exact evaluation state",
+    "explicit statement that uncertified symbols remain INCOMPLETE/denominator-accounted rather than removed to manufacture executability"
+  ],
+  "receiptHashRule": {
+    "canonicalization": "Canonical deterministic object serialization; hash all receipt fields except receiptHash.",
+    "requiredBehavior": [
+      "Changing any typed sourceGenerationRef changes receiptHash.",
+      "Changing generatedCandidates/zeroPickDisposition/executionState/resultClassification changes receiptHash.",
+      "Changing candidateUniverseProvenance changes receiptHash.",
+      "Changing hiddenFallbackAudit changes receiptHash."
+    ],
+    "s22T15Interpretation": "For NC-T01 V0.1 the receiptHash is the final immutable receipt/result-root hash, while ORCHESTRATION_SHA256 is the physical strategy-execution root referenced inside it."
+  },
+  "insufficiencyRules": [
+    "runFingerprintHash alone is NOT sufficient continuity provenance.",
+    "decisionHash alone is NOT sufficient continuity provenance.",
+    "predictionSnapshotHash alone is NOT sufficient continuity provenance.",
+    "A string continuityReceiptId without its immutable digest is NOT sufficient.",
+    "A sourceGenerationRef that is free-text without type+digest semantics is NOT sufficient.",
+    "A continuity receipt stored only in an artifact but not included in the receiptHash dependency graph is NOT sufficient."
+  ],
+  "requiredRegressions": [
+    "Same factors/evaluation, different valid continuity receipt hash -> decisionHash may remain equal but persistenceBatchHash, orchestrationHash and final NC-T01 receiptHash MUST change.",
+    "Same continuity receipt, one replay source-row/revision changes -> replay/sourceHistory/factorSnapshot/persistenceBatch/orchestration/final receipt identities MUST invalidate or change.",
+    "Same execution, one excluded-symbol provenance change -> A1/universe/orchestration/final receipt identity MUST change; runFingerprint alone cannot mask it.",
+    "Remove CONTINUITY_RECEIPT_SHA256 from sourceGenerationRefs -> physical PASS prohibited.",
+    "Replace ORCHESTRATION_SHA256 with runFingerprintHash-only provenance -> physical PASS prohibited.",
+    "ReceiptHash recomputation over all fields except receiptHash must exactly match stored receiptHash."
+  ],
+  "implementationBoundary": {
+    "buildLane": [
+      "Do not mutate the existing generic decision schema solely to satisfy the first NC-T01 witness.",
+      "Thread immutable replay/continuity refs into factor sourceManifest before factor snapshot hashing.",
+      "Expose exact factor snapshot hash, persistenceBatchHash and orchestrationHash to the NC-T01 receipt builder.",
+      "Build typed deterministic sourceGenerationRefs and candidateUniverseProvenance before final receiptHash.",
+      "Keep the read-only/artifact-only NC-T01 path free of actual D1 mutation."
+    ],
+    "auditLane": [
+      "Independently recompute the entire hash chain from artifact payloads.",
+      "Reject any physical PASS where a mutable/free-text source reference substitutes for a digest.",
+      "Reject runFingerprint-only continuity provenance."
+    ]
+  },
+  "dependencyOrder": [
+    "PR #762 canonical System2 fingerprints",
+    "CORR-004 exact expected-session repair + physical exact-window witness",
+    "hash-bound CLEAR_NO_ACTION continuity validation",
+    "typed end-to-end NC-T01 hash chain",
+    "physical artifact-only S22-T11~T16",
+    "CORR-003-reserved persisted SHORT_MOMENTUM -> RANK-01 -> capacity"
+  ],
+  "correctionClassification": "ACCEPTANCE_REFINEMENT_NOT_NEW_CORRECTION",
+  "reasonNoNewCorrection": "No physical NC-T01 implementation has yet claimed PASS. The gap is found while the implementation contract is still pending, so it should refine BUILD_LANE acceptance rather than open a defect against a nonexistent completed runner.",
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No System1 candidate/rank fallback",
+    "No strategy threshold/weight/ranking mutation",
+    "No historical D1 rewrite",
+    "No RAW+ADJUSTED_CONTINUITY shortcut",
+    "No final selection/live push/capital/order authority"
+  ]
+}
