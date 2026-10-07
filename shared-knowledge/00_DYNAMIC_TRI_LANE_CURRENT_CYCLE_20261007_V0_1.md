@@ -1164,3 +1164,59 @@ No conflict was found with:
 `system2/evidence/S2_STAGE1_NCT01_CONTINUITY_BINDING_IMPLEMENTATION_HANDOFF_20261007_V0_1.json`.
 
 Formal Core remains LOCKED.
+
+## 00 critical-path ordering correction — CORR-004 must land before SDA-022 fingerprint canonicalization (2026-10-07 21:48:11 Asia/Taipei)
+
+Observed latest main before write:
+`3082c9221c952d946f3c2a5b9ff9140ed737ca2c`.
+
+Independent cross-lane digest audit found that PR #817 (DATA_LANE / CORR-004 exact-session reconciliation) modifies:
+
+`system2/runtime/daily_shadow_history_reader_v0_1.mjs`
+
+PR #762 hard-pins that same source artifact in the System2 Stage-1 policy fingerprint set.
+
+Exact blob facts:
+- PR #762 pinned/current-main blob before #817 = `560700e0d8cc5378136241b6dee233315fde321c`;
+- PR #817 head blob = `47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1`;
+- therefore merging #817 after a canonical #762 fingerprint would make the S22-T06~T10 source binding stale by construction.
+
+This supersedes the older shorthand ordering that placed #762 before CORR-004.
+
+### Independent PR #817 semantic audit
+
+At audited head `43784e500f678be6ee95710822fdafd2af50ac50`:
+- System2 Research CI PASS;
+- V8 Regression PASS;
+- System2 Stage-1 Assessor Policy PASS;
+- mergeability was CLEAN;
+- the branch was nevertheless 23 commits behind the then-latest main and must be refreshed/reverified before merge.
+
+Core semantics verified:
+- exact expected-session date-set hash is recomputed in `loadPitPriorA1BarsV0_1`;
+- drift throws `EXPECTED_SESSION_HASH_MISMATCH`;
+- older observations cannot silently replace a missing expected recent session;
+- lifecycle source absence does not certify NO_EVENT;
+- only positive certified no-trading intervals are excluded;
+- unresolved missing sessions remain symbol-local INCOMPLETE;
+- no whole-universe history veto is reintroduced.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_CORR004_SDA022_FINGERPRINT_ORDERING_AUDIT_20261007_V0_1.json`.
+
+### Corrected exact order
+
+1. DATA_LANE refreshes PR #817 on then-latest main and reruns exact-head CI.
+2. PR #817 merges first.
+3. Merged-main read-only Daily Shadow preflight proves at least one real TWSE exact-session witness with `rowsWritten=0`; CORR-004 stays open until that physical readback.
+4. BUILD_LANE then regenerates/rebuilds PR #762 fingerprints on the post-#817 latest main so all 11 source-artifact digests are canonical.
+5. #762 exact-head fingerprint CI + System2 Research CI + V8 Regression PASS, then S22-T06~T10 may be canonically credited.
+6. Replay-first hash-bound `CLEAR_NO_ACTION` continuity validation consumes only an exact-session witness.
+7. Full-universe artifact-only NC-T01 executes; 00 independently verifies S22-T11~T16.
+8. CORR-003 protected D1 headroom is required before persisted genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+
+BUILD_LANE may prepare continuity-binding code/regressions in parallel, but must not freeze final policy fingerprint receipts before PR #817 changes the bound reader digest.
+
+Formal Core remains LOCKED.
+No final selection, live push, capital or order authority is enabled.
+
