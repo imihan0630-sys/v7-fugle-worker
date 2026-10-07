@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "SC064_D10_01_VERSIONED_GRAPH_TIMING_V0_1",
+  "status": "RESEARCH_ONLY_OWNER_GATES_PRESERVED",
+  "observedMainBeforeWrite": "2042bb3526cf8e3ea5a7991c7fb3ae8c840f2199",
+  "domain": "D10-01",
+  "auditTicket": "SDA-010",
+  "invariants": [
+    "KNOWN_RELATION_NOT_EQUAL_ACTIVE_RELATION",
+    "KNOWN_AT_DISTINCT_FROM_EFFECTIVE_FROM",
+    "HISTORICAL_GRAPH_VERSIONS_IMMUTABLE",
+    "EVENT_ATTRIBUTION_CONSUMES_PRE_EVENT_GRAPH",
+    "EVENT_DOES_NOT_BACKFILL_PRE_EVENT_GRAPH",
+    "MISSING_CAPACITY_REMAINS_UNKNOWN",
+    "D17_CANNOT_RECREATE_D10_STRUCTURAL_VOTE"
+  ],
+  "mutationOperations": [
+    "ADD_SCHEDULED_EDGE",
+    "ACTIVATE_EDGE",
+    "AMEND_EDGE",
+    "EXPIRE_EDGE",
+    "CANCEL_EDGE",
+    "NO_CHANGE"
+  ],
+  "requiredGraphFields": [
+    "exposureGraphId",
+    "graphVersion",
+    "parentGraphVersion",
+    "generatedAt",
+    "decisionClock",
+    "edgeId",
+    "knownAt",
+    "effectiveFrom",
+    "effectiveTo",
+    "sourceReceiptId"
+  ],
+  "protectedOwnerGates": [
+    "H10",
+    "COV-06"
+  ],
+  "currentMaturity": {
+    "level": "L2",
+    "maturityPct": 40
+  },
+  "formalCoreChanged": false,
+  "exactNext": "SC-065 research-only producer receipt / consumer reference object with explicit no-double-vote counterexample."
+}
