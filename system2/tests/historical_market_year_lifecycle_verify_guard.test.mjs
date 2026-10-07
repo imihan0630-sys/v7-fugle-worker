@@ -20,6 +20,7 @@ assert.ok(
   "TPEx cmode lookup must occur only after baseline sprcHis coverage",
 );
 assert.match(script,/HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_7/);
+assert.match(script,/d1UsageObservedThisRun:db\.metrics/);
 assert.ok(
   script.indexOf("coverageBeforeLifecycle") < script.indexOf("fetchTwseRegulatoryLifecycleForSymbolsV0_1({"),
   "baseline coverage must be computed before targeted lifecycle-source lookup",
