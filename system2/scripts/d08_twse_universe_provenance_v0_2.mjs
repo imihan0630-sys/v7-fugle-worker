@@ -22,10 +22,17 @@ for(const entry of scanReceipt.scanDates){
   });
   const old=oldByDate.get(date);
   if(!old) throw new Error("missing V0.1 frozen snapshot "+date);
+  const semanticSnapshotHash=sha(JSON.stringify({
+    marketDate:date,
+    semanticRegistryHash:semantic.semanticRegistryHash,
+    members:snap.members.map(x=>[x.market,x.symbol]),
+    schemaVersion:"D08_TWSE_SEMANTIC_UNIVERSE_SNAPSHOT_V0_2",
+  }));
   snapshots.push({
     scanDate:date,
     memberCount:snap.memberCount,
     snapshotHash:snap.snapshotHash,
+    semanticSnapshotHash,
     v01MemberCount:old.memberCount,
     memberCountDelta:snap.memberCount-old.memberCount,
     firstSymbol:snap.members[0]?.symbol||null,
@@ -65,12 +72,13 @@ const receipt={
     snapshotCount:snapshots.length,
     minMemberCount:Math.min(...snapshots.map(x=>x.memberCount)),
     maxMemberCount:Math.max(...snapshots.map(x=>x.memberCount)),
-    snapshotBundleHash:sha(snapshots.map(x=>[x.scanDate,x.memberCount,x.snapshotHash].join("|")).join("\n")),
+    volatileSnapshotBundleHash:sha(snapshots.map(x=>[x.scanDate,x.memberCount,x.snapshotHash].join("|")).join("\n")),
+    semanticSnapshotBundleHash:sha(snapshots.map(x=>[x.scanDate,x.memberCount,x.semanticSnapshotHash].join("|")).join("\n")),
     snapshots,
   },
   guards:{
     noReturns:true,noD1Writes:true,noR2Writes:true,noSystem1Runtime:true,noFormalCoreImpact:true,
-    oldReceiptRewritten:false,versionedSemanticChange:true,
+    oldReceiptRewritten:false,versionedSemanticChange:true,semanticSnapshotHashExcludesCaptureClock:true,
   },
 };
 console.log("D08_TWSE_UNIVERSE_PROVENANCE_V0_2="+JSON.stringify(receipt));
