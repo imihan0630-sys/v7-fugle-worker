@@ -72,18 +72,18 @@ jobs:
             ]
           }
           JSON
-          cp /tmp/nct01-audit/runtime-evidence.json system2/evidence/.nct01-runtime-evidence-ci.json
+          cp /tmp/nct01-audit/runtime-evidence.json system2/evidence/nct01-runtime-evidence-ci.json
           node system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs \
-            --runtime-evidence system2/evidence/.nct01-runtime-evidence-ci.json \
+            --runtime-evidence system2/evidence/nct01-runtime-evidence-ci.json \
             --generated-at 2026-10-08T00:10:00Z \
-            --output system2/evidence/.nct01-hidden-fallback-audit-ci.json
-          rm system2/evidence/.nct01-runtime-evidence-ci.json
+            --output system2/evidence/nct01-hidden-fallback-audit-ci.json
+          rm system2/evidence/nct01-runtime-evidence-ci.json
 
       - name: Verify exact-head hidden-fallback audit
         run: |
           node --input-type=module <<'NODE'
           import fs from "node:fs";
-          const payload=JSON.parse(fs.readFileSync("system2/evidence/.nct01-hidden-fallback-audit-ci.json","utf8"));
+          const payload=JSON.parse(fs.readFileSync("system2/evidence/nct01-hidden-fallback-audit-ci.json","utf8"));
           const audit=payload.audit;
           if (audit.runnerHeadSha !== process.env.GITHUB_SHA) throw new Error("audit head mismatch");
           if (audit.auditState !== "CLEAN_PROVEN_ABSENT") throw new Error("audit not clean: "+audit.auditState);
@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: system2-nct01-corr005-006-exact-head-audit
-          path: system2/evidence/.nct01-hidden-fallback-audit-ci.json
+          path: system2/evidence/nct01-hidden-fallback-audit-ci.json
           if-no-files-found: error
           retention-days: 14
 
