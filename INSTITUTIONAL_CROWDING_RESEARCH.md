@@ -2839,3 +2839,45 @@ For the TDCC 2026-09-24 -> 2026-10-02 pair, known hard masks are 1235, 1441, 232
 Shared System2 corporate-action source lanes are physically validated, but complete exact-pair TPEx ex-right/dividend and security-identity transition rows are not persisted as a Room05 pair list. Lane-level event totals cannot substitute for exact event-row materialization.
 
 D06-05 remains L3/60. Outcomes remain CLOSED. Exact next: materialize the complete exact-pair shared event rows, freeze final event-clean exact-denominator common support and row-set hash, then preregister TDCC-vintage-clustered OOS/Shadow validation.
+
+
+---
+
+## IC-102 — D06-05 pair contamination mask adds effective cash-capital increases and TPEx share-exchange identity lineage
+
+Research cycle: 2026-10-08 Asia/Taipei  
+Status: PAIR_MASK_V0_2_ADVANCED / CAPITAL_INCREASE_BOUNDARY_MASK_ADDED / SHARE_EXCHANGE_IDENTITY_MATERIALIZED / CLEAN_SUPPORT_UPPER_BOUND_2778 / FINAL_SUPPORT_NOT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_2.json`.
+
+This round resumes after IC-100/101 rather than rebuilding the already-frozen denominator/corporate-action firewall. The target remains the first event-clean 2026-09-24 -> 2026-10-02 TDCC weekly common support.
+
+New corporate-action family materialized: effective cash-capital increase / new-share allotment. The official TWSE public-subscription schedule, which covers listed and OTC capital increases, places three relevant allotment dates inside or on the pair boundary:
+- 3234 光環: OTC capital increase, new-share allotment/listing 2026-09-24;
+- 4977 眾達-KY: listed capital increase, allotment 2026-09-30;
+- 2464 盟立: listed capital increase, allotment 2026-10-01.
+
+TDCC pair reconciliation shows:
+- 3234: grade17 total remains exactly 126,474,692 at both weekly vintages, but 400-lot-plus concentration moves 35.2289% -> 34.3112% (-0.91765pp). Because the allotment date equals the prior TDCC source-date boundary and within-day source ordering is not reconstructed, stable denominator does not certify a clean baseline. 3234 is therefore a new fail-closed boundary hard mask.
+- 4977: grade17 82,689,841 -> 90,989,841 (+10.0375%); already excluded by the denominator-change guard.
+- 2464: grade17 218,868,886 -> 227,368,886 (+3.8836%); already excluded by the denominator-change guard.
+
+Identity continuity was also materially advanced. TPEx official announcement 11500054131 shows 8183 精星 stopped OTC trading on 2026-09-23 and terminated OTC trading on 2026-10-01 through a share exchange into 6191 精成科 at 1 old 8183 share -> 0.342 6191 ordinary share. TDCC confirms 8183 is present in the 2026-09-24 vintage but absent from 2026-10-02, so it never enters weekly common support. The successor 6191 remains common but grade17 rises 499,303,000 -> 529,392,200 (+6.0262%), so it is already excluded by the exact-denominator guard. The identity relationship is nevertheless preserved explicitly rather than being treated as anonymous universe drift.
+
+TWSE identity continuity is cleaner for this interval: the official termination list shows the latest 2026 termination before the pair was 2867 三商壽 on 2026-09-01; no TWSE termination is listed during 2026-09-24..2026-10-02.
+
+Mask effect:
+- previous known upper bound after denominator + known hard masks = 2,779;
+- newly added stable-denominator hard mask = 3234;
+- revised upper bound = 2,778.
+
+This is still NOT the final clean N. Exact TPEx EX_RIGHT_DIVIDEND pair rows remain unmaterialized in Room05, TPEx identity-transition coverage is not certified exhaustive, and public-subscription data are not exhaustive for every issuance channel. Therefore no outcome columns are opened and no L4 claim is made.
+
+Falsification lesson:
+a stable weekly share denominator is necessary but not sufficient. An event exactly on the TDCC source-date boundary can leave both weekly grade17 totals equal while the ownership distribution is still not a clean pre/post comparison. Event clocks and denominator equality must remain separate gates.
+
+Maturity impact: NONE. D06-05 remains L3/60 and D06 remains at its current tracker maturity. This round improves the L4 clean-support gate rather than source/PIT maturity.
+
+Exact next:
+materialize exact TPEx EX_RIGHT_DIVIDEND rows for 2026-09-24..2026-10-02 and complete interval identity-transition coverage. Classify stock-distribution/cash-only/capital-increase components, then recompute and hash the final event-clean exact-denominator common support before any price/return/MFE/MAE join.
