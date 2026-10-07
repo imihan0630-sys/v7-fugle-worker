@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_REUSE_INFRA_CHECK_QUOTA_GATE_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "conclusion": "GLOBAL_QUOTA_GATE_CAN_REUSE_EXISTING_S2_INFRASTRUCTURE_CHECKS; NO_NEW_TABLE_REQUIRED",
+  "existingStorage": {
+    "table": "s2_infrastructure_checks",
+    "identity": "check_id PRIMARY KEY",
+    "uniqueHash": "check_hash UNIQUE",
+    "secondaryIndex": "idx_s2_infrastructure_checks_time(check_timestamp,check_type)",
+    "payloadFields": [
+      "expected_payload_json",
+      "observed_payload_json",
+      "status",
+      "notes"
+    ],
+    "immutableReadbackPatternAlreadyUsed": true
+  },
+  "provenLocalPattern": {
+    "runtime": "system2/runtime/daily_shadow_fugle_hot_history_bootstrap_v0_1.mjs",
+    "checkType": "FUGLE_RAW_HOT_HISTORY_QUOTA_DAY_CLAIM_V0_1",
+    "policy": "ONE_PHYSICAL_BOOTSTRAP_BATCH_PER_UTC_D1_FREE_QUOTA_DAY",
+    "sequence": [
+      "read same-UTC-day claim/completion evidence",
+      "if already claimed -> DAILY_D1_WRITE_QUOTA_GUARD_BLOCKED",
+      "persist quota-day claim before external fetch/history persistence",
+      "read back observed_payload_json + check_hash",
+      "only then continue physical writes"
+    ],
+    "safetyIntent": "PRESERVE_D1_DAILY_WRITE_HEADROOM"
+  },
+  "reusableGlobalPattern": {
+    "proposedCheckTypes": [
+      "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
+      "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1"
+    ],
+    "proposedIdentityShape": "UTC quota day + writer class + run identity",
+    "requiredPayload": [
+      "quotaDayUtc",
+      "writerClass",
+      "priorityClass",
+      "reservationRowsWrittenEstimate",
+      "reservationRowsReadEstimate",
+      "observedAccountUsageState",
+      "observedRowsWritten when available",
+      "knownLocalRowsWrittenLowerBound",
+      "headroomState",
+      "decision",
+      "reason",
+      "source/probe version",
+      "selectionAuthority=false",
+      "orderImpact=false",
+      "system1RuntimeUsed=false"
+    ],
+    "resultReconciliation": "result receipt should reconcile estimate to actual per-run db.metrics.rowsWritten/rowsRead after execution"
+  },
+  "accountUsageObservation": {
+    "preferred": "Cloudflare account-wide D1 GraphQL analytics when existing token already permits it",
+    "fallback": "UNKNOWN_HEADROOM + conservative known local lower bound/reservations",
+    "noPermissionEscalationRequired": true,
+    "prohibitedInference": "100000 - known System2 writes cannot be treated as exact remaining quota when account-wide analytics is unavailable"
+  },
+  "writeAmplificationAssessment": {
+    "schemaIndexCountRelevantToInsert": 3,
+    "planningEstimateRowsWrittenPerSingleCheckInsert": 4,
+    "physicalMetaAuthoritative": true,
+    "interpretation": "A compact reservation/result receipt is orders of magnitude smaller than the observed 57,880-row warmup and is an acceptable governance write if kept one/few rows per physical writer run."
+  },
+  "remediationGuidance": [
+    "Do not add a new D1 table solely for quota coordination unless an implementation constraint disproves reuse of s2_infrastructure_checks.",
+    "Generalize the existing claim/readback idiom instead of duplicating a second quota subsystem.",
+    "Keep one shared account-level gate module callable by warmup, Daily Shadow physical persistence, historical annual writer and other high-write System2 workflows.",
+    "Push-triggered Recent A1 warmup must remain non-physical regardless of quota headroom.",
+    "Use account analytics if already authorized; otherwise fail/defer discretionary high-write work conservatively without asking for new permission.",
+    "Keep receipts compact so quota governance itself cannot become a material quota consumer."
+  ],
+  "protectedBoundaries": [
+    "No new paid plan",
+    "No new permission required for safe behavior",
+    "No System1 mutation",
+    "No strategy/ranking/final-selection/live-push/capital/order authority change"
+  ],
+  "implementationPerformedByAudit": false
+}
