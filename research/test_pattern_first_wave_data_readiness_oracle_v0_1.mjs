@@ -6,7 +6,7 @@ t("D8801 accepted raw but partial replay stays partial",()=>assert.equal(classif
 t("D8802 rejected raw year blocks",()=>assert.equal(classifyMarketYear({dataCoverageState:"PENDING"}).status,"RAW_DATA_NOT_ACCEPTED"));
 t("D8803 bounded TWSE raw and universe pass",()=>assert.equal(validateTwseBoundedYears(twseYears).status,"TWSE_BOUNDED_RAW_AND_UNIVERSE_READY"));
 t("D8804 missing one TWSE year blocks",()=>assert.equal(validateTwseBoundedYears(twseYears.filter(x=>x.year!==2020)).status,"TWSE_RAW_YEAR_MISSING"));
-t("D8805 incomplete universe blocks bounded TWSE",()=>{const a=structuredClone(twseYears);a[2].officialDelistingUnionComplete=false;assert.equal(validateTwseBoundedYears(a).status,"TWSE_UNIVERSE_NOT_READY");});
+t("D8805 incomplete universe blocks bounded TWSE",()=>{const a=twseYears.map(x=>({...x}));a[2].officialDelistingUnionComplete=false;assert.equal(validateTwseBoundedYears(a).status,"TWSE_UNIVERSE_NOT_READY");});
 t("D8806 pending TPEX 2024 blocks full Taiwan",()=>assert.equal(validateFullTaiwanPrimary([...twseYears,{market:"TPEX",year:2024,dataCoverageState:"PENDING"}]).status,"FULL_TAIWAN_BLOCKED_TPEX_2024"));
 t("D8807 causal receipt unknown blocks OOS",()=>assert.equal(validateCausalReceipts({membership:true,rawA1:true,symbolSession:false,corporateAction:true,priceLimit:true,disposition:true,observability:true,lineage:true,outcomeAvailability:true,d16Policy:true}).status,"CAUSAL_OOS_BLOCKED"));
 t("D8808 all causal receipts pass",()=>assert.equal(validateCausalReceipts({membership:true,rawA1:true,symbolSession:true,corporateAction:true,priceLimit:true,disposition:true,observability:true,lineage:true,outcomeAvailability:true,d16Policy:true}).status,"CAUSAL_OOS_READY"));
