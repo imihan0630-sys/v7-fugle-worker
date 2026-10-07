@@ -1506,3 +1506,30 @@ Exact next:
 `BR-059B` continue issuer-native 2025-2026 annual-report/investor-presentation search only for actual realized mutually-exclusive ABF/PP/product mix. Preserve UNKNOWN if only forecast/capacity/application evidence exists.
 
 SDA-009 remains interrupt-priority if genuine System1 R3A1 evidence appears.
+
+
+## BR-059C — current ABF realized-numerator disclosure audit (2026-10-07)
+
+Artifact:
+- `research/BR059C_ABF_REALIZED_NUMERATOR_DISCLOSURE_AUDIT_20261007_V0_1.md`
+
+Current issuer-native 2025-2026 evidence still does not provide a realized mutually exclusive ABF revenue numerator for either priority issuer.
+
+Frozen:
+- `3189_REALIZED_ABF_NUMERATOR = UNKNOWN`;
+- `8046_REALIZED_ABF_NUMERATOR = UNKNOWN`;
+- `APPLICATION_REVENUE_MIX != PRODUCT_REVENUE_MIX`;
+- `ABF_TECHNOLOGY_OR_CAPACITY_DISCLOSURE != REALIZED_ABF_REVENUE`.
+
+Nan Ya PCB application mix is valid application evidence but cannot be relabeled as ABF product revenue. Kinsus ABF/FCBGA technology and strategy relevance is supported but does not numerically identify realized ABF sales.
+
+D09-13 remains L3/60 and D09 aggregate maturity remains unchanged.
+
+Exact next:
+- BR-059D wait/prospectively capture an issuer-native mutually exclusive ABF/BT/general-PCB realized revenue split or directly reconcilable ABF realized revenue amount;
+- retain UNKNOWN if only application/capacity/roadmap/forecast evidence exists.
+
+SDA-009 remains interrupt priority:
+the first genuine System1 R3A1 receipt must immediately preempt this parallel lane and trigger the frozen V0.6 acceptance path.
+
+Formal Core unchanged.
