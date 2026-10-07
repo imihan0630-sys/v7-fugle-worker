@@ -963,3 +963,44 @@ Initial deterministic regression cases include:
 TPEx lifecycle-source expansion remains separate and unresolved; DATA_LANE has not inferred a TPEx source contract from TWSE semantics.
 
 No D1/R2 mutation was required for this repository hardening. No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.
+
+
+## 2026-10-07 CORR-004 exact expected-session reconciliation implementation
+
+DATA_LANE acknowledged and began `S2-CORR-20261007-004` (HIGH / DATA_LANE):
+long-listed Daily Shadow history readiness could accept the latest 60 observed dates even when one required recent eligible session was missing and an older row silently substituted for it.
+
+Implementation branch / PR:
+- branch: `system2-data/corr004-exact-session-reconciliation-20261007`;
+- PR: `#817`;
+- status at this checkpoint: `FIX_IN_PROGRESS`;
+- independent closure remains AUDIT_LANE-only after physical readback.
+
+Implemented fail-closed semantics:
+- derive each current symbol's exact required eligible prior-session set from official trading dates + official current listing date;
+- exclude only positive certified lifecycle no-trading intervals; source absence never certifies no event;
+- exact date-set equality is required for both long-listed and age-limited symbols;
+- an older row cannot substitute for a missing expected recent session;
+- per-symbol missing/unexpected counts, bounded samples, expected/observed session hashes and lifecycle-exclusion provenance are emitted;
+- missing/unexpected exact sessions remain symbol-local INCOMPLETE; no whole-universe percentage veto is restored;
+- history factor loading is bound to the expected session hash and fails closed on `EXPECTED_SESSION_HASH_MISMATCH`;
+- TWSE lifecycle lookup is targeted only to full-count exact-session mismatches; TPEx source parity remains unresolved/fail-closed;
+- immutable Daily Shadow diagnostics preserve lifecycle source receipts/intervals in `HISTORY_LIFECYCLE_EVIDENCE` shards.
+
+Required regressions are implemented for:
+- clean long-listed exact window;
+- long-listed missing required recent session + older substitute;
+- legitimate certified no-trading interval;
+- new listing short legitimate window;
+- missing expected-session contract;
+- exact probe -> factor-load session hash binding;
+- existing mixed-universe symbol-local readiness / partial denominator behavior.
+
+Protected boundaries remain unchanged:
+- no historical OHLC synthesis or rewrite;
+- no continuity-state relabel to manufacture readiness;
+- no System1 Formal Core/runtime;
+- no strategy thresholds/weights/ranking changes;
+- no final selection/live push/capital/order authority.
+
+Physical acceptance is still pending. After merge, the existing `System2 Daily Shadow Input Preflight Readonly` workflow will be used to prove merged-main exact-session readback with `rowsWritten=0`; at least one real TWSE exact-window witness is required before DATA_LANE may mark CORR-004 `FIX_IMPLEMENTED`.
