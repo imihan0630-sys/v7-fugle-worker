@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T22:41:00+08:00",
+  "updatedAt": "2026-10-07T22:48:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1248,7 +1248,7 @@
       "directiveId": "S2-CORR-20261007-004",
       "createdAt": "2026-10-07T20:48:25+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session",
       "affectedScope": [
         "System2 S2-07 Daily Shadow PIT history readiness",
@@ -1311,7 +1311,16 @@
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
       "blockedBy": null,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #817 merged to main as 625ea3d0bda28fcd06df4c3163a054573c3982f7.",
+        "Merged-main System2 Daily Shadow Input Preflight Readonly run 37639310919 / job 112853723927 SUCCESS on 2026-10-07.",
+        "Physical readback: exactSessionReconciliationEnabled=true; ordinarySymbolCount=1973; exactSessionHistoryReadyCount=46; continuityReadyCount=0; preflightState=READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS.",
+        "Reference pre-fix physical run had historyReadyCount=51; merged exact-session readback has 46, demonstrating count-only false readiness was actually removed.",
+        "Physical witness 1101/TWSE has only SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED and no insufficient-history / expected-session-missing blocker, proving at least one real exact-window history-ready symbol.",
+        "TWSE lifecycle follow-up queried 2 exact-session mismatch candidates; lifecycleState=OBSERVED_POSITIVE_EVENTS_UNCERTIFIED_ABSENCE and lifecycleIntervalCount=0, so empty/uncertified lifecycle evidence did not wash missing sessions into PASS.",
+        "Read-only physical run wrote zero D1 rows and System1 production isolation passed.",
+        "Durable physical receipt: system2/evidence/S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1.json."
+      ],
       "verificationEvidence": [
         "Independent current-main codepath verification confirms daily_shadow_history_reader_v0_1.mjs v0.3-RESEARCH ranks available PIT rows and accepts count>=required for long-listed symbols with ageBoundaryMatches=true, without exact expected symbol-session reconciliation.",
         "Existing tests cover insufficient count, continuity incomplete, age-aware new listing, mixed-universe local blocking and global corruption, but do not cover long-listed missing-expected-session + older-row substitution.",
@@ -1322,8 +1331,8 @@
         "Main advanced 70 commits from PR #817 base but changed-path overlap with the PR's 10 files is zero; no stale-base path collision was found.",
         "Durable review: system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_REVIEW_20261007_V0_1.json @ c99eacedbaf34b0b17b6a0e05c6bf6ac2a77dfa0; PR comment 6040451918 records repository PASS / post-merge physical pending."
       ],
-      "finalDisposition": "PENDING_POST_MERGE_PHYSICAL_READBACK",
-      "updatedAt": "2026-10-07T22:41:00+08:00"
+      "finalDisposition": "FIX_IMPLEMENTED — merged-main exact-session reconciliation passed physical read-only acceptance; independent AUDIT_LANE closure remains required.",
+      "updatedAt": "2026-10-07T22:48:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
