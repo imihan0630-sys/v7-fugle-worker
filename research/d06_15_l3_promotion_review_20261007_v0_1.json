@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "D06_15_L3_PROMOTION_REVIEW_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-15",
+  "reviewedAt": "2026-10-07T18:58:02+08:00",
+  "evidenceContract": "research/d06_15_public_bank_proxy_source_contract_20261007_v0_1.json",
+  "previousLevel": "L2",
+  "previousMaturityPct": 40,
+  "decision": "REJECT_PROMOTION_THIS_ROUND",
+  "newLevel": "L2",
+  "newMaturityPct": 40,
+  "positiveProgress": [
+    "official eight-bank legal/policy set frozen",
+    "159 current active TWSE head+branch execution identifiers frozen across eight families",
+    "fixed-three-character prefix shortcut falsified by Hua Nan branch code family",
+    "customer/proprietary mixture semantics frozen from TWSE",
+    "FinMind Sponsor dataset schema/range/update/missing-date/replay interface frozen",
+    "free-level authorization denial reproduced"
+  ],
+  "blockingReason": "No legally authorized real TaiwanStockGovernmentBankBuySell row set was obtained, so distinct bank_name membership, actual first-known timing and provider-vs-underlying aggregation cannot yet be empirically replayed.",
+  "guard": "Do not turn paid-source existence, documentation, or access denial into L3 evidence.",
+  "exactNext": "Acquire one authorized Sponsor receipt prospectively and run the frozen membership/time/aggregation audit outcome-blind."
+}
