@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_V0_1",
+  "recordedAt": "2026-10-08T06:00:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "454dc48c68780d16df94018be1b43c2e1d16d4b5",
+  "affectedGate": [
+    "S22-T13",
+    "S22-T15",
+    "S22-T16"
+  ],
+  "title": "TWSE suspension completeness state is not cryptographically/source-ref bound before CLEAR_NO_ACTION promotion",
+  "codeFacts": [
+    "buildCorporateActionCompletenessReceiptV0_1 accepts suspensionCoverageByExchange as a plain status map and derives suspensionCoverageComplete from TWSE/TPEX == COMPLETE.",
+    "The completeness receipt does not require or store an immutable suspension-completeness receipt digest/source identity for each exchange.",
+    "buildNct01TwseClearNoActionPromotionReceiptV0_1 requires archiveReceipt.suspensionCoverageComplete=true and suspensionCoverageByExchange.TWSE=COMPLETE.",
+    "The promotion function validates sourceEvidenceRefs only against archiveReceipt.sourceContractResults, which are the three TWSE corporate-action HISTORICAL_ACTUAL_RESULT_RANGE contracts.",
+    "No explicit TWTAWU/suspension completeness sourceEvidenceRef is mandatory for CLEAR_NO_ACTION_ELIGIBLE.",
+    "archiveReceiptHash hashes the supplied COMPLETE status but cannot prove the status came from a real bounded suspension-completeness receipt."
+  ],
+  "testCounterexample": {
+    "file": "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs",
+    "finding": "The positive CLEAR_NO_ACTION fixture supplies only three sourceEvidenceRefs (SRC-0/SRC-1/SRC-2) matching the three corporate-action source contracts; no suspension/TWTAWU completeness digest is required.",
+    "implication": "Current positive tests demonstrate that a plain TWSE suspension COMPLETE status can participate in promotion without immutable suspension evidence binding."
+  },
+  "existingGovernanceAlreadyRequiresMore": [
+    "system2/evidence/S2_STAGE1_NCT01_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS_HANDOFF_20261007_V0_1.json requires the bounded suspension receipt digest to be bound into the corporate-action completeness receipt/sourceEvidenceRefs.",
+    "system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261008_V0_2.json requires both official response hashes and the parity receipt digest to be bound into sourceEvidenceRefs/corporate-action completeness evidence."
+  ],
+  "risk": "A caller can mark suspensionCoverageByExchange.TWSE=COMPLETE and provide valid corporate-action refs while omitting the actual bounded TWTAWU/parity evidence. If all other gates pass, CLEAR_NO_ACTION_ELIGIBLE may be produced with an unproven negative-suspension assertion. This would weaken source lineage and allow a false physical NC-T01 continuity certification.",
+  "minimumCorrection": [
+    "Make TWSE suspension completeness evidence first-class and immutable; a plain string COMPLETE must never be sufficient for physical promotion.",
+    "Add an exchange-scoped suspension evidence object/receipt identity to the corporate-action completeness contract, including exact interval, coverage state, receipt/artifact digest, source family/version and observation/availability timing.",
+    "For TWSE COMPLETE, require a 64-hex bounded-suspension/parity receipt digest and exact interval equality with the archive/replay window.",
+    "Bind that digest into the corporate-action completeness receipt hash.",
+    "buildNct01TwseClearNoActionPromotionReceiptV0_1 must require a sourceEvidenceRef whose source identity/digest matches the archive's TWSE suspension evidence identity; absence or mismatch => CONTINUITY_UNKNOWN.",
+    "Keep the three existing corporate-action contract refs separately required; suspension evidence is additive, not a replacement.",
+    "Do not hard-code 1101 or assume an empty TWTAWU result is complete; DATA_LANE still owns physical bounded completeness proof.",
+    "Preserve timing semantics: post-decision prospective observation cannot be backdated; verified source timestamp path remains explicit.",
+    "No strategy thresholds/weights/ranking/capacity/System1/Formal/final-selection/push/capital/order changes."
+  ],
+  "requiredRegressions": [
+    "TWSE suspension status COMPLETE but suspension evidence object missing -> CONTINUITY_UNKNOWN.",
+    "Suspension evidence digest missing/invalid -> CONTINUITY_UNKNOWN.",
+    "Suspension evidence interval differs from replay/archive interval -> CONTINUITY_UNKNOWN.",
+    "Suspension evidence sourceEvidenceRef missing -> CONTINUITY_UNKNOWN.",
+    "Suspension sourceEvidenceRef digest mismatch -> CONTINUITY_UNKNOWN.",
+    "Suspension evidence observed after decision under PROSPECTIVE_OBSERVED -> CONTINUITY_UNKNOWN.",
+    "Three corporate-action refs complete + valid bounded suspension evidence + exact session evidence -> existing CLEAR_NO_ACTION eligible path remains possible.",
+    "Changing suspension receipt digest changes archive/continuity receipt hash."
+  ],
+  "routing": {
+    "severity": "HIGH",
+    "routingClass": "BUILD_LANE",
+    "assignedRoom": "System 2｜建置總控室",
+    "reason": "The defect is in the promotion/evidence-binding firewall, not in the DATA_LANE source acquisition itself. DATA produces the bounded receipt; BUILD must make it impossible to promote without that receipt."
+  },
+  "physicalBoundary": "This correction can be implemented and verified before DATA produces the first real TWTAWU receipt. Physical S22-T13/T15/T16 remain pending until the real receipt is consumed in one coherent NC-T01 run.",
+  "finalDisposition": "HIGH_CORRECTION_REQUIRED_BEFORE_REAL_CLEAR_NO_ACTION_PROMOTION",
+  "formalCoreImpact": "NONE_LOCKED"
+}
