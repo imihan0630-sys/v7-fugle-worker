@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "S2_CORR_005_006_COMBINED_BUILD_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T00:06:00+08:00",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "b47c7b6cfc7e089275cda53a3ce073e993509f92",
+  "status": "COMBINED_MINIMAL_PATCH_CONTRACT_FROZEN_IMPLEMENTATION_PENDING",
+  "corrections": [
+    "S2-CORR-20261007-005",
+    "S2-CORR-20261007-006"
+  ],
+  "rationale": "Both HIGH corrections modify the same NC-T01 physical receipt/runner boundary. One exact-head patch avoids sequential SHA drift and duplicate physical-evidence runs.",
+  "formalCoreImpact": "NONE_LOCKED",
+  "filesToModify": [
+    {
+      "path": "system2/runtime/nct01_physical_receipt_v0_1.mjs",
+      "requiredDelta": [
+        "Remove false-by-default hiddenFallbackAudit semantics for physical PASS.",
+        "Require explicit five-dimension audit states and a bound HIDDEN_FALLBACK_AUDIT_SHA256 typed ref for PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
+        "Separate W0 continuity-ready witnesses from W1 strategy-executable witnesses.",
+        "W1 requires ACCOUNTED + replay READY + continuity READY + zero continuity blockers + requiredEvidenceComplete=true + terminal non-INCOMPLETE strategyValidity.",
+        "requiredInputsState/executionState/candidateGenerationExecutable must be derived from W1 count, not W0 count.",
+        "candidateUniverseProvenance must separately include CONTINUITY_READY_WITNESS_COUNT, REQUIRED_EVIDENCE_COMPLETE_WITNESS_COUNT, STRATEGY_EXECUTABLE_WITNESS_COUNT and strategy-validity counts.",
+        "LEGITIMATE_ZERO_PICK requires at least one W1 witness."
+      ]
+    },
+    {
+      "path": "system2/runtime/nct01_artifact_runner_v0_1.mjs",
+      "requiredDelta": [
+        "Remove all-false default hiddenFallbackAudit.",
+        "Require exact-head machine audit payload/digest input from the physical wrapper.",
+        "Carry runtime forbidden-access evidence from the same execution cut.",
+        "Pass the bound audit digest and explicit dimensions to the receipt builder.",
+        "Keep System1 Top6/rank structurally unavailable and D1 persistence execution disabled."
+      ]
+    },
+    {
+      "path": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+      "requiredDelta": [
+        "Expose per-symbol requiredEvidenceComplete derived from assessment.missingRequiredEvidence.length===0 or exact equivalent.",
+        "Expose missingRequiredEvidenceCount and preserve strategyValidity/entryReadiness.",
+        "Do not infer requiredEvidenceComplete from continuity readiness or strategyValidity label.",
+        "Keep symbol-local INCOMPLETE accounting unchanged."
+      ]
+    }
+  ],
+  "newMachineHelper": {
+    "suggestedPath": "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs",
+    "namingIsBinding": false,
+    "purpose": "Regenerate exact-head transitive static audit and normalize runtime forbidden-access evidence for S22-T12.",
+    "requiredOutput": [
+      "auditVersion",
+      "runnerEntryPoint",
+      "runnerHeadSha",
+      "transitiveManifestHash",
+      "forbiddenSourceFamilyVersion",
+      "sorted auditedBlobIdentities",
+      "perDimensionDisposition using PROVEN_ABSENT/PRESENT/UNKNOWN",
+      "runtimeForbiddenAccessCount and typed runtime evidence",
+      "auditGeneratedAt",
+      "auditDigest"
+    ],
+    "digestRule": "Canonical deterministic hash over the complete audit payload excluding auditDigest itself."
+  },
+  "closureRootMustInclude": [
+    "system2/runtime/nct01_artifact_runner_v0_1.mjs",
+    "system2/runtime/nct01_physical_receipt_v0_1.mjs",
+    "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs",
+    "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs",
+    "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+    "system2/runtime/pit_replay_v0_1.mjs",
+    "all transitive System2 runtime/source adapters reachable from the physical wrapper"
+  ],
+  "forbiddenRuntimeFamilies": [
+    "System1 Top6/candidate output",
+    "System1 rank output",
+    "cached System1 selected list",
+    "persisted System1 selected list",
+    "alias/compatibility reconstruction of System1 selection",
+    "cross-project System1 selection import",
+    "stale prior System1 selection/shared-state reuse",
+    "Worker.js/V7_DB/STOCKS_KV production-selection bridge"
+  ],
+  "witnessLayers": {
+    "W0": "ACCOUNTED + replay READY + continuity READY + zero continuity blockers",
+    "W1": "W0 + requiredEvidenceComplete=true + strategyValidity in VALID/WEAKENING/INVALIDATED + same-cut evaluation identity",
+    "W2": "W1 + frozen later ranking-admission semantics; not required for NC-T01"
+  },
+  "requiredRegressions": [
+    "hiddenFallbackAudit omitted -> EVIDENCE_INCOMPLETE",
+    "one hidden-fallback dimension missing/UNKNOWN -> EVIDENCE_INCOMPLETE",
+    "all dimensions PROVEN_ABSENT but audit digest missing -> EVIDENCE_INCOMPLETE",
+    "static clean but runtime evidence missing -> EVIDENCE_INCOMPLETE",
+    "runtime clean but static audit missing -> EVIDENCE_INCOMPLETE",
+    "any hidden dependency PRESENT or runtime forbidden access >0 -> HIDDEN_SYSTEM1_DEPENDENCY",
+    "audit digest/head/manifest drift -> EVIDENCE_INCOMPLETE / REAUDIT_REQUIRED",
+    "continuity READY + strategy INCOMPLETE -> INPUT_INCOMPLETE / BLOCKED_INPUTS / candidateGenerationExecutable=false",
+    "continuity READY + INVALIDATED + missingRequiredEvidence>0 -> not W1",
+    "continuity READY + WEAKENING + requiredEvidenceComplete=true -> W1 allowed",
+    "continuity READY + INVALIDATED + requiredEvidenceComplete=true -> W1 allowed",
+    "mixed W0/W1 population -> W1 count controls execution promotion; W0-only rows remain denominator-accounted",
+    "zero generated candidates with >=1 W1 and all other gates pass -> LEGITIMATE_ZERO_PICK",
+    "zero generated candidates with 0 W1 -> never LEGITIMATE_ZERO_PICK",
+    "change audited blob SHA -> hidden-fallback audit digest changes -> final receiptHash changes",
+    "change requiredEvidenceComplete/W1 membership -> candidateUniverseProvenance and final receiptHash change"
+  ],
+  "workflowRequirements": [
+    "One exact-head workflow may validate both CORR-005 and CORR-006.",
+    "Workflow must build the static transitive audit on its own exact head, not consume a stale committed audit as proof.",
+    "Workflow must execute runtime forbidden-access instrumentation in the same physical run.",
+    "Physical run remains artifact-only/read-only with rowsWritten=0 for NC-T01.",
+    "Final artifact must include machine audit payload/digest, per-symbol W0/W1 classifications, typed sourceGenerationRefs, full NC-T01 receipt and deterministic recomputation material."
+  ],
+  "acceptance": [
+    "CORR-005 and CORR-006 exact-head unit/regression tests PASS.",
+    "System2 Research CI PASS and applicable V8 Regression PASS.",
+    "Merged-main readback shows missing/unknown hidden-fallback evidence fail-closed.",
+    "Merged-main readback shows W0-only strategy-incomplete witness fail-closed.",
+    "No real PHYSICALLY_INDEPENDENT_PATH_OBSERVED credit until DATA_LANE supplies a real source-honest CLEAR_NO_ACTION receipt.",
+    "After real continuity evidence, one coherent physical run satisfies Matrix V0.2 T11-T16; mixed heads/runs are not composable."
+  ],
+  "noChangesAuthorized": [
+    "strategy thresholds/weights",
+    "ranking policy",
+    "capacity max12/max3/no-forced-fill semantics",
+    "System1 Formal Core/runtime",
+    "final selection",
+    "live push",
+    "capital authority",
+    "orders"
+  ],
+  "exactNext": [
+    "BUILD_LANE implement one combined patch for CORR-005 + CORR-006 on latest main.",
+    "Run exact-head regression/Research/V8 checks and merge.",
+    "DATA_LANE independently completes bounded TWTAWU + three corporate-action families and emits a real CLEAR_NO_ACTION receipt.",
+    "BUILD_LANE runs one real artifact-only NC-T01 with both correction gates and the real continuity receipt.",
+    "00 independently recomputes Matrix V0.2 S22-T11 through S22-T16."
+  ]
+}
