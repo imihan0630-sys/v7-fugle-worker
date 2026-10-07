@@ -112,18 +112,40 @@ function parseMarketCsv({ market, text }) {
   return out;
 }
 
-async function fetchText(url, fetchImpl, timeoutMs) {
-  const response = await fetchImpl(url, {
-    method: "GET",
-    redirect: "follow",
-    headers: {
-      accept: "text/csv,text/plain,*/*",
-      "user-agent": "System2-Current-Listing-Metadata/0.1",
-    },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
-  if (!response?.ok) throw new Error(`listing metadata HTTP ${Number(response?.status)}`);
-  return response.text();
+async function fetchText(url, fetchImpl, timeoutMs, retryAttempts, retryDelayMs) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
+    try {
+      const response = await fetchImpl(url, {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          accept: "text/csv,text/plain,*/*",
+          "user-agent": "System2-Current-Listing-Metadata/0.2",
+          "cache-control": "no-cache",
+        },
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      if (!response?.ok) {
+        const status = Number(response?.status);
+        const error = new Error(`listing metadata HTTP ${status}`);
+        if (status >= 400 && status < 500 && status !== 429) throw error;
+        lastError = error;
+      } else {
+        return response.text();
+      }
+    } catch (error) {
+      lastError = error;
+      const message = String(error?.message || error);
+      if (/listing metadata HTTP 4\d\d/.test(message) && !message.includes("429")) throw error;
+    }
+    if (attempt < retryAttempts && retryDelayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, retryDelayMs * attempt));
+    }
+  }
+  throw new Error(
+    `listing metadata transport exhausted after ${retryAttempts} attempts: ${String(lastError?.message || lastError)}`,
+  );
 }
 
 export async function fetchCurrentListingMetadataV0_1({
@@ -131,14 +153,22 @@ export async function fetchCurrentListingMetadataV0_1({
   observedAt = null,
   now = () => new Date(),
   timeoutMs = 30_000,
+  retryAttempts = 3,
+  retryDelayMs = 500,
   minimumByMarket = { TWSE: 500, TPEX: 400 },
 } = {}) {
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
   if (observedAt !== null && !Number.isFinite(Date.parse(observedAt))) throw new Error("observedAt must be ISO");
   if (typeof now !== "function") throw new Error("now must be a function");
+  if (!Number.isInteger(retryAttempts) || retryAttempts < 1 || retryAttempts > 8) {
+    throw new Error("retryAttempts must be an integer from 1 to 8");
+  }
+  if (!Number.isInteger(retryDelayMs) || retryDelayMs < 0 || retryDelayMs > 10000) {
+    throw new Error("retryDelayMs must be an integer from 0 to 10000");
+  }
   const [twseText, tpexText] = await Promise.all([
-    fetchText(CURRENT_LISTING_METADATA_SOURCES.TWSE.sourceUrl, fetchImpl, timeoutMs),
-    fetchText(CURRENT_LISTING_METADATA_SOURCES.TPEX.sourceUrl, fetchImpl, timeoutMs),
+    fetchText(CURRENT_LISTING_METADATA_SOURCES.TWSE.sourceUrl, fetchImpl, timeoutMs, retryAttempts, retryDelayMs),
+    fetchText(CURRENT_LISTING_METADATA_SOURCES.TPEX.sourceUrl, fetchImpl, timeoutMs, retryAttempts, retryDelayMs),
   ]);
   const observed = observedAt || now().toISOString();
   if (!Number.isFinite(Date.parse(observed))) throw new Error("now must return a valid date");
