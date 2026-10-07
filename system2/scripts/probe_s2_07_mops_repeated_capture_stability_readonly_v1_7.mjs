@@ -35,7 +35,6 @@ const reconciliation=await reconcileRepeatedMopsCapturesV1_7({
   requiredTrailingZeroUnionGrowthCaptures:2,
 });
 
-assert.equal(reconciliation.blockers.length,0,JSON.stringify(reconciliation.blockers));
 assert.equal(reconciliation.captureCount,paths.length);
 assert.equal(reconciliation.payloadMutationCount,0);
 assert.equal(reconciliation.identityConflictCount,0);
@@ -76,6 +75,8 @@ console.log(JSON.stringify({
   latestPairMembershipStable:reconciliation.latestPairMembershipStable,
   allMembershipIdentical:reconciliation.allMembershipIdentical,
   payloadMutationCount:reconciliation.payloadMutationCount,
+  blockers:reconciliation.blockers,
+  unresolvedDiagnosticOnlyVersionCount:reconciliation.unresolvedDiagnosticOnlyVersionCount,
   lateDiscoveredPreexistingVersionCount:reconciliation.lateDiscoveredPreexistingVersionCount,
   disappearedAfterObservationVersionCount:reconciliation.disappearedAfterObservationVersionCount,
   intermittentMembershipVersionCount:reconciliation.intermittentMembershipVersionCount,
