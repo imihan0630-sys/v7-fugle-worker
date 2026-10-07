@@ -1,0 +1,112 @@
+name: D03 Third Raw Session Capture Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/d03-third-raw-session-capture-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Prepare working ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/d03-b1 /tmp/d03-b2 /tmp/d03-out
+          cp research/technical_indicator_fixed_cadence_observations_20260930.json /tmp/d03-out/ledger.json
+
+      - name: Capture first four official responses
+        shell: bash
+        run: |
+          set -euo pipefail
+          capture() {
+            local url="$1" base="$2"
+            curl --http1.1 --fail --location --retry 2 --retry-all-errors --connect-timeout 15 --max-time 90               -D "/tmp/d03-b1/${base}.headers" -o "/tmp/d03-b1/${base}.json"               -w "%{time_total}" "$url" > "/tmp/d03-b1/${base}.seconds"
+            node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));' "/tmp/d03-b1/${base}.json"
+          }
+          capture "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL" twse_current
+          capture "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes" tpex_current
+          capture "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261007&type=ALLBUT0999&response=json" twse_hist
+          capture "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F10%2F07&id=&response=json" tpex_hist
+          python - <<'PY'
+          from pathlib import Path
+          for p in Path("/tmp/d03-b1").glob("*.seconds"):
+              ms=round(float(p.read_text().strip())*1000)
+              p.with_suffix(".ms").write_text(str(ms))
+          PY
+
+      - name: Build first compact receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/build_technical_indicator_daily_session_receipt_v0_1.mjs             /tmp/d03-out/ledger.json             /tmp/d03-out/technical_indicator_daily_session_receipt_20261007.json.gz             /tmp/d03-b1 2026-10-07 3             "$(cat /tmp/d03-b1/twse_current.ms)"             "$(cat /tmp/d03-b1/tpex_current.ms)"             "$(cat /tmp/d03-b1/twse_hist.ms)"             "$(cat /tmp/d03-b1/tpex_hist.ms)"             session 4 0 0             > /tmp/d03-out/build-first.json
+
+      - name: Capture same-date repeat
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 60
+          capture() {
+            local url="$1" base="$2"
+            curl --http1.1 --fail --location --retry 2 --retry-all-errors --connect-timeout 15 --max-time 90               -D "/tmp/d03-b2/${base}.headers" -o "/tmp/d03-b2/${base}.json"               -w "%{time_total}" "$url" > "/tmp/d03-b2/${base}.seconds"
+            node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));' "/tmp/d03-b2/${base}.json"
+          }
+          capture "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL" twse_current
+          capture "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes" tpex_current
+          capture "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261007&type=ALLBUT0999&response=json" twse_hist
+          capture "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F10%2F07&id=&response=json" tpex_hist
+          python - <<'PY'
+          from pathlib import Path
+          for p in Path("/tmp/d03-b2").glob("*.seconds"):
+              ms=round(float(p.read_text().strip())*1000)
+              p.with_suffix(".ms").write_text(str(ms))
+          PY
+
+      - name: Build repeat compact receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/build_technical_indicator_daily_session_receipt_v0_1.mjs             /tmp/d03-out/ledger.json             /tmp/d03-out/technical_indicator_daily_session_repeat_receipt_20261007.json.gz             /tmp/d03-b2 2026-10-07 3             "$(cat /tmp/d03-b2/twse_current.ms)"             "$(cat /tmp/d03-b2/tpex_current.ms)"             "$(cat /tmp/d03-b2/twse_hist.ms)"             "$(cat /tmp/d03-b2/tpex_hist.ms)"             repeat-b2 4 0 0             > /tmp/d03-out/build-repeat.json
+
+      - name: Freeze capture metadata without raw bodies
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require("fs");
+          const crypto=require("crypto");
+          const ledgerPath="/tmp/d03-out/ledger.json";
+          const ledger=JSON.parse(fs.readFileSync(ledgerPath,"utf8"));
+          ledger.summary.maturityPct=56.7;
+          ledger.summary.rawSourceVersionGate="THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING";
+          ledger.summary.outcomes="CLOSED";
+          ledger.summary.formalCoreImpact="NONE_LOCKED";
+          ledger.exactNextContinuationPoint="Validate the third-session raw-byte receipt and same-date repeat; if the 3-session source-version count passes, keep observer/outcomes blocked until independent attestation, certified symbol sessions, corporate-action ancestry, immutable parent-child reconciliation, exact replay-window continuity and D16 method gates pass.";
+          fs.writeFileSync(ledgerPath,JSON.stringify(ledger,null,2)+"\n");
+          const meta={schemaVersion:"D03_THIRD_RAW_SESSION_CAPTURE_ARTIFACT_V0_1",tradeDate:"2026-10-07",rawPayloadsPersisted:false,files:{}};
+          for(const name of ["technical_indicator_daily_session_receipt_20261007.json.gz","technical_indicator_daily_session_repeat_receipt_20261007.json.gz","ledger.json","build-first.json","build-repeat.json"]){
+            const p="/tmp/d03-out/"+name,b=fs.readFileSync(p);
+            meta.files[name]={bytes:b.length,sha256:crypto.createHash("sha256").update(b).digest("hex")};
+          }
+          fs.writeFileSync("/tmp/d03-out/artifact_manifest.json",JSON.stringify(meta,null,2)+"\n");
+          NODE
+
+      - name: Upload compact receipts only
+        uses: actions/upload-artifact@v4
+        with:
+          name: d03-third-raw-session-20261007
+          path: /tmp/d03-out/
+          if-no-files-found: error
+          retention-days: 30
