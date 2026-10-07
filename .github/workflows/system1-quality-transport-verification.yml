@@ -23,7 +23,86 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Build production Worker from guarded patches
+        run: |
+          set -euo pipefail
+          python3 scripts/apply_v7_5_27.py
+          python3 scripts/apply_v7_5_30.py
+          python3 scripts/apply_v7_5_31.py
+          python3 scripts/apply_v7_5_33.py
+          python3 scripts/apply_v8_0_1.py
+          python3 scripts/apply_v8_0_2.py
+          python3 scripts/apply_v8_0_3.py
+          python3 scripts/apply_v8_0_4.py
+          python3 scripts/apply_v8_1_0.py
+          python3 scripts/apply_v8_1_1.py
+          python3 scripts/apply_v8_1_2.py
+          python3 scripts/apply_v8_1_3.py
+          python3 scripts/apply_v8_2_0.py
+          python3 scripts/apply_v8_2_1.py
+          python3 scripts/apply_v8_3_0.py
+          python3 scripts/apply_v8_3_1.py
+          python3 scripts/apply_v8_4_0.py
+          python3 scripts/apply_v8_4_1.py
+          python3 scripts/apply_v8_5_0.py
+          python3 scripts/apply_v8_5_2.py
+          python3 scripts/apply_v8_6_0.py
+          python3 scripts/apply_v8_6_1.py
+          python3 scripts/apply_v8_6_2.py
+          python3 scripts/apply_v8_6_3.py
+          python3 scripts/apply_v8_7_0.py
+          python3 scripts/apply_v8_7_1.py
+          python3 scripts/apply_v8_7_2.py
+          python3 scripts/apply_v8_7_3.py
+          python3 scripts/apply_v8_7_4.py
+          python3 scripts/apply_v8_7_5.py
+          python3 scripts/apply_v8_7_6.py
+          python3 scripts/apply_v8_7_7.py
+          python3 scripts/apply_v8_7_8.py
+          python3 scripts/apply_v8_7_9.py
+          python3 scripts/apply_v8_7_10.py
+          python3 scripts/apply_v8_7_11.py
+          python3 scripts/apply_v8_7_12.py
+          python3 scripts/apply_v8_7_13.py
+          python3 scripts/apply_v8_8_0.py
+          python3 scripts/apply_v8_8_1.py
+          python3 scripts/apply_v8_8_2.py
+          python3 scripts/apply_v8_9_0.py
+          python3 scripts/apply_v8_9_1.py
+          python3 scripts/apply_v8_9_2.py
+          python3 scripts/apply_v8_9_3.py
+          python3 scripts/apply_v8_9_4.py
+          python3 scripts/apply_v8_9_5.py
+          python3 scripts/apply_v8_9_6.py
+          python3 scripts/apply_v8_9_7.py
+          python3 scripts/apply_v8_9_8.py
+          python3 scripts/apply_v8_9_9.py
+          python3 scripts/apply_v8_10_0.py
+          python3 scripts/apply_v8_11_0.py
+          python3 scripts/rebase_v8_12_anchor.py
+          python3 scripts/apply_v8_12_0.py
+          python3 scripts/apply_v8_13_0.py
+          python3 scripts/apply_v8_14_0.py
+          python3 scripts/apply_v8_14_1.py
+          python3 scripts/apply_v8_14_2.py
+          python3 scripts/apply_v8_14_3.py
+          python3 scripts/apply_v8_14_4.py
+          python3 scripts/apply_v8_15_0.py
+          python3 scripts/apply_v8_15_1.py
+          python3 scripts/apply_v8_15_2.py
+          python3 scripts/apply_v8_15_3.py
+          python3 scripts/apply_v8_15_4.py
+          python3 scripts/apply_v8_16_0.py
+          python3 scripts/apply_v8_17_0.py
+          python3 scripts/apply_v8_18_0.py
+          python3 scripts/apply_v8_19_0.py
+          python3 scripts/apply_v8_19_1_pve248_candidate.py
+          python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
+          python3 scripts/apply_v8_20_0.py
+          # V8.9.3 Hybrid WATCH regression contract
       - name: Verify transport-retry contract offline
+        env:
+          V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
         run: node tests/test_v8_9_7_recovery_hardening.mjs
       - name: Recover official quality only for 2026-10-06
         env:
