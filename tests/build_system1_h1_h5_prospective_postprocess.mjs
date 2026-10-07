@@ -7,7 +7,7 @@ const c2Path=resolve(process.env.C2_EVIDENCE_OUTPUT||"artifacts/system1-c2-paire
 const c3Path=resolve(process.env.C3_REGISTRATION_OUTPUT||"artifacts/system1-c3-registration.json");
 const readinessPath=resolve(process.env.H1_H5_READINESS_OUTPUT||"artifacts/system1-h1-h5-readiness.json");
 const c5Path=resolve(process.env.C5_SHORT_OUTPUT||"artifacts/system1-c5-short.json");
-const bridgePath=resolve(process.env.OPPORTUNITY_LOSS_OUTPUT||"artifacts/system1-opportunity-loss-v0.2.json");
+const bridgePath=resolve(process.env.OPPORTUNITY_LOSS_OUTPUT||"artifacts/system1-opportunity-loss-v0.3.json");
 const json=async p=>JSON.parse(await readFile(p,"utf8"));
 const save=async(p,v)=>{await mkdir(dirname(p),{recursive:true});await writeFile(p,JSON.stringify(v,null,2)+"\n","utf8");};
 
