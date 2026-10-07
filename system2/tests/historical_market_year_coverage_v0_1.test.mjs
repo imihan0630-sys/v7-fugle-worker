@@ -3,6 +3,8 @@ import {
   buildHistoricalMarketYearCoverageV0_1,
   buildObservedIntervalUniverseRegistryV0_1,
   classifyHistoricalA1ObservationV0_1,
+  tpexCmodeRocDateV0_1,
+  parseTpexCmodePositiveStopSessionsV0_1,
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 
 function bar(symbol, marketDate, overrides={}) {
@@ -136,5 +138,48 @@ assert.deepEqual(tpexObserved.memberships.find(x=>x.symbol==="3105"),{
   firstObservedDate:null,lastObservedDate:null,
   membershipBasis:"OFFICIAL_CURRENT_LISTING_DATE_NO_A1_OBSERVATION",
 });
+
+assert.equal(tpexCmodeRocDateV0_1("2023-04-10"),"112/04/10");
+
+const cmodePositive=parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate:"2023-04-10",
+  coverageTo:"2023-12-31",
+  sourceUrl:"https://www.tpex.org.tw/web/stock/aftertrading/cmode/chtm_result.php?l=zh-tw&o=json&d=112/04/10",
+  sourceHash:"c".repeat(64),
+  payload:{
+    reportDate:"112/04/10",
+    aaData:[
+      ["4806","昇華","","","","","停止交易","","",""],
+      ["6488","環球晶","","","","","","","",""],
+      ["3105","穩懋","","","","","-","","",""],
+    ],
+  },
+});
+assert.equal(cmodePositive.state,"POSITIVE_SESSION_SOURCE_OBSERVED");
+assert.equal(cmodePositive.rowCount,3);
+assert.equal(cmodePositive.positiveStopCount,1);
+assert.equal(cmodePositive.absenceCertifiesNoStop,false);
+assert.deepEqual(cmodePositive.intervals.map(x=>({
+  market:x.market,symbol:x.symbol,suspendedFrom:x.suspendedFrom,resumedOn:x.resumedOn,
+  sourceKind:x.sourceKind,sessionEvidenceOnly:x.sessionEvidenceOnly,
+})),[{
+  market:"TPEX",symbol:"4806",suspendedFrom:"2023-04-10",resumedOn:"2023-04-11",
+  sourceKind:"TPEX_CMODE_POSITIVE_STOP_SESSION",sessionEvidenceOnly:true,
+}]);
+
+const cmodeDateMismatch=parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate:"2023-04-10",
+  coverageTo:"2023-12-31",
+  sourceUrl:"https://example.invalid/cmode",
+  sourceHash:"d".repeat(64),
+  payload:{reportDate:"112/04/11",aaData:[["4806","昇華","","","","","停止交易","","",""]]},
+});
+assert.equal(cmodeDateMismatch.state,"SOURCE_DATE_IDENTITY_UNCERTIFIED");
+assert.equal(cmodeDateMismatch.positiveStopCount,0);
+assert.equal(cmodeDateMismatch.intervals.length,0);
+assert.equal(cmodeDateMismatch.absenceCertifiesNoStop,false);
+
+assert.deepEqual(unknown.unknownSessionDates,["2017-01-04"]);
+assert.deepEqual(classified.unknownSessionDates,[]);
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
