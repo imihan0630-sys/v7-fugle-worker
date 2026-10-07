@@ -405,3 +405,68 @@ Canonical audit map:
 核心判準：
 
 **每次正式進度回報不只要回答「做到幾％」，還要回答「這個聊天室到底負責幾個模組、已完成幾個、還剩幾個」。**
+
+
+## 十五、舊聊天室續接強制刷新與模組進度送出閘門（MANDATORY / FAIL-CLOSED）
+
+本節專門修補「舊聊天室已載入舊規則，使用者只說繼續時仍沿用舊格式」的問題。
+
+### 1. 不分新舊聊天室
+
+只要聊天室使用本 repository／bootstrap，無論建立於規則更新前或更新後，收到以下任一類續接意圖時都必須先刷新 canonical 規則：
+
+- 繼續；
+- 接續；
+- 開始／開始學習／開始研究；
+- 繼續深挖／繼續深化／繼續提升進度；
+- 往下執行／繼續執行；
+- 其他語意等價的 continuation 指令。
+
+不得以「這是舊聊天室」「前面已經讀過」「只是接著做」為理由沿用先前快取格式。
+
+### 2. 01～15 每次 continuation 的最小刷新集合
+
+在開始新的實質研究前，至少重新讀取 latest `main` 的：
+
+1. `shared-knowledge/ROOM_BOOTSTRAP.md`;
+2. `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`;
+3. `shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`;
+4. `research/stock_market_learning_tracker_v0_1.json`;
+5. 該研究室專屬 checkpoint。
+
+如涉及 SDA／跨領域／curriculum governance，再依既有規則加讀對應正式檔。
+
+### 3. 00／System 1／System 2／execution lane
+
+收到 continuation 指令時，也必須刷新 latest main、bootstrap／registry 與各自 canonical checkpoint／inventory／governance；舊聊天室先前載入的 module count、status、percent、SHA 都不能當成新回合權威。
+
+### 4. ROOM_MODULE_PROGRESS_GATE
+
+凡正式回覆具有進度／完成／checkpoint／階段結論語意，送出前必須檢查：
+
+- 是否列出【本室責任模組進度】；
+- 是否有總數、已完成、尚未完成、完成率；
+- 多 Dxx 研究室是否逐 Dxx + 本室合計；
+- 數值是否來自當次 latest-main tracker／canonical inventory；
+- 是否滿足 TOTAL = COMPLETED + REMAINING；
+- 是否避免把「模組完成率」誤寫成「成熟度」。
+
+01～15 若缺任一必要欄位：
+
+`ROOM_MODULE_PROGRESS_GATE_FAIL`
+
+在補齊前不得視為完整交付。
+
+非 learning-room 若沒有唯一 canonical binary inventory，必須明寫：
+
+`MODULE_COUNT_NOT_CANONICALLY_DEFINED`
+
+不得省略整個區塊，也不得虛構分母。
+
+### 5. 舊排程／舊提示詞不得豁免
+
+舊自動學習排程、舊聊天室 system prompt、舊 handoff、舊輸出範例即使未包含新版模組統計欄位，也一律被本節與最新 `RESEARCH_OUTPUT_CONTRACT.md` 覆蓋。
+
+### 6. 核心判準
+
+**「規則已經寫入 GitHub」不等於舊聊天室已遵守。每次 continuation 都必須重新載入最新 canonical 輸出規則；送出前以 gate 驗證，不能靠聊天室記憶。**
