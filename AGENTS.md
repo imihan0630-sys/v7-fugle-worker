@@ -164,3 +164,29 @@ For any Chat / Work / Codex task using this repository, regardless of ChatGPT Pr
 - project boundaries do not create governance forks.
 
 A room that does not load this repository/shared bootstrap is outside automatic enforcement and must explicitly adopt it before compliance can be assumed.
+
+
+## Existing-room continuation refresh gate
+
+This is a repository-wide owner rule and applies to existing as well as newly created Chat / Work / Codex rooms that use this repository.
+
+When the owner sends a continuation instruction such as `繼續`, `接續`, `開始`, `往下執行`, `繼續深挖`, `繼續研究`, or an equivalent instruction:
+
+1. Before substantive work, re-read latest `main` and refresh the current canonical shared rules instead of relying on the room's previously loaded prompt/cache.
+2. For 01-15 learning rooms, the mandatory refresh set is:
+   - `shared-knowledge/ROOM_BOOTSTRAP.md`;
+   - `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`;
+   - `shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`;
+   - `research/stock_market_learning_tracker_v0_1.json`;
+   - the room's dedicated checkpoint(s).
+3. For 00 / System 1 / System 2 / execution lanes, refresh the bootstrap/registry plus the room's canonical checkpoint/inventory/governance files before a formal progress reply.
+4. Old-room cached output examples are never authority after a canonical rule change.
+5. Before sending any formal progress/completion/checkpoint reply, enforce `ROOM_MODULE_PROGRESS_GATE`:
+   - if the room has canonical learning modules, include TOTAL / COMPLETED / REMAINING / COMPLETION_RATE using latest tracker and registry responsibility;
+   - if the room has a canonical work-unit inventory, use that inventory and identify the counting basis;
+   - if no canonical binary inventory exists, output `MODULE_COUNT_NOT_CANONICALLY_DEFINED` rather than inventing numbers.
+6. For 01-15, completion-count semantics are fixed: module level `L2` or higher = completed basic research coverage; `L0` or `L1` = remaining. This count is distinct from maturity percentage.
+7. A formal progress reply that omits the required module-count block is `ROOM_MODULE_PROGRESS_GATE_FAIL` and is not a complete delivery.
+8. This refresh gate is triggered by continuation intent in an already-open room; it is not limited to bootstrap of a new chat.
+
+This rule does not authorize Formal Core or production behavior changes.
