@@ -77,7 +77,7 @@ const low=validateActualHoldingsScreenshotExtractionV0_1({
     screenshotCapturedAt:null,
     sourceImage:{sha256:"f".repeat(64),referenceId:"SYNTHETIC_LOW_CONFIDENCE"},
     rows:[{
-      symbol:"2330",companyName:"台積電",quantity:"1,000",averageCost:"1,0O0.5",
+      symbol:"2330",companyName:"台積電",quantity:"1,000",averageCost:"1,000.5",
       currency:"TWD",confidence:{symbol:.70,quantity:.75,averageCost:.40},
       ambiguityFlags:["AVERAGE_COST_GLYPH_AMBIGUOUS"],
     }],
@@ -87,6 +87,19 @@ assert.equal(low.validationState,"REVIEW_REQUIRED");
 assert.equal(low.actualHoldingsWriteEligible,false);
 assert.ok(low.reviewIssueCodes.includes("SCREENSHOT_ASOF_UNKNOWN"));
 assert.ok(low.reviewIssueCodes.includes("CORE_FIELD_LOW_CONFIDENCE"));
+
+const invalidCore=validateActualHoldingsScreenshotExtractionV0_1({
+  extraction:{
+    ...baseExtraction,
+    sourceImage:{sha256:"1".repeat(64),referenceId:"SYNTHETIC_INVALID_CORE"},
+    rows:[{
+      symbol:"2330",companyName:"台積電",quantity:"1,000",averageCost:"1,0O0.5",
+      currency:"TWD",confidence:{symbol:.99,quantity:.99,averageCost:.99},
+    }],
+  },
+});
+assert.equal(invalidCore.validationState,"REJECTED");
+assert.ok(invalidCore.blockingIssueCodes.includes("AVERAGE_COST_INVALID"));
 
 const forbidden=validateActualHoldingsScreenshotExtractionV0_1({
   extraction:{...baseExtraction,sourceType:"BROKER_API"},
@@ -127,6 +140,8 @@ const artifact={
   negativeFixture:{
     lowConfidenceState:low.validationState,
     lowConfidenceIssueCodes:low.reviewIssueCodes,
+    invalidCoreState:invalidCore.validationState,
+    invalidCoreIssueCodes:invalidCore.blockingIssueCodes,
     forbiddenSourceState:forbidden.validationState,
     forbiddenSourceIssueCodes:forbidden.blockingIssueCodes,
   },
