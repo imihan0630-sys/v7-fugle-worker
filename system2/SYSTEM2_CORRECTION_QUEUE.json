@@ -1094,7 +1094,7 @@
       "directiveId": "S2-CORR-20261007-002",
       "createdAt": "2026-10-07T16:40:34+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "REJECTED_WITH_EVIDENCE",
       "title": "Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies",
       "affectedScope": [
         "System2 Stage-1 Decision Clock / prospective readiness",
@@ -1150,9 +1150,11 @@
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
       "implementationEvidence": [],
-      "verificationEvidence": [],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T16:54:00+08:00"
+      "verificationEvidence": [
+        "system2/evidence/S2_CORR_20261007_002_REJECTION_VERIFICATION_20261007_V0_1.json @ e76d10f345aa05145e01ace6193017697b8efe8f"
+      ],
+      "finalDisposition": "REJECTED_WITH_EVIDENCE — global A1+B2+A5 Decision Clock mismatch is real as a research/review-clock observation, but latest-main Stage-1 preflight, Limited Shadow strategy-run and capacity paths do not consume B2/A5/global requiredReady. No current SHORT_MOMENTUM runtime over-gating defect was proven; preserve as a future wiring watchlist.",
+      "updatedAt": "2026-10-07T18:43:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
