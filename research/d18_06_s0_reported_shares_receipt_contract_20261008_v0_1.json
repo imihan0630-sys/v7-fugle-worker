@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "D18_06_S0_REPORTED_SHARES_RECEIPT_CONTRACT_V0_1",
+  "owner": "ROOM11_D18",
+  "module": "D18-06",
+  "status": "SEMANTIC_CONTRACT_FROZEN_EXECUTABLE_OBSERVER_PENDING",
+  "formalCoreImpact": "NONE",
+  "networkCallDeltaRequired": 0,
+  "object": "REPORTED_SHARES_SNAPSHOT_CONTEXT",
+  "denominatorSemantic": "OFFICIAL_PROFILE_REPORTED_ISSUED_COMMON_SHARES",
+  "allowedStates": [
+    "S0_READY_SOURCE_DATED",
+    "S0_READY_CAPTURE_ONLY_DATE_UNKNOWN",
+    "S0_UNKNOWN_SOURCE_OR_VALUE_INVALID"
+  ],
+  "sourceDateStates": [
+    "SOURCE_DATED",
+    "CAPTURED_SOURCE_DATE_UNKNOWN",
+    "SOURCE_DATE_INVALID"
+  ],
+  "requiredRowFields": [
+    "receiptVersion",
+    "scanDate",
+    "decisionTimestamp",
+    "capturedAt",
+    "market",
+    "symbol",
+    "sourceId",
+    "sourceUrl",
+    "sourceTransportPath",
+    "sourceFallbackState",
+    "sourceReportedDate",
+    "sourceDateState",
+    "shareFieldName",
+    "reportedShares",
+    "shareUnit",
+    "fullParsedSourceRowHash",
+    "sourceRowsCanonicalHash",
+    "parserVersion",
+    "pointInTimeObservationState",
+    "effectiveDenominatorState",
+    "effectiveDenominatorCertified",
+    "researchOnly",
+    "decisionImpact"
+  ],
+  "mandatoryFixedValues": {
+    "effectiveDenominatorCertified": false,
+    "researchOnly": true,
+    "decisionImpact": false,
+    "formalMarketCapSourceClaimed": false
+  },
+  "mergedBranchStates": [
+    "OFFICIAL_PROFILE_SHARES_ONLY",
+    "CUSTOM_SHARES_OVERRIDE_PRESENT",
+    "CUSTOM_EXPLICIT_MARKET_CAP_PRESENT",
+    "CUSTOM_SHARES_AND_EXPLICIT_MARKET_CAP_PRESENT",
+    "NO_MARKET_CAP_INPUT",
+    "SOURCE_BRANCH_UNKNOWN"
+  ],
+  "aggregateCounts": [
+    "marketBaseN",
+    "profileRowObservedN",
+    "reportedSharesValidN",
+    "sourceDatedN",
+    "captureOnlyDateUnknownN",
+    "sourceDateInvalidN",
+    "customSharesOverridePresentN",
+    "customExplicitMarketCapPresentN",
+    "sourceBranchUnknownN",
+    "S0ReadyN",
+    "S0UnknownN"
+  ],
+  "tests": [
+    {
+      "id": "S0-T01",
+      "case": "OFFICIAL_VALID_SHARES_SOURCE_DATE",
+      "expect": "S0_READY_SOURCE_DATED"
+    },
+    {
+      "id": "S0-T02",
+      "case": "OFFICIAL_VALID_SHARES_NO_SOURCE_DATE",
+      "expect": "S0_READY_CAPTURE_ONLY_DATE_UNKNOWN"
+    },
+    {
+      "id": "S0-T03",
+      "case": "CAPTURE_AFTER_DECISION",
+      "expect": "S0_UNKNOWN_SOURCE_OR_VALUE_INVALID"
+    },
+    {
+      "id": "S0-T04",
+      "case": "SOURCE_DATE_INVALID_OR_FUTURE",
+      "expect": "S0_UNKNOWN_SOURCE_OR_VALUE_INVALID"
+    },
+    {
+      "id": "S0-T05",
+      "case": "SHARES_MISSING_ZERO_OR_NON_NUMERIC",
+      "expect": "S0_UNKNOWN_SOURCE_OR_VALUE_INVALID"
+    },
+    {
+      "id": "S0-T06",
+      "case": "SAME_SHARES_DIFFERENT_FULL_ROW",
+      "expect": "DISTINCT_ROW_HASH_AND_RECEIPT"
+    },
+    {
+      "id": "S0-T07",
+      "case": "CUSTOM_SHARES_OVERRIDE",
+      "expect": "OFFICIAL_S0_RETAINED_FINAL_BRANCH_CUSTOM_SHARES"
+    },
+    {
+      "id": "S0-T08",
+      "case": "CUSTOM_EXPLICIT_MARKET_CAP",
+      "expect": "OFFICIAL_S0_RETAINED_FINAL_BRANCH_CUSTOM_CAP"
+    },
+    {
+      "id": "S0-T09",
+      "case": "CSV_FALLBACK_VALID_EXPORT_DATE",
+      "expect": "PRESERVE_SOURCE_REPORTED_DATE"
+    },
+    {
+      "id": "S0-T10",
+      "case": "TPEX_DATE_FIELD",
+      "expect": "PRESERVE_SOURCE_REPORTED_DATE"
+    },
+    {
+      "id": "S0-T11",
+      "case": "CURRENT_S0_WITH_HISTORICAL_CLOSE",
+      "expect": "REJECT_HISTORICAL_DENOMINATOR_REUSE"
+    },
+    {
+      "id": "S0-T12",
+      "case": "ISSUED_SHARES_RELABELED_FREE_FLOAT",
+      "expect": "SEMANTIC_REJECTION"
+    },
+    {
+      "id": "S0-T13",
+      "case": "IDENTICAL_INPUT_REPLAY",
+      "expect": "DETERMINISTIC_RECEIPT_HASH"
+    }
+  ],
+  "forbiddenClaims": [
+    "S0_IMPLIES_EFFECTIVE_DENOMINATOR",
+    "S0_IMPLIES_FORMAL_USED_OFFICIAL_SHARES",
+    "S0_IS_FREE_FLOAT",
+    "SOURCE_REPORTED_DATE_EQUALS_EFFECTIVE_DATE",
+    "CURRENT_S0_MAY_BACKFILL_HISTORICAL_MARKET_CAP"
+  ],
+  "maturityImpact": "NONE"
+}
