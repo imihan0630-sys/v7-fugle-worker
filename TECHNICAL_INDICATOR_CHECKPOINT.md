@@ -6201,3 +6201,103 @@ Exact next:
 2. separately keep T48 as proposal-only until owner-authorized implementation, merge/deploy approval, Production verification and same-session generation-set finalization receipt exist;
 3. require both exact parent identity and finalized complete same-session generation inventory before promotion-grade same-parent reconciliation;
 4. continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion and S2-07 bounded stabilization.
+
+
+## 2026-10-07 D03 — TI-1259~1274 three-layer technical continuity history maturity firewall
+
+Canonical artifacts:
+- `research/d03_technical_continuity_history_maturity_map_20261007_v0_1.json`;
+- `research/test_d03_technical_continuity_history_maturity_map_v0_1.mjs`;
+- `research/d03_technical_continuity_history_maturity_execution_receipt_20261007_v0_1.json`.
+
+Canonical workflow:
+- `D03 Technical Continuity History Maturity Readonly`;
+- run `37591631091`;
+- conclusion SUCCESS.
+
+### TI-1259~1263 — three evidence layers are now frozen
+
+D03 formally separates:
+1. Layer A: RAW A1 historical price existence / immutable cold-store/source reconciliation;
+2. Layer B: symbol-session completeness with every missing/extra session causally explained;
+3. Layer C: revision/source-version fact known no later than historical decision cutoff.
+
+Hard rule:
+`RAW_A1_HISTORY_EXISTENCE_DOES_NOT_IMPLY_SYMBOL_SESSION_COMPLETENESS_AND_DOES_NOT_IMPLY_REVISION_KNOWN_AT_COMPLETENESS`.
+
+This prevents large historical-data completion percentages from being mistaken for promotion-grade PIT technical continuity.
+
+### TI-1264~1268 — current market-year evidence mapped into D03
+
+2021 TPEx:
+- 191,643 cold rows = 191,643 fresh official rows;
+- zero missing/extra/source-row/canonical-A1 mismatch in full-year reconciliation;
+- 412 explicit UNKNOWN symbol-session gaps;
+- Data Coverage PASS / Replay Readiness PARTIAL;
+- continuity state remains UNVERIFIED;
+- D03 Layer A ACCEPT / Layer B PARTIAL / Layer C NOT PROVEN.
+
+2023 TPEx:
+- physical data coverage accepted;
+- 395 explicit UNKNOWN symbol-session gaps;
+- unexpectedBars=0;
+- Layer A ACCEPT / Layer B PARTIAL / Layer C NOT PROVEN.
+
+2024 TWSE:
+- 246,037 cold rows = 246,037 fresh official rows;
+- zero source/canonical mismatch in accepted storage/source reconciliation;
+- 478 explicit UNKNOWN symbol-session gaps;
+- Layer A ACCEPT / Layer B PARTIAL / Layer C NOT PROVEN.
+
+2024 TPEx:
+- old run `37587943578` failed twice on different PRIMARY transport dates;
+- legacy endpoint remains forbidden because semantics are non-equivalent;
+- bounded PRIMARY-only transport-recovery implementation is on main and CI `37590871628` passed;
+- fresh physical reverify remains DATA_LANE responsibility;
+- D03 Layer A PENDING / Layer B NOT REVIEWABLE / Layer C NOT PROVEN.
+
+### TI-1269~1271 — indicator-specific consequences
+
+D03-10 Bollinger:
+- Layer A may support deterministic formula replay on observed rows;
+- it cannot establish an exact 20 eligible-session window without Layer B;
+- it cannot establish promotion-grade decision-time continuity without Layer C;
+- a numerical 20-row window is not equivalent to a certified 20-session window.
+
+D03-09 ADX:
+- Layer A may reconstruct recursive H/L/C arithmetic on observed rows;
+- one unexplained missing/adjusted session breaks promotion-grade recursive lineage;
+- Layer B and Layer C remain mandatory;
+- canonical Wilder FULL_REPLAY or replay-certified trusted prior state remains additionally required.
+
+### TI-1272 — transport resilience evidence boundary
+
+Bounded retry of the same canonical PRIMARY transport after transient exhaustion is accepted as acquisition reliability engineering.
+It does not change source semantics and cannot upgrade evidence from Layer A to B/C.
+Non-equivalent legacy fallback remains prohibited.
+
+### TI-1273 — machine firewall
+
+Repository-native read-only workflow run `37591631091` completed SUCCESS.
+The machine test enforces:
+- Layer A PASS cannot auto-promote D03 continuity;
+- unresolved Layer B/C preserves D03-09/D03-10 at L2/40;
+- raw-source gate remains 2/3;
+- legacy TPEx fallback cannot manufacture completeness.
+
+### TI-1274 — maturity and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- D03-09 = L2/40;
+- D03-10 = L2/40;
+- raw source/version gate = 2/3;
+- technical observer = BLOCKED;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact next:
+- DATA_LANE owns fresh 2024 TPEx physical dispatch/acceptance and later market-years; D03 must not duplicate that work;
+- when fresh 2024 TPEx acceptance arrives, credit Layer A only first;
+- then independently review Layer B symbol-session gaps and Layer C revision-known-at;
+- in parallel consume first genuine V8.20 Formal->C1 binding receipt, S2-07 bounded stabilization, System1/System2 D03 redundancy/dedup diagnostics, D16 method/incrementality receipt and raw-source observer completion.
