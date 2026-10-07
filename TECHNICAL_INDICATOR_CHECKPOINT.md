@@ -7066,3 +7066,154 @@ Exact next:
 2. verify exact replay/date-set/sourceHistoryHash/receiptHash identity;
 3. execute/consume the physical artifact-only NC-T01 S22-T11~T16 receipt;
 4. independently keep annual TWSE V0.6 lifecycle rehabilitation, third raw D03 source-version receipt, genuine V8.20 parent, T48, S2-07, System1/System2 D03 dedup/redundancy and D16 incrementality as separate gates.
+
+
+## 2026-10-07 D03 — TI-1397~1414 negative-evidence firewall + lifecycle boundary authority
+
+Canonical D03 artifact:
+- `research/d03_negative_evidence_boundary_authority_firewall_20261007_v0_1.json`.
+
+Cross-lane sources accepted:
+- `system2/evidence/S2_STAGE1_NCT01_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS_HANDOFF_20261007_V0_1.json`;
+- `research/D16_POST_CORR004_LIFECYCLE_OPEN_BOUNDARY_RESIDUAL_RISK_20261008_V0_1.md`;
+- `research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json`;
+- `S2-CORR-20261007-005` = HIGH / OPEN / BUILD_LANE;
+- artifact-only NC-T01 runner core merge `d2050fbc3379dfe618447f88f8104b31e494a633`.
+
+### TI-1397~1401 — absence proof is a typed evidence problem
+
+D03 freezes two distinct negative-evidence claims:
+
+A. market-data absence:
+`NO_SUSPENSION_OR_RELEVANT_LIFECYCLE_EVENT_IN_EXACT_WINDOW`;
+
+B. execution-independence absence:
+`NO_HIDDEN_SYSTEM1_SELECTION_FALLBACK`.
+
+These are orthogonal claims.
+
+Hard rules:
+- empty source result is not event-absence proof without bounded source completeness;
+- missing audit is not false;
+- positive event evidence and negative completeness are separate facts;
+- market-event absence does not prove execution independence;
+- execution-independence absence does not prove technical continuity.
+
+For market-data absence, HTTP 200, an empty array, positive-only announcement lookup with no match, partial pagination or transport success alone are insufficient.
+The admissible negative conclusion is:
+`NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`,
+and it requires exact replay-window query scope plus machine-verifiable response/range/schema/body completeness and causal source identity.
+
+For execution independence, all five hidden-fallback dimensions must be explicit:
+- cached System1 selection;
+- persisted System1 selection;
+- alias/compatibility reconstruction;
+- cross-project System1 selection import;
+- stale prior System1 selection reuse.
+
+Physical absence requires all five = PROVEN_ABSENT, exact-head transitive static audit, runtime no-forbidden-access evidence, and an immutable `HIDDEN_FALLBACK_AUDIT_SHA256` bound into the final receipt hash.
+
+### TI-1402~1406 — post-CORR004 open-boundary residual risk
+
+Current `twse_regulatory_lifecycle_source_v0_1.mjs` still allows:
+- STOP opens an interval;
+- RESUME / delisting closes it;
+- if no close is observed, the interval may be emitted through `coverageTo`.
+
+But the same source explicitly has:
+`absenceCertifiesNoEvent=false`.
+
+Therefore:
+`NO_RESUME_OBSERVED != SUSPENSION_CERTIFIED_ACTIVE_THROUGH_COVERAGE_TO`.
+
+Distinct false-readiness mechanism:
+1. a genuine STOP exists;
+2. the later RESUME is missing from retrieved evidence;
+3. resumed trading sessions are absent from D1;
+4. an uncertified open STOP deletes those expected resumed sessions;
+5. the exact-session denominator shrinks;
+6. older rows may now fit the shortened expected set.
+
+This does not reopen CORR-004.
+CORR-004 correctly closed the count-only older-row-substitution defect.
+This is a separate boundary-authority defect in the exception set used to construct expected sessions.
+
+D03 lifecycle interval admissibility states:
+- `CLOSED_POSITIVE_BOUNDARIES_CERTIFIED`: may exclude covered sessions;
+- `OPEN_ACTIVE_THROUGH_DATE_CERTIFIED`: may exclude only through a separately certified active-through bound;
+- `NOT_ADMISSIBLE_BOUNDARY_INCOMPLETE`: must not remove expected sessions.
+
+A bare `coverageTo` is never boundary authority.
+
+### TI-1407~1409 — D03-10 Bollinger consequence
+
+For D03-10:
+- exact 20 eligible sessions remain the denominator;
+- an uncertified open STOP may not shorten that denominator;
+- every excluded expected date must be covered by an admissible lifecycle interval;
+- if a resumed trading date is wrongly removed, the 20-row window may still look numerically complete while its mean, standard deviation, band width and percent-B are all computed on the wrong temporal support.
+
+Immediate physical gate remains:
+real hash-bound `CLEAR_NO_ACTION` continuity receipt with bounded TWSE suspension negative completeness.
+
+### TI-1410~1412 — D03-09 ADX consequence
+
+For D03-09:
+- only admissible lifecycle exclusions may alter the ordered H/L/C recursion clock;
+- an uncertified open STOP cannot remove resumed sessions;
+- post-STOP observed trading before a certified RESUME is a direct conflict requiring boundary resolution;
+- one wrongly deleted resumed session changes TR, +DM/-DM and Wilder smoothing ancestry even if sequence length remains valid.
+
+After a real continuity receipt, ADX still requires canonical Wilder FULL_REPLAY / replay-certified trusted prior state.
+
+### TI-1413 — artifact-only NC-T01 runner exists but physical independence is not yet provable
+
+PR #830 merged the artifact-only SHORT_MOMENTUM runner core.
+
+Accepted engineering semantics:
+- canonical strategy contract/spec/assessor;
+- replay-first continuity binding;
+- uncertified symbols remain INCOMPLETE and denominator-accounted;
+- persistence is dry-built, not executed;
+- typed hash chain spans policy/A1/replay/source-history/continuity/factor/persistence/orchestration/accounting.
+
+But S2-CORR-20261007-005 is HIGH / OPEN:
+the current receipt path can default omitted hidden-fallback evidence to false.
+
+Therefore:
+- runner core = implemented;
+- physical NC-T01 = not yet observed;
+- S22-T12/S22-T16 = not creditable;
+- no physical-independent-discovery promotion is allowed.
+
+### TI-1414 — current dual pre-physical gate and maturity
+
+Two parallel gates must both close before physical NC-T01:
+
+DATA_LANE:
+1. exact replay-window TWTAWU bounded-completeness receipt;
+2. three TWSE exact-range corporate-action sources;
+3. source-honest real continuity result:
+   `CLEAR_NO_ACTION_ELIGIBLE`, `ADJUSTED_CONTINUITY_REQUIRED`, or `CONTINUITY_UNKNOWN`.
+
+BUILD_LANE:
+1. CORR-005 hidden-fallback hardening;
+2. exact-head transitive static audit;
+3. runtime no-forbidden-access evidence;
+4. typed audit digest bound into final receipt dependency graph.
+
+D03 remains:
+- maturity = 56.7%;
+- 12 active modules;
+- 10 at current L3/60 milestone;
+- D03-09 and D03-10 = L2/40;
+- raw source/version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact next:
+consume whichever lands first:
+A. DATA_LANE bounded TWTAWU + real continuity receipt;
+B. BUILD_LANE CORR-005 hardening.
+After both pass, consume physical artifact-only NC-T01 S22-T11~T16.
+Keep the general lifecycle open-boundary correction separate from CORR-004 closure, and keep annual V0.6, raw-third-session, V8.20 genuine parent, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.
