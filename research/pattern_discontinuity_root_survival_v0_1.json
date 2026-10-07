@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "pattern-discontinuity-root-survival-v0.1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "abruptBreakAutomaticallyKillsRoot": false,
+  "gradualDriftAutomaticallyPreservesRoot": false,
+  "breakDateResetsDenominator": false,
+  "mechanicalGapEqualsInformationRepricing": false,
+  "outcomeJoin": "CLOSED"
+}
