@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "D18_SYSTEM2_STAGE1_POLICY_FREEZE_VALIDATION_V0_1",
+  "updatedAt": "2026-10-07T09:01:00+08:00",
+  "owner": "D18 / Room11",
+  "sourceMergeSha": "41e1d420083b1ea69f98a0ffcf23adab41fafaf1",
+  "sourcePolicy": "system2/SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md",
+  "status": "POLICY_FRAME_FROZEN_EVALUATION_PENDING_REGIME_UNKNOWN",
+  "policyFreezeAt": {
+    "utc": "2026-10-07T01:00:23Z",
+    "taipei": "2026-10-07T09:00:23+08:00"
+  },
+  "strategies": {
+    "SHORT_MOMENTUM": {
+      "strategyVersion": "V0.1-CONTRACT",
+      "assessorPolicyId": "S2-ASSESSOR-SM-LAUNCH-001",
+      "assessorPolicyVersion": "0.1-LAUNCH",
+      "system1Top6Required": false,
+      "system1RankRequired": false,
+      "weightedScore": false,
+      "outcomeTunedThreshold": false
+    },
+    "SWING_GROWTH": {
+      "strategyVersion": "V0.1-CONTRACT",
+      "assessorPolicyId": "S2-ASSESSOR-SG-LAUNCH-001",
+      "assessorPolicyVersion": "0.1-LAUNCH",
+      "requiredFamilies": [
+        "INDUSTRY_THESIS",
+        "FUNDAMENTAL_QUALITY"
+      ],
+      "system1Top6Required": false,
+      "system1RankRequired": false,
+      "rawProxyImputationAllowed": false
+    }
+  },
+  "exactHeadChecks": [
+    {
+      "runId": 37554899502,
+      "name": "verify",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37554899513,
+      "name": "preflight",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37554899485,
+      "name": "diagnostic",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37554899509,
+      "name": "regression",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37554899506,
+      "name": "verify",
+      "conclusion": "success"
+    }
+  ],
+  "runtimeBoundary": {
+    "strategyEvaluation": "ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED",
+    "ranking": "NOT_EXECUTED",
+    "capacity": "NOT_PRODUCED",
+    "predictionSnapshot": "NOT_PRODUCED",
+    "zeroPickDay": null,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "countsTowardDecisionClockReadiness": false,
+    "regimeState": "UNKNOWN",
+    "regimeReason": "VALIDATED_REGIME_SOURCES_NOT_WIRED"
+  },
+  "d18Disposition": {
+    "beforeFreeze": "NO_CANONICAL_PROSPECTIVE_POLICY_FRAME",
+    "afterFreeze": "CANONICAL_STAGE1_POLICY_FRAME_FROZEN",
+    "physicalStrategyEvaluationAvailable": false,
+    "strategyRegimeEvidenceAvailable": false,
+    "retrospectiveBackfillAllowed": false
+  },
+  "sda022": {
+    "t06_t10Passed": false,
+    "t11_t16Passed": false,
+    "reason": "PER_STRATEGY_FINGERPRINT_AND_PHYSICAL_NC_T01_RECEIPTS_NOT_YET_PRESENT"
+  },
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
