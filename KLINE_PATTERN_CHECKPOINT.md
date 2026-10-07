@@ -5921,3 +5921,50 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 first, then emit R7 under DL-097/DL-098.
 5. After one R1-R7 witness passes, hand to D16 under the frozen validation protocol.
 6. No L4 promotion or Formal Core change without actual OOS/prospective evidence.
+
+
+## Continuation update — DL-101~102 (2026-10-07)
+
+### DL-101 — scale / parameter stability firewall
+- Scale, lookback, sequence length, geometry thresholds, base/handle tolerances, timeframe and alignment are experiment dimensions.
+- Outcome-selected scales/parameters are prohibited.
+- Outcome-free representation states are now frozen:
+  STABLE_REPRESENTATION / CONFIG_SENSITIVE_REPRESENTATION / IDENTITY_DRIFT / DATA_BLOCKED / UNKNOWN.
+- Stability is a quality/falsification axis only; it does not imply alpha.
+- D01-09 raw gap parent remains continuous; named large-gap thresholds are child experiments.
+- DL-008 multi-scale rule is inherited: higher-timeframe agreement is not an independent vote.
+
+### DL-102 — cross-module redundancy graph
+- D01-02 / D01-03 / D01-07 / D01-09 cannot become four votes by default.
+- Graph edge classes frozen:
+  EXACT_REPRESENTATION_DUPLICATE;
+  NESTED_SHARED_ROOT;
+  OVERLAPPING_SHARED_ROOT;
+  SAME_EPISODE_DIFFERENT_LABEL;
+  SHARED_MECHANICAL_CONTEXT;
+  DISTINCT_ROOT_CANDIDATE.
+- A gap-up breakout day may simultaneously appear as a strong candle, named sequence, base breakout and gap pattern; these remain dependency-linked unless D16 proves residual independence.
+- Labels are preserved for explanation; graph edges prevent score/sample-size multiplication.
+- Cross-domain volume/volatility/microstructure/statistics remain with D02/D04/D05/D16.
+
+### Test evidence
+- DL-101~102: 15/15 PASS.
+- Cumulative through DL-102: 312/312 PASS.
+- Native Node parity and OOS performance are not claimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 modules remain L3.
+- Outcome-selected parameter search = PROHIBITED.
+- Cross-module redundancy graph = FROZEN.
+- Exact 2021 R1-R6 bundle remains pending.
+- Physical R7 remains blocked.
+- Outcome join remains CLOSED.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-102
+1. Re-read latest main for the frozen 1101/2021-06-15 owner bundle.
+2. If still absent, continue D01-owned outcome-blind work on representation invariance and episode identity across detector versions.
+3. If the owner bundle appears, validate DL-095, then emit R7 and its redundancy graph without outcomes.
+4. D16 receives only deduped/dependency-preserving R7 observations.
+5. No L4 promotion or Formal Core change without actual OOS/prospective evidence.
