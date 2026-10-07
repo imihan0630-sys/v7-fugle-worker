@@ -1,0 +1,28 @@
+name: D02 PVE257 Baseline Content Receipt
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - research/d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs
+      - research/d02_pve257_baseline_content_receipt_v0_1.mjs
+      - tests/test_d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs
+      - tests/test_d02_pve257_baseline_content_receipt_v0_1.mjs
+      - .github/workflows/d02-pve257-baseline-content-receipt.yml
+
+permissions:
+  contents: read
+
+jobs:
+  pve257:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate PVE-256 tri-state guard
+        run: node tests/test_d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs
+      - name: Validate PVE-257 baseline content receipt
+        run: node tests/test_d02_pve257_baseline_content_receipt_v0_1.mjs
