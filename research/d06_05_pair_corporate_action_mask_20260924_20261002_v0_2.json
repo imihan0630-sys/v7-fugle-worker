@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "D06_05_PAIR_CORPORATE_ACTION_MASK_20260924_20261002_V0_2",
+  "createdAt": "2026-10-08T05:53:37+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "baseMainSha": "e6c2a8186e95fd8961da1cead56db3dfd92396ad",
+  "pair": {
+    "priorTDCCSourceDate": "2026-09-24",
+    "currentTDCCSourceDate": "2026-10-02"
+  },
+  "inheritedFrom": "research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json",
+  "universe": {
+    "ordinaryFourDigitCommonSupport": 2962,
+    "exactDenominatorStableBeforeEventMask": 2783,
+    "denominatorChangedExcluded": 179
+  },
+  "inheritedStableDenominatorHardMasks": [
+    "1235",
+    "1441",
+    "2323",
+    "6550"
+  ],
+  "newlyMaterializedEvents": [
+    {
+      "symbol": "3234",
+      "name": "光環",
+      "market": "TPEX",
+      "family": "CASH_CAPITAL_INCREASE_NEW_SHARES",
+      "effectiveOrAllotmentDate": "2026-09-24",
+      "source": "TWSE public subscription schedule covering listed/OTC capital increases",
+      "sourceEvidence": "official public-offering schedule shows 上櫃增資 and allotment/listing date 115/09/24",
+      "priorGrade17Shares": 126474692,
+      "currentGrade17Shares": 126474692,
+      "denominatorDeltaPct": 0,
+      "prior400PlusPct": 35.22888753111176,
+      "current400PlusPct": 34.311239911934315,
+      "concentrationDeltaPctPoint": -0.9176476191774441,
+      "classification": "HARD_MASK_BOUNDARY_CLOCK_UNCERTAIN",
+      "rationale": "The share issuance/allotment date equals the prior TDCC source-date boundary. Same grade17 denominator across the weekly pair does not certify uncontaminated ownership continuity because the within-day TDCC/event ordering is not reconstructed."
+    },
+    {
+      "symbol": "4977",
+      "name": "眾達-KY",
+      "market": "TWSE",
+      "family": "CASH_CAPITAL_INCREASE_NEW_SHARES",
+      "effectiveOrAllotmentDate": "2026-09-30",
+      "source": "TWSE public subscription schedule",
+      "priorGrade17Shares": 82689841,
+      "currentGrade17Shares": 90989841,
+      "denominatorDeltaPct": 10.037508718876362,
+      "concentrationDeltaPctPoint": 2.7268003801081626,
+      "classification": "HARD_EVENT_ALREADY_EXCLUDED_BY_DENOMINATOR_CHANGE"
+    },
+    {
+      "symbol": "2464",
+      "name": "盟立",
+      "market": "TWSE",
+      "family": "CASH_CAPITAL_INCREASE_NEW_SHARES",
+      "effectiveOrAllotmentDate": "2026-10-01",
+      "source": "TWSE public subscription schedule",
+      "priorGrade17Shares": 218868886,
+      "currentGrade17Shares": 227368886,
+      "denominatorDeltaPct": 3.8836036292522635,
+      "concentrationDeltaPctPoint": -0.5705347202850533,
+      "classification": "HARD_EVENT_ALREADY_EXCLUDED_BY_DENOMINATOR_CHANGE"
+    },
+    {
+      "symbol": "8183",
+      "name": "精星",
+      "market": "TPEX",
+      "family": "SHARE_EXCHANGE_DELISTING",
+      "stopTradingDate": "2026-09-23",
+      "effectiveOrDelistingDate": "2026-10-01",
+      "successorSymbol": "6191",
+      "exchangeRatio": "1 old 8183 ordinary share -> 0.342 6191 ordinary share",
+      "source": "TPEx official announcement 11500054131",
+      "priorTDCCPresent": true,
+      "currentTDCCPresent": false,
+      "classification": "IDENTITY_TRANSITION_NOT_IN_COMMON_SUPPORT",
+      "rationale": "8183 disappears from the 2026-10-02 TDCC vintage and therefore is excluded before stable-common-support construction."
+    },
+    {
+      "symbol": "6191",
+      "name": "精成科",
+      "market": "TPEX",
+      "family": "SHARE_EXCHANGE_SUCCESSOR_CAPITAL_EFFECT",
+      "relatedOldSymbol": "8183",
+      "priorGrade17Shares": 499303000,
+      "currentGrade17Shares": 529392200,
+      "denominatorDeltaPct": 6.026240579367639,
+      "concentrationDeltaPctPoint": -1.6043349827756828,
+      "classification": "RELATED_SUCCESSOR_ALREADY_EXCLUDED_BY_DENOMINATOR_CHANGE"
+    }
+  ],
+  "identityContinuityEvidence": {
+    "twseDelistingIntervalScan": "Official TWSE delisting list shows latest pre-pair termination on 2026-09-01; no TWSE termination is listed during 2026-09-24..2026-10-02.",
+    "tpexMaterializedShareExchange": [
+      "8183->6191"
+    ],
+    "exhaustiveTpexIdentityTransitionCoverage": false,
+    "rule": "A security absent from either TDCC vintage cannot enter common support. A successor whose grade17 denominator changes is already excluded by exact-denominator guard, but the relationship remains explicit lineage evidence."
+  },
+  "publicCapitalIncreaseEvidence": {
+    "pairWindowMaterialized": [
+      "3234@2026-09-24",
+      "4977@2026-09-30",
+      "2464@2026-10-01"
+    ],
+    "prePairItemsNotNewPairContamination": [
+      "7856@2026-09-22 initial OTC",
+      "6225@2026-09-22 capital increase",
+      "8084@2026-09-22 capital increase",
+      "3016@2026-09-22 capital increase",
+      "5284@2026-09-22 capital increase"
+    ],
+    "caveat": "Public subscription schedule does not by itself prove exhaustive coverage of every private placement, employee option, or other issuance channel."
+  },
+  "knownMaskEffect": {
+    "priorUpperBound": 2779,
+    "newlyAddedStableDenominatorHardMasks": [
+      "3234"
+    ],
+    "updatedUpperBoundAfterKnownHardMasks": 2778,
+    "hardEventsAlreadyRemovedByDenominatorChange": [
+      "2601",
+      "4806",
+      "4977",
+      "2464",
+      "6191"
+    ],
+    "identityTransitionsOutsideCommonSupport": [
+      "8183"
+    ],
+    "statement": "2778 remains an upper bound, not final clean N."
+  },
+  "remainingCoverageGaps": [
+    "Exact TPEx EX_RIGHT_DIVIDEND rows for 2026-09-24..2026-10-02 have not been fully materialized in Room05.",
+    "TPEx identity-transition/delisting scan is not yet certified exhaustive for the interval.",
+    "Non-public-offering issuance channels are not certified exhaustive.",
+    "Historical firstKnownAt for historical corporate-action rows remains UNKNOWN where not prospectively captured."
+  ],
+  "completenessDecision": {
+    "finalCleanSupportFrozen": false,
+    "status": "PAIR_MASK_V0_2_ADVANCED / CAPITAL_INCREASE_AND_SHARE_EXCHANGE_ADDED / FINAL_SUPPORT_PENDING",
+    "reason": "Known capital-increase and identity-transition contamination is materially broader and the clean-support upper bound falls to 2778, but TPEx ex-right/dividend pair rows and exhaustive identity/issuance coverage remain incomplete."
+  },
+  "exactNext": "Materialize the exact TPEx EX_RIGHT_DIVIDEND rows for 2026-09-24..2026-10-02 and complete interval identity-transition coverage. Classify stock/cash/capital-increase components, then recompute the final event-clean exact-denominator symbol set and canonical hash. Do not open price/return outcomes before the final support is frozen."
+}
