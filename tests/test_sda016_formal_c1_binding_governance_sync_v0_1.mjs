@@ -26,6 +26,11 @@ assert.ok([
   "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_VERIFIED"
 ].includes(issue.formalC1Binding?.status),"unexpected Formal-C1 governance lifecycle");
 assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_binding_contract_v0_1.json");
+assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PRODUCTION_AUTHORITY_ESTABLISHED");
+assert.equal(issue.formalC1Binding?.appendOnlyLedgerImplementation,"MERGED_DEPLOYED_PRODUCTION_VERIFIED");
+assert.equal(issue.formalC1Binding?.genuineBindingReadback,"FIRST_SCHEDULED_DATE_INELIGIBLE_C1_GENERATION_NOT_FOUND_GENUINE_PENDING");
+assert.equal(issue.formalC1Binding?.qualityRepair,"TARGETED_90S_MOPS_FINANCIAL_BODY_DEADLINE_CANDIDATE_EXACT_HEAD_CI_PENDING");
+assert.equal(issue.formalC1Binding?.firstScheduledEvidenceRootCause,"OFFICIAL_QUALITY_MOPS_FULL_MARKET_BODY_TIMEOUT_FINANCIAL_QUARTER_EPS_MISSING");
 assert.ok([
   "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED",
   "MERGED_DEPLOYED_PRODUCTION_VERIFIED"

@@ -517,3 +517,19 @@ The candidate adds no provider call, no D1 table, no scheduler and no Formal dec
 - A/B、ranking、Top6/3+3、capital、15m、lifecycle、push/order 均維持原樣。
 - 目前是 branch/PR candidate；尚未 Merge、尚未 Production deploy。
 - Durable checkpoint：`research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md`。
+
+## 2026-10-07 — V8.20 first scheduled readback diagnosis and quality repair candidate
+
+- PR #680 已合併；Production runtime 已驗證為 `8.20.0-formal-c1-binding-ledger`。
+- 2026-10-06 首次排程 readback `37495670280` 回報
+  `FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`；不得算 0 檔、不得回填 parent。
+- 根因在上游官方品質：`FINANCIAL`、`QUARTER_EPS` 未完成；MOPS 全市場財報
+  `/mops/web/ajax_t163sb04` 的 response body 在 GitHub runner 連續三次耗盡 45 秒。
+- `main` 既有 full-body retry 已由 quality-only run `37556241467` 證實生效，
+  但通用 45 秒期限對約 1.3–1.6 MB 財報 body 安全餘裕不足。
+- 最小修復 candidate 僅將該 MOPS 大型來源 timeout 調為 90 秒；其他官方來源仍為
+  45 秒，三次 bounded retry、401/403 fail-closed、所有品質門檻皆不變。
+- Formal Core、A/B、Top6/3+3、資金、15m、生命周期、push/order、System2 均未修改。
+- 2026-10-06 仍為 research-ineligible；genuine Formal→C1 binding readback 必須等待
+  未來正常排程 session，不能用歷史 recovery 冒充。
+- Receipt：`research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json`。

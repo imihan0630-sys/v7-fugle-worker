@@ -5,6 +5,10 @@ process.on('uncaughtException',error=>{console.error('Quality synchronization fa
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday,isTradingDate};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
+// The full-market MOPS income response is materially larger than the other
+// official-quality payloads. Keep the global 45s bound, but give this one
+// endpoint enough time to finish its body on a slower GitHub runner.
+const MOPS_FINANCIAL_BODY_TIMEOUT_MS=90000;
 const now=new Date();
 const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
 await helpers.loadTradingCalendar({},Number(today.slice(0,4)));
@@ -131,7 +135,7 @@ const periods=[];
 for(let start=0;start<requests.length;start+=2) {
   const batch=await Promise.all(requests.slice(start,start+2).map(async ({key,market})=>{
     const [y,q]=key.split('Q').map(Number),sourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t163sb04';
-    const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+    const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},timeoutMs:MOPS_FINANCIAL_BODY_TIMEOUT_MS,
       body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:marketOptions[market],year:String(y-1911),season:String(q).padStart(2,'0')})});
     const html=await response.text();
     const incomeHeaders=[...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>cell[1].replace(/<[^>]+>/g,'').replace(/\s+/g,''))).filter(row=>row[0]==='公司代號');
