@@ -1,0 +1,90 @@
+name: System2 S2-07 MOPS Repeated Capture Stability V1.7 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_mops_repeated_capture_stability_v1_7.mjs"
+      - "system2/tests/s2_07_mops_repeated_capture_stability_v1_7.test.mjs"
+      - "system2/scripts/probe_s2_07_mops_repeated_capture_stability_readonly_v1_7.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_REPEATED_CAPTURE_STABILITY_V1_7.md"
+      - ".github/workflows/system2-s2-07-mops-repeated-capture-stability-v1-7-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_mops_repeated_capture_stability_v1_7.mjs"
+      - "system2/tests/s2_07_mops_repeated_capture_stability_v1_7.test.mjs"
+      - "system2/scripts/probe_s2_07_mops_repeated_capture_stability_readonly_v1_7.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_REPEATED_CAPTURE_STABILITY_V1_7.md"
+      - ".github/workflows/system2-s2-07-mops-repeated-capture-stability-v1-7-readonly.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: V1.7 repeated-capture contract tests
+        run: node system2/tests/s2_07_mops_repeated_capture_stability_v1_7.test.mjs
+
+      - name: Restore two accepted V1.6 physical captures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v17/r1 /tmp/v17/r2
+          gh run download 37547303476 --repo "${GITHUB_REPOSITORY}" --name s2-07-mops-exact-version-population-v1-6 --dir /tmp/v17/r1
+          gh run download 37548011614 --repo "${GITHUB_REPOSITORY}" --name s2-07-mops-exact-version-population-v1-6 --dir /tmp/v17/r2
+          test -s /tmp/v17/r1/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json
+          test -s /tmp/v17/r2/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json
+
+      - name: Fresh V1.6 capture R3
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
+          mkdir -p /tmp/v17/r3
+          cp /tmp/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json /tmp/v17/r3/
+
+      - name: Fresh V1.6 capture R4
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
+          mkdir -p /tmp/v17/r4
+          cp /tmp/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json /tmp/v17/r4/
+
+      - name: Reconcile four prospective captures
+        run: |
+          node system2/scripts/probe_s2_07_mops_repeated_capture_stability_readonly_v1_7.mjs \
+            /tmp/v17/r1/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json \
+            /tmp/v17/r2/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json \
+            /tmp/v17/r3/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json \
+            /tmp/v17/r4/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json
+
+      - name: No mutation scheduler or System1 authority
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_mops_repeated_capture_stability_readonly_v1_7.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy|cron' system2/scripts/probe_s2_07_mops_repeated_capture_stability_readonly_v1_7.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Upload V1.7 reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-07-mops-repeated-capture-stability-v1-7
+          path: |
+            /tmp/S2_07_MOPS_REPEATED_CAPTURE_STABILITY_V1_7_PHYSICAL_20261007.json
+            /tmp/v17/r3/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json
+            /tmp/v17/r4/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json
+          retention-days: 14
