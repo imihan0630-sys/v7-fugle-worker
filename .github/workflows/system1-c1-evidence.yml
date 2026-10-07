@@ -46,6 +46,15 @@ jobs:
           C3_REGISTRATION_OUTPUT: artifacts/system1-c3-registration.json
           C3_REGISTER: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
         run: node tests/collect_system1_c1_c2_evidence.mjs
+      - name: Build offline H1-H5 opportunity-loss readiness
+        env:
+          C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
+          C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
+          C3_REGISTRATION_OUTPUT: artifacts/system1-c3-registration.json
+          H1_H5_READINESS_OUTPUT: artifacts/system1-h1-h5-readiness.json
+          C5_SHORT_OUTPUT: artifacts/system1-c5-short.json
+          OPPORTUNITY_LOSS_OUTPUT: artifacts/system1-opportunity-loss-v0.2.json
+        run: node tests/build_system1_h1_h5_prospective_postprocess.mjs
       - name: Preserve approved research evidence or explicit readiness blocker
         if: always()
         uses: actions/upload-artifact@v4
@@ -58,5 +67,8 @@ jobs:
             artifacts/system1-c1-generation-inventory.json
             artifacts/system1-formal-c1-binding.json
             artifacts/system1-c3-registration.json
+            artifacts/system1-h1-h5-readiness.json
+            artifacts/system1-c5-short.json
+            artifacts/system1-opportunity-loss-v0.2.json
           if-no-files-found: error
           retention-days: 90
