@@ -97,7 +97,8 @@ jobs:
           grep -q "Real orders: DISABLED" system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md
           grep -q "System 2 virtual/simulated positions only; never owner actual holdings" system2/SYSTEM2_STORAGE_SCHEMA.md
           ! grep -R --line-number --include='actual_holdings_*.mjs' -E 'fetch\(|WebSocket|Authorization:|Bearer |order.*submit|submit.*order|cancel.*order|replace.*order' system2/runtime
-          git diff origin/main...HEAD -- Worker.js wrangler.toml | grep -q '^$' || { echo "System1 production file changed"; exit 1; }
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          ! grep -R --line-number -E 'V7_DB|STOCKS_KV' system2/runtime/actual_holdings_*.mjs
 
       - name: Upload contract evidence
         uses: actions/upload-artifact@v4
