@@ -1083,3 +1083,58 @@ No whole-universe perfection requirement is reintroduced. CORR-004 remains symbo
 Formal Core remains LOCKED.
 Final selection, live push, capital and orders remain disabled.
 
+
+
+## 00 continuation delta — NC-T01 replay-bound continuity implementation handoff frozen (2026-10-07 21:00 Asia/Taipei)
+
+Observed latest main before write:
+`3c2f1cfb1dd6b8fff301e4fe0fa38d77d1e2efb1`.
+
+00 re-read the live Stage-1 orchestration, PIT replay, A1 primitive builder, NC-T01 schema/oracle, Limited Shadow assembler and the shared D03 continuity handoff.
+
+### New executable narrowing
+
+The continuity blocker is now reduced to one concrete runtime seam:
+
+- `buildPitReplayWindow` already preserves the selected PIT revisions/session set and produces `replayHash`;
+- current `resolveContinuityState` runs before that replay window exists and returns only a text state;
+- current `buildA1HistoryPrimitiveBundle` hashes normalized OHLCV as `sourcePayloadHash` but does not bind a continuity receipt;
+- Limited Shadow factor snapshots already have a `source_manifest_json` provenance surface that can carry immutable upstream refs.
+
+Therefore the minimum safe correction is NOT a historical-row rewrite and NOT a second continuity engine.
+
+The exact acceptance contract is now durable at:
+`system2/evidence/S2_STAGE1_NCT01_CONTINUITY_BINDING_IMPLEMENTATION_HANDOFF_20261007_V0_1.json`.
+
+### Frozen acceptance semantics
+
+1. Build/select the RAW PIT replay window first.
+2. Validate continuity only against that exact selected window.
+3. Reuse shared D03 continuity identity semantics, including `continuityReceiptId`, `sourceHistoryHash`, `rawHistoryAdmissionReceiptId`, session/calendar/engine/registry versions and `continuityTransformHash`.
+4. Require exact symbol/asOf/cutoff/date-set/source-history binding.
+5. First NC-T01 witness may only use `CLEAR_NO_ACTION` over RAW bars.
+6. RAW + `ADJUSTED_CONTINUITY` is explicitly invalid until a real TECHNICAL_CONTINUITY transformed window exists.
+7. Missing/drifted/late/ambiguous continuity remains `UNVERIFIED` / INCOMPLETE.
+8. Thread replay/continuity identities into factor/candidate provenance so downstream result hashes bind them.
+9. No D1 history rewrite and no duplicate corporate-action/indicator engine.
+
+Required negative regressions are frozen for wrong symbol/date, post-cutoff receipt, date-set drift, source-row/revision drift, missing identity/hash, unresolved sessions/events and RAW+ADJUSTED misuse.
+
+### NC-T01 schema impact
+
+The existing `SDA022_NC_T01_RECEIPT_V0_1` schema need not be expanded merely for the first witness.
+Its existing `candidateUniverseProvenance` / `sourceGenerationRefs` fields plus receipt/result hashes can bind the immutable replay/continuity refs.
+A structured top-level schema expansion would require a new version, but is not launch-critical for the minimal first physical witness.
+
+### Current priority remains
+
+1. BUILD_LANE — rebuild/rebase #762 on latest main and canonically merge S22-T06~T10 after exact-head checks.
+2. DATA_LANE — produce one exact-window TWSE continuity evidence package for a real history-ready symbol.
+3. BUILD_LANE — implement the replay-first hash-bound `CLEAR_NO_ACTION` validation seam and its regressions.
+4. BUILD_LANE — execute real read-only/artifact-only NC-T01.
+5. 00 — independently verify S22-T11~T16.
+6. REMEDIATION_LANE — secure truthful D1 write-headroom governance before persisted SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+7. DATA_LANE historical — retry 2024 TPEx only when quota gating permits.
+
+Formal Core remains LOCKED.
+Final selection, live push, capital and real orders remain disabled.
