@@ -1644,3 +1644,19 @@ Exact next:
 consume the first actual scheduled C1 run when it becomes observable; inspect its readiness/population evidence rather than workflow color alone. Require scanDate 2026-10-07, same-generation identity, complete/readback verified parent and research eligibility. If PASS, immediately run the frozen Above-MA20/60 builder outcome-blind. If blocked, append the new blocker and do not substitute another universe.
 
 Formal Core unchanged.
+
+
+### BR-068 cross-room C1 parent dependency
+
+Dependency request:
+- `research/BR068_D09_05_C1_PARENT_DEPENDENCY_REQUEST_20261008.md`
+
+Upstream return is intentionally minimal:
+one genuine post-repair C1 parent with scanDate / generation identity / complete readback / research eligibility / population integrity / history-admission lineage.
+
+Room07 retains ownership of the frozen Above-MA20/60 computation.
+
+Workflow green alone is insufficient; acceptance requires:
+`PARENT_COMPLETE && READBACK_VERIFIED && ELIGIBLE_FOR_RESEARCH`.
+
+No alternate universe, historical backfill or selected-only denominator is authorized.
