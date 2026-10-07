@@ -1,0 +1,35 @@
+name: D02 PVE264 D1 Daily Usage Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve264_d1_daily_usage_readonly_v0_1.mjs"
+      - ".github/workflows/d02-pve264-d1-daily-usage-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read account D1 daily usage without mutation
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node research/d02_pve264_d1_daily_usage_readonly_v0_1.mjs
+      - name: Preserve sanitized PVE-264 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d02-pve264-d1-daily-usage-readonly-${{ github.run_id }}
+          path: artifacts/d02-pve264-d1-daily-usage-readonly.json
+          if-no-files-found: warn
+          retention-days: 30
