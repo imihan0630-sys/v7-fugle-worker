@@ -1254,10 +1254,11 @@
       "implementationEvidence": [],
       "verificationEvidence": [
         "Codepath audit confirms .github/workflows/system2-recent-a1-hot-history-warmup.yml allows ordinary main push on watched warmup paths to enter the credentialed physical D1 mutation step; job guard checks only github.ref==refs/heads/main. Durable evidence: system2/evidence/S2_CORR_20261007_003_WARMUP_PUSH_MUTATION_AUDIT_20261007_V0_1.json @ 164fa2c1213e4726e01d42c34187d4cb06d76631.",
-        "Existing s2_infrastructure_checks storage and Fugle quota-day claim already provide compact check_id/hash/readback semantics suitable for a shared UTC-day account-level reservation/result gate; no new table is required unless implementation proves otherwise. Durable evidence: system2/evidence/S2_CORR_20261007_003_REUSE_INFRA_CHECK_QUOTA_GATE_AUDIT_20261007_V0_1.json @ 6f53549c6a8d1b675c08f2f94afa1a0c1049f8e1."
+        "Existing s2_infrastructure_checks storage and Fugle quota-day claim already provide compact check_id/hash/readback semantics suitable for a shared UTC-day account-level reservation/result gate; no new table is required unless implementation proves otherwise. Durable evidence: system2/evidence/S2_CORR_20261007_003_REUSE_INFRA_CHECK_QUOTA_GATE_AUDIT_20261007_V0_1.json @ 6f53549c6a8d1b675c08f2f94afa1a0c1049f8e1.",
+        "Reset-window writer-trigger audit: system2/evidence/S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_20261008_V0_1.json @ c69ad63559a5655b473b4060f04016f08e098e1d. Twelve workflows share system2-isolated-d1-writer; scheduled high-write jobs begin at 16:30/18:35 Asia/Taipei after the 08:00 quota reset, but multiple workflows can still physically mutate D1 on ordinary main push, so time-of-day alone cannot protect post-reset annual-backfill headroom."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T22:41:00+08:00"
+      "updatedAt": "2026-10-08T05:36:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
