@@ -1,0 +1,90 @@
+{
+  "version": "0.1",
+  "id": "BR-066-D09-12-JOINT-20261007",
+  "module": "D09-12 Breadth×Regime交互作用",
+  "marketDate": "2026-10-07",
+  "decisionTimestamp": "2026-10-07T15:55:26.000Z",
+  "decisionTimestampTaipei": "2026-10-07T23:55:26+08:00",
+  "status": "PROSPECTIVE_SAME_DATE_JOINT_RECEIPT / TWSE_SCOPE_KNOWN / TPEX_SCOPE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "formalCoreChanged": false,
+  "outcomeJoined": false,
+  "observedMainBeforeWrite": "805c85ec95577777c61b0689cdb55657cfbc7d8f",
+  "officialSources": {
+    "twseMarketSummary": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=html",
+    "twseTaiexMonthly": "https://www.twse.com.tw/exchangeReport/FMTQIK?response=html",
+    "twseTaiexHistory": "https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?response=html"
+  },
+  "breadth": {
+    "sourceId": "TWSE_MI_INDEX_STOCK_DIRECTION",
+    "sourceObservedAt": "2026-10-07T15:55:26.000Z",
+    "up": 588,
+    "down": 387,
+    "flat": 99,
+    "unmatched": 5,
+    "notComparable": 3,
+    "comparableN": 1074,
+    "totalN": 1082,
+    "advancePct": 54.7486033519553,
+    "declinePct": 36.03351955307262,
+    "flatPct": 9.217877094972067,
+    "netAdvanceMinusDeclinePct": 18.71508379888268,
+    "comparableCoveragePct": 99.26062846580407,
+    "receiptHash": "fce59775c8298dcd6be9dd3bdd8c33c754241a01f004d2fc6b7493a740a18d25"
+  },
+  "taiexContext": {
+    "sourceId": "A2_TAIEX_CLOSE",
+    "sourceObservedAt": "2026-10-07T15:55:26.000Z",
+    "sourceState": "READY",
+    "sourceProspectiveSameDateEligible": true,
+    "close": 49806.37,
+    "ma20": 47577.466,
+    "ma20FiveSessionsAgo": 46911.3815,
+    "ma20Slope5": 666.0844999999972,
+    "return5": 0.03892855526257444,
+    "return20": 0.05240429892319853,
+    "realizedVol5": 0.009369687857411083,
+    "realizedVol20": 0.009596370587846249,
+    "volRatio5to20": 0.9763782850651622,
+    "trendContext": "UP_TREND_CONTEXT",
+    "volatilityDirection": "VOL_CONTRACTING",
+    "historyWindowHash": "6645e596fb59f53dc5d7218734b7224b0ec4850fb0ce60a4596f73610a588227",
+    "officialSessionWindowHash": "72325e6cb39b7362e397fc0dec097d80e25e3587ff0d7250b120a5ff944b421d",
+    "receiptHash": "5693e2d58d2ecbe192b07c838b413ceba728505f8c4f966eeb37eeec0f24a1ef"
+  },
+  "tpex": {
+    "state": "UNKNOWN_NOT_CAPTURED_WITH_EQUIVALENT_OFFICIAL_DENOMINATOR",
+    "reason": "No equally verified same-clock TPEx breadth denominator was frozen in this Room07 receipt."
+  },
+  "breadthContext": {
+    "state": "CONTEXT_RAW",
+    "canonicalBroadPositiveNegativeLabelAuthorized": false,
+    "reason": "Median-return continuity and TPEx same-clock breadth are not both certified in this receipt."
+  },
+  "jointBinding": {
+    "marketDateIdentical": true,
+    "decisionTimestampIdentical": true,
+    "prospectiveSameDate": true,
+    "retrospectiveBackfill": false,
+    "policyApplied": false,
+    "selectionImpact": false,
+    "strategyWeightImpact": false,
+    "capitalImpact": false,
+    "receiptHash": "0990d30af73efc932aeb25be9476cfff154e03ba77b7c6bd3457d85c65ca687b"
+  },
+  "interpretation": [
+    "TAIEX remained in an up-trend context while the cap-weighted index declined slightly on 2026-10-07.",
+    "TWSE stock-direction breadth was positive: advances exceeded declines.",
+    "The prior 2026-10-06 divergence direction reversed on 2026-10-07, showing breadth×index-state interaction is not sign-stable day to day.",
+    "This receipt validates bounded same-date PIT/replay feasibility; it does not establish predictive value."
+  ],
+  "maturityDecision": {
+    "module": "D09-12",
+    "fromLevel": "L2",
+    "toLevel": "L3",
+    "fromPct": 40,
+    "toPct": 60,
+    "promote": true,
+    "reason": "First bounded same-date prospective joint receipt with official TWSE breadth and TAIEX context frozen under one decision cutoff; missing TPEx remains UNKNOWN; no outcome access."
+  },
+  "exactNext": "BR-067 accumulate independent same-clock joint receipts, ideally with both TWSE and TPEx breadth plus continuity-certified median-return context; no L4 before prospective/OOS outcome validation under D16 common-support controls."
+}
