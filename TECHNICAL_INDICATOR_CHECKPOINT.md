@@ -5988,3 +5988,78 @@ No promotion:
 
 Exact next:
 require repeated-capture exact-version union/stability reconciliation with immutable earliest-observed preservation and query-path classification. Only after bounded stabilization may the union bind to the source-lane manifest and pre-parent cut. Post-parent reconciliation must still prove `noRevisionGapThroughCut=true` before symbol-session or technical-continuity promotion. Continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics and D16 D03 method/incrementality receipts.
+
+
+## 2026-10-07 D03 — TI-1227~1238 three-capture union/stability readback
+
+Canonical artifact:
+- `research/d03_system2_s207_three_capture_union_stability_readback_20261007_v0_1.json`.
+
+### TI-1227~1231 — three-capture union is larger than every individual capture
+
+Physical runs:
+- `37547303476`: 159 exact-version keys;
+- `37548011614`: 161 exact-version keys;
+- `37549352244`: 163 exact-version keys.
+
+Across all three:
+- union = 168;
+- intersection = 147;
+- latest capture still omits 5 versions observed prospectively in an earlier capture;
+- run1->run2 churn = +9 / -7, Jaccard 0.9048;
+- run2->run3 churn = +7 / -5, Jaccard 0.9286;
+- run1->run3 churn = +9 / -5, Jaccard 0.9167.
+
+The latest count increasing to 163 does not imply convergence because membership is not monotone and five previously observed versions disappear from the latest capture.
+
+### TI-1232~1234 — payload identity remains strong conditional on presence
+
+For the 147 exact-version keys present in all three captures:
+- payload mutation count = 0;
+- stable event-universe hash is unchanged;
+- stock-code-scoped exact-version identity remains valid.
+
+This supports immutable content identity conditional on presence, but not complete population membership.
+
+### TI-1235~1236 — earliest-observed persistence defect
+
+A new machine-level defect is identified:
+- every repeated observation carries a new `firstObservedAt` equal to that capture's current observation clock;
+- cross-capture earliest genuine observation is therefore not preserved;
+- the current V1.6 artifact behaves as if `firstObservedAt` were per-capture rather than append-only global minimum.
+
+Frozen PIT requirement:
+- `firstObservedAt = min(genuine observedAt across all captures for the same stock-code-scoped versionKey)`;
+- later captures may update `latestObservedAt`, but may never move `firstObservedAt` forward or backward;
+- no later observation can be backdated into historical availability.
+
+### TI-1237 — month-shard instability localization
+
+Run2->run3 churn is entirely month-query-path:
+- additions: 7 = symbol 3086 x6 + symbol 1441 x1;
+- losses: 5 = symbol 6461 x3 + symbol 6550 x2;
+- all five versions in the three-capture union but absent from the latest capture are month-query observations.
+
+Therefore the current instability is localized to month-shard retrieval membership, not payload mutation.
+
+### TI-1238 — maturity and routing
+
+Required future System2 machine behavior:
+1. append-only union persistence keyed by stock-code-scoped versionKey;
+2. immutable earliest `firstObservedAt`;
+3. separate `latestObservedAt`;
+4. query-path provenance persisted per observation/version;
+5. absence classified by query path, never as nonexistence;
+6. bounded stabilization before `expectedMopsKeysetComplete=true`;
+7. `noRevisionGapThroughCut=false` until post-parent reconciliation proves closure.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09/D03-10 remain L2/40;
+- raw gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED.
+
+Exact next:
+route the earliest-observed persistence defect and month-shard membership churn to System2 BUILD_LANE. D03 consumes only a future physical receipt proving append-only union persistence, immutable earliest-observed preservation, query-path provenance and bounded stabilization. Continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the cutoff-bearing C1 parent.
