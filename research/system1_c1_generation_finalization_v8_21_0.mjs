@@ -169,15 +169,21 @@ export async function readC1GenerationFinalization(db,{scanDate}={}){
 }
 export async function guardC1GenerationInsertAfterFinalization(db,{scanDate,generationId,observedAt}={}){
   if(!db?.prepare) return {allowed:true};
-  const date=String(scanDate||"");
-  const row=await db.prepare("SELECT finalization_receipt_id FROM trade_research_c1_generation_finalizations WHERE scan_date=?1").bind(date).first();
+  const date=String(scanDate||""),id=String(generationId||"");
+  const row=await db.prepare("SELECT finalization_receipt_id,receipt_json FROM trade_research_c1_generation_finalizations WHERE scan_date=?1").bind(date).first();
   if(!row) return {allowed:true};
+  const finalized=receiptFromRow(row);
+  await verifyC1GenerationFinalizationReceipt(finalized);
+  // Exact replay of a generation already frozen inside the final set is not a new generation.
+  // The immutable generation table still performs its own content/digest conflict check afterward.
+  if((finalized.generationIds||[]).includes(id))
+    return {allowed:true,finalizedReplay:true,finalizationReceiptId:finalized.finalizationReceiptId};
   const at=String(observedAt||new Date().toISOString());
-  const violationId="C1_FINAL_VIOLATION:"+await c1FinalizationSha256({scanDate:date,generationId:String(generationId||""),observedAt:at});
+  const violationId="C1_FINAL_VIOLATION:"+await c1FinalizationSha256({scanDate:date,generationId:id,observedAt:at});
   await db.prepare(`INSERT OR IGNORE INTO trade_research_c1_generation_finalization_violations(
     violation_id,scan_date,generation_id,finalization_receipt_id,observed_at,violation_json
-  ) VALUES(?1,?2,?3,?4,?5,?6)`).bind(violationId,date,String(generationId||""),row.finalization_receipt_id,at,
-    JSON.stringify({violationId,scanDate:date,generationId:String(generationId||""),finalizationReceiptId:row.finalization_receipt_id,
+  ) VALUES(?1,?2,?3,?4,?5,?6)`).bind(violationId,date,id,row.finalization_receipt_id,at,
+    JSON.stringify({violationId,scanDate:date,generationId:id,finalizationReceiptId:row.finalization_receipt_id,
       observedAt:at,code:"POST_FINALIZATION_GENERATION_VIOLATION",researchOnly:true,formalCoreImpact:false})).run();
   throw new Error("POST_FINALIZATION_GENERATION_VIOLATION");
 }
