@@ -1,0 +1,27 @@
+name: System1 Opportunity-Loss Bridge Review
+
+on:
+  pull_request:
+    paths:
+      - 'research/system1_opportunity_loss_bridge_v0_1.mjs'
+      - 'tests/test_system1_opportunity_loss_bridge_v0_1.mjs'
+      - 'research/SYSTEM1_OPPORTUNITY_LOSS_BRIDGE_CHECKPOINT_20261007.md'
+      - '.github/workflows/system1-opportunity-loss-bridge-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run opportunity-loss bridge falsification
+        run: node tests/test_system1_opportunity_loss_bridge_v0_1.mjs
+      - name: Syntax check research module
+        run: node --check research/system1_opportunity_loss_bridge_v0_1.mjs
