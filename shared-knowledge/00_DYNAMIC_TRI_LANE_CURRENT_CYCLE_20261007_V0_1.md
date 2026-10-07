@@ -579,3 +579,62 @@ Exact next 00 actions:
 6. no B2/SWING_GROWTH symmetry wait, no synthetic zero-pick, no System1 fallback.
 
 Formal Core LOCKED.
+
+
+## 00 deep post-compression audit — 2026-10-07 16:40 Asia/Taipei
+
+Observed main before correction write:
+`03948c48745a9ebccafa92051e9bce48cb1a8fcb`.
+
+### New launch-critical contradiction: global Decision Clock still over-gates SHORT_MOMENTUM
+
+The earlier single-strategy critical-path compression is governance-valid but not yet runtime-executable.
+
+Current global daily clock still freezes:
+- same-session candidate = A1 TWSE + A1 TPEx + B2;
+- global requiredReady additionally depends on A5 being available by that candidate boundary.
+
+Latest D16 strategy-stage dependency audit explicitly states:
+`GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`.
+
+Frozen Stage-1 SHORT_MOMENTUM policy does not require B2 INDUSTRY_THESIS or A5 fundamental evidence, while SWING_GROWTH does require its PIT-valid thesis/fundamental families.
+
+Therefore a second launch-critical correction is now open:
+`S2-CORR-20261007-002`.
+
+Routing:
+- HIGH / OPEN;
+- BUILD_LANE;
+- ownerDecisionRequired=true because strategy/stage execution-clock routing changes admissible decision behavior even though the inconsistency itself is audit-proven.
+
+The required repair is NOT to weaken or rewrite the existing global Decision Clock.
+It is to preserve that artifact and add an explicit strategy/stage dependency-aware readiness path with real-date physical proof.
+
+### A1 timing-window diagnosis
+
+S2-CORR-20261007-001 remains valid, but its root classes are now further separated:
+- the 2026-10-07 prospective A1 collector exhausted around 16:11 Taipei after 30 x 300-second attempts;
+- the System2 daily diagnostic is scheduled at 18:35 Taipei;
+- official TWSE documentation for related daily closing products includes later production cycles up to approximately 17:30, although this does not prove the exact free OpenAPI endpoint follows the identical schedule.
+
+Therefore:
+- TWSE prior-date payload at 16:11 must be treated as observed-not-ready, not proof of end-of-day unavailability;
+- DATA_LANE should test later observation/finality coverage rather than applying transport retry to a genuinely stale-date payload;
+- TPEx NON_JSON/body-integrity failures remain a distinct bounded transport/body recovery problem;
+- a later genuine same-day observation can close readiness only prospectively; it may not backdate an earlier candidate clock.
+
+### Revised shortest truthful Stage-1 chain
+
+1. #762 latest-main canonical fingerprint acceptance;
+2. physical NC-T01 on at least one independent strategy path;
+3. close/approve the minimal strategy-stage clock mismatch correction (S2-CORR-20261007-002);
+4. obtain genuine same-day A1 readiness under S2-CORR-20261007-001;
+5. execute real SHORT_MOMENTUM Stage-1 evaluation under exact frozen policy id/version;
+6. strategy-local RANK-01;
+7. first immutable `s2_capacity_runs` receipt with explicit denominator provenance;
+8. Candidate Board -> bounded monitor pool -> Daily Resonance;
+9. guarded advisory/notification promotion only after existing owner/promotion gates.
+
+SWING_GROWTH/B2/A5 remain parallel second-strategy work and must not be promoted back into a global SHORT_MOMENTUM blocker.
+
+Formal Core remains LOCKED.
