@@ -2821,3 +2821,21 @@ Shared-source audit found an important persistence gap: System2 has physically v
 Current pair-mask coverage remains bounded rather than complete. The main unresolved materialization is the exact TPEx ex-right/dividend event set and merger/share-exchange/security-identity transitions for this pair. Historical firstKnownAt also remains UNKNOWN where it was not prospectively observed; retrospective event identity is usable for contamination diagnosis, not to backdate signal knowledge.
 
 Maturity impact: NONE. D06-05 remains L3/60. The next meaningful step is exact-pair event-row materialization + final clean-support hash; only after that may the vintage-clustered OOS/Shadow protocol open outcomes.
+
+
+---
+
+## IC-101 — D06-05 first bounded TDCC pair corporate-action mask
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: BOUNDED_PAIR_MASK_MATERIALIZED / SHARED_EVENT_PRIMITIVES_REUSED / FINAL_CLEAN_SUPPORT_NOT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence: `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json`.
+
+For the TDCC 2026-09-24 -> 2026-10-02 pair, known hard masks are 1235, 1441, 2323, 2601, 4806 and 6550. 2601/4806 already fail denominator continuity; 1235/1441/2323/6550 keep exact stable grade-17 denominators but remain corporate-action contaminated. Thus exact denominator equality alone is insufficient.
+
+2,962 ordinary common-support securities become 2,783 after exact-denominator filtering. Removing the four currently known stable-denominator hard-event names leaves 2,779 as an upper bound, not final clean N.
+
+Shared System2 corporate-action source lanes are physically validated, but complete exact-pair TPEx ex-right/dividend and security-identity transition rows are not persisted as a Room05 pair list. Lane-level event totals cannot substitute for exact event-row materialization.
+
+D06-05 remains L3/60. Outcomes remain CLOSED. Exact next: materialize the complete exact-pair shared event rows, freeze final event-clean exact-denominator common support and row-set hash, then preregister TDCC-vintage-clustered OOS/Shadow validation.
