@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 15:41 Asia/Taipei
+Updated: 2026-10-07 16:05 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Historical raw A1 data coverage is physically accepted through both 2023 markets, including 2021 TPEx. The former 2021 TPEx blocker is resolved after fresh primary-only physical re-verification: full-year source/canonical mismatch counts are zero, Data Coverage PASS, Replay Readiness PARTIAL. CORR-001 remains FIX_IN_PROGRESS for 2024+ market-years, the 2026 incremental path, aggregate completion and final full-market PIT replay.
+- observedProblem: Historical raw A1 data coverage is physically accepted through TWSE 2024 and TPEx 2023, including the resolved 2021 TPEx transport-semantics case. 2024 TPEx remains PENDING after annual run #28 failed twice on different intermittent TPEx PRIMARY transport timeouts before Physical verify. A bounded PRIMARY-only transport-exhaustion recovery fix is CI-PASS on latest main; fresh latest-main 2024/TPEX dispatch is required. CORR-001 also remains FIX_IN_PROGRESS for both 2025 markets, 2026 segmented current-year physical acceptance, aggregate machine-readable completion and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
