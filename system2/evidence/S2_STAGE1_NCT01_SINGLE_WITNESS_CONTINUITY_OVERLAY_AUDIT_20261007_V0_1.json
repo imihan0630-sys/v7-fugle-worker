@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_SINGLE_WITNESS_CONTINUITY_OVERLAY_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T20:44:29+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "5d6c252c3784d3487f2543a3b9dba834ce25db27",
+  "status": "DESIGN_READY_PHYSICAL_WITNESS_PENDING",
+  "purpose": "Freeze the shortest truthful continuity path that can unlock one real SHORT_MOMENTUM NC-T01 witness without mutating historical D1 rows, shrinking the candidate universe, or self-certifying incomplete continuity evidence.",
+  "physicalBasis": {
+    "workflowRunId": 37609474459,
+    "marketDate": "2026-10-07",
+    "currentUniverseCount": 1973,
+    "globalIntegrityState": "READY",
+    "historyReadyCount": 51,
+    "continuityReadyCount": 0,
+    "symbolLocalIncompleteCount": 1973,
+    "evaluationInputEligibleSymbolCount": 0,
+    "selectionDenominatorComplete": false,
+    "capacityWriteAuthorized": true,
+    "zeroPickMayBeClaimed": false,
+    "exampleHistoryReadyTwseSymbols": [
+      "1101",
+      "1102",
+      "1103",
+      "1104",
+      "1108",
+      "1109",
+      "1110",
+      "1201",
+      "1203",
+      "1210"
+    ],
+    "interpretation": "Global history/accounting integrity is sufficient, but there is currently no physical symbol whose continuity gate is READY. S22-T13 therefore cannot yet pass from this run even though the assessor policy itself is READY."
+  },
+  "strategyDependency": {
+    "strategyId": "SHORT_MOMENTUM",
+    "requiredFamilies": [
+      "TECHNICAL_STRUCTURE",
+      "PRICE_VOLUME",
+      "RISK_FRICTION"
+    ],
+    "sourceFact": "All three launch-required families are produced from current A1 + PIT A1 history; B2/A5/news/institutional sources are not launch prerequisites.",
+    "continuitySensitiveFactors": [
+      "TECH.TREND",
+      "TECH.STRUCTURE",
+      "PV.ACCEPTANCE",
+      "PV.RESPONSE",
+      "RISK.EXTENSION"
+    ],
+    "continuityInsensitiveFactors": [
+      "PV.RELATIVE_VOLUME",
+      "RISK.LIQUIDITY"
+    ],
+    "minimumHistoryImplication": "TECH.TREND includes MA60/ret60, so a genuine executable witness requires an approximately current-plus-60-session replay window with PIT-safe source history and a certified continuity state."
+  },
+  "existingRuntimeSeam": {
+    "orchestrator": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs::runDailyLimitedShadowOrchestratorV0_1",
+    "callback": "resolveContinuityState",
+    "defaultState": "UNVERIFIED",
+    "acceptedContinuityStatesForFactorEligibility": [
+      "CLEAR_NO_ACTION",
+      "ADJUSTED_CONTINUITY"
+    ],
+    "d1MutationRequired": false,
+    "finding": "The orchestrator already allows a caller-supplied symbol-specific continuity resolver. Historical D1 rows may remain immutable/UNVERIFIED while a separate hash-bound continuity receipt is consumed at execution time.",
+    "replayWindowDoesNotSelfCertifyContinuity": true
+  },
+  "existingContinuityCore": {
+    "archive": "system2/runtime/corporate_action_continuity_archive_v0_1.mjs",
+    "capabilities": [
+      "exact interval source-contract coverage",
+      "parser completeness",
+      "revision coverage",
+      "event-version reconciliation",
+      "NO_EVENT only when required source coverage and PIT universe evidence are complete",
+      "exchange suspension-coverage accounting",
+      "symbolSessionCompletenessEvidenceReady"
+    ],
+    "authorityFirewall": [
+      "symbolSessionCompletenessCertified remains false",
+      "technicalContinuityCertified remains false",
+      "continuityTransformPerformed remains false",
+      "historyMutationPerformed remains false"
+    ],
+    "certifierSearchResult": "NO_CANONICAL_RUNTIME_FOUND_THAT_CURRENTLY_UPGRADES_A_COMPLETE_NO_EVENT_SYMBOL_WINDOW_DIRECTLY_TO_CLEAR_NO_ACTION",
+    "governanceMeaning": "00/BUILD must not infer CLEAR_NO_ACTION merely from historyReady=true, a zero event row set, or evidenceReady=true."
+  },
+  "currentResearchAdvances": {
+    "twseOfficialDocumentMachineContract": {
+      "status": "BOUNDED_MACHINE_CONTRACT_PHYSICAL_PASS",
+      "capabilities": [
+        "bounded date query",
+        "server-side pagination",
+        "detail identity",
+        "STOP/RELEASE reversal evidence",
+        "empty query semantics"
+      ]
+    },
+    "layerBLifecycleNormalization": {
+      "workflowRunId": 37621773476,
+      "result": "SUCCESS",
+      "semantics": [
+        "half-open no-trading interval [effectiveFrom,effectiveToExclusive)",
+        "listing start inclusive",
+        "delisting effective date exclusive for old-symbol membership",
+        "overlapping no-trading intervals unioned",
+        "source disagreement fails closed",
+        "no synthetic OHLC"
+      ],
+      "physicalPromotion": "PENDING_BUILD_DATA_MATERIALIZATION"
+    },
+    "historicalGapEvidence": {
+      "twse2024UnknownGaps": 478,
+      "directKnownLifecycleReclassificationCandidates": 373,
+      "directKnownLifecycleReclassificationPct": 78.03,
+      "interpretation": "A large share of historical UNKNOWN gaps are lifecycle-classification debt, not demonstrated official-price source loss."
+    },
+    "tpexParity": "TPEx equivalent complete machine contract is not yet pinned; this does not block a first TWSE-only physical witness if full-universe provenance is preserved."
+  },
+  "proposedMinimalWitness": {
+    "exampleCandidate": {
+      "symbol": "1101",
+      "market": "TWSE",
+      "currentStatus": "HISTORY_READY_CONTINUITY_UNVERIFIED",
+      "rationale": "Long-standing TWSE ordinary stock physically historyReady on 2026-10-07; selected only as the first certification candidate, not as an assumed clean/selected strategy name.",
+      "certified": false
+    },
+    "exactWindowRule": "The runner must derive the exact prior-session window from D1/session evidence. The audit does not guess or hard-code start/end dates.",
+    "dataLaneReceiptRequirements": [
+      "exact symbol/market and exact 60-prior-session window plus current decision date",
+      "PIT universe membership in scope throughout the relevant window",
+      "complete required corporate-action actual-result source contracts for that exact interval",
+      "parserComplete=true for every required source lane",
+      "revisionCoverageComplete=true for every required source lane",
+      "verified empty-range semantics before any zero-row source is treated as absence",
+      "unambiguous event-version reconciliation",
+      "complete TWSE lifecycle/session evidence for stop/resume/listing/delisting/share-conversion/market-migration boundaries relevant to the window",
+      "no unresolved expected-session gap",
+      "immutable source identity/url/hash/payload hash plus observation/source-reported clocks where available",
+      "receipt hash over all bounded evidence and exact decision cutoff",
+      "fail closed to UNKNOWN on any missing source family, pagination gap, boundary conflict, revision ambiguity, or unresolved session"
+    ],
+    "allowedReceiptDisposition": [
+      "CLEAR_NO_ACTION_ELIGIBLE",
+      "ADJUSTED_CONTINUITY_REQUIRED",
+      "CONTINUITY_UNKNOWN"
+    ],
+    "criticalRule": "CLEAR_NO_ACTION_ELIGIBLE may be consumed as CLEAR_NO_ACTION only after the receipt's own certification contract is independently implemented/tested and all required evidence gates pass. NO_EVENT or evidenceReady alone is insufficient."
+  },
+  "buildLaneOverlay": {
+    "preserveCandidateUniverse": true,
+    "candidateUniverseSizeFromSeed": 1973,
+    "behavior": [
+      "Preserve the full real System2 candidate universe and provenance.",
+      "For only symbols with a valid hash-bound continuity witness, resolveContinuityState may return the certified continuity state.",
+      "Every other symbol remains UNVERIFIED and therefore INCOMPLETE/non-admitted.",
+      "Do not shrink the universe to the witness symbol.",
+      "Add a mixed-continuity regression proving one certified witness may execute while an uncertified symbol remains blocked and denominator-accounted.",
+      "NC-T01 receipt must identify the full universe provenance and the exact set/hash of continuity-witness receipts consumed."
+    ],
+    "zeroPickSemantics": "If the one READY witness executes and produces no candidate, it may be classified LEGITIMATE_ZERO_PICK only for the physically executed/READY path; blocked symbols remain DATA_UNKNOWN/INCOMPLETE and must not be counted as natural zero-picks.",
+    "system1DependencyAllowed": false
+  },
+  "ownership": {
+    "dataLane": [
+      "build/verify the source-honest exact-window continuity witness receipt",
+      "own official source completeness, PIT/session continuity and provenance semantics"
+    ],
+    "buildLane": [
+      "consume only independently valid witness receipts through resolveContinuityState",
+      "add mixed-continuity fail-closed regression",
+      "execute read-only/artifact-only NC-T01 after canonical fingerprints"
+    ],
+    "auditLane": [
+      "independently verify S22-T11~T16 receipt and hidden-fallback evidence"
+    ]
+  },
+  "correctionClassification": "EXPECTED_LAUNCH_CRITICAL_DATA_PLUS_BUILD_INTEGRATION_NOT_NEW_CORRECTION",
+  "reasonNoNewCorrection": "Current runtime correctly fails closed with continuityReadyCount=0 and has not falsely claimed S22-T13 physical completion. This is the already-known launch-critical current-session/symbol continuity dependency, now narrowed to a minimal certifiable witness.",
+  "revisedCriticalPath": [
+    "In parallel, canonicalize latest-main System2 fingerprints S22-T06~T10.",
+    "DATA_LANE produces first exact-window TWSE continuity witness receipt for a physically historyReady symbol such as 1101, without assuming certification in advance.",
+    "BUILD_LANE adds mixed per-symbol continuity overlay regression and bounded-batch PIT history prefetch for NC-T01.",
+    "Run full-universe read-only NC-T01 with real A1/PIT history; at least one certified witness must have requiredInputsState=READY and executionState=EXECUTED.",
+    "Independently verify S22-T11~T16.",
+    "Separately, CORR-003 reserves D1 write budget for the first genuine persisted SHORT_MOMENTUM + RANK-01 + s2_capacity_runs execution.",
+    "Reuse bounded pool / Candidate Board / Daily Resonance / institutional read surfaces; then evaluate guarded advisory/notification promotion."
+  ],
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No historical D1 continuity rewrite from this audit",
+    "No source absence => NO_EVENT inference without completeness",
+    "No NO_EVENT/evidenceReady => CLEAR_NO_ACTION self-promotion",
+    "No universe shrink to manufacture an executable witness",
+    "No System1 Top6/rank/cached-selection fallback",
+    "No strategy threshold/weight change",
+    "No final selection/live push/capital/order authority"
+  ]
+}
