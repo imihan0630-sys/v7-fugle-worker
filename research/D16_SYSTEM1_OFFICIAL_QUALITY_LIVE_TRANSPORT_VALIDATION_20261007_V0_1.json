@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "D16_SYSTEM1_OFFICIAL_QUALITY_LIVE_TRANSPORT_VALIDATION_V0_1",
+  "updatedAt": "2026-10-07T09:20:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "HARNESS_REPAIRED_LIVE_SOURCE_EXECUTED_MOPS_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED",
+  "harnessRepair": {
+    "mergeSha": "28c3f6ac3798cdba7c697c32a4908f8237922789",
+    "regressionRunId": 37556241514,
+    "regressionConclusion": "success",
+    "priorDefectResolved": "BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS"
+  },
+  "liveRun": {
+    "runId": 37556241467,
+    "jobId": 112583018405,
+    "conclusion": "failure",
+    "effectiveWorkerBuild": "PASS",
+    "recoveryContract": "PASS",
+    "liveQualityRecovery": "FAIL",
+    "finalReadinessCheck": "SKIPPED"
+  },
+  "initialQualityState": {
+    "INDEX": {
+      "ready": true,
+      "count": 45,
+      "asOfDate": "2026-10-06"
+    },
+    "TDCC": {
+      "ready": true,
+      "count": 2958,
+      "asOfDate": "2026-10-02"
+    },
+    "VALUATION": {
+      "ready": true,
+      "count": 1971,
+      "asOfDate": "2026-10-06"
+    },
+    "ANNOUNCEMENTS": {
+      "ready": true,
+      "count": 95,
+      "asOfDate": "2026-10-06"
+    },
+    "FINANCIAL": {
+      "ready": false,
+      "count": 0,
+      "asOfDate": null
+    },
+    "QUARTER_EPS": {
+      "ready": false,
+      "count": 0,
+      "asOfDate": null
+    }
+  },
+  "sourceFailure": {
+    "authority": "MOPS",
+    "endpoint": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+    "stage": "BATCH_FINANCIAL_STATEMENTS",
+    "observedError": "The operation was aborted due to timeout",
+    "transportHelper": "tests/official_source_fetch_v0_1.mjs",
+    "configuredMaxAttempts": 3,
+    "configuredTimeoutMsPerAttempt": 45000,
+    "timeoutIsRetryable": true,
+    "abortedIsRetryable": true,
+    "fullBodyInsideRetryBoundary": true,
+    "classification": "MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED"
+  },
+  "qualityDisposition": {
+    "FINANCIAL": "NOT_READY_LIVE_TRANSPORT_BLOCKED",
+    "QUARTER_EPS": "NOT_READY_UPSTREAM_FINANCIAL_STAGE_BLOCKED",
+    "quarterEpsIndependentTransportFailureProven": false
+  },
+  "prospectiveResearch": {
+    "historicalBackfillAllowed": false,
+    "genuineFormalC1SampleN": 0,
+    "countAsZeroPick": false,
+    "countAsStrategyFailure": false,
+    "countAsNegativeOutcome": false
+  },
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
