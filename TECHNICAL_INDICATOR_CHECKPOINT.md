@@ -7587,3 +7587,153 @@ Therefore S2-07 remains `STABILIZATION_PENDING`.
 
 D03 remains 56.7%, D03-09 / D03-10 remain L2/40, raw source/version gate remains 2/3, outcomes CLOSED, Formal Core LOCKED.
 Exact D03 next remains W0 real receipt + future genuine parent. CORR-005/006 are removed from the open engineering blocker list but their closure is not used as D03 maturity credit.
+
+
+## 2026-10-08 D03 — TI-1459~1474 W0 / genuine-parent dual-track readiness compression
+
+Canonical artifact:
+- `research/d03_w0_parent_dual_track_readiness_20261008_v0_1.json`.
+
+Latest-main observations:
+- CORR-005 = VERIFIED_CLOSED;
+- CORR-006 = VERIFIED_CLOSED;
+- W0 technical-continuity receipt = still physically pending;
+- 2026-10-07 genuine System1 parent attempt = physically executed but no C1 generation existed;
+- D03-10 Bollinger L3 acceptance oracle + parent-binding oracle are already executable once physical inputs exist.
+
+### TI-1459~1461 — CORR-005 / CORR-006 removed from D03 technical blockers
+
+CORR-005 code firewall is verified closed:
+- missing/UNKNOWN hidden-fallback evidence now fails closed;
+- exact-head static + runtime forbidden-access evidence is required;
+- `HIDDEN_FALLBACK_AUDIT_SHA256` is bound for System2 physical independence.
+
+CORR-006 code firewall is verified closed:
+- W0 continuity-ready is separated from W1 strategy-executable;
+- explicit `requiredEvidenceComplete` / missing-required-evidence count governs W1;
+- W0 alone cannot promote execution or legitimate zero-pick.
+
+D03 interpretation:
+- these are System2 physical-independence protections;
+- they no longer belong on the D03-09/D03-10 W0 technical-feasibility blocker chain;
+- physical S22-T11~T16 still need a real coherent NC-T01 run, but D03 L3 does not wait on that physical independence claim.
+
+### TI-1462~1466 — W0 shortest truthful path compressed
+
+Exact-session identity is already physical PASS under CORR-004.
+Replay-first continuity binding and legacy-label sanitization are merged.
+
+The remaining W0 sequence is now only:
+1. capture the actual official TWSE TWTAWU export/HTML request contract; do not guess export parameters;
+2. prove the frozen official JSON-vs-export parity contract on a positive bounded interval;
+3. use physical positive control 1218/TWSE suspension 2026-08-13 -> 2026-08-14 from run 37488505236 / job 112354734503;
+4. freeze representation/query normalization before inspecting the target witness;
+5. apply the same bounded completeness contract to the exact selected replay interval of a real history-ready TWSE witness such as 1101;
+6. combine with TWSE exact-range ex-right/dividend, capital-reduction and par-value-change sources;
+7. emit `CLEAR_NO_ACTION_ELIGIBLE` only when event/session/source completeness is physically complete; otherwise preserve `ADJUSTED_CONTINUITY_REQUIRED` or `CONTINUITY_UNKNOWN`;
+8. bind sourceHistoryHash/replayHash/receiptHash/exact eligible dates/source-evidence hashes to the selected replay.
+
+Physical positive-control provenance:
+- 1218/TWSE;
+- suspended 2026-08-13;
+- resumed 2026-08-14;
+- bounded source query 2026-04-05..2026-10-02;
+- rows = 383;
+- source artifact hash = `10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857`;
+- source row hash = `40fbafe3fac0f7bafc60f08ca7cb873da716cdce846decfadcd5122ff8197927`.
+
+This proves a real positive row exists for parity falsification.
+It does NOT yet prove negative completeness.
+
+Current export state remains:
+`OFFICIAL_PAGE_HAS_HTML_AND_CSV_CONTROLS / QUERY_ENDPOINT_CONFIRMED / EXPORT_REQUEST_NOT_PINNED`.
+
+An external TWSE route reconstruction confirms the query endpoint and parameter family:
+`/rwd/zh/afterTrading/TWTAWU?startDate=...&endDate=...&querytype=...&stockNo=...`.
+It does not expose the official CSV/HTML request contract.
+D03 therefore refuses to guess `response=csv` or equivalent.
+
+### TI-1467~1470 — genuine parent path compressed to Production-quality proof + new session
+
+Physical 2026-10-07 parent attempt:
+- workflow run 37652129851 / job 112897875757;
+- generation inventory validation PASS;
+- V8.20 binding-readback validation PASS;
+- immutable C1 population verification FAIL because no C1 generation existed;
+- `FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`;
+- institutionReady=true;
+- qualityReady=false;
+- missingQuality = QUARTER_EPS only;
+- eligibleForResearch=false;
+- mayCountAsZeroPick=false.
+
+This is not a V8.20 ledger defect.
+
+Transport diagnosis is now sharply separated from source availability:
+- official MOPSOV host is reachable;
+- Node standard HTTPS probe run 37565002528 physically returned HTTP 200 / 50,742 bytes in 7.411s;
+- repository candidate commit `9a00f072064110d256537ee7cf322f34aae0abcf` uses native HTTPS for MOPSOV;
+- PR #769's 90-second deadline repair is merged as `d13ff8a40007a3e7e8f8ab0fdfb0970c73fd0d08`;
+- but Production deployment/live readback of the native-HTTPS quality acquisition repair remains unproven.
+
+Hard distinction:
+`REPOSITORY_TRANSPORT_REPAIR_EXISTS != PRODUCTION_QUALITY_REPAIR_PROVEN`.
+
+Shortest truthful parent path:
+1. obtain Production-deployed/live-readback evidence of the native-HTTPS or equivalent quality repair;
+2. next ordinary Taiwan session must reach official quality readiness including QUARTER_EPS;
+3. a genuine immutable C1 generation must physically exist;
+4. V8.20 Formal-to-C1 authoritative binding must bind that exact generation;
+5. only then may D03 consume the parent.
+
+No later recovery may backfill the missing 2026-10-07 parent.
+
+### TI-1471~1473 — D03-10 / D03-09 promotion mechanics
+
+D03-10 remains the first promotion target.
+
+Its machine admission is already available:
+- `research/d03_bollinger_l3_acceptance_v0_2.mjs`;
+- `research/d03_parent_continuity_binding_v0_2.mjs`.
+
+D03-10 promotes only when:
+- real W0 technical continuity accepted;
+- genuine V8.20 parent accepted;
+- exact 20 eligible sessions on that parent;
+- Layer-C known-at causality;
+- formula/source guards PASS;
+- COMPLETE expected-parent reconciliation.
+
+D03-09 uses the same W0 + genuine-parent path, then additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted prior state.
+
+Neither module may use:
+- fixture W0 receipts;
+- System2 physical-independence PASS as a substitute for D03 technical continuity;
+- a missing parent as zero-pick;
+- repository-only native-HTTPS repair as Production quality evidence.
+
+### TI-1474 — maturity / inventory / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- active modules = 12;
+- current L3/60 milestone = 10 modules;
+- D03-09 / D03-10 = L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Independent open debts remain:
+- raw source-version third session;
+- T48 generation-set finalization;
+- S2-07 stabilization;
+- System2 D03 raw-vs-dedup diagnostics;
+- System1 D03 redundancy diagnostics;
+- D16 D03 predictive incrementality.
+
+Exact next:
+consume whichever promotion-grade physical input lands first, without cross-credit:
+A. first real exact-window source-honest W0 technical-continuity receipt under frozen bounded TWTAWU + corporate-action completeness;
+B. next genuine ordinary-session immutable C1 generation + authoritative V8.20 Formal-to-C1 binding after Production/live-readback official-quality repair.
+
+When both exist on admissible evidence cuts, immediately run the existing D03-10 Bollinger L3 + parent-binding oracles.
