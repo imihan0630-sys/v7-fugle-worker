@@ -1314,3 +1314,93 @@ Recommended engineering route:
 Codex / GPT-6 Astra / High.
 
 D09 maturity remains 57.1%. No maturity promotion without genuine Taiwan receipts and D16 evidence.
+
+
+## BR-035 / BR-063 2026-10-07 evidence readback
+
+Artifacts:
+- `research/BR035_ABOVE_MA_PARENT_GENERATION_BLOCKER_20261007.md`
+- `research/br035_above_ma_parent_generation_blocker_20261007_v0_1.json`
+- `research/BR063_BREADTH_REGIME_REPLAY_WITNESS_20261006_V0_1.md`
+- `research/br063_breadth_regime_replay_witness_20261006_v0_1.json`
+- `research/BR063_D18_SAME_CLOCK_CAPTURE_DEPENDENCY_20261007.md`
+
+### BR-035 / D09-05 Above-MA breadth
+
+System1 prospective C1 run `37495670280` preserved an explicit readiness blocker:
+- scanDate 2026-10-06;
+- `C1_GENERATION_NOT_FOUND`;
+- Formal scan date still 2026-09-29;
+- Formal pipeline incomplete;
+- qualityReady=false;
+- missing quality = FINANCIAL / QUARTER_EPS;
+- eligibleForResearch=false;
+- mayCountAsZeroPick=false.
+
+Interpretation:
+this is a missing parent generation, not an Above-MA result.
+No MA20/MA60 live receipt is inferred or reconstructed.
+
+D09-05 remains L2 / 40%.
+
+Exact next:
+first complete verified same-generation C1 parent -> run the already-tested isolated Above-MA builder -> freeze no-outcome live receipt.
+
+### BR-063 / D09-12 Breadth × Regime
+
+2026-10-06 official market data provides a real replay witness:
+- TWSE stock-only: 462 up / 519 down / 100 flat / 2 N-A;
+- TPEx: 300 up / 475 down / 90 flat / 28 untraded/suspended;
+- combined descriptive comparable N = 1,946;
+- combined descriptive advance share = 39.1572%;
+- decline share = 51.0791%;
+- net breadth = -11.9219 percentage points.
+
+Official index context:
+- TAIEX 49,822.55, +0.22%;
+- TPEx index 430.86, -0.37%.
+
+Exact D18 TAIEX replay formula over the official 25-session close window gives:
+- MA20 = 47,453.461;
+- MA20Slope5 = +632.6625;
+- D5 return = +4.59899%;
+- D20 return = +7.02758%;
+- RV5 = 0.0085638343;
+- RV20 = 0.0100403787;
+- RV5/RV20 = 0.8529393744;
+- trendContext = UP_TREND_CONTEXT;
+- volatilityDirection = VOL_CONTRACTING.
+
+This is a real descriptive index/breadth divergence witness, but NOT a genuine BR-063 prospective joint receipt.
+
+The actual same-day System2 scheduled run `37419347091` proves:
+- workflow conclusion SUCCESS;
+- dailyGateComplete=false;
+- sameSessionClockReady=false;
+- requiredReady=false;
+- precisionEligible=false;
+- TWSE A1: 30 attempts / no READY;
+- TPEx A1: first READY 2026-10-06T08:03:54.274Z;
+- A2 TAIEX: attemptCount=0;
+- B2 dependency coverage=false;
+- exactDecisionClockAuthorized=false.
+
+Repository workflow search finds no alternate same-day scheduled A2 TAIEX capture.
+
+Therefore:
+- 2026-10-06 = REAL_MARKET_REPLAY_WITNESS;
+- prospective same-clock eligibility = false;
+- canonical D18 breadth label remains CONTEXT_RAW because median-return continuity is not same-clock certified;
+- D09-12 remains L2 / 40%.
+
+Cross-room dependency is frozen at:
+`research/BR063_D18_SAME_CLOCK_CAPTURE_DEPENDENCY_20261007.md`.
+
+Exact next:
+future completed Taiwan session -> actual prospective A2 + breadth under one exact decision timestamp -> immutable joint receipt -> Room07 no-outcome QA -> only then reconsider D09-12 L3.
+
+### Maturity
+
+D09 remains 57.1%.
+No maturity promotion.
+SDA-009 exact next remains authoritative and is not overwritten by this parallel research work.
