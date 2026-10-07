@@ -2879,3 +2879,27 @@ D06-05 corporate-action / denominator guard completed. Durable artifacts: `resea
 
 ## 2026-10-07 D06 — IC-101
 D06-05 first bounded pair corporate-action mask stored at `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json`. Pair 2026-09-24→2026-10-02: known hard masks 1235/1441/2323/2601/4806/6550; exact-denominator support 2783 falls to an upper bound 2779 after currently materialized stable-denominator event masks. This is not final clean N because exact-pair TPEx ex-right/dividend and identity-transition rows are not yet materialized. D06-05 stays L3/60 and outcomes remain closed. Exact next: materialize full shared exact-pair event rows, freeze final event-clean row-set hash, then preregister vintage-clustered OOS/Shadow validation.
+
+
+## 2026-10-08 D06 — IC-102 D06-05 pair contamination mask v0.2
+
+- Durable artifact: `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_2.json`.
+- This continues IC-100/101; denominator/corporate-action firewall was not rebuilt.
+- New official public-capital-increase rows materialized for the TDCC pair:
+  - 3234 光環 OTC capital increase allotment 2026-09-24; grade17 stable 126,474,692 -> 126,474,692 but 400+ concentration -0.91765pp. Pair-boundary clock is unresolved, so 3234 becomes a fail-closed stable-denominator hard mask.
+  - 4977 眾達-KY allotment 2026-09-30; grade17 +10.0375%, already excluded by denominator change.
+  - 2464 盟立 allotment 2026-10-01; grade17 +3.8836%, already excluded by denominator change.
+- TPEx share-exchange identity lineage materialized:
+  - 8183 精星 stopped 2026-09-23 and delisted 2026-10-01, exchanged into 6191 精成科 at 1:0.342.
+  - 8183 exists in prior TDCC vintage but not current, so it is outside common support.
+  - 6191 grade17 +6.0262%, already excluded by denominator change.
+- TWSE official termination list has no termination inside 2026-09-24..2026-10-02.
+- Known clean-support upper bound tightens 2,779 -> 2,778.
+- 2,778 remains an upper bound only. Exact TPEx ex-right/dividend pair rows and exhaustive TPEx identity/other issuance coverage are still pending.
+- No outcome join; D06-05 remains L3/60; Formal Core LOCKED.
+
+### Exact next continuation
+1. Materialize exact TPEx EX_RIGHT_DIVIDEND rows for 2026-09-24..2026-10-02.
+2. Complete TPEx interval identity-transition/delisting coverage and classify any additional issuance channel touching either pair boundary.
+3. Recompute the final event-clean exact-denominator symbol set and canonical hash; only then open the preregistered OOS/Shadow lane.
+4. Do not treat 2,778 as final sample size until those coverage gates pass.
