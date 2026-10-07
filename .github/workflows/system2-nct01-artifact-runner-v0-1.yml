@@ -5,9 +5,12 @@ on:
   pull_request:
     paths:
       - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
       - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
+      - "system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs"
       - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
       - "system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs"
       - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
@@ -17,9 +20,12 @@ on:
     branches: [main]
     paths:
       - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
       - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
+      - "system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs"
       - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
       - "system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs"
       - ".github/workflows/system2-nct01-artifact-runner-v0-1.yml"
@@ -47,6 +53,9 @@ jobs:
 
       - name: NC-T01 artifact runner core
         run: node system2/tests/nct01_artifact_runner_v0_1.test.mjs
+
+      - name: CORR-005/006 fail-closed regression
+        run: node system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs
 
       - name: Existing replay continuity regression
         run: node system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs
