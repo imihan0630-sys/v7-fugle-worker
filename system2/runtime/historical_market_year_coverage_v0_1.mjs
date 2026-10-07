@@ -1,7 +1,8 @@
+import { createHash } from "node:crypto";
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { historicalUniverseMembershipActiveOnDateV0_1 } from "./historical_universe_registry_v0_1.mjs";
 
-export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.2-RESEARCH";
+export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.3-RESEARCH";
 
 
 export function buildObservedIntervalUniverseRegistryV0_1({
@@ -98,6 +99,126 @@ function requiredDate(value, field) {
   const text = String(value || "").trim();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) throw new Error(field + " must be YYYY-MM-DD");
   return text;
+}
+
+function sha256CanonicalV0_1(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+export function tpexCmodeRocDateV0_1(value) {
+  const iso=requiredDate(value,"marketDate");
+  const year=Number(iso.slice(0,4))-1911;
+  if(year<0) throw new Error("TPEx ROC date year cannot be negative");
+  return String(year).padStart(3,"0")+"/"+iso.slice(5,7)+"/"+iso.slice(8,10);
+}
+
+function tpexCmodeDateFromAnyV0_1(value) {
+  const text=String(value??"").trim();
+  let m=text.match(/(?:^|\D)(\d{3})[\/\-.](\d{1,2})[\/\-.](\d{1,2})(?:\D|$)/);
+  if(m){
+    return String(Number(m[1])+1911).padStart(4,"0")+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  m=text.match(/(?:^|\D)(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})(?:\D|$)/);
+  if(m){
+    return m[1]+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  m=text.match(/(?:民國)?\s*(\d{2,3})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+  if(m){
+    return String(Number(m[1])+1911).padStart(4,"0")+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  return null;
+}
+
+function normalizeTpexCmodeCellV0_1(value) {
+  return String(value??"")
+    .replace(/<[^>]*>/g," ")
+    .replace(/&nbsp;|&#160;/gi," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function tpexCmodeStopMarkerPositiveV0_1(value) {
+  const marker=normalizeTpexCmodeCellV0_1(value);
+  if(!marker) return false;
+  const upper=marker.toUpperCase();
+  if(["Y","YES","1","是","*","＊","V","✓","✔","停止","停止交易"].includes(upper)) return true;
+  if(marker.includes("停止") && !marker.includes("未停止")) return true;
+  return false;
+}
+
+function nextCalendarDateV0_1(iso) {
+  const d=new Date(iso+"T00:00:00Z");
+  d.setUTCDate(d.getUTCDate()+1);
+  return d.toISOString().slice(0,10);
+}
+
+export function parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate,
+  payload,
+  sourceUrl,
+  sourceHash,
+  coverageTo,
+}={}) {
+  const requestedDate=requiredDate(marketDate,"marketDate");
+  const to=requiredDate(coverageTo||requestedDate,"coverageTo");
+  if(!payload||typeof payload!=="object") throw new Error("TPEx cmode payload is required");
+
+  const reportDateRaw=payload.reportDate??payload.date??payload.report_date??null;
+  const reportDate=tpexCmodeDateFromAnyV0_1(reportDateRaw);
+  if(!reportDate || reportDate!==requestedDate){
+    return deepFreeze({
+      state:"SOURCE_DATE_IDENTITY_UNCERTIFIED",
+      requestedDate,
+      reportDate,
+      reportDateRaw:reportDateRaw===null?null:String(reportDateRaw),
+      rowCount:0,
+      positiveStopCount:0,
+      intervals:Object.freeze([]),
+      absenceCertifiesNoStop:false,
+      sourceUrl:String(sourceUrl||""),
+      sourceHash:sourceHash||null,
+      schemaVersion:"S2_TPEX_CMODE_POSITIVE_STOP_SESSION_PARSE_V0_1",
+    });
+  }
+
+  const rows=Array.isArray(payload.aaData)
+    ? payload.aaData
+    : (Array.isArray(payload?.tables?.[0]?.data)?payload.tables[0].data:[]);
+  const intervals=[];
+  let acceptedRowCount=0;
+  for(const row of rows){
+    if(!Array.isArray(row)||row.length<7) continue;
+    const symbol=normalizeTpexCmodeCellV0_1(row[0]);
+    if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    acceptedRowCount+=1;
+    if(!tpexCmodeStopMarkerPositiveV0_1(row[6])) continue;
+    intervals.push(deepFreeze({
+      market:"TPEX",
+      symbol,
+      suspendedFrom:requestedDate,
+      resumedOn:nextCalendarDateV0_1(requestedDate),
+      coverageTo:to,
+      sourceRowHash:sha256CanonicalV0_1({marketDate:requestedDate,row}),
+      sourcePayloadHash:sourceHash||null,
+      sourceKind:"TPEX_CMODE_POSITIVE_STOP_SESSION",
+      stopMarker:normalizeTpexCmodeCellV0_1(row[6]),
+      sessionEvidenceOnly:true,
+    }));
+  }
+
+  return deepFreeze({
+    state:"POSITIVE_SESSION_SOURCE_OBSERVED",
+    requestedDate,
+    reportDate,
+    rowCount:rows.length,
+    acceptedRowCount,
+    positiveStopCount:intervals.length,
+    intervals:Object.freeze(intervals),
+    absenceCertifiesNoStop:false,
+    sourceUrl:String(sourceUrl||""),
+    sourceHash:sourceHash||null,
+    schemaVersion:"S2_TPEX_CMODE_POSITIVE_STOP_SESSION_PARSE_V0_1",
+  });
 }
 
 function finitePositive(value) {
@@ -260,6 +381,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
   const missingReasonCounts = {};
   const missingSample = [];
   const missingBySymbolMap = new Map();
+  const unknownSessionDateSet = new Set();
   let unknownMissingBars = 0;
   let suspensionMissingBars = 0;
   for (const key of expectedKeys) {
@@ -269,7 +391,10 @@ export function buildHistoricalMarketYearCoverageV0_1({
     const reason = matched ? "OFFICIAL_SUSPENSION_INTERVAL" : "UNKNOWN_SYMBOL_SESSION_GAP";
     missingReasonCounts[reason] = (missingReasonCounts[reason] || 0) + 1;
     if (matched) suspensionMissingBars += 1;
-    else unknownMissingBars += 1;
+    else {
+      unknownMissingBars += 1;
+      unknownSessionDateSet.add(date);
+    }
     const grouped = missingBySymbolMap.get(symbol) || {
       symbol,missingCount:0,unknownCount:0,suspensionCount:0,firstMissingDate:null,lastMissingDate:null,
     };
@@ -334,6 +459,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
     nonTradingDateBars:nonTradingDateBars.length,
     missingTradingDates:Object.freeze(missingTradingDates),
     missingReasonCounts:deepFreeze(missingReasonCounts),
+    unknownSessionDates:Object.freeze([...unknownSessionDateSet].sort()),
     missingBySymbol:Object.freeze(missingBySymbol.map((x)=>deepFreeze(x))),
     observationStateCounts:deepFreeze(observationStateCounts),
     continuityStateCounts:deepFreeze(continuityStateCounts),
@@ -347,6 +473,6 @@ export function buildHistoricalMarketYearCoverageV0_1({
     rawCoverageState:structuralCoverageState,
     symbolSessionReadiness,
     pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
-    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2",
+    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_3",
   });
 }
