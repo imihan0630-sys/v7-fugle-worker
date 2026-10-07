@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T16:40:34+08:00",
+  "updatedAt": "2026-10-07T16:54:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1039,7 +1039,9 @@
         "Historical DATA_LANE separately observed intermittent TPEx PRIMARY transport exhaustion in 2024 annual run 37587943578; historical bounded PRIMARY-only recovery is already implemented under existing CORR-001 and is not duplicated by this directive",
         "00 secondary live diagnostic after the terminal run, using a separate read-only retrieval channel with no authority promotion: TWSE official STOCK_DAY_ALL returned HTTP 200 / application/json / valid JSON / 1381 rows but sample Date remained 1151006 (2026-10-06), supporting a genuine publication/readiness lag at that observation rather than a JSON transport failure",
         "00 secondary live diagnostic: TPEx official tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json / valid complete JSON / approximately 4.67 MB / 12245 rows with Date 1151007 (2026-10-07), proving current-day TPEx data existed at the later observation; this supports classifying the earlier GitHub-runner NON_JSON_RESPONSE states as transient acquisition/body-integrity failures rather than absence of current-day TPEx publication",
-        "Official TWSE E-shop daily-closing product states production occurs approximately at 14:00, 15:30 and 17:30 on each trading day. This does not prove the exact STOCK_DAY_ALL OpenAPI endpoint updates on the identical schedule, but it falsifies any assumption that a collector ending before 17:30 can treat non-readiness as end-of-day unavailability."
+        "Official TWSE E-shop daily-closing product states production occurs approximately at 14:00, 15:30 and 17:30 on each trading day. This does not prove the exact STOCK_DAY_ALL OpenAPI endpoint updates on the identical schedule, but it falsifies any assumption that a collector ending before 17:30 can treat non-readiness as end-of-day unavailability.",
+        "Independent Firecrawl live readback at 2026-10-07T16:54+08:00: TWSE STOCK_DAY_ALL returned HTTP 200 / application/json with observed payload date 1151006 (2026-10-06), so target date 2026-10-07 was still not published on that endpoint in this observation.",
+        "Independent Firecrawl live readback at 2026-10-07T16:54+08:00: TPEx tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json and exposed observed date 1151007 (2026-10-07), but the independent client reported a truncated body / invalid complete JSON. This supports acquisition/body-integrity variability rather than absence of current-day TPEx publication."
       ],
       "riskIfUnfixed": "SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 strategy-evaluation receipt when its core A1 input family never reaches source-honest READY. NC-T01 S22-T13 physical independence and downstream ranking/capacity evidence can remain blocked, while poll exhaustion could be misread as source absence or a legitimate zero-pick day.",
       "requiredCorrection": [
@@ -1075,7 +1077,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T16:33:46+08:00"
+      "updatedAt": "2026-10-07T16:54:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-002",
