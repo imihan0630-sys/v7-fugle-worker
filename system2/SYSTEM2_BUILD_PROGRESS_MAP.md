@@ -1438,3 +1438,55 @@ Durable evidence:
 
 Next holdings-specific physical gate:
 `FIRST_REAL_OWNER_SCREENSHOT_CONFIRM_PERSIST_READBACK`.
+
+## 2026-10-07 S2-07 MOPS Repeated-Capture Union Stability V1.7 — PHYSICAL PASS / STABILIZATION PENDING
+
+Authoritative implementation:
+- merge commit: `14f67ddba88604e73a2488d4a561a571393f026b`;
+- dedicated workflow run `37579422400` / job `112655458121`: PASS;
+- artifact `11464480276`, digest `sha256:3c3c2da61bfa1cced784a9c28daf214dcc1e3e8b4726a49601db70c16230fe85`;
+- isolation guard: PASS.
+
+Accepted physical result:
+- state = `MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING`;
+- captureCount = 3;
+- unionVersionKeyCount = 168;
+- latestCaptureVersionKeyCount = 163;
+- unionMissingFromLatestCount = 5;
+- earliestObservedPreserved = true;
+- latestObservedPreserved = true;
+- payloadConflictCount = 0;
+- monthOnlyDriftVersionCount = 21;
+- trailingIdenticalTransitions = 0;
+- boundedStabilizationCandidate = false;
+- unionHash = `2c82abd1f195b8a7b0b0b023ed3150edc2f8e9d5e93714d6b25e2ed9c38cdfb0`.
+
+Interpretation:
+- the V1.6 cross-capture `firstObservedAt` reset defect is repaired;
+- a later capture cannot delete an already genuinely observed version or overwrite its earliest observation clock;
+- absence from a later query is membership drift, not proof of nonexistence;
+- stable common payloads do not imply stable historical query membership;
+- no historical availability is backfilled from a later observation.
+
+Authority remains locked:
+- `sourceSemanticsCertified=false`;
+- `monthShardCoverageComplete=false`;
+- `expectedMopsKeysetComplete=false`;
+- `noRevisionGapThroughCut=false`;
+- `preParentEvidenceCutReady=false`;
+- symbol-session completeness=false;
+- technical continuity=false;
+- selection/final-selection/push/capital/order authority=false;
+- Formal Core unchanged.
+
+Durable acceptance:
+`system2/evidence/S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL_ACCEPTANCE_20261007.json`.
+
+Next exact BUILD_LANE continuation:
+1. persist the accepted 168-version union as a durable next-capture seed;
+2. run the next bounded prospective capture against that seed;
+3. preserve earliest-observed clocks and append-only membership history;
+4. continue until the frozen trailing-identical stabilization criterion is physically satisfied without payload conflicts;
+5. independently resolve month-shard/source semantics;
+6. only after both provenance stability and source semantics pass may `expectedMopsKeysetComplete` be reviewed;
+7. keep `noRevisionGapThroughCut=false` until post-parent reconciliation proves closure.
