@@ -918,9 +918,10 @@ Correction consequence:
   - PIT/UNKNOWN/source-integrity semantics;
   - ranking/capacity max12/max3/no-forced-fill semantics;
   - final selection / notification / live capital / orders.
-- ownerDecisionRequired: true
+- ownerDecisionRequired: false
+- Existing owner authorization readback: Go-Live Priority Directive 2026-10-07 already authorizes launch-critical System 2 implementation/testing against frozen launch-policy required inputs and an independently executable strategy path; this correction restores implementation alignment and does not alter strategy thresholds/weights, final-selection, push, capital, orders or System1 Formal Core.
   - Reason: implementing a strategy/stage-specific execution clock changes admissible decision behavior even though the inconsistency is audit-proven; BUILD_LANE must present the minimal contract-preserving design for owner approval before crossing that protected boundary.
 - implementationEvidence: []
 - verificationEvidence: []
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T16:40:34+08:00
+- updatedAt: 2026-10-07T16:54:00+08:00
