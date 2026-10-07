@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "S2_CORR_20261004_001_RUN30_QUOTA_HARDENING_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T19:34:03+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261004-001",
+  "implementationCommit": "d5031e1966da1fd75ec0499d17fabc19ca459d83",
+  "triggerRun": {
+    "runId": 37611914140,
+    "runNumber": 30,
+    "failureStage": "migrate",
+    "backfillStarted": false,
+    "failureClass": "D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT"
+  },
+  "implementationReadback": {
+    "annualWorkflow": ".github/workflows/system2-historical-pack-2017-backfill.yml",
+    "removedRedundantMigrateJob": true,
+    "removedNeedsMigrate": true,
+    "directProvisionCallRemaining": false,
+    "backfillTimeoutMinutes": 120,
+    "dedicatedProvisioningToolPreserved": true
+  },
+  "schemaSafetyReadback": {
+    "backfillScript": "system2/scripts/historical_pack_year_backfill_v0_1.mjs",
+    "remoteReadBeforeMutation": true,
+    "query": "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1",
+    "requiredSchemaVersion": "1.1",
+    "failClosedAssertion": "isolated D1 must be schema 1.1",
+    "conclusion": "REMOVING_WORKFLOW_MIGRATE_DOES_NOT_REMOVE_SCHEMA_READINESS_GATE"
+  },
+  "regressionEvidence": [
+    {
+      "runId": 37612590153,
+      "name": "System2 Research CI",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "runId": 37612590073,
+      "name": "V8 Regression Tests",
+      "conclusion": "SUCCESS"
+    },
+    "historical_annual_workflow_semantics.test.mjs forbids annual migrate provisioning and preserves 120-minute timeout",
+    "historical_cold_workflow_guard.test.mjs forbids provision_system2_d1.mjs and needs:migrate in annual workflow"
+  ],
+  "boundaries": {
+    "sourceIntegrityWeakened": false,
+    "historicalImmutabilityChanged": false,
+    "system1Mutation": false,
+    "strategyRankingChanged": false,
+    "paidUpgradePerformed": false
+  },
+  "disposition": "DIRECT_RUN30_CAUSE_REPAIRED_REPOSITORY_PASS_PHYSICAL_2024_TPEX_ACCEPTANCE_PENDING",
+  "correction003Relationship": {
+    "countsAs": "PARTIAL_RISK_REDUCTION_ONLY",
+    "doesNotCloseGlobalQuotaCorrection": true,
+    "reason": "Legitimate annual backfill still writes D1 manifests/checkpoints/receipts, Daily Shadow and multiple other writer workflows also consume account-wide quota, and no System2-wide budget/reservation/priority contract exists."
+  },
+  "nextPhysicalGate": [
+    "Do not dispatch while today's D1 free-tier write quota is known exhausted.",
+    "After reset/safe quota authorization, fresh 2024/TPEX annual run must reach backfill and Physical verify.",
+    "Acceptance still requires source/storage reconciliation, coverage artifact and System1 isolation PASS.",
+    "A future quota failure after migration removal must be attributed to legitimate write budget, not redundant schema provisioning."
+  ]
+}
