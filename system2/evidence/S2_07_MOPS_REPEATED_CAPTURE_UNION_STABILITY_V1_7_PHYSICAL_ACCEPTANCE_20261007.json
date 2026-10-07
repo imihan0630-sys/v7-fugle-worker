@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "S2_S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL_ACCEPTANCE",
+  "version": "1.7-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "status": "PHYSICAL_PASS_STABILIZATION_PENDING",
+  "implementation": {
+    "mergeCommit": "14f67ddba88604e73a2488d4a561a571393f026b",
+    "workflowRunId": 37579422400,
+    "jobId": 112655458121,
+    "artifactId": 11464480276,
+    "artifactDigest": "sha256:3c3c2da61bfa1cced784a9c28daf214dcc1e3e8b4726a49601db70c16230fe85",
+    "workflowConclusion": "success",
+    "isolationGuard": "PASS"
+  },
+  "accepted": {
+    "state": "MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING",
+    "captureCount": 3,
+    "unionVersionKeyCount": 168,
+    "latestCaptureVersionKeyCount": 163,
+    "unionMissingFromLatestCount": 5,
+    "earliestObservedPreserved": true,
+    "latestObservedPreserved": true,
+    "payloadConflictCount": 0,
+    "monthOnlyDriftVersionCount": 21,
+    "trailingIdenticalTransitions": 0,
+    "boundedStabilizationCandidate": false,
+    "unionHash": "2c82abd1f195b8a7b0b0b023ed3150edc2f8e9d5e93714d6b25e2ed9c38cdfb0"
+  },
+  "authority": {
+    "sourceSemanticsCertified": false,
+    "monthShardCoverageComplete": false,
+    "expectedMopsKeysetComplete": false,
+    "noRevisionGapThroughCut": false,
+    "preParentEvidenceCutReady": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "formalCoreImpact": false
+  },
+  "interpretation": {
+    "provenanceDefectRepaired": true,
+    "earliestObservedClockMeaning": "minimum genuine observation time across accepted immutable captures",
+    "absenceMeansNonexistence": false,
+    "stablePayloadDoesNotImplyStableMembership": true,
+    "historicalAvailabilityBackfillAuthorized": false
+  },
+  "exactNext": [
+    "persist the accepted 168-version union receipt as a durable next-capture seed",
+    "run the next bounded prospective MOPS capture against that seed",
+    "preserve earliest observed clocks and append-only membership history",
+    "continue until the frozen trailing-identical stabilization criterion is physically satisfied without payload conflicts",
+    "keep expectedMopsKeysetComplete=false until provenance stability and source semantics both pass",
+    "keep noRevisionGapThroughCut=false until post-parent reconciliation proves closure"
+  ]
+}
