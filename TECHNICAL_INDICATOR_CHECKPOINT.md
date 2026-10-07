@@ -6479,3 +6479,112 @@ No promotion:
 
 Exact next:
 primary next remains a physical Layer-B lifecycle-event-union rehabilitation receipt with before/after missingReasonCounts. In parallel, consume `S2-CORR-20261007-002` only after corrected strategy-specific readiness and a genuine trading-date mixed-dependency receipt prove SHORT_MOMENTUM evaluable with irrelevant B2/A5 unavailable, SWING_GROWTH blocked when its required evidence is unavailable, and A1/universal PIT/session/source-integrity failures still fail closed. Preserve pre-fix over-gated observations as defect evidence. Continue waiting for Layer C revision-known-at, genuine V8.20 parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy and raw-source observer gates independently.
+
+
+## 2026-10-07 D03 — TI-1309~1324 Layer-B lifecycle normalization contract + machine guard
+
+Canonical artifacts:
+- `research/d03_layer_b_lifecycle_event_normalization_contract_20261007_v0_1.json`;
+- `research/test_d03_layer_b_lifecycle_event_normalization_contract_v0_1.mjs`;
+- `research/d03_layer_b_lifecycle_normalization_execution_receipt_20261007_v0_1.json`.
+
+Canonical workflow:
+- `D03 Layer-B Lifecycle Normalization Readonly`;
+- run `37621773476`;
+- job `112793527371`;
+- conclusion SUCCESS.
+
+### TI-1309~1312 — current verifier architecture decomposed
+
+Exact latest-main inspection confirms the annual verifier currently separates:
+- TWSE historical-universe membership using the official current + new-listing + delisting union;
+- TWSE gap classification using TWTAWU stop/resume intervals;
+- TPEx current membership using MOPS current listed-company metadata plus observed historical intervals;
+- TPEx gap classification using `/www/zh-tw/bulletin/sprcHis` halt/resume rows.
+
+These source families are not yet normalized into one symbol lifecycle state machine.
+Therefore correct delisting/listing knowledge may coexist with an UNKNOWN gap because membership-boundary and no-trading event semantics are consumed by different paths.
+
+### TI-1313~1316 — canonical interval semantics
+
+D03 freezes all no-trading intervals as half-open:
+`[effectiveFrom, effectiveToExclusive)`.
+
+Consequences:
+- stop date is non-trading and excluded from expected price rows;
+- resume date is trading-eligible again when membership remains active;
+- listing/trading start is an inclusive membership boundary;
+- delisting effective date is an exclusive old-symbol membership boundary unless an official source explicitly says trading occurs that date;
+- share conversion may produce both a no-trading interval and an old-symbol membership termination;
+- open-ended stops terminate only at a proven resume/delist/migration boundary or remain open through coverage;
+- overlapping no-trading intervals are unioned, never double-subtracted.
+
+This explicitly prevents resume-day deletion, delisting-day off-by-one errors and duplicate denominator removal.
+
+### TI-1317~1319 — authority / conflict / provenance
+
+Canonical lifecycle event types:
+- LISTING_START;
+- REGULATORY_STOP;
+- REGULATORY_RESUME;
+- DELISTING_EFFECTIVE;
+- SHARE_CONVERSION_STOP;
+- MARKET_MIGRATION_OUT;
+- MARKET_MIGRATION_IN.
+
+Required normalized provenance:
+market, symbol, eventType, effectiveFrom, effectiveToExclusive, membershipAction, tradingAction, sourceId, sourceUrl, sourceRowHash, sourcePayloadHash, observedAt, sourceReportedAt, eventIdentityHash.
+
+Rules:
+- official effective dates outrank free-text inference;
+- source disagreement fails closed to EVENT_BOUNDARY_CONFLICT;
+- source absence never proves no event;
+- changed trading method alone is not a no-trading interval;
+- no synthetic OHLC may fill official non-trading intervals;
+- Layer-B event classification must not advance Layer-C revision-known-at.
+
+### TI-1320~1322 — source reuse map
+
+TWSE can reuse:
+- existing `fetchTwseSuspensionIntervals` / TWTAWU for one stop/resume class;
+- existing `d08_twse_historical_universe_source_v0_1.mjs` current + newlisting + suspendListing union for membership boundaries.
+
+TPEx can reuse:
+- existing `fetchTpexSuspensionIntervals` / `sprcHis` for halt/resume positive rows;
+- official TPEx delisted-company registry exists, but its underlying machine contract is not yet pinned in current verifier;
+- regulatory stop/resume events outside `sprcHis` require a pinned official structured/bulletin source contract.
+
+The implementation objective is therefore source normalization/reuse, not a new parallel inference engine.
+
+### TI-1323 — deterministic real-case boundary guard
+
+Machine tests freeze:
+- TWSE 8101 2024: stop 2024-08-22 / resume 2024-11-19 => [2024-08-22,2024-11-19);
+- TWSE 1701 2024: share-conversion stop 2024-08-21 / delist 2024-09-02 => [2024-08-21,2024-09-02) plus membership termination at 2024-09-02;
+- TPEx 4806 2023: stop 2023-04-10 / resume 2023-10-12 => [2023-04-10,2023-10-12);
+- TPEx 3089 2021: stop 2021-01-20 / resume 2021-07-20 => [2021-01-20,2021-07-20).
+
+Workflow run `37621773476` and isolation step both PASS.
+
+### TI-1324 — maturity / module / exact next
+
+No physical Layer-B promotion yet:
+- D03 maturity remains 56.7%;
+- D03-09 / D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- Layer C remains NOT PROVEN;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED.
+
+Formal D03 module inventory:
+- 12 active modules total;
+- 10 modules currently at L3/60;
+- 2 modules (D03-09 ADX, D03-10 Bollinger) remain L2/40.
+For visible room reporting, use “10 reached current L3 milestone / 2 not yet reached L3” rather than implying L3 means final economic completion.
+
+Exact next:
+1. BUILD/DATA materializes the normalized lifecycle-event union and reruns annual coverage;
+2. physical receipt must expose before/after membership-session denominator, missingReasonCounts, reclassified symbol-session identities, source hashes and unresolved conflicts;
+3. D03 may advance Layer B only from that physical receipt;
+4. in parallel consume S2-CORR-20261007-002 corrected strategy-specific readiness only after a genuine mixed-dependency trading-date receipt;
+5. keep Layer C revision-known-at, V8.20 genuine parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy, D16 incrementality and raw-source observer gates independent.
