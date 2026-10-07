@@ -1,0 +1,35 @@
+name: System1 H1-H5 Prospective Readiness Review
+
+on:
+  pull_request:
+    paths:
+      - 'research/system1_selection_isolated_v0_1.mjs'
+      - 'research/system1_h1_h5_prospective_readiness_v0_1.mjs'
+      - 'tests/test_system1_selection_isolated_v0_1.mjs'
+      - 'tests/test_system1_h1_h5_prospective_readiness_v0_1.mjs'
+      - 'tests/build_system1_h1_h5_prospective_postprocess.mjs'
+      - '.github/workflows/system1-c1-evidence.yml'
+      - '.github/workflows/system1-h1-h5-prospective-review.yml'
+      - 'research/SYSTEM1_H1_H5_PROSPECTIVE_READINESS_CHECKPOINT_20261007.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify C1 target semantics preservation
+        run: node tests/test_system1_selection_isolated_v0_1.mjs
+      - name: Verify H1-H5 T0/T1 readiness semantics
+        run: node tests/test_system1_h1_h5_prospective_readiness_v0_1.mjs
+      - name: Syntax check offline postprocess
+        run: |
+          node --check research/system1_h1_h5_prospective_readiness_v0_1.mjs
+          node --check tests/build_system1_h1_h5_prospective_postprocess.mjs
