@@ -1,6 +1,6 @@
 {
   "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX_V0_1",
-  "updatedAt": "2026-10-07T07:20:00+08:00",
+  "updatedAt": "2026-10-07T09:00:00+08:00",
   "scope": {
     "markets": [
       "TWSE",
@@ -553,28 +553,35 @@
       "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
       "dataCoverageState": "BLOCKED",
       "replayReadinessState": "BLOCKED",
-      "overall": "BLOCKED_SOURCE_REVISION_CANONICAL_A1_CHANGE",
-      "evidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json",
+      "overall": "BLOCKED_TPEX_NON_EQUIVALENT_LEGACY_FALLBACK_REVERIFY_PENDING",
+      "evidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json",
       "githubRunId": 37401612529,
-      "executionState": "BLOCKED_SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE",
-      "blockerEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json",
+      "executionState": "BLOCKED_SOURCE_SEMANTICS_REVERIFY_PENDING",
+      "blockerEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json",
       "retryNotBefore": "2026-10-06T00:00:00Z",
       "retryNotBeforeTaipei": "2026-10-06T08:00:00+08:00",
       "paidUpgradeRequired": false,
-      "canonicalA1ValueMismatchCount": 698,
-      "sourceRevisionOnlyCount": 82,
+      "canonicalA1ValueMismatchCount": 0,
+      "sourceRevisionOnlyCount": 780,
       "sourceRevisionDateCount": 1,
       "sourceRevisionDates": [
         "2021-01-14"
       ],
-      "sourceVersionState": "SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE",
+      "sourceVersionState": "SOURCE_SEMANTICS_FALSE_REVISION_DIAGNOSED",
       "githubRunAttempt": 2,
       "artifactId": 11409737982,
       "artifactDigest": "sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621",
       "universeReadiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
       "officialDelistingUnionComplete": false,
       "priorQuotaBlockerEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json",
-      "priorQuotaBlockerDisposition": "RESOLVED_BY_RUN_18_BACKFILL_COMPLETION"
+      "priorQuotaBlockerDisposition": "RESOLVED_BY_RUN_18_BACKFILL_COMPLETION",
+      "priorRevisionBlockerEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json",
+      "priorRevisionBlockerDisposition": "SUPERSEDED_BY_TRANSPORT_SEMANTICS_ROOT_CAUSE_PENDING_FRESH_REVERIFY",
+      "canonicalTransportPolicy": "PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY",
+      "legacyFallbackCanonicalEligible": false,
+      "recoveryRunId": 37552411600,
+      "recoveryRunConclusion": "FAIL_EXPECTED_698_ACTUAL_0_BEFORE_TRANSPORT_SEMANTICS_FIX",
+      "remediationState": "SOURCE_ADAPTER_FIXED_CI_PASS_FRESH_RECOVERY_PENDING"
     },
     {
       "market": "TPEX",
