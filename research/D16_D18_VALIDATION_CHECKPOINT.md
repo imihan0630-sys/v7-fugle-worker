@@ -4339,3 +4339,119 @@ Exact next:
 2. explicit split/reverse-split + identity-transition scope must be resolved before U2B family completeness;
 3. D18-06 proceeds on its own broader denominator-family authority and effective-share vintage path;
 4. no executable Taiwan replay => no L3.
+
+
+## 2026-10-08 D18-06 S0 reported-shares observer contract
+
+New durable artifacts:
+- `research/D18_06_S0_REPORTED_SHARES_OBSERVER_CONTRACT_20261008_V0_1.md`;
+- `research/d18_06_s0_reported_shares_receipt_contract_20261008_v0_1.json`.
+
+### Existing zero-extra-call observation seam
+
+Current `Worker.js` already fetches TWSE `t187ap03_L` and TPEx `mopsfin_t187ap03_O` company-profile rows and parses reported shares before market-cap fallback.
+
+Observed provenance losses:
+- per-symbol normalized stock keeps only `sharesOutstanding`, not the full original profile-row identity;
+- `sourceMeta` drops the validated CSV fallback `exportDate`;
+- normalized custom enrichment drops payload-level provenance;
+- custom merge may overwrite `sharesOutstanding` or provide explicit market-cap fields;
+- final numeric market cap therefore does not identify the source branch by itself.
+
+The minimal research observer can preserve provenance at the already-existing pre-normalization/pre-custom-spread seam without an additional market-data request.
+
+### S0 scope
+
+S0:
+`REPORTED_SHARES_SNAPSHOT_CONTEXT`.
+
+It proves:
+the existing official profile request reported a specific issued/common-share value at a specific captured clock.
+
+It does not prove:
+- Formal ultimately used that official share value;
+- the reported share value was economically effective for the market date;
+- the denominator is free float;
+- the observation may be backfilled historically.
+
+Required:
+`formalMarketCapSourceClaimed=false`.
+
+### Source-date states
+
+- `SOURCE_DATED`;
+- `CAPTURED_SOURCE_DATE_UNKNOWN`;
+- `SOURCE_DATE_INVALID`.
+
+Corresponding S0 states:
+- `S0_READY_SOURCE_DATED`;
+- `S0_READY_CAPTURE_ONLY_DATE_UNKNOWN`;
+- `S0_UNKNOWN_SOURCE_OR_VALUE_INVALID`.
+
+A genuine official capture with source date unavailable may still document what was observed at capturedAt, but cannot certify an effective denominator.
+
+### Hash semantics
+
+V0.1 requires deterministic:
+- full parsed source-row hash;
+- canonical source-rows hash.
+
+It does NOT falsely call these raw-body hashes.
+
+A byte-exact HTTP raw-body hash is optional because the current fetch helper returns parsed payload and does not preserve raw response bytes.
+
+### Pre-merge final-source branch diagnostic
+
+Without changing existing precedence, research evidence should distinguish:
+- OFFICIAL_PROFILE_SHARES_ONLY;
+- CUSTOM_SHARES_OVERRIDE_PRESENT;
+- CUSTOM_EXPLICIT_MARKET_CAP_PRESENT;
+- CUSTOM_SHARES_AND_EXPLICIT_MARKET_CAP_PRESENT;
+- NO_MARKET_CAP_INPUT;
+- SOURCE_BRANCH_UNKNOWN.
+
+An official S0 receipt remains a valid official observation even when custom fields later win.
+It simply cannot be cited as the final Formal source.
+
+### Denominator semantic firewall
+
+Preferred S0 label:
+`OFFICIAL_PROFILE_REPORTED_ISSUED_COMMON_SHARES`.
+
+Do not alias to:
+- OUTSTANDING_SHARES;
+- EXCHANGE_LISTED_SHARES;
+- FREE_FLOAT_SHARES;
+- EPS_WEIGHTED_AVERAGE_SHARES.
+
+S1 effective denominator authority remains separate.
+
+### Oracle
+
+13 frozen tests cover:
+- dated/capture-only source;
+- post-decision capture;
+- malformed/future source date;
+- invalid shares;
+- same shares with different row provenance;
+- custom shares/cap overrides;
+- CSV exportDate preservation;
+- TPEx Date preservation;
+- current-S0 historical-backfill rejection;
+- free-float semantic rejection;
+- deterministic receipt replay.
+
+### Maturity
+
+D18-06 remains L2/40.
+
+S0 semantic design is complete, but no executable observer or genuine Taiwan S0 receipt exists yet.
+S1 effective-share denominator replay remains blocked.
+
+### Exact next
+
+1. Authorized engineering implements research-only S0 observation at the already-loaded official-profile seam, with zero new market-data calls.
+2. Capture genuine TWSE and TPEx S0 receipts.
+3. Independently validate source date/capture/row-hash and custom-override branch accounting.
+4. Then attach the separate shared effective-share denominator authority for S1.
+5. Freeze size buckets only after deterministic S1 replay and before any outcome inspection.
