@@ -74,6 +74,20 @@ jobs:
           SYSTEM2_HISTORY_YEAR: ${{ inputs.year }}
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
         run: node system2/scripts/historical_pack_year_backfill_v0_1.mjs
+      - name: Persist bounded 2021 TPEx PIT revision lineage
+        if: ${{ inputs.year == '2021' && inputs.market == 'TPEX' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_HISTORY_YEAR: ${{ inputs.year }}
+          SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
+          SYSTEM2_HISTORY_REVISION_OUTPUT: "/tmp/system2-historical-revision-lineage-TPEX-2021.json"
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_tpex_2021_revision_overlay_v0_1.mjs | tee /tmp/system2-historical-revision-lineage-TPEX-2021.log
       - name: Physically verify selected-year market coverage and R2 byte hashes
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -93,6 +107,14 @@ jobs:
         with:
           name: system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}
           path: /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Upload bounded 2021 TPEx revision-lineage evidence
+        if: ${{ always() && inputs.year == '2021' && inputs.market == 'TPEX' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-historical-revision-lineage-TPEX-2021
+          path: /tmp/system2-historical-revision-lineage-TPEX-2021.json
           if-no-files-found: warn
           retention-days: 30
       - name: Confirm System1 production files untouched
