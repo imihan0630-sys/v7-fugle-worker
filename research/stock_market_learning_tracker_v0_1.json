@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T21:47:00+08:00",
+  "updatedAt": "2026-10-07T23:35:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.2
+    "maturityWeightedPct": 47.4
   },
   "domains": [
     {
@@ -1523,27 +1523,27 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 56.9,
+      "maturityPct": 60,
       "modules": [
         {
           "id": "D10-01",
           "name": "上下游供應鏈圖譜",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「上下游供應鏈圖譜」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "SC062_PROSPECTIVE_CONTRACT_FROZEN / SC063_NULL_DENOMINATOR_PRESERVED / SC064_VERSIONED_KNOWNAT_EFFECTIVE_GRAPH / SC065_D10_PRODUCER_D17_REFERENCE_ONLY / SC066_ADMISSION_MATRIX_FROZEN / SDA010_BLOCKED_DEPENDENCY / WAIT_REAL_POST_FREEZE_RECEIPT / KEEP_L2",
-          "next": "Capture the first genuinely post-SC-062 authoritative topology mutation under SC-066; preserve knownAt vs effectiveFrom/effectiveTo, append-only graph version, capacity/common-mode UNKNOWN, and one shared D10 structural primitive for D17 reference-only consumption. No more D10-01 schema expansion without a real new receipt."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TSMC_NAMED_QUALIFIED_MULTISOURCE / MEDIATEK_MULTISOURCE_CONCENTRATION_CONTROL / EFFECTIVE_DATED_APPEND_ONLY_GRAPH / CURRENT_TWSE_OFFICIAL_SOURCE_OBSERVER_PASS / SDA010_BLOCKED_DEPENDENCY / L4_PROSPECTIVE_MUTATION_PENDING",
+          "next": "L4 debt: capture genuine post-SC062 topology mutations under SC066; preserve knownAt/effectiveFrom/effectiveTo, capacity/common-mode UNKNOWN, shared D10 structural primitive and D17 reference-only consumption; SDA-010/H10/COV-06 governance and D16 validation remain separate gates."
         },
         {
           "id": "D10-02",
           "name": "供應鏈Lead-Lag領先落後",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「供應鏈Lead-Lag領先落後」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "SIX_STEEL_VINTAGES / PHYSICAL_PCB_CHAIN_REPLAY / PREFROZEN_1M_2M_3M / SC056_NATIVE_RELEASE_FRONTIER_FROZEN / LATEST_OFFICIAL_MONTH_2026_08 / 2026_09_SOURCE_NOT_YET_RELEASED_AT_20261007_CAPTURE / PRODUCT_SOURCE_PUBLISHEDAT_UNKNOWN / NO_COMMON_STABLE_LAG / KEEP_L2",
-          "next": "SC-067 on first official September 2026 native product-level release: prospectively capture 2433020/2630010/2630040 with source/capture clocks and displayed units, preserve explicit missing/error states, keep 1M/2M/3M and production-direction semantics unchanged, then append only newly enabled edge-wise direction rows."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PREFROZEN_1M_2M_3M / SIX_STEEL_VINTAGES / PHYSICAL_COPPER_FOIL_CCL_PCB_CHAIN / DETERMINISTIC_MOEA_REPLAY / RELEASE_FRONTIER_FROZEN / GENERIC_FIXED_LAG_NOT_VALIDATED / L4_PROSPECTIVE_SAMPLE_PENDING",
+          "next": "SC-067 remains the next prospective sample after official September 2026 release: capture 2433020/2630010/2630040 with source/capture clocks and unchanged 1M/2M/3M semantics; append only newly enabled observations; L4 requires prospective/OOS D16-compatible validation."
         },
         {
           "id": "D10-03",
