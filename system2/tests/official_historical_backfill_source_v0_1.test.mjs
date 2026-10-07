@@ -66,6 +66,30 @@ assert.equal(result.rows.every((x) => x.sourceId === "A1_TPEX_DAILY_QUOTES_HISTO
 assert.equal(result.rows.every((x) => /^[0-9a-f]{64}$/.test(x.sourceRowHash)), true);
 assert.equal(result.dateReceipts.every((x) => x.state === "READY"), true);
 
+let resilientAttempts=0;
+const resilient=await fetchOfficialHistoricalA1RangeV0_1({
+  market:"TPEX",
+  fromDate:"2017-01-03",
+  toDate:"2017-01-03",
+  observedAt:"2026-09-28T12:30:00Z",
+  calendarsByYear:{2017:calendar2017},
+  dateTransportRetryRounds:2,
+  dateTransportRetryCooldownMs:0,
+  fetchImpl:async(url)=>{
+    resilientAttempts+=1;
+    assert.match(String(url),/\/www\/zh-tw\/afterTrading\/dailyQuotes/,
+      "transport recovery must remain PRIMARY-only");
+    if(resilientAttempts<=3) return {ok:false,status:520,json:async()=>({})};
+    return {ok:true,status:200,json:async()=>tpexPayload("2017-01-03")};
+  },
+});
+assert.equal(resilientAttempts,4,
+  "first PRIMARY round exhausts 3 inner attempts; second range round succeeds on first attempt");
+assert.equal(resilient.transportRecoveryCount,1);
+assert.equal(resilient.dateReceipts[0].transportRecoveryRound,1);
+assert.equal(resilient.dateReceipts[0].transportMode,"PRIMARY");
+assert.equal(resilient.transportRetryPolicy,"PRIMARY_ONLY_RETRY_AFTER_TRANSPORT_EXHAUSTION");
+
 const legacyCompatible = await fetchOfficialHistoricalA1RangeV0_1({
   market: "TPEX",
   fromDate: "2017-01-03",
