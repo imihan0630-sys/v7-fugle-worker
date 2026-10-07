@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {mkdir,writeFile} from "node:fs/promises";
+import {randomBytes} from "node:crypto";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.CLOUDFLARE_API_TOKEN;
@@ -15,28 +16,67 @@ async function jsonFetch(url,options={},label=url){
   return data;
 }
 async function cf(path,options={}){
-  return jsonFetch(api+"/accounts/"+accountId+path,{...options,headers:{authorization:"Bearer "+apiToken,accept:"application/json","content-type":"application/json",...(options.headers||{})}},path);
+  return jsonFetch(api+"/accounts/"+accountId+path,{...options,headers:{authorization:"Bearer "+apiToken,accept:"application/json",...(options.headers||{})}},path);
 }
+
 const settings=await cf("/workers/scripts/fugle-test/settings");
 const binding=(settings?.result?.bindings||[]).find(x=>x?.name==="V7_DB");
 const dbId=binding?.id||binding?.database_id;
 assert.ok(dbId,"V7_DB binding missing");
 
-async function d1Select(sql,params=[]){
-  const upper=String(sql).trimStart().toUpperCase();
-  assert.ok(upper.startsWith("SELECT ")||upper.startsWith("WITH ")||upper.startsWith("PRAGMA "),"read-only SQL required");
-  assert.ok(!/\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\b/i.test(sql),"mutating SQL rejected");
-  const d=await cf("/d1/database/"+dbId+"/query",{method:"POST",body:JSON.stringify({sql,params})});
-  return d?.result?.[0]?.results||[];
+const diagScript=("d02-pve271-ro-"+process.env.GITHUB_RUN_ID).toLowerCase();
+const diagToken=randomBytes(32).toString("hex");
+console.log("::add-mask::"+diagToken);
+const workerSource=String.raw`
+async function select(env,sql,params=[]){
+  const upper=String(sql||"").trimStart().toUpperCase();
+  const readPrefix=upper.startsWith("SELECT ")||upper.startsWith("WITH ")||upper.startsWith("PRAGMA ");
+  const blocked=["INSERT ","UPDATE ","DELETE ","REPLACE ","CREATE ","DROP ","ALTER ","VACUUM","ATTACH ","DETACH "].some(token=>upper.includes(token));
+  if(!readPrefix||blocked)throw new Error("READ_ONLY_SQL_REQUIRED");
+  const r=await env.V7_DB.prepare(sql).bind(...params).all();
+  return r.results||[];
 }
+export default{async fetch(req,env){
+  if(req.headers.get("authorization")!=="Bearer "+env.DIAG_TOKEN)return new Response("Not found",{status:404});
+  if(req.method!=="GET")return new Response("Method not allowed",{status:405});
+  try{
+    const rows=await select(env,
+      "SELECT id,cron_expression,scheduled_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs WHERE scheduled_at>=?1 AND scheduled_at<?2 ORDER BY scheduled_at ASC",
+      ["2026-09-15T00:00:00.000Z","2026-10-08T00:00:00.000Z"]);
+    return Response.json({readOnly:true,mutationCount:0,rows});
+  }catch(error){return Response.json({readOnly:true,mutationCount:0,error:String(error?.stack||error).slice(0,1200)},{status:500});}
+}};`;
 
-const cronRows=await d1Select(
-  `SELECT id,cron_expression,scheduled_at,job_type,status,skipped,fugle_calls,error
-     FROM v7_cron_runs
-     WHERE scheduled_at>=?1 AND scheduled_at<?2
-     ORDER BY scheduled_at ASC`,
-  [START+"T00:00:00.000Z","2026-10-08T00:00:00.000Z"]
-);
+let cronRows=[];
+let cleanup={subdomainDisabled:false,scriptDeleted:false};
+try{
+  const metadata={main_module:"worker.js",bindings:[
+    {type:"d1",name:"V7_DB",id:dbId},
+    {type:"plain_text",name:"DIAG_TOKEN",text:diagToken}
+  ]};
+  const body=new FormData();
+  body.append("metadata",new Blob([JSON.stringify(metadata)],{type:"application/json"}),"metadata.json");
+  body.append("worker.js",new Blob([workerSource],{type:"application/javascript+module"}),"worker.js");
+  await cf("/workers/scripts/"+diagScript,{method:"PUT",body});
+  await cf("/workers/scripts/"+diagScript+"/subdomain",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({enabled:true})});
+  const subdomain=(await cf("/workers/subdomain")).result?.subdomain;
+  assert.ok(subdomain,"Workers subdomain unavailable");
+  const url="https://"+diagScript+"."+subdomain+".workers.dev/";
+  let raw=null;
+  for(let attempt=1;attempt<=30;attempt++){
+    try{raw=await jsonFetch(url,{headers:{authorization:"Bearer "+diagToken}},"ephemeral V7 D1 read");break;}
+    catch(error){if(attempt===30)throw error;await new Promise(r=>setTimeout(r,2000));}
+  }
+  assert.equal(raw?.readOnly,true);
+  assert.equal(raw?.mutationCount,0);
+  assert.ok(!raw?.error,raw?.error||"ephemeral read failed");
+  cronRows=Array.isArray(raw?.rows)?raw.rows:[];
+}finally{
+  try{await cf("/workers/scripts/"+diagScript+"/subdomain",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({enabled:false})});cleanup.subdomainDisabled=true;}catch{}
+  try{await cf("/workers/scripts/"+diagScript,{method:"DELETE"});cleanup.scriptDeleted=true;}catch{}
+}
+assert.equal(cleanup.subdomainDisabled,true);
+assert.equal(cleanup.scriptDeleted,true);
 
 const timeFmt=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Taipei",hour:"2-digit",minute:"2-digit",hour12:false});
 const dateFmt=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"});
@@ -86,8 +126,8 @@ const median=writes.length?writes[Math.floor((writes.length-1)/2)]:null;
 const reserveEvidenceState=healthyDates.length>=3&&max>0?"CONSERVATIVE_DAILY_V7_ENVELOPE_OBSERVED":"INSUFFICIENT_HEALTHY_AFTER_MARKET_DAYS";
 
 const report={
- schemaVersion:"D02_PVE271_SYSTEM1_AFTER_MARKET_RESERVE_EVIDENCE_V0_1",
- generatedAt:new Date().toISOString(),readOnly:true,mutationCount:0,
+ schemaVersion:"D02_PVE271_SYSTEM1_AFTER_MARKET_RESERVE_EVIDENCE_V0_2",
+ generatedAt:new Date().toISOString(),readOnly:true,mutationCount:0,cleanup,
  window:{start:START,end:END},
  cron:{rowCount:normalized.length,familyRowCount:familyRows.length,healthyAfterMarketDateCount:healthyDates.length,healthyDates,familyRows},
  v7DailyUsage:{analyticsTokenRole:tokenRole,healthyEnvelopes,minRowsWritten:min,medianRowsWritten:median,maxRowsWritten:max},
