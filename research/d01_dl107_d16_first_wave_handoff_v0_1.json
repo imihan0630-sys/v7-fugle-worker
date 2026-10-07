@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "D01_DL107_D16_FIRST_WAVE_HANDOFF_V0_1",
+  "updatedAt": "2026-10-08 Asia/Taipei",
+  "formalCore": "LOCKED",
+  "outcomeJoin": "CLOSED",
+  "modules": [
+    "D01-02",
+    "D01-03",
+    "D01-07",
+    "D01-09"
+  ],
+  "chronology": {
+    "warmupYear": 2018,
+    "folds": [
+      {
+        "train": [
+          2019,
+          2020,
+          2021
+        ],
+        "test": 2022,
+        "minPurgeEligibleSessions": 20
+      },
+      {
+        "train": [
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "test": 2023,
+        "minPurgeEligibleSessions": 20
+      }
+    ],
+    "finalHoldoutYear": 2024,
+    "finalHoldoutLocked": true
+  },
+  "horizonsEligibleSessions": [
+    1,
+    5,
+    20
+  ],
+  "parents": {
+    "D01-02": "CONTINUOUS_SINGLE_BAR_OHLC_GEOMETRY",
+    "D01-03": "ORDERED_N_BAR_OHLC_GEOMETRY",
+    "D01-07": "PRIOR_TREND_COMPRESSION_GENERIC_BREAKOUT",
+    "D01-09": "RAW_GAP_PLUS_LEGAL_LIMIT_CONTEXT"
+  },
+  "denominatorStates": [
+    "UPSTREAM_DATA_BLOCKED",
+    "R7_DATA_BLOCKED",
+    "NO_STRUCTURE",
+    "STRUCTURE_EMITTED"
+  ],
+  "multiplicity": "HIERARCHICAL_BENJAMINI_YEKUTIELI",
+  "secondaryRobustness": "SPA_OR_REALITY_CHECK_STYLE_WHEN_D16_OWNER_CERTIFIED",
+  "conclusions": [
+    "SUPPORTED",
+    "REFUTED",
+    "INCONCLUSIVE",
+    "NOT_EVALUABLE"
+  ],
+  "noWinnerAllowed": true,
+  "physicalR1R7": "PENDING",
+  "d16Execution": "NOT_STARTED"
+}
