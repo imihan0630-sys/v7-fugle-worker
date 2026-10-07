@@ -1420,8 +1420,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Above-MA廣度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / LIVE_PIT_RECEIPT_PENDING",
-          "next": "BR-035 freeze the first clean post-repair Taiwan Above-MA20/60 live receipt with effective-dated membership, admitted-history coverage bounds and candidate leave-one-out; no outcome join before receipt QA."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / BR035_PARENT_GENERATION_BLOCKED_20261006 / C1_GENERATION_NOT_FOUND / LIVE_PIT_RECEIPT_PENDING / KEEP_L2",
+          "next": "BR-035 wait for the first complete verified same-generation C1 parent after System1 repair; then run the existing Above-MA20/60 research builder with effective-dated membership, admitted-history coverage bounds and candidate leave-one-out; no reconstruction from missing parent and no outcome join before receipt QA."
         },
         {
           "id": "D09-06",
@@ -1488,8 +1488,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "DEPENDENCY_BUILDER_READY / GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING / KEEP_L2",
-          "next": "BR-063 persist the first genuine same-clock D18 observable-regime context plus official breadth receipt on a future completed Taiwan session; no historical backfill or fixture substitution."
+          "status": "DEPENDENCY_BUILDER_READY / 20261006_REAL_MARKET_REPLAY_WITNESS / PROSPECTIVE_SAME_CLOCK_INELIGIBLE / A2_NOT_CAPTURED / TWSE_A1_NOT_READY / GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING / KEEP_L2",
+          "next": "BR-063 future completed Taiwan session: persist actual prospective A2 TAIEX context plus continuity-safe breadth under one exact decision timestamp; current dependency request is research/BR063_D18_SAME_CLOCK_CAPTURE_DEPENDENCY_20261007.md. 2026-10-06 is replay-only and cannot promote L3."
         },
         {
           "id": "D09-13",
@@ -1512,7 +1512,7 @@
           "next": "BR-060 continue native milestone surveillance for the four frozen actions and add issuer-diverse pre-outcome actions when clean native evidence appears; cluster future inference by issuer/action date; freeze implementation milestones before any outcome join; no stock outcome before D16 preregistration/common support and no L4 before prospective/OOS evidence."
         }
       ],
-      "status": "D09_57_1_PERCENT / SDA009_ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / R3_V06_ACCEPTANCE_ORACLE_READY / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / D16_VALIDATION_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED",
+      "status": "D09_57_1_PERCENT / SDA009_ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / R3_V06_ACCEPTANCE_ORACLE_READY / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / BR035_PARENT_GENERATION_BLOCKED / BR063_REPLAY_ONLY_SAME_CLOCK_MISSING / D16_VALIDATION_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "WAIT_FOR_GENUINE_SYSTEM1_R3A1_RECEIPT / DO_NOT_REDESIGN_SEMANTICS. System1 implements additive research-only C1 capture per research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md with providerCallDelta=0 and protected Formal outputs unchanged. First genuine receipt must PASS research/sda009_r3a1_acceptance_oracle_v0_6.mjs before Room07 R3A2/P0-P5 replay and D16 common-support validation."
     },
     {
