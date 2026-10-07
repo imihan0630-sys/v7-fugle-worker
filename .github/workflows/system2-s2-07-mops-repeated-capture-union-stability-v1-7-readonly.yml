@@ -51,9 +51,6 @@ jobs:
           fetch_artifact 11451716945 /tmp/v17/run2.zip /tmp/v17/run2
           fetch_artifact 11451992365 /tmp/v17/run3.zip /tmp/v17/run3
 
-      - name: Capture fourth current V1.6 population
-        run: node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
-
       - name: Reconcile three-capture append-only union and stability
         run: node system2/scripts/probe_s2_07_mops_repeated_capture_union_stability_readonly_v1_7.mjs
 
