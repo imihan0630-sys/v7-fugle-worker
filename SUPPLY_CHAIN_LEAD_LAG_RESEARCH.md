@@ -2972,3 +2972,39 @@ L4 requires at least two prospectively frozen independent monthly vintages under
 
 Exact next:
 SC-083 freeze the first future eligible monthly inventory row outcome-blind under SC-082.
+
+
+## SC-081 — D10-10 V1.7 three-capture stabilization readback (2026-10-08)
+
+Artifact:
+- `research/SC081_D10_10_V17_THREE_CAPTURE_STABILIZATION_READBACK_20261008_V0_1.md`
+
+Canonical V1.7 physical acceptance:
+- PR #772 merged;
+- final dedicated physical run `37579261319` PASS;
+- artifact `11463608550`;
+- captureCount = 3;
+- unionVersionKeyCount = 168;
+- latestCaptureVersionKeyCount = 163;
+- unionMissingFromLatestCount = 5;
+- earliestObservedPreserved = true;
+- latestObservedPreserved = true;
+- payloadConflictCount = 0;
+- monthOnlyDriftVersionCount = 21;
+- trailingIdenticalTransitions = 0;
+- boundedStabilizationCandidate = false;
+- expectedMopsKeysetComplete = false;
+- noRevisionGapThroughCut = false.
+
+V1.7 repairs append-only earliest-observation provenance but not population stability.
+
+Frozen:
+`PROVENANCE_STABLE_FOR_OBSERVED_VERSIONS != POPULATION_MEMBERSHIP_STABLE`.
+
+D10-10 remains L3/60.
+No L4 promotion.
+
+Exact next SC-084:
+consume the next live capture seeded from the durable 168-version union; do not redo the first three captures. Require captureCount >= 4 and continue accumulating trailing identical transitions with zero payload conflict. Separately resolve month-shard/source semantics before expectedMopsKeysetComplete can be reviewed. noRevisionGapThroughCut remains false until post-parent reconciliation.
+
+Formal Core unchanged.
