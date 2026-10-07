@@ -6,14 +6,14 @@ export const CURRENT_LISTING_METADATA_VERSION = "0.1-RESEARCH";
 export const CURRENT_LISTING_METADATA_SOURCES = deepFreeze({
   TWSE: {
     sourceId: "MOPS_T187AP03_L_CURRENT_LISTED_COMPANY",
-    sourceName: "MOPS/TWSE listed-company basic data",
-    sourceUrl: "https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv",
+    sourceName: "TWSE OpenAPI / MOPS listed-company basic data",
+    sourceUrl: "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
     listingDateField: "上市日期",
   },
   TPEX: {
     sourceId: "MOPS_T187AP03_O_CURRENT_LISTED_COMPANY",
-    sourceName: "MOPS/TPEx OTC-company basic data",
-    sourceUrl: "https://mopsfin.twse.com.tw/opendata/t187ap03_O.csv",
+    sourceName: "TPEx OpenAPI / MOPS OTC-company basic data",
+    sourceUrl: "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O",
     listingDateField: "上櫃日期",
   },
 });
@@ -74,6 +74,49 @@ function parseDate(value) {
   throw new Error("unsupported listing date: " + text);
 }
 
+function parseMarketObjects({ market, objects }) {
+  const source = CURRENT_LISTING_METADATA_SOURCES[market];
+  if (!source) throw new Error("unsupported market: " + market);
+  if (!Array.isArray(objects) || !objects.length) throw new Error(market + " company-basic JSON is empty");
+  const out = [];
+  for (const object of objects) {
+    if (!object || typeof object !== "object" || Array.isArray(object)) continue;
+    const symbol = String(object["公司代號"] ?? object["公司代號 "] ?? "").trim();
+    if (!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    const listingDate = parseDate(object[source.listingDateField]);
+    if (!listingDate) continue;
+    out.push({
+      market,
+      symbol,
+      companyName: String(object["公司名稱"] ?? "").trim() || null,
+      industry: String(object["產業別"] ?? "").trim() || null,
+      listingDate,
+      sourceId: source.sourceId,
+      sourceName: source.sourceName,
+      sourceUrl: source.sourceUrl,
+    });
+  }
+  out.sort((a, b) => a.symbol.localeCompare(b.symbol));
+  const seen = new Set();
+  for (const row of out) {
+    if (seen.has(row.symbol)) throw new Error(market + " duplicate ordinary symbol: " + row.symbol);
+    seen.add(row.symbol);
+  }
+  return out;
+}
+
+function parseMarketPayload({ market, text }) {
+  const trimmed = String(text ?? "").replace(/^\uFEFF/, "").trim();
+  if (!trimmed) throw new Error(market + " company-basic payload is empty");
+  if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+    const payload = JSON.parse(trimmed);
+    const objects = Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : null;
+    if (!objects) throw new Error(market + " company-basic JSON rows missing");
+    return parseMarketObjects({ market, objects });
+  }
+  return parseMarketCsv({ market, text: trimmed });
+}
+
 function parseMarketCsv({ market, text }) {
   const source = CURRENT_LISTING_METADATA_SOURCES[market];
   if (!source) throw new Error("unsupported market: " + market);
@@ -120,7 +163,7 @@ async function fetchText(url, fetchImpl, timeoutMs, retryAttempts, retryDelayMs)
         method: "GET",
         redirect: "follow",
         headers: {
-          accept: "text/csv,text/plain,*/*",
+          accept: "application/json,text/csv,text/plain,*/*",
           "user-agent": "System2-Current-Listing-Metadata/0.2",
           "cache-control": "no-cache",
         },
@@ -173,8 +216,8 @@ export async function fetchCurrentListingMetadataV0_1({
   const observed = observedAt || now().toISOString();
   if (!Number.isFinite(Date.parse(observed))) throw new Error("now must return a valid date");
   const rows = [
-    ...parseMarketCsv({ market: "TWSE", text: twseText }),
-    ...parseMarketCsv({ market: "TPEX", text: tpexText }),
+    ...parseMarketPayload({ market: "TWSE", text: twseText }),
+    ...parseMarketPayload({ market: "TPEX", text: tpexText }),
   ];
   const counts = {
     TWSE: rows.filter((x) => x.market === "TWSE").length,
