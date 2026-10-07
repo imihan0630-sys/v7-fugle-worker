@@ -1,6 +1,6 @@
 {
   "schemaVersion": "D03_NEGATIVE_EVIDENCE_BOUNDARY_AUTHORITY_FIREWALL_V0_1",
-  "updatedAt": "2026-10-07T23:57:00+08:00",
+  "updatedAt": "2026-10-08T00:02:00+08:00",
   "owner": "03｜技術指標與趨勢動能研究室",
   "classification": "RESEARCH_ONLY_CROSS_LANE_CAUSAL_EVIDENCE_FIREWALL",
   "formalCoreImpact": "NONE_LOCKED",
@@ -144,5 +144,40 @@
     "outcomes": "CLOSED",
     "reason": "The exact-session identity and replay-binding mechanics are stronger, but a real continuity receipt and physical independent NC-T01 remain absent. The open-boundary admissibility risk is newly isolated and must remain fail-closed."
   },
-  "exactNextContinuationPoint": "Consume whichever lands first: (A) DATA_LANE exact-window TWTAWU bounded-completeness physical receipt plus three TWSE corporate-action exact-range sources, yielding a real CLEAR_NO_ACTION receipt or fail-closed result; or (B) BUILD_LANE CORR-005 hardening with exact-head transitive hidden-fallback audit digest bound into the NC-T01 receipt. After both pre-physical gates pass, consume the real artifact-only NC-T01 S22-T11~T16 receipt. Keep general open-boundary lifecycle correction separate from CORR-004 closure and keep V8.20/T48/S2-07/raw3/dedup/D16 incrementality independent."
+  "exactNextContinuationPoint": "Parallel final pre-physical work: DATA_LANE must physically prove exact-window TWTAWU JSON-vs-official-export bounded parity and compose the three TWSE exact-range corporate-action families into a real continuity receipt; BUILD_LANE must close CORR-005 with exact-head transitive static audit + runtime forbidden-access evidence and bind HIDDEN_FALLBACK_AUDIT_SHA256. Then one real artifact-only SHORT_MOMENTUM NC-T01 must carry T11-T16 on one coherent immutable evidence cut; mixed-run/head evidence is not composable without proven equivalence. Keep open-boundary lifecycle correctness separate from CORR-004 closure and keep annual V0.6/raw3/V8.20/T48/S2-07/dedup/D16 incrementality independent.",
+  "twtaWuBoundedParityCandidate": {
+    "source": "system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261007_V0_1.json",
+    "rule": "The negative suspension claim for the first real witness should be based on the exact replay-window query and parity between the official TWSE JSON machine response and an independently captured official CSV/HTML representation of the same scope.",
+    "prerequisites": [
+      "DO_NOT_GUESS_EXPORT_URL",
+      "CAPTURE_ACTUAL_OFFICIAL_EXPORT_OR_EQUIVALENT_VERIFIED_TWSE_REPRESENTATION",
+      "FIRST_PROVE_PARITY_ON_A_POSITIVE_BOUNDED_INTERVAL_WITH_KNOWN_SUSPENSION_ROWS",
+      "THEN_REUSE_THE_FROZEN_PARITY_CONTRACT_ON_THE_WITNESS_EXACT_REPLAY_WINDOW",
+      "ANY_SCOPE_PAGINATION_TRUNCATION_OR_ROWSET_MISMATCH_RETURNS_SUSPENSION_COVERAGE_UNKNOWN"
+    ],
+    "rationale": "The current JSON contract does not preserve an authoritative totalCount comparable to TPEx sprcHis; HTTP 200 + empty data is therefore insufficient negative completeness."
+  },
+  "physicalAcceptanceMatrix": {
+    "source": "system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261007_V0_1.json",
+    "S22_T11": "DESIGN_STATIC_PRECLEARED_PHYSICAL_PENDING",
+    "S22_T12": "BLOCKED_CORR005",
+    "S22_T13": "BLOCKED_REAL_CONTINUITY_RECEIPT",
+    "S22_T14": "RUNNER_CORE_IMPLEMENTED_PHYSICAL_PENDING",
+    "S22_T15": "HASH_CHAIN_CONTRACT_FROZEN_PHYSICAL_PENDING",
+    "S22_T16": "NOT_YET_PROVEN",
+    "coherentEvidenceCutRule": "T11 through T16 must all PASS on one coherent immutable physical evidence cut. Evidence from different runner heads/runs is not composable unless exact equivalence is independently proven.",
+    "requiredTypedRefs": [
+      "SYSTEM2_POLICY_FINGERPRINT_SHA256",
+      "A1_BATCH_SHA256",
+      "PIT_REPLAY_SHA256",
+      "SOURCE_HISTORY_SHA256",
+      "CONTINUITY_RECEIPT_SHA256",
+      "CONTINUITY_TRANSFORM_SHA256",
+      "FACTOR_SNAPSHOT_SHA256",
+      "PERSISTENCE_BATCH_SHA256",
+      "ORCHESTRATION_SHA256",
+      "SHADOW_ACCOUNTING_SHA256",
+      "HIDDEN_FALLBACK_AUDIT_SHA256"
+    ]
+  }
 }
