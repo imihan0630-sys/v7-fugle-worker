@@ -1,9 +1,24 @@
 # 自我進化學習研究室 — 研究輸出強制契約
 
 Status: CANONICAL_OUTPUT_CONTRACT
-Version: 2026-10-07.2
+Version: 2026-10-07.3
 Scope: 01～15 專屬研究室，手動研究＋自動學習
 Priority: 本檔為研究「可見輸出格式」最高優先契約；若其他舊檔範例與本檔不同，以本檔為準。
+
+## 舊聊天室 continuation 強制刷新
+
+本契約不只適用於新聊天室。
+
+任何既有 01～15 研究室，只要收到「繼續／接續／開始／繼續研究／繼續深挖／繼續提升進度／往下執行」或等價 continuation 指令，在開始新一輪實質研究前，必須重新讀 latest `main` 的：
+
+- `shared-knowledge/ROOM_BOOTSTRAP.md`（共同聊天室規則）；
+- `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`（聊天室責任登錄）；
+- 本檔 `shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（最新可見輸出契約）；
+- `research/stock_market_learning_tracker_v0_1.json`（最新模組／成熟度正式分母）；
+- 本室專屬 checkpoint（檢查點）。
+
+不得沿用舊聊天室先前已載入的輸出格式、模組數、百分比、Level（等級）或狀態作為當次回覆權威。
+
 
 
 ## 個別排程衝突處理
@@ -127,6 +142,22 @@ GitHub 路徑、檔名、URL、commit SHA、程式碼、JSON key、函式名、�
 - 日期與台北時間
 
 UI（使用者介面）顯示「思考中」不能證明仍持續執行；沒有可驗證執行證據時必須標 UNKNOWN（未知）或可能中斷。
+
+## 模組進度送出硬閘門
+
+凡每輪結尾、進度回報、階段結論、checkpoint（檢查點）回報，只要缺少下列任一欄位：
+
+- 模組總數；
+- 已完成模組數；
+- 尚未完成模組數；
+- 模組完成率；
+- 多 Dxx 時逐 Dxx + 本室合計；
+
+即判定：
+
+`ROOM_MODULE_PROGRESS_GATE_FAIL`（聊天室模組進度閘門失敗）
+
+在補齊前不得稱為本輪完整結束，也不得只以成熟度百分比替代。
 
 ## 送出前強制雙檢
 
