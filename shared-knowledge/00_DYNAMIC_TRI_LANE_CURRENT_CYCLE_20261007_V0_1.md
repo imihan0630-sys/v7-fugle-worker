@@ -155,3 +155,52 @@ fresh-dispatch 2024 TPEx annual backfill from latest main, followed by the same 
 4. System1 — DEFAULT_LAST / SENTINEL_ONLY.
 
 Formal Core remains LOCKED.
+
+
+## 00 continuation delta — 2026-10-07 15:xx Asia/Taipei
+
+Observed latest main:
+`2ddada1cdec9bc2fb362329a8aa6bb889b506a9e`.
+
+### System2 BUILD_LANE critical-path readback
+
+PR #762 is still OPEN and GitHub currently reports:
+- mergeable=true;
+- mergeable_state=clean;
+- head `a5487086ba15f844d775e12bc7ce2c3852749644`.
+
+However an independent head-vs-main compare is DIVERGED:
+- main is 103 commits ahead of PR head;
+- PR head is 8 commits ahead of the merge base.
+
+Therefore the prior 00 disposition is unchanged:
+GitHub's current mergeable=true is not sufficient canonical acceptance. BUILD_LANE must rebuild/rebase the eight-commit fingerprint delta on latest main, rerun exact-head fingerprint/System2 Research/V8 applicable checks, then canonical merge. Only after that may physical NC-T01 S22-T11~T16 become the immediate accepted independence gate.
+
+No physical NC-T01 receipt is accepted yet.
+
+### Research lane
+
+Prospective Clock Evidence run `37577209442` remains IN_PROGRESS.
+No 2026-10-07 prospective sample classification is authorized before terminal immutable evidence.
+
+### DATA_LANE correction
+
+Run `37579384088` is SUCCESS but its only artifact is:
+`system2-historical-coverage-TWSE-2024`.
+
+It is therefore a TWSE-2024 physical verification receipt, not the required 2024 TPEx continuation.
+DATA_LANE exact next remains:
+fresh-dispatch 2024 TPEx annual backfill from latest main, then physical verify + artifact + System1-isolation acceptance.
+
+### System1 sentinel
+
+Latest main currently includes independent System1 research work, but 00 found no new condition that escalates System1 above the three active lanes. System1 remains DEFAULT_LAST / SENTINEL_ONLY for 00 scheduling.
+
+### Current dynamic priority
+
+1. System2 BUILD_LANE — rebase/rebuild and canonicalize #762.
+2. Research — consume `37577209442` only when terminal.
+3. DATA_LANE — execute actual 2024 TPEx annual continuation.
+4. System1 — sentinel only.
+
+Formal Core remains LOCKED.
