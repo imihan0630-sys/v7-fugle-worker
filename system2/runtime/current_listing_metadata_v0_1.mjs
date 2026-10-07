@@ -198,6 +198,7 @@ export async function fetchCurrentListingMetadataV0_1({
   timeoutMs = 30_000,
   retryAttempts = 3,
   retryDelayMs = 500,
+  markets = ["TWSE", "TPEX"],
   minimumByMarket = { TWSE: 500, TPEX: 400 },
 } = {}) {
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
@@ -209,22 +210,30 @@ export async function fetchCurrentListingMetadataV0_1({
   if (!Number.isInteger(retryDelayMs) || retryDelayMs < 0 || retryDelayMs > 10000) {
     throw new Error("retryDelayMs must be an integer from 0 to 10000");
   }
-  const [twseText, tpexText] = await Promise.all([
-    fetchText(CURRENT_LISTING_METADATA_SOURCES.TWSE.sourceUrl, fetchImpl, timeoutMs, retryAttempts, retryDelayMs),
-    fetchText(CURRENT_LISTING_METADATA_SOURCES.TPEX.sourceUrl, fetchImpl, timeoutMs, retryAttempts, retryDelayMs),
-  ]);
+  if (!Array.isArray(markets) || !markets.length) throw new Error("markets must be a non-empty array");
+  const requestedMarkets=[...new Set(markets.map((market)=>String(market||"").toUpperCase()))];
+  for (const market of requestedMarkets) {
+    if (!CURRENT_LISTING_METADATA_SOURCES[market]) throw new Error("unsupported market: " + market);
+  }
+  const payloads=await Promise.all(requestedMarkets.map(async (market)=>({
+    market,
+    text:await fetchText(
+      CURRENT_LISTING_METADATA_SOURCES[market].sourceUrl,
+      fetchImpl,
+      timeoutMs,
+      retryAttempts,
+      retryDelayMs,
+    ),
+  })));
   const observed = observedAt || now().toISOString();
   if (!Number.isFinite(Date.parse(observed))) throw new Error("now must return a valid date");
-  const rows = [
-    ...parseMarketPayload({ market: "TWSE", text: twseText }),
-    ...parseMarketPayload({ market: "TPEX", text: tpexText }),
-  ];
+  const rows = payloads.flatMap(({market,text})=>parseMarketPayload({market,text}));
   const counts = {
     TWSE: rows.filter((x) => x.market === "TWSE").length,
     TPEX: rows.filter((x) => x.market === "TPEX").length,
   };
   const blockers = [];
-  for (const market of ["TWSE", "TPEX"]) {
+  for (const market of requestedMarkets) {
     const minimum = Number(minimumByMarket?.[market] ?? 0);
     if (!Number.isInteger(minimum) || minimum < 1) throw new Error("minimumByMarket." + market + " must be positive");
     if (counts[market] < minimum) blockers.push(`${market}:LISTING_METADATA_COVERAGE_LOW`);
@@ -235,8 +244,9 @@ export async function fetchCurrentListingMetadataV0_1({
   const receiptBase = {
     observedAt: observed,
     counts,
+    requestedMarkets,
     sourceIds: Object.fromEntries(
-      Object.entries(CURRENT_LISTING_METADATA_SOURCES).map(([market, source]) => [market, source.sourceId]),
+      requestedMarkets.map((market)=>[market,CURRENT_LISTING_METADATA_SOURCES[market].sourceId]),
     ),
     rows: rows.map((row) => ({
       market: row.market,
@@ -253,6 +263,7 @@ export async function fetchCurrentListingMetadataV0_1({
     state: blockers.length ? "INCOMPLETE" : "READY",
     observedAt: observed,
     counts,
+    requestedMarkets: Object.freeze(requestedMarkets),
     blockerCodes: deepFreeze(blockers),
     metadataHash,
     byMarketSymbol: deepFreeze(byMarketSymbol),
