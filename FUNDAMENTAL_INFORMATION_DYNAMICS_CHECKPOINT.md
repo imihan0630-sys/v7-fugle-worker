@@ -570,3 +570,23 @@ Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PEN
 - PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, overruns, impairments and realized returns append as later vintages/outcomes only.
 - Maturity: **L0/0 -> L2/40**. L3 remains blocked pending at least two Taiwan-listed issuers from materially different industries with project-level PIT replay and an explicit D07-19 vs D21-07 divergent case.
 - Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-08 Room-06 D08-03 outcome-blind percentile materialization PASS
+
+Status: **PERCENTILE_SNAPSHOT_MATERIALIZATION_PASS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED**
+
+- Dedicated execution: GitHub Actions run `37648084681` PASS.
+- Durable receipt: `research/d08_twse_historical_valuation_percentile_materialization_receipt_20261008_v0_1.json`.
+- 44 frozen TWSE scan dates were materialized from the 2005-2026 daily valuation archive, reconciled universe V0.2 and raw valuation V0.3.
+- Source pins remained exact: archive pack bundle, universe semantic bundle/registry and raw V0.3 object bundle all matched the frozen contract.
+- Snapshot count = **44**; cohort member rows = **45305**; raw valuation observed = **45059**.
+- PE known = **35737**; PB known = **45054**. Missing values remain explicit UNKNOWN and never remove cohort membership.
+- PE percentile known totals: 252=34452, 756=32436, 1260=30567, expanding=34452.
+- PB percentile known totals: 252=43548, 756=41237, 1260=39489, expanding=43548.
+- snapshotBundleHash = `2b16513f237ca1c45b1658d5eaa35b5b45d7f23766b87aff7b8a85aec11f1c91`.
+- objectBundleHash = `235f2c43281846aa8be65f26829935a0193875ee92fe5169784f3f73c355a077`.
+- All 44 objects passed immutable R2 readback; daily year-pack and raw V0.3 object hashes were revalidated during materialization.
+- No returns, no outcome join, no D1 writes, no System1 runtime, no Formal Core impact.
+- **D08-03 remains L3/60**: source/replay integrity is materially stronger, but L4 still requires preregistered OOS/prospective Shadow evidence. No maturity inflation.
+- Exact next gate: freeze outcome-blind control snapshots/coverage (PIT-safe peer/industry where available, size/liquidity, trend/RS, regime, fundamental/denominator/corporate-action/listing-age/missingness context) before any Historical-Valuation Shadow outcome join.
