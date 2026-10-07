@@ -6301,3 +6301,98 @@ Exact next:
 - when fresh 2024 TPEx acceptance arrives, credit Layer A only first;
 - then independently review Layer B symbol-session gaps and Layer C revision-known-at;
 - in parallel consume first genuine V8.20 Formal->C1 binding receipt, S2-07 bounded stabilization, System1/System2 D03 redundancy/dedup diagnostics, D16 method/incrementality receipt and raw-source observer completion.
+
+
+## 2026-10-07 D03 — TI-1275~1292 Layer-B symbol-session gap causal rehabilitation
+
+Canonical artifacts:
+- `research/d03_layer_b_symbol_session_gap_event_source_blind_spot_20261007_v0_1.json`;
+- `research/test_d03_layer_b_symbol_session_gap_event_source_blind_spot_v0_1.mjs`;
+- `research/d03_layer_b_gap_event_source_execution_receipt_20261007_v0_1.json`.
+
+Canonical workflow:
+- `D03 Layer-B Gap Event-Source Readonly`;
+- run `37595689041`;
+- conclusion SUCCESS.
+
+### TI-1275~1279 — current Layer-B classifier source-class blind spot
+
+Exact runtime inspection of `system2/runtime/historical_market_year_coverage_v0_1.mjs` confirms:
+- expected symbol-session keys absent from A1 rows are checked only against supplied `suspensionIntervals`;
+- matched rows become `OFFICIAL_SUSPENSION_INTERVAL`;
+- every unmatched missing key becomes `UNKNOWN_SYMBOL_SESSION_GAP`.
+
+Current physical evidence shows the suspension feed is not a complete lifecycle-event union. It does not by itself prove absence of regulatory stop/resume/delisting/share-conversion events.
+Therefore a large fraction of current UNKNOWN gaps are classification debt rather than demonstrated official-price source loss.
+
+### TI-1280~1284 — dominant official-event cases
+
+2024 TWSE physical artifact:
+- total UNKNOWN = 478;
+- 2358 = 153, exact gap span 2024-04-08..2024-11-19; official stop from 2024-04-08 and delist 2024-11-19;
+- 2443 = 153, exact gap span 2024-04-08..2024-11-19; official stop from 2024-04-08 and delist 2024-11-19;
+- 8101 = 58, exact gap span 2024-08-22..2024-11-18; official stop from 2024-08-22 and resume 2024-11-19;
+- 1701 = 9, exact gap span 2024-08-21..2024-09-02; share conversion stopped old shares from 2024-08-21 and delisted the old symbol on 2024-09-02.
+Direct machine-reclassification candidate = 373/478 = 78.03%.
+
+2023 TPEx:
+- total UNKNOWN = 395;
+- 4806 = 126, exact gap span 2023-04-10..2023-10-11; official stop from 2023-04-10, resume 2023-10-12;
+- 3073 = 81, exact gap span 2023-02-20..2023-06-20; official stop from 2023-02-20, resume 2023-06-21;
+- 8080 = 58, exact gap span 2023-10-11..2023-12-29; official stop from 2023-10-11 continued through year-end;
+- 4950 = 31, exact gap span 2023-11-17..2023-12-29; official stop from 2023-11-17 continued through year-end.
+Direct machine-reclassification candidate = 296/395 = 74.94%.
+
+2021 TPEx:
+- total UNKNOWN = 412;
+- 3089 = 117, exact gap span 2021-01-20..2021-07-19; official stop from 2021-01-20, resume 2021-07-20;
+- 3073 = 27, exact gap span 2021-01-04..2021-02-18; official pre-year stop continued until resume 2021-02-19.
+Direct exact candidate = 144/412 = 34.95%.
+- 8080 additionally has an official stop from 2021-04-07 overlapping its 132-gap aggregate window, but exact missing-key dates are not preserved in the durable artifact, so no extra count is credited without row-level reconstruction.
+
+### TI-1285~1288 — required lifecycle-event union
+
+Future Layer-B rehabilitation must union:
+- intraday suspend/resume;
+- regulatory stop trading;
+- regulatory resume trading;
+- delisting effective boundary;
+- share-conversion/reorganization stop boundary;
+- listing start / market migration boundaries.
+
+Semantics:
+- altered trading method / periodic call auction is not a no-bar suspension by itself;
+- an officially proven regulatory stop interval removes the expected daily-price-row requirement;
+- delisting/share conversion ends old-symbol membership at the effective boundary;
+- absence from one event feed does not prove no stop event;
+- reclassification requires official source identity/hash and effective dates;
+- no synthetic OHLC may be created to fill officially non-trading intervals.
+
+### TI-1289~1291 — indicator consequence
+
+Bollinger:
+- classified no-trading intervals are skipped from eligible-session counting, never imputed;
+- 20 numerical rows still do not equal 20 certified eligible sessions until the event union is applied and rerun.
+
+ADX:
+- no TR/DM may be synthesized across regulatory non-trading gaps;
+- recursive lineage restart/bridge semantics remain subject to continuity certification and Wilder FULL_REPLAY.
+
+This Layer-B repair is orthogonal to Layer-C revision-known-at and parent identity/finalization.
+
+### TI-1292 — maturity and exact next
+
+Machine oracle run `37595689041` PASS.
+No maturity promotion yet because canonical physical missingReasonCounts have not been regenerated.
+
+D03 remains:
+- maturity 56.7%;
+- D03-09 L2/40;
+- D03-10 L2/40;
+- raw gate 2/3;
+- technical observer BLOCKED;
+- outcomes CLOSED;
+- Formal Core LOCKED.
+
+Exact next:
+route a minimal System2 DATA/BUILD rehabilitation contract that materializes official lifecycle-event union with immutable source identity/hash/effective boundaries, reruns `historical_market_year_coverage_v0_1`, and emits a physical before/after gap-reclassification receipt. D03 consumes only that receipt for Layer-B advancement. Keep Layer-C revision-known-at, genuine V8.20 parent, T48 finalization, D03 dedup/redundancy, D16 incrementality and raw-source observer gates independent.
