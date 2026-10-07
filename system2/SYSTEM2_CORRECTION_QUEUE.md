@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 16:40 Asia/Taipei
+Updated: 2026-10-07 16:54 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -830,7 +830,7 @@ This closure does not resolve `S2-CORR-20261006-004`, which is a separate curren
 - implementationEvidence: []
 - verificationEvidence: []
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T16:27:32+08:00
+- updatedAt: 2026-10-07T16:54:00+08:00
 
 
 ### S2-CORR-20261007-001 independent secondary-source diagnosis
@@ -863,6 +863,12 @@ Correction consequence:
 - Do not apply one undifferentiated transport fix to both failure classes.
 
 
+
+### 2026-10-07 16:54 independent live source readback
+
+- TWSE `STOCK_DAY_ALL`: HTTP 200 / `application/json`; observed payload date remained `1151006` (2026-10-06). At this observation, target-date 2026-10-07 was still not published on this endpoint. This is source-readiness lag, not JSON transport failure.
+- TPEx `tpex_mainboard_daily_close_quotes`: HTTP 200 / `application/json`; observed date `1151007` (2026-10-07) was present, but the independent Firecrawl client reported a truncated body / invalid complete JSON. This is diagnostic evidence of acquisition/body-integrity variability; it does not prove source absence.
+- Consequence: keep TWSE publication-lag handling separate from TPEx bounded body/transport recovery. Do not solve both with one undifferentiated retry rule, and do not weaken target-date/schema/PIT checks.
 
 ### S2-CORR-20261007-002 — Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies
 
