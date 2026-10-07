@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "D06_05_IC103_CHECKPOINT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchDate": "2026-10-08",
+  "status": "EVENT_IDENTITY_VS_PRICE_ELIGIBILITY_FIREWALL_FROZEN / EXACT_PAIR_TPEX_ROWS_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "artifact": "research/d06_05_exright_event_vs_price_reference_gate_ic103_20261008_v0_1.md",
+  "latestInheritedPairMask": "research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_2.json",
+  "observedExactPairRawTpexRows": false,
+  "technicalContinuityEligibleNotEquivalentToOwnershipEvent": true,
+  "knownCleanSupportUpperBound": 2778,
+  "finalCleanSupport": null,
+  "moduleLevel": "L3",
+  "moduleMaturityPct": 60,
+  "formalCoreImpact": "NONE",
+  "outcomesOpened": false,
+  "evidenceBoundaries": [
+    "Price-reference eligibility does not determine corporate-action event existence",
+    "Actual ex-right/dividend reference rows alone do not identify stock-versus-cash-only-versus-subscription effects",
+    "No new exact-pair TPEx rows or clean symbol-set hash were obtained",
+    "No historical first-known time was backfilled"
+  ],
+  "exactNext": "Acquire and persist complete date-pinned TPEx exDailyQ 2026-09-24..2026-10-02 rows or immutable shared raw artifact; apply dual-axis event identity/ownership contamination classification; join official stock/cash/rights details, security identity and source completeness; freeze final clean support hash before outcome testing."
+}
