@@ -1551,7 +1551,9 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「庫存週期」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_PIT_FEASIBLE / INVENTORY_SCOPE_AND_FRESHNESS_FIREWALL / SC082_PROSPECTIVE_COHORT_PREREGISTERED / HISTORICAL_CODE26_DEMAND_STRONG_INVENTORY_BUILD_CALIBRATION_ONLY / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "SC-083 on next eligible official monthly inventory release: freeze first prospective same-scope cohort row under SC-082 before later-month/stock outcomes; require two independent monthly vintages plus one cross-industry control, preserved revisions/clocks and D16 month-dependence/common-support method before L4."
         },
         {
           "id": "D10-04",
