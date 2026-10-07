@@ -1488,8 +1488,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_20261007_SAME_DATE_JOINT_RECEIPT / TWSE_DIRECTION_BREADTH_KNOWN / TAIEX_CONTEXT_KNOWN / TPEX_SCOPE_UNKNOWN / CAP_WEIGHTED_INDEX_NOT_EQUAL_STOCK_BREADTH / OUTCOMES_CLOSED",
-          "next": "BR-067 accumulate independent same-clock joint receipts, preferably with both TWSE and TPEx breadth plus continuity-certified median-return context; preserve missing venue as UNKNOWN; no L4 before prospective/OOS outcome validation under D16 common-support controls."
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_FIRST_GENUINE_SAME_CLOCK_RECEIPT / BR071_OUTCOME_BLIND_D16_HANDOFF / DATE_LEVEL_UNIT_FROZEN / TPEx_SCOPE_UNKNOWN / SHARED_BREADTH_ROOT_DEDUP / POWER_INSUFFICIENT / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "BR-071 exact next: Room11/D16 freezes date-level dependence/common-support/multiplicity/redundancy method; accumulate independent same-clock receipts under unchanged semantics; add TPEx/equal-weight/median only when certified at same clock; no L4 before prospective/OOS interaction outcomes."
         },
         {
           "id": "D09-13",
