@@ -1440,8 +1440,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「領導股／主流族群生命週期」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / FIVE_OFFICIAL_DATES / STOCK_LEVEL_PARTIAL / OUTCOMES_CLOSED",
-          "next": "BR-061 prospectively append future official TWSE industry total-return snapshots under unchanged lifecycle semantics; add member-level leader concentration/breadth only with effective-dated membership and common clocks; no L4 before preregistered persistence/reversal outcomes."
+          "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / SIX_OFFICIAL_DATES / BR061_20261007_MIXED_25_OF_34 / TOP3_TURNOVER_33P33 / WIDENING_WITHIN_MIXED / STOCK_LEVEL_PARTIAL / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "Continue future official 34-industry snapshots under unchanged participation thresholds; add member-level leader concentration/breadth only with effective-dated membership/common clocks; preregister persistence/reversal outcome method with D16 before L4; ablate D09-06/D09-10/D09-04 and preserve shared-root dedup."
         },
         {
           "id": "D09-08",
