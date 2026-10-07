@@ -100,6 +100,116 @@ function requiredDate(value, field) {
   return text;
 }
 
+export function tpexCmodeRocDateV0_1(value) {
+  const iso=requiredDate(value,"marketDate");
+  const year=Number(iso.slice(0,4))-1911;
+  if(year<0) throw new Error("TPEx ROC date year cannot be negative");
+  return String(year).padStart(3,"0")+"/"+iso.slice(5,7)+"/"+iso.slice(8,10);
+}
+
+function tpexCmodeDateFromAnyV0_1(value) {
+  const text=String(value??"").trim();
+  let m=text.match(/^(\d{3})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);
+  if(m){
+    return String(Number(m[1])+1911).padStart(4,"0")+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  m=text.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);
+  if(m){
+    return m[1]+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  return null;
+}
+
+function normalizeTpexCmodeCellV0_1(value) {
+  return String(value??"")
+    .replace(/<[^>]*>/g," ")
+    .replace(/&nbsp;|&#160;/gi," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function tpexCmodeStopMarkerPositiveV0_1(value) {
+  const marker=normalizeTpexCmodeCellV0_1(value);
+  if(!marker) return false;
+  const upper=marker.toUpperCase();
+  if(["-","--","—","－","0","N","NO","否","無","正常","未停止"].includes(upper)) return false;
+  return true;
+}
+
+function nextCalendarDateV0_1(iso) {
+  const d=new Date(iso+"T00:00:00Z");
+  d.setUTCDate(d.getUTCDate()+1);
+  return d.toISOString().slice(0,10);
+}
+
+export function parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate,
+  payload,
+  sourceUrl,
+  sourceHash,
+  coverageTo,
+}={}) {
+  const requestedDate=requiredDate(marketDate,"marketDate");
+  const to=requiredDate(coverageTo||requestedDate,"coverageTo");
+  if(!payload||typeof payload!=="object") throw new Error("TPEx cmode payload is required");
+
+  const reportDateRaw=payload.reportDate??payload.date??payload.report_date??null;
+  const reportDate=tpexCmodeDateFromAnyV0_1(reportDateRaw);
+  if(!reportDate || reportDate!==requestedDate){
+    return deepFreeze({
+      state:"SOURCE_DATE_IDENTITY_UNCERTIFIED",
+      requestedDate,
+      reportDate,
+      reportDateRaw:reportDateRaw===null?null:String(reportDateRaw),
+      rowCount:0,
+      positiveStopCount:0,
+      intervals:Object.freeze([]),
+      absenceCertifiesNoStop:false,
+      sourceUrl:String(sourceUrl||""),
+      sourceHash:sourceHash||null,
+      schemaVersion:"S2_TPEX_CMODE_POSITIVE_STOP_SESSION_PARSE_V0_1",
+    });
+  }
+
+  const rows=Array.isArray(payload.aaData)
+    ? payload.aaData
+    : (Array.isArray(payload?.tables?.[0]?.data)?payload.tables[0].data:[]);
+  const intervals=[];
+  let acceptedRowCount=0;
+  for(const row of rows){
+    if(!Array.isArray(row)||row.length<7) continue;
+    const symbol=normalizeTpexCmodeCellV0_1(row[0]);
+    if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    acceptedRowCount+=1;
+    if(!tpexCmodeStopMarkerPositiveV0_1(row[6])) continue;
+    intervals.push(deepFreeze({
+      market:"TPEX",
+      symbol,
+      suspendedFrom:requestedDate,
+      resumedOn:nextCalendarDateV0_1(requestedDate),
+      coverageTo:to,
+      sourceRowHash:sourceHash||null,
+      sourceKind:"TPEX_CMODE_POSITIVE_STOP_SESSION",
+      stopMarker:normalizeTpexCmodeCellV0_1(row[6]),
+      sessionEvidenceOnly:true,
+    }));
+  }
+
+  return deepFreeze({
+    state:"POSITIVE_SESSION_SOURCE_OBSERVED",
+    requestedDate,
+    reportDate,
+    rowCount:rows.length,
+    acceptedRowCount,
+    positiveStopCount:intervals.length,
+    intervals:Object.freeze(intervals),
+    absenceCertifiesNoStop:false,
+    sourceUrl:String(sourceUrl||""),
+    sourceHash:sourceHash||null,
+    schemaVersion:"S2_TPEX_CMODE_POSITIVE_STOP_SESSION_PARSE_V0_1",
+  });
+}
+
 function finitePositive(value) {
   return Number.isFinite(value) && value > 0;
 }
