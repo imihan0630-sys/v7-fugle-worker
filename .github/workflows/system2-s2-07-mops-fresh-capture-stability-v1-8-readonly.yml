@@ -1,0 +1,84 @@
+name: System2 S2-07 MOPS Fresh-Capture Stability V1.8 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/scripts/probe_s2_07_mops_fresh_capture_stability_readonly_v1_8.mjs"
+      - "system2/tests/s2_07_mops_fresh_capture_stability_v1_8.test.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_FRESH_CAPTURE_STABILITY_V1_8.md"
+      - ".github/workflows/system2-s2-07-mops-fresh-capture-stability-v1-8-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_s2_07_mops_fresh_capture_stability_readonly_v1_8.mjs"
+      - "system2/tests/s2_07_mops_fresh_capture_stability_v1_8.test.mjs"
+      - "system2/SYSTEM2_S2_07_MOPS_FRESH_CAPTURE_STABILITY_V1_8.md"
+      - ".github/workflows/system2-s2-07-mops-fresh-capture-stability-v1-8-readonly.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: V1.7 union engine tests
+        run: node system2/tests/s2_07_mops_repeated_capture_union_stability_v1_7.test.mjs
+
+      - name: V1.8 fresh-capture contract tests
+        run: node system2/tests/s2_07_mops_fresh_capture_stability_v1_8.test.mjs
+
+      - name: Download three accepted immutable V1.6 artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v18/run1 /tmp/v18/run2 /tmp/v18/run3 /tmp/v18/run4
+          fetch_artifact() {
+            local id="$1" out="$2" dir="$3"
+            curl --fail --silent --show-error --location \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "Accept: application/vnd.github+json" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" \
+              -o "$out"
+            unzip -q "$out" -d "$dir"
+          }
+          fetch_artifact 11451296954 /tmp/v18/run1.zip /tmp/v18/run1
+          fetch_artifact 11451716945 /tmp/v18/run2.zip /tmp/v18/run2
+          fetch_artifact 11451992365 /tmp/v18/run3.zip /tmp/v18/run3
+
+      - name: Capture fresh prospective V1.6 population
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
+          cp /tmp/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json /tmp/v18/run4/
+
+      - name: Reconcile four-capture append-only union and stability
+        run: node system2/scripts/probe_s2_07_mops_fresh_capture_stability_readonly_v1_8.mjs
+
+      - name: No mutation scheduler or System1 authority
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_mops_fresh_capture_stability_readonly_v1_8.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy|cron' system2/scripts/probe_s2_07_mops_fresh_capture_stability_readonly_v1_8.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Upload V1.8 physical evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-07-mops-fresh-capture-stability-v1-8
+          path: /tmp/S2_07_MOPS_FRESH_CAPTURE_STABILITY_V1_8_PHYSICAL_20261007.json
+          retention-days: 14
