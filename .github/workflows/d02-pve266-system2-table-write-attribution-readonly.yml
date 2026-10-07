@@ -24,6 +24,7 @@ jobs:
       - name: Attribute System2 table activity read-only
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
         run: node research/d02_pve266_system2_table_write_attribution_readonly_v0_1.mjs
       - name: Preserve PVE-266 evidence
