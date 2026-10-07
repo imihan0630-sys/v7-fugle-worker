@@ -2862,3 +2862,16 @@ Maturity:
 ## 2026-10-07 D06 — IC-100
 
 D06-05 corporate-action / denominator guard completed. Durable artifacts: `research/d06_05_ownership_denominator_corporate_action_guard_v0_1.json`, `research/d06_05_weekly_pair_clean_support_audit_20260924_20261002_v0_1.json`, `research/d06_05_corporate_action_source_registry_v0_1.json`. D06-05 remains L3/60; outcomes remain closed. Exact next: build one complete replayable TWSE+TPEx corporate-action mask for a TDCC pair, join security-identity continuity, freeze event-clean exact-denominator support, then preregister clustered out-of-sample validation.
+
+
+## 2026-10-07 D06 — IC-101 bounded TDCC pair event mask
+
+- New artifact: `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json`.
+- Pair: 2026-09-24 -> 2026-10-02.
+- Known hard masks: 1235, 1441, 2323, 2601, 4806, 6550.
+- 2601/4806 already fail denominator continuity; 1235/1441/2323/6550 prove stable denominator does not imply event-clean.
+- 2,962 ordinary common support -> 2,783 exact-denominator-stable -> 2,779 upper bound after currently known stable-denominator hard masks.
+- 2,779 is NOT final clean N because exact TPEx ex-right/dividend and identity-transition pair rows are not yet materialized.
+- System2 shared source lanes are physically validated, but lane-level totals cannot substitute for exact pair-row persistence.
+- D06-05 stays L3/60; outcomes remain closed.
+- Exact next: materialize the exact pair event list from the validated shared archive, freeze event-clean common-support row set + hash, then preregister vintage-clustered OOS/Shadow validation.
