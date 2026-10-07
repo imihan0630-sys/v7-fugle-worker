@@ -119,6 +119,8 @@ export async function loadPitPriorA1BarsV0_1({
   decisionTimestamp,
   lookbackSessions = 60,
   priceSpace = "RAW",
+  minimumMarketDate = null,
+  expectedSessionHash = null,
 } = {}) {
   assertDb(db);
   const code = requiredText(symbol, "symbol");
@@ -127,6 +129,11 @@ export async function loadPitPriorA1BarsV0_1({
   const clock = timestamp(decisionTimestamp, "decisionTimestamp");
   const limit = positiveInt(lookbackSessions, "lookbackSessions");
   const space = requiredText(priceSpace, "priceSpace");
+  const minDate = minimumMarketDate ? isoDate(minimumMarketDate, "minimumMarketDate") : null;
+  if (minDate && minDate >= date) throw new Error("minimumMarketDate must be earlier than marketDate");
+  if (expectedSessionHash !== null && !/^[a-f0-9]{64}$/.test(String(expectedSessionHash))) {
+    throw new Error("expectedSessionHash must be a sha256 hex digest");
+  }
   const result = await db.prepare(
     `SELECT bar_id, canonical_key, market_date, market, symbol, company_name,
             price_space, open_price, high_price, low_price, close_price,
@@ -140,9 +147,10 @@ export async function loadPitPriorA1BarsV0_1({
         AND pit_replay_eligible = 1
         AND available_at IS NOT NULL
         AND available_at <= ?
+        AND (? IS NULL OR market_date >= ?)
       ORDER BY market_date DESC, observed_at DESC, bar_hash DESC
       LIMIT ?`,
-  ).bind(code, mkt, date, space, clock, limit * 2).all();
+  ).bind(code, mkt, date, space, clock, minDate, minDate, limit * 2).all();
 
   const raw = Array.isArray(result?.results) ? result.results : [];
   const byDate = new Map();
@@ -171,6 +179,21 @@ export async function loadPitPriorA1BarsV0_1({
     .sort((a, b) => String(a.market_date).localeCompare(String(b.market_date)))
     .slice(-limit)
     .map(normalizeRow);
+
+  if (expectedSessionHash) {
+    const actualSessionHash = await sha256Hex({
+      market: mkt,
+      symbol: code,
+      marketDate: date,
+      dates: selected.map((row) => row.marketDate),
+    });
+    if (actualSessionHash !== expectedSessionHash) {
+      throw new Error(
+        "EXPECTED_SESSION_HASH_MISMATCH for daily Shadow history: "
+        + mkt + "|" + code + "|" + date,
+      );
+    }
+  }
 
   return deepFreeze(selected);
 }
