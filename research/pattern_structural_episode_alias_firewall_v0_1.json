@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "pattern-structural-episode-alias-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "breakoutRetestReclaimContinuationEqualFourVotes": false,
+  "betterEntryTimingEqualsNewStructuralAlpha": false,
+  "laterSuccessMayDeleteEarlierFailure": false,
+  "retestAutomaticallyCreatesNewRoot": false,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
