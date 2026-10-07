@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "D06_19_DIRECT_RETAIL_SOURCE_EXCLUSION_MATRIX_20261007_V0_1",
+  "createdAt": "2026-10-07T15:34:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-19",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "targetConstruct": "DOMESTIC_NATURAL_PERSON_STOCK_DATE_DIRECTIONAL_FLOW",
+  "requiredGrain": [
+    "tradeDate",
+    "market",
+    "symbol",
+    "investorIdentity=domesticNaturalPerson",
+    "buy",
+    "sell",
+    "net"
+  ],
+  "sourceReview": [
+    {
+      "source": "TWSE Data E-Shop / 買賣日報表(全部不含權證)",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/34e615c34c4e4ca3b23fc732bd736f94",
+      "observedFields": [
+        "securityCode",
+        "broker",
+        "tradePrice",
+        "buyShares",
+        "sellShares"
+      ],
+      "classification": "REJECT_AS_DIRECT_RETAIL",
+      "reason": "Broker/branch execution is not beneficial-owner identity. Official product semantics combine securities-firm trading and brokerage-client trading at the broker level; natural-person identity is not established."
+    },
+    {
+      "source": "TWSE Data E-Shop / 外國專業投資機構買賣金額表",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/c4b27c0af2b14f31a3f1e0f666474a2f",
+      "observedFields": [
+        "tradeDate",
+        "foreignInstitutionBuySellAmount",
+        "overseasForeignNaturalPersonBuySellAmount",
+        "domesticForeignNaturalPersonBuySellAmount"
+      ],
+      "classification": "MARKET_LEVEL_IDENTITY_CONTEXT_ONLY",
+      "reason": "Natural-person identity is explicit but the product is aggregate market-level amount, not stock-by-date domestic-natural-person directional flow."
+    },
+    {
+      "source": "TWSE Data E-Shop / 外資個股買賣超統計檔",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/6d00e3b3bef440fa9d7f97b9e1918361",
+      "observedFields": [
+        "symbol",
+        "foreignBuy",
+        "foreignSell",
+        "foreignNet",
+        "foreignDealerBuySell"
+      ],
+      "classification": "REJECT_AS_DOMESTIC_RETAIL",
+      "reason": "Stock-level directional fields exist, but the investor class is foreign/PRC registered investors, not domestic natural persons."
+    },
+    {
+      "source": "TWSE Data E-Shop / 委託檔",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/00000000639057100163905e1d7c0001",
+      "classification": "UNVERIFIED_FOR_RETAIL_IDENTITY",
+      "reason": "Historical order data exist, but the public product landing page does not establish a replayable domestic-natural-person identity field. Recent one-year data are not supplied through this historical product, and custom production is required."
+    },
+    {
+      "source": "TWSE Data E-Shop / 成交檔",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/0000000063ce6ab00163d860b694000a",
+      "classification": "UNVERIFIED_FOR_RETAIL_IDENTITY",
+      "reason": "Historical execution data exist, but the public product landing page does not establish a domestic-natural-person category field. It therefore cannot be admitted as direct retail flow without the exact field contract."
+    },
+    {
+      "source": "TPEx market-structure statistics",
+      "url": "https://www.tpex.org.tw/storage/publish/intro/113/2024%E6%AB%83%E8%B2%B7%E7%B0%A1%E4%BB%8BCH1231.pdf",
+      "classification": "MARKET_LEVEL_CONTEXT_ONLY",
+      "reason": "Natural-person market share is aggregate market structure, not stock-by-date buy/sell direction."
+    },
+    {
+      "source": "TPEx transaction-information store / post-close product groups",
+      "url": "https://www.tpex.org.tw/zh-tw/service/data/product/post.html",
+      "classification": "NO_DIRECT_RETAIL_PRODUCT_VERIFIED",
+      "reason": "Published product groups expose market/statistics/broker/credit-related data families, but this review did not verify a product with domestic-natural-person × symbol × date × buy/sell fields."
+    },
+    {
+      "source": "Investor personal-data query systems",
+      "url": "https://e-investor.tpex.org.tw/",
+      "classification": "OUT_OF_SCOPE_PERSONAL_RECORD_ACCESS",
+      "reason": "Individual investors can request their own records; this is not a marketwide replayable stock-date retail-flow dataset."
+    }
+  ],
+  "forbiddenProxySubstitutions": [
+    "margin financing or margin short -> domestic natural-person direction",
+    "day trading -> domestic natural-person direction",
+    "odd-lot activity -> domestic natural-person direction",
+    "broker/branch net flow -> domestic natural-person direction",
+    "total market flow minus institutional flow -> domestic natural-person direction",
+    "market-level natural-person share -> stock-level natural-person direction",
+    "foreign natural-person flow -> domestic natural-person flow",
+    "emerging-stock trade-side label -> investor identity"
+  ],
+  "result": {
+    "directPublicReplayableSourceFound": false,
+    "paidOrRestrictedDirectSourceVerified": false,
+    "sourceGap": "DOMESTIC_NATURAL_PERSON_STOCK_DATE_DIRECTIONAL_FEED_UNVERIFIED",
+    "maturityDecision": "KEEP_D06_19_L2_40"
+  },
+  "exactNext": "Only continue if an official/authorized field contract explicitly exposes domestic-natural-person identity at stock×date buy/sell grain. If a paid/custom product is considered, verify exact field definitions and PIT/replay terms before any purchase or contact. Otherwise preserve retail direction as UNKNOWN and use proxies only as separately named constructs."
+}
