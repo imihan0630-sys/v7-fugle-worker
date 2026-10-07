@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pattern-zone-width-precision-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "supportResistanceEqualsOneExactPrice": false,
+  "oneTickCrossEqualsBreakout": false,
+  "outcomeBasedZoneResizingAllowed": false,
+  "multipleWidthsEqualMultipleVotes": false,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
