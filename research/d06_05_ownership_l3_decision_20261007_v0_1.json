@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "D06_05_OWNERSHIP_L3_DECISION_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "decisionAt": "2026-10-07T16:46:59+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "preregisteredGate": {
+    "contract": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
+    "requirement": "Same-generation immutable chipAsOfDate/chipDefinition/hash preserved for prospective rows; repeated scan dates sharing one chipAsOfDate are deduplicated as one ownership vintage.",
+    "holderIdentityRule": "holder identity and passive share may remain UNKNOWN at the source/PIT feasibility stage"
+  },
+  "evidence": [
+    "research/d06_tdcc_parent_receipt_20261005_v0_1.json",
+    "research/d06_05_tdcc_same_generation_lineage_20261007_v0_1.json",
+    "research/d06_05_tdcc_weekly_change_falsification_20260924_20261002_v0_1.json",
+    "research/d06_10_tdcc_distribution_pit_source_contract_v0_1.json",
+    "research/institutional_ownership_identity_lineage_audit_v0_1.json"
+  ],
+  "observed": {
+    "authoritativeParentPrimitiveReceiptId": "D06-20261005-TDCC-WEEKLY",
+    "chipAsOfDate": "2026-10-02",
+    "authoritativeContentHash": "fnv1a64-utf8:ad1a265c0a3dcaf8",
+    "sameGenerationId": "D06-20261007-TDCC-OWNERSHIP-LINEAGE-R1",
+    "sameGenerationRows": 4078,
+    "sameGenerationRowSetHash": "fnv1a64-utf8:e48be87cc678e625",
+    "exactShareReconciliation": "4078/4078 PASS",
+    "commonWeeklyVintageComparison": {
+      "priorSourceDate": "2026-09-24",
+      "currentSourceDate": "2026-10-02",
+      "commonSecurities": 4056,
+      "commonOrdinaryFourDigit": 2962,
+      "ordinaryFourDigitIncrease400": 956,
+      "ordinaryFourDigitDecrease400": 873,
+      "ordinaryFourDigitUnchanged400": 1133,
+      "ordinaryFourDigitMedianAbsDeltaPctPoint": 0.02,
+      "ordinaryFourDigitP90AbsDeltaPctPoint": 0.63,
+      "ordinaryFourDigitP99AbsDeltaPctPoint": 3.26
+    }
+  },
+  "boundedConstruct": {
+    "admitted": "IDENTITY_AGNOSTIC_LARGE_HOLDER_OWNERSHIP_CONCENTRATION_STOCK",
+    "cadence": "WEEKLY",
+    "direction": "NONE",
+    "independentEvidenceRule": "one TDCC sourceDate/vintage counts once regardless of later scanDate or number of consumers",
+    "transportMirrorAuthority": false,
+    "transportMirrorAdmissionRule": "mirror may reproduce raw bytes only when its normalized fingerprint exactly equals the already-captured official TDCC parent fingerprint"
+  },
+  "remainingUnknown": [
+    "beneficial holder identity",
+    "active institution share",
+    "passive/index fund ownership share",
+    "strategic/cross-holding share",
+    "holder motive",
+    "directional alpha",
+    "whether an extreme week-over-week concentration delta is ownership trading versus denominator/capital/corporate-action effect"
+  ],
+  "falsificationGuards": [
+    "400-lot-plus concentration must not be labeled institutional ownership, smart money or main-force ownership.",
+    "Repeated daily scans sharing one chipAsOfDate are not independent ownership observations.",
+    "Weekly ownership stock is not daily institutional flow and cannot be added to daily flow as same-cadence confirmation.",
+    "Large week-over-week changes require denominator, corporate-action and universe-continuity controls before economic interpretation.",
+    "No price/return/MFE/MAE/ranking outcome was inspected for this promotion."
+  ],
+  "maturityDecision": {
+    "previousLevel": "L2",
+    "previousMaturityPct": 40,
+    "newLevel": "L3",
+    "newMaturityPct": 60,
+    "levelMeaning": "台股PIT資料可行",
+    "scope": "Taiwan PIT/source/replay feasibility for identity-agnostic large-holder ownership concentration only",
+    "rationale": "Official TDCC semantics and parser integrity were already L3-ready in D06-10. The missing D06-05 gate was immutable same-generation ownership-lineage attachment. A new 2026-10-07 outcome-blind research generation now consumes all 4,078 parsed concentration rows under the exact previously captured official parent hash, passes independent readback, and freezes one-vintage deduplication. Holder identity and passive share remain UNKNOWN rather than being imputed."
+  },
+  "l4Gate": [
+    "Accumulate independent TDCC sourceDate vintages; repeated scanDates within one vintage do not increase N.",
+    "Freeze corporate-action, capital-change and denominator-continuity controls before treating weekly deltas as economic ownership changes.",
+    "Preregister OOS/Shadow outcomes and common-support residual incrementality versus institutional daily flow, passive/index events, price-volume, liquidity and market regime.",
+    "Use TDCC-vintage-clustered inference rather than symbol-row pseudoreplication.",
+    "Keep holder identity/passive share UNKNOWN unless an independent identity-bearing source is obtained."
+  ],
+  "status": "D06_05_L3_SOURCE_PIT_REPLAY_READY / SAME_GENERATION_LINEAGE_PASS / ONE_VINTAGE_ONE_EVIDENCE_UNIT / HOLDER_IDENTITY_UNKNOWN / PASSIVE_SHARE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Preserve the next genuine new TDCC sourceDate as a new immutable parent and consume it through the same generation envelope. Before L4, add denominator/corporate-action continuity guards and preregister vintage-clustered OOS/Shadow residual incrementality. Do not increase maturity from repeated scanDates of the 2026-10-02 vintage."
+}
