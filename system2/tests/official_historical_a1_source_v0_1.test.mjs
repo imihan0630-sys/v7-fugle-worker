@@ -150,26 +150,30 @@ assert.equal(retried.ordinarySymbolCount, 1);
 assert.equal(retried.transportMode, "PRIMARY");
 
 let tpexTransportAttempts = [];
-const tpexFallback = await fetchOfficialHistoricalA1DateV0_1({
-  market: "TPEX",
-  marketDate: "2017-01-03",
-  observedAt,
-  retryAttempts: 2,
-  retryDelayMs: 0,
-  fetchImpl: async (url) => {
-    tpexTransportAttempts.push(url);
-    if (String(url).includes("/www/zh-tw/afterTrading/dailyQuotes")) {
+await assert.rejects(
+  () => fetchOfficialHistoricalA1DateV0_1({
+    market: "TPEX",
+    marketDate: "2017-01-03",
+    observedAt,
+    retryAttempts: 2,
+    retryDelayMs: 0,
+    fetchImpl: async (url) => {
+      tpexTransportAttempts.push(url);
+      assert.match(String(url), /\/www\/zh-tw\/afterTrading\/dailyQuotes/);
       return { ok: false, status: 520, json: async () => ({}) };
-    }
-    assert.match(String(url), /otc_quotes_no1430\/stk_wn1430_result\.php/);
-    return { ok: true, status: 200, json: async () => tpexPayload2017 };
-  },
-});
-assert.equal(tpexTransportAttempts.length, 3, "primary retries twice, then fallback succeeds");
-assert.equal(tpexFallback.transportMode, "LEGACY_JSON_FALLBACK");
-assert.match(tpexFallback.sourceUrl, /otc_quotes_no1430\/stk_wn1430_result\.php/);
-assert.equal(tpexFallback.sourceDateEvidence, "2017-01-03");
-assert.equal(tpexFallback.ordinarySymbolCount, 1);
+    },
+  }),
+  /source exhausted transports/,
+);
+assert.equal(tpexTransportAttempts.length, 2, "TPEx canonical source retries primary only");
+assert.equal(
+  officialHistoricalA1SourceContractV0_1("TPEX").canonicalTransportPolicy,
+  "PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY",
+);
+assert.equal(
+  officialHistoricalA1SourceContractV0_1("TPEX").legacyFallbackCanonicalEligible,
+  false,
+);
 
 let integrityAttempts = 0;
 await assert.rejects(
