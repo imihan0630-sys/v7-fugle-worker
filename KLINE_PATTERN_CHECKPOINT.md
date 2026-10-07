@@ -5491,3 +5491,111 @@ No maturity or Formal change is authorized by this routing.
 3. Freeze one executable dataset manifest before opening outcomes.
 4. If first-wave coverage gates pass, hand OOS execution to D16 under DL-087.
 5. No L4 promotion until completed OOS or prospective Shadow evidence exists.
+
+
+## Continuation update — DL-088~091 (2026-10-07)
+
+### DL-088 — First-wave Taiwan PIT empirical-data readiness audit
+- First-wave L4 candidates remain D01-02, D01-03, D01-07 and D01-09.
+- Raw historical price availability is now explicitly separated from causal replay readiness.
+- TWSE 2018-2024:
+  data coverage PASS;
+  conservative session-finality PIT PASS;
+  official current + new-listing + delisting universe union PASS;
+  official delisting union complete;
+  replay readiness PARTIAL;
+  continuity PARTIAL_UNVERIFIED;
+  technical-price readiness PARTIAL_NONPRICE_OBSERVATIONS;
+  symbol-session readiness PARTIAL_UNKNOWN_GAPS.
+- TWSE 2018-2024 current UNKNOWN symbol-session gap total = 4,036.
+- TPEx 2017-2023 raw price coverage is accepted but the universe remains PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION and official delisting union complete=false.
+- TPEx 2017-2023 current UNKNOWN symbol-session gap total = 2,533.
+- 2024 TPEx remains PENDING / NOT ACCEPTED; current blocker is infrastructure/execution quota after earlier transport/timeout hardening, not proven source corruption.
+- 2025 annual history remains pending; 2026 segmented path remains physical-execution pending.
+- Full-Taiwan first-wave dataset is therefore BLOCKED.
+
+### Causal context blockers frozen
+- Symbol-session lifecycle:
+  repository normalization/source hardening exists, but physical historical completeness is not closed; TPEx lifecycle expansion remains unresolved.
+- Corporate-action continuity:
+  mechanics and positive witnesses exist, but whole-market replay-complete historical event/clear-state coverage is not closed.
+- Suspension/resumption:
+  bounded official source evidence exists, but bounded absence cannot certify no-suspension and all-history completeness is not certified.
+- Price-limit/reference state:
+  source/rule feasibility is L3-ready, but exact first-wave historical per-symbol/per-session receipt materialization is not complete.
+- Disposition/matching regime:
+  mechanism is frozen, but replay-complete historical matching-cadence coverage is not proven.
+
+### DL-089 — Bounded TWSE pre-outcome dataset manifest
+- Market = TWSE only.
+- Warmup-only year = 2018.
+- Inference years = 2019-2024.
+- Fold 1:
+  train 2019-2021;
+  test 2022;
+  minimum purge/embargo 20 eligible sessions.
+- Fold 2:
+  train 2019-2022;
+  test 2023;
+  minimum purge/embargo 20 eligible sessions.
+- Final untouched holdout = 2024.
+- Frozen horizons remain 1 / 5 / 20 eligible sessions.
+- No year substitution is allowed after outcomes.
+- TPEx cannot be appended later into this TWSE result as though one predeclared sample.
+- Manifest is FROZEN but EXECUTION_BLOCKED.
+
+### DL-090 — Module evaluability / owner routing
+- D01-02 = RAW_FEATURE_READY / CAUSAL_OOS_BLOCKED.
+- D01-03 = SEQUENCE_FEATURE_READY / CAUSAL_OOS_BLOCKED.
+- D01-07 = DETECTOR_CONTRACT_READY / CAUSAL_OOS_BLOCKED.
+- D01-09 = RAW_GAP_READY / CAUSAL_OOS_BLOCKED.
+- D01 does not dispatch/rewrite System2 history, redefine the historical universe, infer clean state from source absence, build a second price-limit engine, or execute D16 outcome inference.
+- Exact blocker ownership is routed to existing System2 DATA/BUILD, Corporate Actions, D05, D10 and D16 owners.
+
+### DL-091 — Source/context receipt interface
+- R1 membership receipt frozen.
+- R2 raw A1 observation receipt frozen.
+- R3 symbol-session lifecycle receipt frozen.
+- R4 corporate-action continuity receipt frozen.
+- R5 price-limit/reference-price receipt frozen.
+- R6 disposition/matching-regime receipt frozen.
+- R7 D01 pattern-observability receipt frozen.
+- R8 D16 outcome-availability receipt frozen.
+- R9 D16 validation-policy receipt frozen.
+- Common temporal rule:
+  firstObservableAt <= predictorFreezeAt.
+- Source absence cannot certify clean/normal state unless completenessScope itself is complete.
+- Any UNKNOWN mandatory predictor/context receipt => CAUSAL_OOS_BLOCKED.
+
+### Deterministic execution evidence
+- DL-088~090 readiness oracle:
+  first isolate attempt stopped only because structuredClone was unavailable;
+  test was rewritten with ordinary object copying without changing expectations;
+  final 14 / 14 PASS.
+- DL-091 receipt-bundle oracle:
+  15 / 15 PASS.
+- This tranche:
+  29 / 29 PASS.
+- Cumulative D01 deterministic V8-equivalent execution through DL-091:
+  217 / 217 PASS.
+- Native Node parity remains unclaimed.
+
+### Governance
+- D01 canonical maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- No L4 promotion because no completed causal OOS/prospective Shadow evidence exists.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Outcome join remains CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-091
+
+1. Start DL-092: bounded exact-window physical-receipt positive-control audit.
+2. Search current repository evidence for at least one TWSE symbol/window where R1-R7 can all be physically satisfied without opening any future return.
+3. Use positive control only to verify interface composability, not pattern performance.
+4. If a complete R1-R7 bundle does not exist, record the exact missing receipt families and remain BLOCKED.
+5. Do not weaken completeness rules to manufacture a clean example.
+6. After an R1-R7 positive control exists, hand the same interface to D16 for future R8/R9 outcome execution.
+7. No L4 promotion and no Formal Core change.
