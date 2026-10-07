@@ -1675,3 +1675,83 @@ No current open PR was observed for CORR-005 or the TWTAWU bounded completeness 
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
 No final selection, live push, capital or real orders are authorized.
+
+
+## 00 post-midnight continuation — NC-T01 strategy-readiness false-promotion gate opened (2026-10-08 00:00 Asia/Taipei)
+
+Observed latest main before write:
+`e1b62a1f15c9a3c5116194977186592cea935cad`.
+
+Second-layer independent audit of merged PR #830 found a separate launch-critical defect beyond CORR-005.
+
+### New correction: S2-CORR-20261007-006 / HIGH / BUILD_LANE
+
+Current `system2/runtime/nct01_physical_receipt_v0_1.mjs` defines `executableWitnesses` from:
+- ACCOUNTED;
+- replay READY;
+- continuity READY;
+- zero continuity blockers.
+
+It does not require the witness `strategyValidity` to be non-INCOMPLETE.
+
+The same builder then promotes:
+- `requiredInputsState=READY`;
+- `executionState=EXECUTED`;
+- `candidateGenerationExecutable=true`;
+
+whenever the run is complete and at least one such continuity-ready witness exists.
+
+The orchestrator proves these dimensions are independent:
+`continuityBindingState` and `strategyValidity` are persisted separately.
+
+Therefore a real symbol can be continuity-complete while strategy-required evidence remains INCOMPLETE, yet still become sufficient to promote the NC-T01 run and potentially produce:
+- `PHYSICALLY_INDEPENDENT_PATH_OBSERVED`;
+- `LEGITIMATE_ZERO_PICK`.
+
+That violates the already-frozen physical matrix S22-T13/T14:
+a genuine physical path requires at least one strategy-executable witness; legitimate zero-pick may not mask strategy-input incompleteness.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_STRATEGY_READINESS_PROMOTION_AUDIT_20261007_V0_1.json`
+(commit `c467f12b0ba526ff54cd5cdfe257ea22de55905b`).
+
+Correction queue:
+`S2-CORR-20261007-006`
+- severity HIGH;
+- status OPEN;
+- lane BUILD_LANE;
+- ownerDecisionRequired false.
+
+Minimum fix:
+1. define strategy-executable witness separately from continuity-ready witness;
+2. first physical witness should require `strategyValidity=VALID` unless the frozen strategy contract explicitly permits another executable state;
+3. no executable strategy witness => requiredInputs INCOMPLETE / BLOCKED_INPUTS / candidateGenerationExecutable=false;
+4. provenance carries both CONTINUITY_READY_WITNESS_COUNT and STRATEGY_EXECUTABLE_WITNESS_COUNT;
+5. all continuity-ready but strategy-INCOMPLETE cases must fail closed;
+6. legitimate zero-pick is legal only after at least one executable strategy witness was actually evaluated and all other NC-T01 gates pass.
+
+Existing tests do not cover the decisive counterexample:
+continuity READY + strategyValidity INCOMPLETE.
+
+### Current physical NC-T01 gates
+
+Parallel BUILD_LANE:
+- CORR-005: exact-head transitive hidden-fallback static audit + runtime forbidden-access evidence + bound HIDDEN_FALLBACK_AUDIT_SHA256;
+- CORR-006: executable strategy witness readiness gate / zero-pick fail-closed semantics;
+- real physical wrapper after both repairs.
+
+Parallel DATA_LANE:
+- exact replay-window TWTAWU JSON-vs-official-export bounded completeness parity;
+- corporate-action completeness;
+- first real hash-bound CLEAR_NO_ACTION receipt.
+
+Then:
+- one coherent artifact-only SHORT_MOMENTUM NC-T01 evidence cut;
+- 00 independently recomputes S22-T11~T16;
+- CORR-003 becomes the post-NC-T01 persistence blocker.
+
+No open PR for CORR-005, CORR-006, or the TWTAWU bounded-completeness producer was observed at this checkpoint.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
+No final selection, live push, capital or real orders are authorized.
