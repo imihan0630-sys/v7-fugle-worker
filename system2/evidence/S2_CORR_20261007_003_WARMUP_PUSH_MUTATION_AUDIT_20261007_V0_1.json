@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_WARMUP_PUSH_MUTATION_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "file": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+  "finding": "ORDINARY_MAIN_PUSH_CAN_EXECUTE_HIGH_WRITE_PHYSICAL_D1_WARMUP",
+  "triggerContract": {
+    "workflowDispatch": true,
+    "scheduleCronUtc": "30 8 * * *",
+    "pushMain": true,
+    "pushPaths": [
+      "system2/runtime/recent_a1_hot_history_warmup_v0_1.mjs",
+      "system2/runtime/official_historical_a1_source_v0_1.mjs",
+      "system2/runtime/historical_store_v0_1.mjs",
+      "system2/runtime/historical_bulk_persistence_v0_1.mjs",
+      "system2/deploy/remote_d1_rest_adapter.mjs",
+      "system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs",
+      ".github/workflows/system2-recent-a1-hot-history-warmup.yml"
+    ]
+  },
+  "jobGuard": {
+    "expression": "github.ref == 'refs/heads/main'",
+    "eventTypeGuardPresent": false,
+    "interpretation": "A push to main on any watched warmup path satisfies the physical job guard."
+  },
+  "physicalMutationPath": {
+    "environment": "system2-research",
+    "secretsUsed": [
+      "CLOUDFLARE_ACCOUNT_ID",
+      "SYSTEM2_CLOUDFLARE_API_TOKEN"
+    ],
+    "confirmEnv": "WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY",
+    "script": "system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs",
+    "d1MutationIntended": true
+  },
+  "measuredRisk": {
+    "physicalRunId": 37550201160,
+    "event": "push",
+    "logicalRowsInserted": 9640,
+    "rowsWritten": 57880,
+    "freeWriteCeiling": 100000,
+    "shareOfDailyFreeWriteCeiling": 0.5788
+  },
+  "auditConclusion": "P0 confirmed. Push-triggered physical warmup is a direct avoidable free-tier quota consumer and must be separated from test/read-only push validation.",
+  "requiredRemediation": [
+    "Keep push trigger only for static/tests/planning/read-only evidence OR remove push from the physical workflow entirely.",
+    "Physical warmup may run only under schedule/manual flow after the shared account-level D1 quota budget gate authorizes it.",
+    "Regression must prove a push event cannot reach the Cloudflare credentialed physical mutation step.",
+    "Do not disable schedule/manual physical history warming outright; preserve bounded launch-critical history acquisition behind quota governance.",
+    "No paid-tier upgrade or billing mutation is authorized."
+  ],
+  "implementationPerformedByAudit": false
+}
