@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T23:55:26+08:00",
+  "updatedAt": "2026-10-08T00:10:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.4
+    "maturityWeightedPct": 47.5
   },
   "domains": [
     {
@@ -853,7 +853,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 17.6,
+      "maturityPct": 18.8,
       "modules": [
         {
           "id": "D07-01",
@@ -1032,12 +1032,12 @@
         {
           "id": "D07-20",
           "name": "Integrated Three-statement Forecast三大財報聯動預測",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Integrated Three-statement Forecast三大財報聯動預測」。研究企業財務、三表預測與鑑識會計。所有假設必須區分管理層指引、分析師估計與模型自建假設，保留 PIT（時點一致性）first-known（首次已知）時間、情境敏感度與財報品質反證，禁止用事後實績回填歷史預測。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D07-20 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / INTEGRATED_RECONCILIATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / OUTCOMES_CLOSED",
+          "next": "以至少三家、兩個以上不同產業台灣上市公司建立歷史 PIT 三表聯動重播，分離管理層指引／外部共識／模型假設，驗證融資缺口、三表勾稽、修訂 append-only 與 IFRS 18／重分類時點；完成前維持 L2。"
         },
         {
           "id": "D07-21",
