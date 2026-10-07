@@ -1,0 +1,63 @@
+name: System2 NC-T01 Artifact Runner V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
+      - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
+      - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
+      - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs"
+      - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
+      - ".github/workflows/system2-nct01-artifact-runner-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
+      - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
+      - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
+      - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs"
+      - ".github/workflows/system2-nct01-artifact-runner-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: NC-T01 physical receipt semantics
+        run: node system2/tests/nct01_physical_receipt_v0_1.test.mjs
+
+      - name: Bounded PIT history prefetch semantics
+        run: node system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs
+
+      - name: NC-T01 artifact runner core
+        run: node system2/tests/nct01_artifact_runner_v0_1.test.mjs
+
+      - name: Existing replay continuity regression
+        run: node system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs
+
+      - name: Existing mixed-continuity orchestration regression
+        run: node system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
