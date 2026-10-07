@@ -45,6 +45,45 @@ function normalizeReplayRow(row) {
   };
 }
 
+function selectedRevisionWithProvenance(selectedRevision, rows, key) {
+  if (!selectedRevision) return null;
+  const matches = rows.filter((row) =>
+    row.canonicalKey === selectedRevision.canonicalKey
+    && row.barHash === selectedRevision.barHash
+    && (row.sourceRowHash ?? row.source_row_hash ?? null) === (selectedRevision.sourceRowHash ?? null)
+    && (row.availableAt ?? null) === (selectedRevision.availableAt ?? null)
+    && (row.observedAt ?? null) === (selectedRevision.observedAt ?? null)
+    && (row.capturedAt ?? null) === (selectedRevision.capturedAt ?? null)
+  );
+  if (!matches.length) {
+    return selectedRevision;
+  }
+  const tuples = new Map();
+  for (const row of matches) {
+    const tuple = {
+      sourceId: row.sourceId ?? row.source_id ?? null,
+      sourceName: row.sourceName ?? row.source_name ?? null,
+      sourceRowHash: row.sourceRowHash ?? row.source_row_hash ?? null,
+      barHash: row.barHash,
+      availableAt: row.availableAt ?? null,
+      observedAt: row.observedAt ?? null,
+      capturedAt: row.capturedAt ?? null,
+      continuityState: row.continuityState ?? row.continuity_state ?? "UNVERIFIED",
+      pitAvailabilityClass: row.pitAvailabilityClass ?? row.pit_availability_class ?? null,
+    };
+    const tupleKey = JSON.stringify(tuple);
+    if (!tuples.has(tupleKey)) tuples.set(tupleKey, tuple);
+  }
+  if (tuples.size > 1) {
+    throw new Error("REVISION_PROVENANCE_AMBIGUITY: " + key);
+  }
+  const provenance = [...tuples.values()][0];
+  return deepFreeze({
+    ...selectedRevision,
+    ...provenance,
+  });
+}
+
 function primitiveBar(row) {
   return deepFreeze({
     date: row.marketDate,
@@ -134,9 +173,13 @@ export async function buildPitReplayWindow({
         rows,
         decisionTimestamp: clock,
       });
-      if (selectedRevision) resolved.push(selectedRevision);
+      const revisionWithProvenance = selectedRevisionWithProvenance(selectedRevision, rows, key);
+      if (revisionWithProvenance) resolved.push(revisionWithProvenance);
     } catch (error) {
-      if (/REVISION_AMBIGUITY_AT_SAME_AVAILABILITY/.test(String(error?.message || error))) {
+      if (
+        /REVISION_AMBIGUITY_AT_SAME_AVAILABILITY/.test(String(error?.message || error))
+        || /REVISION_PROVENANCE_AMBIGUITY/.test(String(error?.message || error))
+      ) {
         ambiguousRevisionKeys.push(key);
         continue;
       }

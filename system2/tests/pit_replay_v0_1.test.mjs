@@ -114,6 +114,8 @@ await assert.rejects(
 
 const prospectiveRevision = {
   ...batch.rows.at(-1),
+  sourceId: "TWSE_FIXTURE_REVISION",
+  sourceName: "TWSE fixture revised",
   barHash: "prospective-revision-hash",
   sourceRowHash: "prospective-source-revision-hash",
   close: 999,
@@ -134,6 +136,9 @@ const preRevisionWindow = await buildPitReplayWindow({
 });
 assert.equal(preRevisionWindow.state, "READY");
 assert.equal(preRevisionWindow.bars.at(-1).close, 169);
+assert.equal(preRevisionWindow.bars.at(-1).sourceId, "TWSE_FIXTURE");
+assert.equal(preRevisionWindow.bars.at(-1).sourceRowHash, batch.rows.at(-1).sourceRowHash);
+assert.equal(preRevisionWindow.bars.at(-1).barHash, batch.rows.at(-1).barHash);
 assert.equal(preRevisionWindow.resolvedRevisionKeyCount, 0);
 
 const postRevisionWindow = await buildPitReplayWindow({
@@ -146,7 +151,9 @@ const postRevisionWindow = await buildPitReplayWindow({
 });
 assert.equal(postRevisionWindow.state, "READY");
 assert.equal(postRevisionWindow.bars.at(-1).close, 999);
+assert.equal(postRevisionWindow.bars.at(-1).sourceId, "TWSE_FIXTURE_REVISION");
 assert.equal(postRevisionWindow.bars.at(-1).sourceRowHash, "prospective-source-revision-hash");
+assert.equal(postRevisionWindow.bars.at(-1).barHash, "prospective-revision-hash");
 assert.equal(postRevisionWindow.resolvedRevisionKeyCount, 1);
 assert.equal(
   postRevisionWindow.revisionPolicy,
