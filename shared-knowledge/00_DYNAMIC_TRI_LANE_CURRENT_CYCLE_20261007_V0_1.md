@@ -917,3 +917,69 @@ Durable audit:
 Formal Core remains LOCKED.
 Final selection, live push, capital and real orders remain disabled.
 
+## 00 supersession — NC-T01 continuity must bind the exact PIT replay window (2026-10-07 20:56:39 Asia/Taipei)
+
+Observed latest main before write:
+`cd007c029de49721eaa44c584c462919682925a5`.
+
+The preceding single-witness continuity section is retained as chronology but is incomplete if interpreted as permitting a string-only continuity resolver.
+
+### Runtime readback
+
+Latest-main inspection proves:
+- `buildPitReplayWindow` preserves selected raw/PIT rows and revision identity;
+- `buildA1HistoryPrimitiveBundle` does NOT require historical D1 rows themselves to be rewritten from `UNVERIFIED`; continuity-sensitive factor eligibility is controlled by one top-level continuity state;
+- therefore immutable historical D1 rows may remain unchanged.
+
+However:
+- `resolveContinuityState` currently executes BEFORE the PIT replay window is built;
+- it returns only a text state;
+- the current factor `sourcePayloadHash` hashes normalized date/OHLC/volume/tradeValue and does not bind a continuity receipt;
+- current factor/candidate provenance does not retain `continuityReceiptId`, `sourceHistoryHash` or `continuityTransformHash`.
+
+Therefore a continuity receipt is not currently provably bound to the exact selected PIT revisions/session set consumed by the factor engine.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_CONTINUITY_REPLAY_BINDING_AUDIT_20261007_V0_1.json`.
+
+### Shared contract reuse
+
+D03 already froze the needed continuity identity/provenance semantics:
+- `continuityReceiptId`;
+- `sourceHistoryHash`;
+- `rawHistoryAdmissionReceiptId`;
+- `symbolSessionContractVersion`;
+- `sessionCalendarVersion`;
+- `continuityEngineVersion`;
+- `corporateActionRegistryVersion`;
+- `continuityTransformHash`;
+- exact expected eligible-session set;
+- exact ordered bar/source identities.
+
+System2 Stage-1 should reuse those shared identity semantics at its 61-session window length rather than inventing a second continuity model.
+
+### First witness is CLEAR_NO_ACTION only
+
+Current A1 primitive code treats both `CLEAR_NO_ACTION` and `ADJUSTED_CONTINUITY` as continuity-eligible, but current daily orchestration feeds RAW historical bars and does not apply a TECHNICAL_CONTINUITY price transform.
+
+Therefore:
+- first NC-T01 witness may promote only `CLEAR_NO_ACTION`;
+- `ADJUSTED_CONTINUITY_REQUIRED` must remain fail-closed until an actual transformed technical-continuity window is supplied;
+- merely returning the string `ADJUSTED_CONTINUITY` over RAW bars is prohibited.
+
+### Exact BUILD_LANE runtime delta
+
+1. Build the raw PIT replay window first.
+2. Compute the exact ordered raw-window identity.
+3. Validate a versioned continuity receipt after replay selection.
+4. Require receipt symbol/asOf/cutoff/date set/`sourceHistoryHash` to match the selected live replay window.
+5. Bind continuity receipt identity/hashes into factor/candidate provenance.
+6. Only then pass `CLEAR_NO_ACTION` to the A1 factor primitive builder.
+7. Any drift/mismatch remains `UNVERIFIED` / INCOMPLETE.
+
+Required regressions include source-row drift, date-set drift, post-cutoff receipt, wrong symbol/date, missing receipt/hash, unresolved gaps/events and RAW+`ADJUSTED_CONTINUITY` rejection.
+
+This narrows, rather than expands, the work: no D1 history rewrite and no second corporate-action/indicator engine are required.
+
+Formal Core remains LOCKED.
+
