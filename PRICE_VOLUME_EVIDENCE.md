@@ -6009,3 +6009,107 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 OWNER_APPROVAL_REQUIRED — explicit approval for Class-B Production integration of PR #668. Without approval remain draft/unmerged/un-deployed.
+
+
+# PVE-256 — Same-slot baseline-clean is a provenance/freshness state, not a count-derived boolean (2026-10-07)
+
+## Question
+
+Can the first post-remediation 2026-10-07 intraday row be admitted to H001 solely because it has `slotHistoryCount>=20` and finite `pvSlotRvol20`?
+
+Answer: no.
+
+## Canonical dependency chain
+
+The existing evidence contract already separates:
+1. exact-slot count readiness;
+2. exact-slot baseline freshness;
+3. missing-session / missing-slot provenance;
+4. corporate-action/reset continuity;
+5. current-session continuity;
+6. cohort/common-support eligibility.
+
+PVE-083 requires `baselineAsOfDate` to be consistent with the latest expected comparable prior session. PVE-095 further requires session-age reasoning to use expected symbol sessions, not calendar-day age, and requires unexplained missing exact slots to remain non-clean. PVE-089 identifies persisted `coverage.baselineAsOfDate` as the existing exact-slot freshness salvage field.
+
+Therefore:
+`slotHistoryCount>=20 + finite RVOL`
+is necessary but not sufficient for
+`sameSlotBaselineClean=true`.
+
+## Runtime/source trace
+
+`pvBaselineStats(cache,marketDate,slotKey)`:
+- filters baseline sessions strictly before the current market date;
+- applies `corporateActionResetAt`;
+- selects the exact requested `slotKey` within each prior session;
+- takes the final 20 exact-slot observations;
+- derives `baselineAsOfDate` from the last element of that exact-slot set.
+
+The intraday snapshot already persists `baselineAsOfDate` in `coverage_json`, but current Production does not persist `sameSlotBaselineClean`.
+
+This explains the PVE-255 `null` without converting it to either PASS or FAIL.
+
+## Tri-state rule
+
+Research guard V0.1:
+`research/d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs`.
+
+States:
+- PASS: every required pre-outcome proof is affirmative;
+- FAIL: an explicit violation is observed;
+- UNKNOWN: a required proof is absent.
+
+Mandatory positive evidence before PASS:
+- `slotHistoryCount>=20`;
+- original `pvSlotRvol20` value is a finite number;
+- `baselineAsOfDate < marketDate`;
+- `baselineAsOfDate == expectedLatestComparableSlotDate`;
+- corporate-action continuity is positively classified clean/bridged/reset-clean;
+- exact-slot historical validity is positively PASS.
+
+Current-session prefix/continuity remains a separate common-support gate and is intentionally not hidden inside this baseline-clean state.
+
+## Falsification fixture
+
+`tests/test_d02_pve256_same_slot_baseline_clean_guard_v0_1.mjs` covers:
+- fully proven PASS;
+- missing baseline date -> UNKNOWN;
+- missing expected latest comparable date -> UNKNOWN;
+- stale date mismatch -> FAIL;
+- unresolved corporate-action continuity -> UNKNOWN;
+- known exact-slot invalidity -> FAIL;
+- history count below 20 -> FAIL;
+- null RVOL -> FAIL;
+- PVE-255 durable receipt with missing clean-proof fields -> UNKNOWN;
+- explicit UNKNOWN reason preservation.
+
+A first implementation using numeric coercion was rejected because JavaScript `Number(null)===0`; missing values must not become finite zero by coercion. Final validation passes 10 assertions locally.
+
+## PVE-255 result
+
+PVE-255 remains:
+`SAME_SLOT_BASELINE_CLEAN_UNKNOWN / H001_FAIL_CLOSED`.
+
+No clean date is added.
+No outcome access is opened.
+No maturity change is authorized.
+
+## Outcome-access incident quarantine
+
+A support lookup intended to verify prior-session availability returned a broader current-day price/volume payload that contained post-feature outcome-bearing fields while the preregistered state was `OUTCOME_ACCESS_CLOSED`.
+
+Control response:
+- discard the exposed outcome values from this research decision;
+- do not persist them here;
+- do not inspect/tune thresholds, models, slots or horizons from them;
+- keep the affected 2026-10-07 H001 candidate inadmissible;
+- use only pre-outcome persisted D1 baseline/provenance fields for PVE-257.
+
+This incident cannot create positive evidence.
+
+## Status
+
+`TRI_STATE_BASELINE_CLEAN_GUARD_FROZEN / PVE255_UNKNOWN / OUTCOME_ACCESS_QUARANTINED / H001_FAIL_CLOSED / FORMAL_UNCHANGED`.
+
+Exact next:
+PVE-257 must surface the persisted exact-slot baseline evidence read-only and compute a deterministic baseline content identity; expected comparable-slot freshness remains UNKNOWN unless an authoritative symbol-session/suspension source proves it.
