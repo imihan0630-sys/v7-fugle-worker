@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "D03_W0_PARENT_DUAL_TRACK_READINESS_V0_1",
+  "updatedAt": "2026-10-08T06:14:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_DUAL_TRACK_PROMOTION_READINESS",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "f629847e97814b0e326d887d03ceb174fd4632f1",
+  "closedParallelSystem2Firewalls": {
+    "corr005": {
+      "id": "S2-CORR-20261007-005",
+      "state": "VERIFIED_CLOSED",
+      "meaning": "Missing or UNKNOWN hidden-fallback evidence now fails closed and HIDDEN_FALLBACK_AUDIT_SHA256 is required for System2 physical independence.",
+      "d03W0Impact": "NONE_AFTER_CODE_CLOSURE"
+    },
+    "corr006": {
+      "id": "S2-CORR-20261007-006",
+      "state": "VERIFIED_CLOSED",
+      "meaning": "W0 continuity-ready is separated from W1 strategy-executable; explicit required-evidence completeness controls execution/zero-pick promotion.",
+      "d03W0Impact": "NONE_AFTER_CODE_CLOSURE"
+    }
+  },
+  "w0Track": {
+    "state": "PHYSICAL_RECEIPT_PENDING",
+    "exactSessionIdentity": "PHYSICAL_PASS_CORR004",
+    "replayFirstContinuityBinding": "MERGED",
+    "legacyContinuityFirewall": "MERGED",
+    "shortestRemainingSequence": [
+      "Capture the actual official TWTAWU export/HTML request contract from the TWSE page; do not guess response/export parameters.",
+      "Physically prove official JSON-vs-export representation parity first on a bounded positive-control interval containing real 1218 suspension/resumption.",
+      "Freeze that exact request/normalization contract before inspecting the target witness result.",
+      "Apply the frozen bounded-completeness contract to the exact selected replay window for a real exact-session-ready TWSE witness such as 1101.",
+      "Combine bounded suspension evidence with exact-range TWSE ex-right/dividend, capital-reduction and par-value-change source families.",
+      "Emit CLEAR_NO_ACTION_ELIGIBLE only if event/source/session completeness is complete; otherwise preserve ADJUSTED_CONTINUITY_REQUIRED or CONTINUITY_UNKNOWN.",
+      "Bind receiptHash/sourceHistoryHash/replayHash/exact eligible-date set/source evidence hashes to the selected replay."
+    ],
+    "positiveControl": {
+      "symbol": "1218",
+      "market": "TWSE",
+      "suspendedFrom": "2026-08-13",
+      "resumedOn": "2026-08-14",
+      "priorPhysicalRunId": 37488505236,
+      "priorPhysicalJobId": 112354734503,
+      "boundedQueryStart": "2026-04-05",
+      "boundedQueryEnd": "2026-10-02",
+      "boundedRowCount": 383,
+      "sourceArtifactHash": "10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857",
+      "sourceRowHash": "40fbafe3fac0f7bafc60f08ca7cb873da716cdce846decfadcd5122ff8197927",
+      "credit": "POSITIVE_CONTROL_ONLY_NOT_NEGATIVE_COMPLETENESS"
+    },
+    "targetWitnessCandidate": {
+      "symbol": "1101",
+      "market": "TWSE",
+      "exactSessionHistoryReady": true,
+      "continuityState": "UNVERIFIED",
+      "cleanlinessAssumed": false
+    },
+    "exportContractState": "OFFICIAL_PAGE_HAS_HTML_AND_CSV_CONTROLS_QUERY_ENDPOINT_CONFIRMED_EXPORT_REQUEST_NOT_PINNED",
+    "forbiddenShortcuts": [
+      "EMPTY_JSON_IS_NOT_NO_SUSPENSION_WITHOUT_BOUNDED_COMPLETENESS",
+      "HTTP_200_IS_NOT_NEGATIVE_COMPLETENESS",
+      "THIRD_PARTY_ROUTING_CODE_IS_NOT_OFFICIAL_EXPORT_CONTRACT",
+      "UNCERTIFIED_OPEN_STOP_CANNOT_DELETE_EXPECTED_SESSIONS",
+      "RAW_HISTORY_CANNOT_BE_RELABELED_ADJUSTED_CONTINUITY"
+    ]
+  },
+  "parentTrack": {
+    "state": "GENUINE_PARENT_PENDING_UPSTREAM_OFFICIAL_QUALITY",
+    "latestPhysicalAttempt": {
+      "marketDate": "2026-10-07",
+      "workflowRunId": 37652129851,
+      "jobId": 112897875757,
+      "generationInventoryValidation": "PASS",
+      "formalC1BindingReadbackValidation": "PASS",
+      "immutableC1PopulationReadVerify": "FAIL",
+      "failure": "C1_GENERATION_NOT_FOUND",
+      "formalScanDate": "2026-09-29",
+      "formalPipelineComplete": false,
+      "institutionReady": true,
+      "qualityReady": false,
+      "missingQuality": [
+        "QUARTER_EPS"
+      ],
+      "eligibleForResearch": false,
+      "mayCountAsZeroPick": false
+    },
+    "transportDiagnosis": {
+      "officialHost": "mopsov.twse.com.tw",
+      "nodeFetchUndici": "INCOMPATIBLE_OR_TIMEOUT_PRONE_ON_OBSERVED_PATH",
+      "nativeHttpsProbeRunId": 37565002528,
+      "nativeHttpsObservedHttpStatus": 200,
+      "nativeHttpsObservedBytes": 50742,
+      "nativeHttpsObservedSeconds": 7.411,
+      "repoCandidateCommit": "9a00f072064110d256537ee7cf322f34aae0abcf",
+      "deadlinePr769Merge": "d13ff8a40007a3e7e8f8ab0fdfb0970c73fd0d08",
+      "productionDeployLiveReadback": "NOT_PROVEN"
+    },
+    "interpretation": [
+      "MOPSOV official source absence is not proven; transport feasibility via Node native HTTPS is proven.",
+      "Repository/native-HTTPS candidate existence does not equal Production deployment or live quality recovery.",
+      "The 2026-10-07 missing parent is an upstream generation-absence event, not a V8.20 binding-ledger defect.",
+      "Later repair cannot synthesize a missing decision-time C1 generation.",
+      "Next promotion-grade parent must be a new ordinary-session immutable C1 generation with authoritative V8.20 Formal-to-C1 binding."
+    ],
+    "shortestRemainingSequence": [
+      "Obtain Production deployment/live-readback evidence for the official-quality native-HTTPS acquisition repair or an equivalent verified production repair.",
+      "On the next actual ordinary Taiwan session, require official quality readiness including QUARTER_EPS.",
+      "Require a genuine immutable C1 generation to exist for that session.",
+      "Require authoritative V8.20 Formal-to-C1 binding to that exact generation.",
+      "Then run D03 parent-continuity binding and Bollinger L3 acceptance oracles against the same immutable evidence cut."
+    ]
+  },
+  "promotionLogic": {
+    "d03_10": {
+      "current": "L2_40",
+      "acceptanceOracle": "research/d03_bollinger_l3_acceptance_v0_2.mjs",
+      "parentBindingOracle": "research/d03_parent_continuity_binding_v0_2.mjs",
+      "promoteOnlyWhen": [
+        "REAL_W0_TECHNICAL_CONTINUITY_ACCEPTED",
+        "GENUINE_V8_20_FORMAL_C1_PARENT_ACCEPTED",
+        "EXACT_20_ELIGIBLE_SESSIONS_ON_ACCEPTED_PARENT",
+        "LAYER_C_KNOWN_AT_CAUSALITY",
+        "FORMULA_SOURCE_GUARDS_PASS",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    },
+    "d03_09": {
+      "current": "L2_40",
+      "promoteOnlyWhen": [
+        "REAL_W0_TECHNICAL_CONTINUITY_ACCEPTED",
+        "GENUINE_V8_20_FORMAL_C1_PARENT_ACCEPTED",
+        "LAYER_C_KNOWN_AT_CAUSALITY",
+        "CANONICAL_WILDER_HLC_FULL_REPLAY_OR_REPLAY_CERTIFIED_TRUSTED_STATE",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    }
+  },
+  "independentStillOpen": [
+    "RAW_SOURCE_VERSION_GATE_2_OF_3",
+    "T48_GENERATION_SET_FINALIZATION",
+    "S2_07_STABILIZATION",
+    "SYSTEM2_D03_RAW_VS_DEDUP_DIAGNOSTICS",
+    "SYSTEM1_D03_REDUNDANCY_DIAGNOSTICS",
+    "D16_D03_PREDICTIVE_INCREMENTALITY"
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "activeModules": 12,
+    "l3MilestoneModules": 10,
+    "l2Modules": 2,
+    "outcomes": "CLOSED"
+  },
+  "exactNextContinuationPoint": "Consume whichever promotion-grade physical input arrives first without cross-credit: (A) a real exact-window source-honest W0 technical-continuity receipt for a TWSE exact-session witness under frozen bounded TWTAWU/corporate-action completeness; or (B) a future ordinary-session genuine immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback official-quality repair. If both exist on admissible evidence cuts, immediately execute the existing D03-10 Bollinger L3 and parent-binding oracles. Do not wait for already-closed CORR-005/006 and do not infer missing evidence as negative evidence."
+}
