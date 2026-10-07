@@ -827,3 +827,93 @@ This is expected BUILD_LANE continuation, not a new correction.
 6. bounded pool -> Candidate Board / Daily Resonance consumption.
 
 Formal Core remains LOCKED. No broker-order/live-capital authority is added.
+
+## 00 deep continuation delta — first executable NC-T01 witness narrowed to TWSE single-window continuity certification (2026-10-07 20:50:50 Asia/Taipei)
+
+Observed latest main before write:
+`a1cee8d9b3dc8363a74a710409366e4bd23ccea3`.
+
+This section supersedes the older shorthand "#762 -> NC-T01" where it omits the newly isolated continuity witness gate.
+
+### Physical blocker exposed by the current Stage-1 seed
+
+Daily Shadow Diagnostic run `37609474459` physically proved:
+- current A1 source path READY for 2026-10-07;
+- current universe = 1,973 ordinary symbols;
+- global PIT/history integrity sufficient for authorized Shadow evaluation with symbol-local gaps;
+- `historyReadyCount=51`;
+- `continuityReadyCount=0`;
+- `evaluationInputEligibleSymbolCount=0`.
+
+Therefore an NC-T01 runner alone cannot yet satisfy S22-T13. At least one symbol must first obtain a source-honest continuity witness.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_SINGLE_WITNESS_CONTINUITY_OVERLAY_AUDIT_20261007_V0_1.json`.
+
+### NC-T01 read/write execution footprint
+
+00 independently verified:
+- the existing history loader performs one per-symbol PIT SELECT;
+- the remote D1 REST adapter supports `db.batch()`;
+- current historical A1 indexes are suitable for symbol/window reads;
+- the remaining concern is REST round-trip fanout, not a missing SQL index;
+- a bounded batch/prefetch transport layer should preserve the existing per-symbol PIT SQL semantics;
+- first one-strategy Limited Shadow + capacity persistence is estimated at about 21.7k D1 `rowsWritten` from current table/index topology, subject to physical `meta.rows_written` override.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_G4_D1_FOOTPRINT_AND_READ_PATH_AUDIT_20261007_V0_1.json`.
+
+### First continuity witness can be TWSE-only
+
+The existing corporate-action archive core derives `requiredExchanges` from the actual `requiredSourceContracts`; it does not hard-require both TWSE and TPEx.
+
+For a first TWSE witness such as physically history-ready symbol 1101, the bounded evidence package may therefore require only:
+- TWSE ex-right/ex-dividend historical actual-result range;
+- TWSE capital-reduction historical actual-result range;
+- TWSE par-value-change historical actual-result range;
+- exact-window TWSE suspension/session lifecycle evidence;
+- exact-window PIT universe membership.
+
+TPEx parity remains parallel work and is not a prerequisite for the first TWSE NC-T01 witness.
+
+The archive core already supports evidence readiness when:
+- universe coverage complete;
+- exact-range required source coverage complete;
+- revision coverage complete;
+- event reconciliation unambiguous;
+- required-exchange suspension coverage complete.
+
+It then sets:
+- `noEventMayBeClaimed=true`;
+- `symbolSessionCompletenessEvidenceReady=true`.
+
+But canonical runtime deliberately keeps:
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`.
+
+Repository search found no canonical runtime that promotes the evidence-ready state to a consumable continuity certification. Current `CLEAR_NO_ACTION` use is fixture-level only.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_TWSE_SINGLE_WITNESS_PROMOTION_CERTIFIER_AUDIT_20261007_V0_1.json`.
+
+### Exact current critical path
+
+1. BUILD_LANE: rebuild/rebase and canonically merge System2 SDA-022 fingerprints S22-T06~T10 from PR #762 on latest main; regenerate receipts and rerun exact-head fingerprint CI + System2 Research CI + V8 Regression.
+2. DATA_LANE in parallel: produce one exact-window TWSE continuity evidence package for a physically history-ready symbol. Do not assume 1101 is clean; certify or fail closed from real source evidence.
+3. BUILD_LANE: implement the smallest versioned promotion certifier that may map only a valid hash-bound witness to `CLEAR_NO_ACTION`; add mixed-continuity regression and bounded-batch PIT prefetch. Do not rewrite history or create a second strategy evaluator.
+4. Execute full-universe read-only/artifact-only NC-T01. Preserve all 1,973-symbol provenance; at least one certified witness must be READY/EXECUTED, while uncertified symbols remain INCOMPLETE and denominator-accounted.
+5. 00 independently verifies S22-T11~T16 and hidden-fallback evidence.
+6. REMEDIATION_LANE closes CORR-003 enough to truthfully reserve D1 write headroom for the first persisted genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs` run.
+7. Reuse bounded pool / Candidate Board / Daily Resonance / institutional surfaces; only after the existing promotion gate may guarded advisory/notification authority be reviewed.
+
+### Non-blockers / parallel work
+
+- TPEx continuity parity does not block the first TWSE witness.
+- Full historical market-year completion does not globally veto the narrow Stage-1 witness when its exact required window is certified.
+- SWING_GROWTH B2/A5 does not block the first SHORT_MOMENTUM independence proof.
+- Regime UNKNOWN remains non-blocking for the policy-only Stage-1 witness.
+- System1 stays sentinel-only unless an explicit SDA-022 comparator/escalation condition appears.
+
+Formal Core remains LOCKED.
+Final selection, live push, capital and real orders remain disabled.
+
