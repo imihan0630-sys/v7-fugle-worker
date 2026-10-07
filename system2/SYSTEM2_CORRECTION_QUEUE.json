@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T19:16:52+08:00",
+  "updatedAt": "2026-10-07T19:30:51+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1175,32 +1175,36 @@
         "free-tier cost and quota governance"
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
-      "canonicalRequirement": "System2 parallel execution must not repeatedly collide with a known finite free-tier D1 daily row-write limit. Shared writer concurrency prevents simultaneous mutation but is not a quota budget. Cross-workflow writes must preserve enough headroom for prioritized required work, fail/defer explicitly before predictable quota collision where possible, and must never trigger or assume a paid-plan upgrade without explicit owner approval.",
+      "canonicalRequirement": "System2 parallel execution must not repeatedly collide with Cloudflare D1 Workers Free account-level daily limits. Current official contract is 100,000 rows written/day and 5,000,000 rows read/day, resetting at 00:00 UTC. Shared writer concurrency prevents simultaneous mutation but is not a finite-quota budget. Cross-workflow operations must preserve headroom for prioritized required work, defer explicitly before predictable quota collision where possible, and never trigger/assume a paid-plan upgrade without explicit owner approval.",
       "observedProblem": "On 2026-10-07 scheduled Daily Shadow Diagnostic run 37609474459 succeeded and reported D1 metrics of 13,130 rowsWritten. Twenty-two minutes later annual historical run 37611914140 (#30) failed in the migrate job before backfill began because Cloudflare returned HTTP 400: D1 free tier daily row write limit exceeded. A materially identical quota blocker previously stopped 2021 TPEx run #17. The repository serializes writers through group system2-isolated-d1-writer and contains one local Fugle hot-history per-UTC-day quota claim, but no System2-wide daily write-budget/reservation/priority contract exists.",
       "evidence": [
         "Daily Shadow Diagnostic run 37609474459 SUCCESS; d1Metrics requestCount=797, rowsRead=583256, rowsWritten=13130; prospective history 1,973 rows and immutable diagnostic readback completed.",
         "Historical annual run 37611914140 (#30) FAILED in migrate before backfill; Cloudflare D1 HTTP 400 explicitly reported free-tier daily row write limit exceeded; backfill skipped; no artifact.",
         "Prior recurrence: system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json documents the same free-tier daily row-write blocker on 2021 TPEx run #17.",
         "Repository-wide search finds shared concurrency group system2-isolated-d1-writer across writer workflows, but no global daily D1 write-budget gate; only local quota protection exists for Fugle hot-history bootstrap.",
-        "Durable diagnosis: system2/evidence/S2_CORR_20261007_003_D1_QUOTA_COORDINATION_DIAGNOSIS_V0_1.json @ 4f885c4e6f717f7cafcfe33e716342090bbda0f2."
+        "Durable diagnosis: system2/evidence/S2_CORR_20261007_003_D1_QUOTA_COORDINATION_DIAGNOSIS_V0_1.json @ 4f885c4e6f717f7cafcfe33e716342090bbda0f2.",
+        "Official Cloudflare D1 Free contract verified 2026-10-07: account-wide 100,000 rows written/day, 5,000,000 rows read/day, UTC-day reset at 00:00; enforcement since 2026-09-01 rejects queries after the daily limit is exceeded. Durable evidence: system2/evidence/S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_20261007_V0_1.json @ 0ca1329925d253546e2eacc7958c55adb96c4498."
       ],
       "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
       "requiredCorrection": [
-        "Implement one System2-wide UTC-day D1 write-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.",
+        "Implement one System2-wide UTC-day D1 quota-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.",
+        "Treat the official Workers Free hard ceiling as account-wide 100,000 rowsWritten per UTC quota day unless newer vendor evidence changes the contract; also observe the 5,000,000 rowsRead/day ceiling as a secondary account-level risk.",
         "Classify writer intents and define free-tier-safe reservation/priority behavior for scheduled operational evidence, historical bulk work, bootstrap/smoke/provision and deploy tasks.",
-        "Before large writers begin, emit an explicit QUOTA_BUDGET_DEFERRED/blocked receipt when conservative headroom is unavailable instead of starting predictable failing work.",
-        "Use conservative accounting from known rowsWritten plus reservations/estimates; do not invent an exact remaining Cloudflare quota if it is not directly observable.",
+        "Before large writers begin, emit an explicit QUOTA_BUDGET_DEFERRED/blocked receipt when known usage plus conservative reservations would exceed the available budget instead of starting predictable failing work.",
+        "Use D1 query meta rows_written/rows_read and dashboard/GraphQL analytics where available; when exact account-wide remaining usage cannot be proven, use conservative known-write accounting and reservations rather than inventing headroom.",
+        "Budget estimates must account for index-amplified writes where indexed columns add written rows.",
         "Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.",
         "Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.",
-        "No automatic paid-tier upgrade or paid billing change; any such change is separately OWNER_DECISION_REQUIRED."
+        "No automatic paid-tier upgrade or billing change; any paid change is separately OWNER_DECISION_REQUIRED."
       ],
       "acceptanceCriteria": [
-        "Two or more System2 writer classes on the same UTC quota day are coordinated by one auditable budget/priority contract rather than concurrency only.",
+        "Two or more System2 writer classes on the same UTC quota day are coordinated by one auditable account-level budget/priority contract rather than concurrency only.",
+        "The contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, with vendor-version/source provenance.",
         "A later bulk workflow can determine/defer before predictable free-tier exhaustion using conservative evidence.",
         "Daily Shadow required evidence and DATA_LANE historical progress can be prioritized without changing data/strategy semantics.",
         "Quota deferral is explicit and cannot be mislabeled data/source failure.",
+        "Regression tests cover known writes/reservations, index-amplified estimates, insufficient-headroom defer, unknown remaining quota fail-safe behavior, and UTC-day rollover.",
         "No paid-plan upgrade, billing mutation, System1 change, strategy/ranking/final-selection/push/capital/order authority change.",
-        "Regression tests cover known-writes/reservations, insufficient-headroom defer, unknown remaining quota fail-safe behavior, and reset-day rollover.",
         "Independent audit verifies implementation and at least one physical multi-writer day or equivalent bounded evidence without a quota-collision failure."
       ],
       "protectedBoundaries": [
@@ -1219,7 +1223,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T19:16:52+08:00"
+      "updatedAt": "2026-10-07T19:30:51+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
