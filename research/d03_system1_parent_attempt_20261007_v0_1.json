@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "D03_SYSTEM1_PARENT_ATTEMPT_20261007_V0_1",
+  "updatedAt": "2026-10-08T06:04:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_PARENT_GATE_CONSUMER_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "sourceEvidence": {
+    "workflow": "System 1 C1 Prospective Evidence",
+    "runId": 37652129851,
+    "jobId": 112897875757,
+    "scheduledMarketDate": "2026-10-07",
+    "runCreatedAt": "2026-10-08T00:27:08+08:00",
+    "runConclusion": "failure",
+    "headSha": "0ce42c2638a070ae9331206f7a45318ddada7c7e",
+    "artifactId": 11496544209,
+    "artifactDigest": "sha256:90291db1aa7b2d5ec4be397235ec217313777707ca610c4ddf28b1e51c8925a2",
+    "readinessReceiptSha256": "f8fd26b694382c3b77d9bd3a00b7b2ef7d242b8fd9b2883742cd40b8c499e36c"
+  },
+  "jobStages": {
+    "generationInventoryValidation": "PASS",
+    "formalC1BindingReadbackValidation": "PASS",
+    "immutableC1PopulationReadVerify": "FAIL"
+  },
+  "readiness": {
+    "scanDate": "2026-10-07",
+    "category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "formalScanDate": "2026-09-29",
+    "formalPipelineComplete": false,
+    "institutionReady": true,
+    "qualityReady": false,
+    "missingQuality": [
+      "QUARTER_EPS"
+    ],
+    "eligibleForResearch": false,
+    "mayCountAsZeroPick": false
+  },
+  "causalFinding": {
+    "genuineParentState": "ABSENT_FOR_2026_10_07",
+    "failureLayer": "UPSTREAM_PARENT_GENERATION",
+    "bindingLedgerDefectProven": false,
+    "detail": "The V8.20 binding-readback validation passed before the immutable C1 population lookup failed. No 2026-10-07 C1 generation existed to bind.",
+    "lowerLevelQuarterEpsTransportCauseProvenByThisReceipt": false,
+    "t48ImmediateCause": false
+  },
+  "progressVsPriorAttempt": {
+    "priorMissingQuality": [
+      "FINANCIAL",
+      "QUARTER_EPS"
+    ],
+    "currentMissingQuality": [
+      "QUARTER_EPS"
+    ],
+    "interpretation": "QUALITY_BLOCKER_SET_NARROWED_BUT_PARENT_STILL_ABSENT"
+  },
+  "moduleImpact": {
+    "D03-10": "L2_40 / FIRST_PROMOTION_TARGET / W0_CONTINUITY_AND_GENUINE_PARENT_STILL_REQUIRED",
+    "D03-09": "L2_40 / W0_CONTINUITY_GENUINE_PARENT_AND_WILDER_FULL_REPLAY_STILL_REQUIRED"
+  },
+  "antiShortcuts": [
+    "C1_GENERATION_NOT_FOUND_IS_NOT_ZERO_PICK",
+    "FAILED_PARENT_ATTEMPT_IS_NOT_NEGATIVE_INDICATOR_EVIDENCE",
+    "NO_SYNTHETIC_OR_RETROACTIVE_PARENT",
+    "V8_20_RUNTIME_VALIDATION_PASS_DOES_NOT_EQUAL_GENUINE_PARENT_EXISTENCE"
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "maturityPromotion": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED"
+  },
+  "exactNext": "Continue W0 independently. For the parent track, consume only a future actual normal-session C1 artifact that contains a genuine immutable C1 generation and authoritative V8.20 Formal-to-C1 binding. Do not reclassify the 2026-10-07 failure as a binding-ledger defect."
+}
