@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_CONTINUITY_REPLAY_BINDING_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T20:55:56+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "2877b4570d2e170eb11609884c3a1b88a7f47baf",
+  "status": "RUNTIME_LINEAGE_GAP_AND_ADJUSTED_CONTINUITY_FIREWALL_ISOLATED",
+  "purpose": "Verify whether the proposed single-symbol continuity witness is actually bound to the exact PIT replay window consumed by SHORT_MOMENTUM, and prevent RAW price history from being mislabeled as adjusted technical continuity.",
+  "inspectedRuntime": [
+    "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+    "system2/runtime/pit_replay_v0_1.mjs",
+    "system2/runtime/a1_history_primitives_v0_1.mjs",
+    "system2/runtime/limited_shadow_run_assembler_v0_1.mjs",
+    "system2/runtime/storage_rows.mjs"
+  ],
+  "sharedResearchContractsReused": [
+    "research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md",
+    "research/technical_indicator_continuity_handoff_v0_1.json",
+    "research/d03_bollinger_l3_acceptance_v0_2.mjs",
+    "research/d03_parent_continuity_binding_v0_2.mjs"
+  ],
+  "findings": {
+    "perBarStateSemantics": {
+      "conclusion": "NO_HISTORICAL_D1_ROW_REWRITE_REQUIRED_FOR_FIRST_CLEAR_NO_ACTION_WITNESS",
+      "evidence": [
+        "buildPitReplayWindow preserves each selected bar continuityState in replayWindow.bars, but A1 history factor eligibility is not derived by checking every bar continuityState.",
+        "buildA1HistoryPrimitiveBundle gates continuity-sensitive factors from one top-level continuityState argument.",
+        "continuity-sensitive factors are TECH.TREND, TECH.STRUCTURE, PV.ACCEPTANCE, PV.RESPONSE and RISK.EXTENSION.",
+        "PV.RELATIVE_VOLUME and RISK.LIQUIDITY do not require the continuity flag.",
+        "Therefore immutable prior D1 rows may remain UNVERIFIED if an external exact-window certifier truthfully certifies the entire selected window."
+      ]
+    },
+    "currentBindingGap": {
+      "conclusion": "CURRENT_RESOLVE_CONTINUITY_STATE_IS_NOT_HASH_BOUND_TO_THE_ACTUAL_SELECTED_REPLAY_WINDOW",
+      "evidence": [
+        "runDailyLimitedShadowOrchestratorV0_1 calls resolveContinuityState before loading prior history and before buildPitReplayWindow.",
+        "The current resolver interface returns only a text state such as CLEAR_NO_ACTION.",
+        "The current bar is constructed using that text state before replay-window selection.",
+        "The resolver cannot inspect or verify the actual selected PIT revisions/session set because replayWindow does not yet exist.",
+        "buildA1HistoryPrimitiveBundle sourcePayloadHash hashes normalized date/OHLC/volume/tradeValue content only; normalizeBar strips continuity receipt identity and source-row lineage.",
+        "The factor bundle stores the top-level continuityState but not continuityReceiptId/sourceHistoryHash/continuityTransformHash.",
+        "Candidate sourceManifest currently binds current A1 sourceRowHash/batchHash but does not bind a continuity receipt.",
+        "Therefore a valid witness for one historical window could be accidentally reused after selected-window/revision drift unless a post-replay identity check is added."
+      ],
+      "failureClass": "WITNESS_TO_REPLAY_WINDOW_LINEAGE_NOT_ENFORCED"
+    },
+    "adjustedContinuityHazard": {
+      "conclusion": "ADJUSTED_CONTINUITY_MUST_NOT_BE_USED_FOR_FIRST_NC_T01_WITNESS_WITH_CURRENT_RAW_HISTORY_PATH",
+      "evidence": [
+        "buildA1HistoryPrimitiveBundle treats both CLEAR_NO_ACTION and ADJUSTED_CONTINUITY as continuityEligible.",
+        "The daily orchestrator currently loads RAW prior bars and constructs a RAW current bar.",
+        "No technical-continuity price transform is applied before coreMetrics are computed.",
+        "Thus merely labeling the top-level state ADJUSTED_CONTINUITY would make continuity-sensitive factors KNOWN while still computing from RAW history."
+      ],
+      "firstWitnessPolicy": "CLEAR_NO_ACTION_ONLY",
+      "adjustedPathDisposition": "FAIL_CLOSED_UNTIL_REAL_TECHNICAL_CONTINUITY_TRANSFORMED_WINDOW_IS_SUPPLIED"
+    },
+    "sharedD03ContractFit": {
+      "conclusion": "REUSE_SHARED_CONTINUITY_IDENTITY_AND_WINDOW_BINDING_SEMANTICS; DO_NOT_INVENT_A_SECOND_CONTINUITY_MODEL",
+      "reusableIdentityFields": [
+        "continuityReceiptId",
+        "sourceHistoryHash",
+        "rawHistoryAdmissionReceiptId",
+        "symbolSessionContractVersion",
+        "sessionCalendarVersion",
+        "continuityEngineVersion",
+        "corporateActionRegistryVersion",
+        "continuityTransformHash",
+        "expectedEligibleSymbolSessions",
+        "cleanHistoryStartDate",
+        "receiptVersion"
+      ],
+      "reusableWindowPattern": "D03 Bollinger V0.2 hashes the continuity receipt identity plus ordered exact bars/source identities into continuityWindowHash and verifies date-set equality, unresolvedMissingSessions=0, unresolvedRelevantEvents=0 and no pseudo bars.",
+      "adaptation": "SHORT_MOMENTUM needs its own exact 61-session window rather than D03 Bollinger's 20-session window, but the provenance and hash-binding semantics should stay shared."
+    }
+  },
+  "minimalRuntimeDelta": {
+    "principle": "MOVE_FROM_STRING_ONLY_PRE_REPLAY_CONTINUITY_TO_POST_REPLAY_HASH_BOUND_CONTINUITY_EVIDENCE",
+    "proposedSequence": [
+      "Fetch current official A1 and load exact prior PIT rows without mutating D1.",
+      "Build the raw PIT replay window first using an unpromoted current-bar continuity marker.",
+      "Compute an exact raw-window identity from the selected replay rows using ordered marketDate + sourceId + sourceRowHash + availableAt + OHLCV identity fields, excluding the later continuity label.",
+      "Resolve/validate a versioned continuity receipt only after the replay window exists.",
+      "Require continuity receipt symbol/asOf/decision cutoff/session date-set/sourceHistoryHash to match the actual selected replay window.",
+      "For first NC-T01, accept only a receipt disposition that proves CLEAR_NO_ACTION over the exact 61-session window.",
+      "Pass CLEAR_NO_ACTION into buildA1HistoryPrimitiveBundle only after the identity match succeeds.",
+      "Bind continuityReceiptId + receiptHash + sourceHistoryHash + continuityTransformHash into factor-bundle provenance and/or candidate sourceManifest so the resulting factor/decision evidence retains the witness lineage.",
+      "Any mismatch returns UNVERIFIED / INCOMPLETE; never silently reuse a stale witness."
+    ],
+    "interfaceDirection": {
+      "preferred": "Add a versioned post-replay resolveContinuityEvidence/validateContinuityReceipt seam rather than making the current pre-replay string resolver authoritative for physical NC-T01.",
+      "backwardCompatibility": "Existing fixture-level resolveContinuityState may remain for isolated tests, but the physical NC-T01 workflow must require the hash-bound evidence path.",
+      "noHistoryRewrite": true
+    },
+    "requiredNegativeTests": [
+      "valid witness but one historical sourceRowHash changes -> reject",
+      "valid witness but one selected market date changes -> reject",
+      "valid witness captured after decision cutoff -> reject",
+      "valid witness for different symbol -> reject",
+      "valid witness for different asOf date -> reject",
+      "evidenceReady without certification -> reject",
+      "ADJUSTED_CONTINUITY_REQUIRED with RAW window -> reject",
+      "missing continuityReceiptId/sourceHistoryHash -> reject",
+      "unresolvedMissingSessions > 0 -> reject",
+      "unresolvedRelevantEvents > 0 -> reject"
+    ],
+    "requiredPositiveTest": "One TWSE history-ready symbol with an exact 61-session CLEAR_NO_ACTION receipt whose ordered date/source-history identity exactly matches the live PIT replay window becomes continuityEligible; all other uncertified symbols remain INCOMPLETE and denominator-accounted."
+  },
+  "ncT01Consequence": {
+    "priorAuditSupersession": "The earlier TWSE single-witness certifier audit remains directionally valid but is incomplete if implemented as a string-only resolver. This audit adds the mandatory exact replay-window hash binding.",
+    "firstPhysicalPassRequires": [
+      "canonical S22-T06~T10 System2 fingerprints",
+      "one exact-window CLEAR_NO_ACTION continuity receipt",
+      "receipt-to-live-PIT-window identity match",
+      "real SHORT_MOMENTUM assessor execution",
+      "System1 Top6/rank inputs unavailable",
+      "hidden-fallback audit pass",
+      "full 1,973-symbol universe provenance preserved",
+      "canonical NC-T01 receipt S22-T11~T16"
+    ]
+  },
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No historical D1 continuity-state rewrite",
+    "No provider-adjusted series relabeled as TECHNICAL_CONTINUITY",
+    "No ADJUSTED_CONTINUITY without transformed bars",
+    "No System1 Top6/rank fallback",
+    "No strategy threshold/weight/ranking mutation",
+    "No final selection/live push/capital/order authority"
+  ]
+}
