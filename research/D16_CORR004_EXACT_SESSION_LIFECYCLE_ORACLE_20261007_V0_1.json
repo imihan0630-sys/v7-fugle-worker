@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "D16_CORR004_EXACT_SESSION_LIFECYCLE_ORACLE_V0_1",
+  "ticket": "S2-CORR-20261007-004",
+  "owner": "ROOM11_D16",
+  "status": "PRE_PHYSICAL_BLOCKING_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "outcomeAccess": "CLOSED",
+  "tests": [
+    {
+      "id": "C004-D16-T01",
+      "case": "LONG_LISTED_MISSING_RECENT_PLUS_OLDER_SUBSTITUTE",
+      "expect": "BLOCK_HISTORY_READY"
+    },
+    {
+      "id": "C004-D16-T02",
+      "case": "CLEAN_EXACT_EXPECTED_WINDOW",
+      "expect": "ALLOW_HISTORY_READY_IF_OTHER_GATES_PASS"
+    },
+    {
+      "id": "C004-D16-T03",
+      "case": "POSITIVE_STOP_PLUS_POSITIVE_RESUME_CLOSED_INTERVAL",
+      "expect": "ALLOW_CERTIFIED_INTERVAL_TO_REMOVE_SESSIONS"
+    },
+    {
+      "id": "C004-D16-T04",
+      "case": "POSITIVE_STOP_WITHOUT_CERTIFIED_RESUME_OR_ACTIVE_THROUGH",
+      "expect": "OPEN_INTERVAL_NOT_ADMISSIBLE_FOR_SESSION_DELETION"
+    },
+    {
+      "id": "C004-D16-T05",
+      "case": "PARTIAL_LIFECYCLE_SOURCE_PLUS_MISSING_RESUMED_BARS",
+      "expect": "MUST_NOT_RECOVER_HISTORY_READY"
+    },
+    {
+      "id": "C004-D16-T06",
+      "case": "POST_STOP_OBSERVED_BARS_WITH_OPEN_INTERVAL",
+      "expect": "BLOCK_AS_UNEXPECTED_UNLESS_BOUNDARY_RESOLVED"
+    },
+    {
+      "id": "C004-D16-T07",
+      "case": "TPEX_LIFECYCLE_PARITY_NOT_PROVEN",
+      "expect": "SYMBOL_LOCAL_INCOMPLETE"
+    },
+    {
+      "id": "C004-D16-T08",
+      "case": "PROBE_EXPECTED_SESSION_HASH_DIFFERS_FROM_FACTOR_LOAD_DATE_SET",
+      "expect": "EXPECTED_SESSION_HASH_MISMATCH"
+    },
+    {
+      "id": "C004-D16-T09",
+      "case": "DATE_SET_EQUAL_BUT_SOURCE_REVISION_LINEAGE_DIFFERS",
+      "expect": "REQUIRE_SEPARATE_REPLAY_SOURCE_HISTORY_HASH_BINDING"
+    },
+    {
+      "id": "C004-D16-T10",
+      "case": "ONE_SYMBOL_SESSION_DEFECT_OTHER_SYMBOLS_CLEAN",
+      "expect": "NO_WHOLE_UNIVERSE_VETO"
+    }
+  ],
+  "lifecycleIntervalDispositions": [
+    "CLOSED_POSITIVE_BOUNDARIES_CERTIFIED",
+    "OPEN_ACTIVE_THROUGH_DATE_CERTIFIED",
+    "NOT_ADMISSIBLE_BOUNDARY_INCOMPLETE"
+  ],
+  "requiredPhysicalFields": [
+    "currentUniverseN",
+    "exactSessionReadyN",
+    "lifecycleBoundaryUnknownN",
+    "continuityReadyN",
+    "evaluationInputEligibleN",
+    "rowsWritten"
+  ],
+  "physicalAcceptance": {
+    "mergedMainRequired": true,
+    "rowsWrittenMustEqual": 0,
+    "atLeastOneTwseExactSessionWitness": true,
+    "openStopWithoutCertifiedBoundaryCannotPromote": true
+  },
+  "ncT01Dependency": [
+    "CORR004_PHYSICAL_ACCEPTANCE",
+    "SYSTEM2_FINGERPRINT_REGENERATED_POST_CORR004",
+    "HASH_BOUND_CLEAR_NO_ACTION_CONTINUITY",
+    "PHYSICAL_NC_T01"
+  ],
+  "maturityImpact": "NONE"
+}
