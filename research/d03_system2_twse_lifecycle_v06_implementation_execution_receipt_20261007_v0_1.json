@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "D03_SYSTEM2_TWSE_LIFECYCLE_V06_IMPLEMENTATION_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-07T21:01:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "workflow": {
+    "name": "D03 System2 TWSE Lifecycle V0.6 Acceptance",
+    "runId": 37625151533,
+    "headSha": "ecefbac4e34281591ba0a5efd41d9c3ba63a95c8",
+    "conclusion": "success"
+  },
+  "accepted": {
+    "twseLifecycleRuntimeImplemented": true,
+    "verifierV06Integrated": true,
+    "baselineUnknownTargeting": true,
+    "beforeAfterMissingReasonCountsEmitted": true,
+    "reclassifiedUnknownBarsEmitted": true,
+    "positiveOfficialEvidenceOnly": true,
+    "coldOhlcvMutation": false,
+    "layerCKnownAtAdvanced": false,
+    "tpexLifecycleParity": false,
+    "physicalAnnualRerunComplete": false
+  },
+  "ncT01ContinuityReadback": {
+    "source": "system2/evidence/S2_STAGE1_NCT01_CONTINUITY_REPLAY_BINDING_AUDIT_20261007_V0_1.json",
+    "acceptedFinding": "CONTINUITY_RECEIPT_MUST_BE_HASH_BOUND_TO_ACTUAL_SELECTED_PIT_REPLAY_WINDOW",
+    "firstWitnessPolicy": "CLEAR_NO_ACTION_ONLY",
+    "adjustedContinuityOnRawHistory": "REJECT",
+    "requiredIdentity": [
+      "continuityReceiptId",
+      "sourceHistoryHash",
+      "continuityTransformHash",
+      "exact ordered selected bar/source identities"
+    ],
+    "d03Meaning": "A continuity state string is not promotion-grade provenance unless the receipt identity matches the exact selected replay window and unresolved gaps/events are zero."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "layerB": "TWSE_V06_IMPLEMENTATION_MACHINE_ACCEPTED_PHYSICAL_RERUN_PENDING",
+    "layerC": "NOT_PROVEN",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "exactNextContinuationPoint": "Consume a physical TWSE annual verifier V0.6 rerun after DATA_LANE can execute safely; inspect before/after UNKNOWN counts, reclassified identities, source hashes and conflicts. TPEx lifecycle parity remains a separate unresolved source contract. For any NC-T01 or D03 technical-continuity witness, require post-replay exact-window hash binding and CLEAR_NO_ACTION for raw history; reject string-only continuity and RAW+ADJUSTED_CONTINUITY. Continue waiting for genuine V8.20 Formal-to-C1 parent, T48 finalization, S2-07 stabilization, System1/System2 D03 dedup/redundancy and D16 incrementality."
+}
