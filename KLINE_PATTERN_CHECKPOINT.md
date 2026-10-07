@@ -4852,3 +4852,106 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from disposition-security periodic matching / altered matching cadence, where apparent persistence may be a microstructure artifact.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-068 (2026-10-07)
+
+### DL-068 — Structural response vs disposition-security extended matching cadence
+- DL-067 separated continuous-trading structure from intraday volatility interruption.
+- DL-068 freezes TWSE disposition / altered-trading-method extended matching cadence as a separate microstructure layer.
+- Current official disposition rules were re-read live:
+  first occurrence within the recent 30-business-day window can use approximately 2-minute matching; altered-trading-method securities may use approximately 10-minute matching; altered-trading-method securities with periodic call auction may use approximately 45-minute matching.
+  repeated disposition within the canonical window can retain approximately 2-minute matching while altered-method examples extend to approximately 25 minutes and altered-method + periodic call auction to approximately 60 minutes.
+  official surveillance measures may adjust the matching time.
+- Operating Rule 58-9 confirms disposition / altered-method periodic-call-auction securities are securities with extended matching intervals.
+- These interval values are official examples tied to the applicable measure; D01 does not infer matching cadence from sparse bars.
+- Matching regime classes are separated:
+  REGULAR_CONTINUOUS_MATCHING;
+  EXTENDED_MATCHING_APPROX_2M;
+  ALTERED_METHOD_APPROX_10M;
+  ALTERED_METHOD_APPROX_25M;
+  PERIODIC_CALL_APPROX_45M;
+  PERIODIC_CALL_APPROX_60M;
+  CANONICAL_CUSTOM_MATCHING_INTERVAL;
+  MATCHING_CADENCE_UNKNOWN.
+- Disposition status is regulatory/microstructure context, not bullish/bearish Pattern evidence.
+- Wall-clock time and executable-match opportunity count are permanently separated.
+- No execution between scheduled matches != price acceptance.
+- Indicative/computed price != executed trade.
+- Between scheduled matches:
+  no pseudo OHLC;
+  no forward-filled stable close;
+  no zero-trade acceptance inference.
+- Bar integrity requires:
+  actualTradeCount;
+  scheduledMatchOpportunityCount;
+  executedMatchCount;
+  staleCarryForwardUsed=false for promotion-grade research.
+- Periodic call-auction jump across a structural zone is PERIODIC_MATCH_GAP_CROSSING.
+  No continuous path is invented.
+- Repeated stale last price may not be labeled flat support, VCP contraction, low volatility or price acceptance.
+- DL-067 remains nested: an extended-cadence security can also experience volatility-interruption postponement.
+- Matching-cadence change does not create a new structural root; use matchingRegimeEpisodeId alongside the existing root/version.
+- Structural opportunity states distinguish no scheduled match, quote-only state, scheduled match without execution, actual execution, periodic gap and stabilization postponement.
+- A 15-minute bar under normal continuous matching is not information-density-equivalent to a 15-minute bar containing zero/one periodic match.
+- Primary comparators:
+  G0 NORMAL_CADENCE_AT_STRUCTURAL_ZONE;
+  G1 EXTENDED_CADENCE_AT_STRUCTURAL_ZONE;
+  H0 EXTENDED_CADENCE_AWAY_FROM_STRUCTURAL_ZONE;
+  H1 EXTENDED_CADENCE_AT_STRUCTURAL_ZONE.
+- Preferred longitudinal diagnostic:
+  B0 PRE_DISPOSITION_NORMAL_CADENCE;
+  B1 DURING_DISPOSITION_EXTENDED_CADENCE;
+  B2 POST_DISPOSITION_RETURNED_CADENCE.
+- Future D16 ladder:
+  C0 RAW_PATTERN_RESPONSE;
+  C1 DISPOSITION_EPISODE_IDENTIFIED;
+  C2 MATCHING_CADENCE_RECEIPT_CONTROLLED;
+  C3 WALL_CLOCK_VS_MATCH_OPPORTUNITY_SEPARATED;
+  C4 QUOTE_VS_EXECUTION_SEPARATED;
+  C5 PSEUDO_BAR_FORWARD_FILL_EXCLUDED;
+  C6 PERIODIC_GAP_CROSSING_CONTROLLED;
+  C7 VOLATILITY_INTERRUPTION_NESTED_MECHANISM_CONTROLLED;
+  C8 ORDER_TYPE_AND_MARGIN_RESTRICTIONS_CONTROLLED;
+  C9 LIQUIDITY_AND_TRADE_COUNT_CONTROLLED;
+  C10 BEFORE_DURING_AFTER_SYMBOL_COMPARATOR_CONTROLLED;
+  C11 NORMAL_CADENCE_COMPARATOR_CONTROLLED;
+  C12 AWAY_FROM_ZONE_EXTENDED_CADENCE_CONTROLLED;
+  C13 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  C14 MULTI_TIER_MULTI_SYMBOL_MULTI_REGIME_REPLICATION.
+- Interpretation states:
+  Q0 SPARSE_MATCHING_EXPLANATION;
+  Q1 STALE_LAST_PRICE_FLATNESS_EXPLANATION;
+  Q2 PERIODIC_CALL_GAP_EXPLANATION;
+  Q3 INDICATIVE_QUOTE_NOT_EXECUTED_EXPLANATION;
+  Q4 NESTED_VOLATILITY_INTERRUPTION_EXPLANATION;
+  Q5 ORDER_RESTRICTION_EXPLANATION;
+  Q6 LIQUIDITY_ATTENTION_EXPLANATION;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 MATCHING_REGIME_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_EXTENDED_MATCHING_CADENCE_FIREWALL_V0_1.md
+  - research/pattern_extended_matching_cadence_firewall_v0_1.json
+  - research/pattern_extended_matching_cadence_firewall_v0_1.mjs
+  - research/test_pattern_extended_matching_cadence_firewall_v0_1.mjs
+  - research/PATTERN_EXTENDED_MATCHING_CADENCE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains open: sparse-bar shape / breakout / support / VCP remain PRICE_OHLC-related.
+- SDA-002 remains open: disposition measure/version and matching cadence require replay-safe first-known receipts.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-068
+
+1. Reconcile the DL-068 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-068 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve wall-clock time, scheduled match opportunities and executed trade count separately.
+4. Consume official disposition/matching receipts plus D04/D05 order/auction/liquidity context; never infer cadence from bar sparsity.
+5. Hand C0-C14 / Q0-Q9 cadence-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from disposition ancillary restrictions (full-payment collection, margin/short-sale suspension, broker/order-size constraints) that change participant composition even after matching cadence is controlled.
+8. No outcome join / no runtime wiring / no Formal change.
