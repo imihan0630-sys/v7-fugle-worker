@@ -82,6 +82,46 @@ once(
   "late-generation research guard"
 )
 
+once(
+'''    const statements=[session.prepare(\`INSERT INTO trade_research_c1_generations(
+      generation_id,scan_date,decision_at,captured_at,source_main_sha,runtime_version,universe_scope,universe_digest,content_digest,
+      population_n,captured_n,feature_n,chunk_count,completeness,header_json,created_at
+    ) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?10,?11,?12,?13,?14,?15)\`)''',
+'''    const statements=[session.prepare(\`INSERT INTO trade_research_c1_generations(
+      generation_id,scan_date,decision_at,captured_at,source_main_sha,runtime_version,universe_scope,universe_digest,content_digest,
+      population_n,captured_n,feature_n,chunk_count,completeness,header_json,created_at
+    ) SELECT ?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?10,?11,?12,?13,?14,?15
+      WHERE NOT EXISTS (
+        SELECT 1 FROM trade_research_c1_generation_finalizations WHERE scan_date=?2
+      )\`)''',
+  "atomic generation insert finalization guard"
+)
+
+once(
+'''    chunks.forEach((chunk,index)=>statements.push(session.prepare(\`INSERT INTO trade_research_c1_chunks(
+      generation_id,chunk_index,row_count,rows_json,created_at
+    ) VALUES(?1,?2,?3,?4,?5)\`).bind(receipt.generationId,index,chunk.length,JSON.stringify(chunk),now)));''',
+'''    chunks.forEach((chunk,index)=>statements.push(session.prepare(\`INSERT INTO trade_research_c1_chunks(
+      generation_id,chunk_index,row_count,rows_json,created_at
+    ) SELECT ?1,?2,?3,?4,?5
+      WHERE EXISTS (SELECT 1 FROM trade_research_c1_generations WHERE generation_id=?1)\`)
+      .bind(receipt.generationId,index,chunk.length,JSON.stringify(chunk),now)));''',
+  "atomic chunk insert requires generation header"
+)
+
+once(
+'''  const stored=await session.prepare(\`SELECT * FROM trade_research_c1_generations WHERE generation_id=?1\`).bind(receipt.generationId).first();
+  if(!stored) throw new Error("C1_D1_READBACK_MISMATCH");''',
+'''  const stored=await session.prepare(\`SELECT * FROM trade_research_c1_generations WHERE generation_id=?1\`).bind(receipt.generationId).first();
+  if(!stored) {
+    await C1_GENERATION_FINALIZATION.guardC1GenerationInsertAfterFinalization(session,{
+      scanDate:String(receipt.sessionDate),generationId:String(receipt.generationId),observedAt:new Date().toISOString()
+    });
+    throw new Error("C1_D1_READBACK_MISMATCH");
+  }''',
+  "post-batch race readback guard"
+)
+
 helper=r'''
 async function finalizeC1GenerationSetSafe(env,scanDate) {
   const blocked=(reason,error=null)=>({
