@@ -89,6 +89,9 @@ assert.match(source,/CREATE TABLE IF NOT EXISTS trade_research_c1_generation_fin
 assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-finalize"/);
 assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-finalization"/);
 assert.match(source,/guardC1GenerationInsertAfterFinalization/);
+assert.match(source,/date!==shiftDateString\(today,-1\)/,"finalizer must remain previous-calendar-date prospective only");
+assert.match(source,/C1_FINALIZATION_NOT_PROSPECTIVE_PREVIOUS_DATE/);
+assert.doesNotMatch(source,/C1_FINALIZATION.*14\*86400000/,"finalization must not inherit 14-day operational recovery");
 assert.doesNotMatch(source,/UPDATE trade_research_c1_generation_finalizations/);
 assert.doesNotMatch(source,/DELETE FROM trade_research_c1_generation_finalizations/);
 
