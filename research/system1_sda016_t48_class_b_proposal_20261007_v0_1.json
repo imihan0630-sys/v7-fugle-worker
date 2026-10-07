@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "SYSTEM1_SDA016_T48_CLASS_B_PROPOSAL_V0_1",
+  "updatedAt": "2026-10-07T15:30:00+08:00",
+  "status": "CLASS_B_PROPOSAL_READY_IMPLEMENTATION_NOT_AUTHORIZED",
+  "candidateRuntime": "8.21.0-c1-generation-set-finalization",
+  "formalCoreImpact": "NONE",
+  "system2Impact": "NONE",
+  "operationalRecoveryBlocker": false,
+  "producerRegistry": {
+    "version": "SYSTEM1_C1_PRODUCER_REGISTRY_V0_1",
+    "producers": [
+      {
+        "class": "AFTER_MARKET_SCAN_PIPELINE",
+        "promotionEligible": true
+      },
+      {
+        "class": "STAGE_SELECTION_ROUTE",
+        "promotionEligible": true,
+        "prospectiveSameDateOnly": true
+      },
+      {
+        "class": "DIRECT_SAFE_PERSISTENCE_CALLER",
+        "promotionEligible": false,
+        "reason": "NO_CONCRETE_PRODUCTION_CALLSITE_REGISTERED"
+      }
+    ],
+    "newProducerRequiresNewRegistryVersion": true
+  },
+  "persistence": {
+    "table": "trade_research_c1_generation_finalizations",
+    "appendOnly": true,
+    "uniqueScanDate": true,
+    "updateAllowed": false,
+    "deleteAllowed": false,
+    "historicalBackfillAllowed": false
+  },
+  "timing": {
+    "target": "PREVIOUS_TAIWAN_TRADING_SESSION_AFTER_DATE_ROLLOVER_BEFORE_00_10_COLLECTOR",
+    "requireAllProducerWindowsClosed": true,
+    "requireNoPendingRecovery": true,
+    "requireNoRunningProducer": true
+  },
+  "lateGenerationPolicy": "POST_FINALIZATION_GENERATION_VIOLATION_FAIL_CLOSED_RESEARCH_ONLY",
+  "protectedReadback": "GET /api/research/c1-generation-finalization?scanDate=YYYY-MM-DD",
+  "acceptance": [
+    "T48-F01",
+    "T48-F02",
+    "T48-F03",
+    "T48-F04",
+    "T48-F05",
+    "T48-F06",
+    "T48-F07",
+    "T48-F08",
+    "T48-F09",
+    "T48-F10"
+  ],
+  "requiresOwnerApprovalForImplementation": true,
+  "requiresSeparateMergeDeployApproval": true
+}
