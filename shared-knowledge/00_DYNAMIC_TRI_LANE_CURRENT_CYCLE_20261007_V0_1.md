@@ -450,3 +450,103 @@ A1 remains the true current-data blocker for the SHORT_MOMENTUM narrow Stage-1 p
 B2 remains SWING_GROWTH-specific and must not regain global Stage-1 blocking status solely for symmetry.
 
 Formal Core remains LOCKED.
+
+
+## 00 prospective terminal intake + strategy-specific blocker split — 2026-10-07
+
+Observed latest main before write:
+`38c99f2df324b820211831a00bf40fd6708cf8f0`.
+
+Prospective Clock Evidence run `37577209442` reached terminal SUCCESS.
+00 independently inspected job logs and immutable artifacts instead of equating workflow SUCCESS with evidence readiness.
+
+### A1 daily gate — NOT READY
+
+Artifact:
+`system2-a1-arrival-2026-10-07-37577209442`
+digest:
+`sha256:4b2b436015a385c89402d071d9f1c8efc644b6fda2707962263a272b81553ef2`.
+
+Collector window:
+2026-10-07 13:37:25 -> 16:11:02 Asia/Taipei approximately.
+
+Terminal result:
+- dailyGateComplete=false;
+- decisionClockStatus=BLOCKED_DEPENDENCIES;
+- decisionClockFrozen=false.
+
+Observed failure semantics include:
+- TWSE A1 returned HTTP 200 but target-date rows were not present; observed payload date remained 2026-10-06 during the sampled window;
+- TPEx A1 produced HTTP-200 NON_JSON responses in some probes and later target-date-not-present states;
+- no source state is converted to zero, no-trade, bearish or strategy failure.
+
+Therefore 2026-10-07 is NOT a valid exact decision-clock strategy-evaluation sample from this collector.
+
+### A5 / B2 dependency split
+
+Artifact:
+`system2-required-dependencies-2026-10-07-37577209442`
+digest:
+`sha256:a2b94b923095ade2a650477df94fa2154b9557625321430a7b41539966f5833c`.
+
+A5_QUARTERLY_FINANCIALS:
+- coverage READY;
+- TWSE EPS ordinary symbols 1084;
+- TWSE profit ordinary symbols 1054;
+- matched same-vintage count 1054;
+- TPEx EPS ordinary symbols 892;
+- TPEx profit ordinary symbols 885;
+- matched same-vintage count 885;
+- dominant vintage 2026Q2;
+- dependencyCoverageEligible=true;
+- publicationTimestampProven=false;
+- admissible semantics remain prospective first-observed upper-bound, not company filing time.
+
+B2_INDUSTRY_THESIS_PROSPECTIVE:
+- dependencyCoverageEligible=false;
+- final dependency state SOURCE_ERROR;
+- TWSE/TPEX profile transport observed HTTP 200 NON_JSON responses;
+- TPEx daily also observed HTTP 200 NON_JSON;
+- TWSE daily target date remained 2026-10-06 in the final sampled receipt;
+- derived snapshot incomplete;
+- thesisDirectionAssigned=false;
+- strategyScoreAssigned=false.
+
+### Immutable daily bundle
+
+Artifact:
+`system2-decision-clock-daily-2026-10-07-37577209442`
+digest:
+`sha256:9e1ff9c1ad5a88406095b405a057ce97c90ef051fe347ef13eb8a204388b1baf`.
+
+Final evidence:
+- requiredReady=false;
+- precisionEligible=false;
+- a5AvailableByCandidate=false;
+- candidateTimestamp=null;
+- exactDecisionClockAuthorized=false;
+- cronAuthorized=false;
+- externalMutationPerformed=false.
+
+### Launch-path consequence
+
+This terminal sample sharpens, rather than expands, the launch blockers.
+
+SHORT_MOMENTUM:
+- does NOT require B2 INDUSTRY_THESIS;
+- does NOT require MARKET_REGIME for the frozen launch policy;
+- remains blocked today by A1 exact same-date decision-clock readiness plus the engineering chain (#762 -> NC-T01 -> genuine evaluator/rank/capacity).
+
+SWING_GROWTH:
+- independently remains blocked by B2 INDUSTRY_THESIS_PROSPECTIVE not ready;
+- A5 coverage readiness alone cannot manufacture a growth thesis;
+- its blocker must not be promoted into a global SHORT_MOMENTUM/Stage-1 blocker.
+
+Therefore first-launch scheduling remains:
+#762 canonical -> physical NC-T01 -> SHORT_MOMENTUM genuine daily evaluation when A1 is decision-clock ready -> RANK-01 -> first immutable capacity receipt.
+
+Research lane status for this sample:
+TERMINAL_NEGATIVE_READINESS_EVIDENCE_ACCEPTED.
+It is a valid prospective source-availability/clock observation but NOT a strategy-performance sample and NOT a zero-pick day.
+
+Formal Core remains LOCKED.
