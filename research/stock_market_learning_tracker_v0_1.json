@@ -1650,8 +1650,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / GLOBALWAFERS_US317P8M_PLUS_ITALY_EUR30M_REALIZED_SUPPORT / SHERMAN_TIER1_QUALIFICATION / STP_VOLUME_PRODUCTION_ENTERING / UTSUNOMIYA_ONLINE_HIGH_UTILIZATION / FOXCONN_WISCONSIN_SCOPE_RESET_NEGATIVE_CONTROL / OUTCOMES_CLOSED",
-          "next": "SC-074 capture the next genuinely new policy/disbursement/project-scope event under separate award/disbursement/capex/facility/qualification/HVM/utilization/revision states; no policy headline may be promoted directly into capacity or earnings exposure; future L4 requires prospective common-support validation."
+          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / GLOBALWAFERS_US317P8M_PLUS_ITALY_EUR30M_REALIZED_SUPPORT / SHERMAN_TIER1_QUALIFICATION / STP_VOLUME_PRODUCTION_ENTERING / UTSUNOMIYA_ONLINE_HIGH_UTILIZATION / FOXCONN_WISCONSIN_SCOPE_RESET_NEGATIVE_CONTROL / SC087_20261008_BOUNDED_CHIPS_NULL / NO_NEW_POST_FREEZE_CHIPS_AWARD_DISBURSEMENT_PROJECT_SCOPE_EVENT_OBSERVED / OUTCOMES_CLOSED",
+          "next": "SC-088 continue prospective official NIST/Commerce CHIPS observation for the first genuinely new award/disbursement/project-scope/qualification/HVM/utilization milestone after SC087. Freeze sourcePublishedAt/capturedAt and keep AWARD, DISBURSEMENT, CAPEX, FACILITY, QUALIFICATION, HVM and UTILIZATION separate; issuer-specific realized capacity/earnings remain UNKNOWN absent direct evidence; no L4 before D16 common-support validation."
         }
       ]
     },
