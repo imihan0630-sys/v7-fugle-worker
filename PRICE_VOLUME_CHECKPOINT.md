@@ -3993,3 +3993,68 @@ Exact next continuation point:
 1. LIVE_HINGE: after the 2026-10-07 10:15 bar is completed and captured, use the merged read-only workflow (manual rerun if needed for immediate inspection; scheduled 13:20 run remains the deterministic coverage receipt) to inspect provider, endpoint, exact-response SHA-256, normalizationVersion, semanticFingerprint, slotHistoryCount>=20, finite pvSlotRvol20, sameSlotBaselineClean=true and matching bootstrap receipt.
 2. ORACLE: rerun/evaluate PVE-247; any missing family remains fail closed.
 3. SCHEDULE_GAP: PR #743 remains a draft split-trigger Class-B candidate and must not merge/deploy without explicit owner approval.
+
+
+## PVE-255 continuation — first post-remediation live intraday provenance receipt, baseline-clean flag gap (2026-10-07)
+
+Status: LIVE_INTRADAY_PROVENANCE_PASS / SLOT_HISTORY_20 / FINITE_RVOL / SAME_SLOT_BASELINE_CLEAN_UNKNOWN / SCHEDULE_FAMILY_PENDING / H001_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Deterministic scheduled read-only workflow:
+- run `37577134267` SUCCESS;
+- job `112648432172` SUCCESS;
+- generatedAt `2026-10-07T05:36:29.171Z`;
+- readOnly=true / mutationCount=0;
+- runtime `8.20.0-formal-c1-binding-ledger`.
+
+Physical 2026-10-07 intraday receipt for 2454:
+- selected slot = 11:45 Asia/Taipei;
+- slotHistoryCount = 20;
+- pvSlotRvol20 = 0.728744939271255 (finite);
+- provider = FUGLE;
+- intraday endpoint persisted;
+- rawPayloadHash = `39871de533102aa2bd27679f6dcb1157194e2cf9ccde4409f2d7679d2c0ffcf7`;
+- rawPayloadHashBasis = EXACT_PROVIDER_RESPONSE_SHA256;
+- sourceFetchedAt = `2026-10-07T04:02:03.672Z`;
+- normalizationVersion = `PV_SHADOW_V0_2_PVE248`;
+- semanticFingerprint = `6becac3b33f99b524a84f3a44ee6759ec7712aea73c06a6899de17d2190b0d5f`.
+
+Historical baseline receipt remains physically strong:
+- validSessions = 80;
+- finalValidSessions = 80;
+- providerStatus = HTTP_200;
+- exact-response raw hash preserved;
+- rawRowCount = 2337;
+- normalizedSessionCount = 80;
+- rejectedSessionCount = 43 with reasons retained.
+
+New blocker isolated:
+- sameSlotBaselineClean = null.
+- PVE-247 baseline family therefore remains fail closed with SAME_SLOT_BASELINE_NOT_CLEAN.
+- Provenance family passes.
+- This is not equivalent to zero/false; null is UNKNOWN until a deterministic baseline-clean derivation/readback exists.
+
+Schedule family remains independently fail closed in this 13:36 readback:
+- latestAfterMarketDate = null;
+- afterMarketRows = [];
+- PRIMARY_23_35_READBACK_MISSING;
+- RECOVERY_23_55_READBACK_MISSING.
+These rows are expected to be unavailable before the same day's 23:35/23:55 family executes, so their absence at 13:36 is not negative evidence about tonight's delivery.
+
+The current oracle also reports receipt-family failures tied to its present generic input binding. Those failures do not erase the physically observed 2026-10-07 provenance/slot-history facts above. They also do not authorize H001 admission. A later acceptance pass must bind the actual post-remediation receipt through the canonical PVE-241/PVE-242 guards, common support, cohort/generation and Formal isolation.
+
+Anti-self-deception:
+- finite RVOL + 20 history is insufficient while baseline-clean is UNKNOWN;
+- provenance PASS is not alpha evidence;
+- the 11:45 row cannot be promoted by inspecting outcomes;
+- missing same-day 23:35/23:55 rows before their clock time cannot be coded as schedule failure;
+- no retrospective repair of 2026-10-05 is allowed.
+
+Current research state:
+- D02 = 60.0%;
+- clean prospective H001 dates = 0;
+- Gate 7 CLOSED;
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-256 — first, outcome-blindly trace and implement/consume the authoritative derivation for sameSlotBaselineClean so the existing 20-history/finite-RVOL 2026-10-07 receipt can be classified PASS or UNKNOWN without using outcomes. Separately, after the natural 23:35/23:55 family executes, rerun the merged read-only workflow and require physical primary/recovery rows with at-most-one successful business execution. Keep PR #743 owner-gated and unmerged/un-deployed unless separately approved.
