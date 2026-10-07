@@ -99,6 +99,7 @@ jobs:
           python3 scripts/apply_v8_19_1_pve248_candidate.py
           python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
           python3 scripts/apply_v8_20_0.py
+          python3 scripts/apply_v8_21_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Verify transport-retry contract offline
         env:
