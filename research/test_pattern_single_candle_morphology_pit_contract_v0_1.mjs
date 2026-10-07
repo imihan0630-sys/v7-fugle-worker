@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import {normalizeCandle,classifyCandleAlias,validateCandleClock,classifyCandleContamination} from "./pattern_single_candle_morphology_pit_contract_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8201 normalized body",()=>assert.equal(normalizeCandle({open:10,high:12,low:9,close:11,tradeCount:5,completedBar:true}).bodyToRange,1/3));
+t("D8202 zero trade blocked",()=>assert.equal(normalizeCandle({open:10,high:10,low:10,close:10,tradeCount:0,completedBar:true}).status,"ZERO_TRADE_BAR"));
+t("D8203 incomplete bar blocked",()=>assert.equal(normalizeCandle({open:10,high:12,low:9,close:11,tradeCount:5,completedBar:false}).status,"INCOMPLETE_BAR"));
+t("D8204 multiple names one vote",()=>assert.equal(classifyCandleAlias({aliases:["hammer","doji"]}).effectiveIndependentEvidenceCount,1));
+t("D8205 future close lookahead blocked",()=>assert.equal(validateCandleClock({barCloseAt:"2026-10-07T13:30:00+08:00",predictorFreezeAt:"2026-10-07T12:00:00+08:00"}).status,"INCOMPLETE_BAR_LOOKAHEAD"));
+t("D8206 limit censorship flagged",()=>assert.equal(classifyCandleContamination({priceLimitCensored:true}).status,"CANDLE_CONTEXT_CONTAMINATED"));
+t("D8207 clean context stays clean",()=>assert.equal(classifyCandleContamination({}).status,"CANDLE_CONTEXT_CLEAN"));
+t("D8208 invalid OHLC blocked",()=>assert.equal(normalizeCandle({open:10,high:9,low:8,close:11,tradeCount:5,completedBar:true}).status,"INVALID_OHLC"));
+console.log(`SUMMARY ${p}/8 PASS`);
