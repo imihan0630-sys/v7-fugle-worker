@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "D16_NESTED_ACQUISITION_MISSINGNESS_CONTRACT_V0_1",
+  "updatedAt": "2026-10-07T09:49:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "RESEARCH_ONLY_NESTED_ACQUISITION_MISSINGNESS_FROZEN",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "rootRule": "DOWNSTREAM_NOT_REACHED_DUE_TO_UPSTREAM_FAILURE_IS_NOT_AN_INDEPENDENT_SOURCE_FAILURE",
+  "stageStateEnum": [
+    "ROOT_OBSERVED_FAILURE",
+    "DERIVED_DOWNSTREAM_BLOCK",
+    "INDEPENDENT_OBSERVED_FAILURE",
+    "OBSERVED_SUCCESS",
+    "NOT_REACHED",
+    "UNKNOWN"
+  ],
+  "episodeRequiredFields": [
+    "acquisitionEpisodeId",
+    "runId",
+    "jobId",
+    "dataset",
+    "stage",
+    "parentAcquisitionEpisodeId",
+    "dependencyPathHash",
+    "attemptedAt",
+    "endpointIdentity",
+    "transportState",
+    "bodyState",
+    "parseState",
+    "semanticState",
+    "persistenceState",
+    "terminalState"
+  ],
+  "denominatorFields": [
+    "acquisitionAttemptedDatasetN",
+    "acquisitionObservedFailureN",
+    "downstreamNotReachedN",
+    "independentAcquisitionEpisodeN",
+    "blockedDatasetN",
+    "recoveredDatasetN"
+  ],
+  "estimands": {
+    "sourceConditional": "DATASET_SOURCE_TRANSPORT_RELIABILITY_GIVEN_STAGE_ATTEMPTED",
+    "endToEnd": "PIPELINE_END_TO_END_DATASET_AVAILABILITY"
+  },
+  "positivity": {
+    "downstreamStageObservedOnlyAfterUpstreamSuccess": true,
+    "ipwAutomaticallyAuthorized": false,
+    "zeroSupportDisposition": "ACQUISITION_POSITIVITY_NOT_ESTABLISHED"
+  },
+  "firstWitness": {
+    "runId": 37556241467,
+    "financial": {
+      "attempted": true,
+      "endpoint": "MOPS /mops/web/ajax_t163sb04",
+      "retryN": 3,
+      "terminal": "MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED",
+      "role": "ROOT_OBSERVED_FAILURE"
+    },
+    "quarterEps": {
+      "attempted": false,
+      "terminal": "DOWNSTREAM_NOT_REACHED_UPSTREAM_BLOCKED",
+      "parentDataset": "FINANCIAL",
+      "independentFailureProven": false,
+      "role": "DERIVED_DOWNSTREAM_BLOCK"
+    }
+  },
+  "canonicalOracleMapping": [
+    "SDA016-T28",
+    "SDA016-T31",
+    "SDA016-T33",
+    "SDA016-T39"
+  ],
+  "expandsCanonicalOracleCount": false,
+  "outcomes": "CLOSED"
+}
