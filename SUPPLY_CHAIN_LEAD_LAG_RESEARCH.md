@@ -2692,3 +2692,43 @@ Exact next:
 
 D10-04 remains L3/60.
 Formal Core unchanged.
+
+
+## SC-071 — FPC second-issuer selective posted-price control (2026-10-07)
+
+Artifact:
+- `research/SC071_FPC_SELECTIVE_POSTED_PRICE_SECOND_ISSUER_CONTROL_20261007_V0_1.md`
+
+Formosa Plastics / 1301 official 2026-02-01 domestic list-price notice provides the first counted different-issuer full posted-price matrix under the SC-032 state vector.
+
+Observed listed rows:
+- suspension homopolymer PVC: +NTD1.0/kg;
+- MBS additive: +NTD3.0/kg;
+- nine other listed product rows: unchanged.
+
+Issuer caveats explicitly state:
+- some product/spec/customer adjustments are not listed;
+- actual selling price remains subject to salesperson quotation.
+
+Frozen state:
+- postedPriceResponse = SELECTIVE;
+- realizedAspResponse = UNKNOWN;
+- realizedMarginResponse = UNKNOWN;
+- volumeMixResponse = UNKNOWN;
+- inferenceState = DESCRIPTIVE_ONLY.
+
+This closes the prior same-issuer-only calibration gap and shows selective posted-price behavior is observable across a second Taiwan issuer/industry.
+
+Permanent firewalls:
+- `LIST_PRICE != REALIZED_ASP`;
+- `OBSERVED_PRODUCT_MATRIX != COMPANY_WIDE_COMPLETE_PRODUCT_UNIVERSE`;
+- `PRICE_INCREASE != MARGIN_PROTECTION`.
+
+Historical exact public first-availability time is not authenticated, so this remains source calibration rather than historical decision-clock proof.
+
+D10-06 remains L3/60.
+
+Exact next:
+SC-072 capture the first genuinely prospective future issuer pricing event under the unchanged SC-032 state vector with native sourcePublishedAt/capturedAt frozen before any later ASP/margin or stock outcome.
+
+Formal Core unchanged.
