@@ -1789,7 +1789,7 @@ No maturity or Formal change is authorized by this routing.
   - research/pattern_topology_parameter_robustness_v0_1.mjs
   - research/test_pattern_topology_parameter_robustness_v0_1.mjs
   - research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_D16_HANDOFF_V0_1.md
-- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- 24 adversarial tests authored; TEST_EXECUTION_PENDING.
 - SDA-001 remains REMEDIATION_IN_PROGRESS.
 - SDA-002 remains REMEDIATION_IN_PROGRESS.
 - No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
@@ -4635,5 +4635,120 @@ No maturity or Formal change is authorized by this routing.
 5. Hand C0-C11 / Q0-Q9 continuity-attribution inference to D16.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from suspension/resumption stale-price anchoring and reopening price discovery after multi-session no-trade intervals.
+8. No outcome join / no runtime wiring / no Formal change.
+
+## Continuation update — DL-066 (2026-10-07)
+
+### DL-066 — Structural response vs suspension/resumption stale-price anchoring
+- DL-065 separated corporate-action mechanical resets from technical continuity.
+- DL-066 freezes suspension/resumption attribution:
+  verified suspension interval;
+  stale pre-suspension price;
+  information accumulation while no trade occurs;
+  resumption call auction;
+  reopening order flow/liquidity;
+  market/sector/global movement during the no-trade interval.
+- VERIFIED_SUSPENSION_SESSION != SOURCE_MISSING_SESSION.
+- Verified suspension sessions receive no OHLC pseudo-bars, no forward-filled close and no zero-volume fabricated bar.
+- Unknown suspension provenance remains DATA_BLOCKED.
+- Two clocks are permanently separated:
+  ELIGIBLE_TRADING_SESSION_AGE does not increment during verified suspension;
+  CALENDAR_INFORMATION_AGE continues through real-world elapsed time.
+- Required fields also preserve suspensionCalendarDays and suspensionMarketSessions.
+- Last pre-suspension price is PRE_SUSPENSION_PRICE_STALE_ANCHOR_CANDIDATE, not proof of current equilibrium after resumption.
+- Owner-certified information accumulated during suspension remains separate:
+  firm/material news;
+  corporate-action changes;
+  market/sector/global move;
+  derivatives/futures context;
+  regime transition.
+- No SUSPENSION_NEWS_SCORE is defined.
+- Frozen resumption states:
+  VERIFIED_SUSPENSION_ACTIVE;
+  RESUMPTION_ORDER_ACCEPTANCE;
+  RESUMPTION_INDICATIVE_STATE;
+  RESUMPTION_FIRST_CALL_PRINT;
+  POST_RESUMPTION_CONTINUOUS_TRADING;
+  RESUMPTION_DELAYED_OR_DEFERRED;
+  SUSPENSION_PROVENANCE_UNKNOWN.
+- The first resumption call print is not equivalent to a continuous-trading touch.
+- Reopening discovery is now further separated:
+  LAST_EXECUTED_PRICE_BEFORE_SUSPENSION;
+  EXCHANGE_REOPENING_REFERENCE;
+  FIRST_REOPENING_AUCTION_PRICE;
+  FIRST_CONTINUOUS_TRADE_AFTER_REOPENING;
+  POST_REOPENING_STABILIZED_REFERENCE.
+- FIRST_REOPENING_AUCTION_PRICE != CONFIRMED_BREAKOUT.
+- Same-session short halt, one-session suspension, multi-session suspension and canonical extended suspension remain distinct freshness states.
+- No arbitrary stale-duration score is defined.
+- Discovery windows (first auction / first 5m / first 15m / first 30m / first session) must be preregistered; best-after-outcome window selection is prohibited.
+- Root reconfirmation from first call alone is prohibited; a separate post-resumption observable confirmation rule is required.
+- Opposite-side first resumption print across an old zone is RESUMPTION_GAP_CROSSING.
+  No unobserved path through the zone is invented.
+- Suspension does not automatically invalidate an old structural root, but residual structural attribution requires stale-anchor/information/reopening controls.
+- Resumption reference price must be owner-certified and is not assumed equal to last pre-suspension close.
+- Same-day halt/resumption and multi-session suspension are not pooled automatically.
+- Pre-suspension order queue does not establish resumption queue identity.
+  Fresh order-book receipts are required.
+- If suspension overlaps a corporate-action reset, DL-065 continuity receipt is mandatory.
+- If resumption is constrained by daily price limits, DL-064 limit-state receipt is mandatory.
+- DL-062 auction semantics remain mandatory for a call-auction first print.
+- Taiwan official rules support the mechanism:
+  suspension stops new order acceptance;
+  resumption first matching may be by call auction;
+  information-assessment suspension exists to control material-information asymmetry.
+- Taiwan empirical work finds post-disclosure price/volume effects can remain elevated after suspension, reinforcing information-accumulation/repricing as an alternative to structural-memory claims.
+- Primary comparator:
+  G0 RESUMPTION_EVENT_AWAY_FROM_OLD_STRUCTURAL_ZONE;
+  G1 RESUMPTION_EVENT_AT_OLD_STRUCTURAL_ZONE.
+- Future D16 ladder:
+  S0 RAW_RESUMPTION_ZONE_RESPONSE;
+  S1 VERIFIED_SUSPENSION_INTERVAL_CONTROLLED;
+  S2 ELIGIBLE_SESSION_VS_CALENDAR_AGE_SEPARATED;
+  S3 PRE_SUSPENSION_STALE_ANCHOR_CONTROLLED;
+  S4 FIRM_INFORMATION_DURING_SUSPENSION_CONTROLLED;
+  S5 MARKET_SECTOR_GLOBAL_MOVE_CONTROLLED;
+  S6 CORPORATE_ACTION_CONTINUITY_CONTROLLED;
+  S7 RESUMPTION_REFERENCE_AND_AUCTION_CONTROLLED;
+  S8 PRICE_LIMIT_CONTEXT_CONTROLLED;
+  S9 REOPENING_ORDER_FLOW_LIQUIDITY_CONTROLLED;
+  S10 GENERIC_SUSPENSION_COMPARATOR_CONTROLLED;
+  S11 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  S12 MULTI_DURATION_MULTI_EVENT_MULTI_SYMBOL_REPLICATION.
+- Interpretation states:
+  Q0 STALE_PRICE_ANCHOR_EXPLANATION;
+  Q1 INFORMATION_ACCUMULATION_EXPLANATION;
+  Q2 REOPENING_PRICE_DISCOVERY_EXPLANATION;
+  Q3 CORPORATE_ACTION_RESET_EXPLANATION;
+  Q4 PRICE_LIMIT_CATCHUP_EXPLANATION;
+  Q5 REOPENING_LIQUIDITY_EXPLANATION;
+  Q6 MULTIPLE_SUSPENSION_MECHANISMS;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 SUSPENSION_PROVENANCE_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- SDA-001 remains open: old zone/stale price/resumption price share PRICE_OHLC ancestry; external context is not automatic extra vote.
+- SDA-002 remains open: exact suspension/resumption knownAt and replay-safe receipts remain mandatory.
+- New files:
+  - research/PATTERN_SUSPENSION_RESUMPTION_FIREWALL_V0_1.md
+  - research/pattern_suspension_resumption_firewall_v0_1.json
+  - research/pattern_suspension_resumption_firewall_v0_1.mjs
+  - research/test_pattern_suspension_resumption_firewall_v0_1.mjs
+  - research/PATTERN_SUSPENSION_RESUMPTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-066
+
+1. Reconcile the DL-066 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-066 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve verified suspension sessions as non-trading sessions, not missing bars or pseudo-bars.
+4. Preserve eligible trading-session age and calendar information age as distinct clocks.
+5. Hand S0-S12 / Q0-Q9 suspension-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from intraday volatility interruption / delayed matching / dynamic price-stabilization mechanics, which are not the same as multi-session suspension.
 8. No outcome join / no runtime wiring / no Formal change.
 

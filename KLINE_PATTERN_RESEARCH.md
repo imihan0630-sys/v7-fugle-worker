@@ -24179,3 +24179,28 @@ New durable artifacts:
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
 
+
+
+# DL-066 — Structural response vs suspension/resumption stale-price anchoring (2026-10-07)
+
+DL-066 separates a verified trading suspension from ordinary missing bars and separates pre-suspension structural memory from reopening price discovery.
+
+A verified suspension interval receives no fabricated OHLC, no forward-filled close and no zero-volume pseudo-bar. Eligible trading-session age does not advance while the symbol is suspended, but calendar/information age continues. This creates a dual-clock state: a structural root may be young in tradable-session age while materially stale in real information time.
+
+The final pre-suspension trade remains an execution fact, not proof of current equilibrium. During the no-trade interval, firm news, corporate actions, market/sector/global movement, derivatives context and regime can all evolve. D01 consumes those owner-certified receipts rather than collapsing them into a single suspension-news score.
+
+Resumption is explicitly phased: order acceptance, indicative state, first call print, post-resumption continuous trading and delayed/deferred resumption. The first call print is a price-discovery event and is not equivalent to an ordinary continuous touch. An opposite-side first print across an old zone is a RESUMPTION_GAP_CROSSING; no unseen continuous path through the zone is invented.
+
+The consolidated refinement preserves five distinct price references: last executed pre-suspension price, exchange reopening reference, first reopening auction price, first continuous trade after reopening and later stabilized reference. These may coincide numerically but are not semantically interchangeable.
+
+Freshness states distinguish same-session short halt, one-session suspension, multi-session suspension and canonical extended suspension. D01 does not invent a fitted stale-duration score.
+
+The first reopening auction price cannot by itself confirm a breakout or reconfirm an old structural root. Reconfirmation requires a separately frozen post-resumption observation rule. Candidate discovery windows such as first auction, first 5m, first 15m, first 30m or first session must be frozen before outcome inspection; selecting the winning discovery window after outcomes is prohibited.
+
+Primary future comparison remains G0 resumption away from an old structural zone versus G1 resumption at an old zone under matched suspension duration/type, information accumulation, benchmark/sector move, corporate-action continuity, price-limit state, reopening reference/auction mechanics, liquidity and old-root history.
+
+Future D16 attribution proceeds through S0-S12 and interpretation Q0-Q9, separating stale-price anchoring, information accumulation, reopening price discovery, corporate-action reset, price-limit catch-up and liquidity from any structural-response residual.
+
+Twenty-four adversarial cases are authored. Research-specific Node execution remains TEST_EXECUTION_PENDING; V8 CI is not a substitute receipt.
+
+SDA-001 and SDA-002 remain open. No outcome join, no historical Shadow fabrication, no runtime/Worker/D1 wiring and no Formal change. D01 maturity remains 52.7%, Pattern alpha remains UNKNOWN and Formal Core remains LOCKED.
