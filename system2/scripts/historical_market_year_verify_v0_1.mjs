@@ -17,6 +17,7 @@ import {
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 import { fetchCurrentListingMetadataV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
 import { reconcileHistoricalSourceRowsV0_1 } from "../runtime/historical_source_reconciliation_v0_1.mjs";
+import { evaluateHistoricalRevisionLineageV0_1 } from "../runtime/historical_revision_lineage_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
@@ -351,6 +352,35 @@ const sourceReconciliationBase=reconcileHistoricalSourceRowsV0_1({
   sampleLimit:100,
 });
 
+let revisionLineage=null;
+if(sourceReconciliationBase.sourceRowHashMismatchCount>0
+  || sourceReconciliationBase.canonicalA1ValueMismatchCount>0){
+  const persistedRevisionRows=await db.rawQuery(
+    `SELECT * FROM s2_historical_a1_bars
+      WHERE market=? AND market_date>=? AND market_date<=? AND price_space='RAW'
+      ORDER BY canonical_key, available_at, observed_at, bar_hash`,
+    [market,fromDate,toDate],
+  );
+  revisionLineage=evaluateHistoricalRevisionLineageV0_1({
+    coldRows,
+    freshOfficialRows:officialRange.rows,
+    persistedRows:persistedRevisionRows,
+    sampleLimit:100,
+  });
+}
+
+const effectiveDataIntegrityState =
+  sourceReconciliationBase.dataIntegrityState==="PASS"
+    ? "PASS"
+    : (
+        sourceReconciliationBase.missingFromColdCount===0
+        && sourceReconciliationBase.absentFromFreshOfficialCount===0
+        && sourceReconciliationBase.canonicalA1ValueMismatchCount>0
+        && revisionLineage?.state==="PIT_REVISION_LINEAGE_READY"
+      )
+      ? "PASS_WITH_PIT_REVISION_LINEAGE"
+      : "BLOCKED";
+
 let registry;
 let historicalUniverseEvidence;
 let suspension;
@@ -432,6 +462,8 @@ const coverage=buildHistoricalMarketYearCoverageV0_1({
 
 const sourceReconciliation={
   ...sourceReconciliationBase,
+  effectiveDataIntegrityState,
+  revisionLineage,
   officialTradingDates:officialRange.tradingDateCount,
 };
 
@@ -453,7 +485,7 @@ const storageVerification={
 };
 
 const dataCoverageState = storageVerification.state==="PASS"
-  && sourceReconciliation.dataIntegrityState==="PASS"
+  && sourceReconciliation.effectiveDataIntegrityState!=="BLOCKED"
   && coverage.structuralCoverageState==="PASS"
     ? "PASS"
     : "BLOCKED";
@@ -472,7 +504,7 @@ const output={
     :(replayReadinessState==="PASS"
       ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
       :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_5",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
@@ -506,7 +538,7 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_4",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_5",
 };
 
 const json=JSON.stringify(output,null,2);
