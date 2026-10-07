@@ -826,3 +826,42 @@ New repository hardening:
 No physical D1/R2 mutation was performed by this audit. System1 Formal Core/runtime, strategy/ranking, final selection, capital/order and broker authority remain unchanged.
 
 Exact next physical continuation after quota reset: fresh latest-main `2024 / TPEX`; first consume the read-only resume preflight result, then allow source/backfill only if the durable state is not blocked.
+
+
+## 2026-10-07 segmented-current-year dry audit / replay-gate readback
+
+DATA_LANE continued with repository/read-only work only; no new physical D1/R2 ingestion was performed.
+
+2026 segmented-current-year dry audit:
+- active incomplete Taipei month remains excluded by `throughMonth=currentMonth-1`;
+- monthly manifests remain uniquely keyed by market/symbol/year/month/price-space;
+- immutable object/manifest conflict and R2 byte-hash verification remain covered;
+- hybrid cold loader continues to prefer a completed annual pack over same-year segments, preventing annual+segment duplicate bars;
+- current-year workflow still performs full D1 provisioning before segmented backfill, but that workflow-level quota coordination conflict is now owned by `S2-CORR-20261007-003 / REMEDIATION_LANE`; DATA_LANE did not seize or modify that conflict unit.
+
+A DATA_LANE-local crash window was identified in segmented persistence:
+- a COMPLETE segment receipt may exist if execution stops after receipt insertion but before the final checkpoint is sealed COMPLETE;
+- the current-year script previously treated any COMPLETE receipt as `ALREADY_RECEIPTED` and skipped the month without repairing that checkpoint.
+
+Repository hardening on the DATA_LANE branch:
+- add receipt-driven segment checkpoint finalization;
+- checkpoint identity/count/rolling-hash mismatch remains fail-closed as `IMMUTABLE_CONFLICT`;
+- if the checkpoint is already COMPLETE, no repair write is emitted;
+- if the checkpoint is missing/incomplete, the COMPLETE receipt is physically verified against manifests/R2 before exactly one final checkpoint repair;
+- the current-year script invokes this finalizer before skipping an already-receipted month;
+- regressions cover no-op complete rerun and receipt-before-final-checkpoint recovery.
+
+Aggregate replay-input gate readback from
+`system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json`
+(`updatedAt=2026-10-07T11:55:29+08:00`):
+- expected completed annual market-year legs for 2017-2025: 18;
+- physically accepted annual legs: 15;
+- remaining annual blockers are exactly: `2024/TPEX`, `2025/TWSE`, `2025/TPEX`;
+- both 2026 current-year market rows remain PENDING;
+- all 15 accepted annual legs still carry explicit replay debt (`replayReadinessState=PARTIAL`) from symbol-session UNKNOWN / continuity / non-price readiness semantics;
+- those replay debts are not raw-source missing-row failures and must not be relabeled as full replay readiness.
+
+This readback confirms there is no hidden fourth annual market-year blocker. Exact physical critical path remains:
+`2024/TPEX -> 2025/TWSE -> 2025/TPEX -> 2026 segmented TWSE/TPEX -> aggregate present-scope replay qualification`.
+
+System1 Formal Core/runtime, strategy/ranking/final selection, capital/order, broker routing and production push authority remain unchanged.
