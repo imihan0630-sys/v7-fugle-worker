@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_STAGE1_CORR004_SDA022_FINGERPRINT_ORDERING_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T21:47:47+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "6a15a91a4805a4bed87594f8e92f446d49264109",
+  "status": "CROSS_LANE_SEQUENCE_CORRECTION_REQUIRED",
+  "finding": "PR817 modifies a source artifact whose blob SHA is hard-pinned by PR762 System2 policy fingerprints. Merging PR762 before PR817 would make the canonical S22-T06~T10 fingerprint source binding stale immediately after PR817 lands.",
+  "exactEvidence": {
+    "pr762": {
+      "number": 762,
+      "head": "a5487086ba15f844d775e12bc7ce2c3852749644",
+      "fingerprintSourcePath": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+      "pinnedBlobSha": "560700e0d8cc5378136241b6dee233315fde321c",
+      "sourceDigestGuard": "SOURCE_ARTIFACT_DIGEST_MISMATCH on any bound blob drift"
+    },
+    "currentMainAtBlobCheck": {
+      "path": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+      "blobSha": "560700e0d8cc5378136241b6dee233315fde321c",
+      "matchesPr762Pin": true
+    },
+    "pr817": {
+      "number": 817,
+      "head": "43784e500f678be6ee95710822fdafd2af50ac50",
+      "changedBlobSha": "47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1",
+      "changesFingerprintBoundSource": true,
+      "checksAtAuditedHead": [
+        "System2 Research CI SUCCESS",
+        "V8 Regression Tests SUCCESS",
+        "System2 Stage-1 Assessor Policy V0.1 SUCCESS"
+      ],
+      "mergeableAtAudit": true,
+      "branchSyncAtAudit": {
+        "status": "DIVERGED",
+        "aheadBy": 16,
+        "behindBy": 23,
+        "mergeBase": "fa9cc211450dea407630efd8e5c97ffa917c4830"
+      }
+    }
+  },
+  "independentPr817SemanticAudit": {
+    "expectedSessionHashBoundIntoHistoryLoad": true,
+    "exactRule": "loadPitPriorA1BarsV0_1 recomputes selected date-set hash and throws EXPECTED_SESSION_HASH_MISMATCH on drift",
+    "olderRowSubstitutionPrevented": true,
+    "sourceAbsenceDoesNotCertifyLifecycleNoEvent": true,
+    "positiveLifecycleIntervalsOnly": true,
+    "unresolvedMissingSessionFailsClosed": true,
+    "symbolLocalIncompletenessPreserved": true,
+    "wholeUniverseVetoReintroduced": false,
+    "physicalMergedMainReadbackStillRequired": true
+  },
+  "correctedOrder": [
+    "DATA_LANE refreshes PR817 onto then-latest main and reruns exact-head CI.",
+    "PR817 merges first because it changes a PR762 fingerprint-bound source artifact.",
+    "Merged-main read-only Daily Shadow preflight physically proves at least one exact-session TWSE witness with rowsWritten=0; CORR-004 remains open until this readback.",
+    "BUILD_LANE then rebuilds/regenerates PR762 fingerprints against the post-PR817 latest main, including the new daily_shadow_history_reader blob SHA.",
+    "PR762 exact-head fingerprint CI + System2 Research CI + V8 Regression pass, then canonical S22-T06~T10 merge.",
+    "Replay-first hash-bound CLEAR_NO_ACTION continuity implementation may then consume the exact-session witness and proceed toward physical NC-T01 S22-T11~T16."
+  ],
+  "parallelSafeWork": [
+    "BUILD_LANE may prepare replay-first continuity binding code/tests against latest semantics but must not freeze final policy fingerprint receipts before PR817 source digest stabilizes.",
+    "REMEDIATION_LANE may continue CORR-003 quota governance.",
+    "DATA_LANE may continue CORR-001 and historical work subject to quota/lane governance."
+  ],
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No lane ownership seizure",
+    "No stale fingerprint canonicalization",
+    "No physical NC-T01 S22-T13 before exact-session witness",
+    "No final selection/live push/capital/order authority"
+  ]
+}
