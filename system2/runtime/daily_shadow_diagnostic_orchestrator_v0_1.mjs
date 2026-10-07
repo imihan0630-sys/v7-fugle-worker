@@ -288,6 +288,18 @@ export async function runDailyShadowDiagnosticV0_1({
           sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
         } : null,
         sourceSession }];
+      if (historyLifecycle.queriedSymbolCount > 0) {
+        payloads.push({
+          kind: "HISTORY_LIFECYCLE_EVIDENCE",
+          state: historyLifecycle.state,
+          candidateSymbols: historyLifecycle.candidateSymbols,
+          intervals: historyLifecycle.certifiedNoTradingIntervals,
+          conflicts: historyLifecycle.conflicts || [],
+          symbolReceipts: historyLifecycle.symbolReceipts || [],
+          absenceCertifiesNoEvent: false,
+          knownAtState: historyLifecycle.knownAtState || null,
+        });
+      }
       for (let i = 0; i < (history.diagnostics || []).length; i += 100) {
         payloads.push({ kind: "HISTORY_COVERAGE", rows: history.diagnostics.slice(i, i + 100) });
       }
