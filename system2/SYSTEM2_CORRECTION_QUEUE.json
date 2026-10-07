@@ -268,7 +268,10 @@
         "2021 TWSE completion receipt S2HCR-a6ea89acf316e2cb5a30c8c785ed76b3773487adde1d8a3ae1adad1d8ac9eb1f COMPLETE",
         "2021 TWSE manifest rolling hash a6ea89acf316e2cb5a30c8c785ed76b3773487adde1d8a3ae1adad1d8ac9eb1f",
         "2021 TWSE storage/source equality: 232956 cold rows == 232956 fresh official rows with zero canonical A1 mismatches",
-        "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
+        "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+        "AUDIT readback: timeout hardening merge 211b84fa2e1b8dbf7090c4e48df5ce51beee3596 changes only annual backfill job budget 60→120 minutes plus checkpoint/test; no source-integrity or System1 boundary weakening observed.",
+        "System2 Research CI 37610316535 SUCCESS and V8 Regression 37610316546 SUCCESS on timeout-hardening merge.",
+        "Independent audit evidence system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json @ 19dc73ca3f0723f602700b82b28bd93fd460e499 classifies the change REPOSITORY_HARDENING_PASS_PHYSICAL_ACCEPTANCE_PENDING; no post-hardening 2024/TPEX physical acceptance exists yet."
       ],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-07T18:43:00+08:00",
