@@ -118,7 +118,10 @@ export function observeRow(row, decisionAt) {
   const close = number(row.feature?.close);
   return {symbol:row.symbol,sessionDate:row.sessionDate,parentId:row.parentId,
     pool:close === null ? 'UNKNOWN' : close >= 1000 ? 'THOUSAND' : close >= 10 ? 'GENERAL':'BELOW_PRICE_FLOOR',
-    gates, formalResult:row.formalResult ? structuredClone(row.formalResult):null,
+    gates,
+    targetSemanticsV2:old?.targetSemanticsV2 ? structuredClone(old.targetSemanticsV2) : null,
+    targetSemanticsVersion:old?.targetSemanticsVersion ?? null,
+    formalResult:row.formalResult ? structuredClone(row.formalResult):null,
     firstFailureReason:row.formalResult?.ok === false ? row.formalResult.reason ?? null:null,
     researchOnly:true,decisionImpact:false,formalCoreImpact:false};
 }

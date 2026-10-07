@@ -28,6 +28,32 @@ for(const value of [null,undefined,'',false,'100',NaN,Infinity]) {
 const fail=fixture('2330');fail.feature.marketCapYi=5;fail.sector.breadth=10;fail.derived.setupQuality=20;
 const observation=observeRow(fail,clock);
 equal(observation.gates.MARKET_CAP_FLOOR.status,'FAIL');equal(observation.gates.SECTOR_GATE.status,'FAIL');equal(observation.gates.FINAL_SIGNAL_GRADE.status,'FAIL');
+{
+  const r=fixture('2888');
+  Object.assign(r.derived,{
+    targetState:'NONE',target:null,rewardPerRisk:null,
+    targetSearchComplete:true,targetSearchAlgorithmVersion:'FIXTURE_TARGET_V2',
+    targetSearchLookbackStart:'2026-01-01',targetSearchLookbackEnd:'2026-10-01',
+    targetProvenanceState:'VERIFIED',targetSourceVerified:true,targetSourceReceiptIds:['fixture-source'],
+    targetGeometryQuality:'VALID',targetGeometryVerified:true
+  });
+  const o=observeRow(r,clock);
+  equal(o.gates.TARGET_AVAILABLE.status,'FAIL');
+  equal(o.targetSemanticsV2.state,'TARGET_NONE_SEARCH_COMPLETE');
+  equal(o.targetSemanticsV2.sourceVerified,true);
+  equal(o.targetSemanticsVersion,'TARGET_AVAILABLE_FOUR_STATE_V0_1');
+}
+{
+  const r=fixture('2889');
+  Object.assign(r.derived,{
+    targetState:'NONE',target:null,rewardPerRisk:null,
+    targetSearchComplete:true,targetProvenanceState:'UNKNOWN',targetSourceVerified:false,
+    targetGeometryQuality:'VALID',targetGeometryVerified:true
+  });
+  const o=observeRow(r,clock);
+  equal(o.gates.TARGET_AVAILABLE.status,'FAIL');
+  equal(o.targetSemanticsV2.state,'TARGET_UNKNOWN_SOURCE');
+}
 for(const change of [{knownAt:'2026-10-02T00:00:00Z'},{parentId:'wrong'},{sessionDate:'2026-09-30'},{authenticated:false},{knownAt:'2026-10-01 10:00'}]) {
   const r=fixture();r.gateEvidence.PRICE_FLOOR={...evidence,...change};equal(observeRow(r,clock).gates.PRICE_FLOOR.status,'UNKNOWN');
 }
