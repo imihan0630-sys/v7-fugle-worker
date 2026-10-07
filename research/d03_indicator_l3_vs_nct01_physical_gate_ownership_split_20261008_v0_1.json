@@ -106,5 +106,17 @@
     "promotion": false,
     "reason": "This closes a governance over-gating ambiguity only. The real W0 continuity receipt and remaining indicator-specific PIT gates have not yet physically passed."
   },
-  "exactNextContinuationPoint": "For D03 maturity, prioritize the first real exact-window source-honest hash-bound technical continuity receipt and indicator-specific parent/known-at gates without waiting for CORR005/CORR006. In parallel consume CORR005/CORR006 only for System2 NC-T01 physical-independence evidence. If a real W0 receipt lands first, evaluate D03-10 L3 admission immediately under its own preregistered indicator gates."
+  "exactNextContinuationPoint": "For D03 maturity, prioritize the first real exact-window source-honest hash-bound technical continuity receipt and indicator-specific parent/known-at gates without waiting for CORR005/CORR006. In parallel consume CORR005/CORR006 only for System2 NC-T01 physical-independence evidence. If a real W0 receipt lands first, evaluate D03-10 L3 admission immediately under its own preregistered indicator gates.",
+  "twtaWuOfficialInterfaceEvidence": {
+    "page": "https://www.twse.com.tw/zh/trading/historical/twtawu.html",
+    "officialFacts": [
+      "Supports bounded date-period query.",
+      "Supports security-code or all-listed-security scope.",
+      "States data available from 2011-10-03 onward.",
+      "Exposes both Print/HTML and CSV Download controls on the official page."
+    ],
+    "d03Interpretation": "Independent official representations exist at the UI level, so bounded representation parity is feasible in principle.",
+    "currentBoundary": "FEASIBLE_NOT_PINNED",
+    "missing": "The exact official CSV/HTML export request contract and response completeness semantics have not yet been captured; do not guess an export URL and do not promote empty JSON to NO_SUSPENSION."
+  }
 }
