@@ -19,7 +19,7 @@
     },
     {
       "path": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
-      "contentSha": "79bebce21cca3cdf3b40affd6043ffa6b1f84c0e"
+      "contentSha": "35997dbde5ca0a97567f3a346268fd767007202c"
     },
     {
       "path": "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
@@ -166,6 +166,6 @@
     "BREAKOUT_CONTINUATION is the first source-complete launch mapping; pullback/reacceleration remains non-promoted."
   ],
   "fingerprintId": "SYSTEM2:SHORT_MOMENTUM:STAGE1:2026-10-07:V0.1",
-  "fingerprintHash": "115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3",
-  "generatedAt": "2026-10-07T15:26:34.525Z"
+  "fingerprintHash": "2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd",
+  "generatedAt": "2026-10-07T21:54:17.313Z"
 }
