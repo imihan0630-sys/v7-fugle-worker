@@ -7,6 +7,7 @@ import { buildHistoricalA1PacksResearchV0_1 } from "../runtime/historical_pack_r
 import {
   executeHistoricalSegmentPackSetV0_1,
   readHistoricalSegmentReceiptV0_1,
+  finalizeHistoricalSegmentCheckpointFromReceiptV0_1,
 } from "../runtime/historical_segmented_cold_store_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -73,10 +74,15 @@ for(let month=1;month<=throughMonth;month+=1){
   const existing=await readHistoricalSegmentReceiptV0_1({db,batchId});
   if(existing){
     assert.equal(existing.state,"COMPLETE","existing current-year segment receipt is not COMPLETE");
+    const finalized=await finalizeHistoricalSegmentCheckpointFromReceiptV0_1({
+      db,objectStore,receipt:existing,capturedAt,
+    });
     results.push({
       month,fromDate,toDate,batchId,state:"ALREADY_RECEIPTED",
       receiptId:existing.receipt_id,packCount:Number(existing.pack_count),
       barCount:Number(existing.bar_count),manifestRollingHash:existing.manifest_rolling_hash,
+      checkpointRepairPerformed:finalized.checkpointRepairPerformed,
+      repairVerification:finalized.verification?.state||null,
     });
     continue;
   }

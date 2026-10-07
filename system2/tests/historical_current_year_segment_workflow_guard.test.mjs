@@ -22,6 +22,7 @@ assert.match(script,/onlyCompletedCalendarMonths:true/);
 assert.match(script,/currentIncompleteMonthWritten:false/);
 assert.match(script,/annualPackMutated:false/);
 assert.match(script,/executeHistoricalSegmentPackSetV0_1/);
+assert.match(script,/finalizeHistoricalSegmentCheckpointFromReceiptV0_1/,"receipted months must finalize an interrupted checkpoint before being skipped");
 assert.doesNotMatch(script,/executeHistoricalColdPackSetV0_1/,"current-year path must not mutate annual pack manifests");
 
 assert.match(migration,/s2_historical_a1_segment_manifests/);
