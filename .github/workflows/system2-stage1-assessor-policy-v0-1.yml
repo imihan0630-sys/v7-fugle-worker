@@ -1,0 +1,70 @@
+name: System2 Stage-1 Assessor Policy V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/stage1_assessor_policies_v0_1.mjs"
+      - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
+      - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
+      - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/tests/stage1_assessor_policies_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_input_preflight_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_input_preflight_workflow_guard.test.mjs"
+      - "system2/tests/daily_shadow_diagnostic_v0_1.test.mjs"
+      - "system2/SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md"
+      - ".github/workflows/system2-stage1-assessor-policy-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/stage1_assessor_policies_v0_1.mjs"
+      - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
+      - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
+      - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/tests/stage1_assessor_policies_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_input_preflight_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_input_preflight_workflow_guard.test.mjs"
+      - "system2/tests/daily_shadow_diagnostic_v0_1.test.mjs"
+      - "system2/SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md"
+      - ".github/workflows/system2-stage1-assessor-policy-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Stage-1 assessor policy tests
+        run: |
+          set -euo pipefail
+          node system2/tests/stage1_assessor_policies_v0_1.test.mjs
+          node system2/tests/daily_shadow_input_preflight_v0_1.test.mjs
+          node system2/tests/daily_shadow_input_preflight_workflow_guard.test.mjs
+          node system2/tests/daily_shadow_diagnostic_v0_1.test.mjs
+
+      - name: Policy safety guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'SYSTEM1_FORMAL|TOP6_3PLUS3|FORMAL_15M_CONFIRMATION' system2/runtime/stage1_assessor_policies_v0_1.mjs
+          ! grep -qE 'weightedScore|totalScore|priorityScore' system2/runtime/stage1_assessor_policies_v0_1.mjs
+          grep -q 'NO_WEIGHTED_TOTAL_SCORE' system2/runtime/stage1_assessor_policies_v0_1.mjs
+          grep -q 'NO_OUTCOME_TUNED_NUMERIC_THRESHOLD' system2/runtime/stage1_assessor_policies_v0_1.mjs
+          grep -q 'system1Top6Required: false' system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
+          grep -q 'system1RankRequired: false' system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          git diff --exit-code origin/main...HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
