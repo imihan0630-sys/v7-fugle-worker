@@ -5434,3 +5434,60 @@ No maturity or Formal change is authorized by this routing.
 5. Require pattern-specific incrementality over raw OHLC / raw N-bar geometry / generic compression / generic breakout controls.
 6. Route statistical inference to D16.
 7. No Formal Core change.
+
+
+## Continuation update — DL-087 (2026-10-07)
+
+### DL-087 — L3-to-L4 prospective/OOS validation portfolio preregistration
+- All 11 D01 modules are now L3; L4 requires PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE.
+- One common Taiwan PIT empirical protocol is frozen before any new outcome join.
+- Primary research universe preserves point-in-time listing status, delisting/failure histories where available, suspension/disposition states and ordinary common-equity identity.
+- Formal System-1 deployment filters are secondary sensitivity analysis, not baked into the primary scientific universe.
+- Primary outcome families frozen:
+  structural reaction;
+  forward returns at 1 / 5 / 20 eligible sessions;
+  MFE / MAE on the same horizons;
+  executable economic endpoint only with owner-certified cost receipt.
+- Common-parent controls are mandatory for every named pattern family.
+- Chronological protocol frozen:
+  expanding-window primary validation;
+  minimum initial train span 3 complete years;
+  1 complete year test fold;
+  purge/embargo at least 20 eligible sessions;
+  final most-recent complete 1-year holdout untouched by tuning.
+- Primary multiplicity control:
+  hierarchical Benjamini-Yekutieli FDR within D01 correlated hypothesis families.
+- Secondary D16 robustness:
+  SPA / Reality-Check-style family comparison where owner-certified.
+- Search registry must count every attempted parameter/template variant.
+- Allowed conclusions:
+  SUPPORTED;
+  REFUTED;
+  INCONCLUSIVE;
+  NOT_EVALUABLE.
+- NO_WINNER remains valid.
+- First empirical wave:
+  D01-02;
+  D01-03;
+  D01-07;
+  D01-09.
+- 10 deterministic protocol tests authored and 10 / 10 PASS under V8-equivalent execution.
+- Cumulative D01 deterministic equivalent execution through DL-087:
+  188 / 188 PASS.
+- No module is promoted to L4 in this tranche because no OOS/prospective outcome evidence has yet been joined.
+
+### Governance
+- D01 canonical maturity remains 60.0%.
+- All 11 modules remain L3.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Outcome join remains CLOSED.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-087
+
+1. Start DL-088: Taiwan PIT empirical-data readiness audit for D01-02 / D01-03 / D01-07 / D01-09.
+2. Resolve exact historical coverage, delisting/listing membership, session-status, corporate-action, suspension, price-limit and disposition receipts.
+3. Freeze one executable dataset manifest before opening outcomes.
+4. If first-wave coverage gates pass, hand OOS execution to D16 under DL-087.
+5. No L4 promotion until completed OOS or prospective Shadow evidence exists.
