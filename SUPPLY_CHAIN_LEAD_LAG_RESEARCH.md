@@ -2511,3 +2511,31 @@ This is an independent Taiwan issuer control and strengthens D10-01 topology ide
 Exact next:
 - SC-062 freeze a prospective append-only D10-01 topology receipt contract;
 - reconsider L3 only after at least one independently captured future issuer update can be replayed without backfill and all UNKNOWN/identity firewalls survive.
+
+
+## SC-062 — D10-01 prospective topology receipt contract frozen (2026-10-07)
+
+Artifacts:
+- `research/SC062_D10_01_PROSPECTIVE_TOPOLOGY_RECEIPT_CONTRACT_20261007_V0_1.md`
+- `research/sc062_d10_01_prospective_topology_receipt_contract_v0_1.json`
+
+The topology layer is now decomposed into three non-substitutable primitives:
+1. connectivity / qualified path existence;
+2. economic capacity / exposure redundancy;
+3. common-mode dependency.
+
+Replay invariants prohibit:
+- later supplier backfill;
+- anonymous identity guessing;
+- equal-weight fills for missing exposure;
+- multi-path => capacity-sufficient inference;
+- first-tier redundancy => full-network resilience inference;
+- UNKNOWN => safe inference.
+
+D10-01 remains L2/40.
+
+L3 preflight is now frozen prospectively. A qualifying promotion receipt must be a genuinely future issuer/source update captured after this contract freeze with valid sourcePublishedAt/capturedAt/decisionClock and replay without future leakage.
+
+Exact next:
+- SC-063 capture the next genuinely new issuer-native topology disclosure/event after contract freeze;
+- pre-existing historical documents may enrich controls but cannot count as the prospective L3 qualifying receipt.
