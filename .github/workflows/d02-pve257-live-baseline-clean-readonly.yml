@@ -1,5 +1,7 @@
 name: D02 PVE257 Live Baseline Clean Readonly
 
+# Class A research-only readback; no schedule and no Production mutation.
+
 on:
   workflow_dispatch:
   push:
