@@ -184,7 +184,8 @@ export async function generateNcT01HiddenFallbackAuditV0_1({
     auditGeneratedAt,
   });
   return {
-    ...audit,
+    schemaVersion:"S2_NCT01_HIDDEN_FALLBACK_AUDIT_GENERATION_V0_1",
+    audit,
     staticFindings:findings,
     physicalAcceptanceEligible:false,
     evidencePurpose:"EXACT_HEAD_STATIC_AND_RUNTIME_GUARD_INPUT; NOT PHYSICAL NC-T01 ACCEPTANCE BY ITSELF",
