@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 16:05 Asia/Taipei
+Updated: 2026-10-07 16:40 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -862,3 +862,65 @@ Correction consequence:
 - TPEx: test bounded fail-closed acquisition/body-completeness retry while retaining target-date/schema/coverage/PIT guards.
 - Do not apply one undifferentiated transport fix to both failure classes.
 
+
+
+### S2-CORR-20261007-002 — Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies
+
+- createdAt: 2026-10-07T16:40:34+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: NONE
+- affectedScope:
+  - System2 Stage-1 Decision Clock / prospective readiness;
+  - SHORT_MOMENTUM first-launch path;
+  - strategy-specific source dependency semantics;
+  - physical NC-T01 S22-T13 and downstream capacity eligibility.
+- detectedBy: 00_RESEARCH_AUDIT_CONTROL
+- canonicalRequirement:
+  Launch-critical readiness must be evaluated against the frozen strategy/stage dependency contract. A global source gate must not require source families that the strategy does not consume merely because another strategy needs them. UNKNOWN/missing strategy-irrelevant sources must not globally suppress an otherwise truthfully evaluable strategy.
+- observedProblem:
+  Current global Decision Clock computes `sameSessionClockReady` / `candidateTimestamp` from A1 TWSE + A1 TPEx + B2, and also requires A5 availability by the candidate boundary for global `requiredReady`. Latest frozen Stage-1 semantics state that SHORT_MOMENTUM launch-required families are TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION; MARKET_REGIME is not a launch-required family, and B2 INDUSTRY_THESIS plus A5 FUNDAMENTAL evidence belong to SWING_GROWTH / other dependency lanes. D16 already records `GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`. Therefore the global clock can keep SHORT_MOMENTUM blocked for a source family it does not require, defeating the approved single-independent-strategy Stage-1 path.
+- evidence:
+  - `system2/SYSTEM2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1.md`: candidate timestamp uses A1 TWSE + A1 TPEx + B2 and then enforces A5 by candidate boundary;
+  - `system2/runtime/decision_clock_daily_evidence.mjs`: B2 participates directly in `sameSessionClockReady`;
+  - `research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md`: explicitly freezes `GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`;
+  - `research/D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.md`: SHORT_MOMENTUM launch policy does not require MARKET_REGIME; SWING_GROWTH requires PIT-valid INDUSTRY_THESIS + FUNDAMENTAL_QUALITY;
+  - `system2/SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md`: frozen Stage-1 per-strategy assessor policies;
+  - 2026-10-07 terminal prospective run `37577209442`: A5 coverage true / B2 false / global requiredReady false, demonstrating the practical over-gating risk;
+  - Project dynamic-priority governance explicitly allows a single genuinely independent launch strategy to satisfy Stage-1 before a second strategy is ready.
+- riskIfUnfixed:
+  Even after A1 is physically READY and #762 / NC-T01 are resolved, SHORT_MOMENTUM can remain globally blocked by B2 or A5 despite not requiring them. This would create artificial opportunity starvation, make the single-strategy launch path non-executable, and conflate one strategy's missing thesis evidence with another strategy's readiness.
+- requiredCorrection:
+  1. Preserve the existing global cross-strategy Decision Clock artifact for the estimand/use-cases that genuinely require A1+B2+A5; do not retroactively reinterpret its historical evidence.
+  2. Add or expose a strategy/stage dependency-aware readiness evaluation for Stage-1 execution instead of weakening the global artifact in place.
+  3. SHORT_MOMENTUM readiness may depend only on its frozen strategy/stage required inputs plus universal source/PIT/session/integrity safeguards.
+  4. SWING_GROWTH must continue to fail closed on missing B2 INDUSTRY_THESIS / A5-derived FUNDAMENTAL_QUALITY as required; no source may be imputed or dropped merely to create picks.
+  5. Preserve explicit per-strategy candidate/readiness clocks and immutable dependency identities; no favorable rerun/cherry-picking.
+  6. Do not authorize different economic thresholds, ranking weights, selection policy, final-selection, push, capital or orders as part of this correction.
+  7. Add regression tests proving: B2/A5 missing can block SWING_GROWTH while a clean SHORT_MOMENTUM instance remains evaluable; missing A1 still blocks SHORT_MOMENTUM; universal integrity/PIT failures still fail closed for every strategy.
+  8. Physical acceptance requires a real trading-date prospective receipt showing strategy-specific readiness semantics; synthetic tests alone are insufficient.
+- acceptanceCriteria:
+  - strategy/stage readiness matches the frozen dependency contract;
+  - SHORT_MOMENTUM is not blocked solely because B2/A5 are unavailable when those sources are not required by its frozen Stage-1 policy;
+  - SWING_GROWTH remains INCOMPLETE/BLOCKED when its required thesis/fundamental evidence is unavailable;
+  - global source/PIT/session/integrity failures remain fail-closed;
+  - denominator/accounting provenance remains complete and UNKNOWN is never coerced to zero/pass;
+  - current global Decision Clock evidence history is preserved append-only;
+  - physical real-date evidence validates the corrected dependency routing before launch promotion;
+  - System1 Formal Core and System2 final-selection/live-push/capital/order authority remain unchanged.
+- protectedBoundaries:
+  - System1 Formal Core;
+  - System2 strategy identities and frozen Stage-1 assessor policies;
+  - PIT/UNKNOWN/source-integrity semantics;
+  - ranking/capacity max12/max3/no-forced-fill semantics;
+  - final selection / notification / live capital / orders.
+- ownerDecisionRequired: true
+  - Reason: implementing a strategy/stage-specific execution clock changes admissible decision behavior even though the inconsistency is audit-proven; BUILD_LANE must present the minimal contract-preserving design for owner approval before crossing that protected boundary.
+- implementationEvidence: []
+- verificationEvidence: []
+- finalDisposition: PENDING
+- updatedAt: 2026-10-07T16:40:34+08:00
