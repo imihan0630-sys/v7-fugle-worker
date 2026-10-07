@@ -158,7 +158,8 @@
 - Stopping：`SINGLE_PRIMARY_LOOK`；不允許 efficacy / futility outcome peeking；只有 pre-outcome readiness / integrity checks 可持續進行。
 - Primary opening gate：System1 fingerprint 5/5、System2 fingerprint、physical NC-T01、prospective pair receipts、common cutoff、exact model-state encoding、ModelMethodReceipt、MDE/precision target、>=40 effective independent decision dates、class/replication/coverage/consumption gates、explicit outer-stream state 全部完成。
 - Current verified：System1 `S22-T01~T05 = 5/5 PASS`；D16 prereg `S22-T25~T28 = 4/4 PASS`。
-- Current pending：System2 `S22-T06~T10`、physical NC-T01 `S22-T11~T16`、prospective `S22-T17~T24`。
+- Current pending：System2 `S22-T06~T10`、physical NC-T01 `S22-T11~T16`、prospective `S22-T17~T24`、MDE/precision target。
+- Model method freeze：`research/D16_SDA022_D5_MODEL_METHOD_FREEZE_20261007_V0_1.md` / `research/d16_sda022_d5_model_method_receipt_20261007_v0_1.json`。Primary encoding = coarse System1 policy state + SHORT_MOMENTUM entry-readiness state；ridge logistic lambda=1 primary，0.1/10 non-rescuing sensitivity；identity calibration；no interaction / rank / Regime / gate-vector expansion；date-balanced Brier remains primary。
 - Human prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.md`。
 - Machine prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json`。
 - Outer-stream enrollment：`research/D16_SDA022_OUTER_STREAM_ENROLLMENT_20261006_V0_1.json`。
