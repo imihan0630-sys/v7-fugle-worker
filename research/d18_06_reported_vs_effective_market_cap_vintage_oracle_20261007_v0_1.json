@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "D18_06_REPORTED_VS_EFFECTIVE_MARKET_CAP_VINTAGE_ORACLE_V0_1",
+  "owner": "ROOM11_D18",
+  "module": "D18-06",
+  "status": "PRE_EXECUTABLE_BLOCKING_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "layers": {
+    "S0": "REPORTED_SHARES_SNAPSHOT_CONTEXT",
+    "S1": "EFFECTIVE_MARKET_CAP_MEMBERSHIP"
+  },
+  "tests": [
+    {
+      "id": "SIZE-T01",
+      "case": "SAME_NUMERIC_SHARES_DIFFERENT_SOURCE_ROW_HASH_OR_VINTAGE",
+      "expect": "DISTINCT_PROVENANCE_IDENTITY"
+    },
+    {
+      "id": "SIZE-T02",
+      "case": "SOURCE_DATE_T_EFFECTIVE_DATE_AFTER_T",
+      "expect": "S0_KNOWN_S1_BLOCKED"
+    },
+    {
+      "id": "SIZE-T03",
+      "case": "CURRENT_SHARES_WITH_HISTORICAL_CLOSE_NO_VINTAGE_PROOF",
+      "expect": "REJECT_CURRENT_SHARES_BACKFILL"
+    },
+    {
+      "id": "SIZE-T04",
+      "case": "CUSTOM_SHARES_OVERRIDE_OFFICIAL_PROVENANCE_ABSENT",
+      "expect": "MARKET_CAP_SOURCE_UNKNOWN"
+    },
+    {
+      "id": "SIZE-T05",
+      "case": "CUSTOM_EXPLICIT_MARKET_CAP_PROVENANCE_ABSENT",
+      "expect": "S1_BLOCKED"
+    },
+    {
+      "id": "SIZE-T06",
+      "case": "OFFICIAL_SHARE_ROW_OBSERVED_AFTER_DECISION",
+      "expect": "PIT_INELIGIBLE"
+    },
+    {
+      "id": "SIZE-T07",
+      "case": "CAPITAL_SUPPLY_EVENT_UNRESOLVED",
+      "expect": "S1_BLOCKED"
+    },
+    {
+      "id": "SIZE-T08",
+      "case": "MARKET_TRANSFER_OR_MEMBERSHIP_UNRESOLVED",
+      "expect": "S1_BLOCKED"
+    },
+    {
+      "id": "SIZE-T09",
+      "case": "SAME_DAY_CLOSE_DATE_MISMATCH",
+      "expect": "S1_BLOCKED"
+    },
+    {
+      "id": "SIZE-T10",
+      "case": "TPEX_DENOMINATOR_SEMANTICS_INHERITED_FROM_TWSE",
+      "expect": "BLOCK_CROSS_MARKET_SCOPE_INHERITANCE"
+    },
+    {
+      "id": "SIZE-T11",
+      "case": "ISSUED_SHARES_RELABELLED_FREE_FLOAT",
+      "expect": "BLOCK_SEMANTIC_ALIAS"
+    },
+    {
+      "id": "SIZE-T12",
+      "case": "EQUAL_MARKET_CAP_DIFFERENT_DENOMINATOR_VINTAGE",
+      "expect": "KEEP_DISTINCT_RECEIPT_IDENTITY"
+    },
+    {
+      "id": "SIZE-T13",
+      "case": "OFFICIAL_ROW_EFFECTIVE_DENOMINATOR_EXACT_CLOSE_ALL_CERTIFIED",
+      "expect": "DETERMINISTIC_S1_MARKET_CAP_RECEIPT"
+    }
+  ],
+  "requiredS0Fields": [
+    "symbol",
+    "market",
+    "sharesOutstanding",
+    "sourceId",
+    "sourceRowHash",
+    "sourceReportedDate",
+    "capturedAt",
+    "decisionTimestamp",
+    "pointInTimeEligible"
+  ],
+  "requiredS1Fields": [
+    "effectiveSharesOutstanding",
+    "sharesEffectiveForMarketDate",
+    "denominatorVintageReceiptId",
+    "denominatorVintageReceiptHash",
+    "denominatorFamilySetVersion",
+    "effectiveDateOrValidityInterval",
+    "closeSourceId",
+    "closeSourceRowHash",
+    "closeMarketDate",
+    "priceSpaceVersion",
+    "marketCapHash"
+  ],
+  "denominatorLadder": [
+    "M0_MARKET_BASE_UNIVERSE",
+    "M1_REPORTED_SHARES_SNAPSHOT_KNOWN",
+    "M2_EFFECTIVE_SHARE_DENOMINATOR_CERTIFIED",
+    "M3_EFFECTIVE_MARKET_CAP_KNOWN",
+    "M4_SIZE_BUCKET_ELIGIBLE"
+  ],
+  "currentDisposition": {
+    "S0": "SOURCE_FEASIBILITY_STRONG_ZERO_EXTRA_CALL_OBSERVABILITY_PLAUSIBLE",
+    "S1": "BLOCKED_EFFECTIVE_DENOMINATOR_VINTAGE",
+    "sizeBucket": "NOT_FROZEN",
+    "maturityImpact": "NONE"
+  }
+}
