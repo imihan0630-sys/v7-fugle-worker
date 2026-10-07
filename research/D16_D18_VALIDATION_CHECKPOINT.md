@@ -3810,3 +3810,120 @@ Exact next:
 4. validate replay-bound CLEAR_NO_ACTION continuity + physical NC-T01 hash chain;
 5. keep D16-SDA022-01 numerical target pending until a lawful derivation basis exists;
 6. if no trigger lands, continue D18-04 U2 true-return continuity and D18-06 PIT size-vintage work.
+
+
+## 2026-10-07 D18-04 U2B CLEAR_NO_ACTION minimal feasibility path
+
+New durable artifacts:
+- `research/D18_U2B_CLEAR_NO_ACTION_MINIMAL_FEASIBILITY_CONTRACT_20261007_V0_1.md`;
+- `research/d18_u2b_clear_no_action_minimal_feasibility_oracle_20261007_v0_1.json`.
+
+### New scope separation
+
+The first executable U2B path does not need a full adjusted-return engine.
+
+V0.1 may be:
+`U2B_CLEAR_NO_ACTION_PRICE_RETURN`
+
+using the exact current close and immediately previous eligible official symbol-session close, but only when the shared continuity authority certifies the exact pair/window as CLEAR_NO_ACTION.
+
+This is close-to-close price return on a certified no-action interval.
+It is not total shareholder return, not an adjusted event path and not a transaction/fill return.
+
+### Critical anti-alias rule
+
+`NC_T01_CLEAR_NO_ACTION_ELIGIBLE != AUTOMATIC_U2B_READY`.
+
+NC-T01 technical continuity asks whether RAW history may safely feed technical/price-volume factors.
+
+D18 U2B asks whether the raw close ratio is an economically interpretable cross-sectional price return.
+
+D18 may reuse the same evidence package/certifier, but must additionally bind:
+- exact current/prior eligible session identity;
+- exact pair hash;
+- price-space/return-definition version;
+- U2B-required corporate-action family-set identity and adequacy;
+- lifecycle/reference-price reset state;
+- no post-cutoff evidence.
+
+### Action-family adequacy firewall
+
+Current shared continuity infrastructure materially covers:
+- EX_RIGHT_DIVIDEND;
+- CAPITAL_REDUCTION;
+- PAR_VALUE_CHANGE;
+for TWSE and TPEx historical actual-result lanes.
+
+These are strong reusable inputs, but Room11 will not silently claim that they exhaust every price-space reset relevant to the U2B return estimand.
+
+Before U2B promotion:
+`U2B_ACTION_FAMILY_SET_COMPLETE=true`
+must bind a versioned family-set scope, included/excluded reset-family rationale, lifecycle/delisting/identifier-change treatment and revision/coverage semantics.
+
+Otherwise:
+`ACTION_FAMILY_COVERAGE_SCOPE_UNPROVEN`
+and the row stays outside U2B.
+
+### Denominator and missingness
+
+V0.1 must separately report:
+- U0 N;
+- U1 N;
+- U2A N;
+- U2B clear-no-action ready N;
+- action-event blocked N;
+- continuity-unknown N;
+- prior-session missing N;
+- source/revision invalid N;
+- family-scope-unproven N.
+
+The no-action subset is not assumed missing-at-random.
+
+A median/mean on U2B may not be generalized to U0 without coverage/missingness interpretation.
+
+### Oracle
+
+The machine oracle freezes 13 cases.
+
+Key negatives:
+- holiday previous calendar day => use exact prior official eligible session;
+- missing required prior session + older substitute => block;
+- new listing without comparable prior => block;
+- open STOP with unresolved resume => block;
+- action event present => block V0.1 no-action path;
+- continuity receipt pair mismatch => block;
+- source-row revision drift => block;
+- post-cutoff evidence => block;
+- technical continuity pass but U2B family scope unproven => block;
+- no TWSE->TPEx scope inheritance;
+- missing/no-close rows cannot become zero return.
+
+Positive control:
+one exact two-session no-action pair with complete source/session/action-family/lifecycle/revision provenance deterministically emits U2B price return.
+
+### Relation to CORR-004
+
+CORR-004 exact expected-session reconciliation is now a prerequisite for trustworthy U2B prior-session identity.
+
+But CORR-004 does not prove corporate-action family adequacy.
+
+This keeps:
+session identity,
+technical continuity,
+economic price-return continuity
+as distinct evidence claims.
+
+### Maturity
+
+D18-04 remains L2/40.
+
+No executable U2B builder or physical Taiwan U2B pair exists yet.
+This round advances the implementation-ready semantic path only.
+
+Exact next:
+1. obtain CORR-004 merged-main physical session proof;
+2. reuse shared continuity certifier after exact-window binding;
+3. obtain explicit U2B action-family-set adequacy;
+4. build research-only U2B row/aggregate receipt;
+5. execute the 13-test oracle and one physical no-action pair;
+6. measure U2B coverage before any breadth/return Regime threshold.
