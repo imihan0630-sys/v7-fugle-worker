@@ -18,6 +18,7 @@ const finite=x=>typeof x==="number"&&Number.isFinite(x);
 const iso=x=>typeof x==="string"&&/(Z|[+-]\d\d:\d\d)$/.test(x)&&Number.isFinite(Date.parse(x));
 const same=(a,b,t=1e-7)=>finite(a)&&finite(b)&&Math.abs(a-b)<=Math.max(1,Math.abs(a),Math.abs(b))*t;
 const inc=(o,k)=>{o[k]=(o[k]||0)+1;};
+const bytes=x=>new TextEncoder().encode(JSON.stringify(x)).byteLength;
 
 function verifySourceState(s,receipt){
   if(s?.schemaVersion!==TARGET_RR_SOURCE_SCHEMA||s?.scanDate!==receipt.sessionDate||
@@ -141,7 +142,8 @@ export async function buildTargetRrChildCapturePrototype({
     if(!TARGET_STAGES.has(audit.formalStage)){preTarget.count++;inc(preTarget.reasons,audit.formalStage||"UNKNOWN");continue;}
     const history=historyState(f,parent,receipt.sessionDate),targetPrice=perSymbolTargetPriceSource(f,source);
     const semantics=targetSemantics({audit,history,targetPrice,parent,source,generationId:receipt.generationId,decisionAt:receipt.decisionAt});
-    const pool=pools.has(parent.pricePool)?parent.pricePool:"UNKNOWN";
+    if(!pools.has(parent.pricePool)) throw new Error("TARGET_RR_PARENT_POOL_INVALID");
+    const pool=parent.pricePool;
     const row={
       symbol:String(parent.symbol),pool,channel,formalStage:audit.formalStage,targetStateV2:semantics.state,
       parentSnapshotHash:await shadowHash(parent),parentContentDigest:receipt.contentDigest,
@@ -176,7 +178,12 @@ export async function buildTargetRrChildCapturePrototype({
     parentContentDigest:receipt.contentDigest,sourceReceipt,frameCounts,fullFrameN:rows.length,sampledChildN:children.length,
     capPerStratum,samplingOutcomeBlind:true,childDigest:hash(children),economicSuperiority:"UNKNOWN",
     formalOptimizationCandidate:"NONE",researchOnly:true,decisionImpact:false,formalCoreImpact:false,
+    storageBudget:{maxPerStratum:6,maxChildBytes:90000,maxHeaderBytes:90000,maxBundleBytes:5000000},
     noPlanChanges:true,noTrade:true,noPush:true
   };
-  return {header:{...header,semanticFingerprint:hash(header)},children};
+  const finalHeader={...header,semanticFingerprint:hash(header)};
+  if(children.length>384||children.some(x=>bytes(x)>90000)||bytes(finalHeader)>90000||
+     bytes({header:finalHeader,children})>5000000)
+    throw new Error("TARGET_RR_CHILD_STORAGE_BUDGET");
+  return {header:finalHeader,children};
 }
