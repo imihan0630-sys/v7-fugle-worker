@@ -1773,3 +1773,40 @@ CSSD / CSAD / IQR / MAD / upside-downside dispersion / top-1 and top-3 trade-val
 D09-09 remains L3/60.
 No L4 promotion.
 Formal Core unchanged.
+
+
+## BR-040 — second independent official TWSE stock-breadth date (2026-10-07)
+
+Artifact:
+- `research/br040_twse_advance_decline_second_date_20261007_v0_1.json`
+
+Official TWSE stock-only counts:
+- up 588 (limit-up 12);
+- down 387 (limit-down 4);
+- unchanged 99;
+- unmatched 5;
+- N/A 3;
+- comparable N = 1,074.
+
+Derived:
+- advance = 54.7486%;
+- decline = 36.0335%;
+- unchanged = 9.2179%;
+- net advance-minus-decline = +18.7151 percentage points.
+
+TAIEX:
+- close 49,806.37;
+- point change -16.18;
+- approximately -0.0325%.
+
+Cross-date falsification with BR-039:
+- 2026-10-02 = index up / breadth negative;
+- 2026-10-07 = index slightly down / breadth positive.
+
+Frozen:
+`CAP_WEIGHTED_INDEX_DIRECTION != STOCK_COUNT_BREADTH_DIRECTION`.
+
+BR-040 and BR-066 consume the same 2026-10-07 TWSE stock-direction root. Consumer count is two; independent evidence-root count is one.
+
+D09-04 remains L3/60.
+No L4 promotion; continue independent dates and add TPEx only under accepted same-clock denominator semantics.
