@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T16:27:32+08:00",
+  "updatedAt": "2026-10-07T16:33:46+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1036,7 +1036,10 @@
         "A1_TPEX_DAILY_CLOSE: 30 attempts with no READY observation; observed INVALID_PAYLOAD/NON_JSON_RESPONSE and NOT_READY states remain explicit",
         "Daily bundle: requiredReady=false; precisionEligible=false; candidateTimestamp=null; exactDecisionClockAuthorized=false; cronAuthorized=false; externalMutationPerformed=false",
         "system2/runtime/official_source_probes.mjs uses a single GET per probe and returns NON_JSON_RESPONSE on JSON parse failure after HTTP success",
-        "Historical DATA_LANE separately observed intermittent TPEx PRIMARY transport exhaustion in 2024 annual run 37587943578; historical bounded PRIMARY-only recovery is already implemented under existing CORR-001 and is not duplicated by this directive"
+        "Historical DATA_LANE separately observed intermittent TPEx PRIMARY transport exhaustion in 2024 annual run 37587943578; historical bounded PRIMARY-only recovery is already implemented under existing CORR-001 and is not duplicated by this directive",
+        "00 secondary live diagnostic after the terminal run, using a separate read-only retrieval channel with no authority promotion: TWSE official STOCK_DAY_ALL returned HTTP 200 / application/json / valid JSON / 1381 rows but sample Date remained 1151006 (2026-10-06), supporting a genuine publication/readiness lag at that observation rather than a JSON transport failure",
+        "00 secondary live diagnostic: TPEx official tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json / valid complete JSON / approximately 4.67 MB / 12245 rows with Date 1151007 (2026-10-07), proving current-day TPEx data existed at the later observation; this supports classifying the earlier GitHub-runner NON_JSON_RESPONSE states as transient acquisition/body-integrity failures rather than absence of current-day TPEx publication",
+        "Official TWSE E-shop daily-closing product states production occurs approximately at 14:00, 15:30 and 17:30 on each trading day. This does not prove the exact STOCK_DAY_ALL OpenAPI endpoint updates on the identical schedule, but it falsifies any assumption that a collector ending before 17:30 can treat non-readiness as end-of-day unavailability."
       ],
       "riskIfUnfixed": "SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 strategy-evaluation receipt when its core A1 input family never reaches source-honest READY. NC-T01 S22-T13 physical independence and downstream ranking/capacity evidence can remain blocked, while poll exhaustion could be misread as source absence or a legitimate zero-pick day.",
       "requiredCorrection": [
@@ -1045,7 +1048,8 @@
         "Add only bounded fail-closed transport recovery where justified for transient transport/non-JSON acquisition; do not weaken target-date, schema, coverage, OHLC or PIT validation.",
         "Ensure the observation window or follow-up observation mechanism can truthfully capture same-day source readiness when it occurs; never infer permanent unavailability merely because the current polling window exhausted.",
         "Persist/emit the first source-honest READY observation timestamp and preserve all earlier failed/not-ready attempts append-only.",
-        "Re-run a real trading-day prospective receipt before claiming the current A1 gate repaired."
+        "Re-run a real trading-day prospective receipt before claiming the current A1 gate repaired.",
+        "Separate readiness-window design from transport recovery: TWSE stale-prior-date evidence requires later observation/finality handling, while TPEx transient NON_JSON_RESPONSE can be tested with bounded acquisition retry; do not apply one fix to both failure classes."
       ],
       "acceptanceCriteria": [
         "A genuine trading-date run distinguishes TWSE and TPEx current-day readiness independently and preserves every attempt state",
@@ -1071,7 +1075,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T16:27:32+08:00"
+      "updatedAt": "2026-10-07T16:33:46+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
