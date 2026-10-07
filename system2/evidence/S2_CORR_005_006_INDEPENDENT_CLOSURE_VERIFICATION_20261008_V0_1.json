@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_V0_1",
+  "recordedAt": "2026-10-08T05:57:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "f2a2a6924f3aea5233b419441140ac1911a924fb",
+  "corrections": [
+    "S2-CORR-20261007-005",
+    "S2-CORR-20261007-006"
+  ],
+  "implementation": {
+    "pullRequest": 841,
+    "title": "system2: close NC-T01 CORR-005 and CORR-006 firewalls",
+    "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+    "mergeCommit": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+    "mergedAt": "2026-10-07T21:59:04Z"
+  },
+  "exactHeadChecks": [
+    {
+      "workflow": "System2 Research CI",
+      "runId": 37692800933,
+      "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 NC-T01 Artifact Runner V0.1",
+      "runId": 37692801039,
+      "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 SDA-022 Policy Fingerprints V0.1",
+      "runId": 37692801017,
+      "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "V8 Regression Tests",
+      "runId": 37692801025,
+      "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 NC-T01 Continuity Replay Binding V0.1",
+      "runId": 37692800978,
+      "head": "b73ab494b9aef3af9970723602bd584e131b7db7",
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "mergedMainChecks": [
+    {
+      "workflow": "System2 NC-T01 Artifact Runner V0.1",
+      "runId": 37693224252,
+      "head": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 SDA-022 Policy Fingerprints V0.1",
+      "runId": 37693224237,
+      "head": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 NC-T01 Continuity Replay Binding V0.1",
+      "runId": 37693224292,
+      "head": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "V8 Regression Tests",
+      "runId": 37693224321,
+      "head": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "workflow": "System2 Research CI",
+      "runId": 37693224267,
+      "head": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "mergedMainCorrectionAuditArtifact": {
+    "runId": 37693224252,
+    "artifactId": 11513234786,
+    "artifactDigest": "sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb",
+    "runnerHeadSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+    "transitiveManifestHash": "a4705275be3a94d2948686bc3bbb775f82537bfe9b181022064725d607ccd242",
+    "auditDigest": "474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037",
+    "auditedBlobCount": 24,
+    "perDimensionDisposition": {
+      "cachedSystem1SelectionUsed": "PROVEN_ABSENT",
+      "persistedSystem1SelectionUsed": "PROVEN_ABSENT",
+      "aliasReconstructionUsed": "PROVEN_ABSENT",
+      "crossProjectFallbackUsed": "PROVEN_ABSENT",
+      "staleSharedStateUsed": "PROVEN_ABSENT"
+    },
+    "runtimeEvidence": {
+      "instrumented": true,
+      "sameExecutionCut": true,
+      "runtimeForbiddenAccessCount": 0,
+      "runtimeEvidenceDigest": "5679e1fb80e7ebd6621f773b676a8b3720e479025a83d507e634b2e24adb748e",
+      "typedEvidence": [
+        "CI_CORRECTION_REGRESSION_ONLY_NO_FORBIDDEN_SYSTEM1_ACCESS"
+      ]
+    },
+    "auditState": "CLEAN_PROVEN_ABSENT",
+    "physicalAcceptanceEligible": false,
+    "interpretation": "Valid merged-main correction regression and exact-head audit contract evidence. It is intentionally not a physical NC-T01 acceptance artifact."
+  },
+  "fingerprintRebind": {
+    "reason": "PR #841 changed daily_shadow_orchestrator_v0_1.mjs, one of the 11 hard-bound SDA-022 source artifacts, so fingerprint regeneration was mandatory.",
+    "runId": 37693224237,
+    "artifactId": 11514650165,
+    "artifactDigest": "sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555",
+    "SHORT_MOMENTUM": "2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd",
+    "SWING_GROWTH": "727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af",
+    "orchestratorBlob": "35997dbde5ca0a97567f3a346268fd767007202c",
+    "S22_T06_to_T10_preserved": true,
+    "physicalIndependentDiscovery": false,
+    "ncT01Required": true
+  },
+  "currentMainDriftReadback": {
+    "observedMain": "f2a2a6924f3aea5233b419441140ac1911a924fb",
+    "unchangedRelevantBlobs": [
+      [
+        "system2/runtime/nct01_physical_receipt_v0_1.mjs",
+        "b46d74fee6a3101f14c2f81d48a061c7624421c6"
+      ],
+      [
+        "system2/runtime/nct01_artifact_runner_v0_1.mjs",
+        "eade16012a8e1db24566bda468f23b7a965fe7bd"
+      ],
+      [
+        "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs",
+        "ec94a3b967731afae3543258a41bd91f0a1419ef"
+      ],
+      [
+        "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+        "35997dbde5ca0a97567f3a346268fd767007202c"
+      ],
+      [
+        "system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs",
+        "ce7ee4917d20868e0aac3459240200bbc57094ba"
+      ]
+    ]
+  },
+  "corr005Findings": {
+    "omittedAuditEvidenceFailsClosed": true,
+    "missingOrUnknownDimensionFailsClosed": true,
+    "missingAuditDigestFailsClosed": true,
+    "staticOnlyOrRuntimeOnlyEvidenceFailsClosed": true,
+    "anyPresentDependencyBecomesHiddenSystem1Dependency": true,
+    "auditDigestBoundIntoTypedSourceGenerationRefs": true,
+    "exactHeadAuditAndRuntimeEvidenceRequired": true,
+    "disposition": "VERIFIED_FIXED"
+  },
+  "corr006Findings": {
+    "w0ContinuityReadySeparatedFromW1StrategyExecutable": true,
+    "requiredEvidenceCompleteExplicit": true,
+    "missingRequiredEvidenceCountExplicit": true,
+    "assessmentHashExplicit": true,
+    "strategyIncompleteCannotPromoteExecution": true,
+    "invalidatedWithMissingRequiredEvidenceCannotPromoteW1": true,
+    "legitimateZeroPickRequiresAtLeastOneW1": true,
+    "provenanceSeparatesContinuityReadyRequiredCompleteAndExecutableCounts": true,
+    "disposition": "VERIFIED_FIXED"
+  },
+  "physicalBoundary": {
+    "S22_T11_to_T16": "NOT_CLOSED_BY_THIS_VERIFICATION",
+    "realSourceHonestClearNoActionReceiptObserved": false,
+    "realArtifactOnlyNcT01Observed": false,
+    "reason": "Merged-main correction artifact explicitly sets physicalAcceptanceEligible=false. Code firewalls are fixed, but the physical independence gate still requires one coherent real continuity-backed artifact-only execution."
+  },
+  "finalDisposition": "CORR_005_AND_CORR_006_VERIFIED_CLOSED_CODE_FIREWALLS_ONLY_PHYSICAL_NC_T01_REMAINS_PENDING",
+  "formalCoreImpact": "NONE_LOCKED"
+}
