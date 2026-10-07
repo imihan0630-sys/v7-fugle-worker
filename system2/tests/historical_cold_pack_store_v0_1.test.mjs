@@ -112,6 +112,17 @@ assert.equal(verified.objectCountVerified,1);
 const second=await executeHistoricalColdPackSetV0_1({db,objectStore,packSet,batchId:"COLD|TWSE|2017",capturedAt,chunkSize:1});
 assert.equal(second.state,"ALREADY_COMPLETE");
 assert.equal(second.insertedObjectCount,0);
+assert.equal(second.checkpointRepairPerformed,false);
+
+db.checkpoints[0]={...db.checkpoints[0],state:"OBJECTS_AND_MANIFESTS_READY"};
+const repaired=await executeHistoricalColdPackSetV0_1({
+  db,objectStore,packSet,batchId:"COLD|TWSE|2017",capturedAt:"2026-09-28T14:34:00Z",chunkSize:1,
+});
+assert.equal(repaired.state,"ALREADY_COMPLETE");
+assert.equal(repaired.checkpointRepairPerformed,true);
+assert.equal(db.checkpoints[0].state,"COMPLETE");
+assert.equal(Number(db.checkpoints[0].manifest_committed_count),packSet.packCount);
+assert.equal(Number(db.checkpoints[0].object_ready_count),packSet.packCount);
 
 const rebuilt=await buildHistoricalA1PacksResearchV0_1({rows,capturedAt:"2026-09-28T14:35:00Z"});
 const resumed=await executeHistoricalColdPackSetV0_1({db,objectStore,packSet:rebuilt,batchId:"COLD|TWSE|2017|RETRY",capturedAt:"2026-09-28T14:35:00Z",chunkSize:1});
