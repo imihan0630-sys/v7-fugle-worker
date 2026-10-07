@@ -3,16 +3,17 @@ import {mkdir,writeFile} from "node:fs/promises";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
-assert.ok(accountId&&token,"System2 Cloudflare credentials required");
+const settingsToken=process.env.CLOUDFLARE_API_TOKEN;
+assert.ok(accountId&&token&&settingsToken,"System2 Cloudflare credentials required");
 const origin="https://api.cloudflare.com/client/v4";
 
-async function cf(path,options={}){
- const res=await fetch(origin+"/accounts/"+accountId+path,{...options,headers:{authorization:"Bearer "+token,accept:"application/json","content-type":"application/json",...(options.headers||{})},signal:AbortSignal.timeout(45000)});
+async function cf(path,options={},authToken=token){
+ const res=await fetch(origin+"/accounts/"+accountId+path,{...options,headers:{authorization:"Bearer "+authToken,accept:"application/json","content-type":"application/json",...(options.headers||{})},signal:AbortSignal.timeout(45000)});
  const text=await res.text();let data;try{data=JSON.parse(text)}catch{data=null}
  if(!res.ok||data?.success===false) throw new Error("Cloudflare HTTP "+res.status+": "+String(data?.errors?.[0]?.message||text).slice(0,700));
  return data;
 }
-const settings=await cf("/workers/scripts/system2-shadow-research/settings");
+const settings=await cf("/workers/scripts/system2-shadow-research/settings",{},settingsToken);
 const binding=(settings?.result?.bindings||[]).find(x=>x?.name==="SYSTEM2_DB");
 const dbId=binding?.id||binding?.database_id;
 assert.ok(dbId,"SYSTEM2_DB binding missing");
