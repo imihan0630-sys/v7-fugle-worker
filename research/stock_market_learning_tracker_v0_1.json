@@ -1460,8 +1460,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「橫截面報酬離散度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / SYNTHETIC_DIRECTION_FALSIFICATION_PASS / BR043A_SHARED_R3A1_PARENT_DEPENDENCY / SDA009_GENUINE_R3A1_RECEIPT_0 / ONE_PARENT_DATA_ROOT / LIVE_RECEIPT_PENDING / OUTCOMES_CLOSED",
-          "next": "BR-043 remains reserved for the first genuine live/source-only dispersion receipt. Wait for genuine System1 R3A1 parity receipt passing sda009_r3a1_acceptance_oracle_v0_6; reuse the exact immutable member universe to compute CSSD/CSAD/IQR/MAD, coverage and trade-value Top1/Top3 removal outcome-blind; do not create a separate Room07 parent path; accumulate independent dates before D16 prospective/OOS testing."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / BR041_SCHEMA_FROZEN / BR042_SYNTHETIC_FALSIFICATION_PASS / 20261007_A1_FULL_MARKET_1973_PERSISTED_READBACK_VERIFIED / B5_CURRENT_CLASSIFICATION_PROSPECTIVELY_USABLE / BR043_ROW_EXPORT_ACCESS_BLOCKED / KEEP_L3",
+          "next": "BR-043 exact next: consume DATA_LANE read-only immutable 2026-10-07 A1 row export (TWSE 1086 + TPEx 887 expected lineage) plus same-observation B5 symbol→industry receipt/hash; then compute CSSD/CSAD/IQR/MAD/upside-downside and trade-value top-1/top-3 leader removal outcome-blind. No L4 until live receipt plus independent dates."
         },
         {
           "id": "D09-10",
