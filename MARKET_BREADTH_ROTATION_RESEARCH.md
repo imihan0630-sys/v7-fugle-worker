@@ -2505,3 +2505,53 @@ No stock outcome or Formal change.
 
 Exact next:
 BR-065 continue native milestone surveillance across all five frozen actions; preserve issuer clustering and shared D10 lineage where physical milestones are consumed.
+
+
+## BR-066 — 2026-10-07 same-date Breadth × Regime joint receipt
+
+Artifacts:
+- `research/BR066_D09_12_SAME_DAY_BREADTH_REGIME_JOINT_RECEIPT_20261007_V0_1.md`
+- `research/br066_d09_12_same_day_breadth_regime_joint_receipt_20261007_v0_1.json`
+
+Decision cutoff:
+`2026-10-07T23:55:26+08:00`.
+
+Official TWSE evidence frozen before the cutoff:
+- TAIEX close 49,806.37, daily move -16.18 / approximately -0.03%;
+- stock-direction breadth: 588 up / 387 down / 99 flat / 5 unmatched / 3 N-A;
+- comparable N = 1,074;
+- advance share = 54.7486%;
+- decline share = 36.0335%;
+- net advance-minus-decline = +18.7151 percentage points;
+- comparable coverage = 99.2606%.
+
+The existing D18 TAIEX formula is reused unchanged:
+- MA20 = 47,577.466;
+- five-session MA20 slope = +666.0845;
+- return5 = +3.8929%;
+- return20 = +5.2404%;
+- RV5 = 0.0093696879;
+- RV20 = 0.0095963706;
+- RV5/RV20 = 0.9763782851;
+- trendContext = UP_TREND_CONTEXT;
+- volatilityDirection = VOL_CONTRACTING.
+
+TPEx same-clock breadth remains UNKNOWN because an equally verified current denominator was not frozen in this receipt.
+
+Critical cross-date falsification:
+- 2026-10-06 replay: cap-weighted TAIEX positive while descriptive stock breadth was weak/negative;
+- 2026-10-07 prospective bounded receipt: cap-weighted TAIEX slightly negative while TWSE stock breadth is positive.
+
+Thus:
+`CAP_WEIGHTED_INDEX_DIRECTION != EQUAL_STOCK_DIRECTION_BREADTH`
+and the divergence sign is not stable day to day.
+
+Maturity decision:
+- D09-12: L2/40 -> L3/60;
+- reason: first bounded same-date prospective joint receipt validates Taiwan PIT source/semantic/replay feasibility under one decision cutoff;
+- this is not L4, not predictive Alpha, not a canonical BROAD_POSITIVE/BROAD_NEGATIVE claim.
+
+Exact next:
+BR-067 accumulate independent same-clock joint receipts, preferably with both TWSE and TPEx breadth plus continuity-certified median-return context; no outcome join before D16 common-support/OOS preregistration.
+
+Formal Core unchanged.
