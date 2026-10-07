@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "pattern-rr-uncertainty-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "grossRREqualsExecutableRR": false,
+  "zoneWidthMayBeCountedTwice": false,
+  "stopPaddingAlwaysImprovesRiskControl": false,
+  "targetHaircutAlwaysImprovesRealism": false,
+  "bestExPostStopTargetAllowed": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
