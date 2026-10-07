@@ -162,12 +162,6 @@ export async function buildMopsRepeatedCaptureUnionV1_7({
         existing.observationCount+=1;
       }
     }
-
-    for(const [key,item] of union.entries()){
-      if(!present.has(key)){
-        item.absentCaptureIds=uniqueSorted([...(item.absentCaptureIds||[]),capture.captureId]);
-      }
-    }
   }
 
   const pairwiseTransitions=[];
@@ -190,7 +184,7 @@ export async function buildMopsRepeatedCaptureUnionV1_7({
     .map(item=>({
       ...item,
       observedCaptureIds:uniqueSorted(item.observedCaptureIds||[]),
-      absentCaptureIds:uniqueSorted(item.absentCaptureIds||[]),
+      absentCaptureIds:normalized.filter(c=>!c.keys.includes(item.versionKey)).map(c=>c.captureId),
       observedQueryRefs:uniqueSorted(item.observedQueryRefs||[]),
       observedQueryPathClasses:uniqueSorted(item.observedQueryPathClasses||[]),
       presentInLatestCapture:(item.observedCaptureIds||[]).includes(normalized.at(-1).captureId),
