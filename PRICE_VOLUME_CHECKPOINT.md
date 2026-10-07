@@ -4247,3 +4247,178 @@ Governance:
 
 Exact next continuation point:
 PVE-261 — freeze an owner-gated Class-B remediation acceptance contract for the baseline refresh defect without merging/deploying Production changes. The candidate must make freshness, not minimum count, authoritative: if the persisted exact-slot baseline is older than the latest expected comparable prior slot, a bounded historical refresh/backfill through the prior session is required before H001 can be clean. Acceptance must prove no current/future leakage, preserve exact provider provenance, preserve corporate-action/reset semantics, reject unexplained missing slots, and physically read back a future session whose `baselineAsOfDate` equals its latest expected comparable prior slot. Separately, only after 2026-10-07 23:35/23:55 is naturally due may the PVE-251 schedule family be evaluated. PR #743 remains owner-gated.
+
+
+## PVE-261~269 continuation — baseline remediation acceptance frozen; cross-system D1 quota failure physically classified (2026-10-08)
+
+Status: PVE261_BASELINE_REFRESH_ACCEPTANCE_FROZEN / PVE263_AFTER_MARKET_INVOCATION_FAILED_D1_QUOTA / PVE264_CROSS_SYSTEM_ACCOUNT_QUOTA_CAUSE_CERTIFIED / PVE267_EXISTING_CORR003_HANDOFF / PVE268_CROSS_SYSTEM_QUOTA_ACCEPTANCE_FROZEN / PVE269_SCHEDULE_EVIDENCE_FUSION_FROZEN / CLEAN_H001_DATES_0 / GATE7_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### PVE-261 — owner-gated baseline-refresh acceptance contract
+
+Research-only artifacts:
+- `research/d02_pve261_baseline_refresh_acceptance_v0_1.mjs`;
+- `tests/test_d02_pve261_baseline_refresh_acceptance_v0_1.mjs`;
+- `.github/workflows/d02-pve261-baseline-refresh-acceptance.yml`.
+
+Dedicated validation run `37648991883`: SUCCESS; 22 assertions PASS.
+
+The frozen contract requires a future Class-B Production remediation to prove:
+- minimum history count cannot bypass exact-slot freshness;
+- latest expected comparable prior slot is bound from an authoritative pre-outcome source;
+- bounded refresh proceeds through the expected prior session;
+- current-session and future-date leakage are forbidden;
+- exact provider-response SHA-256 provenance survives;
+- corporate-action/reset semantics survive;
+- unexplained missing exact slots fail closed;
+- no retrospective clean date;
+- future physical acceptance occurs strictly after deployment and has decisionImpact=0.
+
+The contract grants no merge, deploy, maturity, Formal or outcome-access authority.
+
+### PVE-251/PVE-262 — natural 23:35/23:55 readback and raw audit
+
+After the natural 2026-10-07 23:35/23:55 Asia/Taipei family was due, PVE-251 was physically rerun:
+- trigger commit `15d6591d37c8cda7304d4fb9a19246370257c6e8`;
+- run `37649041814`, job `112887225789`: SUCCESS;
+- configured Cloudflare family includes `35,55 15 * * mon-fri`;
+- D1 family rows remained absent.
+
+PVE-262 then queried the raw D1 interval 2026-10-07 23:20 through 2026-10-08 00:10 Asia/Taipei:
+- `research/d02_pve262_cron_window_readonly_v0_1.mjs`;
+- run `37649249573`, job `112887945915`: SUCCESS;
+- window row count = 0;
+- latest persisted `v7_cron_runs` evidence stopped around 17:13 Asia/Taipei.
+
+This excluded a PVE-251 filtering artifact but did not by itself prove the Cloudflare trigger was absent.
+
+### PVE-263 — invocation existed; execution failed on account-level D1 quota
+
+Read-only side-effect audit:
+- `research/d02_pve263_after_market_side_effect_readonly_v0_1.mjs`;
+- run `37649543821`, job `112888965126`: SUCCESS.
+
+Physical KV/D1-side evidence:
+- `V7_LAST_SCAN_ATTEMPT.status=FAILED`;
+- requestedDate = 2026-10-07;
+- generatedAt = 2026/10/07 23:36:10 Asia/Taipei;
+- error explicitly reports Cloudflare D1 Free daily row-write limit exceeded;
+- failure alert was sent;
+- lease `V7_AFTER_MARKET_LEASE:2026-10-07` updated at 23:55:03 Asia/Taipei.
+
+Therefore the primary/recovery family was entered. Missing `v7_cron_runs` rows are compatible with the D1 audit sink itself being unable to write after quota exhaustion; `writeCronRun()` is fail-open on its own persistence failure.
+
+The correct state is not “trigger missing”. It is:
+`INVOKED_EXECUTION_FAILED_D1_QUOTA`.
+
+### PVE-264 — account-wide quota load is overwhelmingly SYSTEM2_DB
+
+Cloudflare analytics readback:
+- successful run `37650006684`, job `112890551584`;
+- UTC date = 2026-10-07;
+- SYSTEM2_DB rowsWritten = 124,629;
+- V7_DB rowsWritten = 1,869;
+- account total rowsWritten = 126,498;
+- SYSTEM2_DB share ≈ 98.52%;
+- V7_DB share ≈ 1.48%.
+
+The official Free limit used by the canonical System2 correction evidence is 100,000 rowsWritten per UTC day at the account level.
+
+This physically proves separate D1 database IDs do not isolate the Free write quota and that System2 account consumption can deny later System1 V7_DB writes despite low V7_DB self-consumption.
+
+### Existing canonical correction ownership
+
+Repository governance already contains:
+- `S2-CORR-20261007-003`;
+- severity HIGH;
+- status OPEN;
+- routing = REMEDIATION_LANE;
+- assigned room = System 2｜補強修復室;
+- modification owner = SYSTEM2_REMEDIATION_ROOM;
+- audit/routing/closure authority remains AUDIT_LANE.
+
+D02 did not open a duplicate correction and does not take implementation ownership.
+
+Existing canonical CORR-003 evidence already measured:
+- Recent A1 Hot History Warmup: 9,640 logical bars -> 57,880 D1 rowsWritten (~6.00x amplification);
+- scheduled Daily Shadow: 13,130 rowsWritten;
+- later Daily Shadow push: 1,296 rowsWritten;
+- 2024 TWSE annual sample: 7,358 rowsWritten.
+
+### PVE-265/PVE-266 — write-family attribution
+
+PVE-265 D1 Insights completed successfully but returned an empty query-level top-write list. That empty list is insufficient evidence and is not interpreted as zero write activity because PVE-264 independently proves 124,629 SYSTEM2_DB rowsWritten.
+
+PVE-266 read-only physical table attribution:
+- first attempt failed only on Worker-settings permission scope and was not accepted;
+- repaired run `37651086323`, job `112894288513`: SUCCESS;
+- `s2_historical_a1_bars` captured during UTC 2026-10-07 = 18,460 rows;
+- `s2_historical_a1_pack_manifests` = 1,538 rows;
+- `s2_historical_ingest_batches` = 21 rows, declaredRows sum = 20,433;
+- `s2_resonance_runs` = 1;
+- `s2_resonance_snapshots` = 0.
+
+This is consistent with CORR-003's independently measured historical-A1 write amplification. It does not claim every one of the 124,629 SYSTEM2_DB rowsWritten belongs to a single workflow.
+
+### PVE-267 — cross-system impact handoff
+
+Durable handoff:
+`research/D02_PVE267_CROSS_SYSTEM_D1_QUOTA_IMPACT_HANDOFF_20261008_V0_1.md`
+commit `f09c9c69a43c97c37d6cfc075a7070797742bab5`.
+
+New material impact added for AUDIT_LANE review:
+System2 account-level D1 consumption can block System1's after-market Production persistence. CORR-003 closure therefore should protect System1's critical after-market headroom in addition to System2 P0 writers.
+
+No queue mutation or severity self-change was made by D02.
+
+### PVE-268 — cross-system quota acceptance firewall
+
+Artifacts:
+- `research/d02_pve268_cross_system_d1_quota_acceptance_v0_1.mjs`;
+- `tests/test_d02_pve268_cross_system_d1_quota_acceptance_v0_1.mjs`;
+- run `37651460612`, job `112895571602`: SUCCESS;
+- 22 assertions PASS.
+
+The research-only guard requires:
+- vendor-contract-bound account quota;
+- UTC quota-day identity;
+- known account usage or conservative UNKNOWN_BLOCK;
+- evidence-derived System1 after-market reserve (no arbitrary reserve number);
+- writer reservation and priority;
+- explicit fact that separate DB IDs do not isolate the account quota;
+- no paid upgrade authority;
+- future physical proof that the quota gate was active before after-market, System1 reserve was granted, primary/recovery family invoked, exactly one business scan succeeded, normal receipt persisted, and no quota rejection occurred.
+
+### PVE-269 — schedule evidence fusion
+
+Artifacts:
+- `research/d02_pve269_schedule_evidence_fusion_v0_1.mjs`;
+- `tests/test_d02_pve269_schedule_evidence_fusion_v0_1.mjs`;
+- run `37651678046`, job `112896305719`: SUCCESS;
+- 17 assertions PASS.
+
+The frozen state model distinguishes:
+- `FAMILY_NOT_CONFIGURED`;
+- `UNOBSERVED`;
+- `INVOKED_AUDIT_ROW_UNAVAILABLE`;
+- `INVOKED_EXECUTION_FAILED`;
+- `INVOKED_EXECUTION_FAILED_D1_QUOTA`;
+- `BUSINESS_EXECUTION_SUCCESS`;
+- `DUPLICATE_BUSINESS_EXECUTION`.
+
+For 2026-10-07 the correct research classification is:
+`INVOKED_EXECUTION_FAILED_D1_QUOTA`.
+
+This prevents a failed D1 audit sink from being misread as a missing trigger.
+
+### Research/maturity state
+
+No economic price-volume hypothesis changed from UNKNOWN to supported/rejected.
+No promotion-grade outcome access opened.
+No 2026-10-07 retroactive repair is allowed.
+Clean prospective H001 dates remain 0.
+D02 remains 60.0%; all 12 D02 modules remain L3.
+Gate 7 remains CLOSED.
+Formal Core remains LOCKED.
+
+Exact next continuation point:
+PVE-270 — keep two independent prerequisites fail-closed before any H001 reopening. (A) The owner-gated PVE-261 baseline-refresh Production remediation must later produce a genuinely prospective exact-slot receipt whose `baselineAsOfDate` equals the authoritative latest expected comparable prior slot, with exact source provenance, corporate-action continuity, no current/future leakage, exact-slot validity PASS and decisionImpact=0. (B) Existing `S2-CORR-20261007-003` remains owned by REMEDIATION_LANE/AUDIT_LANE governance and must later be independently verified with an account-level D1 quota reservation that protects the System1 23:35/23:55 after-market window; a future real trading day must resolve through PVE-269 as `BUSINESS_EXECUTION_SUCCESS` with exactly one successful business scan and normal persisted receipts. Until both are physically true: H001 fail closed, outcomes closed, clean prospective dates=0, Gate 7 CLOSED and Formal Core LOCKED. Research-only D02 work may continue on H20/H003/Wave-2 admission semantics but cannot promote L4 without genuine prospective/OOS evidence.
