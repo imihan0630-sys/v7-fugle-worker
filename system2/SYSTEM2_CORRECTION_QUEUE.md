@@ -1029,3 +1029,33 @@ Correction consequence:
 - verificationEvidence: []
 - finalDisposition: PENDING
 - updatedAt: 2026-10-07T19:43:05+08:00
+
+
+### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
+
+- severity: HIGH
+- status: OPEN
+- routingClass: DATA_LANE
+- assignedRoom: System 2｜歷史資料工程室
+- canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
+- problem: count-only long-listed history readiness can accept the latest 60 observed rows even when one required recent eligible symbol-session is missing and an older row substitutes for it.
+- required semantics:
+  - exact expected eligible symbol-session set from official trading dates + PIT listing membership + certified lifecycle no-trading intervals;
+  - missing/unexpected sessions stay symbol-local and fail closed;
+  - older observations cannot substitute for a missing required recent session;
+  - no synthetic OHLC and no history rewrite;
+  - TWSE positive lifecycle evidence may remove certified non-trading sessions; empty lookup is not NO_EVENT;
+  - TPEx parity remains separate/fail-closed.
+- implementation candidate: PR #817 `fix(system2-data): reconcile exact Daily Shadow symbol sessions`.
+- 00 independent content audit: CONTENT_PASS_CANDIDATE / CANONICAL_AND_PHYSICAL_ACCEPTANCE_PENDING.
+  - old-head checks PASS;
+  - branch is diverged from latest main and must be rebuilt/rebased;
+  - factor-load path recomputes and validates `expectedSessionHash`, so the guard is not diagnostics-only;
+  - after canonical merge, require merged-main read-only preflight with at least one real exact-window TWSE witness and `rowsWritten=0`.
+- launch compression:
+  - first NC-T01 history/session witness does not require a broad annual market-year rerun or D1 mutation;
+  - exact-window read-only evidence is sufficient for this gate;
+  - continuity promotion remains separate and must bind `CLEAR_NO_ACTION` to the exact selected PIT replay window.
+- durable 00 audit:
+  `system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_CONTENT_AUDIT_20261007_V0_1.json`.
+- finalDisposition: PENDING
