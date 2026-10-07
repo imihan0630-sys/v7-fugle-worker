@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "D16_SYSTEM1_QUALITY_VERIFICATION_HARNESS_AUDIT_V0_1",
+  "updatedAt": "2026-10-07T09:01:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS",
+  "source": {
+    "prMergeSha": "420094e95adba8366c6e2f96ecf45e028cd64e41",
+    "workflow": ".github/workflows/system1-quality-transport-verification.yml",
+    "runId": 37555765564,
+    "jobId": 112581505705
+  },
+  "observedFailure": {
+    "step": "Verify transport-retry contract offline",
+    "assertion": "V8.9.7+ runtime required",
+    "liveQualityRecoveryExecuted": false,
+    "readinessCheckExecuted": false,
+    "artifactEmitted": false
+  },
+  "authorityModel": {
+    "rootWorkerRole": "BASELINE_SOURCE",
+    "rootWorkerVersion": "7.5.26-q1-statement-column-validation",
+    "baselinePatch": "scripts/apply_v7_5_27.py",
+    "productionBuildWorkflow": ".github/workflows/v7-cloudflare.yml",
+    "finalPatch": "scripts/apply_v8_20_0.py",
+    "effectiveProductionVersion": "8.20.0-formal-c1-binding-ledger"
+  },
+  "defect": {
+    "canonicalClassification": "BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS",
+    "canonicalBuildChainExecuted": false,
+    "V7_TEST_WORKER_PATHSet": false,
+    "offlineTestAuthority": "ROOT_BASELINE_WORKER_JS",
+    "mainSourceRegressionProven": false
+  },
+  "qualityDisposition": {
+    "FINANCIAL": "UNKNOWN_NOT_TESTED_BY_RUN_37555765564",
+    "QUARTER_EPS": "UNKNOWN_NOT_TESTED_BY_RUN_37555765564",
+    "qualityTransportRepairPass": false,
+    "qualityTransportRepairFailFromLiveSource": false
+  },
+  "researchRoles": {
+    "countInProspectiveEvidenceN": false,
+    "countAsZeroPick": false,
+    "countAsStrategyFailure": false,
+    "countAsNegativeOutcome": false,
+    "countInOperationalFailureAccounting": true,
+    "suggestedOperationalClass": "VALIDATOR_CONTRACT_FAILURE"
+  },
+  "engineeringRouting": {
+    "owner": "SYSTEM1_ENGINEERING",
+    "acceptablePatterns": [
+      "APPLY_CANONICAL_PATCH_CHAIN_BEFORE_OFFLINE_TEST",
+      "BIND_TEST_TO_CANONICAL_GENERATED_EFFECTIVE_WORKER_VIA_V7_TEST_WORKER_PATH"
+    ],
+    "requiredPostFixSequence": [
+      "EFFECTIVE_RUNTIME_CONTRACT_TEST_PASS",
+      "LIVE_QUALITY_RECOVERY_EXECUTED",
+      "FINANCIAL_READINESS_READBACK",
+      "QUARTER_EPS_READINESS_READBACK"
+    ]
+  },
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
