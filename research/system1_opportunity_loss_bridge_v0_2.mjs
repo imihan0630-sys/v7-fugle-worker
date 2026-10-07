@@ -92,6 +92,7 @@ export function buildSystem1OpportunityLossBridgeV02(args={}){
   const out={
     ...base,
     schemaVersion:"SYSTEM1_OPPORTUNITY_LOSS_BRIDGE_V0_2",
+    rows:[...(base.rows||[])].sort((a,b)=>String(a.symbol||"").localeCompare(String(b.symbol||""))),
     lifecycle,
     hypotheses,
     investigationQueue,
