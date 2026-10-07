@@ -19,7 +19,7 @@
     },
     {
       "path": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
-      "contentSha": "79bebce21cca3cdf3b40affd6043ffa6b1f84c0e"
+      "contentSha": "35997dbde5ca0a97567f3a346268fd767007202c"
     },
     {
       "path": "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
@@ -167,6 +167,6 @@
     "No universal cross-strategy score and no System1 Top6/rank prerequisite."
   ],
   "fingerprintId": "SYSTEM2:SWING_GROWTH:STAGE1:2026-10-07:V0.1",
-  "fingerprintHash": "a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b",
-  "generatedAt": "2026-10-07T15:26:34.525Z"
+  "fingerprintHash": "727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af",
+  "generatedAt": "2026-10-07T21:54:17.313Z"
 }
