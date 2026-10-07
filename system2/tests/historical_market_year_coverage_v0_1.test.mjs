@@ -182,6 +182,7 @@ assert.equal(cmodeDateMismatch.intervals.length,0);
 assert.equal(cmodeDateMismatch.absenceCertifiesNoStop,false);
 
 assert.deepEqual(unknown.unknownSessionDates,["2017-01-04"]);
+assert.equal(unknown.schemaVersion,"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_3");
 assert.deepEqual(classified.unknownSessionDates,[]);
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
