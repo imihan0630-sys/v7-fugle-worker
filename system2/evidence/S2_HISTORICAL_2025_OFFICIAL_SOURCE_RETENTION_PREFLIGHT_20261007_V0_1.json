@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_HISTORICAL_2025_OFFICIAL_SOURCE_RETENTION_PREFLIGHT_V0_1",
+  "observedAt": "2026-10-07T20:23:25+08:00",
+  "purpose": "Read-only boundary-date confirmation that canonical official historical A1 endpoints still retain 2025 payloads before physical annual ingestion.",
+  "authority": {
+    "sourceAuthority": "OFFICIAL_TWSE_TPEX",
+    "retrievalChannel": "FIRECRAWL_TRANSPORT_ONLY",
+    "retrievalChannelIsSourceAuthority": false,
+    "physicalD1Write": false,
+    "physicalR2Write": false
+  },
+  "samples": [
+    {
+      "market": "TWSE",
+      "marketDate": "2025-01-02",
+      "url": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20250102&type=ALLBUT0999",
+      "bodyChars": 185045,
+      "dateMarker": true,
+      "securityCodeField": true,
+      "closeField": true,
+      "dataArray": true,
+      "disposition": "PASS_OFFICIAL_HISTORICAL_PAYLOAD_PRESENT"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2025-12-31",
+      "url": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20251231&type=ALLBUT0999",
+      "bodyChars": 192379,
+      "dateMarker": true,
+      "securityCodeField": true,
+      "closeField": true,
+      "dataArray": true,
+      "disposition": "PASS_OFFICIAL_HISTORICAL_PAYLOAD_PRESENT"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2025-01-02",
+      "url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2025%2F01%2F02",
+      "bodyChars": 414011,
+      "dateMarker": true,
+      "securityCodeField": true,
+      "closeField": true,
+      "dataArray": true,
+      "disposition": "PASS_OFFICIAL_HISTORICAL_PAYLOAD_PRESENT"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2025-12-31",
+      "url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2025%2F12%2F31",
+      "bodyChars": 1692269,
+      "dateMarker": true,
+      "securityCodeField": true,
+      "closeField": true,
+      "dataArray": true,
+      "disposition": "PASS_OFFICIAL_HISTORICAL_PAYLOAD_PRESENT"
+    }
+  ],
+  "conclusions": {
+    "boundaryRetentionPass": true,
+    "twse2025BoundaryRetentionPass": true,
+    "tpex2025BoundaryRetentionPass": true,
+    "fullYearCompletenessClaim": false,
+    "physicalAcceptanceClaim": false,
+    "nextPhysicalOrder": [
+      "2024/TPEX",
+      "2025/TWSE",
+      "2025/TPEX"
+    ],
+    "caveat": "Boundary sampling confirms source retention and live schema markers only. Full-year acceptance still requires the canonical annual backfill, physical verify, artifact, and System1 isolation gates."
+  },
+  "protectedBoundaries": [
+    "No D1/R2 physical mutation",
+    "No System1 Formal/runtime change",
+    "No strategy/ranking/final-selection/capital/order authority change",
+    "No use of TPEx non-equivalent legacy fallback as canonical evidence"
+  ]
+}
