@@ -2478,3 +2478,36 @@ Maturity:
 Exact next:
 - SC-060 seek one official Taiwan issuer disruption event where an alternate source/path is actually attempted and qualification/capacity/geography/switching delay determines whether redundancy works;
 - preserve event clocks and keep stock outcomes closed.
+
+
+## SC-060 — TSMC realized drought redundancy stress test (2026-10-07)
+
+Artifact:
+- `research/SC060_TSMC_DROUGHT_REALIZED_REDUNDANCY_STRESS_TEST_20261007_V0_1.md`
+
+TSMC official drought-contingency material provides a staged operational path from conservation/drills into water-truck activation and alternative/reclaimed water sourcing under stronger restriction states. Sustainability indicators report zero climate-disaster production-interruption days in the relevant reported periods.
+
+Interpretation is deliberately bounded:
+- this supports a realized operational redundancy witness;
+- zero interruption cannot be causally attributed to water trucks or any single path;
+- `REALIZED_ZERO_INTERRUPTION != SINGLE_PATH_CAUSAL_SUCCESS`.
+
+`D10-01` remains L2/40. No Formal change.
+
+## SC-061 — MediaTek multisource / concentration orthogonality (2026-10-07)
+
+Artifact:
+- `research/SC061_MEDIATEK_MULTISOURCE_CONCENTRATION_ORTHOGONALITY_20261007_V0_1.md`
+
+MediaTek 2024 annual-report evidence names multiple wafer-foundry sources (TSMC, UMC, GlobalFoundries) and active pursuit of additional suppliers, while the key-supplier table still reports Supplier A at 67.21% of total 2024 purchases.
+
+Frozen rules:
+- `MULTISOURCE_COUNT != PROCUREMENT_SHARE_REDUNDANCY`;
+- `FIRST_TIER_CONNECTIVITY_REDUNDANCY != CAPACITY_OR_ALLOCATION_REDUNDANCY`;
+- anonymized Supplier A/B must not be guessed onto the named-foundry list.
+
+This is an independent Taiwan issuer control and strengthens D10-01 topology identifiability, but retrospective annual-report evidence alone does not promote L3.
+
+Exact next:
+- SC-062 freeze a prospective append-only D10-01 topology receipt contract;
+- reconsider L3 only after at least one independently captured future issuer update can be replayed without backfill and all UNKNOWN/identity firewalls survive.
