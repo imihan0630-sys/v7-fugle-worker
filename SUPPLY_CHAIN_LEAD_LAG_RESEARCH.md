@@ -2644,3 +2644,51 @@ on the first official publication of September 2026 product-level Industrial Pro
 Background waits:
 - D10-01: first genuine post-SC-062 topology mutation.
 - D09 / SDA-009: genuine System1 R3A1 receipt; current canonical genuine receipt count remains 0.
+
+
+## SC-068 — UMC issuer-native true utilization and low-utilization control (2026-10-07)
+
+Artifact:
+- `research/SC068_UMC_TRUE_UTILIZATION_AND_LOW_UTILIZATION_CONTROL_20261007_V0_1.md`
+
+UMC official quarterly releases provide issuer-native wafer-fab capacity-utilization rates rather than synthetic shipment/capacity proxies:
+- 2024Q1: 65%;
+- 2024Q4: 70%;
+- 2025Q4: 78%;
+- 2026Q1: 79%;
+- 2026Q2: 85%.
+
+2024Q1 is frozen as the low-utilization control. UMC simultaneously reported wafer shipments increasing QoQ while utilization remained 65%, so:
+`SHIPMENT_GROWTH != HIGH_UTILIZATION`.
+
+This closes the prior D10-04 source-quality gap for one Taiwan issuer and supplies the requested low-utilization control.
+
+D10-04 remains L3/60 because no stock/economic outcome or prospective/OOS validation is opened.
+
+## SC-069 — UMC 2026Q3 utilization forecast-realization preregistration (2026-10-07)
+
+Artifact:
+- `research/SC069_UMC_2026Q3_UTILIZATION_FORECAST_REALIZATION_PREREG_20261007_V0_1.md`
+
+UMC's 2026Q2 official release froze:
+- realized 2026Q2 utilization = 85%;
+- management guidance for 2026Q3 utilization = above 90%.
+
+UMC's official investor calendar schedules the 2026Q3 earnings release / conference call for 2026-10-28.
+
+The comparison is preregistered before the realized 2026Q3 utilization is public:
+- `GUIDANCE_MET` iff realized utilization > 90%;
+- `GUIDANCE_NOT_MET` iff realized utilization <= 90%;
+- `UNRESOLVED` if no comparable issuer-native utilization figure is disclosed;
+- `SOURCE_DELAYED` if the official release is postponed.
+
+No tolerance band may be added after seeing the result.
+No stock outcome is opened.
+
+Exact next:
+- SC-070 on the first official 2026Q3 UMC release, capture the issuer-native utilization with source/capture clocks and evaluate only the preregistered >90% condition;
+- preserve unavailable fields as UNKNOWN;
+- then decide whether a bounded D16 source/validation handoff is warranted.
+
+D10-04 remains L3/60.
+Formal Core unchanged.
