@@ -4,8 +4,11 @@ on:
   pull_request:
     paths:
       - 'research/system1_opportunity_loss_bridge_v0_1.mjs'
+      - 'research/system1_opportunity_loss_bridge_v0_2.mjs'
       - 'tests/test_system1_opportunity_loss_bridge_v0_1.mjs'
+      - 'tests/test_system1_opportunity_loss_bridge_v0_2.mjs'
       - 'research/SYSTEM1_OPPORTUNITY_LOSS_BRIDGE_CHECKPOINT_20261007.md'
+      - 'research/SYSTEM1_OPPORTUNITY_LOSS_BRIDGE_V0_2_CHECKPOINT_20261007.md'
       - '.github/workflows/system1-opportunity-loss-bridge-review.yml'
   workflow_dispatch:
 
@@ -22,6 +25,10 @@ jobs:
         with:
           node-version: '22'
       - name: Run opportunity-loss bridge falsification
-        run: node tests/test_system1_opportunity_loss_bridge_v0_1.mjs
-      - name: Syntax check research module
-        run: node --check research/system1_opportunity_loss_bridge_v0_1.mjs
+        run: |
+          node tests/test_system1_opportunity_loss_bridge_v0_1.mjs
+          node tests/test_system1_opportunity_loss_bridge_v0_2.mjs
+      - name: Syntax check research modules
+        run: |
+          node --check research/system1_opportunity_loss_bridge_v0_1.mjs
+          node --check research/system1_opportunity_loss_bridge_v0_2.mjs
