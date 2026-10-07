@@ -18,5 +18,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Probe each official MOPSOV IPv4 route (no secrets or writes)
+        shell: bash
+        run: |
+          set -u
+          for ip in $(dig +short A mopsov.twse.com.tw | sort -u); do
+            echo "mopsov_ipv4=${ip}"
+            curl --fail --silent --show-error \
+              --connect-timeout 10 --max-time 25 \
+              --resolve "mopsov.twse.com.tw:443:${ip}" \
+              --output /tmp/mopsov-route.html \
+              --write-out 'status=%{http_code} bytes=%{size_download} remote_ip=%{remote_ip} total=%{time_total}\n' \
+              'https://mopsov.twse.com.tw/mops/web/t163sb04' || true
+          done
       - name: Inspect public official source schemas (no secrets or writes)
         run: node tests/inspect_official_quality_sources.mjs
