@@ -115,11 +115,28 @@
     "No physical NC-T01 credit from synthetic fixtures"
   ],
   "exactNext": [
-    "BUILD_LANE opens bounded CORR-007 patch from latest main using this interface.",
+    "BUILD_LANE opens bounded CORR-007 patch from latest main using this interface and explicit evidence-bound completeness versioning.",
     "DATA_LANE continues TWTAWU V0.2 actual official-export capture and real bounded receipt independently.",
-    "00 independently audits CORR-007 exact-head implementation.",
+    "00 independently audits CORR-007 exact-head implementation including legacy V0.1 fail-closed behavior.",
     "Merge CORR-007 after PASS.",
     "Rebase/harden PR #844 with runtime guard ledger and post-CORR-007 main.",
     "Then execute real physical NC-T01 only after DATA receipt exists."
-  ]
+  ],
+  "schemaMigrationRecommendation": {
+    "disposition": "EXPLICIT_COMPLETENESS_RECEIPT_V0_2_PREFERRED",
+    "evidence": [
+      "Repository search finds S2_CA_COMPLETENESS_RECEIPT_V0_1 schema literal only in the completeness producer; no downstream runtime consumer currently hard-codes that schema string.",
+      "The semantic meaning of suspensionCoverageComplete changes materially from status-only to immutable-evidence-bound, so silently retaining the V0_1 receipt identity would hide an evidence-strength change."
+    ],
+    "recommendation": [
+      "Keep existing source-capture/event-version schemas V0_1; CORR-007 does not need to rev unrelated event/source contracts.",
+      "Introduce an explicit S2_CA_COMPLETENESS_RECEIPT_V0_2 (and a V0_2 builder or equivalently explicit versioned constructor) for evidence-bound suspension completeness.",
+      "V0_2 must include normalized suspensionEvidenceByExchange and hash it as part of the receipt.",
+      "Physical NC-T01 CLEAR_NO_ACTION promotion should require V0_2 semantics; legacy V0_1 status-only completeness must fail closed for physical promotion.",
+      "Do not rewrite or relabel historical V0_1 receipts as V0_2.",
+      "If BUILD chooses a different versioning mechanism, it must preserve the same machine-visible distinction between legacy status-only and evidence-bound semantics."
+    ],
+    "migrationRisk": "LOW_REPOSITORY_COUPLING",
+    "formalCoreImpact": "NONE"
+  }
 }
