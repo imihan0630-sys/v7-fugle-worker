@@ -14,6 +14,8 @@ import { buildHistoricalUniverseRegistryV0_1 } from "../runtime/historical_unive
 import {
   buildHistoricalMarketYearCoverageV0_1,
   buildObservedIntervalUniverseRegistryV0_1,
+  parseTpexCmodePositiveStopSessionsV0_1,
+  tpexCmodeRocDateV0_1,
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 import { fetchCurrentListingMetadataV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
 import { fetchTwseRegulatoryLifecycleForSymbolsV0_1 } from "../runtime/twse_regulatory_lifecycle_source_v0_1.mjs";
@@ -282,6 +284,107 @@ async function fetchTpexSuspensionIntervals(){
   };
 }
 
+async function fetchTpexCmodePositiveStopSessionsV0_1(marketDates=[]){
+  const endpoint="https://www.tpex.org.tw/web/stock/aftertrading/cmode/chtm_result.php";
+  const dates=[...new Set(marketDates)].sort();
+  const intervals=[];
+  const receipts=[];
+  let successfulDateCount=0;
+  let partialDateCount=0;
+  let positiveStopSessionCount=0;
+
+  async function fetchOne(marketDate){
+    const rocDate=tpexCmodeRocDateV0_1(marketDate);
+    const url=new URL(endpoint);
+    url.searchParams.set("l","zh-tw");
+    url.searchParams.set("o","json");
+    url.searchParams.set("d",rocDate);
+    let lastError=null;
+    for(let attempt=1;attempt<=2;attempt+=1){
+      try{
+        const response=await fetch(url,{
+          redirect:"follow",
+          headers:{
+            accept:"application/json,text/plain,*/*",
+            referer:"https://www.tpex.org.tw/zh-tw/mainboard/trading/info/altered.html",
+            "user-agent":"System2-DATA-LANE-tpex-cmode-history/0.1",
+          },
+          signal:AbortSignal.timeout(15000),
+        });
+        const rawText=await response.text();
+        const sourceHash=sha256Text(rawText);
+        if(!response.ok){
+          lastError=new Error("HTTP_"+response.status);
+          if(attempt<2)continue;
+          return {marketDate,state:"HTTP_PARTIAL",httpStatus:response.status,url:url.toString(),sourceHash,intervals:[]};
+        }
+        let payload;
+        try{payload=JSON.parse(rawText);}
+        catch(error){
+          lastError=error;
+          if(attempt<2)continue;
+          return {marketDate,state:"PARSE_PARTIAL",httpStatus:response.status,url:url.toString(),sourceHash,intervals:[]};
+        }
+        const parsed=parseTpexCmodePositiveStopSessionsV0_1({
+          marketDate,payload,sourceUrl:url.toString(),sourceHash,coverageTo:toDate,
+        });
+        return {
+          marketDate,state:parsed.state,httpStatus:response.status,url:url.toString(),sourceHash,
+          reportDate:parsed.reportDate||null,rowCount:parsed.rowCount||0,
+          acceptedRowCount:parsed.acceptedRowCount||0,
+          positiveStopCount:parsed.positiveStopCount||0,
+          absenceCertifiesNoStop:false,
+          intervals:parsed.intervals,
+        };
+      }catch(error){
+        lastError=error;
+        if(attempt<2)await new Promise((resolve)=>setTimeout(resolve,750));
+      }
+    }
+    return {
+      marketDate,state:"TRANSPORT_PARTIAL",httpStatus:null,url:null,sourceHash:null,
+      message:String(lastError?.message||lastError||"unknown").slice(0,300),
+      absenceCertifiesNoStop:false,intervals:[],
+    };
+  }
+
+  for(let i=0;i<dates.length;i+=8){
+    const batch=dates.slice(i,i+8);
+    const results=await Promise.all(batch.map(fetchOne));
+    for(const result of results){
+      receipts.push({...result,intervals:undefined});
+      if(result.state==="POSITIVE_SESSION_SOURCE_OBSERVED"){
+        successfulDateCount+=1;
+        positiveStopSessionCount+=Number(result.positiveStopCount||0);
+        intervals.push(...result.intervals);
+      }else{
+        partialDateCount+=1;
+      }
+    }
+  }
+
+  return {
+    state:partialDateCount>0
+      ? "PARTIAL_POSITIVE_SESSION_EVIDENCE"
+      : "OBSERVED_POSITIVE_SESSION_EVIDENCE_UNCERTIFIED_ABSENCE",
+    endpoint,
+    queriedDateCount:dates.length,
+    successfulDateCount,
+    partialDateCount,
+    positiveStopSessionCount,
+    intervalCount:intervals.length,
+    intervals,
+    receiptSample:receipts.slice(0,100),
+    absenceCertifiesNoStop:false,
+    historicalDateParameter:"d=ROC_YYY/MM/DD",
+    machineContract:"TPEX_CMODE_HISTORICAL_DATE_SCOPED_V0_1",
+    sourceDiscoveryProvenance:[
+      "TPEx official cmode dataset / historical machine response",
+      "date-scoped endpoint uses l=zh-tw&o=json&d=<ROC date>",
+    ],
+  };
+}
+
 const db=await createRemoteD1RestAdapter({
   accountId,apiToken,databaseName:"system2-research",
 });
@@ -480,6 +583,23 @@ let lifecycleEvidence={
 };
 
 let lifecycleIntervals=[];
+let tpexCmodeEvidence={
+  state:"NOT_APPLICABLE_FOR_MARKET",
+  queriedDateCount:0,
+  successfulDateCount:0,
+  partialDateCount:0,
+  positiveStopSessionCount:0,
+  intervalCount:0,
+  reclassifiedUnknownBars:0,
+  beforeUnknownBars:coverageBeforeLifecycle.unknownBars,
+  afterUnknownBars:coverageBeforeLifecycle.unknownBars,
+  beforeMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+  afterMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+  absenceCertifiesNoStop:false,
+  source:"NONE",
+};
+let tpexCmodeIntervals=[];
+
 if(market==="TWSE" && coverageBeforeLifecycle.unknownBars>0){
   const unknownSymbols=coverageBeforeLifecycle.missingBySymbol
     .filter((x)=>Number(x.unknownCount)>0)
@@ -522,12 +642,47 @@ if(market==="TWSE" && coverageBeforeLifecycle.unknownBars>0){
   };
 }
 
-const coverage=lifecycleIntervals.length
+if(market==="TPEX" && coverageBeforeLifecycle.unknownBars>0){
+  const cmode=await fetchTpexCmodePositiveStopSessionsV0_1(
+    coverageBeforeLifecycle.unknownSessionDates || [],
+  );
+  tpexCmodeIntervals=cmode.intervals;
+  const after=buildHistoricalMarketYearCoverageV0_1({
+    market,year,fromDate,toDate,
+    tradingDates,
+    registry,rows:coldRows,
+    suspensionIntervals:[...suspension.intervals,...tpexCmodeIntervals],
+  });
+  tpexCmodeEvidence={
+    state:cmode.state,
+    queriedDateCount:cmode.queriedDateCount,
+    successfulDateCount:cmode.successfulDateCount,
+    partialDateCount:cmode.partialDateCount,
+    positiveStopSessionCount:cmode.positiveStopSessionCount,
+    intervalCount:cmode.intervalCount,
+    reclassifiedUnknownBars:coverageBeforeLifecycle.unknownBars-after.unknownBars,
+    beforeUnknownBars:coverageBeforeLifecycle.unknownBars,
+    afterUnknownBars:after.unknownBars,
+    beforeMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+    afterMissingReasonCounts:after.missingReasonCounts,
+    receiptSample:cmode.receiptSample,
+    intervalSample:cmode.intervals.slice(0,100),
+    absenceCertifiesNoStop:false,
+    source:"TPEX_CMODE_HISTORICAL_DATE_SCOPED",
+    endpoint:cmode.endpoint,
+    historicalDateParameter:cmode.historicalDateParameter,
+    machineContract:cmode.machineContract,
+    sourceDiscoveryProvenance:cmode.sourceDiscoveryProvenance,
+  };
+}
+
+const combinedLifecycleIntervals=[...lifecycleIntervals,...tpexCmodeIntervals];
+const coverage=combinedLifecycleIntervals.length
   ? buildHistoricalMarketYearCoverageV0_1({
       market,year,fromDate,toDate,
       tradingDates,
       registry,rows:coldRows,
-      suspensionIntervals:[...suspension.intervals,...lifecycleIntervals],
+      suspensionIntervals:[...suspension.intervals,...combinedLifecycleIntervals],
     })
   : coverageBeforeLifecycle;
 
@@ -575,7 +730,7 @@ const output={
     :(replayReadinessState==="PASS"
       ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
       :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_6",
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_7",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
@@ -593,6 +748,7 @@ const output={
     limitation:suspension.limitation || null,
   },
   lifecycleEvidence,
+  tpexCmodeEvidence,
   coverage,
   dataCoverageState,
   replayReadinessState,
@@ -610,7 +766,7 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_6",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_7",
 };
 
 const json=JSON.stringify(output,null,2);
