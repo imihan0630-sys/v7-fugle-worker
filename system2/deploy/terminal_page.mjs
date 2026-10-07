@@ -192,7 +192,7 @@ a{color:inherit}
   <div class="pagehead"><div><div class="eyebrow">POSITION MANAGEMENT</div><h2>部位管理</h2><p>ACTUAL HOLDINGS 與 VIRTUAL POSITIONS 永久分離。真實持股只接受 Owner 主動上傳券商庫存截圖後的確認快照；不串券商 API，也不把模擬成交轉成真實庫存。</p></div><span class="status shadow">NO BROKER ORDER AUTHORITY</span></div>
   <div class="grid g3">
     <div class="metric"><div class="label">Actual Holdings Source</div><div class="value" style="font-size:15px">AUTHORIZED</div><div class="sub">USER_UPLOADED_BROKER_SCREENSHOT</div></div>
-    <div class="metric"><div class="label">Actual Holdings</div><div class="value">PENDING</div><div class="sub">NO VERIFIED OWNER SNAPSHOT</div></div>
+    <div class="metric"><div class="label">Actual Holdings</div><div class="value">PENDING</div><div class="sub">NO VERIFIED OWNER SNAPSHOT · ACTUAL_POSITION_MONITOR_VERIFIED=false</div></div>
     <div class="metric"><div class="label">Virtual Positions</div><div class="value">READY</div><div class="sub">SIMULATED / VIRTUAL ONLY</div></div>
   </div>
   <div class="grid g2" style="margin-top:12px">
