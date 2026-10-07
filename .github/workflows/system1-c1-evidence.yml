@@ -53,6 +53,7 @@ jobs:
           C3_REGISTRATION_OUTPUT: artifacts/system1-c3-registration.json
           H1_H5_READINESS_OUTPUT: artifacts/system1-h1-h5-readiness.json
           C5_SHORT_OUTPUT: artifacts/system1-c5-short.json
+          C5_DAILY_REPORT_OUTPUT: artifacts/system1-c5-daily-report.json
           OPPORTUNITY_LOSS_OUTPUT: artifacts/system1-opportunity-loss-v0.3.json
         run: node tests/build_system1_h1_h5_prospective_postprocess.mjs
       - name: Preserve approved research evidence or explicit readiness blocker
@@ -69,6 +70,7 @@ jobs:
             artifacts/system1-c3-registration.json
             artifacts/system1-h1-h5-readiness.json
             artifacts/system1-c5-short.json
+            artifacts/system1-c5-daily-report.json
             artifacts/system1-opportunity-loss-v0.3.json
           if-no-files-found: error
           retention-days: 90
