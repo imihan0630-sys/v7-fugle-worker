@@ -12,7 +12,9 @@ for(const year of ["2017","2018","2019","2020","2021","2022","2023","2024","2025
 }
 assert.ok(!workflow.includes('- "2026"'),"current year must not use completed-year annual workflow");
 assert.ok(!workflow.includes('SYSTEM2_HISTORY_YEAR: "2017"'),"workflow must not hard-code 2017");
-assert.equal((workflow.match(/SYSTEM2_HISTORY_YEAR: \$\{\{ inputs\.year \}\}/g)||[]).length,2);
+assert.equal((workflow.match(/SYSTEM2_HISTORY_YEAR: \$\{\{ inputs\.year \}\}/g)||[]).length,3);
+assert.match(workflow,/if: \$\{\{ inputs\.year == '2021' && inputs\.market == 'TPEX' \}\}/);
+assert.ok(workflow.includes("historical_tpex_2021_revision_overlay_v0_1.mjs"));
 assert.ok(workflow.includes("system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}"));
 
 assert.match(script,/latestCompletedCalendarYear=taipeiCalendarYear-1/);

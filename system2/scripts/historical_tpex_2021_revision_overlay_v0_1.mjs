@@ -16,6 +16,7 @@ import { reconcileHistoricalSourceRowsV0_1 } from "../runtime/historical_source_
 import { buildHistoricalStoreIngestBatch } from "../runtime/historical_store_v0_1.mjs";
 import { executeHistoricalIngestBatchBulkV0_1 } from "../runtime/historical_bulk_persistence_v0_1.mjs";
 import { evaluateHistoricalRevisionLineageV0_1 } from "../runtime/historical_revision_lineage_v0_1.mjs";
+import { classifyHistoricalTpex2021RevisionSignatureV0_1 } from "../runtime/historical_tpex_2021_revision_signature_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
@@ -117,130 +118,131 @@ const reconciliation=reconcileHistoricalSourceRowsV0_1({
   freshOfficialRows:fresh.rows,
   sampleLimit:1000,
 });
-assert.equal(reconciliation.missingFromColdCount,0,"revision overlay refuses missing cold rows");
-assert.equal(reconciliation.absentFromFreshOfficialCount,0,"revision overlay refuses rows absent from fresh official source");
-assert.equal(reconciliation.sourceRowHashMismatchCount,780,
-  "2021 TPEx revision signature changed: expected 780 source-row revisions");
-assert.equal(reconciliation.canonicalA1ValueMismatchCount,698,
-  "2021 TPEx revision signature changed: expected 698 canonical A1 revisions");
-assert.equal(reconciliation.sourceRevisionOnlyCount,82,
-  "2021 TPEx revision signature changed: expected 82 source-only revisions");
-assert.equal(reconciliation.sourceRevisionDateCount,1,
-  "2021 TPEx revision overlay expects exactly one revised market date");
-assert.equal(reconciliation.sourceRevisionByDate?.[0]?.marketDate,targetDate,
-  "2021 TPEx revision date changed from the frozen blocker date");
-assert.equal(reconciliation.sourceRevisionByDate?.[0]?.count,780,
-  "2021 TPEx revision-date count changed from the frozen blocker signature");
-
-const changedKeys=new Set([
-  ...reconciliation.sourceRowHashMismatchSample,
-  ...reconciliation.canonicalA1ValueMismatchSample.map((x)=>x.key),
-]);
-assert.equal(changedKeys.size,reconciliation.sourceRowHashMismatchCount,
-  "revision overlay requires every canonical change to be represented by source-row revision identity");
-
-const persistedBefore=await db.rawQuery(
-  "SELECT * FROM s2_historical_a1_bars WHERE market='TPEX' AND market_date=? AND price_space='RAW' ORDER BY canonical_key, available_at, observed_at, bar_hash",
-  [targetDate],
-);
-const preLineage=evaluateHistoricalRevisionLineageV0_1({
-  coldRows:baselineRows,
-  freshOfficialRows:fresh.rows,
-  persistedRows:persistedBefore,
-  sampleLimit:1000,
-});
-
-const existingRevisionReceipt=await db.rawQuery(
-  "SELECT batch_id, captured_at, batch_hash, row_count FROM s2_historical_ingest_batches WHERE batch_id=? LIMIT 1",
-  [revisionBatchId],
-);
-if(existingRevisionReceipt.length&&preLineage.state!=="PIT_REVISION_LINEAGE_READY"){
-  throw new Error("EXISTING_REVISION_RECEIPT_DOES_NOT_COVER_CURRENT_OFFICIAL_REVISION");
-}
-
+const signature=classifyHistoricalTpex2021RevisionSignatureV0_1(reconciliation);
+const canonicalOverlayRequired=signature.canonicalOverlayRequired;
 let baselinePersistence=null;
 let revisionPersistence=null;
-const freshByKey=new Map(fresh.rows.map((row)=>[key(row),row]));
-const partialRevisionTimes=[...new Set(
-  persistedBefore
-    .filter((row)=>{
-      const freshRow=freshByKey.get(String(row.market_date||"")+"|"+String(row.symbol||""));
-      return freshRow
-        && changedKeys.has(String(row.market_date||"")+"|"+String(row.symbol||""))
-        && String(row.availability_basis||"")==="PROSPECTIVE_OBSERVATION"
-        && String(row.source_row_hash||"")===String(freshRow.sourceRowHash||"")
-        && row.available_at
-        && Number.isFinite(Date.parse(row.available_at));
-    })
-    .map((row)=>String(row.available_at))
-)];
-assert.ok(partialRevisionTimes.length<=1,
-  "multiple partial revision availability timestamps found; refusing to create another revision version");
-let revisionFirstKnownAt=existingRevisionReceipt[0]?.captured_at
-  || minTimestamp(partialRevisionTimes,observedAt);
+let persistedBefore=[];
+let persistedAfter=[];
+let preLineage=null;
+let lineage=null;
+let partialRevisionTimes=[];
+let revisionFirstKnownAt=null;
 
-if(preLineage.state!=="PIT_REVISION_LINEAGE_READY"){
-  const existingBaselineReceipt=await db.rawQuery(
-    "SELECT batch_id, captured_at FROM s2_historical_ingest_batches WHERE batch_id=? LIMIT 1",
-    [baselineBatchId],
+if(canonicalOverlayRequired){
+  const changedKeys=new Set([
+    ...reconciliation.sourceRowHashMismatchSample,
+    ...reconciliation.canonicalA1ValueMismatchSample.map((x)=>x.key),
+  ]);
+  assert.equal(changedKeys.size,reconciliation.sourceRowHashMismatchCount,
+    "revision overlay requires every canonical change to be represented by source-row revision identity");
+
+  persistedBefore=await db.rawQuery(
+    "SELECT * FROM s2_historical_a1_bars WHERE market='TPEX' AND market_date=? AND price_space='RAW' ORDER BY canonical_key, available_at, observed_at, bar_hash",
+    [targetDate],
   );
-  const baselineCapturedAt=existingBaselineReceipt[0]?.captured_at
-    || maxTimestamp(baselineRows.map((x)=>x.capturedAt),observedAt);
-
-  const sourceContract=officialHistoricalA1SourceContractV0_1("TPEX");
-  const baselineBatch=await buildHistoricalStoreIngestBatch({
-    batchId:baselineBatchId,
-    datasetLane:"CORE_2017_PLUS",
-    sourceId:sourceContract.sourceId,
-    sourceName:sourceContract.sourceName,
-    sourceUrl:sourceContract.sourceUrl,
-    capturedAt:baselineCapturedAt,
-    rows:baselineRows,
-  });
-  baselinePersistence=await executeHistoricalIngestBatchBulkV0_1({
-    db,ingestBatch:baselineBatch,lookupChunkSize:80,insertChunkSize:80,
+  preLineage=evaluateHistoricalRevisionLineageV0_1({
+    coldRows:baselineRows,
+    freshOfficialRows:fresh.rows,
+    persistedRows:persistedBefore,
+    sampleLimit:1000,
   });
 
-  const freshChanged=fresh.rows
-    .filter((row)=>changedKeys.has(key(row)))
-    .map((row)=>({
-      ...row,
-      observedAt:revisionFirstKnownAt,
-      availableAt:revisionFirstKnownAt,
-      availabilityBasis:"PROSPECTIVE_OBSERVATION",
-    }));
-  assert.equal(freshChanged.length,changedKeys.size,"fresh revision row coverage mismatch");
+  const existingRevisionReceipt=await db.rawQuery(
+    "SELECT batch_id, captured_at, batch_hash, row_count FROM s2_historical_ingest_batches WHERE batch_id=? LIMIT 1",
+    [revisionBatchId],
+  );
+  if(existingRevisionReceipt.length&&preLineage.state!=="PIT_REVISION_LINEAGE_READY"){
+    throw new Error("EXISTING_REVISION_RECEIPT_DOES_NOT_COVER_CURRENT_OFFICIAL_REVISION");
+  }
 
-  const revisionBatch=await buildHistoricalStoreIngestBatch({
-    batchId:revisionBatchId,
-    datasetLane:"CORE_2017_PLUS",
-    sourceId:sourceContract.sourceId,
-    sourceName:sourceContract.sourceName,
-    sourceUrl:sourceContract.sourceUrl,
-    capturedAt:revisionFirstKnownAt,
-    rows:freshChanged,
+  const freshByKey=new Map(fresh.rows.map((row)=>[key(row),row]));
+  partialRevisionTimes=[...new Set(
+    persistedBefore
+      .filter((row)=>{
+        const freshRow=freshByKey.get(String(row.market_date||"")+"|"+String(row.symbol||""));
+        return freshRow
+          && changedKeys.has(String(row.market_date||"")+"|"+String(row.symbol||""))
+          && String(row.availability_basis||"")==="PROSPECTIVE_OBSERVATION"
+          && String(row.source_row_hash||"")===String(freshRow.sourceRowHash||"")
+          && row.available_at
+          && Number.isFinite(Date.parse(row.available_at));
+      })
+      .map((row)=>String(row.available_at))
+  )];
+  assert.ok(partialRevisionTimes.length<=1,
+    "multiple partial revision availability timestamps found; refusing to create another revision version");
+  revisionFirstKnownAt=existingRevisionReceipt[0]?.captured_at
+    || minTimestamp(partialRevisionTimes,observedAt);
+
+  if(preLineage.state!=="PIT_REVISION_LINEAGE_READY"){
+    const existingBaselineReceipt=await db.rawQuery(
+      "SELECT batch_id, captured_at FROM s2_historical_ingest_batches WHERE batch_id=? LIMIT 1",
+      [baselineBatchId],
+    );
+    const baselineCapturedAt=existingBaselineReceipt[0]?.captured_at
+      || maxTimestamp(baselineRows.map((x)=>x.capturedAt),observedAt);
+
+    const sourceContract=officialHistoricalA1SourceContractV0_1("TPEX");
+    const baselineBatch=await buildHistoricalStoreIngestBatch({
+      batchId:baselineBatchId,
+      datasetLane:"CORE_2017_PLUS",
+      sourceId:sourceContract.sourceId,
+      sourceName:sourceContract.sourceName,
+      sourceUrl:sourceContract.sourceUrl,
+      capturedAt:baselineCapturedAt,
+      rows:baselineRows,
+    });
+    baselinePersistence=await executeHistoricalIngestBatchBulkV0_1({
+      db,ingestBatch:baselineBatch,lookupChunkSize:80,insertChunkSize:80,
+    });
+
+    const freshChanged=fresh.rows
+      .filter((row)=>changedKeys.has(key(row)))
+      .map((row)=>({
+        ...row,
+        observedAt:revisionFirstKnownAt,
+        availableAt:revisionFirstKnownAt,
+        availabilityBasis:"PROSPECTIVE_OBSERVATION",
+      }));
+    assert.equal(freshChanged.length,changedKeys.size,"fresh revision row coverage mismatch");
+
+    const revisionBatch=await buildHistoricalStoreIngestBatch({
+      batchId:revisionBatchId,
+      datasetLane:"CORE_2017_PLUS",
+      sourceId:sourceContract.sourceId,
+      sourceName:sourceContract.sourceName,
+      sourceUrl:sourceContract.sourceUrl,
+      capturedAt:revisionFirstKnownAt,
+      rows:freshChanged,
+    });
+    revisionPersistence=await executeHistoricalIngestBatchBulkV0_1({
+      db,ingestBatch:revisionBatch,lookupChunkSize:80,insertChunkSize:80,
+    });
+  }
+
+  persistedAfter=await db.rawQuery(
+    "SELECT * FROM s2_historical_a1_bars WHERE market='TPEX' AND market_date=? AND price_space='RAW' ORDER BY canonical_key, available_at, observed_at, bar_hash",
+    [targetDate],
+  );
+  lineage=evaluateHistoricalRevisionLineageV0_1({
+    coldRows:baselineRows,
+    freshOfficialRows:fresh.rows,
+    persistedRows:persistedAfter,
+    sampleLimit:1000,
   });
-  revisionPersistence=await executeHistoricalIngestBatchBulkV0_1({
-    db,ingestBatch:revisionBatch,lookupChunkSize:80,insertChunkSize:80,
-  });
+  assert.equal(lineage.state,"PIT_REVISION_LINEAGE_READY","2021 TPEx revision lineage remains blocked");
+  assert.equal(lineage.changedKeyCount,changedKeys.size,"revision lineage changed-key coverage mismatch");
+  assert.equal(lineage.readyKeyCount,changedKeys.size,"not every changed key is PIT lineage ready");
+}else{
+  assert.equal(reconciliation.dataIntegrityState,"PASS",
+    "source-revision-only branch requires canonical A1 equality with the immutable cold baseline");
 }
 
-const persistedAfter=await db.rawQuery(
-  "SELECT * FROM s2_historical_a1_bars WHERE market='TPEX' AND market_date=? AND price_space='RAW' ORDER BY canonical_key, available_at, observed_at, bar_hash",
-  [targetDate],
-);
-const lineage=evaluateHistoricalRevisionLineageV0_1({
-  coldRows:baselineRows,
-  freshOfficialRows:fresh.rows,
-  persistedRows:persistedAfter,
-  sampleLimit:1000,
-});
-assert.equal(lineage.state,"PIT_REVISION_LINEAGE_READY","2021 TPEx revision lineage remains blocked");
-assert.equal(lineage.changedKeyCount,changedKeys.size,"revision lineage changed-key coverage mismatch");
-assert.equal(lineage.readyKeyCount,changedKeys.size,"not every changed key is PIT lineage ready");
-
 const output={
-  result:"PASS_TPEX_2021_REVISION_LINEAGE",
+  result:canonicalOverlayRequired
+    ? "PASS_TPEX_2021_REVISION_LINEAGE"
+    : "PASS_TPEX_2021_SOURCE_REVISION_ONLY_BASELINE_RETAINED",
   market,year,targetDate,
   annualColdReceipt:{
     receiptId:receipt.receipt_id,
@@ -257,17 +259,27 @@ const output={
     sourceRowHashMismatchCount:reconciliation.sourceRowHashMismatchCount,
     canonicalA1ValueMismatchCount:reconciliation.canonicalA1ValueMismatchCount,
     sourceRevisionOnlyCount:reconciliation.sourceRevisionOnlyCount,
+    sourceRevisionDateCount:reconciliation.sourceRevisionDateCount,
+    sourceRevisionByDate:reconciliation.sourceRevisionByDate,
+    sourceRowHashMismatchSample:reconciliation.sourceRowHashMismatchSample,
+    sourceRevisionOnlySample:reconciliation.sourceRevisionOnlySample,
     sourceVersionState:reconciliation.sourceVersionState,
   },
+  acceptedObservedSignature:signature,
   overlay:{
-    baselineBatchId,
-    revisionBatchId,
+    action:signature.action,
+    canonicalOverlayRequired,
+    baselineBatchId:canonicalOverlayRequired?baselineBatchId:null,
+    revisionBatchId:canonicalOverlayRequired?revisionBatchId:null,
     revisionFirstKnownAt,
     partialRevisionResumeTimestamp:partialRevisionTimes[0]||null,
-    preExistingLineageState:preLineage.state,
+    preExistingLineageState:preLineage?.state||null,
     baselinePersistence,
     revisionPersistence,
     persistedRowCountAfter:persistedAfter.length,
+    persistenceSkippedReason:canonicalOverlayRequired
+      ? null
+      : "CANONICAL_A1_VALUES_MATCH_IMMUTABLE_COLD_BASELINE",
   },
   lineage,
   d1UsageObservedThisRun:{
@@ -278,7 +290,7 @@ const output={
   },
   coldHistoryMutated:false,
   system1RuntimeChanged:false,
-  schemaVersion:"S2_HISTORICAL_TPEX_2021_REVISION_OVERLAY_V0_1",
+  schemaVersion:"S2_HISTORICAL_TPEX_2021_REVISION_OVERLAY_V0_2",
 };
 const json=JSON.stringify(output,null,2);
 if(outputPath)await writeFile(outputPath,json+"\n","utf8");
