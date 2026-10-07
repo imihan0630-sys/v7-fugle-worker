@@ -34,13 +34,13 @@ const receipt=await buildMopsRepeatedCaptureUnionV1_7({
   trailingIdenticalTransitionRequirement:2,
 });
 
-assert.equal(receipt.captureCount,4);
+assert.equal(receipt.captureCount,3);
 assert.equal(receipt.earliestObservedPreserved,true);
 assert.equal(receipt.latestObservedPreserved,true);
 assert.equal(receipt.appendOnlyUnion,true);
 assert.equal(receipt.absenceMeansNonexistence,false);
 assert.equal(receipt.payloadConflictCount,0);
-assert.ok(receipt.unionVersionKeyCount>=168,"union must retain all three-capture versions");
+assert.equal(receipt.unionVersionKeyCount,168,"three accepted captures must reconcile to the known 168-version union");
 assert.equal(receipt.expectedMopsKeysetComplete,false);
 assert.equal(receipt.noRevisionGapThroughCut,false);
 assert.equal(receipt.preParentEvidenceCutReady,false);
@@ -50,7 +50,7 @@ assert.equal(receipt.selectionAuthority,false);
 assert.equal(receipt.system1RuntimeUsed,false);
 
 const firstCaptureAt=captures[0].capturedAt;
-const commonAll=receipt.versions.filter(v=>v.observedCaptureIds.length===4);
+const commonAll=receipt.versions.filter(v=>v.observedCaptureIds.length===3);
 assert.ok(commonAll.length>0);
 assert.ok(commonAll.some(v=>Date.parse(v.firstObservedAt)<Date.parse(captures.at(-1).capturedAt)));
 assert.ok(receipt.versions.every(v=>Date.parse(v.firstObservedAt)<=Date.parse(v.latestObservedAt)));
