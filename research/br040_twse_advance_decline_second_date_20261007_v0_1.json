@@ -1,0 +1,82 @@
+{
+  "version": "0.1",
+  "id": "BR-040",
+  "capturedAt": "2026-10-07T23:55:26+08:00",
+  "tradeDate": "2026-10-07",
+  "module": "D09-04 漲跌家數／Advance-Decline",
+  "mode": "OFFICIAL_TWSE_SOURCE_ONLY / OUTCOME_BLIND / SECOND_INDEPENDENT_DATE",
+  "formalCoreChanged": false,
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "url": "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261007&response=html&type=ALLBUT0999",
+    "marketScope": "TWSE_STOCKS_COLUMN",
+    "comparisonDefinition": "today closing price versus previous closing price"
+  },
+  "counts": {
+    "up": 588,
+    "limitUp": 12,
+    "down": 387,
+    "limitDown": 4,
+    "unchanged": 99,
+    "unmatched": 5,
+    "notComparable": 3
+  },
+  "denominatorSemantics": {
+    "comparableN": 1074,
+    "totalStockRowsIncludingUnmatchedAndNotComparable": 1082,
+    "comparableFormula": "up + down + unchanged",
+    "notComparableExcludedReason": "TWSE N/A is not an ordinary close-to-close comparison.",
+    "unmatchedRule": "Unmatched remains outside comparable denominator."
+  },
+  "derivedPct": {
+    "advancePctComparable": 54.7486033519553,
+    "declinePctComparable": 36.03351955307262,
+    "unchangedPctComparable": 9.217877094972067,
+    "netAdvanceMinusDeclinePctPoints": 18.71508379888268
+  },
+  "contemporaneousIndexContext": {
+    "taiexClose": 49806.37,
+    "taiexPointChange": -16.18,
+    "taiexChangePct": -0.03247525467885526
+  },
+  "priorIndependentDate": {
+    "receiptId": "BR-039",
+    "tradeDate": "2026-10-02",
+    "taiexChangePct": 0.25,
+    "netAdvanceMinusDeclinePctPoints": -2.13
+  },
+  "crossDateFalsification": {
+    "observedBothDivergenceDirections": true,
+    "date1": "INDEX_UP_BREADTH_NEGATIVE",
+    "date2": "INDEX_DOWN_BREADTH_POSITIVE",
+    "rule": "CAP_WEIGHTED_INDEX_DIRECTION != STOCK_COUNT_BREADTH_DIRECTION"
+  },
+  "sharedEvidenceRoot": {
+    "rootId": "TWSE_MI_INDEX_STOCK_DIRECTION:2026-10-07",
+    "alsoConsumedBy": [
+      "BR-066/D09-12"
+    ],
+    "independentVoteCount": 1,
+    "consumerCount": 2,
+    "rule": "ONE_MARKET_RECEIPT_MANY_CONSUMERS_NOT_MANY_INDEPENDENT_VOTES"
+  },
+  "universeFirewall": [
+    "Use TWSE Stocks column, not Overall Market.",
+    "Do not relabel TWSE-only breadth as Taiwan-wide TWSE+TPEx breadth.",
+    "Do not mix official denominator with strategy/Formal eligible universe.",
+    "N/A and unmatched are not silently mapped to decline/flat."
+  ],
+  "outcomesOpened": false,
+  "maturityDecision": {
+    "D09_04": "KEEP_L3",
+    "promoteToL4": false
+  },
+  "reason": "Second independent official date strengthens prospective/repeated PIT evidence, but two dates are insufficient for L4/OOS predictive validation and TPEx/strategy-universe lanes remain separate.",
+  "exactNext": [
+    "Accumulate more independent official TWSE dates under unchanged denominator semantics.",
+    "Add TPEx same-clock breadth only with an accepted official transport/denominator.",
+    "Use one shared evidence root when D09-12 consumes the same daily breadth receipt.",
+    "Do not open predictive outcomes before D16 common-support/OOS method is frozen."
+  ],
+  "observedMainBeforeWrite": "eb661b3e8f1ff95c86199431a4d8ca9dafc9a5ab"
+}
