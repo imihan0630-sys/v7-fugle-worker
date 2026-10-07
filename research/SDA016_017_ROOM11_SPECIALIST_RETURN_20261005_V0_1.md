@@ -1429,3 +1429,94 @@ No maturity change.
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 System1 official-quality live transport — harness fixed, MOPS financial transport blocked
+
+Canonical:
+- `research/D16_SYSTEM1_OFFICIAL_QUALITY_LIVE_TRANSPORT_VALIDATION_20261007_V0_1.md`;
+- `research/D16_SYSTEM1_OFFICIAL_QUALITY_LIVE_TRANSPORT_VALIDATION_20261007_V0_1.json`.
+
+### Attempt 1 and Attempt 2 must remain separate
+
+Attempt 1 / PR #763:
+- run `37555765564`;
+- failed before any live source access;
+- cause = `BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS`;
+- FINANCIAL / QUARTER_EPS were not tested.
+
+Attempt 2 / PR #765:
+- merge `28c3f6ac3798cdba7c697c32a4908f8237922789`;
+- regression `37556241514` = SUCCESS;
+- live quality run `37556241467`;
+- job `112583018405`.
+
+The #765 workflow now:
+- builds canonical effective Worker through V7→V8.20 patch chain;
+- binds `V7_TEST_WORKER_PATH`;
+- passes offline recovery-hardening contract;
+- enters actual quality-only official-source recovery.
+
+### Actual live quality state before recovery
+
+- INDEX ready=true / count=45 / 2026-10-06;
+- TDCC ready=true / count=2958 / 2026-10-02;
+- VALUATION ready=true / count=1971 / 2026-10-06;
+- ANNOUNCEMENTS ready=true / count=95 / 2026-10-06;
+- FINANCIAL ready=false / count=0;
+- QUARTER_EPS ready=false / count=0.
+
+No plan change was observed in the starting status.
+
+### First real live-source blocker
+
+MOPS market mapping was reached:
+- TWSE = sii;
+- TPEx = otc.
+
+The workflow then attempted:
+`https://mopsov.twse.com.tw/mops/web/ajax_t163sb04`.
+
+Terminal failure:
+`Public source /mops/web/ajax_t163sb04: The operation was aborted due to timeout`.
+
+Transport helper:
+`tests/official_source_fetch_v0_1.mjs`:
+- maxAttempts=3;
+- defaultTimeoutMs=45000;
+- timeout/aborted are retryable;
+- response body consumption is inside retry boundary.
+
+Therefore:
+`MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED`.
+
+This is not a single unretied timeout.
+
+### Current quality disposition
+
+- FINANCIAL = `NOT_READY_LIVE_TRANSPORT_BLOCKED`;
+- QUARTER_EPS = `NOT_READY_UPSTREAM_FINANCIAL_STAGE_BLOCKED`.
+
+QUARTER_EPS transport has not independently failed; its stage was never reached.
+
+Do not infer:
+- permanent MOPS outage;
+- absent financial data;
+- parser failure;
+- QUARTER_EPS source failure;
+- quality repair success.
+
+### Research impact
+
+2026-10-06 remains:
+`INELIGIBLE_PARENT_MISSING`.
+
+Later repair attempts do not backfill the original prospective evidence.
+
+Genuine Formal↔C1 sample N remains 0.
+No zero-pick / strategy failure / negative outcome is created.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
