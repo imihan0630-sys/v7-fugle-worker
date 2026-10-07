@@ -1138,3 +1138,29 @@ A structured top-level schema expansion would require a new version, but is not 
 
 Formal Core remains LOCKED.
 Final selection, live push, capital and real orders remain disabled.
+
+
+## 00 concurrent D03 readback — TWSE lifecycle v0.6 aligns with NC-T01 continuity gate (2026-10-07 21:01 Asia/Taipei)
+
+Observed latest main:
+`fa9cc211450dea407630efd8e5c97ffa917c4830`.
+
+Concurrent D03 acceptance commit `dc5de832716f2e5c6c2da63b0c773c8da5a41054` was reviewed because it directly touches the continuity evidence lane.
+
+Result:
+- it does NOT invalidate the 00 NC-T01 replay-binding handoff;
+- it independently accepts the same rule: continuity must be hash-bound to the exact selected PIT replay window;
+- first raw-history witness remains `CLEAR_NO_ACTION` only;
+- RAW + `ADJUSTED_CONTINUITY` remains rejected;
+- required identity again includes `continuityReceiptId`, `sourceHistoryHash`, `continuityTransformHash` and ordered selected bar/source identities;
+- D03 maturity remains 56.7%; no maturity promotion;
+- TWSE lifecycle V0.6 implementation is machine-accepted, but the physical annual rerun is still pending;
+- Layer C known-at / full promotion is still not proven.
+
+Therefore the Stage-1 critical path is unchanged, but one implementation dependency is better prepared:
+TWSE lifecycle V0.6 can feed the future witness once DATA_LANE can safely execute the physical rerun and exact-window certification.
+
+No conflict was found with:
+`system2/evidence/S2_STAGE1_NCT01_CONTINUITY_BINDING_IMPLEMENTATION_HANDOFF_20261007_V0_1.json`.
+
+Formal Core remains LOCKED.
