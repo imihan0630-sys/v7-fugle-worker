@@ -556,3 +556,48 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## 2026-10-07 Room-06 continuation — D07-19 promoted; D08 exact-session archive canonical
+
+Canonical base at this continuation:
+- main = `d4d2cf74354fec565bec40709b054ea62beec96e`.
+
+D07-19:
+- canonical artifact: `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`;
+- ownership frozen: D07-19 = project economics; D21-07 = management capital-allocation/governance;
+- NPV is the value-additivity anchor; IRR/MIRR are supportive diagnostics with scale/timing/non-conventional-cash-flow caveats;
+- project cash flows must be incremental, after-tax and PIT eligible; sunk costs excluded, opportunity costs/cannibalization included, financing double-count prohibited;
+- Real Options require a concrete defer/expand/contract/abandon/stage decision right and observable uncertainty resolution;
+- later cost overruns/utilization/margins/impairments remain later vintages/outcomes and cannot rewrite the original project state;
+- maturity: **L0/0 -> L2/40**;
+- D07 weighted maturity = **17.6%**;
+- Room-06 D07+D08 weighted maturity = **21.1%**;
+- L3 blocked pending Taiwan project-level PIT replay across at least two materially different industries;
+- outcomes CLOSED; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+D08-03 archive recovery now canonical:
+- PR #798 merged to main;
+- root cause of prior 2026 failure: scheduled-holiday calendar incorrectly treated 2026-07-10 emergency closure as a trading session;
+- capture now enumerates official monthly FMTQIK actual sessions;
+- frozen receipt: `research/d08_twse_daily_valuation_year_pack_execution_receipt_2026_20261007_v0_1.json`;
+- 2026 PASS: 159 trading dates / 170650 rows / 131500 PE-known / 170647 PB-known;
+- R2 object inserted and exact readback hash verified;
+- prior 2005-2025 year packs remain retained, so the year-pack evidence set is complete through 2026-08-31;
+- next archive gate: durable 2005-2026 manifest + aggregate packBundleHash, then 44 frozen outcome-blind percentile snapshots.
+
+Separate D08 historical-universe provenance gate:
+- raw 44-date capture remains BLOCKED at 2023-03-31 because live rebuilt membership = 982 while frozen 2026-10-04 receipt = 981;
+- frozen expectation MUST NOT be rewritten merely to match the live source;
+- source diagnosis shows only the current-company source changed:
+  - frozen currentSourceHash = `c9028b40687aca3e9c0b733f75c67ff19baa2785d6341977c9936a9daa20b63c`;
+  - live currentSourceHash = `89735ae8bd3a96b86de7edfa33864ef3f23452ee77569629a75b4ecbc3568ec2`;
+  - newListingSourceHash unchanged = `bb70678fc001770c7e86ef9471e0ff96b8fe87b6852545a485ab18d1610f7b91`;
+  - delistingSourceHash unchanged = `a80693f2ab3c94b024ed830c73e64f2a0d122fdba806148edce38bf1570fc143`;
+  - live reconciliation touched current-list symbols 2465 / 2482 / 2486 / 6873.
+- required fix is a versioned immutable universe-provenance receipt/source snapshot, not a count patch.
+
+Room-06 module census:
+- D07 = 34 modules;
+- D08 = 19 modules;
+- total = 53 modules;
+- after D07-19 promotion: >=L2 = 26 / 53; L0 = 27 / 53.
