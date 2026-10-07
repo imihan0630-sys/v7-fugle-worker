@@ -370,6 +370,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
   const missingReasonCounts = {};
   const missingSample = [];
   const missingBySymbolMap = new Map();
+  const unknownSessionDateSet = new Set();
   let unknownMissingBars = 0;
   let suspensionMissingBars = 0;
   for (const key of expectedKeys) {
@@ -379,7 +380,10 @@ export function buildHistoricalMarketYearCoverageV0_1({
     const reason = matched ? "OFFICIAL_SUSPENSION_INTERVAL" : "UNKNOWN_SYMBOL_SESSION_GAP";
     missingReasonCounts[reason] = (missingReasonCounts[reason] || 0) + 1;
     if (matched) suspensionMissingBars += 1;
-    else unknownMissingBars += 1;
+    else {
+      unknownMissingBars += 1;
+      unknownSessionDateSet.add(date);
+    }
     const grouped = missingBySymbolMap.get(symbol) || {
       symbol,missingCount:0,unknownCount:0,suspensionCount:0,firstMissingDate:null,lastMissingDate:null,
     };
@@ -444,6 +448,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
     nonTradingDateBars:nonTradingDateBars.length,
     missingTradingDates:Object.freeze(missingTradingDates),
     missingReasonCounts:deepFreeze(missingReasonCounts),
+    unknownSessionDates:Object.freeze([...unknownSessionDateSet].sort()),
     missingBySymbol:Object.freeze(missingBySymbol.map((x)=>deepFreeze(x))),
     observationStateCounts:deepFreeze(observationStateCounts),
     continuityStateCounts:deepFreeze(continuityStateCounts),
