@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_WITNESS_REPLAY_IDENTITY_EXPORT_GAP_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "6fb302047abf0600c62897afb16b2cbad99acc9c",
+  "status": "PHYSICAL_HISTORY_WITNESS_EXISTS_BUT_DURABLE_REPLAY_IDENTITY_NOT_EXPORTED",
+  "physicalRun": {
+    "runId": 37639310919,
+    "jobId": 112853723927,
+    "workflow": "System2 Daily Shadow Input Preflight Readonly",
+    "conclusion": "SUCCESS",
+    "artifacts": [],
+    "rowsWritten": 0,
+    "system1Isolation": "PASS"
+  },
+  "witness": {
+    "symbol": "1101",
+    "market": "TWSE",
+    "marketDate": "2026-10-07",
+    "historyReady": true,
+    "continuityReady": false,
+    "onlyKnownBlocker": "SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED"
+  },
+  "repositoryReadback": {
+    "durablePhysicalReceipt": "system2/evidence/S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1.json",
+    "physicalReceiptCarriesExactWitnessSessionHash": false,
+    "physicalReceiptCarriesExactWitnessSessionDateSet": false,
+    "physicalReceiptCarriesExpectedFirstLastDates": false,
+    "workflowArtifactCount": 0,
+    "testsContainExpectedSessionHash": true,
+    "testsArePhysicalEvidence": false
+  },
+  "diagnosis": "CORR-004 correctly proved and closed exact-session history readiness, but its physical workflow emitted only a console summary and no durable per-symbol replay-identity artifact. NC-T01 continuity promotion requires the continuity receipt to bind the exact replay window actually used for the witness; a human-reconstructed or fixture-derived window is not acceptable.",
+  "requiredHandoff": {
+    "ownerLane": "DATA_LANE",
+    "minimumWitnessExport": [
+      "symbol / market / marketDate / decisionTimestamp",
+      "requiredPriorSessions",
+      "expected eligible session count",
+      "exact ordered expected session date set OR canonical deterministic digest plus first/last date sufficient for independent readback",
+      "observed expected session count",
+      "missingExpectedSessionCount=0",
+      "unexpectedSessionCount=0",
+      "expectedSessionHash",
+      "observedSessionHash",
+      "selected PIT bar/revision identity sufficient to reproduce sourceHistoryHash",
+      "listing/lifecycle exclusion provenance used to derive eligible sessions",
+      "exact Git/source-generation identity"
+    ],
+    "acceptableExecution": "A bounded one-symbol read-only witness export is sufficient; a full-universe rerun is not required solely to produce this handoff.",
+    "mutationAllowed": false
+  },
+  "buildLaneConsumption": [
+    "Do not infer/recompute the witness date window independently from a later calendar snapshot.",
+    "Continuity promotion receipt must match the exported witness replay/session identity exactly.",
+    "Merged #825/#826 replay-first validator must reject any symbol/window/hash mismatch.",
+    "Physical NC-T01 final receipt must include deterministic typed sourceGenerationRefs covering this witness identity."
+  ],
+  "correctionClassification": "EXPECTED_NC_T01_HANDOFF_GAP_NOT_NEW_CORRECTION",
+  "reasonNoNewCorrection": "CORR-004 acceptance remains valid for its history-readiness scope; the missing durable per-symbol export is a downstream physical-independence evidence requirement rather than a regression in the repaired history gate.",
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime change",
+    "No historical D1 mutation",
+    "No synthetic OHLC",
+    "No strategy/ranking/final-selection/push/capital/order authority"
+  ],
+  "implementationPerformedByAudit": false
+}
