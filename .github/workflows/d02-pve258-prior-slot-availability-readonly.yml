@@ -18,6 +18,7 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
+    environment: system2-research
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
