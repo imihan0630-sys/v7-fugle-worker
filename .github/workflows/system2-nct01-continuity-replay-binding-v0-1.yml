@@ -6,6 +6,9 @@ on:
     paths:
       - "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
+      - "system2/runtime/historical_revision_lineage_v0_1.mjs"
+      - "system2/runtime/pit_replay_v0_1.mjs"
+      - "system2/tests/pit_replay_v0_1.test.mjs"
       - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
       - "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
       - "system2/tests/daily_shadow_orchestrator_v0_1.test.mjs"
@@ -15,6 +18,9 @@ on:
     paths:
       - "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
+      - "system2/runtime/historical_revision_lineage_v0_1.mjs"
+      - "system2/runtime/pit_replay_v0_1.mjs"
+      - "system2/tests/pit_replay_v0_1.test.mjs"
       - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
       - "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
       - "system2/tests/daily_shadow_orchestrator_v0_1.test.mjs"
@@ -34,6 +40,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: PIT revision provenance tuple regression
+        run: node system2/tests/pit_replay_v0_1.test.mjs
 
       - name: NC-T01 continuity promotion and replay binding tests
         run: node system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs
