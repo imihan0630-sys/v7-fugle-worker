@@ -4113,3 +4113,137 @@ Governance:
 
 Exact next continuation point:
 PVE-257 — create an isolated read-only baseline-clean diagnostic that surfaces the persisted snapshot `baselineAsOfDate`, `coverageReasons`, baseline `corporateActionResetAt`, the exact-slot last-20 ordered date list and a deterministic content fingerprint from persisted D1 baseline sessions, then feed only those pre-outcome fields into the PVE-256 tri-state guard. The latest expected comparable slot date must come from an authoritative exchange/symbol-session plus suspension/missing-slot provenance source; if that proof is absent, remain UNKNOWN. Separately, only after the natural 2026-10-07 23:35/23:55 family is due may the merged PVE-251 read-only workflow evaluate physical primary/recovery delivery. PR #743 remains owner-gated.
+
+
+## PVE-257~260 continuation — same-slot baseline freshness physically falsified and refresh invariant frozen (2026-10-07)
+
+Status: PVE257_LIVE_BASELINE_CONTENT_PASS / PVE258_PRIOR_SLOT_EXISTS / SAME_SLOT_BASELINE_CLEAN_FAIL / PVE259_ROOT_CAUSE_CERTIFIED / PVE260_REFRESH_INVARIANT_FROZEN / CLEAN_H001_DATES_0 / GATE7_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### PVE-257 — persisted baseline content identity readback
+
+Research-only artifacts:
+- `research/d02_pve257_baseline_content_receipt_v0_1.mjs`;
+- `tests/test_d02_pve257_baseline_content_receipt_v0_1.mjs`;
+- dedicated validation workflow `.github/workflows/d02-pve257-baseline-content-receipt.yml`;
+- live read-only diagnostic `research/d02_pve257_live_baseline_clean_readonly_v0_1.mjs`;
+- live workflow `.github/workflows/d02-pve257-live-baseline-clean-readonly.yml`.
+
+Validation:
+- exact-slot receipt fixtures expanded to 17 assertions and PASS;
+- dedicated run `37636807211` SUCCESS;
+- V8 Regression run `37636807109` SUCCESS;
+- live read-only run `37637126539`, job `112846174390`, SUCCESS;
+- readOnly=true / mutationCount=0 / diagnostic Worker cleanup PASS.
+
+Physical 2454 / 2026-10-07 / 11:45 result:
+- snapshot `baselineAsOfDate=2026-10-05`;
+- reconstructed exact-slot `baselineAsOfDate=2026-10-05`;
+- `coverageBaselineIdentityState=PASS`;
+- `baselineTemporalIdentityState=PASS`;
+- exact-slot eligible session count = 80;
+- no invalid exact-slot baseline session inside the persisted payload;
+- last-20 exact-slot dates end at `2026-10-05`;
+- deterministic baseline content fingerprint = `1ca5ac53a1d04f422eb6676bbc79c65141d66b1243787d06523e85d6c5490d6e`;
+- exact-slot historical validity = PASS;
+- corporate-action continuity proof remains UNKNOWN, but this no longer rescues freshness once a known freshness violation is established.
+
+### PVE-258 — prior comparable slot exists physically
+
+A sanitized research-only provider probe queried only:
+- symbol = 2454;
+- market date = 2026-10-06;
+- timeframe = 15m;
+- target slot = 11:45;
+- no 2026-10-07 outcome query and no price/outcome fields emitted.
+
+First attempt correctly failed because the repository-level workflow had no `FUGLE_API_KEY`; no evidence was accepted from that failure.
+The workflow was then bound to the existing read-only research data-source environment and rerun.
+
+Authoritative provider receipt:
+- run `37638102686`, job `112849554395`, SUCCESS;
+- HTTP 200;
+- source rows = 19;
+- first local identity = 09:00;
+- last local identity = 13:30;
+- target 11:45 occurrence count = exactly 1;
+- exact-response SHA-256 = `47f54378d28df65ffca0741342013a73db3040863c0ea090c1d3252b83f4e9e0`;
+- readOnly=true / mutationCount=0 / outcomeFieldsEmitted=false.
+
+The official TWSE 2026 holiday calendar does not list 2026-10-06 as a market holiday. More importantly, the exact provider 15m receipt physically proves that 2454 had a 2026-10-06 11:45 bar.
+
+Therefore for the 2026-10-07 11:45 feature:
+- `expectedLatestComparableSlotDate=2026-10-06`;
+- persisted/reconstructed `baselineAsOfDate=2026-10-05`;
+- PVE-256 tri-state guard resolves to FAIL via `BASELINE_FRESHNESS_MISMATCH`.
+This FAIL is independent of the still-UNKNOWN corporate-action continuity field because an explicit freshness violation already exists.
+
+The 2026-10-07 H001 candidate is not admissible.
+No clean prospective date is added.
+
+### PVE-259 — physical root cause
+
+Research-only D1 roll-path audit:
+- `research/d02_pve259_roll_path_readonly_v0_1.mjs`;
+- workflow `.github/workflows/d02-pve259-roll-path-readonly.yml`;
+- run `37638346857`, job `112850392177`, SUCCESS;
+- readOnly=true / mutationCount=0.
+
+Physical 2454 rows on 2026-10-06:
+- snapshot count = 4;
+- observed slots = 09:00, 09:15, 09:30, 09:45;
+- latest observed slot = 09:45;
+- 13:00 snapshot = absent.
+
+Runtime semantics:
+- `pvRollObservedSession()` writes the current market date into the baseline only when the current intraday session's latest completed slot is exactly 13:00.
+- Therefore 2026-10-06 could not be rolled into the baseline through the intraday roll path.
+- the later after-market historical bootstrap populated 80 sessions through 2026-10-05.
+- `pvBootstrapSymbol()` subsequently skips any baseline with matching schema and `validSessions>=20`, without requiring freshness against the latest expected comparable prior session.
+
+Certified defect:
+`MINIMUM_SAMPLE_SUFFICIENCY_IS_BEING_USED_AS_A_REFRESH_SKIP_PROXY`.
+
+The defect is not “only 20 rows”. It is:
+- enough historical rows can coexist with a stale exact-slot baseline;
+- a missed 13:00 roll can create a one-day hole;
+- once the baseline reaches >=20 rows, the current bootstrap skip condition can preserve that hole into the next session.
+
+### PVE-260 — fail-closed refresh invariant
+
+Research-only guard:
+- `research/d02_pve260_baseline_refresh_decision_v0_1.mjs`;
+- test `tests/test_d02_pve260_baseline_refresh_decision_v0_1.mjs`;
+- workflow `.github/workflows/d02-pve260-baseline-refresh-decision.yml`;
+- dedicated run `37638566016` SUCCESS;
+- 10 assertions PASS.
+
+Frozen decision semantics:
+- schema mismatch or <20 sessions => BOOTSTRAP_REQUIRED;
+- expected latest comparable slot date unknown => UNKNOWN_BLOCK;
+- exact-slot baseline date older than expected => REFRESH_REQUIRED even when `validSessions>=20`;
+- baseline ahead of expected => IDENTITY_CONFLICT;
+- exact-slot validity FAIL => REFRESH_REQUIRED;
+- only exact-slot freshness equality plus validity PASS may return FRESH_READY / maySkipHistoricalRefresh=true.
+
+Physical PVE-257~259 case:
+- schema matches;
+- validSessions=80;
+- exact-slot baselineAsOfDate=2026-10-05;
+- expectedLatestComparableSlotDate=2026-10-06;
+- exact-slot historical validity PASS;
+- decision = `REFRESH_REQUIRED / BASELINE_STALE_DESPITE_MIN_HISTORY`.
+
+Governance:
+- this guard is research-only and does not modify Production;
+- fixing `pvBootstrapSymbol()` / baseline refresh behavior is a Production runtime change and remains owner-gated/Class-B;
+- PR #743 split 23:35/23:55 schedule candidate remains separately owner-gated and must not be conflated with the baseline freshness defect;
+- tonight's 23:35/23:55 family is not yet evidence until its natural execution time occurs;
+- no Formal selection/ranking/capital/push/trade change;
+- D02 maturity remains 60.0%;
+- all 12 D02 modules remain at least L3;
+- clean prospective H001 dates remain 0;
+- Gate 7 CLOSED;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-261 — freeze an owner-gated Class-B remediation acceptance contract for the baseline refresh defect without merging/deploying Production changes. The candidate must make freshness, not minimum count, authoritative: if the persisted exact-slot baseline is older than the latest expected comparable prior slot, a bounded historical refresh/backfill through the prior session is required before H001 can be clean. Acceptance must prove no current/future leakage, preserve exact provider provenance, preserve corporate-action/reset semantics, reject unexplained missing slots, and physically read back a future session whose `baselineAsOfDate` equals its latest expected comparable prior slot. Separately, only after 2026-10-07 23:35/23:55 is naturally due may the PVE-251 schedule family be evaluated. PR #743 remains owner-gated.
