@@ -228,6 +228,63 @@ export async function verifyHistoricalSegmentReceiptV0_1({db,objectStore,receipt
   });
 }
 
+export async function finalizeHistoricalSegmentCheckpointFromReceiptV0_1({
+  db,objectStore,receipt,capturedAt,
+}={}){
+  if(!db||typeof db.prepare!=="function") throw new Error("isolated System2 database adapter is required");
+  if(!receipt||receipt.state!=="COMPLETE") throw new Error("complete historical segment receipt is required");
+  const completedAt=requiredText(capturedAt||receipt.completed_at,"capturedAt");
+  const checkpoint=await db.prepare(
+    "SELECT * FROM s2_historical_segment_backfill_checkpoints WHERE batch_id=? LIMIT 1"
+  ).bind(receipt.batch_id).first();
+
+  if(checkpoint&&(String(checkpoint.market)!==String(receipt.market)
+    ||Number(checkpoint.year)!==Number(receipt.year)
+    ||Number(checkpoint.month)!==Number(receipt.month)
+    ||Number(checkpoint.expected_pack_count)!==Number(receipt.pack_count)
+    ||Number(checkpoint.expected_bar_count)!==Number(receipt.bar_count)
+    ||String(checkpoint.rolling_hash)!==String(receipt.manifest_rolling_hash))){
+    throw new Error("IMMUTABLE_CONFLICT historical segment checkpoint: "+receipt.batch_id);
+  }
+
+  const checkpointAlreadyComplete=Boolean(
+    checkpoint
+    && checkpoint.state==="COMPLETE"
+    && Number(checkpoint.object_ready_count)===Number(receipt.pack_count)
+    && Number(checkpoint.manifest_committed_count)===Number(receipt.pack_count)
+    && Number(checkpoint.next_pack_index)===Number(receipt.pack_count)
+  );
+  if(checkpointAlreadyComplete){
+    return deepFreeze({
+      batchId:receipt.batch_id,
+      checkpointRepairPerformed:false,
+      checkpointState:"COMPLETE",
+      verification:null,
+      schemaVersion:"S2_HISTORICAL_SEGMENT_RECEIPT_CHECKPOINT_FINALIZATION_V0_1",
+    });
+  }
+
+  const verification=await verifyHistoricalSegmentReceiptV0_1({db,objectStore,receipt});
+  await writeCheckpoint(db,{
+    checkpoint_id:"S2HSCP-"+await sha256Hex({
+      batchId:receipt.batch_id,market:receipt.market,year:Number(receipt.year),month:Number(receipt.month),
+    }),
+    batch_id:receipt.batch_id,market:receipt.market,year:Number(receipt.year),month:Number(receipt.month),
+    expected_pack_count:Number(receipt.pack_count),expected_bar_count:Number(receipt.bar_count),
+    object_ready_count:Number(receipt.pack_count),manifest_committed_count:Number(receipt.pack_count),
+    next_pack_index:Number(receipt.pack_count),rolling_hash:receipt.manifest_rolling_hash,
+    state:"COMPLETE",updated_at:completedAt,
+    schema_version:"S2_HISTORICAL_SEGMENT_BACKFILL_CHECKPOINT_V0_1",
+  });
+  return deepFreeze({
+    batchId:receipt.batch_id,
+    checkpointRepairPerformed:true,
+    checkpointState:"COMPLETE",
+    verification,
+    schemaVersion:"S2_HISTORICAL_SEGMENT_RECEIPT_CHECKPOINT_FINALIZATION_V0_1",
+  });
+}
+
 export async function executeHistoricalSegmentPackSetV0_1({
   db,objectStore,packSet,batchId,capturedAt,market,year,month,segmentFromDate,segmentToDate,chunkSize=25,
 }={}){
@@ -273,12 +330,17 @@ export async function executeHistoricalSegmentPackSetV0_1({
   const prior=await readHistoricalSegmentReceiptV0_1({db,batchId:id});
   if(prior){
     if(!receiptMatches(prior,expectedReceipt)) throw new Error("IMMUTABLE_CONFLICT historical segment receipt: "+id);
-    const verification=await verifyHistoricalSegmentReceiptV0_1({db,objectStore:store,receipt:prior});
+    const finalized=await finalizeHistoricalSegmentCheckpointFromReceiptV0_1({
+      db,objectStore:store,receipt:prior,capturedAt:completedAt,
+    });
+    const verification=finalized.verification
+      || await verifyHistoricalSegmentReceiptV0_1({db,objectStore:store,receipt:prior});
     return deepFreeze({
       batchId:id,market:mkt,year:yr,month:mon,packCount:packSet.packCount,barCount:packSet.barCount,
       insertedObjectCount:0,identicalObjectCount:packSet.packCount,insertedManifestCount:0,
       identicalManifestCount:packSet.packCount,rollingHash,state:"ALREADY_COMPLETE",
       receiptId:prior.receipt_id,verification,
+      checkpointRepairPerformed:finalized.checkpointRepairPerformed,
       schemaVersion:"S2_HISTORICAL_SEGMENT_PACK_STORE_RESULT_V0_1",
     });
   }
