@@ -159,6 +159,8 @@ assert.equal(cmodePositive.state,"POSITIVE_SESSION_SOURCE_OBSERVED");
 assert.equal(cmodePositive.rowCount,3);
 assert.equal(cmodePositive.positiveStopCount,1);
 assert.equal(cmodePositive.absenceCertifiesNoStop,false);
+assert.match(cmodePositive.intervals[0].sourceRowHash,/^[a-f0-9]{64}$/);
+assert.equal(cmodePositive.intervals[0].sourcePayloadHash,"c".repeat(64));
 assert.deepEqual(cmodePositive.intervals.map(x=>({
   market:x.market,symbol:x.symbol,suspendedFrom:x.suspendedFrom,resumedOn:x.resumedOn,
   sourceKind:x.sourceKind,sessionEvidenceOnly:x.sessionEvidenceOnly,
