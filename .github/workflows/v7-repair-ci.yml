@@ -372,6 +372,8 @@ jobs:
           node tests/test_system1_c1_scan_origin_generation_inventory_v8_19_0.mjs
           node tests/test_v8_19_1_pve248_runtime_candidate.mjs
           node tests/test_system1_formal_c1_binding_v8_20_0.mjs
+          node tests/test_system1_generation_set_finalization_v0_1.mjs
+          node tests/test_system1_c1_generation_finalization_v8_21_0.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
           node tests/test_system1_c4_ranking_collection_v0_1.mjs
           node tests/test_system1_c4_saturation_carryover_v0_1.mjs
@@ -393,9 +395,11 @@ jobs:
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.20.0-formal-c1-binding-ledger";' Worker.js
+          grep -F 'const VERSION = "8.21.0-c1-generation-set-finalization";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generation_finalizations' Worker.js
+          grep -F 'url.pathname === "/api/research/c1-generation-finalization"' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
