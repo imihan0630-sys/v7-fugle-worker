@@ -5919,3 +5919,72 @@ No promotion:
 
 Exact next:
 stop blind historical-clock promotion attempts for this bounded event. Reopen only if independent evidence binds the stable TPEx semanticHash and sourceRowHash to a genuine prospective observation or authoritative publication-time contract no later than the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity. Continue waiting for System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the protected cutoff-bearing parent path.
+
+
+## TI-1215 through TI-1226 — S2-07 V1.6 prospective exact-version membership-drift gate (2026-10-07)
+
+Canonical artifacts:
+- `research/D03_SYSTEM2_S207_MOPS_MEMBERSHIP_DRIFT_READBACK_20261007_V0_1.md`;
+- `research/d03_system2_s207_mops_membership_drift_readback_20261007_v0_1.json`;
+- `research/test_d03_system2_s207_mops_membership_drift_readback_v0_1.mjs`.
+
+### TI-1215~1217 — genuine prospective observation layer accepted
+
+System2 V1.6 merge `bc405245870d6e986cbbf709562ce93c320bb327` establishes stock-code-scoped exact-version observations for a frozen 23-event / 23-symbol universe. Dedicated workflow `37548011614` / job `112556594405`, System2 Research CI `37548011621` and V8 Regression `37548011620` all completed SUCCESS.
+
+Latest physical capture:
+- stable semantic event-universe hash = `b7941323ed1969a17697bc58be3d549b7e244f4dfc45b81a0bc6d5645fc305b0`;
+- 161 global exact-version keys;
+- 23/23 frozen symbols covered;
+- 21/23 annual/month-query exact events;
+- source-clock key collisions = 0;
+- common exact-version payload mutation count = 0.
+
+This is accepted as a genuine prospective observation layer. It is not accepted as historical pre-cutoff availability proof for earlier decisions.
+
+### TI-1218~1220 — repeated-capture membership instability falsifies single-capture completeness
+
+Earlier successful run `37547303476` observed 159 versions and 17/23 exact events. The latest run observed 161 versions and 21/23 exact events. Across the two runs, the latest gained 9 version identities and lost 7; common payload mutations remained 0.
+
+Accepted distinction:
+- exact-version payload identity is stable conditional on a version being returned;
+- historical query membership is not stable;
+- absence in one capture is not proof of nonexistence;
+- a single successful capture cannot certify the complete expected MOPS keyset.
+
+Symbol 4806 appears among the earlier annual/month-query divergent symbols. Its prospective observation does not retroactively prove availability by the 2026-10-02 replay cutoff.
+
+### TI-1221~1224 — PIT, bias and incrementality boundary
+
+- PIT: preserve the earliest genuine observed-at as an upper bound; never overwrite it with a later run and never backdate it.
+- OOS / walk-forward: UNKNOWN; two captures minutes apart on one date are not independent-date validation.
+- Selection bias: the 23-event low-volume universe is frozen but not a random market-wide sample.
+- Look-ahead: retrospective source clocks and later prospective observations cannot prove earlier availability.
+- Multiple testing / overfitting: no outcome, threshold, weight or factor fit.
+- Factor redundancy: provenance-only evidence; no independent alpha root and no indicator-versus-price incrementality claim.
+- Cost, fillability and market-state dependence: UNKNOWN.
+
+The newly added 2021 TPEx revision-recovery workflow is engineering capability only at this checkpoint. It is not credited until a physical run and immutable receipt exist, and even then it must be evaluated as source/revision lineage rather than technical-indicator alpha.
+
+### TI-1225~1226 — maturity and next gate
+
+Remaining false gates:
+- `sourceSemanticsCertified=false`;
+- `monthShardCoverageComplete=false`;
+- `expectedMopsKeysetComplete=false`;
+- `noRevisionGapThroughCut=false`;
+- `preParentEvidenceCutReady=false`;
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+require repeated-capture exact-version union/stability reconciliation with immutable earliest-observed preservation and query-path classification. Only after bounded stabilization may the union bind to the source-lane manifest and pre-parent cut. Post-parent reconciliation must still prove `noRevisionGapThroughCut=true` before symbol-session or technical-continuity promotion. Continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics and D16 D03 method/incrementality receipts.

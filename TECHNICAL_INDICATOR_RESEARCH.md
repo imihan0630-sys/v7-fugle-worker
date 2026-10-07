@@ -3694,3 +3694,16 @@ This is meaningful negative evidence: issuer disclosure chronology does not prov
 Dedicated workflow and System2 Research CI pass. Repository-wide regression fails at an unrelated SDA-016 governance-sync token assertion; merged-main dedicated run `37538787809` and merged-main System2 Research CI `37538787638` pass after the physical receipt freezes stable identity. D03 accepts only the dedicated bounded evidence. D03 remains 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
 
 Exact next is to stop blind historical-clock promotion attempts and reopen only when independent evidence binds the stable semanticHash and sourceRowHash to a prospective observation or an authoritative publication-time contract before the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity.
+
+
+## TI-1215 through TI-1226 — S2-07 V1.6 prospective membership-drift gate (2026-10-07)
+
+System2 V1.6 provides the first genuine prospective exact-version population layer for a frozen 23-event / 23-symbol universe. Two successful captures preserve the same stable semantic universe and common exact-version payload hashes have zero mutation. This supports stable content identity conditional on presence.
+
+The same comparison also falsifies single-capture completeness: the first run has 159 versions, the second 161, while the second gains 9 and loses 7 identities. Symbol 4806 is among the earlier query-path divergent symbols. Therefore a missing row cannot mean the version did not exist, and one capture cannot freeze the complete expected keyset. Earliest genuine observed-at is an upper bound only and cannot be backdated to historical availability.
+
+Dedicated workflow `37548011614`, System2 Research CI `37548011621` and V8 Regression `37548011620` pass. However expected-keyset completeness, revision-gap closure, pre-parent readiness, symbol-session completeness and technical continuity remain false. Two same-date captures are not OOS or walk-forward evidence; cost, fillability and market-state evidence remain UNKNOWN. No factor outcome was joined and no new alpha root exists.
+
+The 2021 TPEx revision-recovery workflow is not credited before physical execution and an immutable receipt. D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate remains 2/3; outcomes remain CLOSED; Formal Core remains LOCKED.
+
+Exact next is repeated-capture union/stability reconciliation with earliest-observed preservation and query-path classification, followed by bounded stabilization, source-manifest/pre-parent binding and post-parent proof of `noRevisionGapThroughCut=true` before any technical-continuity promotion.
