@@ -290,3 +290,86 @@ Canonical audit map:
 - 不得沿用 checkpoint、commit、舊聊天室或上一則訊息的舊時間；以當次回覆時間為準。
 
 核心判準：專案正式回覆若沒有「日期＋台北時間」結尾，即視為輸出格式不完整。
+
+
+## 十四、聊天室責任模組數量進度回報規則（MANDATORY）
+
+本節適用於 00、01～15、System 1、System 2、各 execution lane，以及所有依本 bootstrap／registry 恢復且具有正式「模組／工作單元 inventory」的聊天室。
+
+### 1. 正式回報除了百分比，必須同時報模組數
+
+任何研究／工程／稽核／續接回合，只要回覆中有「本輪結束、進度、完成、階段性結論、checkpoint 更新」等正式進度回報，除既有成熟度／進度百分比外，必須額外列出本聊天室正式責任範圍的：
+
+- 模組總數；
+- 已完成模組數；
+- 尚未完成模組數。
+
+固定最低格式：
+
+```
+【本室責任模組進度】
+- 負責領域：<Dxx 或正式工作域>
+- 模組總數：N
+- 已完成：X
+- 尚未完成：Y
+- 模組完成率：X / N = Z%
+```
+
+其中必須滿足：
+`N = X + Y`。
+
+不得只回成熟度百分比而省略模組數；也不得只列本輪有碰到的模組而冒充全室責任模組總數。
+
+### 2. 01～15 研究室的正式分母與完成判準
+
+01～15 的模組總數與狀態一律重新讀取最新：
+`research/stock_market_learning_tracker_v0_1.json`
+並依 `ROOM_BOOTSTRAP_REGISTRY.json` 中該聊天室正式負責的 Dxx 加總；不得使用舊聊天室、舊 Learning Map、舊提示詞或記憶中的模組數覆蓋最新 tracker。
+
+為避免「模組是否完成」與成熟度百分比混淆，固定採以下二元口徑：
+
+- **已完成模組**：該模組目前至少達 `L2`（MECHANISM_AND_FALSIFICATION_DEFINED；機制＋反證已定義）；
+- **尚未完成模組**：該模組仍為 `L0` 或 `L1`；
+- `L3`、`L4`、`L5` 均屬已完成基礎研究的模組，但仍可繼續提升成熟度。
+
+因此「模組完成率」只回答研究廣度是否已完成基本機制＋反證覆蓋，不等於成熟度，也不等於已取得可交易 Alpha、PIT、OOS、Shadow、多 Regime、成本或 Formal promotion 證據。
+
+例：
+- 12/12 模組至少 L2，可回報「已完成 12、未完成 0、模組完成率 100%」；
+- 若這 12 個模組都只在 L3，領域成熟度仍可能只有 60%，不得把模組完成率 100% 誤寫成成熟度 100%。
+
+### 3. 多 Dxx 聊天室
+
+若一個聊天室負責多個 Dxx（例如 D04+D05、D07+D08），結尾必須：
+
+1. 逐 Dxx 列出總數／已完成／未完成；
+2. 再列本聊天室合計。
+
+不得只挑成熟度較高的 Dxx，也不得跨入其他聊天室的 Dxx 補數。
+
+### 4. 00／System 1／System 2／execution lane
+
+若聊天室沒有 Dxx learning-module（學習模組）分母，禁止硬套 356 個研究模組。
+
+- 若該聊天室已有正式 machine-readable（機器可讀）工作單元 inventory（例如 correction queue、launch gate、正式 implementation inventory），使用該聊天室自己被治理文件明確定義的工作單元，並清楚標示計數口徑。
+- 若目前沒有唯一 canonical inventory 或「完成」狀態不能可靠二元化，必須回報：
+  `MODULE_COUNT_NOT_CANONICALLY_DEFINED`（模組數尚無唯一正式定義）
+  並列出目前採用的正式進度／gate／queue；不得為了滿足格式虛構總數。
+
+00 負責稽核各聊天室是否遵守此規則，但不得自行替專科室修改其模組成熟度。
+
+### 5. 回覆與 GitHub 一致性
+
+- 每次回報模組數前重新讀 latest main 的正式 tracker／inventory。
+- 若 tracker 與舊 Learning Map、checkpoint 或聊天室文字數量不同，以最新 canonical tracker／inventory 為準，並修復鏡像文件，而不是沿用舊數字。
+- 若本輪新增／合併／刪除正式模組，必須先完成 curriculum governance，再重新計算 N/X/Y；不得先用新分母宣傳進度。
+- 工程完成、CI PASS、PR merge 不得自動把研究模組標成完成；研究模組完成仍依 L2+ 口徑，成熟度仍依 L0～L5 權重。
+- Formal Core 變更權限不受本格式規則影響。
+
+### 6. 新聊天室自動繼承
+
+本規則屬 ROOM_BOOTSTRAP canonical 全域規則。任何未來新建／續接聊天室，只要依本 bootstrap／registry 恢復，都自動繼承，不需韓哥再次提醒。
+
+核心判準：
+
+**每次正式進度回報不只要回答「做到幾％」，還要回答「這個聊天室到底負責幾個模組、已完成幾個、還剩幾個」。**
