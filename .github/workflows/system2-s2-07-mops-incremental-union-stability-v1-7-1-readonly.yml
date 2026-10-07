@@ -6,7 +6,7 @@ on:
     paths:
       - "system2/runtime/s2_07_mops_incremental_union_stability_v1_7_1.mjs"
       - "system2/tests/s2_07_mops_incremental_union_stability_v1_7_1.test.mjs"
-      - "system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs"
+      - "system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs"\n      - "system2/scripts/probe_s2_07_mops_exact_version_population_bounded_parallel_readonly_v1_7_1.mjs"
       - "system2/SYSTEM2_S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7.md"
       - ".github/workflows/system2-s2-07-mops-incremental-union-stability-v1-7-1-readonly.yml"
   push:
@@ -25,7 +25,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
@@ -52,7 +52,7 @@ jobs:
           test -f /tmp/v171/seed/S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL_20261007.json
 
       - name: Capture one fresh V1.6 exact-version population
-        run: node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
+        run: node system2/scripts/probe_s2_07_mops_exact_version_population_bounded_parallel_readonly_v1_7_1.mjs
 
       - name: Extend durable union seed with fresh capture
         run: node system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs
