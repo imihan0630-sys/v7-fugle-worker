@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "D17",
+  "module": "D17-08",
+  "createdAt": "2026-10-08T01:32:58+08:00",
+  "status": "AUTHORIZED_PROVIDER_PRODUCT_LANE_BOUNDED_KEEP_L2",
+  "formalCoreImpact": "NONE",
+  "researchQuestion": "Does an official Taiwan general-news provider expose an authorized Traditional-Chinese news-text product lane sufficient to move D17-08 from theory toward a measurement benchmark without assuming production/commercial rights or PIT completeness?",
+  "evidence": [
+    {
+      "source": "CNA product/service page",
+      "finding": "CNA explicitly offers licensed Chinese-news products to subscribers and describes rapid delivery of collected, reported and translated news."
+    },
+    {
+      "source": "CNA AskCNA/CNA MCP product page",
+      "finding": "CNA MCP is a paid subscription product that can search CNA data; the page also exposes a separate Team/organization contact lane."
+    },
+    {
+      "source": "CNA 2026-08-31 launch coverage",
+      "finding": "CNA states MCP subscription can connect AI applications to its database and spans institutions, schools and individuals."
+    }
+  ],
+  "support": [
+    "A first-party paid/authorized access lane exists; D17-08 is no longer blocked by absence of any identifiable Traditional-Chinese general-news product candidate.",
+    "CNA product materials support an explicit distinction between consumer/small-workflow subscription and organization/team arrangements."
+  ],
+  "falsification": [
+    "A subscription product page does not prove System 2 commercial-production, redistribution, storage, derivative-training or bulk-export rights.",
+    "Searchable database access does not prove exhaustive event denominator, low-latency feed semantics, immutable historical versions or first-availability timestamps.",
+    "CNA may include translated wire content; source lineage must remain separate from delivery endpoint.",
+    "No article text has been used to label stock direction and no return outcome has been opened."
+  ],
+  "pit": {
+    "requiredClocks": [
+      "sourcePublishedAt",
+      "sourceUpdatedAt",
+      "interfaceFirstObservedAt",
+      "capturedAt"
+    ],
+    "rule": "Displayed publication time is not strategy knownAt unless prospective first-observation is authenticated.",
+    "missing": "UNKNOWN"
+  },
+  "decision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Authorized product candidate is bounded, but exact text fields/rights, exhaustive denominator, prospective first-observation latency and Traditional-Chinese entity-level annotation reliability are not yet validated."
+  },
+  "exactNextContinuationPoint": "Validate the actual CNA MCP/authorized-product terms and returned text fields for the intended research/production use; preserve query/pagination/coverage receipts. If rights and fields are sufficient, build an outcome-closed Traditional-Chinese target-entity double-blind annotation benchmark before any prospective PIT/OOS return test.",
+  "formalOptimizationCandidate": false,
+  "sources": [
+    "https://www.cna.com.tw/about/product.aspx",
+    "https://ask.cna.com.tw/",
+    "https://www.cna.com.tw/news/ait/202608310244.aspx"
+  ]
+}
