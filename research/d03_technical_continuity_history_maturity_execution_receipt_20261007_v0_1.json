@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D03_TECHNICAL_CONTINUITY_HISTORY_MATURITY_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-07T16:12:00+08:00",
+  "workflow": {
+    "name": "D03 Technical Continuity History Maturity Readonly",
+    "runId": 37591631091,
+    "runNumber": 1,
+    "headSha": "37d5db509abde6f3d5bfc80fe73da271c36ba60f",
+    "conclusion": "success"
+  },
+  "test": "research/test_d03_technical_continuity_history_maturity_map_v0_1.mjs",
+  "spec": "research/d03_technical_continuity_history_maturity_map_20261007_v0_1.json",
+  "acceptedRules": [
+    "Layer A raw A1 history acceptance cannot auto-promote Layer B symbol-session completeness.",
+    "Layer A or B acceptance cannot auto-promote Layer C revision-known-at completeness.",
+    "D03-09 and D03-10 remain L2/40 while Layer B/C and parent gates are incomplete.",
+    "Non-equivalent legacy TPEx transport fallback remains prohibited.",
+    "Transport resilience affects acquisition reliability only, not evidence-layer authority."
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalCoreImpact": "NONE_LOCKED"
+  }
+}
