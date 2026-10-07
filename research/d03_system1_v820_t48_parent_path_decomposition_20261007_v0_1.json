@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "D03_SYSTEM1_V820_T48_PARENT_PATH_DECOMPOSITION_V0_1",
+  "updatedAt": "2026-10-07T15:50:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_PARENT_PATH_INCREMENTAL_READBACK",
+  "formalCoreImpact": "NONE_LOCKED",
+  "source": {
+    "mainSha": "21539eb5f094203a80bf856dc87bf83ee78bee50",
+    "v820Runtime": "8.20.0-formal-c1-binding-ledger",
+    "t48Proposal": "research/SYSTEM1_SDA016_T48_CLASS_B_PROPOSAL_20261007.md",
+    "t48ProposalJson": "research/system1_sda016_t48_class_b_proposal_20261007_v0_1.json"
+  },
+  "acceptedFacts": {
+    "v820ProductionVerified": true,
+    "authoritativeFormalToC1BindingRuntimeExists": true,
+    "bindingTable": "trade_research_formal_c1_bindings",
+    "firstGenuinePostDeployBindingReceipt": "PENDING",
+    "t48GenerationSetFinalizationProposalReady": true,
+    "t48ImplementationAuthorized": false,
+    "t48CandidateRuntime": "8.21.0-c1-generation-set-finalization",
+    "t48OperationalRecoveryBlocker": false,
+    "t48ResearchCompletenessHardening": true
+  },
+  "d03GateDecomposition": {
+    "gateA_authoritativeParentIdentity": {
+      "mechanism": "V8.20 exact Formal decision receipt -> immutable C1 generation binding",
+      "engineeringState": "PRODUCTION_VERIFIED",
+      "evidenceState": "FIRST_GENUINE_NORMAL_SESSION_RECEIPT_PENDING",
+      "d03Credit": "NO_PROMOTION_UNTIL_GENUINE_RECEIPT"
+    },
+    "gateB_sameSessionGenerationSetFinalization": {
+      "mechanism": "Append-only prior-session finalization receipt proving canonical same-session C1 generation inventory is terminal and complete for research consumption",
+      "engineeringState": "CLASS_B_PROPOSAL_ONLY",
+      "evidenceState": "NOT_IMPLEMENTED_NOT_PHYSICALLY_PROVEN",
+      "d03Credit": "NO_PROMOTION"
+    }
+  },
+  "antiConflationRules": [
+    "V8.20 authoritative parent identity does not prove the same-session generation set is complete.",
+    "T48 generation-set finalization, even if later implemented, does not replace the need for a genuine V8.20 Formal-to-C1 parent binding receipt.",
+    "A failed or ineligible scheduled evidence attempt is not evidence of a binding defect.",
+    "Historical recovery or stage-selection cannot synthesize a promotion-grade genuine parent.",
+    "D03 same-parent comparator admission requires the actual bound generation plus complete expected-parent reconciliation; source-code availability alone is insufficient."
+  ],
+  "d03Implication": {
+    "bollingerD03_10": "First promotion target remains blocked by both genuine parent identity and complete same-session parent-set finalization/continuity reconciliation.",
+    "adxD03_09": "Blocked by the same parent gates plus canonical Wilder H/L/C full replay or replay-certified trusted state.",
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE",
+    "maturityPct": 56.7
+  },
+  "exactNextContinuationPoint": "First consume a legitimate post-deploy V8.20 genuine Formal-to-C1 binding receipt when a normal Taiwan session produces one. Separately, do not treat T48 as implemented until owner-authorized V8.21 code, merge/deploy approval, production verification, and a same-session generation-set finalization receipt exist. D03 promotion-grade parent readiness requires both authoritative exact parent identity and complete finalized same-session generation inventory, plus continuity/revision closure. In parallel continue monitoring System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion, and System2 S2-07 stabilization."
+}
