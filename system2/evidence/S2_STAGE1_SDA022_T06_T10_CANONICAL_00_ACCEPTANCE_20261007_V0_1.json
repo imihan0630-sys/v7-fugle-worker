@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "S2_STAGE1_SDA022_T06_T10_CANONICAL_00_ACCEPTANCE_V0_1",
+  "recordedAt": "2026-10-07T23:27:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "22c1e45a8af68a26054217ad547f831f248d590d",
+  "oracle": "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
+  "canonicalImplementation": {
+    "pullRequest": 828,
+    "mergeCommit": "51946aa75ef1e73c8ff84798f2af957b7018f8de",
+    "finalHead": "fc464d49d6adf1f3ab7012cac8b7bba78c2ca169",
+    "mergedAt": "2026-10-07T15:31:39Z",
+    "replacementForPullRequest": 762
+  },
+  "prerequisiteReadback": {
+    "corr004": "VERIFIED_CLOSED",
+    "exactSessionPr": 817,
+    "exactSessionMerge": "625ea3d0bda28fcd06df4c3163a054573c3982f7",
+    "mergedMainReadOnlyPreflightRun": 37639310919,
+    "exactSessionHistoryReadyCount": 46,
+    "physicalWitness": "1101/TWSE",
+    "d1RowsWritten": 0,
+    "replayFirstContinuityPr": 825,
+    "legacyContinuityFirewallPr": 826
+  },
+  "exactFinalHeadChecks": [
+    {
+      "name": "System2 SDA-022 Policy Fingerprints V0.1",
+      "runId": 37644326811,
+      "headSha": "fc464d49d6adf1f3ab7012cac8b7bba78c2ca169",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "System2 Research CI",
+      "runId": 37644326767,
+      "headSha": "fc464d49d6adf1f3ab7012cac8b7bba78c2ca169",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "name": "V8 Regression Tests",
+      "runId": 37644326798,
+      "headSha": "fc464d49d6adf1f3ab7012cac8b7bba78c2ca169",
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "workflowArtifact": {
+    "id": 11493956334,
+    "name": "system2-sda022-policy-fingerprints-v0-1",
+    "digest": "sha256:53342ab89bd430d77ec596d7162f2a3297e246175afdb50c7990d4b8620ab975",
+    "headSha": "fc464d49d6adf1f3ab7012cac8b7bba78c2ca169"
+  },
+  "canonicalFingerprintHashes": {
+    "SHORT_MOMENTUM": "115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3",
+    "SWING_GROWTH": "a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b"
+  },
+  "sourceArtifactBinding": {
+    "count": 11,
+    "allCanonicalMainBlobDigestsMatchedAtAudit": true,
+    "importantPostCorrectionDigests": {
+      "dailyShadowOrchestrator": "79bebce21cca3cdf3b40affd6043ffa6b1f84c0e",
+      "dailyShadowHistoryReader": "47bbdc3d5ca518dc7f79ba5505aeaea145ebecf1"
+    }
+  },
+  "oracleResults": {
+    "S22_T06": "PASS",
+    "S22_T07": "PASS",
+    "S22_T08": "PASS",
+    "S22_T09": "PASS",
+    "S22_T10": "PASS"
+  },
+  "preservedSemantics": {
+    "strategiesRemainSeparate": true,
+    "globalMax": 12,
+    "perStrategyActiveMonitorMax": 3,
+    "forcedFill": false,
+    "implicitGlobalUniversalScore": false,
+    "system1Top6OrRankRequired": false,
+    "candidateUniverseMode": "NOT_PHYSICALLY_PROVEN",
+    "physicalIndependentDiscovery": false,
+    "ncT01Required": true,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  },
+  "supersededBranches": [
+    {
+      "pullRequest": 762,
+      "disposition": "SUPERSEDED_DO_NOT_MERGE_OR_CREDIT"
+    },
+    {
+      "pullRequest": 827,
+      "disposition": "REDUNDANT_AFTER_828_DO_NOT_MERGE_OR_SEPARATELY_CREDIT"
+    }
+  ],
+  "nextGate": "PHYSICAL_NC_T01_S22_T11_TO_T16",
+  "finalDisposition": "CANONICAL_PASS_S22_T06_TO_T10",
+  "formalCoreImpact": "NONE_LOCKED"
+}
