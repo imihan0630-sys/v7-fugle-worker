@@ -56,6 +56,11 @@ function maxTimestamp(values,fallback){
   if(!valid.length)return fallback;
   return valid.sort((a,b)=>Date.parse(a)-Date.parse(b)).at(-1);
 }
+function minTimestamp(values,fallback){
+  const valid=values.filter((x)=>x&&Number.isFinite(Date.parse(x)));
+  if(!valid.length)return fallback;
+  return valid.sort((a,b)=>Date.parse(a)-Date.parse(b))[0];
+}
 
 const db=await createRemoteD1RestAdapter({
   accountId,apiToken,databaseName:"system2-research",
@@ -114,6 +119,18 @@ const reconciliation=reconcileHistoricalSourceRowsV0_1({
 });
 assert.equal(reconciliation.missingFromColdCount,0,"revision overlay refuses missing cold rows");
 assert.equal(reconciliation.absentFromFreshOfficialCount,0,"revision overlay refuses rows absent from fresh official source");
+assert.equal(reconciliation.sourceRowHashMismatchCount,780,
+  "2021 TPEx revision signature changed: expected 780 source-row revisions");
+assert.equal(reconciliation.canonicalA1ValueMismatchCount,698,
+  "2021 TPEx revision signature changed: expected 698 canonical A1 revisions");
+assert.equal(reconciliation.sourceRevisionOnlyCount,82,
+  "2021 TPEx revision signature changed: expected 82 source-only revisions");
+assert.equal(reconciliation.sourceRevisionDateCount,1,
+  "2021 TPEx revision overlay expects exactly one revised market date");
+assert.equal(reconciliation.sourceRevisionByDate?.[0]?.marketDate,targetDate,
+  "2021 TPEx revision date changed from the frozen blocker date");
+assert.equal(reconciliation.sourceRevisionByDate?.[0]?.count,780,
+  "2021 TPEx revision-date count changed from the frozen blocker signature");
 
 const changedKeys=new Set([
   ...reconciliation.sourceRowHashMismatchSample,
@@ -143,7 +160,24 @@ if(existingRevisionReceipt.length&&preLineage.state!=="PIT_REVISION_LINEAGE_READ
 
 let baselinePersistence=null;
 let revisionPersistence=null;
-let revisionFirstKnownAt=existingRevisionReceipt[0]?.captured_at||observedAt;
+const freshByKey=new Map(fresh.rows.map((row)=>[key(row),row]));
+const partialRevisionTimes=[...new Set(
+  persistedBefore
+    .filter((row)=>{
+      const freshRow=freshByKey.get(String(row.market_date||"")+"|"+String(row.symbol||""));
+      return freshRow
+        && changedKeys.has(String(row.market_date||"")+"|"+String(row.symbol||""))
+        && String(row.availability_basis||"")==="PROSPECTIVE_OBSERVATION"
+        && String(row.source_row_hash||"")===String(freshRow.sourceRowHash||"")
+        && row.available_at
+        && Number.isFinite(Date.parse(row.available_at));
+    })
+    .map((row)=>String(row.available_at))
+)];
+assert.ok(partialRevisionTimes.length<=1,
+  "multiple partial revision availability timestamps found; refusing to create another revision version");
+let revisionFirstKnownAt=existingRevisionReceipt[0]?.captured_at
+  || minTimestamp(partialRevisionTimes,observedAt);
 
 if(preLineage.state!=="PIT_REVISION_LINEAGE_READY"){
   const existingBaselineReceipt=await db.rawQuery(
@@ -229,6 +263,7 @@ const output={
     baselineBatchId,
     revisionBatchId,
     revisionFirstKnownAt,
+    partialRevisionResumeTimestamp:partialRevisionTimes[0]||null,
     preExistingLineageState:preLineage.state,
     baselinePersistence,
     revisionPersistence,
