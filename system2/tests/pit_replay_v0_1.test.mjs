@@ -112,4 +112,45 @@ await assert.rejects(
   /REVISION_AMBIGUITY/,
 );
 
+const prospectiveRevision = {
+  ...batch.rows.at(-1),
+  barHash: "prospective-revision-hash",
+  sourceRowHash: "prospective-source-revision-hash",
+  close: 999,
+  observedAt: "2026-10-01T00:00:00Z",
+  availableAt: "2026-10-01T00:00:00Z",
+  capturedAt: "2026-10-01T00:00:00Z",
+  availabilityBasis: "PROSPECTIVE_OBSERVATION",
+  pitReplayEligible: true,
+};
+
+const preRevisionWindow = await buildPitReplayWindow({
+  replayId: "PIT-2330-PRE-REVISION",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-09-29T10:10:00Z",
+  lookbackSessions: 61,
+  historicalBars: [...batch.rows, prospectiveRevision],
+});
+assert.equal(preRevisionWindow.state, "READY");
+assert.equal(preRevisionWindow.bars.at(-1).close, 169);
+assert.equal(preRevisionWindow.resolvedRevisionKeyCount, 0);
+
+const postRevisionWindow = await buildPitReplayWindow({
+  replayId: "PIT-2330-POST-REVISION",
+  symbol: "2330",
+  marketDate: "2026-09-29",
+  decisionTimestamp: "2026-10-01T00:00:00Z",
+  lookbackSessions: 61,
+  historicalBars: [...batch.rows, prospectiveRevision],
+});
+assert.equal(postRevisionWindow.state, "READY");
+assert.equal(postRevisionWindow.bars.at(-1).close, 999);
+assert.equal(postRevisionWindow.bars.at(-1).sourceRowHash, "prospective-source-revision-hash");
+assert.equal(postRevisionWindow.resolvedRevisionKeyCount, 1);
+assert.equal(
+  postRevisionWindow.revisionPolicy,
+  "LATEST_AVAILABLE_REVISION_BY_AVAILABLE_AT_FAIL_CLOSED_ON_SAME_AVAILABILITY_CONFLICT",
+);
+
 console.log("System2 PIT replay v0.1 tests passed");
