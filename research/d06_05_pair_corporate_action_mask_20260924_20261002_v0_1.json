@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "D06_05_PAIR_CORPORATE_ACTION_MASK_20260924_20261002_V0_1",
+  "createdAt": "2026-10-07T20:41:42+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "pair": {
+    "priorTDCCTSourceDate": "2026-09-24",
+    "currentTDCCSourceDate": "2026-10-02"
+  },
+  "universe": {
+    "ordinaryFourDigitCommonSupport": 2962,
+    "exactDenominatorStableBeforeEventMask": 2783,
+    "denominatorChangedExcluded": 179
+  },
+  "sharedPrimitiveRule": "Reuse Corporate Actions/System2 official event primitives as cleansing metadata. No event becomes a second directional vote and historical firstKnownAt is not backfilled.",
+  "hardEventMasks": [
+    {
+      "symbol": "1235",
+      "market": "TWSE",
+      "family": "STOCK_RIGHTS_DIVIDEND",
+      "boundaryDate": "2026-09-24",
+      "sourceState": "TWSE_OFFICIAL_EXRIGHT_FORECAST_OBSERVED",
+      "mechanics": "nonzero stock distribution rate 0.04999999 on the prior TDCC source-date boundary",
+      "denominatorDeltaPct": 0,
+      "concentrationDeltaPctPoint": 0.0004242280094928219,
+      "classification": "HARD_MASK_BOUNDARY_CLOCK_UNCERTAIN"
+    },
+    {
+      "symbol": "1441",
+      "market": "TWSE",
+      "family": "CAPITAL_REDUCTION",
+      "effectiveDate": "2026-09-29",
+      "sourceState": "SYSTEM2_PROMOTION_EVIDENCE_READY_BOUNDED",
+      "sharedEvidence": "system2/evidence/S2_07_PROMOTION_LINKAGE_V0_7_PHYSICAL_20261006.json",
+      "denominatorDeltaPct": 0,
+      "concentrationDeltaPctPoint": -36.504448574410496,
+      "classification": "HARD_MASK"
+    },
+    {
+      "symbol": "6550",
+      "market": "TWSE",
+      "family": "CAPITAL_REDUCTION",
+      "effectiveDate": "2026-09-29",
+      "sourceState": "SYSTEM2_PROMOTION_EVIDENCE_READY_BOUNDED",
+      "sharedEvidence": "system2/evidence/S2_07_PROMOTION_LINKAGE_V0_7_PHYSICAL_20261006.json",
+      "denominatorDeltaPct": 0,
+      "concentrationDeltaPctPoint": -25.66548915355135,
+      "classification": "HARD_MASK"
+    },
+    {
+      "symbol": "4806",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "effectiveDate": "2026-10-02",
+      "sourceState": "SYSTEM2_PROMOTION_EVIDENCE_READY_BOUNDED",
+      "sharedEvidence": "system2/evidence/S2_07_PROMOTION_LINKAGE_V0_7_PHYSICAL_20261006.json",
+      "suspensionContext": "stop 2026-09-23 -> resume/effective 2026-10-02 per System2 checkpoint",
+      "denominatorDeltaPct": -30.038877969556133,
+      "concentrationDeltaPctPoint": -1.866493508033244,
+      "classification": "HARD_MASK"
+    },
+    {
+      "symbol": "2601",
+      "market": "TWSE",
+      "family": "CAPITAL_REDUCTION",
+      "sourceState": "TWSE_OFFICIAL_ANNOUNCEMENT_OBSERVED",
+      "suspensionContext": "old shares suspended 2026-09-23 through 2026-10-03; new shares resume/list 2026-10-05",
+      "denominatorDeltaPct": -16.29497525174915,
+      "concentrationDeltaPctPoint": 68.40802122838514,
+      "classification": "HARD_MASK"
+    },
+    {
+      "symbol": "2323",
+      "market": "TWSE",
+      "family": "CAPITAL_REDUCTION",
+      "sourceState": "TWSE_OFFICIAL_MARGIN_EVENT_AND_REDUCTION_ANNOUNCEMENT_OBSERVED",
+      "suspensionContext": "reduction-related trading/credit suspension touches 2026-10-01/10-02 pair end",
+      "denominatorDeltaPct": 0,
+      "concentrationDeltaPctPoint": 0.3418280364772386,
+      "classification": "HARD_MASK"
+    }
+  ],
+  "cashOnlyObservedNonAutomaticMasks": [
+    {
+      "symbol": "2109",
+      "market": "TWSE",
+      "effectiveDate": "2026-09-29",
+      "family": "CASH_DIVIDEND_ONLY",
+      "classification": "NOT_SHARE_DENOMINATOR_CONTAMINATION_BY_ITSELF"
+    },
+    {
+      "symbol": "7631",
+      "market": "TWSE",
+      "effectiveDate": "2026-09-29",
+      "family": "CASH_DIVIDEND_ONLY",
+      "classification": "NOT_SHARE_DENOMINATOR_CONTAMINATION_BY_ITSELF"
+    },
+    {
+      "symbol": "9927",
+      "market": "TWSE",
+      "effectiveDate": "2026-10-01",
+      "family": "CASH_DIVIDEND_ONLY",
+      "classification": "NOT_SHARE_DENOMINATOR_CONTAMINATION_BY_ITSELF"
+    },
+    {
+      "symbol": "2323",
+      "market": "TWSE",
+      "effectiveDate": "2026-10-01",
+      "family": "CASH_DIVIDEND_PLUS_SEPARATE_CAPITAL_REDUCTION",
+      "classification": "MASKED_BY_CAPITAL_REDUCTION_NOT_BY_CASH_DIVIDEND"
+    }
+  ],
+  "knownMaskEffect": {
+    "hardMaskCount": 6,
+    "hardMasksAlreadyExcludedByDenominatorChange": [
+      "2601",
+      "4806"
+    ],
+    "hardMasksWithExactStableDenominator": [
+      "1235",
+      "1441",
+      "2323",
+      "6550"
+    ],
+    "upperBoundAfterDenominatorAndKnownHardEventMask": 2779
+  },
+  "coverage": {
+    "TWSE_CAPITAL_REDUCTION": "BOUNDED_SHARED_EVENT_EVIDENCE_PLUS_OFFICIAL_CASES",
+    "TPEX_CAPITAL_REDUCTION": "BOUNDED_SHARED_EVENT_EVIDENCE",
+    "TWSE_STOCK_RIGHTS_DIVIDEND": "PARTIAL_PAIR_MATERIALIZATION",
+    "TPEX_STOCK_RIGHTS_DIVIDEND": "SOURCE_LANE_PHYSICALLY_READY_BUT_PAIR_ROWS_NOT_MATERIALIZED_IN_ROOM05",
+    "TWSE_PAR_VALUE_CHANGE": "SOURCE_LANE_PHYSICALLY_READY_NO_PAIR_ROW_MATERIALIZED",
+    "TPEX_PAR_VALUE_CHANGE": "SOURCE_LANE_PHYSICALLY_READY_NO_PAIR_ROW_MATERIALIZED",
+    "MERGER_SHARE_EXCHANGE_IDENTITY": "NOT_EXHAUSTIVELY_MATERIALIZED_FOR_PAIR"
+  },
+  "completenessDecision": {
+    "finalCleanSupportFrozen": false,
+    "status": "BOUNDED_MASK_ADVANCED_NOT_COMPLETE",
+    "reason": "Known hard contaminations are masked and shared source lanes are validated, but Room05 has not materialized the full TPEx stock-right/dividend and identity-transition event rows for this exact pair. 2779 is an upper bound, not final clean N."
+  },
+  "exactNext": "Materialize exact pair rows from the already-validated shared TWSE/TPEx corporate-action archive, especially TPEx EX_RIGHT_DIVIDEND and merger/share-exchange identity transitions. Then recompute final event-clean exact-denominator support and hash it before any outcome join."
+}
