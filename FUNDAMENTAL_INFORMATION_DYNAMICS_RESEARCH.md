@@ -1994,3 +1994,14 @@ The primary decision metric is NPV because it preserves value additivity under a
 PIT discipline is strict: project cost, demand, price, volume, margin, capacity, tax, timing and discount-rate assumptions must be known by the decision timestamp. Later cost overruns, utilization, impairments, margins or realized returns are append-only later vintages/outcomes and cannot rewrite the original project state. Missing project assumptions remain UNKNOWN rather than being backfilled from realized capex or later operating results.
 
 Falsification gates reject universal “higher IRR is better” or “higher capex is better” rules, reject option value without observable exercise rights, require incrementality versus D07-18 WACC, D07-20/21 forecasts, D21-07 capital-allocation quality and D08 valuation, and prohibit promotion from one issuer, one industry or one capex cycle. L3 requires replayable Taiwan project disclosures across at least two materially different industries, append-only revision handling, and at least one divergent D07-19 versus D21-07 state. Outcomes remain CLOSED and no Formal Optimization Candidate is created.
+
+
+## 2026-10-08 Room-06 D07-20 三大財報聯動預測
+
+D07-20 is frozen at **L2 / 40%** as the integrated reconciliation layer. It owns statement integration, forecast-vintage integrity, funding/circularity diagnostics and accounting-presentation normalization rather than creating a new standalone forecast vote. D07-21 owns revenue/margin/OPEX drivers; D07-22 owns working-capital/CAPEX/FCF detail; D07-23 owns scenarios; D08 consumes the reconciled forecast for valuation.
+
+A valid historical forecast must reconcile the balance-sheet equation, the beginning-to-ending cash bridge, equity/retained-earnings roll-forward, debt/interest/funding path and depreciation-CAPEX-PPE path. An unexplained cash/debt/equity plug is a falsification signal. Growth without an economically plausible reinvestment/capacity path, margin expansion caused only by reclassification, and later actuals/restatements leaking into an earlier forecast vintage are prohibited.
+
+Management guidance, analyst/consensus estimates and model assumptions remain distinct PIT provenance lanes. IFRS 18 adoption/early adoption/reclassification is treated as a presentation vintage; economic time-series comparison requires comparable mapping or explicit UNKNOWN. Exact three-statement closure is internal-coherence evidence only, not forecast accuracy or alpha evidence.
+
+L3 requires >=3 Taiwan-listed issuers across >=2 materially different industries, original statement vintages/knownAt evidence, append-only revisions, a financing/circularity case and a presentation/reclassification case. Outcomes remain closed.
