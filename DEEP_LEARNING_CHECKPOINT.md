@@ -2833,3 +2833,27 @@ Maturity:
 2. D06-05 waits for the next genuinely new TDCC sourceDate; repeated use of the 2026-10-02 vintage earns no additional evidence count or maturity.
 3. Before D06-05 L4, freeze corporate-action/capital/denominator continuity and preregister vintage-clustered OOS/Shadow residual incrementality.
 4. D06-11 remains prospective-November-clock gated; D06-13 remains full-universe authorization/cost gated; D06-19 remains direct domestic-natural-person source gated.
+
+
+## 2026-10-07 D06 — IC-099 public-bank proxy source contract deepening
+
+- Durable artifacts:
+  - `research/d06_15_public_bank_proxy_source_contract_20261007_v0_1.json`;
+  - `research/d06_15_l3_promotion_review_20261007_v0_1.json`.
+- Official eight-public-bank set frozen separately from the broader public-financial-institution universe.
+- Current TWSE 2026-10-07 broker mapping: 8 head offices + 151 active branches = 159 current execution identifiers across the eight public-bank-affiliated broker families.
+- Fixed three-character prefix aggregation is falsified: Hua Nan Yong Chang current branch codes span 930x through 939x.
+- Membership rule is now a dated explicit TWSE active-code set with versioning; FinMind free trader master is history/context only because it can retain closed or non-branch/self identifiers.
+- TWSE broker-security buy/sell combines brokerage customer flow and proprietary activity; beneficial owner is not identified.
+- FinMind Sponsor dataset `TaiwanStockGovernmentBankBuySell` has documented one-day replay, fields, date range, update schedule and missing-date contract.
+- Direct no-credential probe correctly returned free-level access denial; no real government-bank rows were obtained.
+- D06-15 remains L2/40. Source-contract ambiguity is largely resolved, but L3 still requires one legally authorized real provider receipt, actual firstKnownAt and provider-vs-underlying aggregation cross-check.
+- Government-fund identity, policy/stabilization motive and bank-proprietary ownership remain UNKNOWN.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. D06-15: on a valid future trading date, obtain one legally authorized Sponsor receipt and run the frozen membership/clock/aggregation audit outcome-blind.
+2. D06-11 remains the 2026-11 prospective review-clock lane.
+3. D06-13 remains complete-universe authorization/cost gated.
+4. D06-19 remains direct domestic-natural-person stock-date directional-source gated.
+5. D06-05 remains at L3 and waits for a genuinely new TDCC sourceDate; repeated 2026-10-02 consumption earns no new evidence count.
