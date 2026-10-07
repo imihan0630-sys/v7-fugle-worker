@@ -65,5 +65,31 @@
   ],
   "correctionDirectiveCreated": false,
   "rationale": "The defect is caught pre-merge inside an active BUILD_LANE PR and has not been falsely declared complete; it should be fixed within that PR rather than opening a parallel correction conflict unit.",
-  "implementationPerformedByAudit": false
+  "implementationPerformedByAudit": false,
+  "followUpAudit": {
+    "checkedHead": "33300552acc05b07bca476198d42db454c43d869",
+    "dedicatedWorkflow": {
+      "runId": 37641693350,
+      "conclusion": "SUCCESS"
+    },
+    "provenanceFixCommit": "ce24024071fef15d220c76210bf3301bfd8b9623",
+    "positive": [
+      "sourceId/sourceName/pitAvailabilityClass are now preserved through selected revision",
+      "continuity core/unit/integration tests pass",
+      "shallow-checkout System1 isolation guard fixed by fetch-depth:0 in 33300552"
+    ],
+    "blockingSemanticRegression": {
+      "code": "LEGACY_CONTINUITY_STATE_REINTRODUCED_BEFORE_POST_REPLAY_CERTIFICATION",
+      "observed": "ce240240 also preserves continuityState in historical_revision_lineage normalizeRow; pit_replay primitive therefore no longer defaults selected history bars to UNVERIFIED.",
+      "risk": "A persisted legacy CLEAR_NO_ACTION or ADJUSTED_CONTINUITY label can enter replayWindow.bars and replayHash before the new replay-first continuity receipt is verified, contaminating lineage with pre-certification continuity authority.",
+      "required": "Preserve selected source identity but keep raw NC-T01 replay continuity UNVERIFIED until a valid resolveContinuityEvidence receipt binds after replay."
+    },
+    "requiredRegression": [
+      "historical input with continuityState=CLEAR_NO_ACTION still produces raw NC-T01 replay continuityState=UNVERIFIED before binding",
+      "historical input with continuityState=ADJUSTED_CONTINUITY cannot make RAW replay continuity-eligible",
+      "valid post-replay receipt alone may promote to CLEAR_NO_ACTION",
+      "sourceHistoryHash remains continuity-label independent"
+    ],
+    "prCommentId": 6040795719
+  }
 }
