@@ -43,8 +43,8 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-13 | Fugle live bounded monitor | ✅ | Worker secret configured; Ticker/adjusted history/Quote path deployed; no intraday full-market scan. |
 | S2-14 | Resonance D1 persistence / episodes / operations audit | ✅ | Schema V1.1, 46 isolated `s2_` tables; snapshots/latest/runs/episode events and 19:00 operations audit deployed. |
 | S2-15 | System 2 Worker / Cron | ✅ | `system2-shadow-research`; one consolidated Cron; four System 1 Cron triggers untouched. |
-| S2-16 | UI / read API | 🟡 | Resonance UI, pool API, operations API, health live. Institutional Monitoring UI/UX North-Star contract defines the final command-center target; full multi-strategy candidate/holdings/performance interface remains pending. Current surfaces must label System 2 virtual/simulated positions as virtual and must not present owner actual holdings until an authorized holdings source + reconciliation + provenance/readback path is verified. |
-| S2-17 | Execution simulation / position lifecycle | 🟡 | `VIRTUAL_POSITION_READY`: minimum simulated execution runtime and virtual `s2_positions` lifecycle exist, including `SIM_FILLED -> POSITION_MONITOR`. `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`; `ACTUAL_POSITION_MONITOR_VERIFIED=false`. Automated future-session outcome loop also remains incomplete. |
+| S2-16 | UI / read API | 🟡 | Resonance UI/read APIs remain live. Actual Holdings UI contract now has a dedicated `USER_UPLOADED_BROKER_SCREENSHOT` source/read-model path, visually separate from VIRTUAL POSITIONS / CANDIDATES / WATCHLIST / SIMULATED FILLS. A real Owner snapshot has not yet been physically imported, so Actual Holdings current data remains empty/locked. |
+| S2-17 | Execution simulation / position lifecycle | 🟡 | `VIRTUAL_POSITION_READY` remains unchanged. Screenshot Actual Holdings validation/snapshot/reconciliation/persistence runtime and additive isolated schema are implemented on the build lane; `ACTUAL_POSITION_MONITOR_VERIFIED=false` until a real Owner screenshot is confirmed and read back. Broker API/order routing/real capital remain disabled. |
 | S2-18 | Strategy performance engine | 🟡 | Metrics/spec/storage concepts exist; trustworthy prospective sample population depends on S2-07 and downstream outcomes. |
 | S2-19 | PIT Replay / Bulk Backtest | 🟡 | Engines exist; broad historical dataset and multi-strategy evidence expansion remain incomplete. |
 | S2-20 | OOS / Forward / Prospective Shadow promotion evidence | ⏳ | Requires independent dates/regimes, cost/slippage, redundancy, overfit/multiple-testing and date-clustering checks. |
@@ -54,11 +54,12 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 
 Current capability state for `S2-CORR-20261004-002`:
 
-- `TARGET_ONLY`: continuous monitoring of owner actual holdings.
 - `DESIGN_APPROVED`: actual-vs-desired exposure and actual-holdings-outside-candidate-capacity architecture.
 - `VIRTUAL_POSITION_READY`: simulated fills / virtual `s2_positions` / virtual `POSITION_MONITOR` lifecycle.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 holdings source/reconciliation adapter is physically verified.
+- `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT`.
+- `CHAT_ASSISTED_HOLDINGS_IMPORT_READY=CODE_TESTED_PENDING_REAL_OWNER_SNAPSHOT`.
 - `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+- Broker API holdings, real orders, live capital authority and broker order routing remain `NOT AUTHORIZED / DISABLED`.
 
 No actual-holdings UI/API label is authorized from signal, suggested-share, plan, candidate or simulated-fill records. Any broker-holdings or System 1/V8 shared-holdings integration is a future `OWNER_DECISION_REQUIRED` gate.
 
@@ -1376,3 +1377,27 @@ Next exact BUILD_LANE continuation:
 5. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 6. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity binding.
 
+## 2026-10-07 Owner holdings-source decision
+
+Owner explicitly selected the current System 2 actual-holdings source:
+`USER_UPLOADED_BROKER_SCREENSHOT`.
+
+Build scope:
+- structured extraction contract, not a general OCR engine;
+- fail-closed deterministic validation;
+- explicit review/confirmation;
+- immutable snapshot + idempotency;
+- previous/current reconciliation;
+- dedicated actual-holdings read model;
+- dedicated isolated `s2_actual_holdings_*` storage;
+- no reuse of virtual `s2_positions` as ownership evidence.
+
+Protected boundary:
+- broker API = NOT AUTHORIZED;
+- broker token/certificate = NOT REQUIRED / NOT AUTHORIZED;
+- real orders = DISABLED;
+- live capital authority = DISABLED;
+- broker order routing = NOT AUTHORIZED;
+- System 1 holdings auto-import = NOT AUTHORIZED.
+
+First real Owner screenshot physical import/readback remains a separate acceptance gate.
