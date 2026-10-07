@@ -1498,8 +1498,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）」。正式主責為 industry × explicit product/geographic market definition × vintage（產業×明確產品／地理市場定義×版本）的產業結構狀態：競爭強度、市占水準／分布、進入障礙、替代威脅、供應商／客戶議價力、產業產能／價格／毛利結構。公司特定策略行動與其 announcement→commitment→implementation→outcome（公告→承諾→執行→結果）生命週期由 D09-14 主責。共享的市占、產能、價格、毛利、客戶與供應商觀測只建立一份 parent evidence receipt（母證據憑證），不得因 D09-13／D09-14 同時引用而重複算票；D10 實體供應鏈／產能傳導與 D11／D17 事件時鐘維持各自主責。每個結論必須保存 PIT（時點一致性）、市場定義版本、反證／失效條件、資料品質、冗餘、成本與對 System 1／System 2 的可驗證增量價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / TWO_COMPATIBLE_PCB_APPLICATION_REVENUE_NUMERATORS_COMPEQ_NANYA_PCB / NANYA_8046_AI_HPC_2025_16PCT_NOT_ABF / KINSUS_3189_NUMERIC_MAGNITUDE_UNKNOWN / ABF_SPECIFIC_NUMERIC_NUMERATOR_ZERO / OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
-          "next": "BR-059 continue independent issuer-native product/application revenue numerator search, prioritizing ABF/substrate-specific numeric disclosure for 3189 and 8046; preserve application-vs-product taxonomy separation and UNKNOWN when no compatible ABF numerator exists; no composite structure score before OOS/redundancy tests."
+          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / 3189_2025_SUBSTRATE_UPPER_BOUND_FROZEN_82P11 / 8046_2025_BROAD_CIRCUIT_BOARD_UPPER_BOUND_FROZEN_97P23 / ABF_SPECIFIC_NUMERATOR_STILL_UNKNOWN / APPLICATION_VS_PRODUCT_TAXONOMY_FIREWALL / OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
+          "next": "BR-059A continue issuer-native 2025-2026 annual-report/investor-presentation search for mutually exclusive product-level disclosure that can isolate ABF for 3189 or 8046; current 3189 substrate and 8046 broad circuit-board values are upper bounds only, not ABF numerators. Preserve UNKNOWN if no compatible issuer-native numerator exists; no composite structure score before OOS/redundancy tests."
         },
         {
           "id": "D09-14",
@@ -1513,7 +1513,8 @@
         }
       ],
       "status": "D09_57_1_PERCENT / SDA009_ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / R3_V06_ACCEPTANCE_ORACLE_READY / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / BR035_PARENT_GENERATION_BLOCKED / BR063_REPLAY_ONLY_SAME_CLOCK_MISSING / D16_VALIDATION_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "WAIT_FOR_GENUINE_SYSTEM1_R3A1_RECEIPT / DO_NOT_REDESIGN_SEMANTICS. System1 implements additive research-only C1 capture per research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md with providerCallDelta=0 and protected Formal outputs unchanged. First genuine receipt must PASS research/sda009_r3a1_acceptance_oracle_v0_6.mjs before Room07 R3A2/P0-P5 replay and D16 common-support validation."
+      "exactNextContinuationPoint": "WAIT_FOR_GENUINE_SYSTEM1_R3A1_RECEIPT / DO_NOT_REDESIGN_SEMANTICS. System1 implements additive research-only C1 capture per research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md with providerCallDelta=0 and protected Formal outputs unchanged. First genuine receipt must PASS research/sda009_r3a1_acceptance_oracle_v0_6.mjs before Room07 R3A2/P0-P5 replay and D16 common-support validation.",
+      "lastResearchUpdate": "2026-10-07"
     },
     {
       "id": "D10",
