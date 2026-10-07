@@ -56,7 +56,21 @@
     "executionLaneScheduling": "DYNAMIC_BY_LAUNCH_CRITICAL_BLOCKER_NOT_FIXED_ROUND_ROBIN",
     "system1Priority": "DEFAULT_LAST_SENTINEL_ONLY",
     "system1EscalationPolicy": "ONLY_SHARED_RUNTIME_OR_DATA_REGRESSION_SDA022_COMPARATOR_FORMAL_CORE_PROTECTION_OR_VERIFIED_DIRECT_BLOCKER",
-    "room00CurrentDynamicTriLaneCycle": "shared-knowledge/00_DYNAMIC_TRI_LANE_CURRENT_CYCLE_20261007_V0_1.md"
+    "room00CurrentDynamicTriLaneCycle": "shared-knowledge/00_DYNAMIC_TRI_LANE_CURRENT_CYCLE_20261007_V0_1.md",
+    "moduleCountProgressPolicy": "MANDATORY_ROOM_RESPONSIBILITY_MODULE_COUNTS_AT_FORMAL_PROGRESS_REPORT",
+    "moduleCountProgressPolicySource": "shared-knowledge/ROOM_BOOTSTRAP.md",
+    "learningRoomModuleInventory": "research/stock_market_learning_tracker_v0_1.json",
+    "learningRoomModuleCompletionThreshold": "L2_OR_HIGHER",
+    "learningRoomIncompleteThreshold": "L0_OR_L1",
+    "moduleCountRequiredFields": [
+      "TOTAL",
+      "COMPLETED",
+      "REMAINING",
+      "COMPLETION_RATE"
+    ],
+    "multiDomainRoomRequiresPerDomainAndRoomTotal": true,
+    "nonLearningRoomModuleCountFallback": "USE_CANONICAL_ROOM_WORK_UNIT_INVENTORY_OR_MODULE_COUNT_NOT_CANONICALLY_DEFINED",
+    "moduleCountAppliesToNewRooms": true
   },
   "identities": [
     {
