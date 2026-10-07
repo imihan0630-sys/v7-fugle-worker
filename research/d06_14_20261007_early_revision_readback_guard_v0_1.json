@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "D06_14_20261007_EARLY_REVISION_READBACK_GUARD_V0_1",
+  "createdAt": "2026-10-07T05:33:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-14",
+  "status": "EARLY_READBACK_AGGREGATES_STABLE / EXTRACTION_ROWCOUNT_DISCREPANCY / CANONICAL_PARSER_AUTHORITY_PRESERVED / T2_T1_FINAL_LABELS_NOT_GRANTED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "observations": [
+    {
+      "tradeDate": "2026-10-05",
+      "expectedPriorRows": 841,
+      "priorFingerprint": "fnv1a64-utf8:48e8edf2952b9b40",
+      "aggregateReadback": {
+        "totalDayTradeShares": 563183000,
+        "totalDayTradeBuyValue": 139035902050,
+        "totalDayTradeSellValue": 139484441280
+      },
+      "extractionLayerReportedRows": 251,
+      "interpretation": "Aggregate values exactly match prior canonical receipt, while extraction row count conflicts with the canonical parser. Do not declare a provider revision from extraction-layer row count."
+    },
+    {
+      "tradeDate": "2026-10-06",
+      "expectedPriorRows": 843,
+      "priorFingerprint": "fnv1a64-utf8:21c5de02d6096939",
+      "aggregateReadback": {
+        "totalDayTradeShares": 530117000,
+        "totalDayTradeBuyValue": 136109936790,
+        "totalDayTradeSellValue": 136525764410
+      },
+      "extractionLayerReportedRows": 400,
+      "interpretation": "Aggregate values exactly match prior canonical receipt, while extraction row count conflicts with the canonical parser. Do not declare a provider revision from extraction-layer row count."
+    }
+  ],
+  "guards": [
+    "Canonical table parser controls row-level revision evidence.",
+    "Natural-language/structured extraction row counts are non-authoritative diagnostics.",
+    "Identical aggregate totals are stability evidence but are insufficient to certify row-level equality.",
+    "2026-10-05 T2_FINAL and 2026-10-06 T1_REVISED labels require a defensible post-workflow row-level readback under canonical parsing.",
+    "Morning calendar rollover alone does not prove provider T1/T2 workflow completion."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Revision clock and source stability are strengthened, but canonical row-level T2/T1 confirmation has not yet been completed under the provider workflow."
+  },
+  "exactNext": "Later on 2026-10-07, after the provider T+1/T+2 workflow is plausibly complete, re-run the canonical row parser for pinned tradeDate 20261005 and 20261006. Only then compare union/common support and assign T2_FINAL/T1_REVISED."
+}
