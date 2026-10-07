@@ -5229,3 +5229,84 @@ No maturity or Formal change is authorized by this routing.
 6. Hand migration persistence and root-renewal sensitivity to D16.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. No Formal Core change.
+
+
+## Continuation update — DL-079~080 (2026-10-07)
+
+### DL-079 — Zone migration / root persistence firewall
+- Zone version and structural root are now separate identities.
+- Center drift, widening, narrowing, reshape, merge and split can remain one structuralRootId while zoneVersionId advances.
+- Moving-window/adaptive transformations do not create new independent information merely because the representation moves.
+- Every version preserves root-forming observation-set lineage.
+- Root renewal requires preregistered completion/coexistence semantics, a genuinely distinct observation set, non-deterministic transformation, predictor-time firstObservableAt, minimum topology separation and no future outcome use.
+- Merge/split operations preserve parent lineage and do not multiply evidence by themselves.
+- Frozen migration metrics:
+  centerShiftTicks;
+  centerShiftBps;
+  widthChangeTicks;
+  overlapRatio;
+  unionWidthTicks;
+  intersectionWidthTicks;
+  parentObservationOverlapRatio;
+  newObservationShare;
+  elapsedEligibleSessions.
+- D16 ladder G0-G11 frozen.
+- 10 adversarial tests authored.
+- Independent V8-equivalent deterministic execution: 10 / 10 PASS.
+- Native Node environment-parity execution remains separate and is not claimed.
+
+### DL-080 — Structural break / regime reset firewall
+- Regime/change-point context may alter root relevance, but only through replay-safe receipts known by predictor freeze.
+- Retrospective best-fit break dates cannot enter live predictors.
+- D01 does not build a second regime engine; owner-certified regime receipts are consumed as context.
+- Root treatment states now separate unchanged activity, contextual activity, freshness reevaluation, geometry reestimation, temporary block, mechanical invalidation, new-price-discovery invalidation and unknown state.
+- Regime change alone does not automatically invalidate all old structural roots.
+- Abrupt/gradual and volatility/trend/liquidity/multidimensional changes remain distinct.
+- New post-break roots are not automatically independent alpha.
+- Regime context is not an extra confirmation vote.
+- D16 ladder B0-B11 frozen.
+- 10 adversarial tests authored.
+- Independent V8-equivalent deterministic execution: 10 / 10 PASS.
+- Native Node environment-parity execution remains separate and is not claimed.
+
+### Deterministic execution evidence
+- DL-068~078: 118 / 118 PASS under V8-equivalent research execution.
+- DL-079~080: 20 / 20 PASS under V8-equivalent research execution.
+- Cumulative DL-068~080: 138 / 138 PASS.
+- Evidence files:
+  research/D01_DL068_078_TEST_EXECUTION_EVIDENCE_20261007_V0_1.md
+  research/D01_DL079_080_TEST_EXECUTION_EVIDENCE_20261007_V0_1.md
+- This closes deterministic helper/test execution evidence under V8-equivalent semantics only.
+- It does not close native Node parity, Taiwan historical validation, OOS/prospective validation, D16 incrementality, SDA-001, SDA-002, or Formal promotion.
+
+### Evidence / governance
+- New research files:
+  research/PATTERN_ZONE_MIGRATION_ROOT_PERSISTENCE_FIREWALL_V0_1.md
+  research/pattern_zone_migration_root_persistence_firewall_v0_1.mjs
+  research/test_pattern_zone_migration_root_persistence_firewall_v0_1.mjs
+  research/pattern_zone_migration_root_persistence_firewall_v0_1.json
+  research/PATTERN_ZONE_MIGRATION_ROOT_PERSISTENCE_D16_HANDOFF_V0_1.md
+  research/PATTERN_STRUCTURAL_BREAK_REGIME_RESET_FIREWALL_V0_1.md
+  research/pattern_structural_break_regime_reset_firewall_v0_1.mjs
+  research/test_pattern_structural_break_regime_reset_firewall_v0_1.mjs
+  research/pattern_structural_break_regime_reset_firewall_v0_1.json
+  research/PATTERN_STRUCTURAL_BREAK_REGIME_RESET_D16_HANDOFF_V0_1.md
+  research/D01_DL079_080_EVIDENCE_LEDGER_V0_1.md
+- SDA-001 remains open.
+- SDA-002 remains open.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-080
+
+1. Native Node environment-parity execution remains optional evidence work; deterministic research logic is already 138/138 PASS under V8-equivalent execution.
+2. Start DL-081: large discontinuity root survival versus gradual-drift root survival.
+3. Separate event gap, price-limit catch-up, suspension/resumption, corporate-action mechanics and genuine information repricing before any old-root survival claim.
+4. Compare abrupt discontinuity versus gradual regime drift under the same structural-root lineage.
+5. Preserve old-root failure/survival outcomes in the denominator; do not reset history at the break.
+6. Hand root-survival heterogeneity to D16 with prospective/OOS validation.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. No Formal Core change.

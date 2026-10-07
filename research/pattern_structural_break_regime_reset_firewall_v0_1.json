@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pattern-structural-break-regime-reset-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "regimeChangeAutomaticallyInvalidatesAllRoots": false,
+  "retrospectiveBreakDateMayEnterLiveFeatures": false,
+  "postBreakRootEqualsIndependentAlpha": false,
+  "regimeContextEqualsExtraConfirmationVote": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}

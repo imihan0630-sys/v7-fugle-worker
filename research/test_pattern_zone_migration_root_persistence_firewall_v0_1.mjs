@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {classifyMigration,observationOverlap,classifyRootRenewal,classifyVersionLineage} from "./pattern_zone_migration_root_persistence_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7901 moving center same root",()=>assert.equal(classifyMigration({sameRoot:true,centerShiftTicks:2,widthBefore:4,widthAfter:4}).status,"SAME_ROOT_TRANSLATION"));
+t("D7902 widening same root",()=>assert.equal(classifyMigration({sameRoot:true,centerShiftTicks:0,widthBefore:4,widthAfter:6}).status,"SAME_ROOT_WIDENING"));
+t("D7903 split preserves root class",()=>assert.equal(classifyMigration({sameRoot:true,split:true}).status,"SAME_ROOT_SPLIT"));
+t("D7904 version remains one vote",()=>assert.equal(classifyVersionLineage({structuralRootId:"R1",zoneVersionId:"V2",parentZoneVersionId:"V1"}).effectiveIndependentEvidenceCount,1));
+t("D7905 rolling observation overlap measured",()=>assert.ok(observationOverlap({parentIds:["a","b","c"],childIds:["b","c","d"]}).overlapRatio>0));
+t("D7906 deterministic transform cannot renew root",()=>assert.equal(classifyRootRenewal({priorRootClosed:true,newObservationSetDistinct:true,deterministicTransform:true,firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",minSeparationSatisfied:true,usesFutureOutcome:false}).status,"KEEP_EXISTING_ROOT"));
+t("D7907 future outcome renewal blocked",()=>assert.equal(classifyRootRenewal({priorRootClosed:true,newObservationSetDistinct:true,deterministicTransform:false,firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",minSeparationSatisfied:true,usesFutureOutcome:true}).status,"ROOT_RENEWAL_SELECTION_BIAS"));
+t("D7908 future observable root blocked",()=>assert.equal(classifyRootRenewal({priorRootClosed:true,newObservationSetDistinct:true,deterministicTransform:false,firstObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",minSeparationSatisfied:true,usesFutureOutcome:false}).status,"ROOT_RENEWAL_LOOKAHEAD"));
+t("D7909 true distinct root candidate",()=>assert.equal(classifyRootRenewal({priorRootClosed:true,newObservationSetDistinct:true,deterministicTransform:false,firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",minSeparationSatisfied:true,usesFutureOutcome:false}).status,"GENUINE_NEW_ROOT_CANDIDATE"));
+t("D7910 missing lineage blocked",()=>assert.equal(classifyVersionLineage({structuralRootId:"",zoneVersionId:"V1"}).status,"LINEAGE_UNKNOWN"));
+console.log(`SUMMARY ${p}/10 PASS`);
