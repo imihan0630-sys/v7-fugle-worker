@@ -81,7 +81,7 @@ No stock outcome opened.
 
 ## Exact next
 
-SC-082-D10-10:
+SC-084:
 1. do not redo the first three captures;
 2. consume the next live capture seeded from the durable 168-version union;
 3. preserve earliest firstObservedAt and append-only union identity;
