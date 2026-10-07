@@ -1,0 +1,36 @@
+name: D02 PVE266 System2 Table Attribution Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve266_system2_table_write_attribution_readonly_v0_1.mjs"
+      - ".github/workflows/d02-pve266-system2-table-write-attribution-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Attribute System2 table activity read-only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: node research/d02_pve266_system2_table_write_attribution_readonly_v0_1.mjs
+      - name: Preserve PVE-266 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d02-pve266-system2-table-attribution-${{ github.run_id }}
+          path: artifacts/d02-pve266-system2-table-write-attribution-readonly.json
+          if-no-files-found: warn
+          retention-days: 30
