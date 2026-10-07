@@ -170,7 +170,7 @@ export async function readC1GenerationFinalization(db,{scanDate}={}){
 export async function guardC1GenerationInsertAfterFinalization(db,{scanDate,generationId,observedAt}={}){
   if(!db?.prepare) return {allowed:true};
   const date=String(scanDate||""),id=String(generationId||"");
-  const row=await db.prepare("SELECT finalization_receipt_id,receipt_json FROM trade_research_c1_generation_finalizations WHERE scan_date=?1").bind(date).first();
+  const row=await db.prepare("SELECT * FROM trade_research_c1_generation_finalizations WHERE scan_date=?1").bind(date).first();
   if(!row) return {allowed:true};
   const finalized=receiptFromRow(row);
   await verifyC1GenerationFinalizationReceipt(finalized);
