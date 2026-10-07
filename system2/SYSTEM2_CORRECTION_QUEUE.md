@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 19:43:05 Asia/Taipei
+Updated: 2026-10-07 23:05:43 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1034,7 +1034,7 @@ Correction consequence:
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
 - severity: HIGH
-- status: OPEN
+- status: VERIFIED_CLOSED
 - routingClass: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
 - canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1058,4 +1058,15 @@ Correction consequence:
   - continuity promotion remains separate and must bind `CLEAR_NO_ACTION` to the exact selected PIT replay window.
 - durable 00 audit:
   `system2/evidence/S2_CORR_20261007_004_PR817_INDEPENDENT_CONTENT_AUDIT_20261007_V0_1.json`.
-- finalDisposition: PENDING
+- finalDisposition: VERIFIED_CLOSED — merged exact-session reconciliation is regression-tested and physically verified; history/session defect closed. Continuity certification remains a separate NC-T01 gate.
+
+#### Independent closure verification
+
+- implementation owner state reached `FIX_IMPLEMENTED` through PR #824 after PR #817 merged.
+- independent AUDIT_LANE verification: `system2/evidence/S2_CORR_20261007_004_INDEPENDENT_VERIFICATION_20261007_V0_1.json` @ `b8e519f7b70718fc6fbb161f69c13a8d799e4e69`.
+- merged-main physical readonly run `37639310919`: SUCCESS, `rowsWritten=0`, `exactSessionReconciliationEnabled=true`, history-ready `46`, continuity-ready `0`, System1 isolation PASS.
+- positive real witness: `1101 / TWSE` exact-window history-ready, with continuity still correctly unresolved.
+- negative real witnesses including `1213/1218` remain fail-closed with expected/unexpected-session blockers.
+- merged V8 Regression `37639311568` PASS; Stage1 Assessor `37639310904` PASS; later descendant/main System2 Research CI `37640265444` PASS.
+- closure scope is history/session reconciliation only. It does not certify continuity and does not authorize strategy selection, live push, capital or orders.
+- verifiedAt: 2026-10-07T23:05:43+08:00
