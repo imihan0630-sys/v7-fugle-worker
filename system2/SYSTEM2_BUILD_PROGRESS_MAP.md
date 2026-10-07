@@ -1539,3 +1539,26 @@ Durable audit:
 `system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`.
 
 Formal Core remains LOCKED.
+
+
+## 2026-10-08 06:22 Launch-critical order refinement — CORR-007 -> PR #844
+
+Current code-firewall state:
+- CORR-005 = VERIFIED_CLOSED;
+- CORR-006 = VERIFIED_CLOSED;
+- physical S22-T11..T16 = NOT YET PASSED.
+
+Current BUILD blockers:
+1. CORR-007 suspension-provenance binding:
+   `S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json`.
+2. PR #844 physical wrapper hardening:
+   - reject mutating D1 SQL before transport;
+   - runtime network/capability guard ledger;
+   - derive runtimeForbiddenAccessCount from actual counters;
+   - bind ledger identity into hidden-fallback audit/final receipt.
+
+Order:
+CORR-007 canonical merge -> #844 rebase/latest-main checks -> #844 merge -> physical fail-closed smoke -> real DATA continuity receipt -> real NC-T01 -> 00 T11..T16 audit.
+
+Do not credit CI/synthetic evidence as physical independence.
+Do not resume lower-priority S2-07 work until this launch-critical chain is cleared unless it can proceed without delaying the NC-T01 blocker.
