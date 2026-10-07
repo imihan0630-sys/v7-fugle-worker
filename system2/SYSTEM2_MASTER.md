@@ -794,3 +794,9 @@ PR #775 / merge `28a42d5d49dce00a42dacf18797b45a904fc6dc3` establishes the Owner
 This implementation does not mean the Owner's current holdings are already loaded. No real Owner screenshot was used in the acceptance fixture and isolated-D1 migration 0009 was not physically applied by the acceptance workflow. `ACTUAL_POSITION_MONITOR_VERIFIED=false` remains authoritative until the first real screenshot completes confirm/persist/readback.
 
 Broker API holdings, broker adapter/token/certificate, System1 holdings import, real orders, live capital authority and broker order routing remain NOT AUTHORIZED / DISABLED.
+
+## 2026-10-07 S2-07 V1.7 append-only union boundary
+
+Merge `14f67ddba88604e73a2488d4a561a571393f026b` and dedicated run `37579422400` physically verify the V1.7 append-only MOPS exact-version union. Three accepted prospective captures reconcile to a 168-version union; the latest capture contains 163, five previously observed versions are absent, earliest/latest genuine observation clocks are preserved, and payload conflicts are zero.
+
+This repairs cross-capture provenance mechanics but does not establish complete MOPS membership. `trailingIdenticalTransitions=0`, `boundedStabilizationCandidate=false`, `expectedMopsKeysetComplete=false`, and `noRevisionGapThroughCut=false`. Next BUILD_LANE work is durable union-seed persistence followed by the next bounded capture and continued stabilization evidence.
