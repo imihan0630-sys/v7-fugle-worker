@@ -7,6 +7,7 @@ const c2Path=resolve(process.env.C2_EVIDENCE_OUTPUT||"artifacts/system1-c2-paire
 const c3Path=resolve(process.env.C3_REGISTRATION_OUTPUT||"artifacts/system1-c3-registration.json");
 const readinessPath=resolve(process.env.H1_H5_READINESS_OUTPUT||"artifacts/system1-h1-h5-readiness.json");
 const c5Path=resolve(process.env.C5_SHORT_OUTPUT||"artifacts/system1-c5-short.json");
+const c5DailyPath=resolve(process.env.C5_DAILY_REPORT_OUTPUT||"artifacts/system1-c5-daily-report.json");
 const bridgePath=resolve(process.env.OPPORTUNITY_LOSS_OUTPUT||"artifacts/system1-opportunity-loss-v0.3.json");
 const json=async p=>JSON.parse(await readFile(p,"utf8"));
 const save=async(p,v)=>{await mkdir(dirname(p),{recursive:true});await writeFile(p,JSON.stringify(v,null,2)+"\n","utf8");};
@@ -31,11 +32,14 @@ await save(readinessPath,{
   noPlanChanges:true,noTrade:true,noPush:true
 });
 await save(c5Path,result.c5Diagnostic);
+await save(c5DailyPath,result.c5DailyReport);
 await save(bridgePath,result.opportunityLossBridge);
 console.log(JSON.stringify({
   ok:true,sessionDate:result.sessionDate,generationId:result.generationId,
   h1:result.hypotheses[0].state,h2:result.hypotheses[1].state,h3:result.hypotheses[2].state,
   h4:result.hypotheses[3].state,h5:result.hypotheses[4].state,
+  h1ConditionalRankableN:result.hypotheses[0].conditionalUpperBound?.rankableN??0,
+  h1SafetyCaptureDemandState:result.hypotheses[0].safetyCaptureDemand?.demandState??"UNKNOWN",
   targetUnknownSourceN:result.targetProvenanceAudit.unknownSourceN,
   researchOnly:true,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true
 }));
