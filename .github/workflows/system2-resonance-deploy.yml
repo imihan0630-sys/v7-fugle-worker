@@ -132,7 +132,7 @@ jobs:
               if(!diagnostic.ok||dg.schemaVersion!=="S2_DAILY_SHADOW_DIAGNOSTIC_V0_1")throw new Error("daily diagnostic API failed");
               if(dg.receipt&&(dg.receipt.capacityRunId!==null||dg.receipt.zeroPickDay!==null||dg.receipt.finalSelectionEnabled!==false))throw new Error("diagnostic authority mismatch");
               const page=await fetch(url+"/resonance",{signal:AbortSignal.timeout(15000)});if(!page.ok||!(await page.text()).includes("查看執行診斷"))throw new Error("UI failed");
-              const terminal=await fetch(url+"/terminal",{signal:AbortSignal.timeout(15000)});const terminalHtml=await terminal.text();if(!terminal.ok||!terminalHtml.includes("多策略智慧選股終端")||!terminalHtml.includes("ACTUAL_HOLDINGS_SOURCE_NOT_WIRED"))throw new Error("terminal UI failed");
+              const terminal=await fetch(url+"/terminal",{signal:AbortSignal.timeout(15000)});const terminalHtml=await terminal.text();if(!terminal.ok||!terminalHtml.includes("多策略智慧選股終端")||!terminalHtml.includes("USER_UPLOADED_BROKER_SCREENSHOT")||!terminalHtml.includes("Real orders: DISABLED"))throw new Error("terminal UI failed");
               console.log(JSON.stringify({result:"PASS",url,schemaVersion:h.schemaVersion,cronExpressions:expressions,resonanceState:h.resonanceState,captureState:h.captureState,system1RuntimeUsed:h.system1RuntimeUsed}));
               process.exit(0);
             }catch(e){last=e;await new Promise(r=>setTimeout(r,5000))}
