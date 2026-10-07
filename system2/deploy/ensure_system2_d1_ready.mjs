@@ -41,6 +41,8 @@ const requiredTables = [
   "s2_historical_cold_backfill_checkpoints",
   "s2_historical_cold_ingest_receipts",
   "s2_historical_universe_registry_receipts",
+  "s2_historical_a1_revision_links",
+  "s2_historical_revision_receipts",
   "s2_resonance_watch_pools",
   "s2_resonance_session_cache",
   "s2_resonance_runs",
