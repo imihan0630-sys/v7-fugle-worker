@@ -2909,3 +2909,36 @@ Current:
 - inference state = POWER_INSUFFICIENT.
 
 This dependency is now explicit; Room07 must not self-validate the economic/stock effect.
+
+
+## SC-080 — D10-10 prospective event-clock L4 readiness audit (2026-10-08)
+
+Artifact:
+- `research/SC080_D10_10_PROSPECTIVE_EVENT_CLOCK_L4_READINESS_AUDIT_20261008_V0_1.md`
+
+D10-10 has stronger evidence than its original L3 basis:
+- two successful prospective MOPS exact-version captures minutes apart;
+- stable exact-version payload identity for common versions;
+- no source-clock version-key collisions;
+- sourceReportedAt semantics previously certified on original/correction/cancellation controls;
+- BR-064 adds one same-day issuer event witness.
+
+But the two physical captures returned different prospective population memberships:
+- first unique version keys = 159;
+- second = 161;
+- second-minus-first = 9;
+- first-minus-second = 7.
+
+Therefore:
+- `PROSPECTIVE_CAPTURE_WORKS` = supported;
+- `PROSPECTIVE_EVENT_POPULATION_COMPLETE` = not yet supported;
+- `CLOCK_OBSERVABILITY != EVENT_UNIVERSE_COMPLETENESS`.
+
+D10-10 remains L3/60.
+
+L4 gate now requires repeated independent prospective captures, bounded expected-keyset completeness, versioned membership drift, firstObservedAt distinct from sourceReportedAt, append-only correction/cancellation chains, no revision gap through cut, real event plus NULL observation under the same capture contract, and no outcome-driven clock redesign.
+
+Exact next:
+SC-081 consume the next independent prospective MOPS exact-version capture and test bounded keyset stability / revision-gap behavior outcome-blind.
+
+Formal Core unchanged.
