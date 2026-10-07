@@ -1,0 +1,27 @@
+name: System1 Target-RR Child Prototype Review
+
+on:
+  pull_request:
+    paths:
+      - 'research/system1_target_rr_child_capture_prototype_v0_1.mjs'
+      - 'tests/test_system1_target_rr_child_capture_prototype_v0_1.mjs'
+      - 'research/SYSTEM1_TARGET_RR_CHILD_CAPTURE_PROTOTYPE_20261007.md'
+      - '.github/workflows/system1-target-rr-child-prototype-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run Target-RR child adversarial prototype
+        run: node tests/test_system1_target_rr_child_capture_prototype_v0_1.mjs
+      - name: Syntax check prototype
+        run: node --check research/system1_target_rr_child_capture_prototype_v0_1.mjs
