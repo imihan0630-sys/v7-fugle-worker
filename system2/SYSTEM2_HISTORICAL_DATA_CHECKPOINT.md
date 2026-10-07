@@ -520,3 +520,30 @@ Exact execution action: fresh-dispatch the dedicated `System2 Historical 2021 TP
 Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
 
 Do not advance to 2024 TWSE until this dedicated recovery reaches terminal verification. Do not rerun old run #18 as a substitute.
+
+
+## 2026-10-07 2021 TPEx transport-semantics root cause / fresh recovery required
+
+Recovery run `37552411600` / #1 failed closed before writing any revision overlay because the frozen blocker expected 698 canonical A1 mismatches, while the current canonical PRIMARY TPEx source returned 0 canonical mismatches.
+
+Root cause is now established as non-equivalent official TPEx transport semantics, not a verified canonical A1 source revision:
+- PRIMARY endpoint title: `上櫃股票行情`;
+- legacy endpoint title: `上櫃股票每日收盤行情(不含定價)`;
+- representative 1240 PRIMARY = volume 18,564 / value 1,005,344 / tx 22, while legacy = 18,000 / 974,800 / 15;
+- representative 3228 PRIMARY = 793,962 / 182,271,509 / 665, while legacy = 780,000 / 179,040,000 / 554;
+- run #18 artifact retained fresh mismatch values matching the legacy `不含定價` endpoint;
+- current PRIMARY reconciliation returns canonical A1 equality with the immutable cold baseline while source-row identity still differs.
+
+Remediation:
+- canonical TPEx A1 transport policy is now `PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY`;
+- legacy fallback remains diagnostic-only and cannot satisfy canonical A1 ingestion;
+- recovery overlay now writes zero revision rows when PRIMARY canonical values equal cold baseline, and emits a source-semantics recovery receipt instead;
+- System2 Research CI `37554545204`: SUCCESS;
+- System1 Formal Core / production runtime remains untouched.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json`.
+
+Fresh recovery is required because run #1 is bound to pre-fix head. Do not use Re-run on run #1. Launch a new workflow_dispatch from latest main:
+https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
+
+Acceptance gate: source-semantics recovery PASS, Physical verifier V0.5 SUCCESS, Data Coverage PASS, System1 isolation PASS. Only then reclassify 2021 TPEx to PASS/PARTIAL and resume 2024 TWSE.
