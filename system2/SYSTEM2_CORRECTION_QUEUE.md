@@ -1199,3 +1199,32 @@ Important boundary:
 the correction CI artifact explicitly sets `physicalAcceptanceEligible=false`.
 Therefore this closure fixes the code firewalls but does **not** credit physical S22-T11..T16.
 A real source-honest continuity receipt plus one coherent artifact-only NC-T01 run are still required.
+
+
+### S2-CORR-20261008-007 — NC-T01 CLEAR_NO_ACTION promotion does not bind TWSE suspension completeness to immutable source evidence
+
+- createdAt: 2026-10-08T06:01:00+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- problem:
+  - corporate-action completeness currently accepts `suspensionCoverageByExchange.TWSE=COMPLETE` as a status value;
+  - CLEAR_NO_ACTION promotion checks that status, but mandatory `sourceEvidenceRefs` only have to match the three corporate-action historical-range contracts;
+  - current positive regression can pass with three corporate-action refs and no TWTAWU/bounded-suspension receipt digest.
+- risk:
+  a plain COMPLETE value could be promoted without an immutable exact-window negative-suspension receipt, weakening S22-T13/T15/T16 provenance.
+- required repair:
+  1. make exchange-scoped suspension evidence first-class and immutable;
+  2. exact interval + receipt/artifact digest + source family/version + timing required;
+  3. bind suspension evidence into archive/completeness receipt hash;
+  4. require matching suspension sourceEvidenceRef for CLEAR_NO_ACTION;
+  5. missing/mismatch/late evidence => CONTINUITY_UNKNOWN;
+  6. preserve the three existing corporate-action refs separately;
+  7. no strategy/ranking/capacity/System1/Formal/trading-authority changes.
+- durable audit:
+  `system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`
+  @ `cef80ec06e9ea9448f98dfdbadec4e0915b1be43`.
+- physical boundary:
+  DATA_LANE still owns the real bounded TWTAWU completeness receipt. CORR-007 only makes it impossible for BUILD to promote without that receipt.
+- finalDisposition: PENDING
