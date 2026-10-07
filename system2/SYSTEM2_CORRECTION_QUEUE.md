@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 09:02 Asia/Taipei
+Updated: 2026-10-07 09:53 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and both 2023 markets. 2021 TPEx remains BLOCKED, but the prior diagnosis of 698 canonical A1 source revisions has been superseded: those values match the non-equivalent TPEx legacy `不含定價` fallback that was incorrectly treated as canonical-equivalent when primary transport failed. Canonical TPEx A1 is now `PRIMARY_ONLY_FAIL_CLOSED`; latest PRIMARY reconciliation returns 0 canonical A1 mismatches against immutable cold history. Fresh post-fix Physical re-verification is still required before 2021 TPEx can move to PASS/PARTIAL. CORR-001 stays FIX_IN_PROGRESS for this fresh reverify, 2024+ market-years, 2026 incremental history and final full-market PIT replay.
+- observedProblem: Historical raw A1 data coverage is physically accepted through both 2023 markets, including 2021 TPEx. The former 2021 TPEx blocker is resolved after fresh primary-only physical re-verification: full-year source/canonical mismatch counts are zero, Data Coverage PASS, Replay Readiness PARTIAL. CORR-001 remains FIX_IN_PROGRESS for 2024+ market-years, the 2026 incremental path, aggregate completion and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -165,6 +165,12 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T00:12:00+08:00
 
+
+  - 2021 TPEx recovery run `37555975307` (#3): SUCCESS; source-semantics recovery, Physical verifier V0.5, artifact upload and System1 isolation all PASS.
+  - Full-year 2021 TPEx reconciliation: 191,643 cold rows = 191,643 fresh official rows; 0 missing/extra/source-row/canonical A1 mismatches; effective integrity PASS.
+  - Coverage: 244 sessions; denominator 192,055; actual 191,643; 412 explicit UNKNOWN symbol-session gaps; unexpectedBars=0; Data Coverage PASS / Replay Readiness PARTIAL.
+  - Accepted evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11455912132`, digest `sha256:b26787f62a240bc39dc39d2f82b7a2bc30b4bfcd07f708d3ebffc6713ae4ff46`.
+  - Prior canonical-revision interpretation is superseded by transport-semantics root cause evidence; old blocker evidence remains immutable provenance.
 
 ### S2-CORR-20261006-003 — Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity
 
