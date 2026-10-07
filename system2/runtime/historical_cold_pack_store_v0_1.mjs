@@ -405,12 +405,34 @@ export async function loadHistoricalBarsFromColdPacksV0_1({
   const from = requiredText(fromDate, "fromDate");
   const to = requiredText(toDate, "toDate");
   if (to < from) throw new Error("toDate cannot be earlier than fromDate");
-  const result = await db.prepare(`SELECT * FROM s2_historical_a1_pack_manifests
+
+  const annualResult = await db.prepare(`SELECT * FROM s2_historical_a1_pack_manifests
     WHERE market=? AND symbol=? AND price_space=? AND year BETWEEN ? AND ? ORDER BY year ASC`
   ).bind(mkt,code,priceSpace,Number(from.slice(0,4)),Number(to.slice(0,4))).all();
+  const annualManifests = annualResult?.results || [];
+  const annualYears = new Set(annualManifests.map((row)=>Number(row.year)));
+
+  let segmentManifests = [];
+  try {
+    const segmentResult = await db.prepare(`SELECT * FROM s2_historical_a1_segment_manifests
+      WHERE market=? AND symbol=? AND price_space=? AND segment_to_date>=? AND segment_from_date<=?
+      ORDER BY year ASC, month ASC`).bind(mkt,code,priceSpace,from,to).all();
+    segmentManifests = (segmentResult?.results || [])
+      .filter((row)=>!annualYears.has(Number(row.year)));
+  } catch (error) {
+    const message=String(error?.message||error);
+    if(!/no such table.*s2_historical_a1_segment_manifests/i.test(message)) throw error;
+  }
+
   const rows = [];
   const packRefs = [];
-  for (const manifest of result?.results || []) {
+  const seenDates = new Set();
+  const manifests = [
+    ...annualManifests.map((row)=>({row,sourceKind:"ANNUAL"})),
+    ...segmentManifests.map((row)=>({row,sourceKind:"SEGMENT"})),
+  ];
+  for (const entry of manifests) {
+    const manifest=entry.row;
     const object = await store.get(manifest.object_key);
     if (!object) throw new Error("COLD_OBJECT_MISSING: " + manifest.object_key);
     if (bytesSha256(object.bytes) !== manifest.object_sha256) {
@@ -424,19 +446,30 @@ export async function loadHistoricalBarsFromColdPacksV0_1({
     };
     const materialized = await materializeHistoricalA1PackRowsV0_1({ pack });
     for (const row of materialized.rows) {
-      if (row.marketDate >= from && row.marketDate <= to) rows.push(row);
+      if (row.marketDate < from || row.marketDate > to) continue;
+      if(seenDates.has(row.marketDate)) throw new Error("overlapping historical annual/segment row: "+mkt+"|"+code+"|"+row.marketDate);
+      seenDates.add(row.marketDate);
+      rows.push(row);
     }
     packRefs.push(deepFreeze({
       packId:manifest.pack_id,payloadHash:manifest.payload_hash,objectSha256:manifest.object_sha256,
       objectKey:manifest.object_key,year:Number(manifest.year),
+      month:entry.sourceKind==="SEGMENT"?Number(manifest.month):null,
+      sourceKind:entry.sourceKind,
     }));
   }
   rows.sort((a,b) => a.marketDate.localeCompare(b.marketDate));
   return deepFreeze({
     market:mkt,symbol:code,fromDate:from,toDate:to,priceSpace,rowCount:rows.length,
-    rows:Object.freeze(rows),packRefs:Object.freeze(packRefs),sourceMode:"R2_COLD_OBJECT_WITH_D1_MANIFEST",
+    rows:Object.freeze(rows),packRefs:Object.freeze(packRefs),
+    sourceMode:segmentManifests.length
+      ?"R2_COLD_OBJECT_WITH_D1_ANNUAL_AND_SEGMENT_MANIFESTS"
+      :"R2_COLD_OBJECT_WITH_D1_MANIFEST",
+    annualPackYears:Object.freeze([...annualYears].sort((a,b)=>a-b)),
+    segmentPackCount:segmentManifests.length,
+    annualSupersedesSegmentsForSameYear:true,
     pointInTimePolicy:"SESSION_CLOSE_FINALITY_PER_MARKET_DATE",
-    schemaVersion:"S2_HISTORICAL_COLD_PACK_QUERY_RESULT_V0_1",
+    schemaVersion:"S2_HISTORICAL_COLD_PACK_QUERY_RESULT_V0_2",
   });
 }
 
