@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "S2_STAGE1_PR830_INDEPENDENT_REVIEW_V0_1",
+  "recordedAt": "2026-10-07T23:44:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "90df668f24b063aa02a925ee65262fc9d6f0685a",
+  "pullRequest": 830,
+  "mergedImplementation": {
+    "head": "25c79729ebf8ab2731648e3364be49314ae84c41",
+    "mergeCommit": "d2050fbc3379dfe618447f88f8104b31e494a633",
+    "base": "fdc87159e8c470d9a8314fa8a1b5c2a06e66a31a"
+  },
+  "acceptedCoreSemantics": [
+    "Artifact-only SHORT_MOMENTUM runner uses the canonical contract/spec/assessor and merged replay-first continuity resolver.",
+    "Uncertified symbols remain INCOMPLETE and denominator-accounted.",
+    "PIT history prefetch reuses the canonical per-symbol read semantics and expectedSessionHash validation.",
+    "Persistence provenance is dry-built; D1 persistence execution is disabled.",
+    "The NC-T01 receipt requires the frozen typed digest chain for policy, A1, replay, source-history, continuity, factor snapshot, persistence batch, orchestration and shadow accounting.",
+    "Missing real continuity witness yields EVIDENCE_INCOMPLETE / BLOCKED_INPUTS rather than a zero-pick or physical independence claim.",
+    "Exact-head runner verify, System2 Research CI and V8 Regression passed before merge."
+  ],
+  "blockingFinding": {
+    "id": "NC_T01_HIDDEN_FALLBACK_AUDIT_MISSING_DEFAULTS_FALSE",
+    "severity": "HIGH",
+    "affectedOracle": "S22-T12 and S22-T16",
+    "codeFacts": [
+      "nct01_physical_receipt_v0_1.mjs::hiddenAudit(input={}) maps every omitted audit field to false.",
+      "buildNcT01PhysicalIndependenceReceiptV0_1 defaults hiddenFallbackAudit to an empty object.",
+      "runNcT01ArtifactOnlyV0_1 defaults hiddenFallbackAudit to an all-false object.",
+      "deriveOutcome treats those false values as proof of no hidden dependency if all other gates pass.",
+      "The merged workflow currently exercises core/tests only and does not itself produce the real physical NC-T01 artifact."
+    ],
+    "risk": "Absent hidden-fallback audit evidence is semantically indistinguishable from machine-proven absence, so a future caller could reach PHYSICALLY_INDEPENDENT_PATH_OBSERVED without satisfying the SDA-022 explicit hidden-fallback audit requirement.",
+    "noFalsePhysicalClaimObservedYet": true
+  },
+  "minimumCorrection": [
+    "Require all five hidden-fallback audit dimensions to be explicitly present for any physical PASS; missing/unknown is fail-closed.",
+    "Generate a machine audit on the exact physical runner head/transitive System2 path proving System1 Top6/rank and cached/persisted/alias/cross-project/stale selection fallbacks are unavailable/unused.",
+    "Bind the immutable audit digest into the receipt dependency graph. Preferred minimal implementation: additional HIDDEN_FALLBACK_AUDIT_SHA256 typed sourceGenerationRef without changing the V0.1 top-level schema.",
+    "Require the audit digest for PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
+    "Add regressions for missing audit object, missing field, missing digest, any true dependency flag and a fully machine-bound clean audit.",
+    "Keep the real physical workflow artifact-only/read-only; no D1 mutation is needed."
+  ],
+  "nonBlockingFacts": [
+    "The merged runner core need not be rolled back.",
+    "The correction does not change strategy thresholds, weights, ranking, candidate-generation economics or capacity semantics.",
+    "The DATA_LANE real CLEAR_NO_ACTION continuity receipt remains independently required.",
+    "No physicalIndependentDiscovery PASS has yet been claimed."
+  ],
+  "disposition": "CORE_ACCEPTED_PHYSICAL_PASS_BLOCKED_PENDING_HIDDEN_FALLBACK_AUDIT_HARDENING",
+  "formalCoreImpact": "NONE_LOCKED"
+}
