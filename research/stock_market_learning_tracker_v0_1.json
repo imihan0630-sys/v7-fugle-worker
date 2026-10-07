@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07 Asia/Taipei",
+  "updatedAt": "2026-10-07T15:15:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2711,7 +2711,10 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「Negative Controls負向控制」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3 / REGIME_LABEL_ERROR_NEGATIVE_CONTROL_FAMILY_FROZEN",
+          "evidence": " + research/D16_D18_REGIME_LABEL_MEASUREMENT_ERROR_CHECKPOINT_20261007.md",
+          "next": "維持 L3/60%。在首批真實 prospective Strategy×Regime receipts 開啟 outcomes 前，事前登錄 transition exclusion、fixed adjacent-state contamination stress、component-drop、static baseline 與 exposure-matched control；不得 outcome-driven tuning。"
         },
         {
           "id": "D16-11",
@@ -3070,9 +3073,9 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Market Regime市場狀態Taxonomy」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行性已驗證",
-          "status": "L3 / TAIWAN_PIT_TAXONOMY_FEASIBILITY_VALIDATED / IMMUTABLE_OBSERVABLE_REGIME_VECTOR_REPLAY_PASS / PARTIAL_DIMENSIONS_EXPLICIT_UNKNOWN / WAITING_PROSPECTIVE_OCCUPANCY / FORMAL_UNCHANGED",
-          "next": "維持 L3/60%。累積 context-only prospective observable-regime receipts；D18-04/06/07 未成熟維度保持 UNKNOWN/CONTEXT_RAW。L4 前需 frozen vector/policy versions、untouched OOS/Prospective Shadow、multiple episodes、成本與 exposure-matched controls。",
-          "evidence": "research/D18_01_OBSERVABLE_REGIME_VECTOR_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_observable_regime_vector_v0_1.mjs + system2/tests/d18_observable_regime_vector_v0_1.test.mjs"
+          "status": "L3 / TAIWAN_PIT_TAXONOMY_FEASIBILITY_VALIDATED / IMMUTABLE_OBSERVABLE_REGIME_VECTOR_REPLAY_PASS / PARTIAL_DIMENSIONS_EXPLICIT_UNKNOWN / WAITING_PROSPECTIVE_OCCUPANCY / FORMAL_UNCHANGED / REGIME_LABEL_MEASUREMENT_ERROR_FIREWALL_FROZEN",
+          "next": "維持 L3/60%。若 decision-time Regime 與 physical Stage-1 strategy evaluation 同時形成，先驗證 frozen regime vector/version、component states、transition/ambiguity/UNKNOWN semantics、source generation 與 preregistered label-error sensitivity；受保護 outcomes 開啟前不得依結果調整 taxonomy/error stress。",
+          "evidence": "research/D18_01_OBSERVABLE_REGIME_VECTOR_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_observable_regime_vector_v0_1.mjs + system2/tests/d18_observable_regime_vector_v0_1.test.mjs + research/D16_D18_REGIME_LABEL_MEASUREMENT_ERROR_CHECKPOINT_20261007.md"
         },
         {
           "id": "D18-02",
