@@ -4055,3 +4055,191 @@ No size-leadership outcome or policy claim is opened.
 4. Build deterministic S1 market-cap receipt/replay.
 5. Freeze size-bucket construction before outcomes.
 6. Only after executable Taiwan PIT replay consider D18-06 L3.
+
+
+## 2026-10-08 CORR-004 closure readback + post-CORR004 lifecycle residual + CORR-005 hidden-fallback semantics
+
+New durable Room11 artifacts:
+- `research/D16_POST_CORR004_LIFECYCLE_OPEN_BOUNDARY_RESIDUAL_RISK_20261008_V0_1.md`;
+- `research/D16_SDA022_NCT01_HIDDEN_FALLBACK_EVIDENCE_SEMANTICS_20261008_V0_1.md`;
+- `research/d16_sda022_nct01_hidden_fallback_oracle_20261008_v0_1.json`.
+
+### 1. CORR-004 original defect is genuinely closed
+
+Canonical merged implementation:
+- PR #817;
+- merge commit `625ea3d0bda28fcd06df4c3163a054573c3982f7`;
+- history reader `0.4-RESEARCH`.
+
+Physical merged-main readback:
+- workflow run `37639310919`;
+- market date `2026-10-07`;
+- ordinary universe = 1973;
+- pre-fix count-ready reference = 51;
+- post-fix exact-session history-ready = 46;
+- exact-session reconciliation enabled;
+- 1101/TWSE is a real positive exact-session witness;
+- 1213/1218 remain fail-closed mismatch examples;
+- rowsWritten=0;
+- System1 isolation PASS;
+- continuityReadyCount=0.
+
+Room11 accepts:
+`CORR004_ORIGINAL_DEFECT_VERIFIED_CLOSED`.
+
+Do not reopen CORR-004 merely because later lifecycle/continuity issues remain.
+
+### 2. Post-CORR004 lifecycle open-boundary residual remains real
+
+Current `twse_regulatory_lifecycle_source_v0_1.mjs` still normalizes an observed STOP with no observed RESUME into an interval through `coverageTo`.
+
+The same source states:
+`absenceCertifiesNoEvent=false`.
+
+Therefore:
+`NO_RESUME_OBSERVED != ACTIVE_THROUGH_COVERAGE_TO_CERTIFIED`.
+
+The CORR-004 physical run had:
+- lifecycleQueriedSymbolCount=2;
+- lifecycleIntervalCount=0.
+
+So physical CORR-004 acceptance proved empty/no-interval lookup does not wash missing sessions into PASS.
+It did not physically exercise:
+positive STOP + missing/incomplete RESUME boundary.
+
+Residual risk:
+an uncertified open STOP could delete true expected resumed sessions and recreate false readiness through the lifecycle exception path.
+
+Frozen admissible states:
+- CLOSED_POSITIVE_BOUNDARIES_CERTIFIED;
+- OPEN_ACTIVE_THROUGH_DATE_CERTIFIED;
+- NOT_ADMISSIBLE_BOUNDARY_INCOMPLETE.
+
+Only the first two may remove expected sessions.
+
+This is a separate post-CORR004 risk.
+Recommended routing is a new correction only if 00 chooses to open one; Room11 does not mutate runtime or reopen CORR-004.
+
+### 3. First NC-T01 shortest path is narrower than full lifecycle repair
+
+00 has already exposed a bounded TWTAWU negative-suspension path for the exact replay interval.
+
+Therefore the first NC-T01 may proceed without full-market lifecycle rehabilitation if:
+- the chosen TWSE witness has exact-session readiness;
+- bounded exact-window suspension completeness is physically proven;
+- the three required TWSE corporate-action families are complete over the exact interval;
+- a real hash-bound CLEAR_NO_ACTION receipt is emitted;
+- the receipt binds the live replay window.
+
+This makes the open-boundary residual a general correctness risk, not necessarily a blocker for the first clean witness.
+
+### 4. SDA-022 S22-T06~T10 are now canonical PASS
+
+Replacement fingerprint PR #828 merged:
+`51946aa75ef1e73c8ff84798f2af957b7018f8de`.
+
+00 accepted:
+- S22-T06 PASS;
+- S22-T07 PASS;
+- S22-T08 PASS;
+- S22-T09 PASS;
+- S22-T10 PASS.
+
+Old PR #762 is superseded/closed and must not be credited or merged.
+
+Physical independent discovery remains false.
+
+### 5. NC-T01 runner core merged but CORR-005 blocks physical independence
+
+PR #830 merged:
+`d2050fbc3379dfe618447f88f8104b31e494a633`.
+
+Accepted core:
+- artifact-only SHORT_MOMENTUM runner;
+- canonical strategy contract/spec/assessor;
+- replay-first continuity binding;
+- bounded PIT history prefetch;
+- dry-built persistence provenance;
+- required typed hash chain;
+- uncertified symbols remain INCOMPLETE;
+- no real continuity witness => EVIDENCE_INCOMPLETE/BLOCKED_INPUTS.
+
+New correction:
+`S2-CORR-20261007-005` HIGH / OPEN / BUILD_LANE.
+
+Defect:
+omitted hiddenFallbackAudit fields can default to false and may be interpreted as proof of no hidden dependency.
+
+D16 frozen semantic rule:
+`ABSENCE_OF_AUDIT_EVIDENCE != EVIDENCE_OF_ABSENCE`.
+
+Each forbidden selection-dependency dimension is ternary:
+- PROVEN_ABSENT;
+- PRESENT;
+- UNKNOWN.
+
+Missing/unaudited is UNKNOWN, never false-by-default.
+
+### 6. Hidden-fallback physical PASS standard
+
+Five minimum dimensions:
+- cached System1 selection fallback;
+- persisted System1 selection fallback;
+- alias/compatibility fallback to System1 selection;
+- cross-project/System1 selection import;
+- stale prior System1 selection reuse.
+
+Any PRESENT:
+`HIDDEN_SYSTEM1_DEPENDENCY`.
+
+Any UNKNOWN with no PRESENT:
+`EVIDENCE_INCOMPLETE`.
+
+All PROVEN_ABSENT is still insufficient unless:
+- exact runner head is bound;
+- transitive execution-path manifest is audited;
+- forbidden-source family/version is frozen;
+- audit has immutable digest;
+- runtime no-access evidence is present;
+- typed ref `HIDDEN_FALLBACK_AUDIT_SHA256` is bound into sourceGenerationRefs;
+- final NC-T01 receiptHash changes if that audit digest changes.
+
+Static/transitive audit and runtime no-access evidence are distinct required layers.
+
+Shared raw market data is allowed.
+System1 selection authority is not.
+
+Same selected symbol is not proof of dependence.
+Different selected symbols are not proof of independence.
+
+### 7. D16 / D18 tracker state after this readback
+
+No maturity promotion:
+- D16 = 60%;
+- D18 = 52%.
+
+D16-11:
+CORR-004 original exact-session provenance gate satisfied physically, but lifecycle-boundary authority/source clock/real continuity remain incomplete.
+
+D16-14:
+S22-T06~T10 canonical and artifact-runner core merged, but physical S22-T11~T16 remains blocked on CORR-005 + real continuity.
+
+D16-19:
+post-CORR004 System2 fingerprint gate is satisfied; numerical MDE/precision remains TARGET_VALUE_PENDING_FREEZE and physical NC-T01/common-cutoff prospective pairs remain pending.
+
+D18-04:
+CORR-004 exact-session dependency is satisfied.
+Next U2B blocker is real CLEAR_NO_ACTION continuity plus separate U2B action-family-set adequacy.
+
+D18-06:
+reported-vs-effective share vintage split remains unchanged; S0 source observability is strong, S1 effective denominator authority remains pending.
+
+### Exact next continuation
+
+1. Observe DATA_LANE bounded TWTAWU exact-window suspension-completeness evidence.
+2. Validate the first real hash-bound CLEAR_NO_ACTION receipt.
+3. Observe BUILD_LANE CORR-005 repair.
+4. Apply the 12-test hidden-fallback oracle; require exact-head transitive audit digest + runtime no-access evidence.
+5. Run/validate physical NC-T01 and recompute S22-T11~T16.
+6. Keep CORR-004 closed; route open STOP residual separately.
+7. If external gates do not land, continue D18-04 executable U2B row/aggregate design and D18-06 S0 provenance observer semantics.
