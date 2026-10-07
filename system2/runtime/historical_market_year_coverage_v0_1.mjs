@@ -1,4 +1,5 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
+import { historicalUniverseMembershipActiveOnDateV0_1 } from "./historical_universe_registry_v0_1.mjs";
 
 export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.2-RESEARCH";
 
@@ -170,7 +171,11 @@ export function buildHistoricalMarketYearCoverageV0_1({
     && m.replayEligible === true
     && m.effectiveFrom
     && m.effectiveFrom <= to
-    && (m.effectiveTo === null || m.effectiveTo >= from)
+    && (
+      m.effectiveTo === null
+      || m.effectiveTo === undefined
+      || (m.endBasis === "OFFICIAL_DELISTING_DATE" ? m.effectiveTo > from : m.effectiveTo >= from)
+    )
   );
 
   const expectedKeys = new Set();
@@ -179,7 +184,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
   for (const date of tradingDates) {
     const seen = new Set();
     const active = relevantMemberships.filter((m) =>
-      m.effectiveFrom <= date && (m.effectiveTo === null || m.effectiveTo >= date)
+      historicalUniverseMembershipActiveOnDateV0_1(m, date)
     );
     for (const m of active) {
       if (seen.has(m.symbol)) throw new Error("overlapping active membership: " + mkt + "|" + m.symbol + "|" + date);

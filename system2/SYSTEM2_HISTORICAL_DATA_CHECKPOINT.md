@@ -892,3 +892,32 @@ Physical execution order remains:
 `2024/TPEX -> 2025/TWSE -> 2025/TPEX -> 2026 segmented -> aggregate replay qualification`.
 
 No D1/R2 mutation, strategy/ranking/final-selection, System1 Formal/runtime, capital/order, broker routing or push authority change occurred.
+
+
+## 2026-10-07 delisting effective-date exclusive-boundary hardening
+
+DATA_LANE reconciled the latest D03 lifecycle-normalization contract with historical universe/coverage semantics.
+
+Confirmed contract:
+- listing/trading start date is inclusive;
+- regulatory no-trading intervals are half-open `[stopDate,resumeDate)`;
+- an official delisting effective date is an exclusive old-symbol membership boundary unless an official source explicitly says trading occurs on that date;
+- observed-interval-only `effectiveTo` remains inclusive because it means last positively observed trading date, not a legal termination date.
+
+Prior DATA runtime behavior used one generic inclusive test `effectiveTo >= marketDate`, so an `OFFICIAL_DELISTING_DATE` remained active on the delisting effective date itself. This could inflate the expected symbol-session denominator and manufacture one UNKNOWN gap per affected delisted symbol.
+
+Repository hardening:
+- add `historicalUniverseMembershipActiveOnDateV0_1`;
+- keep stored official `delistingDate/effectiveTo` values unchanged, preserving registry source identity and immutable membership rows;
+- interpret `endBasis=OFFICIAL_DELISTING_DATE` as exclusive at snapshot/coverage read time;
+- preserve inclusive semantics for observed-interval-only `effectiveTo`;
+- regression proves a symbol delisted on 2022-01-05 is absent from the 2022-01-05 replay snapshot and is not expected to have a price row on that date.
+
+This is a denominator/lifecycle-semantics correction only. It does not synthesize OHLC, change source rows, alter cold R2 objects, or claim the broader regulatory-stop source blind spot is solved.
+
+The larger lifecycle source gap remains:
+- TWSE `TWTAWU` covers the official intraday/suspension class but does not cover all long-duration regulatory `停止買賣` cases;
+- D03 research physically identified 2358/2443/8101/1701 and several TPEx cases as candidate official lifecycle explanations;
+- canonical missingReasonCounts must not change for those intervals until DATA/BUILD materializes source-identified normalized lifecycle events and produces a before/after physical receipt.
+
+System1 Formal Core/runtime, strategy/ranking/final selection, capital/order, broker routing and production push authority remain unchanged.
