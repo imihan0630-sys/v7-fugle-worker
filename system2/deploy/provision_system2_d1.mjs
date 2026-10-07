@@ -99,6 +99,7 @@ const migrationFiles = [
   "../sql/0005_historical_packs.sql",
   "../sql/0006_historical_cold_store.sql",
   "../sql/0007_daily_resonance_integration.sql",
+  "../sql/0008_historical_revision_lineage.sql",
 ];
 for (const migrationFile of migrationFiles) {
   const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
@@ -142,6 +143,8 @@ const requiredTables = [
   "s2_historical_cold_backfill_checkpoints",
   "s2_historical_cold_ingest_receipts",
   "s2_historical_universe_registry_receipts",
+  "s2_historical_a1_revision_links",
+  "s2_historical_revision_receipts",
   "s2_resonance_watch_pools",
   "s2_resonance_session_cache",
   "s2_resonance_runs",
