@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_V0_1",
+  "recordedAt": "2026-10-08T05:36:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "9bbd43fa9bebc35b114cb181611e3745576cca74",
+  "finding": "BOTH_DEFECTS_RECONFIRMED_ON_LATEST_MAIN_NO_BUILD_FIX_PRESENT",
+  "sourceHistory": {
+    "nct01PhysicalReceiptLastChange": "d2050fbc3379dfe618447f88f8104b31e494a633",
+    "nct01ArtifactRunnerLastChange": "d2050fbc3379dfe618447f88f8104b31e494a633",
+    "nct01PhysicalReceiptTestLastChange": "d2050fbc3379dfe618447f88f8104b31e494a633",
+    "nct01ArtifactRunnerTestLastChange": "d2050fbc3379dfe618447f88f8104b31e494a633",
+    "interpretation": "No later commit on latest main changed the core receipt/runner/tests after PR #830."
+  },
+  "corr005": {
+    "directiveId": "S2-CORR-20261007-005",
+    "confirmed": true,
+    "codeFacts": [
+      "hiddenAudit(input={}) maps omitted dimensions to false using === true.",
+      "buildNcT01PhysicalIndependenceReceiptV0_1 defaults hiddenFallbackAudit={}.",
+      "runNcT01ArtifactOnlyV0_1 defaults all five hidden-fallback flags to false.",
+      "REQUIRED_PASS_REF_TYPES does not include HIDDEN_FALLBACK_AUDIT_SHA256.",
+      "deriveOutcome can reach PHYSICALLY_INDEPENDENT_PATH_OBSERVED when those default-false values are used and other gates pass."
+    ],
+    "regressionGap": [
+      "No current regression proves omitted hiddenFallbackAudit => EVIDENCE_INCOMPLETE.",
+      "No current regression proves one missing audit dimension => EVIDENCE_INCOMPLETE.",
+      "No current regression requires a hidden-fallback audit digest in sourceGenerationRefs.",
+      "No current regression binds runtime forbidden-access evidence to the same exact-head audit identity."
+    ],
+    "requiredDisposition": "BUILD_LANE_FIX_REQUIRED_BEFORE_S22_T12_T16_PHYSICAL_PASS"
+  },
+  "corr006": {
+    "directiveId": "S2-CORR-20261007-006",
+    "confirmed": true,
+    "codeFacts": [
+      "buildNcT01ReceiptFromOrchestrationV0_1 defines executableWitnesses only by ACCOUNTED + replay READY + continuity READY + zero continuity blockers.",
+      "The executable-witness filter does not require requiredEvidenceComplete.",
+      "The executable-witness filter does not exclude strategyValidity=INCOMPLETE.",
+      "requiredInputsState/executionState/candidateGenerationExecutable are promoted from witnessSymbols.length>0.",
+      "Current candidateUniverseProvenance records CONTINUITY_READY_WITNESS_COUNT and SYMBOL_LOCAL_INCOMPLETE_COUNT but not REQUIRED_EVIDENCE_COMPLETE_WITNESS_COUNT or STRATEGY_EXECUTABLE_WITNESS_COUNT.",
+      "Current tests cover a VALID continuity-ready witness and an all-continuity-incomplete case, but not continuity READY + strategy INCOMPLETE or INVALIDATED + missing required evidence."
+    ],
+    "regressionGap": [
+      "No current regression proves all W0 continuity-ready but strategy-incomplete witnesses => BLOCKED_INPUTS.",
+      "No current regression proves INVALIDATED with missing required evidence is non-executable.",
+      "No current regression proves LEGITIMATE_ZERO_PICK requires at least one W1 strategy-executable witness."
+    ],
+    "requiredDisposition": "BUILD_LANE_FIX_REQUIRED_BEFORE_S22_T13_T14_T16_PHYSICAL_PASS"
+  },
+  "combinedImplementationConstraint": [
+    "Fix CORR-005 and CORR-006 in one bounded BUILD_LANE change if practical because both touch nct01_physical_receipt_v0_1.mjs / runner / tests and one physical receipt contract.",
+    "Do not alter SHORT_MOMENTUM thresholds, strategy contract, ranking or capacity semantics.",
+    "Keep NC-T01 artifact-only/read-only: no D1 mutation required for the physical independence proof.",
+    "No System1 runtime access, final selection, live push, capital or order authority."
+  ],
+  "buildStatusAtAudit": {
+    "matchingImplementationPrFound": false,
+    "scannedRecentPrRange": "831-850",
+    "note": "No PR in the scanned recent range implements CORR-005/006; PR #830 remains the latest source of the affected core files."
+  }
+}
