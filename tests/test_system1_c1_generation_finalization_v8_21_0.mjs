@@ -94,6 +94,10 @@ assert.match(source,/CREATE TABLE IF NOT EXISTS trade_research_c1_generation_fin
 assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-finalize"/);
 assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-finalization"/);
 assert.match(source,/guardC1GenerationInsertAfterFinalization/);
+assert.match(source,/WHERE NOT EXISTS \(\s*SELECT 1 FROM trade_research_c1_generation_finalizations WHERE scan_date=\?2\s*\)/,
+  "generation insert must atomically reject a finalized scanDate");
+assert.match(source,/WHERE EXISTS \(SELECT 1 FROM trade_research_c1_generations WHERE generation_id=\?1\)/,
+  "chunk insert must not create orphan chunks when finalized generation header insert is rejected");
 assert.match(source,/date!==shiftDateString\(today,-1\)/,"finalizer must remain previous-calendar-date prospective only");
 assert.match(source,/C1_FINALIZATION_NOT_PROSPECTIVE_PREVIOUS_DATE/);
 assert.doesNotMatch(source,/C1_FINALIZATION.*14\*86400000/,"finalization must not inherit 14-day operational recovery");
