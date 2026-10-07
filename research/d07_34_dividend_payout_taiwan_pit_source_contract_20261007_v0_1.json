@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "06｜基本面與估值研究室",
+  "moduleId": "D07-34",
+  "topic": "Dividend / Payout Policy & Sustainability Taiwan PIT source contract",
+  "asOf": "2026-10-07T09:33:00+08:00",
+  "outcomesOpened": false,
+  "formalCoreChanged": false,
+  "currentLevelDecision": {"level":"L2","maturityPct":40,"promotion":false},
+  "officialSourceEvidence": [
+    {
+      "sourceFamily": "TWSE material information disclosure",
+      "finding": "Dividend distribution/non-distribution, changes, record-date decisions, ex-dividend payment-date changes and delayed payment are material-information disclosure events.",
+      "pitImplication": "Board/shareholder decision, record date, ex-date and payment date must be separate event clocks."
+    },
+    {
+      "sourceFamily": "TWSE reporting rules",
+      "finding": "Dividend/benefit record-date and cash-dividend payment-date reporting has an explicit advance reporting requirement relative to book-closure.",
+      "pitImplication": "Record-date/payment scheduling is not interchangeable with the earlier dividend decision timestamp."
+    },
+    {
+      "sourceFamily": "TWSE current material-information examples",
+      "finding": "Current disclosures expose decision date, dividend type/amount, ex-date, record date and cash payment date; per-share cash amount can be revised when outstanding shares change.",
+      "pitImplication": "Dividend amount must be versioned; share-count/corporate-action changes can alter per-share payout after the initial decision."
+    }
+  ],
+  "mechanism": [
+    "Payout sustainability is a cash-source and balance-sheet question, not a high-yield ranking rule.",
+    "Earnings coverage, CFO/FCF coverage, retention and leverage can jointly constrain future payout capacity.",
+    "Proposal/board decision/final approval/ex-date/payment are distinct information and cash-flow clocks."
+  ],
+  "counterEvidenceAndAlternativeExplanations": [
+    "High dividend yield can be caused by price collapse rather than payout quality.",
+    "High payout can be rational for mature low-reinvestment firms and dangerous for cyclical/high-capex firms.",
+    "Dividend cuts can preserve solvency and improve long-run value; they are not mechanically bearish.",
+    "Stable DPS can be debt-funded or reserve-funded and therefore is not sufficient evidence of sustainability.",
+    "Per-share dividend revisions can reflect share-count changes rather than deterioration in total cash distribution."
+  ],
+  "failureConditions": [
+    "Historical first-known timestamps cannot be replayed.",
+    "Dividend source (earnings/retained earnings/capital reserve) is not separable.",
+    "Cash dividend and stock dividend are conflated.",
+    "Financial institutions are evaluated without D07-32 regulatory-capital semantics.",
+    "Outcome data influences sample selection, threshold choice or event-clock definition."
+  ],
+  "pitContract": {
+    "requiredClocks": ["proposalKnownAt","boardDecisionKnownAt","shareholderApprovalKnownAt","recordDateKnownAt","exDateKnownAt","paymentDateKnownAt"],
+    "requiredVersioning": ["dividendTotal","dividendPerShare","sharesOutstandingBasis","sourceOfDistribution","revisionReason"],
+    "missingPolicy": "UNKNOWN",
+    "noBackfill": true
+  },
+  "antiBiasGates": [
+    "PIT / vintage control",
+    "OOS and walk-forward only after source replay",
+    "selection-bias guard including cutters/suspenders and delisted cases",
+    "look-ahead prohibition",
+    "data-snooping and multiple-testing ledger",
+    "factor-redundancy controls versus D07-02/D07-05/D07-06/D11/D21",
+    "date/event clustering control",
+    "accounting revision and corporate-action versioning",
+    "transaction-cost/liquidity/regime controls before strategy interpretation"
+  ],
+  "sourceReadiness": {
+    "currentOfficialFieldFamily": "FEASIBLE",
+    "historicalAppendOnlyReplay": "NOT_YET_PROVEN",
+    "sourceOfDistributionHistoricalReplay": "NOT_YET_PROVEN",
+    "level3Eligibility": false
+  },
+  "exactNextContinuationPoint": "Build a multi-company multi-date historical MOPS/TWSE append-only replay that preserves proposal/board/final/ex-date/payment clocks, dividend source, total/per-share revisions and share-count basis. Include cutters/suspenders and unchanged payers. Keep outcomes closed until the replay passes PIT and survivorship checks."
+}
