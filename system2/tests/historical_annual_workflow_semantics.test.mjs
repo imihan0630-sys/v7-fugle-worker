@@ -7,6 +7,7 @@ const verifier=await readFile("system2/scripts/historical_market_year_verify_v0_
 
 assert.match(workflow,/name:\s+System2 Historical Pack Annual Backfill/);
 assert.match(workflow,/backfill:\s*[\s\S]*?timeout-minutes:\s*120/,"annual backfill must preserve bounded 120-minute headroom for transport recovery + physical verify");
+assert.ok(!workflow.includes("Migrate isolated System2 D1"),"annual backfill must use its schema-version gate instead of full provisioning");
 assert.match(workflow,/year:\s*\n\s+description:/);
 for(const year of ["2017","2018","2019","2020","2021","2022","2023","2024","2025"]){
   assert.ok(workflow.includes(`- "${year}"`),`workflow year option missing: ${year}`);
