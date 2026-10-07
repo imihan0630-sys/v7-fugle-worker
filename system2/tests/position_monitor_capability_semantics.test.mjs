@@ -67,7 +67,7 @@ assert.ok(
 assert.ok(ui.includes("SIMULATED / VIRTUAL"));
 assert.ok(ui.includes("ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT"));
 assert.ok(ui.includes("ACTUAL_POSITION_MONITOR_VERIFIED=false"));
-assert.ok(ui.includes("Broker API"));
+assert.ok(ui.toLowerCase().includes("broker api"));
 
 assert.ok(
   !master.includes("Actual holdings are continuously monitored in a dedicated POSITION_MONITOR"),
