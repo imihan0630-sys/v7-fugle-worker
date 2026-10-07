@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "pattern-gap-price-limit-pit-contract-v0.1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "allGapsShareOneMechanism": false,
+  "gapFillIsPredictorTimeInformation": false,
+  "priceLimitGapEqualsFreePriceDiscovery": false,
+  "mechanicalGapEqualsInformationGap": false,
+  "d01_09_PIT_DataContract": "FEASIBLE",
+  "outcomeJoin": "CLOSED"
+}
