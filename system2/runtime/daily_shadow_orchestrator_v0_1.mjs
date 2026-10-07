@@ -235,6 +235,9 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       priceSpace: "RAW",
       lookbackSessions,
       historicalBars: [...priorBars, currentBar],
+      continuityMode: resolveContinuityEvidence
+        ? "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION"
+        : "PRESERVE_INPUT",
     });
 
     let continuityBinding = null;

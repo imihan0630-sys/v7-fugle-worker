@@ -99,7 +99,7 @@ async function priorBars(symbol, priceOffset) {
       tradeValue: (1_000_000 + i * 1000) * close,
       transactions: 1000 + i,
       change: 1,
-      continuityState: "UNVERIFIED",
+      continuityState: symbol === "2330" ? "CLEAR_NO_ACTION" : "ADJUSTED_CONTINUITY",
       sourceId: "A1_TWSE_HISTORY_FIXTURE",
       sourceName: "fixture",
       sourceRowHash: await sha256Hex({ symbol, date, revision: "A" }),
@@ -215,8 +215,10 @@ async function run(receiptId) {
     regime,
     a1SymbolSnapshotBatch: a1,
     loadPriorHistoricalBars: async ({ symbol }) => history[symbol],
-    resolveContinuityEvidence: async ({ symbol, replayWindow }) =>
-      symbol === "2330" ? certifiedReceipt(replayWindow, receiptId) : null,
+    resolveContinuityEvidence: async ({ symbol, replayWindow }) => {
+      assert.ok(replayWindow.bars.every((bar) => bar.continuityState === "UNVERIFIED"));
+      return symbol === "2330" ? certifiedReceipt(replayWindow, receiptId) : null;
+    },
     assessSymbol: async ({ symbol, factorBundle, continuityBinding }) => {
       assessCalls += 1;
       assert.equal(symbol, "2330");
