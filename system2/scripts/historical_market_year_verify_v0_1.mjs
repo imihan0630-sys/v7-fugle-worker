@@ -16,6 +16,7 @@ import {
   buildObservedIntervalUniverseRegistryV0_1,
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 import { fetchCurrentListingMetadataV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
+import { fetchTwseRegulatoryLifecycleForSymbolsV0_1 } from "../runtime/twse_regulatory_lifecycle_source_v0_1.mjs";
 import { reconcileHistoricalSourceRowsV0_1 } from "../runtime/historical_source_reconciliation_v0_1.mjs";
 import { evaluateHistoricalRevisionLineageV0_1 } from "../runtime/historical_revision_lineage_v0_1.mjs";
 
@@ -454,11 +455,81 @@ if(market==="TWSE"){
   suspension=await fetchTpexSuspensionIntervals();
 }
 
-const coverage=buildHistoricalMarketYearCoverageV0_1({
+const tradingDates=officialRange.dateReceipts.map((x)=>x.marketDate);
+const coverageBeforeLifecycle=buildHistoricalMarketYearCoverageV0_1({
   market,year,fromDate,toDate,
-  tradingDates:officialRange.dateReceipts.map((x)=>x.marketDate),
+  tradingDates,
   registry,rows:coldRows,suspensionIntervals:suspension.intervals,
 });
+
+let lifecycleEvidence={
+  state:"NOT_APPLICABLE_FOR_MARKET",
+  queriedSymbolCount:0,
+  candidateAnnouncementCount:0,
+  detailFetchCount:0,
+  eventCount:0,
+  intervalCount:0,
+  reclassifiedUnknownBars:0,
+  beforeUnknownBars:coverageBeforeLifecycle.unknownBars,
+  afterUnknownBars:coverageBeforeLifecycle.unknownBars,
+  beforeMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+  afterMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+  absenceCertifiesNoEvent:false,
+  knownAtState:"NOT_APPLICABLE",
+  source:"NONE",
+};
+
+let lifecycleIntervals=[];
+if(market==="TWSE" && coverageBeforeLifecycle.unknownBars>0){
+  const unknownSymbols=coverageBeforeLifecycle.missingBySymbol
+    .filter((x)=>Number(x.unknownCount)>0)
+    .map((x)=>x.symbol);
+  const lifecycle=await fetchTwseRegulatoryLifecycleForSymbolsV0_1({
+    symbols:unknownSymbols,
+    fromDate,
+    toDate,
+    observedAt,
+    fetchImpl:fetch,
+  });
+  lifecycleIntervals=lifecycle.intervals;
+  const after=buildHistoricalMarketYearCoverageV0_1({
+    market,year,fromDate,toDate,
+    tradingDates,
+    registry,rows:coldRows,
+    suspensionIntervals:[...suspension.intervals,...lifecycleIntervals],
+  });
+  lifecycleEvidence={
+    state:lifecycle.state,
+    queriedSymbolCount:lifecycle.queriedSymbolCount,
+    candidateAnnouncementCount:lifecycle.candidateAnnouncementCount,
+    detailFetchCount:lifecycle.detailFetchCount,
+    eventCount:lifecycle.eventCount,
+    intervalCount:lifecycle.intervalCount,
+    partialSymbolCount:lifecycle.partialSymbolCount,
+    conflictCount:lifecycle.conflicts.length,
+    reclassifiedUnknownBars:coverageBeforeLifecycle.unknownBars-after.unknownBars,
+    beforeUnknownBars:coverageBeforeLifecycle.unknownBars,
+    afterUnknownBars:after.unknownBars,
+    beforeMissingReasonCounts:coverageBeforeLifecycle.missingReasonCounts,
+    afterMissingReasonCounts:after.missingReasonCounts,
+    intervalSample:lifecycle.intervals.slice(0,50),
+    eventSample:lifecycle.events.slice(0,50),
+    symbolReceiptSample:lifecycle.symbolReceipts.slice(0,50),
+    absenceCertifiesNoEvent:false,
+    knownAtState:lifecycle.knownAtState,
+    source:"TWSE_OFFICIAL_ANNOUNCEMENT_LIST_DETAIL",
+    schemaVersion:lifecycle.schemaVersion,
+  };
+}
+
+const coverage=lifecycleIntervals.length
+  ? buildHistoricalMarketYearCoverageV0_1({
+      market,year,fromDate,toDate,
+      tradingDates,
+      registry,rows:coldRows,
+      suspensionIntervals:[...suspension.intervals,...lifecycleIntervals],
+    })
+  : coverageBeforeLifecycle;
 
 const sourceReconciliation={
   ...sourceReconciliationBase,
@@ -504,7 +575,7 @@ const output={
     :(replayReadinessState==="PASS"
       ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
       :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_5",
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_6",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
@@ -521,6 +592,7 @@ const output={
     sourceHistoryStart:suspension.sourceHistoryStart,
     limitation:suspension.limitation || null,
   },
+  lifecycleEvidence,
   coverage,
   dataCoverageState,
   replayReadinessState,
@@ -538,7 +610,7 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_5",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_6",
 };
 
 const json=JSON.stringify(output,null,2);

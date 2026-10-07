@@ -921,3 +921,45 @@ The larger lifecycle source gap remains:
 - canonical missingReasonCounts must not change for those intervals until DATA/BUILD materializes source-identified normalized lifecycle events and produces a before/after physical receipt.
 
 System1 Formal Core/runtime, strategy/ranking/final selection, capital/order, broker routing and production push authority remain unchanged.
+
+
+## 2026-10-07 TWSE regulatory lifecycle source materialization
+
+DATA_LANE materialized the first official event-source union requested by the D03 Layer-B lifecycle normalization contract.
+
+Official machine contracts pinned:
+- announcement list: `https://www.twse.com.tw/rwd/zh/announcement/announcement` with `startDate/endDate/keyword/response=json`;
+- announcement detail: `https://www.twse.com.tw/rwd/zh/announcement/announcement_detail?id=<announcementId>&response=json`;
+- source authority is TWSE; browser/search transport used during discovery is not promoted as market authority.
+
+Positive source witness:
+- 2358/2443 official TWSE announcement id `05C3F55AF0ED11EEAA0D005056BE380E`;
+- detail body states `併案停止買賣日期：民國113年4月8日`;
+- the same list contract exposes later 2358/2443 delisting announcements;
+- this confirms the prior TWTAWU-only verifier has an official event-class blind spot rather than raw A1 source loss.
+
+Repository implementation:
+- add `twse_regulatory_lifecycle_source_v0_1.mjs`;
+- query only symbols still carrying `UNKNOWN_SYMBOL_SESSION_GAP` after the existing TWTAWU pass;
+- announcement-list absence never certifies no event;
+- only positive official list/detail evidence can create normalized lifecycle events;
+- ordinary margin-financing suspensions / changed trading-method notices are not treated as no-price-bar events;
+- stop/resume/delisting intervals use the D03 half-open convention `[stopDate,resumeOrDelistDate)`;
+- historical announcement publication date is retained, but `sourceReportedAt` is not fabricated; Layer-C known-at remains explicitly unproven.
+
+Physical verifier integration:
+- compute baseline coverage first;
+- target only baseline UNKNOWN symbols for official announcement lookup;
+- union positive regulatory lifecycle intervals with existing TWTAWU intervals;
+- recompute final coverage without changing cold OHLCV;
+- emit lifecycle evidence with before/after UNKNOWN counts, before/after missingReasonCounts, event/interval samples, source receipts, partial-source counts and `reclassifiedUnknownBars`;
+- verifier schema advances to `S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_6`.
+
+Initial deterministic regression cases include:
+- 2358: stop 2024-04-08 -> delist 2024-11-19;
+- 1701: share-conversion stop 2024-08-21 -> delist 2024-09-02;
+- margin-financing-only suspension is ignored.
+
+TPEx lifecycle-source expansion remains separate and unresolved; DATA_LANE has not inferred a TPEx source contract from TWSE semantics.
+
+No D1/R2 mutation was required for this repository hardening. No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.
