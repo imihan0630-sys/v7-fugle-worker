@@ -1520,3 +1520,82 @@ No maturity change:
 D16=60%.
 D18=52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 live TWSE session resolution + source-acquisition coarsening method
+
+### 2026-10-07 opportunity resolution
+
+Premarket first-known candidate remains immutable:
+`research/D16_PROSPECTIVE_OPPORTUNITY_CANDIDATE_20261007_V0_2.json`
+with first-known state at 07:28:12 Taipei:
+`SESSION_IDENTITY_UNKNOWN_PREMARKET`.
+
+Append-only resolution:
+`research/D16_PROSPECTIVE_OPPORTUNITY_RESOLUTION_20261007_V0_1.json`.
+
+Official TWSE MIS evidence observed:
+- source date = 2026-10-07;
+- market data time = 09:14:30;
+- query system time = 09:15:09;
+- weighted-index market key = `tse_t00.tw_20261007`;
+- nonzero activity witness `m=1711504`;
+- session resolution = `VERIFIED_TRADING_SESSION`.
+
+Therefore:
+- expected trading opportunity now counts as 1 for 2026-10-07;
+- the corresponding System1 C1 evidence attempt is expected at 2026-10-08 00:10 Taipei;
+- before that window closes, no missing-attempt gap exists;
+- no prospective evidence exists yet.
+
+### D16 source-acquisition coarsening
+
+New canonical:
+- `research/D16_SOURCE_ACQUISITION_COARSENING_ADDENDUM_20261007_V0_1.md`;
+- `research/D16_SOURCE_ACQUISITION_COARSENING_ADDENDUM_20261007_V0_1.json`.
+
+Core:
+source data existence/publication and source transport observability are separate stochastic processes.
+
+Observation chain:
+1. provider publication;
+2. transport access;
+3. body completion;
+4. parse;
+5. semantic validation;
+6. persistence/readback;
+7. research admission.
+
+Run 37556241467 is classified:
+`OBSERVATION_CHANNEL_CENSORED / MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED`.
+
+For FINANCIAL:
+- provider publication = UNKNOWN_FROM_THIS_RUN;
+- transport/body completion = FAILED;
+- parse/validation/persistence = NOT_REACHED;
+- research readiness = NOT_READY.
+
+For QUARTER_EPS:
+- downstream stage = NOT_REACHED.
+
+Three internal retries remain one acquisition episode, not N=3.
+
+Do not assume missingness/coarsening ignorability.
+If future response-probability weighting is considered:
+- use only pre-outcome first-known covariates;
+- prove support/positivity;
+- no extreme-weight rescue for zero support;
+- trimming/overlap weighting changes the estimand;
+- use sensitivity/bounds if support is inadequate.
+
+Canonical SDA016 mapping only:
+- T28;
+- T31;
+- T33;
+- T39.
+
+Canonical count remains 58.
+No maturity change.
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
