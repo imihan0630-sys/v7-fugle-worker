@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "D16_SDA022_D5_MODEL_METHOD_RECEIPT_V0_1",
+  "experimentId": "D16-SDA022-01",
+  "status": "MODEL_METHOD_FROZEN_EFFECT_TARGET_PENDING_OUTCOMES_CLOSED",
+  "targetId": "SDA022_S1_SM_D5_REFERENCE_CLOSE_POSITIVE_V0_1",
+  "system1States": [
+    "FORMAL_SELECTED",
+    "FORMAL_QUALIFIED_NOT_SELECTED",
+    "FORMAL_REJECTED",
+    "FORMAL_UNKNOWN"
+  ],
+  "shortMomentumStates": [
+    "SM_BUY_ELIGIBLE",
+    "SM_ACTIVE_ENTRY_MONITOR",
+    "SM_WATCH",
+    "SM_INPUT_INCOMPLETE"
+  ],
+  "baselineModel": "INTERCEPT_PLUS_ONEHOT_SYSTEM1_POLICY_STATE",
+  "augmentedModel": "BASELINE_PLUS_ONEHOT_SHORT_MOMENTUM_POLICY_STATE",
+  "estimator": "RIDGE_LOGISTIC_REGRESSION",
+  "primaryLambda": 1,
+  "lambdaSensitivity": [
+    0.1,
+    10
+  ],
+  "primaryCalibrator": "IDENTITY_NO_POSTHOC_RECALIBRATION",
+  "chronology": "ONLY_MATURED_PRIOR_D5_OUTCOMES_BEFORE_DECISION_DATE",
+  "primaryMetric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+  "primaryDelta": "BRIER_AUGMENTED_MINUS_BRIER_BASELINE",
+  "primaryInferenceUnit": "DECISION_DATE",
+  "primaryBlockOfficialSessions": 5,
+  "blockSensitivityOfficialSessions": [
+    10,
+    20
+  ],
+  "rowWeightedResult": "DESCRIPTIVE_ONLY",
+  "interactions": false,
+  "outcomeAccess": "CLOSED",
+  "openGates": [
+    "MDE_OR_PRECISION_TARGET_FROZEN",
+    "SYSTEM2_FINGERPRINT_CANONICAL",
+    "NC_T01_PHYSICAL_PROOF_RECORDED",
+    "COMMON_CUTOFF_PAIR_RECEIPTS_READY"
+  ],
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
