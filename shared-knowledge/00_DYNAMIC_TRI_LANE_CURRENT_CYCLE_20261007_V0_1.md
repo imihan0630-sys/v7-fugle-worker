@@ -204,3 +204,60 @@ Latest main currently includes independent System1 research work, but 00 found n
 4. System1 — sentinel only.
 
 Formal Core remains LOCKED.
+
+
+## 00 continuation delta — 2026-10-07 16:04 Asia/Taipei
+
+Observed latest main:
+`5374b212b752893973080d7ee1f0ef179774f0f3`.
+
+### System2 BUILD_LANE — still highest launch-critical blocker
+
+PR #762 remains OPEN on stale head `a5487086ba15f844d775e12bc7ce2c3852749644`.
+No equivalent canonical System2 policy-fingerprint receipt satisfying S22-T06~T10 was found on latest main outside that PR.
+Existing 00 audit comments already instruct BUILD_LANE to rebuild/rebase on latest main, rerun exact-head fingerprint/System2 Research/applicable V8 checks, and canonical merge.
+00 will not duplicate the same directive comment.
+
+Therefore:
+- S22-T06~T10 content evidence remains accepted-but-not-canonical;
+- physical NC-T01 S22-T11~T16 remains blocked behind canonical fingerprint acceptance;
+- no final selection/live push/capital/order authority follows from the stale PR.
+
+### Research lane — terminal evidence still pending
+
+Prospective Clock Evidence run `37577209442` remains IN_PROGRESS.
+Its configured polling window has not yet been exhausted at this readback.
+No 2026-10-07 prospective sample classification is permitted before terminal immutable evidence.
+
+### DATA_LANE — 2024 TPEx cursor materially changed
+
+2024 TPEx annual run #28 = `37587943578` failed twice before Physical verify:
+- attempt 1: TPEx PRIMARY timeout on 2024-04-26;
+- attempt 2: TPEx PRIMARY timeout on 2024-01-15;
+- System1 isolation PASS both times;
+- legacy non-equivalent TPEx endpoint remained forbidden.
+
+The changed failure date supports intermittent runner-to-PRIMARY transport exhaustion rather than a deterministic corrupt market date.
+
+A bounded PRIMARY-only transport-recovery implementation is now on latest main and System2 Research CI `37590871628` PASS.
+The remediation does not weaken schema/date/OHLC/data-integrity fail-closed behavior and does not permit the legacy endpoint to satisfy canonical ingestion.
+
+Exact DATA_LANE next:
+fresh workflow_dispatch from then-latest main with `year=2024 / market=TPEX`.
+Do not rerun old #28 because it is bound to the pre-fix head.
+Acceptance still requires:
+annual backfill PASS + Physical verify PASS + artifact + System1 isolation PASS.
+
+### System1 sentinel
+
+No new System1 condition currently qualifies to preempt the three active lanes.
+System1 remains DEFAULT_LAST / SENTINEL_ONLY.
+
+### Dynamic priority after 16:04 readback
+
+1. System2 BUILD_LANE — canonicalize #762 on latest main; then physical NC-T01.
+2. Research — consume `37577209442` at terminal evidence.
+3. DATA_LANE — fresh 2024/TPEX dispatch using the transport-recovery main.
+4. System1 — sentinel only.
+
+Formal Core remains LOCKED.
