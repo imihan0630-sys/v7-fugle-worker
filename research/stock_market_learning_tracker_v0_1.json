@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T23:35:00+08:00",
+  "updatedAt": "2026-10-07T23:55:26+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1377,7 +1377,7 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md"
       ],
-      "maturityPct": 57.1,
+      "maturityPct": 58.6,
       "modules": [
         {
           "id": "D09-01",
@@ -1484,12 +1484,12 @@
         {
           "id": "D09-12",
           "name": "Breadth×Regime交互作用",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "DEPENDENCY_BUILDER_READY / 20261006_REAL_MARKET_REPLAY_WITNESS / PROSPECTIVE_SAME_CLOCK_INELIGIBLE / A2_NOT_CAPTURED / TWSE_A1_NOT_READY / GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING / KEEP_L2",
-          "next": "BR-063 future completed Taiwan session: persist actual prospective A2 TAIEX context plus continuity-safe breadth under one exact decision timestamp; current dependency request is research/BR063_D18_SAME_CLOCK_CAPTURE_DEPENDENCY_20261007.md. 2026-10-06 is replay-only and cannot promote L3."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_20261007_SAME_DATE_JOINT_RECEIPT / TWSE_DIRECTION_BREADTH_KNOWN / TAIEX_CONTEXT_KNOWN / TPEX_SCOPE_UNKNOWN / CAP_WEIGHTED_INDEX_NOT_EQUAL_STOCK_BREADTH / OUTCOMES_CLOSED",
+          "next": "BR-067 accumulate independent same-clock joint receipts, preferably with both TWSE and TPEx breadth plus continuity-certified median-return context; preserve missing venue as UNKNOWN; no L4 before prospective/OOS outcome validation under D16 common-support controls."
         },
         {
           "id": "D09-13",
