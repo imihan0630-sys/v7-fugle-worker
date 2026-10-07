@@ -1,11 +1,11 @@
 # System 2 Position & Exposure Management Architecture
 
 Updated: 2026-10-04 Asia/Taipei
-Status: OWNER-APPROVED TARGET ARCHITECTURE V0.1 / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / THRESHOLDS NOT YET FROZEN
+Status: OWNER-APPROVED TARGET ARCHITECTURE V0.2 / VIRTUAL_POSITION_READY / SCREENSHOT_SOURCE_AUTHORIZED / REAL_OWNER_SNAPSHOT_PENDING / THRESHOLDS NOT YET FROZEN
 
 ## Purpose
 
-The approved target architecture requires System 2 to manage verified actual holdings and simulated positions with symmetric decision semantics. Current implementation readiness is narrower: the virtual/simulated lane is implemented, while an authorized actual-holdings source and reconciliation path are not wired.
+The approved architecture requires System 2 to manage verified actual holdings and simulated positions with symmetric decision semantics. The authorized actual-holdings source is now the Owner-uploaded broker screenshot path; broker API access is not part of the current design. A real Owner snapshot has not yet been physically imported, so actual-position monitoring remains unverified.
 
 
 The system must not be structurally biased toward:
@@ -25,8 +25,9 @@ These states are canonical and must not be collapsed:
 | `TARGET_ONLY` | Continuous owner actual-holdings monitoring is a target behavior, not a current operational claim. |
 | `DESIGN_APPROVED` | Actual-vs-desired exposure, capacity exclusion and symmetric reduce/re-add rules are owner-approved architecture. |
 | `VIRTUAL_POSITION_READY` | Simulated fills, virtual `s2_positions`, and `SIM_FILLED -> POSITION_MONITOR` lifecycle semantics are implemented/research-ready. |
-| `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED` | No authorized System 2 actual-holdings source/reconciliation adapter is physically verified. |
-| `ACTUAL_POSITION_MONITOR_VERIFIED` | `false`. This may become true only after source + reconciliation + provenance + persistence/readback evidence. |
+| `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED` | `USER_UPLOADED_BROKER_SCREENSHOT` is the current Owner-authorized actual-holdings source. |
+| `CHAT_ASSISTED_HOLDINGS_IMPORT_READY` | Code/schema path supports structured extraction -> validation -> confirmation -> immutable snapshot -> reconciliation; real Owner screenshot readback is still pending. |
+| `ACTUAL_POSITION_MONITOR_VERIFIED` | `false` until a real Owner screenshot completes provenance + confirmation + persistence/readback. |
 
 ### Actual-holding label gate
 
@@ -50,7 +51,7 @@ The following are explicitly insufficient to establish actual ownership:
 - simulated fill;
 - virtual `s2_positions` row.
 
-System 1/V8 holdings must not be silently imported. Broker holdings or shared System 1 holdings integration is `OWNER_DECISION_REQUIRED` before implementation.
+System 1/V8 holdings must not be silently imported. Broker API/account-token holdings integration and shared System 1 holdings integration are currently `NOT AUTHORIZED` and require a future explicit Owner decision before implementation.
 
 ## Core principle: actual exposure vs desired exposure
 
@@ -88,7 +89,7 @@ Owner-approved target rule:
 - A verified actual position remains monitored until authorized holdings reconciliation reaches zero or the owner explicitly removes it from tracked holdings.
 - A stock may simultaneously exist in actual POSITION_MONITOR and one or more strategy research contexts.
 
-**Current implementation note:** the repository's implemented `POSITION_MONITOR` lifecycle is currently entered from `SIM_FILLED` and backed by virtual `s2_positions`. That is `VIRTUAL_POSITION_READY`, not evidence that owner actual holdings are continuously monitored.
+**Current implementation note:** the repository's existing `SIM_FILLED -> POSITION_MONITOR` lifecycle remains backed by virtual `s2_positions` and stays `VIRTUAL_POSITION_READY`. The new screenshot import path uses dedicated actual-holdings tables and never upgrades a virtual row into ownership. `ACTUAL_POSITION_MONITOR_VERIFIED` remains false until the first real Owner screenshot is confirmed, persisted and read back.
 
 ## Two-sided monitor on every holding
 
@@ -170,7 +171,7 @@ HOLD_TARGET                    RISK_WARNING
                                   RESTORED
 ```
 
-Current virtual runtime does not enter this graph from external ownership; it enters the shared POSITION_MONITOR concept through `SIM_FILLED -> POSITION_MONITOR`. An external/initial actual holding requires the future authorized source/reconciliation gate.
+Current virtual runtime enters its own POSITION_MONITOR concept through `SIM_FILLED -> POSITION_MONITOR`. An external/initial actual holding enters only through the authorized `USER_UPLOADED_BROKER_SCREENSHOT` import contract after validation and confirmation; the two lanes remain permanently separate.
 
 Separate terminal risk path:
 
@@ -332,7 +333,7 @@ It may reuse Shared Knowledge from System 1 REDUCE/RE-ADD research, but it does 
 Owner explicitly approved the full position-management **architecture/design** on 2026-09-26. That approval does not itself prove an operational actual-holdings feed or authorize importing System 1/V8 holdings.
 
 Approved concepts include:
-- target rule: verified actual holdings, once an authorized source/reconciliation path is wired, are monitored outside candidate and active-entry caps;
+- target rule: verified actual holdings imported through the authorized screenshot source are monitored outside candidate and active-entry caps;
 - actual exposure vs desired exposure;
 - HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE as symmetric first-class actions;
 - fresh-entry chase logic must not be reused blindly for re-add;
@@ -342,3 +343,24 @@ Approved concepts include:
 - every reduction should define recovery/re-add conditions;
 - hysteresis/no-trade logic is required to reduce whipsaw;
 - exact thresholds, tranche sizes and timing rules remain subject to prospective Shadow validation.
+
+## Owner-approved screenshot source and broker boundary — 2026-10-07
+
+Canonical source contract:
+`system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`.
+
+Permanent current boundary:
+- actual holdings source = `USER_UPLOADED_BROKER_SCREENSHOT`;
+- extraction = ChatGPT/vision-assisted structured payload, not a general OCR engine;
+- deterministic validation + explicit confirmation are mandatory before persistence;
+- low confidence / ambiguity = `REVIEW_REQUIRED`, never guessed;
+- broker API holdings = `NOT AUTHORIZED`;
+- broker token/certificate binding = `NOT REQUIRED / NOT AUTHORIZED`;
+- real orders = `DISABLED`;
+- live capital authority = `DISABLED`;
+- broker order routing = `NOT AUTHORIZED`.
+
+Allowed actual-holdings decisions remain advisory only:
+HOLD / ADD / RE-ADD / RESTORE / REDUCE / EXIT / WARNING.
+
+The system must not infer exact intermediate trades from two holdings snapshots.
