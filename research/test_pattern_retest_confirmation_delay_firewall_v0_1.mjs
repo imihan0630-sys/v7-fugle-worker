@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {preserveRetestDenominator,classifyRetestSelection,measureConfirmationDelay,classifyRetestValue,validateRetestClock} from "./pattern_retest_confirmation_delay_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7601 full denominator keeps no-retest",()=>assert.equal(preserveRetestDenominator({totalBreakouts:100,noRetest:30,retestContinue:25,retestFail:15,immediateFail:20,immediateContinue:5,dataBlocked:5}).noRetestIncluded,true));
+t("D7602 observed-retest-only sample flagged",()=>assert.equal(classifyRetestSelection({analysisRequiresObservedRetest:true,noRetestIncluded:false}).status,"SURVIVORSHIP_BY_RETEST_SELECTION"));
+t("D7603 full sample guarded",()=>assert.equal(classifyRetestSelection({analysisRequiresObservedRetest:true,noRetestIncluded:true}).status,"RETEST_SELECTION_GUARDED"));
+t("D7604 confirmation distance measured",()=>assert.equal(measureConfirmationDelay({breakoutPrice:100,entryPrice:103,breakoutAt:"2026-10-07T09:00:00+08:00",entryAt:"2026-10-07T09:15:00+08:00"}).confirmationPriceDistance,3));
+t("D7605 confirmation latency positive",()=>assert.ok(measureConfirmationDelay({breakoutPrice:100,entryPrice:103,breakoutAt:"2026-10-07T09:00:00+08:00",entryAt:"2026-10-07T09:15:00+08:00"}).confirmationLatencyMs>0));
+t("D7606 better geometry not automatically new information",()=>assert.equal(classifyRetestValue({sameEpisode:true,structuralReconfirmationEvidence:false,bettterRiskGeometry:true,executionDifference:false}).newStructuralInformation,false));
+t("D7607 explicit reconfirmation can be tested",()=>assert.equal(classifyRetestValue({sameEpisode:true,structuralReconfirmationEvidence:true,bettterRiskGeometry:false,executionDifference:false}).newStructuralInformation,true));
+t("D7608 future retest unavailable",()=>assert.equal(validateRetestClock({retestObservedAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"RETEST_NOT_KNOWN_AT_FREEZE"));
+t("D7609 past retest available",()=>assert.equal(validateRetestClock({retestObservedAt:"2026-10-07T08:30:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00"}).status,"RETEST_KNOWN_AT_FREEZE"));
+t("D7610 invalid denominator blocked",()=>assert.equal(preserveRetestDenominator({totalBreakouts:-1,noRetest:0,retestContinue:0,retestFail:0,immediateFail:0,immediateContinue:0,dataBlocked:0}).status,"UNKNOWN"));
+console.log(`SUMMARY ${p}/10 PASS`);
