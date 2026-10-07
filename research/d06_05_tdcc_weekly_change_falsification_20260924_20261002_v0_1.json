@@ -1,0 +1,350 @@
+{
+  "schemaVersion": "D06_05_TDCC_WEEKLY_CHANGE_FALSIFICATION_20260924_20261002_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "createdAt": "2026-10-07T16:46:59+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "purpose": "Quantify source-cadence and cross-vintage ownership-stock changes without joining price outcomes or interpreting change as active institutional flow.",
+  "vintages": {
+    "prior": {
+      "sourceDate": "20260924",
+      "mirrorBlobSha": "c8bb0823cfb29d25a409bf2675cb705b46d5a293",
+      "rawRows": 69156,
+      "securities": 4068,
+      "integrityPass": 4068
+    },
+    "current": {
+      "sourceDate": "20261002",
+      "authoritativeParentReceipt": "research/d06_tdcc_parent_receipt_20261005_v0_1.json",
+      "contentHash": "fnv1a64-utf8:ad1a265c0a3dcaf8",
+      "rawRows": 69326,
+      "securities": 4078,
+      "integrityPass": 4078
+    }
+  },
+  "universe": {
+    "common": 4056,
+    "added": 22,
+    "removed": 12,
+    "commonOrdinaryFourDigit": 2962
+  },
+  "allSecuritySummary": {
+    "n": 4056,
+    "increase400": 1135,
+    "decrease400": 1046,
+    "unchanged400": 1875,
+    "increase1000": 843,
+    "decrease1000": 857,
+    "unchanged1000": 2356,
+    "medianAbsDelta400PctPoint": 0.01,
+    "p90AbsDelta400PctPoint": 0.67,
+    "p99AbsDelta400PctPoint": 3.65,
+    "topAbsDelta400": [
+      {
+        "symbol": "2601",
+        "delta400": 68.41,
+        "delta1000": 73.82,
+        "prev400": 31.59,
+        "curr400": 100
+      },
+      {
+        "symbol": "1441",
+        "delta400": -36.5,
+        "delta1000": -41.39,
+        "prev400": 100,
+        "curr400": 63.5
+      },
+      {
+        "symbol": "8276",
+        "delta400": -26.42,
+        "delta1000": -33.85,
+        "prev400": 48.38,
+        "curr400": 21.96
+      },
+      {
+        "symbol": "6550",
+        "delta400": -25.67,
+        "delta1000": -28.69,
+        "prev400": 100,
+        "curr400": 74.33
+      },
+      {
+        "symbol": "006206",
+        "delta400": 11.79,
+        "delta1000": 15.51,
+        "prev400": 21.36,
+        "curr400": 33.15
+      },
+      {
+        "symbol": "7950",
+        "delta400": -11.67,
+        "delta1000": -19.42,
+        "prev400": 95.34,
+        "curr400": 83.67
+      },
+      {
+        "symbol": "00681R",
+        "delta400": -11.12,
+        "delta1000": -50.05,
+        "prev400": 90.76,
+        "curr400": 79.64
+      },
+      {
+        "symbol": "00783",
+        "delta400": 10.99,
+        "delta1000": 0,
+        "prev400": 13.24,
+        "curr400": 24.23
+      },
+      {
+        "symbol": "3520",
+        "delta400": 10.49,
+        "delta1000": 14,
+        "prev400": 41.12,
+        "curr400": 51.61
+      },
+      {
+        "symbol": "6533",
+        "delta400": 9.47,
+        "delta1000": 4.66,
+        "prev400": 21.28,
+        "curr400": 30.75
+      },
+      {
+        "symbol": "00739",
+        "delta400": 9.18,
+        "delta1000": 7.63,
+        "prev400": 38.44,
+        "curr400": 47.62
+      },
+      {
+        "symbol": "00411A",
+        "delta400": -8.62,
+        "delta1000": -8.54,
+        "prev400": 38.64,
+        "curr400": 30.02
+      },
+      {
+        "symbol": "6672",
+        "delta400": 8.28,
+        "delta1000": 8.17,
+        "prev400": 33.66,
+        "curr400": 41.94
+      },
+      {
+        "symbol": "6660",
+        "delta400": -7.62,
+        "delta1000": -18.47,
+        "prev400": 100,
+        "curr400": 92.38
+      },
+      {
+        "symbol": "2484",
+        "delta400": 7.45,
+        "delta1000": 6.2,
+        "prev400": 25.74,
+        "curr400": 33.19
+      },
+      {
+        "symbol": "1727",
+        "delta400": -7.28,
+        "delta1000": -5.62,
+        "prev400": 68.89,
+        "curr400": 61.61
+      },
+      {
+        "symbol": "00781B",
+        "delta400": -6,
+        "delta1000": 0,
+        "prev400": 30.62,
+        "curr400": 24.62
+      },
+      {
+        "symbol": "00852L",
+        "delta400": -5.79,
+        "delta1000": -19.16,
+        "prev400": 49.17,
+        "curr400": 43.38
+      },
+      {
+        "symbol": "6977",
+        "delta400": 5.65,
+        "delta1000": 0.01,
+        "prev400": 39.14,
+        "curr400": 44.79
+      },
+      {
+        "symbol": "7929",
+        "delta400": -5.4,
+        "delta1000": -0.02,
+        "prev400": 81.6,
+        "curr400": 76.2
+      }
+    ]
+  },
+  "ordinaryFourDigitSummary": {
+    "n": 2962,
+    "increase400": 956,
+    "decrease400": 873,
+    "unchanged400": 1133,
+    "increase1000": 691,
+    "decrease1000": 691,
+    "unchanged1000": 1580,
+    "medianAbsDelta400PctPoint": 0.02,
+    "p90AbsDelta400PctPoint": 0.63,
+    "p99AbsDelta400PctPoint": 3.26,
+    "topAbsDelta400": [
+      {
+        "symbol": "2601",
+        "delta400": 68.41,
+        "delta1000": 73.82,
+        "prev400": 31.59,
+        "curr400": 100
+      },
+      {
+        "symbol": "1441",
+        "delta400": -36.5,
+        "delta1000": -41.39,
+        "prev400": 100,
+        "curr400": 63.5
+      },
+      {
+        "symbol": "8276",
+        "delta400": -26.42,
+        "delta1000": -33.85,
+        "prev400": 48.38,
+        "curr400": 21.96
+      },
+      {
+        "symbol": "6550",
+        "delta400": -25.67,
+        "delta1000": -28.69,
+        "prev400": 100,
+        "curr400": 74.33
+      },
+      {
+        "symbol": "7950",
+        "delta400": -11.67,
+        "delta1000": -19.42,
+        "prev400": 95.34,
+        "curr400": 83.67
+      },
+      {
+        "symbol": "3520",
+        "delta400": 10.49,
+        "delta1000": 14,
+        "prev400": 41.12,
+        "curr400": 51.61
+      },
+      {
+        "symbol": "6533",
+        "delta400": 9.47,
+        "delta1000": 4.66,
+        "prev400": 21.28,
+        "curr400": 30.75
+      },
+      {
+        "symbol": "6672",
+        "delta400": 8.28,
+        "delta1000": 8.17,
+        "prev400": 33.66,
+        "curr400": 41.94
+      },
+      {
+        "symbol": "6660",
+        "delta400": -7.62,
+        "delta1000": -18.47,
+        "prev400": 100,
+        "curr400": 92.38
+      },
+      {
+        "symbol": "2484",
+        "delta400": 7.45,
+        "delta1000": 6.2,
+        "prev400": 25.74,
+        "curr400": 33.19
+      },
+      {
+        "symbol": "1727",
+        "delta400": -7.28,
+        "delta1000": -5.62,
+        "prev400": 68.89,
+        "curr400": 61.61
+      },
+      {
+        "symbol": "6977",
+        "delta400": 5.65,
+        "delta1000": 0.01,
+        "prev400": 39.14,
+        "curr400": 44.79
+      },
+      {
+        "symbol": "7929",
+        "delta400": -5.4,
+        "delta1000": -0.02,
+        "prev400": 81.6,
+        "curr400": 76.2
+      },
+      {
+        "symbol": "6532",
+        "delta400": 5.37,
+        "delta1000": 0,
+        "prev400": 35.4,
+        "curr400": 40.77
+      },
+      {
+        "symbol": "2340",
+        "delta400": 4.89,
+        "delta1000": 4.44,
+        "prev400": 38.63,
+        "curr400": 43.52
+      },
+      {
+        "symbol": "4554",
+        "delta400": -4.83,
+        "delta1000": -6.44,
+        "prev400": 58.42,
+        "curr400": 53.59
+      },
+      {
+        "symbol": "3441",
+        "delta400": 4.8,
+        "delta1000": 0,
+        "prev400": 25.56,
+        "curr400": 30.36
+      },
+      {
+        "symbol": "6426",
+        "delta400": -4.71,
+        "delta1000": 3.19,
+        "prev400": 53.75,
+        "curr400": 49.04
+      },
+      {
+        "symbol": "2342",
+        "delta400": -4.7,
+        "delta1000": -3.81,
+        "prev400": 40.24,
+        "curr400": 35.54
+      },
+      {
+        "symbol": "6485",
+        "delta400": 4.6,
+        "delta1000": 0.35,
+        "prev400": 25,
+        "curr400": 29.6
+      }
+    ]
+  },
+  "falsification": [
+    "Repeated scan dates within one chipAsOfDate are not new ownership evidence.",
+    "Weekly concentration change is an ownership-stock change, not daily institutional flow.",
+    "Large weekly deltas can arise from denominator/capital/corporate-action/universe effects and require separate controls before economic interpretation.",
+    "400-lot-plus concentration does not identify institutions, passive funds, strategic holders or motive.",
+    "No price, return, selection, MFE, MAE or ranking outcome is joined in this receipt."
+  ],
+  "status": "CADENCE_CHANGE_PROFILE_FROZEN / OWNERSHIP_STOCK_NOT_FLOW / CORPORATE_ACTION_DENOMINATOR_GUARD_REQUIRED / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
