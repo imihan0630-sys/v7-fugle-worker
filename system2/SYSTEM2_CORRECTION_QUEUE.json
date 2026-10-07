@@ -1099,7 +1099,8 @@
         "D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.md: SHORT_MOMENTUM launch policy does not require MARKET_REGIME; SWING_GROWTH requires PIT-valid INDUSTRY_THESIS + FUNDAMENTAL_QUALITY",
         "SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md: per-strategy Stage-1 policies frozen",
         "Prospective run 37577209442: A5 coverage=true / B2 coverage=false / global requiredReady=false",
-        "Dynamic-priority governance permits a single genuinely independent launch strategy before a second strategy is ready"
+        "Dynamic-priority governance permits a single genuinely independent launch strategy before a second strategy is ready",
+        "Owner Go-Live Priority Directive 2026-10-07 already authorizes implementation/testing of launch-critical System2 work using only frozen launch-policy required inputs and requires at least one independently executable System2 strategy; this correction restores implementation to that existing authorization and does not change thresholds, weights, final-selection, push, capital, orders or System1 Formal Core."
       ],
       "riskIfUnfixed": "SHORT_MOMENTUM can remain globally blocked by B2/A5 even after its own A1 inputs, #762 and NC-T01 are ready, causing artificial opportunity starvation and making the narrow Stage-1 path non-executable.",
       "requiredCorrection": [
@@ -1129,7 +1130,7 @@
         "ranking/capacity max12/max3/no-forced-fill semantics",
         "final selection / notification / live capital / orders"
       ],
-      "ownerDecisionRequired": true,
+      "ownerDecisionRequired": false,
       "routingClass": "BUILD_LANE",
       "assignedLane": "BUILD_LANE",
       "assignedRoom": "System 2｜建置總控室",
@@ -1138,7 +1139,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T16:40:34+08:00"
+      "updatedAt": "2026-10-07T16:54:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
