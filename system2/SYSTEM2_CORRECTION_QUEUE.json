@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T06:22:00+08:00",
+  "updatedAt": "2026-10-08T06:25:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1589,10 +1589,11 @@
       "blockedBy": [],
       "implementationEvidence": [],
       "verificationEvidence": [
-        "00 minimal BUILD/DATA interface: system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json @ commit eaa0e609eb48727b6047100d9848ccbc4b921594."
+        "00 minimal BUILD/DATA interface: system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json @ commit eaa0e609eb48727b6047100d9848ccbc4b921594.",
+        "00 schema-versioning refinement: evidence-bound completeness should be machine-distinct from legacy status-only V0.1; canonical handoff updated @ commit 08e55e4e9e9347aae7cd5f737751c101778e516f."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T06:22:00+08:00"
+      "updatedAt": "2026-10-08T06:25:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
