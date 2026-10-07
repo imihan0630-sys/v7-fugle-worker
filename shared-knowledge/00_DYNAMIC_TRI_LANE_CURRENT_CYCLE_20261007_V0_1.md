@@ -352,3 +352,72 @@ After canonical fingerprints:
 
 Stage-1 still requires the remaining independent promotion gates; this narrowing does not itself authorize go-live.
 Formal Core remains LOCKED.
+
+
+## 00 deep critical-path compression audit — 2026-10-07 afternoon
+
+Observed latest main before write:
+`3f4dd6bb0eba7209caa0cc326d0255e7ba2c8556`.
+
+### Key finding — old aggregate launch blockers are too coarse
+
+Independent latest-main readback shows several previously grouped blockers are NOT universal Stage-1 gates anymore.
+
+1. MARKET_REGIME is not a universal launch dependency.
+   - D18 policy/regime boundary explicitly states SHORT_MOMENTUM launch policy does not require MARKET_REGIME as a launch-required family.
+   - Policy-only prospective System2 evidence may proceed while Regime remains UNKNOWN.
+   - Regime is required only for a strategy×regime/D18 claim or a preregistered regime challenger, not for the smallest truthful SHORT_MOMENTUM Stage-1 path.
+
+2. Whole-universe perfect 60-session readiness is not a universal launch gate.
+   - CORR-004 is VERIFIED_CLOSED.
+   - Symbol-local history/continuity gaps remain per-symbol INCOMPLETE/BLOCKED while clean symbols may proceed.
+   - Partial denominator semantics remain explicit and cannot become a false zero-pick.
+   - Therefore old wording such as “28 READY dates versus required 60” must not be interpreted as requiring every current-universe symbol to become fully ready before any Stage-1 strategy evaluation can run.
+
+3. SWING_GROWTH missing thesis inputs must not block the first independent Stage-1 lane.
+   - SWING_GROWTH still requires PIT-valid INDUSTRY_THESIS + FUNDAMENTAL_QUALITY and A1 timing cannot manufacture them.
+   - The project dynamic-priority directive explicitly allows 00/BUILD_LANE to evaluate a single genuinely independent launch strategy before a second strategy is ready.
+   - SDA-022 NC-T01 requires at least one independently executable System2 strategy without System1 Top6/rank.
+   - No canonical rule found that requires SHORT_MOMENTUM and SWING_GROWTH to become physically launch-ready simultaneously.
+
+### Shortest truthful System2 Stage-1 path
+
+00 therefore freezes the current launch-critical sequence as:
+
+1. canonicalize System2 policy fingerprints S22-T06~T10 from #762 on latest main;
+2. physical NC-T01 S22-T11~T16 using at least one independent strategy path;
+3. use SHORT_MOMENTUM as the first launch-path candidate because its frozen policy can operate without MARKET_REGIME and does not depend on SWING_GROWTH's unresolved fundamental/industry thesis inputs;
+4. wire genuine daily SHORT_MOMENTUM strategy evaluation under exact policy id/version;
+5. produce strategy-local RANK-01;
+6. produce the first physical immutable `s2_capacity_runs` receipt only from truthfully ready symbols with explicit COMPLETE/PARTIAL/UNKNOWN denominator provenance;
+7. populate Candidate Board / bounded monitor pool from that authorized capacity receipt;
+8. allow deployed Daily Resonance / institutional UI to consume the genuine pool;
+9. only then evaluate guarded final-selection / advisory-notification activation under the existing owner/promotion gates.
+
+This compression does NOT:
+- invent thresholds;
+- downgrade PIT/UNKNOWN semantics;
+- make partial coverage a clean zero-pick;
+- promote Regime;
+- make SWING_GROWTH optional forever;
+- authorize live capital/orders/broker routing;
+- mutate System1 Formal Core.
+
+### Hidden post-#762 blocker exposed
+
+The daily diagnostic orchestrator currently remains intentionally non-executing:
+`ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED`,
+with ranking `NOT_EXECUTED` and capacity `NOT_PRODUCED`.
+
+Therefore merging #762 alone is not sufficient for Stage-1 progress.
+Immediately after NC-T01, BUILD_LANE must move into genuine SHORT_MOMENTUM daily evaluation -> RANK-01 -> capacity persistence rather than spending the next cycle on non-launch-critical general completeness.
+
+### Lane implications
+
+- BUILD_LANE: #762 -> NC-T01 -> SHORT_MOMENTUM physical evaluation/capacity is the dominant launch path.
+- Research/D16-D18: validate policy-only prospective receipts; do not require Regime for this lane; preserve D18 regime evidence as a separate lane.
+- DATA_LANE: continue recent/current PIT integrity and 2024 TPEx recovery, but broader annual-history completeness must not veto Stage-1 unless the actual SHORT_MOMENTUM evaluator/validator proves the missing segment is required.
+- SWING_GROWTH: continue as parallel second-strategy readiness; do not use its unresolved FUNDAMENTAL_QUALITY/INDUSTRY_THESIS as a global Stage-1 blocker.
+- System1: sentinel only unless SDA-022 comparator or other explicit escalation condition triggers.
+
+Formal Core remains LOCKED.
