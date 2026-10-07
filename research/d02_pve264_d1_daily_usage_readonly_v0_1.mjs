@@ -3,6 +3,7 @@ import {mkdir,writeFile} from "node:fs/promises";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.CLOUDFLARE_API_TOKEN;
+const system2Token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||"";
 assert.ok(accountId&&apiToken,"Cloudflare repository secrets required");
 const api="https://api.cloudflare.com/client/v4";
 
@@ -16,9 +17,13 @@ const settings=await cfJson(api+"/accounts/"+accountId+"/workers/scripts/fugle-t
 const v7Binding=(settings?.result?.bindings||[]).find(x=>x?.name==="V7_DB");
 const v7DbId=v7Binding?.id||v7Binding?.database_id;
 assert.ok(v7DbId,"V7_DB id unavailable");
-const list=await cfJson(api+"/accounts/"+accountId+"/d1/database?per_page=100");
-const dbs=(list?.result||[]).map(x=>({id:x.uuid||x.id,name:x.name||null}));
-const nameById=new Map(dbs.map(x=>[x.id,x.name]));
+let system2DbId=null;
+try{
+ const s2=await cfJson(api+"/accounts/"+accountId+"/workers/scripts/system2-shadow-research/settings");
+ const b=(s2?.result?.bindings||[]).find(x=>x?.name==="SYSTEM2_DB");
+ system2DbId=b?.id||b?.database_id||null;
+}catch{}
+const nameById=new Map([[v7DbId,"V7_DB"],...(system2DbId?[[system2DbId,"SYSTEM2_DB"]]:[])]);
 
 const query=`query D1DailyRows($accountTag: string!, $start: Date, $end: Date) {
  viewer {
@@ -34,8 +39,15 @@ const query=`query D1DailyRows($accountTag: string!, $start: Date, $end: Date) {
   }
  }
 }`;
-const gql=await cfJson(api+"/graphql",{method:"POST",body:JSON.stringify({query,variables:{accountTag:accountId,start:"2026-10-07",end:"2026-10-07"}})});
-if(gql?.errors?.length)throw new Error("GraphQL: "+JSON.stringify(gql.errors).slice(0,1000));
+async function gqlWithToken(token){
+ const res=await fetch(api+"/graphql",{method:"POST",headers:{authorization:"Bearer "+token,accept:"application/json","content-type":"application/json"},body:JSON.stringify({query,variables:{accountTag:accountId,start:"2026-10-07",end:"2026-10-07"}}),signal:AbortSignal.timeout(45000)});
+ const text=await res.text();let data;try{data=JSON.parse(text)}catch{data=null}
+ return {ok:res.ok&&!data?.errors?.length,status:res.status,data,error:data?.errors||data?.errors?.[0]?.message||text};
+}
+let gqlAttempt=await gqlWithToken(apiToken),tokenRole="CLOUDFLARE_API_TOKEN";
+if(!gqlAttempt.ok&&system2Token){gqlAttempt=await gqlWithToken(system2Token);tokenRole="SYSTEM2_CLOUDFLARE_API_TOKEN";}
+if(!gqlAttempt.ok)throw new Error("GraphQL analytics unavailable: HTTP "+gqlAttempt.status+" "+JSON.stringify(gqlAttempt.error).slice(0,900));
+const gql=gqlAttempt.data;
 const groups=gql?.data?.viewer?.accounts?.[0]?.d1AnalyticsAdaptiveGroups||[];
 const rows=groups.map(g=>({
  date:g?.dimensions?.date??null,databaseId:g?.dimensions?.databaseId??null,databaseName:nameById.get(g?.dimensions?.databaseId)||null,
@@ -44,6 +56,6 @@ const rows=groups.map(g=>({
  isV7Db:g?.dimensions?.databaseId===v7DbId
 })).sort((a,b)=>b.rowsWritten-a.rowsWritten);
 const totals=rows.reduce((a,x)=>({rowsRead:a.rowsRead+x.rowsRead,rowsWritten:a.rowsWritten+x.rowsWritten,readQueries:a.readQueries+x.readQueries,writeQueries:a.writeQueries+x.writeQueries}),{rowsRead:0,rowsWritten:0,readQueries:0,writeQueries:0});
-const report={schemaVersion:"D02_PVE264_D1_DAILY_USAGE_READONLY_V0_1",generatedAt:new Date().toISOString(),readOnly:true,mutationCount:0,date:"2026-10-07",v7DbId,databaseCount:rows.length,rows,accountTotals:totals,freeTierRowsWrittenLimit:100000,accountRowsWrittenAtOrAboveFreeLimit:totals.rowsWritten>=100000};
+const report={schemaVersion:"D02_PVE264_D1_DAILY_USAGE_READONLY_V0_2",generatedAt:new Date().toISOString(),readOnly:true,mutationCount:0,date:"2026-10-07",analyticsTokenRole:tokenRole,v7DbId,system2DbId,databaseCount:rows.length,rows,accountTotals:totals,freeTierRowsWrittenLimit:100000,accountRowsWrittenAtOrAboveFreeLimit:totals.rowsWritten>=100000};
 await mkdir("artifacts",{recursive:true});await writeFile("artifacts/d02-pve264-d1-daily-usage-readonly.json",JSON.stringify(report,null,2)+"\n");
 console.log("D02_PVE264_RESULT="+JSON.stringify(report));
