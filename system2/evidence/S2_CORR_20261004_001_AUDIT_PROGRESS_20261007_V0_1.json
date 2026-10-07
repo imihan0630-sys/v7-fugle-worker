@@ -5,7 +5,7 @@
   "auditRole": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
   "canonicalMainShaAtAudit": "34455da7f47016ee149ffeaa963f798251e9fe3d",
   "scope": "Historical daily-market backfill / 2023 TPEx acceptance and canonical DATA_LANE synchronization",
-  "findingState": "2023_TPEX_SYNC_RESOLVED_2021_TPEX_RECOVERY_IMPLEMENTATION_FIX_REQUIRED",
+  "findingState": "2021_TPEX_RESOLVED_2024_TWSE_ACCEPTED_2024_TPEX_PENDING_DUPLICATE_DISPATCH_OBSERVED",
   "physicalAcceptance": {
     "market": "TPEX",
     "year": 2023,
@@ -65,7 +65,8 @@
       "Update SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json from PENDING to PASS_DATA_PARTIAL_REPLAY while preserving 395 UNKNOWN symbol-session gaps.",
       "Then fresh-dispatch 2024 TWSE from latest main under the same physical acceptance standard.",
       "Keep 2021 TPEx canonical source-revision/as-of blocker explicitly open in parallel."
-    ]
+    ],
+    "auditNote": "CORR-001 remains open because 2024 TPEX and later market-years are not yet complete. Duplicate run #27 must not be counted as 2024 TPEX progress."
   },
   "protectedBoundaries": {
     "system1FormalCore": "UNCHANGED",
@@ -112,6 +113,38 @@
       "coldHistoryOverwrite": "PROHIBITED",
       "system1FormalCore": "UNCHANGED",
       "system1ProductionRuntime": "UNCHANGED"
+    }
+  },
+  "checkedAt": "2026-10-07T15:10:00+08:00",
+  "currentAnnualContinuationAudit": {
+    "accepted2021Tpex": {
+      "state": "PASS_DATA_PARTIAL_REPLAY",
+      "latestMainConfirmationRunId": 37563020090,
+      "note": "Former canonical-revision blocker resolved as transport-semantics misclassification; immutable cold history preserved."
+    },
+    "accepted2024Twse": {
+      "runId": 37564954928,
+      "state": "PASS_DATA_PARTIAL_REPLAY",
+      "actualBars": 246037,
+      "expectedBars": 246515,
+      "unknownBars": 478
+    },
+    "duplicateRun": {
+      "runId": 37579384088,
+      "runNumber": 27,
+      "conclusion": "success",
+      "requestedYear": 2024,
+      "requestedMarket": "TWSE",
+      "artifactName": "system2-historical-coverage-TWSE-2024",
+      "classification": "DUPLICATE_ACCEPTED_MARKET_YEAR_REVERIFICATION_NO_NEW_COVERAGE",
+      "effect": "No canonical coverage expansion. 2024 TPEX remains PENDING.",
+      "system1Isolation": "PASS"
+    },
+    "nextRequiredMarketYear": {
+      "year": 2024,
+      "market": "TPEX",
+      "action": "fresh workflow_dispatch from latest main with year=2024 and market=TPEX",
+      "doNotCountRun27AsTpex": true
     }
   }
 }
