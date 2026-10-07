@@ -132,7 +132,7 @@ async function fetchText(url, fetchImpl, timeoutMs, retryAttempts, retryDelayMs)
         if (status >= 400 && status < 500 && status !== 429) throw error;
         lastError = error;
       } else {
-        return response.text();
+        return await response.text();
       }
     } catch (error) {
       lastError = error;
