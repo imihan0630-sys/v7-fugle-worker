@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS_HANDOFF_V0_1",
+  "recordedAt": "2026-10-07T23:27:00+08:00",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "assignedLane": "DATA_LANE",
+  "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "status": "LAUNCH_CRITICAL_ACCEPTANCE_CONTRACT_FROZEN_PHYSICAL_RECEIPT_PENDING",
+  "correctionClassification": "EXPECTED_NCT01_PHYSICAL_EVIDENCE_GATE_NOT_NEW_CORRECTION",
+  "purpose": "Define the minimum bounded official TWSE suspension/resumption negative-completeness evidence required before a real exact-window witness may receive CLEAR_NO_ACTION.",
+  "currentFacts": {
+    "exactSessionRepair": "CORR-004 VERIFIED_CLOSED",
+    "physicalHistoryWitness": "1101/TWSE on 2026-10-07",
+    "physicalHistoryWitnessState": "EXACT_SESSION_HISTORY_READY_CONTINUITY_UNVERIFIED",
+    "continuityReadyCount": 0,
+    "replayFirstContinuityBindingMerged": true,
+    "legacyContinuityLabelSanitizationMerged": true,
+    "realClearNoActionReceiptObserved": false,
+    "physicalNcT01Observed": false
+  },
+  "blockingSemantic": {
+    "receiptBuilder": "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs::buildNct01TwseClearNoActionPromotionReceiptV0_1",
+    "requiredArchiveStates": [
+      "archiveReceipt.noEventMayBeClaimed=true",
+      "archiveReceipt.suspensionCoverageComplete=true",
+      "archiveReceipt.symbolSessionCompletenessEvidenceReady=true",
+      "archiveReceipt.suspensionCoverageByExchange.TWSE=COMPLETE"
+    ],
+    "currentPositiveOnlySource": "system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs",
+    "currentPositiveOnlyLimitation": "absenceCertifiesNoEvent=false; announcement-list absence cannot certify a clean window",
+    "currentTwtaWuUsage": [
+      "system2/scripts/historical_market_year_verify_v0_1.mjs",
+      "system2/scripts/probe_s2_07_symbol_session_integration_readonly_v0_8.mjs"
+    ],
+    "currentTwtaWuLimitation": "Existing System2 consumers deliberately emit absenceCertifiesNoSuspension=false / allHistoryCompletenessCertified=false. That conservative all-history state must not be silently overwritten."
+  },
+  "officialPrimaryEvidence": {
+    "page": "https://www.twse.com.tw/zh/trading/historical/twtawu.html",
+    "observedSemantics": [
+      "TWSE labels the page as historical information query for trading-halt securities.",
+      "The query exposes an explicit data period.",
+      "The query supports security code or all listed securities.",
+      "TWSE states the database contains information from 2011-10-03 onward."
+    ],
+    "interpretation": "This supports engineering a bounded exact-window completeness contract. It does not by itself promote the JSON machine endpoint or any empty result to COMPLETE."
+  },
+  "candidateMachineSource": {
+    "sourceId": "TWSE_TWTAWU",
+    "endpointTemplate": "https://www.twse.com.tw/rwd/zh/afterTrading/TWTAWU?startDate=YYYYMMDD&endDate=YYYYMMDD&querytype=3&response=json",
+    "role": "EXACT_WINDOW_SUSPENSION_RESUMPTION_NEGATIVE_COVERAGE_CANDIDATE",
+    "historicalStart": "2011-10-03"
+  },
+  "minimumPhysicalProducerSequence": [
+    "Obtain the exact selected RAW PIT replay window first; use its firstSelectedDate/lastSelectedDate as the bounded suspension query interval. Do not hard-code a generic annual range.",
+    "Fetch TWTAWU from the official TWSE endpoint for that exact interval, preserving request URL/parameters, observedAt, raw-body hash and source identity.",
+    "Require accepted HTTP/body/schema/status semantics and the expected symbol/suspension/resumption field contract.",
+    "Prove response completeness for the requested bounded interval. When the JSON response lacks an authoritative total/range-completeness indicator, require an independent same-query official representation or other canonical completeness proof; do not infer completeness merely from HTTP 200 or an empty data array.",
+    "Confirm the witness date window is fully after the official database history start.",
+    "Normalize positive halt/resumption rows with half-open interval semantics; preserve conflicts and open intervals fail-closed.",
+    "For the witness symbol, distinguish EVENT_PRESENT, NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW, and SUSPENSION_COVERAGE_UNKNOWN.",
+    "Only NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW may contribute TWSE=COMPLETE negative suspension coverage for CLEAR_NO_ACTION.",
+    "Bind the bounded suspension receipt digest into the corporate-action completeness receipt/sourceEvidenceRefs used by the continuity receipt.",
+    "A post-decision observation may be used only under the explicitly allowed historical/source-availability semantics; do not backdate a later observation into the original decision clock.",
+    "Keep the entire producer read-only/artifact-only; no D1 historical mutation is required."
+  ],
+  "requiredCorporateActionCompanionSources": [
+    "TWSE_EX_RIGHT_DIVIDEND_ACTUAL / TWT49U exact historical actual-result range",
+    "TWSE_CAPITAL_REDUCTION_REFERENCE / TWTAUU exact historical actual-result range",
+    "TWSE_PAR_VALUE_CHANGE_REFERENCE / TWTB8U exact historical actual-result range"
+  ],
+  "failClosedRules": [
+    "Positive-only announcement-list absence is not NO_SUSPENSION.",
+    "HTTP 200 alone is not bounded completeness.",
+    "Empty TWTAWU data without a proven bounded query contract is UNKNOWN.",
+    "A partial/truncated/paginated/ambiguous response is UNKNOWN.",
+    "Any source/schema/range/revision conflict is UNKNOWN.",
+    "Any positive relevant suspension interval overlapping the replay window prevents CLEAR_NO_ACTION unless the exact symbol-session/replay semantics are reconciled.",
+    "RAW + ADJUSTED_CONTINUITY remains prohibited for the first NC-T01 witness.",
+    "Do not require TPEx parity or all-history TWTAWU completeness for the first TWSE witness.",
+    "Do not require annual D1/R2 rerun or write quota for this read-only evidence gate."
+  ],
+  "acceptanceCriteria": [
+    "One real TWSE exact-session-ready witness uses the exact replay-window interval, not a hand-picked generic interval.",
+    "TWTAWU bounded response completeness is machine-verifiable for that interval.",
+    "The witness suspension classification is source-honest and immutable.",
+    "All three TWSE corporate-action historical actual-result families are exact-range/parser/revision complete for the same replay interval.",
+    "Corporate-action completeness receipt reaches eventCoverageComplete=true and suspensionCoverageByExchange.TWSE=COMPLETE without fabricated evidence.",
+    "The resulting CLEAR_NO_ACTION receipt is hash-bound to exact replayHash/sourceHistoryHash/session hashes/source evidence and observed no later than the allowed evidence cut.",
+    "No System1 runtime, final-selection, live-push, capital or order authority is introduced."
+  ],
+  "exactNext": [
+    "DATA_LANE implements or composes a read-only exact-window TWTAWU bounded-completeness probe using existing official source/parser utilities where possible.",
+    "Run it against a real exact-session-ready TWSE witness, preferably 1101 only as a candidate; if any required evidence is incomplete, fail closed and try another truthfully ready witness rather than assuming cleanliness.",
+    "Compose the three existing TWSE exact-range corporate-action source parses plus bounded suspension receipt into the corporate-action completeness receipt.",
+    "If COMPLETE, emit the first real buildNct01TwseClearNoActionPromotionReceiptV0_1 receipt; otherwise preserve CONTINUITY_UNKNOWN.",
+    "BUILD_LANE consumes only the real receipt in the artifact-only NC-T01 runner and emits the typed end-to-end hash chain.",
+    "00 independently verifies S22-T11 through S22-T16."
+  ],
+  "nonBlockers": [
+    "full 2011-present TWTAWU archive completeness",
+    "TPEx lifecycle parity for the first TWSE witness",
+    "broad annual market-year rerun",
+    "D1 write-budget CORR-003 before artifact-only NC-T01",
+    "SWING_GROWTH readiness",
+    "MARKET_REGIME"
+  ],
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No fabricated no-event/no-suspension state",
+    "No historical OHLC mutation",
+    "No System1 candidate/rank fallback",
+    "No strategy threshold/weight/ranking mutation",
+    "No final selection/live push/capital/order authority"
+  ]
+}
