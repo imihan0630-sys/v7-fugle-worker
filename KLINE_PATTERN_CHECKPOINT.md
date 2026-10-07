@@ -4992,3 +4992,83 @@ No maturity or Formal change is authorized by this routing.
 6. Hand residual inference to D16 with same-root common support and prospective/OOS validation.
 7. Keep SDA-001/SDA-002 open.
 8. No Formal Core change.
+
+
+## Continuation update — DL-072~073 (2026-10-07)
+
+### DL-072 — Repeated-touch strength decomposition
+- Repeated-touch folklore was decomposed into competing mechanisms instead of a monotone touch-count rule.
+- Frozen mechanisms:
+  COORDINATION_REINFORCEMENT;
+  RESTING_LIQUIDITY_DEPLETION;
+  STIMULATED_REPLENISHMENT;
+  ADVERSE_SELECTION_WITHDRAWAL;
+  MICROSTRUCTURE_ARTIFACT.
+- More touches are not assumed stronger or weaker.
+- Touch identity requires immutable execution/match lineage; duplicate provider bars/prints do not multiply touches.
+- Touch order is preserved rather than collapsed into one scalar count.
+- Candidate empirical shapes include reinforcing, depleting, U-shaped, inverted-U, threshold, no relation, state dependent and unidentified.
+- D04/D05 remain canonical owners of spread/depth/order-book/resiliency evidence; D01 consumes receipts only.
+- Within-root and matched between-root comparators are both required.
+- D16 ladder T0-T13 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### DL-073 — Structural-zone width / precision-illusion firewall
+- Exact-price support/resistance was rejected as a default semantic.
+- Structural geometry is represented as a zone with explicit lower/upper bounds and uncertainty.
+- Candidate width families:
+  TICK_FIXED;
+  SPREAD_SCALED;
+  VOLATILITY_SCALED;
+  EXECUTION_DISTRIBUTION;
+  HYBRID_PREREGISTERED.
+- Multiple width families are challenger representations of one geometry object, not independent votes.
+- Crossing states are separated:
+  ENTER_ZONE;
+  TOUCH_ZONE;
+  PARTIAL_PENETRATION;
+  FULL_ZONE_CROSS;
+  CLOSE_BEYOND_ZONE;
+  RECLAIM_ZONE;
+  DATA_BLOCKED.
+- One-tick penetration is not automatically a breakout.
+- Outcome-based zone resizing is direct lookahead and prohibited.
+- Width must be reported in ticks, basis points and volatility units.
+- D16 ladder Z0-Z11 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+
+### Evidence / governance
+- Deep-read evidence supports coexistence of technical-level memory, depth depletion, liquidity replenishment and adverse-selection withdrawal.
+- Therefore touch count alone cannot identify the operative mechanism.
+- Evidence ledger:
+  research/D01_DL072_073_EVIDENCE_LEDGER_V0_1.md
+- New DL-072 files:
+  research/PATTERN_REPEATED_TOUCH_DECOMPOSITION_V0_1.md
+  research/pattern_repeated_touch_decomposition_v0_1.json
+  research/pattern_repeated_touch_decomposition_v0_1.mjs
+  research/test_pattern_repeated_touch_decomposition_v0_1.mjs
+  research/PATTERN_REPEATED_TOUCH_D16_HANDOFF_V0_1.md
+- New DL-073 files:
+  research/PATTERN_ZONE_WIDTH_PRECISION_FIREWALL_V0_1.md
+  research/pattern_zone_width_precision_firewall_v0_1.json
+  research/pattern_zone_width_precision_firewall_v0_1.mjs
+  research/test_pattern_zone_width_precision_firewall_v0_1.mjs
+  research/PATTERN_ZONE_WIDTH_D16_HANDOFF_V0_1.md
+- SDA-001 remains open.
+- SDA-002 remains open.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-073
+
+1. Execute DL-068~073 research Node tests independently; keep TEST_EXECUTION_PENDING until actual execution evidence exists.
+2. Start DL-074: zone-width / target-price / stop-loss / RR geometry interaction.
+3. Prevent the same structural uncertainty from being counted once in zone width, again in stop distance, and again in target/RR confidence.
+4. Separate geometric uncertainty from execution/slippage uncertainty and from volatility risk.
+5. Preserve D01-11 ownership of target/resistance/RR geometry while routing execution cost to D10 and microstructure to D04/D05.
+6. Hand residual incrementality to D16.
+7. Keep SDA-001/SDA-002 open.
+8. No Formal Core change.
