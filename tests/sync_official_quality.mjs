@@ -45,20 +45,20 @@ async function readonlyPreview(body,label) {
     catch(error) {
       lastMeta={attempt,status:response.status,contentType,bodyPrefix:text.slice(0,240).replace(/\s+/g,' ')};
       console.error(JSON.stringify({readonlyPreviewNonJson:true,label,...lastMeta}));
-      const retryable=attempt<3 && (response.status===429 || response.status>=500 || /text\/html/i.test(contentType) || /^\s*</.test(text));
-      if(retryable) {await new Promise(resolve=>setTimeout(resolve,1000*attempt));continue;}
+      const retryable=attempt<maxAttempts && (response.status===429 || response.status>=500 || /text\/html/i.test(contentType) || /^\s*</.test(text));
+      if(retryable) {await new Promise(resolve=>setTimeout(resolve,[0,2000,5000,10000,15000][attempt]||15000));continue;}
       throw new Error(label+' returned non-JSON response: '+JSON.stringify(lastMeta));
     }
     if(!response.ok) {
       lastMeta={attempt,status:response.status,contentType,error:String(result?.error || '').slice(0,500)};
       console.error(JSON.stringify({readonlyPreviewRejected:true,label,...lastMeta}));
-      if(attempt<3 && (response.status===429 || response.status>=500)) {await new Promise(resolve=>setTimeout(resolve,1000*attempt));continue;}
+      if(attempt<maxAttempts && (response.status===429 || response.status>=500)) {await new Promise(resolve=>setTimeout(resolve,[0,2000,5000,10000,15000][attempt]||15000));continue;}
       throw new Error(label+' failed: '+JSON.stringify(lastMeta));
     }
     console.log(JSON.stringify({readonlyPreviewAccepted:true,label,attempt,status:response.status,contentType}));
     return result;
   }
-  throw new Error(label+' failed after bounded retries: '+JSON.stringify(lastMeta));
+  throw new Error(label+' transient retries exhausted after '+maxAttempts+' attempts: '+JSON.stringify(lastMeta));
 }
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
 const recoveryOnly=String(process.env.QUALITY_RECOVERY_ONLY || '')==='1';
