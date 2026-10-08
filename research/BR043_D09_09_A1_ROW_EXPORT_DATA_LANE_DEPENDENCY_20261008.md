@@ -67,3 +67,42 @@ Room07 will perform the frozen BR-043 CSSD/CSAD/IQR/MAD/trade-value-leader-remov
 DATA_LANE is not asked to calculate or optimize the dispersion factor.
 
 Formal Core unchanged.
+
+
+## Shared-consumer extension — D09-10
+
+The same immutable A1+B5 export is also the canonical parent data root for D09-10 產業成交值／集中度.
+
+Do NOT generate a second Room07 export for D09-10.
+
+One data root:
+`2026-10-07 A1 rows + same-observation B5 industry mapping`.
+
+Consumers:
+1. D09-09:
+   - CSSD;
+   - CSAD;
+   - IQR;
+   - MAD;
+   - upside/downside dispersion;
+   - trade-value top-1/top-3 leader-removal diagnostics.
+2. D09-10:
+   - industry member trade-value sum;
+   - top-1 trade-value share;
+   - top-3 trade-value share;
+   - trade-value HHI;
+   - effective active names = 1 / HHI;
+   - stock-count-normalized HHI;
+   - leader-return gaps;
+   - breadth / average-return state after top-1 and top-3 removal;
+   - sign stability after leader removal.
+
+Shared lineage rules:
+- `ONE_A1_B5_PARENT / MULTIPLE_RESEARCH_CONSUMERS`;
+- consumer count does not increase independent evidence-root count;
+- no sector concentration metric may be inferred from aggregate market totals when row payload is absent;
+- raw HHI is not cross-sector comparable without sector-size normalization;
+- D09-09 and D09-10 may produce different derived research receipts while preserving the same parent artifact digest/hash.
+
+DATA_LANE remains responsible only for the read-only immutable export.
+Room07 retains all factor computation and interpretation.
