@@ -170,4 +170,117 @@ assert.equal(failed.state, "SOURCE_ERROR");
 assert.equal(failed.reason, "NETWORK_ERROR");
 assert.notEqual(failed.state, "NOT_READY");
 
+
+// CORR-20261007-001: Stage1's real source selector must also govern the
+// prospective Decision Clock without fabricating an earlier availability time.
+const clockDate="2026-09-28";
+const exactTwseRows=Array.from({length:600},(_,i)=>({
+  market:"TWSE",marketDate:clockDate,symbol:String(1000+i),
+  companyName:"Test "+i,open:101,high:104,low:99,close:102,
+  volumeShares:150000,tradeValue:15300000,transactions:200,
+}));
+const exactTpexRows=Array.from({length:450},(_,i)=>({
+  market:"TPEX",marketDate:clockDate,symbol:String(2000+i),
+  companyName:"Test "+i,open:61,high:64,low:59,close:62,
+  volumeShares:60000,tradeValue:3720000,transactions:150,
+}));
+function exactResult(market,rows,reportedDate=clockDate){
+  return {
+    state:"READY",market,marketDate:clockDate,rows,
+    sourceUrl:market==="TWSE"
+      ?"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20260928&type=ALLBUT0999"
+      :"https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2026%2F09%2F28",
+    sourceDateEvidence:reportedDate,sourceDateEvidenceBasis:"PAYLOAD_DATE",
+  };
+}
+const staleTwseRows=twseRows.map(row=>({...row,Date:"1150925"}));
+let exactCalls=[];
+let clockTicks=0;
+const clock=()=>new Date(new Date("2026-09-28T07:25:00Z").getTime()+1000*clockTicks++);
+const clockRecovered=await probeOfficialSource({
+  sourceId:"A1_TWSE_DAILY_CLOSE",marketDate:clockDate,now:clock,
+  fetchImpl:async url=>{
+    assert.match(url,/STOCK_DAY_ALL/);
+    return {ok:true,status:200,json:async()=>staleTwseRows};
+  },
+  exactDateFetch:async({market,marketDate})=>{
+    exactCalls.push({market,marketDate});
+    return exactResult("TWSE",exactTwseRows);
+  },
+});
+assert.equal(clockRecovered.state,"READY");
+assert.deepEqual(exactCalls,[{market:"TWSE",marketDate:clockDate}]);
+assert.equal(clockRecovered.recordCount,600);
+assert.equal(clockRecovered.sourceSelection.selection,"EXACT_DATE_FALLBACK");
+assert.equal(clockRecovered.sourceSelection.selectedSourceId,"A1_TWSE_MI_INDEX_EXACT_DATE_PROSPECTIVE");
+assert.match(clockRecovered.sourceSelection.selectedSourceUrl,/MI_INDEX/);
+assert.equal(clockRecovered.sourceSelection.primary.reportedDates[0],"1150925");
+assert.equal(clockRecovered.sourceSelection.fallback.sourceDateEvidence,clockDate);
+assert.equal(clockRecovered.sourceSelection.historySessionCloseFinalityUsed,false);
+assert.equal(clockRecovered.availableAtSemantics,"FIRST_OBSERVED_READY_UPPER_BOUND_NOT_PUBLISH_TIME");
+assert.equal(clockRecovered.validationVersion,"S2_A1_EXACT_DATE_CLOCK_VALIDATION_V0_1");
+assert.ok(clockRecovered.observedAt>clockRecovered.probeStartedAt);
+assert.equal(clockRecovered.externalMutationPerformed,false);
+
+// Broken latest OpenAPI body must NOT mean the market failed to publish.
+const clockTpex=await probeOfficialSource({
+  sourceId:"A1_TPEX_DAILY_CLOSE",marketDate:clockDate,
+  now:()=>new Date("2026-09-28T07:35:00Z"),
+  fetchImpl:async url=>{
+    assert.match(url,/tpex_mainboard_daily_close_quotes/);
+    return {ok:true,status:200,json:async()=>{throw new Error("truncated OpenAPI JSON")}};
+  },
+  exactDateFetch:async()=>exactResult("TPEX",exactTpexRows),
+});
+assert.equal(clockTpex.state,"READY");
+assert.equal(clockTpex.recordCount,450);
+assert.equal(clockTpex.sourceSelection.selection,"EXACT_DATE_FALLBACK");
+assert.equal(clockTpex.sourceSelection.primary.errorCode,"NON_JSON_RESPONSE");
+assert.equal(clockTpex.sourceSelection.selectedSourceId,"A1_TPEX_DAILY_QUOTES_EXACT_DATE_PROSPECTIVE");
+assert.equal(clockTpex.sourceSelection.sourceDateVerified,true);
+
+// A primary already current must not call the fallback, even when the caller
+// provides a throwing exact-date handler.
+const noFallback=await probeOfficialSource({
+  sourceId:"A1_TWSE_DAILY_CLOSE",marketDate:clockDate,
+  now:()=>new Date("2026-09-28T07:37:00Z"),
+  fetchImpl:async()=>({ok:true,status:200,json:async()=>twseRows}),
+  exactDateFetch:async()=>{throw new Error("correct current primary must never request exact-date fallback")},
+});
+assert.equal(noFallback.state,"READY");
+assert.equal(noFallback.sourceSelection.selection,"PRIMARY_LATEST_OPENAPI_TARGET_DATE");
+assert.equal(noFallback.sourceSelection.fallback.attempted,false);
+
+// A stale primary and unverified/missing exact-date evidence stay fail-closed.
+const mismatchedExact=await probeOfficialSource({
+  sourceId:"A1_TWSE_DAILY_CLOSE",marketDate:clockDate,
+  now:()=>new Date("2026-09-28T07:39:00Z"),
+  fetchImpl:async()=>({ok:true,status:200,json:async()=>staleTwseRows}),
+  exactDateFetch:async()=>exactResult("TWSE",exactTwseRows,"2026-09-25"),
+});
+assert.notEqual(mismatchedExact.state,"READY");
+assert.equal(mismatchedExact.sourceSelection.sourceDateVerified,false);
+
+const failedExact=await probeOfficialSource({
+  sourceId:"A1_TWSE_DAILY_CLOSE",marketDate:clockDate,
+  now:()=>new Date("2026-09-28T07:41:00Z"),
+  fetchImpl:async()=>({ok:true,status:200,json:async()=>staleTwseRows}),
+  exactDateFetch:async()=>{throw new Error("SOURCE_DATE_MISMATCH")},
+});
+assert.equal(failedExact.state,"NOT_READY");
+assert.equal(failedExact.sourceSelection.selection,"PRIMARY_NON_TARGET_DATE_FALLBACK_FAILED");
+assert.equal(failedExact.sourceSelection.fallback.ok,false);
+assert.match(failedExact.sourceSelection.fallback.errorCode,/SOURCE_DATE_MISMATCH/);
+
+// An exact-date payload with unusable close prices does not satisfy the A1 gate.
+const missingPrices=await probeOfficialSource({
+  sourceId:"A1_TWSE_DAILY_CLOSE",marketDate:clockDate,
+  now:()=>new Date("2026-09-28T07:43:00Z"),
+  fetchImpl:async()=>({ok:true,status:200,json:async()=>staleTwseRows}),
+  exactDateFetch:async()=>exactResult("TWSE",exactTwseRows.map(row=>({...row,close:null}))),
+});
+assert.equal(missingPrices.state,"INVALID_PAYLOAD");
+assert.equal(missingPrices.reason,"COVERAGE_BELOW_CONTRACT_MINIMUM");
+assert.equal(missingPrices.recordCount,0);
+
 console.log("System2 official read-only source probe tests passed");
