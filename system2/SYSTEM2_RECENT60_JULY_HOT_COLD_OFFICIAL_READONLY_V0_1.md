@@ -42,3 +42,13 @@ No corporate-action `NO_EVENT`, `CLEAR_NO_ACTION`, suspension or symbol-level NC
 - For 46 exact history-ready symbols still lacking continuity, NC-T01 needs independent full-window corporate-action, lifecycle, suspension, PIT-vintage and NO_EVENT coverage receipts.
 
 System1 V8 Formal Core, runtime, selection, BUY/SELL, capital, order and push untouched.
+
+## DATA_LANE read quota economization (2026-10-09)
+
+Observed merged-main physical Action #37858652385 was blocked at the very first D1 SELECT by Cloudflare's **daily row READ** free-tier limit, before processing any of the 96 frozen identities. This is not official source absence. Independently, PR #922 physical Action #37859630615 has already proven all 96 original symbol-date identities currently visible at canonical TWSE/TPEx official historical sources with zero D1 calls.
+
+To reduce the next diagnostic's D1 read pressure, the bounded physical reader accepts `batchHotManifestRead=true` and its runner enables it. This makes exactly **6 planned SELECT statements** for twelve symbols rather than 26 repeated per-symbol SELECTs: 2 July receipt reads + 2 batched (TWSE, TPEx) Hot D1 reads + 2 batched (TWSE, TPEx) cold-manifest reads. A manifest-present symbol still invokes the canonical R2 pack loader and its D1 lookup, so additional SELECTs can be required for physical pack SHA checks. This count concerns *the explicit Hot D1/manifest/control-plane prefetch statements*, **not** actual Cloudflare `rows_read` metering, which remains physical-only proof.
+
+Rows returned outside the exact six-symbol/eight-date market sample, duplicate monthly manifests, unknown receipt states and mismatched cold bytes remain fail-closed. Preserve the old 26-SELECT implementation as a testable compatibility branch and compare exact per-sample cause maps against the new batch plan.
+
+No D1 writes, R2 PUT, migration, account-budget gate ownership seizure, paid upgrade, PIT backfill or corporate-action continuity promotion is authorized. Before any fresh physical retry, check actual Cloudflare D1 READ budget with REMEDIATION_LANE after reset; only a physical Run can establish D1 rows-read saving.

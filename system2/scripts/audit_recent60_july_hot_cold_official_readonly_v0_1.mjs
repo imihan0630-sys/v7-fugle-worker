@@ -38,6 +38,7 @@ try{
   stage="AUDIT_HOT_D1_VS_COLD_R2_JULY";
   const bridge=await auditFrozenRecent60JulyHotColdV0_1({
     db,objectStore,frozenEvidence,
+    batchHotManifestRead:true,
     onSymbol:row=>{
       samplesDone.push({market:row.market,symbol:row.symbol,
         manifests:row.julySegmentManifestCount,
