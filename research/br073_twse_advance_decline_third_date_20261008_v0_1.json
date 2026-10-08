@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "BR073_TWSE_STOCK_BREADTH_THIRD_DATE_V0_1",
+  "status": "RESEARCH_ONLY_OFFICIAL_TWSE_THIRD_DATE_OUTCOMES_CLOSED",
+  "module": "D09-04",
+  "marketDate": "2026-10-08",
+  "observedMainBeforeWrite": "f117dc2096ce53b94183561c4c685a3dcebbbc12",
+  "source": {
+    "type": "TWSE_OFFICIAL_MI_INDEX",
+    "url": "https://www.twse.com.tw/en/exchangeReport/MI_INDEX?response=html",
+    "observedDate": "2026-10-08",
+    "sourceClass": "OFFICIAL_EXCHANGE"
+  },
+  "counts": {
+    "up": 425,
+    "down": 540,
+    "flat": 109,
+    "unmatched": 3,
+    "notComparable": 5,
+    "comparableN": 1074,
+    "totalN": 1082
+  },
+  "derived": {
+    "advancePct": 39.57169459962756,
+    "declinePct": 50.279329608938546,
+    "flatPct": 10.148975791433893,
+    "netAdvanceMinusDeclinePct": -10.707635009310987,
+    "comparableCoveragePct": 99.26062846580406
+  },
+  "priorIndependentDates": [
+    "2026-10-02",
+    "2026-10-07"
+  ],
+  "independentDateCountAfterAppend": 3,
+  "sharedRootRule": "ONE_DAILY_TWSE_BREADTH_RECEIPT_MAY_HAVE_MULTIPLE_CONSUMERS_BUT_ONE_EVIDENCE_ROOT",
+  "stockOutcomesOpened": false,
+  "formalCoreChanged": false,
+  "maturity": {
+    "level": "L3",
+    "maturityPct": 60,
+    "promote": false
+  },
+  "exactNext": "Append additional independent official TWSE breadth dates under unchanged denominator semantics; add TPEx only with accepted same-clock official transport; preserve shared-root dedup with D09-12; no L4 before D16 common-support/OOS validation."
+}
