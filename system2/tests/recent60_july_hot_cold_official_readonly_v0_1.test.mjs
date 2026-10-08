@@ -119,7 +119,7 @@ assert.ok(db.sqls.every(s=>/^\s*SELECT\b/.test(s)));
 
 const batchedDb=fakeDb();
 const batched=await auditFrozenRecent60JulyHotColdV0_1({
-  db:batchedDb,objectStore:store,frozenEvidence:frozen,coldLoader,
+  db:batchedDb,objectStore,frozenEvidence:frozen,coldLoader,
   batchHotManifestRead:true,
 });
 assert.equal(batched.batchedD1ReadPlanUsed,true);
@@ -133,7 +133,7 @@ assert.equal(batchedDb.sqls.filter(q=>q.includes("s2_historical_a1_segment_manif
 assert.equal(batchedDb.metrics.rowsWritten,0);
 assert.ok(batchedDb.sqls.every(q=>/^\s*SELECT\b/.test(q)));
 await assert.rejects(()=>auditFrozenRecent60JulyHotColdV0_1({
-  db:fakeDb({unexpectedHotRow:true}),objectStore:store,
+  db:fakeDb({unexpectedHotRow:true}),objectStore,
   frozenEvidence:frozen,coldLoader,batchHotManifestRead:true,
 }),/batched hot row escaped sampled dates/);
 
