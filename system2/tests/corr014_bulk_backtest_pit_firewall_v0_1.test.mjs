@@ -223,6 +223,30 @@ await assert.rejects(
 assert.equal(mismatchHistoryCalls,0);
 assert.equal(mismatchEvaluatorCalls,0);
 
+const excludedMember={...member(),excluded:true,exclusionReasons:["POLICY_EXCLUDED"]};
+const excludedReceipt=await buildBulkBacktestPitUniverseReceiptV0_1({
+  plan:validPlan,
+  marketDate,
+  decisionTimestamp,
+  registryId:"REG-CORR014",
+  registryHash:h("2"),
+  members:[excludedMember],
+  exclusions:[{market:"TWSE",symbol:"2330",reason:"POLICY_EXCLUDED",state:"KNOWN"}],
+  capturedAt,
+});
+assert.equal(excludedReceipt.state,"READY");
+await assert.rejects(
+  ()=>runBulkBacktestV0_1({
+    plan:validPlan,
+    loadUniverse:async()=>[excludedMember],
+    loadUniverseReceipt:async()=>excludedReceipt,
+    loadHistoricalBars:async()=>[],
+    evaluateSymbol:async()=>({candidateState:"WATCH"}),
+    capturedAt,
+  }),
+  /zero-sample completion requires proved empty PIT universe/,
+);
+
 const futureEndMember={...member(),delistingDate:"2030-01-01"};
 await assert.rejects(
   ()=>buildBulkBacktestPitUniverseReceiptV0_1({
