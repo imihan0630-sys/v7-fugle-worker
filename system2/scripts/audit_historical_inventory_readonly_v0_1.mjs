@@ -28,6 +28,9 @@ const [
   coldManifests,
   coldCheckpoints,
   coldReceipts,
+  segmentedReceipts,
+  segmentedCheckpoints,
+  segmentedManifests,
 ] = await Promise.all([
   db.rawQuery(`
     SELECT market,
@@ -90,6 +93,13 @@ const [
   db.rawQuery("SELECT COUNT(*) AS manifest_count FROM s2_historical_a1_pack_manifests"),
   db.rawQuery("SELECT COUNT(*) AS checkpoint_count FROM s2_historical_cold_backfill_checkpoints"),
   db.rawQuery("SELECT COUNT(*) AS receipt_count FROM s2_historical_cold_ingest_receipts"),
+  db.rawQuery(`SELECT market,year,month,batch_id,state,receipt_id,pack_count,bar_count,manifest_rolling_hash,completed_at
+    FROM s2_historical_segment_ingest_receipts WHERE year=2026 ORDER BY market,month`),
+  db.rawQuery(`SELECT market,year,month,batch_id,state,expected_pack_count,expected_bar_count,
+    object_ready_count,manifest_committed_count,next_pack_index,rolling_hash
+    FROM s2_historical_segment_backfill_checkpoints WHERE year=2026 ORDER BY market,month`),
+  db.rawQuery(`SELECT market,year,month,COUNT(*) AS manifest_count,COALESCE(SUM(bar_count),0) AS bar_count
+    FROM s2_historical_a1_segment_manifests WHERE year=2026 GROUP BY market,year,month ORDER BY market,month`),
 ]);
 
 const ambiguityByMarket = Object.fromEntries(
@@ -146,6 +156,28 @@ const result = {
     manifestCount: Number(coldManifests[0]?.manifest_count || 0),
     checkpointCount: Number(coldCheckpoints[0]?.checkpoint_count || 0),
     receiptCount: Number(coldReceipts[0]?.receipt_count || 0),
+  },
+  // These D1-only receipts/counts do not prove R2 byte-GET or source reconciliation.
+  currentYearSegmentControlPlane: {
+    receiptCount: segmentedReceipts.length,
+    receipts: segmentedReceipts.map(row=>({
+      market:String(row.market),year:Number(row.year),month:Number(row.month),
+      batchId:String(row.batch_id),state:String(row.state),receiptId:String(row.receipt_id),
+      packCount:Number(row.pack_count),barCount:Number(row.bar_count),
+      manifestRollingHash:String(row.manifest_rolling_hash),completedAt:String(row.completed_at),
+    })),
+    checkpoints: segmentedCheckpoints.map(row=>({
+      market:String(row.market),year:Number(row.year),month:Number(row.month),
+      batchId:String(row.batch_id),state:String(row.state),
+      expectedPackCount:Number(row.expected_pack_count),expectedBarCount:Number(row.expected_bar_count),
+      objectReadyCount:Number(row.object_ready_count),manifestCommittedCount:Number(row.manifest_committed_count),
+      nextPackIndex:Number(row.next_pack_index),rollingHash:String(row.rolling_hash),
+    })),
+    manifestCounts: segmentedManifests.map(row=>({
+      market:String(row.market),year:Number(row.year),month:Number(row.month),
+      manifestCount:Number(row.manifest_count),barCount:Number(row.bar_count),
+    })),
+    assurance:"D1_CONTROL_PLANE_ONLY_R2_BYTE_VERIFICATION_SEPARATE",
   },
   d1Metrics: {
     requestCount: db.metrics.requestCount,
