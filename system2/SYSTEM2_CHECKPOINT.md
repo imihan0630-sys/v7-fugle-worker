@@ -3195,3 +3195,34 @@ Next BUILD priority:
 2. do not redo CORR-009 / CORR-010 / CORR-014 / CORR-015 code-firewall work unless new contradicting evidence appears;
 3. preserve CORR-007 / CORR-008 blocker governance and DATA_LANE physical-evidence ownership.
 
+## 2026-10-08 19:20 BUILD_LANE reconciliation — CORR-014 FIX_IMPLEMENTED
+
+Implementation:
+- PR #868 merged as `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`.
+- Bulk-backtest plan identity now binds dataset manifest, policy registration, evaluator code, factor bundle, Regime version, execution assumptions and cost model.
+- Each replay date requires a hash-bound PIT universe receipt tied to exact plan/run/date/decision-clock and historical membership.
+- Checkpoint, partition, date-summary, sample/state counts and rolling digest are recomputed/reconciled before resume.
+- Zero-sample completion requires a separately proved empty PIT universe.
+- AP-04 forged-completion checkpoint is rejected before loaders/evaluators run.
+
+Exact-head PASS:
+- CORR-014 `37743894631`;
+- System2 Research CI `37743894530`;
+- V8 Regression `37743894466`.
+
+Merged-main PASS on `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`:
+- CORR-014 `37744022901`;
+- System2 Research CI `37744022808`;
+- V8 Regression `37744023076`.
+
+Disposition:
+- `S2-CORR-20261008-014 = FIX_IMPLEMENTED`;
+- CRITICAL correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`;
+- old PR #869 is stale and must not replay its older queue/checkpoint/progress snapshots.
+
+Next BUILD priority:
+1. continue the highest-severity unblocked correction from current canonical queue;
+2. do not redo CORR-014 code firewall unless contradicting evidence appears;
+3. preserve System1 Formal Core/runtime and all final-selection/live-push/capital/order boundaries.
+
