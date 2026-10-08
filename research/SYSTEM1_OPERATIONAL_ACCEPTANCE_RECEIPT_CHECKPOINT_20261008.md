@@ -47,3 +47,19 @@ Manual or push-triggered collectors do not execute the acceptance builder.
 No Worker, D1 schema, selection, A/B, comparator, ranking, Top6/3+3, capital, 15m semantics, maxChase, signal, push, trade, order or System2 behavior changes.
 
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## Upstream failure receipt
+
+Scheduled collection now runs the acceptance builder with an always-guard.
+
+If C1, C2, generation inventory, binding, or H1-H5 artifacts are missing because an upstream scheduled step failed, the builder must still write `system1-operational-acceptance.json` with:
+
+- status = BLOCKED;
+- genuineProspective = false;
+- firstBlocker = UPSTREAM_ARTIFACT_MISSING;
+- exact missing artifact names/paths;
+- upstream readiness status and verification failure when available.
+
+The builder then exits non-zero, so the workflow remains failed while the diagnostic receipt is still preserved.
+
+This closes the previous observability gap where an upstream failure could prevent the final acceptance receipt from existing at all.
