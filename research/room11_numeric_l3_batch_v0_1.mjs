@@ -8,6 +8,7 @@ import { materializeHistoricalA1PackRowsV0_1 } from "../system2/runtime/historic
 import { fetchHistoricalTwseCalendarV0_1 } from "../system2/runtime/historical_twse_calendar_v0_1.mjs";
 import { conservativeHistoricalAvailableAt } from "../system2/runtime/official_full_market_daily_history_adapter_v0_1.mjs";
 import { historicalUniverseMembershipActiveOnDateV0_1 } from "../system2/runtime/historical_universe_registry_v0_1.mjs";
+import { buildD08TwseHistoricalUniverseSourceV0_1, buildD08SemanticUniverseIdentityV0_1 } from "../system2/runtime/d08_twse_historical_universe_source_v0_1.mjs";
 
 const VERSION="ROOM11_NUMERIC_L3_BATCH_V0_2";
 export const PINNED_TWSE_2025_REGISTRY=Object.freeze({
@@ -232,6 +233,69 @@ export function bindHistoricalMembership(rows,membershipRows,registryReceipt,exp
   return {rows:admitted,blockedRows:blocked,blockedCount:blocked.length,admittedCount:admitted.length};
 }
 
+export function bindHistoricalMembershipFromRegistry(rows,registry){
+  must(registry?.schemaVersion==="S2_HISTORICAL_UNIVERSE_REGISTRY_V0_1","OFFICIAL_REGISTRY_INVALID");
+  must(Array.isArray(registry.memberships)&&registry.memberships.length>0,"OFFICIAL_REGISTRY_MEMBERSHIPS_MISSING");
+  must(registry.unknownStartCount===0 && registry.replayEligibleCount===registry.membershipCount,"OFFICIAL_REGISTRY_NOT_REPLAY_COMPLETE");
+  const bySymbol=new Map();
+  for(const m of registry.memberships){
+    if(m.market!=="TWSE")continue;
+    if(!bySymbol.has(m.symbol))bySymbol.set(m.symbol,[]);
+    bySymbol.get(m.symbol).push(m);
+  }
+  const admitted=[],blocked=[];
+  for(const row of rows){
+    const ms=bySymbol.get(String(row.symbol))||[];
+    const decision=ms.filter(m=>historicalUniverseMembershipActiveOnDateV0_1(m,row.decisionDate));
+    const outcome=ms.filter(m=>historicalUniverseMembershipActiveOnDateV0_1(m,row.outcomeDate));
+    if(decision.length!==1 || outcome.length!==1 || decision[0].membershipId!==outcome[0].membershipId){
+      blocked.push({...row,membershipBlockReason:decision.length!==1?"DECISION_MEMBERSHIP_NOT_UNIQUE":outcome.length!==1?"OUTCOME_MEMBERSHIP_NOT_UNIQUE":"MEMBERSHIP_INTERVAL_CHANGED"});
+      continue;
+    }
+    const m=decision[0];
+    must(/^[a-f0-9]{64}$/i.test(String(m.membershipHash||"")),"MEMBERSHIP_HASH_INVALID");
+    admitted.push({...row,registryId:registry.registryId,registryHash:registry.registryHash,membershipId:m.membershipId,membershipHash:m.membershipHash});
+  }
+  return {rows:admitted,blockedRows:blocked,blockedCount:blocked.length,admittedCount:admitted.length};
+}
+
+export function buildPanelFeasibility(rows){
+  must(Array.isArray(rows)&&rows.length>0,"PANEL_ROWS_REQUIRED");
+  const seen=new Set(),byDate=new Map(),byIssuer=new Map();
+  for(const r of rows){
+    must(r.membershipId&&r.membershipHash,"PANEL_MEMBERSHIP_REQUIRED");
+    const key=r.decisionDate+"|"+r.symbol;
+    must(!seen.has(key),"DUPLICATE_ISSUER_DATE");
+    seen.add(key);
+    if(!byDate.has(r.decisionDate))byDate.set(r.decisionDate,new Set());
+    if(!byIssuer.has(r.symbol))byIssuer.set(r.symbol,new Set());
+    byDate.get(r.decisionDate).add(r.symbol);
+    byIssuer.get(r.symbol).add(r.decisionDate);
+  }
+  const dates=[...byDate.keys()].sort(),issuers=[...byIssuer.keys()].sort();
+  must(dates.length>=80&&issuers.length>=8,"PANEL_SUPPORT_INSUFFICIENT");
+  const observedCellN=rows.length,totalPossibleCellN=dates.length*issuers.length;
+  const missingCellN=totalPossibleCellN-observedCellN;
+  must(missingCellN>=0,"PANEL_CELL_ACCOUNTING_INVALID");
+  const dateCellCounts=dates.map(d=>byDate.get(d).size);
+  const issuerDateCounts=issuers.map(s=>byIssuer.get(s).size);
+  const out={
+    schemaVersion:"D16_PANEL_FEASIBILITY_V0_1",
+    observedCellN,totalPossibleCellN,missingCellN,
+    missingCellsImputedAsZero:false,
+    independentDateN:dates.length,issuerN:issuers.length,
+    minIssuerPerDate:Math.min(...dateCellCounts),maxIssuerPerDate:Math.max(...dateCellCounts),
+    minDatePerIssuer:Math.min(...issuerDateCounts),maxDatePerIssuer:Math.max(...issuerDateCounts),
+    balancedPanel:missingCellN===0,
+    dateClusterKey:"decisionDate",issuerClusterKey:"symbol",
+    rowPoolingAsIndependentEvidence:false,
+    twoWayDependenceInspectable:true,
+    panelIdentityHash:sha256(rows.map(r=>[r.decisionDate,r.symbol,r.membershipHash,r.sourceRowHash,r.nextSourceRowHash,r.partition])),
+  };
+  return {...out,receiptHash:sha256(out)};
+}
+
+
 export function fitAr1(rows){
   const bySymbol=new Map();
   for(const r of rows){if(!bySymbol.has(r.symbol))bySymbol.set(r.symbol,[]);bySymbol.get(r.symbol).push(r);}
@@ -381,6 +445,20 @@ export async function runPhysicalBatch(){
   const persistedMembershipRowCount=membershipRows.length;
   if(persistedRegistryReceiptPresent)must(membershipRows.length===PINNED_TWSE_2025_REGISTRY.membershipCount,"PINNED_MEMBERSHIP_ROW_COUNT_MISMATCH");
 
+  let liveOfficialUniverse=null;
+  let liveOfficialSemanticIdentity=null;
+  if(!persistedRegistryReceiptPresent){
+    const observedAt=new Date().toISOString();
+    liveOfficialUniverse=await buildD08TwseHistoricalUniverseSourceV0_1({
+      datasetStartDate:"2025-01-01",
+      observedAt,
+      fetchImpl:fetch,
+    });
+    must(liveOfficialUniverse.registry.unknownStartCount===0,"LIVE_OFFICIAL_UNIVERSE_UNKNOWN_START");
+    must(liveOfficialUniverse.registry.replayEligibleCount===liveOfficialUniverse.registry.membershipCount,"LIVE_OFFICIAL_UNIVERSE_REPLAY_INCOMPLETE");
+    liveOfficialSemanticIdentity=buildD08SemanticUniverseIdentityV0_1(liveOfficialUniverse.registry);
+  }
+
   const symbolBars=[];
   const packEvidence=[];
   let storageReadMode;
@@ -422,12 +500,15 @@ export async function runPhysicalBatch(){
 
   must(symbolBars.length>=8,"INSUFFICIENT_PHYSICAL_SYMBOL_COHORT");
   const rows0=buildRows(symbolBars,calendar.tradingDates);
+  const membershipAuthorityMode=persistedRegistryReceiptPresent
+    ?"D1_PERSISTED_OFFICIAL_UNIVERSE_REGISTRY"
+    :"FRESH_OFFICIAL_TWSE_RESEARCH_ARTIFACT";
   const membershipBound=persistedRegistryReceiptPresent
     ? bindHistoricalMembership(rows0,membershipRows,registryRows[0])
-    : null;
-  if(membershipBound)must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
+    : bindHistoricalMembershipFromRegistry(rows0,liveOfficialUniverse.registry);
+  must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
 
-  const modelRows0=membershipBound?membershipBound.rows:rows0;
+  const modelRows0=membershipBound.rows;
   const sp=splitDates(modelRows0);
   const allPartitioned=modelRows0.map(r=>({...r,partition:sp.split(r)}));
   const purgedTrainRows=allPartitioned.filter(r=>r.partition==="PURGED_TRAIN_BOUNDARY");
@@ -450,24 +531,25 @@ export async function runPhysicalBatch(){
     firstValidationDate:sp.firstValidationDate,firstTestDate:sp.firstTestDate,
     priceReturnFeatureEnabled:false,rawPriceReturnUsed:false,
     continuityStates:[...new Set(rows.flatMap(r=>[r.currentContinuityState,r.nextContinuityState]))].sort(),
-    membershipScope:membershipBound
-      ?"PINNED_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION_D1_RECEIPT_BOUND"
-      :"BOUNDED_PHYSICAL_BAR_COHORT_MEMBERSHIP_NOT_D1_RECEIPT_BOUND",
-    registryId:membershipBound?PINNED_TWSE_2025_REGISTRY.registryId:null,
-    registryHash:membershipBound?PINNED_TWSE_2025_REGISTRY.registryHash:null,
+    membershipScope:membershipAuthorityMode,
+    registryId:persistedRegistryReceiptPresent?PINNED_TWSE_2025_REGISTRY.registryId:liveOfficialUniverse.registry.registryId,
+    registryHash:persistedRegistryReceiptPresent?PINNED_TWSE_2025_REGISTRY.registryHash:liveOfficialUniverse.registry.registryHash,
+    semanticRegistryHash:persistedRegistryReceiptPresent?null:liveOfficialSemanticIdentity.semanticRegistryHash,
     durableAnnualVerifierRegistryId:PINNED_TWSE_2025_REGISTRY.registryId,
     durableAnnualVerifierRegistryHash:PINNED_TWSE_2025_REGISTRY.registryHash,
-    membershipHashSetHash:membershipBound?sha256([...new Set(rows.map(r=>r.membershipHash))].sort()):null,
+    membershipHashSetHash:sha256([...new Set(rows.map(r=>r.membershipHash))].sort()),
     rowIdentityHash:sha256(rows.map(r=>[r.decisionDate,r.outcomeDate,r.symbol,r.membershipHash||null,r.sourceRowHash,r.nextSourceRowHash,r.partition])),
     dateClusterUnit:"DECISION_DATE",issuerClusterUnit:"SYMBOL",
     nextSessionBoundaryPurgeApplied:true,
-    survivorshipAwareMembershipApplied:Boolean(membershipBound),
+    survivorshipAwareMembershipApplied:true,
+    membershipAuthorityMode,
     fullYearAvailabilityCohortSelection:true,
     populationInferenceAuthorized:false,
-    d16_17L3Eligible:Boolean(membershipBound),
+    d16_17L3Eligible:true,
     numericMethodL3Eligible:true,
   };
 
+  const panelFeasibility=buildPanelFeasibility(rows);
   const timeSeries=fitAr1(rows);
   const featureSelection=nestedFeatureSelection(rows);
   const cal=calibration(rows);
@@ -485,14 +567,18 @@ export async function runPhysicalBatch(){
       registry:PINNED_TWSE_2025_REGISTRY,
       symbolCohort:symbolBars.map(x=>x[0]),packEvidence,
     },
-    panel,timeSeries,featureSelection,calibration:cal,monteCarlo,
+    panel,panelFeasibility,
+    membershipEvidence:persistedRegistryReceiptPresent
+      ? {authorityMode:membershipAuthorityMode,registryId:PINNED_TWSE_2025_REGISTRY.registryId,registryHash:PINNED_TWSE_2025_REGISTRY.registryHash,cohortMembershipHashSetHash:panel.membershipHashSetHash}
+      : {authorityMode:membershipAuthorityMode,observedAt:liveOfficialUniverse.registry.observedAt,registryId:liveOfficialUniverse.registry.registryId,registryHash:liveOfficialUniverse.registry.registryHash,semanticRegistryHash:liveOfficialSemanticIdentity.semanticRegistryHash,sourceReceipt:liveOfficialUniverse.sourceReceipt,cohortMembershipHashSetHash:panel.membershipHashSetHash,cohortMemberships:liveOfficialUniverse.registry.memberships.filter(m=>symbolBars.some(([symbol])=>symbol===m.symbol)).map(m=>({symbol:m.symbol,memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,effectiveFrom:m.effectiveFrom,effectiveTo:m.effectiveTo,startBasis:m.startBasis,endBasis:m.endBasis,membershipId:m.membershipId,membershipHash:m.membershipHash,sourceId:m.sourceId,sourceRowHash:m.sourceRowHash}))},
+    timeSeries,featureSelection,calibration:cal,monteCarlo,
     d1Metrics,
     rowsWrittenZero:Number(d1Metrics.rowsWritten||0)===0,
     formalCoreChanged:false,system1RuntimeUsed:false,system2StrategyAuthorityChanged:false,
     alphaClaimMade:false,priceReturnClaimMade:false,
     promotionsEligible:{
       D16_16_TIME_SERIES:true,
-      D16_17_PANEL_CROSS_SECTION:Boolean(membershipBound),
+      D16_17_PANEL_CROSS_SECTION:true,
       D16_18_REGULARIZATION:true,
       D16_19_ML_CALIBRATION_TOOLING:true,
       D16_24_DISTRIBUTIONAL_SIMULATION:true,
