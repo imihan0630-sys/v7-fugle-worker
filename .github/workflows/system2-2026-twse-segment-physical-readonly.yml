@@ -1,0 +1,79 @@
+name: System2 2026 TWSE Segment Physical Readonly
+
+on:
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Existing 2026 TWSE monthly receipts: ALL checks January to June"
+        required: true
+        type: choice
+        options:
+          - ALL
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+        default: ALL
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-2026-twse-segment-physical-readonly.yml"
+      - "system2/runtime/historical_segment_physical_readonly_audit_v0_1.mjs"
+      - "system2/scripts/audit_2026_twse_segments_physical_readonly_v0_1.mjs"
+      - "system2/tests/historical_segment_physical_readonly_audit_v0_1.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-2026-twse-segment-physical-readonly
+  cancel-in-progress: false
+
+jobs:
+  physical:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Guard no-write physical verifier
+        run: |
+          set -euo pipefail
+          node system2/tests/historical_segment_physical_readonly_audit_v0_1.test.mjs
+          node --check system2/scripts/audit_2026_twse_segments_physical_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Read and SHA256-verify existing R2 segment bytes and D1 receipts
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_SEGMENT_READONLY_MONTH: ${{ inputs.month || 'ALL' }}
+          SYSTEM2_SEGMENT_READONLY_OUTPUT: /tmp/system2-2026-twse-segment-physical.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_2026_twse_segments_physical_readonly_v0_1.mjs
+
+      - name: Preserve physical verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-twse-2026-segments-physical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-2026-twse-segment-physical.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm System1 production files untouched
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "Production isolation PASS"
