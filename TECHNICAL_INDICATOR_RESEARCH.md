@@ -3742,3 +3742,21 @@ The 20-case executable oracle passes and rejects every frozen counterexample. It
 D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
 
 Exact next: accept merged-main CORR-007 verification and real bounded suspension evidence on the W0 track; independently wait for a future genuine V8.20 parent. Run existing D03-10 oracles only when both admissible inputs exist.
+
+
+## 2026-10-08 D03 CORR-007 versioned receipt compatibility gate
+
+Artifacts:
+- `research/D03_CORR007_VERSIONED_RECEIPT_COMPATIBILITY_GATE_20261008_V0_1.md`;
+- `research/d03_corr007_versioned_receipt_gate_cases_20261008_v0_1.json`;
+- `research/test_d03_corr007_versioned_receipt_gate_v0_1.mjs`.
+
+The upstream CORR-007 handoff now explicitly distinguishes evidence-bound suspension completeness from legacy status-only completeness. D03 therefore adds a machine gate: legacy `S2_CA_COMPLETENESS_RECEIPT_V0_1` cannot promote physical CLEAR_NO_ACTION even if a digest is appended or the payload is relabelled. V0.2 semantics require an exact interval, source family/version, immutable bounded digest, matching source evidence reference, causal timing, all three separate corporate-action references, exact-session readiness and zero partial/conflict state.
+
+The 16-case executable oracle passes, including rejection of legacy-with-digest and V0.2-wrapper/V0.1-source mixtures. Changing only the bounded suspension digest changes the bound input hash.
+
+Counterevidence remains binding: this is a contract oracle, not merged runtime implementation, independent exact-head verification, a real TWTAWU bounded receipt, physical W0 continuity, a genuine V8.20 parent or predictive evidence. OOS, walk-forward, multiple-testing, transaction cost, fillability, market-state and alpha remain UNKNOWN.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next is merged-main CORR-007 V0.2-equivalent implementation and independent verification, including legacy V0.1 fail-closed and digest/hash-chain sensitivity; then a real exact-window TWTAWU receipt bound into archive/continuity, plus the independent future genuine V8.20 parent track.
