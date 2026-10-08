@@ -122,7 +122,14 @@ const orderRow = {
   side: "BUY",
   order_type: "BUY_STOP",
   trigger_rule_version: "S2_TW_DAILY_EXECUTION_SIMULATOR_V0_1",
-  order_json: "{}",
+  order_json: JSON.stringify({
+    simOrderId: "SO-PERSIST-2330",
+    decisionId: decisionBase.decisionId,
+    strategyId: "SHORT_MOMENTUM",
+    strategyVersion: "V0.1-CONTRACT",
+    symbol: decisionBase.symbol,
+    decisionTimestamp: decisionBase.decisionTimestamp,
+  }),
   created_at: decisionBase.decisionTimestamp,
   status: "SIMULATION_ORDER_FROZEN",
 };
@@ -139,7 +146,10 @@ const fillRow = {
   fill_quality: "FILLED_WITH_SLIPPAGE",
   ambiguity_reason: null,
   feasibility_flags_json: "[]",
-  fill_json: "{}",
+  fill_json: JSON.stringify({
+    simFillId: "SF-PERSIST-2330",
+    simOrderId: orderRow.sim_order_id,
+  }),
 };
 
 const batch1 = await buildOutcomePersistenceBatchV0_1({
@@ -156,6 +166,14 @@ assert.equal(batch1.mutableTable, "s2_outcomes");
 assert.match(batch1.batchHash, /^[0-9a-f]{64}$/);
 
 const db = new MockDb();
+db.rows.set(`s2_decisions|${decisionBase.decisionId}`, {
+  decision_id: decisionBase.decisionId,
+  strategy_id: "SHORT_MOMENTUM",
+  strategy_version: "V0.1-CONTRACT",
+  symbol: decisionBase.symbol,
+  market_date: decisionBase.decisionMarketDate,
+  decision_timestamp: decisionBase.decisionTimestamp,
+});
 const first = await executeOutcomePersistenceBatchV0_1({ db, batch: batch1 });
 assert.equal(first.insertedCount, 3);
 assert.equal(first.updatedCount, 0);
@@ -222,6 +240,85 @@ await assert.rejects(
     createdAt: "2026-10-03T09:01:00Z",
   }),
   /duplicate persistence identity/,
+);
+
+const tamperedSql = JSON.parse(JSON.stringify(batch1));
+tamperedSql.records[0].insert.text =
+  "UPDATE s2_decisions SET symbol = '9999' WHERE decision_id = 'FOREIGN'";
+const sqlDb = new MockDb();
+sqlDb.rows.set(`s2_decisions|${decisionBase.decisionId}`, {
+  decision_id: decisionBase.decisionId,
+  strategy_id: "SHORT_MOMENTUM",
+  strategy_version: "V0.1-CONTRACT",
+  symbol: decisionBase.symbol,
+  market_date: decisionBase.decisionMarketDate,
+  decision_timestamp: decisionBase.decisionTimestamp,
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db: sqlDb, batch: tamperedSql }),
+  /OUTCOME_SQL_PLAN_MISMATCH|OUTCOME_BATCH_CANONICAL_MISMATCH/,
+);
+
+const missingDecisionDb = new MockDb();
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db: missingDecisionDb, batch: batch1 }),
+  /LINEAGE_PARENT_MISSING:s2_sim_orders.decision_id/,
+);
+
+const wrongOrderBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-WRONG-ORDER-LINEAGE",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  simulationOrderRows: [{
+    ...orderRow,
+    order_json: JSON.stringify({
+      ...JSON.parse(orderRow.order_json),
+      strategyId: "SWING_GROWTH",
+    }),
+  }],
+  outcomeRow: toS2OutcomeRowV0_1(day1),
+  createdAt: "2026-09-30T09:02:00Z",
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db, batch: wrongOrderBatch }),
+  /LINEAGE_MISMATCH:order-decision.strategy_id/,
+);
+
+const orphanFillBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-ORPHAN-FILL",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  simulationFillRows: [{
+    ...fillRow,
+    sim_fill_id: "SF-ORPHAN",
+    sim_order_id: "SO-MISSING",
+    fill_json: JSON.stringify({ simFillId: "SF-ORPHAN", simOrderId: "SO-MISSING" }),
+  }],
+  outcomeRow: toS2OutcomeRowV0_1(day1),
+  createdAt: "2026-09-30T09:03:00Z",
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db, batch: orphanFillBatch }),
+  /LINEAGE_PARENT_MISSING:s2_sim_fills.sim_order_id/,
+);
+
+const wrongOutcomeRow = {
+  ...toS2OutcomeRowV0_1(day1),
+  outcome_json: JSON.stringify({
+    ...day1,
+    decisionId: "D-FOREIGN",
+  }),
+};
+const wrongOutcomeBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-WRONG-OUTCOME-LINEAGE",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  outcomeRow: wrongOutcomeRow,
+  createdAt: "2026-09-30T09:04:00Z",
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db, batch: wrongOutcomeBatch }),
+  /LINEAGE_MISMATCH:outcome_json.decisionId/,
 );
 
 console.log("System2 outcome persistence V0.1 tests passed");
