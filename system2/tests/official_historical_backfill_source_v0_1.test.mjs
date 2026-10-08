@@ -117,6 +117,27 @@ assert.deepEqual(exactRequested,["2026-07-08","2026-07-09","2026-07-13"]);
 assert.equal(exactRequested.includes("2026-07-10"),false,"unscheduled trading date must not be requested");
 assert.equal(exactResult.tradingDateCount,3);
 
+
+let observedTicks=0;
+const observedRange=await fetchOfficialHistoricalA1RangeV0_1({
+  market:"TPEX",fromDate:"2017-01-03",toDate:"2017-01-04",
+  calendarsByYear:{2017:calendar2017},
+  observedAtFactory:()=>{
+    observedTicks+=1;
+    return observedTicks===1?"2026-10-08T10:59:01Z":"2026-10-08T10:59:02Z";
+  },
+  fetchImpl:async url=>({
+    ok:true,status:200,
+    json:async()=>tpexPayload(new URL(url).searchParams.get("date").replaceAll("/","-")),
+  }),
+});
+assert.equal(observedTicks,2);
+assert.deepEqual(observedRange.rows.map(r=>r.observedAt),["2026-10-08T10:59:01Z","2026-10-08T10:59:02Z"]);
+await assert.rejects(
+  ()=>fetchOfficialHistoricalA1RangeV0_1({market:"TWSE",observedAtFactory:"invalid"}),
+  /observedAtFactory must be a function/,
+);
+
 const contracts = buildOfficialBackfillSourceContractsV0_1();
 assert.equal(contracts.TWSE.authenticationRequired, false);
 assert.equal(contracts.TPEX.historicalDateRequired, true);
