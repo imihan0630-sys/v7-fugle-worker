@@ -1073,3 +1073,25 @@ No hypothesis supported/rejected.
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core LOCKED.
+
+
+## PVE-277~279 Wave-2 dependency-specific admission overlay — 2026-10-08
+
+Wave-2 outcome status remains CLOSED / ALPHA_UNKNOWN across D02-04/05/07/08/09/10/11/12.
+
+New integrity findings:
+- D02-04 LOW participation requires fresh same-slot participation baseline.
+- D02-05 EXTREME participation/response requires fresh volume and range baselines.
+- D02-07 and D02-09 PIVOT_SIGNED_VOLUME require exact daily continuity receipts, not a median-freshness proxy.
+- D02-08 provider-pressure primary source remains independent; registered comparator controls must be fresh.
+- D02-09 PARTICIPATION_TRAJECTORY and D02-10 interaction require declared participation lineage with matching slot/cumulative/persistence evidence.
+- D02-11 rolling-20 liquidity capacity requires exact latest prior eligible-session freshness.
+- D02-12 time curve requires historical denominator + control freshness; prospective price-by-volume profile requires control freshness at comparison.
+
+PVE-278 is now the Wave-2 pre-outcome anti-bypass overlay.
+PVE-279 binds its exact admitted dataset to D16 input.
+
+No outcomes inspected.
+No hypothesis supported/rejected.
+No maturity promotion.
+No Formal optimization candidate.
