@@ -149,6 +149,7 @@ for(let month=1;month<=throughMonth;month+=1){
   const range=await fetchOfficialHistoricalA1RangeV0_1({
     market,fromDate,toDate,observedAt:capturedAt,
     pauseMs:750,includeRowProvenance:true,calendarsByYear,fetchImpl:tracedFetch,
+    observedAtFactory:()=>new Date().toISOString(),
     onDateReceipt:({marketDate,ordinarySymbolCount,state})=>{
       console.log("S2_SEGMENT_DATE_RECEIPT "+JSON.stringify({market,year,month,marketDate,ordinarySymbolCount,state}));
     },
@@ -159,13 +160,13 @@ for(let month=1;month<=throughMonth;month+=1){
   assert.ok(range.rowCount>1000,`${market} ${year}-${monthText} official row count unexpectedly low`);
 
   activeStage="BUILD_MONTH_PACKS";
-  const packSet=await buildHistoricalA1PacksResearchV0_1({rows:range.rows,capturedAt});
+  const packSet=await buildHistoricalA1PacksResearchV0_1({rows:range.rows,capturedAt:new Date().toISOString()});
   assert.ok(packSet.packCount>300,`${market} ${year}-${monthText} pack count unexpectedly low`);
   assert.equal(packSet.barCount,range.rowCount,"current-year segment pack accounting mismatch");
 
   activeStage="PERSIST_AND_VERIFY_MONTH";
   const persisted=await executeHistoricalSegmentPackSetV0_1({
-    db,objectStore,packSet,batchId,capturedAt,market,year,month,
+    db,objectStore,packSet,batchId,capturedAt:new Date().toISOString(),market,year,month,
     segmentFromDate:fromDate,segmentToDate:toDate,chunkSize:25,
   });
   assert.equal(persisted.packCount,packSet.packCount);
