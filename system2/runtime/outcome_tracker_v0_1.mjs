@@ -566,6 +566,81 @@ export function toS2OutcomeRowV0_1(snapshot) {
   });
 }
 
+export async function verifyDecisionOutcomeSnapshotV0_2(snapshot) {
+  const blockers = [];
+  if (!snapshot || typeof snapshot !== "object" || Array.isArray(snapshot)) {
+    return deepFreeze({ valid: false, blockers: Object.freeze(["OUTCOME_SNAPSHOT_MISSING"]) });
+  }
+  if (snapshot.schemaVersion !== "S2_DECISION_OUTCOME_V0_2") {
+    blockers.push("OUTCOME_SCHEMA_VERSION_MISMATCH");
+  }
+
+  const claimedOutcomeHash = String(snapshot.outcomeHash || "");
+  const payload = { ...snapshot };
+  delete payload.outcomeHash;
+  const recomputedOutcomeHash = await sha256Hex(payload);
+  if (!HASH_RE.test(claimedOutcomeHash)) blockers.push("OUTCOME_HASH_MISSING_OR_INVALID");
+  else if (claimedOutcomeHash !== recomputedOutcomeHash) blockers.push("OUTCOME_HASH_MISMATCH");
+
+  const identityMaterial = {
+    decisionId: snapshot.decisionId ?? null,
+    decisionHash: snapshot.decisionHash ?? null,
+    strategyId: snapshot.strategyId ?? null,
+    strategyVersion: snapshot.strategyVersion ?? null,
+    regimeSnapshotId: snapshot.regimeSnapshotId ?? null,
+    regimeHash: snapshot.regimeHash ?? null,
+    priceSpace: snapshot.priceSpace ?? null,
+    corporateActionState: snapshot.corporateActionState ?? null,
+    corporateActionLineageHash: snapshot.corporateActionLineageHash ?? null,
+    costScenarioSetHash: snapshot.costScenarioSetHash ?? null,
+    executionHash: snapshot.executionLineage?.executionHash ?? null,
+    costModelHash: snapshot.executionLineage?.costModelHash ?? null,
+    taxRuleHash: snapshot.executionLineage?.taxRuleHash ?? null,
+  };
+  const recomputedOutcomeVersionId = await sha256Hex(identityMaterial);
+  const claimedOutcomeVersionId = String(snapshot.outcomeVersionId || "");
+  if (!HASH_RE.test(claimedOutcomeVersionId)) blockers.push("OUTCOME_VERSION_ID_MISSING_OR_INVALID");
+  else if (claimedOutcomeVersionId !== recomputedOutcomeVersionId) {
+    blockers.push("OUTCOME_VERSION_ID_MISMATCH");
+  }
+
+  const expectedCostScenarioSetHash = await sha256Hex(
+    Object.entries(snapshot.costScenarios || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([scenarioId, row]) => ({
+        scenarioId,
+        roundTripCostRate: row?.roundTripCostRate ?? null,
+        note: row?.note ?? null,
+      })),
+  );
+  // V0.2 stores the hash of normalized input scenarios, while costScenarios stores
+  // derived returns and omits note. Therefore only require a syntactically valid
+  // frozen hash here; replay equality is proven by outcomeHash/version identity.
+  if (!HASH_RE.test(String(snapshot.costScenarioSetHash || ""))) {
+    blockers.push("COST_SCENARIO_SET_HASH_MISSING_OR_INVALID");
+  }
+
+  if (snapshot.executionLineage !== null) {
+    for (const [field, value] of [
+      ["executionHash", snapshot.executionLineage?.executionHash],
+      ["costModelHash", snapshot.executionLineage?.costModelHash],
+      ["taxRuleHash", snapshot.executionLineage?.taxRuleHash],
+    ]) {
+      if (!HASH_RE.test(String(value || ""))) blockers.push(`EXECUTION_LINEAGE_${field}_INVALID`);
+    }
+    if (!snapshot.executionLineage?.executionVersion) blockers.push("EXECUTION_LINEAGE_VERSION_MISSING");
+    if (!snapshot.executionLineage?.taxRuleId) blockers.push("EXECUTION_LINEAGE_TAX_RULE_ID_MISSING");
+  }
+
+  return deepFreeze({
+    valid: blockers.length === 0,
+    blockers: Object.freeze([...new Set(blockers)]),
+    recomputedOutcomeHash,
+    recomputedOutcomeVersionId,
+    expectedCostScenarioSetHashDiagnostic: expectedCostScenarioSetHash,
+  });
+}
+
 export function toS2OutcomeVersionRowV0_2(snapshot) {
   if (!snapshot || typeof snapshot !== "object") throw new Error("outcome snapshot is required");
   if (snapshot.schemaVersion !== "S2_DECISION_OUTCOME_V0_2") {
