@@ -23,7 +23,7 @@ function fakeDb({failBatch=0}={}){
     calls,
     prepare(sql){
       assert.match(sql,/WITH eligible AS/);
-      assert.match(sql,/AND symbol IN \(/);
+      assert.match(sql,/WHERE symbol IN \(/);
       assert.match(sql,/AND market_date >= \?/);
       assert.match(sql,/pit_replay_eligible = 1/);
       assert.match(sql,/available_at <= \?/);
