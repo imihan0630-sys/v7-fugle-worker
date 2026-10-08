@@ -76,6 +76,7 @@ export async function auditFrozenRecent60JulyHotColdV0_1({
   db,objectStore,frozenEvidence,
   coldLoader=loadHistoricalBarsFromSegmentsV0_1,
   onSymbol=()=>{},
+  batchHotManifestRead=false,
 }={}){
   assert.equal(typeof coldLoader,"function");
   const samples=selectFrozenRecent60JulySampleV0_1(frozenEvidence);
@@ -103,13 +104,57 @@ export async function auditFrozenRecent60JulyHotColdV0_1({
 
   const symbols=[],causes={};
   let totalHotRows=0,totalColdRows=0,totalManifests=0;
+  const batchedHot={},batchedManifests={};
+  if(batchHotManifestRead){
+    // Two bounded market-level SELECTs per table replace 12 independent
+    // repeated scans. This reduces D1 READ budget pressure without making
+    // any new bar, source-date or retrospective PIT assertions.
+    for(const market of MARKET_ORDER){
+      const marketSamples=samples.filter(x=>x.market===market);
+      assert.equal(marketSamples.length,6);
+      const symbolIds=marketSamples.map(x=>x.symbol);
+      const dates=marketSamples[0].dates;
+      assert.equal(dates.length,8);
+      assert.ok(marketSamples.every(x=>x.dates.every((d,i)=>d===dates[i])));
+      const hotQuery="SELECT market,symbol,market_date,price_space,pit_replay_eligible,available_at,bar_hash "+
+        "FROM s2_historical_a1_bars WHERE market=? AND symbol IN ("+
+        symbolIds.map(()=>"?").join(",")+") AND market_date IN ("+
+        dates.map(()=>"?").join(",")+") ORDER BY symbol,market_date,bar_hash";
+      const hotResult=await roDb.prepare(hotQuery).bind(market,...symbolIds,...dates).all();
+      const allHot=hotResult?.results||[];
+      assert.ok(Array.isArray(allHot));
+      for(const row of allHot){
+        assert.equal(row.market,market);
+        assert.ok(symbolIds.includes(row.symbol),"batched hot row escaped sampled symbols");
+        assert.ok(dates.includes(row.market_date),"batched hot row escaped sampled dates");
+      }
+      batchedHot[market]=allHot;
+      const manifestsQuery="SELECT market,symbol,year,month,price_space,segment_manifest_id,object_key,object_sha256 "+
+        "FROM s2_historical_a1_segment_manifests WHERE market=? AND symbol IN ("+
+        symbolIds.map(()=>"?").join(",")+") AND year=? AND month=? AND price_space=?";
+      const manifestResult=await roDb.prepare(manifestsQuery).bind(
+        market,...symbolIds,2026,7,"RAW"
+      ).all();
+      const allManifests=manifestResult?.results||[];
+      assert.ok(Array.isArray(allManifests));
+      for(const row of allManifests){
+        assert.equal(row.market,market);
+        assert.ok(symbolIds.includes(row.symbol),"batched cold manifest escaped sampled symbols");
+        assert.equal(Number(row.year),2026);
+        assert.equal(Number(row.month),7);
+        assert.equal(row.price_space,"RAW");
+      }
+      batchedManifests[market]=allManifests;
+    }
+  }
   for(const sample of samples){
     const {market,symbol,dates}=sample;
-    const hot=await roDb.prepare(
-      "SELECT market,symbol,market_date,price_space,pit_replay_eligible,available_at,bar_hash "+
-      "FROM s2_historical_a1_bars WHERE market=? AND symbol=? AND market_date IN ("+
-      dates.map(()=>"?").join(",")+") ORDER BY market_date,bar_hash"
-    ).bind(market,symbol,...dates).all();
+    const hot=batchHotManifestRead ? {results:batchedHot[market].filter(x=>x.symbol===symbol)} :
+      await roDb.prepare(
+        "SELECT market,symbol,market_date,price_space,pit_replay_eligible,available_at,bar_hash "+
+        "FROM s2_historical_a1_bars WHERE market=? AND symbol=? AND market_date IN ("+
+        dates.map(()=>"?").join(",")+") ORDER BY market_date,bar_hash"
+      ).bind(market,symbol,...dates).all();
     const hotRows=hot?.results||[];
     assert.ok(Array.isArray(hotRows));
     for(const row of hotRows){
@@ -118,11 +163,13 @@ export async function auditFrozenRecent60JulyHotColdV0_1({
       assert.ok(dates.includes(row.market_date),"unexpected hot D1 date");
     }
     const rawHot=hotRows.filter(r=>r.price_space==="RAW");
-    const manifests=await roDb.prepare(
-      "SELECT market,symbol,year,month,price_space,segment_manifest_id,object_key,object_sha256 "+
-      "FROM s2_historical_a1_segment_manifests "+
-      "WHERE market=? AND symbol=? AND year=? AND month=? AND price_space=?"
-    ).bind(market,symbol,2026,7,"RAW").all();
+    const manifests=batchHotManifestRead ?
+      {results:batchedManifests[market].filter(x=>x.symbol===symbol)} :
+      await roDb.prepare(
+        "SELECT market,symbol,year,month,price_space,segment_manifest_id,object_key,object_sha256 "+
+        "FROM s2_historical_a1_segment_manifests "+
+        "WHERE market=? AND symbol=? AND year=? AND month=? AND price_space=?"
+      ).bind(market,symbol,2026,7,"RAW").all();
     const found=manifests?.results||[];
     assert.ok(Array.isArray(found)&&found.length<=1,
       "duplicate/unbounded July symbol segment manifests");
@@ -194,6 +241,8 @@ export async function auditFrozenRecent60JulyHotColdV0_1({
     originalFrozenSampleRun:37854849181,
     originalFrozenSampleBlobSha:FROZEN_RECENT60_SAMPLE_BLOB_SHA,
     sampledSymbolCount:12,sampledDateIdentityCount:96,
+    batchedD1ReadPlanUsed:batchHotManifestRead,
+    expectedControlPlaneSelectQueries:batchHotManifestRead ? 6 : 26,
     julyMonthReceipts:receipts,
     causeCounts:causes,symbols:Object.freeze(symbols),
     hotRawRowsCurrentlyObserved:totalHotRows,
