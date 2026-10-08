@@ -25,6 +25,11 @@ const preflight = await readFile(
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /run_daily_shadow_input_preflight_readonly\.mjs/);
 assert.match(workflow, /rowsWritten!==0/);
+assert.match(workflow,/recent60_pit_gap_taxonomy_v0_1/);
+assert.match(workflow,/recent60GapDecompositionState/);
+assert.match(workflow,/recent60MissingExpectedSessionTotal/);
+assert.match(workflow,/gap taxonomy primary cause overcount/);
+assert.match(workflow,/NOT_DISTINGUISHED_BY_THIS_READ_ONLY_RESULT/);
 assert.match(workflow, /assessor policy not READY/);
 assert.match(workflow, /selectionDenominatorComplete!==true.*zeroPickMayBeClaimed!==false/s);
 assert.match(workflow, /System1 production files unchanged PASS/);
