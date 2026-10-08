@@ -1,0 +1,33 @@
+name: System2 AUDIT CORR-011 Independent Persistence Verification
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs"
+      - "system2/runtime/persistence_batch.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - ".github/workflows/system2-audit-corr011-independent-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs"
+      - "system2/runtime/persistence_batch.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - ".github/workflows/system2-audit-corr011-independent-v0-1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-negatives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: AUDIT_LANE independently authored AP-08 and lineage regressions
+        run: node system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs
+      - name: Verify persistence runtime syntax
+        run: |
+          node --check system2/runtime/persistence_executor.mjs
+          node --check system2/runtime/persistence_batch.mjs
