@@ -79,6 +79,16 @@ try {
 
   assert.equal(bundle.bundleVersion, "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3");
   assert.equal(bundle.collectorProvenance.provenanceVersion, "S2_DECISION_CLOCK_COLLECTOR_PROVENANCE_V0_3");
+  assert.equal(bundle.collectorProvenance.collectorContractVersion,
+    "S2_DECISION_CLOCK_COLLECTOR_CONTRACT_V0_4");
+  assert.equal(bundle.collectorProvenance.evidenceEpoch,
+    "S2_CLOCK_A1_STAGE1_EXACT_DATE_ALIGNMENT_EPOCH_V0_4");
+  assert.equal(bundle.collectorProvenance.collectorContractFiles.length,15);
+  assert.ok(bundle.collectorProvenance.collectorContractFiles.some(
+    x=>x.path==="system2/runtime/daily_shadow_a1_source_v0_1.mjs"));
+  assert.ok(bundle.collectorProvenance.collectorContractFiles.some(
+    x=>x.path==="system2/runtime/official_historical_a1_source_v0_1.mjs"));
+
   assert.equal(bundle.collectorProvenance.workflowRunId, "999");
   assert.equal(bundle.collectorProvenance.workflowRunAttempt, 1);
   assert.equal(bundle.collectorProvenance.workflowSha, workflowSha);
