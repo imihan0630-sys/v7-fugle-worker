@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1",
+  "source": {
+    "workflowRunId": 37854849181,
+    "jobId": 113576451531,
+    "artifactId": 11583895434,
+    "artifactDigest": "sha256:36c24b4b8b908afaa27247791fae7d478a584d953cebaf60066137bf08b81242",
+    "artifactFile": "system2-recent60-hot-d1-vs-pit-readonly.json",
+    "observedMain": "d19c65e0e30dd9d75005030b20d6b20edc35e61a",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37854849181",
+    "runStatus": "SUCCESS"
+  },
+  "time": {
+    "marketDate": "2026-10-08",
+    "sourceObservedAt": "2026-10-08T22:39:53.496Z",
+    "observationTimezone": "Asia/Taipei",
+    "semantics": "RETROSPECTIVE_POST_FACTO_DIAGNOSTIC_ONLY_NOT_2026_10_08_PROSPECTIVE_PIT"
+  },
+  "aggregate": {
+    "currentUniverseCount": 1972,
+    "historyReadyCount": 46,
+    "continuityReadyCount": 0,
+    "missingExpectedPITEligibleSymbolCount": 1926,
+    "missingExpectedPITEligibleSymbolSessionTotal": 44256,
+    "unexpectedOlderSessionSymbolCount": 1451,
+    "ambiguousRevisionSymbolCount": 0,
+    "listingAgeLimitedSymbolCount": 13,
+    "minimumPriorSessionRequirement": 60,
+    "selectedCountBuckets": {
+      "0": 0,
+      "1_9": 1,
+      "10_29": 5,
+      "30_59": 1921,
+      "60_PLUS": 45
+    },
+    "firstBlockerPriorityClassCounts": {
+      "EXPECTED_PIT_SESSION_MISSING": 1926,
+      "CONTINUITY_PROOF_MISSING": 46,
+      "OTHER_FIRST_BLOCKERS": 0
+    }
+  },
+  "byMarket": {
+    "TWSE": {
+      "currentUniverseCount": 1086,
+      "historyReadyCount": 22,
+      "continuityReadyCount": 0,
+      "missingExpectedPITEligibleSymbolCount": 1064,
+      "missingExpectedPITEligibleSymbolSessionTotal": 24431,
+      "selectedDateBuckets": {
+        "0": 0,
+        "1_9": 0,
+        "10_29": 1,
+        "30_59": 1062,
+        "60_PLUS": 23
+      }
+    },
+    "TPEX": {
+      "currentUniverseCount": 886,
+      "historyReadyCount": 24,
+      "continuityReadyCount": 0,
+      "missingExpectedPITEligibleSymbolCount": 862,
+      "missingExpectedPITEligibleSymbolSessionTotal": 19825,
+      "selectedDateBuckets": {
+        "0": 0,
+        "1_9": 1,
+        "10_29": 4,
+        "30_59": 859,
+        "60_PLUS": 22
+      }
+    }
+  },
+  "sample": {
+    "selection": "TOP_MISSING_EXACT_PIT_SESSION_SYMBOLS_IN_EACH_MARKET_NOT_RANDOM_STATISTICAL_SAMPLE",
+    "marketSymbolCount": 12,
+    "requestedDateIdentities": 96,
+    "allDateObservations": "HOT_D1_ROW_ABSENT",
+    "dateSample": [
+      "2026-07-14",
+      "2026-07-15",
+      "2026-07-16",
+      "2026-07-17",
+      "2026-07-20",
+      "2026-07-21",
+      "2026-07-22",
+      "2026-07-23"
+    ],
+    "twseSymbols": [
+      "1563",
+      "6949",
+      "2321",
+      "3356",
+      "3591",
+      "6550"
+    ],
+    "tpexSymbols": [
+      "3710",
+      "4747",
+      "6129",
+      "8059",
+      "8277",
+      "6461"
+    ],
+    "pitRowWasPresentButFiltered": 0,
+    "guardrails": [
+      "NO_INFERENCE_ALL_MARKET_HOT_ABSENT",
+      "NO_INFERENCE_SOURCE_OFFICIAL_ABSENT",
+      "NO_INFERENCE_COLD_R2_ABSENT",
+      "SAMPLE_NOT_RANDOM"
+    ],
+    "note": "All eight early-July dates appeared as missing PIT-eligible sessions in each of the twelve priority-selected symbols; exact D1 hot rows for each identity were absent."
+  },
+  "replayImplications": {
+    "selectedOlderDatesRisk": "1451 current symbols had at least one unexpected selected date, consistent with the exact-session reader refusing old-row substitution for missing expected sessions.",
+    "historyCompleteButContinuityUnknown": "46 securities remain blocked from technical continuity promotion pending independent corporate-action/lifecycle completeness receipts.",
+    "coldDataBridge": "Historical 2017-2025 cold annual physical acceptance and 2026 TWSE Jan-Jun R2 physical acceptance do not equate to 2026 Jul-Sep hot D1 availability.",
+    "pit": "No eligibility/firstKnownAt backdating, source receipts immutable."
+  },
+  "metering": {
+    "d1RequestCount": 14,
+    "d1RowsRead": 489866,
+    "d1RowsWritten": 0,
+    "r2WriteCount": 0,
+    "system1RuntimeUsed": false
+  },
+  "nextSafeActions": [
+    "DATA_LANE compare early July 2026 TWSE+TPEx market-year segmented cold receipts/R2 existence to scoped hot D1 exact-date identities before budgeted writes.",
+    "REMEDIATION_LANE owns Cloudflare account-level D1 free-tier write-budget and writer scheduling; do not execute competing all-symbol backfill.",
+    "Preserve expected-session hash and older-date substitution firewall when rehydrating hot 60-session windows.",
+    "Independent completeness proof for 46 history-ready stocks needed for NC-T01; no source-no-event inference from zero rows."
+  ],
+  "policy": {
+    "system1FormalCoreChanged": false,
+    "system2SelectionPromotion": false,
+    "corporateActionNoEventCertified": false,
+    "cleanZeroPickAllowed": false
+  }
+}
