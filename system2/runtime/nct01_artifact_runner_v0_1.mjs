@@ -48,6 +48,7 @@ export async function runNcT01ArtifactOnlyV0_1({
   sharedRawSourceRefs = [],
   historyPrefetchEvidence = null,
   hiddenFallbackAuditEvidence = null,
+  hiddenFallbackAuditEvidenceFactory = null,
   orchestrator = runDailyLimitedShadowOrchestratorV0_1,
 } = {}) {
   const id=requiredText(runId,"runId");
@@ -58,6 +59,12 @@ export async function runNcT01ArtifactOnlyV0_1({
   if(Date.parse(captured)<Date.parse(clock)) throw new Error("capturedAt cannot predate decisionTimestamp");
   if(typeof loadPriorHistoricalBars!=="function") throw new Error("loadPriorHistoricalBars is required");
   if(typeof orchestrator!=="function") throw new Error("orchestrator is required");
+  if(hiddenFallbackAuditEvidenceFactory!==null && typeof hiddenFallbackAuditEvidenceFactory!=="function") {
+    throw new Error("hiddenFallbackAuditEvidenceFactory must be a function");
+  }
+  if(hiddenFallbackAuditEvidence!==null && hiddenFallbackAuditEvidenceFactory!==null) {
+    throw new Error("hiddenFallbackAuditEvidence and hiddenFallbackAuditEvidenceFactory are mutually exclusive");
+  }
   if(!a1SymbolSnapshotBatch||typeof a1SymbolSnapshotBatch!=="object") throw new Error("a1SymbolSnapshotBatch is required");
   if(!sourceSessionReceipt||typeof sourceSessionReceipt!=="object") throw new Error("sourceSessionReceipt is required");
   if(!regime||typeof regime!=="object") throw new Error("regime is required");
@@ -111,8 +118,18 @@ export async function runNcT01ArtifactOnlyV0_1({
     ],
   });
 
+  const resolvedHiddenFallbackAuditEvidence = hiddenFallbackAuditEvidenceFactory
+    ? await hiddenFallbackAuditEvidenceFactory({
+        runId:id,
+        marketDate:date,
+        decisionTimestamp:clock,
+        capturedAt:captured,
+        orchestration,
+      })
+    : hiddenFallbackAuditEvidence;
+
   const hiddenFallbackAuditView=await validateNcT01HiddenFallbackAuditV0_1(
-    hiddenFallbackAuditEvidence,
+    resolvedHiddenFallbackAuditEvidence,
   );
 
   const receipt=await buildNcT01ReceiptFromOrchestrationV0_1({
@@ -120,7 +137,7 @@ export async function runNcT01ArtifactOnlyV0_1({
     orchestration,
     policyFingerprintReceipt,
     sharedRawSourceRefs:rawRefs,
-    hiddenFallbackAuditEvidence,
+    hiddenFallbackAuditEvidence:resolvedHiddenFallbackAuditEvidence,
     generatedAt:captured,
     notes:[
       "NC_T01_ARTIFACT_ONLY_RUNNER_V0_1",
@@ -195,8 +212,8 @@ export async function runNcT01ArtifactOnlyV0_1({
     hiddenFallbackAuditIntegrityValid:hiddenFallbackAuditView.auditIntegrityValid,
     hiddenFallbackReauditRequired:hiddenFallbackAuditView.reauditRequired,
     hiddenFallbackRuntimeForbiddenAccessCount:
-      Number.isInteger(hiddenFallbackAuditEvidence?.runtimeEvidence?.runtimeForbiddenAccessCount)
-        ? hiddenFallbackAuditEvidence.runtimeEvidence.runtimeForbiddenAccessCount
+      Number.isInteger(resolvedHiddenFallbackAuditEvidence?.runtimeEvidence?.runtimeForbiddenAccessCount)
+        ? resolvedHiddenFallbackAuditEvidence.runtimeEvidence.runtimeForbiddenAccessCount
         : null,
     incompleteSymbolCount:incompleteSymbols.length,
     generatedCandidateCount:receipt.generatedCandidates.length,
