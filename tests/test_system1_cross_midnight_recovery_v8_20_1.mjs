@@ -6,7 +6,7 @@ const beforePath="artifacts/Worker-before-v8_20_1.mjs";
 assert.equal(fs.existsSync(beforePath),true,"V8.20.1 pre-patch Worker artifact missing");
 const before=fs.readFileSync(beforePath,"utf8");
 
-assert.match(source,/const VERSION = "8\.20\.(?:1-cross-midnight-recovery-readback|2-idempotent-d1-snapshots)";/);
+assert.match(source,/const VERSION = "(?:8\.20\.(?:1-cross-midnight-recovery-readback|2-idempotent-d1-snapshots)|8\.21\.0-c1-generation-set-finalization)";/);
 assert.match(source,/url\.pathname === "\/api\/market-data\/status"/);
 assert.match(source,/url\.searchParams\.get\("marketDate"\)/);
 assert.match(source,/const requestedDate=url\.searchParams\.get\("marketDate"\)/,
