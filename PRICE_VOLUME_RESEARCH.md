@@ -14072,3 +14072,28 @@ No stage may substitute for the previous stage.
 The next non-redundant bottleneck is no longer admission-lineage architecture. It is whether a promotion-grade numerical target and D16 model method have legitimately been frozen before outcomes.
 
 D02 remains 60.0%, all modules L3, outcomes closed.
+
+
+# PVE-282~288 synthesis — D02 has moved from design ambiguity to evidence waiting (2026-10-08)
+
+The principal change in this stage is not an alpha result. It is removal of preregistration degrees of freedom.
+
+Before PVE-282:
+- most non-Wave-1 target shells still permitted metric/horizon choice;
+- model-method preregistration existed only for Wave-1;
+- the first post-repair System1 operational clock was not formally separated from D02 feature-time cleanliness.
+
+After PVE-288:
+- 13/14 target shells have singular primary metric/horizon semantics; D02-11 is the only deliberate structural block;
+- all 12 predictive Brier lanes require D16-owned frozen pre-outcome model/calibration receipts;
+- cross-room dependencies are explicit machine-checkable requests;
+- numerical target invention is blocked because current legal source count is zero;
+- System1 operational recovery and D02 clean-date credit are formally separate clocks.
+
+This means additional internal specification has sharply diminishing value.
+The next knowledge gain must come from new immutable producer evidence:
+D16 method receipts, D14 cost-quality evidence, PVE-261 physical remediation, current CORR-003 quota closure and genuine scheduled System1 acceptance.
+
+No future external receipt may be replaced by synthetic fixtures, workflow color, retrospective replay or a threshold guessed from current D02 outcomes.
+
+D02 maturity remains 60.0%.
