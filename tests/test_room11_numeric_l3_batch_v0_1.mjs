@@ -41,7 +41,7 @@ test("NB-T02 missing official session breaks local window instead of stale subst
 });
 test("NB-T03 late current evidence excluded",()=>{
  const bs=dates.slice(0,20).map((d,i)=>bar("1101",d,i));
- bs[10]={...bs[10],availableAt:bs[10].marketDate+"T06:30:00.000Z"};
+ bs[10]={...bs[10],availableAt:bs[10].marketDate+"T10:10:00.001Z"};
  const rows=buildRows([["1101",bs]],dates);
  assert.ok(rows.every(r=>r.decisionDate!==dates[10]));
 });
