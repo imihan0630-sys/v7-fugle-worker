@@ -1485,8 +1485,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「題材股與正式產業分類橋接」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "BOUNDED_MANY_TO_MANY_TAIWAN_PIT_BRIDGE / CROSS_INDUSTRY_ABF_WITNESS / MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED",
-          "next": "BR-047 add more current prospective cross-industry theme bridges; BR-048 require effective-dated historical exposure vintages before any historical theme-return study."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / BR046_ABF_MANY_TO_MANY_BRIDGE / BR047_AI_DATA_CENTER_SECOND_THEME_CROSS_INDUSTRY_BRIDGE / QUANTA_COMPUTE_SERVER_EDGE / DELTA_POWER_COOLING_INFRA_EDGE / EXPOSURE_MAGNITUDES_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "BR-048 build effective-dated exposure vintages for at least one bridge using issuer-native product/revenue/capacity changes over time; additions/removals must append rather than persist indefinitely; preserve exposure magnitude UNKNOWN unless directly disclosed."
         },
         {
           "id": "D09-12",
