@@ -1,0 +1,23 @@
+name: D02 PVE278 Wave2 Anti-Bypass Firewall
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve278_wave2_anti_bypass_firewall_v0_1.mjs"
+      - "tests/test_d02_pve278_wave2_anti_bypass_firewall_v0_1.mjs"
+      - ".github/workflows/d02-pve278-wave2-anti-bypass-firewall.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve278_wave2_anti_bypass_firewall_v0_1.mjs
