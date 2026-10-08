@@ -188,7 +188,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T21:01:27+08:00
 - severity: MEDIUM
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -243,6 +243,8 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - updatedAt: 2026-10-06T21:18:28+08:00
 
 ## Closed directives
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
+
 
 ### S2-CORR-20261006-004 — Institutional terminal can surface prior-session resonance as current-day monitor data
 
@@ -1084,7 +1086,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T23:45:41+08:00
 - severity: HIGH
-- status: OPEN
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1118,12 +1120,14 @@ Correction consequence:
 - `nct01_physical_receipt_v0_1.mjs`, `nct01_artifact_runner_v0_1.mjs` and their tests have not changed since merged PR #830 (`d2050fbc3379dfe618447f88f8104b31e494a633`).
 - Missing hidden-fallback evidence still defaults to false; no required `HIDDEN_FALLBACK_AUDIT_SHA256` typed ref exists in the current physical PASS ref set.
 - No BUILD implementation PR for CORR-005 was found in the recent PR range audited.
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
+
 
 ### S2-CORR-20261007-006 — NC-T01 continuity-ready witness can promote physical execution while strategy required evidence is incomplete
 
 - createdAt: 2026-10-07T23:59:18+08:00
 - severity: HIGH
-- status: OPEN
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1199,6 +1203,7 @@ Important boundary:
 the correction CI artifact explicitly sets `physicalAcceptanceEligible=false`.
 Therefore this closure fixes the code firewalls but does **not** credit physical S22-T11..T16.
 A real source-honest continuity receipt plus one coherent artifact-only NC-T01 run are still required.
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
 
 
 ### S2-CORR-20261008-007 — NC-T01 CLEAR_NO_ACTION promotion does not bind TWSE suspension completeness to immutable source evidence
