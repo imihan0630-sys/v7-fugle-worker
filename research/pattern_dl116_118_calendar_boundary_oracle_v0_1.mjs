@@ -206,8 +206,8 @@ export function revisionRootAccounting(receipts=[]){
 export function validateNoRevisionVoteInflation({receipts=[],claimedIndependentVotes}={}){
   const a=revisionRootAccounting(receipts);
   if(!Number.isInteger(claimedIndependentVotes)||claimedIndependentVotes<0)
-    return {status:"CLAIMED_VOTE_COUNT_INVALID",...a};
+    return {...a,status:"CLAIMED_VOTE_COUNT_INVALID"};
   if(claimedIndependentVotes>a.effectiveIndependentRevisionRootCount)
-    return {status:"REVISION_FANOUT_VOTE_INFLATION",...a};
-  return {status:"REVISION_VOTE_ACCOUNTING_VALID",...a};
+    return {...a,status:"REVISION_FANOUT_VOTE_INFLATION"};
+  return {...a,status:"REVISION_VOTE_ACCOUNTING_VALID"};
 }
