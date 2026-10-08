@@ -90,7 +90,7 @@ const invalid={
 await assert.rejects(()=>probePitHistoryCoverageV0_1({
   db:fakeDb(),snapshotBatch:invalid,decisionTimestamp,
   priorTradingDates:dates,listingMetadata,requiredPriorSessions:60,
-}),/ordinary 4-digit symbol identities/);
+}),/safe bound-parameter symbol identities/);
 
 const hugeSymbols=Array.from({length:5001},(_,i)=>String(i+1000));
 await assert.rejects(()=>probePitHistoryCoverageV0_1({
