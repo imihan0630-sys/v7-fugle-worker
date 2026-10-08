@@ -106,12 +106,14 @@ export async function runNcT01PhysicalArtifactReadonlyV0_1({
   runtimeGuardFactory=createNcT01RuntimeGuardV0_1,
   dbFactory=createRemoteD1RestAdapter,
   contextBuilder=buildDailyShadowReadonlyContextV0_1,
+  historyPrefetch=prefetchDailyShadowPitHistoryV0_1,
   artifactRunner=runNcT01ArtifactOnlyV0_1,
 }={}){
   if(typeof auditGenerator!=="function") throw new Error("auditGenerator is required");
   if(typeof runtimeGuardFactory!=="function") throw new Error("runtimeGuardFactory is required");
   if(typeof dbFactory!=="function") throw new Error("dbFactory is required");
   if(typeof contextBuilder!=="function") throw new Error("contextBuilder is required");
+  if(typeof historyPrefetch!=="function") throw new Error("historyPrefetch is required");
   if(typeof artifactRunner!=="function") throw new Error("artifactRunner is required");
   if(typeof now!=="function") throw new Error("now is required");
 
@@ -177,7 +179,7 @@ export async function runNcT01PhysicalArtifactReadonlyV0_1({
     };
   }
 
-  const prefetched=await prefetchDailyShadowPitHistoryV0_1({
+  const prefetched=await historyPrefetch({
     db,
     snapshotBatch:context.a1.snapshotBatch,
     decisionTimestamp:context.decisionTimestamp,
