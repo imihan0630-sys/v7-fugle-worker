@@ -323,6 +323,13 @@ jobs:
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
+      - name: Verify V8.20.1 cross-midnight recovery contract
+        env:
+          V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
+        run: |
+          node tests/test_system1_cross_midnight_recovery_v0_1.mjs
+          node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
+
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
@@ -330,6 +337,8 @@ jobs:
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
+          grep -F 'url.pathname === "/api/market-data/status"' Worker.js
+          grep -F 'historicalReadback:!!requestedDate' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_bars' Worker.js
