@@ -1335,3 +1335,17 @@ No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order,
 - Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2025_PHYSICAL_VERIFICATION_V0_1.json`.
 - 2017–2025 annual legs accepted 17/18; sole remaining annual market-year: 2025 TPEX. Next: 2025/TPEX annual physical backfill, subject to D1 quota / single-writer safeguards; then 2026 segmented and aggregate replay qualification.
 - No System1 Formal/runtime or strategy/ranking/final-selection/capital/order/push authority changed.
+
+
+## 2026-10-08 2025 TPEx physical acceptance — Run #33
+
+- Workflow inputs are physically confirmed as `market=TPEX` / `year=2025` by artifact batch `S2-HIST-PACK-YEAR|TPEX|2025`; run #33 / ID 37730512780 concluded SUCCESS at 2026-10-08 13:55:54 Asia/Taipei; job 113158337294.
+- Annual 243 official sessions, 206790 official rows, 879 packs/symbols; storage receipt S2HCR-2403bb779359941d16a00352f60981c6b182429411eecf1e4f8b40207fc39d5d COMPLETE.
+- R2 HEAD and byte-GET: 879/879 PASS; D1 manifests/checkpoint COMPLETE. This verification observed 6 D1 requests, 14529 rows read, 0 rows written, and size 208076800 bytes.
+- Cold/fresh official row parity 206790/206790; missing/extra rows, source-row hash mismatches, canonical A1 mismatches and source-revision-only rows are all 0.
+- Membership-session denominator 207067; 277 gaps = 7 official suspension classified + 270 `UNKNOWN` retained; no unexpected bars. Data coverage PASS / replay readiness PARTIAL; PIT conservative session finality PASS; continuity remains PARTIAL_UNVERIFIED.
+- TPEx historical universe remains `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`; the official suspension history has positive evidence but absence is not certification. TPEx cmode queried 191 dates, with all 191 retained as `SOURCE_DATE_IDENTITY_UNCERTIFIED`; no UNKNOWN bar was reclassified.
+- Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37730512780/artifacts/11531765477 ; digest `sha256:ca403a31bd6c6e9f577027f0c1d50681c42956bd17a33407643e40372b753a12`.
+- Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2025_PHYSICAL_VERIFICATION_V0_1.json`.
+- 2017–2025 annual raw A1 data-coverage legs are accepted 18/18. Next: the separate 2026 segmented path, then aggregate replay qualification; annual acceptance does not upgrade TPEx replay readiness above PARTIAL.
+- System1 production isolation PASS. No System1 Formal/runtime or strategy/ranking/final-selection/capital/order/push authority changed.
