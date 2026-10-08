@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { validateD18ObservableRegimeVectorV0_1 } from "./d18_observable_regime_vector_v0_1.mjs";
 
 export const D18_REGIME_TRANSITION_VERSION = "D18_REGIME_TRANSITION_V0_1_RESEARCH";
 const VECTOR_VERSION = "D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH";
@@ -25,7 +26,21 @@ function sourceHash(receipt) {
   return receipt?.receiptHash || null;
 }
 
-function transitionForDimension(prior, current) {
+function transitionForDimension(prior, current, {
+  vectorEvidenceValid = true,
+  priorEvidenceValid = true,
+  currentEvidenceValid = true,
+} = {}) {
+  if (!vectorEvidenceValid || !priorEvidenceValid || !currentEvidenceValid) {
+    return deepFreeze({
+      state: "UNKNOWN",
+      priorState: prior?.state || "MISSING",
+      currentState: current?.state || "MISSING",
+      priorValue: prior?.value ?? null,
+      currentValue: current?.value ?? null,
+      reason: "DIMENSION_EVIDENCE_INVALID",
+    });
+  }
   if (!prior || !current) {
     return deepFreeze({
       state: "UNKNOWN",
@@ -86,12 +101,9 @@ export async function buildD18RegimeTransitionReceiptV0_1({
   if (Date.parse(at) < Date.parse(currentClock)) {
     throw new Error("observedAt cannot be earlier than current decision clock");
   }
-  if (priorVector.pointInTimeEligible !== true || currentVector.pointInTimeEligible !== true) {
-    throw new Error("both vectors must be PIT eligible");
-  }
-  if (!sourceHash(priorVector) || !sourceHash(currentVector)) {
-    throw new Error("both vectors require immutable receiptHash");
-  }
+  const priorValidation = await validateD18ObservableRegimeVectorV0_1(priorVector);
+  const currentValidation = await validateD18ObservableRegimeVectorV0_1(currentVector);
+  const vectorEvidenceValid = priorValidation.valid === true && currentValidation.valid === true;
 
   if (!Array.isArray(officialSessionDates) || officialSessionDates.length < 2) {
     throw new Error("officialSessionDates requires at least two sessions");
@@ -115,7 +127,15 @@ export async function buildD18RegimeTransitionReceiptV0_1({
   const transitions=Object.fromEntries(
     dimensionKeys.map((key)=>[
       key,
-      transitionForDimension(priorVector.dimensions?.[key],currentVector.dimensions?.[key]),
+      transitionForDimension(
+        priorVector.dimensions?.[key],
+        currentVector.dimensions?.[key],
+        {
+          vectorEvidenceValid,
+          priorEvidenceValid: priorValidation.dimensions?.[key]?.valid === true,
+          currentEvidenceValid: currentValidation.dimensions?.[key]?.valid === true,
+        },
+      ),
     ]),
   );
 
@@ -133,7 +153,13 @@ export async function buildD18RegimeTransitionReceiptV0_1({
     observedAt:at,
     priorVectorHash:sourceHash(priorVector),
     currentVectorHash:sourceHash(currentVector),
-    state:"KNOWN_TRANSITION_FRAME",
+    priorVectorEvidenceValid:priorValidation.valid === true,
+    currentVectorEvidenceValid:currentValidation.valid === true,
+    regimeEvidenceBlockers:Object.freeze([
+      ...priorValidation.blockers.map((code)=>"PRIOR:"+code),
+      ...currentValidation.blockers.map((code)=>"CURRENT:"+code),
+    ]),
+    state:vectorEvidenceValid?"KNOWN_TRANSITION_FRAME":"UNKNOWN_TRANSITION_FRAME",
     transitions:deepFreeze(transitions),
     summary:deepFreeze({
       dimensionCount:dimensionKeys.length,

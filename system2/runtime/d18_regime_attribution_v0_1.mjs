@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { validateD18ObservableRegimeVectorV0_1 } from "./d18_observable_regime_vector_v0_1.mjs";
 
 export const D18_REGIME_ATTRIBUTION_VERSION = "D18_REGIME_ATTRIBUTION_V0_1_RESEARCH";
 const VECTOR_VERSION = "D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH";
@@ -29,6 +30,10 @@ function vectorSnapshot(regimeVector) {
       value: row.value ?? null,
       reason: row.reason ?? null,
       sourceRef: row.sourceRef ?? null,
+      sourceIdentity: row.sourceIdentity ?? null,
+      availableAt: row.availableAt ?? null,
+      pointInTimeEligible: row.pointInTimeEligible === true,
+      evidenceHash: row.evidenceHash ?? null,
     };
   }
   return deepFreeze(out);
@@ -37,7 +42,11 @@ function vectorSnapshot(regimeVector) {
 function discreteLabels(dimensions) {
   return deepFreeze(Object.fromEntries(
     Object.entries(dimensions)
-      .filter(([, row]) => row.state === "KNOWN" && row.value !== null)
+      .filter(([, row]) =>
+        row.state === "KNOWN"
+        && row.value !== null
+        && row.pointInTimeEligible === true
+      )
       .map(([key, row]) => [key, row.value]),
   ));
 }
@@ -100,10 +109,10 @@ export async function buildD18RegimeAttributionReceiptV0_1({
   if (regimeVector.vectorVersion !== VECTOR_VERSION) {
     throw new Error("unsupported regimeVector version");
   }
-  if (regimeVector.pointInTimeEligible !== true) {
-    throw new Error("regimeVector must be PIT eligible");
-  }
-  const regimeHash = requiredText(regimeVector.receiptHash, "regimeVector.receiptHash");
+  const regimeHash = typeof regimeVector.receiptHash === "string"
+    ? regimeVector.receiptHash
+    : null;
+  const regimeValidation = await validateD18ObservableRegimeVectorV0_1(regimeVector);
   if (regimeVector.marketDate !== marketDate) throw new Error("regime marketDate mismatch");
   if (iso(regimeVector.decisionTimestamp, "regimeVector.decisionTimestamp") !== decisionTimestamp) {
     throw new Error("regime decisionTimestamp mismatch");
@@ -126,9 +135,11 @@ export async function buildD18RegimeAttributionReceiptV0_1({
   }
 
   const dimensions = vectorSnapshot(regimeVector);
-  const labels = discreteLabels(dimensions);
-  const raws = rawContexts(dimensions);
-  const unknowns = unknownDimensions(dimensions);
+  const labels = regimeValidation.valid ? discreteLabels(dimensions) : deepFreeze({});
+  const raws = regimeValidation.valid ? rawContexts(dimensions) : deepFreeze({});
+  const unknowns = regimeValidation.valid
+    ? unknownDimensions(dimensions)
+    : Object.freeze(Object.keys(dimensions).sort());
 
   const key = `D${h}`;
   const matured = (outcomeSnapshot.maturedHorizons || []).includes(h)
@@ -136,7 +147,11 @@ export async function buildD18RegimeAttributionReceiptV0_1({
 
   let state = "MATURED";
   const reasons = [];
-  if (outcomeSnapshot.performanceEligible !== true) {
+  if (regimeValidation.valid !== true) {
+    state = "UNKNOWN";
+    reasons.push("REGIME_VECTOR_EVIDENCE_INVALID");
+    reasons.push(...regimeValidation.blockers.map((code) => "REGIME:" + code));
+  } else if (outcomeSnapshot.performanceEligible !== true) {
     state = "UNKNOWN";
     reasons.push("OUTCOME_NOT_PERFORMANCE_ELIGIBLE");
   } else if (!matured) {
@@ -202,6 +217,8 @@ export async function buildD18RegimeAttributionReceiptV0_1({
     candidateState: requiredText(e.state, "decisionSnapshot.evaluation.state"),
     regimeVectorHash: regimeHash,
     regimeVectorVersion: regimeVector.vectorVersion,
+    regimeEvidenceValid: regimeValidation.valid === true,
+    regimeEvidenceBlockers: Object.freeze([...regimeValidation.blockers]),
     regimeDimensions: dimensions,
     discreteRegimeLabels: labels,
     rawRegimeContexts: raws,
