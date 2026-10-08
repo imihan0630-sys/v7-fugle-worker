@@ -444,12 +444,22 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
       "referencePriceType", "priceSpace", "corporateActionState",
       "corporateActionLineage", "regimeSnapshotHash", "regimeHash",
       "executionHash", "costModelHash", "taxRuleHash", "entryPlan",
-      "costScenarios",
     ];
     for (const key of immutablePaths) {
       if (JSON.stringify(priorPayload[key] ?? null) !== JSON.stringify(nextPayload[key] ?? null)) {
         blockers.push(`IMMUTABLE_OUTCOME_PROVENANCE_REVISION:${key}`);
       }
+    }
+    // Scenario returns mature with horizons. Freeze only cost model identity/rate,
+    // never the horizonReturns sub-object that legitimately gains observations.
+    const costContract = scenarios => Object.fromEntries(
+      Object.entries(scenarios ?? {}).map(([id, item]) => [
+        id, { roundTripCostRate: item?.roundTripCostRate, semantics: item?.semantics },
+      ]),
+    );
+    if (JSON.stringify(costContract(priorPayload.costScenarios))
+        !== JSON.stringify(costContract(nextPayload.costScenarios))) {
+      blockers.push("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costScenarios");
     }
     const priorExecution = priorPayload.simulatedExecution;
     const nextExecution = nextPayload.simulatedExecution;
