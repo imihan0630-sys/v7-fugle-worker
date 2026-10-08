@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "S2_INDEPENDENT_BATCH_AUDIT_V0_1",
+  "auditId": "S2-AUDIT-EXEC-PERF-XSTRAT-REGIME-20261008-V0.1",
+  "createdAt": "2026-10-08T11:30:54+08:00",
+  "timezone": "Asia/Taipei",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "auditedMainCommit": "a6349d9f034b1fa1f7184cfa1ed7eb38633f17d6",
+  "auditedMainCommitTime": "2026-10-08T11:35:07+08:00",
+  "latestMainReconfirmation": {
+    "initialProbeCommit": "d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45",
+    "reconfirmedThroughCommit": "a6349d9f034b1fa1f7184cfa1ed7eb38633f17d6",
+    "interveningRelevantRuntimeTestOrSpecChanges": 0,
+    "result": "FINDINGS_UNCHANGED"
+  },
+  "scope": [
+    "S2-07 daily PIT-safe Shadow orchestration boundary",
+    "S2-08 frozen decision and immutable archive",
+    "S2-09 execution simulator and outcome persistence",
+    "S2-17 performance accounting boundary",
+    "S2-19 PIT replay and bulk backtest",
+    "D18 cross-strategy and Regime research frames"
+  ],
+  "protectedBoundaries": {
+    "system1FormalCoreChanged": false,
+    "system1RuntimeChanged": false,
+    "otherImplementationLaneChanged": false,
+    "strategyThresholdsChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "livePushCapitalOrOrderAuthorityChanged": false
+  },
+  "verification": {
+    "targetedTests": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0
+    },
+    "fullSystem2LocalTests": {
+      "discovered": 219,
+      "passed": 215,
+      "failedForCodeAssertion": 0,
+      "environmentBlocked": 4,
+      "environmentBlocker": "Windows host lacks the Linux zip executable used by four Decision Clock packaging tests",
+      "localhostRetest": {
+        "test": "system2/tests/decision_clock_missing_run_coverage.test.mjs",
+        "result": "PASS outside the restricted localhost sandbox"
+      }
+    },
+    "adversarialProbes": [
+      {
+        "id": "AP-01",
+        "result": "REPRODUCED",
+        "finding": "A KNOWN factor explicitly marked pointInTimeEligible=false with availableAt after the decision clock was accepted into a SELECTED frozen decision."
+      },
+      {
+        "id": "AP-02",
+        "result": "REPRODUCED",
+        "finding": "A SHORT_MOMENTUM prediction bundle became outcomeJoinEligible using only a SWING_GROWTH fingerprint, no source-session receipt, and a non-recomputed decisionHash."
+      },
+      {
+        "id": "AP-03",
+        "result": "REPRODUCED",
+        "finding": "A run fingerprint declared COMPLETE/outcomeJoinEligible with source and accounting receipts from different dates and strategies and with zero decision hashes."
+      },
+      {
+        "id": "AP-04",
+        "result": "REPRODUCED",
+        "finding": "A forged resume checkpoint with invalid checkpointHash, zero samples and every requested date pre-marked completed produced allRequestedDatesComplete=true."
+      },
+      {
+        "id": "AP-05",
+        "result": "REPRODUCED",
+        "finding": "Monotonic outcome validation allowed MFE/MAE deletion, holding-session rewrite and outcome/cost JSON replacement under the same decision_id."
+      },
+      {
+        "id": "AP-06",
+        "result": "REPRODUCED",
+        "finding": "An expired entry window containing only incomplete OHLC was finalized as NO_FILL/DATA_UNKNOWN, and reversed execution market dates were accepted."
+      },
+      {
+        "id": "AP-07",
+        "result": "REPRODUCED",
+        "finding": "A future-dated, explicitly non-PIT globalTransmission input became a KNOWN dimension inside a vector marked pointInTimeEligible=true."
+      },
+      {
+        "id": "AP-08",
+        "result": "REPRODUCED",
+        "finding": "The persistence executor accepted an unverified batchHash and executed caller-supplied UPDATE SQL while reporting an INSERTED immutable operation."
+      }
+    ]
+  },
+  "findings": [
+    {
+      "directiveId": "S2-CORR-20261008-009",
+      "severity": "CRITICAL",
+      "title": "Frozen decisions can promote explicitly non-PIT or future factor evidence",
+      "primaryCode": [
+        "system2/runtime/factor_snapshot.mjs:93",
+        "system2/runtime/decision_archive.mjs:61",
+        "system2/runtime/limited_shadow_run_assembler_v0_1.mjs:108"
+      ],
+      "probe": "AP-01"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-010",
+      "severity": "CRITICAL",
+      "title": "Outcome-join fingerprints do not enforce decision/source/strategy/version isolation",
+      "primaryCode": [
+        "system2/runtime/shadow_run_fingerprint.mjs:41",
+        "system2/runtime/prediction_snapshot_v0_1.mjs:263",
+        "system2/runtime/prediction_snapshot_v0_1.mjs:295"
+      ],
+      "probes": ["AP-02", "AP-03"]
+    },
+    {
+      "directiveId": "S2-CORR-20261008-011",
+      "severity": "HIGH",
+      "title": "Immutable persistence executor trusts unverified batch SQL and digest fields",
+      "primaryCode": [
+        "system2/runtime/persistence_executor.mjs:10",
+        "system2/runtime/persistence_executor.mjs:50",
+        "system2/sql/0001_research_core.sql:372"
+      ],
+      "probe": "AP-08"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "severity": "HIGH",
+      "title": "Outcome monotonic updates can rewrite cost/performance provenance and erase excursions",
+      "primaryCode": [
+        "system2/runtime/outcome_tracker_v0_1.mjs:368",
+        "system2/runtime/outcome_tracker_v0_1.mjs:401",
+        "system2/runtime/outcome_persistence_v0_1.mjs:207"
+      ],
+      "probe": "AP-05"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "severity": "HIGH",
+      "title": "Execution/outcome session validation can misclassify unknown entry windows and accept reversed dates",
+      "primaryCode": [
+        "system2/runtime/execution_simulator_v0_1.mjs:79",
+        "system2/runtime/execution_simulator_v0_1.mjs:660",
+        "system2/runtime/outcome_tracker_v0_1.mjs:37"
+      ],
+      "probe": "AP-06"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-014",
+      "severity": "CRITICAL",
+      "title": "Bulk backtest can accept forged completion checkpoints and unproven PIT universes",
+      "primaryCode": [
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:52",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:169",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:417"
+      ],
+      "probe": "AP-04"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-015",
+      "severity": "CRITICAL",
+      "title": "D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible",
+      "primaryCode": [
+        "system2/runtime/d18_observable_regime_vector_v0_1.mjs:190",
+        "system2/runtime/d18_observable_regime_vector_v0_1.mjs:258",
+        "system2/runtime/d18_observable_regime_vector_v0_1.mjs:294"
+      ],
+      "probe": "AP-07"
+    }
+  ],
+  "disposition": {
+    "newDirectiveCount": 7,
+    "criticalCount": 4,
+    "highCount": 3,
+    "allStatus": "OPEN",
+    "allRoutingClass": "BUILD_LANE",
+    "implementationPerformed": false,
+    "reasonNoImplementation": "Independent audit issued bounded correction directives; the audit role did not seize BUILD_LANE conflict units.",
+    "currentRuntimeExposure": "Research-only primitives; general System2 capture/final selection/live push/capital/orders remain disabled. No observed production trade impact.",
+    "promotionBlock": "Do not treat S2-08/S2-09/S2-17/S2-19 or D18 cross-strategy/Regime performance as promotion-grade until the applicable directives are independently verified closed."
+  }
+}
