@@ -1,0 +1,23 @@
+name: D02 PVE284 D16 Predictive Model Method Guard
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve284_d16_predictive_model_method_guard_v0_2.mjs"
+      - "tests/test_d02_pve284_d16_predictive_model_method_guard_v0_2.mjs"
+      - ".github/workflows/d02-pve284-d16-predictive-model-method.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve284_d16_predictive_model_method_guard_v0_2.mjs
