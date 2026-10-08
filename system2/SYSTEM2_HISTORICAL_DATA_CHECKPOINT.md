@@ -1518,3 +1518,16 @@ Account free D1 **ROW READ** quota still blocked the merged-main hot/cold physic
 Immutable physical source evidence: `system2/evidence/S2_RECENT60_JULY_2026_ALL96_OFFICIAL_SOURCE_POSTFACTO_20261009_V0_1.json`. Earlier 4/4 source evidence and D1 quota blocker remain separately preserved in main; no overwrite.
 
 Protected: System1 Formal Core, A/B Top6, signals, push, 15-minute K, capital, orders, Cloudflare production runtime unchanged.
+
+
+## 2026-10-09 DATA_LANE — 60-session D1 query-cost containment candidate (PIT unchanged)
+
+Cloudflare isolated System2 D1 READ quota refused the last read-only July frozen 96-identity physical audit (Run `37858652385`) before source/storage readback. Query review showed `probePitHistoryCoverageV0_1` first scanned all historically PIT-eligible A1 rows prior to the market date and grouped/ranked them, although the caller already supplies an exact official 180-calendar-day trading-session window for each recent-60 preflight.
+
+DATA_LANE Class A bounded optimization (branch `system2-data/recent60-exact-calendar-bounded-d1-read-20261009`) adds a parameterized SQL lower bound `market_date >= earliest exact official priorTradingDates` **only when** listing metadata READY and the supplied verified prior session list contains at least the required 60 sessions. Missing/too-short calendar or listing metadata leaves the original unbounded query untouched; every row must still pass PIT eligibility, availability-at-decision and exact expected session/revision checks. No continuity, NC-T01 or strategy READY promotion.
+
+Deterministic tests cover bounded SQL binds, no-history missing results, unchanged 60-row history readiness without continuity, missing/short calendar fallback, and missing metadata fallback. Evidence: `system2/evidence/S2_RECENT60_PIT_COVERAGE_SQL_BOUNDED_READ_PLAN_20261009_V0_1.json`.
+
+At PR creation this is **code candidate, not physical D1 read savings PASS**. CI, V8 regression, merge and post-reset bounded independent D1 row-read observations remain gates; no billing upgrade or physical rerun without available account read quota and REMEDIATION_LANE coordination.
+
+System1 Formal Core/runtime, production Cron, A/B, Top6, signals, push, capital, orders untouched.
