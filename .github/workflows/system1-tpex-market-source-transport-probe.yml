@@ -1,0 +1,25 @@
+name: System1 TPEx Market Source Transport Probe
+
+on:
+  pull_request:
+    paths:
+      - 'tests/probe_system1_tpex_market_source_transport.mjs'
+      - '.github/workflows/system1-tpex-market-source-transport-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe canonical TPEx transports read-only
+        env:
+          TPEX_PROBE_DATE: '2026-10-08'
+        run: node tests/probe_system1_tpex_market_source_transport.mjs

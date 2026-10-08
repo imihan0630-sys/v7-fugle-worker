@@ -1,3 +1,4 @@
+import {fetchOfficialMarketPayload} from "./system1_official_market_transport_v0_1.mjs";
 import assert from 'node:assert/strict';
 const origin='https://fugle-test.imihan0630.workers.dev';
 const now=new Date();
@@ -12,9 +13,8 @@ for (const market of ['TWSE','TPEx']) {
   const sourceUrl=market==='TWSE'
     ? `https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=${marketDate.replaceAll('-','')}&type=ALLBUT0999`
     : `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(marketDate.replaceAll('-','/'))}&id=&response=json`;
-  const source=await fetch(sourceUrl,{headers:{accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(40000)});
-  assert.equal(source.ok,true,`${market} official market source HTTP ${source.status}`);
-  const payload=await source.json();
+  const source=await fetchOfficialMarketPayload({market,sourceUrl});
+  const payload=source.payload;
   // Worker再次核對官方日期、普通股數量及來源，拒絕舊資料或HTML。
   const response=await fetch(origin+'/api/market-data',{method:'POST',headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},
     body:JSON.stringify({market,marketDate,sourceUrl,payload}),signal:AbortSignal.timeout(30000)});
@@ -23,5 +23,6 @@ for (const market of ['TWSE','TPEx']) {
   assert.equal(response.ok,true,`${market} cache rejected: ${String(result.error || response.status).slice(0,500)}`);
   assert.equal(result.verified,true);
   assert.equal(result.marketDate,marketDate);
-  console.log(JSON.stringify({officialMarketCached:true,market,marketDate,count:result.count,verified:true}));
+  console.log(JSON.stringify({officialMarketCached:true,market,marketDate,count:result.count,verified:true,
+    sourceHttpStatus:source.httpStatus,sourceAttemptsUsed:source.attemptsUsed,transportPolicy:"BOUNDED_OFFICIAL_RETRY_V0_1"}));
 }
