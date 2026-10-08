@@ -526,6 +526,7 @@ export async function buildDecisionOutcomeSnapshotV0_1({
     mae: excursions.mae,
     excursionEvaluatedThroughSession: excursions.evaluatedThroughSession,
     barrierObservation: barriers,
+    costScenarioDefinitions: deepFreeze(normalizedCosts),
     costScenarios: deepFreeze(costScenarioReturns(returns.stock, normalizedCosts)),
     simulatedExecution: sim,
     sessions: Object.freeze(normalizedSessions),
@@ -604,20 +605,17 @@ export async function verifyDecisionOutcomeSnapshotV0_2(snapshot) {
     blockers.push("OUTCOME_VERSION_ID_MISMATCH");
   }
 
-  const expectedCostScenarioSetHash = await sha256Hex(
-    Object.entries(snapshot.costScenarios || {})
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([scenarioId, row]) => ({
-        scenarioId,
-        roundTripCostRate: row?.roundTripCostRate ?? null,
-        note: row?.note ?? null,
-      })),
-  );
-  // V0.2 stores the hash of normalized input scenarios, while costScenarios stores
-  // derived returns and omits note. Therefore only require a syntactically valid
-  // frozen hash here; replay equality is proven by outcomeHash/version identity.
-  if (!HASH_RE.test(String(snapshot.costScenarioSetHash || ""))) {
+  if (!Array.isArray(snapshot.costScenarioDefinitions)) {
+    blockers.push("COST_SCENARIO_DEFINITIONS_MISSING");
+  }
+  const expectedCostScenarioSetHash = Array.isArray(snapshot.costScenarioDefinitions)
+    ? await sha256Hex(snapshot.costScenarioDefinitions)
+    : null;
+  const claimedCostScenarioSetHash = String(snapshot.costScenarioSetHash || "");
+  if (!HASH_RE.test(claimedCostScenarioSetHash)) {
     blockers.push("COST_SCENARIO_SET_HASH_MISSING_OR_INVALID");
+  } else if (expectedCostScenarioSetHash !== claimedCostScenarioSetHash) {
+    blockers.push("COST_SCENARIO_SET_HASH_MISMATCH");
   }
 
   if (snapshot.executionLineage !== null) {
@@ -637,7 +635,7 @@ export async function verifyDecisionOutcomeSnapshotV0_2(snapshot) {
     blockers: Object.freeze([...new Set(blockers)]),
     recomputedOutcomeHash,
     recomputedOutcomeVersionId,
-    expectedCostScenarioSetHashDiagnostic: expectedCostScenarioSetHash,
+    recomputedCostScenarioSetHash: expectedCostScenarioSetHash,
   });
 }
 
