@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_HISTORICAL_2026_TWSE_SEGMENT_FAILURE_DIAGNOSTIC_V0_1",
+  "authority": "GITHUB_ACTIONS_RUN_AND_JOB_LOGS",
+  "observedRun": {
+    "runId": 37740634959,
+    "runNumber": 1,
+    "workflow": "System2 Historical Current-Year Segmented Backfill",
+    "workflowUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37740634959",
+    "market": "TWSE",
+    "headSha": "f2f60fe1c3c8719d115593045af13295b6d6d51b",
+    "status": "completed",
+    "conclusion": "failure",
+    "completedAt": "2026-10-08T09:52:57Z",
+    "attempt": 1
+  },
+  "jobEvidence": {
+    "migration": {
+      "jobId": 113190297114,
+      "conclusion": "success"
+    },
+    "backfill": {
+      "jobId": 113190405245,
+      "conclusion": "failure",
+      "failedStep": "Backfill current-year completed-month cold segments",
+      "error": "official historical daily table not found for TWSE",
+      "stackLocations": [
+        "system2/runtime/official_historical_a1_source_v0_1.mjs:283",
+        "system2/runtime/official_historical_backfill_source_v0_1.mjs:126",
+        "system2/scripts/historical_current_year_segment_backfill_v0_1.mjs:90"
+      ],
+      "sourceErrorDateRecorded": false,
+      "sourceStatusOrTableShapeRecorded": false
+    },
+    "artifact": {
+      "name": "system2-current-year-segments-TWSE",
+      "uploaded": false,
+      "reason": "No files were found at expected path; script aborted before writing output"
+    },
+    "system1ProductionIsolation": "PASS"
+  },
+  "findings": {
+    "classification": "OFFICIAL_SOURCE_DAILY_TABLE_UNRECOGNIZED",
+    "exactFailingDate": "UNKNOWN_NOT_LOGGED",
+    "exactFailingMonth": "UNKNOWN_NOT_LOGGED",
+    "causeUnproven": "Could be valid nontrading date in broad holiday calendar, source response schema/status change, or provider transient; no claim without source envelope evidence",
+    "physicalIngestion": "PARTIAL_UNKNOWN_REQUIRES_D1_READONLY_RECEIPT_INVENTORY",
+    "previousMonthReceipts": "NOT_VERIFIED_BY_THIS_RUN_ARTIFACT",
+    "replayReadiness": "BLOCKED_UNVERIFIED",
+    "retryRecommendation": "DO_NOT_BLIND_RERUN"
+  },
+  "repairScope": {
+    "path": "system2/scripts/historical_current_year_segment_backfill_v0_1.mjs",
+    "changes": [
+      "Use TWSE official FMTQIK exact month trading dates instead of holiday-only weekday inference",
+      "Per-day identity/status and per-month progress records in runner logs",
+      "Safe official response envelope on source failure including failed month/date",
+      "Write fail-closed diagnostic JSON artifact on any catch without false success",
+      "Pace official-source requests and resume already receipted months"
+    ],
+    "historicalA1ParserRelaxed": false,
+    "marketCalendarFabricated": false,
+    "system1FormalCoreChanged": false,
+    "capitalOrderPushChanged": false
+  },
+  "acceptanceGates": [
+    "New PR tests and V8 regression success",
+    "Live run must complete monthly official source and physical D1/R2 receipt verification",
+    "If failure recurs, inspect source date/status schema from run artifact; do not skip or fill"
+  ],
+  "nextStep": "Run read-only D1 segment inventory if available; following CI and merge, controlled TWSE 2026 segment rerun only with no active writer."
+}
