@@ -1853,3 +1853,34 @@ D09-06 remains L3/60.
 Exact next: append the next independent official 34-index receipt under the same taxonomy/rank contract, then compute comparable deltaPercentileRank/rotationVelocity; member breadth/concentration remains required before leadership interpretation.
 
 Formal Core unchanged.
+
+
+## 2026-10-08 — D16 validation dependency requests normalized
+
+New cross-room requests:
+- `research/BR070_D09_07_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+- `research/BR071_D09_12_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+- `research/BR069_D09_14_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+These formalize the existing outcome-blind handoffs without opening outcomes.
+
+D09-07:
+- independent unit = official industry snapshot date;
+- cross-sectional and serial dependence must be modeled;
+- overlapping industry hierarchy retained;
+- no L4 until a D16 lifecycle method receipt exists.
+
+D09-12:
+- independent unit = same-clock market-date receipt;
+- interaction remains vector-valued;
+- redundancy against standalone breadth/regime must be tested;
+- no L4 until a D16 interaction method receipt exists.
+
+D09-14:
+- independent unit = issuer strategic-action vintage;
+- issuer clustering and action-family heterogeneity retained;
+- long-horizon right-censoring frozen;
+- no L4 until a D16 cohort method receipt exists.
+
+All three remain L3/60.
+Formal Core unchanged.
