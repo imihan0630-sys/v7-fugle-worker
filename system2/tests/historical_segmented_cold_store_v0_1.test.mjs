@@ -113,6 +113,7 @@ const args={
   capturedAt,market:"TWSE",year:2026,month:9,
   segmentFromDate:"2026-09-01",segmentToDate:"2026-09-30",chunkSize:1,
 };
+const beforeReceiptCommit=Date.now();
 const first=await executeHistoricalSegmentPackSetV0_1(args);
 assert.equal(first.state,"COMPLETE");
 assert.equal(first.insertedObjectCount,2);
@@ -121,6 +122,9 @@ assert.equal(first.verification.state,"VERIFIED");
 assert.equal(first.verification.headObjectCountVerified,2);
 assert.equal(first.verification.byteGetObjectCountVerified,2);
 assert.equal(db.receipts.length,1);
+assert.ok(Date.parse(db.receipts[0].completed_at)>=beforeReceiptCommit,
+  "receipt completion time cannot predate the actual persistence call");
+assert.ok(Date.parse(db.receipts[0].completed_at)<=Date.now());
 
 const second=await executeHistoricalSegmentPackSetV0_1(args);
 assert.equal(second.state,"ALREADY_COMPLETE");
