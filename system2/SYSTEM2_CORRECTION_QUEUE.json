@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T13:34:07+08:00",
+  "updatedAt": "2026-10-08T15:10:25+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1736,7 +1736,7 @@
       "directiveId": "S2-CORR-20261008-010",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "CRITICAL",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Outcome-join fingerprints do not enforce decision/source/strategy/version isolation",
       "affectedScope": [
         "S2-08 prediction snapshots and run fingerprints",
@@ -1785,12 +1785,17 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [
-        "Independent batch audit AP-02/AP-03 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      "implementationEvidence": [
+        "PR #864 merged as d0a0554960883aad3d5f85989148ef044f9e135c.",
+        "system2/evidence/S2_CORR_010_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json"
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "verificationEvidence": [
+        "Independent batch audit AP-02/AP-03 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "Exact-head PASS: CORR-010 37741546228; CORR-009 regression 37741546094; System2 Research CI 37741546128; V8 Regression 37741546086.",
+        "Merged-main PASS on d0a05549: CORR-010 37741728923; CORR-009 regression 37741728744; System2 Research CI 37741728771; V8 Regression 37741728752."
+      ],
+      "finalDisposition": "FIX_IMPLEMENTED — closed-set outcome-join lineage is merged and exact-head/merged-main validated. AP-02/AP-03 are fail-closed; foreign strategy/version/date/spec/universe evidence, missing source/accounting receipts, tampered digests and non-closed decision-hash coverage cannot authorize outcome joins. CRITICAL correction remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+      "updatedAt": "2026-10-08T15:10:25+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-011",

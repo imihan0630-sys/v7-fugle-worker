@@ -1294,7 +1294,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1305,7 +1305,12 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   2. recompute every digest and require exact strategy/version/date/spec/universe equality;
   3. reject foreign, missing, duplicate, extra or empty decision-hash coverage except a separately proved zero-pick run.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-02/AP-03.
-- finalDisposition: PENDING
+- implementation:
+  - PR #864 merged as `d0a0554960883aad3d5f85989148ef044f9e135c`;
+  - exact-head PASS: CORR-010 `37741546228`, CORR-009 regression `37741546094`, System2 Research CI `37741546128`, V8 Regression `37741546086`;
+  - merged-main PASS: CORR-010 `37741728923`, CORR-009 regression `37741728744`, System2 Research CI `37741728771`, V8 Regression `37741728752`;
+  - durable BUILD handoff: `system2/evidence/S2_CORR_010_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+- finalDisposition: FIX_IMPLEMENTED — AP-02/AP-03 closed-set outcome-join lineage is fail-closed; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
 
 
 ### S2-CORR-20261008-011 — Immutable persistence executor trusts unverified batch SQL and digest fields
