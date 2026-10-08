@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T06:25:00+08:00",
+  "updatedAt": "2026-10-08T10:59:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1594,6 +1594,72 @@
       ],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-08T06:25:00+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-008",
+      "createdAt": "2026-10-08T10:59:00+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc",
+      "affectedScope": [
+        "System2 physical NC-T01 S22-T12/S22-T16",
+        "PR #844 same-cut physical read-only wrapper",
+        "runtime forbidden-access evidence",
+        "pre-transport D1 read-only enforcement",
+        "physical receipt evidence chain"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "A physical NC-T01 read-only run must prevent mutating D1 SQL before transport and must derive runtime no-forbidden-access evidence from an active guard ledger on the same exact execution cut. Literal zero counters or post-hoc rowsWritten checks are insufficient.",
+      "observedProblem": "PR #844 current head 9d690d120d017c8fab5424c02e0dfb8a90008a49 uses generic remote_d1_rest_adapter with arbitrary SQL capability, checks rowsWritten only after execution, and sameCutRuntimeEvidence returns instrumented=true/runtimeForbiddenAccessCount=0 as literals. Therefore read-only and no-forbidden-access are asserted rather than fully enforced/measured at runtime.",
+      "evidence": [
+        "system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json",
+        "PR #844 current head 9d690d120d017c8fab5424c02e0dfb8a90008a49",
+        "run_nct01_physical_artifact_readonly_v0_1.mjs::sameCutRuntimeEvidence returns a literal runtimeForbiddenAccessCount=0",
+        "physical wrapper uses system2/deploy/remote_d1_rest_adapter.mjs and only verifies rowsWritten after execution"
+      ],
+      "riskIfUnfixed": "A future reachable module could issue mutating SQL before the post-run check fails, or access a forbidden runtime origin while the receipt still records a declarative zero. This could create a false S22-T12/S22-T16 physical independence/read-only PASS.",
+      "requiredCorrection": [
+        "Add a runner-local D1 read-only guard that rejects mutating SQL before any Cloudflare transport; preserve generic adapter behavior outside this wrapper.",
+        "Use repository-proven SELECT/WITH/PRAGMA allow semantics and deny INSERT/UPDATE/DELETE/REPLACE/CREATE/DROP/ALTER/VACUUM/ATTACH/DETACH before transport.",
+        "Wrap the physical runner fetchImpl with a frozen allowed-origin contract derived from canonical source adapters; reject unexpected origins before network access.",
+        "Record a same-cut runtime guard ledger including database identity, allowedReadQueryCount, rejectedMutationAttemptCount, rowsRead, rowsWritten, observed origins, allowedNetworkRequestCount, forbiddenOriginAttemptCount and capability-denial state.",
+        "Derive runtimeForbiddenAccessCount from measured ledger counters, not a literal.",
+        "Set instrumented=true only when the guard ledger is active and complete.",
+        "Bind runtime ledger identity/counters into typedEvidence -> runtimeEvidenceDigest -> auditDigest -> HIDDEN_FALLBACK_AUDIT_SHA256 -> final receiptHash.",
+        "Keep rowsWritten=0 as second-line readback, not the primary prevention control.",
+        "Add regressions for blocked mutating SQL before transport, blocked unexpected origin before fetch, allowed official/System2 reads, missing/incomplete guard => EVIDENCE_INCOMPLETE, and ledger mutation => final hash mutation."
+      ],
+      "acceptanceCriteria": [
+        "A mutating SQL attempt is rejected before remote request count increases.",
+        "An unexpected network origin is rejected before fetch and increments a measured forbidden-origin counter.",
+        "Allowed official-source/System2-D1 reads succeed and are counted.",
+        "runtimeForbiddenAccessCount is derived from the active guard ledger.",
+        "Guard absent/incomplete or ledger identity mismatch => EVIDENCE_INCOMPLETE.",
+        "runtimeEvidenceDigest, hidden-fallback auditDigest and final NC-T01 receiptHash change when the guard ledger changes.",
+        "Merged-main physical wrapper still writes zero D1 rows and retains all System1/final-selection/push/capital/order boundaries.",
+        "No S22-T12/S22-T16 physical credit until CORR-007 source provenance and this runtime guard are both present on one coherent physical run."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "System2 strategy contracts/thresholds/ranking/capacity",
+        "No D1 mutation",
+        "No synthetic continuity evidence",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [
+        "S2-CORR-20261008-007"
+      ],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "00 blocking audit: system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json"
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T10:59:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
