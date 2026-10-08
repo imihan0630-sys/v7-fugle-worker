@@ -17,6 +17,13 @@ assert.doesNotMatch(workflow,/^\s+push:/m,"current-year segment backfill must ne
 assert.doesNotMatch(workflow,/matrix:\s*[\s\S]*market:/,"current-year segment backfill must run one market at a time");
 
 assert.match(script,/throughMonth=currentMonth-1/);
+assert.match(script,/fetchHistoricalTwseMonthlyTradingDatesV0_1/,"current-year sessions must be proved by exact official FMTQIK month");
+assert.match(script,/calendarsByYear/,"exact monthly sessions must reach A1 reader");
+assert.match(script,/onDateReceipt:/,"daily accepted source receipts must be logged");
+assert.match(script,/BLOCKED_FAIL_CLOSED_SEGMENT_BACKFILL/,"failed run must preserve prior completed months and explicit error");
+assert.match(script,/lastRequestedOfficialDate/,"failed run must preserve failed daily source identity");
+assert.match(script,/S2_SEGMENT_MONTH_COMPLETE/,"each completed month must be logged");
+assert.match(script,/pauseMs:750/,"paced source access must avoid 25ms request bursts");
 assert.match(script,/PASS_CURRENT_YEAR_COMPLETED_MONTH_SEGMENTS/);
 assert.match(script,/onlyCompletedCalendarMonths:true/);
 assert.match(script,/currentIncompleteMonthWritten:false/);
