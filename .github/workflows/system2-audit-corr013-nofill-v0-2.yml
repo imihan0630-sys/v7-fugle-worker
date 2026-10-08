@@ -1,0 +1,29 @@
+name: System2 AUDIT CORR-013 Calendar NoFill Matrix V0.2
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr013-nofill-v0-2.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr013-nofill-v0-2.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independent CORR-013 observed unsafe calendar and no-fill semantics
+        run: node system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs
+      - name: Simulator syntax
+        run: node --check system2/runtime/execution_simulator_v0_1.mjs
