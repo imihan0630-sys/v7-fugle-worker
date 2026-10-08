@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "S2_RECENT60_JULY_20261009_D1_READ_QUOTA_BLOCKED_V0_1",
+  "authority": "GITHUB_ACTIONS_PHYSICAL_MAIN_RUN",
+  "run": {
+    "id": 37858652385,
+    "number": 1,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37858652385",
+    "headSha": "2a772080d329f9259d864e97d1eb0a1b94d8d065",
+    "jobId": 113588851058,
+    "conclusion": "failure",
+    "physicalStep": "Read 96 frozen date identities against isolated hot D1, cold R2 and official exact-date GET",
+    "physicalStepConclusion": "failure",
+    "unitGuardConclusion": "success",
+    "system1IsolationConclusion": "success",
+    "artifactId": 11584838697,
+    "artifactDigest": "sha256:99c52c6b57e478306d66220ef3502729f8fa75ade16bf50b4f13d0f9d442fb2a"
+  },
+  "observed": {
+    "blockedStage": "AUDIT_HOT_D1_VS_COLD_R2_JULY",
+    "dbEngine": "Cloudflare D1 system2-research",
+    "errorClass": "D1_FREE_TIER_DAILY_ROW_READ_LIMIT_EXCEEDED",
+    "cloudflareHTTPStatus": 400,
+    "errorExcerpt": "Your account has exceeded D1's free tier daily row read limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue.",
+    "sampledIdentitiesProcessed": 0,
+    "d1RowsWritten": 0,
+    "officialSourceProbesExecuted": false,
+    "coldR2PackVerificationsExecuted": false,
+    "dbResult": "UNVERIFIED_QUOTA_STOP",
+    "sourceResult": "NOT_ATTEMPTED",
+    "readQuotaWindow": "midnight UTC / 08:00 Asia/Taipei on 2026-10-09",
+    "billing": "NO_PAID_UPGRADE_AUTHORIZED"
+  },
+  "interpretation": [
+    "Neither hot D1 nor cold R2 nor official historical source availability can be inferred from an account-level read quota refusal",
+    "96 observed historical missing market-symbol-date identities remain original immutable Action 37854849181 evidence",
+    "No retrofit of firstKnownAt, calendar sessions, suspension or corporate-action NO_EVENT",
+    "Do not retry D1-based workflow until read budget is available and other lanes' quota use is checked"
+  ],
+  "response": {
+    "newWorkflow": "system2-recent60-july-official-source-only.yml",
+    "scope": "4 independent post-facto source GET observations (2 dates per market) from the same frozen sample; zero Cloudflare API/secrets use",
+    "sourceDataClock": "CURRENT_POST_FACTO_OBSERVATION_NOT_HISTORICAL_FIRST_KNOWN",
+    "r2StorageReady": "UNVERIFIED",
+    "pitReady": "UNVERIFIED",
+    "system1FormalCoreModified": false
+  },
+  "remainingGates": [
+    "After Cloudflare read budget reset and account quota coordination, retry original PR #919 physical read-only Run once",
+    "Only sample true July cold receipts/manifests and byte-verified objects when available",
+    "Proceed 46 history-ready symbol corporate-action/lifecycle completeness through independent NC-T01 evidence"
+  ]
+}
