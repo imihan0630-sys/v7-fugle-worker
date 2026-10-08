@@ -6533,3 +6533,94 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~125 before physical R7 emission.
 5. D16 receives security-identity relation, migration boundary, successor dependency and symbol-reuse metadata together with the full denominator.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-126~128 (2026-10-08)
+
+### DL-126 — newly listed / relisted warmup and insufficient history
+- Short history by design is now explicitly separated from data loss.
+- Frozen warmup states:
+  FIRST_ELIGIBLE_SESSION;
+  WARMUP_IN_PROGRESS;
+  HISTORY_TOO_SHORT_BY_DESIGN;
+  MODULE_MINIMUM_HISTORY_READY;
+  FULL_PREREGISTERED_WINDOW_READY;
+  DATA_MISSING_BLOCKED;
+  IDENTITY_BLOCKED.
+- Initial-listing/reference price is not a prior same-security close.
+- A genuinely new security cannot borrow predecessor bars/anchors.
+- D01-02 may describe the first completed bar after observability.
+- D01-03 must wait for N same-security eligible bars.
+- D01-07 must satisfy preregistered base-width/lifecycle history.
+- D01-09 ordinary same-security gap is not evaluable on a new-security listing day.
+- Proven same-security transfer listing may reuse prior-market history only after DL-123 continuity PASS.
+- HISTORY_TOO_SHORT_BY_DESIGN remains denominator-accounted and is not recoded as NO_STRUCTURE or DATA_MISSING.
+
+### DL-127 — relisting / long-absence stale-anchor firewall
+- Security identity continuity and structural-anchor freshness are separate.
+- A same-security instrument returning after long absence begins with stale-anchor status unless a preregistered reconfirmation rule passes.
+- Frozen states:
+  SAME_SECURITY_SHORT_INTERRUPTION;
+  SAME_SECURITY_LONG_ABSENCE_STALE_ANCHOR;
+  SAME_SECURITY_REENTRY_RECONFIRMED;
+  SAME_SECURITY_REENTRY_BREACHED;
+  SUCCESSOR_SECURITY_NEW_IDENTITY;
+  IDENTITY_UNKNOWN_BLOCKED;
+  DATA_BLOCKED.
+- First reentry print is price discovery and cannot backdate confirmation.
+- Reconfirmation receives a new observable clock and cannot mutate the old receipt.
+- No arbitrary post-outcome calendar half-life is allowed.
+
+### DL-128 — listing-age common support / denominator
+- Every first-wave opportunity now carries:
+  securityIdentity;
+  listingStart;
+  listingAgeEligibleSessions;
+  warmupState;
+  identityTransitionClass;
+  same-security history availability;
+  module minimum-history requirement/readiness.
+- Parent and named child must share listing-age/warmup support.
+- Mature-history parent cannot be compared against a child after silently dropping short-history names.
+- Frozen denominator states:
+  HISTORY_TOO_SHORT_BY_DESIGN;
+  MODULE_HISTORY_READY_NO_STRUCTURE;
+  MODULE_HISTORY_READY_STRUCTURE_EMITTED;
+  DATA_MISSING_BLOCKED;
+  IDENTITY_BLOCKED.
+- D16 receives listing-age metadata for stratification/common support only; listing age is not Alpha.
+- NEW_SECURITY_INITIAL_LISTING, SAME_SECURITY_TRANSFER_LISTING and SUCCESSOR_SECURITY_INITIAL_LISTING remain distinct transition classes.
+
+### Test evidence
+- DL-122~125:
+  34/34 PASS.
+- DL-126~128:
+  23/23 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-128:
+  570/570 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SECURITY_IDENTITY_TRANSITION_FIREWALL = FROZEN.
+- CROSS_MARKET_PATTERN_CONTINUITY = FROZEN.
+- SUCCESSOR_PATTERN_BREAK = FROZEN.
+- SYMBOL_REUSE_TRANSITION_DEDUP = FROZEN.
+- LISTING_WARMUP = FROZEN.
+- RELISTING_STALE_ANCHOR = FROZEN.
+- LISTING_AGE_COMMON_SUPPORT = FROZEN.
+- SHORT_HISTORY_SILENT_DROP = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-128
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze first-day/early-life price-discovery semantics and transfer-listing placebo controls so listing mechanics cannot masquerade as pattern Alpha.
+4. If R1-R6 appear, validate DL-095 plus DL-108~128 before physical R7 emission.
+5. D16 receives listing-age/warmup/identity-transition metadata and keeps short-history rows in the denominator.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
