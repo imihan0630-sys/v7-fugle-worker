@@ -139,7 +139,7 @@ for(let month=1;month<=throughMonth;month+=1){
             title:String(table?.title??"").slice(0,100),
             fields:Array.isArray(table?.fields)?table.fields.map(String).slice(0,25):[],
           })),
-          fieldKeys:Object.keys(payload||{}).filter(k=>/^fields\\d*$/.test(k)).slice(0,10),
+          fieldKeys:Object.keys(payload||{}).filter(k=>/^fields\d*$/.test(k)).slice(0,10),
         };
         return payload;
       },
@@ -199,7 +199,7 @@ for(let month=1;month<=throughMonth;month+=1){
     schemaVersion:"S2_HISTORICAL_CURRENT_YEAR_SEGMENT_FAIL_CLOSED_RECEIPT_V0_1",
   };
   console.error("S2_SEGMENT_FAIL_CLOSED "+JSON.stringify(failure));
-  if(outputPath) await writeFile(outputPath,JSON.stringify(failure,null,2)+"\\n","utf8");
+  if(outputPath) await writeFile(outputPath,JSON.stringify(failure,null,2)+"\n","utf8");
   throw error;
 }
 
