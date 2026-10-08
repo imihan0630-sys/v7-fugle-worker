@@ -213,11 +213,26 @@ async function certifiedReceipt(replayWindow, receiptId) {
   });
 }
 
-const allKnown = Object.fromEntries(
-  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => [
-    x.family,
-    { observationState: "KNOWN", thesisState: "SUPPORTIVE", reasons: ["fixture-known"], warnings: [] },
-  ]),
+const stage1Families = Object.fromEntries(
+  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => {
+    const required = ["TECHNICAL_STRUCTURE", "PRICE_VOLUME", "RISK_FRICTION"].includes(x.family);
+    return [
+      x.family,
+      required
+        ? {
+            observationState: "KNOWN",
+            thesisState: x.family === "RISK_FRICTION" ? "NEUTRAL" : "SUPPORTIVE",
+            reasons: ["fixture-known-from-a1-factor-lineage"],
+            warnings: [],
+          }
+        : {
+            observationState: "UNKNOWN",
+            thesisState: "INDETERMINATE",
+            reasons: ["fixture-nonblocking-family-not-wired"],
+            warnings: [],
+          },
+    ];
+  }),
 );
 
 async function run(receiptId) {
@@ -248,7 +263,7 @@ async function run(receiptId) {
       assert.equal(continuityBinding.continuityState, "CLEAR_NO_ACTION");
       assert.equal(factorBundle.continuityEligible, true);
       return {
-        familyAssessments: allKnown,
+        familyAssessments: stage1Families,
         entryReadiness: "BUY_ELIGIBLE",
         reasons: ["fixture qualified"],
       };
@@ -320,7 +335,7 @@ await assert.rejects(
     loadPriorHistoricalBars: async ({ symbol }) => history[symbol],
     resolveContinuityState: async () => "CLEAR_NO_ACTION",
     resolveContinuityEvidence: async () => null,
-    assessSymbol: async () => ({ familyAssessments: allKnown, entryReadiness: "WATCH" }),
+    assessSymbol: async () => ({ familyAssessments: stage1Families, entryReadiness: "WATCH" }),
   }),
   /mutually exclusive/,
 );

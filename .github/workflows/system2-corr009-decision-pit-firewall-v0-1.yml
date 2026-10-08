@@ -1,0 +1,67 @@
+name: System2 CORR-009 Decision PIT Firewall V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/decision_archive.mjs"
+      - "system2/runtime/limited_shadow_v0_1.mjs"
+      - "system2/runtime/prediction_snapshot_v0_1.mjs"
+      - "system2/tests/research_core.test.mjs"
+      - "system2/tests/prediction_snapshot_v0_1.test.mjs"
+      - "system2/tests/limited_shadow_run_assembler_v0_1.test.mjs"
+      - "system2/tests/corr009_decision_pit_firewall_v0_1.test.mjs"
+      - ".github/workflows/system2-corr009-decision-pit-firewall-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/decision_archive.mjs"
+      - "system2/runtime/limited_shadow_v0_1.mjs"
+      - "system2/runtime/prediction_snapshot_v0_1.mjs"
+      - "system2/tests/corr009_decision_pit_firewall_v0_1.test.mjs"
+      - ".github/workflows/system2-corr009-decision-pit-firewall-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-009 adversarial PIT firewall
+        run: node system2/tests/corr009_decision_pit_firewall_v0_1.test.mjs
+
+      - name: Research core regression
+        run: node system2/tests/research_core.test.mjs
+
+      - name: Prediction snapshot regression
+        run: node system2/tests/prediction_snapshot_v0_1.test.mjs
+
+      - name: Limited Shadow assembler regression
+        run: node system2/tests/limited_shadow_run_assembler_v0_1.test.mjs
+
+      - name: Static correction assertions
+        run: |
+          set -euo pipefail
+          grep -q 'DECISION_EVIDENCE_FIREWALL_VERSION_V0_1' system2/runtime/decision_archive.mjs
+          grep -q 'FACTOR_PIT_INELIGIBLE' system2/runtime/decision_archive.mjs
+          grep -q 'FACTOR_AVAILABLE_AFTER_DECISION' system2/runtime/decision_archive.mjs
+          grep -q 'FACTOR_SOURCE_HASH_MISSING' system2/runtime/decision_archive.mjs
+          grep -q 'DECISION_EVIDENCE_NOT_READY' system2/runtime/prediction_snapshot_v0_1.mjs
+          echo "CORR-009 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"

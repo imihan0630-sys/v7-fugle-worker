@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { buildMarketRegimeSnapshot } from "../runtime/factor_snapshot.mjs";
+import { buildFactorObservation, buildMarketRegimeSnapshot } from "../runtime/factor_snapshot.mjs";
 import { buildStrategyStateAssessment } from "../runtime/strategy_evaluator.mjs";
 import {
   SHORT_MOMENTUM_CONTRACT_V0_1,
@@ -31,16 +31,60 @@ const regime = buildMarketRegimeSnapshot({
 });
 
 const familyAssessments = Object.fromEntries(
-  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => [
-    x.family,
-    {
-      observationState: "KNOWN",
-      thesisState: x.role === "PRIMARY" ? "SUPPORTIVE" : "NEUTRAL",
-      reasons: ["fixture"],
-      warnings: [],
-    },
-  ]),
+  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => {
+    const required = ["TECHNICAL_STRUCTURE", "PRICE_VOLUME", "RISK_FRICTION"].includes(x.family);
+    return [
+      x.family,
+      required
+        ? {
+            observationState: "KNOWN",
+            thesisState: x.family === "RISK_FRICTION" ? "NEUTRAL" : "SUPPORTIVE",
+            reasons: ["fixture-known-with-factor-lineage"],
+            warnings: [],
+          }
+        : {
+            observationState: "UNKNOWN",
+            thesisState: "INDETERMINATE",
+            reasons: ["fixture-nonblocking-family-not-wired"],
+            warnings: [],
+          },
+    ];
+  }),
 );
+
+function factor(factorId) {
+  return buildFactorObservation({
+    factorId,
+    factorVersion: "0.1",
+    scope: "SYMBOL",
+    scopeKey: "2330",
+    marketDate: "2026-09-27",
+    decisionTimestamp: "2026-09-27T07:30:00Z",
+    state: "KNOWN",
+    rawValue: 1,
+    normalizedValue: 0.5,
+    confidence: 1,
+    provenance: {
+      sourceId: "LIMITED_SHADOW_FIXTURE",
+      sourceName: "fixture",
+      availableAt: "2026-09-27T07:20:00Z",
+      capturedAt: "2026-09-27T07:21:00Z",
+      pointInTimeEligible: true,
+      payloadHash: factorId.replaceAll(".", "-") + "-payload",
+    },
+    normalization: {
+      method: "NONE",
+      normalizationVersion: "0.1",
+    },
+    qualityFlags: [],
+  });
+}
+
+const factorObservations = [
+  factor("TECH.TREND"),
+  factor("PV.RELATIVE_VOLUME"),
+  factor("RISK.LIQUIDITY"),
+];
 
 const validAssessment = buildStrategyStateAssessment(
   SHORT_MOMENTUM_CONTRACT_V0_1,
@@ -70,7 +114,7 @@ const base = {
     symbol: "2330",
     companyName: "fixture",
     regimeSnapshotId: "REGIME-20260927",
-    factorRefs: [],
+    factorRefs: factorObservations.map((x) => x.factorId + "@" + x.factorVersion),
     interactionRefs: [],
     reasons: [],
     warnings: [],
@@ -83,7 +127,7 @@ const base = {
     targets: [],
     maxHoldingSessions: 10,
   },
-  factorObservations: [],
+  factorObservations,
   interactionObservations: [],
   regime,
   frozenAt: "2026-09-27T07:31:00Z",
