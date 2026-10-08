@@ -1722,3 +1722,48 @@ Next BUILD priority:
 2. do not redo CORR-014 code firewall unless contradicting evidence appears;
 3. preserve System1 Formal Core/runtime and all final-selection/live-push/capital/order boundaries.
 
+## 2026-10-09 00:29 BUILD_LANE handoff — CORR-008 FIX_IMPLEMENTED
+
+Implementation:
+- PR #895 merged as `53b15e0731be0948f89f8bc08c90661703276905`; stale PR #844 was closed as superseded.
+- NC-T01 physical wrapper now creates a measured runtime guard before remote D1 construction or official-source network access.
+- D1 uses a runner-local pre-transport read-only guard: SELECT / WITH / PRAGMA only; mutation and multi-statement SQL fail before Cloudflare transport.
+- Network access is constrained to the frozen Cloudflare / TWSE / TPEx origin contract, including redirect-hop enforcement.
+- Same-cut runtime evidence is derived from measured D1 / network / capability ledgers; `runtimeForbiddenAccessCount` is no longer declarative.
+- Runtime ledger identity is bound through `runtimeEvidenceDigest -> hidden-fallback auditDigest -> HIDDEN_FALLBACK_AUDIT_SHA256 -> final NC-T01 receiptHash`.
+- Hidden-fallback audit finalizes only after SHORT_MOMENTUM orchestration; any guarded activity after the audit cut invalidates the cut.
+- Post-run `rowsWritten=0` remains a second-line readback.
+- Real physical workflow V0.2 is manual `workflow_dispatch` only and requires a repo-local real continuity receipt path.
+
+Exact-head PASS on `c904b904100a95bac653ef45a287c1c9c1c9cef5`:
+- CORR-008 Runtime Guard `37808737377`;
+- NC-T01 Artifact Runner `37808737264`;
+- System2 Research CI `37808737224`;
+- V8 Regression `37808737229`.
+
+Merged-main PASS on `53b15e0731be0948f89f8bc08c90661703276905`:
+- CORR-008 Runtime Guard `37808924586`;
+- NC-T01 Artifact Runner `37808924734`;
+- System2 Research CI `37808924695`;
+- V8 Regression `37808924693`.
+
+Disposition:
+- `S2-CORR-20261008-008 = FIX_IMPLEMENTED`;
+- HIGH correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_008_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
+
+Non-claims:
+- code CI does not credit SDA-022 S22-T12 / S22-T16 physical acceptance;
+- a source-honest DATA_LANE continuity receipt plus one coherent manual physical run and independent 00/AUDIT review remain required;
+- no System1 Formal Core/runtime, strategy threshold/weight/ranking/capacity, final-selection/live-push/capital/order authority changed.
+
+Incidental readback:
+- System1 C1 Prospective Evidence run `37808995747` failed independently with `C1_GENERATION_NOT_FOUND / UPSTREAM_ARTIFACT_MISSING`;
+- its own artifact reports `formalCoreImpact=false / noPlanChanges=true / noTrade=true / noPush=true`;
+- all required CORR-008 / Research / V8 gates passed.
+
+Next BUILD priority:
+1. continue the highest-severity unblocked BUILD_LANE correction from the canonical queue;
+2. do not reopen CORR-008 code-firewall work unless independent audit finds contradictory evidence;
+3. preserve DATA_LANE ownership of real continuity evidence and 00/AUDIT ownership of physical acceptance.
+
