@@ -10,7 +10,8 @@ export const NCT01_ALLOWED_NETWORK_ORIGINS_V0_1 = Object.freeze([
   "https://www.twse.com.tw",
 ]);
 
-const READ_PREFIX_RE = /^(SELECT|WITH|PRAGMA)\b/i;
+const READ_QUERY_PREFIX_RE = /^(SELECT|WITH)\b/i;
+const READ_ONLY_PRAGMA_RE = /^PRAGMA\s+(?:(?:main|temp)\.)?(?:table_info|table_xinfo|index_list|index_info|index_xinfo|foreign_key_list|database_list|page_count|page_size|compile_options)\b(?:\s*\([^;]*\))?\s*$/i;
 const BLOCKED_SQL_RE = /\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\b/i;
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
@@ -28,10 +29,12 @@ function normalizeSql(sql) {
 
 export function assertNcT01ReadOnlySqlV0_1(sql) {
   const text = normalizeSql(sql);
-  if (!READ_PREFIX_RE.test(text) || BLOCKED_SQL_RE.test(text)) {
+  if (BLOCKED_SQL_RE.test(text)) {
     throw new Error("NCT01_READ_ONLY_SQL_REQUIRED");
   }
-  return text;
+  if (READ_QUERY_PREFIX_RE.test(text)) return text;
+  if (READ_ONLY_PRAGMA_RE.test(text)) return text;
+  throw new Error("NCT01_READ_ONLY_SQL_REQUIRED");
 }
 
 function inputUrl(input) {
@@ -195,15 +198,36 @@ export function createNcT01RuntimeGuardV0_1({
         if (!Array.isArray(statements)) throw new Error("batch statements must be an array");
         const checked = [];
         for (const statement of statements) {
-          if (!statement || typeof statement.sql !== "string") {
+          if (!statement || typeof statement !== "object" || statement.__remoteD1Statement !== true) {
             state.rejectedMutationAttemptCount += 1;
             throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:FOREIGN_STATEMENT");
           }
-          rejectUnsafeSql(statement.sql);
-          checked.push(statement);
+
+          let suppliedSql;
+          let suppliedParams;
+          try {
+            suppliedSql = statement.sql;
+            suppliedParams = statement.params;
+          } catch {
+            state.rejectedMutationAttemptCount += 1;
+            throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:MUTABLE_STATEMENT_ACCESS");
+          }
+
+          if (typeof suppliedSql !== "string" || !Array.isArray(suppliedParams)) {
+            state.rejectedMutationAttemptCount += 1;
+            throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:FOREIGN_STATEMENT");
+          }
+
+          const text = rejectUnsafeSql(suppliedSql);
+          const params = Object.freeze([...suppliedParams]);
+          checked.push(Object.freeze({
+            __remoteD1Statement: true,
+            sql: text,
+            params,
+          }));
         }
         state.allowedReadQueryCount += checked.length;
-        return db.batch(checked);
+        return db.batch(Object.freeze(checked));
       },
       async rawQuery(sql, params = []) {
         if (typeof db.rawQuery !== "function") throw new Error("NCT01_D1_RAW_QUERY_UNAVAILABLE");
