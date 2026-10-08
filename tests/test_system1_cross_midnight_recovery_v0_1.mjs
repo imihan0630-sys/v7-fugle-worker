@@ -20,6 +20,7 @@ const gate=await readFile(new URL("./trading_day_gate.mjs",import.meta.url),"utf
 const cache=await readFile(new URL("./prepare_market_cache.mjs",import.meta.url),"utf8");
 const inst=await readFile(new URL("./sync_institution_data.mjs",import.meta.url),"utf8");
 const recovery=await readFile(new URL("./recover_after_market.mjs",import.meta.url),"utf8");
+const quality=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
 
 for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
@@ -32,6 +33,9 @@ assert.match(recovery,/Scheduled fallback requires frozen RECOVERY_MARKET_DATE/)
 assert.match(recovery,/Scheduled fallback target exceeds one-day cross-midnight window/);n++;
 assert.match(recovery,/Only one POST|Only one POST/);n++;
 assert.match(recovery,/no repeated POST/i);n++;
+assert.match(quality,/const maxAttempts=5/);n++;
+assert.match(quality,/\[0,2000,5000,10000,15000\]/);n++;
+assert.match(quality,/transient retries exhausted after/);n++;
 
 assert.match(workflow,/V7_TRIGGER_SCHEDULE: \$\{\{ github\.event\.schedule \}\}/);n++;
 assert.match(workflow,/OFFICIAL_MARKET_DATE: \$\{\{ steps\.calendar\.outputs\.market_date \}\}/);n++;
@@ -47,4 +51,5 @@ assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[])
 
 console.log(JSON.stringify({ok:true,assertions:n,crossMidnightPinned:true,scheduledFallbackOnly:true,
   crossMidnightMarketRewriteDisabled:true,readOnlyPrereqReuseRequired:true,
-  businessPostRetryChanged:false,formalSelectionRulesChanged:false,system2Touched:false}));
+  epsPreviewBoundedRetry:true,businessPostRetryChanged:false,
+  formalSelectionRulesChanged:false,system2Touched:false}));
