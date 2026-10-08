@@ -6456,3 +6456,31 @@ No economic hypothesis status changed.
 No L4 promotion was authorized.
 
 Next: PVE-282 current-main EffectTarget / D16 model-method readiness audit.
+
+
+# PVE-282~288 — promotion-design and future-clock evidence synthesis (2026-10-08)
+
+PVE-282 first reconciled the real remaining design debt instead of treating all pending work as one blocker:
+4 target shells already had singular metric/horizon but lacked legitimate numbers; 10 still lacked primary metric/horizon; Wave-1 had zero actual D02-specific method receipts.
+
+PVE-283 then outcome-blindly froze nine additional primary metric/horizon shells where the existing feature clock and coverage contract supported one non-post-hoc choice. It deliberately left D02-11 blocked because liquidity utility depends on D14 execution-cost quality.
+
+The result became:
+13 PARTIAL numerical-target shells, 1 BLOCKED, 0 READY.
+
+PVE-284 generalized the pre-outcome D16-19 ModelMethodReceipt firewall to all 12 predictive Brier lanes. This prevents estimator/calibrator/search choices from masquerading as feature incrementality.
+
+PVE-285 turned remaining cross-room needs into formal machine-checkable requests:
+12 D16 method receipts and one D14 cost-quality receipt.
+
+PVE-286 froze the first legal clock for the new System1 operational-acceptance capability. Because the capability merged after the 2026-10-08 00:10 schedule, the first post-deploy opportunity is 2026-10-09 00:10 for candidate scanDate 2026-10-08. Workflow success alone is not sufficient.
+
+PVE-287 found zero current legal numerical target sources across all 14 D02 evidence keys. Fixture values and sample-size floors remain explicitly non-research numbers.
+
+PVE-288 prevents a new false equivalence:
+System1 OPERATIONAL_RECOVERY_PASS != D02 clean H001 date.
+A D02 clean date also needs pre-feature PVE-261 physical baseline remediation, exact feature-level freshness, current quota-remediation physical PASS and no retroactive credit.
+
+No economic outcomes were opened.
+No module was promoted.
+D02 remains 60.0%, clean dates remain 0, Gate 7 CLOSED, Formal Core LOCKED.
