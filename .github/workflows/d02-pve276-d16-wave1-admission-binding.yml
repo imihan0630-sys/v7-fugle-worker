@@ -1,0 +1,23 @@
+name: D02 PVE276 D16 Wave1 Admission Binding
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve276_d16_wave1_admission_binding_v0_1.mjs"
+      - "tests/test_d02_pve276_d16_wave1_admission_binding_v0_1.mjs"
+      - ".github/workflows/d02-pve276-d16-wave1-admission-binding.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve276_d16_wave1_admission_binding_v0_1.mjs
