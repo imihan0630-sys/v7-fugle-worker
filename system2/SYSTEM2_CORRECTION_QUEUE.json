@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T00:29:00+08:00",
+  "updatedAt": "2026-10-09T00:38:06+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1611,7 +1611,7 @@
       "directiveId": "S2-CORR-20261008-008",
       "createdAt": "2026-10-08T10:59:00+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFYING",
       "title": "NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc",
       "affectedScope": [
         "System2 physical NC-T01 S22-T12/S22-T16",
@@ -1675,10 +1675,11 @@
         "Exact-head PASS on c904b904100a95bac653ef45a287c1c9c1c9cef5: CORR-008 37808737377; NC-T01 Artifact Runner 37808737264; System2 Research CI 37808737224; V8 Regression 37808737229.",
         "Merged-main PASS on 53b15e0731be0948f89f8bc08c90661703276905: CORR-008 37808924586; NC-T01 Artifact Runner 37808924734; System2 Research CI 37808924695; V8 Regression 37808924693.",
         "Mutation/origin attempts fail before transport, incomplete guard cannot promote physical independence, post-audit access invalidates same-cut identity, and measured ledger changes propagate through runtimeEvidenceDigest/auditDigest/final receiptHash.",
-        "No SDA-022 S22-T12/S22-T16 physical credit is claimed by code CI; real continuity evidence and one coherent manual physical run remain separately required."
+        "No SDA-022 S22-T12/S22-T16 physical credit is claimed by code CI; real continuity evidence and one coherent manual physical run remain separately required.",
+        "AUDIT_LANE negative verification found AP-008-A writable PRAGMA and AP-008-B mutable statement.sql TOCTOU bypass of pre-transport mutation defense: system2/evidence/S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json. Current code may NOT be declared VERIFIED_CLOSED. No actual Cloudflare D1 write/physical pass claim."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — NC-T01 physical wrapper now prevents D1 mutation and unexpected network access before transport, derives no-forbidden-access from an active measured same-cut guard ledger, and binds ledger identity through hidden-fallback audit into the final receipt. Independent AUDIT_LANE verification remains required before VERIFIED_CLOSED; code CI is not physical S22-T12/S22-T16 acceptance.",
-      "updatedAt": "2026-10-09T00:29:00+08:00"
+      "finalDisposition": "VERIFYING — INDEPENDENT_AUDIT_NEGATIVE: unqualified writable PRAGMA passes lexical read-only check and mutable SQL statement getter can differ between validation and adapter consumption. BUILD_LANE must patch the guards and provide new negative tests; physical NC-T01 still separately pending.",
+      "updatedAt": "2026-10-09T00:38:06+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-009",
