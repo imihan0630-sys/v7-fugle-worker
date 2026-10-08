@@ -4422,3 +4422,142 @@ Formal Core remains LOCKED.
 
 Exact next continuation point:
 PVE-270 — keep two independent prerequisites fail-closed before any H001 reopening. (A) The owner-gated PVE-261 baseline-refresh Production remediation must later produce a genuinely prospective exact-slot receipt whose `baselineAsOfDate` equals the authoritative latest expected comparable prior slot, with exact source provenance, corporate-action continuity, no current/future leakage, exact-slot validity PASS and decisionImpact=0. (B) Existing `S2-CORR-20261007-003` remains owned by REMEDIATION_LANE/AUDIT_LANE governance and must later be independently verified with an account-level D1 quota reservation that protects the System1 23:35/23:55 after-market window; a future real trading day must resolve through PVE-269 as `BUSINESS_EXECUTION_SUCCESS` with exactly one successful business scan and normal persisted receipts. Until both are physically true: H001 fail closed, outcomes closed, clean prospective dates=0, Gate 7 CLOSED and Formal Core LOCKED. Research-only D02 work may continue on H20/H003/Wave-2 admission semantics but cannot promote L4 without genuine prospective/OOS evidence.
+
+
+## PVE-270~276 continuation — Wave-1 freshness/execution anti-bypass chain frozen (2026-10-08)
+
+Status: PVE270_H001_DUAL_PREREQUISITE_PASS / PVE271_272_SYSTEM1_RESERVE_EVIDENCE_INSUFFICIENT / PVE273_H20_STALE_BASELINE_BYPASS_CLOSED / PVE274_H003_BASELINE_SYMMETRY_BYPASS_CLOSED / PVE275_WAVE1_ANTI_BYPASS_FIREWALL_FROZEN / PVE276_D16_CONSUMPTION_BINDING_FROZEN / CLEAN_PROSPECTIVE_DATES_0 / GATE7_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### PVE-270 — H001 dual prerequisite gate
+
+Artifacts:
+- `research/d02_pve270_h001_dual_prerequisite_gate_v0_1.mjs`;
+- `tests/test_d02_pve270_h001_dual_prerequisite_gate_v0_1.mjs`;
+- validation run `37693629093`: SUCCESS;
+- 32 falsification assertions PASS.
+
+H001 prospective reopening now requires both:
+1. owner-approved/deployed/physically accepted PVE-261 baseline-refresh remediation with exact expected prior-slot freshness, source hash, corporate-action continuity, no current/future leakage and decisionImpact=0;
+2. independently verified CORR-003 account-level quota protection with a future family state of BUSINESS_EXECUTION_SUCCESS, exactly one business execution and normal persisted receipt.
+
+Either prerequisite missing keeps H001 fail closed.
+The gate never grants outcome access, maturity promotion or Formal Core change.
+
+### PVE-271/PVE-272 — System1 after-market reserve calibration remains insufficient
+
+PVE-271 first direct D1 REST read failed HTTP 403 because the token cannot query V7_DB through that endpoint. The attempt was rejected as evidence and repaired using a temporary read-only Worker binding, then cleaned up.
+
+Successful PVE-271 run `37694052477`:
+- healthy successful after-market dates found in 2026-09-15..2026-10-07: 2026-09-21 and 2026-09-22 only;
+- whole-V7_DB rowsWritten: 2,825 and 1,635;
+- state = `INSUFFICIENT_HEALTHY_AFTER_MARKET_DAYS`;
+- no reserve number authorized.
+
+PVE-272 extended the query to all available `v7_cron_runs` history:
+- run `37694255555`: SUCCESS;
+- cron history begins 2026-09-14;
+- successful 23:35/23:55 AFTER_MARKET_SCAN dates remain exactly two: 2026-09-21 and 2026-09-22;
+- observed whole-day V7_DB distribution: min/median=1,635; p90/max=2,825 rowsWritten;
+- state = `INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS`.
+
+2,825 is evidence of an observed healthy whole-day upper envelope only. It is not accepted as an exact after-market write cost or reservation because n=2 and no safety margin is evidence-bound.
+
+### PVE-273 — H20 baseline freshness bypass physically reproduced and closed
+
+Artifacts:
+- `research/d02_pve273_h20_baseline_freshness_bridge_v0_1.mjs`;
+- `tests/test_d02_pve273_h20_baseline_freshness_bridge_v0_1.mjs`;
+- `research/D02_PVE273_H20_BASELINE_FRESHNESS_BYPASS_20261008_V0_1.md`;
+- run `37694494840`: SUCCESS;
+- 22 assertions PASS.
+
+The legacy PVE-242 H20 lane can PASS with valid D01 event identity/anchor/horizon while supplying no same-slot baseline freshness proof.
+
+This is a real admission bypass because H20's frozen primary contrast is SAME_SLOT_RVOL20 beyond LOCAL_PREV5_VOLUME_RATIO on the identical D01-owned breakout.
+
+PVE-273 additionally requires:
+- sameSlotBaselineClean;
+- slotHistoryCount >=20;
+- current-slot coverage;
+- baselineAsOfDate == authoritative expected latest comparable slot;
+- exact-slot validity;
+- corporate-action continuity;
+- no current/future leakage;
+- exact provider-response SHA-256;
+- frozen residual target identity.
+
+### PVE-274 — H003 baseline symmetry bypass physically reproduced and closed
+
+Artifacts:
+- `research/d02_pve274_h003_baseline_symmetry_gate_v0_1.mjs`;
+- `tests/test_d02_pve274_h003_baseline_symmetry_gate_v0_1.mjs`;
+- `research/D02_PVE274_H003_BASELINE_SYMMETRY_20261008_V0_1.md`;
+- run `37721499945`: SUCCESS;
+- 26 assertions PASS.
+
+Frozen H003 comparison:
+- P = PRICE_ONLY_RESPONSE = price geometry only;
+- PV = PRICE_PLUS_VOLUME_RESPONSE = identical price geometry + volume effort.
+
+V8.11 research source proves pvResponseState uses:
+- pvSlotRvol20 from slotVolumeMedian20;
+- pvSlotRangeExpansion20 and pvSignedProgress20 from slotRangeMedian20;
+- both derived from same-slot prior-session baseline statistics.
+
+Legacy PVE-242 H003 can PASS without proving either baseline fresh.
+PVE-274 therefore requires:
+- identical P/PV price geometry, event identity, eligible rows and outcome definition;
+- price-range baseline independently fresh/valid;
+- PV-only volume baseline independently fresh/valid;
+- both baseline dates symmetric and strictly prior;
+- corporate-action/source/leakage checks;
+- volume effort is the only PV increment.
+
+### PVE-275 — unified Wave-1 anti-bypass firewall
+
+Artifacts:
+- `research/d02_pve275_wave1_anti_bypass_firewall_v0_1.mjs`;
+- `tests/test_d02_pve275_wave1_anti_bypass_firewall_v0_1.mjs`;
+- `research/D02_PVE275_WAVE1_ANTI_BYPASS_FIREWALL_20261008_V0_1.md`;
+- run `37721621006`: SUCCESS.
+
+Routing:
+- D02-02:H001 -> PVE-270;
+- D02-03:H20 -> PVE-273;
+- D02-06:H003 -> PVE-274.
+
+Legacy PVE-242/Wave-1 gates remain historical component checks but cannot by themselves mint a new clean prospective row.
+
+### PVE-276 — D16 Wave-1 admission consumption binding
+
+Artifacts:
+- `research/d02_pve276_d16_wave1_admission_binding_v0_1.mjs`;
+- `tests/test_d02_pve276_d16_wave1_admission_binding_v0_1.mjs`;
+- `research/D02_PVE276_D16_WAVE1_ADMISSION_BINDING_20261008_V0_1.md`;
+- run `37721763116`: SUCCESS;
+- 32 assertions PASS.
+
+The canonical D02->D16 V0.2 receipt guard still names legacy `D02_L4_WAVE1_GATE_V0_1_1`.
+PVE-276 proves a legacy D16 receipt can otherwise PASS without proving PVE-275 admission.
+
+For H001/H20/H003, downstream D16 consumption now additionally requires:
+- PVE-275 PASS receipt for exact evidenceKey;
+- pre-outcome/outcome-blind creation;
+- immutable admission receipt hash;
+- immutable admitted dataset hash;
+- exact equality of admitted dataset hash and D16 input dataset hash;
+- admitted row count bound to D16 common-support count;
+- direct legacy D16 consumption forbidden.
+
+### Research state
+
+No H001/H20/H003 economic outcome was inspected or reclassified.
+Clean prospective dates remain 0.
+All 12 D02 modules remain L3.
+D02 maturity remains 60.0%.
+Gate 7 remains CLOSED.
+Formal Core remains LOCKED.
+FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
+
+Exact next continuation point:
+PVE-277 — audit all Wave-2 D02 evidence lanes for dependence on historical/same-slot/daily volume or range baselines and test whether any current Wave-2 admission guard can PASS while the authoritative latest expected baseline observation is stale/missing. Build a dependency matrix first; only freeze new fail-closed overlays where the feature genuinely depends on baseline freshness. Do not generalize the Wave-1 rule to baseline-independent features. Remain outcome-blind; no L4 promotion.
