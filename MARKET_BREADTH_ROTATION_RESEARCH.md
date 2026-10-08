@@ -2699,3 +2699,30 @@ Exact next:
 continue official TWSE dates outcome-blind; consume D16 method return when available; no L4 until prospective/OOS evidence is adequate under the frozen method.
 
 Formal Core unchanged.
+
+
+## BR-075 — D09-08 size-leadership D16 preregistration (2026-10-08)
+
+Artifacts:
+- `research/BR075_D09_08_SIZE_LEADERSHIP_D16_PREREG_20261008_V0_1.md`
+- `research/BR075_D09_08_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Frozen:
+- independent unit = common-complete size-TRI market date;
+- all Taiwan50 / MidCap100 / SmallCap300 legs must share a common total-return basis;
+- D1/D5/D20/D60 are repeated horizons, not independent dates;
+- price-index-complete does not equal TRI-complete;
+- partial/missing legs do not increment complete-date N.
+
+Current complete-date N = 1.
+Opened predictive outcomes = 0.
+Inference state = POWER_INSUFFICIENT.
+
+D09-08 remains L3/60.
+
+Room11/D16 must freeze date dependence, horizon multiplicity, sector/effective-membership/liquidity/breadth/concentration/regime controls and missingness policy before predictive use.
+
+Exact next:
+accumulate genuinely new common-complete official TRI dates and consume D16 method return when available.
+
+Formal Core unchanged.
