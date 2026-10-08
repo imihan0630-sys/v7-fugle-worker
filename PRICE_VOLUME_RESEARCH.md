@@ -14097,3 +14097,25 @@ D16 method receipts, D14 cost-quality evidence, PVE-261 physical remediation, cu
 No future external receipt may be replaced by synthetic fixtures, workflow color, retrospective replay or a threshold guessed from current D02 outcomes.
 
 D02 maturity remains 60.0%.
+
+
+# PVE-289 synthesis — the next unit of learning is now an external receipt, not another specification (2026-10-08)
+
+D02 has reached a useful boundary.
+
+The domain now has:
+- complete L3 coverage across 12 modules;
+- end-to-end admission lineage for all 14 evidence keys;
+- typed baseline/continuity freshness controls;
+- singular primary metric/horizon shells for 13/14 target keys;
+- D16 method contracts for all 12 predictive Brier lanes;
+- formal cross-room dependency requests;
+- explicit operational-vs-clean-date clock separation;
+- a numerical-target source firewall.
+
+The remaining uncertainty is empirical/producer-owned.
+Additional D02-only specification would mostly duplicate already-frozen governance.
+
+Therefore the next valid learning increment is triggered by a changed immutable producer receipt and must update only the affected evidence key/lane.
+
+No maturity change.
