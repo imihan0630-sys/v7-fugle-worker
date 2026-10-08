@@ -203,16 +203,22 @@ export function createNcT01RuntimeGuardV0_1({
             throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:FOREIGN_STATEMENT");
           }
 
-          let suppliedSql;
-          let suppliedParams;
-          try {
-            suppliedSql = statement.sql;
-            suppliedParams = statement.params;
-          } catch {
+          const sqlDescriptor = Object.getOwnPropertyDescriptor(statement, "sql");
+          const paramsDescriptor = Object.getOwnPropertyDescriptor(statement, "params");
+          if (
+            !sqlDescriptor
+            || !paramsDescriptor
+            || typeof sqlDescriptor.get === "function"
+            || typeof sqlDescriptor.set === "function"
+            || typeof paramsDescriptor.get === "function"
+            || typeof paramsDescriptor.set === "function"
+          ) {
             state.rejectedMutationAttemptCount += 1;
             throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:MUTABLE_STATEMENT_ACCESS");
           }
 
+          const suppliedSql = sqlDescriptor.value;
+          const suppliedParams = paramsDescriptor.value;
           if (typeof suppliedSql !== "string" || !Array.isArray(suppliedParams)) {
             state.rejectedMutationAttemptCount += 1;
             throw new Error("NCT01_READ_ONLY_SQL_REQUIRED:FOREIGN_STATEMENT");
