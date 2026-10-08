@@ -1347,3 +1347,32 @@ No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order,
 - Aggregate 2017–2025 raw historical annual market-year coverage accepted: 18/18. This does NOT imply complete continuity, no UNKNOWN, complete historical-universe replay, or Stage-1 launch authorization.
 - Exact subsequent DATA_LANE work: 2026 segmented history (no annual current-year dispatch), aggregate replay qualification, and launch-critical hot-history/NC-T01 continuity evidence. Preserve single D1 writer and D1 quota safeguards.
 - No System1 Formal/runtime, strategies, final selection, capital/order or live push authority changed.
+
+
+## 2026-10-08 2026 TWSE segmented backfill #1 — fail-closed source diagnostic and recovery candidate
+
+Canonical execution:
+- workflow `System2 Historical Current-Year Segmented Backfill`, Run #1 / ID `37740634959`, head `f2f60fe1c3c8719d115593045af13295b6d6d51b`;
+- completed 2026-10-08 17:52:57 Asia/Taipei with conclusion `FAILURE`;
+- isolated System2 D1 additive schema migration PASS;
+- backfill step FAIL after about 2h54m, exact error `official historical daily table not found for TWSE` from `official_historical_a1_source_v0_1.mjs:283`;
+- upload step was completed but found no diagnostic JSON, therefore no artifact was retained;
+- System1 production isolation PASS.
+
+**No successful 2026 TWSE month-count claim is justified by this workflow log.** Prior completed month receipts, if any, are not disproven by the workflow failure, but need independent D1 read-only inventory; do not imply zero months or all nine months complete.
+
+Root-cause status: `OFFICIAL_SOURCE_DAILY_TABLE_UNRECOGNIZED / EXACT_DATE_UNKNOWN`. The original run printed neither the failing date/month nor source `stat`/table envelope. Possible calendar overinclusion, official schema/status response, or transient source availability must remain hypotheses pending physical readback.
+
+DATA_LANE isolated remediation on `system2-data/2026-segment-fail-closed-recovery-20261008`:
+- use TWSE official FMTQIK **exact requested-month trading dates**, including for TPEx's shared exchange-session calendar; deny uncertified date lists;
+- bind that exact date list into historical A1 fetch, preserving strict source-date and OHLC identity checks;
+- pace day requests, log completed dates/months and read-only source request identity;
+- on failure write `BLOCKED_FAIL_CLOSED_SEGMENT_BACKFILL` with failed stage, month, last requested official date, source status/table envelope and any previously completed monthly receipts; upload via existing `always()` evidence step;
+- preserve existing receipt-aware skipping and immutable manifest/R2 byte verification; do not relax parser/zero-fill/synthesize missing data.
+
+Immutable diagnosis:
+`system2/evidence/S2_2026_TWSE_SEGMENT_RUN1_FAILURE_DIAGNOSTIC_20261008_V0_1.json`.
+
+Acceptance to proceed: review CI + V8 regression, merge candidate, verify exact official monthly FMTQIK preflight; controlled retry only after checking the single D1 writer and durable prior receipts. If source/date failure recurs, extract exact date and source envelope from artifact and classify before modifying any semantics. 2025 historical annual raw coverage remains `18/18 PASS_DATA_PARTIAL_REPLAY`; 2026 segmentation and aggregate replay NOT ACCEPTED.
+
+Protected boundaries: System1 Formal/runtime, strategies, signal semantics, ranking, capital, order, broker routing, production push untouched.
