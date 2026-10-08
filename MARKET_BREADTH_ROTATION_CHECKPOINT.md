@@ -1933,3 +1933,23 @@ one daily TWSE breadth receipt may have multiple research consumers, but only on
 
 D09-04 remains L3/60.
 Exact next: append further independent official dates under unchanged denominator semantics; no L4 before D16 common-support/OOS validation.
+
+
+## BR-074 — D09-04 three-date D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/BR074_D09_04_THREE_DATE_ADVANCE_DECLINE_D16_HANDOFF_20261008_V0_1.md`
+- `research/BR074_D09_04_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Frozen independent unit:
+`TWSE_MARKET_DATE_BREADTH_ROOT`.
+
+Independent date N = 3.
+Multiple horizons/consumers/transforms do not inflate N.
+Predictive outcomes opened = 0.
+Inference state = `POWER_INSUFFICIENT`.
+
+Room11/D16 method receipt is required before any predictive access.
+D09-04 remains L3/60.
+
+Exact next: continue outcome-blind official dates and consume the D16 method return when it lands.
