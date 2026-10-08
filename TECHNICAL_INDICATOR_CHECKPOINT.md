@@ -8141,3 +8141,152 @@ Independent gates remain:
 - System2 D03 raw-vs-dedup diagnostics;
 - System1 D03 redundancy diagnostics;
 - D16 D03 predictive incrementality.
+
+
+## 2026-10-08 D03 — TI-1545~1564 decision-PIT firewall + price-reset/identity family-set closure
+
+Canonical D03 artifacts:
+- `research/d03_corr009_decision_pit_evidence_consumer_acceptance_20261008_v0_1.json`;
+- `research/d03_price_reset_and_identity_continuity_family_set_20261008_v0_1.json`.
+
+Upstream engineering:
+- `S2-CORR-20261008-009`;
+- merge `c7afee03aec24d1c5a3a79e71cb4c8250a67b61e`;
+- correction state at this D03 readback = `FIX_IMPLEMENTED` / independent AUDIT_LANE closure pending;
+- exact-head targeted workflow `37732779734` PASS;
+- merged-main targeted workflow `37732958236` PASS.
+
+### TI-1545~1550 — factor-level PIT evidence is now a machine precondition for frozen decisions
+
+D03 accepts the merged decision-evidence firewall as an engineering prerequisite.
+
+For every `KNOWN` decision-supporting factor:
+- `pointInTimeEligible` must be true;
+- `availableAt` must be valid and no later than `decisionTimestamp`;
+- factor marketDate and decisionTimestamp must match the frozen decision clock;
+- SYMBOL-scope factor must match the decision symbol;
+- exact `factorId@factorVersion` must be authorized by frozen factor refs;
+- immutable sourceId and source payload hash are required.
+
+For every evidence family:
+- a KNOWN family assessment must map to exact supporting factor observation hashes;
+- strategy-id/version and authorized factor family mappings must match the frozen contract.
+
+If any blocker exists:
+- effective frozen decision becomes INCOMPLETE;
+- rank and score are cleared;
+- entry readiness is blocked where present;
+- prediction snapshot exposes the decisionEvidence blocker/hash state;
+- outcome join is blocked.
+
+D03 canonical rule:
+`FORMULA_CORRECTNESS_DOES_NOT_IMPLY_DECISION_TIME_ADMISSIBILITY`.
+
+This closes the previously demonstrated AP-01 engineering path in which future/non-PIT factor evidence could be frozen as SELECTED.
+
+### TI-1551~1554 — D03 indicator consequence
+
+The firewall applies equally to direct price/trend transforms and named indicators.
+
+D03-01~04:
+- prior L3 Taiwan-PIT feasibility is retained;
+- future frozen-decision evidence must use exact decision-clock-admissible observations.
+
+D03-10 Bollinger:
+- exact 20-session arithmetic is insufficient if the resulting factor observation is not decision-time admissible;
+- exact-window correctness and factor availability are independent gates.
+
+D03-09 ADX:
+- canonical Wilder replay correctness is insufficient if the computed/observed factor is not available by the decision clock;
+- replay lineage and decision-time evidence admission remain independent.
+
+Non-PIT/future observations may remain archived only as diagnostic/UNKNOWN evidence and may not support ranking, selection, capacity or outcome joins.
+
+No maturity credit is granted because this removes a look-ahead path; it does not establish indicator alpha or satisfy W0/parent gates.
+
+### TI-1555~1559 — D03 price-reset family set is now explicit
+
+D03 freezes:
+`D03_PRICE_RESET_FAMILY_SET_V0_1`
+for domestic ordinary common-equity technical price continuity.
+
+Required price-reset families:
+1. EX_RIGHT_DIVIDEND;
+2. CAPITAL_REDUCTION;
+3. PAR_VALUE_CHANGE.
+
+Domestic ordinary-share mechanical unit split/consolidation caused by official par-value change is mapped into PAR_VALUE_CHANGE and must not be duplicated as a generic split/reverse-split family.
+
+Scope limits:
+- ETF beneficiary-certificate split/reverse split is outside this ordinary-equity baseline;
+- foreign/TDR/other security classes do not inherit this mapping;
+- legal company demerger is not a stock-unit split alias.
+
+Future W0 receipts must expose:
+- `priceResetFamilySetVersion`;
+- `priceResetCoverageReceiptHash`;
+- exact selected session/date-set identity;
+- source evidence hashes;
+- bounded suspension receipt identity/digest;
+- identity-transition disposition and evidence hash;
+- continuityReceiptId/sourceHistoryHash/replayHash and source clocks.
+
+### TI-1560~1562 — identity transition is not an ordinary price adjustment
+
+Merger, share conversion, delisting, market migration, identifier replacement or demerger that changes security identity are:
+`PAIR_OR_SEQUENCE_COMPARABILITY_BLOCKER`
+by default.
+
+D03 default:
+`NEW_IDENTITY_NEW_TECHNICAL_LINEAGE`.
+
+Therefore:
+- Bollinger finite-window lineage terminates on old-security identity termination;
+- ADX/Wilder recursive state terminates on old-security identity termination;
+- no cross-symbol state/history inheritance is allowed merely because an exchange ratio or successor reference price exists;
+- a cross-identity bridge requires a separately versioned same-security/economic-identity transform contract with transformed-history provenance.
+
+Three clean price-reset families cannot certify technical continuity across an unresolved identity transition.
+
+### TI-1563 — W0 family-completeness anti-shortcut
+
+The first real W0 CLEAR_NO_ACTION path now requires all of:
+- exact eligible-session identity;
+- evidence-bound exact-window TWTAWU suspension completeness;
+- EX_RIGHT_DIVIDEND family coverage;
+- CAPITAL_REDUCTION family coverage;
+- PAR_VALUE_CHANGE family coverage;
+- explicit same-security identity-transition disposition;
+- exact replay/source-history hashes;
+- causal source availability clocks.
+
+Important:
+- share-denominator-only events do not automatically block raw price-space continuity when they do not reset exchange price space;
+- however any downstream market-cap/share-denominator factor remains separately gated by its own denominator vintage;
+- price-space continuity and share-denominator completeness may not alias each other.
+
+### TI-1564 — physical state / maturity / exact next
+
+Current physical state at 2026-10-08 13:40+ Taipei:
+- no real W0 CLEAR_NO_ACTION continuity receipt observed;
+- no new 2026-10-08 ordinary-session genuine System1 parent observed;
+- latest System1 C1 prospective physical attempt remains run `37724488223` for marketDate 2026-10-07 and failed closed;
+- latest parent blocker remains stale Formal scan plus quality not ready in that receipt;
+- no retrospective synthesis is permitted.
+
+D03 remains:
+- maturity = 56.7%;
+- 12 active modules;
+- 10 at current L3/60 milestone;
+- D03-09 / D03-10 = L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact next:
+1. W0 track — consume a real exact-window parity-certified TWTAWU bounded negative-completeness receipt; require D03_PRICE_RESET_FAMILY_SET_V0_1 + explicit same-security identity-transition disposition; bind all evidence into the real hash-bound continuity receipt.
+2. Parent track — consume the next actual ordinary-session System1 parent attempt only when live quality readiness, Formal scan advancement, genuine immutable C1 generation and authoritative V8.20 binding exist.
+3. When W0 + genuine parent both exist, run D03-10 Bollinger L3 and parent-binding oracles immediately.
+4. D03-09 then applies canonical suspension/resume semantics inside Wilder FULL_REPLAY / trusted-state certification.
+5. CORR-009 governance remains pending independent AUDIT_LANE closure; do not confuse engineering acceptance with governance closure.
+6. Keep raw third-session, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.
