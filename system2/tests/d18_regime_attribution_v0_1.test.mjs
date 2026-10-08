@@ -15,19 +15,62 @@ const decisionBase={
   },
 };
 
-const regimeVector={
-  vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
-  marketDate:"2026-10-02",
-  decisionTimestamp:"2026-10-02T06:30:00.000Z",
-  pointInTimeEligible:true,
-  receiptHash:"regime-hash-1",
-  dimensions:{
-    trendContext:{state:"KNOWN",value:"UP_TREND_CONTEXT",reason:null,sourceRef:"a"},
-    volatilityDirection:{state:"KNOWN",value:"VOL_CONTRACTING",reason:null,sourceRef:"b"},
-    breadthContext:{state:"CONTEXT_RAW",value:null,reason:"U2B_PENDING",sourceRef:"c"},
-    sizeLeadership:{state:"UNKNOWN",value:null,reason:"SIZE_PENDING",sourceRef:null},
-  },
-};
+const D18_DIMENSIONS=[
+  "trendContext",
+  "breadthContext",
+  "volatilityDirection",
+  "activityDirection",
+  "concentrationContext",
+  "sizeLeadership",
+  "institutionalContext",
+  "globalTransmission",
+  "sectorRotationContext",
+];
+
+async function hashedDimension({
+  state="UNKNOWN",
+  value=null,
+  reason="fixture unknown",
+  sourceRef=null,
+  sourceIdentity=null,
+  availableAt=null,
+  pointInTimeEligible=false,
+  blockerCodes=[],
+}={}) {
+  const base={state,value,reason,sourceRef,sourceIdentity,availableAt,pointInTimeEligible,blockerCodes};
+  return {...base,evidenceHash:await sha256Hex(base)};
+}
+
+async function makeRegimeVector(){
+  const dimensions={};
+  for(const key of D18_DIMENSIONS) dimensions[key]=await hashedDimension();
+  dimensions.trendContext=await hashedDimension({
+    state:"KNOWN",value:"UP_TREND_CONTEXT",reason:null,
+    sourceRef:"a".repeat(64),sourceIdentity:"A2_TAIEX_CLOSE",
+    availableAt:"2026-10-02T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  dimensions.volatilityDirection=await hashedDimension({
+    state:"KNOWN",value:"VOL_CONTRACTING",reason:null,
+    sourceRef:"b".repeat(64),sourceIdentity:"A2_TAIEX_CLOSE",
+    availableAt:"2026-10-02T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  dimensions.breadthContext=await hashedDimension({
+    state:"CONTEXT_RAW",value:null,reason:"U2B_PENDING",
+    sourceRef:"c".repeat(64),sourceIdentity:"D18.DIRECTION_BREADTH",
+    availableAt:"2026-10-02T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  dimensions.sizeLeadership=await hashedDimension({reason:"SIZE_PENDING"});
+  const base={
+    vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
+    marketDate:"2026-10-02",
+    decisionTimestamp:"2026-10-02T06:30:00.000Z",
+    pointInTimeEligible:true,
+    dimensions,
+  };
+  return {...base,receiptHash:await sha256Hex(base)};
+}
+
+const regimeVector=await makeRegimeVector();
 
 const outcomeBase={
   decisionId:"D-2330-20261002",
@@ -79,6 +122,8 @@ assert.ok(Math.abs(a.metrics.stockReturn-0.04)<1e-12);
 assert.ok(Math.abs(a.metrics.relativeBenchmarkReturn-0.025)<1e-12);
 assert.ok(Math.abs(a.metrics.costScenario.horizonReturn-0.036)<1e-12);
 assert.equal(a.attributionOnly,true);
+assert.equal(a.regimeEvidenceValid,true);
+assert.deepEqual(a.regimeEvidenceBlockers,[]);
 assert.equal(a.policyValueEvaluated,false);
 assert.equal(a.switchingRuleApplied,false);
 assert.equal(a.selectionImpact,false);
@@ -125,13 +170,25 @@ await assert.rejects(
   /regime decisionTimestamp mismatch/,
 );
 
-await assert.rejects(
-  ()=>buildD18RegimeAttributionReceiptV0_1({
-    ...base,
-    receiptId:"D18-ATTR-NONPIT",
-    regimeVector:{...regimeVector,pointInTimeEligible:false},
-  }),
-  /regimeVector must be PIT eligible/,
-);
+const tamperedRegime={
+  ...regimeVector,
+  dimensions:{
+    ...regimeVector.dimensions,
+    trendContext:{
+      ...regimeVector.dimensions.trendContext,
+      value:"DOWN_TREND_CONTEXT",
+    },
+  },
+};
+const tamperedAttribution=await buildD18RegimeAttributionReceiptV0_1({
+  ...base,
+  receiptId:"D18-ATTR-TAMPERED",
+  regimeVector:tamperedRegime,
+});
+assert.equal(tamperedAttribution.state,"UNKNOWN");
+assert.equal(tamperedAttribution.metrics,null);
+assert.equal(tamperedAttribution.regimeEvidenceValid,false);
+assert(tamperedAttribution.reasons.includes("REGIME_VECTOR_EVIDENCE_INVALID"));
+assert.equal(Object.keys(tamperedAttribution.discreteRegimeLabels).length,0);
 
 console.log("D18 regime attribution tests: PASS");
