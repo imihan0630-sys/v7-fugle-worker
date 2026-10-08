@@ -1369,7 +1369,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1381,7 +1381,12 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. bind dataset, policy registration, evaluator/code, factors, Regime, execution and cost assumptions into run identity;
   4. reject zero-sample completion without a proved empty PIT universe.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-04.
-- finalDisposition: PENDING
+- implementation:
+  - PR #868 merged as `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`;
+  - exact-head PASS: CORR-014 `37743894631`, System2 Research CI `37743894530`, V8 Regression `37743894466`;
+  - merged-main PASS: CORR-014 `37744022901`, System2 Research CI `37744022808`, V8 Regression `37744023076`;
+  - durable BUILD handoff: `system2/evidence/S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+- finalDisposition: FIX_IMPLEMENTED — AP-04 forged checkpoint/unproven PIT-universe completion is fail-closed; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
 
 
 ### S2-CORR-20261008-015 — D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible
