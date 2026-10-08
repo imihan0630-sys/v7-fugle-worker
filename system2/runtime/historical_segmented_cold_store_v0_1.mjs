@@ -389,19 +389,22 @@ export async function executeHistoricalSegmentPackSetV0_1({
   if(insertedManifestCount+identicalManifestCount!==packSet.packCount) throw new Error("historical segment manifest accounting mismatch");
 
   const receiptId="S2HSR-"+rollingHash;
+  // A receipt cannot claim it was completed at the job start time.
+  // Mint the completed timestamp only after manifests and objects are persisted.
+  const receiptCompletedAt=new Date().toISOString();
   await db.prepare(`INSERT INTO s2_historical_segment_ingest_receipts (
     receipt_id,batch_id,market,year,month,pack_count,bar_count,payload_json_bytes,gzip_bytes,
     first_market_date,last_market_date,manifest_rolling_hash,completed_at,state,schema_version
   ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(
     receiptId,id,mkt,yr,mon,packSet.packCount,packSet.barCount,packSet.payloadJsonBytes,packSet.gzipBytes,
-    firstMarketDate,lastMarketDate,rollingHash,completedAt,"COMPLETE","S2_HISTORICAL_SEGMENT_INGEST_RECEIPT_V0_1"
+    firstMarketDate,lastMarketDate,rollingHash,receiptCompletedAt,"COMPLETE","S2_HISTORICAL_SEGMENT_INGEST_RECEIPT_V0_1"
   ).run();
   await writeCheckpoint(db,{
     checkpoint_id:"S2HSCP-"+await sha256Hex({batchId:id,market:mkt,year:yr,month:mon}),
     batch_id:id,market:mkt,year:yr,month:mon,expected_pack_count:packSet.packCount,
     expected_bar_count:packSet.barCount,object_ready_count:packSet.packCount,
     manifest_committed_count:packSet.packCount,next_pack_index:packSet.packCount,
-    rolling_hash:rollingHash,state:"COMPLETE",updated_at:completedAt,
+    rolling_hash:rollingHash,state:"COMPLETE",updated_at:receiptCompletedAt,
     schema_version:"S2_HISTORICAL_SEGMENT_BACKFILL_CHECKPOINT_V0_1",
   });
   const receipt=await readHistoricalSegmentReceiptV0_1({db,batchId:id});

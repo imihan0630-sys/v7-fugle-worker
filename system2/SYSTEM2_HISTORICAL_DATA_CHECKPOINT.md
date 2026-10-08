@@ -1389,3 +1389,20 @@ Independent event witness: CNA reported TWSE and TPEx closed on **2026-07-10** d
 Recovery is on main (`7498c206786be8fad05f42388be2bd720a1e5fed`): exact FMTQIK official monthly sessions, per-day logs, durable failed-date/status evidence, paced requests, prior-receipt resume. Next safe execution: one controlled 2026 TWSE segmented workflow_dispatch on latest main, only with no competing D1 writer; confirm six prior monthly receipts remain immutable, verify new July–September R2 physical evidence and System1 isolation, then record completed run artifact. Do not dispatch TPEx concurrently.
 
 Durable evidence: `system2/evidence/S2_2026_TWSE_SEGMENT_RUN1_D1_MONTHLY_INVENTORY_20261008_V0_1.json`. No System1 Formal/runtime, strategy, ranking, capital/order or production push changes.
+
+
+## 2026-10-08 DATA_LANE PIT clock integrity follow-up before 2026 segment rerun
+
+Independent read-only inventory from GitHub Run `37766622566` found six TWSE 2026 January–June COMPLETE receipts all bearing the identical `completed_at=2026-10-08T06:59:08.074Z` (the initial workflow timestamp), despite six months being sequentially ingested and the full failed job lasting about three hours. Source inspection confirms the original current-year segment script reused one batch-start `capturedAt` as **every** official daily `observedAt`, pack capture time and month receipt completion time. This is a PIT/provenance clock-integrity problem: later observed facts cannot be asserted available at the start of an extended job.
+
+DATA_LANE fix candidate `system2-data/2026-segment-observedat-pit-clock-fix-20261008`:
+- add opt-in `observedAtFactory` to historical daily range ingestion, invoked after each successful official payload arrives (existing callers retain their explicit frozen observation time when no factory is supplied);
+- issue fresh per-day observedAt and per-month pack/persistence capturedAt during segmented ingestion;
+- mint durable `completed_at` only after R2 objects/manifests are persisted, just before the segment receipt is committed;
+- add behavioral regression tests for post-fetch clock semantics and non-backdated receipt completion timestamps.
+
+This change has **no retrospective write**: January–June immutable receipts remain exactly as originally recorded. Treat their old observed/completion clock provenance as `PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT`; D1 manifest/receipt count parity does not certify historically accurate observation clocks, R2 physical bytes, or aggregate replay readiness. July–September must use the fixed clocks on the next controlled retry and undergo source/physical checks.
+
+Evidence: `system2/evidence/S2_2026_SEGMENT_OBSERVATION_CLOCK_FIX_HANDOFF_20261008_V0_1.json`.
+
+No System1 Formal Core/runtime, strategies, ranking, final selection, capital, orders, or production push changed.

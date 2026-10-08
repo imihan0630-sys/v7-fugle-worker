@@ -20,6 +20,8 @@ assert.match(script,/throughMonth=currentMonth-1/);
 assert.match(script,/fetchHistoricalTwseMonthlyTradingDatesV0_1/,"current-year sessions must be proved by exact official FMTQIK month");
 assert.match(script,/calendarsByYear/,"exact monthly sessions must reach A1 reader");
 assert.match(script,/onDateReceipt:/,"daily accepted source receipts must be logged");
+assert.match(script,/observedAtFactory:\(\)=>new Date\(\)\.toISOString\(\)/,"official daily observations must get retrieval-time provenance");
+assert.match(script,/capturedAt:new Date\(\)\.toISOString\(\)/,"segment pack/persist times must be fresh per-month");
 assert.match(script,/BLOCKED_FAIL_CLOSED_SEGMENT_BACKFILL/,"failed run must preserve prior completed months and explicit error");
 assert.match(script,/lastRequestedOfficialDate/,"failed run must preserve failed daily source identity");
 assert.match(script,/S2_SEGMENT_MONTH_COMPLETE/,"each completed month must be logged");

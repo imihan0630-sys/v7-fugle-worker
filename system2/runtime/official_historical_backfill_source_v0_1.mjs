@@ -84,6 +84,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   fromDate,
   toDate,
   observedAt = new Date().toISOString(),
+  observedAtFactory = null,
   fetchImpl = globalThis.fetch,
   calendarsByYear = null,
   pauseMs = 0,
@@ -94,6 +95,9 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
 } = {}) {
   const contract = officialHistoricalA1SourceContractV0_1(market);
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
+  if (observedAtFactory !== null && typeof observedAtFactory !== "function") {
+    throw new Error("observedAtFactory must be a function or null");
+  }
   if (!Number.isInteger(pauseMs) || pauseMs < 0 || pauseMs > 60000) {
     throw new Error("pauseMs must be an integer from 0 to 60000");
   }
@@ -126,7 +130,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
         receipt = await fetchOfficialHistoricalA1DateV0_1({
           market,
           marketDate,
-          observedAt,
+          observedAt:observedAtFactory || observedAt,
           fetchImpl,
         });
         transportRecoveryRound = round;

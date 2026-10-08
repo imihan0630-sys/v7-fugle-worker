@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "S2_2026_SEGMENT_OBSERVATION_CLOCK_FIX_HANDOFF_V0_1",
+  "scope": "SYSTEM2_DATA_LANE",
+  "identifiedFrom": "Read-only D1 inventory run 37766622566 plus main source code analysis",
+  "defect": {
+    "description": "Current-year segmented workflow minted capturedAt once at job start and reused it as official A1 observedAt and each month receipt completed_at, backdating later source observations and persistence completion times.",
+    "sourceFiles": [
+      "system2/scripts/historical_current_year_segment_backfill_v0_1.mjs",
+      "system2/runtime/official_historical_a1_source_v0_1.mjs",
+      "system2/runtime/official_historical_backfill_source_v0_1.mjs",
+      "system2/runtime/historical_segmented_cold_store_v0_1.mjs"
+    ],
+    "physicalWitness": {
+      "market": "TWSE",
+      "year": 2026,
+      "affectedCompletedMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "uniformD1ReceiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "isReceiptTimestampExactActualCompletion": false
+    },
+    "severityCandidate": "PIT_PROVENANCE_CLOCK_INACCURACY_REQUIRES_AUDIT_DISPOSITION"
+  },
+  "fix": {
+    "sourceDateObservedAt": "Opt-in observedAtFactory invoked after successful official daily response JSON is received; defaults stay backward compatible.",
+    "monthlyPackCapturedAt": "Mint after all official monthly source retrieval is complete.",
+    "monthStoreInputCapturedAt": "Mint at beginning of actual month persistence, not at workflow initialization.",
+    "receiptCompletedAt": "Mint after cold manifests and R2 objects persisted, immediately before receipt D1 commit.",
+    "tests": [
+      "source clock called post-fetch, exactly once",
+      "range-level fresh observation time for each date",
+      "receipt completion time after physical persistence begins",
+      "script guard ensures clock is used"
+    ],
+    "existingReceiptPolicy": "Do not rewrite or backdate six immutable 2026 TWSE receipts. Preserve them as pre-fix metadata, note audit restriction on historical observation clock.",
+    "unchangedBoundaries": [
+      "System1 Formal Core and production runtime",
+      "Annual 2017-2025 historical packs",
+      "Strategy ranking and signals",
+      "Capital, order and broker behavior",
+      "Official source/table/date integrity validation",
+      "Historic unverified continuity and PIT release gates"
+    ]
+  },
+  "acceptance": [
+    "System2 CI and V8 regression PASS",
+    "Merge main and read back",
+    "Controlled 2026 TWSE segmented rerun, January-June immutable receipts untouched",
+    "July-September actual source observation timestamps and completion receipts recorded and validated",
+    "Independent audit handles pre-fix timestamp accuracy on Jan-Jun"
+  ]
+}
