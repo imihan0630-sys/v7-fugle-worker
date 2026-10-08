@@ -1,0 +1,24 @@
+name: D02 PVE283 Non-Wave1 Metric Horizon Freeze
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve283_nonwave1_primary_metric_horizon_guard_v0_1.mjs"
+      - "research/d02_l4_effect_target_registry_v0_5.json"
+      - "tests/test_d02_pve283_nonwave1_primary_metric_horizon_guard_v0_1.mjs"
+      - ".github/workflows/d02-pve283-nonwave1-metric-horizon-freeze.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve283_nonwave1_primary_metric_horizon_guard_v0_1.mjs
