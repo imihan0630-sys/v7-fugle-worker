@@ -1441,7 +1441,7 @@
           "learningScope": "聚焦「領導股／主流族群生命週期」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
           "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / SIX_OFFICIAL_DATES / BR061_20261007_MIXED_25_OF_34 / BR070_D16_DATE_LEVEL_HANDOFF / TOP3_TURNOVER_33P33 / WIDENING_WITHIN_MIXED / STOCK_LEVEL_PARTIAL / POWER_INSUFFICIENT / KEEP_L3",
-          "next": "BR-070 exact next: Room11/D16 freezes date-clustered lifecycle method; continue official 34-industry append-only snapshots; add member-level breadth/concentration only with effective-dated membership/common clocks; no L4 before genuine prospective persistence/reversal outcomes under the frozen method."
+          "next": "Room11/D16 must consume research/BR070_D09_07_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freeze the date-clustered lifecycle method before predictive access; Room07 continues official 34-industry append-only snapshots outcome-blind."
         },
         {
           "id": "D09-08",
@@ -1489,7 +1489,7 @@
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
           "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_FIRST_GENUINE_SAME_CLOCK_RECEIPT / BR071_OUTCOME_BLIND_D16_HANDOFF / DATE_LEVEL_UNIT_FROZEN / TPEx_SCOPE_UNKNOWN / SHARED_BREADTH_ROOT_DEDUP / POWER_INSUFFICIENT / OUTCOMES_CLOSED / KEEP_L3",
-          "next": "BR-071 exact next: Room11/D16 freezes date-level dependence/common-support/multiplicity/redundancy method; accumulate independent same-clock receipts under unchanged semantics; add TPEx/equal-weight/median only when certified at same clock; no L4 before prospective/OOS interaction outcomes."
+          "next": "Room11/D16 must consume research/BR071_D09_12_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freeze the same-clock interaction method before predictive access; Room07 accumulates independent same-clock receipts under unchanged semantics."
         },
         {
           "id": "D09-13",
@@ -1509,7 +1509,7 @@
           "learningScope": "聚焦「Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）」。正式主責為 issuer × observable strategic action × implementation stage × vintage（公司×可觀測策略行動×執行階段×版本）的公司特定策略行動生命週期，包括 actionType、announcementAt、可觀測的 commitment／boardApprovalAt、implementationStage、目標產品／技術／地理、聯盟／M&A／垂直整合／擴產卡位、競爭者反應，以及可歸因於已記錄策略行動的後續市占／產能／產品定位變化。靜態市占水準、進入障礙、替代威脅與產業結構屬 D09-13；若沒有 firm-specific action（公司特定行動）欄位，觀測不得歸為 D09-14。D10 實體產能／供應鏈、D11／D17 事件／新聞時鐘只能作依賴來源，不得複製成第二張票。共享母資料只保留一份 parent receipt；D09-14 只有 actor-specific action lifecycle（行動者特定策略生命週期）提供增量資訊時才形成獨立研究狀態。每個結論必須保存 PIT、行動階段版本、反證、資料品質、冗餘、成本與 System 1／System 2 增量價值。",
           "levelMeaning": "台股PIT資料可行",
           "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIVE_FROZEN_ACTIONS / FOUR_ISSUERS / BR069_OUTCOME_BLIND_D16_HANDOFF / ACTION_FAMILY_HETEROGENEITY_PRESERVED / TSMC_CLUSTER_DEPENDENCE_PRESERVED / FUTURE_OUTCOMES_CLOSED / KEEP_L3",
-          "next": "BR-069 exact next: Room11/D16 freezes issuer-clustered, action-family-stratified cohort method before any stock/economic outcome access; continue issuer-native milestone append only, preserve D10 shared lineage and right-censoring; no L4 until prospective outcomes mature under frozen method."
+          "next": "Room11/D16 must consume research/BR069_D09_14_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freeze the issuer-clustered/action-family-stratified cohort method before any cohort-level economic/stock outcome access; Room07 continues issuer-native milestone append only."
         }
       ],
       "status": "D09_57_1_PERCENT / SDA009_ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / R3_V06_ACCEPTANCE_ORACLE_READY / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / BR035_PARENT_GENERATION_BLOCKED / BR063_REPLAY_ONLY_SAME_CLOCK_MISSING / D16_VALIDATION_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED",
