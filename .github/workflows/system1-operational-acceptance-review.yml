@@ -1,0 +1,31 @@
+name: System1 Operational Acceptance Review
+
+on:
+  pull_request:
+    paths:
+      - 'research/system1_operational_acceptance_v0_1.mjs'
+      - 'tests/test_system1_operational_acceptance_v0_1.mjs'
+      - 'tests/build_system1_operational_acceptance.mjs'
+      - '.github/workflows/system1-c1-evidence.yml'
+      - '.github/workflows/system1-operational-acceptance-review.yml'
+      - 'research/SYSTEM1_OPERATIONAL_ACCEPTANCE_RECEIPT_CHECKPOINT_20261008.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Falsify operational acceptance receipt
+        run: node tests/test_system1_operational_acceptance_v0_1.mjs
+      - name: Syntax check acceptance builder
+        run: |
+          node --check research/system1_operational_acceptance_v0_1.mjs
+          node --check tests/build_system1_operational_acceptance.mjs
