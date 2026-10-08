@@ -190,3 +190,48 @@ When the owner sends a continuation instruction such as `繼續`, `接續`, `開
 8. This refresh gate is triggered by continuation intent in an already-open room; it is not limited to bootstrap of a new chat.
 
 This rule does not authorize Formal Core or production behavior changes.
+
+
+## Continuous execution gate
+
+This is a repository-wide owner rule for Chat / Work / Codex rooms using this repository.
+
+The purpose is to prevent long-running work from repeatedly stopping at status updates, tool errors, concurrent-main movement, or recoverable execution boundaries.
+
+1. A visible progress/status message is **not** a completion point and is never an implicit request for the owner to reply.
+   - After a progress message, continue the same task in the same turn/tool sequence whenever the environment permits.
+   - Do not end a work cycle merely because a status update was emitted.
+
+2. Recoverable execution failures must be handled automatically:
+   - transient connector/tool errors;
+   - GitHub 409/concurrent-main movement;
+   - stale blob SHA;
+   - truncated tool output;
+   - pagination;
+   - rate-limited retrieval when another authorized retrieval path exists;
+   - a failed search/query that can be reformulated;
+   - stale branch/check/head readback.
+   Diagnose, refresh/retry/fallback safely, verify, and continue without asking the owner to say `繼續` again.
+
+3. If the owner sends `繼續` / `繼續呀` / equivalent while a prior long task was only partially completed:
+   - treat it as continuation reinforcement, not a new plan;
+   - recover from latest canonical/durable state;
+   - do not restart finished work;
+   - resume the exact unfinished substep.
+
+4. Before a long tool sequence, prefer durable sub-checkpoints after material accepted deltas so an external turn boundary cannot lose the continuation point.
+
+5. Progress-update wording should make clear that execution is still active and does not need a reply, e.g. `仍在執行，不需回覆`, when useful. Do not falsely claim background execution after the assistant turn has actually ended.
+
+6. A work cycle may intentionally stop only when at least one is true:
+   - a coherent requested segment has been completed and reported;
+   - the next step requires owner-only MFA, Secret, login, permission, protected production/Formal-Core approval, or another explicit authorization boundary;
+   - every safe retry/fallback path has failed and the exact external blocker is identified;
+   - the current product/tool environment has a hard boundary that cannot be crossed in this session.
+   Ordinary uncertainty, a single failed tool call, a concurrent commit, or a long-running task is not sufficient reason to stop.
+
+7. If an unavoidable external interruption occurs, the next owner continuation must resume from the exact durable continuation point. Never use the interruption as a reason to restart research or ask the owner to repost context.
+
+8. This gate does not permit pretending that work continues after a final assistant response. Persistent background execution exists only through verified automations/workflows. The rule governs continuous execution **within the active turn** and robust recovery across turns.
+
+A recoverable interruption that is merely reported and then left for the owner to restart is `CONTINUOUS_EXECUTION_GATE_FAIL`.
