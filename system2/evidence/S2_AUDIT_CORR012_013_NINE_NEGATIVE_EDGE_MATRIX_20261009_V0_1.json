@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "S2_AUDIT_CORR012013_INDEPENDENT_EDGE_MATRIX_EVIDENCE_V0_1",
+  "recordedAt": "2026-10-09T01:31:16+08:00",
+  "verificationOwner": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditScope": [
+    "S2-CORR-20261008-012",
+    "S2-CORR-20261008-013"
+  ],
+  "source": {
+    "repo": "imihan0630-sys/v7-fugle-worker",
+    "implementationRef": "main",
+    "testPath": "system2/tests/audit_corr012_013_edge_matrix_v0_1.test.mjs",
+    "workflowPath": ".github/workflows/system2-audit-corr012013-matrix-v0-1.yml",
+    "pullRequest": 908,
+    "mergedCommit": "fa820bbce49c91169cdf2ad4699750e1460baa45"
+  },
+  "observedWorkflow": {
+    "runId": 37817121691,
+    "jobId": 113448473333,
+    "step": "Run 9 isolated CORR-012 and 013 observational probes",
+    "conclusion": "success",
+    "system2ResearchRunId": 37817122614,
+    "system2ResearchConclusion": "success",
+    "v8RegressionRunId": 37817121306,
+    "v8RegressionConclusion": "success"
+  },
+  "negativeFindings": [
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "COST_JSON_ONLY_CHANGE",
+      "state": "UNSAFE",
+      "observed": []
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "STRATEGY_JSON_ONLY_CHANGE",
+      "state": "UNSAFE",
+      "observed": []
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "CLOSED_HOLDING_ONLY_CHANGE",
+      "state": "UNSAFE",
+      "observed": []
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "MFE_ERASE_ONLY",
+      "state": "UNSAFE",
+      "observed": []
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "MAE_ERASE_ONLY",
+      "state": "UNSAFE",
+      "observed": []
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "INVALID_SEPTEMBER_31",
+      "state": "UNSAFE",
+      "observed": [
+        "accepted=true",
+        "observedState=ENTRY_PENDING"
+      ]
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "DUPLICATE_DATE",
+      "state": "UNSAFE",
+      "observed": [
+        "accepted=true",
+        "observedState=NO_FILL"
+      ]
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "UNPROVED_OFFICIAL_SESSION_GAP",
+      "state": "UNSAFE",
+      "observed": [
+        "accepted=true",
+        "observedState=NO_FILL"
+      ]
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "PARTIAL_UNKNOWN_OHLC_WINDOW",
+      "state": "UNSAFE",
+      "observed": [
+        "accepted=true",
+        "observedState=NO_FILL"
+      ]
+    }
+  ],
+  "counts": {
+    "total": 9,
+    "unsafe": 9,
+    "safe": 0
+  },
+  "interpretation": "All nine independent negative cases exposed the pre-fix defects in isolated research-only JS execution. CI success is evidence that tests ran; it is NOT closure or acceptance. CORR-012 and 013 must remain OPEN until BUILD code changes plus new negative and positive controls pass independent verification.",
+  "perDirectiveRepairGates": {
+    "S2-CORR-20261008-012": [
+      "cost model/strategy/execution/regime/decision lineage hash bound and versioned; no in-place payload replacement",
+      "known MFE/MAE cannot regress to null or worsen; closed holding sessions cannot change",
+      "signal return distinct from net after simulated fills/costs",
+      "AP-05 and five isolated cases fail closed with exact blocker codes"
+    ],
+    "S2-CORR-20261008-013": [
+      "validated real YYYY-MM-DD and strictly increasing unique session dates",
+      "bind sessions to official trading calendar or explicitly mark its absence INCOMPLETE",
+      "partially unknown OHLC trigger window cannot become NO_FILL",
+      "proofCompleteNoFill only for complete ordered evidence-proven no-touch window",
+      "barrier ambiguous/limit/halt/unknown sessions and denominators separated"
+    ]
+  },
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime edits",
+    "No real D1/Cloudflare API usage",
+    "No capital/order/push/trading authority",
+    "No synthetic OOS or physical market data acceptance"
+  ],
+  "nextOwner": "BUILD_LANE",
+  "closurePermitted": false
+}
