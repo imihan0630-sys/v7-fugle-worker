@@ -382,6 +382,7 @@ jobs:
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
           node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
+          node tests/test_system1_official_market_transport_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
           node tests/test_system1_c4_ranking_collection_v0_1.mjs
           node tests/test_system1_c4_saturation_carryover_v0_1.mjs
