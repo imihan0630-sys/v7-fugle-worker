@@ -162,6 +162,7 @@ const requiredTables = [
   "s2_actual_holdings_snapshots",
   "s2_actual_holdings_rows",
   "s2_actual_holdings_reconciliation_events",
+  "s2_outcome_versions",
 ];
 const missingTables = requiredTables.filter((name) => !tables.includes(name));
 assert.deepEqual(missingTables, [], `missing System2 tables: ${missingTables.join(", ")}`);
