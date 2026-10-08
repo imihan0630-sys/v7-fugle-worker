@@ -74,6 +74,13 @@ for(const sql of [
   "SELECT 1",
   "WITH x AS (SELECT 1) SELECT * FROM x",
   "PRAGMA table_info(s2_historical_a1_bars)",
+  "PRAGMA table_xinfo(s2_historical_a1_bars)",
+  "PRAGMA index_list(s2_historical_a1_bars)",
+  "PRAGMA index_info(idx_example)",
+  "PRAGMA foreign_key_list(s2_historical_a1_bars)",
+  "PRAGMA page_count",
+  "PRAGMA page_size",
+  "PRAGMA compile_options",
 ]){
   assert.equal(assertNcT01ReadOnlySqlV0_1(sql),sql);
 }
@@ -90,6 +97,12 @@ for(const sql of [
   "DETACH DATABASE y",
   "WITH x AS (SELECT 1) DELETE FROM y",
   "SELECT 1; UPDATE x SET a=1",
+  "PRAGMA user_version=1729",
+  "PRAGMA writable_schema=ON",
+  "PRAGMA application_id=8675309",
+  "PRAGMA cache_size=-2000",
+  "PRAGMA journal_mode=WAL",
+  "PRAGMA unknown_pragma",
 ]){
   assert.throws(()=>assertNcT01ReadOnlySqlV0_1(sql),/NCT01_READ_ONLY_SQL_REQUIRED/);
 }
@@ -157,9 +170,56 @@ await assert.rejects(
   /NCT01_READ_ONLY_SQL_REQUIRED/,
 );
 assert.equal(mutRawDb.metrics.requestCount,beforeBatch);
+// AP-008-A: writable/side-effect PRAGMAs must fail before D1 transport.
+for(const sql of [
+  "PRAGMA user_version=1729",
+  "PRAGMA writable_schema=ON",
+  "PRAGMA application_id=8675309",
+]){
+  const beforePragma=mutRawDb.metrics.requestCount;
+  assert.throws(()=>mutDb.prepare(sql),/NCT01_READ_ONLY_SQL_REQUIRED/);
+  assert.equal(mutRawDb.metrics.requestCount,beforePragma);
+}
+
+// AP-008-B: accessor-backed SQL cannot change after validation.
+let mutableSqlReads=0;
+let underlyingBatchCalls=0;
+const toctouRawDb=fakeDb();
+const originalBatch=toctouRawDb.batch;
+toctouRawDb.batch=async(statements)=>{
+  underlyingBatchCalls+=1;
+  return originalBatch(statements);
+};
+const toctouGuard=createNcT01RuntimeGuardV0_1({
+  executionCutId:"CUT-TOCTOU",
+  fetchImpl:async()=>response(200),
+});
+const toctouDb=await toctouGuard.wrapD1(toctouRawDb);
+const mutableStatement={
+  __remoteD1Statement:true,
+  get sql(){
+    mutableSqlReads+=1;
+    return mutableSqlReads<=2
+      ? "SELECT 1"
+      : "UPDATE s2_decisions SET rank=1";
+  },
+  params:[],
+};
+const beforeToctou=toctouRawDb.metrics.requestCount;
+await assert.rejects(
+  ()=>toctouDb.batch([mutableStatement]),
+  /NCT01_READ_ONLY_SQL_REQUIRED:MUTABLE_STATEMENT_ACCESS/,
+);
+assert.equal(underlyingBatchCalls,0);
+assert.equal(toctouRawDb.metrics.requestCount,beforeToctou);
+assert.equal(mutableSqlReads,0);
+const toctouEvidence=await toctouGuard.buildRuntimeEvidenceV0_1();
+assert.equal(toctouEvidence.ledger.d1.rejectedMutationAttemptCount,1);
+assert.equal(toctouEvidence.runtimeEvidence.runtimeForbiddenAccessCount,1);
+
 const mutEvidence=await mutGuard.buildRuntimeEvidenceV0_1();
-assert.equal(mutEvidence.ledger.d1.rejectedMutationAttemptCount,3);
-assert.equal(mutEvidence.runtimeEvidence.runtimeForbiddenAccessCount,3);
+assert.equal(mutEvidence.ledger.d1.rejectedMutationAttemptCount,6);
+assert.equal(mutEvidence.runtimeEvidence.runtimeForbiddenAccessCount,6);
 
 // Unexpected origin is rejected before underlying fetch.
 let forbiddenBaseFetchCount=0;
