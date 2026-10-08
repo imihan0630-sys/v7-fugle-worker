@@ -1,0 +1,35 @@
+name: System2 AUDIT CORR-008 Independent Negative Verification
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_corr008_independent_guard_v0_1.test.mjs"
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr008-independent-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_corr008_independent_guard_v0_1.test.mjs"
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr008-independent-v0-1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-reproduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independently authored CORR-008 AP-008-A and AP-008-B negative tests
+        run: node system2/tests/audit_corr008_independent_guard_v0_1.test.mjs
+      - name: Syntax guard
+        run: node --check system2/runtime/nct01_runtime_guard_v0_1.mjs
+      - name: System1 source lockout
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -E '^(src/|worker/|cloudflare/|system1/)' ; then
+            echo "System1 source modified by audit-only PR" >&2
+            exit 1
+          fi
