@@ -287,6 +287,12 @@ export async function buildFrozenDecisionSnapshot(input) {
     state: effectiveState,
     rank: effectiveState === "INCOMPLETE" ? null : Number.isFinite(evaluation.rank) ? evaluation.rank : null,
     totalScore: effectiveState === "INCOMPLETE" ? null : Number.isFinite(evaluation.totalScore) ? evaluation.totalScore : null,
+    ...(evaluation.strategyValidity !== undefined
+      ? { strategyValidity: effectiveState === "INCOMPLETE" ? "INCOMPLETE" : evaluation.strategyValidity }
+      : {}),
+    ...(evaluation.entryReadiness !== undefined
+      ? { entryReadiness: effectiveState === "INCOMPLETE" ? "BLOCKED" : evaluation.entryReadiness }
+      : {}),
     factorRefs: [...(evaluation.factorRefs || [])].map(String),
     interactionRefs: [...(evaluation.interactionRefs || [])].map(String),
     regimeSnapshotId: requiredText(evaluation.regimeSnapshotId, "evaluation.regimeSnapshotId"),
