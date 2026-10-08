@@ -14011,3 +14011,28 @@ Formal Core remains LOCKED.
 
 Next:
 PVE-270 keeps baseline remediation and cross-system quota remediation as two independent future physical prerequisites. Only a genuinely prospective post-remediation trading date can reopen H001 admission.
+
+
+# PVE-270~276 synthesis — baseline freshness is a feature-lineage property, not an H001-only property (2026-10-08)
+
+The major conceptual result from this pass is that baseline freshness must follow the feature lineage rather than the hypothesis label.
+
+H001 first exposed the defect because same-slot RVOL was visibly stale. The source audit now proves the same underlying historical baseline family feeds other representations:
+- H20 uses same-slot RVOL as the incremental breakout-volume challenger;
+- H003 price-volume response uses both same-slot volume and same-slot range baselines.
+
+Therefore an admission architecture that only hardens H001 is not causally complete.
+
+The correct research rule is:
+`freshness obligation follows every baseline-dependent feature into every downstream hypothesis and validation consumer`.
+
+This does not imply every D02 feature needs the same gate. A feature without a historical baseline should not inherit irrelevant freshness checks. PVE-277 will therefore audit Wave-2 dependency-by-dependency rather than copy the Wave-1 firewall mechanically.
+
+A second result is that infrastructure capacity is part of prospective evidence validity only where physical acquisition/persistence is required. PVE-270 keeps System1 after-market execution capacity independent from baseline correctness. PVE-271/272 refuse to infer a reserve from only two healthy dates, preserving the difference between observed envelope and operational reservation.
+
+A third result is end-to-end lineage binding. A pre-outcome gate is not enough if a downstream statistical validator can consume a different dataset. PVE-276 therefore binds the admitted dataset hash to the D16 input dataset hash, closing a data-substitution degree of freedom before outcomes.
+
+These are evidence-governance advances, not economic efficacy evidence.
+D02 stays 60.0%; all 12 modules stay L3; no L4 promotion and no Formal optimization candidate.
+
+Next research: PVE-277 Wave-2 baseline lineage audit.
