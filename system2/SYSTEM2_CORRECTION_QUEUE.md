@@ -1258,7 +1258,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T10:59:00+08:00
 - severity: HIGH
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - blockedBy: none (former CORR-007 prerequisite independently VERIFIED_CLOSED; CORR-008 remains OPEN)
@@ -1276,11 +1276,27 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   6. fail-closed regressions for mutation/origin attempts and missing/incomplete guard.
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
-- finalDisposition: PENDING
+- finalDisposition: FIX_IMPLEMENTED — measured pre-transport D1/network runtime guard is merged; independent AUDIT_LANE verification is required before VERIFIED_CLOSED; no physical S22-T12/S22-T16 credit from code CI.
 - independent AUDIT_LANE prerequisite release: PR #871 / main `35295e412911193a49f332496821fc42f8ff5f6d` resolved only CORR-007 code provenance; physical W0 and CORR-008 runtime guard not credited.
 - latest-main recheck: PR #844 head `9d690d1` is 416 commits behind main and unmergeable; use exact-head reconciliation before replacement/merge.
 - independent remaining-gate matrix: `system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json`.
 
+
+
+#### BUILD implementation handoff — 2026-10-09 00:29
+
+- PR #895 merged as `53b15e0731be0948f89f8bc08c90661703276905`; stale PR #844 is closed as superseded.
+- Physical wrapper creates the guard before remote D1 construction / official-source access.
+- D1 mutation or multi-statement SQL is rejected before Cloudflare transport; canonical SELECT / WITH / PRAGMA reads remain allowed.
+- Unexpected network origins and redirect targets are rejected before underlying fetch.
+- Same-cut runtime evidence is derived from measured D1 / network / capability counters; `runtimeForbiddenAccessCount` is no longer a literal.
+- Measured ledger identity is bound through `runtimeEvidenceDigest -> auditDigest -> HIDDEN_FALLBACK_AUDIT_SHA256 -> final receiptHash`.
+- Hidden-fallback audit finalizes only after orchestration; post-audit guarded activity causes ledger-drift failure.
+- Exact-head PASS: CORR-008 `37808737377`; Artifact Runner `37808737264`; Research CI `37808737224`; V8 Regression `37808737229`.
+- Merged-main PASS: CORR-008 `37808924586`; Artifact Runner `37808924734`; Research CI `37808924695`; V8 Regression `37808924693`.
+- Manual physical V0.2 is `workflow_dispatch` only; CI does not consume a real continuity receipt and does not claim physical independence.
+- Durable evidence: `system2/evidence/S2_CORR_008_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
+- BUILD_LANE does **not** self-close this HIGH correction; independent AUDIT_LANE verification is still required.
 
 ### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
 
