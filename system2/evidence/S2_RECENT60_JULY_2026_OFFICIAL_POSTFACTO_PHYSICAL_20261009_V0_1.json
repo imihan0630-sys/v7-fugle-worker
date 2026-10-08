@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "S2_RECENT60_JULY_2026_OFFICIAL_POST_FACTO_PHYSICAL_EVIDENCE_V0_1",
+  "status": "PASS_FOUR_BOUNDED_OFFICIAL_DATES_OBSERVED_POST_FACTO",
+  "sourceBasis": "GITHUB_MAIN_ACTION_JOB_LOG_AND_IMMUTABLE_ARTIFACT",
+  "baseline": {
+    "previousHotD1PhysicalRunId": 37854849181,
+    "previousSampledMissingIdentities": 96,
+    "baselineFrozenGitBlobSha": "5346c9cf908b5ed66266460dc342fce803c2369c",
+    "baselineMarketDate": "2026-10-08"
+  },
+  "run": {
+    "id": 37859091830,
+    "runNumber": 1,
+    "jobId": 113590286029,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37859091830",
+    "headSha": "2f03b5007af3c823e7176c07d246ba43d2804f3e",
+    "conclusion": "success",
+    "observedSummaryAt": "2026-10-08T23:22:58.776Z",
+    "taipeiObservedSummary": "2026-10-09T07:22:58.776+08:00",
+    "artifact": {
+      "id": 11585735521,
+      "name": "system2-recent60-july-official-no-d1-37859091830-1",
+      "digest": "sha256:22444513308e60383bf9a42a3e9c89da4556a8086496bdc8ad78fb8200f83716"
+    },
+    "guardPassed": true,
+    "system1IsolationPassed": true
+  },
+  "observations": [
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-14",
+      "officialExactDateReady": true,
+      "originalFrozenSampledSymbolsObserved": 6,
+      "originalFrozenSampledSymbolsTotal": 6
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-23",
+      "officialExactDateReady": true,
+      "originalFrozenSampledSymbolsObserved": 6,
+      "originalFrozenSampledSymbolsTotal": 6
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-14",
+      "officialExactDateReady": true,
+      "originalFrozenSampledSymbolsObserved": 6,
+      "originalFrozenSampledSymbolsTotal": 6
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-23",
+      "officialExactDateReady": true,
+      "originalFrozenSampledSymbolsObserved": 6,
+      "originalFrozenSampledSymbolsTotal": 6
+    }
+  ],
+  "counts": {
+    "independentOfficialDateChecks": 4,
+    "officialDateReady": 4,
+    "sampledMarketSymbolDateIdentitiesFound": 24,
+    "originalHotD1MissingIdentitiesTested": 96,
+    "fullNinetySixDateOfficialAuditPerformed": false,
+    "markets": [
+      "TWSE",
+      "TPEX"
+    ],
+    "tradingDates": [
+      "2026-07-14",
+      "2026-07-23"
+    ]
+  },
+  "storage": {
+    "d1ApiCalls": 0,
+    "d1RowsRead": 0,
+    "d1RowsWritten": 0,
+    "r2ApiCalls": 0,
+    "r2ObjectsRead": 0,
+    "r2ObjectsWritten": 0,
+    "cloudflareSecretsUsed": false
+  },
+  "priorStorageReadBlockedRun": {
+    "id": 37858652385,
+    "jobId": 113588851058,
+    "headSha": "2a772080d329f9259d864e97d1eb0a1b94d8d065",
+    "artifactId": 11584838697,
+    "artifactDigest": "sha256:99c52c6b57e478306d66220ef3502729f8fa75ade16bf50b4f13d0f9d442fb2a",
+    "cause": "CLOUDFLARE_D1_FREE_DAILY_ROW_READ_LIMIT",
+    "physicalSampleCompleted": 0,
+    "d1RowsWritten": 0
+  },
+  "interpretation": {
+    "positive": "Historical TWSE and TPEx canonical exact-date official daily A1 sources are currently readable for 2026-07-14 and 2026-07-23, and cover all 12 frozen sample symbols on each respective market; 24 source-market-symbol-date presences witnessed.",
+    "notEstablished": [
+      "Original 2026-07-14 or 2026-07-23 source publication timestamp / firstKnownAt at July decision cut",
+      "Whether all eight early-July sessions in the previous 96 hot D1 absence sample currently have matching official source bars",
+      "Whether 2026 July cold R2 physical objects/manifests/COMPLETE receipts exist",
+      "Whether 96 sampled hot D1 rows still absent after original 2026-10-09 early-morning sample",
+      "Whether 60 exact prior sessions, corporate-action/lifecycle continuity, suspension and NO_EVENT coverage are complete",
+      "NC-T01 physical readiness, Shadow selection, replay, trading orders or System1 Formal Core"
+    ]
+  },
+  "nextSteps": [
+    "When Cloudflare D1 read quota resets at midnight UTC and REMEDIATION_LANE account read budget allows, rerun exact original Run 37858652385 physical Hot D1/Cold R2 diagnostic once; preserve blocked artifact and do not silently overwrite",
+    "Read 2026 July TWSE and TPEx segment D1 receipts/manifests, verify actual R2 objects only where manifests exist, then compare 96 original sample identities",
+    "Investigate Stage1 recent60 hot-D1 ingestion gap and official source clock without backdating PIT",
+    "Separately certify full 60-session corporate-action/lifecycle continuity for 46 history-ready symbols before NC-T01"
+  ],
+  "protected": {
+    "system1FormalCoreModified": false,
+    "system1RuntimeModified": false,
+    "system2RankingOrSelectionModified": false,
+    "profitClaimed": false,
+    "paidPlanChanged": false,
+    "historicalFirstKnownAtBackfilled": false
+  }
+}
