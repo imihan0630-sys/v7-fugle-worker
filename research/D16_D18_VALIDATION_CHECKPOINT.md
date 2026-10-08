@@ -4937,3 +4937,124 @@ Physical/executable evidence remains absent:
 4. Run S1-T01~T18.
 5. Freeze size-bucket policy before outcomes.
 6. Only then assess D18-06 L3.
+
+
+## 2026-10-09 four-module numeric L3 physical acceptance
+
+Durable acceptance:
+- `research/D16_16_18_19_24_NUMERIC_L3_PHYSICAL_ACCEPTANCE_20261009_V0_1.md`.
+
+Canonical physical run:
+- workflow: `Research Room11 Numeric L3 Physical Readonly`;
+- run: `37805085401`;
+- exact head: `8d8237d5c765782e120f2258d55633a7d2256aaa`;
+- conclusion: SUCCESS;
+- artifact id: `11562023285`;
+- artifact digest: `sha256:e39583068a4a7baca59f6c13d9aae549a9d6489e9fd8d4932adb9bca5c3c4279`;
+- receipt hash: `51eec07be8f55d7313cee739b44dd8383ea685d809d0ef431c3e126a09121287`.
+
+Physical data:
+- 2025 TWSE immutable R2 cold history;
+- 12 real symbols;
+- 238 independent decision dates;
+- 2,845 model rows;
+- D1 rowsWritten=0;
+- 17/17 pure fail-closed/leakage tests PASS;
+- research repository isolation PASS.
+
+D1 free-tier read quota was exhausted during physical execution.
+This did not become evidence.
+A bounded R2-only fallback activated only for that explicit quota error and verified:
+- durable accepted annual evidence anchor;
+- exactly 1,070 unique 2025 TWSE RAW annual R2 packs;
+- payload-hash metadata;
+- object SHA-256;
+- pack schema;
+- decompressed canonical payload identity.
+No R2/D1 write was performed.
+
+### Leakage correction
+
+The original 60/20/20 chronological split had a D+1 label boundary leak:
+- last TRAIN decision could mature in first VALIDATION session;
+- last VALIDATION decision could mature in first TEST session.
+
+Accepted V0.2 purges:
+- 12 TRAIN→VALIDATION boundary rows;
+- 11 VALIDATION→TEST boundary rows.
+
+Hard invariants:
+- TRAIN outcomeDate < firstValidationDate;
+- VALIDATION outcomeDate < firstTestDate.
+
+### D16 promotions
+
+Promoted:
+- D16-16 L2/40 -> L3/60: real Taiwan PIT time-series execution feasibility.
+- D16-18 L2/40 -> L3/60: real nested regularization/feature-selection feasibility; outer test untouched.
+- D16-19 L2/40 -> L3/60: real Taiwan PIT ML/calibration tooling feasibility only.
+- D16-24 L2/40 -> L3/60: real empirical date-level input distribution + deterministic dependence-preserving block bootstrap feasibility.
+
+D16-19 critical firewall:
+the physical target is `NEXT_SESSION_TRADE_VALUE_UP_DIAGNOSTIC_NOT_RETURN_ALPHA`.
+Brier `0.24559490566223208`.
+This is NOT the canonical stock-return CalibrationReceipt and does not satisfy D16-25 or SDA-022 numerical effect-target requirements.
+
+D16-24:
+- empirical independent date N=190;
+- blockLength=5;
+- pathLength=20;
+- simulationCount=500;
+- syntheticPathCountIsEmpiricalN=false.
+
+### Non-promotions
+
+D16-17 remains L2/40.
+
+The official 2025 TWSE full-universe artifact proves:
+- current + new-listing + delisting union;
+- registry id `S2-DATA-TWSE-2025-OFFICIAL-UNION-V0.1`;
+- registry hash `8d6d57a6a7791a95cd48c4cb98ddb41a9af2ce6415d619995bafcaf5a1915535`;
+- 1,096 members;
+- 1,096 replay eligible;
+- 1,089 current;
+- 7 delisted;
+- zero unknown starts.
+
+However the annual verifier constructs the registry in memory and does not persist a matching row-level registry receipt/membership set into the D1 tables consumed by Room11.
+
+Physical numeric run therefore records:
+- persistedRegistryReceiptPresent=false;
+- survivorshipAwareMembershipApplied=false;
+- D16_17_PANEL_CROSS_SECTION=false;
+- populationInferenceAuthorized=false.
+
+A bounded availability cohort is not a survivorship-safe issuer×date population.
+
+D16-25 remains L2/40 because the diagnostic D16-19 calibration is not a genuine canonical calibrated-decision ledger.
+
+### D16 current level map
+
+After acceptance:
+- L4=10;
+- L3=10;
+- L2=5;
+- maturity=64.0%.
+
+Remaining D16 L2:
+- D16-17 panel/cross-section;
+- D16-20 causal inference;
+- D16-21 alternative data;
+- D16-22 NLP/LLM;
+- D16-25 probabilistic/Bayesian decision.
+
+### Exact next continuation
+
+Priority attack order:
+1. D16-17 durable consumable survivorship-aware historical membership receipt or authorized exact-equivalent consumer path, then physical panel rerun.
+2. D16-20 real Taiwan PIT event/treatment cohort + pre-treatment covariates + overlap/positivity.
+3. D16-21 real Taiwan alternative-data entity-linked panel.
+4. D16-22 PIT text corpus + immutable document/model/prompt clocks.
+5. D16-25 genuine canonical CalibrationReceipt -> decision ledger; no second calibrator and no diagnostic-target substitution.
+
+SDA-016, SDA-017 and SDA-022 remain governed separately and are not closed by these L3 feasibility promotions.
