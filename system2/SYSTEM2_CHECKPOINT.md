@@ -3397,3 +3397,13 @@ Owner-approved policy contract: `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_
 - **System 1 Formal Core, formal 23:35/23:55 windows, four production Crons, push, capital and order paths remain untouched.**
 
 BUILD next: deliver/accept the already active CORR-012/013 and data-readiness prerequisites without modifying a protected runtime; schedule implementation is a separate tracked integration after readiness.
+
+## 2026-10-09 BUILD_LANE implementation — post-market clock gate V0.1 merged (offline only)
+
+- PR #929 merged to `main` as `47b67feee348b70d7f344b8881d10ca1140486a1`. Parent owner-approved policy remains `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_POOL_CLOCK_V0_1.md`.
+- New standalone offline guard: `system2/runtime/post_market_clock_gate_v0_1.mjs`; adversarial test: `system2/tests/post_market_clock_gate_v0_1.test.mjs`; exact scope/limitations: `system2/SYSTEM2_POST_MARKET_CLOCK_GATE_IMPLEMENTATION_V0_1.md`.
+- Gate covers fixed 19:00 preliminary-only, 23:45 eligible-to-revalidate attempt, conditional 00:15 retaining the original marketDate across midnight, exact provider-reported market date, first-observed/response clocks, PIT, source hash/attestation shape, calendar, full-universe requirements and strategy-specific required vs optional source readiness.
+- Source and strategy negative probes fail closed, and downstream selection/capacity/trade/push flags are always false. Any READY result is `READY_FOR_DOWNSTREAM_REVALIDATION` only: caller-supplied attestations are **not** independent verification of physical provider bytes or source availability.
+- PR-head System2 Research CI and V8 Regression PASS; main file readback confirmed after merge. No Worker/Cron, D1, migration, API, secret, paid data source or System1 files were changed. No actual physical source, next-day monitor/capacity freeze or D1 write success is certified.
+- Exact next BUILD work remains the HIGH `S2-CORR-20261008-012` and then `-013` (both OPEN at observed canonical queue), together with non-conflicting downstream clock integration only after DATA_LANE PIT/source and REMEDIATION_LANE quota gates. The existing draft CORR-012 PR #912 is not completed or authorized for merge by this checkpoint.
+- 23:45/00:15 production schedule deployment remains **NOT AUTHORIZED / NOT DEPLOYED**. Existing System2 19:00 bounded reader and System1 formal 23:35/23:55 schedule unchanged.
