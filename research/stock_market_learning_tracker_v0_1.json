@@ -1420,7 +1420,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「漲跌家數／Advance-Decline」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "OFFICIAL_TWSE_STOCK_BREADTH_PIT_PASS / TWO_INDEPENDENT_DATES_20261002_20261007 / BOTH_INDEX_BREADTH_DIVERGENCE_DIRECTIONS_OBSERVED / BR040_BR066_SHARED_ROOT_DEDUP / OUTCOMES_CLOSED / KEEP_L3",
+          "status": "OFFICIAL_TWSE_STOCK_BREADTH_PIT_PASS / THREE_INDEPENDENT_DATES_20261002_20261007_20261008 / BOTH_INDEX_BREADTH_DIVERGENCE_DIRECTIONS_OBSERVED / DAILY_SHARED_ROOT_DEDUP / OUTCOMES_CLOSED / KEEP_L3",
           "next": "Accumulate more independent official TWSE stock-breadth dates under unchanged denominator semantics; add TPEx only with accepted same-clock official transport; preserve one evidence root when D09-12 consumes the same daily breadth receipt; no L4 before D16 common-support/OOS validation."
         },
         {
