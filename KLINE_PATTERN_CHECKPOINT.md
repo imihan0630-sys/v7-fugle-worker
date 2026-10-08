@@ -6217,3 +6217,94 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 and DL-108~112 before physical R7 emission.
 5. Once physical R1-R7 exists, attach revision-vintage metadata to the already frozen DL-107 D16 handoff.
 6. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
+
+
+## Continuation update — DL-113~115 (2026-10-08)
+
+### DL-113 — cross-scale source-revision propagation
+- One primitive daily source revision may fan out into daily / weekly / monthly / rolling derived-bar changes.
+- Primitive revision root identity is preserved through every aggregation layer.
+- Higher-timeframe aggregation must record constituent bar identities, aggregation definition/version, semantic space and primitiveRevisionRootIds.
+- A primitive daily correction does not automatically imply the derived weekly/monthly OHLC changed; the aggregate must be rebuilt and compared.
+- Session-set revisions can change aggregate membership/open/close even without a raw price-value edit.
+- TECHNICAL_CONTINUITY revisions propagate only within continuity space; RAW_EXECUTION and TECHNICAL_CONTINUITY constituents may not be mixed.
+- Volume-only changes do not force D01 price-pattern replay when price aggregates are unchanged.
+
+### DL-114 — revision-root lineage / cross-scale dedup
+- Revision lineage graph now separates primitive source revision, derived bar revision, R7 representation revision and context revision.
+- Frozen revision-edge classes:
+  EXACT_REVISION_DUPLICATE;
+  NESTED_REVISION_ROOT;
+  OVERLAPPING_REVISION_ROOT;
+  DISJOINT_REVISION_ROOT_CANDIDATE.
+- rawDerivedRevisionCount / rawRepresentationRevisionCount may exceed primitiveRevisionRootCount.
+- effectiveIndependentRevisionRootCount defaults to primitiveRevisionRootCount, not representation count.
+- Three changed scales from one corrected daily row remain one primitive revision root.
+- Multiple distinct primitive revision roots still do not automatically imply predictive independence.
+- Cross-scale revision fanout remains rooted in PRICE_OHLC where applicable.
+
+### DL-115 — cross-scale revision sensitivity receipt
+- Outcome-blind per-scale receipt now preserves:
+  old/new source vintage;
+  primitive revision roots;
+  constituent set commitments;
+  old/new derived bar hashes;
+  old/new R7 states/hashes;
+  old/new episode/clocks;
+  revision change class.
+- Aggregate metrics separate:
+  primitiveRevisionRootCount;
+  derivedBarRebuildCount;
+  derivedBarChangedCount;
+  R7ReplayedCount;
+  R7RepresentationChangedCount;
+  rawRevisionRepresentationCount;
+  effectiveIndependentRevisionRootCount.
+- Hard invariant:
+  effectiveIndependentRevisionRootCount <= primitiveRevisionRootCount.
+- Frozen descriptive states:
+  ALL_SCALES_UNCHANGED_AFTER_REBUILD;
+  SOME_SCALES_CHANGED;
+  ALL_OBSERVED_SCALES_CHANGED;
+  WINDOW_MEMBERSHIP_CHANGED;
+  CONTINUITY_SPACE_REVISION_CHANGED;
+  DATA_BLOCKED.
+- Multi-scale changed count is not Alpha and cannot become a vote multiplier.
+
+### Adversarial execution finding
+- First execution produced 27/28 PASS.
+- Failure exposed a helper implementation bug:
+  generic REVISION_ROOTS_ACCOUNTED status overwrote the more specific ONE_ROOT_MULTI_SCALE_FANOUT status because of object-spread field precedence.
+- Implementation was corrected without changing the frozen research rule or fixture expectation.
+- Final execution:
+  28/28 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-115:
+  437/437 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Physical owner readback
+- No physical 1101 / 2021-06-15 R1-R6 owner bundle was found before this tranche.
+- Physical R7 remains blocked.
+- D01 did not implement duplicate System2/D05 collectors.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- CROSS_SCALE_REVISION_PROPAGATION = FROZEN.
+- REVISION_ROOT_LINEAGE_DEDUP = FROZEN.
+- CROSS_SCALE_REVISION_SENSITIVITY = FROZEN.
+- FANOUT_COUNT_EQUALS_INDEPENDENT_EVIDENCE_COUNT = FALSE.
+- SDA-001 research semantics remain complete for current D01 scope; ticket stays open under cross-domain/System/D16/00 gates.
+- SDA-002 remains open under physical replay/System/D16/00 gates.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-115
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze derived-bar boundary/calendar/timezone revision identity so a calendar-definition correction cannot masquerade as new market information.
+4. If R1-R6 appear, validate DL-095 plus DL-108~115 before physical R7 emission.
+5. D16 receives primitive revision roots and cross-scale sensitivity metadata, never raw scale-count votes.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
