@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "S2_2026_TWSE_SEGMENT_D1_MONTHLY_INVENTORY_EVIDENCE_V0_1",
+  "observedAt": "2026-10-08T10:57:37.003Z",
+  "sourceRun": {
+    "id": 37766622566,
+    "number": 2,
+    "workflow": "System2 Historical Inventory Readonly",
+    "conclusion": "success",
+    "jobId": 113275752571,
+    "artifactId": 11544273832,
+    "artifactDigest": "sha256:dcaf789a94d73d56b46716c54c5b95bd1148c173dc5071228494dbc6c2758b87",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37766622566"
+  },
+  "failedOriginalRun": {
+    "id": 37740634959,
+    "number": 1,
+    "status": "failure",
+    "error": "official historical daily table not found for TWSE",
+    "lastSuccessfulMonthBoundedByD1ControlPlane": 6,
+    "exactFailureDateUnproven": true
+  },
+  "d1ReadOnlyObservations": {
+    "database": "system2-research",
+    "monthReceipts": [
+      {
+        "month": 1,
+        "receiptId": "S2HSR-6127bf95a2a9a6a10fc625e0fdf8d2832c100b7e0d71fa1c3f614fb37203b529",
+        "receiptState": "COMPLETE",
+        "packCount": 1071,
+        "barCount": 22419,
+        "manifestRollingHash": "6127bf95a2a9a6a10fc625e0fdf8d2832c100b7e0d71fa1c3f614fb37203b529",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1071,
+        "checkpointReadyObjects": 1071,
+        "checkpointCommittedManifests": 1071,
+        "manifestCount": 1071,
+        "manifestBarCount": 22419,
+        "controlPlaneConsistent": true
+      },
+      {
+        "month": 2,
+        "receiptId": "S2HSR-043203f2dc7806bfeb1856af41049ca7708c8c96c401e0fd675c13ed1ad8e162",
+        "receiptState": "COMPLETE",
+        "packCount": 1072,
+        "barCount": 12861,
+        "manifestRollingHash": "043203f2dc7806bfeb1856af41049ca7708c8c96c401e0fd675c13ed1ad8e162",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1072,
+        "checkpointReadyObjects": 1072,
+        "checkpointCommittedManifests": 1072,
+        "manifestCount": 1072,
+        "manifestBarCount": 12861,
+        "controlPlaneConsistent": true
+      },
+      {
+        "month": 3,
+        "receiptId": "S2HSR-5e74851bf7b7b7aaf6663ad3b237691bc56c23499cb142accea9fdee40a513ff",
+        "receiptState": "COMPLETE",
+        "packCount": 1075,
+        "barCount": 23586,
+        "manifestRollingHash": "5e74851bf7b7b7aaf6663ad3b237691bc56c23499cb142accea9fdee40a513ff",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1075,
+        "checkpointReadyObjects": 1075,
+        "checkpointCommittedManifests": 1075,
+        "manifestCount": 1075,
+        "manifestBarCount": 23586,
+        "controlPlaneConsistent": true
+      },
+      {
+        "month": 4,
+        "receiptId": "S2HSR-584f410a0fbc3df1fb705b343ea5a110e850cbf523bc2a0981607b58f07ccdf7",
+        "receiptState": "COMPLETE",
+        "packCount": 1078,
+        "barCount": 21490,
+        "manifestRollingHash": "584f410a0fbc3df1fb705b343ea5a110e850cbf523bc2a0981607b58f07ccdf7",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1078,
+        "checkpointReadyObjects": 1078,
+        "checkpointCommittedManifests": 1078,
+        "manifestCount": 1078,
+        "manifestBarCount": 21490,
+        "controlPlaneConsistent": true
+      },
+      {
+        "month": 5,
+        "receiptId": "S2HSR-d508a5c3f991eb75b479b70fc63fef430418a9d8c5f5bf834fdae68aca5d8e74",
+        "receiptState": "COMPLETE",
+        "packCount": 1082,
+        "barCount": 21577,
+        "manifestRollingHash": "d508a5c3f991eb75b479b70fc63fef430418a9d8c5f5bf834fdae68aca5d8e74",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1082,
+        "checkpointReadyObjects": 1082,
+        "checkpointCommittedManifests": 1082,
+        "manifestCount": 1082,
+        "manifestBarCount": 21577,
+        "controlPlaneConsistent": true
+      },
+      {
+        "month": 6,
+        "receiptId": "S2HSR-957083d0f83254c156cb67672339f6b5daf91746ef67e6b1b82b854d3fad1922",
+        "receiptState": "COMPLETE",
+        "packCount": 1083,
+        "barCount": 22717,
+        "manifestRollingHash": "957083d0f83254c156cb67672339f6b5daf91746ef67e6b1b82b854d3fad1922",
+        "checkpointState": "COMPLETE",
+        "checkpointNextPackIndex": 1083,
+        "checkpointReadyObjects": 1083,
+        "checkpointCommittedManifests": 1083,
+        "manifestCount": 1083,
+        "manifestBarCount": 22717,
+        "controlPlaneConsistent": true
+      }
+    ],
+    "completedD1ControlPlaneMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "monthsWithoutCompleteD1Receipts": [
+      7,
+      8,
+      9
+    ],
+    "rowsWritten": 0,
+    "mutationPerformed": false,
+    "system1RuntimeUsed": false,
+    "assurance": "D1_CONTROL_PLANE_ONLY_R2_BYTE_VERIFICATION_SEPARATE"
+  },
+  "rootCauseCandidate": {
+    "classification": "LIKELY_UNSCHEDULED_TRADING_DAY_FROM_HOLIDAY_ONLY_CALENDAR",
+    "eventDate": "2026-07-10",
+    "impact": "TWSE and TPEX official trading markets both closed due to Typhoon Bavi according to 2026-07-09 public report",
+    "sourceEvidence": [
+      {
+        "url": "https://www.cna.com.tw/news/afe/202607090360.aspx",
+        "source": "CNA",
+        "publishedAt": "2026-07-09T20:32:00+08:00"
+      },
+      {
+        "url": "https://www.twse.com.tw/zh/ETFortune/announcement?company=A00049&date=20260713&fund=ZZZZ&seq=1&type=other",
+        "source": "TWSE_HOSTED_DISCLOSURE",
+        "publishedDate": "2026-07-13"
+      },
+      {
+        "url": "https://www.twse.com.tw/zh/clearing/suspended.html",
+        "source": "TWSE_OFFICIAL_MARKET_CLOSURE_POLICY"
+      }
+    ],
+    "notConfirmedAsExactFailedDate": true,
+    "reproductionRequired": true
+  },
+  "recovery": {
+    "approvedMainFix": "7498c206786be8fad05f42388be2bd720a1e5fed",
+    "exactFmtqikCalendarRequired": true,
+    "priorReceiptsReusedWithoutMutation": true,
+    "nextMarket": "TWSE",
+    "neededMonths": [
+      7,
+      8,
+      9
+    ],
+    "controlledRetryRequired": true,
+    "system2PITContinuityReplayReady": false
+  },
+  "protectedBoundaries": {
+    "system1FormalRuntimeChanged": false,
+    "unverifiedBarsForwardFilled": false,
+    "unverifiedSourceTablesAccepted": false
+  }
+}
