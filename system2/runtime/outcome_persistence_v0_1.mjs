@@ -3,8 +3,30 @@ import { canonicalStringify, sha256Hex } from "./decision_archive.mjs";
 import { validateMonotonicOutcomeUpdateV0_1 } from "./outcome_tracker_v0_1.mjs";
 
 const IMMUTABLE_TABLES = Object.freeze({
-  s2_sim_orders: "sim_order_id",
-  s2_sim_fills: "sim_fill_id",
+  s2_sim_orders: Object.freeze({
+    identityColumn: "sim_order_id",
+    columns: Object.freeze([
+      "sim_order_id","decision_id","side","order_type","trigger_rule_version",
+      "order_json","created_at","status",
+    ]),
+  }),
+  s2_sim_fills: Object.freeze({
+    identityColumn: "sim_fill_id",
+    columns: Object.freeze([
+      "sim_fill_id","sim_order_id","fill_timestamp","raw_fill_price","slippage",
+      "commission","transaction_tax","all_in_price","shares","fill_quality",
+      "ambiguity_reason","feasibility_flags_json","fill_json",
+    ]),
+  }),
+});
+const OUTCOME_TABLE_SPEC = Object.freeze({
+  table: "s2_outcomes",
+  identityColumn: "decision_id",
+  columns: Object.freeze([
+    "decision_id","d1_return","d3_return","d5_return","d10_return","d20_return",
+    "mfe","mae","target_hit_session","stop_hit_session","ambiguous_same_bar",
+    "realized_return_after_cost","holding_sessions","outcome_json","updated_at",
+  ]),
 });
 
 function requiredText(value, field) {
@@ -18,13 +40,17 @@ function assertIdentifier(value, field) {
   return text;
 }
 
-function normalizeRow(row, field) {
+function normalizeRow(row, field, allowedColumns) {
   if (!row || typeof row !== "object" || Array.isArray(row)) {
     throw new Error(`${field} must be an object`);
   }
   const entries = Object.entries(row).sort(([a], [b]) => a.localeCompare(b));
   if (!entries.length) throw new Error(`${field} cannot be empty`);
-  for (const [key] of entries) assertIdentifier(key, `${field}.${key}`);
+  const allowed = new Set(allowedColumns || []);
+  for (const [key] of entries) {
+    assertIdentifier(key, `${field}.${key}`);
+    if (!allowed.has(key)) throw new Error(`${field} column is not whitelisted: ${key}`);
+  }
   return Object.fromEntries(entries);
 }
 
@@ -74,9 +100,10 @@ export async function buildOutcomePersistenceBatchV0_1({
     ["s2_sim_orders", simulationOrderRows],
     ["s2_sim_fills", simulationFillRows],
   ]) {
-    const identityColumn = IMMUTABLE_TABLES[table];
+    const spec = IMMUTABLE_TABLES[table];
+    const identityColumn = spec.identityColumn;
     for (let i = 0; i < rows.length; i += 1) {
-      const row = normalizeRow(rows[i], `${table}[${i}]`);
+      const row = normalizeRow(rows[i], `${table}[${i}]`, spec.columns);
       const identity = requiredText(row[identityColumn], `${table}[${i}].${identityColumn}`);
       const key = `${table}|${identity}`;
       if (seen.has(key)) throw new Error(`duplicate persistence identity: ${key}`);
@@ -89,6 +116,7 @@ export async function buildOutcomePersistenceBatchV0_1({
         row,
         select: selectSql(table, row, identityColumn),
         insert: insertSql(table, row),
+        identityDigest: await sha256Hex({ table, identityColumn, identity }),
         rowDigest: await sha256Hex(row),
       });
     }
@@ -104,7 +132,11 @@ export async function buildOutcomePersistenceBatchV0_1({
   if (!rawOutcomes.length) throw new Error("at least one outcome row is required");
 
   for (let i = 0; i < rawOutcomes.length; i += 1) {
-    const normalizedOutcome = normalizeRow(rawOutcomes[i], `outcomeRows[${i}]`);
+    const normalizedOutcome = normalizeRow(
+      rawOutcomes[i],
+      `outcomeRows[${i}]`,
+      OUTCOME_TABLE_SPEC.columns,
+    );
     const decisionId = requiredText(
       normalizedOutcome.decision_id,
       `outcomeRows[${i}].decision_id`,
@@ -122,6 +154,11 @@ export async function buildOutcomePersistenceBatchV0_1({
       select: selectSql("s2_outcomes", normalizedOutcome, "decision_id"),
       insert: insertSql("s2_outcomes", normalizedOutcome),
       update: outcomeUpdateSql(normalizedOutcome),
+      identityDigest: await sha256Hex({
+        table: "s2_outcomes",
+        identityColumn: "decision_id",
+        identity: decisionId,
+      }),
       rowDigest: await sha256Hex(normalizedOutcome),
     });
   }
@@ -167,6 +204,184 @@ async function readExisting(db, record) {
   throw new Error("database prepared statement must support first() or all()");
 }
 
+function parseJsonObject(value, field) {
+  let parsed;
+  try {
+    parsed = JSON.parse(requiredText(value, field));
+  } catch {
+    throw new Error(`${field} must be valid JSON`);
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`${field} must encode an object`);
+  }
+  return parsed;
+}
+
+export async function rebuildAndVerifyOutcomePersistenceBatchV0_1(batch) {
+  if (!batch || typeof batch !== "object" || Array.isArray(batch)) {
+    throw new Error("outcome persistence batch is required");
+  }
+  if (!Array.isArray(batch.records)) throw new Error("batch.records must be an array");
+
+  const simulationOrderRows = [];
+  const simulationFillRows = [];
+  const outcomeRows = [];
+  for (let index = 0; index < batch.records.length; index += 1) {
+    const record = batch.records[index];
+    if (!record || typeof record !== "object") {
+      throw new Error(`batch.records[${index}] must be an object`);
+    }
+    if (record.table === "s2_sim_orders" && record.kind === "IMMUTABLE") {
+      simulationOrderRows.push(record.row);
+    } else if (record.table === "s2_sim_fills" && record.kind === "IMMUTABLE") {
+      simulationFillRows.push(record.row);
+    } else if (record.table === "s2_outcomes" && record.kind === "MONOTONIC_OUTCOME") {
+      outcomeRows.push(record.row);
+    } else {
+      throw new Error(`OUTCOME_PERSISTENCE_RECORD_CONTRACT_MISMATCH:${index}`);
+    }
+  }
+
+  const canonical = await buildOutcomePersistenceBatchV0_1({
+    batchId: batch.batchId,
+    marketDate: batch.marketDate,
+    decisionTimestamp: batch.decisionTimestamp,
+    simulationOrderRows,
+    simulationFillRows,
+    outcomeRows,
+    createdAt: batch.createdAt,
+  });
+
+  if (batch.batchHash !== canonical.batchHash) throw new Error("OUTCOME_BATCH_HASH_MISMATCH");
+  if (batch.operationCount !== canonical.operationCount) {
+    throw new Error("OUTCOME_BATCH_OPERATION_COUNT_MISMATCH");
+  }
+
+  for (let index = 0; index < canonical.records.length; index += 1) {
+    const supplied = batch.records[index];
+    const expected = canonical.records[index];
+    if (supplied?.rowDigest !== expected.rowDigest) {
+      throw new Error(`OUTCOME_ROW_DIGEST_MISMATCH:${index}`);
+    }
+    if (supplied?.identityDigest !== expected.identityDigest) {
+      throw new Error(`OUTCOME_IDENTITY_DIGEST_MISMATCH:${index}`);
+    }
+    if (
+      supplied?.table !== expected.table
+      || supplied?.kind !== expected.kind
+      || supplied?.identity !== expected.identity
+      || supplied?.identityColumn !== expected.identityColumn
+    ) {
+      throw new Error(`OUTCOME_IDENTITY_CONTRACT_MISMATCH:${index}`);
+    }
+    for (const field of ["select","insert","update"]) {
+      if (canonicalStringify(supplied?.[field] ?? null) !== canonicalStringify(expected?.[field] ?? null)) {
+        throw new Error(`OUTCOME_SQL_PLAN_MISMATCH:${index}:${field}`);
+      }
+    }
+  }
+
+  if (canonicalStringify(batch) !== canonicalStringify(canonical)) {
+    throw new Error("OUTCOME_BATCH_CANONICAL_MISMATCH");
+  }
+  return canonical;
+}
+
+async function readCanonicalParent(db, {
+  table,
+  identityColumn,
+  identityValue,
+  columns,
+}) {
+  const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${identityColumn} = ? LIMIT 1`;
+  const statement = db.prepare(sql).bind(identityValue);
+  if (typeof statement.first === "function") return await statement.first();
+  if (typeof statement.all === "function") {
+    const result = await statement.all();
+    return result?.results?.[0] ?? null;
+  }
+  throw new Error("database prepared statement must support first() or all()");
+}
+
+function requireLineageEqual(actual, expected, code) {
+  if (actual !== expected) throw new Error(`LINEAGE_MISMATCH:${code}`);
+}
+
+async function validateOutcomeLineageV0_1(db, batch) {
+  const localOrders = new Map(
+    batch.records
+      .filter((record) => record.table === "s2_sim_orders")
+      .map((record) => [record.identity, record.row]),
+  );
+
+  for (const record of batch.records) {
+    if (record.table === "s2_sim_orders") {
+      const order = parseJsonObject(record.row.order_json, "s2_sim_orders.order_json");
+      requireLineageEqual(order.decisionId, record.row.decision_id, "order_json.decisionId");
+      requireLineageEqual(order.decisionTimestamp, record.row.created_at, "order_json.decisionTimestamp");
+      const decision = await readCanonicalParent(db, {
+        table: "s2_decisions",
+        identityColumn: "decision_id",
+        identityValue: record.row.decision_id,
+        columns: ["decision_id","strategy_id","strategy_version","symbol","decision_timestamp"],
+      });
+      if (!decision) {
+        throw new Error(`LINEAGE_PARENT_MISSING:s2_sim_orders.decision_id:${record.row.decision_id}`);
+      }
+      requireLineageEqual(decision.decision_timestamp, record.row.created_at, "order-decision.decision_timestamp");
+      requireLineageEqual(order.strategyId, decision.strategy_id, "order-decision.strategy_id");
+      requireLineageEqual(order.strategyVersion, decision.strategy_version, "order-decision.strategy_version");
+      requireLineageEqual(order.symbol, decision.symbol, "order-decision.symbol");
+    }
+
+    if (record.table === "s2_sim_fills") {
+      const fill = parseJsonObject(record.row.fill_json, "s2_sim_fills.fill_json");
+      requireLineageEqual(fill.simOrderId, record.row.sim_order_id, "fill_json.simOrderId");
+      const parent = localOrders.get(record.row.sim_order_id)
+        || await readCanonicalParent(db, {
+          table: "s2_sim_orders",
+          identityColumn: "sim_order_id",
+          identityValue: record.row.sim_order_id,
+          columns: ["sim_order_id","decision_id","order_json"],
+        });
+      if (!parent) {
+        throw new Error(`LINEAGE_PARENT_MISSING:s2_sim_fills.sim_order_id:${record.row.sim_order_id}`);
+      }
+    }
+
+    if (record.table === "s2_outcomes") {
+      const outcome = parseJsonObject(record.row.outcome_json, "s2_outcomes.outcome_json");
+      requireLineageEqual(outcome.decisionId, record.row.decision_id, "outcome_json.decisionId");
+      const decision = await readCanonicalParent(db, {
+        table: "s2_decisions",
+        identityColumn: "decision_id",
+        identityValue: record.row.decision_id,
+        columns: ["decision_id","symbol","market_date","decision_timestamp"],
+      });
+      if (!decision) {
+        throw new Error(`LINEAGE_PARENT_MISSING:s2_outcomes.decision_id:${record.row.decision_id}`);
+      }
+      if (outcome.symbol !== undefined) {
+        requireLineageEqual(outcome.symbol, decision.symbol, "outcome-decision.symbol");
+      }
+      if (outcome.decisionMarketDate !== undefined) {
+        requireLineageEqual(
+          outcome.decisionMarketDate,
+          decision.market_date,
+          "outcome-decision.market_date",
+        );
+      }
+      if (outcome.decisionTimestamp !== undefined) {
+        requireLineageEqual(
+          outcome.decisionTimestamp,
+          decision.decision_timestamp,
+          "outcome-decision.decision_timestamp",
+        );
+      }
+    }
+  }
+}
+
 export async function executeOutcomePersistenceBatchV0_1({
   db,
   batch,
@@ -180,9 +395,12 @@ export async function executeOutcomePersistenceBatchV0_1({
     throw new Error("refusing non-isolated binding name");
   }
 
+  const canonicalBatch = await rebuildAndVerifyOutcomePersistenceBatchV0_1(batch);
+  await validateOutcomeLineageV0_1(db, canonicalBatch);
+
   const writes = [];
   const decisions = [];
-  for (const record of batch.records) {
+  for (const record of canonicalBatch.records) {
     const existing = await readExisting(db, record);
     if (record.kind === "IMMUTABLE") {
       if (existing && !rowsEqual(existing, record.row)) {
@@ -249,11 +467,12 @@ export async function executeOutcomePersistenceBatchV0_1({
     table: record.table,
     identity: record.identity,
     state,
+    identityDigest: record.identityDigest,
     rowDigest: record.rowDigest,
   }));
   return deepFreeze({
-    batchId: batch.batchId,
-    batchHash: batch.batchHash,
+    batchId: canonicalBatch.batchId,
+    batchHash: canonicalBatch.batchHash,
     bindingName,
     insertedCount: outcomes.filter((x) => x.state === "INSERTED").length,
     updatedCount: outcomes.filter((x) => x.state === "UPDATED_MONOTONIC").length,
