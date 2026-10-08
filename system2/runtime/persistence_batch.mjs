@@ -390,7 +390,7 @@ export async function buildSystem2PersistenceBatch({
     duplicateIdenticalPolicy: "SKIP_IDENTICAL",
     outcomeRowsAllowed: false,
     createdAt: requiredText(createdAt, "createdAt"),
-    schemaVersion: "S2_PERSISTENCE_BATCH_V0_1",
+    schemaVersion: "S2_PERSISTENCE_BATCH_V0_2",
   };
 
   const batchHash = await sha256Hex(base);
