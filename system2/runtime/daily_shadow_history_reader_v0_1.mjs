@@ -239,10 +239,31 @@ export async function probePitHistoryCoverageV0_1({
   const coverageDatePredicate = coverageReadFloor
     ? "AND market_date >= ?" : "";
 
-  const result = await db.prepare(`WITH eligible AS (
+  // Current A1 ordinary symbols form the only requested coverage denominator.
+  // Existing PIT index is symbol-leading. Without this predicate SQLite may
+  // scan historical rows for unrelated symbols even with a date floor.
+  // Bounded 50-symbol parameter batches keep D1 bind counts small and never
+  // change each requested symbol's ROW_NUMBER/revision/PIT calculation.
+  const currentSymbols = [...new Set((snapshotBatch.symbols || []).map(
+    (value) => String(value).trim(),
+  ))].sort();
+  if (currentSymbols.some((symbol) => !/^[A-Za-z0-9_-]{1,16}$/.test(symbol))) {
+    throw new Error("daily Shadow PIT coverage requires safe bound-parameter symbol identities");
+  }
+  if (currentSymbols.length > 5000) {
+    throw new Error("daily Shadow PIT coverage has an unexpected unbounded universe");
+  }
+  const chunkSize = 50;
+  const coverageRows = [];
+  let coverageSelectCount = 0;
+  for (let start = 0; start < currentSymbols.length; start += chunkSize) {
+    const symbols = currentSymbols.slice(start, start + chunkSize);
+    const symbolPlaceholders = symbols.map(() => "?").join(",");
+    const result = await db.prepare(`WITH eligible AS (
        SELECT symbol, market, market_date, continuity_state, bar_hash
          FROM s2_historical_a1_bars
-        WHERE market_date < ?
+        WHERE symbol IN (${symbolPlaceholders})
+          AND market_date < ?
           AND price_space = ?
           AND pit_replay_eligible = 1
           AND available_at IS NOT NULL
@@ -278,9 +299,14 @@ export async function probePitHistoryCoverageV0_1({
        FROM ranked
       WHERE rn <= ?
       GROUP BY symbol, market`,
-  ).bind(date, space, clock, ...(coverageReadFloor ? [coverageReadFloor] : []), required).all();
-
-  const coverageRows = Array.isArray(result?.results) ? result.results : [];
+    ).bind(...symbols, date, space, clock,
+      ...(coverageReadFloor ? [coverageReadFloor] : []), required).all();
+    if (!Array.isArray(result?.results)) {
+      throw new Error("D1 PIT coverage batch result must include rows array");
+    }
+    coverageRows.push(...result.results);
+    coverageSelectCount += 1;
+  }
   const byKey = new Map(
     coverageRows.map((row) => [`${row.market}|${row.symbol}`, row]),
   );
@@ -476,6 +502,9 @@ export async function probePitHistoryCoverageV0_1({
       ? "EXACT_SESSION_CALENDAR_BOUNDED"
       : "UNBOUNDED_LEGACY_FAIL_CLOSED",
     coverageReadLowerBound: coverageReadFloor,
+    coverageReadPlan: "SYMBOL_INDEX_SCOPED_BOUNDED_50",
+    coverageSelectCount,
+    coverageSymbolCount: currentSymbols.length,
     coverageReadLowerBoundSemantics:
       "QUERY_SCAN_WINDOW_ONLY_NOT_PIT_PUBLICATION_OR_CONTINUITY_PROOF",
     certifiedNoTradingIntervalCount: certifiedNoTradingIntervals.length,

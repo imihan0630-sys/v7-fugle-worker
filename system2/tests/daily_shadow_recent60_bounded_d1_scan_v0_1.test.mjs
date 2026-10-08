@@ -33,9 +33,12 @@ const bounded=await probePitHistoryCoverageV0_1({
 });
 assert.equal(empty.traces.length,1);
 assert.match(empty.traces[0].sql,/AND market_date >= \?/);
-assert.deepEqual(empty.traces[0].params,[marketDate,"RAW",clock,dates[0],60]);
+assert.deepEqual(empty.traces[0].params,[symbol,marketDate,"RAW",clock,dates[0],60]);
 assert.equal(bounded.coverageReadScanScope,"EXACT_SESSION_CALENDAR_BOUNDED");
 assert.equal(bounded.coverageReadLowerBound,dates[0]);
+assert.equal(bounded.coverageReadPlan,"SYMBOL_INDEX_SCOPED_BOUNDED_50");
+assert.equal(bounded.coverageSelectCount,1);
+assert.equal(bounded.coverageSymbolCount,1);
 assert.equal(bounded.historyReadyCount,0,"query bounding cannot manufacture missing PIT history");
 assert.equal(bounded.continuityReadyCount,0);
 assert.equal(bounded.diagnostics[0].missingExpectedSessionCount,60);
@@ -60,7 +63,7 @@ const legacy=await probePitHistoryCoverageV0_1({
   priorTradingDates:null,listingMetadata:listing,requiredPriorSessions:60,
 });
 assert.doesNotMatch(noCalendar.traces[0].sql,/AND market_date >= \?/);
-assert.deepEqual(noCalendar.traces[0].params,[marketDate,"RAW",clock,60]);
+assert.deepEqual(noCalendar.traces[0].params,[symbol,marketDate,"RAW",clock,60]);
 assert.equal(legacy.coverageReadLowerBound,null);
 assert.equal(legacy.coverageReadScanScope,"UNBOUNDED_LEGACY_FAIL_CLOSED");
 assert.equal(legacy.historyReadyCount,0);
@@ -71,7 +74,7 @@ const insufficient=await probePitHistoryCoverageV0_1({
   priorTradingDates:dates.slice(0,59),listingMetadata:listing,requiredPriorSessions:60,
 });
 assert.doesNotMatch(short.traces[0].sql,/AND market_date >= \?/);
-assert.deepEqual(short.traces[0].params,[marketDate,"RAW",clock,60]);
+assert.deepEqual(short.traces[0].params,[symbol,marketDate,"RAW",clock,60]);
 assert.equal(insufficient.coverageReadScanScope,"UNBOUNDED_LEGACY_FAIL_CLOSED");
 assert.equal(insufficient.historyReadyCount,0);
 assert.equal(insufficient.diagnostics[0].sessionReconciliationState,"EXPECTED_SESSION_CALENDAR_WINDOW_INSUFFICIENT");

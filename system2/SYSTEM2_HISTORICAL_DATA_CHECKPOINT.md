@@ -1531,3 +1531,14 @@ Deterministic tests cover bounded SQL binds, no-history missing results, unchang
 At PR creation this is **code candidate, not physical D1 read savings PASS**. CI, V8 regression, merge and post-reset bounded independent D1 row-read observations remain gates; no billing upgrade or physical rerun without available account read quota and REMEDIATION_LANE coordination.
 
 System1 Formal Core/runtime, production Cron, A/B, Top6, signals, push, capital, orders untouched.
+
+
+## 2026-10-09 DATA_LANE — existing-index symbol-batched 60-session PIT coverage read candidate
+
+Review of PR #928's date-only lower bound against the actual schema `system2/sql/0002_historical_store.sql` found both existing historical A1 D1 indexes are **symbol-leading**. An isolated local SQLite EXPLAIN plan under the existing index definitions still reports a full table SCAN for date-only predicates; with `symbol IN (...)`, `price_space` and `market_date` predicates the static model switches to a symbol-first index SEARCH. This is a query-plan falsification of any premature claim that the #928 date-floor alone solved real D1 READ quota exhaustion. Physical Cloudflare savings have not been measured.
+
+Separate Class A read-only candidate `system2-data/recent60-symbol-index-scoped-read-20261009` now limits the coverage query to the current A1 frozen snapshot's ordinary symbols in batches of at most 50, using only parameter-bound SQL, while retaining the exact existing per-market/symbol/date revision, PIT `available_at`, 60-session ranking, and continuity tests. Every batch must succeed before any readiness artifact is returned; failed D1 reads remain errors, never counted as missing bars/zero-pick. A 101-symbol deterministic multi-batch test confirms 50+50+1 SELECT batches; failed second batch blocks the entire result.
+
+Evidence: `system2/evidence/S2_RECENT60_PIT_COVERAGE_SYMBOL_INDEX_SCOPED_READ_PLAN_20261009_V0_1.json`. **Not yet physically validated:** actual D1 rows-read savings, time/cost and live 1972-symbol completeness. Do not execute another write/read-heavy Cloudflare probe until account-wide quota reset and REMEDIATION_LANE scheduling. NC-T01 and 60-day continuity remain unpromoted.
+
+No System1 Formal Core/runtime, strategy thresholds, final selection, signals, push, capital or orders changed.

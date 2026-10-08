@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "S2_RECENT60_PIT_COVERAGE_SYMBOL_INDEX_SCOPED_READ_PLAN_V0_1",
+  "owner": "SYSTEM2_DATA_LANE",
+  "classification": "CLASS_A_RESEARCH_ONLY_QUERY_PLAN_REPAIR",
+  "codeStatus": "IMPLEMENTED_BRANCH_CI_PENDING",
+  "historyReader": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+  "priorOptimization": {
+    "pr": 928,
+    "mergedSha": "31f4cbefe4084716c82c03ccf3485ef0f3a3c0a0",
+    "effect": "Adds calendar lower date predicate but no symbol qualifier; source-qualified eligible date population unchanged",
+    "limitation": "Existing D1 indexes begin with symbol; a date-only predicate can still cause full-table scans"
+  },
+  "localSQLitePlanModel": {
+    "environment": "LOCAL_IN_MEMORY_SQLITE_SCHEMA_MODEL_NOT_PHYSICAL_D1",
+    "indexes": [
+      "idx_s2_historical_a1_pit_window(symbol,price_space,market_date,available_at,pit_replay_eligible)",
+      "idx_s2_historical_a1_symbol_date(symbol,market_date,price_space)"
+    ],
+    "legacy": "SCAN s2_historical_a1_bars",
+    "calendarBoundOnly": "SCAN s2_historical_a1_bars",
+    "symbolScopedCalendarBound": "SEARCH s2_historical_a1_bars USING INDEX idx_s2_historical_a1_pit_window (symbol=? AND price_space=? AND market_date>? AND market_date<?)",
+    "actualCloudflareD1PlanObserved": false,
+    "actualD1ReadRowsSavingsMeasured": false
+  },
+  "newQuery": {
+    "onlyTargets": "Frozen current A1 snapshotBatch.symbols distinct ordinary 4-digit symbols, max 5000",
+    "batchSize": 50,
+    "sqlBindCountMax": 55,
+    "range": "market_date < decisionMarketDate and, when official enough, market_date >= earliest verified prior session",
+    "pitFilters": [
+      "price_space = RAW",
+      "pit_replay_eligible = 1",
+      "available_at is not null and <= decisionTimestamp"
+    ],
+    "aggregation": "Each SQL batch preserves per-symbol market-date group, revision count, 60-session ROW_NUMBER ranking; concatenate disjoint symbols before existing exact-session reconciliation",
+    "readOnly": true,
+    "d1Mutation": false,
+    "failClosedOnBatchError": true,
+    "productionRuntimeChanged": false
+  },
+  "tests": [
+    "101 symbol current-universe => 50,50,1 parameter-bound SELECTs",
+    "All 101 precisely matched 60-date histories remain historyReady but continuityReady remains zero",
+    "D1 failure on second batch rejects entire history result",
+    "Non-ordinary symbol identity cannot enter SQL",
+    "Unexpected >5000-symbol denominator fails closed",
+    "Calendar-bound query contract and no-calendar fallback continue to pass"
+  ],
+  "releaseGates": [
+    "System2 CI and V8 regression PASS",
+    "Merge main with SHA readback",
+    "Real D1 indexed plan and account-wide read-budget metrics after quota reset; no savings PASS claim until observed",
+    "NC-T01, corporate-action/no-event proof and 2026 July R2 remain independent blockers"
+  ],
+  "sources": [
+    "system2/sql/0002_historical_store.sql",
+    "system2/evidence/S2_RECENT60_PIT_COVERAGE_SQL_BOUNDED_READ_PLAN_20261009_V0_1.json",
+    "GitHub daily read-quota blocked Run 37861034380"
+  ],
+  "billingUpgradeAuthorized": false
+}
