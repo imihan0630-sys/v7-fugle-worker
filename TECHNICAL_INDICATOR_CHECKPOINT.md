@@ -7893,3 +7893,98 @@ A. consume merged-main CORR-007 V0.2-equivalent implementation plus independent 
 B. then consume a real exact-window TWTAWU bounded suspension receipt bound additively with all three corporate-action refs into archive and continuity hashes;
 C. independently consume a future genuine ordinary-session immutable C1 generation and authoritative V8.20 Formal-to-C1 binding;
 D. when W0 and the genuine parent both exist, run the existing D03-10 Bollinger L3 and parent-binding oracles; D03-09 additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
+
+
+## 2026-10-08 D03 — TI-1511~1526 CORR-007 merged-main V0.2 implementation acceptance
+
+Canonical D03 artifact:
+- `research/d03_corr007_merged_main_implementation_acceptance_20261008_v0_1.json`.
+
+Merged implementation:
+- merge commit `836184f98726449107cdbd0ed83e2746bbbcf965`;
+- component commit `6ecc2e33406675e73bc4d2e3e36ae0c968ba5c86`: evidence-bound corporate-action completeness V0.2;
+- component commit `012d5dc43314276a16f9bdeb562122e0fe35dda5`: immutable TWSE suspension evidence required for NC-T01.
+
+Exact-head machine evidence:
+- System2 Research CI `37720705098` SUCCESS;
+- NC-T01 Continuity Replay Binding `37720705101` SUCCESS;
+- NC-T01 Artifact Runner `37720705126` SUCCESS;
+- V8 Regression `37720705066` SUCCESS.
+
+### TI-1511~1516 — CORR-007 engineering implementation is materially present on main
+
+Latest runtime now makes evidence-bound suspension completeness machine-distinct from legacy status-only semantics.
+
+Accepted:
+- `S2_CA_COMPLETENESS_RECEIPT_V0_2` is explicit;
+- NC-T01 physical continuity promotion requires V0.2 schema identity;
+- legacy V0.1 fails closed for promotion;
+- V0.2 with a plain COMPLETE string but no evidence-ready suspension receipt remains incomplete;
+- suspension evidence must bind exact interval, sourceId, sourceFamily, sourceContractVersion, immutable 64-hex receipt digest, observedAt and availability semantics;
+- verified-source timestamp evidence additionally requires availableAt.
+
+D03 therefore removes `CORR007_IMPLEMENTATION_PENDING` from its own W0 technical-feasibility blocker chain.
+
+Governance boundary:
+the canonical System2 correction queue still says CORR-007 OPEN because AUDIT_LANE closure has not yet been written.
+D03 does not change that queue state and does not claim `VERIFIED_CLOSED`.
+
+### TI-1517~1521 — promotion path now binds additive suspension provenance
+
+Merged tests demonstrate:
+- legacy V0.1 receipt => `CONTINUITY_UNKNOWN`;
+- status-only V0.2 without suspension evidence => `CONTINUITY_UNKNOWN`;
+- missing TWSE suspension sourceEvidenceRef => fail closed;
+- suspension receipt digest mismatch => fail closed;
+- suspension source identity mismatch => fail closed;
+- prospective suspension evidence observed after decision cutoff => fail closed;
+- verified-source evidence available after decision cutoff => fail closed;
+- valid evidence-bound suspension + three corporate-action refs preserves the intended CLEAR_NO_ACTION test path;
+- mutating only the suspension receipt digest changes the archive receipt hash and final continuity receiptHash.
+
+This satisfies the D03 TI-1495~1510 anti-stale-receipt / hash-sensitivity engineering requirement.
+
+### TI-1522~1524 — remaining W0 gap is now producer-side physical evidence
+
+No real bounded TWTAWU negative-completeness receipt exists yet.
+The frozen positive-control contract still requires:
+- real 1218/TWSE 2026-08-13 -> 2026-08-14 positive row;
+- exact bounded query scope;
+- official representation parity;
+- immutable raw response hashes and parity receipt digest;
+- only then may an exact-window no-row result support `NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`.
+
+The official TWSE human page continues to expose HTML/print and CSV download controls, but the actual CSV/HTML request contract remains unpinned.
+Browser/scrape attempts in this D03 session did not yield a trustworthy request contract.
+D03 therefore does not guess `response=csv` or any export parameter.
+
+Important:
+V0.2 provenance binding proves that a supplied suspension receipt is immutably bound.
+It does not manufacture or semantically validate a suspension receipt that DATA_LANE has not physically produced.
+
+### TI-1525 — module blocker compression
+
+D03-10 Bollinger:
+- exact-session identity = physical PASS on the accepted real TWSE path;
+- replay-first continuity binding = merged;
+- legacy continuity leakage = blocked;
+- CORR-007 V0.2 provenance binding = machine accepted;
+- immediate remaining W0 blocker = real bounded TWTAWU physical receipt + three CA refs -> real W0 continuity receipt.
+
+D03-09 ADX has the same immediate W0 blocker and later additionally requires canonical Wilder FULL_REPLAY / replay-certified trusted prior state.
+
+### TI-1526 — maturity / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 L3/60 + 2 L2/40;
+- D03-09 / D03-10 remain L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Dual-track exact next:
+A. W0: consume first real exact-window bounded TWTAWU suspension-completeness receipt under the frozen positive-control parity contract, bind it additively with all three TWSE corporate-action refs, and run the real W0 continuity certifier;
+B. Parent: independently consume the next genuine ordinary-session immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback quality repair.
+
+When both admissible inputs exist, immediately execute the existing D03-10 Bollinger L3 acceptance and parent-binding oracles. D03-09 remains second and additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
