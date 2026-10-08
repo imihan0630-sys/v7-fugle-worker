@@ -1,0 +1,184 @@
+name: System2 CORR-008 NC-T01 Runtime Guard V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - "system2/runtime/daily_shadow_readonly_context_v0_1.mjs"
+      - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
+      - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs"
+      - "system2/tests/nct01_runtime_guard_v0_1.test.mjs"
+      - "system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_readonly_context_v0_1.test.mjs"
+      - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
+      - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
+      - ".github/workflows/system2-corr008-nct01-runtime-guard-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - "system2/runtime/daily_shadow_readonly_context_v0_1.mjs"
+      - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
+      - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
+      - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs"
+      - "system2/tests/nct01_runtime_guard_v0_1.test.mjs"
+      - "system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs"
+      - ".github/workflows/system2-corr008-nct01-runtime-guard-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Measured runtime guard unit regression
+        run: node system2/tests/nct01_runtime_guard_v0_1.test.mjs
+
+      - name: Physical wrapper guard fail-closed regression
+        run: node system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs
+
+      - name: Read-only physical source context regression
+        run: node system2/tests/daily_shadow_readonly_context_v0_1.test.mjs
+
+      - name: Same-cut artifact runner regression
+        run: node system2/tests/nct01_artifact_runner_v0_1.test.mjs
+
+      - name: Final receipt runtime-ledger hash lineage regression
+        run: node system2/tests/nct01_physical_receipt_v0_1.test.mjs
+
+      - name: Physical wrapper syntax check
+        run: node --check system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs
+
+      - name: Build measured CI-only runtime guard evidence
+        run: |
+          mkdir -p system2/evidence
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { createNcT01RuntimeGuardV0_1 } from "./system2/runtime/nct01_runtime_guard_v0_1.mjs";
+
+          const response=()=>({
+            status:200,
+            ok:true,
+            headers:new Headers(),
+            async text(){return "{}";},
+          });
+          const metrics={requestCount:0,rowsRead:0,rowsWritten:0,latestSizeAfter:null};
+          const statement=(sql,params=[])=>({
+            __remoteD1Statement:true,
+            sql,
+            params:[...params],
+            bind(...next){return statement(sql,next);},
+            async all(){metrics.requestCount+=1;metrics.rowsRead+=1;return {results:[{ok:1}]};},
+            async first(){metrics.requestCount+=1;metrics.rowsRead+=1;return {ok:1};},
+            async run(){metrics.requestCount+=1;return {success:true,meta:{rows_read:0,rows_written:0},results:[]};},
+          });
+          const rawDb={
+            database:{name:"system2-research",idPresent:true,uuidDigestInput:"corr008-ci-fake-db"},
+            metrics,
+            prepare(sql){return statement(sql);},
+            async batch(statements){
+              metrics.requestCount+=1;
+              metrics.rowsRead+=statements.length;
+              return statements.map(()=>({success:true,meta:{rows_read:1,rows_written:0},results:[]}));
+            },
+            async rawQuery(){
+              metrics.requestCount+=1;
+              metrics.rowsRead+=1;
+              return [{ok:1}];
+            },
+          };
+
+          const guard=createNcT01RuntimeGuardV0_1({
+            executionCutId:"CORR008-CI:"+process.env.GITHUB_SHA,
+            fetchImpl:async()=>response(),
+          });
+          await guard.fetch("https://api.cloudflare.com/client/v4/accounts/fake/d1/database");
+          await guard.fetch("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json");
+          const db=await guard.wrapD1(rawDb);
+          await db.prepare("SELECT 1").all();
+          const measured=await guard.buildRuntimeEvidenceV0_1();
+          if(measured.runtimeEvidence.instrumented!==true) throw new Error("guard not instrumented");
+          if(measured.runtimeEvidence.sameExecutionCut!==true) throw new Error("guard not same-cut");
+          if(measured.runtimeEvidence.runtimeForbiddenAccessCount!==0) throw new Error("unexpected forbidden access");
+          if(measured.ledger.d1.rowsWritten!==0) throw new Error("unexpected D1 write");
+          fs.writeFileSync(
+            "system2/evidence/nct01-corr008-runtime-evidence-ci.json",
+            JSON.stringify(measured.runtimeEvidence,null,2)+"\n",
+          );
+          fs.writeFileSync(
+            "system2/evidence/nct01-corr008-runtime-ledger-ci.json",
+            JSON.stringify(measured.ledger,null,2)+"\n",
+          );
+          console.log("Measured CI runtime guard evidence PASS",measured.runtimeEvidence.runtimeEvidenceDigest);
+          NODE
+
+      - name: Audit exact physical-wrapper graph with measured ledger
+        run: |
+          node system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs             --entry-point system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs             --runtime-evidence system2/evidence/nct01-corr008-runtime-evidence-ci.json             --generated-at 2026-10-09T00:05:00Z             --output system2/evidence/nct01-corr008-physical-wrapper-audit-ci.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const measured=JSON.parse(fs.readFileSync("system2/evidence/nct01-corr008-runtime-evidence-ci.json","utf8"));
+          const payload=JSON.parse(fs.readFileSync("system2/evidence/nct01-corr008-physical-wrapper-audit-ci.json","utf8"));
+          const audit=payload.audit;
+          if(audit.runnerHeadSha!==process.env.GITHUB_SHA) throw new Error("physical wrapper audit head mismatch");
+          if(audit.auditState!=="CLEAN_PROVEN_ABSENT") throw new Error("physical wrapper audit not clean: "+audit.auditState);
+          if(audit.staticComplete!==true||audit.runtimeComplete!==true) throw new Error("physical wrapper audit incomplete");
+          if(audit.hiddenDependencyPresent!==false) throw new Error("hidden dependency observed");
+          if(audit.runtimeEvidence.runtimeForbiddenAccessCount!==0) throw new Error("forbidden runtime access observed");
+          if(audit.runtimeEvidence.runtimeEvidenceDigest!==measured.runtimeEvidenceDigest) {
+            throw new Error("measured runtime guard digest not bound into audit");
+          }
+          for(const [dimension,rows] of Object.entries(payload.staticFindings||{})){
+            if(rows.length) throw new Error("physical wrapper finding "+dimension+": "+rows.join(","));
+          }
+          if(payload.physicalAcceptanceEligible!==false) throw new Error("CI graph audit must not claim physical acceptance");
+          if(!Array.isArray(audit.auditedBlobIdentities)||audit.auditedBlobIdentities.length<1) {
+            throw new Error("physical wrapper transitive manifest missing");
+          }
+          console.log("CORR-008 physical-wrapper graph audit PASS",audit.auditDigest);
+          NODE
+
+      - name: Static pre-transport guard assertions
+        run: |
+          set -euo pipefail
+          grep -q 'READ_PREFIX_RE = /^(SELECT|WITH|PRAGMA)' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'rejectedMutationAttemptCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'forbiddenOriginAttemptCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'runtimeForbiddenAccessCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          ! grep -q 'function sameCutRuntimeEvidence' system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs
+          grep -q 'runtime guard ledger drifted after hidden-fallback audit cut' system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs
+          echo "CORR-008 static guard assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
+
+      - name: Upload CORR-008 exact-head evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-corr008-nct01-runtime-guard
+          path: |
+            system2/evidence/nct01-corr008-runtime-evidence-ci.json
+            system2/evidence/nct01-corr008-runtime-ledger-ci.json
+            system2/evidence/nct01-corr008-physical-wrapper-audit-ci.json
+          if-no-files-found: error
+          retention-days: 14

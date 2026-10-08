@@ -265,4 +265,66 @@ const changed=await buildNcT01PhysicalIndependenceReceiptV0_1({
 });
 assert.notEqual(pass.receiptHash,changed.receiptHash);
 
+async function cleanAuditForLedger(runtimeDigest,typedEvidence){
+  return buildNcT01HiddenFallbackAuditV0_1({
+    runnerEntryPoint:"system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs",
+    runnerHeadSha:"a".repeat(40),
+    auditedBlobIdentities:[
+      {path:"system2/runtime/nct01_runtime_guard_v0_1.mjs",blobSha:"b".repeat(40)},
+      {path:"system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs",blobSha:"c".repeat(40)},
+    ],
+    perDimensionDisposition:{
+      cachedSystem1SelectionUsed:"PROVEN_ABSENT",
+      persistedSystem1SelectionUsed:"PROVEN_ABSENT",
+      aliasReconstructionUsed:"PROVEN_ABSENT",
+      crossProjectFallbackUsed:"PROVEN_ABSENT",
+      staleSharedStateUsed:"PROVEN_ABSENT",
+    },
+    runtimeEvidence:{
+      instrumented:true,
+      sameExecutionCut:true,
+      runtimeForbiddenAccessCount:0,
+      runtimeEvidenceDigest:runtimeDigest,
+      typedEvidence,
+    },
+    forbiddenSourceFamilyVersion:"S2-NCT01-FORBIDDEN-SOURCES-V0_1",
+    auditGeneratedAt:"2026-10-09T00:05:00.000Z",
+  });
+}
+
+const ledgerAuditA=await cleanAuditForLedger(
+  h("a"),
+  ["NCT01_RUNTIME_GUARD_LEDGER_SHA256:"+h("a"),"D1_ALLOWED_READ_QUERY_COUNT:10"],
+);
+const ledgerAuditB=await cleanAuditForLedger(
+  h("b"),
+  ["NCT01_RUNTIME_GUARD_LEDGER_SHA256:"+h("b"),"D1_ALLOWED_READ_QUERY_COUNT:11"],
+);
+assert.equal(ledgerAuditA.runtimeEvidence.runtimeForbiddenAccessCount,0);
+assert.equal(ledgerAuditB.runtimeEvidence.runtimeForbiddenAccessCount,0);
+assert.notEqual(ledgerAuditA.auditDigest,ledgerAuditB.auditDigest);
+
+function refsForAudit(audit){
+  return allRefs.map((ref)=>
+    ref.startsWith("HIDDEN_FALLBACK_AUDIT_SHA256:")
+      ? "HIDDEN_FALLBACK_AUDIT_SHA256:"+audit.auditDigest
+      : ref
+  );
+}
+const ledgerReceiptA=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-LEDGER-LINEAGE",
+  hiddenFallbackAuditEvidence:ledgerAuditA,
+  sourceGenerationRefs:refsForAudit(ledgerAuditA),
+});
+const ledgerReceiptB=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-LEDGER-LINEAGE",
+  hiddenFallbackAuditEvidence:ledgerAuditB,
+  sourceGenerationRefs:refsForAudit(ledgerAuditB),
+});
+assert.equal(ledgerReceiptA.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.equal(ledgerReceiptB.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.notEqual(ledgerReceiptA.receiptHash,ledgerReceiptB.receiptHash);
+
 console.log("System2 NC-T01 physical receipt v0.1 tests passed");
