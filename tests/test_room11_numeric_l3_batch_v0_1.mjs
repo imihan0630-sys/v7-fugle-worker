@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {
-  buildRows, splitDates, bindHistoricalMembership, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
+  buildRows, splitDates, bindHistoricalMembership, bindHistoricalMembershipFromRegistry, buildPanelFeasibility, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
 } from "../research/room11_numeric_l3_batch_v0_1.mjs";
 
 let passed=0;
@@ -141,6 +141,50 @@ throws("NB-T06F registry denominator count mismatch fails closed",()=>{
 throws("NB-T06G membership row from another registry fails closed",()=>{
  bindHistoricalMembership([panel[0]],[{...fakeMemberships[0],registry_id:"OTHER"}],fakeReceipt,fakeExpected);
 },/MEMBERSHIP_REGISTRY_MISMATCH/);
+
+test("NB-T06H fresh official registry path binds exact decision/outcome membership",()=>{
+ const registry={
+  schemaVersion:"S2_HISTORICAL_UNIVERSE_REGISTRY_V0_1",
+  registryId:"LIVE",
+  registryHash:"c".repeat(64),
+  membershipCount:2,replayEligibleCount:2,unknownStartCount:0,
+  memberships:[
+   {market:"TWSE",symbol:"1101",replayEligible:true,effectiveFrom:"2025-01-01",effectiveTo:null,endBasis:"OPEN_ENDED_CURRENT",membershipId:"LM1",membershipHash:"3".repeat(64)},
+   {market:"TWSE",symbol:"1102",replayEligible:true,effectiveFrom:"2025-01-01",effectiveTo:"2025-03-01",endBasis:"OFFICIAL_DELISTING_DATE",membershipId:"LM2",membershipHash:"4".repeat(64)},
+  ],
+ };
+ const rows=[
+  {...panel[0],symbol:"1101",decisionDate:"2025-02-27",outcomeDate:"2025-02-28"},
+  {...panel[1],symbol:"1102",decisionDate:"2025-02-28",outcomeDate:"2025-03-01"},
+ ];
+ const x=bindHistoricalMembershipFromRegistry(rows,registry);
+ assert.equal(x.admittedCount,1);
+ assert.equal(x.blockedCount,1);
+ assert.equal(x.rows[0].registryId,"LIVE");
+});
+test("NB-T06I panel feasibility preserves missing cells and two-way clusters",()=>{
+ const xs=[];
+ for(let d=0;d<90;d++){
+  const date=`2025-${String(1+Math.floor(d/28)).padStart(2,"0")}-${String(1+(d%28)).padStart(2,"0")}`;
+  for(const symbol of ["1101","1102","1103","1104","1108","1109","1110","1201"]){
+   if(d===10&&symbol==="1201")continue;
+   xs.push({decisionDate:date,outcomeDate:date,symbol,membershipId:"M"+symbol,membershipHash:"a".repeat(64),sourceRowHash:"b".repeat(64),nextSourceRowHash:"c".repeat(64),partition:"TRAIN"});
+  }
+ }
+ const p=buildPanelFeasibility(xs);
+ assert.equal(p.issuerN,8);
+ assert.equal(p.independentDateN,90);
+ assert.equal(p.missingCellN,1);
+ assert.equal(p.missingCellsImputedAsZero,false);
+ assert.equal(p.balancedPanel,false);
+ assert.equal(p.dateClusterKey,"decisionDate");
+ assert.equal(p.issuerClusterKey,"symbol");
+});
+throws("NB-T06J duplicate issuer-date panel cell rejected",()=>{
+ const r={decisionDate:"2025-01-02",outcomeDate:"2025-01-03",symbol:"1101",membershipId:"M",membershipHash:"a".repeat(64),sourceRowHash:"b".repeat(64),nextSourceRowHash:"c".repeat(64),partition:"TRAIN"};
+ buildPanelFeasibility([r,r,...Array.from({length:80},(_,i)=>({...r,decisionDate:`2025-02-${String((i%28)+1).padStart(2,"0")}`,symbol:String(1201+(i%8)),membershipId:"X"+i}))]);
+},/DUPLICATE_ISSUER_DATE/);
+
 
 test("NB-T07 AR1 baseline executable on multiple issuers",()=>{
  const r=fitAr1(panel);
