@@ -4577,3 +4577,141 @@ No maturity promotion.
 3. Re-run SR-T01~T12.
 4. In parallel keep CORR-005 hidden-fallback and DATA_LANE real continuity gates.
 5. Only when all three gates pass may one coherent physical NC-T01 evidence cut be evaluated for S22-T11~T16.
+
+
+## 2026-10-08 morning continuation — CORR-005/006 closed, CORR-007 active, D18-04 U2B semantic scope closed
+
+### D16 critical-path refresh
+
+Canonical latest facts:
+- CORR-004 original exact-session defect remains VERIFIED_CLOSED.
+- CORR-005 hidden-fallback code firewall is VERIFIED_CLOSED after PR #841 / merge `d56f05fbc5986d00adbc81392b9dc0711de5043e`.
+- CORR-006 W0/W1 strategy-readiness code firewall is VERIFIED_CLOSED under the same merged implementation.
+- those closures are code-firewall closures only; their CI/audit artifacts explicitly do not credit physical NC-T01.
+- SDA-022 policy fingerprints were correctly regenerated because #841 changed a fingerprint-bound orchestrator blob.
+- physical S22-T11~T16 remains unproven.
+
+New active correction:
+`S2-CORR-20261008-007` HIGH / OPEN / BUILD_LANE.
+
+CORR-007 defect:
+TWSE suspension completeness can currently enter the archive as a plain COMPLETE status and then participate in CLEAR_NO_ACTION promotion without a mandatory exact-window immutable bounded-suspension evidence digest/source ref.
+
+Physical promotion now requires:
+- first-class exchange-scoped suspension evidence;
+- exact interval equality with replay/archive window;
+- source family/version;
+- immutable receipt/artifact digest;
+- observation/availability timing;
+- digest bound into archive/completeness hash;
+- matching suspension sourceEvidenceRef in final continuity promotion.
+
+Three existing TWSE corporate-action range refs remain separately required.
+
+Plain `suspensionCoverageByExchange.TWSE=COMPLETE` is not evidence.
+
+### Physical wrapper runtime guard
+
+00 independent review of PR #844 identified two pre-merge acceptance blockers:
+
+1. Generic remote D1 adapter can transport mutating SQL and only detects rowsWritten after execution.
+   Physical wrapper must reject non-read-only SQL before transport.
+
+2. runtimeForbiddenAccessCount was declarative/literal rather than derived from a measured same-cut access ledger.
+
+Required runtime ledger:
+- D1 identity, allowed read count, rejected mutation attempts, rowsRead, rowsWritten;
+- frozen allowed network-origin contract, observed origins, allowed request count, forbidden-origin attempts;
+- System1 selection/cache/alias/cross-project capabilities absent;
+- final-selection/push/capital/order capabilities absent;
+- D1 persistence executor absent/unused.
+
+The measured ledger identity must flow into runtimeEvidenceDigest -> auditDigest -> HIDDEN_FALLBACK_AUDIT_SHA256 -> final NC-T01 receiptHash.
+
+### D16 current exact path
+
+Before physical NC-T01:
+1. CORR-007 evidence-bound suspension provenance.
+2. Physical-wrapper pre-transport D1/network guards + measured runtime ledger.
+3. DATA_LANE real bounded TWTAWU completeness/parity + three TWSE corporate-action exact-range families.
+4. First real versioned hash-bound CLEAR_NO_ACTION receipt.
+5. One coherent artifact-only SHORT_MOMENTUM NC-T01.
+6. 00 recomputes S22-T11~T16 from one immutable cut.
+7. Only then does CORR-003 become the persistence blocker before rank/capacity persistence.
+
+No maturity change:
+D16 remains 60%.
+
+### D18-04 semantic closure advance
+
+New durable artifacts:
+- `research/D18_U2B_IDENTITY_TRANSITION_PAIR_COMPARABILITY_CONTRACT_20261008_V0_1.md`;
+- `research/d18_u2b_identity_transition_pair_comparability_oracle_20261008_v0_1.json`.
+
+Domestic ordinary common-equity mechanical share-unit expansion/contraction is mapped to the canonical PAR_VALUE_CHANGE family when implemented through official stock par-value change mechanics.
+
+This avoids a duplicate generic split/reverse-split event family.
+
+Scope limits:
+- ETF split/reverse-split remains a different security-class mechanism;
+- foreign/TDR/other security classes are not inherited;
+- legal company demerger/business split is not a stock-unit split.
+
+Identity-transition handling is now frozen for U2B V0.1.
+
+Merger/share-conversion/demerger/delisting-to-successor/unproven identifier transition:
+`PAIR_NOT_COMPARABLE_IDENTITY_TRANSITION`
+unless immutable same-security equivalence is proven.
+
+An exchange-published successor reference price or exchange ratio is a trading/reference-price object, not by itself a same-security investment-return transform.
+
+Critical scope reduction:
+PRICE_RESET_FAMILY_SET V0.1 does NOT need to build adjusted cross-security merger/share-conversion returns.
+For identity-transition families, complete detection + fail-closed NOT_COMPARABLE blocking is sufficient family adequacy.
+
+Required pair identity:
+- prior/current market/symbol/security identity;
+- identityRelation;
+- membership transition;
+- action family;
+- pair comparability state/reason;
+- identity evidence hash.
+
+Machine oracle ID-T01~ID-T12 now covers:
+- same-security no action;
+- suspension/resumption;
+- new-company share conversion;
+- merger into existing company;
+- demerger/multiple successors;
+- delisting;
+- proven vs unknown code-change equivalence;
+- successor reference-price insufficiency;
+- exchange-ratio-with-incomplete-consideration insufficiency;
+- company-split vs par-value-split alias rejection;
+- same-security PAR_VALUE_CHANGE.
+
+D18-04 status:
+semantic scope is now closed enough for the first executable V0.1 path.
+
+Remaining evidence is executable/physical only:
+- CORR-007 evidence-bound suspension completeness;
+- versioned priceResetFamilySet receipt;
+- first real hash-bound CLEAR_NO_ACTION pair;
+- U2B row/aggregate builder;
+- existing 13-test oracle + ID-T01~ID-T12.
+
+D18-04 remains L2/40 because none of those physical/executable receipts exists yet.
+
+### D18-06 status
+
+S0 reported-shares observer contract is frozen and zero-extra-call source observability is strong.
+No executable observer or genuine TWSE/TPEx S0 receipt exists yet.
+S1 effective-share denominator vintage remains separate and pending.
+
+### Exact next continuation
+
+Priority:
+1. Re-read CORR-007 / PR #844 / DATA_LANE continuity state.
+2. If CORR-007 or wrapper guard implementation lands, validate immediately.
+3. If real bounded suspension/CLEAR_NO_ACTION receipt lands, validate priceResetFamilySetVersion and exact-window lineage.
+4. If no D16 external gate lands, continue D18-04 executable row/aggregate acceptance or D18-06 S0 physical-observer acceptance semantics.
