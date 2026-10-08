@@ -36,7 +36,8 @@ async function admin(path,options={}) {
 }
 async function readonlyPreview(body,label) {
   let lastMeta=null;
-  for(let attempt=1;attempt<=3;attempt++) {
+  const maxAttempts=5;
+  for(let attempt=1;attempt<=maxAttempts;attempt++) {
     const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify(body)});
     const contentType=String(response.headers.get('content-type') || '');
     const text=await response.text();
