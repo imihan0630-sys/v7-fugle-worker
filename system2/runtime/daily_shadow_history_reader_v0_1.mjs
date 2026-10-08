@@ -239,8 +239,7 @@ export async function probePitHistoryCoverageV0_1({
   const coverageDatePredicate = coverageReadFloor
     ? "AND market_date >= ?" : "";
 
-  const result = await db.prepare(`
-    `WITH eligible AS (
+  const result = await db.prepare(`WITH eligible AS (
        SELECT symbol, market, market_date, continuity_state, bar_hash
          FROM s2_historical_a1_bars
         WHERE market_date < ?
