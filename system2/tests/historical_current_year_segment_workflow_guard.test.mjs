@@ -13,6 +13,11 @@ assert.match(workflow,/- TPEX/);
 assert.match(workflow,/group: system2-isolated-d1-writer/);
 assert.match(workflow,/SYSTEM2_HISTORY_SEGMENT_MARKET: \$\{\{ inputs\.market \}\}/);
 assert.match(workflow,/historical_current_year_segment_backfill_v0_1\.mjs/);
+assert.match(workflow,/historical_segment_schema_readonly_preflight_v0_1\.mjs/,"2026 segment writer must first verify existing D1 schema using SELECT only");
+assert.match(workflow,/needs: preflight/,"backfill must wait for readonly schema verification");
+assert.doesNotMatch(workflow,/provision_system2_d1\.mjs/,"re-running broad D1 migrations/insert sentinels wastes daily write quota");
+assert.doesNotMatch(workflow,/SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1/,"backfill dispatch cannot provision D1");
+
 assert.doesNotMatch(workflow,/^\s+push:/m,"current-year segment backfill must never auto-run on push");
 assert.doesNotMatch(workflow,/matrix:\s*[\s\S]*market:/,"current-year segment backfill must run one market at a time");
 
