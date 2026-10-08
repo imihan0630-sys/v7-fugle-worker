@@ -76,12 +76,8 @@ new_inst='''  const session = env.V7_DB.withSession("first-primary");
 once(old_inst,new_inst,"institution snapshot idempotency")
 
 once(
-'''        const validated=validateOfficialQualityData(body,marketDate);
-        await writeQualitySnapshot(env,body.kind,marketDate,validated);
-        const readback=await readQualitySnapshot(env,body.kind,marketDate);''',
-'''        const validated=validateOfficialQualityData(body,marketDate);
-        const persistence=await writeQualitySnapshot(env,body.kind,marketDate,validated);
-        const readback=await readQualitySnapshot(env,body.kind,marketDate);''',
+'''        await writeQualitySnapshot(env,body.kind,marketDate,validated);''',
+'''        const persistence=await writeQualitySnapshot(env,body.kind,marketDate,validated);''',
 "quality route persistence receipt"
 )
 once(
@@ -91,12 +87,8 @@ once(
 "quality route dedup response"
 )
 once(
-'''        const validated=validateInstitutionData(body,date);
-        await writeInstitutionSnapshot(env,date,validated.stocks);
-        const actual=(await readInstitutionSnapshotRows(env,date,1))[0];''',
-'''        const validated=validateInstitutionData(body,date);
-        const persistence=await writeInstitutionSnapshot(env,date,validated.stocks);
-        const actual=(await readInstitutionSnapshotRows(env,date,1))[0];''',
+'''        await writeInstitutionSnapshot(env,date,validated.stocks);''',
+'''        const persistence=await writeInstitutionSnapshot(env,date,validated.stocks);''',
 "institution route persistence receipt"
 )
 once(
