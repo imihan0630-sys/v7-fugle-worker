@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T01:20:23+08:00",
+  "updatedAt": "2026-10-09T01:25:21+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1824,7 +1824,7 @@
       "directiveId": "S2-CORR-20261008-011",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Immutable persistence executor trusts unverified batch SQL and digest fields",
       "affectedScope": [
         "S2-08 immutable decision persistence",
@@ -1884,10 +1884,11 @@
         "Exact-head PASS on 2f8eb9a042154668c740a56cefa02c41fa61d65a: CORR-011 37814281548; System2 Research CI 37814281345; V8 Regression 37814281392.",
         "Merged-main PASS on 98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882: CORR-011 37814464487; System2 Research CI 37814464192; V8 Regression 37814464250.",
         "AP-08 UPDATE-as-INSERT is rejected before db.batch; SQL/hash/identity/table/column tamper, post-write divergence and parent-lineage negatives fail closed.",
-        "Independent AP-08 witness now reports SAFE under the dedicated CORR-011 gate; independent AUDIT_LANE closure review is still required."
+        "Independent AP-08 witness now reports SAFE under the dedicated CORR-011 gate; independent AUDIT_LANE closure review is still required.",
+        "AUDIT_LANE independent dynamic AP-08 re-test + code diff verification: system2/evidence/S2_AUDIT_INDEPENDENT_CORR011_CODE_CLOSURE_20261009_V0_1.json; independent GitHub Actions 37816240636 PASS, System2 Research 37816240323 PASS, V8 Regression 37816240412 PASS. Original 011 code-layer integrity only; real D1 schema and CORR-012/013 remain separate."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — caller SQL/hash/identity/table/column authority is removed from immutable persistence; AP-08 is fail-closed before db.batch, exact readback and parent lineage guards are present. Independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.",
-      "updatedAt": "2026-10-09T01:11:08+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — independent audit of canonical immutable persistence code firewall, pretransport AP-08 rejection, full-lineage implementation tests and exact post-write readback; no physical Cloudflare D1 migration, real source completeness, outcome monotonicity or live authority credit.",
+      "updatedAt": "2026-10-09T01:25:21+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-012",
