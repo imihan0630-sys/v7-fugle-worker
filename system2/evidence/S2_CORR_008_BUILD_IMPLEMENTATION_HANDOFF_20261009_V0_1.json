@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "S2_CORR_008_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-09T00:29:00+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-008",
+  "severity": "HIGH",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "53b15e0731be0948f89f8bc08c90661703276905",
+  "implementation": {
+    "pullRequest": 895,
+    "mergeCommit": "53b15e0731be0948f89f8bc08c90661703276905",
+    "supersededPullRequest": 844,
+    "behavior": [
+      "NC-T01 physical wrapper now creates the runtime guard before remote D1 construction or official-source access.",
+      "Runner-local D1 enforcement permits only SELECT/WITH/PRAGMA semantics and rejects mutation or multi-statement SQL before Cloudflare transport.",
+      "Physical fetch is constrained to a frozen canonical-origin contract and checks every redirect hop before transport.",
+      "Runtime evidence is ledger-derived from measured D1/network/capability counters; runtimeForbiddenAccessCount is no longer a literal.",
+      "The ledger binds the isolated system2-research database identity, allowed read counts, mutation rejections, rows read/written, observed origins, allowed/forbidden network counts and forbidden capability attempts.",
+      "The measured runtimeEvidenceDigest is bound through hidden-fallback auditDigest and HIDDEN_FALLBACK_AUDIT_SHA256 into the final NC-T01 receiptHash.",
+      "Hidden-fallback audit finalizes only after SHORT_MOMENTUM orchestration; any guarded activity after the audit cut changes the ledger and fails the wrapper.",
+      "Post-run rowsWritten=0 remains a second-line physical readback.",
+      "The real physical workflow is workflow_dispatch-only and requires a repo-local continuity receipt path; PR/push does not execute the real Cloudflare/TWSE/TPEx physical run."
+    ],
+    "regressions": [
+      "Mutating SQL is rejected before raw remote request count increases.",
+      "Forbidden network origin is rejected before underlying fetch.",
+      "Allowed official/System2 D1 reads increment measured counters.",
+      "Incomplete runtime guard cannot promote PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
+      "Post-audit guarded access fails on runtime-ledger drift.",
+      "Two clean zero-forbidden measured ledgers with different identities change runtimeEvidenceDigest, auditDigest and final receiptHash.",
+      "Physical wrapper transitive graph exact-head audit is CLEAN_PROVEN_ABSENT."
+    ]
+  },
+  "exactHeadValidation": {
+    "head": "c904b904100a95bac653ef45a287c1c9c1c9cef5",
+    "runs": [
+      {
+        "name": "System2 CORR-008 NC-T01 Runtime Guard V0.1",
+        "runId": 37808737377,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "runId": 37808737264,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37808737224,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37808737229,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "53b15e0731be0948f89f8bc08c90661703276905",
+    "runs": [
+      {
+        "name": "System2 CORR-008 NC-T01 Runtime Guard V0.1",
+        "runId": 37808924586,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "runId": 37808924734,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37808924695,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37808924693,
+        "result": "PASS"
+      }
+    ]
+  },
+  "incidentalDiagnostics": {
+    "workflow": "System 1 C1 Prospective Evidence",
+    "runId": 37808995747,
+    "conclusion": "FAIL_CLOSED_UNRELATED_TO_CORR008",
+    "blocker": "C1_GENERATION_NOT_FOUND / UPSTREAM_ARTIFACT_MISSING",
+    "formalCoreImpact": false,
+    "noPlanChanges": true,
+    "noTrade": true,
+    "noPush": true,
+    "note": "The required CORR-008/V8 regression gates all passed; this independent scheduled System1 evidence collector reported its own missing upstream C1 generation."
+  },
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime unchanged.",
+    "Generic remote D1 adapter semantics outside the physical wrapper are unchanged.",
+    "System2 strategy contracts, thresholds, ranking and capacity semantics unchanged.",
+    "No D1 mutation.",
+    "No synthetic CLEAR_NO_ACTION or continuity evidence.",
+    "No final selection/live push/capital/order authority."
+  ],
+  "nonClaims": [
+    "BUILD_LANE does not self-close this HIGH correction.",
+    "Code-firewall CI is not SDA-022 S22-T12/S22-T16 physical acceptance.",
+    "No PHYSICALLY_INDEPENDENT_PATH_OBSERVED production/physical credit is claimed from fake-transport CI.",
+    "A source-honest DATA_LANE continuity receipt plus one coherent manual physical run and 00/AUDIT independent review remain required for physical acceptance."
+  ],
+  "exactNext": [
+    "AUDIT_LANE independently reproduces mutation/origin/incomplete-guard/hash-lineage failures on merged main and may advance CORR-008 to VERIFIED_CLOSED if accepted.",
+    "DATA_LANE continues to own source-honest continuity evidence for the later manual physical run.",
+    "BUILD_LANE continues the next highest-severity unblocked correction after this governance handoff."
+  ]
+}
