@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "D03_THIRD_RAW_SESSION_PHYSICAL_ACCEPTANCE_20261008_V0_1",
+  "updatedAt": "2026-10-08T23:34:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "PHYSICAL_OUTCOME_BLIND_SOURCE_VERSION_SESSION_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "workflow": {
+    "name": "D03 Third Raw Session Capture Readonly",
+    "runId": 37801356231,
+    "jobId": 113394105056,
+    "headSha": "3d5c646920cd9075a3897dc5acf84af172086979",
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 11561016595,
+    "name": "d03-third-raw-session-20261008",
+    "bytes": 360816,
+    "digest": "sha256:d466f1d0e4353e9f9279fe449e18e88754f11b4945502797ba5260560ec1b417"
+  },
+  "ledgerReadback": {
+    "chainValid": true,
+    "entryCount": 28,
+    "prospectiveCompletedTradingSessionsObserved": 3,
+    "requiredProspectiveCompletedTradingSessions": 3,
+    "coverageGate": "THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING",
+    "latestBatchTradeDate": "2026-10-08",
+    "repeatedVersionComparisons": 16,
+    "unchangedByteComparisons": 16,
+    "changedByteComparisons": 0,
+    "revisionIncidence": "UNKNOWN",
+    "afterHoursRepeatIntervalObserved": true,
+    "rawPayloadsPersisted": false
+  },
+  "acceptedSources": {
+    "twseCurrent": {
+      "endpointId": "TWSE_CURRENT_STOCK_DAY_ALL",
+      "observedTradeDate": "2026-10-07",
+      "freshness": "STALE_PREVIOUS_TRADE_DATE",
+      "payloadBytes": 319262,
+      "payloadSha256": "2271989da2b9eba6a5e0072e9d0928b2c8a0dc6da37d58d265f1858ce22b29bb"
+    },
+    "twseHistorical": {
+      "endpointId": "TWSE_HISTORICAL_MI_INDEX",
+      "requestedTradeDate": "2026-10-08",
+      "observedTradeDate": "2026-10-08",
+      "rowCount": 1380,
+      "payloadBytes": 247290,
+      "payloadSha256": "2b20b3916c53d14acf53b365aab749c779ad2b8f0c8bfe064ace2fef407e69c8"
+    },
+    "tpexCurrent": {
+      "endpointId": "TPEX_CURRENT_DAILY_CLOSE",
+      "observedTradeDate": "2026-10-08",
+      "freshness": "CURRENT_TRADE_DATE",
+      "payloadBytes": 4782391,
+      "payloadSha256": "62ef8965893b3bf882054b09beec3007ff19a5527c457af490e9f16077207fc1"
+    },
+    "tpexHistorical": {
+      "endpointId": "TPEX_HISTORICAL_DAILY_QUOTES",
+      "requestedTradeDate": "2026-10-08",
+      "observedTradeDate": "2026-10-08",
+      "rowCount": 12221,
+      "payloadBytes": 1841812,
+      "payloadSha256": "65023a6204cb68246085e2a4a6fe6b81f5b9bec19d88422f8953e44c1772b15a"
+    }
+  },
+  "sameDateRepeat": {
+    "sourcePayloadHashesIdenticalAcrossFirstAndRepeat": true,
+    "tpexCurrentVsHistorical": {
+      "classification": "NO_D03_OHLC_ROW_CHANGE",
+      "rowCount": 12221,
+      "added": 0,
+      "removed": 0,
+      "changed": 0,
+      "unchanged": 12221
+    },
+    "twseCurrentVsHistorical": {
+      "classification": "NOT_COMPARABLE_TRADE_DATE_MISMATCH",
+      "currentTradeDate": "2026-10-07",
+      "historicalTradeDate": "2026-10-08",
+      "interpretation": "Stale TWSE current endpoint prevents same-date current-vs-historical parity credit for 2026-10-08, but does not invalidate the historical completed-session capture."
+    }
+  },
+  "scientificInterpretation": [
+    "The preregistered three completed-session count is now physically met.",
+    "Same-date first/repeat payload hashes are stable for all four official endpoint captures in this run.",
+    "Finite unchanged comparisons do not prove zero future revisions; revision incidence remains UNKNOWN.",
+    "TWSE current endpoint staleness is preserved as a source-freshness fact and is not coerced into parity.",
+    "The session-count gate does not satisfy independent source attestation, certified symbol-session lineage, corporate-action ancestry, immutable parent-child reconciliation, W0 continuity, genuine V8.20 parent, D16 incrementality or predictive outcomes."
+  ],
+  "gateDecision": {
+    "prior": "RAW_RECEIPT_GATE_2_OF_3",
+    "current": "THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING",
+    "threeSessionCountClosed": true,
+    "independentSourceAttestation": "UNKNOWN",
+    "certifiedSymbolSessionReceipt": "UNKNOWN",
+    "corporateActionAncestry": "UNKNOWN",
+    "immutableParentChildReconciliation": "UNKNOWN",
+    "outcomes": "CLOSED"
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Remove the stale 2_OF_3 count blocker. Keep revision incidence UNKNOWN and continue with remaining independent PIT gates: W0 real continuity, genuine V8.20 parent, independent source attestation, certified symbol-session/corporate-action lineage, immutable parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality."
+}
