@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "D18_U2B_IDENTITY_TRANSITION_PAIR_COMPARABILITY_ORACLE_V0_1",
+  "owner": "ROOM11_D18",
+  "module": "D18-04",
+  "status": "PRE_EXECUTABLE_BLOCKING_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "comparableIdentityRelations": [
+    "SAME_SECURITY",
+    "SAME_SECURITY_CODE_CHANGED_PROVEN_EQUIVALENT"
+  ],
+  "blockedIdentityRelations": [
+    "SUCCESSOR_SECURITY",
+    "MULTI_SUCCESSOR",
+    "TERMINATED_NO_SUCCESSOR",
+    "UNKNOWN"
+  ],
+  "tests": [
+    {
+      "id": "ID-T01",
+      "case": "SAME_SYMBOL_SAME_SECURITY_NO_ACTION",
+      "expect": "COMPARABLE_SUBJECT_TO_OTHER_GATES"
+    },
+    {
+      "id": "ID-T02",
+      "case": "SAME_SECURITY_CERTIFIED_SUSPENSION_RESUMPTION",
+      "expect": "COMPARABLE_AFTER_CONTINUITY_GATES"
+    },
+    {
+      "id": "ID-T03",
+      "case": "PREDECESSOR_CONVERTED_TO_NEW_COMPANY_SECURITY",
+      "expect": "PAIR_NOT_COMPARABLE_IDENTITY_TRANSITION"
+    },
+    {
+      "id": "ID-T04",
+      "case": "MERGER_INTO_EXISTING_COMPANY",
+      "expect": "PAIR_NOT_COMPARABLE_IDENTITY_TRANSITION"
+    },
+    {
+      "id": "ID-T05",
+      "case": "COMPANY_DEMERGER_MULTI_SUCCESSOR",
+      "expect": "PAIR_NOT_COMPARABLE_IDENTITY_TRANSITION"
+    },
+    {
+      "id": "ID-T06",
+      "case": "DELISTED_PREDECESSOR_NO_SUCCESSOR",
+      "expect": "PAIR_NOT_COMPARABLE_DELISTED_OR_SUCCESSOR_REQUIRED"
+    },
+    {
+      "id": "ID-T07",
+      "case": "CODE_CHANGED_IDENTITY_EQUIVALENCE_PROVEN",
+      "expect": "SAME_SECURITY_CODE_CHANGED_PROVEN_EQUIVALENT"
+    },
+    {
+      "id": "ID-T08",
+      "case": "CODE_CHANGED_EQUIVALENCE_UNKNOWN",
+      "expect": "IDENTITY_EQUIVALENCE_UNKNOWN"
+    },
+    {
+      "id": "ID-T09",
+      "case": "SUCCESSOR_REFERENCE_PRICE_EXISTS",
+      "expect": "NOT_SUFFICIENT_FOR_SAME_SECURITY_RETURN"
+    },
+    {
+      "id": "ID-T10",
+      "case": "EXCHANGE_RATIO_KNOWN_CONSIDERATION_INCOMPLETE",
+      "expect": "NO_CROSS_IDENTITY_U2B_RETURN"
+    },
+    {
+      "id": "ID-T11",
+      "case": "COMPANY_SPLIT_MISALIASED_AS_PAR_VALUE_SPLIT",
+      "expect": "SEMANTIC_REJECTION"
+    },
+    {
+      "id": "ID-T12",
+      "case": "SAME_SECURITY_PAR_VALUE_CHANGE",
+      "expect": "PRICE_RESET_FAMILY_NOT_IDENTITY_TRANSITION"
+    }
+  ],
+  "v01AdmittedState": "U2B_COMPARABLE_CLEAR_NO_ACTION",
+  "blockedStates": [
+    "U2B_CONTINUITY_UNKNOWN",
+    "U2B_PRICE_RESET_UNKNOWN",
+    "U2B_IDENTITY_TRANSITION_NOT_COMPARABLE",
+    "U2B_IDENTITY_EQUIVALENCE_UNKNOWN",
+    "U2B_PRIOR_SESSION_MISSING",
+    "U2B_SOURCE_REVISION_INVALID"
+  ],
+  "requiredIdentityFields": [
+    "priorMarket",
+    "priorSymbol",
+    "priorSecurityIdentity",
+    "currentMarket",
+    "currentSymbol",
+    "currentSecurityIdentity",
+    "identityRelation",
+    "membershipTransitionState",
+    "actionFamily",
+    "pairComparabilityState",
+    "pairComparabilityReason",
+    "identityEvidenceHash"
+  ],
+  "maturityImpact": "NONE"
+}
