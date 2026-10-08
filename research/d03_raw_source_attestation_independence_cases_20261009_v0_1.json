@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "D03_RAW_SOURCE_ATTESTATION_INDEPENDENCE_CASES_V0_1",
+  "recordedAt": "2026-10-09T02:09:00+08:00",
+  "levels": {
+    "L0": "NO_ATTESTATION",
+    "L1": "REPEAT_CAPTURE_STABILITY_ONLY",
+    "L2": "SAME_AUTHORITY_REPRESENTATION_PARITY",
+    "L3": "INDEPENDENT_INTEGRITY_OR_TIMESTAMP_WITNESS",
+    "L4": "INDEPENDENT_SEMANTIC_SOURCE_ATTESTATION"
+  },
+  "base": {
+    "claimMarket": "TWSE",
+    "claimTradeDate": "2026-10-08",
+    "decisionTimestamp": "2026-10-08T13:30:00+08:00",
+    "primary": {
+      "authorityRootId": "AUTHORITY_ROOT_A",
+      "producerRootId": "PRODUCER_ROOT_A",
+      "endpointId": "PRIMARY_HISTORY",
+      "representation": "JSON",
+      "parserRootId": "PARSER_A",
+      "scopeHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "normalizedSymbolSessionHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "rawPayloadHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "observedAt": "2026-10-08T13:20:00+08:00",
+      "complete": true
+    },
+    "attestor": {
+      "authorityRootId": "AUTHORITY_ROOT_B",
+      "producerRootId": "PRODUCER_ROOT_B",
+      "endpointId": "INDEPENDENT_RECORD",
+      "representation": "SIGNED_RECORD",
+      "parserRootId": "PARSER_B",
+      "scopeHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "normalizedSymbolSessionHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "rawPayloadHash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "observedAt": "2026-10-08T13:25:00+08:00",
+      "complete": true,
+      "integrityOnly": false
+    },
+    "sameMarket": true,
+    "sameTradeDate": true,
+    "sameBoundedScope": true,
+    "sharedBackendKnown": false,
+    "lineageUnknown": false,
+    "conflictCount": 0,
+    "symbolSessionReceiptCertified": true,
+    "corporateActionAncestryCertified": true,
+    "continuityReceiptHashBound": true
+  },
+  "cases": [
+    {"id":"A01","expectedLevel":"L4","expectedReady":true,"path":null,"value":null,"reason":"independent semantic roots and exact bounded agreement"},
+    {"id":"A02","expectedLevel":"L1","expectedReady":false,"path":"attestor.authorityRootId","value":"AUTHORITY_ROOT_A","path2":"attestor.producerRootId","value2":"PRODUCER_ROOT_A","path3":"attestor.endpointId","value3":"PRIMARY_HISTORY","reason":"same endpoint repeat is stability only"},
+    {"id":"A03","expectedLevel":"L2","expectedReady":false,"path":"attestor.authorityRootId","value":"AUTHORITY_ROOT_A","path2":"attestor.producerRootId","value2":"PRODUCER_ROOT_A","reason":"different representation under same producer"},
+    {"id":"A04","expectedLevel":"L3","expectedReady":false,"path":"attestor.integrityOnly","value":true,"reason":"independent timestamp or integrity witness is not semantic attestation"},
+    {"id":"A05","expectedLevel":"L3","expectedReady":false,"path":"attestor.parserRootId","value":"PARSER_A","reason":"common parser leaves shared transform risk"},
+    {"id":"A06","expectedLevel":"UNKNOWN","expectedReady":false,"path":"sameTradeDate","value":false,"reason":"trade-date mismatch"},
+    {"id":"A07","expectedLevel":"UNKNOWN","expectedReady":false,"path":"sameBoundedScope","value":false,"reason":"scope mismatch"},
+    {"id":"A08","expectedLevel":"UNKNOWN","expectedReady":false,"path":"sameMarket","value":false,"reason":"different markets cannot attest the same universe"},
+    {"id":"A09","expectedLevel":"UNKNOWN","expectedReady":false,"path":"attestor.complete","value":false,"reason":"partial attestor response"},
+    {"id":"A10","expectedLevel":"UNKNOWN","expectedReady":false,"path":"lineageUnknown","value":true,"reason":"unknown lineage root"},
+    {"id":"A11","expectedLevel":"L2","expectedReady":false,"path":"sharedBackendKnown","value":true,"reason":"known common backend defeats source independence"},
+    {"id":"A12","expectedLevel":"CONFLICT","expectedReady":false,"path":"attestor.normalizedSymbolSessionHash","value":"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","reason":"semantic row disagreement"},
+    {"id":"A13","expectedLevel":"UNKNOWN","expectedReady":false,"path":"attestor.scopeHash","value":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","reason":"bounded scope hash mismatch"},
+    {"id":"A14","expectedLevel":"UNKNOWN","expectedReady":false,"path":"attestor.observedAt","value":"2026-10-08T13:31:00+08:00","reason":"attestation arrived after decision"},
+    {"id":"A15","expectedLevel":"L4","expectedReady":false,"path":"symbolSessionReceiptCertified","value":false,"reason":"source independence alone does not certify symbol sessions"},
+    {"id":"A16","expectedLevel":"L4","expectedReady":false,"path":"corporateActionAncestryCertified","value":false,"reason":"source independence alone does not certify price continuity"},
+    {"id":"A17","expectedLevel":"L4","expectedReady":false,"path":"continuityReceiptHashBound","value":false,"reason":"attestation must be bound into continuity hash"},
+    {"id":"A18","expectedLevel":"CONFLICT","expectedReady":false,"path":"conflictCount","value":1,"reason":"unresolved source conflict"},
+    {"id":"A19","expectedLevel":"UNKNOWN","expectedReady":false,"path":"primary.complete","value":false,"reason":"partial primary response"},
+    {"id":"A20","expectedLevel":"UNKNOWN","expectedReady":false,"path":"primary.rawPayloadHash","value":null,"reason":"primary raw identity missing"}
+  ]
+}
