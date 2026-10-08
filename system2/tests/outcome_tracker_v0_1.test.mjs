@@ -2,11 +2,19 @@ import assert from "node:assert/strict";
 import {
   buildDecisionOutcomeSnapshotV0_1,
   toS2OutcomeRowV0_1,
+  toS2OutcomeVersionRowV0_2,
   validateMonotonicOutcomeUpdateV0_1,
+  verifyDecisionOutcomeSnapshotV0_2,
 } from "../runtime/outcome_tracker_v0_1.mjs";
 
 const base = {
   decisionId: "D-2330-20260929",
+  decisionHash: "a".repeat(64),
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  regimeSnapshotId: "REG-20260929",
+  regimeHash: "b".repeat(64),
+  corporateActionLineageHash: "c".repeat(64),
   symbol: "2330",
   decisionMarketDate: "2026-09-29",
   decisionTimestamp: "2026-09-29T07:30:00Z",
@@ -127,6 +135,11 @@ assert.equal(
 assert.equal(outcome.performanceEligible, true);
 assert.deepEqual(outcome.warnings, []);
 assert.match(outcome.outcomeHash, /^[0-9a-f]{64}$/);
+assert.match(outcome.outcomeVersionId, /^[0-9a-f]{64}$/);
+assert.equal(outcome.schemaVersion, "S2_DECISION_OUTCOME_V0_2");
+const verifiedOutcome = await verifyDecisionOutcomeSnapshotV0_2(outcome);
+assert.equal(verifiedOutcome.valid, true);
+assert.deepEqual(verifiedOutcome.blockers, []);
 
 const replay = await buildDecisionOutcomeSnapshotV0_1({
   ...base,
@@ -145,6 +158,16 @@ assert.equal(row.ambiguous_same_bar, 0);
 assert.equal(row.realized_return_after_cost, null);
 assert.equal(row.holding_sessions, null);
 assert.equal(JSON.parse(row.outcome_json).relativeBenchmarkReturns.D5 !== undefined, true);
+const versionRow = toS2OutcomeVersionRowV0_2(outcome);
+assert.equal(versionRow.outcome_version_id, outcome.outcomeVersionId);
+assert.equal(versionRow.decision_hash, base.decisionHash);
+assert.equal(versionRow.strategy_id, base.strategyId);
+assert.equal(versionRow.strategy_version, base.strategyVersion);
+assert.equal(versionRow.regime_snapshot_id, base.regimeSnapshotId);
+assert.equal(versionRow.regime_hash, base.regimeHash);
+assert.equal(versionRow.realized_return_after_cost, null);
+assert.equal(versionRow.simulated_execution_json, null);
+assert.match(versionRow.signal_return_json, /SIGNAL_PRICE_RETURNS_AND_SCENARIO_ESTIMATES_NOT_SIMULATED_REALIZED_RETURN/);
 
 const day1Outcome = await buildDecisionOutcomeSnapshotV0_1({
   ...base,
@@ -171,6 +194,56 @@ const lowerMfe = {
 };
 const badMfe = validateMonotonicOutcomeUpdateV0_1(day1Row, lowerMfe);
 assert.ok(badMfe.blockers.includes("MFE_NON_MONOTONIC"));
+
+const erasedMfe = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  d1_return: day1Row.d1_return,
+  mfe: null,
+});
+assert.ok(erasedMfe.blockers.includes("MFE_ERASED"));
+
+const erasedMae = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  d1_return: day1Row.d1_return,
+  mae: null,
+});
+assert.ok(erasedMae.blockers.includes("MAE_ERASED"));
+
+const closedLegacy = {
+  ...row,
+  realized_return_after_cost: 0.07,
+  holding_sessions: 4,
+  outcome_json: JSON.stringify({
+    strategyId: "SHORT_MOMENTUM",
+    costModel: "COST_V1",
+  }),
+};
+const holdingRewrite = validateMonotonicOutcomeUpdateV0_1(closedLegacy, {
+  ...closedLegacy,
+  holding_sessions: 11,
+  updated_at: "2026-10-07T09:00:00Z",
+});
+assert.ok(holdingRewrite.blockers.includes("CLOSED_HOLDING_SESSIONS_REVISION"));
+
+const costRewrite = validateMonotonicOutcomeUpdateV0_1(closedLegacy, {
+  ...closedLegacy,
+  outcome_json: JSON.stringify({
+    strategyId: "SHORT_MOMENTUM",
+    costModel: "COST_V99",
+  }),
+  updated_at: "2026-10-07T09:00:00Z",
+});
+assert.ok(costRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModelHash"));
+
+const strategyRewrite = validateMonotonicOutcomeUpdateV0_1(closedLegacy, {
+  ...closedLegacy,
+  outcome_json: JSON.stringify({
+    strategyId: "SWING_GROWTH",
+    costModel: "COST_V1",
+  }),
+  updated_at: "2026-10-07T09:00:00Z",
+});
+assert.ok(strategyRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:strategyId"));
 
 const ambiguous = await buildDecisionOutcomeSnapshotV0_1({
   ...base,
@@ -246,4 +319,4 @@ await assert.rejects(
   /mixed price spaces/,
 );
 
-console.log("System2 decision outcome tracker V0.1 tests passed");
+console.log("System2 decision outcome tracker V0.2 lineage tests passed");

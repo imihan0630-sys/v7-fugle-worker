@@ -5,7 +5,7 @@ import {
 } from "../runtime/outcome_persistence_v0_1.mjs";
 import {
   buildDecisionOutcomeSnapshotV0_1,
-  toS2OutcomeRowV0_1,
+  toS2OutcomeVersionRowV0_2,
 } from "../runtime/outcome_tracker_v0_1.mjs";
 
 class MockStatement {
@@ -44,7 +44,9 @@ class MockDb {
           ? "sim_order_id"
           : table === "s2_sim_fills"
             ? "sim_fill_id"
-            : "decision_id";
+            : table === "s2_outcome_versions"
+              ? "outcome_version_id"
+              : "decision_id";
         const key = `${table}|${row[identityColumn]}`;
         if (this.rows.has(key)) return [{ success: false }];
         this.rows.set(key, row);
@@ -52,12 +54,12 @@ class MockDb {
         continue;
       }
 
-      const update = statement.sql.match(/^UPDATE\s+s2_outcomes\s+SET\s+(.+)\s+WHERE\s+decision_id\s*=\s*\?\s+AND\s+updated_at\s*=\s*\?/i);
+      const update = statement.sql.match(/^UPDATE\s+s2_outcome_versions\s+SET\s+(.+)\s+WHERE\s+outcome_version_id\s*=\s*\?\s+AND\s+updated_at\s*=\s*\?/i);
       if (!update) throw new Error(`unexpected SQL: ${statement.sql}`);
       const assignments = update[1].split(",").map((x) => x.trim().split(/\s*=\s*/)[0]);
-      const decisionId = statement.params[assignments.length];
+      const outcomeVersionId = statement.params[assignments.length];
       const expectedUpdatedAt = statement.params[assignments.length + 1];
-      const key = `s2_outcomes|${decisionId}`;
+      const key = `s2_outcome_versions|${outcomeVersionId}`;
       const prior = this.rows.get(key);
       if (!prior || prior.updated_at !== expectedUpdatedAt) {
         results.push({ success: true, meta: { changes: 0 } });
@@ -76,6 +78,12 @@ class MockDb {
 
 const decisionBase = {
   decisionId: "D-PERSIST-2330",
+  decisionHash: "a".repeat(64),
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  regimeSnapshotId: "REG-PERSIST-1",
+  regimeHash: "b".repeat(64),
+  corporateActionLineageHash: "c".repeat(64),
   symbol: "2330",
   decisionMarketDate: "2026-09-29",
   decisionTimestamp: "2026-09-29T07:30:00Z",
@@ -158,21 +166,29 @@ const batch1 = await buildOutcomePersistenceBatchV0_1({
   decisionTimestamp: decisionBase.decisionTimestamp,
   simulationOrderRows: [orderRow],
   simulationFillRows: [fillRow],
-  outcomeRow: toS2OutcomeRowV0_1(day1),
+  outcomeRow: toS2OutcomeVersionRowV0_2(day1),
   createdAt: "2026-09-30T09:01:00Z",
 });
 assert.equal(batch1.operationCount, 3);
-assert.equal(batch1.mutableTable, "s2_outcomes");
+assert.equal(batch1.mutableTable, "s2_outcome_versions");
 assert.match(batch1.batchHash, /^[0-9a-f]{64}$/);
 
 const db = new MockDb();
 db.rows.set(`s2_decisions|${decisionBase.decisionId}`, {
   decision_id: decisionBase.decisionId,
-  strategy_id: "SHORT_MOMENTUM",
-  strategy_version: "V0.1-CONTRACT",
+  decision_hash: decisionBase.decisionHash,
+  strategy_id: decisionBase.strategyId,
+  strategy_version: decisionBase.strategyVersion,
   symbol: decisionBase.symbol,
   market_date: decisionBase.decisionMarketDate,
   decision_timestamp: decisionBase.decisionTimestamp,
+  regime_snapshot_id: decisionBase.regimeSnapshotId,
+});
+db.rows.set(`s2_market_regime_snapshots|${decisionBase.regimeSnapshotId}`, {
+  regime_snapshot_id: decisionBase.regimeSnapshotId,
+  market_date: decisionBase.decisionMarketDate,
+  decision_timestamp: decisionBase.decisionTimestamp,
+  snapshot_hash: decisionBase.regimeHash,
 });
 const first = await executeOutcomePersistenceBatchV0_1({ db, batch: batch1 });
 assert.equal(first.insertedCount, 3);
@@ -188,24 +204,50 @@ const batch3 = await buildOutcomePersistenceBatchV0_1({
   decisionTimestamp: decisionBase.decisionTimestamp,
   simulationOrderRows: [orderRow],
   simulationFillRows: [fillRow],
-  outcomeRow: toS2OutcomeRowV0_1(day3),
+  outcomeRow: toS2OutcomeVersionRowV0_2(day3),
   createdAt: "2026-10-02T09:01:00Z",
 });
 const updated = await executeOutcomePersistenceBatchV0_1({ db, batch: batch3 });
 assert.equal(updated.updatedCount, 1);
 assert.equal(updated.skippedIdenticalCount, 2);
-assert.ok(Math.abs(db.rows.get("s2_outcomes|D-PERSIST-2330").d3_return - 0.06) < 1e-12);
+assert.equal(day1.outcomeVersionId, day3.outcomeVersionId);
+assert.ok(Math.abs(db.rows.get(`s2_outcome_versions|${day3.outcomeVersionId}`).d3_return - 0.06) < 1e-12);
 
-const changedDay1 = {
-  ...toS2OutcomeRowV0_1(day3),
+const scalarTamper = {
+  ...toS2OutcomeVersionRowV0_2(day3),
   d1_return: 0.5,
   updated_at: "2026-10-03T09:00:00Z",
 };
-const conflictBatch = await buildOutcomePersistenceBatchV0_1({
-  batchId: "OPB-CONFLICT",
+const scalarTamperBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-SCALAR-TAMPER",
   marketDate: decisionBase.decisionMarketDate,
   decisionTimestamp: decisionBase.decisionTimestamp,
-  outcomeRow: changedDay1,
+  outcomeRow: scalarTamper,
+  createdAt: "2026-10-03T09:01:00Z",
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db, batch: scalarTamperBatch }),
+  /LINEAGE_MISMATCH:outcome\.row\.d1_return/,
+);
+
+// A fully recomputed snapshot with the same frozen identity but revised mature D1
+// passes row/snapshot integrity, then fails the monotonic historical-revision gate.
+const revisedDay3 = await buildDecisionOutcomeSnapshotV0_1({
+  ...decisionBase,
+  sessions: [
+    session(1, "2026-09-30", 150),
+    session(2, "2026-10-01", 104),
+    session(3, "2026-10-02", 106),
+  ],
+  updatedAt: "2026-10-03T09:00:00Z",
+});
+assert.equal(revisedDay3.outcomeVersionId, day3.outcomeVersionId);
+assert.notEqual(revisedDay3.horizonReturns.D1, day3.horizonReturns.D1);
+const conflictBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-MATURE-HORIZON-REVISION",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  outcomeRow: toS2OutcomeVersionRowV0_2(revisedDay3),
   createdAt: "2026-10-03T09:01:00Z",
 });
 await assert.rejects(
@@ -218,7 +260,7 @@ const immutableConflict = await buildOutcomePersistenceBatchV0_1({
   marketDate: decisionBase.decisionMarketDate,
   decisionTimestamp: decisionBase.decisionTimestamp,
   simulationOrderRows: [{ ...orderRow, status: "CLOSED" }],
-  outcomeRow: toS2OutcomeRowV0_1(day3),
+  outcomeRow: toS2OutcomeVersionRowV0_2(day3),
   createdAt: "2026-10-03T09:01:00Z",
 });
 await assert.rejects(
@@ -236,7 +278,7 @@ await assert.rejects(
     batchId: "OPB-DUPLICATE-OUTCOME",
     marketDate: decisionBase.decisionMarketDate,
     decisionTimestamp: decisionBase.decisionTimestamp,
-    outcomeRows: [toS2OutcomeRowV0_1(day3), toS2OutcomeRowV0_1(day3)],
+    outcomeRows: [toS2OutcomeVersionRowV0_2(day3), toS2OutcomeVersionRowV0_2(day3)],
     createdAt: "2026-10-03T09:01:00Z",
   }),
   /duplicate persistence identity/,
@@ -248,11 +290,19 @@ tamperedSql.records[0].insert.text =
 const sqlDb = new MockDb();
 sqlDb.rows.set(`s2_decisions|${decisionBase.decisionId}`, {
   decision_id: decisionBase.decisionId,
-  strategy_id: "SHORT_MOMENTUM",
-  strategy_version: "V0.1-CONTRACT",
+  decision_hash: decisionBase.decisionHash,
+  strategy_id: decisionBase.strategyId,
+  strategy_version: decisionBase.strategyVersion,
   symbol: decisionBase.symbol,
   market_date: decisionBase.decisionMarketDate,
   decision_timestamp: decisionBase.decisionTimestamp,
+  regime_snapshot_id: decisionBase.regimeSnapshotId,
+});
+sqlDb.rows.set(`s2_market_regime_snapshots|${decisionBase.regimeSnapshotId}`, {
+  regime_snapshot_id: decisionBase.regimeSnapshotId,
+  market_date: decisionBase.decisionMarketDate,
+  decision_timestamp: decisionBase.decisionTimestamp,
+  snapshot_hash: decisionBase.regimeHash,
 });
 await assert.rejects(
   () => executeOutcomePersistenceBatchV0_1({ db: sqlDb, batch: tamperedSql }),
@@ -276,7 +326,7 @@ const wrongOrderBatch = await buildOutcomePersistenceBatchV0_1({
       strategyId: "SWING_GROWTH",
     }),
   }],
-  outcomeRow: toS2OutcomeRowV0_1(day1),
+  outcomeRow: toS2OutcomeVersionRowV0_2(day1),
   createdAt: "2026-09-30T09:02:00Z",
 });
 await assert.rejects(
@@ -294,7 +344,7 @@ const orphanFillBatch = await buildOutcomePersistenceBatchV0_1({
     sim_order_id: "SO-MISSING",
     fill_json: JSON.stringify({ simFillId: "SF-ORPHAN", simOrderId: "SO-MISSING" }),
   }],
-  outcomeRow: toS2OutcomeRowV0_1(day1),
+  outcomeRow: toS2OutcomeVersionRowV0_2(day1),
   createdAt: "2026-09-30T09:03:00Z",
 });
 await assert.rejects(
@@ -303,7 +353,7 @@ await assert.rejects(
 );
 
 const wrongOutcomeRow = {
-  ...toS2OutcomeRowV0_1(day1),
+  ...toS2OutcomeVersionRowV0_2(day1),
   outcome_json: JSON.stringify({
     ...day1,
     decisionId: "D-FOREIGN",
@@ -318,7 +368,28 @@ const wrongOutcomeBatch = await buildOutcomePersistenceBatchV0_1({
 });
 await assert.rejects(
   () => executeOutcomePersistenceBatchV0_1({ db, batch: wrongOutcomeBatch }),
-  /LINEAGE_MISMATCH:outcome_json.decisionId/,
+  /OUTCOME_SNAPSHOT_INTEGRITY:.*OUTCOME_HASH_MISMATCH/,
 );
 
-console.log("System2 outcome persistence V0.1 tests passed");
+
+const alternateCost = await buildDecisionOutcomeSnapshotV0_1({
+  ...decisionBase,
+  costScenarios: [{ scenarioId: "ALT_COST", roundTripCostRate: 0.01, note: "alternate" }],
+  sessions: [session(1, "2026-09-30", 102)],
+  updatedAt: "2026-09-30T09:00:00Z",
+});
+assert.notEqual(alternateCost.outcomeVersionId, day1.outcomeVersionId);
+const alternateBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-ALT-COST",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  outcomeRow: toS2OutcomeVersionRowV0_2(alternateCost),
+  createdAt: "2026-09-30T09:05:00Z",
+});
+const alternatePersisted = await executeOutcomePersistenceBatchV0_1({ db, batch: alternateBatch });
+assert.equal(alternatePersisted.insertedCount, 1);
+assert.equal(alternatePersisted.updatedCount, 0);
+assert.ok(db.rows.has(`s2_outcome_versions|${day1.outcomeVersionId}`));
+assert.ok(db.rows.has(`s2_outcome_versions|${alternateCost.outcomeVersionId}`));
+
+console.log("System2 outcome persistence V0.2 lineage tests passed");

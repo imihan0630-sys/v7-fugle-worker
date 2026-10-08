@@ -198,8 +198,11 @@ Implemented research-only behavior:
 - `AMBIGUOUS_SAME_BAR` preservation with possible stop-first / target-first paths rather than favorable sequencing;
 - daily-bar fills keep exact `fillTimestamp` null because OHLC does not identify an intraday timestamp;
 - signal return remains separate from simulated gross and net-after-cost return;
-- immutable simulated order/fill persistence plus monotonic, optimistic-guarded `s2_outcomes` updates;
-- post-write readback verification against isolated `SYSTEM2_DB` only.
+- immutable simulated order/fill persistence plus versioned `s2_outcome_versions` identity and monotonic maturation under an unchanged outcome version;
+- legacy `s2_outcomes` is retained for history compatibility and is not the active CORR-012 write target;
+- decision/strategy/Regime/price-space/corporate-action/cost/execution/tax lineage is frozen into `outcome_version_id`; changed assumptions create a new version instead of replacing one row;
+- signal-price scenario returns remain physically separate from simulated net-after-cost realized returns;
+- candidate rows, existing rows and post-write readback all recompute canonical outcome/version hashes against isolated `SYSTEM2_DB` only.
 
 Still not implemented / not claimed:
 - partial fills;

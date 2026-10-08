@@ -770,7 +770,9 @@ export function toOutcomeSimulatedExecutionV0_1(simulation) {
     realizedReturnAfterCost: simulation.realizedReturnAfterCost,
     holdingSessions: simulation.holdingSessions,
     fillQuality: requiredText(simulation.fillQuality, "simulation.fillQuality"),
+    executionHash: requiredText(simulation.executionHash, "simulation.executionHash"),
     executionVersion: EXECUTION_SIMULATOR_VERSION_V0_1,
+    order: simulation.order,
   });
 }
 

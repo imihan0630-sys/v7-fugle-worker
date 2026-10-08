@@ -465,7 +465,11 @@ Semantic guard:
 - Broker API holdings and System 1 holdings import remain unauthorized.
 - Signal, trigger, suggested/requested-share and plan records cannot be converted into actual holdings.
 
-### s2_outcomes
+### s2_outcomes — LEGACY V0.1 / retained history
+
+Existing rows are preserved for historical compatibility. New CORR-012 writes must not use this decision_id-only table because it cannot bind execution/cost/Regime lineage strongly enough for versioned performance research.
+
+Legacy fields:
 - decision_id
 - d1/d3/d5/d10/d20 returns
 - mfe / mae
@@ -476,6 +480,46 @@ Semantic guard:
 - holding_sessions
 - cost_adjusted_return
 - outcome_json
+
+### s2_outcome_versions — V0.2 closed-lineage outcome maturation
+
+Primary identity:
+- outcome_version_id = deterministic hash of frozen decision / strategy / Regime / price-space / corporate-action / cost-scenario / execution lineage
+- decision_id remains a parent reference, not the sole mutable identity
+
+Frozen lineage:
+- decision_hash
+- strategy_id / strategy_version
+- symbol / decision_timestamp
+- regime_snapshot_id / regime_hash
+- price_space
+- corporate_action_state / corporate_action_lineage_hash
+- cost_scenario_set_hash
+- execution_hash / execution_version
+- cost_model_hash
+- tax_rule_id / tax_rule_hash
+
+Maturable evidence under one unchanged outcome_version_id:
+- d1/d3/d5/d10/d20 returns
+- mfe / mae
+- target_hit_session / stop_hit_session / ambiguous_same_bar
+- realized_return_after_cost / holding_sessions
+- updated_at
+
+Separation contract:
+- signal_return_json stores signal-price horizon returns and scenario estimates only
+- simulated_execution_json stores simulated execution evidence only
+- realized_return_after_cost is never relabeled from signal-price return
+- outcome_json stores the full canonical V0.2 snapshot
+- outcome_hash must recompute from the full canonical snapshot on candidate write, existing-row update and post-write readback
+
+Maturation rules:
+- null may become known when later evidence matures
+- known horizon/barrier/realized values cannot be revised
+- known MFE cannot decrease or become null
+- known MAE cannot increase or become null
+- once simulated execution is closed / realized, holding_sessions cannot change
+- changed strategy, Regime, price space, corporate-action lineage, cost scenario, execution or tax assumptions require a distinct outcome_version_id rather than in-place replacement
 
 ### s2_strategy_daily_performance
 - portfolio_id
