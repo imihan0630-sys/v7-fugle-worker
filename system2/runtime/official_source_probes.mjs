@@ -3,11 +3,16 @@ import {
   buildSourceProbeReceipt,
   taipeiMarketCloseTimestamp,
 } from "./source_arrival_latency.mjs";
+import { deepFreeze } from "./factor_snapshot.mjs";
+import { resolveMarketPayload } from "./daily_shadow_a1_source_v0_1.mjs";
+import { fetchOfficialHistoricalA1DateV0_1 } from "./official_historical_a1_source_v0_1.mjs";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const USER_AGENT = "System2-ReadOnly-Source-Arrival/0.2";
 
 export const A1_DAILY_CLOSE_VALIDATION_VERSION = "S2_A1_DAILY_CLOSE_VALIDATION_V0_2";
+export const A1_CLOCK_SHARED_SOURCE_SELECTION_VERSION = "S2_A1_CLOCK_SHARED_STAGE1_SOURCE_SELECTION_V0_1";
+export const A1_EXACT_DATE_CLOCK_VALIDATION_VERSION = "S2_A1_EXACT_DATE_CLOCK_VALIDATION_V0_1";
 
 function rocDate(marketDate) {
   const [year, month, day] = marketDate.split("-").map(Number);
@@ -219,6 +224,7 @@ export async function probeOfficialSource({
   sourceId,
   marketDate,
   fetchImpl = fetch,
+  exactDateFetch = fetchOfficialHistoricalA1DateV0_1,
   now = () => new Date(),
   timeoutMs = DEFAULT_TIMEOUT_MS,
 } = {}) {
@@ -242,12 +248,63 @@ export async function probeOfficialSource({
           : "NETWORK_ERROR",
     };
   }
-  const observedAt = now().toISOString();
-  const parsed = result.transportOk
+
+  // Preserve the original primary-source observation time. A later exact-date
+  // fallback may only become READY at its own post-response observation time.
+  let observedAt = now().toISOString();
+  let parsed = result.transportOk
     ? parseOfficialSourcePayload(sourceId, result.payload, marketDate)
     : { schemaValid: false, payloadDate: null, recordCount: null };
+  let selectedSource = null;
+  let fallbackIntegrityOk = true;
+  if (sourceId === "A1_TWSE_DAILY_CLOSE" || sourceId === "A1_TPEX_DAILY_CLOSE") {
+    const market = sourceId === "A1_TWSE_DAILY_CLOSE" ? "TWSE" : "TPEX";
+    // Stage 1 already implements the exact-date source selection, including
+    // its canonical-only (no legacy TPEx) fallback policy. Reuse that same
+    // selector rather than inventing an independent Decision Clock pathway.
+    const selected = await resolveMarketPayload({
+      market, marketDate,
+      primary: {
+        ok: result.transportOk && result.errorCode === null,
+        httpStatus: result.httpStatus,
+        errorCode: result.errorCode,
+        payload: result.payload ?? null,
+      },
+      exactDateFetch,
+      fetchImpl,
+    });
+    const viaExactDate = selected.selection === "EXACT_DATE_FALLBACK";
+    const targetDateProven = !viaExactDate
+      || (selected.fallback?.sourceDateEvidence === marketDate);
+    fallbackIntegrityOk = targetDateProven;
+    if (viaExactDate && targetDateProven) {
+      // Never reuse the historical parser's SESSION_CLOSE_FINALITY clock as
+      // a prospective firstKnownAt/availableAt. This observation is after the
+      // actual exact-date response has been received and normalized.
+      observedAt = now().toISOString();
+      parsed = parseOfficialSourcePayload(sourceId, selected.rows, marketDate);
+      result = {transportOk:true,httpStatus:200,errorCode:null};
+      parsed.validationVersion = A1_EXACT_DATE_CLOCK_VALIDATION_VERSION;
+    }
+    selectedSource = deepFreeze({
+      version: A1_CLOCK_SHARED_SOURCE_SELECTION_VERSION,
+      selection: selected.selection,
+      selectedSourceId: viaExactDate && targetDateProven
+        ? selected.sourceOverride?.sourceId || null : sourceId,
+      selectedSourceUrl: viaExactDate && targetDateProven
+        ? selected.sourceOverride?.sourceUrl || null : officialSourceUrl(sourceId,marketDate),
+      primary: selected.primary,
+      fallback: selected.fallback,
+      sourceDateEvidence: viaExactDate ? selected.fallback?.sourceDateEvidence ?? null : parsed.payloadDate,
+      sourceDateEvidenceBasis: viaExactDate
+        ? selected.fallback?.sourceDateEvidenceBasis ?? null : "OPENAPI_ROW_DATE",
+      sourceDateVerified: targetDateProven && parsed.payloadDate === marketDate,
+      prospectiveAvailabilitySemantics:"OBSERVED_AFTER_SELECTED_SOURCE_RESPONSE_NOT_HISTORICAL_PUBLICATION",
+      historySessionCloseFinalityUsed:false,
+    });
+  }
 
-  return buildSourceProbeReceipt({
+  const receipt = buildSourceProbeReceipt({
     sourceId,
     marketDate,
     marketCloseTimestamp: taipeiMarketCloseTimestamp(marketDate),
@@ -255,13 +312,17 @@ export async function probeOfficialSource({
     observedAt,
     transportOk: result.transportOk,
     httpStatus: result.httpStatus,
-    schemaValid: result.transportOk && result.errorCode !== "NON_JSON_RESPONSE" && parsed.schemaValid,
+    schemaValid: fallbackIntegrityOk && result.transportOk
+      && result.errorCode !== "NON_JSON_RESPONSE" && parsed.schemaValid,
     payloadDate: parsed.payloadDate,
     recordCount: parsed.recordCount,
     validationVersion: parsed.validationVersion || null,
     coverageDiagnostics: parsed.coverageDiagnostics || null,
     errorCode: result.errorCode,
+    endpointClass: selectedSource?.selection === "EXACT_DATE_FALLBACK"
+      ? "OFFICIAL_CANONICAL_EXACT_DATE_GET" : "OFFICIAL_PUBLIC_GET",
   });
+  return selectedSource ? deepFreeze({...receipt,sourceSelection:selectedSource}) : receipt;
 }
 
 export async function probeOfficialSources(options = {}) {
