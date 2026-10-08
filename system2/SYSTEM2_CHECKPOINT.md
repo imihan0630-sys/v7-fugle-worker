@@ -3384,3 +3384,16 @@ Exact next:
 2. BUILD_LANE continues `S2-CORR-20261008-012`.
 3. Preserve CORR-008 physical NC-T01 and DATA_LANE continuity gates as separate launch-critical work.
 
+## 2026-10-09 BUILD_LANE owner decision — post-market source readiness / next-session pool clock
+
+Owner-approved policy contract: `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_POOL_CLOCK_V0_1.md`.
+
+- 19:00 Asia/Taipei is only a PRELIMINARY_SOURCE_REVIEW target: not proof of complete after-market inputs and never a new final-pick authority by itself.
+- 23:45 Asia/Taipei is a proposed conditional FINAL_FREEZE_ATTEMPT when each strategy's preregistered mandatory source set passes exact-date, receipt, source-vintage, PIT, coverage, corporate-action, ranking/capacity and immutable-readback checks.
+- 00:15 on the next calendar date is a conditional recovery observation for the **same explicit trading date T** if 23:45 is incomplete. No midnight drift, retroactive eligibility or rewriting the frozen historical record.
+- Fixed wall-clock times and HTTP 200 do not prove freshness. Any missing mandatory input remains UNKNOWN/NOT_READY, not an invented zero-pick; different authorized strategies may have different required datasets. Paid/unavailable sources are not automatically enabled.
+- Existing deployed bounded 19:00 refresh behavior and `SYSTEM2_CAPTURE_ENABLED=false` are unchanged. Future late freezes and recovery require separate isolated System 2 implementation, new tests, CI, real source and D1 readback, and appropriate authorization; this docs commit does not do that.
+- DATA_LANE owns physical source/PIT readiness, REMEDIATION_LANE owns shared free-tier D1 budget, BUILD_LANE owns the future isolated selection/capacity/Worker integration, AUDIT_LANE validates closure.
+- **System 1 Formal Core, formal 23:35/23:55 windows, four production Crons, push, capital and order paths remain untouched.**
+
+BUILD next: deliver/accept the already active CORR-012/013 and data-readiness prerequisites without modifying a protected runtime; schedule implementation is a separate tracked integration after readiness.
