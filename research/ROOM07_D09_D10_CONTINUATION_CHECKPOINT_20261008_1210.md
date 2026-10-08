@@ -32,3 +32,9 @@ BR-043/BR-072 shared A1+B5 parent dependency remains unchanged. The same immutab
 No Level, maturityPct, module status or aggregate change is justified by these two mathematical/governance receipts. Tracker remains untouched. This branch requires review/merge before the canonical main can treat these files as durable current-room receipts. Re-read latest main before merge and reconcile concurrent D09/D10 checkpoint updates.
 
 Exact next: review and merge the two non-duplicating research receipts; after merge resume canonical priorities from latest tracker/checkpoint. Do not merge the old conflicting SC-089 label.
+
+## 2026-10-08 20:11 Taipei — D09-10 sharp partial-identification continuation
+
+Existing D09-10 synthetic counterexample was extended, not repeated, with a closed-form sharp identified set for m missing nonnegative trade amounts: for observed sum S>0 and sum of squares Q, HHI lies in [Q/(S^2+mQ),1) absent valid finite upper caps. The lower bound is attained by each missing amount Q/S. In the 90/10 + one missing example, the 0.54 comparator has two crossing amounts (~29.677213 and ~205.105396), proving the concentration rank is non-monotone in missing trade amount. Thus incomplete-sector ranks must remain UNKNOWN unless identified intervals separate. This is a deterministic proof, not a new Taiwan market date, new independent sample, or alpha evidence.
+
+Prior two receipts passed independent arithmetic rechecks. The old conflicting SC-089 inventory-mix ticket remains excluded; canonical SC-089 GlobalWafers D10-08 is untouched. A research-only draft PR was opened for the three branch files; no formal selection or tracker maturity changes are justified. Exact next: verify PR merge/readback against latest main and preserve shared BR-043/BR-072 A1+B5 parent for first real D09-09/D09-10 calculation; continue SC-083 prospective inventory cohort and SDA-009 R3A1 receipt gate when upstream data become available.
