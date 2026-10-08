@@ -104,6 +104,13 @@ export async function buildD18SectorRotationContextV0_1({
   eligibleB2(priorB2Receipt, priorMarketDate, decisionMs, reasons, "PRIOR");
   const currentRows = validIndustryRows(currentB2Receipt, reasons, "CURRENT");
   const priorRows = validIndustryRows(priorB2Receipt, reasons, "PRIOR");
+  const observedTimes = [
+    Date.parse(currentB2Receipt?.observedAt || ""),
+    Date.parse(priorB2Receipt?.observedAt || ""),
+  ];
+  const availableAt = observedTimes.every(Number.isFinite)
+    ? new Date(Math.max(...observedTimes)).toISOString()
+    : null;
 
   const base = {
     receiptId: id,
@@ -111,6 +118,7 @@ export async function buildD18SectorRotationContextV0_1({
     marketDate,
     priorMarketDate,
     decisionTimestamp: decisionAt,
+    availableAt,
     currentB2ReceiptHash: currentB2Receipt?.receiptHash || null,
     priorB2ReceiptHash: priorB2Receipt?.receiptHash || null,
     classificationVintageSemantics:
@@ -125,6 +133,7 @@ export async function buildD18SectorRotationContextV0_1({
     return deepFreeze({
       ...base,
       state: "UNKNOWN",
+      pointInTimeEligible: false,
       unknownReasons: Object.freeze([...new Set(reasons)]),
       industries: Object.freeze([]),
       schemaVersion: D18_SECTOR_ROTATION_CONTEXT_VERSION,
@@ -155,6 +164,7 @@ export async function buildD18SectorRotationContextV0_1({
   const payload = {
     ...base,
     state: commonCount > 0 ? "KNOWN" : "UNKNOWN",
+    pointInTimeEligible: commonCount > 0,
     unknownReasons: Object.freeze(commonCount > 0 ? [] : ["NO_COMMON_INDUSTRY_KEYS"]),
     commonIndustryCount: commonCount,
     currentIndustryCount: currentRows.length,

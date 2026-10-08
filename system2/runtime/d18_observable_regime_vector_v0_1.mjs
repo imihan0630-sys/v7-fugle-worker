@@ -15,6 +15,235 @@ const DIMENSIONS = Object.freeze([
   "sectorRotationContext",
 ]);
 
+const HASH_RE = /^[a-f0-9]{64}$/;
+
+function sourceIdentity(receipt) {
+  return receipt?.sourceId
+    || receipt?.featureId
+    || receipt?.receiptId
+    || receipt?.bundleId
+    || receipt?.sourceBatchId
+    || receipt?.contextVersion
+    || receipt?.version
+    || null;
+}
+
+function ownHash(receipt) {
+  return receipt?.receiptHash
+    || receipt?.featureHash
+    || receipt?.bundleHash
+    || null;
+}
+
+function ownHashField(receipt) {
+  if (typeof receipt?.receiptHash === "string") return "receiptHash";
+  if (typeof receipt?.featureHash === "string") return "featureHash";
+  if (typeof receipt?.bundleHash === "string") return "bundleHash";
+  return null;
+}
+
+async function orderedJsonSha256Hex(value) {
+  const bytes = new TextEncoder().encode(JSON.stringify(value));
+  if (globalThis.crypto?.subtle) {
+    const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
+    return [...new Uint8Array(digest)]
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+  const { createHash } = await import("node:crypto");
+  return createHash("sha256").update(bytes).digest("hex");
+}
+
+async function recomputeComponentHash(receipt) {
+  const field = ownHashField(receipt);
+  if (!field) return { field: null, claimed: null, recomputed: null, valid: false };
+  const claimed = String(receipt[field] || "");
+  const payload = stripHash(receipt, field);
+  const recomputed = field === "featureHash"
+    ? await orderedJsonSha256Hex(payload)
+    : await sha256Hex(payload);
+  return {
+    field,
+    claimed,
+    recomputed,
+    valid: HASH_RE.test(claimed) && claimed === recomputed,
+  };
+}
+
+function normalizeAvailableAt(receipt) {
+  return receipt?.availableAt
+    || receipt?.sourceObservedAt
+    || receipt?.observedAt
+    || null;
+}
+
+async function validateDimensionSource(receipt, {
+  marketDate,
+  decisionTimestamp,
+  tag,
+  allowState = "KNOWN",
+} = {}) {
+  const blockers = [];
+  if (!receipt || typeof receipt !== "object") {
+    blockers.push(tag + "_MISSING");
+    return {
+      ready: false,
+      blockers,
+      sourceIdentity: null,
+      sourceRef: null,
+      availableAt: null,
+    };
+  }
+
+  if (receipt.state !== allowState) blockers.push(tag + "_STATE_NOT_" + allowState);
+  if (receipt.marketDate !== marketDate) blockers.push(tag + "_MARKET_DATE_MISMATCH");
+  if (!sameInstant(receipt.decisionTimestamp, decisionTimestamp)) {
+    blockers.push(tag + "_DECISION_CLOCK_MISMATCH");
+  }
+  if (receipt.pointInTimeEligible !== true) blockers.push(tag + "_PIT_INELIGIBLE");
+
+  const availableAt = normalizeAvailableAt(receipt);
+  const availableMs = Date.parse(availableAt || "");
+  if (!Number.isFinite(availableMs)) blockers.push(tag + "_AVAILABLE_AT_MISSING_OR_INVALID");
+  else if (availableMs > Date.parse(decisionTimestamp)) blockers.push(tag + "_AVAILABLE_AFTER_DECISION");
+
+  const identity = sourceIdentity(receipt);
+  if (typeof identity !== "string" || !identity.trim()) blockers.push(tag + "_SOURCE_IDENTITY_MISSING");
+
+  const hash = ownHash(receipt);
+  const componentHash = await recomputeComponentHash(receipt);
+  if (!HASH_RE.test(String(hash || ""))) blockers.push(tag + "_SOURCE_HASH_MISSING_OR_INVALID");
+  else if (!componentHash.valid) blockers.push(tag + "_SOURCE_HASH_MISMATCH");
+
+  return {
+    ready: blockers.length === 0,
+    blockers,
+    sourceIdentity: identity,
+    sourceRef: hash,
+    sourceHashField: componentHash.field,
+    sourceHashRecomputed: componentHash.recomputed,
+    sourceHashVerified: componentHash.valid,
+    availableAt: Number.isFinite(availableMs) ? new Date(availableMs).toISOString() : null,
+  };
+}
+
+async function dimensionPayload({
+  state,
+  value = null,
+  reason = null,
+  proof,
+  extra = {},
+} = {}) {
+  const base = {
+    state,
+    value,
+    reason,
+    sourceRef: proof?.sourceRef || null,
+    sourceIdentity: proof?.sourceIdentity || null,
+    sourceHashField: proof?.sourceHashField || null,
+    sourceHashRecomputed: proof?.sourceHashRecomputed || null,
+    sourceHashVerified: proof?.sourceHashVerified === true,
+    availableAt: proof?.availableAt || null,
+    pointInTimeEligible: proof?.ready === true,
+    blockerCodes: Object.freeze([...(proof?.blockers || [])]),
+    ...extra,
+  };
+  const evidenceHash = await sha256Hex(base);
+  return deepFreeze({ ...base, evidenceHash });
+}
+
+async function unknownDimension(reason, proof = null, extra = {}) {
+  return dimensionPayload({
+    state: "UNKNOWN",
+    value: null,
+    reason,
+    proof,
+    extra,
+  });
+}
+
+async function knownDimension(value, proof, extra = {}) {
+  return dimensionPayload({
+    state: "KNOWN",
+    value,
+    reason: null,
+    proof,
+    extra,
+  });
+}
+
+async function rawDimension(reason, proof, extra = {}) {
+  return dimensionPayload({
+    state: "CONTEXT_RAW",
+    value: null,
+    reason,
+    proof,
+    extra,
+  });
+}
+
+function stripHash(value, field) {
+  const out = { ...value };
+  delete out[field];
+  return out;
+}
+
+async function validateDimensionEvidenceRow(row) {
+  if (!row || typeof row !== "object") {
+    return { valid: false, blockers: ["DIMENSION_ROW_MISSING"] };
+  }
+  const claimed = String(row.evidenceHash || "");
+  const recomputed = await sha256Hex(stripHash(row, "evidenceHash"));
+  const blockers = [];
+  if (!HASH_RE.test(claimed)) blockers.push("DIMENSION_EVIDENCE_HASH_INVALID");
+  else if (recomputed !== claimed) blockers.push("DIMENSION_EVIDENCE_HASH_MISMATCH");
+
+  if (row.state === "KNOWN" || row.state === "CONTEXT_RAW") {
+    if (row.pointInTimeEligible !== true) blockers.push("DIMENSION_PIT_NOT_PROVEN");
+    if (!row.availableAt || !Number.isFinite(Date.parse(row.availableAt))) {
+      blockers.push("DIMENSION_AVAILABLE_AT_INVALID");
+    }
+    if (!row.sourceIdentity) blockers.push("DIMENSION_SOURCE_IDENTITY_MISSING");
+    if (!HASH_RE.test(String(row.sourceRef || ""))) blockers.push("DIMENSION_SOURCE_HASH_INVALID");
+    if (row.sourceHashVerified !== true) blockers.push("DIMENSION_COMPONENT_HASH_NOT_VERIFIED");
+    if (!HASH_RE.test(String(row.sourceHashRecomputed || ""))) {
+      blockers.push("DIMENSION_COMPONENT_RECOMPUTED_HASH_INVALID");
+    } else if (row.sourceHashRecomputed !== row.sourceRef) {
+      blockers.push("DIMENSION_COMPONENT_HASH_MISMATCH");
+    }
+  }
+  return { valid: blockers.length === 0, blockers, recomputed };
+}
+
+export async function validateD18ObservableRegimeVectorV0_1(regimeVector) {
+  const blockers = [];
+  if (!regimeVector || typeof regimeVector !== "object") {
+    return deepFreeze({ valid: false, blockers: Object.freeze(["REGIME_VECTOR_MISSING"]), dimensions: {} });
+  }
+  if (regimeVector.vectorVersion !== D18_OBSERVABLE_REGIME_VECTOR_VERSION) {
+    blockers.push("REGIME_VECTOR_VERSION_MISMATCH");
+  }
+
+  const dimensionValidation = {};
+  for (const key of DIMENSIONS) {
+    const result = await validateDimensionEvidenceRow(regimeVector.dimensions?.[key]);
+    dimensionValidation[key] = deepFreeze(result);
+    blockers.push(...result.blockers.map((code) => key + ":" + code));
+  }
+
+  const claimedReceiptHash = String(regimeVector.receiptHash || "");
+  const recomputedReceiptHash = await sha256Hex(stripHash(regimeVector, "receiptHash"));
+  if (!HASH_RE.test(claimedReceiptHash)) blockers.push("REGIME_VECTOR_HASH_INVALID");
+  else if (claimedReceiptHash !== recomputedReceiptHash) blockers.push("REGIME_VECTOR_HASH_MISMATCH");
+
+  return deepFreeze({
+    valid: blockers.length === 0,
+    blockers: Object.freeze([...new Set(blockers)]),
+    dimensions: deepFreeze(dimensionValidation),
+    recomputedReceiptHash,
+  });
+}
+
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(`${field} is required`);
   return value.trim();
@@ -36,25 +265,6 @@ function sameInstant(a, b) {
   const x = Date.parse(a || "");
   const y = Date.parse(b || "");
   return Number.isFinite(x) && Number.isFinite(y) && x === y;
-}
-
-function unknown(reason, sourceRef = null) {
-  return deepFreeze({
-    state: "UNKNOWN",
-    value: null,
-    reason,
-    sourceRef,
-  });
-}
-
-function known(value, sourceRef, extra = {}) {
-  return deepFreeze({
-    state: "KNOWN",
-    value,
-    reason: null,
-    sourceRef,
-    ...extra,
-  });
 }
 
 function validateReceiptClock(receipt, marketDate, decisionTimestamp, tag, reasons) {
@@ -105,23 +315,35 @@ export async function buildD18ObservableRegimeVectorV0_1({
     validateReceiptClock(sectorRotation, date, clock, "SECTOR_ROTATION", reasons);
   }
 
-  // Hard prerequisites for the vector itself:
-  // trend/volatility source and market-direction breadth receipt must be the same decision state.
-  const taiexReady =
-    taiexContext?.state === "KNOWN"
-    && taiexContext?.pointInTimeEligible === true
-    && typeof taiexContext?.historyWindowHash === "string"
-    && typeof taiexContext?.officialSessionWindowHash === "string";
+  // Hard prerequisites use the same source/PIT/hash firewall as every optional dimension.
+  const taiexProof = await validateDimensionSource(taiexContext, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "TAIEX_CONTEXT",
+  });
+  if (
+    typeof taiexContext?.historyWindowHash !== "string"
+    || typeof taiexContext?.officialSessionWindowHash !== "string"
+  ) {
+    taiexProof.blockers.push("TAIEX_CONTEXT_WINDOW_HASH_MISSING");
+    taiexProof.ready = false;
+  }
+  reasons.push(...taiexProof.blockers);
 
-  if (!taiexReady) reasons.push("TAIEX_CONTEXT_NOT_PIT_READY");
-
-  const breadthReady =
-    directionBreadth?.state === "KNOWN"
-    && typeof directionBreadth?.sourceBatchHash === "string"
-    && directionBreadth?.total
-    && Number.isFinite(directionBreadth.total.advanceShareKnown);
-
-  if (!breadthReady) reasons.push("DIRECTION_BREADTH_NOT_PIT_READY");
+  const breadthProof = await validateDimensionSource(directionBreadth, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "DIRECTION_BREADTH",
+  });
+  if (
+    typeof directionBreadth?.sourceBatchHash !== "string"
+    || !directionBreadth?.total
+    || !Number.isFinite(directionBreadth.total.advanceShareKnown)
+  ) {
+    breadthProof.blockers.push("DIRECTION_BREADTH_CONTENT_INCOMPLETE");
+    breadthProof.ready = false;
+  }
+  reasons.push(...breadthProof.blockers);
 
   if (reasons.length) {
     return deepFreeze({
@@ -132,7 +354,9 @@ export async function buildD18ObservableRegimeVectorV0_1({
       state: "UNKNOWN",
       pointInTimeEligible: false,
       unknownReasons: Object.freeze([...new Set(reasons)]),
-      dimensions: deepFreeze(Object.fromEntries(DIMENSIONS.map((x) => [x, unknown("VECTOR_PREREQUISITE_NOT_READY")]))),
+      dimensions: deepFreeze(Object.fromEntries(await Promise.all(
+        DIMENSIONS.map(async (x) => [x, await unknownDimension("VECTOR_PREREQUISITE_NOT_READY")]),
+      ))),
       scalarRiskScoreProduced: false,
       policyApplied: false,
       selectionImpact: false,
@@ -142,9 +366,9 @@ export async function buildD18ObservableRegimeVectorV0_1({
 
   const dimensions = {};
 
-  dimensions.trendContext = known(
+  dimensions.trendContext = await knownDimension(
     taiexContext.trendContext,
-    sourceHash(taiexContext),
+    taiexProof,
     {
       metrics: deepFreeze({
         close: taiexContext.metrics?.close ?? null,
@@ -155,9 +379,9 @@ export async function buildD18ObservableRegimeVectorV0_1({
     },
   );
 
-  dimensions.volatilityDirection = known(
+  dimensions.volatilityDirection = await knownDimension(
     taiexContext.volatilityDirection,
-    sourceHash(taiexContext),
+    taiexProof,
     {
       metrics: deepFreeze({
         realizedVol5: taiexContext.metrics?.realizedVol5 ?? null,
@@ -170,12 +394,11 @@ export async function buildD18ObservableRegimeVectorV0_1({
   // Direction breadth is executable and PIT-safe, but the canonical BROAD_POSITIVE /
   // BROAD_NEGATIVE rule also requires median return. U2B continuity-certified return
   // is not ready, so do not fabricate the label. Preserve the raw breadth context.
-  dimensions.breadthContext = deepFreeze({
-    state: "CONTEXT_RAW",
-    value: null,
-    reason: "MEDIAN_RETURN_U2B_NOT_CONTINUITY_CERTIFIED",
-    sourceRef: sourceHash(directionBreadth),
-    raw: deepFreeze({
+  dimensions.breadthContext = await rawDimension(
+    "MEDIAN_RETURN_U2B_NOT_CONTINUITY_CERTIFIED",
+    breadthProof,
+    {
+      raw: deepFreeze({
       advanceShareKnown: directionBreadth.total.advanceShareKnown,
       declineShareKnown: directionBreadth.total.declineShareKnown,
       flatShareKnown: directionBreadth.total.flatShareKnown,
@@ -187,102 +410,114 @@ export async function buildD18ObservableRegimeVectorV0_1({
     }),
   });
 
-  // Activity is intentionally UNKNOWN until a 20-session frozen market-activity series exists.
-  if (
-    activityContext?.state === "KNOWN"
-    && activityContext?.marketDate === date
-    && sameInstant(activityContext?.decisionTimestamp, clock)
-    && Number.isFinite(activityContext?.totalTradeValueVs20D)
-  ) {
+  // Optional contexts must independently prove date/clock/PIT/availability/source/hash.
+  const activityProof = await validateDimensionSource(activityContext, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "ACTIVITY_CONTEXT",
+  });
+  if (activityProof.ready && Number.isFinite(activityContext?.totalTradeValueVs20D)) {
     const ratio = Number(activityContext.totalTradeValueVs20D);
-    dimensions.activityDirection = known(
+    dimensions.activityDirection = await knownDimension(
       ratio > 1 ? "ACTIVITY_EXPANDING" : ratio < 1 ? "ACTIVITY_CONTRACTING" : "ACTIVITY_EQUAL",
-      sourceHash(activityContext),
+      activityProof,
       { totalTradeValueVs20D: ratio },
     );
   } else {
-    dimensions.activityDirection = unknown(
-      "FROZEN_20_SESSION_ACTIVITY_HISTORY_NOT_PROVEN",
-      sourceHash(activityContext),
+    if (activityContext && !Number.isFinite(activityContext?.totalTradeValueVs20D)) {
+      activityProof.blockers.push("ACTIVITY_CONTEXT_METRIC_INVALID");
+      activityProof.ready = false;
+    }
+    dimensions.activityDirection = await unknownDimension(
+      activityContext ? "PIT_ACTIVITY_CONTEXT_NOT_READY" : "FROZEN_20_SESSION_ACTIVITY_HISTORY_NOT_PROVEN",
+      activityProof,
     );
   }
 
-  // Concentration remains raw by contract; no HIGH/LOW threshold is authorized.
-  if (
-    concentrationContext?.state === "KNOWN"
-    && concentrationContext?.marketDate === date
-    && sameInstant(concentrationContext?.decisionTimestamp, clock)
-  ) {
-    dimensions.concentrationContext = deepFreeze({
-      state: "CONTEXT_RAW",
-      value: null,
-      reason: "NO_OUTCOME_INDEPENDENT_HIGH_LOW_THRESHOLD_FROZEN",
-      sourceRef: sourceHash(concentrationContext),
-      raw: deepFreeze({
-        top10TradeValueShare: concentrationContext.top10TradeValueShare ?? null,
-        top20TradeValueShare: concentrationContext.top20TradeValueShare ?? null,
-        returnDispersion: concentrationContext.returnDispersion ?? null,
-      }),
-    });
+  const concentrationProof = await validateDimensionSource(concentrationContext, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "CONCENTRATION_CONTEXT",
+  });
+  if (concentrationProof.ready) {
+    dimensions.concentrationContext = await rawDimension(
+      "NO_OUTCOME_INDEPENDENT_HIGH_LOW_THRESHOLD_FROZEN",
+      concentrationProof,
+      {
+        raw: deepFreeze({
+          top10TradeValueShare: concentrationContext.top10TradeValueShare ?? null,
+          top20TradeValueShare: concentrationContext.top20TradeValueShare ?? null,
+          returnDispersion: concentrationContext.returnDispersion ?? null,
+        }),
+      },
+    );
   } else {
-    dimensions.concentrationContext = unknown(
+    dimensions.concentrationContext = await unknownDimension(
       "PIT_CONCENTRATION_CONTEXT_NOT_READY",
-      sourceHash(concentrationContext),
+      concentrationProof,
     );
   }
 
-  // Institutional flow is descriptive context only; never a majority-vote market state.
-  if (
-    institutionalContext?.state === "KNOWN"
-    && institutionalContext?.marketDate === date
-    && sameInstant(institutionalContext?.decisionTimestamp, clock)
-  ) {
-    dimensions.institutionalContext = deepFreeze({
-      state: "CONTEXT_RAW",
-      value: null,
-      reason: "DESCRIPTIVE_FLOW_CONTEXT_NO_BULL_BEAR_VOTE",
-      sourceRef: sourceHash(institutionalContext),
-      raw: deepFreeze({
-        foreignNet: institutionalContext.foreignNet ?? null,
-        trustNet: institutionalContext.trustNet ?? null,
-        dealerNet: institutionalContext.dealerNet ?? null,
-      }),
-    });
+  const institutionalProof = await validateDimensionSource(institutionalContext, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "INSTITUTIONAL_CONTEXT",
+  });
+  if (institutionalProof.ready) {
+    dimensions.institutionalContext = await rawDimension(
+      "DESCRIPTIVE_FLOW_CONTEXT_NO_BULL_BEAR_VOTE",
+      institutionalProof,
+      {
+        raw: deepFreeze({
+          foreignNet: institutionalContext.foreignNet ?? null,
+          trustNet: institutionalContext.trustNet ?? null,
+          dealerNet: institutionalContext.dealerNet ?? null,
+        }),
+      },
+    );
   } else {
-    dimensions.institutionalContext = unknown(
+    dimensions.institutionalContext = await unknownDimension(
       "PIT_INSTITUTIONAL_CONTEXT_NOT_READY",
-      sourceHash(institutionalContext),
+      institutionalProof,
     );
   }
 
-  // D18-06 / D18-07 remain blocked; explicit UNKNOWN is the correct executable state.
-  dimensions.sizeLeadership =
-    sizeLeadership?.state === "KNOWN"
-      ? known(sizeLeadership.value, sourceHash(sizeLeadership))
-      : unknown("PIT_MARKET_CAP_VINTAGE_NOT_READY", sourceHash(sizeLeadership));
+  const sizeProof = await validateDimensionSource(sizeLeadership, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "SIZE_LEADERSHIP",
+  });
+  dimensions.sizeLeadership = sizeProof.ready
+    ? await knownDimension(sizeLeadership.value, sizeProof)
+    : await unknownDimension("PIT_MARKET_CAP_VINTAGE_NOT_READY", sizeProof);
 
-  dimensions.globalTransmission =
-    globalTransmission?.state === "KNOWN"
-      ? known(globalTransmission.value, sourceHash(globalTransmission))
-      : unknown("DURABLE_GLOBAL_DECISION_TIME_RECEIPTS_NOT_READY", sourceHash(globalTransmission));
+  const globalProof = await validateDimensionSource(globalTransmission, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "GLOBAL_TRANSMISSION",
+  });
+  dimensions.globalTransmission = globalProof.ready
+    ? await knownDimension(globalTransmission.value, globalProof)
+    : await unknownDimension("DURABLE_GLOBAL_DECISION_TIME_RECEIPTS_NOT_READY", globalProof);
 
-  if (
-    sectorRotation?.state === "KNOWN"
-    && sectorRotation?.marketDate === date
-    && sameInstant(sectorRotation?.decisionTimestamp, clock)
-  ) {
-    dimensions.sectorRotationContext = deepFreeze({
-      state: "CONTEXT_RAW",
-      value: null,
-      reason: "NO_ROTATION_POLICY_THRESHOLD_AUTHORIZED",
-      sourceRef: sourceHash(sectorRotation),
-      commonIndustryCount: sectorRotation.commonIndustryCount ?? null,
-      industries: sectorRotation.industries ?? [],
-    });
+  const sectorProof = await validateDimensionSource(sectorRotation, {
+    marketDate: date,
+    decisionTimestamp: clock,
+    tag: "SECTOR_ROTATION",
+  });
+  if (sectorProof.ready) {
+    dimensions.sectorRotationContext = await rawDimension(
+      "NO_ROTATION_POLICY_THRESHOLD_AUTHORIZED",
+      sectorProof,
+      {
+        commonIndustryCount: sectorRotation.commonIndustryCount ?? null,
+        industries: sectorRotation.industries ?? [],
+      },
+    );
   } else {
-    dimensions.sectorRotationContext = unknown(
+    dimensions.sectorRotationContext = await unknownDimension(
       "SECTOR_ROTATION_CONTEXT_NOT_READY",
-      sourceHash(sectorRotation),
+      sectorProof,
     );
   }
 
@@ -304,6 +539,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
       knownCount,
       rawContextCount: rawCount,
       unknownCount,
+      pitEligibleDimensionCount: values.filter((x) => x.pointInTimeEligible === true).length,
       allDimensionsReady: unknownCount === 0 && rawCount === 0,
     }),
     sourceLineage: deepFreeze({

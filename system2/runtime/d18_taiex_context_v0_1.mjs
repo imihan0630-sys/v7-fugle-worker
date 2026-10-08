@@ -112,6 +112,7 @@ export async function buildD18TaiexContextV0_1({
     sourceId: "A2_TAIEX_CLOSE",
     sourceProbeContractVersion: sourceProbeReceipt?.contractVersion || null,
     sourceObservedAt: sourceProbeReceipt?.observedAt || null,
+    availableAt: sourceProbeReceipt?.observedAt || null,
     sourceState: sourceProbeReceipt?.state || null,
     sourceProspectiveSameDateEligible: sourceProbeReceipt?.prospectiveSameDateEligible === true,
     calendarReceiptRef: calendarReceipt?.receiptRef || null,
