@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "SC089_D10_03_SYNTHETIC_FALSIFICATION_V0_1",
+  "researchRoom": "07",
+  "moduleId": "D10-03",
+  "evidenceClass": "DETERMINISTIC_SYNTHETIC_COUNTEREXAMPLE",
+  "parent": "research/SC082_D10_03_PROSPECTIVE_INVENTORY_CYCLE_COHORT_PREREG_20261008_V0_1.md",
+  "period0": {
+    "A": {
+      "cost": 90,
+      "inventory": 9,
+      "burden": 0.1
+    },
+    "B": {
+      "cost": 10,
+      "inventory": 10,
+      "burden": 1
+    },
+    "aggregateBurden": 0.19
+  },
+  "period1": {
+    "A": {
+      "cost": 10,
+      "inventory": 0.8,
+      "burden": 0.08
+    },
+    "B": {
+      "cost": 90,
+      "inventory": 81,
+      "burden": 0.9
+    },
+    "aggregateBurden": 0.818
+  },
+  "withinProductEffect": -0.028,
+  "compositionEffect": 0.656,
+  "aggregateChange": 0.628,
+  "identityCheck": "PASS",
+  "finding": "Each group inventory burden improves, yet the aggregate burden worsens because the cost mix shifts toward the high-burden group.",
+  "caveats": [
+    "Synthetic example, not MOEA official inventory ratio",
+    "Not a prospective observation or predictive factor",
+    "Product mix, cost inflation, demand denominator, valuation and revision effects must be separated",
+    "Without product-level weights, causal attribution is UNKNOWN",
+    "SC082 preregistered states and SC083 next cursor unchanged"
+  ],
+  "moduleLevel": "L3",
+  "maturityPct": 60,
+  "formalCore": "LOCKED"
+}
