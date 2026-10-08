@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "S2_CORR_007_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T11:40:00+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-007",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "d0ba47a084cfc35c503b817e277bcfb8b04ced10",
+  "implementation": {
+    "mergeCommit": "836184f98726449107cdbd0ed83e2746bbbcf965",
+    "componentCommits": [
+      "6ecc2e33406675e73bc4d2e3e36ae0c968ba5c86",
+      "012d5dc43314276a16f9bdeb562122e0fe35dda5",
+      "10f1ae0ddeadc5ec93440e4b63e3fda90f1904da",
+      "0e1154e046ee5247accad8fa36cb1c444f38cef0",
+      "41062003cc34e605ea22effb40ad3249e35764e0"
+    ],
+    "runtimeFiles": [
+      "system2/runtime/corporate_action_continuity_archive_v0_1.mjs",
+      "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
+    ],
+    "regressionFiles": [
+      "system2/tests/corporate_action_continuity_archive_v0_1.test.mjs",
+      "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs",
+      "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
+    ],
+    "ciWorkflows": [
+      ".github/workflows/system2-nct01-continuity-replay-binding-v0-1.yml",
+      ".github/workflows/system2-nct01-artifact-runner-v0-1.yml"
+    ]
+  },
+  "exactHeadValidation": [
+    {
+      "runId": 37720705098,
+      "name": "System2 Research CI",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37720705101,
+      "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37720705126,
+      "name": "System2 NC-T01 Artifact Runner V0.1",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37720705066,
+      "name": "V8 Regression Tests",
+      "conclusion": "success"
+    }
+  ],
+  "implementedSemantics": [
+    "S2_CA_COMPLETENESS_RECEIPT_V0_2 is machine-distinct from legacy V0_1.",
+    "Plain suspensionCoverageByExchange.TWSE=COMPLETE is insufficient for physical CLEAR_NO_ACTION promotion.",
+    "TWSE suspension evidence requires exact interval identity, nonempty source identity/version, immutable 64-hex receipt digest and explicit timing semantics.",
+    "Verified-source-timestamp evidence requires availableAt; prospective evidence cannot be backdated past the decision clock.",
+    "NC-T01 continuity promotion requires a matching additive TWSE suspension sourceEvidenceRef in addition to the three corporate-action range refs.",
+    "Missing suspension evidence, missing ref, digest/source mismatch, interval mismatch or late evidence fails closed to CONTINUITY_UNKNOWN.",
+    "Changing the suspension receipt digest changes the archive receipt hash and downstream continuity receipt hash."
+  ],
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime unchanged.",
+    "No strategy threshold/weight/ranking/capacity change.",
+    "No final selection/live push/capital/order authority.",
+    "No fabricated no-suspension/no-event state.",
+    "No historical OHLC mutation."
+  ],
+  "nonClaims": [
+    "This BUILD_LANE handoff does not self-close HIGH correction CORR-007.",
+    "No physical S22-T13/S22-T15/S22-T16 credit is claimed.",
+    "A real bounded TWTAWU suspension-completeness receipt from DATA_LANE is still required before real CLEAR_NO_ACTION physical promotion."
+  ],
+  "independentConsumerEvidence": {
+    "path": "research/d03_corr007_merged_main_implementation_acceptance_20261008_v0_1.json",
+    "observedState": "CORR007_V02_IMPLEMENTATION_MACHINE_ACCEPTED / AUDIT_LANE_QUEUE_CLOSURE_PENDING"
+  },
+  "exactNext": [
+    "AUDIT_LANE independently verifies CORR-007 acceptance criteria and may advance FIX_IMPLEMENTED to VERIFIED_CLOSED.",
+    "Do not begin blocked CORR-008 conflict-unit changes until CORR-007 is VERIFIED_CLOSED or blocker is formally removed.",
+    "After CORR-007 closure, resume the NC-T01 physical wrapper guard path and then consume the first real source-honest TWSE suspension/continuity receipt."
+  ]
+}
