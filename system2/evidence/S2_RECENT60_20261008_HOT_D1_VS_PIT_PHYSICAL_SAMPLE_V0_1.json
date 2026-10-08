@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "S2_RECENT60_PIT_VS_HOT_D1_READONLY_PHYSICAL_EVIDENCE_V0_1",
+  "marketDate": "2026-10-08",
+  "observationTimeBasis": "2026-10-09T06:40:05+08:00_POST_FACTO_DIAGNOSTIC_NOT_FIRST_KNOWN",
+  "status": "PHYSICAL_SAMPLED_D1_READBACK_PASS_REPLAY_AND_CONTINUITY_BLOCKED",
+  "authority": "GITHUB_MAIN_ACTION_LOGS_AND_IMMUTABLE_ARTIFACT",
+  "workflow": {
+    "runId": 37854849181,
+    "jobId": 113576451531,
+    "runNumber": 1,
+    "attempt": 1,
+    "sha": "d19c65e0e30dd9d75005030b20d6b20edc35e61a",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37854849181",
+    "artifact": {
+      "id": 11583895434,
+      "name": "system2-recent60-hot-d1-vs-pit-37854849181-1",
+      "digest": "sha256:36c24b4b8b908afaa27247791fae7d478a584d953cebaf60066137bf08b81242",
+      "sizeBytes": 3157
+    },
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-10-08T22:39:35Z",
+    "completedAt": "2026-10-08T22:40:05Z"
+  },
+  "historicalSessionTaxonomy": {
+    "currentUniverseCount": 1972,
+    "exactPITSessionHistoryReadyCount": 46,
+    "continuityCertifiedReadyCount": 0,
+    "blockedMissingExpectedPITEligibleSessionCount": 1926,
+    "historyReadyButContinuityProofMissingCount": 46,
+    "otherFirstCauseCategoriesCount": 0,
+    "semantics": "PRIORITY_CLASSIFICATION_ON_THIS_OBSERVATION_NOT_STOCK_RANKING_OR_AGGREGATE_REPLAY"
+  },
+  "boundedHotD1PhysicalCrosscheck": {
+    "sampledMarketSymbolCountMax": 12,
+    "sampledDateIdentities": 96,
+    "D1HotBarRowAbsent": 96,
+    "D1PresentButPitFlagExcluded": 0,
+    "D1PresentButAvailableAtTooLate": 0,
+    "D1PresentButNonRawPriceSpace": 0,
+    "unexpectedEligibleRowReaderMismatch": 0,
+    "sampleSelection": "UP_TO_6_SYMBOLS_PER_MARKET_WITH_OBSERVED_EXACT_EXPECTED_SESSION_GAPS; UP_TO_8_MISSING_DATES_EACH",
+    "reading": "NO_ROW_FOR_EXACT_MARKET_SYMBOL_DATE_IN_S2_HISTORICAL_A1_BARS",
+    "noInferences": [
+      "NOT_FULL_MARKET_PHYSICAL_ABSENCE_PROOF",
+      "NO_COLD_R2_ABSENCE_INFERENCE",
+      "NOT_OFFICIAL_SOURCE_DATA_MISSING",
+      "NO_PIT_ELIGIBILITY_PROMOTION",
+      "NO_CORPORATE_ACTION_NO_EVENT_OR_CONTINUITY_CERTIFICATION",
+      "NO_RETROACTIVE_FIRST_KNOWN"
+    ]
+  },
+  "executionCost": {
+    "d1RowsRead": 489866,
+    "d1RowsWritten": 0,
+    "r2ObjectsWritten": 0,
+    "system1RuntimeUsed": false,
+    "livePush": false,
+    "capitalOrders": false,
+    "workerProductionMutation": false
+  },
+  "provenanceCaveat": "Retroactive 2026-10-08 snapshot investigated on 2026-10-09; cannot certify what was prospectively observed on 2026-10-08 or backdate source timestamp.",
+  "nextResearch": {
+    "highPriority": "READ_ONLY_TWSE_TPEX_RECENT60_COLD_R2_PRESENCE_AND_TWSE_TPEX_HOT_HISTORY_INGEST_LAG_RECONCILIATION",
+    "beforeAnyWrite": "REMEDIATION_LANE account-level D1 budget approval/gate; source/physical row inventory; immutable snapshot and PIT clock preservation",
+    "continuity": "For 46 exact-session-ready symbols obtain independent complete corporate-action/lifecycle source receipts; do not infer CLEAR_NO_ACTION from raw bars.",
+    "NC_T01": "No independently source-hash-bound real continuity witness; Stage1 NC-T01 execution remains blocked."
+  },
+  "protected": {
+    "system1FormalCoreChanged": false,
+    "system1ProductionRuntimeChanged": false,
+    "system2StrategyRankPolicyChanged": false,
+    "backdatedEligibility": false
+  }
+}
