@@ -1400,6 +1400,20 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Durable evidence: `system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
 - BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
 
+
+#### BUILD implementation handoff — 2026-10-09 01:11
+
+- PR #901 merged as `98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882`.
+- Caller batches are rebuilt canonically from whitelisted table/column contracts before any DB prepare/transport; supplied SQL, row digests, identity fields and batch hash are verification inputs only, never execution authority.
+- AP-08 caller UPDATE-as-insert is rejected before `db.batch`; tampered SQL/hash/identity/table/column and concurrent/post-write divergence fail closed.
+- Exact post-write readback verifies every inserted immutable row.
+- Decision/factor/regime and order/fill/outcome parent lineage are fail-closed; decision corrections remain append-only through `s2_decision_corrections`.
+- CORR-012 monotonic outcome maturation semantics are intentionally unchanged here.
+- Exact-head PASS: CORR-011 `37814281548`; Research CI `37814281345`; V8 Regression `37814281392`.
+- Merged-main PASS: CORR-011 `37814464487`; Research CI `37814464192`; V8 Regression `37814464250`.
+- Durable evidence: `system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
+- BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE verification is mandatory before `VERIFIED_CLOSED`.
+
 ### S2-CORR-20261008-012 — Outcome monotonic updates can rewrite cost/performance provenance and erase excursions
 
 - createdAt: 2026-10-08T11:30:54+08:00
