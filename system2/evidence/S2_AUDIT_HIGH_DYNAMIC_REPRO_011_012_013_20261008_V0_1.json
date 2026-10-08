@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "S2_AUDIT_HIGH_ADVERSARIAL_DYNAMIC_REPRO_V0_1",
+  "recordedAt": "2026-10-08T22:59:13+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "source": "main plus isolated audit PR fixture",
+  "auditPR": 890,
+  "probeHead": "b2e9e31512cf469ceb81a1d3828169dbf7c84d72",
+  "testPath": "system2/tests/audit_high_adversarial_witness_011_012_013_v0_1.test.mjs",
+  "githubActions": {
+    "research": {
+      "workflowRunId": 37796797844,
+      "jobId": 113378243808,
+      "conclusion": "success",
+      "testFilesExecuted": 226
+    },
+    "v8": {
+      "workflowRunId": 37796797829,
+      "conclusion": "success"
+    },
+    "logTimeUtc": "2026-10-08T14:58:06Z",
+    "logMarker": "SYSTEM2_INDEPENDENT_AUDIT_PROBE",
+    "logSource": "GitHub Actions actual job logs retrieved independently by AUDIT_LANE"
+  },
+  "findings": [
+    {
+      "directiveId": "S2-CORR-20261008-011",
+      "probe": "AP-08-CALLER-UPDATE-AS-INSERT",
+      "state": "UNSAFE",
+      "observed": {
+        "mutationTransportCalls": 1,
+        "reportedInsert": 1,
+        "rejectedReason": null,
+        "sqlWasDryRunOnly": true
+      },
+      "interpretation": "Persistence executor trusted caller-provided UPDATE as insertSql and reported INSERTED without rejecting the mutation before db.batch. No physical D1 write occurred.",
+      "acceptanceGate": "Canonical whitelisted insert/select SQL rebuilt and row/batch hash verified before transport; AP-08 must result in zero db.batch mutation transport."
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "probe": "AP-05-MFE-MAE-HOLDING-COST-LINEAGE-REVISION",
+      "state": "UNSAFE",
+      "observed": {
+        "blockerCodes": [],
+        "previousMfe": 0.15,
+        "nextMfe": null,
+        "previousHolding": 4,
+        "nextHolding": 10,
+        "changedOutcomeJsonStrategy": "SHORT_MOMENTUM -> SWING_GROWTH",
+        "changedOutcomeJsonCost": "COST_V1 -> COST_V99"
+      },
+      "interpretation": "Outcome update verifier allows erasing known MFE/MAE, rewriting closed holding_sessions, and changing strategy/cost lineage in outcome_json without blockers.",
+      "acceptanceGate": "Immutable provenance guards must explicitly block erasing known excursions, closed holding period revisions and strategy/execution/cost lineage mutation."
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "AP-06-MISSING-OHLC-PROOF-INCOMPLETE-NO-FILL",
+      "state": "UNSAFE",
+      "observed": {
+        "observedState": "NO_FILL",
+        "observedFillQuality": "DATA_UNKNOWN",
+        "blockedObservationCount": 1
+      },
+      "interpretation": "A window with entirely unknown OHLC is counted as terminal NO_FILL despite unresolved entry feasibility.",
+      "acceptanceGate": "Unknown trigger feasibility must remain DATA_BLOCKED/AMBIGUOUS; only complete ordered known entry window can be proofCompleteNoFill."
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "probe": "AP-06-REVERSED-MARKET-DATE-SEQUENCE",
+      "state": "UNSAFE",
+      "observed": {
+        "accepted": true,
+        "observedState": "NO_FILL",
+        "rejectedReason": null
+      },
+      "interpretation": "Simulation accepted session number 1 on 2026-10-01 preceding session number 2 on 2026-09-30 instead of rejecting date regression.",
+      "acceptanceGate": "Reject invalid/duplicate/non-strictly-increasing marketDate prior to simulation."
+    }
+  ],
+  "safety": {
+    "db": "in-memory dry-run mock (no persistence)",
+    "network": "not invoked",
+    "secrets": "none",
+    "system1": "not modified",
+    "productionRuntime": "not modified",
+    "noChangeToStrategyRankingCapitalOrOrders": true
+  },
+  "disposition": {
+    "status011": "OPEN",
+    "status012": "OPEN",
+    "status013": "OPEN",
+    "allFourReproduced": true,
+    "closurePermitted": false,
+    "owner": "BUILD_LANE",
+    "independentRetestRequiredAfterFix": true
+  },
+  "caveats": [
+    "Green CI means audit witness executed; it does not mean vulnerabilities are fixed.",
+    "Witnesses are isolated unit probes rather than physical D1/market transactions.",
+    "No conclusion about CORR-008, historical data completeness or production go-live is asserted."
+  ]
+}
