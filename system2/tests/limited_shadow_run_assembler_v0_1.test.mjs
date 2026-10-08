@@ -238,7 +238,12 @@ assert.equal(bundle.predictionSnapshot.selectionDenominator.complete, false);
 assert.equal(bundle.predictionSnapshot.selectionDenominator.unresolvedByState.INCOMPLETE, 1);
 assert.equal(bundle.predictionSnapshot.cohortCounts.NEAR_MISS, 1);
 assert.equal(bundle.predictionSnapshot.cohortCounts.SELECTED, 0);
-assert.equal(bundle.predictionSnapshot.outcomeJoinEligible, true);
+assert.equal(bundle.predictionSnapshot.outcomeJoinEligible, false);
+assert.ok(
+  bundle.predictionSnapshot.outcomeJoinBlockers.includes(
+    "DECISION_EVIDENCE_NOT_READY:D-SM-2454-20260929",
+  ),
+);
 assert.equal(
   bundle.predictionSnapshot.predictionSnapshotHash,
   replay.predictionSnapshot.predictionSnapshotHash,
