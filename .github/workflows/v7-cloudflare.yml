@@ -79,6 +79,7 @@ on:
       - "scripts/apply_v8_19_1_pve250_prod_stamp.py"
       - "scripts/apply_v8_20_0.py"
       - "scripts/apply_v8_20_1.py"
+      - "scripts/apply_v8_20_2.py"
       - "scripts/rebase_v8_12_*.py"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
@@ -316,6 +317,7 @@ jobs:
         run: python3 scripts/apply_v8_20_0.py
       - name: Apply V8.20.1 cross-midnight recovery hardening
         run: python3 scripts/apply_v8_20_1.py
+          python3 scripts/apply_v8_20_2.py
 
       - name: Syntax check Worker.js
         run: |
@@ -329,16 +331,18 @@ jobs:
         run: |
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
+          node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
 
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.20.1-cross-midnight-recovery-readback";' Worker.js
+          grep -F 'const VERSION = "8.20.2-idempotent-d1-snapshots";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
           grep -F 'url.pathname === "/api/market-data/status"' Worker.js
           grep -F 'const requestedDate=url.searchParams.get("marketDate");' Worker.js
+          grep -F 'deduplicated:persistence.deduplicated' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_bars' Worker.js
