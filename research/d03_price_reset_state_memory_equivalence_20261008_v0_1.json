@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "D03_PRICE_RESET_STATE_MEMORY_EQUIVALENCE_V0_1",
+  "updatedAt": "2026-10-08T20:34:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_MATHEMATICAL_STATE_EQUIVALENCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "purpose": "Formalize finite-memory Bollinger and recursive Wilder ADX behavior across certified same-identity price-basis resets without weakening W0, parent, PIT or continuity gates.",
+  "inheritedFormulaVersions": {
+    "adx": "WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1",
+    "bollinger": "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1"
+  },
+  "affineTransformDefinition": {
+    "form": "P_prime = a * P + b",
+    "constraints": [
+      "a > 0",
+      "same a,b apply to the certified pre-event price prefix mapped into the target post-event price basis",
+      "same security identity",
+      "no per-bar nonlinear rounding unless separately proved replay-equivalent"
+    ],
+    "notAuthority": "This theorem does not certify that any real corporate action is affine; the corporate-action continuity receipt must certify the transform."
+  },
+  "adxMatureStateTheorem": {
+    "scope": "Only a fully initialized mature Wilder state after the first valid ADX exists.",
+    "stateMap": {
+      "previousHLC": "H/L/C -> a*(H/L/C)+b",
+      "smoothedTR": "TR_smooth -> a*TR_smooth",
+      "smoothedPlusDM": "+DM_smooth -> a*(+DM_smooth)",
+      "smoothedMinusDM": "-DM_smooth -> a*(-DM_smooth)",
+      "plusDI": "+DI unchanged",
+      "minusDI": "-DI unchanged",
+      "dx": "DX unchanged",
+      "adx": "ADX unchanged"
+    },
+    "proofSketch": [
+      "All H/L/C differences under a uniform positive affine transform are multiplied by a; b cancels.",
+      "TR and directional-movement ordering/sign tests are preserved for a>0, so one-bar TR/+DM/-DM are multiplied by a.",
+      "Wilder smoothing is linear in the price-dimensional input states, so smoothed TR/+DM/-DM are multiplied by a.",
+      "+DI and -DI are ratios of equally scaled numerator/denominator and are unchanged.",
+      "DX and the mature ADX recurrence consume only dimensionless DI/DX values, so they are unchanged.",
+      "After transforming the previous H/L/C and price-dimensional mature state, the next target-basis bar produces the same continuation as full replay on the affine-transformed prefix."
+    ],
+    "requiredBeforeUse": [
+      "MATURE_ADX_STATE_CERTIFIED",
+      "STATE_LINEAGE_HASH_BOUND",
+      "EXACT_SAME_FORMULA_VERSION",
+      "AFFINE_TRANSFORM_CERTIFIED_FOR_THE_EXACT_PREFIX",
+      "NO_NONLINEAR_OR_TICK_ROUNDING_DIVERGENCE_OR_EXACT_PARITY_PROOF",
+      "SAME_SECURITY_IDENTITY",
+      "DECISION_TIME_CAUSALITY_VALID"
+    ],
+    "failClosed": [
+      "PRE_FIRST_ADX_OR_PARTIALLY_INITIALIZED_STATE",
+      "NON_AFFINE_OR_UNKNOWN_TRANSFORM",
+      "IDENTITY_TERMINATION_OR_MARKET_MIGRATION",
+      "ROUNDING_OR_TICK_RULE_NOT_REPLAY_EQUIVALENT",
+      "UNRESOLVED_EVENT_BOUNDARY"
+    ],
+    "status": "EQUIVALENCE_CANDIDATE_REQUIRES_EXACT_IMPLEMENTATION_PARITY_BEFORE_TRUSTED_STATE_PROMOTION"
+  },
+  "bollingerFiniteMemoryTheorem": {
+    "window": 20,
+    "exactRule": "Bollinger output at t depends only on the exact 20 eligible closes in the frozen formula.",
+    "postResetAmnesia": "If all exact 20 eligible closes are strictly after the last certified price-basis reset and within one continuing security identity/price space, any older pre-reset price history has zero direct formula influence.",
+    "mixedWindowRule": "If any retained close in the exact 20-session window is pre-reset, RAW pre/post prices may not be mixed. Use certified transformed retained closes or fail closed.",
+    "affineBufferRule": "For a certified affine reset, applying P'=aP+b to every retained pre-reset close in the rolling buffer yields the same Bollinger result as replaying that exact transformed 20-close window, subject to identical rounding semantics.",
+    "noShortcut": "POST_RESET_20_CLEAN_SESSIONS does not replace W0 technical-continuity acceptance, genuine parent identity, Layer-C known-at, exact session or source-hash gates."
+  },
+  "finiteVsRecursiveMemory": {
+    "bollinger": "FINITE_MEMORY_EXACTLY_20_ELIGIBLE_CLOSES",
+    "adx": "RECURSIVE_MEMORY_UNBOUNDED_WITHOUT_REPLAY_CERTIFIED_STATE",
+    "implication": "A sufficiently old reset can leave Bollinger's exact 20-session formula entirely, while ADX cannot claim amnesia merely from elapsed bars. ADX needs full replay, replay-certified trusted state, or a separately proved state-transform equivalence."
+  },
+  "adversarialCases": [
+    {
+      "id": "M01",
+      "case": "AFFINE_PREFIX_MATURE_ADX_STATE",
+      "expect": "STATE_TRANSFORM_CONTINUATION_EQUALS_FULL_TRANSFORMED_REPLAY_WITHIN_FLOAT_TOLERANCE"
+    },
+    {
+      "id": "M02",
+      "case": "RAW_BRIDGE_ACROSS_PRICE_RESET",
+      "expect": "DIFFERENT_FROM_CERTIFIED_TRANSFORMED_REPLAY"
+    },
+    {
+      "id": "M03",
+      "case": "BOLLINGER_1_TO_19_POST_RESET_BARS_WITH_RAW_PREFIX",
+      "expect": "RAW_MIX_DIFFERS_FROM_TRANSFORMED_WINDOW"
+    },
+    {
+      "id": "M04",
+      "case": "BOLLINGER_20_OR_MORE_POST_RESET_ELIGIBLE_BARS",
+      "expect": "PRE_RESET_HISTORY_HAS_ZERO_DIRECT_FORMULA_INFLUENCE"
+    },
+    {
+      "id": "M05",
+      "case": "IDENTITY_TERMINATION",
+      "expect": "STATE_TRANSFORM_FORBIDDEN_NEW_LINEAGE"
+    },
+    {
+      "id": "M06",
+      "case": "UNKNOWN_OR_NONLINEAR_TRANSFORM",
+      "expect": "FAIL_CLOSED_REPLAY_OR_WAIT_FOR_CLEAN_FINITE_WINDOW"
+    }
+  ],
+  "moduleImpact": {
+    "D03-10": {
+      "current": "L2_40",
+      "benefit": "Explains and machine-tests finite-memory contamination expiry; future parent-specific Bollinger acceptance may use a clean post-reset 20-session suffix without requiring transformed history older than that suffix.",
+      "nonCredit": "REAL_W0_CONTINUITY_RECEIPT and GENUINE_V8_20_PARENT remain required under the current promotion oracle."
+    },
+    "D03-09": {
+      "current": "L2_40",
+      "benefit": "Defines a mathematically valid candidate route for replay-certified trusted-state transformation under a certified affine same-identity reset.",
+      "nonCredit": "Canonical FULL_REPLAY/trusted-state gate is not relaxed until exact implementation parity, rounding semantics and lineage certification are physically proven."
+    }
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Machine-test M01-M06. Keep W0 and genuine-parent tracks primary. If a real W0 and parent arrive, Bollinger may use exact 20-session finite-memory semantics; ADX must still use FULL_REPLAY or a separately certified trusted-state/state-transform path with exact parity. Keep CORR-014 audit closure, raw third-session, T48, S2-07, dedup/redundancy and D16 incrementality independent."
+}
