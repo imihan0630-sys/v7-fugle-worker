@@ -3,6 +3,7 @@ import { writeFile } from "node:fs/promises";
 import { createRemoteD1RestAdapter } from "../system2/deploy/remote_d1_rest_adapter.mjs";
 import { createRemoteR2S3Adapter } from "../system2/deploy/remote_r2_s3_adapter.mjs";
 import { loadHistoricalBarsFromColdPacksV0_1 } from "../system2/runtime/historical_cold_pack_store_v0_1.mjs";
+import { fetchHistoricalTwseCalendarV0_1 } from "../system2/runtime/historical_twse_calendar_v0_1.mjs";
 
 const VERSION="ROOM11_NUMERIC_L3_BATCH_V0_1";
 function stable(v){if(Array.isArray(v))return v.map(stable);if(v&&typeof v==="object")return Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])]));return v;}
@@ -32,13 +33,19 @@ function guardedDb(db){
   };
 }
 
-function buildRows(symbolBars){
+export function buildRows(symbolBars,officialTradingDates){
+  must(Array.isArray(officialTradingDates)&&officialTradingDates.length>=80,"OFFICIAL_TRADING_DATES_REQUIRED");
+  const orderedDates=[...new Set(officialTradingDates)].sort();
+  const dateIndex=new Map(orderedDates.map((d,i)=>[d,i]));
   const out=[];
   for(const [symbol,bars0] of symbolBars){
     const bars=[...bars0].sort((a,b)=>a.marketDate.localeCompare(b.marketDate));
     for(let i=2;i<bars.length-1;i++){
       const p2=bars[i-2],p1=bars[i-1],cur=bars[i],nxt=bars[i+1];
       if(![p2,p1,cur,nxt].every(x=>x?.pitReplayEligible===true))continue;
+      const ci=dateIndex.get(cur.marketDate);
+      if(!Number.isInteger(ci)||ci<2||ci+1>=orderedDates.length)continue;
+      if(p2.marketDate!==orderedDates[ci-2]||p1.marketDate!==orderedDates[ci-1]||nxt.marketDate!==orderedDates[ci+1])continue;
       const vals=[p2.tradeValue,p1.tradeValue,cur.tradeValue,nxt.tradeValue,cur.transactions,cur.volumeShares];
       if(!vals.every(Number.isFinite))continue;
       if(vals.some(x=>x<0)||cur.tradeValue<=0||p1.tradeValue<=0||p2.tradeValue<=0||nxt.tradeValue<=0)continue;
@@ -47,7 +54,7 @@ function buildRows(symbolBars){
       if(Date.parse(nxt.availableAt)<=Date.parse(decisionTimestamp))continue;
       const logTV2=Math.log1p(p2.tradeValue),logTV1=Math.log1p(p1.tradeValue),logTV0=Math.log1p(cur.tradeValue),logTVNext=Math.log1p(nxt.tradeValue);
       out.push({
-        market:"TPEX",symbol,decisionDate:cur.marketDate,decisionTimestamp,
+        market:"TWSE",symbol,decisionDate:cur.marketDate,decisionTimestamp,
         outcomeDate:nxt.marketDate,outcomeAvailableAt:nxt.availableAt,
         sourceRowHash:cur.sourceRowHash,nextSourceRowHash:nxt.sourceRowHash,
         currentContinuityState:cur.continuityState,nextContinuityState:nxt.continuityState,
@@ -62,7 +69,7 @@ function buildRows(symbolBars){
   return out;
 }
 
-function splitDates(rows){
+export function splitDates(rows){
   const dates=[...new Set(rows.map(x=>x.decisionDate))].sort();
   must(dates.length>=80,"INSUFFICIENT_INDEPENDENT_DATES");
   const a=Math.floor(dates.length*0.6),b=Math.floor(dates.length*0.8);
@@ -71,7 +78,7 @@ function splitDates(rows){
   return {dates,trainDates:[...trainSet],validationDates:[...valSet],testDates:[...testSet],split};
 }
 
-function fitAr1(rows){
+export function fitAr1(rows){
   const bySymbol=new Map();
   for(const r of rows){if(!bySymbol.has(r.symbol))bySymbol.set(r.symbol,[]);bySymbol.get(r.symbol).push(r);}
   const results=[];
@@ -116,7 +123,7 @@ function fitRidge(rows,idx,lambda){
   const coef=solve(A,b);
   return {coef,st,predict:r=>{const z=[1,...st.apply(r)];return z.reduce((a,x,i)=>a+x*coef[i],0);}};
 }
-function nestedFeatureSelection(rows){
+export function nestedFeatureSelection(rows){
   const tr=rows.filter(r=>r.partition==="TRAIN"),va=rows.filter(r=>r.partition==="VALIDATION"),te=rows.filter(r=>r.partition==="TEST");
   const families=[
     {id:"LAG_TV",idx:[0]},
@@ -150,7 +157,7 @@ function fitLogistic(rows,idx,lambda=0.1,steps=500,lr=0.05){
   }
   return {w,st,predict:r=>{const z=[1,...st.apply(r)];return sigmoid(z.reduce((a,x,i)=>a+x*w[i],0));}};
 }
-function calibration(rows){
+export function calibration(rows){
   const tr=rows.filter(r=>r.partition==="TRAIN"),te=rows.filter(r=>r.partition==="TEST");
   const model=fitLogistic(tr,[0,2],0.1,600,0.05);
   const preds=te.map(r=>model.predict(r)),ys=te.map(r=>r.binaryY);
@@ -163,7 +170,7 @@ function calibration(rows){
   return {target:"NEXT_SESSION_TRADE_VALUE_UP_DIAGNOSTIC_NOT_RETURN_ALPHA",trainN:tr.length,testN:te.length,brier,bins,identityCalibration:true,outerTestUsedForModelSelection:false};
 }
 function rng(seed){let x=seed>>>0;return()=>{x=(1664525*x+1013904223)>>>0;return x/4294967296;};}
-function blockBootstrap(rows){
+export function blockBootstrap(rows){
   const byDate=new Map();
   for(const r of rows.filter(x=>x.partition!=="TEST")){if(!byDate.has(r.decisionDate))byDate.set(r.decisionDate,[]);byDate.get(r.decisionDate).push(r.delta);}
   const dates=[...byDate.keys()].sort(),series=dates.map(d=>mean(byDate.get(d)));
@@ -191,15 +198,17 @@ export async function runPhysicalBatch(){
   const rawDb=await createRemoteD1RestAdapter({accountId,apiToken,databaseName:"system2-research"});
   const db=guardedDb(rawDb);
   const objectStore=createRemoteR2S3Adapter({accountId,accessKeyId,secretAccessKey,bucketName});
+  const calendar=await fetchHistoricalTwseCalendarV0_1({year:2025});
+  must(calendar?.tradingDatesExact===true && calendar.tradingDates.length>=200,"TWSE_OFFICIAL_CALENDAR_NOT_EXACT");
   const manifests=await db.rawQuery(`SELECT symbol,object_key,object_sha256,payload_hash,bar_count
     FROM s2_historical_a1_pack_manifests
-    WHERE market='TPEX' AND year=2025 AND price_space='RAW'
+    WHERE market='TWSE' AND year=2025 AND price_space='RAW'
     ORDER BY symbol ASC LIMIT 24`);
-  must(manifests.length>=12,"INSUFFICIENT_2025_TPEX_MANIFESTS");
+  must(manifests.length>=12,"INSUFFICIENT_2025_TWSE_MANIFESTS");
   const symbolBars=[];
   const packEvidence=[];
   for(const m of manifests){
-    const loaded=await loadHistoricalBarsFromColdPacksV0_1({db,objectStore,market:"TPEX",symbol:m.symbol,fromDate:"2025-01-01",toDate:"2025-12-31",priceSpace:"RAW"});
+    const loaded=await loadHistoricalBarsFromColdPacksV0_1({db,objectStore,market:"TWSE",symbol:m.symbol,fromDate:"2025-01-01",toDate:"2025-12-31",priceSpace:"RAW"});
     const valid=loaded.rows.filter(r=>r.pitReplayEligible&&Number.isFinite(r.tradeValue)&&r.tradeValue>0&&Number.isFinite(r.transactions)&&Number.isFinite(r.volumeShares));
     if(valid.length>=180){
       symbolBars.push([m.symbol,loaded.rows]);
@@ -208,11 +217,11 @@ export async function runPhysicalBatch(){
     if(symbolBars.length>=12)break;
   }
   must(symbolBars.length>=8,"INSUFFICIENT_PHYSICAL_SYMBOL_COHORT");
-  const rows0=buildRows(symbolBars);
+  const rows0=buildRows(symbolBars,calendar.tradingDates);
   const sp=splitDates(rows0);
   const rows=rows0.map(r=>({...r,partition:sp.split(r)}));
   const panel={
-    market:"TPEX",year:2025,target:"NEXT_SESSION_LOG_TRADE_VALUE",
+    market:"TWSE",year:2025,target:"NEXT_OFFICIAL_SESSION_LOG_TRADE_VALUE",
     rowCount:rows.length,issuerCount:new Set(rows.map(r=>r.symbol)).size,independentDateCount:sp.dates.length,
     trainDateN:sp.trainDates.length,validationDateN:sp.validationDates.length,testDateN:sp.testDates.length,
     priceReturnFeatureEnabled:false,rawPriceReturnUsed:false,
@@ -229,7 +238,7 @@ export async function runPhysicalBatch(){
   const base={
     schemaVersion:VERSION,
     observedAt:new Date().toISOString(),
-    physicalSource:{market:"TPEX",year:2025,storage:"SYSTEM2_RESEARCH_D1_MANIFEST_PLUS_R2_COLD_OBJECT",symbolCohort:symbolBars.map(x=>x[0]),packEvidence},
+    physicalSource:{market:"TWSE",year:2025,officialCalendarSource:calendar.source,officialTradingDateCount:calendar.tradingDates.length,storage:"SYSTEM2_RESEARCH_D1_MANIFEST_PLUS_R2_COLD_OBJECT",symbolCohort:symbolBars.map(x=>x[0]),packEvidence},
     panel,timeSeries,featureSelection,calibration:cal,monteCarlo,
     d1Metrics:rawDb.metrics,
     rowsWrittenZero:rawDb.metrics.rowsWritten===0,
