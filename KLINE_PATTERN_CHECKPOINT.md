@@ -6849,3 +6849,95 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~137 before physical R7 emission.
 5. D16 receives issuer-event dependency and security-class metadata with the full denominator.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-138~140 (2026-10-08)
+
+### DL-138 — same-security trading-channel representation firewall
+- Frozen channel classes:
+  REGULAR_LOT;
+  INTRADAY_ODD_LOT;
+  AFTER_HOURS_ODD_LOT;
+  AFTER_HOURS_FIXED_PRICE;
+  BLOCK_TRADE;
+  OTHER_OFFICIAL_CHANNEL;
+  CHANNEL_UNKNOWN.
+- Same security across channels does not imply identical price observation.
+- Every D01 canonical bar must bind:
+  canonicalBarSourceId;
+  channelCompositionVersion;
+  included/excluded trading channels;
+  marketSessionDate;
+  sourceHistoryHash.
+- Channel-specific observations may not be silently fused into a custom bar unless the canonical owner/source contract explicitly defines the aggregation.
+- Multiple channels on the same security/date share a dependency root and do not multiply votes.
+- Pre-regime channel absence is CHANNEL_NOT_YET_AVAILABLE_BY_DESIGN, not DATA_MISSING.
+
+### DL-139 — session-mechanism price-discovery / confirmation firewall
+- Frozen mechanism classes:
+  opening call auction;
+  regular continuous;
+  closing call auction;
+  intraday odd-lot call auction;
+  after-hours odd-lot call auction;
+  after-hours fixed price;
+  block trade;
+  volatility-interruption call auction;
+  unknown.
+- After-hours fixed-price trading using the regular-session close is execution/liquidity context, not a second price confirmation.
+- Odd-lot prices may differ from regular prices but cannot silently replace/fuse with regular geometry.
+- Auction sub-observations do not create extra votes over the same canonical OHLC bar.
+- Block-trade price does not enter first-wave D01 canonical pattern geometry by default.
+
+### DL-140 — trading-channel regime vintage / common support
+- Every channel receipt binds rule version, effective interval and source-channel-composition version.
+- Modern channel data may not be backfilled before the channel existed.
+- Unknown source composition fails closed.
+- Parent/child and old/new-vintage comparison require compatible channel composition and mechanism regime.
+- sameSecurityDateChannelClusterId preserves cross-channel dependence without inventing independent vote count.
+- Frozen denominator states:
+  CHANNEL_OBSERVED;
+  CHANNEL_NOT_YET_AVAILABLE_BY_DESIGN;
+  CHANNEL_SOURCE_MISSING;
+  CHANNEL_COMPOSITION_UNKNOWN_BLOCKED;
+  MECHANISM_RULE_UNKNOWN_BLOCKED.
+
+### External primary-source readback
+- TWSE officially separates regular trading, intraday odd-lot, after-hours odd-lot, after-hours fixed-price and block trading.
+- Intraday odd-lot began on 2020-10-26, first matches at 09:10 and uses periodic call auctions.
+- After-hours fixed-price trading uses the same-day regular-session closing price.
+- These mechanism differences support D01's channel-dependence firewall and prohibit counting repeated/mechanically fixed observations as independent price discovery.
+
+### Test evidence
+- DL-135~137:
+  25/25 PASS.
+- DL-138~140:
+  22/22 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-140:
+  667/667 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SECURITY_CLASS_FIREWALL = FROZEN.
+- ISSUER_EVENT_SECURITY_OPPORTUNITY_SPLIT = FROZEN.
+- CLASS_TRANSITION_ADMISSION = FROZEN.
+- TRADING_CHANNEL_REPRESENTATION = FROZEN.
+- SESSION_MECHANISM_FIREWALL = FROZEN.
+- CHANNEL_REGIME_VINTAGE = FROZEN.
+- MULTI_CHANNEL_EXTRA_PATTERN_VOTE = PROHIBITED.
+- SILENT_CHANNEL_FUSION = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-140
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze canonical daily OHLC composition/finality across delayed-close, no-regular-trade and trading-mechanism reforms so a change in what counts as the official daily close cannot masquerade as a pattern change.
+4. If R1-R6 appear, validate DL-095 plus DL-108~140 before physical R7 emission.
+5. D16 receives channel-regime/composition/dependency metadata with full denominators.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
