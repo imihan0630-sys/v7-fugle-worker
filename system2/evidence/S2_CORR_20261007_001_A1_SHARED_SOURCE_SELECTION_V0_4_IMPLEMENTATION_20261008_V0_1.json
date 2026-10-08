@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "S2_CORR_20261007_001_A1_SHARED_SELECTION_V0_4_IMPLEMENTATION_V0_1",
+  "directiveId": "S2-CORR-20261007-001",
+  "assignedLane": "DATA_LANE",
+  "codeDisposition": "CANDIDATE_PENDING_CI",
+  "physicalFallbackAcceptance": "PENDING_FUTURE_REAL_TRADING_DATE",
+  "historicalEvidenceRetrospectiveRelabel": false,
+  "baselineWitness": {
+    "prospectiveRunId": 37577209442,
+    "date": "2026-10-07",
+    "collectorSourceContract": "LATEST_OPENAPI_ONLY",
+    "decisionClockObservedTwseReady": false,
+    "decisionClockObservedTpexReady": false,
+    "stage1DailyShadowRunId": 37609474459,
+    "stage1ObservedTwseDateReady": true,
+    "stage1ObservedTwseOrdinaryRows": 1086,
+    "stage1ObservedTpexDateReady": true,
+    "stage1ObservedTpexOrdinaryRows": 887,
+    "interpretation": "SOURCE_SELECTION_DIVERGENCE_NOT_MARKET_WIDE_OFFICIAL_A1_OUTAGE"
+  },
+  "implementation": {
+    "selectionProvider": "system2/runtime/daily_shadow_a1_source_v0_1.mjs:resolveMarketPayload",
+    "collector": "system2/runtime/official_source_probes.mjs",
+    "dateParser": "system2/runtime/official_historical_a1_source_v0_1.mjs",
+    "sourceSelectionVersion": "S2_A1_CLOCK_SHARED_STAGE1_SOURCE_SELECTION_V0_1",
+    "primarySourceRetained": true,
+    "canonicalTwseExactDate": "TWSE_MI_INDEX_ALLBUT0999",
+    "canonicalTpexExactDate": "TPEX_afterTrading_dailyQuotes",
+    "legacyNonEquivalentTpexEligible": false,
+    "readyTimestamp": "ACTUAL_POST_SELECTED_SOURCE_RESPONSE_OBSERVATION_UPPER_BOUND",
+    "historicalSessionFinalityUsedAsProspective": false,
+    "failedAcquisitionMayBePromoted": false,
+    "allowedHttpMethods": [
+      "GET"
+    ],
+    "d1Writes": false,
+    "workerCronChange": false,
+    "system1FormalCoreChange": false
+  },
+  "freeze": {
+    "legacyManifest": "system2/contracts/decision_clock_collector_freeze_v0_1.json",
+    "legacyManifestGitBlobSha": "7ae0ce4e46f7244f630ad0ae9de202d23aa96b30",
+    "newManifest": "system2/contracts/decision_clock_collector_freeze_v0_2.json",
+    "newContract": "S2_DECISION_CLOCK_COLLECTOR_CONTRACT_V0_4",
+    "evidenceEpoch": "S2_CLOCK_A1_STAGE1_EXACT_DATE_ALIGNMENT_EPOCH_V0_4",
+    "newFreezeTrackedFileCount": 15,
+    "comparability": "V0_3_OLD_ATTEMPTS_NEVER_AGGREGATED_WITH_V0_4",
+    "startRule": "FIRST_OFFICIAL_TRADING_DAY_AFTER_MAIN_MERGE_AND_INDEPENDENT_REVALIDATION",
+    "oldManifestModified": false
+  },
+  "testsExpected": [
+    "stale primary TWSE + exact READY",
+    "TPEx 200 NON_JSON + exact READY",
+    "primary date already current no fallback",
+    "exact fallback mismatched source date blocked",
+    "missing exact data does not become READY",
+    "null close values cannot bypass coverage minimum",
+    "immutable prechange 13-file freeze and future 15-file epoch",
+    "bundle carries new epoch while V0.3 provenance schema preserved"
+  ],
+  "remaining": [
+    "Run System2 Research CI and V8 regression",
+    "Verify main readback and immutable baseline",
+    "Collect real-date prospective A1 same-cut observations after merge",
+    "Independent audit for closure; no self-claim of physically accepted fallback"
+  ]
+}
