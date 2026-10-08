@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { verifyShadowRunFingerprintV0_1 } from "./shadow_run_fingerprint.mjs";
 
 const ARCHIVE_COHORTS = Object.freeze([
   "SELECTED",
@@ -34,6 +35,38 @@ function archiveCohort(state, decisionId, importantRejectedDecisionIds) {
     return importantRejectedDecisionIds.has(decisionId) ? "IMPORTANT_REJECTED" : "REJECTED";
   }
   return "DIAGNOSTIC_OTHER";
+}
+
+async function recomputeDecisionHashV0_1(snapshot) {
+  const evaluation = snapshot?.evaluation || {};
+  const claimed = typeof evaluation.decisionHash === "string" ? evaluation.decisionHash.trim() : "";
+  const { decisionHash: _ignored, ...evaluationWithoutHash } = evaluation;
+  const { evaluation: _oldEvaluation, ...rest } = snapshot || {};
+  const recomputed = await sha256Hex({
+    ...rest,
+    evaluation: evaluationWithoutHash,
+  });
+  return {
+    claimed,
+    recomputed,
+    valid: /^[a-f0-9]{64}$/.test(claimed) && claimed === recomputed,
+  };
+}
+
+async function recomputeDecisionEvidenceHashV0_1(decisionEvidence) {
+  if (!decisionEvidence || typeof decisionEvidence !== "object") {
+    return { claimed: null, recomputed: null, valid: false };
+  }
+  const claimed = typeof decisionEvidence.evidenceHash === "string"
+    ? decisionEvidence.evidenceHash.trim()
+    : "";
+  const { evidenceHash: _ignored, ...base } = decisionEvidence;
+  const recomputed = await sha256Hex(base);
+  return {
+    claimed,
+    recomputed,
+    valid: /^[a-f0-9]{64}$/.test(claimed) && claimed === recomputed,
+  };
 }
 
 function explicitFactorScores(evaluation) {
@@ -246,6 +279,8 @@ export async function buildPredictionSnapshotBundleV0_1({
 
     const cohort = archiveCohort(state, decisionId, importantRejectedSet);
     const scorePayload = explicitFactorScores(e);
+    const decisionHashIntegrity = await recomputeDecisionHashV0_1(snapshot);
+    const decisionEvidenceIntegrity = await recomputeDecisionEvidenceHashV0_1(decisionEvidence);
 
     decisions.push({
       decisionId,
@@ -285,6 +320,10 @@ export async function buildPredictionSnapshotBundleV0_1({
       decisionEvidenceHash: decisionEvidence?.evidenceHash || null,
       decisionEvidenceOutcomeJoinEligible: decisionEvidence?.outcomeJoinEligible === true,
       decisionEvidenceBlockers: Object.freeze([...(decisionEvidence?.blockerCodes || [])].map(String)),
+      decisionHashIntegrityValid: decisionHashIntegrity.valid,
+      recomputedDecisionHash: decisionHashIntegrity.recomputed,
+      decisionEvidenceHashIntegrityValid: decisionEvidenceIntegrity.valid,
+      recomputedDecisionEvidenceHash: decisionEvidenceIntegrity.recomputed,
       decisionSchemaVersion: requiredText(snapshot.schemaVersion, "snapshot.schemaVersion"),
     });
   }
@@ -323,6 +362,12 @@ export async function buildPredictionSnapshotBundleV0_1({
 
   const outcomeJoinBlockers = [];
   for (const row of decisions) {
+    if (row.decisionHashIntegrityValid !== true) {
+      outcomeJoinBlockers.push("DECISION_HASH_INTEGRITY_INVALID:" + row.decisionId);
+    }
+    if (row.decisionEvidenceHashIntegrityValid !== true) {
+      outcomeJoinBlockers.push("DECISION_EVIDENCE_HASH_INTEGRITY_INVALID:" + row.decisionId);
+    }
     if (
       row.decisionEvidenceState !== "READY"
       || row.decisionEvidenceOutcomeJoinEligible !== true
@@ -331,18 +376,106 @@ export async function buildPredictionSnapshotBundleV0_1({
       outcomeJoinBlockers.push("DECISION_EVIDENCE_NOT_READY:" + row.decisionId);
     }
   }
+  if (!sourceReceipt) {
+    outcomeJoinBlockers.push("SOURCE_SESSION_RECEIPT_NOT_PROVIDED");
+  } else if (sourceReceipt.outcomeJoinSourceEligible !== true) {
+    outcomeJoinBlockers.push("SOURCE_SESSION_NOT_OUTCOME_JOIN_ELIGIBLE");
+  }
+  if (!normalizedRunReceipts.length) {
+    outcomeJoinBlockers.push("SHADOW_RUN_RECEIPT_NOT_PROVIDED");
+  }
   if (!normalizedFingerprints.length) {
     outcomeJoinBlockers.push("RUN_FINGERPRINT_NOT_PROVIDED");
   }
+
+  const runReceiptEntries = [];
+  const runReceiptHashCounts = new Map();
+  for (const receipt of normalizedRunReceipts) {
+    const accountingHash = await sha256Hex(receipt);
+    runReceiptEntries.push({ receipt, accountingHash });
+    runReceiptHashCounts.set(
+      accountingHash,
+      (runReceiptHashCounts.get(accountingHash) || 0) + 1,
+    );
+  }
+  for (const [hash, count] of runReceiptHashCounts) {
+    if (count > 1) outcomeJoinBlockers.push("DUPLICATE_SHADOW_RUN_RECEIPT_HASH:" + hash);
+  }
+
+  const fingerprintReconciliations = [];
+  const matchedRunHashes = new Set();
+  const fingerprintDecisionHashCounts = new Map();
   for (const fp of normalizedFingerprints) {
-    if (fp.outcomeJoinEligible !== true) {
+    const matchingRuns = runReceiptEntries.filter(
+      (entry) => entry.accountingHash === fp.shadowAccountingHash,
+    );
+    if (matchingRuns.length !== 1) {
       outcomeJoinBlockers.push(
-        `RUN_FINGERPRINT_NOT_ELIGIBLE:${fp.fingerprintId || fp.runFingerprintHash || "UNKNOWN"}`,
+        "RUN_FINGERPRINT_ACCOUNTING_RECEIPT_MATCH_COUNT:"
+        + (fp.fingerprintId || fp.runFingerprintHash || "UNKNOWN")
+        + ":"
+        + matchingRuns.length,
+      );
+    }
+    const matchingRun = matchingRuns.length === 1 ? matchingRuns[0] : null;
+    if (matchingRun) matchedRunHashes.add(matchingRun.accountingHash);
+
+    const reconciliation = await verifyShadowRunFingerprintV0_1({
+      fingerprint: fp,
+      sourceSessionReceipt: sourceReceipt,
+      shadowRunReceipt: matchingRun?.receipt || null,
+      decisionSnapshots,
+    });
+    fingerprintReconciliations.push(reconciliation);
+    if (reconciliation.outcomeJoinEligible !== true) {
+      outcomeJoinBlockers.push(
+        "RUN_FINGERPRINT_RECONCILIATION_INCOMPLETE:"
+        + (fp.fingerprintId || fp.runFingerprintHash || "UNKNOWN"),
+      );
+    }
+    for (const blocker of reconciliation.blockers) {
+      outcomeJoinBlockers.push(
+        "RUN_FINGERPRINT:"
+        + (fp.fingerprintId || fp.runFingerprintHash || "UNKNOWN")
+        + ":"
+        + blocker,
+      );
+    }
+    for (const hash of fp.decisionHashes || []) {
+      const value = String(hash);
+      fingerprintDecisionHashCounts.set(
+        value,
+        (fingerprintDecisionHashCounts.get(value) || 0) + 1,
       );
     }
   }
-  if (sourceReceipt && sourceReceipt.outcomeJoinSourceEligible !== true) {
-    outcomeJoinBlockers.push("SOURCE_SESSION_NOT_OUTCOME_JOIN_ELIGIBLE");
+
+  for (const entry of runReceiptEntries) {
+    if (!matchedRunHashes.has(entry.accountingHash)) {
+      outcomeJoinBlockers.push("SHADOW_RUN_RECEIPT_UNCOVERED:" + entry.accountingHash);
+    }
+  }
+
+  for (const [hash, count] of fingerprintDecisionHashCounts) {
+    if (count > 1) outcomeJoinBlockers.push("DECISION_HASH_COVERED_MULTIPLE_TIMES:" + hash);
+  }
+  const expectedDecisionHashes = decisions.map((row) => row.decisionHash).sort();
+  const coveredDecisionHashes = [...fingerprintDecisionHashCounts.keys()].sort();
+  if (
+    expectedDecisionHashes.length !== coveredDecisionHashes.length
+    || expectedDecisionHashes.some((hash, index) => hash !== coveredDecisionHashes[index])
+  ) {
+    outcomeJoinBlockers.push("PREDICTION_DECISION_HASH_CLOSED_SET_MISMATCH");
+  }
+
+  if (expectedDecisionHashes.length === 0 && normalizedFingerprints.length > 0) {
+    const zeroProofReady = fingerprintReconciliations.length === normalizedFingerprints.length
+      && fingerprintReconciliations.every(
+        (row) => row.zeroDecisionHashProof === true && row.outcomeJoinEligible === true,
+      );
+    if (!zeroProofReady) {
+      outcomeJoinBlockers.push("ZERO_DECISION_HASH_COVERAGE_NOT_PROVEN");
+    }
   }
 
   const base = {
@@ -358,6 +491,7 @@ export async function buildPredictionSnapshotBundleV0_1({
     sourceSessionReceipt: sourceReceipt,
     shadowRunReceipts: Object.freeze(normalizedRunReceipts),
     runFingerprints: Object.freeze(normalizedFingerprints),
+    fingerprintReconciliations: Object.freeze(fingerprintReconciliations),
     outcomeJoinEligible: outcomeJoinBlockers.length === 0,
     outcomeJoinBlockers: Object.freeze([...new Set(outcomeJoinBlockers)]),
     selectionDenominator,
