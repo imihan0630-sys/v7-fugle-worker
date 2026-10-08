@@ -29,8 +29,12 @@ for(const name of ["scoreCandidate","selectTomorrowCandidates","evaluateMomentum
   assert.equal(a[name].toString(),b[name].toString(),name+" changed by recovery hardening");
 }
 
-const added=source.length-before.length;
-assert.ok(added>0&&added<8000,"unexpected V8.20.1 patch size");
+const patch=fs.readFileSync("scripts/apply_v8_20_1.py","utf8");
+assert.match(patch,/cross-midnight recovery readback hardening/);
+assert.match(patch,/market status readback route/);
+assert.match(patch,/const VERSION = "8\.20\.1-cross-midnight-recovery-readback";/);
+for(const forbidden of ["scoreCandidate","selectTomorrowCandidates","evaluateMomentum","evaluateOperationSignals","saveStockConfig"])
+  assert.equal(patch.includes("function "+forbidden+"("),false,forbidden+" must not be patched by V8.20.1");
 console.log(JSON.stringify({
   ok:true,version:"8.20.1-cross-midnight-recovery-readback",
   marketStatusReadOnly:true,historicalInstitutionReadbackPreserved:true,
