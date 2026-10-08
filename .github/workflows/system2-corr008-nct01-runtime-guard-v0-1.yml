@@ -156,7 +156,9 @@ jobs:
       - name: Static pre-transport guard assertions
         run: |
           set -euo pipefail
-          grep -q 'READ_PREFIX_RE = /^(SELECT|WITH|PRAGMA)' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'READ_ONLY_PRAGMA_RE' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'table_info|table_xinfo|index_list|index_info|index_xinfo|foreign_key_list|database_list|page_count|page_size|compile_options' system2/runtime/nct01_runtime_guard_v0_1.mjs
+          grep -q 'MUTABLE_STATEMENT_ACCESS' system2/runtime/nct01_runtime_guard_v0_1.mjs
           grep -q 'rejectedMutationAttemptCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
           grep -q 'forbiddenOriginAttemptCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
           grep -q 'runtimeForbiddenAccessCount' system2/runtime/nct01_runtime_guard_v0_1.mjs
