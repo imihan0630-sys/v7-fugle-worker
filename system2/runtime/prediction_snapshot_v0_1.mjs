@@ -107,7 +107,31 @@ function validateDecisionSnapshot(snapshot, {
     }
   }
 
-  return { e, decisionId, decisionHash, symbol, state, factorObservations, regime };
+  const decisionEvidence = snapshot.decisionEvidence && typeof snapshot.decisionEvidence === "object"
+    ? snapshot.decisionEvidence
+    : null;
+  if (decisionEvidence) {
+    assertSameClock(decisionEvidence.marketDate, marketDate, "decisionEvidence.marketDate");
+    assertSameClock(
+      decisionEvidence.decisionTimestamp,
+      decisionTimestamp,
+      "decisionEvidence.decisionTimestamp",
+    );
+    if (requiredText(decisionEvidence.symbol, "decisionEvidence.symbol") !== symbol) {
+      throw new Error(`decisionEvidence symbol mismatch for ${decisionId}`);
+    }
+  }
+
+  return {
+    e,
+    decisionId,
+    decisionHash,
+    symbol,
+    state,
+    factorObservations,
+    regime,
+    decisionEvidence,
+  };
 }
 
 function normalizeSupportingReceipt(receipt, marketDate, decisionTimestamp, field) {
@@ -212,6 +236,7 @@ export async function buildPredictionSnapshotBundleV0_1({
       state,
       factorObservations,
       regime,
+      decisionEvidence,
     } = validateDecisionSnapshot(snapshot, {
       marketDate: date,
       decisionTimestamp: clock,
@@ -256,6 +281,10 @@ export async function buildPredictionSnapshotBundleV0_1({
       sourceReadiness: e.sourceReadiness || null,
       shadowSpecId: e.shadowSpecId || null,
       evaluationMode: e.evaluationMode || null,
+      decisionEvidenceState: decisionEvidence?.state || "MISSING",
+      decisionEvidenceHash: decisionEvidence?.evidenceHash || null,
+      decisionEvidenceOutcomeJoinEligible: decisionEvidence?.outcomeJoinEligible === true,
+      decisionEvidenceBlockers: Object.freeze([...(decisionEvidence?.blockerCodes || [])].map(String)),
       decisionSchemaVersion: requiredText(snapshot.schemaVersion, "snapshot.schemaVersion"),
     });
   }
@@ -293,6 +322,15 @@ export async function buildPredictionSnapshotBundleV0_1({
       : null;
 
   const outcomeJoinBlockers = [];
+  for (const row of decisions) {
+    if (
+      row.decisionEvidenceState !== "READY"
+      || row.decisionEvidenceOutcomeJoinEligible !== true
+      || !/^[a-f0-9]{64}$/.test(String(row.decisionEvidenceHash || ""))
+    ) {
+      outcomeJoinBlockers.push("DECISION_EVIDENCE_NOT_READY:" + row.decisionId);
+    }
+  }
   if (!normalizedFingerprints.length) {
     outcomeJoinBlockers.push("RUN_FINGERPRINT_NOT_PROVIDED");
   }
