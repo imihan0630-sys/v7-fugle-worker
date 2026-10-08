@@ -1269,7 +1269,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1281,7 +1281,13 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. exact family-assessment-to-factor-hash lineage;
   4. fail closed to UNKNOWN/INCOMPLETE and outcome-join-ineligible on any missing or future PIT evidence.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-01.
-- finalDisposition: PENDING
+- implementation:
+  - PR #859 merged as `c7afee03aec24d1c5a3a79e71cb4c8250a67b61e`;
+  - exact-head PASS: CORR-009 `37732779734`, Research `37732779722`, NC-T01 Continuity `37732779809`, NC-T01 Artifact Runner `37732779729`, V8 Regression `37732779747`;
+  - merged-main PASS: CORR-009 `37732958236`, Research `37732958273`, NC-T01 Continuity `37732958318`, V8 Regression `37732958351`;
+  - durable BUILD handoff: `system2/evidence/S2_CORR_009_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+- finalDisposition: FIX_IMPLEMENTED / AUDIT_LANE_VERIFICATION_PENDING
+
 
 
 ### S2-CORR-20261008-010 — Outcome-join fingerprints do not enforce decision/source/strategy/version isolation

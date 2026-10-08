@@ -3091,3 +3091,35 @@ Launch-critical order:
 6. Preserve S2-07 MOPS stabilization as the non-conflicting fallback cursor.
 
 No strategy/ranking/capacity/System1 Formal/final-selection/live-push/capital/order authority changed.
+
+## 2026-10-08 13:34 BUILD_LANE handoff — CORR-009 FIX_IMPLEMENTED
+
+Implementation:
+- PR #859 merged as `c7afee03aec24d1c5a3a79e71cb4c8250a67b61e`.
+- Canonical decision evidence firewall now binds exact factor version, PIT eligibility, availableAt<=decision clock, source identity/hash and family-to-factor observation hashes.
+- Unsafe/non-PIT/future evidence forces the frozen decision to `INCOMPLETE`, clears rank/score, blocks strategy readiness and prevents outcome join.
+- AP-01 is reproduced and fail-closed.
+
+Exact-head PASS:
+- CORR-009 Decision PIT Firewall `37732779734`;
+- System2 Research CI `37732779722`;
+- NC-T01 Continuity `37732779809`;
+- NC-T01 Artifact Runner `37732779729`;
+- V8 Regression `37732779747`.
+
+Merged-main PASS on `c7afee03aec24d1c5a3a79e71cb4c8250a67b61e`:
+- CORR-009 `37732958236`;
+- System2 Research CI `37732958273`;
+- NC-T01 Continuity `37732958318`;
+- V8 Regression `37732958351`.
+
+Disposition:
+- `S2-CORR-20261008-009 = FIX_IMPLEMENTED`;
+- CRITICAL correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_009_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+
+Next BUILD priority:
+1. continue the next unblocked CRITICAL correction from the canonical queue;
+2. CORR-008 remains blocked by CORR-007 independent closure;
+3. preserve physical NC-T01 and System1 Formal Core boundaries.
+

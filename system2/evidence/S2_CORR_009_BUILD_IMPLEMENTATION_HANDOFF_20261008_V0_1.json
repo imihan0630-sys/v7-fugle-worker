@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "S2_CORR_009_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T13:34:07+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-009",
+  "severity": "CRITICAL",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "09f3a11520f431f5ef1e6a30239aa17521e2bdb9",
+  "implementation": {
+    "pullRequest": 859,
+    "mergeCommit": "c7afee03aec24d1c5a3a79e71cb4c8250a67b61e",
+    "decisionEvidenceFirewallVersion": "0.1-RESEARCH",
+    "behavior": [
+      "Every decision-supporting KNOWN factor is checked for exact market/decision clock, PIT eligibility, availableAt<=decisionTimestamp, source identity/hash and authorized factor version.",
+      "Family assessments are bound to exact factor observation hashes under the strategy contract.",
+      "Unsafe evidence forces the frozen decision to INCOMPLETE, clears rank/score, blocks strategy readiness and blocks outcome join.",
+      "AP-01 non-PIT/future factor evidence cannot remain SELECTED or outcome-join eligible.",
+      "Legacy fixtures that asserted KNOWN families without real supporting factor lineage were repaired rather than weakening the firewall."
+    ]
+  },
+  "exactHeadPullRequestValidation": {
+    "head": "e63a3c3a7650f9d5257c2718d1dc2c081a86ba88",
+    "runs": [
+      {
+        "name": "System2 CORR-009 Decision PIT Firewall V0.1",
+        "runId": 37732779734,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37732779722,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+        "runId": 37732779809,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "runId": 37732779729,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37732779747,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "c7afee03aec24d1c5a3a79e71cb4c8250a67b61e",
+    "runs": [
+      {
+        "name": "System2 CORR-009 Decision PIT Firewall V0.1",
+        "runId": 37732958236,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37732958273,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+        "runId": 37732958318,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37732958351,
+        "result": "PASS"
+      }
+    ]
+  },
+  "nonClaims": [
+    "BUILD_LANE does not self-close a CRITICAL correction.",
+    "CORR-009 remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+    "No physical NC-T01 S22-T11..T16 credit is claimed by this correction.",
+    "No System1 Formal Core/runtime, final-selection, live-push, capital or order authority changed."
+  ],
+  "exactNext": [
+    "AUDIT_LANE independently reproduces AP-01 and verifies merged-main decision/family/outcome-join lineage.",
+    "BUILD_LANE continues the next unblocked CRITICAL correction from the canonical queue.",
+    "CORR-008 remains blocked by CORR-007 until independent closure."
+  ]
+}
