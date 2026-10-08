@@ -5,6 +5,10 @@ Status: BOOTSTRAP / DESIGN_AND_RESEARCH
 System ID: SYSTEM2
 Production trading: NOT ENABLED
 
+## System 2 post-market source-readiness and next-session pool clock (owner-approved, not deployed)
+
+Owner-approved on 2026-10-09: 19:00 is preliminary source review only; 23:45 is the preferred conditional final-freeze attempt; if mandatory inputs remain incomplete, 00:15 next calendar date may check the same explicit trading date T with PIT and immutable append-only semantics. **No fixed clock alone certifies source readiness.** Canonical contract: `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_POOL_CLOCK_V0_1.md`. The existing 19:00 deployed bounded refresh is unchanged; 23:45/00:15 are not deployed or new selection/push authority. System 1's formal 23:35/23:55 schedule is untouched.
+
 ## Mission
 
 Build a separate multi-strategy Taiwan-equity selection and monitoring platform that independently performs stock selection, entry/exit planning, intraday monitoring, notifications, simulated position management and performance learning, while preserving independent risk controls and measurable strategy performance.
