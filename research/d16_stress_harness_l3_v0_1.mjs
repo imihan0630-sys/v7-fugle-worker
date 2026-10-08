@@ -106,12 +106,26 @@ export function runStressScenario({snapshot,scenario}){
   return {...base,receiptHash:sha256(base)};
 }
 
-export function reverseStressThreshold({snapshot,scenarioTemplate,lossLimit,shockScaleGrid}){
+export function reverseStressThreshold({snapshot,scenarioTemplate,lossLimit,shockScaleGrid,reverseRegistration}){
   validateSnapshot(snapshot);
+  validateScenario(scenarioTemplate,snapshot.decisionTimestamp);
   must(Number.isFinite(lossLimit)&&lossLimit<0,"LOSS_LIMIT_INVALID");
   must(Array.isArray(shockScaleGrid)&&shockScaleGrid.length>=1,"SHOCK_SCALE_GRID_REQUIRED");
   const grid=[...new Set(shockScaleGrid)].sort((a,b)=>a-b);
   for(const x of grid) must(Number.isFinite(x)&&x>0,"SHOCK_SCALE_INVALID");
+  must(reverseRegistration?.registrationState==="PREREGISTERED_RESEARCH","REVERSE_REGISTRATION_NOT_PREREGISTERED");
+  must(reverseRegistration.registeredAt && reverseRegistration.availableAt,"REVERSE_REGISTRATION_CLOCK_INCOMPLETE");
+  must(time(reverseRegistration.registeredAt,"REVERSE_REGISTERED_AT")<=time(snapshot.decisionTimestamp,"DECISION_TIMESTAMP"),"REVERSE_REGISTERED_AFTER_DECISION");
+  must(time(reverseRegistration.availableAt,"REVERSE_AVAILABLE_AT")<=time(snapshot.decisionTimestamp,"DECISION_TIMESTAMP"),"REVERSE_AVAILABLE_AFTER_DECISION");
+  must(reverseRegistration.outcomeSelected!==true,"OUTCOME_SELECTED_REVERSE_GRID_FORBIDDEN");
+  const reverseExpectedHash=sha256({
+    scenarioId:scenarioTemplate.scenarioId,
+    scenarioVersion:scenarioTemplate.scenarioVersion,
+    baseParameterHash:scenarioTemplate.parameterHash,
+    lossLimit,
+    shockScaleGrid:grid,
+  });
+  must(reverseRegistration.parameterHash===reverseExpectedHash,"REVERSE_PARAMETER_HASH_MISMATCH");
   const results=[];
   for(const scale of grid){
     const scaled={
@@ -149,6 +163,8 @@ export function reverseStressThreshold({snapshot,scenarioTemplate,lossLimit,shoc
     results,
     firstBreachScale:breach?.scale??null,
     currentOrFutureOutcomeAccessed:false,
+    reverseRegistrationHash:reverseRegistration.registrationHash || sha256(reverseRegistration),
+    reverseParameterHash:reverseRegistration.parameterHash,
     thresholdTuningPerformed:false,
     formalCoreChanged:false,
   };
