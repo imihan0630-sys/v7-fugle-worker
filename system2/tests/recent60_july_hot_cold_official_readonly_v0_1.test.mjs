@@ -190,6 +190,11 @@ const workflow=await readFile(new URL("../../.github/workflows/system2-recent60-
 const runner=await readFile(new URL("../scripts/audit_recent60_july_hot_cold_official_readonly_v0_1.mjs",import.meta.url),"utf8");
 assert.match(workflow,/permissions:\s*\n\s+contents: read/);
 assert.match(workflow,/system2-recent60-july-hot-cold-official-readonly/);
+assert.match(workflow,/^on:\s*\n\s+workflow_dispatch:/m,
+  "D1-intensive physical audit must be explicitly initiated");
+assert.doesNotMatch(workflow,/^\s+(?:push|schedule|pull_request|workflow_run):/m,
+  "automatic workflow must never retry an exhausted D1 READ quota");
+
 assert.match(workflow,/audit_recent60_july_hot_cold_official_readonly_v0_1\.mjs/);
 assert.doesNotMatch(workflow,/provision_system2_d1|wrangler\s+deploy|fugle-test/);
 assert.match(runner,/FROZEN_RECENT60_SAMPLE_BLOB_SHA/);
