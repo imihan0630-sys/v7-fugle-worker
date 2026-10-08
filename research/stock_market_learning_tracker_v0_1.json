@@ -1474,7 +1474,9 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「產業成交值／集中度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / BR030_CONCENTRATION_CONTRACT_FROZEN / 20261007_A1_FULL_MARKET_1973_PERSISTED_READBACK_VERIFIED / BR072_SHARED_A1_B5_PARENT_WITH_D09_09 / ROW_PAYLOAD_NOT_EXPOSED / COMPUTATION_READY / KEEP_L3",
+          "next": "Consume the same immutable BR-043 DATA_LANE A1+B5 row export used by D09-09; compute top1/top3 trade-value share, HHI/normalized HHI, effective active names, leader gaps and top1/top3 removal diagnostics outcome-blind from the shared parent digest; no duplicate parent capture; then accumulate independent clean dates before L4."
         },
         {
           "id": "D09-11",
