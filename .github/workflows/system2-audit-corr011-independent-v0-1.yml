@@ -1,0 +1,33 @@
+name: System2 AUDIT CORR-011 Independent Immutable Persistence
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - "system2/runtime/persistence_batch.mjs"
+      - ".github/workflows/system2-audit-corr011-independent-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - "system2/runtime/persistence_batch.mjs"
+      - ".github/workflows/system2-audit-corr011-independent-v0-1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-reproduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independent AP-08 SQL and immutability negative reproduction
+        run: node system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs
+      - name: Affected persistence syntax guard
+        run: |
+          node --check system2/runtime/persistence_executor.mjs
+          node --check system2/runtime/persistence_batch.mjs
