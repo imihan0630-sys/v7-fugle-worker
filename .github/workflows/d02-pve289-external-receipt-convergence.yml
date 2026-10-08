@@ -1,0 +1,24 @@
+name: D02 PVE289 External Receipt Convergence
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve289_external_receipt_convergence_snapshot_v0_1.json"
+      - "research/d02_pve289_external_receipt_convergence_guard_v0_1.mjs"
+      - "tests/test_d02_pve289_external_receipt_convergence_guard_v0_1.mjs"
+      - ".github/workflows/d02-pve289-external-receipt-convergence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve289_external_receipt_convergence_guard_v0_1.mjs
