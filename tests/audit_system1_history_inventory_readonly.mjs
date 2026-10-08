@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import {mkdirSync,writeFileSync} from "node:fs";
+import {dirname} from "node:path";
 
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 assert.ok(token,"Missing V7_ADMIN_TOKEN");
@@ -37,7 +39,16 @@ const failures=parsed.filter(x=>x.status==="FAILED");
 
 const readiness=finalize?.readiness||{};
 const result={
-  schemaVersion:"SYSTEM1_HISTORY_INVENTORY_READONLY_V0_2",
+  schemaVersion:"SYSTEM1_HISTORY_INVENTORY_READONLY_V0_3",
+  diagnosticExecutionStatus:"PASS",
+  historyAcceptanceStatus:readiness?.checks?.historyReady===false
+    ?"BLOCKED_REPORTED_NOT_READY"
+    :readiness?.checks?.historyReady===true
+      ?"REPORTED_READY_RAW_COVERAGE_UNVERIFIED"
+      :"UNKNOWN_REPORTED_READINESS_MISSING",
+  rawHistoryEvidenceGrade:"STATUS_ENDPOINTS_ONLY",
+  raw60DayHistoryInventoryVerified:false,
+  operationalRecoveryPass:false,
   observedAt:new Date().toISOString(),
   runtimeVersion:runtime?.version||cron?.version||null,
   productionReadiness:{
@@ -71,4 +82,7 @@ const result={
   },
   readOnly:true,mutationPerformed:false,noPlanChanges:true,noTrade:true,noPush:true
 };
+const outputPath=String(process.env.HISTORY_INVENTORY_OUTPUT||"artifacts/system1-history-inventory-readonly.json");
+mkdirSync(dirname(outputPath),{recursive:true});
+writeFileSync(outputPath,JSON.stringify(result,null,2)+"\n");
 console.log(JSON.stringify(result,null,2));
