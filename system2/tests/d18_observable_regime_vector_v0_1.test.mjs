@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { sha256Hex } from "../runtime/decision_archive.mjs";
 import {
   buildD18ObservableRegimeVectorV0_1,
   validateD18ObservableRegimeVectorV0_1,
@@ -7,13 +9,23 @@ import {
 const marketDate = "2026-10-02";
 const decisionTimestamp = "2026-10-02T06:30:00.000Z";
 
-const taiexContext = {
+async function withReceiptHash(base) {
+  return { ...base, receiptHash: await sha256Hex(base) };
+}
+
+function withFeatureHash(base) {
+  return {
+    ...base,
+    featureHash: createHash("sha256").update(JSON.stringify(base)).digest("hex"),
+  };
+}
+
+const taiexContext = await withReceiptHash({
   marketDate,
   decisionTimestamp,
   state: "KNOWN",
   pointInTimeEligible: true,
   availableAt: "2026-10-02T06:20:00.000Z",
-  receiptHash: "a".repeat(64),
   historyWindowHash: "h1",
   officialSessionWindowHash: "s1",
   trendContext: "UP_TREND_CONTEXT",
@@ -27,16 +39,15 @@ const taiexContext = {
     realizedVol20: 0.012,
     volRatio5to20: 2/3,
   },
-};
+});
 
-const directionBreadth = {
+const directionBreadth = withFeatureHash({
   marketDate,
   decisionTimestamp,
   state: "KNOWN",
   pointInTimeEligible: true,
   availableAt: "2026-10-02T06:20:00.000Z",
   featureId: "D18.DIRECTION_BREADTH",
-  featureHash: "b".repeat(64),
   sourceBatchId: "A1-BATCH-1",
   sourceBatchHash: "c".repeat(64),
   total: {
@@ -52,9 +63,9 @@ const directionBreadth = {
     TWSE: { advanceShareKnown: 0.55 },
     TPEX: { advanceShareKnown: 0.60 },
   },
-};
+});
 
-const sectorRotation = {
+const sectorRotation = await withReceiptHash({
   marketDate,
   priorMarketDate: "2026-10-01",
   decisionTimestamp,
@@ -62,10 +73,9 @@ const sectorRotation = {
   pointInTimeEligible: true,
   availableAt: "2026-10-02T06:20:00.000Z",
   receiptId: "SECTOR-ROT-1",
-  receiptHash: "d".repeat(64),
   commonIndustryCount: 20,
   industries: [{ industryKey: "TWSE:電子", currentRank: 1, priorRank: 3, rankImprovement: 2 }],
-};
+});
 
 const base = {
   receiptId: "D18-RV-1",
@@ -106,11 +116,10 @@ assert.equal(replay.receiptHash, out.receiptHash);
 const changed = await buildD18ObservableRegimeVectorV0_1({
   ...base,
   receiptId: "D18-RV-2",
-  taiexContext: {
-    ...taiexContext,
+  taiexContext: await withReceiptHash({
+    ...Object.fromEntries(Object.entries(taiexContext).filter(([key]) => key !== "receiptHash")),
     metrics: { ...taiexContext.metrics, close: 25100 },
-    receiptHash: "e".repeat(64),
-  },
+  }),
 });
 assert.notEqual(changed.receiptHash, out.receiptHash);
 
@@ -128,45 +137,42 @@ const notPit = await buildD18ObservableRegimeVectorV0_1({
   taiexContext: { ...taiexContext, pointInTimeEligible: false },
 });
 assert.equal(notPit.state, "UNKNOWN");
-assert(notPit.unknownReasons.includes("TAIEX_CONTEXT_NOT_PIT_READY"));
+assert(notPit.unknownReasons.includes("TAIEX_CONTEXT_PIT_INELIGIBLE"));
 
 const activity = await buildD18ObservableRegimeVectorV0_1({
   ...base,
   receiptId: "D18-RV-activity",
-  activityContext: {
+  activityContext: await withReceiptHash({
     marketDate,
     decisionTimestamp,
     state: "KNOWN",
     receiptId: "ACTIVITY-1",
-    receiptHash: "f".repeat(64),
     pointInTimeEligible: true,
     availableAt: "2026-10-02T06:20:00.000Z",
     totalTradeValueVs20D: 1.12,
-  },
-  concentrationContext: {
+  }),
+  concentrationContext: await withReceiptHash({
     marketDate,
     decisionTimestamp,
     state: "KNOWN",
     receiptId: "CONC-1",
-    receiptHash: "1".repeat(64),
     pointInTimeEligible: true,
     availableAt: "2026-10-02T06:20:00.000Z",
     top10TradeValueShare: 0.31,
     top20TradeValueShare: 0.44,
     returnDispersion: 0.021,
-  },
-  institutionalContext: {
+  }),
+  institutionalContext: await withReceiptHash({
     marketDate,
     decisionTimestamp,
     state: "KNOWN",
     receiptId: "INST-1",
-    receiptHash: "2".repeat(64),
     pointInTimeEligible: true,
     availableAt: "2026-10-02T06:20:00.000Z",
     foreignNet: 100,
     trustNet: -20,
     dealerNet: 5,
-  },
+  }),
 });
 assert.equal(activity.dimensions.activityDirection.value, "ACTIVITY_EXPANDING");
 assert.equal(activity.dimensions.concentrationContext.state, "CONTEXT_RAW");
@@ -176,7 +182,7 @@ assert.equal(activity.compositeRiskOnOffAssigned, false);
 const ap07 = await buildD18ObservableRegimeVectorV0_1({
   ...base,
   receiptId: "D18-RV-AP07",
-  globalTransmission: {
+  globalTransmission: await withReceiptHash({
     receiptId: "GLOBAL-FUTURE",
     marketDate: "2030-01-01",
     decisionTimestamp: "2030-01-01T06:30:00.000Z",
@@ -184,8 +190,7 @@ const ap07 = await buildD18ObservableRegimeVectorV0_1({
     value: "RISK_ON",
     pointInTimeEligible: false,
     availableAt: "2030-01-01T06:20:00.000Z",
-    receiptHash: "3".repeat(64),
-  },
+  }),
 });
 assert.equal(ap07.state, "KNOWN_PARTIAL_VECTOR");
 assert.equal(ap07.pointInTimeEligible, true);
