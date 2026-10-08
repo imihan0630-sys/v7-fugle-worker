@@ -1335,3 +1335,15 @@ No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order,
 - Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2025_PHYSICAL_VERIFICATION_V0_1.json`.
 - 2017–2025 annual legs accepted 17/18; sole remaining annual market-year: 2025 TPEX. Next: 2025/TPEX annual physical backfill, subject to D1 quota / single-writer safeguards; then 2026 segmented and aggregate replay qualification.
 - No System1 Formal/runtime or strategy/ranking/final-selection/capital/order/push authority changed.
+
+
+## 2026-10-08 2025 TPEx physical acceptance — Run #33
+
+- Workflow run #33 / ID 37730512780 concluded SUCCESS at 2026-10-08 13:55:54 Asia/Taipei, job 113158337294; official requested 2025/TPEX.
+- Annual official 243 sessions, 206790 rows, 879 packs/symbols; storage receipt S2HCR-2403bb779359941d16a00352f60981c6b182429411eecf1e4f8b40207fc39d5d COMPLETE.
+- R2 HEAD and byte-GET 879/879 PASS; D1 manifests/checkpoint COMPLETE; cold/fresh official source 206790/206790; source row hashes and canonical A1 mismatches zero.
+- Membership/session denominator 207067; gaps 277 = 7 official suspension + 270 UNKNOWN preserved, unexpected 0. Data coverage PASS / replay readiness PARTIAL; PIT conservative session finality PASS; continuity PARTIAL_UNVERIFIED; official TPEx delisting union still incomplete.
+- System1 isolation PASS. Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37730512780/artifacts/11531765477; digest `sha256:ca403a31bd6c6e9f577027f0c1d50681c42956bd17a33407643e40372b753a12`. Durable evidence `system2/evidence/S2_HISTORICAL_TPEX_2025_PHYSICAL_VERIFICATION_V0_1.json`.
+- Aggregate 2017–2025 raw historical annual market-year coverage accepted: 18/18. This does NOT imply complete continuity, no UNKNOWN, complete historical-universe replay, or Stage-1 launch authorization.
+- Exact subsequent DATA_LANE work: 2026 segmented history (no annual current-year dispatch), aggregate replay qualification, and launch-critical hot-history/NC-T01 continuity evidence. Preserve single D1 writer and D1 quota safeguards.
+- No System1 Formal/runtime, strategies, final selection, capital/order or live push authority changed.
