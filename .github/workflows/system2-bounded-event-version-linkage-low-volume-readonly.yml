@@ -1,0 +1,49 @@
+name: System2 Bounded Event Version Linkage Low Volume Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_event_version_linkage_v0_1.mjs"
+      - "system2/tests/bounded_event_version_linkage_v0_1.test.mjs"
+      - "system2/scripts/probe_bounded_event_version_linkage_low_volume_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_BOUNDED_EVENT_VERSION_LINKAGE_LOW_VOLUME_V0_1.md"
+      - ".github/workflows/system2-bounded-event-version-linkage-low-volume-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_event_version_linkage_v0_1.mjs"
+      - "system2/tests/bounded_event_version_linkage_v0_1.test.mjs"
+      - "system2/scripts/probe_bounded_event_version_linkage_low_volume_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_BOUNDED_EVENT_VERSION_LINKAGE_LOW_VOLUME_V0_1.md"
+      - ".github/workflows/system2-bounded-event-version-linkage-low-volume-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-bounded-event-version-linkage-low-volume-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linkage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run linkage unit tests
+        run: node system2/tests/bounded_event_version_linkage_v0_1.test.mjs
+      - name: Run physical low-volume linkage probe
+        run: node system2/scripts/probe_bounded_event_version_linkage_low_volume_readonly_v0_1.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_bounded_event_version_linkage_low_volume_readonly_v0_1.mjs
+          echo "Read-only bounded event-version linkage boundary PASS"
