@@ -1,0 +1,32 @@
+name: D03 Bollinger Post-Reset Parent Shortcut Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_bollinger_post_reset_parent_shortcut_spec_20261008_v0_1.json"
+      - "research/d03_bollinger_post_reset_parent_shortcut_v0_1.mjs"
+      - "research/test_d03_bollinger_post_reset_parent_shortcut_v0_1.mjs"
+      - ".github/workflows/d03-bollinger-post-reset-parent-shortcut-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Bollinger post-reset parent shortcut tests
+        run: node research/test_d03_bollinger_post_reset_parent_shortcut_v0_1.mjs
+      - name: Confirm research-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState|finalSelection|orderImpact' research/d03_bollinger_post_reset_parent_shortcut_v0_1.mjs
+          echo "D03 Bollinger post-reset parent shortcut isolation PASS"
