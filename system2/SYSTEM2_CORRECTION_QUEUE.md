@@ -1381,7 +1381,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: HIGH
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed: the executor ran caller-supplied `UPDATE s2_decisions ...` as `insertSql`, did not verify batch/row digests and reported `INSERTED`.
@@ -1391,7 +1391,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. measured statement ledger plus exact post-write readback;
   4. guarded immutable lineage and correction-only append paths.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-08.
-- finalDisposition: FIX_IMPLEMENTED — canonical immutable persistence firewall merged; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
+- finalDisposition: VERIFIED_CLOSED — independent code-layer AP-08 canonical INSERT and readback integrity verified; physical D1, CORR-012/013 and live authority remain separately unverified.
 - independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-08 arbitrary UPDATE passed to mock D1 and mislabeled INSERTED`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
 
@@ -1422,6 +1422,15 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Merged-main PASS: CORR-011 `37814464487`; Research CI `37814464192`; V8 Regression `37814464250`.
 - Durable evidence: `system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
 - BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE verification is mandatory before `VERIFIED_CLOSED`.
+
+#### AUDIT_LANE independent AP-08 closure — 2026-10-09 01:25
+
+- Dedicated independent test merged through PR #905, run `37816240636` PASS; System2 Research `37816240323` PASS; V8 Regression `37816240412` PASS.
+- Tampered caller INSERT SQL, batch hash/row digest and unauthorized column fail before database prepare/transport; valid INSERT receives exact readback; concurrent divergent post-write state rejected.
+- Merged implementation blobs re-read from current main, all equal to BUILD PR #901 merge.
+- Durable evidence: `system2/evidence/S2_AUDIT_INDEPENDENT_CORR011_CODE_CLOSURE_20261009_V0_1.json`.
+- CORR-012 outcome maturation/cost provenance, CORR-013 sequence/NO_FILL, and real D1 guarded-writer physical protection remain separately blocked or unverified.
+
 
 ### S2-CORR-20261008-012 — Outcome monotonic updates can rewrite cost/performance provenance and erase excursions
 
