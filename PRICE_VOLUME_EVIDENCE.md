@@ -6396,3 +6396,26 @@ PVE-270 is a dual-prerequisite prospective reopening boundary:
 2. existing `S2-CORR-20261007-003` must later be independently remediated/verified so account quota reservation protects System1 after-market execution, followed by a future real trading day classified by PVE-269 as exactly one successful business execution.
 
 Neither prerequisite may be satisfied retrospectively from 2026-10-07.
+
+
+# PVE-270~276 — Wave-1 baseline/execution anti-bypass evidence chain (2026-10-08)
+
+The continuation after PVE-269 identified that fixing the original H001 defect alone would leave two different bypass classes:
+1. sibling Wave-1 lanes can consume the same stale baseline family without H001's freshness checks;
+2. downstream D16 receipts can validate data admitted only by the legacy Wave-1 gate.
+
+PVE-270 first froze H001's dual prerequisite: baseline remediation and account-level D1 execution capacity are independent necessary conditions. Thirty-two falsifiers passed.
+
+PVE-271/272 then attempted to evidence-bind the System1 after-market D1 reserve instead of inventing one. Read-only physical history found only two healthy after-market dates in all available cron history, 2026-09-21 and 2026-09-22. Their whole-V7_DB daily writes were 2,825 and 1,635. This is insufficient for a reservation contract; `reserveNumberAuthorized=false`. The finding reduces uncertainty without fabricating headroom.
+
+PVE-273 reproduced an H20 admission defect: the legacy H20 PVE-242 bridge passes event identity/anchor/horizon with no same-slot baseline freshness fields. Because H20's challenger is same-slot RVOL20, that is a genuine stale-baseline path. The 22-fixture overlay closes it.
+
+PVE-274 reproduced the analogous but structurally different H003 defect. P/PV compare price-only response against identical price geometry plus volume effort. V8.11 source binds pvSlotRvol20 to a historical slot-volume median and range-expansion/signed-progress to a historical slot-range median. Therefore both common price-range baseline validity and PV-only volume-baseline validity must be proven; asymmetry can masquerade as volume incrementality. Twenty-six fixtures pass.
+
+PVE-275 composes H001/H20/H003 into one Wave-1 pre-outcome firewall. PVE-276 then binds D16's exact input dataset hash to the PVE-275 admitted dataset hash. Existing D16 V0.2 semantics remain statistically authoritative, but direct consumption of legacy Wave-1 admission is no longer sufficient under current D02 evidence governance.
+
+No economic result changed. These findings lower false-positive admission risk; they do not demonstrate alpha.
+
+D02 remains 60.0%; all modules L3; clean prospective dates 0; Gate 7 CLOSED; Formal Core LOCKED.
+
+Next: PVE-277 Wave-2 baseline dependency/bypass audit.
