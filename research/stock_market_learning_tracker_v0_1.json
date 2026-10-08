@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.4
+    "maturityWeightedPct": 47.8
   },
   "domains": [
     {
@@ -2653,7 +2653,7 @@
         "research/d16_25_probabilistic_decision_contract_v0_1.json",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
-      "maturityPct": 60.8,
+      "maturityPct": 64,
       "modules": [
         {
           "id": "D16-01",
@@ -2793,12 +2793,12 @@
         {
           "id": "D16-16",
           "name": "Time-series Models時間序列模型",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Time-series Models時間序列模型」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / TIME_SERIES_BASELINE_PIT_AND_REFIT_CONTRACT_FROZEN / TAIWAN_EXECUTABLE_REPLAY_PENDING",
-          "next": "維持 L2/40%。下一步只在 executable Taiwan PIT time-series builder / replay、training-only transforms、baseline/challenger frozen forecasts 成立後評估 L3；不得以 specification 或 synthetic fixture 升級。",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / REAL_TWSE_2025_TIME_SERIES_REPLAY / D1_NEXT_SESSION_BOUNDARIES_PURGED / NON_ALPHA_TRADE_VALUE_DIAGNOSTIC / L4_RETURN_OOS_PENDING",
+          "next": "維持 L3/60%。已用真實 2025 TWSE R2 immutable bars、238 個獨立日期、12 檔 bounded cohort 完成可執行 time-series replay，且 TRAIN→VALIDATION／VALIDATION→TEST 的 D+1 label 已 purge。下一步才是正式 return/horizon estimand、較完整 baseline family 與 chronological OOS/prospective evidence；不得把成交值診斷目標當股票報酬 Alpha。",
           "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md"
         },
         {
@@ -2808,30 +2808,30 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Panel／Cross-sectional Models面板與橫截面模型」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / PANEL_CROSS_SECTION_DEPENDENCE_AND_MEMBERSHIP_CONTRACT_FROZEN / TAIWAN_PANEL_REPLAY_PENDING",
-          "next": "維持 L2/40%。下一步建立/驗證 Taiwan PIT issuer×date panel builder、歷史 membership、corporate-action continuity、date/issuer dependence 與 deterministic replay；無真實 PIT 不升 L3。",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / PHYSICAL_NUMERIC_PANEL_EXISTS / OFFICIAL_2025_TWSE_UNIVERSE_ARTIFACT_EXISTS / PERSISTED_ROW_LEVEL_MEMBERSHIP_RECEIPT_ABSENT / SURVIVORSHIP_AWARE_PANEL_L3_BLOCKED",
+          "next": "維持 L2/40%。2025 TWSE 官方 current+new-listing+delisting union 的 physical artifact 已存在，但 annual verifier 僅在記憶體建 registry，沒有可供 Room11 消費的 D1 row-level registry receipt/membership；因此 bounded full-year-availability cohort 不得冒充 survivorship-aware issuer×date panel。下一步取得 durable consumable membership receipt 或授權 exact equivalent 後重跑 panel gate。",
           "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md"
         },
         {
           "id": "D16-18",
           "name": "Regularization／Feature Selection正則化與特徵選擇",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Regularization／Feature Selection正則化與特徵選擇」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / NESTED_REGULARIZATION_FEATURE_SELECTION_CONTRACT_FROZEN / TAIWAN_EXECUTABLE_NESTED_REPLAY_PENDING",
-          "next": "維持 L2/40%。下一步建立 fold-local preprocessing/selection 的 Taiwan PIT nested pipeline，驗證 feature provenance、source-family redundancy、common-support OOS；無 executable replay 不升 L3。",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / REAL_TWSE_NESTED_FEATURE_SELECTION / OUTER_TEST_UNTOUCHED / PREPROCESSING_OUTER_TEST_ISOLATED / PURGED_BOUNDARIES / RETURN_ALPHA_NOT_EVALUATED",
+          "next": "維持 L3/60%。真實 TWSE bounded cohort 已完成 3 feature families × 3 ridge lambdas 的 nested selection；outer test 未參與 selection/preprocessing，D+1 邊界已 purge。下一步需正式 target、research-family multiplicity accounting、common-support OOS/prospective evidence 才能評估 L4。",
           "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md"
         },
         {
           "id": "D16-19",
           "name": "Machine Learning／Calibration機器學習與校準",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Machine Learning／Calibration機器學習與校準」。D16-19 是模型估計與機率校準的唯一 producer：負責模型訓練／比較、train-validation-calibration 邊界、calibrator 實作與選擇（含 identity/no-recalibration baseline、Platt／sigmoid、Beta、Isotonic 等 challenger）、Brier／log loss／reliability／calibration-in-the-large／slope-intercept 等 probability-quality diagnostics、model／calibration drift、refit eligibility、簡單 baseline 比較，以及 immutable CalibrationReceipt 產生。所有 preprocessing、feature selection、model/calibrator selection 必須在訓練邊界內完成，控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、PIT／replay、成本與資料漂移。D16-25 只可消費 CalibrationReceipt，不得重做 calibrator 或建立第二套 probability authority；未取得 genuine Taiwan PIT calibration evidence 不得升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / H09_CANONICAL_SCOPE_DEDUP_COMPLETE / CALIBRATION_PRODUCER / SDA022_D5_MODEL_METHOD_FROZEN / EFFECT_TARGET_DERIVATION_FIREWALL_FROZEN / TARGET_VALUE_PENDING_FREEZE / POST_CORR004_SYSTEM2_FINGERPRINT_CANONICAL / PHYSICAL_NCT01_AND_PROSPECTIVE_PAIRS_PENDING",
-          "next": "Maintain L2/40%. Numerical MDE/precision remains TARGET_VALUE_PENDING_FREEZE. Post-CORR004 System2 policy fingerprints S22-T06~T10 are canonical; remaining upstream independence gate is physical NC-T01 S22-T11~T16 after real CLEAR_NO_ACTION continuity + CORR-005 hidden-fallback audit hardening. Only then accumulate common-cutoff prospective System1/System2 pair receipts before any D5 outcome opening.",
+          "status": "L3_TAIWAN_PIT_ML_CALIBRATION_TOOLING_FEASIBILITY / REAL_TWSE_DIAGNOSTIC_BRIER / OUTER_TEST_NOT_USED_FOR_SELECTION / CANONICAL_RETURN_CALIBRATION_RECEIPT_PENDING / SDA022_EFFECT_TARGET_PENDING",
+          "next": "維持 L3/60%。本次 L3 僅證明真實 Taiwan PIT probability/calibration tooling 可執行，diagnostic target=NEXT_SESSION_TRADE_VALUE_UP_DIAGNOSTIC_NOT_RETURN_ALPHA，Brier=0.24559490566223208。不得把它當 canonical stock-return CalibrationReceipt，不得餵給 D16-25；SDA-022 numerical MDE/precision 仍 TARGET_VALUE_PENDING_FREEZE。",
           "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md + shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md research/D16_SDA022_D5_MODEL_METHOD_FREEZE_20261007_V0_1.md + research/d16_sda022_d5_model_method_receipt_20261007_v0_1.json freeze the first cross-system D5 model method before outcome access: coarse categorical policy states, ridge logistic lambda=1 primary, 0.1/10 non-rescuing sensitivity, identity/no post-hoc calibration, chronological matured-only refit, date-level Brier delta, dependence-aware block sensitivity. research/D16_SDA022_D5_EFFECT_TARGET_DERIVATION_FIREWALL_20261007_V0_1.md freezes allowed target rationale bases and prohibits arbitrary percentage/fixture thresholds or treating the 40-date support floor as a precision guarantee. No independent genuine Taiwan D5 Brier effect series was found for lawful numerical target planning."
         },
         {
@@ -2881,12 +2881,12 @@
         {
           "id": "D16-24",
           "name": "Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / MONTE_CARLO_DISTRIBUTIONAL_VALIDATION_CONTRACT_FROZEN / TAIWAN_PIT_SIMULATION_REPLAY_PENDING",
-          "next": "維持 L2/40%。下一步需 Taiwan PIT input distribution＋dependency-preserving simulation＋seed/version replay＋later-outcome distributional validation；模擬路徑數不得冒充實證樣本。",
+          "status": "L3_TAIWAN_PIT_DISTRIBUTIONAL_SIMULATION_FEASIBILITY / REAL_DATE_LEVEL_INPUT_DISTRIBUTION / DEPENDENCE_PRESERVING_BLOCK_BOOTSTRAP / DETERMINISTIC_SEED_REPLAY / SYNTHETIC_PATHS_NOT_EMPIRICAL_N",
+          "next": "維持 L3/60%。已用 190 個真實獨立 decision dates 的輸入分布完成 blockLength=5、pathLength=20、500 paths 的 deterministic bootstrap；synthetic paths 不得當 empirical N。下一步需 decision-relevant return/risk distribution、dependence specification 與 realized distributional validation 才能評估 L4。",
           "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
@@ -2896,13 +2896,13 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。D16-25 是 calibrated-belief 的 decision consumer：消費 D16-19 產生的 calibrated probabilities／distributions 與 calibration-quality metadata，負責 target／horizon／decision population、base rate／prior、Bayesian evidence update、uncertainty response／penalty、expected value／utility、risk-coverage、ACCEPT／ABSTAIN／DATA_BLOCKED 與 decision drift。必須明確區分 HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY；UNKNOWN 不得等同 FAIL 或 0。D16-25 可要求最低校準品質並評估其決策後果，但不擁有 calibrator fitting／method selection／probability mapping，也不得建立第二套 probability authority。任何 System 1／System 2 應用都先走 Prospective Shadow／OOS，驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與決策效用；未取得證據不得進入 Formal。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_SPECIALIST_COMPLETE / CONCEPTUAL_AND_EXECUTABLE_VALIDATION_CLOSED / DATE_BALANCED_CALIBRATION_GUARD_ADDED / REAL_TAIWAN_PIT_CALIBRATION_PENDING / READY_FOR_D15_19_SPECIALIST_COMPARISON / SELECTIVE_DENOMINATOR_FALSIFICATION_REPRODUCED / DUAL_DENOMINATOR_ACCEPTANCE_REQUIRED / H09_CANONICAL_SCOPE_DEDUP_COMPLETE / CALIBRATED_BELIEF_DECISION_CONSUMER / NO_SECOND_CALIBRATOR",
-          "next": "維持 L2/40%。依既有 selective-denominator / dual-denominator 規則取得 genuine complete Taiwan PIT decision ledger 與 matured outcome；D16-25 只消費 D16-19 CalibrationReceipt，負責 prior/Bayesian update、uncertainty、utility、risk-coverage 與 ABSTAIN，不重做 calibrator。D15-19 Kelly sizing 仍走獨立專科比較；無真實 PIT 證據不得升 L3 或進 Formal。",
+          "status": "L2_SPECIALIST_COMPLETE / CALIBRATED_BELIEF_DECISION_CONSUMER / DIAGNOSTIC_CALIBRATION_NOT_CANONICAL_INPUT / GENUINE_TAIWAN_CALIBRATION_DECISION_LEDGER_PENDING / DUAL_DENOMINATOR_ACCEPTANCE_REQUIRED / NO_SECOND_CALIBRATOR",
+          "next": "維持 L2/40%。本輪 D16-19 diagnostic calibration 只證明 tooling feasibility，不是 D16-25 可消費的 canonical return CalibrationReceipt。仍需 genuine complete Taiwan PIT decision ledger、matured outcome、uncertainty/risk-coverage/ABSTAIN evidence；不得以 numeric batch 順帶升級。",
           "evidence": "D16-25 L2 specialist side is complete for merge governance. Existing PR #333 added per-Regime calibration and preregistered selective-policy evaluation. PR #340 (merge 399287ac5ad669686f5f40fcfe72ea28617fd680; head 716b9038a1437b03dc5de92ee24709918a5b2deb) added date-balanced Brier/log-loss, per-date diagnostics and calibration-in-the-large to prevent same-date row multiplicity from masquerading as independent evidence. CI PASS: System2 Research 37095784670, V8 Repair 37095784642, V8 Regression 37095784664. D16-25 owns target/prior/probability-distribution/calibration/uncertainty/ABSTAIN/decision-utility validation; D15-19 retains distinct log-growth/Fractional-Kelly/portfolio-allocation responsibility. L3 remains blocked by absence of genuine complete Taiwan PIT prediction/outcome/calibration receipts. Additional audit: research/D16_25_SELECTIVE_DENOMINATOR_ACCEPTANCE_AUDIT_20261003_V0_1.md; unchanged evaluator synthetic reproduction shows matured-subset coverage 50% -> 66.7% after one label arrives while frozen full decision coverage remains 75%. Existing probability tests PASS; synthetic-only, no L3 evidence. Latest C1 workflow run 37067696964 completed/failure; root cause not inferred from summary. Production readonly version 8.15.3-c3-quote-context, testMode=false; no mutation."
         }
       ],
-      "status": "D16_L3_COUNT_ADVANCED_6_OF_25 / D16_23_STRESS_HARNESS_L3 / CORR004_VERIFIED_CLOSED / CORR005_006_VERIFIED_CLOSED / CORR007_AND_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "L2→L3 clearance now has 9 remaining D16 L2 modules: D16-16/17/18/19 need executable Taiwan PIT numeric/model replay; D16-20 real PIT treatment/event cohort; D16-21 real alternative-data panel; D16-22 PIT text corpus/model-version replay; D16-24 empirical PIT distribution simulation; D16-25 genuine calibrated decision ledger. D16-23 is now L3 feasibility only. Continue batch construction only where upstream real Taiwan evidence exists; no synthetic-only promotion.",
+      "status": "D16_L3_COUNT_ADVANCED_10_OF_25 / FOUR_MODULE_REAL_TWSE_NUMERIC_L3_BATCH_ACCEPTED / D16_17_MEMBERSHIP_GATE_BLOCKED / D16_20_21_22_25_L2_REMAIN / SDA022_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D16 L2→L3 clearance remaining five: D16-17 requires durable consumable survivorship-aware historical-universe membership receipt then panel replay; D16-20 requires real Taiwan PIT treatment/event cohort + pre-treatment covariates + overlap/positivity; D16-21 requires real entity-linked alternative-data panel with entry/exit/vendor-version replay; D16-22 requires PIT text corpus + immutable document/model/prompt clocks; D16-25 requires genuine canonical CalibrationReceipt→decision ledger with uncertainty/risk-coverage/ABSTAIN. Numeric batch run 37805085401 accepted D16-16/18/19/24 at L3 feasibility only; no Alpha or full-market inference.",
       "lastResearchUpdate": "2026-10-03T10:03:42+08:00",
       "researchNote": "D16-25 specialist work established the conceptual/executable validation contract and D15-19 handoff, justifying L2/40%. No real calibration/PIT outcome evidence exists yet, so L3 remains closed and no Formal optimization candidate exists."
     },
