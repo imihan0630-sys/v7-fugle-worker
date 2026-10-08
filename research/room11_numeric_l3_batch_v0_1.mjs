@@ -1,8 +1,10 @@
 import crypto from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { writeFile } from "node:fs/promises";
 import { createRemoteD1RestAdapter } from "../system2/deploy/remote_d1_rest_adapter.mjs";
 import { createRemoteR2S3Adapter } from "../system2/deploy/remote_r2_s3_adapter.mjs";
 import { loadHistoricalBarsFromColdPacksV0_1 } from "../system2/runtime/historical_cold_pack_store_v0_1.mjs";
+import { materializeHistoricalA1PackRowsV0_1 } from "../system2/runtime/historical_pack_store_v0_1.mjs";
 import { fetchHistoricalTwseCalendarV0_1 } from "../system2/runtime/historical_twse_calendar_v0_1.mjs";
 import { conservativeHistoricalAvailableAt } from "../system2/runtime/official_full_market_daily_history_adapter_v0_1.mjs";
 import { historicalUniverseMembershipActiveOnDateV0_1 } from "../system2/runtime/historical_universe_registry_v0_1.mjs";
@@ -16,6 +18,16 @@ export const PINNED_TWSE_2025_REGISTRY=Object.freeze({
   unknownStartCount:0,
   currentCount:1089,
   delistedCount:7,
+});
+export const PINNED_TWSE_2025_ANNUAL_EVIDENCE=Object.freeze({
+  runId:37720726697,
+  headSha:"836184f98726449107cdbd0ed83e2746bbbcf965",
+  artifactId:11527595746,
+  artifactDigest:"sha256:41ab589d5f38e667f8fb61427d2053d38d9f62d23e044d22a8c7e0f441cd56df",
+  manifestRollingHash:"4b01e356aae94e5b1be6c40732602c342bc3ba9c43c1851b1cf6778d3063a29d",
+  packCount:1070,
+  barCount:254854,
+  sourceReconciliationState:"PASS",
 });
 function stable(v){if(Array.isArray(v))return v.map(stable);if(v&&typeof v==="object")return Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])]));return v;}
 const stableJson=v=>JSON.stringify(stable(v));
@@ -43,6 +55,82 @@ export function guardedDb(db){
     database:db.database,
   };
 }
+
+function rfc3986(value){
+  return encodeURIComponent(String(value)).replace(/[!'()*]/g,c=>"%"+c.charCodeAt(0).toString(16).toUpperCase());
+}
+function hmac(key,value,encoding=undefined){return crypto.createHmac("sha256",key).update(value).digest(encoding);}
+function r2SigningKey(secret,shortDate){
+  const d=hmac("AWS4"+secret,shortDate),r=hmac(d,"auto"),svc=hmac(r,"s3");
+  return hmac(svc,"aws4_request");
+}
+function xmlDecode(text){
+  return String(text).replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+}
+export async function listR2KeysReadOnly({accountId,accessKeyId,secretAccessKey,bucketName,prefix,fetchImpl=fetch,now=()=>new Date()}={}){
+  for(const [k,v] of Object.entries({accountId,accessKeyId,secretAccessKey,bucketName,prefix}))must(v,`R2_LIST_${k}_MISSING`);
+  const host=`${accountId}.r2.cloudflarestorage.com`;
+  const path="/"+rfc3986(bucketName);
+  const emptyHash=crypto.createHash("sha256").update("").digest("hex");
+  let token=null;
+  const keys=[];
+  for(let page=0;page<10;page++){
+    const params=[["list-type","2"],["max-keys","1000"],["prefix",prefix]];
+    if(token)params.push(["continuation-token",token]);
+    params.sort((a,b)=>rfc3986(a[0]).localeCompare(rfc3986(b[0]))||rfc3986(a[1]).localeCompare(rfc3986(b[1])));
+    const query=params.map(([k,v])=>`${rfc3986(k)}=${rfc3986(v)}`).join("&");
+    const stamp=now().toISOString().replace(/[:-]|\.\d{3}/g,"");
+    const short=stamp.slice(0,8);
+    const headers=new Headers({host,"x-amz-content-sha256":emptyHash,"x-amz-date":stamp});
+    const canonicalHeaders=`host:${host}\nx-amz-content-sha256:${emptyHash}\nx-amz-date:${stamp}\n`;
+    const signedHeaders="host;x-amz-content-sha256;x-amz-date";
+    const canonicalRequest=["GET",path,query,canonicalHeaders,signedHeaders,emptyHash].join("\n");
+    const scope=`${short}/auto/s3/aws4_request`;
+    const stringToSign=["AWS4-HMAC-SHA256",stamp,scope,crypto.createHash("sha256").update(canonicalRequest).digest("hex")].join("\n");
+    const signature=hmac(r2SigningKey(secretAccessKey,short),stringToSign,"hex");
+    headers.set("authorization",`AWS4-HMAC-SHA256 Credential=${accessKeyId}/${scope}, SignedHeaders=${signedHeaders}, Signature=${signature}`);
+    const response=await fetchImpl(`https://${host}${path}?${query}`,{method:"GET",headers,signal:AbortSignal.timeout(60000)});
+    const body=await response.text();
+    must(response.ok,`R2_LIST_HTTP_${response.status}`);
+    for(const match of body.matchAll(/<Key>([\s\S]*?)<\/Key>/g))keys.push(xmlDecode(match[1]));
+    const truncated=/<IsTruncated>true<\/IsTruncated>/.test(body);
+    if(!truncated)return keys;
+    const m=body.match(/<NextContinuationToken>([\s\S]*?)<\/NextContinuationToken>/);
+    must(m?.[1],"R2_LIST_CONTINUATION_TOKEN_MISSING");
+    token=xmlDecode(m[1]);
+  }
+  throw new Error("R2_LIST_PAGE_LIMIT_EXCEEDED");
+}
+
+async function loadAnnualPackDirectFromR2({objectStore,key}){
+  const match=String(key).match(/^a1\/v0\.1\/market=TWSE\/year=2025\/symbol=([1-9][0-9]{3})\/price_space=RAW\/([a-f0-9]{64})\.json\.gz$/);
+  must(match,"R2_PACK_KEY_CONTRACT_MISMATCH");
+  const [,symbol,payloadHash]=match;
+  const object=await objectStore.get(key);
+  must(object,"R2_PACK_OBJECT_MISSING");
+  const bytes=Buffer.from(object.bytes);
+  const actualObjectSha=crypto.createHash("sha256").update(bytes).digest("hex");
+  const md=object.metadata?.customMetadata||{};
+  must(md["payload-hash"]===payloadHash,"R2_PACK_PAYLOAD_METADATA_MISMATCH");
+  must(md["object-sha256"]===actualObjectSha,"R2_PACK_OBJECT_SHA_MISMATCH");
+  must(md["pack-schema"]==="S2_HISTORICAL_A1_PACK_RESEARCH_V0_1","R2_PACK_SCHEMA_MISMATCH");
+  const payload=JSON.parse(gunzipSync(bytes).toString("utf8"));
+  must(payload.market==="TWSE"&&Number(payload.year)===2025&&payload.symbol===symbol&&payload.priceSpace==="RAW","R2_PACK_PAYLOAD_IDENTITY_MISMATCH");
+  must(Array.isArray(payload.bars)&&payload.bars.length>=1,"R2_PACK_BARS_MISSING");
+  const firstMarketDate=payload.bars[0][0],lastMarketDate=payload.bars.at(-1)[0];
+  const pack={
+    packId:"S2HP-A1-"+payloadHash,market:"TWSE",symbol,year:2025,priceSpace:"RAW",
+    firstMarketDate,lastMarketDate,barCount:payload.bars.length,payloadHash,
+    gzipBase64:bytes.toString("base64"),capturedAt:object.metadata?.uploadedAt||"R2_UPLOAD_TIME_UNKNOWN",
+    schemaVersion:"S2_HISTORICAL_A1_PACK_RESEARCH_V0_1",
+  };
+  const materialized=await materializeHistoricalA1PackRowsV0_1({pack});
+  return {
+    symbol,rows:materialized.rows,
+    evidence:{symbol,objectKey:key,payloadHash,objectSha256:actualObjectSha,loadedRowCount:materialized.rowCount,r2UploadedAt:object.metadata?.uploadedAt||null},
+  };
+}
+
 
 export function buildRows(symbolBars,officialTradingDates){
   must(Array.isArray(officialTradingDates)&&officialTradingDates.length>=80,"OFFICIAL_TRADING_DATES_REQUIRED");
@@ -261,47 +349,85 @@ export async function runPhysicalBatch(){
   const secretAccessKey=process.env.SYSTEM2_R2_SECRET_ACCESS_KEY;
   const bucketName=process.env.SYSTEM2_R2_BUCKET;
   for(const [k,v] of Object.entries({accountId,apiToken,accessKeyId,secretAccessKey,bucketName}))must(v,`ENV_${k}_MISSING`);
-  const rawDb=await createRemoteD1RestAdapter({accountId,apiToken,databaseName:"system2-research"});
-  const db=guardedDb(rawDb);
+
   const objectStore=createRemoteR2S3Adapter({accountId,accessKeyId,secretAccessKey,bucketName});
   const calendar=await fetchHistoricalTwseCalendarV0_1({year:2025});
-  must(calendar?.tradingDatesExact===true && calendar.tradingDates.length>=200,"TWSE_OFFICIAL_CALENDAR_NOT_EXACT");
-  const registryRows=await db.rawQuery(`SELECT registry_id,registry_hash,membership_count,replay_eligible_count,unknown_start_count,current_count,delisted_count
-    FROM s2_historical_universe_registry_receipts
-    WHERE registry_id=? LIMIT 1`,[PINNED_TWSE_2025_REGISTRY.registryId]);
-  const membershipRows=await db.rawQuery(`SELECT registry_id,market,symbol,membership_id,membership_hash,effective_from,effective_to,end_basis,replay_eligible
-    FROM s2_historical_universe_memberships
-    WHERE registry_id=? AND market='TWSE'
-    ORDER BY symbol,effective_from,effective_to`,[PINNED_TWSE_2025_REGISTRY.registryId]);
-  const persistedRegistryReceiptPresent=registryRows.length===1;
-  const persistedMembershipRowCount=membershipRows.length;
-  if(persistedRegistryReceiptPresent){
-    must(membershipRows.length===PINNED_TWSE_2025_REGISTRY.membershipCount,"PINNED_MEMBERSHIP_ROW_COUNT_MISMATCH");
+  must(calendar?.tradingDatesExact===true && calendar.tradingDates.length===243,"TWSE_OFFICIAL_CALENDAR_NOT_EXACT");
+
+  let rawDb=null,db=null,d1State="READY";
+  let registryRows=[],membershipRows=[],manifests=[];
+  try{
+    rawDb=await createRemoteD1RestAdapter({accountId,apiToken,databaseName:"system2-research"});
+    db=guardedDb(rawDb);
+    registryRows=await db.rawQuery(`SELECT registry_id,registry_hash,membership_count,replay_eligible_count,unknown_start_count,current_count,delisted_count
+      FROM s2_historical_universe_registry_receipts
+      WHERE registry_id=? LIMIT 1`,[PINNED_TWSE_2025_REGISTRY.registryId]);
+    membershipRows=await db.rawQuery(`SELECT registry_id,market,symbol,membership_id,membership_hash,effective_from,effective_to,end_basis,replay_eligible
+      FROM s2_historical_universe_memberships
+      WHERE registry_id=? AND market='TWSE'
+      ORDER BY symbol,effective_from,effective_to`,[PINNED_TWSE_2025_REGISTRY.registryId]);
+    manifests=await db.rawQuery(`SELECT symbol,object_key,object_sha256,payload_hash,bar_count
+      FROM s2_historical_a1_pack_manifests
+      WHERE market='TWSE' AND year=2025 AND price_space='RAW'
+      ORDER BY symbol ASC LIMIT 24`);
+  }catch(error){
+    const message=String(error?.message||error);
+    if(!/exceeded D1's free tier daily row read limit/i.test(message))throw error;
+    d1State="READ_QUOTA_EXHAUSTED_R2_ONLY_FALLBACK";
+    registryRows=[];membershipRows=[];manifests=[];
   }
 
-  const manifests=await db.rawQuery(`SELECT symbol,object_key,object_sha256,payload_hash,bar_count
-    FROM s2_historical_a1_pack_manifests
-    WHERE market='TWSE' AND year=2025 AND price_space='RAW'
-    ORDER BY symbol ASC LIMIT 24`);
-  must(manifests.length>=12,"INSUFFICIENT_2025_TWSE_MANIFESTS");
+  const persistedRegistryReceiptPresent=registryRows.length===1;
+  const persistedMembershipRowCount=membershipRows.length;
+  if(persistedRegistryReceiptPresent)must(membershipRows.length===PINNED_TWSE_2025_REGISTRY.membershipCount,"PINNED_MEMBERSHIP_ROW_COUNT_MISMATCH");
+
   const symbolBars=[];
   const packEvidence=[];
-  for(const m of manifests){
-    const loaded=await loadHistoricalBarsFromColdPacksV0_1({db,objectStore,market:"TWSE",symbol:m.symbol,fromDate:"2025-01-01",toDate:"2025-12-31",priceSpace:"RAW"});
-    const valid=loaded.rows.filter(r=>r.pitReplayEligible&&Number.isFinite(r.tradeValue)&&r.tradeValue>0&&Number.isFinite(r.transactions)&&Number.isFinite(r.volumeShares));
-    if(valid.length>=180){
-      symbolBars.push([m.symbol,loaded.rows]);
-      packEvidence.push({symbol:m.symbol,manifestObjectSha256:m.object_sha256,manifestPayloadHash:m.payload_hash,loadedRowCount:loaded.rowCount,packRefs:loaded.packRefs});
+  let storageReadMode;
+
+  if(manifests.length>=12 && db){
+    storageReadMode="SYSTEM2_RESEARCH_D1_MANIFEST_PLUS_R2_COLD_OBJECT";
+    for(const m of manifests){
+      const loaded=await loadHistoricalBarsFromColdPacksV0_1({db,objectStore,market:"TWSE",symbol:m.symbol,fromDate:"2025-01-01",toDate:"2025-12-31",priceSpace:"RAW"});
+      const valid=loaded.rows.filter(r=>r.pitReplayEligible&&Number.isFinite(r.tradeValue)&&r.tradeValue>0&&Number.isFinite(r.transactions)&&Number.isFinite(r.volumeShares));
+      if(valid.length>=180){
+        symbolBars.push([m.symbol,loaded.rows]);
+        packEvidence.push({symbol:m.symbol,manifestObjectSha256:m.object_sha256,manifestPayloadHash:m.payload_hash,loadedRowCount:loaded.rowCount,packRefs:loaded.packRefs});
+      }
+      if(symbolBars.length>=12)break;
     }
-    if(symbolBars.length>=12)break;
+  }else{
+    storageReadMode="R2_DIRECT_LIST_AND_GET_USING_DURABLE_ANNUAL_EVIDENCE_ANCHOR";
+    const prefix="a1/v0.1/market=TWSE/year=2025/";
+    const keys=await listR2KeysReadOnly({accountId,accessKeyId,secretAccessKey,bucketName,prefix});
+    const annualKeys=keys.filter(k=>/^a1\/v0\.1\/market=TWSE\/year=2025\/symbol=[1-9][0-9]{3}\/price_space=RAW\/[a-f0-9]{64}\.json\.gz$/.test(k)).sort();
+    const bySymbol=new Map();
+    for(const key of annualKeys){
+      const symbol=key.match(/\/symbol=([1-9][0-9]{3})\//)?.[1];
+      if(!bySymbol.has(symbol))bySymbol.set(symbol,[]);
+      bySymbol.get(symbol).push(key);
+    }
+    must(bySymbol.size===PINNED_TWSE_2025_ANNUAL_EVIDENCE.packCount,"R2_DIRECT_UNIQUE_SYMBOL_COUNT_MISMATCH");
+    must([...bySymbol.values()].every(v=>v.length===1),"R2_DIRECT_MULTIPLE_IMMUTABLE_PACKS_PER_SYMBOL");
+    for(const symbol of [...bySymbol.keys()].sort().slice(0,24)){
+      const loaded=await loadAnnualPackDirectFromR2({objectStore,key:bySymbol.get(symbol)[0]});
+      const valid=loaded.rows.filter(r=>r.pitReplayEligible&&Number.isFinite(r.tradeValue)&&r.tradeValue>0&&Number.isFinite(r.transactions)&&Number.isFinite(r.volumeShares));
+      if(valid.length>=180){
+        symbolBars.push([symbol,loaded.rows]);
+        packEvidence.push(loaded.evidence);
+      }
+      if(symbolBars.length>=12)break;
+    }
   }
+
   must(symbolBars.length>=8,"INSUFFICIENT_PHYSICAL_SYMBOL_COHORT");
   const rows0=buildRows(symbolBars,calendar.tradingDates);
   const membershipBound=persistedRegistryReceiptPresent
     ? bindHistoricalMembership(rows0,membershipRows,registryRows[0])
     : null;
   if(membershipBound)must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
-  const modelRows0=membershipBound ? membershipBound.rows : rows0;
+
+  const modelRows0=membershipBound?membershipBound.rows:rows0;
   const sp=splitDates(modelRows0);
   const allPartitioned=modelRows0.map(r=>({...r,partition:sp.split(r)}));
   const purgedTrainRows=allPartitioned.filter(r=>r.partition==="PURGED_TRAIN_BOUNDARY");
@@ -309,6 +435,7 @@ export async function runPhysicalBatch(){
   const rows=allPartitioned.filter(r=>r.partition==="TRAIN"||r.partition==="VALIDATION"||r.partition==="TEST");
   must(rows.every(r=>r.partition!=="TRAIN"||r.outcomeDate<sp.firstValidationDate),"TRAIN_LABEL_CROSSES_VALIDATION");
   must(rows.every(r=>r.partition!=="VALIDATION"||r.outcomeDate<sp.firstTestDate),"VALIDATION_LABEL_CROSSES_TEST");
+
   const panel={
     market:"TWSE",year:2025,target:"NEXT_OFFICIAL_SESSION_LOG_TRADE_VALUE",
     rowCount:rows.length,preMembershipRowCount:rows0.length,
@@ -340,18 +467,27 @@ export async function runPhysicalBatch(){
     d16_17L3Eligible:Boolean(membershipBound),
     numericMethodL3Eligible:true,
   };
+
   const timeSeries=fitAr1(rows);
   const featureSelection=nestedFeatureSelection(rows);
   const cal=calibration(rows);
   const monteCarlo=blockBootstrap(rows);
-  must(rawDb.metrics.rowsWritten===0,"D1_ROWS_WRITTEN_NONZERO");
+  const d1Metrics=rawDb?.metrics||{requests:0,rowsRead:0,rowsWritten:0};
+  must(Number(d1Metrics.rowsWritten||0)===0,"D1_ROWS_WRITTEN_NONZERO");
+
   const base={
     schemaVersion:VERSION,
     observedAt:new Date().toISOString(),
-    physicalSource:{market:"TWSE",year:2025,officialCalendarSource:calendar.source,officialTradingDateCount:calendar.tradingDates.length,storage:"SYSTEM2_RESEARCH_D1_MANIFEST_PLUS_R2_COLD_OBJECT",registry:PINNED_TWSE_2025_REGISTRY,symbolCohort:symbolBars.map(x=>x[0]),packEvidence},
+    physicalSource:{
+      market:"TWSE",year:2025,officialCalendarSource:calendar.source,officialTradingDateCount:calendar.tradingDates.length,
+      storage:storageReadMode,d1State,
+      durableAnnualEvidence:PINNED_TWSE_2025_ANNUAL_EVIDENCE,
+      registry:PINNED_TWSE_2025_REGISTRY,
+      symbolCohort:symbolBars.map(x=>x[0]),packEvidence,
+    },
     panel,timeSeries,featureSelection,calibration:cal,monteCarlo,
-    d1Metrics:rawDb.metrics,
-    rowsWrittenZero:rawDb.metrics.rowsWritten===0,
+    d1Metrics,
+    rowsWrittenZero:Number(d1Metrics.rowsWritten||0)===0,
     formalCoreChanged:false,system1RuntimeUsed:false,system2StrategyAuthorityChanged:false,
     alphaClaimMade:false,priceReturnClaimMade:false,
     promotionsEligible:{
