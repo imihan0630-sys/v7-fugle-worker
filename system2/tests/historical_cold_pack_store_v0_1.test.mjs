@@ -13,6 +13,9 @@ class FakeStatement {
   constructor(db, sql) { this.db=db; this.sql=sql.replace(/\s+/g," ").trim(); this.params=[]; }
   bind(...params) { this.params=params; return this; }
   async first() {
+    if(this.sql.includes("FROM s2_historical_universe_registry_receipts")){
+      return this.db.universeReceipts.find((row)=>row.registry_id===this.params[0]) || null;
+    }
     if(this.sql.includes("FROM s2_historical_cold_ingest_receipts")){
       return this.db.receipts.find((row)=>row.batch_id===this.params[0]) || null;
     }
@@ -58,7 +61,7 @@ class FakeStatement {
 }
 
 class FakeDb {
-  constructor(){this.manifests=[];this.receipts=[];this.checkpoints=[];this.memberships=[];}
+  constructor(){this.manifests=[];this.receipts=[];this.checkpoints=[];this.memberships=[];this.universeReceipts=[];}
   prepare(sql){return new FakeStatement(this,sql);}
   async batch(statements){
     return statements.map((statement)=>{
@@ -83,6 +86,16 @@ class FakeObjectStore {
 }
 
 const capturedAt="2026-09-28T14:30:00Z";
+const h=(ch)=>String(ch).repeat(64).slice(0,64);
+const planIdentity={
+  datasetManifestHash:h("a"),
+  policyRegistrationHash:h("b"),
+  evaluatorCodeHash:h("c"),
+  factorBundleHash:h("d"),
+  regimeVersionHash:h("e"),
+  executionAssumptionHash:h("f"),
+  costModelHash:h("1"),
+};
 const rows=["2017-01-03","2017-01-04","2017-01-05"].map((marketDate,index)=>({
   market:"TWSE",symbol:"2330",companyName:"台積電",marketDate,priceSpace:"RAW",
   open:100+index,high:103+index,low:99+index,close:102+index,
@@ -147,14 +160,21 @@ db.memberships.push({
   registry_id:"REG-2017",market:"TWSE",symbol:"2330",company_name:"台積電",industry:"半導體",
   membership_id:"MEM-2330",membership_hash:"MH-2330",replay_eligible:1,effective_from:"2017-01-03",effective_to:null,
 });
+db.universeReceipts.push({
+  registry_id:"REG-2017",
+  registry_hash:h("2"),
+  membership_count:1,
+  replay_eligible_count:1,
+  unknown_start_count:0,
+});
 const loaders=createHistoricalColdBacktestLoadersV0_1({db,objectStore,registryId:"REG-2017"});
 const plan=await buildBulkBacktestPlanV0_1({
   runId:"BT-COLD-1",datasetVersion:"COLD-V1",strategyId:"SHORT_MOMENTUM",strategyVersion:"0.1",
   marketDates:["2017-01-05"],decisionClockByDate:{"2017-01-05":"2017-01-05T10:11:00Z"},
-  lookbackSessions:3,symbolPartitionSize:20,selectionPolicyAuthorized:false,createdAt:capturedAt,
+  lookbackSessions:3,symbolPartitionSize:20,selectionPolicyAuthorized:false,planIdentity,createdAt:capturedAt,
 });
 const run=await runBulkBacktestV0_1({
-  plan,loadUniverse:loaders.loadUniverse,loadHistoricalBars:loaders.loadHistoricalBars,
+  plan,loadUniverse:loaders.loadUniverse,loadUniverseReceipt:loaders.loadUniverseReceipt,loadHistoricalBars:loaders.loadHistoricalBars,
   evaluateSymbol:async()=>({candidateState:"QUALIFIED_NOT_SELECTED",reasons:["FIXTURE"]}),
   retainSamplesInMemory:true,capturedAt,
 });

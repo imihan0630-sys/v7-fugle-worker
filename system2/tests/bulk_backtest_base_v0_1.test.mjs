@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   buildBulkBacktestPlanV0_1,
+  buildBulkBacktestPitUniverseReceiptV0_1,
   runBulkBacktestV0_1,
 } from "../runtime/bulk_backtest_runner_v0_1.mjs";
 import {
@@ -8,6 +9,17 @@ import {
   toHistoricalBasePersistenceRecords,
 } from "../runtime/historical_base_dataset_v0_1.mjs";
 import { buildSystem2PersistenceBatch } from "../runtime/persistence_batch.mjs";
+
+const h=(ch)=>String(ch).repeat(64).slice(0,64);
+const planIdentity={
+  datasetManifestHash:h("a"),
+  policyRegistrationHash:h("b"),
+  evaluatorCodeHash:h("c"),
+  factorBundleHash:h("d"),
+  regimeVersionHash:h("e"),
+  executionAssumptionHash:h("f"),
+  costModelHash:h("1"),
+};
 
 function datePlus(start, days) {
   const d = new Date(start + "T00:00:00Z");
@@ -68,6 +80,7 @@ const plan = await buildBulkBacktestPlanV0_1({
   lookbackSessions: 61,
   symbolPartitionSize: 2,
   selectionPolicyAuthorized: false,
+  planIdentity,
   createdAt: "2026-09-28T09:40:00Z",
 });
 
@@ -83,11 +96,27 @@ const bySymbol = {
 
 async function loadUniverse() {
   return [
-    { symbol: "2330", companyName: "台積電", market: "TWSE" },
-    { symbol: "2317", companyName: "鴻海", market: "TWSE" },
-    { symbol: "2454", companyName: "聯發科", market: "TWSE" },
-    { symbol: "9999", companyName: "排除樣本", market: "TWSE", excluded: true, exclusionReasons: ["FIXTURE"] },
+    { symbol: "2330", companyName: "台積電", market: "TWSE", membershipId:"M-2330", membershipHash:"MH-2330", replayEligible:true, membershipStateAtReplay:"ACTIVE" },
+    { symbol: "2317", companyName: "鴻海", market: "TWSE", membershipId:"M-2317", membershipHash:"MH-2317", replayEligible:true, membershipStateAtReplay:"ACTIVE" },
+    { symbol: "2454", companyName: "聯發科", market: "TWSE", membershipId:"M-2454", membershipHash:"MH-2454", replayEligible:true, membershipStateAtReplay:"ACTIVE" },
+    { symbol: "9999", companyName: "排除樣本", market: "TWSE", membershipId:"M-9999", membershipHash:"MH-9999", replayEligible:true, membershipStateAtReplay:"ACTIVE", excluded: true, exclusionReasons: ["FIXTURE"] },
   ];
+}
+
+async function loadUniverseReceipt({marketDate,decisionTimestamp,plan,universe,capturedAt}) {
+  return buildBulkBacktestPitUniverseReceiptV0_1({
+    plan,
+    marketDate,
+    decisionTimestamp,
+    registryId:"REG-FIXTURE",
+    registryHash:h("2"),
+    members:universe,
+    exclusions:universe.filter((x)=>x.excluded).map((x)=>({
+      market:x.market,symbol:x.symbol,reason:"FIXTURE",state:"KNOWN",
+    })),
+    emptyUniverseProven:universe.length===0,
+    capturedAt,
+  });
 }
 
 async function loadHistoricalBars({ symbol }) {
@@ -128,6 +157,7 @@ await assert.rejects(
   () => runBulkBacktestV0_1({
     plan,
     loadUniverse,
+    loadUniverseReceipt,
     loadHistoricalBars,
     evaluateSymbol,
     onPartition: async (partition) => archivedPartitions.push(...partition.samples),
@@ -149,6 +179,7 @@ assert.equal(firstCheckpoint.processedSampleCount, 3);
 const resumed = await runBulkBacktestV0_1({
   plan,
   loadUniverse,
+  loadUniverseReceipt,
   loadHistoricalBars,
   evaluateSymbol,
   onPartition: async (partition) => archivedPartitions.push(...partition.samples),
@@ -210,19 +241,46 @@ const selectedPlan = await buildBulkBacktestPlanV0_1({
   marketDates: ["2026-09-29"],
   decisionClockByDate: { "2026-09-29": "2026-09-29T10:10:00Z" },
   selectionPolicyAuthorized: false,
+  planIdentity,
   createdAt: "2026-09-28T09:40:00Z",
 });
 
 await assert.rejects(
   () => runBulkBacktestV0_1({
     plan: selectedPlan,
-    loadUniverse: async () => [{ symbol: "2330", companyName: "台積電", market: "TWSE" }],
+    loadUniverse: async () => [{ symbol: "2330", companyName: "台積電", market: "TWSE", membershipId:"M-2330", membershipHash:"MH-2330", replayEligible:true, membershipStateAtReplay:"ACTIVE" }],
+    loadUniverseReceipt,
     loadHistoricalBars,
     evaluateSymbol: async () => ({ candidateState: "SELECTED" }),
     capturedAt: "2026-10-01T09:55:00Z",
   }),
   /SELECTED generation is not authorized/,
 );
+
+let forgedLoaderCalls=0;
+const forgedCheckpoint={
+  ...firstCheckpoint,
+  completedDates:[...marketDates],
+  completedThroughDate:marketDates.at(-1),
+  processedSampleCount:0,
+  stateCounts:{},
+  dateSummaries:[],
+  partitionReceipts:[],
+  checkpointHash:h("0"),
+};
+await assert.rejects(
+  () => runBulkBacktestV0_1({
+    plan,
+    loadUniverse: async (...args) => { forgedLoaderCalls+=1; return loadUniverse(...args); },
+    loadUniverseReceipt,
+    loadHistoricalBars,
+    evaluateSymbol,
+    resumeCheckpoint: forgedCheckpoint,
+    capturedAt: "2026-10-01T09:45:00Z",
+  }),
+  /resume checkpoint hash mismatch/,
+);
+assert.equal(forgedLoaderCalls,0,"forged checkpoint must fail before universe loading");
 
 const historicalObservedLater = archivedPartitions.find((x) => x.symbol === "2330");
 assert.equal(historicalObservedLater.factorObservations[0].provenance.observedAt, "2026-10-01T00:00:00Z");

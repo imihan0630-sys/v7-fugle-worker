@@ -3149,3 +3149,35 @@ Exact next:
 Room11/D16 freezes the event/chain dependence and multiplicity method before outcomes; Room07 adds independent material vintages and a different industry/chain without changing lag windows.
 
 Formal Core unchanged.
+
+
+## SC-093 — policy-finance instrument firewall / Wolfspeed conditional loan calibration (2026-10-08)
+
+Artifact:
+- `research/SC093_D10_14_POLICY_FINANCE_INSTRUMENT_FIREWALL_WOLFSPEED_20261008_V0_1.md`
+
+Wolfspeed's 2026-10-07 official disclosure is retained as historical calibration relative to the SC-087 prospective freeze on 2026-10-08 05:55 Asia/Taipei.
+
+It MUST NOT increment post-SC087 prospective event N.
+
+The event freezes a distinct policy-finance state:
+- up to US$1.5b;
+- 30-year senior-secured delayed-draw term loan facility;
+- conditional commitment only;
+- definitive agreements/funding not yet proven;
+- possible warrants up to 7.5% fully diluted equity pro rata with funded tranches;
+- intended SiC/GaN/wide-bandgap domestic capability scope.
+
+Frozen firewalls:
+- `CONDITIONAL_LOAN_COMMITMENT != CASH_DISBURSEMENT`;
+- `LOAN != GRANT`;
+- `FINANCING_CAPACITY != MANUFACTURING_CAPACITY`;
+- `POLICY_SUPPORT_AMOUNT != REALIZED_CAPEX`;
+- `PROGRAM_INTENT != REALIZED_OUTPUT`.
+
+No Taiwan issuer benefit/harm sign is inferred.
+D10-14 remains L3/60.
+Prospective post-SC087 event N unchanged.
+
+Exact next:
+continue SC-088 from the SC-087 freeze and admit only genuinely post-freeze official events with financing instrument, conditionality, realized funding and physical realization stored separately.

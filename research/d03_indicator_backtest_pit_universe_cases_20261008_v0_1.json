@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D03_INDICATOR_BACKTEST_PIT_UNIVERSE_CASES_V0_1",
+  "recordedAt": "2026-10-08T18:12:00+08:00",
+  "base": {
+    "marketDate": "2026-09-29",
+    "decisionTimestamp": "2026-09-29T13:30:00+08:00",
+    "planIdentity": {
+      "datasetManifestHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyRegistrationHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "evaluatorCodeHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "factorDefinitionHash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "regimeVersionHash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "executionAssumptionHash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "costModelHash": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "planHash": "2222222222222222222222222222222222222222222222222222222222222222",
+    "universeReceipt": {
+      "marketDate": "2026-09-29",
+      "decisionTimestamp": "2026-09-29T13:30:00+08:00",
+      "registryHash": "3333333333333333333333333333333333333333333333333333333333333333",
+      "historicalUniverseSnapshotHash": "4444444444444444444444444444444444444444444444444444444444444444",
+      "membershipSourceMode": "HISTORICAL_PIT",
+      "emptyUniverseProven": false,
+      "members": [
+        {
+          "market": "TWSE",
+          "symbol": "2330",
+          "membershipId": "TWSE-2330-20260929",
+          "membershipHash": "5555555555555555555555555555555555555555555555555555555555555555",
+          "replayEligible": true,
+          "membershipStateAtReplay": "ACTIVE",
+          "excluded": false,
+          "exclusionState": "NONE"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2317",
+          "membershipId": "TWSE-2317-20260929",
+          "membershipHash": "6666666666666666666666666666666666666666666666666666666666666666",
+          "replayEligible": true,
+          "membershipStateAtReplay": "ACTIVE",
+          "excluded": false,
+          "exclusionState": "NONE"
+        }
+      ],
+      "receiptHash": "7777777777777777777777777777777777777777777777777777777777777777"
+    },
+    "accounting": {
+      "eligibleCount": 2,
+      "accountedCount": 2,
+      "sampleCount": 2,
+      "stateCountSum": 2,
+      "zeroSampleCompletion": false
+    },
+    "checkpoint": {
+      "planHash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "checkpointHashValid": true,
+      "partitionHashesValid": true,
+      "rollingDigestValid": true,
+      "completedDatePresent": true
+    },
+    "factorEvidence": {
+      "allAvailableByDecision": true,
+      "allContinuityReadyOrExplicitUnknown": true
+    },
+    "validation": {
+      "claimType": "OOS",
+      "trainTestDateOverlapCount": 0,
+      "dateClusterAuditComplete": true,
+      "walkForwardOrderValid": true
+    }
+  },
+  "cases": [
+    {"id":"U01","expected":true,"mutation":null,"reason":"complete PIT universe and denominator"},
+    {"id":"U02","expected":false,"path":"planIdentity.factorDefinitionHash","value":null,"reason":"factor definition identity missing"},
+    {"id":"U03","expected":false,"path":"planIdentity.costModelHash","value":null,"reason":"cost model identity missing"},
+    {"id":"U04","expected":false,"path":"universeReceipt.registryHash","value":null,"reason":"registry lineage missing"},
+    {"id":"U05","expected":false,"path":"universeReceipt.historicalUniverseSnapshotHash","value":null,"reason":"historical snapshot lineage missing"},
+    {"id":"U06","expected":false,"path":"universeReceipt.membershipSourceMode","value":"CURRENT_SURVIVORS_ONLY","reason":"survivorship-biased current universe"},
+    {"id":"U07","expected":false,"path":"universeReceipt.marketDate","value":"2026-09-30","reason":"date mismatch"},
+    {"id":"U08","expected":false,"path":"universeReceipt.members.0.membershipEndDate","value":"2030-01-01","reason":"future membership end exposed"},
+    {"id":"U09","expected":false,"path":"universeReceipt.members.1.symbol","value":"2330","reason":"duplicate market-symbol member"},
+    {"id":"U10","expected":false,"path":"universeReceipt.members.0.replayEligible","value":false,"reason":"unknown membership in claimed complete denominator"},
+    {"id":"U11","expected":false,"path":"universeReceipt.members.0.exclusionState","value":"UNKNOWN","reason":"unknown exclusion cannot leave denominator"},
+    {"id":"U12","expected":false,"path":"accounting.accountedCount","value":1,"reason":"eligible-accounted mismatch"},
+    {"id":"U13","expected":false,"path":"accounting.stateCountSum","value":1,"reason":"state count mismatch"},
+    {"id":"U14","expected":false,"path":"checkpoint.checkpointHashValid","value":false,"reason":"forged checkpoint"},
+    {"id":"U15","expected":false,"path":"checkpoint.partitionHashesValid","value":false,"reason":"partition lineage broken"},
+    {"id":"U16","expected":false,"path":"checkpoint.planHash","value":"9999999999999999999999999999999999999999999999999999999999999999","reason":"resume under changed plan"},
+    {"id":"U17","expected":false,"path":"factorEvidence.allAvailableByDecision","value":false,"reason":"look-ahead factor evidence"},
+    {"id":"U18","expected":false,"path":"validation.trainTestDateOverlapCount","value":1,"reason":"training and OOS overlap"},
+    {"id":"U19","expected":false,"path":"validation.walkForwardOrderValid","value":false,"reason":"walk-forward order invalid"},
+    {"id":"U20","expected":false,"path":"validation.dateClusterAuditComplete","value":false,"reason":"date clustering unaudited"}
+  ]
+}

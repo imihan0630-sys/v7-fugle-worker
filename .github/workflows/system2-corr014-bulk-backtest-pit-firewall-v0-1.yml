@@ -1,0 +1,68 @@
+name: System2 CORR-014 Bulk Backtest PIT Firewall V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/bulk_backtest_runner_v0_1.mjs"
+      - "system2/runtime/historical_cold_pack_store_v0_1.mjs"
+      - "system2/tests/corr014_bulk_backtest_pit_firewall_v0_1.test.mjs"
+      - "system2/tests/bulk_backtest_base_v0_1.test.mjs"
+      - "system2/tests/historical_cold_pack_store_v0_1.test.mjs"
+      - ".github/workflows/system2-corr014-bulk-backtest-pit-firewall-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/bulk_backtest_runner_v0_1.mjs"
+      - "system2/runtime/historical_cold_pack_store_v0_1.mjs"
+      - "system2/tests/corr014_bulk_backtest_pit_firewall_v0_1.test.mjs"
+      - "system2/tests/bulk_backtest_base_v0_1.test.mjs"
+      - "system2/tests/historical_cold_pack_store_v0_1.test.mjs"
+      - ".github/workflows/system2-corr014-bulk-backtest-pit-firewall-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-014 adversarial checkpoint and PIT-universe firewall
+        run: node system2/tests/corr014_bulk_backtest_pit_firewall_v0_1.test.mjs
+
+      - name: Bulk backtest regression
+        run: node system2/tests/bulk_backtest_base_v0_1.test.mjs
+
+      - name: Historical cold-store regression
+        run: node system2/tests/historical_cold_pack_store_v0_1.test.mjs
+
+      - name: Syntax check affected runtime
+        run: |
+          node --check system2/runtime/bulk_backtest_runner_v0_1.mjs
+          node --check system2/runtime/historical_cold_pack_store_v0_1.mjs
+
+      - name: Static CORR-014 assertions
+        run: |
+          set -euo pipefail
+          grep -q 'BULK_BACKTEST_PIT_UNIVERSE_RECEIPT_VERSION' system2/runtime/bulk_backtest_runner_v0_1.mjs
+          grep -q 'resume checkpoint hash mismatch' system2/runtime/bulk_backtest_runner_v0_1.mjs
+          grep -q 'PIT universe receipt member set mismatch' system2/runtime/bulk_backtest_runner_v0_1.mjs
+          grep -q 'zero-sample completion requires proved empty PIT universe' system2/runtime/bulk_backtest_runner_v0_1.mjs
+          grep -q 'loadUniverseReceipt' system2/runtime/historical_cold_pack_store_v0_1.mjs
+          echo "CORR-014 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"

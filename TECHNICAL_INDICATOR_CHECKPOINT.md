@@ -8290,3 +8290,118 @@ Exact next:
 4. D03-09 then applies canonical suspension/resume semantics inside Wilder FULL_REPLAY / trusted-state certification.
 5. CORR-009 governance remains pending independent AUDIT_LANE closure; do not confuse engineering acceptance with governance closure.
 6. Keep raw third-session, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.
+
+
+## 2026-10-08 D03 — TI-1565~1584 indicator backtest PIT universe and denominator firewall
+
+Canonical D03 artifacts:
+- `research/D03_INDICATOR_BACKTEST_PIT_UNIVERSE_DENOMINATOR_FIREWALL_20261008_V0_1.md`;
+- `research/d03_indicator_backtest_pit_universe_cases_20261008_v0_1.json`;
+- `research/test_d03_indicator_backtest_pit_universe_v0_1.mjs`.
+
+Cross-lane engineering source:
+- `S2-CORR-20261008-014`;
+- merged implementation commit `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`;
+- correction queue remains OPEN / independent verification pending.
+
+### TI-1565~1570 — clean indicator arithmetic does not cure a survivor-biased universe
+
+D03 freezes:
+`INDICATOR_FORMULA_CORRECTNESS_DOES_NOT_PROVE_HISTORICAL_UNIVERSE_VALIDITY`.
+
+A multi-date or cross-sectional technical-indicator study must bind, for each decision date:
+- the exact historical market-symbol membership known at that decision;
+- registry and historical-universe snapshot hashes;
+- known exclusions and their reasons;
+- replay eligibility and unresolved membership states;
+- the exact decision timestamp;
+- a denominator that reconciles eligible, accounted, sampled and state-count totals.
+
+Today's surviving symbols cannot be replayed backward as the historical universe.
+A later delisting/membership-end fact cannot be exposed inside a prior decision receipt.
+Unknown membership or exclusion is UNKNOWN, not absent.
+
+This applies to all D03 modules whenever they support historical cross-sectional or multi-date claims, especially:
+- ret5/ret20/ret60 ranks;
+- trend persistence and momentum continuation;
+- pullback/reversal comparison;
+- Bollinger/ADX promotion evidence;
+- indicator redundancy and incremental-value tests.
+
+### TI-1571~1576 — zero samples have three non-equivalent meanings
+
+D03 separates:
+1. `PROVED_EMPTY_PIT_UNIVERSE` — the historical universe was genuinely empty under an immutable receipt;
+2. `NONEMPTY_UNIVERSE_ALL_EXCLUDED` — symbols existed, but policy/data gates excluded them;
+3. `UNIVERSE_OR_DENOMINATOR_UNKNOWN` — membership/exclusion/accounting proof is incomplete.
+
+Only the first may support a completed zero-sample date.
+
+The second is not a natural zero-sample market and must remain explicit.
+The third blocks completion.
+
+This prevents selection-bias laundering in which a difficult date loses all symbols through exclusions and is then counted as a clean empty observation.
+
+### TI-1577~1581 — plan and resume identity
+
+Before any resume checkpoint is trusted, the research plan must bind:
+- dataset manifest;
+- policy registration;
+- evaluator code;
+- factor definition;
+- regime version;
+- execution assumptions;
+- cost model.
+
+Any change creates a different plan identity.
+An old checkpoint cannot resume after indicator formula, factor family, regime definition, execution assumption or cost model changes.
+
+Checkpoint admission also requires:
+- valid checkpoint hash;
+- matching plan hash;
+- valid partition hashes;
+- valid rolling digest;
+- completed-date/date-summary/sample reconciliation.
+
+This closes a path where zero physical samples or a forged completed-date list could be labelled a finished backtest.
+
+### TI-1582~1583 — executable falsification and evidence limits
+
+The D03 oracle passes 22 cases.
+
+Observed:
+`status=PASS; cases=22; currentSurvivorUniverseRejected=true; allExcludedZeroSampleRejected=true; provedEmptyUniverseAccepted=true; factorIdentityMutationChangesPlanInput=true; d03MaturityPct=56.7; formalCoreImpact=NONE_LOCKED`.
+
+Additional OOS / walk-forward admission:
+- training and test dates must not overlap;
+- walk-forward order must be causal;
+- date-cluster audit must be complete;
+- factor evidence must be available by the decision clock.
+
+Counterevidence:
+- these are deterministic contract tests;
+- no physical D03 historical panel or predictive outcome is created;
+- no multiple-testing correction, redundancy residual, transaction cost, fillability or market-state result is created;
+- CORR-014 queue remains open pending independent governance verification;
+- a merged engineering firewall is not D03 alpha evidence.
+
+Unavailable claims remain UNKNOWN.
+
+### TI-1584 — maturity and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 L3/60 + 2 L2/40;
+- D03-09 / D03-10 remain L2/40;
+- outcomes CLOSED;
+- Formal Core LOCKED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Primary physical next remains:
+1. W0 — first real exact-window parity-certified TWTAWU bounded receipt, D03 price-reset family set, same-security identity disposition and real continuity hash chain;
+2. parent — next actual ordinary-session genuine immutable C1 generation with live quality readiness, advanced Formal scan and authoritative V8.20 binding;
+3. when W0 + parent exist, run D03-10 Bollinger admission; D03-09 then adds canonical Wilder full replay.
+
+Independent validation debt:
+4. after CORR-014 independent closure, future D03 OOS/walk-forward panels must bind per-date PIT universe receipts and immutable plan/checkpoint identities;
+5. keep raw third-session, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.

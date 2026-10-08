@@ -1909,3 +1909,47 @@ D09-10 remains L3/60.
 
 Exact next:
 when the shared immutable row export arrives, compute both receipts outcome-blind from the same parent digest, then accumulate independent clean dates before L4.
+
+
+## BR-073 — third independent official TWSE stock-breadth date (2026-10-08)
+
+Artifact:
+- `research/br073_twse_advance_decline_third_date_20261008_v0_1.json`
+
+Frozen:
+- up 425;
+- down 540;
+- unchanged 109;
+- unmatched 3;
+- N/A 5;
+- comparable N 1,074;
+- net advance-minus-decline = -10.7076 percentage points.
+
+Independent official TWSE breadth-date count is now 3:
+2026-10-02 / 2026-10-07 / 2026-10-08.
+
+Shared-root rule remains:
+one daily TWSE breadth receipt may have multiple research consumers, but only one independent evidence root.
+
+D09-04 remains L3/60.
+Exact next: append further independent official dates under unchanged denominator semantics; no L4 before D16 common-support/OOS validation.
+
+
+## BR-074 — D09-04 three-date D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/BR074_D09_04_THREE_DATE_ADVANCE_DECLINE_D16_HANDOFF_20261008_V0_1.md`
+- `research/BR074_D09_04_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Frozen independent unit:
+`TWSE_MARKET_DATE_BREADTH_ROOT`.
+
+Independent date N = 3.
+Multiple horizons/consumers/transforms do not inflate N.
+Predictive outcomes opened = 0.
+Inference state = `POWER_INSUFFICIENT`.
+
+Room11/D16 method receipt is required before any predictive access.
+D09-04 remains L3/60.
+
+Exact next: continue outcome-blind official dates and consume the D16 method return when it lands.

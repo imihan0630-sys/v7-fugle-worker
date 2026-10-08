@@ -6,6 +6,7 @@ import {
   assertHistoricalColdObjectStoreV0_1,
   historicalPackObjectKeyV0_1,
 } from "./historical_cold_object_store_v0_1.mjs";
+import { buildBulkBacktestPitUniverseReceiptV0_1 } from "./bulk_backtest_runner_v0_1.mjs";
 
 export const HISTORICAL_COLD_PACK_STORE_VERSION = "0.1-RESEARCH";
 
@@ -500,8 +501,21 @@ export function createHistoricalColdBacktestLoadersV0_1({ db, objectStore, regis
   if (!db || typeof db.prepare !== "function") throw new Error("isolated System2 database adapter is required");
   const store = assertHistoricalColdObjectStoreV0_1(objectStore);
   const registry = requiredText(registryId, "registryId");
+
+  async function registryReceipt() {
+    const receipt = await db.prepare(`SELECT registry_id,registry_hash,membership_count,replay_eligible_count,unknown_start_count
+      FROM s2_historical_universe_registry_receipts
+      WHERE registry_id=? LIMIT 1`).bind(registry).first();
+    if (!receipt) throw new Error("historical universe registry receipt missing: " + registry);
+    if (!/^[a-f0-9]{64}$/.test(String(receipt.registry_hash || ""))) {
+      throw new Error("historical universe registry hash invalid: " + registry);
+    }
+    return receipt;
+  }
+
   return deepFreeze({
     async loadUniverse({ marketDate }) {
+      const receipt = await registryReceipt();
       const result = await db.prepare(`SELECT market,symbol,company_name,industry,membership_id,membership_hash
         FROM s2_historical_universe_memberships
         WHERE registry_id=? AND replay_eligible=1 AND effective_from<=?
@@ -516,8 +530,31 @@ export function createHistoricalColdBacktestLoadersV0_1({ db, objectStore, regis
           market:row.market,symbol:row.symbol,companyName:row.company_name || null,
           industry:row.industry || null,excluded:false,exclusionReasons:[],
           membershipId:row.membership_id,membershipHash:row.membership_hash,
+          registryId:receipt.registry_id,registryHash:receipt.registry_hash,
+          replayEligible:true,membershipStateAtReplay:"ACTIVE",unknownReason:null,
         });
       }));
+    },
+    async loadUniverseReceipt({ marketDate, decisionTimestamp, plan, universe, capturedAt }) {
+      const receipt = await registryReceipt();
+      return buildBulkBacktestPitUniverseReceiptV0_1({
+        plan,
+        marketDate,
+        decisionTimestamp,
+        registryId: receipt.registry_id,
+        registryHash: receipt.registry_hash,
+        members: universe,
+        exclusions: universe
+          .filter((row) => row.excluded)
+          .map((row) => ({
+            market: row.market,
+            symbol: row.symbol,
+            reason: (row.exclusionReasons || []).join("|") || "EXCLUDED",
+            state: "KNOWN",
+          })),
+        emptyUniverseProven: universe.length === 0,
+        capturedAt,
+      });
     },
     async loadHistoricalBars({ market,symbol,marketDate,lookbackSessions,priceSpace="RAW" }) {
       const loaded = await loadHistoricalBarsFromColdPacksV0_1({

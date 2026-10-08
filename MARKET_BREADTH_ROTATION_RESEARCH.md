@@ -2638,3 +2638,91 @@ No stock outcome or Formal change.
 
 Exact next:
 BR-048 create effective-dated exposure vintages where issuer-native product/revenue/capacity evidence changes over time; no indefinite carry-forward of a static theme label.
+
+
+## BR-073 — third independent official TWSE stock-breadth date (2026-10-08)
+
+Artifact:
+- `research/br073_twse_advance_decline_third_date_20261008_v0_1.json`
+
+Official TWSE stock-only counts:
+- up 425;
+- down 540;
+- unchanged 109;
+- unmatched 3;
+- N/A 5;
+- comparable N = 1,074;
+- total state N = 1,082.
+
+Derived under the unchanged denominator:
+- advance = 39.5717%;
+- decline = 50.2793%;
+- unchanged = 10.1490%;
+- net advance-minus-decline = -10.7076 percentage points;
+- comparable coverage = 99.2606%.
+
+This is the third independent official TWSE breadth date after:
+- 2026-10-02;
+- 2026-10-07.
+
+The 2026-10-08 receipt is one evidence root. If D09-12 later consumes the same date after a same-clock official TAIEX context receipt becomes available, consumer count must not increase independent evidence-root count.
+
+D09-04 remains L3/60.
+No stock outcome or L4 promotion.
+
+Exact next:
+continue independent official TWSE dates under the same denominator; TPEx is admitted only with accepted same-clock official transport; no L4 before D16 common-support/OOS validation.
+
+
+## BR-074 — D09-04 three-date breadth D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/BR074_D09_04_THREE_DATE_ADVANCE_DECLINE_D16_HANDOFF_20261008_V0_1.md`
+- `research/BR074_D09_04_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Independent official TWSE market-date roots now equal 3:
+- 2026-10-02;
+- 2026-10-07;
+- 2026-10-08.
+
+The independent unit is the market-date breadth root. D5/D20/D60 horizons, D09-12 consumption, index-context joins and multiple transforms do not increase independent N.
+
+Current:
+- independent date N = 3;
+- predictive/stock outcomes opened = 0;
+- inference readiness = POWER_INSUFFICIENT;
+- D09-04 remains L3/60.
+
+Room11/D16 must freeze date clustering/weighting, common support, horizon multiplicity, missing TPEx/strategy-universe policy, redundancy controls and power disposition before any predictive access.
+
+Exact next:
+continue official TWSE dates outcome-blind; consume D16 method return when available; no L4 until prospective/OOS evidence is adequate under the frozen method.
+
+Formal Core unchanged.
+
+
+## BR-075 — D09-08 size-leadership D16 preregistration (2026-10-08)
+
+Artifacts:
+- `research/BR075_D09_08_SIZE_LEADERSHIP_D16_PREREG_20261008_V0_1.md`
+- `research/BR075_D09_08_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Frozen:
+- independent unit = common-complete size-TRI market date;
+- all Taiwan50 / MidCap100 / SmallCap300 legs must share a common total-return basis;
+- D1/D5/D20/D60 are repeated horizons, not independent dates;
+- price-index-complete does not equal TRI-complete;
+- partial/missing legs do not increment complete-date N.
+
+Current complete-date N = 1.
+Opened predictive outcomes = 0.
+Inference state = POWER_INSUFFICIENT.
+
+D09-08 remains L3/60.
+
+Room11/D16 must freeze date dependence, horizon multiplicity, sector/effective-membership/liquidity/breadth/concentration/regime controls and missingness policy before predictive use.
+
+Exact next:
+accumulate genuinely new common-complete official TRI dates and consume D16 method return when available.
+
+Formal Core unchanged.
