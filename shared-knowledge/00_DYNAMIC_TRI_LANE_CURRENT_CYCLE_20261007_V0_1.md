@@ -2131,3 +2131,105 @@ CORR-003 becomes the persistence blocker before genuine rank/capacity persistenc
 
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
+
+
+## 00 continuation delta — continuous execution gate + PR #844 runtime-guard correction (2026-10-08 10:59 Asia/Taipei)
+
+Observed latest main before write:
+`3b20005b7c458ae538141b00a2fea70fd6271603`.
+
+### Repository-wide interruption handling hardened
+
+Owner observed repeated practical interruption: recoverable tool errors / concurrent main movement / progress messages were too often followed by a stopped work cycle that required another manual `繼續`.
+
+Canonical fix now exists at all three layers:
+- `AGENTS.md` — `Continuous execution gate`;
+- `shared-knowledge/ROOM_BOOTSTRAP.md` — `CONTINUOUS_EXECUTION_GATE / FAIL-CLOSED`;
+- `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json` — machine-readable gate.
+
+Required semantics:
+- progress/status messages are not completion points and do not require owner reply;
+- recoverable errors auto-diagnose / refresh / retry / safe-fallback / verify / continue;
+- `繼續` during unfinished work is continuation reinforcement, not a restart;
+- only owner-only MFA/Secret/permission/protected approval, exhausted safe retries, hard tool boundary, or a genuinely completed requested segment may intentionally stop the work;
+- no fake background-execution claims after a final response.
+
+A recoverable interruption merely reported and then left for the owner to restart is:
+`CONTINUOUS_EXECUTION_GATE_FAIL`.
+
+### Overnight BUILD movement
+
+`S2-CORR-20261007-005` and `S2-CORR-20261007-006` are now independently `VERIFIED_CLOSED` after merged PR #841 and merged-main exact-head verification.
+
+This closes their code firewalls only; S22-T11..T16 physical credit still requires one real coherent NC-T01 execution cut.
+
+### PR #844 current status
+
+PR:
+`#844 system2: add same-cut NC-T01 physical read-only workflow`.
+
+Current head:
+`9d690d120d017c8fab5424c02e0dfb8a90008a49`.
+
+Directionally accepted:
+- real official A1 + isolated system2-research D1 physical surface;
+- no real continuity receipt => EVIDENCE_INCOMPLETE;
+- no W1 strategy-executable witness => no physical-independent promotion;
+- same-cut hidden-fallback audit finalizes after orchestration;
+- full physical-wrapper transitive graph is statically audited;
+- final selection / live push / capital / orders remain disabled.
+
+PR-head tests are green, but merge/physical promotion remains blocked.
+
+### Existing upstream blocker — CORR-007
+
+`S2-CORR-20261008-007` HIGH / OPEN / BUILD_LANE:
+CLEAR_NO_ACTION currently can accept TWSE suspension COMPLETE without first-class immutable bounded-suspension receipt identity being bound into archive + continuity `sourceEvidenceRefs`.
+
+DATA_LANE already owns the bounded TWTAWU parity/source evidence work; BUILD owns the provenance-binding contract.
+
+### New wrapper-surface blocker — CORR-008
+
+Opened:
+`S2-CORR-20261008-008` HIGH / OPEN / BUILD_LANE.
+
+Reason:
+- #844 physical wrapper uses generic remote D1 adapter and verifies `rowsWritten=0` only after execution;
+- mutating SQL is not blocked before Cloudflare transport;
+- `sameCutRuntimeEvidence()` currently sets `instrumented=true` and `runtimeForbiddenAccessCount=0` as literals;
+- therefore runtime read-only/no-forbidden-access evidence is declarative rather than measured.
+
+Required:
+1. runner-local pre-transport D1 read-only SQL guard;
+2. frozen allowed-origin network guard;
+3. same-cut measured runtime guard ledger;
+4. derive `runtimeForbiddenAccessCount` from real counters;
+5. bind ledger -> runtimeEvidenceDigest -> hidden-fallback auditDigest -> `HIDDEN_FALLBACK_AUDIT_SHA256` -> final receiptHash;
+6. fail closed if guard/ledger is missing or incomplete.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
+
+### Updated exact Stage-1 continuation
+
+BUILD_LANE:
+1. close CORR-007 provenance binding;
+2. close CORR-008 physical-wrapper runtime guard;
+3. rebase/harden #844 on canonical post-correction main;
+4. rerun exact-head NC-T01/Research/V8/applicable checks;
+5. merge #844 only after both blockers are present.
+
+DATA_LANE:
+1. continue frozen TWTAWU V0.2 positive parity;
+2. prove bounded exact replay-window negative suspension completeness;
+3. compose three TWSE corporate-action exact-range families;
+4. emit immutable source-honest continuity evidence;
+5. final CLEAR_NO_ACTION promotion remains blocked until CORR-007 binding exists.
+
+Then:
+- execute one real artifact-only SHORT_MOMENTUM NC-T01 on one coherent physical cut;
+- 00 independently recomputes S22-T11..T16;
+- only then does CORR-003 D1 persistence headroom become the dominant path to genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+
+Formal Core remains LOCKED.
+System1 remains sentinel-only.
