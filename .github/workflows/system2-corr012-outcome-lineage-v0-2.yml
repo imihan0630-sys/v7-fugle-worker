@@ -1,0 +1,98 @@
+name: System2 CORR-012 Outcome Lineage V0.2
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/outcome_tracker_v0_1.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - "system2/runtime/outcome_lineage_v0_2.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/runtime/outcome_persistence_v0_2.mjs"
+      - "system2/sql/0011_outcome_lineage_versions.sql"
+      - "system2/tests/outcome_tracker_v0_1.test.mjs"
+      - "system2/tests/execution_simulator_v0_1.test.mjs"
+      - "system2/tests/outcome_persistence_v0_1.test.mjs"
+      - "system2/tests/outcome_lineage_v0_2.test.mjs"
+      - "system2/tests/audit_high_adversarial_witness_011_012_013_v0_1.test.mjs"
+      - ".github/workflows/system2-corr012-outcome-lineage-v0-2.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/outcome_tracker_v0_1.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - "system2/runtime/outcome_lineage_v0_2.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/runtime/outcome_persistence_v0_2.mjs"
+      - "system2/sql/0011_outcome_lineage_versions.sql"
+      - "system2/tests/outcome_lineage_v0_2.test.mjs"
+      - ".github/workflows/system2-corr012-outcome-lineage-v0-2.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-012 outcome lineage V0.2
+        run: node system2/tests/outcome_lineage_v0_2.test.mjs
+
+      - name: Outcome tracker regression
+        run: node system2/tests/outcome_tracker_v0_1.test.mjs
+
+      - name: Execution simulator regression
+        run: node system2/tests/execution_simulator_v0_1.test.mjs
+
+      - name: Legacy V0.1 writer deauthorization
+        run: node system2/tests/outcome_persistence_v0_1.test.mjs
+
+      - name: Independent AP-05 witness must be SAFE
+        run: |
+          set -euo pipefail
+          node system2/tests/audit_high_adversarial_witness_011_012_013_v0_1.test.mjs | tee /tmp/corr012-audit.log
+          grep -F '"directive":"S2-CORR-20261008-012","probe":"AP-05-MFE-MAE-HOLDING-COST-LINEAGE-REVISION","state":"SAFE"' /tmp/corr012-audit.log
+          grep -F '"MFE_ERASURE"' /tmp/corr012-audit.log
+          grep -F '"MAE_ERASURE"' /tmp/corr012-audit.log
+
+      - name: Validate additive outcome lineage SQL
+        run: |
+          set -euo pipefail
+          sqlite3 /tmp/system2-corr012.db < system2/sql/0001_research_core.sql
+          sqlite3 /tmp/system2-corr012.db < system2/sql/0011_outcome_lineage_versions.sql
+          sqlite3 /tmp/system2-corr012.db "PRAGMA table_info(s2_outcome_versions);" | tee /tmp/outcome-columns.txt
+          grep -q "outcome_version_id" /tmp/outcome-columns.txt
+          grep -q "decision_hash" /tmp/outcome-columns.txt
+          grep -q "regime_hash" /tmp/outcome-columns.txt
+          grep -q "execution_hash" /tmp/outcome-columns.txt
+          grep -q "cost_model_hash" /tmp/outcome-columns.txt
+          grep -q "signal_returns_json" /tmp/outcome-columns.txt
+          grep -q "simulated_net_return_after_cost" /tmp/outcome-columns.txt
+
+      - name: Static correction assertions
+        run: |
+          set -euo pipefail
+          grep -q 'MFE_ERASURE' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'MAE_ERASURE' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'CLOSED_HOLDING_SESSIONS_REVISION' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'OUTCOME_JSON_PROVENANCE_REVISION' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'OUTCOME_LINEAGE_HASH_MISMATCH' system2/runtime/outcome_lineage_v0_2.mjs
+          grep -q 'LEGACY_OUTCOME_PERSISTENCE_V0_1_DISABLED_USE_V0_2' system2/runtime/outcome_persistence_v0_1.mjs
+          grep -q 's2_outcome_versions' system2/runtime/outcome_persistence_v0_2.mjs
+          echo "CORR-012 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
