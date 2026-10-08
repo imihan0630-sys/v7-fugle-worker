@@ -106,7 +106,7 @@ export function validateCrossScaleReceipt(r={}){
 export function validateOnePrimitiveManyScales(rows=[]){
   const accounting=revisionRootAccounting(rows);
   if(accounting.primitiveRevisionRootCount===1&&accounting.rawRevisionRepresentationCount>1){
-    return {status:"ONE_ROOT_MULTI_SCALE_FANOUT",...accounting};
+    return {...accounting,status:"ONE_ROOT_MULTI_SCALE_FANOUT"};
   }
-  return {status:"GENERAL_REVISION_FANOUT",...accounting};
+  return {...accounting,status:"GENERAL_REVISION_FANOUT"};
 }
