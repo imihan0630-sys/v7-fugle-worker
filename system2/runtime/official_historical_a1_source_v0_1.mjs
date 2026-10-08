@@ -379,7 +379,9 @@ export async function fetchOfficialHistoricalA1DateV0_1({
           market,
           marketDate,
           payload,
-          observedAt,
+          // For opt-in live ingestion, stamp observation after the official
+          // response has arrived; static historical replay callers stay unchanged.
+          observedAt:typeof observedAt==="function"?observedAt():observedAt,
           sourceUrl: candidate.url,
           transportMode: candidate.transportMode,
         });
