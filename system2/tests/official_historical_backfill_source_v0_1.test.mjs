@@ -101,6 +101,22 @@ const legacyCompatible = await fetchOfficialHistoricalA1RangeV0_1({
 assert.equal(legacyCompatible.rows[0].sourceRowHash, undefined,
   "legacy inline-pack callers must retain their previously frozen canonical payload");
 
+// Exact official month calendars must take precedence over weekday/holiday guesses.
+const exact2026={year:2026,tradingDates:["2026-07-08","2026-07-09","2026-07-13"],source:"TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",tradingDatesExact:true};
+const exactRequested=[];
+const exactResult=await fetchOfficialHistoricalA1RangeV0_1({
+  market:"TPEX",fromDate:"2026-07-08",toDate:"2026-07-13",
+  calendarsByYear:{2026:exact2026},
+  fetchImpl:async url=>{
+    const date=new URL(url).searchParams.get("date").replaceAll("/","-");
+    exactRequested.push(date);
+    return {ok:true,status:200,json:async()=>tpexPayload(date)};
+  },
+});
+assert.deepEqual(exactRequested,["2026-07-08","2026-07-09","2026-07-13"]);
+assert.equal(exactRequested.includes("2026-07-10"),false,"unscheduled trading date must not be requested");
+assert.equal(exactResult.tradingDateCount,3);
+
 const contracts = buildOfficialBackfillSourceContractsV0_1();
 assert.equal(contracts.TWSE.authenticationRequired, false);
 assert.equal(contracts.TPEX.historicalDateRequired, true);
