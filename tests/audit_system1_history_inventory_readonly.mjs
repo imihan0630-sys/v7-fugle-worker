@@ -12,9 +12,10 @@ async function get(path){
   return data;
 }
 
-const [cron,finalize,runtime]=await Promise.all([
+const [cron,finalize,scan,runtime]=await Promise.all([
   get("/api/cron/status?historyAudit="+Date.now()),
   get("/api/finalize/status?historyAudit="+Date.now()),
+  get("/api/scan/status?historyAudit="+Date.now()),
   fetch(origin+"/api/version?historyAudit="+Date.now(),{headers:{accept:"application/json","cache-control":"no-cache"},signal:AbortSignal.timeout(30000)}).then(r=>r.json())
 ]);
 
@@ -45,6 +46,17 @@ const result={
     target:Number(readiness?.history?.target??0),
     resolved:Number(readiness?.history?.resolved??0),
     institution3DaysReady:readiness?.checks?.institution3DaysReady??null
+  },
+  lastSuccessfulFormalScan:{
+    scanDate:scan?.scanDate||null,
+    generatedAt:scan?.generatedAt||null,
+    selectedCount:scan?.selectedCount??null,
+    ordinaryStocks:scan?.market?.ordinaryStocks??null,
+    with60Days:scan?.diagnostics?.with60Days??null,
+    historyCacheCount:scan?.diagnostics?.historyCacheCount??null,
+    historyCacheTarget:scan?.diagnostics?.historyCacheTarget??null,
+    historyWarmupResolved:scan?.diagnostics?.historyWarmupResolved??null,
+    historyCoverageComplete:scan?.diagnostics?.historyCoverageComplete??null
   },
   recentHistoryWarmupRuns:parsed,
   latestNumericProgress:latestNumeric,
