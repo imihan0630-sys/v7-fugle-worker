@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {
-  buildRows, splitDates, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
+  buildRows, splitDates, bindHistoricalMembership, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
 } from "../research/room11_numeric_l3_batch_v0_1.mjs";
 
 let passed=0;
@@ -85,6 +85,63 @@ test("NB-T06 chronological split keeps disjoint dates",()=>{
  assert.equal([...a].some(x=>b.has(x)||c.has(x)),false);
  assert.equal([...b].some(x=>c.has(x)),false);
 });
+
+test("NB-T06B D+1 labels cannot cross train-validation or validation-test boundary",()=>{
+ const sp=splitDates(panel);
+ const assigned=panel.map(r=>({...r,partition:sp.split(r)}));
+ const kept=assigned.filter(r=>["TRAIN","VALIDATION","TEST"].includes(r.partition));
+ assert.ok(assigned.some(r=>r.partition==="PURGED_TRAIN_BOUNDARY"));
+ assert.ok(assigned.some(r=>r.partition==="PURGED_VALIDATION_BOUNDARY"));
+ assert.equal(kept.some(r=>r.partition==="TRAIN" && r.outcomeDate>=sp.firstValidationDate),false);
+ assert.equal(kept.some(r=>r.partition==="VALIDATION" && r.outcomeDate>=sp.firstTestDate),false);
+});
+
+const fakeExpected={
+ registryId:"REGISTRY-TWSE-2025-TEST",
+ registryHash:"a".repeat(64),
+ membershipCount:2,replayEligibleCount:2,unknownStartCount:0,currentCount:1,delistedCount:1,
+};
+const fakeReceipt={
+ registry_id:fakeExpected.registryId,registry_hash:fakeExpected.registryHash,
+ membership_count:2,replay_eligible_count:2,unknown_start_count:0,current_count:1,delisted_count:1,
+};
+const fakeMemberships=[
+ {
+  registry_id:fakeExpected.registryId,symbol:"1101",membership_id:"M1101",membership_hash:"1".repeat(64),
+  effective_from:"2025-01-01",effective_to:null,end_basis:"OPEN_ENDED_CURRENT",replay_eligible:1,
+ },
+ {
+  registry_id:fakeExpected.registryId,symbol:"1102",membership_id:"M1102",membership_hash:"2".repeat(64),
+  effective_from:"2025-01-01",effective_to:"2025-03-01",end_basis:"OFFICIAL_DELISTING_DATE",replay_eligible:1,
+ },
+];
+test("NB-T06C membership binding requires active same security on decision and outcome",()=>{
+ const rows=[
+  {...panel[0],symbol:"1101",decisionDate:"2025-02-27",outcomeDate:"2025-02-28"},
+  {...panel[1],symbol:"1102",decisionDate:"2025-02-28",outcomeDate:"2025-03-01"},
+ ];
+ const x=bindHistoricalMembership(rows,fakeMemberships,fakeReceipt,fakeExpected);
+ assert.equal(x.admittedCount,1);
+ assert.equal(x.blockedCount,1);
+ assert.equal(x.rows[0].symbol,"1101");
+ assert.equal(x.rows[0].membershipHash,"1".repeat(64));
+});
+test("NB-T06D official delisting date is exclusive membership boundary",()=>{
+ const row={...panel[0],symbol:"1102",decisionDate:"2025-03-01",outcomeDate:"2025-03-02"};
+ const x=bindHistoricalMembership([row],fakeMemberships,fakeReceipt,fakeExpected);
+ assert.equal(x.admittedCount,0);
+ assert.equal(x.blockedCount,1);
+});
+throws("NB-T06E registry hash mismatch fails closed",()=>{
+ bindHistoricalMembership([panel[0]],fakeMemberships,{...fakeReceipt,registry_hash:"b".repeat(64)},fakeExpected);
+},/REGISTRY_HASH_MISMATCH/);
+throws("NB-T06F registry denominator count mismatch fails closed",()=>{
+ bindHistoricalMembership([panel[0]],fakeMemberships,{...fakeReceipt,membership_count:3},fakeExpected);
+},/REGISTRY_COUNT_MISMATCH_membershipCount/);
+throws("NB-T06G membership row from another registry fails closed",()=>{
+ bindHistoricalMembership([panel[0]],[{...fakeMemberships[0],registry_id:"OTHER"}],fakeReceipt,fakeExpected);
+},/MEMBERSHIP_REGISTRY_MISMATCH/);
+
 test("NB-T07 AR1 baseline executable on multiple issuers",()=>{
  const r=fitAr1(panel);
  assert.ok(r.length>=5);
