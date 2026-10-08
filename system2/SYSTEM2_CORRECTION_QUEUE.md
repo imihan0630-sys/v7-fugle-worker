@@ -1258,7 +1258,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T10:59:00+08:00
 - severity: HIGH
-- status: VERIFYING
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - blockedBy: none (former CORR-007 prerequisite independently VERIFIED_CLOSED; CORR-008 remains OPEN)
@@ -1276,7 +1276,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   6. fail-closed regressions for mutation/origin attempts and missing/incomplete guard.
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
-- finalDisposition: VERIFYING — independent AP-008-A writable PRAGMA and AP-008-B mutable statement.sql batch TOCTOU counterexamples block closure; BUILD patch and physical W0 remain pending.
+- finalDisposition: FIX_IMPLEMENTED — corrective PR #899 closes AP-008-A writable-PRAGMA and AP-008-B mutable-statement TOCTOU bypasses; prior negative evidence preserved; independent AUDIT_LANE re-verification is still required before VERIFIED_CLOSED.
 - independent AUDIT_LANE prerequisite release: PR #871 / main `35295e412911193a49f332496821fc42f8ff5f6d` resolved only CORR-007 code provenance; physical W0 and CORR-008 runtime guard not credited.
 - latest-main recheck: PR #844 head `9d690d1` is 416 commits behind main and unmergeable; use exact-head reconciliation before replacement/merge.
 - independent remaining-gate matrix: `system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json`.
@@ -1305,6 +1305,19 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - AP-008-B: `batch(statements)` checks `statement.sql` before passing the original mutable statement to `db.batch`, leaving a getter/TOCTOU gap. Deterministic JS pass-through probe delivered a later `UPDATE` string after the lexical checks saw `SELECT`.
 - Required: BUILD whitelist truly read-only PRAGMAs, freeze/canonicalize D1 batch statements, add adversarial tests proving zero transport calls, and rerun exact-head CI. This finding blocks `VERIFIED_CLOSED`, regardless of earlier CI PASS.
 
+
+
+#### BUILD corrective addendum — 2026-10-09 00:49
+
+- PR #899 merged as `7f6a888c55720be6b8df049146a042f70e63f24e`.
+- AP-008-A repaired: generic PRAGMA permission replaced by explicit read-only metadata allowlist; writable/side-effect PRAGMAs fail before D1 transport.
+- AP-008-B repaired: accessor/getter-backed batch statements are rejected; validated SQL/params are rebuilt into fresh frozen adapter-native statements before `db.batch`.
+- Negative regressions prove rejected attempts increment `rejectedMutationAttemptCount` while underlying D1 request/batch counts remain zero.
+- Exact-head PASS: CORR-008 `37811513968`; Artifact Runner `37811514005`; Research CI `37811513963`; V8 Regression `37811513986`.
+- Merged-main PASS: CORR-008 `37811723886`; Artifact Runner `37811723860`; Research CI `37811723871`; V8 Regression `37811723958`.
+- Prior negative audit `S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json` remains preserved as pre-patch evidence.
+- Durable corrective evidence: `system2/evidence/S2_CORR_008_BUILD_CORRECTIVE_ADDENDUM_20261009_V0_1.json`.
+- BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE re-verification is still mandatory.
 
 ### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
 

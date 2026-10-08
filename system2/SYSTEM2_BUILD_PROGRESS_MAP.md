@@ -1767,3 +1767,41 @@ Next BUILD priority:
 2. do not reopen CORR-008 code-firewall work unless independent audit finds contradictory evidence;
 3. preserve DATA_LANE ownership of real continuity evidence and 00/AUDIT ownership of physical acceptance.
 
+## 2026-10-09 00:49 BUILD_LANE corrective handoff — CORR-008 FIX_IMPLEMENTED after independent bypass audit
+
+Corrective implementation:
+- PR #899 merged as `7f6a888c55720be6b8df049146a042f70e63f24e`.
+- AP-008-A repaired: generic PRAGMA prefix permission was replaced by an explicit read-only metadata allowlist; writable/side-effect PRAGMAs are rejected before D1 transport.
+- AP-008-B repaired: accessor/getter-backed batch statements are rejected; validated SQL/params are copied into fresh frozen adapter-native statements before `db.batch`.
+- Negative tests prove rejected mutation attempts increment measured counters while underlying D1 request/batch counts remain zero.
+- The original independent negative audit remains preserved as pre-patch evidence.
+
+Exact-head PASS on `573faeda844803036730db436dae326094416564`:
+- CORR-008 runtime guard `37811513968`;
+- NC-T01 Artifact Runner `37811514005`;
+- System2 Research CI `37811513963`;
+- V8 Regression `37811513986`.
+
+Merged-main PASS on `7f6a888c55720be6b8df049146a042f70e63f24e`:
+- CORR-008 runtime guard `37811723886`;
+- NC-T01 Artifact Runner `37811723860`;
+- System2 Research CI `37811723871`;
+- V8 Regression `37811723958`.
+
+Disposition:
+- `S2-CORR-20261008-008 = FIX_IMPLEMENTED`;
+- independent AUDIT_LANE re-verification is still mandatory before `VERIFIED_CLOSED`;
+- durable corrective evidence: `system2/evidence/S2_CORR_008_BUILD_CORRECTIVE_ADDENDUM_20261009_V0_1.json`.
+
+Protected boundaries remain unchanged:
+- System1 Formal Core/runtime;
+- System2 strategy/ranking/capacity semantics;
+- no live final-selection/push/capital/order authority;
+- no physical D1 mutation;
+- no SDA-022 S22-T11..T16 physical credit.
+
+Exact next:
+1. AUDIT_LANE independently re-runs AP-008-A/AP-008-B against merged main.
+2. DATA_LANE real continuity completeness remains separate.
+3. Only after code closure + real continuity evidence may one coherent manual physical NC-T01 be offered to 00 for S22-T11..T16.
+
