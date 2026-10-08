@@ -4,6 +4,7 @@ import {
   buildCorporateActionEventVersionV0_1,
   reconcileCorporateActionEventVersionsV0_1,
   buildCorporateActionCompletenessReceiptV0_1,
+  buildCorporateActionCompletenessReceiptV0_2,
   classifyCorporateActionSymbolWindowV0_1,
 } from "../runtime/corporate_action_continuity_archive_v0_1.mjs";
 
@@ -340,5 +341,123 @@ assert.equal(
   }).state,
   "EVENT_COVERAGE_UNKNOWN",
 );
+
+const suspensionEvidence = {
+  TWSE: {
+    exchange: "TWSE",
+    coverageState: "COMPLETE",
+    requestedStartDate: "2026-04-05",
+    requestedEndDate: "2026-10-02",
+    sourceId: "TWSE_TWTAWU_BOUNDED",
+    sourceFamily: "TWTAWU",
+    sourceContractVersion: "TWSE-TWTAWU-BOUNDED-V0_2",
+    receiptDigest: "a".repeat(64),
+    observedAt: "2026-10-02T07:00:00Z",
+    availabilitySemantics: "PROSPECTIVE_OBSERVED",
+  },
+  TPEX: {
+    exchange: "TPEX",
+    coverageState: "COMPLETE",
+    requestedStartDate: "2026-04-05",
+    requestedEndDate: "2026-10-02",
+    sourceId: "TPEX_SUSPENSION_BOUNDED",
+    sourceFamily: "TPEX_SUSPENSION",
+    sourceContractVersion: "TPEX-SUSPENSION-BOUNDED-V0_2",
+    receiptDigest: "b".repeat(64),
+    observedAt: "2026-10-02T07:00:00Z",
+    availabilitySemantics: "PROSPECTIVE_OBSERVED",
+  },
+};
+
+const statusOnlyV02 = await buildCorporateActionCompletenessReceiptV0_2({
+  startDate: "2026-04-05",
+  endDate: "2026-10-02",
+  universeVersion: "fixture-universe-v1",
+  universeCoverageComplete: true,
+  requiredSourceContracts,
+  sourceCoverage,
+  eventVersions: [],
+  suspensionCoverageByExchange: { TWSE: "COMPLETE", TPEX: "COMPLETE" },
+  generatedAt: "2026-10-02T07:10:00Z",
+});
+assert.equal(statusOnlyV02.schemaVersion, "S2_CA_COMPLETENESS_RECEIPT_V0_2");
+assert.equal(statusOnlyV02.eventCoverageComplete, true);
+assert.equal(statusOnlyV02.suspensionCoverageComplete, false);
+assert.equal(statusOnlyV02.symbolSessionCompletenessEvidenceReady, false);
+assert.equal(statusOnlyV02.suspensionEvidenceByExchange.TWSE.evidenceReady, false);
+assert.ok(statusOnlyV02.suspensionEvidenceByExchange.TWSE.blockerCodes.includes("SUSPENSION_EVIDENCE_RECEIPT_DIGEST_INVALID"));
+assert.match(statusOnlyV02.receiptHash, /^[a-f0-9]{64}$/);
+
+const evidenceBoundV02 = await buildCorporateActionCompletenessReceiptV0_2({
+  startDate: "2026-04-05",
+  endDate: "2026-10-02",
+  universeVersion: "fixture-universe-v1",
+  universeCoverageComplete: true,
+  requiredSourceContracts,
+  sourceCoverage,
+  eventVersions: [],
+  suspensionCoverageByExchange: { TWSE: "COMPLETE", TPEX: "COMPLETE" },
+  suspensionEvidenceByExchange: suspensionEvidence,
+  generatedAt: "2026-10-02T07:10:00Z",
+});
+assert.equal(evidenceBoundV02.suspensionCoverageComplete, true);
+assert.equal(evidenceBoundV02.symbolSessionCompletenessEvidenceReady, true);
+assert.equal(evidenceBoundV02.evidenceBoundSuspensionCompleteness, true);
+assert.equal(evidenceBoundV02.legacyStatusOnlyCompletenessAccepted, false);
+assert.equal(evidenceBoundV02.suspensionEvidenceByExchange.TWSE.receiptDigest, "a".repeat(64));
+
+const badSuspensionDigestV02 = await buildCorporateActionCompletenessReceiptV0_2({
+  startDate: "2026-04-05",
+  endDate: "2026-10-02",
+  universeVersion: "fixture-universe-v1",
+  universeCoverageComplete: true,
+  requiredSourceContracts,
+  sourceCoverage,
+  eventVersions: [],
+  suspensionCoverageByExchange: { TWSE: "COMPLETE", TPEX: "COMPLETE" },
+  suspensionEvidenceByExchange: {
+    ...suspensionEvidence,
+    TWSE: { ...suspensionEvidence.TWSE, receiptDigest: "not-a-sha256" },
+  },
+  generatedAt: "2026-10-02T07:10:00Z",
+});
+assert.equal(badSuspensionDigestV02.suspensionCoverageComplete, false);
+assert.equal(badSuspensionDigestV02.symbolSessionCompletenessEvidenceReady, false);
+assert.ok(badSuspensionDigestV02.suspensionEvidenceByExchange.TWSE.blockerCodes.includes("SUSPENSION_EVIDENCE_RECEIPT_DIGEST_INVALID"));
+
+const badSuspensionRangeV02 = await buildCorporateActionCompletenessReceiptV0_2({
+  startDate: "2026-04-05",
+  endDate: "2026-10-02",
+  universeVersion: "fixture-universe-v1",
+  universeCoverageComplete: true,
+  requiredSourceContracts,
+  sourceCoverage,
+  eventVersions: [],
+  suspensionCoverageByExchange: { TWSE: "COMPLETE", TPEX: "COMPLETE" },
+  suspensionEvidenceByExchange: {
+    ...suspensionEvidence,
+    TWSE: { ...suspensionEvidence.TWSE, requestedStartDate: "2026-04-06" },
+  },
+  generatedAt: "2026-10-02T07:10:00Z",
+});
+assert.equal(badSuspensionRangeV02.suspensionCoverageComplete, false);
+assert.ok(badSuspensionRangeV02.suspensionEvidenceByExchange.TWSE.blockerCodes.includes("SUSPENSION_EVIDENCE_INTERVAL_MISMATCH"));
+
+const changedSuspensionDigestV02 = await buildCorporateActionCompletenessReceiptV0_2({
+  startDate: "2026-04-05",
+  endDate: "2026-10-02",
+  universeVersion: "fixture-universe-v1",
+  universeCoverageComplete: true,
+  requiredSourceContracts,
+  sourceCoverage,
+  eventVersions: [],
+  suspensionCoverageByExchange: { TWSE: "COMPLETE", TPEX: "COMPLETE" },
+  suspensionEvidenceByExchange: {
+    ...suspensionEvidence,
+    TWSE: { ...suspensionEvidence.TWSE, receiptDigest: "c".repeat(64) },
+  },
+  generatedAt: "2026-10-02T07:10:00Z",
+});
+assert.notEqual(evidenceBoundV02.receiptHash, changedSuspensionDigestV02.receiptHash);
 
 console.log("System2 corporate-action continuity archive core tests passed");
