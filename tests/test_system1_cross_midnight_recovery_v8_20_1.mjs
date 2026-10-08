@@ -29,8 +29,14 @@ for(const name of ["scoreCandidate","selectTomorrowCandidates","evaluateMomentum
   assert.equal(a[name].toString(),b[name].toString(),name+" changed by recovery hardening");
 }
 
+const effectiveVersion=(source.match(/const VERSION = "([^"]+)";/)||[])[1]||"";
 const added=source.length-before.length;
-assert.ok(added>0&&added<8000,"unexpected V8.20.1 patch size");
+if(effectiveVersion==="8.20.1-cross-midnight-recovery-readback"||effectiveVersion==="8.20.2-idempotent-d1-snapshots")
+  assert.ok(added>0&&added<12000,"unexpected V8.20.1/8.20.2 cumulative patch size");
+else {
+  assert.equal(effectiveVersion,"8.21.0-c1-generation-set-finalization");
+  assert.ok(added>0,"V8.20.1 recovery layer disappeared under successor runtime");
+}
 console.log(JSON.stringify({
   ok:true,version:"8.20.1-cross-midnight-recovery-readback",
   marketStatusReadOnly:true,historicalInstitutionReadbackPreserved:true,
