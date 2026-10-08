@@ -1,0 +1,57 @@
+name: System2 Recent60 July Official Source Only Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-recent60-july-official-source-only.yml"
+      - "system2/scripts/audit_recent60_july_official_without_d1_v0_1.mjs"
+      - "system2/tests/recent60_july_official_only_workflow_guard.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-recent60-july-official-source-only
+  cancel-in-progress: false
+
+jobs:
+  source:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify no Cloudflare D1/R2 dependency and immutable historical sample
+        run: |
+          set -euo pipefail
+          node system2/tests/recent60_july_official_only_workflow_guard.test.mjs
+          node --check system2/scripts/audit_recent60_july_official_without_d1_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Collect bounded retrospective official date observations with no D1
+        env:
+          SYSTEM2_RECENT60_JULY_OFFICIAL_ONLY_OUTPUT: /tmp/s2-recent60-july-official-no-d1.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_recent60_july_official_without_d1_v0_1.mjs
+
+      - name: Preserve source-ready or partial/blocked receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-recent60-july-official-no-d1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-recent60-july-official-no-d1.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm System1 Formal/runtime files untouched
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 isolation PASS"
