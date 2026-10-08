@@ -33,7 +33,7 @@ function mockD1(existing){
   return {env:{V7_DB:{withSession:()=>session}},calls};
 }
 
-assert.match(source,/const VERSION = "8\.20\.2-idempotent-d1-snapshots";/);
+assert.match(source,/const VERSION = "(?:8\.20\.2-idempotent-d1-snapshots|8\.21\.0-c1-generation-set-finalization)";/);
 assert.match(source,/writeRowsAvoided/);
 assert.match(source,/deduplicated:persistence\.deduplicated/);
 
