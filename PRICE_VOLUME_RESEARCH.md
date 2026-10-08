@@ -14055,3 +14055,20 @@ No claim of predictive efficacy follows from stronger data lineage.
 No L4 promotion follows from a gate becoming more accurate.
 
 Next: audit D02-01 semantic-governance admission for the same dataset-substitution class before declaring all-D02 admission lineage closed.
+
+
+# PVE-280~281 synthesis — statistical validity starts with exact data identity (2026-10-08)
+
+A statistically sophisticated receipt is not sufficient if it can be attached to a different dataset than the one admitted by the domain-specific research gate.
+
+PVE-276, PVE-279 and PVE-280 now close that degree of freedom for Wave-1, Wave-2 and D02-01 respectively. PVE-281 makes those routes canonical across all 14 evidence keys.
+
+The methodological chain is now:
+
+`feature semantics -> PIT/freshness/continuity admission -> immutable admitted dataset -> exact D16 input dataset -> preregistered target/method -> outcome interpretation`.
+
+No stage may substitute for the previous stage.
+
+The next non-redundant bottleneck is no longer admission-lineage architecture. It is whether a promotion-grade numerical target and D16 model method have legitimately been frozen before outcomes.
+
+D02 remains 60.0%, all modules L3, outcomes closed.
