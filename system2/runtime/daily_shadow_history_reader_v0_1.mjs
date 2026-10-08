@@ -228,8 +228,18 @@ export async function probePitHistoryCoverageV0_1({
     && tradingDates.length > 0;
   const lifecycleIndex = buildLifecycleIndex(certifiedNoTradingIntervals, date);
 
-  const result = await db.prepare(
-    `WITH eligible AS (
+  // The official prior-session window is already the complete population for
+  // exact-session reconciliation. A global unbounded historical scan would
+  // repeatedly read years of unrelated earlier D1 bars every daily preflight.
+  // Only when that calendar is source-qualified AND contains at least the
+  // required 60 sessions may we safely bound the SQL. With missing/short
+  // calendars the original unrestricted diagnostic query is preserved.
+  const coverageReadFloor = exactSessionContractAvailable
+    && tradingDates.length >= required ? tradingDates[0] : null;
+  const coverageDatePredicate = coverageReadFloor
+    ? "AND market_date >= ?" : "";
+
+  const result = await db.prepare(`WITH eligible AS (
        SELECT symbol, market, market_date, continuity_state, bar_hash
          FROM s2_historical_a1_bars
         WHERE market_date < ?
@@ -237,6 +247,7 @@ export async function probePitHistoryCoverageV0_1({
           AND pit_replay_eligible = 1
           AND available_at IS NOT NULL
           AND available_at <= ?
+          ${coverageDatePredicate}
      ),
      per_date AS (
        SELECT symbol, market, market_date,
@@ -267,7 +278,7 @@ export async function probePitHistoryCoverageV0_1({
        FROM ranked
       WHERE rn <= ?
       GROUP BY symbol, market`,
-  ).bind(date, space, clock, required).all();
+  ).bind(date, space, clock, ...(coverageReadFloor ? [coverageReadFloor] : []), required).all();
 
   const coverageRows = Array.isArray(result?.results) ? result.results : [];
   const byKey = new Map(
@@ -461,6 +472,12 @@ export async function probePitHistoryCoverageV0_1({
     exactSessionReconciliationEnabled: exactSessionContractAvailable,
     listingMetadataState: listingMetadata?.state || "NOT_PROVIDED",
     priorTradingDateCount: tradingDates?.length || 0,
+    coverageReadScanScope: coverageReadFloor
+      ? "EXACT_SESSION_CALENDAR_BOUNDED"
+      : "UNBOUNDED_LEGACY_FAIL_CLOSED",
+    coverageReadLowerBound: coverageReadFloor,
+    coverageReadLowerBoundSemantics:
+      "QUERY_SCAN_WINDOW_ONLY_NOT_PIT_PUBLICATION_OR_CONTINUITY_PROOF",
     certifiedNoTradingIntervalCount: certifiedNoTradingIntervals.length,
     currentUniverseCount: currentCount,
     accountedSymbolCount,
