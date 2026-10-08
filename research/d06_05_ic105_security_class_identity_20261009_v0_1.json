@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "D06_05_IC105_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "researchDate": "2026-10-09",
+  "parent": "research/d06_05_pair_event_clean_support_candidate_20260924_20261002_v0_3.json",
+  "parentCount": 2778,
+  "parentHash": "fnv1a64-utf8:11ab5a267ae9cd2a",
+  "confirmedNonCommon": {
+    "ETF": [
+      "0051",
+      "0053",
+      "0057",
+      "0061"
+    ],
+    "TDR": [
+      "9103",
+      "9110"
+    ]
+  },
+  "officialSources": [
+    "https://www.twse.com.tw/zh/products/securities/etf/products/list.html",
+    "https://wwwc.twse.com.tw/zh/focus/links.html"
+  ],
+  "derivedUpperBound": 2772,
+  "derivedHash": "fnv1a64-utf8:447d982577761b1f",
+  "hashMethod": "FNV1a64 UTF8 ascending codes joined by newline without trailing newline",
+  "interpretation": "2772 is only an upper bound. No exhaustive dated security identity or TPEx delisting proof. Original 2778 remains immutable candidate.",
+  "status": "SECURITY_CLASS_MIXTURE_CONFIRMED / FINAL_COMMON_STOCK_SUPPORT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "next": "Complete dated TWSE/TPEx instrument identity classification for all 2778 parent symbols and TPEx delisting enumeration before deriving a separately hashed common-stock cohort. No outcome testing before this gate.",
+  "moduleLevel": "L3",
+  "maturityPct": 60,
+  "formalCoreImpact": "NONE"
+}
