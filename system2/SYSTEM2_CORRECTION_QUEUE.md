@@ -1205,7 +1205,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T06:01:00+08:00
 - severity: HIGH
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - problem:
@@ -1227,7 +1227,18 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   @ `cef80ec06e9ea9448f98dfdbadec4e0915b1be43`.
 - physical boundary:
   DATA_LANE still owns the real bounded TWTAWU completeness receipt. CORR-007 only makes it impossible for BUILD to promote without that receipt.
-- finalDisposition: PENDING
+- finalDisposition: FIX_IMPLEMENTED / AUDIT_LANE_VERIFICATION_PENDING
+
+#### 2026-10-08 11:40 BUILD implementation handoff
+- merged implementation: `836184f98726449107cdbd0ed83e2746bbbcf965`;
+- exact-head PASS: Research `37720705098`, Continuity `37720705101`, Artifact Runner `37720705126`, V8 Regression `37720705066`;
+- V0.2 archive requires evidence-bound TWSE suspension completeness; legacy/status-only COMPLETE fails closed;
+- CLEAR_NO_ACTION promotion additionally requires a matching TWSE suspension sourceEvidenceRef while retaining all three corporate-action refs;
+- durable BUILD handoff: `system2/evidence/S2_CORR_007_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`;
+- independent research consumer readback: `research/d03_corr007_merged_main_implementation_acceptance_20261008_v0_1.json`;
+- HIGH correction is **not self-closed**. AUDIT_LANE must independently verify before `VERIFIED_CLOSED`;
+- physical NC-T01 remains uncredited until DATA_LANE supplies a real bounded TWTAWU receipt and one coherent run consumes it.
+
 
 
 ### S2-CORR-20261008-008 — NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc
