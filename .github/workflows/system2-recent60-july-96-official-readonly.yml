@@ -1,0 +1,58 @@
+name: System2 Recent60 July 96 Official Source Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-recent60-july-96-official-readonly.yml"
+      - "system2/runtime/recent60_frozen96_official_source_readonly_v0_2.mjs"
+      - "system2/scripts/audit_recent60_july_96_official_source_only_v0_2.mjs"
+      - "system2/tests/recent60_july_96_official_source_v0_2.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-recent60-july-96-official-readonly
+  cancel-in-progress: false
+
+jobs:
+  source:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Test bounded 16 session identities and zero Cloudflare dependencies
+        run: |
+          set -euo pipefail
+          node system2/tests/recent60_july_96_official_source_v0_2.test.mjs
+          node --check system2/scripts/audit_recent60_july_96_official_source_only_v0_2.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Probe 16 canonical exact-date official A1 source GETs for all 96 frozen gap identities
+        env:
+          SYSTEM2_RECENT60_96_OFFICIAL_OUTPUT: /tmp/system2-recent60-july-96-official.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_recent60_july_96_official_source_only_v0_2.mjs
+
+      - name: Preserve physical positive, partial or blocked source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-recent60-july-96-official-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-recent60-july-96-official.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm System1 Formal and production runtime untouched
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production isolation PASS"
