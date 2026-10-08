@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "S2_2026_TWSE_JAN_JUN_INDEPENDENT_R2_BYTE_PHYSICAL_VERIFICATION_V0_1",
+  "market": "TWSE",
+  "year": 2026,
+  "monthsChecked": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "disposition": "PASS_D1_RECEIPT_AND_R2_HEAD_BYTE_SHA256_WITH_PIT_REPLAY_PARTIAL",
+  "physicalRun": {
+    "runId": 37771226567,
+    "runNumber": 1,
+    "jobId": 113291014214,
+    "headSha": "e6a1feec8e9185c583b17aefcdbff9d3d094dd49",
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-10-08T11:36:58Z",
+    "finishedAt": "2026-10-08T11:40:59Z",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37771226567",
+    "artifactId": 11547382438,
+    "artifactDigest": "sha256:84800b204b198757cd1f316579e10201a15e3cd512150b5efd5dd28bfdb55b40",
+    "artifactName": "system2-twse-2026-segments-physical-37771226567-1",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37771226567/artifacts/11547382438"
+  },
+  "aggregate": {
+    "receiptCount": 6,
+    "manifestPackCount": 6461,
+    "officialMarketRawBarCountFromFrozenReceipts": 124650,
+    "r2HeadVerified": 6461,
+    "r2FullByteSha256Verified": 6461,
+    "d1RowsRead": 38778,
+    "d1RowsWritten": 0,
+    "r2ObjectsWritten": 0,
+    "system1RuntimeUsed": false,
+    "sourceReconciliationPerformed": false,
+    "pitObservationClockCertified": false,
+    "continuityPromoted": false,
+    "replayReadinessPromoted": false
+  },
+  "months": [
+    {
+      "month": 1,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|01",
+      "receiptId": "S2HSR-6127bf95a2a9a6a10fc625e0fdf8d2832c100b7e0d71fa1c3f614fb37203b529",
+      "barCount": 22419,
+      "packCount": 1071,
+      "manifestRollingHash": "6127bf95a2a9a6a10fc625e0fdf8d2832c100b7e0d71fa1c3f614fb37203b529",
+      "r2HeadVerified": 1071,
+      "r2FullByteSha256Verified": 1071,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    },
+    {
+      "month": 2,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|02",
+      "receiptId": "S2HSR-043203f2dc7806bfeb1856af41049ca7708c8c96c401e0fd675c13ed1ad8e162",
+      "barCount": 12861,
+      "packCount": 1072,
+      "manifestRollingHash": "043203f2dc7806bfeb1856af41049ca7708c8c96c401e0fd675c13ed1ad8e162",
+      "r2HeadVerified": 1072,
+      "r2FullByteSha256Verified": 1072,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    },
+    {
+      "month": 3,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|03",
+      "receiptId": "S2HSR-5e74851bf7b7b7aaf6663ad3b237691bc56c23499cb142accea9fdee40a513ff",
+      "barCount": 23586,
+      "packCount": 1075,
+      "manifestRollingHash": "5e74851bf7b7b7aaf6663ad3b237691bc56c23499cb142accea9fdee40a513ff",
+      "r2HeadVerified": 1075,
+      "r2FullByteSha256Verified": 1075,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    },
+    {
+      "month": 4,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|04",
+      "receiptId": "S2HSR-584f410a0fbc3df1fb705b343ea5a110e850cbf523bc2a0981607b58f07ccdf7",
+      "barCount": 21490,
+      "packCount": 1078,
+      "manifestRollingHash": "584f410a0fbc3df1fb705b343ea5a110e850cbf523bc2a0981607b58f07ccdf7",
+      "r2HeadVerified": 1078,
+      "r2FullByteSha256Verified": 1078,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    },
+    {
+      "month": 5,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|05",
+      "receiptId": "S2HSR-d508a5c3f991eb75b479b70fc63fef430418a9d8c5f5bf834fdae68aca5d8e74",
+      "barCount": 21577,
+      "packCount": 1082,
+      "manifestRollingHash": "d508a5c3f991eb75b479b70fc63fef430418a9d8c5f5bf834fdae68aca5d8e74",
+      "r2HeadVerified": 1082,
+      "r2FullByteSha256Verified": 1082,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    },
+    {
+      "month": 6,
+      "batchId": "S2-HIST-SEGMENT-MONTH|TWSE|2026|06",
+      "receiptId": "S2HSR-957083d0f83254c156cb67672339f6b5daf91746ef67e6b1b82b854d3fad1922",
+      "barCount": 22717,
+      "packCount": 1083,
+      "manifestRollingHash": "957083d0f83254c156cb67672339f6b5daf91746ef67e6b1b82b854d3fad1922",
+      "r2HeadVerified": 1083,
+      "r2FullByteSha256Verified": 1083,
+      "physicalState": "PASS_R2_HEAD_SHA256_AND_D1_MANIFEST",
+      "receiptCompletedAt": "2026-10-08T06:59:08.074Z",
+      "originalObservationClockAccuracy": "PRE_FIX_PROVENANCE_REQUIRES_INDEPENDENT_AUDIT"
+    }
+  ],
+  "remainingBoundaries": {
+    "month07To09": "MISSING_COMPLETE_PHYSICAL_RECEIPTS_BEFORE_WRITER_RESUME",
+    "officialLiveSourceReconciliation": "NOT_PERFORMED_BY_READONLY_PHYSICAL_AUDIT",
+    "preFixObservationAndReceiptCompletionClocks": "UNCERTIFIED_NOT_REWRITTEN",
+    "corporateActionContinuity": "UNVERIFIED",
+    "launchCriticalRecent60Window": "SEPARATE_GATED_REQUIREMENT",
+    "aggregateReplay": "PARTIAL"
+  },
+  "noMutationPolicy": {
+    "system1FormalCore": false,
+    "system1ProductionRuntime": false,
+    "system2StrategyOrSelection": false,
+    "capitalOrderOrPush": false,
+    "retroactiveHistoryRewrite": false
+  },
+  "nextSteps": [
+    "After quota reset, gated TWSE July–September segmented backfill on latest main and byte-verify receipt",
+    "Keep Jan–Jun original immutable receipts unchanged; audit earlier PIT clocks independently",
+    "Proceed NC-T01/60-session symbol-local readiness investigation with Data Lane ownership"
+  ]
+}
