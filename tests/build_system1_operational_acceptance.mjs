@@ -1,6 +1,6 @@
 import {readFile,mkdir,writeFile} from "node:fs/promises";
 import {dirname,resolve} from "node:path";
-import {buildSystem1OperationalAcceptance} from "../research/system1_operational_acceptance_v0_1.mjs";
+import {buildSystem1OperationalAcceptance,buildSystem1OperationalBlocker} from "../research/system1_operational_acceptance_v0_1.mjs";
 
 const paths={
   c1:resolve(process.env.C1_EVIDENCE_OUTPUT||"artifacts/system1-c1-evidence.json"),
@@ -8,19 +8,38 @@ const paths={
   inventory:resolve(process.env.C1_INVENTORY_OUTPUT||"artifacts/system1-c1-generation-inventory.json"),
   binding:resolve(process.env.FORMAL_C1_BINDING_OUTPUT||"artifacts/system1-formal-c1-binding.json"),
   h1h5:resolve(process.env.H1_H5_READINESS_OUTPUT||"artifacts/system1-h1-h5-readiness.json"),
+  readiness:resolve(process.env.C1_READINESS_OUTPUT||"artifacts/system1-c1-readiness.json"),
   output:resolve(process.env.OPERATIONAL_ACCEPTANCE_OUTPUT||"artifacts/system1-operational-acceptance.json")
 };
 const read=async p=>JSON.parse(await readFile(p,"utf8"));
-const [c1,c2,inventory,binding,h1h5]=await Promise.all([
-  read(paths.c1),read(paths.c2),read(paths.inventory),read(paths.binding),read(paths.h1h5)
-]);
-const receipt=buildSystem1OperationalAcceptance({
+const readOptional=async p=>{try{return await read(p);}catch{return null;}};
+const names=["c1","c2","inventory","binding","h1h5"];
+const values={};
+const missing=[];
+for(const name of names){
+  try{values[name]=await read(paths[name]);}
+  catch(error){missing.push({name,path:paths[name],error:String(error?.code||error?.message||error).slice(0,160)});}
+}
+const readiness=await readOptional(paths.readiness);
+const receipt=missing.length
+  ? buildSystem1OperationalBlocker({
+      trigger:{
+        eventName:String(process.env.ACCEPTANCE_EVENT_NAME||""),
+        schedule:String(process.env.ACCEPTANCE_SCHEDULE||"")
+      },
+      observedAt:process.env.ACCEPTANCE_OBSERVED_AT||new Date().toISOString(),
+      code:"UPSTREAM_ARTIFACT_MISSING",
+      detail:{missing,upstreamStatus:readiness?.status||readiness?.category||null,
+        verificationFailure:readiness?.verificationFailure||null},
+      upstreamReadiness:readiness
+    })
+  : buildSystem1OperationalAcceptance({
   trigger:{
     eventName:String(process.env.ACCEPTANCE_EVENT_NAME||""),
     schedule:String(process.env.ACCEPTANCE_SCHEDULE||"")
   },
   observedAt:process.env.ACCEPTANCE_OBSERVED_AT||new Date().toISOString(),
-  c1,c2,inventory,binding,h1h5
+  c1:values.c1,c2:values.c2,inventory:values.inventory,binding:values.binding,h1h5:values.h1h5
 });
 await mkdir(dirname(paths.output),{recursive:true});
 await writeFile(paths.output,JSON.stringify(receipt,null,2)+"\n","utf8");
