@@ -52,3 +52,13 @@ To reduce the next diagnostic's D1 read pressure, the bounded physical reader ac
 Rows returned outside the exact six-symbol/eight-date market sample, duplicate monthly manifests, unknown receipt states and mismatched cold bytes remain fail-closed. Preserve the old 26-SELECT implementation as a testable compatibility branch and compare exact per-sample cause maps against the new batch plan.
 
 No D1 writes, R2 PUT, migration, account-budget gate ownership seizure, paid upgrade, PIT backfill or corporate-action continuity promotion is authorized. Before any fresh physical retry, check actual Cloudflare D1 READ budget with REMEDIATION_LANE after reset; only a physical Run can establish D1 rows-read saving.
+
+## 2026-10-09 DATA_LANE quota-safe trigger restriction
+
+Main-push-triggered physical Action `37858652385` and `37860309692` were both blocked at their **first** D1 query by the account's free-tier daily ROW READ limit (before D1 hot/cold sample classification). The second followed code optimization from 26 to 6 planned SELECTs; that optimization did not and could not bypass a daily exhausted read budget. Both action artifacts preserve fail-closed receipts; D1 writes 0.
+
+For this D1-intensive physical audit **workflow_dispatch only** is now permitted. `push`, `schedule`, `pull_request`, and `workflow_run` triggers are explicitly regression forbidden. Merely merging a data script cannot blindly re-run a live D1 SELECT when account read quota is exhausted. The owner/REMEDIATION_LANE still controls account-wide quota scheduling; no blanket 08:00 auto-retry is created.
+
+After Cloudflare daily read quota reset (midnight UTC = 08:00 Taipei time), check actual capacity and concurrent readers, then issue at most one manual READ-only workflow if the account budget allows. The six planned control-plane SELECTs plus any extra canonical R2 pack lookups do **not** certify an amount of Cloudflare metered rows_read until physically measured.
+
+Next stage still requires exact 96 hot D1 / cold R2 materialized identity readback. Already accepted 16/16 official dates and 96/96 original frozen symbol-date presences are *post-facto source evidence*, not PIT/NC-T01 readiness.

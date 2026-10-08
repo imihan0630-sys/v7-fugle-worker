@@ -1,15 +1,10 @@
 name: System2 Recent60 July Hot Cold Official Readonly
 
+# Read-heavy live D1 verification is manual-only: main pushes must not
+# consume or retry exhausted account-wide Cloudflare daily READ quotas.
+# Coordinated one-run dispatch after verified quota headroom only.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/system2-recent60-july-hot-cold-official-readonly.yml"
-      - "system2/runtime/recent60_july_hot_cold_source_readonly_v0_1.mjs"
-      - "system2/runtime/recent60_july_official_source_probe_v0_1.mjs"
-      - "system2/scripts/audit_recent60_july_hot_cold_official_readonly_v0_1.mjs"
-      - "system2/tests/recent60_july_hot_cold_official_readonly_v0_1.test.mjs"
 
 permissions:
   contents: read
