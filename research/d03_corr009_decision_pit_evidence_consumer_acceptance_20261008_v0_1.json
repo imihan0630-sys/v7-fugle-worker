@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "D03_CORR009_DECISION_PIT_EVIDENCE_CONSUMER_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-08T13:47:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_CROSS_LANE_DECISION_PIT_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "e4345d8cc718806aa14f1a7d660707cb9dbd5066",
+  "correction": {
+    "id": "S2-CORR-20261008-009",
+    "severity": "CRITICAL",
+    "state": "FIX_IMPLEMENTED_AUDIT_CLOSURE_PENDING",
+    "mergeCommit": "c7afee03aec24d1c5a3a79e71cb4c8250a67b61e",
+    "targetedWorkflowRun": 37732779734,
+    "mergedMainWorkflowRun": 37732958236
+  },
+  "acceptedEngineeringFacts": [
+    "A canonical decision-evidence firewall is now applied before frozen-decision promotion.",
+    "Every KNOWN decision-supporting factor must be pointInTimeEligible=true.",
+    "Every KNOWN decision-supporting factor must have a valid availableAt not later than decisionTimestamp.",
+    "Every KNOWN factor must carry immutable source identity and source payload hash.",
+    "The exact factorId@factorVersion must be authorized by the frozen decision refs and strategy contract.",
+    "Every KNOWN evidence-family assessment must map to exact supporting factor observation hashes.",
+    "Any firewall blocker forces the effective frozen decision state to INCOMPLETE and clears rank/score.",
+    "Prediction snapshots expose decisionEvidence state/hash/blockers and block outcome joins unless decision evidence is READY."
+  ],
+  "d03CanonicalInterpretation": {
+    "commonRule": "FORMULA_CORRECTNESS_DOES_NOT_IMPLY_DECISION_TIME_ADMISSIBILITY",
+    "knownTechnicalFactorRule": "A technical factor may be KNOWN for a frozen decision only when its exact observation was available by the decision clock and its source/version/hash lineage is bound.",
+    "noBackdating": "A later observation cannot be relabelled as decision-time KNOWN merely because the underlying price date is earlier.",
+    "familyRule": "A KNOWN trend/momentum/indicator family label without exact supporting factor hashes is non-admissible.",
+    "diagnosticRule": "Non-PIT or future observations may remain archived as diagnostic/UNKNOWN evidence but may not support selection, ranking, capacity or outcome-join eligibility."
+  },
+  "indicatorImplications": {
+    "D03-01_to_D03-04": {
+      "state": "L3_FEASIBILITY_RETAINED",
+      "requirement": "MA/retN/persistence/continuation observations used in any future frozen decision must satisfy the decision-evidence firewall at the exact factor version and clock.",
+      "noPromotionCredit": true
+    },
+    "D03-09_ADX": {
+      "state": "L2_40",
+      "requirement": "A replay-certified ADX value remains inadmissible if its factor observation becomes available only after the decision clock; exact Wilder lineage and decision-clock admissibility are independent gates.",
+      "immediateBlocker": "REAL_W0_CONTINUITY_RECEIPT",
+      "laterBlockers": [
+        "GENUINE_V8_20_PARENT",
+        "LAYER_C_REVISION_KNOWN_AT",
+        "CANONICAL_WILDER_FULL_REPLAY_OR_TRUSTED_STATE",
+        "COMPLETE_PARENT_RECONCILIATION"
+      ]
+    },
+    "D03-10_BOLLINGER": {
+      "state": "L2_40",
+      "requirement": "Exact 20-session Bollinger values may support a frozen decision only if the observation itself is PIT-eligible and available no later than the decision clock; exact-window correctness and decision-time availability are separate gates.",
+      "immediateBlocker": "REAL_W0_CONTINUITY_RECEIPT",
+      "laterBlockers": [
+        "GENUINE_V8_20_PARENT",
+        "EXACT_20_ELIGIBLE_SESSIONS_ON_PARENT",
+        "LAYER_C_REVISION_KNOWN_AT",
+        "FORMULA_SOURCE_GUARDS",
+        "COMPLETE_PARENT_RECONCILIATION"
+      ]
+    }
+  },
+  "antiShortcutCases": [
+    {
+      "case": "POINT_IN_TIME_FALSE_BUT_PRICE_DATE_IS_OLD",
+      "disposition": "INCOMPLETE_NOT_SELECTABLE"
+    },
+    {
+      "case": "AVAILABLE_AT_AFTER_DECISION",
+      "disposition": "INCOMPLETE_NOT_SELECTABLE"
+    },
+    {
+      "case": "KNOWN_FAMILY_WITHOUT_FACTOR_HASH_LINEAGE",
+      "disposition": "INCOMPLETE_NOT_SELECTABLE"
+    },
+    {
+      "case": "SOURCE_HASH_MISSING",
+      "disposition": "INCOMPLETE_NOT_SELECTABLE"
+    },
+    {
+      "case": "DIAGNOSTIC_NON_PIT_OBSERVATION_ARCHIVED",
+      "disposition": "ALLOWED_ONLY_AS_UNKNOWN_DIAGNOSTIC"
+    }
+  ],
+  "evidenceBoundary": {
+    "engineeringAcceptance": "PASS",
+    "independentAuditClosure": "PENDING",
+    "physicalD03W0Receipt": "PENDING",
+    "genuineSystem1Parent": "PENDING",
+    "predictiveIncrementality": "PENDING",
+    "maturityPromotion": false
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Keep the dual physical path primary. W0: consume the first real exact-window parity-certified TWTAWU bounded negative-completeness receipt, bind it with the three TWSE corporate-action refs, and emit the real hash-bound continuity receipt. Parent: consume a new ordinary-session quality-ready Formal scan with a genuine immutable C1 generation and authoritative V8.20 Formal-to-C1 binding. CORR-009 independently requires AUDIT_LANE VERIFIED_CLOSED before governance closure, but its merged decision-PIT firewall is accepted by D03 as an engineering prerequisite and does not substitute for W0, parent, Layer-C, raw third-session, S2-07, redundancy/dedup or D16 incrementality."
+}
