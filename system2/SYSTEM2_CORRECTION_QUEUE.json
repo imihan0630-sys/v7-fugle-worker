@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T10:59:00+08:00",
+  "updatedAt": "2026-10-08T11:30:54+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1660,6 +1660,420 @@
       ],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-08T10:59:00+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-009",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "title": "Frozen decisions can promote explicitly non-PIT or future factor evidence",
+      "affectedScope": [
+        "S2-07 daily PIT-safe Shadow orchestration",
+        "S2-08 frozen decisions and prediction snapshots",
+        "factor observation to strategy assessment linkage",
+        "prospective Shadow and later outcome joins"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Every frozen strategy decision must be derived only from evidence available by its decision clock. A factor marked non-PIT, missing an eligible availability clock, or available after the decision may be retained as UNKNOWN/diagnostic evidence but may not support QUALIFIED_NOT_SELECTED, SELECTED, ranking, capacity or outcome-join eligibility.",
+      "observedProblem": "buildFactorObservation allows a KNOWN observation with pointInTimeEligible=false and an availableAt after the decision clock. buildFrozenDecisionSnapshot and the Limited Shadow assembler validate date/symbol shape but do not require factor-level PIT eligibility or bind family assessments back to the factor evidence that justified KNOWN. An adversarial probe froze such evidence into a SELECTED decision with a valid decisionHash.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-01",
+        "system2/runtime/factor_snapshot.mjs:93-98 applies the decision-clock check only when pointInTimeEligible===true.",
+        "system2/runtime/decision_archive.mjs:61-69 validates symbol/date but not PIT eligibility/availableAt of factor evidence.",
+        "system2/runtime/limited_shadow_run_assembler_v0_1.mjs:108-119 validates clock/scope but not factor PIT eligibility.",
+        "Latest-main adversarial result: SELECTED accepted with pointInTimeEligible=false and availableAt one day after decisionTimestamp."
+      ],
+      "riskIfUnfixed": "Look-ahead or retrospectively observed evidence can enter an apparently immutable decision and later contaminate Shadow, OOS, Regime and performance evidence. Immutability would preserve the wrong information set rather than prove PIT correctness.",
+      "requiredCorrection": [
+        "Create one canonical decision-evidence firewall used by direct frozen-decision, Limited Shadow and daily orchestrator paths.",
+        "For every evidence item that supports a KNOWN family, require pointInTimeEligible=true, valid availableAt<=decisionTimestamp, exact marketDate/decisionTimestamp/scope, immutable source identity/hash and an authorized factor version.",
+        "Treat non-PIT, missing-clock and future-clock observations as UNKNOWN/diagnostic; never silently drop the provenance flag while retaining KNOWN.",
+        "Bind each family assessment to the exact factor/interaction evidence hashes used to derive it and reject unaccounted KNOWN family labels.",
+        "Require the prediction/fingerprint path to expose a PIT-evidence-complete state before outcome join eligibility.",
+        "Add fail-closed tests for false/null PIT flags, missing availableAt, future availableAt, mismatched clock/symbol and family assessment without supporting factor evidence.",
+        "Preserve research-only/no-selection/no-push/no-capital/no-order boundaries."
+      ],
+      "acceptanceCriteria": [
+        "The AP-01 future/non-PIT fixture is rejected or frozen only as INCOMPLETE/UNKNOWN and cannot be SELECTED or qualified.",
+        "Every KNOWN decision-supporting factor has availableAt<=decisionTimestamp and pointInTimeEligible=true.",
+        "Every KNOWN family assessment has exact supporting factor/interaction hash lineage.",
+        "Non-PIT diagnostic observations remain archivable without becoming strategy evidence.",
+        "Outcome join eligibility is false when any required PIT evidence lineage is incomplete.",
+        "Exact-head System2 Research CI and targeted negative tests pass.",
+        "System1 Formal Core/runtime and all live authorities remain unchanged."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "System2 frozen strategy thresholds and ranking",
+        "No retrospective backdating of availableAt",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-01 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-010",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "title": "Outcome-join fingerprints do not enforce decision/source/strategy/version isolation",
+      "affectedScope": [
+        "S2-08 prediction snapshots and run fingerprints",
+        "S2-09 outcome joins",
+        "cross-strategy and strategy-version isolation",
+        "source-session and decision-hash lineage"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "An outcome-join-eligible prediction set must prove a one-to-one closed lineage among its exact decisions, source-session receipt, strategy run, strategy/version/spec/universe, decision hashes and run fingerprint. Evidence from one strategy/version/date cannot authorize another.",
+      "observedProblem": "buildShadowRunFingerprint does not cross-check its declared date/strategy/version/spec/universe against the supplied source-session and accounting receipts, allows zero decision hashes, and can still mark the fingerprint COMPLETE. buildPredictionSnapshotBundle only checks supporting receipt clocks and boolean outcomeJoinEligible; sourceSessionReceipt is optional and fingerprint strategy/version/decision-hash membership is not reconciled. A SHORT_MOMENTUM decision bundle became outcomeJoinEligible using only a SWING_GROWTH fingerprint and no source receipt.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-02/AP-03",
+        "system2/runtime/shadow_run_fingerprint.mjs:41-82 derives completeness from sourceReady/accountingComplete without identity reconciliation or decision-hash coverage.",
+        "system2/runtime/prediction_snapshot_v0_1.mjs:263-308 makes sourceSessionReceipt optional and does not reconcile fingerprint strategy/version/decision hashes to decisions.",
+        "Latest-main AP-02: SHORT_MOMENTUM bundle outcomeJoinEligible=true with SWING_GROWTH fingerprint, null source receipt and non-recomputed decisionHash.",
+        "Latest-main AP-03: COMPLETE fingerprint accepted receipts from 1999/2030 and another strategy with decisionHashes=[]."
+      ],
+      "riskIfUnfixed": "Outcomes, costs and Regime attributions can be joined across strategy/version/date boundaries or attached to tampered decisions, producing apparently valid cross-strategy performance from the wrong cohort.",
+      "requiredCorrection": [
+        "Define one canonical closed-set fingerprint contract for source receipt, shadow accounting receipt, decisions and downstream ordering/capacity lineage.",
+        "Require exact equality of marketDate, decisionTimestamp, strategyId, strategyVersion, shadowSpecId and universeVersion across all linked receipts.",
+        "Recompute and verify source-session, accounting, decision and run-fingerprint hashes instead of trusting supplied digest strings.",
+        "Require decisionHashes to equal the complete expected decision set from accounting; zero hashes are legal only for a fully proved clean zero-pick denominator with no decision rows.",
+        "Require sourceSessionReceipt for outcomeJoinEligible and match its hash to every run fingerprint.",
+        "Require every decision to be covered by exactly one matching fingerprint; reject foreign, missing, duplicate and extra fingerprints.",
+        "Add cross-strategy, cross-version, cross-date, missing-source, empty-hash and tampered-hash negative regressions."
+      ],
+      "acceptanceCriteria": [
+        "AP-02 and AP-03 fail closed with explicit lineage blockers.",
+        "No decision becomes outcomeJoinEligible from a foreign strategy/version/spec/universe fingerprint.",
+        "No outcomeJoinEligible bundle omits the exact source-session receipt.",
+        "Decision hashes are recomputed and the exact set is reconciled to accounting and fingerprint receipts.",
+        "A proved clean zero-pick run has a separate explicit zero-decision contract rather than an unqualified empty hash set.",
+        "System2 Research CI and cross-strategy/version/date negative tests pass.",
+        "System1 and live trading authorities remain unchanged."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "System2 strategy definitions and ranking policy",
+        "No cross-strategy evidence borrowing",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-02/AP-03 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-011",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Immutable persistence executor trusts unverified batch SQL and digest fields",
+      "affectedScope": [
+        "S2-08 immutable decision persistence",
+        "System2 generic persistence executor",
+        "decision/factor/regime/run archive integrity",
+        "isolated D1 writer safety"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "The immutable archive executor must accept only a canonical, hash-verified INSERT-only batch generated from whitelisted table/column contracts. Caller-supplied SQL must never be treated as immutable persistence authority.",
+      "observedProblem": "executeSystem2PersistenceBatch validates only batch schemaVersion/binding/namespace, does not recompute batchHash or rowDigest, does not rebuild SQL from TABLE_SPECS, and executes operation.sql.insertSql supplied by the caller. AP-08 supplied UPDATE s2_decisions as insertSql; the executor ran it and reported the operation as INSERTED. The SQL schema has no foreign-key or append-only trigger backstop for the decision/execution/outcome lineage.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-08",
+        "system2/runtime/persistence_executor.mjs:10-21 validates only top-level labels.",
+        "system2/runtime/persistence_executor.mjs:50-75 consumes caller-supplied select/insert SQL without canonical regeneration.",
+        "system2/sql/0001_research_core.sql:372-486 defines decision/order/fill/outcome tables without relational foreign keys or append-only guards.",
+        "AP-08 executed an UPDATE and returned PERSISTENCE_BATCH_APPLIED/insertedCount=1 with batchHash=NOT_VERIFIED."
+      ],
+      "riskIfUnfixed": "A future internal writer, deserialized artifact or compromised integration can bypass application-level immutability and rewrite a frozen decision while the executor emits a successful immutable-persistence receipt.",
+      "requiredCorrection": [
+        "Make executor input opaque/canonical: regenerate SQL from whitelisted table specs and normalized rows; never execute caller-provided SQL text.",
+        "Recompute batchHash, rowDigest, identity and operation count before any database call and fail on mismatch.",
+        "Enforce INSERT-only statements in the executor and record measured write statements/row counts.",
+        "Post-write read back every inserted immutable row and verify exact canonical equality.",
+        "Add database-level or equivalent guarded-writer constraints for decision/order/fill lineage, including foreign-key-equivalent existence checks if D1 deployment constraints preclude native FKs.",
+        "Keep corrections append-only in s2_decision_corrections rather than updating s2_decisions.",
+        "Add tampered SQL/hash/identity/table/column and concurrent-write negative tests."
+      ],
+      "acceptanceCriteria": [
+        "AP-08 is rejected before db.batch is called.",
+        "Every executed statement is regenerated INSERT-only SQL for an exact whitelisted table/column contract.",
+        "Batch/row/identity digests are recomputed and verified.",
+        "All immutable writes receive exact post-write readback.",
+        "Decision/order/fill/outcome lineage cannot reference absent or mismatched parents.",
+        "System2 Research CI and isolated-D1 persistence regressions pass with zero System1 changes."
+      ],
+      "protectedBoundaries": [
+        "System1 databases/runtime",
+        "Existing System2 immutable history",
+        "No destructive migration or history rewrite",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-08 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-012",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Outcome monotonic updates can rewrite cost/performance provenance and erase excursions",
+      "affectedScope": [
+        "S2-09 outcomes and simulated execution",
+        "S2-17 cost-adjusted performance",
+        "MFE/MAE and holding-period integrity",
+        "strategy/version/regime attribution lineage"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Outcome maturation may append newly available horizons and monotonically extend excursions, but it must never erase mature evidence or rewrite decision, strategy, execution, cost, price-space, corporate-action or Regime provenance under the same decision identity.",
+      "observedProblem": "validateMonotonicOutcomeUpdate guards mature horizon returns, barrier sessions, ambiguity and realized return, but permits existing MFE/MAE to become null and does not protect holding_sessions or outcome_json. The physical row contains no decisionHash, strategyId/version, regime hash, execution hash or cost-model hash columns. AP-05 changed the strategy/cost payload and holding period, erased MFE/MAE and was accepted with no blockers.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-05",
+        "system2/runtime/outcome_tracker_v0_1.mjs:368-392 reduces persistence to decision_id plus mutable metrics/outcome_json.",
+        "system2/runtime/outcome_tracker_v0_1.mjs:401-470 does not reject MFE/MAE nulling, holding-session rewrite or outcome_json provenance changes.",
+        "system2/sql/0001_research_core.sql:470-485 has no decisionHash/strategy/version/regime/execution/cost hash columns.",
+        "AP-05 returned updateAllowed=true with empty blockers after those rewrites."
+      ],
+      "riskIfUnfixed": "Cost-adjusted results and cross-strategy/Regime comparisons can drift under a stable decision_id, making historical performance irreproducible and allowing a later assumption set to overwrite an earlier one without a new version.",
+      "requiredCorrection": [
+        "Bind each outcome row to decisionHash, strategyId, strategyVersion, symbol, decision clock, regime snapshot/hash, price space, corporate-action lineage, executionHash and costModel/tax-rule hash.",
+        "Define field-level maturation rules: null may become known; known horizons/barriers/realized returns cannot change; MFE cannot decrease or become null; MAE cannot increase or become null; holding sessions cannot change once the simulated trade is closed.",
+        "Make cost-scenario and execution-assumption changes new versioned outcome/execution records rather than in-place JSON replacement.",
+        "Recompute outcomeHash and validate it against the full canonical payload on every insert/update/readback.",
+        "Separate signal-return scenario estimates from realized simulated-fill net returns in storage and aggregation.",
+        "Add AP-05 regressions plus cost-model/version/strategy/regime mismatch tests."
+      ],
+      "acceptanceCriteria": [
+        "AP-05 fails with explicit immutable-provenance blockers.",
+        "MFE/MAE and closed holding periods cannot be erased or rewritten.",
+        "Outcome rows are closed-lineage bound to the exact decision, strategy/version, regime, execution and cost assumptions.",
+        "Changing tax/commission/slippage or execution semantics creates a distinct versioned record.",
+        "Signal return and simulated net-after-cost return remain separately queryable and cannot be relabeled.",
+        "System2 Research CI and targeted persistence/readback tests pass."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal performance/runtime",
+        "Existing System2 outcome history",
+        "No owner brokerage assumption invented",
+        "No live capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-05 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-013",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Execution/outcome session validation can misclassify unknown entry windows and accept reversed dates",
+      "affectedScope": [
+        "S2-09 Taiwan execution simulator",
+        "unfilled and blocked-entry semantics",
+        "outcome horizon/session ordering",
+        "selected-to-triggered and holding-period metrics"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "NO_FILL requires complete, strictly ordered eligible-session evidence proving that the trigger was not executable during the full entry-validity window. Missing OHLC or non-monotonic/duplicate dates must remain DATA_UNKNOWN/AMBIGUOUS and must not enter unfilled or holding-period denominators.",
+      "observedProblem": "Execution and outcome normalizers require contiguous session numbers but do not require valid YYYY-MM-DD dates, uniqueness or strict date increase. At entry-window expiry, rows.length>=entryValidity finalizes state=NO_FILL even when the only entry observation was DATA_UNKNOWN. AP-06 produced NO_FILL/DATA_UNKNOWN from entirely missing OHLC and accepted market dates in reverse order.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-06",
+        "system2/runtime/execution_simulator_v0_1.mjs:79-177 validates sessionNumber but not strict market-date ordering/uniqueness.",
+        "system2/runtime/execution_simulator_v0_1.mjs:660-679 finalizes NO_FILL by row count despite DATA_UNKNOWN observations.",
+        "system2/runtime/outcome_tracker_v0_1.mjs:37-95 has the same missing strict market-date ordering check.",
+        "AP-06 accepted [2026-10-03, 2026-10-02] and labeled an all-null OHLC entry window NO_FILL."
+      ],
+      "riskIfUnfixed": "Unknown or malformed execution windows can be counted as genuine non-triggered signals, and reversed/duplicate dates can distort holding duration, MFE/MAE, horizon returns, tax/cost timing and strategy conversion statistics.",
+      "requiredCorrection": [
+        "Validate every marketDate as a real YYYY-MM-DD date and require strictly increasing unique eligible sessions.",
+        "Bind session numbers to the official trading-calendar sequence and reject gaps unless the gap has an explicit certified non-trading reason.",
+        "Define proof-complete NO_FILL separately from DATA_UNKNOWN, HALT_BLOCKED, LIMIT_BLOCKED and LIQUIDITY_BLOCKED.",
+        "If any unresolved entry session could have contained the trigger, keep the order DATA_BLOCKED/AMBIGUOUS rather than NO_FILL.",
+        "Carry blocker intervals and denominator eligibility explicitly into outcome/performance aggregation.",
+        "Add reversed-date, duplicate-date, invalid-date, missing-OHLC, mixed blocker and proof-complete no-touch regressions."
+      ],
+      "acceptanceCriteria": [
+        "AP-06 reversed dates are rejected before simulation/outcome construction.",
+        "All-unknown or partially unknown trigger windows cannot become genuine NO_FILL.",
+        "Only a complete ordered entry window with known trigger feasibility can set proofCompleteNoFill=true.",
+        "Blocked and unknown states are excluded from selected-to-triggered denominators or reported separately.",
+        "Official-session gaps and corporate-action/trading-halt states remain explicit.",
+        "System2 Research CI and execution/outcome negative tests pass."
+      ],
+      "protectedBoundaries": [
+        "System1 live signals/positions",
+        "No synthetic fills",
+        "No favorable same-bar sequencing",
+        "No real order routing"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-06 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-014",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "title": "Bulk backtest can accept forged completion checkpoints and unproven PIT universes",
+      "affectedScope": [
+        "S2-19 PIT replay and bulk backtest",
+        "backtest completion receipts/checkpoints",
+        "historical universe and survivorship controls",
+        "strategy/policy version reproducibility"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "A complete backtest must prove every requested date was physically evaluated over the exact PIT universe with an immutable dataset/policy/evaluator identity. Resume checkpoints must be hash-verified and internally reconciled to persisted samples/date summaries before any date is skipped.",
+      "observedProblem": "checkpointCompletedDates verifies only runId and planHash, then trusts completedDates, counts, summaries and rollingDigest without validating schemaVersion/checkpointHash or persisted sample coverage. AP-04 supplied an invalid checkpoint with all dates completed and zero samples; the run returned allRequestedDatesComplete=true without invoking any loader/evaluator. normalizeUniverse also accepts only symbol/name/market/exclusion flags and requires no PIT membership, availability, universe hash or source lineage. Evaluator implementation/policy authority is represented only by caller-supplied strings/boolean.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-04",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:52-69 normalizes universe rows without PIT/version/source evidence.",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:169-173 trusts resume completedDates after only runId/planHash checks.",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:197-207 imports unverified checkpoint counts/summaries/digest.",
+        "system2/runtime/bulk_backtest_runner_v0_1.mjs:417 declares completion from completed-date count.",
+        "AP-04 returned complete for two dates, zero samples, zero date summaries and checkpointHash=INVALID."
+      ],
+      "riskIfUnfixed": "A zero-sample or survivor-biased replay can be labeled complete and later used for strategy/OOS/Regime claims, invalidating the historical research foundation while passing superficial completion checks.",
+      "requiredCorrection": [
+        "Recompute/verify checkpointHash and require the exact checkpoint schema/version before resume.",
+        "Reconcile completedDates exactly to requested dates and to immutable per-date summaries, partition receipts, sample counts and rolling digest.",
+        "Refuse a completed date with zero persisted accounting unless a separately proved empty PIT universe receipt exists.",
+        "Require an immutable PIT universe receipt per date with membership source/version, availableAt, listing/delisting/lifecycle handling, unknowns and universe hash.",
+        "Bind dataset manifest, policy registration, evaluator/code hash, factor versions, Regime version and cost/execution assumptions into the plan/run identity.",
+        "Replace raw selectionPolicyAuthorized boolean authority with a verified preregistration/approval receipt.",
+        "Add forged/missing/tampered checkpoint, survivor-universe, unknown membership, evaluator drift and zero-sample completion regressions."
+      ],
+      "acceptanceCriteria": [
+        "AP-04 fails before any requested date is considered complete.",
+        "Resume requires a valid recomputed checkpoint hash and exact persisted sample/partition/date-summary reconciliation.",
+        "Every requested date has a PIT-universe receipt and full accounted denominator or explicit incomplete state.",
+        "Current/survivor-only universe callbacks cannot produce PIT-complete runs without historical membership proof.",
+        "Policy/evaluator/factor/Regime/cost/execution changes alter the immutable run identity/version.",
+        "A full-market completion claim remains blocked until physically qualified data and receipts exist.",
+        "System2 Research CI and bulk replay negative tests pass."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "Historical raw/cold objects remain immutable",
+        "No fabricated universe membership",
+        "No strategy promotion from incomplete replay"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-04 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-015",
+      "createdAt": "2026-10-08T11:30:54+08:00",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "title": "D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible",
+      "affectedScope": [
+        "D18 observable Regime vector",
+        "strategy activation/deactivation research frame",
+        "Regime attribution and transition evidence",
+        "cross-strategy Regime comparison"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Every KNOWN Regime dimension in a pointInTimeEligible vector must independently prove the same market date/decision clock, availableAt<=decisionTimestamp, PIT eligibility and immutable source/hash lineage. One valid core input cannot certify future or mismatched optional dimensions.",
+      "observedProblem": "The vector gates TAIEX and direction breadth, but optional activity/concentration/institutional contexts do not require PIT eligibility or availability clocks, and sizeLeadership/globalTransmission accept any object with state=KNOWN without date/clock/PIT checks. The final vector is then marked pointInTimeEligible=true. AP-07 supplied a 2030 future, pointInTimeEligible=false globalTransmission input to a 2026 decision and received a KNOWN RISK_ON dimension in a PIT-eligible vector.",
+      "evidence": [
+        "system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json AP-07",
+        "system2/runtime/d18_observable_regime_vector_v0_1.mjs:190-267 accepts optional contexts without a uniform PIT/availableAt firewall.",
+        "system2/runtime/d18_observable_regime_vector_v0_1.mjs:294-325 marks the resulting vector pointInTimeEligible=true.",
+        "system2/runtime/d18_strategy_activation_frame_v0_1.mjs:233-250 can consume any KNOWN PIT-vector dimension for the challenger policy state.",
+        "AP-07 output: vectorState=KNOWN_PARTIAL_VECTOR, pointInTimeEligible=true, globalTransmission=KNOWN/RISK_ON from 2030/non-PIT input."
+      ],
+      "riskIfUnfixed": "Future macro/global/size or other optional context can contaminate Regime labels, activation counterfactuals and strategy comparisons, creating look-ahead bias precisely in the upper-level Regime layer intended to control strategy applicability.",
+      "requiredCorrection": [
+        "Use one uniform dimension-input validator for every Regime source, including raw-context dimensions.",
+        "Require exact marketDate/decisionTimestamp, pointInTimeEligible=true, availableAt<=decisionTimestamp and immutable source receipt/hash for KNOWN or CONTEXT_RAW inclusion.",
+        "If an optional dimension fails its own PIT gate, preserve it as UNKNOWN and prevent policies registered on that dimension from leaving DATA_UNKNOWN.",
+        "Recompute and verify component receipt hashes and the final vector receipt hash before activation/attribution/transition use.",
+        "Separate vector-level partial usability from dimension-level PIT eligibility; never use one boolean to certify every member.",
+        "Add future-date, wrong-clock, non-PIT, missing-availableAt, missing-hash and tampered-receipt tests for all optional dimensions."
+      ],
+      "acceptanceCriteria": [
+        "AP-07 globalTransmission becomes UNKNOWN and cannot produce POLICY_ENABLED/POLICY_DISABLED.",
+        "Every KNOWN/CONTEXT_RAW dimension has its own verified PIT/source/hash receipt.",
+        "A vector cannot advertise pointInTimeEligible=true for a dimension that lacks PIT proof.",
+        "Activation/attribution/transition modules verify referenced vector/component hashes rather than trusting strings.",
+        "Cross-strategy Regime comparisons report UNKNOWN/missing common support instead of using contaminated context.",
+        "D18 targeted tests and System2 Research CI pass with no selection/capital impact."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "D18 remains research-only",
+        "No dynamic strategy weight or activation authority",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [
+        "Independent batch audit AP-07 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      ],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T11:30:54+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
