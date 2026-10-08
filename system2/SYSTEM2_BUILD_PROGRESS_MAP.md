@@ -1562,3 +1562,28 @@ CORR-007 canonical merge -> #844 rebase/latest-main checks -> #844 merge -> phys
 
 Do not credit CI/synthetic evidence as physical independence.
 Do not resume lower-priority S2-07 work until this launch-critical chain is cleared unless it can proceed without delaying the NC-T01 blocker.
+
+
+## 2026-10-08 11:40 Stage-1 BUILD status — CORR-007 FIX_IMPLEMENTED
+
+Launch-critical code firewall status:
+- CORR-005 = VERIFIED_CLOSED;
+- CORR-006 = VERIFIED_CLOSED;
+- CORR-007 = FIX_IMPLEMENTED / independent AUDIT_LANE closure pending;
+- CORR-008 = OPEN / blockedBy CORR-007;
+- physical NC-T01 S22-T11..T16 = NOT YET PASSED.
+
+CORR-007 implementation:
+- merge `836184f98726449107cdbd0ed83e2746bbbcf965`;
+- V0.2 evidence-bound TWSE suspension completeness;
+- exact-window suspension digest/source/version/timing identity;
+- additive matching suspension sourceEvidenceRef;
+- legacy/status-only COMPLETE fail-closed;
+- exact-head Research / Continuity / Artifact Runner / V8 Regression all PASS.
+
+Durable BUILD handoff:
+`system2/evidence/S2_CORR_007_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+
+Next launch-critical gate is independent CORR-007 closure. CORR-008 remains intentionally blocked until that gate is cleared. Real physical independence still additionally requires DATA_LANE source-honest TWTAWU/continuity evidence and one coherent read-only NC-T01 run.
+
+Formal Core remains LOCKED.
