@@ -1,0 +1,91 @@
+name: System2 CORR-012 Outcome Lineage V0.2
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/outcome_tracker_v0_1.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - "system2/sql/0011_outcome_versioned_lineage.sql"
+      - "system2/deploy/provision_system2_d1.mjs"
+      - "system2/tests/outcome_tracker_v0_1.test.mjs"
+      - "system2/tests/outcome_persistence_v0_1.test.mjs"
+      - "system2/tests/execution_simulator_v0_1.test.mjs"
+      - "system2/tests/corr012_outcome_lineage_firewall_v0_2.test.mjs"
+      - "system2/tests/corr012_outcome_lineage_schema_v0_2.test.mjs"
+      - "system2/tests/audit_corr012_013_edge_matrix_v0_1.test.mjs"
+      - "system2/SYSTEM2_STORAGE_SCHEMA.md"
+      - "system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md"
+      - ".github/workflows/system2-corr012-outcome-lineage-v0-2.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/outcome_tracker_v0_1.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - "system2/sql/0011_outcome_versioned_lineage.sql"
+      - "system2/deploy/provision_system2_d1.mjs"
+      - "system2/tests/corr012_outcome_lineage_firewall_v0_2.test.mjs"
+      - "system2/tests/corr012_outcome_lineage_schema_v0_2.test.mjs"
+      - ".github/workflows/system2-corr012-outcome-lineage-v0-2.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-012 strict adversarial firewall
+        run: node system2/tests/corr012_outcome_lineage_firewall_v0_2.test.mjs
+
+      - name: Outcome tracker regression
+        run: node system2/tests/outcome_tracker_v0_1.test.mjs
+
+      - name: Execution simulator integration regression
+        run: node system2/tests/execution_simulator_v0_1.test.mjs
+
+      - name: Versioned outcome persistence regression
+        run: node system2/tests/outcome_persistence_v0_1.test.mjs
+
+      - name: Outcome lineage schema/provision guard
+        run: node system2/tests/corr012_outcome_lineage_schema_v0_2.test.mjs
+
+      - name: Independent audit matrix readback
+        run: |
+          set -euo pipefail
+          node system2/tests/audit_corr012_013_edge_matrix_v0_1.test.mjs | tee /tmp/corr012013.log
+          test "$(grep -c '"correction":"012","state":"SAFE"' /tmp/corr012013.log)" -eq 5
+          test "$(grep -c '"correction":"012","state":"UNSAFE"' /tmp/corr012013.log || true)" -eq 0
+          test "$(grep -c '"correction":"013","state":"UNSAFE"' /tmp/corr012013.log)" -eq 4
+          echo "Independent CORR-012 probes: 5/5 SAFE; CORR-013 remains 4/4 UNSAFE as expected"
+
+      - name: Static lineage assertions
+        run: |
+          set -euo pipefail
+          grep -q 's2_outcome_versions' system2/runtime/outcome_persistence_v0_1.mjs
+          grep -q 'MFE_ERASED' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'MAE_ERASED' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'CLOSED_HOLDING_SESSIONS_REVISION' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'IMMUTABLE_OUTCOME_PROVENANCE_REVISION' system2/runtime/outcome_tracker_v0_1.mjs
+          grep -q 'signal_return_json' system2/sql/0011_outcome_versioned_lineage.sql
+          grep -q 'realized_return_after_cost' system2/sql/0011_outcome_versioned_lineage.sql
+          echo "CORR-012 static lineage assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
