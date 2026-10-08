@@ -1542,3 +1542,14 @@ Separate Class A read-only candidate `system2-data/recent60-symbol-index-scoped-
 Evidence: `system2/evidence/S2_RECENT60_PIT_COVERAGE_SYMBOL_INDEX_SCOPED_READ_PLAN_20261009_V0_1.json`. **Not yet physically validated:** actual D1 rows-read savings, time/cost and live 1972-symbol completeness. Do not execute another write/read-heavy Cloudflare probe until account-wide quota reset and REMEDIATION_LANE scheduling. NC-T01 and 60-day continuity remain unpromoted.
 
 No System1 Formal Core/runtime, strategy thresholds, final selection, signals, push, capital or orders changed.
+
+
+## 2026-10-09 DATA_LANE — fixed 2026-10-08 D1 indexed READ physical-cost measurement gate
+
+PR #933 merged as `f7d12dbd21632ea14c702117dcfcf74b41aef559`; exact-head System2/V8 PASS and latest main readback contains parameter-bound 50-current-symbol batches. The first post-merge daily preflight was run before 2026-10-09 market opened; it observed currentUniverse=0 and D1 rowsRead=0, so it is **not** physical throughput/latency evidence. Other post-merge diagnostics also encountered unavailable source/quota conditions; no physical rows-read savings were claimed.
+
+DATA_LANE now provides a separate **manual-only** read-only workflow `system2-recent60-indexed-d1-read-cost-readonly.yml` pinned to completed 2026-10-08 marketDate. Runner strictly refuses to contact Cloudflare before the 2026-10-09 **08:00 Asia/Taipei / 00:00 UTC** daily quota reset; once available it records a real isolated System2 D1 `rowsRead` count and request total, requires no writes and a sufficiently complete contemporaneously queried ordinary market universe (at least 1,800 symbols), and preserves a PASS/BLOCKED Artifact. No push/schedule triggers or automatic retries.
+
+**Do not launch without REMEDIATION_LANE quota/single-reader coordination.** This is a retrospective physical cost probe, not a rerun of original PIT first-known data and never upgrades history/continuity, corporate-action no-event, NC-T01, zero-pick or strategy replay. Evidence: `system2/evidence/S2_RECENT60_INDEXED_READ_COST_POST_RESET_MANUAL_GATE_20261009_V0_1.json`.
+
+System1 Formal Core/runtime, A/B Top6, 15-minute K signal, push, capital and orders untouched.

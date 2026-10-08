@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "S2_RECENT60_INDEXED_D1_READ_COST_POST_RESET_MANUAL_GATE_V0_1",
+  "status": "RESEARCH_ONLY_MANUAL_PHYSICAL_PROBE_PR_PENDING",
+  "marketDate": "2026-10-08",
+  "source": "POST_FACTO_OFFICIAL_A1_NOT_ORIGINAL_PROSPECTIVE_PIT",
+  "resetTimeUtc": "2026-10-09T00:00:00Z",
+  "resetTimeTaipei": "2026-10-09T08:00:00+08:00",
+  "workflow": ".github/workflows/system2-recent60-indexed-d1-read-cost-readonly.yml",
+  "runner": "system2/scripts/audit_recent60_indexed_d1_read_cost_readonly_v0_1.mjs",
+  "readPlanFromMergedMain": "SYMBOL_INDEX_SCOPED_BOUNDED_50",
+  "requiredConditions": [
+    "Run latest merged main only",
+    "Do not dispatch before reset time (runner itself enforces this)",
+    "Coordinate REMEDIATION_LANE for account-wide D1 read budget and no competing read jobs",
+    "One user-initiated workflow_dispatch only, no push/schedule/automatic retry",
+    "Observe actual D1 requests/rowsRead/rowsWritten and complete >1800 ordinary A1 universe",
+    "RowsWritten must remain 0, no capital/order/selection/push or System1 runtime access"
+  ],
+  "interpretation": [
+    "One successful measurement of D1 rowsRead is not a controlled speedup comparison against legacy full scan",
+    "Recorded market date 2026-10-08 is retrospective, so observations on 2026-10-09 cannot backdate 2026-10-08 firstKnownAt",
+    "No NC-T01/corporate-action/no-event/zero-pick/replay/full-market certification",
+    "Official 96/96 July historical source evidence is separate from D1 cold/hot receipts"
+  ],
+  "acceptance": [
+    "CI and V8 regression PASS",
+    "Workflow physically succeeds after read-budget headroom",
+    "D1 rowsRead is measured rather than assumed, no D1 writes",
+    "Manual audit artifact preserved and formal evidence checkpoint added only after physical PASS"
+  ],
+  "paidPlanUpgradeAuthorized": false
+}
