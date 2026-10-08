@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-08T22:48:38+08:00
+Updated: 2026-10-08T22:59:13+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1346,6 +1346,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   4. guarded immutable lineage and correction-only append paths.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-08.
 - finalDisposition: PENDING
+- independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-08 arbitrary UPDATE passed to mock D1 and mislabeled INSERTED`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
 
 ### S2-CORR-20261008-012 — Outcome monotonic updates can rewrite cost/performance provenance and erase excursions
@@ -1363,6 +1364,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   4. keep signal-return scenarios separate from simulated fill net-after-cost results.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-05.
 - finalDisposition: PENDING
+- independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-05 MFE/MAE nulled and holding/cost/strategy lineage rewritten without blockers`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
 
 ### S2-CORR-20261008-013 — Execution/outcome session validation can misclassify unknown entry windows and accept reversed dates
@@ -1381,6 +1383,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. expose blocker intervals and denominator eligibility to performance aggregation.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-06.
 - finalDisposition: PENDING
+- independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-06 missing OHLC falsely finalized NO_FILL; reversed market dates accepted`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
 
 ### S2-CORR-20261008-014 — Bulk backtest can accept forged completion checkpoints and unproven PIT universes

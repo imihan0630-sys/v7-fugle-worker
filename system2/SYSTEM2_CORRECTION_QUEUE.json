@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T22:48:38+08:00",
+  "updatedAt": "2026-10-08T22:59:13+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1858,10 +1858,11 @@
       "blockedBy": [],
       "implementationEvidence": [],
       "verificationEvidence": [
-        "Independent batch audit AP-08 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+        "Independent batch audit AP-08 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "finalDisposition": "OPEN — independent AUDIT_LANE dynamic adversarial witness reproduces original HIGH defect on the current code; no implementation, no formal acceptance, no production credit.",
+      "updatedAt": "2026-10-08T22:59:13+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-012",
@@ -1916,10 +1917,11 @@
       "blockedBy": [],
       "implementationEvidence": [],
       "verificationEvidence": [
-        "Independent batch audit AP-05 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+        "Independent batch audit AP-05 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "finalDisposition": "OPEN — independent AUDIT_LANE dynamic adversarial witness reproduces original HIGH defect on the current code; no implementation, no formal acceptance, no production credit.",
+      "updatedAt": "2026-10-08T22:59:13+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-013",
@@ -1974,10 +1976,11 @@
       "blockedBy": [],
       "implementationEvidence": [],
       "verificationEvidence": [
-        "Independent batch audit AP-06 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+        "Independent batch audit AP-06 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "finalDisposition": "OPEN — independent AUDIT_LANE dynamic adversarial witness reproduces original HIGH defect on the current code; no implementation, no formal acceptance, no production credit.",
+      "updatedAt": "2026-10-08T22:59:13+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-014",
