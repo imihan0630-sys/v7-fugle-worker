@@ -5,7 +5,7 @@
   "familySets": {
     "priceResetFamilySet": {
       "purpose": "U2B_PRICE_SPACE_CONTINUITY",
-      "currentStatus": "PARTIAL_STRONG_IDENTITY_TRANSITION_AND_PHYSICAL_RECEIPT_PENDING",
+      "currentStatus": "SEMANTIC_SCOPE_FROZEN_PHYSICAL_FAMILY_RECEIPT_PENDING",
       "families": [
         {
           "family": "EX_RIGHT_DIVIDEND",
@@ -41,7 +41,9 @@
         {
           "family": "MERGER_SHARE_CONVERSION_DELISTING_IDENTIFIER_CHANGE",
           "role": "PAIR_COMPARABILITY_BLOCKER",
-          "sharedCoverage": "V0_1_BLOCK_UNLESS_EXPLICIT_TRANSFORM"
+          "sharedCoverage": "V0_1_COMPLETE_IF_DETECTED_AND_BLOCKED_NOT_TRANSFORMED",
+          "v01Rule": "SUCCESSOR_OR_MULTI_SUCCESSOR_OR_UNKNOWN_IDENTITY_TRANSITION_IS_NOT_COMPARABLE",
+          "allowedCodeChangeException": "SAME_SECURITY_CODE_CHANGED_PROVEN_EQUIVALENT_ONLY"
         }
       ]
     },
@@ -98,6 +100,8 @@
   "maturityImpact": "NONE",
   "notes": [
     "2026-10-08 official TWSE/TPEx rules resolve domestic ordinary-common-equity split-like unit changes through the PAR_VALUE_CHANGE mechanism; no duplicate generic split family is needed for that scoped universe.",
-    "Corporate demerger/company split remains an identity/pair-comparability event, not a par-value unit-change alias."
+    "Corporate demerger/company split remains an identity/pair-comparability event, not a par-value unit-change alias.",
+    "2026-10-08 D18-04 freezes identity-transition completeness as detection+blocking rather than adjusted successor-return construction. Merger/share-conversion/demerger/delisting-to-successor pairs are NOT_COMPARABLE in U2B V0.1 unless immutable same-security equivalence is proven.",
+    "Exchange successor reference price or exchange ratio is a trading/reference-price object, not by itself a same-security historical return transform."
   ]
 }
