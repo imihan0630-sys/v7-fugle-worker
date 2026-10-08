@@ -3782,3 +3782,27 @@ The 22-case oracle passes. It rejects current-survivor universes, future members
 This is deterministic contract evidence, not physical D03 outcome evidence. CORR-014 remains open in the correction queue pending independent verification. OOS, walk-forward performance, multiple-testing control, redundancy, cost, fillability, market-state and alpha remain UNKNOWN until real panels satisfy the gate.
 
 D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+
+## Continuation update — TI-1637 through TI-1654
+
+- TI-1637~1641 freeze a four-level raw-source attestation taxonomy. L1 is same-endpoint repeat-capture stability; L2 is same-authority or same-producer representation parity; L3 is an independent integrity/timestamp witness or a path retaining a shared parser; only L4 is independent semantic source attestation across distinct authority, producer and parser roots for the same market, trade date, bounded scope and symbol-session semantics before the decision cutoff.
+- TI-1642~1647 classify the completed third raw-session receipt without inflating evidence. Two captures of the same official endpoint are L1 only. TPEx current/history exact-row equality is at most L2 because authority/producer ancestry is shared. TWSE current/history cannot receive same-date L2 parity for 2026-10-08 because current remained on 2026-10-07. Therefore independent source attestation remains UNKNOWN.
+- TI-1648~1652 add a 20-case executable falsification oracle. It rejects market/date/scope mismatch, partial responses, unknown lineage, late observation, shared backends, shared semantic parsers and missing payload identities. Semantic disagreement is CONFLICT rather than permission to choose the primary silently. L4 alone is still insufficient when certified symbol-session receipt, corporate-action ancestry or continuity-receipt hash binding is absent.
+- TI-1653 fixes a canonicalization defect exposed by the first local run: top-level-only key sorting failed to bind nested attestor identity. Recursive deterministic canonicalization now makes a nested attestor raw-payload-hash mutation change the SHA-256 identity. The corrected oracle passes all 20 cases.
+- TI-1654 explicitly forbids inventing a second official source. The current physical evidence supports finite repeat stability, not independent-source completeness. Revision incidence, OOS, walk-forward, multiple-testing control, cost, fillability, market-state robustness and alpha remain UNKNOWN.
+- New research artifacts:
+  - research/D03_RAW_SOURCE_ATTESTATION_INDEPENDENCE_FIREWALL_20261009_V0_1.md
+  - research/d03_raw_source_attestation_independence_cases_20261009_v0_1.json
+  - research/test_d03_raw_source_attestation_independence_v0_1.mjs
+- No D03 module promotion, no outcome join and no FORMAL_OPTIMIZATION_CANDIDATE. D03 remains 56.7%; 12 modules = 10 L3 + 2 L2. Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. W0 remains the primary physical lane: obtain the first real exact-window source-honest continuity receipt binding bounded TWTAWU negative completeness, D03_PRICE_RESET_FAMILY_SET_V0_1, same-security identity-transition disposition and exact replay/source-history/session/source hashes.
+2. Parent remains the second physical lane: obtain the next ordinary-session live-quality-ready immutable C1 generation with authoritative V8.20 Formal-to-C1 binding.
+3. Independent raw-source attestation remains UNKNOWN. Do not count same-endpoint recapture, same-authority endpoint parity or integrity-only timestamps as an independent semantic source.
+4. If a candidate attestor is found, first bind authorityRootId, producerRootId, parserRootId, endpointId, market, trade date, bounded scope, raw payload hash, normalized symbol-session hash and observedAt; then run the 20-case oracle before any completeness credit.
+5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
+6. Keep certified symbol-session/corporate-action lineage, immutable parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
+7. Formal Core remains unchanged.
