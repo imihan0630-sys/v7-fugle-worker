@@ -3760,3 +3760,25 @@ Counterevidence remains binding: this is a contract oracle, not merged runtime i
 D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
 
 Exact next is merged-main CORR-007 V0.2-equivalent implementation and independent verification, including legacy V0.1 fail-closed and digest/hash-chain sensitivity; then a real exact-window TWTAWU receipt bound into archive/continuity, plus the independent future genuine V8.20 parent track.
+
+
+## TI-1565 through TI-1584 — indicator backtest PIT universe and denominator firewall (2026-10-08)
+
+Artifacts:
+- `research/D03_INDICATOR_BACKTEST_PIT_UNIVERSE_DENOMINATOR_FIREWALL_20261008_V0_1.md`;
+- `research/d03_indicator_backtest_pit_universe_cases_20261008_v0_1.json`;
+- `research/test_d03_indicator_backtest_pit_universe_v0_1.mjs`.
+
+D03 consumes merged System2 CORR-014 as an engineering dependency and freezes its own inference rule: formula correctness does not prove historical-universe validity. Every multi-date or cross-sectional indicator claim must bind the exact decision-date market-symbol universe, registry/snapshot hashes, known exclusions, replay eligibility, decision timestamp and fully reconciled eligible/accounted/sample/state denominators.
+
+Today's survivors cannot be replayed backward. Future delisting or membership-end facts cannot enter a prior decision receipt. Unknown membership or exclusion remains UNKNOWN.
+
+Zero samples are split into three states: proved empty PIT universe; nonempty universe with all members excluded; or unknown universe/denominator. Only the first may complete a zero-sample date.
+
+The immutable research plan must bind dataset, policy, evaluator code, factor definition, regime version, execution assumptions and cost model. Changed plan identity invalidates checkpoint reuse. Checkpoint, partition, rolling-digest, date-summary and sample accounting must reconcile before any date is skipped.
+
+The 22-case oracle passes. It rejects current-survivor universes, future membership-end leakage, unknown membership/exclusions, denominator mismatch, forged checkpoints, plan drift, look-ahead factor evidence, OOS overlap, invalid walk-forward ordering and missing date-cluster audit. It accepts a genuinely empty universe only with an explicit proved-empty receipt.
+
+This is deterministic contract evidence, not physical D03 outcome evidence. CORR-014 remains open in the correction queue pending independent verification. OOS, walk-forward performance, multiple-testing control, redundancy, cost, fillability, market-state and alpha remain UNKNOWN until real panels satisfy the gate.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
