@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T12:53:00+08:00",
+  "updatedAt": "2026-10-08T13:34:07+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1671,7 +1671,7 @@
       "directiveId": "S2-CORR-20261008-009",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "CRITICAL",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Frozen decisions can promote explicitly non-PIT or future factor evidence",
       "affectedScope": [
         "S2-07 daily PIT-safe Shadow orchestration",
@@ -1720,12 +1720,17 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [
-        "Independent batch audit AP-01 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      "implementationEvidence": [
+        "PR #859 merged as c7afee03aec24d1c5a3a79e71cb4c8250a67b61e.",
+        "system2/evidence/S2_CORR_009_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json"
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "verificationEvidence": [
+        "Independent batch audit AP-01 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "Exact-head PASS: CORR-009 37732779734; System2 Research CI 37732779722; NC-T01 Continuity 37732779809; NC-T01 Artifact Runner 37732779729; V8 Regression 37732779747.",
+        "Merged-main PASS on c7afee03: CORR-009 37732958236; System2 Research CI 37732958273; NC-T01 Continuity 37732958318; V8 Regression 37732958351."
+      ],
+      "finalDisposition": "FIX_IMPLEMENTED — canonical decision PIT evidence firewall is merged and exact-head/merged-main validated. AP-01 is fail-closed; unsafe evidence cannot remain selected/qualified or outcome-join eligible. CRITICAL correction remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+      "updatedAt": "2026-10-08T13:34:07+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-010",
