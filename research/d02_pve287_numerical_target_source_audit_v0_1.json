@@ -1,0 +1,395 @@
+{
+  "schemaVersion": "D02_PVE287_NUMERICAL_TARGET_SOURCE_AUDIT_V0_1",
+  "generatedAt": "2026-10-08 Asia/Taipei",
+  "status": "OUTCOME_BLIND_NO_LEGAL_NUMERICAL_TARGET_SOURCE_CURRENTLY_AVAILABLE",
+  "sourceRegistry": "research/d02_l4_effect_target_registry_v0_5.json",
+  "evidenceKeyCount": 14,
+  "targetFreezeAuthorizedCount": 0,
+  "currentD02OutcomeInspected": false,
+  "notes": [
+    "Fixture thresholds in tests are explicitly non-research values and cannot be reused.",
+    "20/30/40-date admission/support floors are not MDE or precision targets.",
+    "Brier boundedness is a sanity bound, not a materiality threshold.",
+    "An unrelated SDA-022 method/effect receipt cannot be transferred to D02.",
+    "A future target may freeze only after one permitted rationale path gains exact immutable provenance."
+  ],
+  "entries": {
+    "D02-01:SEMANTIC_GOVERNANCE": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "SEMANTIC_POLICY"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "NO_OWNER_APPROVED_SEMANTIC_MATERIALITY_TOLERANCE"
+      ],
+      "forbiddenSubstitutes": [
+        "OBSERVED_CURRENT_D02_INCIDENCE",
+        "TEST_FIXTURE_THRESHOLD",
+        "GENERIC_ZERO_TOLERANCE_WITHOUT_POLICY_JUSTIFICATION"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-02:H001": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-03:H20": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-04:DRYUP": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-05:EXTREME_PARTICIPATION": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-06:H003": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-07:SVB20": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-08:PROVIDER_PRESSURE": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-09:PIVOT_SIGNED_VOLUME": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-09:PARTICIPATION_TRAJECTORY": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-10:TREND_VOLUME_INTERACTION": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-11:LIQUIDITY_COUNTERFACTUAL": {
+      "status": "BLOCKED_BEFORE_NUMERICAL_SOURCE_SELECTION",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "PRIMARY_UTILITY_METRIC_AND_HORIZON_NOT_FROZEN",
+        "D14_COST_QUALITY_RECEIPT_PENDING"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D14_COST_QUALITY_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "UNKNOWN_COMMISSION_AS_ZERO",
+        "UNKNOWN_SLIPPAGE_AS_ZERO",
+        "GENERIC_INTERNET_FEE_AS_OWNER_ACTUAL",
+        "TEST_FIXTURE_THRESHOLD"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-12:TIME_OF_DAY_VOLUME_CURVE": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    },
+    "D02-12:PRICE_BY_VOLUME_PROFILE": {
+      "status": "MISSING_LEGAL_NUMERICAL_SOURCE",
+      "targetFreezeAuthorized": false,
+      "permittedRationalePaths": [
+        "COST_BENEFIT",
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "currentAvailableLegalSources": [],
+      "blockers": [
+        "D02_SPECIFIC_D16_MODEL_METHOD_RECEIPT_PENDING",
+        "NO_IMMUTABLE_DISJOINT_D02_BRIER_PLANNING_EFFECT_SERIES_FOUND",
+        "NO_QUANTIFIED_THEORETICAL_BRIER_MATERIALITY_BOUND_FOUND",
+        "NO_DECISION_CONSEQUENCE_BOUND_PRECISION_VALUE_FROZEN",
+        "D14_UNIVERSAL_ECONOMIC_COST_ANCHOR_NOT_READY"
+      ],
+      "dependencyRequest": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "forbiddenSubstitutes": [
+        "TEST_FIXTURE_THRESHOLD",
+        "ADMISSION_DATE_FLOOR_AS_PRECISION_TARGET",
+        "GENERIC_BENCHMARK_EFFECT_SIZE",
+        "UNRELATED_SDA022_EFFECT_OR_METHOD_RECEIPT",
+        "CURRENT_D02_PROSPECTIVE_OUTCOME",
+        "UNKNOWN_COST_AS_ZERO"
+      ],
+      "currentD02OutcomeUsed": false
+    }
+  },
+  "maturityPromotionAuthorized": false,
+  "formalCoreChangeAuthorized": false
+}
