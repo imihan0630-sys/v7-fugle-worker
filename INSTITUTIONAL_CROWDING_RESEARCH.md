@@ -2881,3 +2881,42 @@ Maturity impact: NONE. D06-05 remains L3/60 and D06 remains at its current track
 
 Exact next:
 materialize exact TPEx EX_RIGHT_DIVIDEND rows for 2026-09-24..2026-10-02 and complete interval identity-transition coverage. Classify stock-distribution/cash-only/capital-increase components, then recompute and hash the final event-clean exact-denominator common support before any price/return/MFE/MAE join.
+
+
+---
+
+## IC-104 — D06-05 exact TPEx ex-right rows materialized; 2,778-symbol event-clean candidate frozen
+
+Research cycle: 2026-10-08 Asia/Taipei  
+Status: TPEX_EXRIGHT_EXACT_PAIR_ROWS_PASS / FOUR_CASH_ONLY_ROWS / NO_NEW_SHARE_MASK / CLEAN_SUPPORT_CANDIDATE_2778_HASH_FROZEN / FINAL_IDENTITY_CERTIFICATION_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_pair_event_clean_support_candidate_20260924_20261002_v0_3.json`.
+
+The exact official TPEx actual ex-right/ex-dividend range for 2026-09-24 through 2026-10-02 was finally materialized from `/www/zh-tw/bulletin/exDailyQ` with verified response range `20260924~20261002`. The official response contains exactly four rows:
+- 8440 綠電 — 2026-09-30 — ex-dividend, cash dividend 0.35, zero stock distribution and zero capital-increase subscription quantities;
+- 1784 訊聯 — 2026-10-01 — ex-dividend, cash dividend 0.880964, zero stock distribution and zero capital-increase subscription quantities;
+- 6523 達爾膚 — 2026-10-01 — ex-dividend, cash dividend 2.00, zero stock distribution and zero capital-increase subscription quantities;
+- 6171 大城地產 — 2026-10-02 — ex-dividend, cash dividend 2.00, zero stock distribution and zero capital-increase subscription quantities.
+
+All four rows are therefore classified `CASH_ONLY_CONTEXT`. None creates a share-denominator hard mask. This directly validates the IC-103 distinction between event identity and ownership contamination: an official ex-right/dividend event may exist without changing share-count comparability.
+
+The TDCC pair support was recomputed mechanically from the immutable 2026-09-24 and 2026-10-02 weekly raw snapshots:
+- ordinary four-digit common support = 2,962;
+- exact grade-17 denominator-stable support = 2,783;
+- stable-denominator hard masks = 1235 / 1441 / 2323 / 6550 / 3234;
+- TPEx cash-only rows add zero hard masks;
+- resulting event-clean candidate count = 2,778;
+- canonical ascending-symbol candidate hash = `fnv1a64-utf8:11ab5a267ae9cd2a`.
+
+Identity continuity remains fail-closed. Official TPEx announcement 11500054131 confirms 8183 精星 stopped trading on 2026-09-23 and delisted on 2026-10-01 through share exchange into 6191 精成科 at 1:0.342. 8183 is outside common support and 6191 is already removed by denominator change. However, the official TPEx annual delisted-company registry has not yet been machine-enumerated for the exact pair interval in this room. Search absence is not accepted as an exhaustive no-event certificate.
+
+Therefore the 2,778-symbol set is now frozen as `CANDIDATE_FROZEN`, not `FINAL_CERTIFIED`. No price, return, MFE, MAE, hit-rate or ranking outcome may be joined yet. The remaining certification task is narrow: machine-enumerate the official TPEx delisted-company registry or persist an equivalent authoritative exact-range identity list for 2026-09-24..2026-10-02. If that produces no additional common-support identity transition, the exact same 2,778-symbol set/hash may be promoted to final clean support.
+
+Maturity impact: NONE. D06-05 remains L3/60. This round closes the TPEx ex-right/dividend row-materialization blocker and freezes a deterministic pre-outcome candidate cohort, but L4 outcome validation is still locked behind final identity certification and preregistration.
+
+Exact next:
+1. obtain machine-enumerated official TPEx delisted-company / identity-transition coverage for the exact pair interval;
+2. if no additional common-support identity transition exists, promote the frozen 2,778-symbol hash to FINAL_CERTIFIED without changing symbols;
+3. preregister TDCC-vintage-clustered OOS/Shadow residual incrementality before opening outcome columns;
+4. preserve one-TDCC-vintage-pair-one-evidence-unit semantics and SDA-007 anti-double-count rules.
