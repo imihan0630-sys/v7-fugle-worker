@@ -320,6 +320,8 @@ jobs:
         run: python3 scripts/apply_v8_20_1.py
       - name: Apply V8.20.2 idempotent D1 snapshots
         run: python3 scripts/apply_v8_20_2.py
+      - name: Apply V8.21.0 C1 generation-set finalization
+        run: python3 scripts/apply_v8_21_0.py
 
       - name: Syntax check Worker.js
         run: |
