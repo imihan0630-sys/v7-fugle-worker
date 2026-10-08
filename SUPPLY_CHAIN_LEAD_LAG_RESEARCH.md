@@ -3116,3 +3116,36 @@ Formal Core unchanged.
 
 Exact next:
 SC-091 capture the next genuinely new issuer-native shortage/allocation/capacity-constraint root under the frozen cohort contract; preserve NULL observation if no new root exists.
+
+
+## SC-029 / SC-092 — D10-05 second material vintage reconciled and D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/SC029_D10_05_SECOND_MATERIAL_PRICE_VINTAGE_RECONCILIATION_20261008_V0_1.md`
+- `research/SC092_D10_05_MATERIAL_PRICE_COHORT_D16_HANDOFF_20261008_V0_1.md`
+- `research/SC092_D10_05_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+The already-frozen 2026-09 steel-chain row satisfies the old SC-029 next-vintage requirement:
+- scrap +4.1% MoM;
+- billet +3.8% MoM;
+- H-beam 0% MoM;
+- descriptor = UPSTREAM_PRESSURE_WITH_DOWNSTREAM_STICKINESS.
+
+This is a failed same-month pass-through control under the unchanged SC-028 lag family.
+
+Frozen:
+- two months in one chain are not two independent industries;
+- lag0/1/2 are not three independent observations;
+- benchmark spread is not issuer gross margin;
+- stock outcomes remain closed.
+
+Current:
+- prospective material vintages = 2;
+- independent chains = 1;
+- inference readiness = POWER_INSUFFICIENT;
+- D10-05 remains L3/60.
+
+Exact next:
+Room11/D16 freezes the event/chain dependence and multiplicity method before outcomes; Room07 adds independent material vintages and a different industry/chain without changing lag windows.
+
+Formal Core unchanged.
