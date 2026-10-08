@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "D03_BOLLINGER_POST_RESET_PARENT_SHORTCUT_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-08T23:28:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "workflow": {
+    "name": "D03 Bollinger Post-Reset Parent Shortcut Readonly",
+    "runId": 37800889318,
+    "jobId": 113392478117,
+    "headSha": "d0476a06df75662e8c3887ba109d6386508ed198",
+    "conclusion": "success"
+  },
+  "spec": "research/d03_bollinger_post_reset_parent_shortcut_spec_20261008_v0_1.json",
+  "oracle": "research/d03_bollinger_post_reset_parent_shortcut_v0_1.mjs",
+  "test": "research/test_d03_bollinger_post_reset_parent_shortcut_v0_1.mjs",
+  "machineResults": {
+    "clean20PostReset": "PASS_SHORTCUT_ELIGIBLE",
+    "onePreResetSession": "PASS_FAIL_CLOSED",
+    "identityTermination": "PASS_FAIL_CLOSED",
+    "resetKnownAfterCutoff": "PASS_FAIL_CLOSED",
+    "unresolvedResetEvent": "PASS_FAIL_CLOSED",
+    "sessionCount19": "PASS_FAIL_CLOSED"
+  },
+  "acceptedInterpretation": [
+    "Bollinger finite memory is exactly the accepted 20 eligible closes under the frozen formula.",
+    "When all exact 20 eligible parent sessions are strictly after the last certified same-identity price-basis reset, older pre-reset history has zero direct formula influence.",
+    "Any mixed pre/post-reset retained session forbids the shortcut unless the retained pre-reset close is separately continuity-certified/transformed under the main oracle.",
+    "Identity termination/migration, unknown reset timing, unresolved reset events or late-known reset evidence fail closed.",
+    "The shortcut cannot create W0 continuity, a genuine V8.20 parent, Layer-C known-at or D03-10 L3 by itself."
+  ],
+  "corr014ConsumerReadback": {
+    "state": "VERIFIED_CLOSED",
+    "mergeCommit": "4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7",
+    "meaning": "Forged completion checkpoints and unproven PIT universes now fail closed at the System2 bulk replay code boundary.",
+    "d03Impact": "PIT_UNIVERSE_DENOMINATOR_CODE_FIREWALL_CLOSED_NO_OUTCOME_OR_PHYSICAL_HISTORY_CREDIT"
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Primary dual track remains physical: consume a real W0 exact-window continuity receipt and a future genuine ordinary-session V8.20 Formal-to-C1 parent. If both exist, apply the new post-reset 20-session shortcut before the existing D03-10 parent/L3 oracles; shortcut eligibility may eliminate irrelevant older transformed history only, never another gate. D03-09 still needs FULL_REPLAY or separately certified trusted-state parity. Keep raw third-session, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent."
+}
