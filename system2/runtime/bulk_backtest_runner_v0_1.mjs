@@ -649,6 +649,9 @@ export async function runBulkBacktestV0_1({
     reconcileUniverseReceiptMembersV0_1(universeReceipt, universe);
     const eligible = universe.filter((x) => !x.excluded && x.replayEligible);
     const excludedCount = universe.length - eligible.length;
+    if (eligible.length === 0 && universeReceipt.emptyUniverseProven !== true) {
+      throw new Error("zero-sample completion requires proved empty PIT universe");
+    }
     const dateStateCounts = {};
     let dateSampleCount = 0;
     let selectedCount = 0;
