@@ -2,6 +2,7 @@ import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
 
 export const CORPORATE_ACTION_CONTINUITY_ARCHIVE_VERSION = "0.1-RESEARCH";
+export const CORPORATE_ACTION_COMPLETENESS_RECEIPT_V0_2_VERSION = "0.2-RESEARCH";
 
 const EXCHANGES = new Set(["TWSE", "TPEX"]);
 const KNOWLEDGE_TIME_MODES = new Set([
@@ -365,6 +366,89 @@ function coverageRowSatisfied(row, startDate, endDate) {
   );
 }
 
+const HASH64 = /^[a-f0-9]{64}$/;
+
+function safeIsoDate(value) {
+  try {
+    return isoDate(value, "suspensionEvidence.date");
+  } catch {
+    return null;
+  }
+}
+
+function safeIsoTimestamp(value) {
+  try {
+    return isoTimestamp(value, "suspensionEvidence.timestamp");
+  } catch {
+    return null;
+  }
+}
+
+function normalizeSuspensionEvidenceV0_2({
+  exchange,
+  evidence,
+  startDate,
+  endDate,
+} = {}) {
+  const ex = normalizeExchange(exchange);
+  const row = evidence && typeof evidence === "object" && !Array.isArray(evidence)
+    ? evidence
+    : {};
+  const blockers = [];
+  const coverageState = typeof row.coverageState === "string"
+    ? row.coverageState.trim().toUpperCase()
+    : "UNKNOWN";
+  const requestedStartDate = safeIsoDate(row.requestedStartDate);
+  const requestedEndDate = safeIsoDate(row.requestedEndDate);
+  const sourceId = optionalText(row.sourceId);
+  const sourceFamily = optionalText(row.sourceFamily);
+  const sourceContractVersion = optionalText(row.sourceContractVersion);
+  const receiptDigest = typeof row.receiptDigest === "string" &&
+    HASH64.test(row.receiptDigest.trim().toLowerCase())
+    ? row.receiptDigest.trim().toLowerCase()
+    : null;
+  const observedAt = safeIsoTimestamp(row.observedAt);
+  const availableAt = row.availableAt === null || row.availableAt === undefined || row.availableAt === ""
+    ? null
+    : safeIsoTimestamp(row.availableAt);
+  const availabilitySemantics = typeof row.availabilitySemantics === "string"
+    ? row.availabilitySemantics.trim().toUpperCase()
+    : null;
+
+  if (coverageState !== "COMPLETE") blockers.push("SUSPENSION_EVIDENCE_COVERAGE_NOT_COMPLETE");
+  if (requestedStartDate !== startDate || requestedEndDate !== endDate) {
+    blockers.push("SUSPENSION_EVIDENCE_INTERVAL_MISMATCH");
+  }
+  if (!sourceId) blockers.push("SUSPENSION_EVIDENCE_SOURCE_ID_MISSING");
+  if (!sourceFamily) blockers.push("SUSPENSION_EVIDENCE_SOURCE_FAMILY_MISSING");
+  if (!sourceContractVersion) blockers.push("SUSPENSION_EVIDENCE_SOURCE_CONTRACT_VERSION_MISSING");
+  if (!receiptDigest) blockers.push("SUSPENSION_EVIDENCE_RECEIPT_DIGEST_INVALID");
+  if (!observedAt) blockers.push("SUSPENSION_EVIDENCE_OBSERVED_AT_INVALID");
+  if (!["PROSPECTIVE_OBSERVED", "VERIFIED_SOURCE_TIMESTAMP"].includes(availabilitySemantics)) {
+    blockers.push("SUSPENSION_EVIDENCE_AVAILABILITY_SEMANTICS_INVALID");
+  }
+  if (availabilitySemantics === "VERIFIED_SOURCE_TIMESTAMP" && !availableAt) {
+    blockers.push("SUSPENSION_EVIDENCE_AVAILABLE_AT_REQUIRED");
+  }
+
+  return deepFreeze({
+    exchange: ex,
+    coverageState,
+    requestedStartDate,
+    requestedEndDate,
+    sourceId,
+    sourceFamily,
+    sourceContractVersion,
+    receiptDigest,
+    observedAt,
+    availableAt,
+    availabilitySemantics,
+    evidenceReady: blockers.length === 0,
+    blockerCodes: sortedUnique(blockers),
+    immutable: true,
+  });
+}
+
 export function buildCorporateActionCompletenessReceiptV0_1({
   startDate,
   endDate,
@@ -464,6 +548,91 @@ export function buildCorporateActionCompletenessReceiptV0_1({
     orderImpact: false,
     system1RuntimeUsed: false,
   });
+}
+
+export async function buildCorporateActionCompletenessReceiptV0_2({
+  startDate,
+  endDate,
+  universeVersion,
+  universeCoverageComplete,
+  requiredSourceContracts = [],
+  sourceCoverage = [],
+  eventVersions = [],
+  suspensionCoverageByExchange = {},
+  suspensionEvidenceByExchange = {},
+  generatedAt,
+} = {}) {
+  const legacy = buildCorporateActionCompletenessReceiptV0_1({
+    startDate,
+    endDate,
+    universeVersion,
+    universeCoverageComplete,
+    requiredSourceContracts,
+    sourceCoverage,
+    eventVersions,
+    suspensionCoverageByExchange,
+    generatedAt,
+  });
+
+  const requiredExchanges = sortedUnique(
+    legacy.requiredSourceContracts.map((row) => row.exchange),
+  );
+  const normalizedSuspensionEvidence = {};
+  for (const exchange of requiredExchanges) {
+    normalizedSuspensionEvidence[exchange] = normalizeSuspensionEvidenceV0_2({
+      exchange,
+      evidence: suspensionEvidenceByExchange?.[exchange],
+      startDate: legacy.interval.startDate,
+      endDate: legacy.interval.endDate,
+    });
+  }
+
+  const suspensionCoverageComplete = requiredExchanges.every((exchange) =>
+    suspensionCoverageByExchange?.[exchange] === "COMPLETE" &&
+    normalizedSuspensionEvidence[exchange]?.evidenceReady === true
+  );
+  const symbolSessionCompletenessEvidenceReady =
+    legacy.eventCoverageComplete && suspensionCoverageComplete;
+
+  const base = {
+    schemaVersion: "S2_CA_COMPLETENESS_RECEIPT_V0_2",
+    version: CORPORATE_ACTION_COMPLETENESS_RECEIPT_V0_2_VERSION,
+    interval: legacy.interval,
+    universeVersion: legacy.universeVersion,
+    universeCoverageComplete: legacy.universeCoverageComplete,
+    requiredSourceContracts: legacy.requiredSourceContracts,
+    sourceContractResults: legacy.sourceContractResults,
+    sourceCoverageComplete: legacy.sourceCoverageComplete,
+    revisionCoverageComplete: legacy.revisionCoverageComplete,
+    archiveUnambiguous: legacy.archiveUnambiguous,
+    eventCoverageComplete: legacy.eventCoverageComplete,
+    noEventMayBeClaimed: legacy.noEventMayBeClaimed,
+    suspensionCoverageByExchange: deepFreeze({ ...suspensionCoverageByExchange }),
+    suspensionEvidenceByExchange: deepFreeze(normalizedSuspensionEvidence),
+    suspensionCoverageComplete,
+    symbolSessionCompletenessEvidenceReady,
+    eventReconciliation: legacy.eventReconciliation,
+    generatedAt: legacy.generatedAt,
+    evidenceBoundSuspensionCompleteness: true,
+    legacyStatusOnlyCompletenessAccepted: false,
+
+    // Promotion firewalls. This core can establish evidence readiness only.
+    symbolSessionCompletenessCertified: false,
+    technicalContinuityCertified: false,
+    continuityTransformPerformed: false,
+    historyMutationPerformed: false,
+    strategyEvaluationPerformed: false,
+    capacityRunProduced: false,
+    zeroPickClaimed: false,
+    selectionAuthority: false,
+    finalSelectionEnabled: false,
+    livePushEnabled: false,
+    capitalImpact: false,
+    orderImpact: false,
+    system1RuntimeUsed: false,
+  };
+  const receiptHash = await sha256Hex(base);
+  return deepFreeze({ ...base, receiptHash });
 }
 
 export function classifyCorporateActionSymbolWindowV0_1({
