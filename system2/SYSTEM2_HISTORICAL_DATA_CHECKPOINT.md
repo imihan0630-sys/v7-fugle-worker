@@ -1473,3 +1473,20 @@ Observed for **completed 2026-10-08 market date**, fetched at 2026-10-09 ~06:40 
 Durable evidence: `system2/evidence/S2_RECENT60_20261008_HOT_D1_VS_PIT_PHYSICAL_SAMPLE_V0_1.json`.
 
 Protected boundaries unchanged: System1 Formal Core/runtime, System2 selection/ranking, capital, orders, production push and strategy performance all untouched.
+
+## 2026-10-09 06:45 Asia/Taipei — Full immutable Action artifact readback clarifies 60-session hot gap coverage
+
+After PR #915/#916, independently opened immutable GitHub Action artifact `11583895434` from run `37854849181` (digest `sha256:36c24b4b8b908afaa27247791fae7d478a584d953cebaf60066137bf08b81242`). This is a **retrospective 2026-10-08 market-date investigation** run 2026-10-09, not a replay-time/prospective availability receipt.
+
+Complete exact-session *PIT-eligible* gap taxonomy:
+- TWSE: current 1,086; 22 history-ready; 1,064 expected-session-missing symbols; **24,431 missing expected PIT symbol-sessions**.
+- TPEx: current 886; 24 history-ready; 862 expected-session-missing symbols; **19,825 missing expected PIT symbol-sessions**.
+- Combined: 1,972 current symbols, 46 history-ready, **0 independently continuity-ready**, 1,926 symbol-first-blocker PIT-session missing; **44,256 missing expected PIT symbol-sessions**.
+- **1,451 symbols had unexpected selected PIT dates**: strong old-date-substitution diagnostic; do not count 60 arbitrary historical bars as exact last-60-session readiness. These categories overlap with expected-date missing and must not be added as separate missing-symbol totals.
+- Other taxonomy: 13 listing-age-limited, 0 ambiguous-revision symbols under this observation; required prior-session window 60.
+
+Sampled physical hot D1 identity readback: worst exact-session missing symbols, six per market (`TWSE:1563,6949,2321,3356,3591,6550` and `TPEX:3710,4747,6129,8059,8277,6461`). The 8 examined dates per symbol were **2026-07-14, 07-15, 07-16, 07-17, 07-20, 07-21, 07-22, 07-23**, hence **96/96 hot D1 RAW source identities absent** (not randomly sampled). This does **not** prove cold R2 / official source absence or PIT first-known on the examined prior date. The readback consumed 489,866 D1 reads and **0 writes**.
+
+Durable detailed proof: `system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json`. Source raw GitHub artifact remains separate and immutable.
+
+Priorities: (1) inspect 2026 early-July month cold R2 receipts and hot D1 ingestion coverage before costly writes, (2) preserve expected-versus-observed exact date-set hashes (avoid older-row substitution), (3) involve REMEDIATION_LANE for account D1 write budget (no unapproved overlapping writers), (4) pursue real exact-window corporate-action/lifecycle completeness for 46 history-ready symbols (NC-T01 still blocked).
