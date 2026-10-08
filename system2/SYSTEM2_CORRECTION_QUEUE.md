@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-08T22:59:13+08:00
+Updated: 2026-10-09T00:38:06+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1258,7 +1258,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T10:59:00+08:00
 - severity: HIGH
-- status: FIX_IMPLEMENTED
+- status: VERIFYING
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - blockedBy: none (former CORR-007 prerequisite independently VERIFIED_CLOSED; CORR-008 remains OPEN)
@@ -1276,7 +1276,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   6. fail-closed regressions for mutation/origin attempts and missing/incomplete guard.
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
-- finalDisposition: FIX_IMPLEMENTED — measured pre-transport D1/network runtime guard is merged; independent AUDIT_LANE verification is required before VERIFIED_CLOSED; no physical S22-T12/S22-T16 credit from code CI.
+- finalDisposition: VERIFYING — independent AP-008-A writable PRAGMA and AP-008-B mutable statement.sql batch TOCTOU counterexamples block closure; BUILD patch and physical W0 remain pending.
 - independent AUDIT_LANE prerequisite release: PR #871 / main `35295e412911193a49f332496821fc42f8ff5f6d` resolved only CORR-007 code provenance; physical W0 and CORR-008 runtime guard not credited.
 - latest-main recheck: PR #844 head `9d690d1` is 416 commits behind main and unmergeable; use exact-head reconciliation before replacement/merge.
 - independent remaining-gate matrix: `system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json`.
@@ -1297,6 +1297,14 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Manual physical V0.2 is `workflow_dispatch` only; CI does not consume a real continuity receipt and does not claim physical independence.
 - Durable evidence: `system2/evidence/S2_CORR_008_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
 - BUILD_LANE does **not** self-close this HIGH correction; independent AUDIT_LANE verification is still required.
+
+#### Independent AUDIT_LANE fail-closed verification — 2026-10-09 00:38
+
+- Negative audit: `system2/evidence/S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json`.
+- AP-008-A: the allowed `PRAGMA` prefix also admits `PRAGMA user_version=1729` and `PRAGMA writable_schema=ON`; independent SQLite replay confirms state mutation. No claim of a physical Cloudflare D1 write.
+- AP-008-B: `batch(statements)` checks `statement.sql` before passing the original mutable statement to `db.batch`, leaving a getter/TOCTOU gap. Deterministic JS pass-through probe delivered a later `UPDATE` string after the lexical checks saw `SELECT`.
+- Required: BUILD whitelist truly read-only PRAGMAs, freeze/canonicalize D1 batch statements, add adversarial tests proving zero transport calls, and rerun exact-head CI. This finding blocks `VERIFIED_CLOSED`, regardless of earlier CI PASS.
+
 
 ### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
 
