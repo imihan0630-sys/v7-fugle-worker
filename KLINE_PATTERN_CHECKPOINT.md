@@ -6788,3 +6788,64 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~134 before physical R7 emission.
 5. D16 receives identity-resolution/alias-lineage/collision metadata with full denominators.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-135~137 (2026-10-08)
+
+### DL-135 — same-issuer different-security-class firewall
+- Same issuer does not imply same security.
+- Domestic ordinary common equity remains the D01 first-wave class.
+- Preferred equity / TDR / warrant / convertible or exchangeable bond / subscription right / payment certificate and other non-ordinary classes do not silently enter ordinary-equity history.
+- Same issuer + different securityClass => separate security identity.
+- Class conversion/exercise/redemption does not create one continuous OHLC path without explicit canonical equivalence.
+- Different classes may have different price units/reference rules/expiry/leverage/liquidity mechanics, so issuer identity is not a price-pattern common parent.
+
+### DL-136 — issuer-event context vs security opportunity
+- One issuer event receives issuerEventContextId and may be referenced by multiple security-level R7 observations.
+- Each security still preserves its own securityIdentity/securityClass/history/session/pattern episode.
+- Multiple affected securities are not aliases.
+- One issuer event affecting common/preferred/warrant does not create one independent vote per security.
+- Cross-security price geometry is not a D01 common parent.
+- Shared issuer event becomes a dependency cluster for D16, not a vote multiplier.
+
+### DL-137 — security-class transition/conversion admission
+- SAME_SECURITY_CLASS_ADMINISTRATIVE_CHANGE may preserve history only with identity and price-space proof.
+- DIFFERENT_CLASS_SUCCESSOR_SECURITY / CONVERSION_INTO_EXISTING_COMMON_SHARE / CONVERSION_INTO_NEW_COMMON_SHARE / MULTI_CONSIDERATION_TRANSITION break source-instrument pattern continuity.
+- CB/warrant/preferred history may not be inserted into common-share history.
+- Existing common-share target preserves its own historical lineage.
+- Newly created target common security uses DL-126 listing warmup and cannot borrow non-equity predecessor bars.
+- Mixed cash/securities/fractional consideration payoff transforms remain outside D01.
+
+### Test evidence
+- DL-132~134:
+  27/27 PASS.
+- DL-135~137:
+  25/25 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-137:
+  645/645 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- ISSUER_ALIAS_FIREWALL = FROZEN.
+- SAME_CODE_COLLISION_FIREWALL = FROZEN.
+- R1_R7_ALIAS_LINEAGE_INTEGRATION = FROZEN.
+- SECURITY_CLASS_FIREWALL = FROZEN.
+- ISSUER_EVENT_SECURITY_OPPORTUNITY_SPLIT = FROZEN.
+- CLASS_TRANSITION_ADMISSION = FROZEN.
+- SAME_ISSUER_EXTRA_PATTERN_VOTE = PROHIBITED.
+- CROSS_CLASS_HISTORY_STITCH = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-137
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze odd-lot/regular-lot and alternate trading-channel representation identity so the same common-share price event cannot be duplicated across trading venues/lot regimes as separate pattern evidence.
+4. If R1-R6 appear, validate DL-095 plus DL-108~137 before physical R7 emission.
+5. D16 receives issuer-event dependency and security-class metadata with the full denominator.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
