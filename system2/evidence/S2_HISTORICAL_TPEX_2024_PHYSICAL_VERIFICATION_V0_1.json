@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TPEX_2024_PHYSICAL_VERIFICATION_V0_1",
+  "recordedAt": "2026-10-08T10:53:18+08:00",
+  "owner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "market": "TPEX",
+  "year": 2024,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "workflow": {
+    "name": "System2 Historical Pack Annual Backfill",
+    "runNumber": 31,
+    "runId": 37714783081,
+    "jobId": 113108678259,
+    "headSha": "2efda20852d4083a4d57faab3643455f9f166dde",
+    "conclusion": "success"
+  },
+  "resumePreflight": {
+    "state": "PARTIAL_RESUME_CANDIDATE",
+    "manifestCount": 500,
+    "manifestBarCount": 119720,
+    "checkpointExpectedPackCount": 844,
+    "checkpointExpectedBarCount": 198856,
+    "checkpointManifestCommittedCount": 500,
+    "checkpointObjectReadyCount": 500,
+    "duplicateLogicalKeyCount": 0,
+    "objectHeadFailureCount": 0,
+    "rowsWritten": 0
+  },
+  "annualBackfill": {
+    "state": "YEAR_BACKFILL_COMPLETE",
+    "tradingDateCount": 242,
+    "officialRowCount": 198856,
+    "packCount": 844,
+    "symbolCount": 844,
+    "insertedObjectCount": 344,
+    "identicalObjectCount": 500,
+    "insertedManifestCount": 344,
+    "identicalManifestCount": 500,
+    "d1RowsWritten": 2482,
+    "objectBackend": "CLOUDFLARE_R2_S3",
+    "objectBucket": "system2-historical-research"
+  },
+  "physicalVerification": {
+    "result": "PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS",
+    "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_7",
+    "storage": {
+      "receiptId": "S2HCR-67fa033b62de1ed7fcf7984d0238184461cbbc40a8d5ad579e172a4852dfaf11",
+      "completionReceiptState": "COMPLETE",
+      "manifestRollingHash": "67fa033b62de1ed7fcf7984d0238184461cbbc40a8d5ad579e172a4852dfaf11",
+      "checkpointState": "COMPLETE",
+      "packCount": 844,
+      "barCount": 198856,
+      "checkpointObjectReadyCount": 844,
+      "checkpointManifestCommittedCount": 844,
+      "headObjectCountVerified": 844,
+      "byteGetObjectCountVerified": 844,
+      "state": "PASS"
+    },
+    "sourceReconciliation": {
+      "state": "PASS",
+      "dataIntegrityState": "PASS",
+      "sourceVersionState": "STABLE",
+      "coldRowCount": 198856,
+      "freshOfficialRowCount": 198856,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0,
+      "canonicalA1ValueMismatchCount": 0,
+      "sourceRevisionOnlyCount": 0,
+      "sourceRevisionDateCount": 0,
+      "officialTradingDates": 242
+    },
+    "historicalUniverse": {
+      "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+      "registryId": "S2-DATA-TPEX-2024-OBSERVED-INTERVAL-V0.1",
+      "registryHash": "6eb7f77aee31c08182d17b1058ba79a2a96d0661acf23319cb97ecc7a59242e5",
+      "membershipCount": 844,
+      "replayEligibleCount": 844,
+      "currentCount": 826,
+      "observedHistoricalOnlyCount": 18,
+      "officialDelistingUnionComplete": false
+    },
+    "coverage": {
+      "membershipSessionDenominator": 199209,
+      "actualBars": 198856,
+      "missingBars": 353,
+      "unknownBars": 353,
+      "suspensionClassifiedMissingBars": 0,
+      "unexpectedBars": 0,
+      "missingReasonCounts": {
+        "UNKNOWN_SYMBOL_SESSION_GAP": 353
+      },
+      "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+      "overallState": "PARTIAL",
+      "replayReadinessState": "PARTIAL"
+    },
+    "suspensionEvidence": {
+      "state": "OBSERVED_POSITIVE_INTERVALS_UNCERTIFIED_HISTORY",
+      "sourceUrl": "https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis",
+      "intervalCount": 19,
+      "absenceCertifiesNoSuspension": false
+    },
+    "cmodeEvidence": {
+      "state": "PARTIAL_POSITIVE_SESSION_EVIDENCE",
+      "queriedDateCount": 242,
+      "successfulDateCount": 0,
+      "partialDateCount": 242,
+      "positiveStopSessionCount": 0,
+      "intervalCount": 0,
+      "reclassifiedUnknownBars": 0,
+      "beforeUnknownBars": 353,
+      "afterUnknownBars": 353,
+      "reason": "All date-scoped HTTP responses were 200 but lacked response-level reportDate identity, so the v0.7 parser fail-closed as SOURCE_DATE_IDENTITY_UNCERTIFIED. No UNKNOWN gap was relabeled."
+    },
+    "d1RowsWritten": 0
+  },
+  "artifact": {
+    "id": 11524379580,
+    "name": "system2-historical-coverage-TPEX-2024",
+    "digest": "sha256:7f28194f94130db89b2f9d28677d3570ef3a7e921a6e3d307fb71ec31547f2b1",
+    "expired": false
+  },
+  "system1Isolation": "PASS",
+  "interpretation": [
+    "2024/TPEX cold data coverage is physically accepted.",
+    "Replay readiness remains PARTIAL because 353 symbol-session gaps remain explicitly UNKNOWN and the TPEx historical-universe official delisting union is incomplete.",
+    "The cmode supplement failed closed and did not manufacture suspension classifications.",
+    "This acceptance removes 2024/TPEX from the annual blocker set; the next annual physical targets are 2025/TWSE then 2025/TPEX."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime change",
+    "No strategy/ranking/final-selection/capital/order authority change",
+    "No synthetic OHLCV",
+    "No favorable relabeling of unresolved lifecycle gaps"
+  ]
+}
