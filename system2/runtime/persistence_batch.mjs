@@ -397,6 +397,65 @@ export async function buildSystem2PersistenceBatch({
   return deepFreeze({ ...base, batchHash });
 }
 
+export async function rebuildAndVerifySystem2PersistenceBatch(batch) {
+  if (!batch || typeof batch !== "object" || Array.isArray(batch)) {
+    throw new Error("persistence batch is required");
+  }
+  if (!Array.isArray(batch.operations)) {
+    throw new Error("batch.operations must be an array");
+  }
+
+  const records = batch.operations.map((operation, index) => {
+    if (!operation || typeof operation !== "object" || Array.isArray(operation)) {
+      throw new Error(`batch.operations[${index}] must be an object`);
+    }
+    return {
+      table: operation.table,
+      row: operation.row,
+    };
+  });
+
+  const canonical = await buildSystem2PersistenceBatch({
+    batchId: batch.batchId,
+    marketDate: batch.marketDate,
+    decisionTimestamp: batch.decisionTimestamp,
+    records,
+    createdAt: batch.createdAt,
+  });
+
+  if (batch.batchHash !== canonical.batchHash) {
+    throw new Error("PERSISTENCE_BATCH_HASH_MISMATCH");
+  }
+  if (batch.operationCount !== canonical.operationCount) {
+    throw new Error("PERSISTENCE_BATCH_OPERATION_COUNT_MISMATCH");
+  }
+
+  for (let index = 0; index < canonical.operations.length; index += 1) {
+    const supplied = batch.operations[index];
+    const expected = canonical.operations[index];
+    if (supplied?.rowDigest !== expected.rowDigest) {
+      throw new Error(`PERSISTENCE_ROW_DIGEST_MISMATCH:${index}`);
+    }
+    if (supplied?.identityDigest !== expected.identityDigest) {
+      throw new Error(`PERSISTENCE_IDENTITY_DIGEST_MISMATCH:${index}`);
+    }
+    if (supplied?.identityKey !== expected.identityKey) {
+      throw new Error(`PERSISTENCE_IDENTITY_MISMATCH:${index}`);
+    }
+    if (canonicalStringify(supplied?.identity) !== canonicalStringify(expected.identity)) {
+      throw new Error(`PERSISTENCE_IDENTITY_OBJECT_MISMATCH:${index}`);
+    }
+    if (canonicalStringify(supplied?.sql) !== canonicalStringify(expected.sql)) {
+      throw new Error(`PERSISTENCE_SQL_PLAN_MISMATCH:${index}`);
+    }
+  }
+
+  if (canonicalStringify(batch) !== canonicalStringify(canonical)) {
+    throw new Error("PERSISTENCE_BATCH_CANONICAL_MISMATCH");
+  }
+  return canonical;
+}
+
 export function compareExistingRow(operation, existingRow) {
   if (!operation || typeof operation !== "object") throw new Error("operation is required");
   if (existingRow === null || existingRow === undefined) {
