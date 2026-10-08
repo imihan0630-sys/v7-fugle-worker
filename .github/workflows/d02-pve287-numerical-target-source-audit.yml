@@ -1,0 +1,24 @@
+name: D02 PVE287 Numerical Target Source Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve287_numerical_target_source_audit_v0_1.json"
+      - "research/d02_pve287_numerical_target_source_audit_guard_v0_1.mjs"
+      - "tests/test_d02_pve287_numerical_target_source_audit_guard_v0_1.mjs"
+      - ".github/workflows/d02-pve287-numerical-target-source-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve287_numerical_target_source_audit_guard_v0_1.mjs
