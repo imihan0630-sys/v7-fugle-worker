@@ -1375,7 +1375,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1387,7 +1387,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. bind dataset, policy registration, evaluator/code, factors, Regime, execution and cost assumptions into run identity;
   4. reject zero-sample completion without a proved empty PIT universe.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-04.
-- finalDisposition: FIX_IMPLEMENTED — bulk-backtest checkpoint/PIT-universe/run identity is fail-closed; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
+- finalDisposition: VERIFIED_CLOSED — independently verified original code firewall; no physical/OOS/production acceptance.
 
 
 
@@ -1403,12 +1403,14 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Durable evidence: `system2/evidence/S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
 - Old handoff PR #869 is stale and must not replay its older governance files over current main.
 - BUILD_LANE does **not** self-close this CRITICAL correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
+- independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_20261008_V0_1.json` (merged-code identity, targeted adversarial tests and GitHub Actions PASS, with explicit limits).
+
 
 ### S2-CORR-20261008-015 — D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed: a future 2030, `pointInTimeEligible=false` global-transmission context became a KNOWN RISK_ON dimension inside a 2026 vector marked PIT eligible.
@@ -1418,7 +1420,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. fail affected activation, attribution and transition policy to UNKNOWN;
   4. verify component and vector hashes before downstream use.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-07.
-- finalDisposition: FIX_IMPLEMENTED — per-dimension Regime PIT/source/hash evidence is fail-closed; independent AUDIT_LANE verification is still required before VERIFIED_CLOSED.
+- finalDisposition: VERIFIED_CLOSED — independently verified original code firewall; no physical/OOS/production acceptance.
 
 
 #### BUILD implementation handoff — 2026-10-08 19:15
@@ -1433,3 +1435,5 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Merged-main PASS: CORR-015 `37768765685`; System2 Research CI `37768765738`; V8 Regression `37768765666`.
 - Durable evidence: `system2/evidence/S2_CORR_015_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
 - BUILD_LANE does **not** self-close this CRITICAL correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
+- independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_20261008_V0_1.json` (merged-code identity, targeted adversarial tests and GitHub Actions PASS, with explicit limits).
+

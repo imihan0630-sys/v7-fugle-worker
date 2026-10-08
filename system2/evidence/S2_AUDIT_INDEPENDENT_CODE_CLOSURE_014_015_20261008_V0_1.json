@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_V0_1",
+  "recordedAt": "2026-10-08T20:20:19+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "scope": "CRITICAL_CODE_FIREWALL_ONLY",
+  "auditedMainQueueBlob": "70505bd04e45ad966da4e2e2b0ff32526906f9dd",
+  "correctedIssues": [
+    {
+      "directiveId": "S2-CORR-20261008-014",
+      "implementationMergeCommit": "4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7",
+      "programBlobsUnchangedOnAuditedMain": [
+        {
+          "path": "system2/runtime/bulk_backtest_runner_v0_1.mjs",
+          "blobSha": "83d76c6bc4e5af2811ecf9fca2b22f10349300cb"
+        },
+        {
+          "path": "system2/runtime/historical_cold_pack_store_v0_1.mjs",
+          "blobSha": "279477e515a64056b79f67cc8bfc3f1ee1a43f09"
+        }
+      ],
+      "adversarialChecksReviewed": [
+        "AP-04 forged checkpoint hash rejected before universe/history loader or evaluator",
+        "tampered checkpoint with recomputed self hash fails full accounting reconciliation",
+        "historical PIT universe receipt member set mismatch fails before loader/evaluator",
+        "zero-sample completed run requires proved empty PIT universe",
+        "future membership-end field cannot enter strategy-visible universe",
+        "plan-identity hash binds cost/policy/evaluator/factor/regime/selection contract"
+      ],
+      "verifiedGitHubActions": [
+        {
+          "runId": 37744022901,
+          "job": "verify",
+          "conclusion": "success",
+          "step": "CORR-014 adversarial checkpoint and PIT-universe firewall"
+        },
+        {
+          "runId": 37744022808,
+          "job": "verify",
+          "conclusion": "success",
+          "step": "System2 Research CI"
+        },
+        {
+          "runId": 37744023076,
+          "job": "regression",
+          "conclusion": "success",
+          "step": "V8 Regression"
+        }
+      ],
+      "decision": "VERIFIED_CLOSED_FOR_ORIGINAL_PIT_UNIVERSE_AND_REPLAY_CHECKPOINT_CODE_FIREWALL",
+      "nonClaims": [
+        "No full-market historical data qualification",
+        "No prospective OOS or proven strategy alpha",
+        "No permission to promote live selection, push, funds or orders"
+      ]
+    },
+    {
+      "directiveId": "S2-CORR-20261008-015",
+      "implementationMergeCommit": "591728bfc1a2569e0bd5eb0d10ce71f8dd3e8055",
+      "programBlobsUnchangedOnAuditedMain": [
+        {
+          "path": "system2/runtime/d18_observable_regime_vector_v0_1.mjs",
+          "blobSha": "28e2cec54071da0a75cf37806da4f53b2041277a"
+        },
+        {
+          "path": "system2/runtime/d18_regime_attribution_v0_1.mjs",
+          "blobSha": "1f21e692f706ec0d881b7d9421eda4d966b5d5d4"
+        },
+        {
+          "path": "system2/runtime/d18_regime_transition_v0_1.mjs",
+          "blobSha": "710f2c425a618845ba6fb7a0ac9614f973329519"
+        },
+        {
+          "path": "system2/runtime/d18_strategy_activation_frame_v0_1.mjs",
+          "blobSha": "2e2c8cbf96a124bdb8ccef76193037d51efe3bf9"
+        },
+        {
+          "path": "system2/runtime/d18_strategy_dependence_panel_v0_1.mjs",
+          "blobSha": "d9fa7e4b8319c720a7c6d2d6b8e9aac0e2126de1"
+        }
+      ],
+      "adversarialChecksReviewed": [
+        "AP-07 future explicitly non-PIT global transmission becomes UNKNOWN and pointInTimeEligible=false",
+        "36 optional-dimension negative cases reject future/non-PIT/source-hash-invalid input without leaking known context",
+        "internal vector hash remains valid while contaminated dimensions remain UNKNOWN, not silently promoted",
+        "strategy activation abstains on UNKNOWN; contaminated context cannot generate POLICY_ENABLED or POLICY_DISABLED",
+        "attribution/transition and cross-strategy common-support consumers require bound vector and component identities"
+      ],
+      "verifiedGitHubActions": [
+        {
+          "runId": 37768765685,
+          "job": "verify",
+          "conclusion": "success",
+          "step": "CORR-015 adversarial Regime PIT matrix"
+        },
+        {
+          "runId": 37768765738,
+          "job": "verify",
+          "conclusion": "success",
+          "step": "System2 Research CI"
+        },
+        {
+          "runId": 37768765666,
+          "job": "regression",
+          "conclusion": "success",
+          "step": "V8 Regression"
+        }
+      ],
+      "decision": "VERIFIED_CLOSED_FOR_ORIGINAL_D18_REGIME_PIT_CODE_FIREWALL",
+      "nonClaims": [
+        "No claims of regime alpha, OOS validity or predictive performance",
+        "No System 2 production activation or final selection permission",
+        "No physical NC-T01 S22-T11..16 acceptance"
+      ]
+    }
+  ],
+  "independence": {
+    "implementationOwner": "BUILD_LANE",
+    "verificationOwner": "AUDIT_LANE",
+    "verificationMethod": "independent comparison of current main runtime blobs to merged implementations, independent review of adversarial regression assertions, GitHub Actions job and step conclusions retrieved directly; audit does not claim separate local dynamic re-execution",
+    "sourceOfTruth": "main"
+  },
+  "protectedBoundaries": [
+    "System1 Formal Core locked",
+    "System2 strategy thresholds/weights/ranking unchanged by this audit",
+    "No live push, capital, orders or selection authority change"
+  ],
+  "remainingGates": [
+    "S2-CORR-20261008-008 read-only physical NC-T01 guard pending",
+    "S2-CORR-20261008-011/012/013 HIGH defects pending BUILD implementation",
+    "DATA_LANE 2024 TPEx historical and real bounded TWTAWU physical receipts pending",
+    "REMEDIATION_LANE D1 quota writer coordination pending"
+  ]
+}
