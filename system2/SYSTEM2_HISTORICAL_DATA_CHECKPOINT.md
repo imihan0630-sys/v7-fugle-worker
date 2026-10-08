@@ -1236,3 +1236,89 @@ Do not infer no suspension from empty rows alone.
 Do not guess the official export URL.
 Do not hard-code the witness.
 No D1 mutation is required for this evidence task.
+
+
+## 2026-10-08 2024 TPEx annual physical acceptance — Run #31
+
+Fresh latest-main annual run:
+- workflow: `System2 Historical Pack Annual Backfill`;
+- run number: `#31`;
+- run id: `37714783081`;
+- job id: `113108678259`;
+- head: `2efda20852d4083a4d57faab3643455f9f166dde`;
+- conclusion: `SUCCESS`;
+- inputs: `2024 / TPEX`.
+
+Resume behavior:
+- read-only annual resume preflight PASS;
+- prior durable partial state: 500 manifests / 119720 bars;
+- expected complete state: 844 packs / 198856 bars;
+- no duplicate logical manifest keys;
+- no R2 HEAD failures;
+- preflight D1 rowsWritten = 0;
+- state `PARTIAL_RESUME_CANDIDATE`, resume authorized.
+
+Annual backfill:
+- `YEAR_BACKFILL_COMPLETE`;
+- 242 official trading dates;
+- 198856 official rows;
+- 844 packs / 844 symbols;
+- 344 new R2 objects + 500 immutable identical objects;
+- 344 new manifests + 500 immutable identical manifests;
+- D1 rowsWritten = 2482.
+
+Physical storage/source verification:
+- completion receipt `S2HCR-67fa033b62de1ed7fcf7984d0238184461cbbc40a8d5ad579e172a4852dfaf11` COMPLETE;
+- manifest rolling hash matches the receipt;
+- checkpoint COMPLETE;
+- R2 HEAD verified `844/844`;
+- R2 byte-GET verified `844/844`;
+- cold rows = fresh official rows = `198856`;
+- missing-from-cold = 0;
+- absent-from-fresh = 0;
+- source-row-hash mismatch = 0;
+- canonical A1 value mismatch = 0;
+- source revision-only = 0;
+- source version = `STABLE`.
+
+Coverage:
+- membership-session denominator = `199209`;
+- actual bars = `198856`;
+- missing = `353`;
+- UNKNOWN = `353`;
+- unexpected bars = `0`;
+- data coverage = `PASS`;
+- replay readiness = `PARTIAL`;
+- universe readiness = `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`;
+- official TPEx delisting union remains incomplete.
+
+TPEx halt/lifecycle evidence:
+- `sprcHis` positive interval state = `OBSERVED_POSITIVE_INTERVALS_UNCERTIFIED_HISTORY`, 19 intervals;
+- cmode supplement state = `PARTIAL_POSITIVE_SESSION_EVIDENCE`;
+- cmode queried 242 dates, but every date remained source-date-identity uncertified because the HTTP-200 payloads did not expose a response-level `reportDate`;
+- cmode reclassified UNKNOWN bars = `0`;
+- before/after UNKNOWN = `353 -> 353`;
+- therefore no unresolved gap was opportunistically relabeled.
+
+Artifact:
+- id `11524379580`;
+- digest `sha256:7f28194f94130db89b2f9d28677d3570ef3a7e921a6e3d307fb71ec31547f2b1`;
+- durable repository evidence:
+  `system2/evidence/S2_HISTORICAL_TPEX_2024_PHYSICAL_VERIFICATION_V0_1.json`.
+
+System1 production isolation PASS.
+
+DATA_LANE disposition:
+`2024/TPEX = DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
+
+Aggregate annual status for completed calendar years 2017-2025:
+- expected annual market-year legs: 18;
+- accepted: 16;
+- remaining annual blockers: exactly `2025/TWSE` and `2025/TPEX`.
+
+Exact annual continuation:
+`2025/TWSE -> 2025/TPEX -> 2026 segmented -> aggregate replay qualification`.
+
+The separate TPEx cmode date-identity defect remains a lifecycle-source refinement issue; it does not invalidate the accepted 2024/TPEX raw/cold physical coverage.
+
+No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.
