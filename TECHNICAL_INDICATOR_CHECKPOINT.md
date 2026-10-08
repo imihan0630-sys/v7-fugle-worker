@@ -8681,3 +8681,139 @@ Independent gates still open:
 - System2 D03 raw-vs-dedup diagnostics;
 - System1 D03 redundancy diagnostics;
 - D16 D03 predictive incrementality.
+
+
+## 2026-10-08 D03 — TI-1619~1636 third raw completed-session physical gate closure
+
+Canonical D03 artifact:
+- `research/d03_third_raw_session_physical_acceptance_20261008_v0_1.json`.
+
+Canonical workflow:
+- `D03 Third Raw Session Capture Readonly`;
+- run `37801356231`;
+- job `113394105056`;
+- head `3d5c646920cd9075a3897dc5acf84af172086979`;
+- conclusion SUCCESS.
+
+Canonical uploaded artifact:
+- id `11561016595`;
+- name `d03-third-raw-session-20261008`;
+- digest `sha256:d466f1d0e4353e9f9279fe449e18e88754f11b4945502797ba5260560ec1b417`.
+
+### TI-1619~1623 — preregistered three-session count is physically met
+
+Artifact ledger readback:
+- chainValid = true;
+- entryCount = 28;
+- prospectiveCompletedTradingSessionsObserved = 3;
+- requiredProspectiveCompletedTradingSessions = 3;
+- coverageGate = `THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING`;
+- latestBatchTradeDate = 2026-10-08;
+- afterHoursRepeatIntervalObserved = true.
+
+Therefore the old visible state:
+`RAW_RECEIPT_GATE_2_OF_3`
+is stale and must no longer be reported.
+
+Canonical replacement:
+`THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING`.
+
+This closes the preregistered completed-session count only.
+It does not close the broader PIT/source-lineage stack.
+
+### TI-1624~1628 — same-date repeated raw versions are stable in this physical run
+
+Two independent same-date captures were completed.
+
+All four official endpoint payload hashes are identical across the first and repeat captures:
+- TWSE current = `2271989da2b9eba6a5e0072e9d0928b2c8a0dc6da37d58d265f1858ce22b29bb`;
+- TWSE historical = `2b20b3916c53d14acf53b365aab749c779ad2b8f0c8bfe064ace2fef407e69c8`;
+- TPEx current = `62ef8965893b3bf882054b09beec3007ff19a5527c457af490e9f16077207fc1`;
+- TPEx historical = `65023a6204cb68246085e2a4a6fe6b81f5b9bec19d88422f8953e44c1772b15a`.
+
+Ledger aggregate:
+- repeatedVersionComparisons = 16;
+- unchangedByteComparisons = 16;
+- changedByteComparisons = 0.
+
+Scientific limit:
+finite unchanged comparisons do not prove zero revisions.
+`revisionIncidence` remains UNKNOWN.
+
+### TI-1629~1631 — endpoint freshness is preserved rather than laundered
+
+2026-10-08 completed-session physical state:
+- TWSE historical = 2026-10-08, 1,380 rows;
+- TPEx historical = 2026-10-08, 12,221 rows;
+- TPEx current = 2026-10-08;
+- TWSE current still reports 2026-10-07.
+
+Therefore:
+- TPEx current-vs-historical OHLC projection = `NO_D03_OHLC_ROW_CHANGE`, 12,221 unchanged, zero added/removed/changed;
+- TWSE current-vs-historical = `NOT_COMPARABLE_TRADE_DATE_MISMATCH`.
+
+The stale TWSE current endpoint is not an error in the completed-session historical capture and does not invalidate the third-session count.
+It also cannot be reinterpreted as same-date parity.
+
+This preserves source freshness truthfully instead of forcing a green parity state.
+
+### TI-1632~1634 — what the three-session closure does NOT prove
+
+Still independently UNKNOWN / pending:
+- independent source attestation;
+- certified symbol-session receipt;
+- corporate-action ancestry;
+- immutable parent-child reconciliation;
+- W0 real technical-continuity receipt;
+- genuine V8.20 Formal-to-C1 parent;
+- D16 predictive incrementality;
+- predictive outcomes.
+
+The fixed-cadence observer remains outcome-blind.
+
+No outcome join is opened.
+No Formal optimization candidate is created.
+
+### TI-1635 — D03-09 / D03-10 consequence
+
+D03-09 ADX:
+- raw completed-session count is no longer a blocker;
+- canonical FULL_REPLAY / trusted-state certification remains;
+- real W0, genuine parent, Layer-C and parent reconciliation remain.
+
+D03-10 Bollinger:
+- raw completed-session count is no longer a blocker;
+- first promotion target remains unchanged;
+- W0 + genuine parent remain primary;
+- parent-specific 20-session post-reset shortcut remains available once both physical inputs exist.
+
+### TI-1636 — maturity / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- active modules = 12;
+- 10 at current L3/60 milestone;
+- D03-09 / D03-10 = L2/40;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Raw observer state:
+`THREE_SESSION_COUNT_MET_OTHER_PIT_GATES_PENDING`.
+
+Primary dual track:
+1. W0 — first real exact-window source-honest technical-continuity receipt;
+2. Parent — next genuine ordinary-session immutable C1 generation with authoritative V8.20 Formal-to-C1 binding.
+
+When both exist:
+- D03-10 runs post-reset parent shortcut then canonical Bollinger L3 + parent-binding oracles;
+- D03-09 remains FULL_REPLAY / replay-certified trusted-state.
+
+Independent remaining gates:
+- independent raw-source attestation;
+- certified symbol-session / corporate-action lineage;
+- immutable parent-child reconciliation;
+- T48 generation-set finalization;
+- S2-07 stabilization;
+- System2 D03 raw-vs-dedup diagnostics;
+- System1 D03 redundancy diagnostics;
+- D16 D03 predictive incrementality.
