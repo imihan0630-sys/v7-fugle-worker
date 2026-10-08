@@ -6624,3 +6624,88 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~128 before physical R7 emission.
 5. D16 receives listing-age/warmup/identity-transition metadata and keeps short-history rows in the denominator.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-129~131 (2026-10-08)
+
+### DL-129 — listing-day / early-life price discovery
+- Frozen price-discovery classes:
+  NEW_SECURITY_INITIAL_LISTING_PRICE_DISCOVERY;
+  SAME_SECURITY_TRANSFER_LISTING_PRICE_DISCOVERY;
+  SUCCESSOR_SECURITY_INITIAL_LISTING_PRICE_DISCOVERY;
+  RELISTING_REENTRY_PRICE_DISCOVERY;
+  MATURE_CONTINUOUS_TRADING.
+- Initial-listing/public-offering/transfer reference bases are market-mechanism anchors, not ordinary prior-close observations.
+- D01-02 first completed bar may be described geometrically but must retain priceDiscoveryClass.
+- D01-03 and D01-07 require enough same-security history unless DL-123 same-security transfer continuity passes.
+- D01-09:
+  new-security first day has no ordinary prior-close gap;
+  same-security transfer uses MARKET_MIGRATION_BOUNDARY_GAP;
+  successor uses IDENTITY_TRANSITION_REFERENCE_DISTANCE.
+- listingAgeEligibleSessions remains continuous context; no post-hoc bullish/bearish age threshold is invented.
+
+### DL-130 — transfer-listing / listing-mechanic placebo registry
+- Placebo/control families frozen before outcomes:
+  SAME_SECURITY_NON_TRANSITION_GEOMETRY;
+  REFERENCE_BASIS_MECHANIC;
+  FIRST_SESSION_PRICE_DISCOVERY;
+  SAME_SECURITY_TRANSFER_VS_NEW_SECURITY_LISTING;
+  MIGRATION_BOUNDARY_VS_ORDINARY_GAP.
+- First-session morphology must be compared on transition-class/listing-age common support.
+- New-security listing, same-security transfer listing and successor-security listing cannot be pooled as one event class.
+- Reference-basis mechanics may not be credited as pattern Alpha.
+- Any residual pattern effect remains only a candidate pending D16 OOS/multiplicity/common-support validation.
+
+### DL-131 — listing-cohort survivorship firewall
+- Historical listing cohort predictor may use:
+  listingStart;
+  listingAgeEligibleSessions;
+  security identity;
+  then-current market/lifecycle state.
+- Predictor may not use:
+  future delisting;
+  future migration;
+  future successor identity;
+  future survival duration;
+  present-day listing status as historical eligibility.
+- Current survivors alone cannot define historical listing cohorts.
+- Later-delisted/migrated/converted/short-lived securities remain denominator-accounted through the PIT historical universe.
+- Terminal state may appear only on the outcome/descriptive side after the proper unlock.
+
+### Test evidence
+- DL-122~125:
+  34/34 PASS.
+- DL-126~128:
+  23/23 PASS.
+- DL-129~131:
+  23/23 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-131:
+  593/593 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SECURITY_IDENTITY_TRANSITION_FIREWALL = FROZEN.
+- CROSS_MARKET_PATTERN_CONTINUITY = FROZEN.
+- SUCCESSOR_PATTERN_BREAK = FROZEN.
+- SYMBOL_REUSE_TRANSITION_DEDUP = FROZEN.
+- LISTING_WARMUP = FROZEN.
+- RELISTING_STALE_ANCHOR = FROZEN.
+- LISTING_AGE_COMMON_SUPPORT = FROZEN.
+- EARLY_LIFE_PRICE_DISCOVERY = FROZEN.
+- LISTING_MECHANIC_PLACEBOS = FROZEN.
+- LISTING_COHORT_SURVIVORSHIP = FROZEN.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-131
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze corporate-name / issuer-identity alias changes and same-code different-issuer collision handling across long historical windows, then integrate that alias lineage into R1/R7 opportunity identity.
+4. If R1-R6 appear, validate DL-095 plus DL-108~131 before physical R7 emission.
+5. D16 receives listing-mechanic placebo, listing-age/cohort, security-identity and transition-class metadata with full denominators.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
