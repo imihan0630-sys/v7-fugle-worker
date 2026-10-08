@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09T00:38:06+08:00
+Updated: 2026-10-09T01:32:28+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1449,6 +1449,13 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - finalDisposition: PENDING
 - independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-05 MFE/MAE nulled and holding/cost/strategy lineage rewritten without blockers`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
+#### AUDIT_LANE additional independent edge matrix — 2026-10-09 01:32
+
+- Evidence: `system2/evidence/S2_AUDIT_CORR012_013_NINE_NEGATIVE_EDGE_MATRIX_20261009_V0_1.json`.
+- PR #908 independently authored/merged; Actions `37817121691` ran all 5 cost/strategy/closed-holding/MFE/MAE rewrite probes; all classified `UNSAFE`.
+- Research `37817122614` and V8 Regression `37817121306` succeeded, meaning the probe execution was valid, **not** that the vulnerability was fixed.
+- Status stays `OPEN`, assigned to BUILD_LANE. Neither original acceptance nor physical/production readiness is credited.
+
 
 ### S2-CORR-20261008-013 — Execution/outcome session validation can misclassify unknown entry windows and accept reversed dates
 
@@ -1467,6 +1474,13 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-06.
 - finalDisposition: PENDING
 - independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-06 missing OHLC falsely finalized NO_FILL; reversed market dates accepted`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
+
+#### AUDIT_LANE additional independent edge matrix — 2026-10-09 01:32
+
+- Evidence: `system2/evidence/S2_AUDIT_CORR012_013_NINE_NEGATIVE_EDGE_MATRIX_20261009_V0_1.json`.
+- PR #908 independently authored/merged; Actions `37817121691` ran all 4 invalid/duplicate/unqualified calendar and partial-OHLC probes; all classified `UNSAFE`.
+- Research `37817122614` and V8 Regression `37817121306` succeeded, meaning the probe execution was valid, **not** that the vulnerability was fixed.
+- Status stays `OPEN`, assigned to BUILD_LANE. Neither original acceptance nor physical/production readiness is credited.
 
 
 ### S2-CORR-20261008-014 — Bulk backtest can accept forged completion checkpoints and unproven PIT universes
