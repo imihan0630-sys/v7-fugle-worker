@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "S2_2026_TWSE_SEGMENT_RUN2_D1_DAILY_QUOTA_FAILURE_V0_1",
+  "source": {
+    "runId": 37769681911,
+    "runNumber": 2,
+    "jobId": 113285895378,
+    "event": "workflow_dispatch",
+    "branch": "main",
+    "headSha": "f839e8ee961b85f3ec6af939455d6a023e759c0f",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37769681911",
+    "createdAt": "2026-10-08T11:23:08Z",
+    "completedAt": "2026-10-08T11:23:20Z",
+    "status": "completed",
+    "conclusion": "failure"
+  },
+  "verification": {
+    "failedJob": "migrate",
+    "failedStep": "Migrate isolated System2 D1 additive segmented-cold schema",
+    "failedIn": "system2/deploy/provision_system2_d1.mjs:111",
+    "logError": "Your account has exceeded D1's free tier daily row write limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue.",
+    "cloudflareHttpStatus": 400,
+    "backfillJob": "skipped",
+    "physicalArtifactsCreated": 0,
+    "completedMonthCountFromThisRun": 0,
+    "previousD1ReceiptsRead": false,
+    "system1FormalCoreChanged": false
+  },
+  "diagnosis": {
+    "classification": "CLOUDFLARE_D1_FREE_DAILY_ROW_WRITE_QUOTA_EXCEEDED",
+    "reason": "workflow redundantly provisions isolated D1 schema and write/read verification sentinels on every segmented-backfill dispatch although the isolated D1 schema 1.1 and segment tables already exist",
+    "previousD1Evidence": "Read-only inventory run 37766622566 showed TWSE January-June 2026 COMPLETE D1 control-plane receipts, checkpoints and manifests.",
+    "resetBoundary": "2026-10-09T00:00:00Z",
+    "resetBoundaryTaipei": "2026-10-09T08:00:00+08:00",
+    "billingDecision": "DO_NOT_UPGRADE_AUTOMATICALLY",
+    "integrity": "NO_BACKFILL_ATTEMPT_AND_NO_NEW_MONTH_SUCCESS_CLAIM"
+  },
+  "repair": {
+    "workflow": ".github/workflows/system2-historical-current-year-segment-backfill.yml",
+    "replacement": "Zero-write existing-schema preflight via isolated D1 SELECT and PRAGMA only, required table/column validation, no CREATE, no INSERT, no sentinel",
+    "files": [
+      "system2/runtime/historical_segment_schema_readonly_v0_1.mjs",
+      "system2/scripts/historical_segment_schema_readonly_preflight_v0_1.mjs",
+      "system2/tests/historical_segment_schema_readonly_v0_1.test.mjs"
+    ],
+    "semantics": "fail closed on absent schema, wrong schema version, missing columns, read-only failure or D1 rowsWritten > 0. Separate explicitly authorized provisioning workflow required for migration.",
+    "safety": "No System1 formal core or production runtime changes."
+  },
+  "next": "After CI and main merge, do not dispatch write-heavy monthly backfill until Cloudflare reset at 08:00 Taipei on 2026-10-09 and single D1 writer / quota headroom check. Validate immutable prior Jan-Jun receipts and Jul-Sep physical verification after successful controlled rerun."
+}

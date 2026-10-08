@@ -1406,3 +1406,17 @@ This change has **no retrospective write**: January–June immutable receipts re
 Evidence: `system2/evidence/S2_2026_SEGMENT_OBSERVATION_CLOCK_FIX_HANDOFF_20261008_V0_1.json`.
 
 No System1 Formal Core/runtime, strategies, ranking, final selection, capital, orders, or production push changed.
+
+
+## 2026-10-08 19:23 Asia/Taipei — TWSE current-year segmented Run #2 D1 daily quota stop; zero-write preflight correction
+
+Run: [37769681911](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37769681911), started 2026-10-08 19:23:08 Asia/Taipei, terminal FAILURE at 19:23:20, head `f839e8ee961b85f3ec6af939455d6a023e759c0f`.
+- `migrate` job failed before `backfill` could start; `backfill` SKIPPED.
+- Exact Cloudflare D1 HTTP 400: **Your account has exceeded D1's free tier daily row write limit**. The exhausted operation occurred inside `system2/deploy/provision_system2_d1.mjs` at line 111, while the segmented workflow unnecessarily repeated complete schema provisioning and write/read sentinels per dispatch.
+- This run created **no new 2026 segment backfill acceptance**. Previously confirmed 2026/TWSE January–June D1 complete receipts from read-only inventory run `37766622566` remain the latest verified control-plane baseline; July–September still require physical completion.
+- D1 free-tier reset named by provider: **midnight UTC / 2026-10-09 08:00 Asia/Taipei**. Do **not** upgrade billing without owner approval and do not blindly dispatch more write-heavy workflows before reset.
+- Controlled DATA_LANE fix `system2-data/2026-segments-zero-write-preflight-20261008`: remove repeated D1 migration/provisioning from current-year backfill dispatch, replace with **zero-write read-only verification** of existing isolated `system2-research` schema version 1.1 and required segmented tables/columns. Fail closed when a table/column/version is missing; independent authorized migration remains separate. New dedicated unit and guard tests protect this boundary.
+- Canonical failure evidence: `system2/evidence/S2_2026_TWSE_SEGMENT_RUN2_D1_QUOTA_PREFLIGHT_RECOVERY_20261008_V0_1.json`.
+- Acceptance gates: PR CI PASS + V8 regression PASS, merge and read back latest main; only after D1 quota reset and single-writer/no-collision confirmation execute one controlled 2026 TWSE segmented rerun; validate old receipts are reused without modification and July–September R2 byte-GET/official date identity/evidence are PASS.
+- System1 Formal Core, V8 production runtime, orders, capital, push, signals and source-integrity semantics remain untouched.
+

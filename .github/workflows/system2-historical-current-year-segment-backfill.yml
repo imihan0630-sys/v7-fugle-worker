@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  migrate:
+  preflight:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: system2-research
@@ -30,15 +30,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Migrate isolated System2 D1 additive segmented-cold schema
+      - name: Verify existing System2 segmented schema without any D1 writes
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
-        run: node system2/deploy/provision_system2_d1.mjs
+        run: node system2/scripts/historical_segment_schema_readonly_preflight_v0_1.mjs
 
   backfill:
-    needs: migrate
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 180
     environment: system2-research
