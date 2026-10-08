@@ -6116,3 +6116,104 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095, emit R7 under DL-097/DL-098, then apply DL-103~105 version invariance.
 5. Once physical R1-R7 exists, release the already-frozen DL-107 package to D16.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-108~112 (2026-10-08)
+
+### DL-108 — source-vintage equivalence / historical receipt immutability
+- Source capture identity, semantic identity, knowledge-time identity and D01 replay identity are now explicitly separated.
+- Frozen source-revision classes:
+  BYTE_REFRESH_SEMANTICALLY_EQUIVALENT;
+  PARSER_EQUIVALENT_REPARSE;
+  DUPLICATE_OBSERVATION_SAME_SEMANTIC_VERSION;
+  METADATA_ONLY_NON_CAUSAL_CHANGE;
+  SEMANTIC_REVISION;
+  KNOWLEDGE_CLOCK_REVISION;
+  COVERAGE_EXPANSION.
+- Exact replay equivalence requires same query/window, semantic set, PIT clocks, exactSessionHash, sourceHistoryHash, denominator state and canonical R7 payload.
+- A newer archive may improve current truth but may not mutate an old R7 receipt.
+- PIT_VIEW and BEST_KNOWN_CURRENT_VIEW are now separate research objects.
+
+### DL-109 — corporate-action registry revision causality
+- Later corporate-action revisions are classified by when the corrected information was knowable.
+- PREEXISTING_PUBLIC_INFORMATION_BACKFILL:
+  information was public by the old cutoff but the research pipeline missed it;
+  this is a pipeline error and corrected replay is required.
+- LATE_PUBLIC_CORRECTION / LATE_CANCELLATION:
+  information became knowable only after the old cutoff;
+  old PIT predictor is not backdated.
+- Effective-date / continuity-effect corrections use the same knowledge-time split.
+- A current revisionCoverageComplete/completeness certificate is validation evidence, not automatically historical predictor information.
+- Final holdout already opened cannot be reset to untouched by later data correction.
+
+### DL-110 — source-vintage migration ledger / holdout firewall
+- Source-vintage migration is append-only.
+- Old/new sourceHistoryHash, registry version, continuity receipt and R7 receipt are all versioned.
+- Outcome-access state at correction discovery is frozen.
+- Pre-outcome pipeline repair may replay cleanly before outcomes.
+- Development-outcome-open repair becomes a new analysis version.
+- Final-holdout-open/consumed repair is diagnostic/sensitivity evidence and requires fresh confirmation unless a preregistered error-correction policy already governs the case.
+- Source correction never resets a consumed holdout.
+- Revision-denominator changes must remain visible.
+- Revised named child and common parent must use identical revised support.
+
+### DL-111 — R1-R6 revision blast-radius matrix
+- R1 membership/security revision changing window identity => all affected downstream D01 receipts replay.
+- R2 price correction => all D01 price consumers using the bar replay.
+- R2 volume-only correction => D02 context by default; not a D01 price revision.
+- R3 symbol-session revision changing eligible date set => all affected downstream D01 receipts replay.
+- R4 continuity revision => every module consuming affected continuity bars replays.
+- R5 reference/limit revision primarily affects D01-09 unless another module explicitly consumed that context.
+- R6 matching/disposition revision affects only frozen context-dependent consumers; it does not rewrite raw OHLC.
+- expectedSessionHash/sourceHistoryHash/continuityTransformHash change forces versioned downstream replay.
+
+### DL-112 — outcome-blind revision sensitivity audit
+- Old/new source-vintage replay is compared before outcomes.
+- Frozen representation-change classes:
+  UNCHANGED_REPRESENTATION;
+  VALUE_ONLY_CHANGE_SAME_STATE;
+  FEATURE_STATE_CHANGE;
+  EPISODE_IDENTITY_CHANGE;
+  CLOCK_CHANGE;
+  WINDOW_IDENTITY_CHANGE;
+  NEWLY_EVALUABLE;
+  NO_LONGER_EVALUABLE;
+  UNKNOWN_BLOCKED.
+- Sensitivity is reported continuously over the full affected denominator.
+- Results must be stratified by D01 module and R1-R6 revision family.
+- No post-hoc 5%/10% robustness threshold may be invented after counts are observed.
+- Representation stability/fragility is not alpha.
+
+### Test evidence
+- DL-108~110: 27/27 PASS.
+- DL-111~112: 25/25 PASS.
+- This tranche: 52/52 PASS.
+- Cumulative through DL-112: 409/409 PASS.
+- Native Node parity and OOS/prospective performance are not claimed.
+
+### Physical owner readback
+- No physical 1101 / 2021-06-15 R1-R6 owner bundle was found before this tranche.
+- Physical R7 remains blocked.
+- D01 did not implement duplicate System2/D05 collectors.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SOURCE_VINTAGE_FIREWALL = FROZEN.
+- CORPORATE_ACTION_REVISION_CAUSALITY = FROZEN.
+- SOURCE_VINTAGE_MIGRATION_LEDGER = FROZEN.
+- REVISION_BLAST_RADIUS_MATRIX = FROZEN.
+- OUTCOME_BLIND_REVISION_SENSITIVITY = FROZEN.
+- SDA-001 / SDA-002 remain open under their existing cross-system/D16/00 gates.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-112
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new D01-owned outcome-blind science.
+3. Candidate next science:
+   freeze source-revision impact on cross-scale aggregation / derived higher-timeframe bars and ensure one low-level correction cannot generate multiple synthetic evidence revisions.
+4. If R1-R6 appear, validate DL-095 and DL-108~112 before physical R7 emission.
+5. Once physical R1-R7 exists, attach revision-vintage metadata to the already frozen DL-107 D16 handoff.
+6. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
