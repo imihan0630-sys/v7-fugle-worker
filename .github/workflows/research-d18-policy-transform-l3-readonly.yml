@@ -1,0 +1,34 @@
+name: Research D18 Policy Transform L3 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d18_policy_transform_l3_v0_1.mjs"
+      - "tests/test_d18_policy_transform_l3_v0_1.mjs"
+      - ".github/workflows/research-d18-policy-transform-l3-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run D18-09 and D18-12 L3 falsification suite
+        run: node tests/test_d18_policy_transform_l3_v0_1.mjs
+      - name: Confirm research-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|deploy|CLOUDFLARE|ADMIN_TOKEN|V7_ADMIN_TOKEN|livePush|sendLine|THREEMIN|fetch\(|D1|INSERT|UPDATE|DELETE|CREATE TABLE|DROP TABLE' research/d18_policy_transform_l3_v0_1.mjs
+          grep -F 'selectionImpact: false' research/d18_policy_transform_l3_v0_1.mjs
+          grep -F 'rankingImpact: false' research/d18_policy_transform_l3_v0_1.mjs
+          grep -F 'capitalImpact: false' research/d18_policy_transform_l3_v0_1.mjs
+          echo "Research-only D18 policy-transform boundary PASS"
