@@ -97,6 +97,7 @@ jobs:
           python3 scripts/apply_v8_20_0.py
           python3 scripts/apply_v8_20_1.py
           python3 scripts/apply_v8_20_2.py
+          python3 scripts/apply_v8_21_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -105,7 +106,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.20.2-idempotent-d1-snapshots";' Worker.js
+          grep -F 'const VERSION = "8.21.0-c1-generation-set-finalization";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
@@ -243,6 +244,7 @@ jobs:
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
           node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
+          node tests/test_system1_c1_generation_finalization_v8_21_0.mjs
           node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
