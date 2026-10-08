@@ -191,6 +191,8 @@ export async function buildNct01TwseClearNoActionPromotionReceiptV0_1({
     : "";
   const evidenceCapturedAt = isoTimestamp(capturedAt, "capturedAt");
   const emittedAt = isoTimestamp(generatedAt || capturedAt, "generatedAt");
+  let verifiedArchiveReceiptHash = null;
+  let twseSuspensionEvidence = null;
 
   if (replayIdentity.state !== "READY" || !hash64(replayIdentity.sourceHistoryHash)) {
     blockers.push("REPLAY_SOURCE_IDENTITY_NOT_READY");
@@ -202,6 +204,74 @@ export async function buildNct01TwseClearNoActionPromotionReceiptV0_1({
     blockers.push("CORPORATE_ACTION_COMPLETENESS_RECEIPT_MISSING");
   }
   if (archiveReceipt) {
+    if (archiveReceipt.schemaVersion !== "S2_CA_COMPLETENESS_RECEIPT_V0_2") {
+      blockers.push("CORPORATE_ACTION_COMPLETENESS_RECEIPT_V0_2_REQUIRED");
+    }
+    if (archiveReceipt.evidenceBoundSuspensionCompleteness !== true) {
+      blockers.push("SUSPENSION_EVIDENCE_BOUND_SEMANTICS_REQUIRED");
+    }
+    if (!hash64(archiveReceipt.receiptHash)) {
+      blockers.push("ARCHIVE_RECEIPT_HASH_INVALID");
+    } else {
+      const { receiptHash, ...archiveHashBase } = archiveReceipt;
+      const recomputedArchiveHash = await sha256Hex(archiveHashBase);
+      if (recomputedArchiveHash !== receiptHash) {
+        blockers.push("ARCHIVE_RECEIPT_HASH_MISMATCH");
+      } else {
+        verifiedArchiveReceiptHash = receiptHash;
+      }
+    }
+    twseSuspensionEvidence = archiveReceipt.suspensionEvidenceByExchange?.TWSE || null;
+    if (!twseSuspensionEvidence || typeof twseSuspensionEvidence !== "object") {
+      blockers.push("TWSE_SUSPENSION_EVIDENCE_MISSING");
+    } else {
+      if (twseSuspensionEvidence.exchange !== "TWSE") blockers.push("TWSE_SUSPENSION_EVIDENCE_EXCHANGE_MISMATCH");
+      if (twseSuspensionEvidence.coverageState !== "COMPLETE") blockers.push("TWSE_SUSPENSION_EVIDENCE_NOT_COMPLETE");
+      if (twseSuspensionEvidence.evidenceReady !== true) blockers.push("TWSE_SUSPENSION_EVIDENCE_NOT_READY");
+      if (!hash64(twseSuspensionEvidence.receiptDigest)) blockers.push("TWSE_SUSPENSION_EVIDENCE_DIGEST_INVALID");
+      if (typeof twseSuspensionEvidence.sourceId !== "string" || !twseSuspensionEvidence.sourceId) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_SOURCE_ID_MISSING");
+      }
+      if (typeof twseSuspensionEvidence.sourceFamily !== "string" || !twseSuspensionEvidence.sourceFamily) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_SOURCE_FAMILY_MISSING");
+      }
+      if (
+        typeof twseSuspensionEvidence.sourceContractVersion !== "string" ||
+        !twseSuspensionEvidence.sourceContractVersion
+      ) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_SOURCE_CONTRACT_VERSION_MISSING");
+      }
+      if (twseSuspensionEvidence.requestedStartDate !== replayIdentity.firstSelectedDate) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_WINDOW_START_MISMATCH");
+      }
+      if (twseSuspensionEvidence.requestedEndDate !== replayIdentity.lastSelectedDate) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_WINDOW_END_MISMATCH");
+      }
+      const suspensionObservedAt =
+        typeof twseSuspensionEvidence.observedAt === "string" &&
+        Number.isFinite(Date.parse(twseSuspensionEvidence.observedAt))
+          ? new Date(twseSuspensionEvidence.observedAt).toISOString()
+          : null;
+      const suspensionAvailableAt =
+        typeof twseSuspensionEvidence.availableAt === "string" &&
+        Number.isFinite(Date.parse(twseSuspensionEvidence.availableAt))
+          ? new Date(twseSuspensionEvidence.availableAt).toISOString()
+          : null;
+      if (!suspensionObservedAt) blockers.push("TWSE_SUSPENSION_EVIDENCE_OBSERVED_AT_INVALID");
+      if (
+        twseSuspensionEvidence.availabilitySemantics === "PROSPECTIVE_OBSERVED" &&
+        suspensionObservedAt &&
+        Date.parse(suspensionObservedAt) > Date.parse(decisionTimestamp)
+      ) {
+        blockers.push("TWSE_SUSPENSION_EVIDENCE_OBSERVED_AFTER_DECISION");
+      }
+      if (twseSuspensionEvidence.availabilitySemantics === "VERIFIED_SOURCE_TIMESTAMP") {
+        if (!suspensionAvailableAt) blockers.push("TWSE_SUSPENSION_EVIDENCE_AVAILABLE_AT_REQUIRED");
+        else if (Date.parse(suspensionAvailableAt) > Date.parse(decisionTimestamp)) {
+          blockers.push("TWSE_SUSPENSION_EVIDENCE_AVAILABLE_AFTER_DECISION");
+        }
+      }
+    }
     if (archiveReceipt.eventCoverageComplete !== true) blockers.push("EVENT_COVERAGE_NOT_COMPLETE");
     if (archiveReceipt.noEventMayBeClaimed !== true) blockers.push("NO_EVENT_NOT_CLAIMABLE");
     if (archiveReceipt.suspensionCoverageComplete !== true) blockers.push("SUSPENSION_COVERAGE_NOT_COMPLETE");
@@ -277,6 +347,29 @@ export async function buildNct01TwseClearNoActionPromotionReceiptV0_1({
       const matched = (result.satisfyingSourceIds || []).some((sourceId) => refIds.has(sourceId));
       if (!matched) blockers.push("ARCHIVE_SOURCE_CONTRACT_NOT_BOUND_TO_SOURCE_REF");
     }
+
+    if (twseSuspensionEvidence && typeof twseSuspensionEvidence === "object") {
+      const expectedSourceId = twseSuspensionEvidence.sourceId || null;
+      const expectedDigest = twseSuspensionEvidence.receiptDigest || null;
+      const sourceIdMatched = refs.some((ref) => ref.sourceId === expectedSourceId);
+      const digestMatched = refs.some((ref) => ref.digest === expectedDigest);
+      const pairMatches = refs.filter(
+        (ref) => ref.sourceId === expectedSourceId && ref.digest === expectedDigest,
+      );
+      if (!pairMatches.length) {
+        if (sourceIdMatched && !digestMatched) blockers.push("TWSE_SUSPENSION_SOURCE_REF_DIGEST_MISMATCH");
+        else if (digestMatched && !sourceIdMatched) blockers.push("TWSE_SUSPENSION_SOURCE_REF_SOURCE_ID_MISMATCH");
+        else if (sourceIdMatched && digestMatched) blockers.push("TWSE_SUSPENSION_SOURCE_REF_PAIR_MISMATCH");
+        else blockers.push("TWSE_SUSPENSION_SOURCE_REF_MISSING");
+      } else {
+        const timingMatched = pairMatches.some((ref) =>
+          ref.observedAt === twseSuspensionEvidence.observedAt &&
+          ref.availableAt === (twseSuspensionEvidence.availableAt || null) &&
+          ref.availabilitySemantics === twseSuspensionEvidence.availabilitySemantics
+        );
+        if (!timingMatched) blockers.push("TWSE_SUSPENSION_SOURCE_REF_TIMING_MISMATCH");
+      }
+    }
   }
 
   const sourceFamily = requiredText(sourceFamilyVersion, "sourceFamilyVersion");
@@ -286,7 +379,7 @@ export async function buildNct01TwseClearNoActionPromotionReceiptV0_1({
   const engineVersion = requiredText(continuityEngineVersion, "continuityEngineVersion");
   const registryVersion = requiredText(corporateActionRegistryVersion, "corporateActionRegistryVersion");
 
-  const archiveReceiptHash = archiveReceipt ? await sha256Hex(archiveReceipt) : null;
+  const archiveReceiptHash = verifiedArchiveReceiptHash;
   const sourceEvidenceHash = refs.length ? await sha256Hex(refs) : null;
   const continuityTransformHash = hash64(replayIdentity.sourceHistoryHash)
     ? await sha256Hex({

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { sha256Hex } from "../runtime/decision_archive.mjs";
 import { buildPitReplayWindow } from "../runtime/pit_replay_v0_1.mjs";
-import { buildCorporateActionCompletenessReceiptV0_1 } from "../runtime/corporate_action_continuity_archive_v0_1.mjs";
+import { buildCorporateActionCompletenessReceiptV0_1, buildCorporateActionCompletenessReceiptV0_2 } from "../runtime/corporate_action_continuity_archive_v0_1.mjs";
 import {
   buildNct01ReplaySourceIdentityV0_1,
   buildNct01TwseClearNoActionPromotionReceiptV0_1,
@@ -81,8 +81,21 @@ const requiredSourceContracts = [
   { exchange: "TWSE", actionFamilyId: "PAR_VALUE_CHANGE", sourceClass: "HISTORICAL_ACTUAL_RESULT_RANGE" },
 ];
 
-function makeArchive() {
-  return buildCorporateActionCompletenessReceiptV0_1({
+const suspensionEvidence = {
+  exchange: "TWSE",
+  coverageState: "COMPLETE",
+  requestedStartDate: "2026-07-31",
+  requestedEndDate: marketDate,
+  sourceId: "TWSE-TWTAWU-BOUNDED",
+  sourceFamily: "TWTAWU",
+  sourceContractVersion: "TWSE-TWTAWU-BOUNDED-V0_2",
+  receiptDigest: "d".repeat(64),
+  observedAt: "2026-09-29T07:00:00Z",
+  availabilitySemantics: "PROSPECTIVE_OBSERVED",
+};
+
+function archiveBaseArgs() {
+  return {
     startDate: "2026-07-31",
     endDate: marketDate,
     universeVersion: "TWSE-NCT01-FIXTURE",
@@ -104,7 +117,22 @@ function makeArchive() {
     eventVersions: [],
     suspensionCoverageByExchange: { TWSE: "COMPLETE" },
     generatedAt: "2026-09-29T07:00:00Z",
+  };
+}
+
+async function makeArchive(overrides = {}) {
+  const evidence = overrides.suspensionEvidence === undefined
+    ? suspensionEvidence
+    : overrides.suspensionEvidence;
+  return buildCorporateActionCompletenessReceiptV0_2({
+    ...archiveBaseArgs(),
+    ...(overrides.archiveArgs || {}),
+    suspensionEvidenceByExchange: evidence ? { TWSE: evidence } : {},
   });
+}
+
+function makeLegacyArchive() {
+  return buildCorporateActionCompletenessReceiptV0_1(archiveBaseArgs());
 }
 
 async function makeSessionEvidence(replay) {
@@ -128,7 +156,7 @@ async function makeSessionEvidence(replay) {
   };
 }
 
-function sourceEvidenceRefs(observedAt = "2026-09-29T07:00:00Z") {
+function corporateActionSourceEvidenceRefs(observedAt = "2026-09-29T07:00:00Z") {
   return [0, 1, 2].map((i) => ({
     sourceId: "SRC-" + i,
     digest: String(i + 1).repeat(64),
@@ -137,11 +165,31 @@ function sourceEvidenceRefs(observedAt = "2026-09-29T07:00:00Z") {
   }));
 }
 
+function suspensionSourceEvidenceRef(overrides = {}) {
+  return {
+    sourceId: suspensionEvidence.sourceId,
+    digest: suspensionEvidence.receiptDigest,
+    observedAt: suspensionEvidence.observedAt,
+    availabilitySemantics: suspensionEvidence.availabilitySemantics,
+    ...overrides,
+  };
+}
+
+function sourceEvidenceRefs(observedAt = "2026-09-29T07:00:00Z", suspensionOverrides = {}) {
+  return [
+    ...corporateActionSourceEvidenceRefs(observedAt),
+    suspensionSourceEvidenceRef({
+      observedAt,
+      ...suspensionOverrides,
+    }),
+  ];
+}
+
 async function makeReceipt(replay, overrides = {}) {
   return buildNct01TwseClearNoActionPromotionReceiptV0_1({
     receiptId: overrides.receiptId || "NCT01-CONT-1101-A",
     replayWindow: replay,
-    archiveReceipt: makeArchive(),
+    archiveReceipt: overrides.archiveReceipt || await makeArchive(overrides.archiveOverrides),
     universeState: "IN_SCOPE",
     symbolSessionEvidence: await makeSessionEvidence(replay),
     sourceEvidenceRefs: overrides.sourceEvidenceRefs || sourceEvidenceRefs(),
@@ -171,12 +219,116 @@ assert.equal(replayIdentity.state, "READY", JSON.stringify(replayIdentity.blocke
 assert.match(replayIdentity.sourceHistoryHash, /^[a-f0-9]{64}$/);
 assert.equal(replayIdentity.selectedDates.length, 61);
 
+const legacyStatusOnlyReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-LEGACY-V01",
+  archiveReceipt: makeLegacyArchive(),
+});
+assert.equal(legacyStatusOnlyReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(legacyStatusOnlyReceipt.blockerCodes.includes("CORPORATE_ACTION_COMPLETENESS_RECEIPT_V0_2_REQUIRED"));
+assert.ok(legacyStatusOnlyReceipt.blockerCodes.includes("TWSE_SUSPENSION_EVIDENCE_MISSING"));
+
+const statusOnlyV02Archive = await makeArchive({ suspensionEvidence: null });
+const statusOnlyV02Receipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-V02-STATUS-ONLY",
+  archiveReceipt: statusOnlyV02Archive,
+});
+assert.equal(statusOnlyV02Receipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(statusOnlyV02Receipt.blockerCodes.includes("SUSPENSION_COVERAGE_NOT_COMPLETE"));
+assert.ok(statusOnlyV02Receipt.blockerCodes.includes("TWSE_SUSPENSION_EVIDENCE_NOT_READY"));
+
+const noSuspensionRefReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-NO-SUSPENSION-REF",
+  sourceEvidenceRefs: corporateActionSourceEvidenceRefs(),
+});
+assert.equal(noSuspensionRefReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(noSuspensionRefReceipt.blockerCodes.includes("TWSE_SUSPENSION_SOURCE_REF_MISSING"));
+
+const suspensionDigestMismatchReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-SUSP-DIGEST-MISMATCH",
+  sourceEvidenceRefs: [
+    ...corporateActionSourceEvidenceRefs(),
+    suspensionSourceEvidenceRef({ digest: "e".repeat(64) }),
+  ],
+});
+assert.equal(suspensionDigestMismatchReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(suspensionDigestMismatchReceipt.blockerCodes.includes("TWSE_SUSPENSION_SOURCE_REF_DIGEST_MISMATCH"));
+
+const suspensionSourceMismatchReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-SUSP-SOURCE-MISMATCH",
+  sourceEvidenceRefs: [
+    ...corporateActionSourceEvidenceRefs(),
+    suspensionSourceEvidenceRef({ sourceId: "TWSE-TWTAWU-OTHER" }),
+  ],
+});
+assert.equal(suspensionSourceMismatchReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(suspensionSourceMismatchReceipt.blockerCodes.includes("TWSE_SUSPENSION_SOURCE_REF_SOURCE_ID_MISMATCH"));
+
+const lateSuspensionEvidence = {
+  ...suspensionEvidence,
+  observedAt: "2026-09-29T08:00:00Z",
+};
+const lateSuspensionArchive = await makeArchive({ suspensionEvidence: lateSuspensionEvidence });
+const lateSuspensionReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-SUSP-LATE",
+  archiveReceipt: lateSuspensionArchive,
+  sourceEvidenceRefs: [
+    ...corporateActionSourceEvidenceRefs(),
+    {
+      sourceId: lateSuspensionEvidence.sourceId,
+      digest: lateSuspensionEvidence.receiptDigest,
+      observedAt: lateSuspensionEvidence.observedAt,
+      availabilitySemantics: "PROSPECTIVE_OBSERVED",
+    },
+  ],
+});
+assert.equal(lateSuspensionReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(lateSuspensionReceipt.blockerCodes.includes("SOURCE_EVIDENCE_OBSERVED_AFTER_DECISION"));
+assert.ok(lateSuspensionReceipt.blockerCodes.includes("TWSE_SUSPENSION_EVIDENCE_OBSERVED_AFTER_DECISION"));
+
+const verifiedLateEvidence = {
+  ...suspensionEvidence,
+  availabilitySemantics: "VERIFIED_SOURCE_TIMESTAMP",
+  availableAt: "2026-09-29T08:00:00Z",
+};
+const verifiedLateArchive = await makeArchive({ suspensionEvidence: verifiedLateEvidence });
+const verifiedLateReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-SUSP-VERIFIED-LATE",
+  archiveReceipt: verifiedLateArchive,
+  sourceEvidenceRefs: [
+    ...corporateActionSourceEvidenceRefs(),
+    {
+      sourceId: verifiedLateEvidence.sourceId,
+      digest: verifiedLateEvidence.receiptDigest,
+      observedAt: verifiedLateEvidence.observedAt,
+      availableAt: verifiedLateEvidence.availableAt,
+      availabilitySemantics: "VERIFIED_SOURCE_TIMESTAMP",
+    },
+  ],
+});
+assert.equal(verifiedLateReceipt.disposition, "CONTINUITY_UNKNOWN");
+assert.ok(verifiedLateReceipt.blockerCodes.includes("SOURCE_EVIDENCE_AVAILABLE_AFTER_DECISION"));
+assert.ok(verifiedLateReceipt.blockerCodes.includes("TWSE_SUSPENSION_EVIDENCE_AVAILABLE_AFTER_DECISION"));
+
+const changedSuspensionArchive = await makeArchive({
+  suspensionEvidence: { ...suspensionEvidence, receiptDigest: "f".repeat(64) },
+});
+const changedSuspensionReceipt = await makeReceipt(replay, {
+  receiptId: "NCT01-CONT-1101-A",
+  archiveReceipt: changedSuspensionArchive,
+  sourceEvidenceRefs: [
+    ...corporateActionSourceEvidenceRefs(),
+    suspensionSourceEvidenceRef({ digest: "f".repeat(64) }),
+  ],
+});
+assert.notEqual((await makeArchive()).receiptHash, changedSuspensionArchive.receiptHash);
+
 const receipt = await makeReceipt(replay);
 assert.equal(receipt.disposition, "CLEAR_NO_ACTION_ELIGIBLE");
 assert.equal(receipt.technicalContinuityCertified, true);
 assert.equal(receipt.symbolSessionCompletenessCertified, true);
 assert.equal(receipt.historyMutationPerformed, false);
 assert.match(receipt.receiptHash, /^[a-f0-9]{64}$/);
+assert.notEqual(receipt.receiptHash, changedSuspensionReceipt.receiptHash);
 
 const binding = await bindNct01ContinuityReceiptToReplayV0_1({
   continuityReceipt: receipt,
