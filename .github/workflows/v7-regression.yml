@@ -243,6 +243,7 @@ jobs:
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
           node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
+          node tests/test_system1_official_market_transport_v0_1.mjs
           node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
