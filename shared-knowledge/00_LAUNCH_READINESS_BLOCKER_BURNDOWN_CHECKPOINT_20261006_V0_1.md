@@ -1675,3 +1675,34 @@ BUILD_LANE should, where practical, make physical NC-T01 exercise this same genu
 provided each contract is independently satisfied and no synthetic fixture substitutes for live source evidence.
 
 No authority promotion is implied.
+
+## 2026-10-09 00:00 Taipei — 00 late-night tri-lane audit reconciliation
+
+Observed latest `main` before reconciliation: `8d8237d5c765782e120f2258d55633a7d2256aaa` (readback provenance only). This entry independently reconciles existing canonical receipts; no source/runtime tests were rerun by Room 00. Formal Core remains LOCKED.
+
+### Correction queue / BUILD_LANE
+- Canonical machine queue has 24 directives: {"FIX_IN_PROGRESS":1,"VERIFIED_CLOSED":16,"FIX_IMPLEMENTED":1,"REJECTED_WITH_EVIDENCE":1,"OPEN":5}; 16 VERIFIED_CLOSED, 1 REJECTED_WITH_EVIDENCE, 7 requiring action (5 OPEN + 1 FIX_IMPLEMENTED + 1 FIX_IN_PROGRESS).
+- `S2-CORR-20261008-007` is VERIFIED_CLOSED for the provenance code firewall only, following independent AUDIT_LANE acceptance PR #871 / merge `35295e412911193a49f332496821fc42f8ff5f6d`; this does **not** prove physical bounded TWTAWU evidence or NC-T01.
+- `S2-CORR-20261008-008` remains OPEN, now without the CORR-007 dependency. Physical wrapper PR #844 remains open and not mergeable at head `9d690d120d017c8fab5424c02e0dfb8a90008a49`; rebuild/rebase to current head, implement pre-transport D1 SQL and network-origin guards, same-cut measured ledger, chained digest and negative tests before any physical acceptance.
+- `S2-CORR-20261008-011/012/013` remain HIGH/OPEN. AUDIT_LANE PR #890 dynamic isolated dry-run evidence independently reproduced four UNSAFE outcomes, including UPDATE-as-INSERT SQL trust, MFE/MAE/provenance erasure, UNKNOWN-as-NO_FILL and reversed sessions. CI GREEN is a successful audit execution, **not** security closure. BUILD_LANE owns fixes and independently observed SAFE retests.
+- `S2-CORR-20261007-003` quota coordination is HIGH/OPEN, REMEDIATION_LANE owner. Prioritize shared UTC-day account-wide quota reservations protecting real Daily Shadow and prevent ordinary push high-write paths. No owner-approved paid tier.
+
+### DATA_LANE / revision-aware scope
+- `system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md` confirms **2017–2025 annual TWSE+TPEx physical raw market-year legs 18/18 accepted**, after 2025 TPEx run `37730512780`. This **does not** certify full PIT replay, continuity, delisting completeness, or Stage-1.
+- 2026/TWSE January–June had independent R2 HEAD + full byte SHA proof 6461/6461, 124650 bars in run `37771226567`; their earlier observation/completion-clock provenance remains PRE_FIX and needs separate audit. July–September and 2026 TPEx segmentation remain unaccepted.
+- 2026/TWSE segmented run `37769681911` failed at D1 provisioning quota before backfill; next write retry must await actual reset/headroom, read-only zero-write preflight acceptance, and no competing D1 writer. DATA_LANE owns evidence and permitted controlled execution.
+- **Administrative drift:** `S2-CORR-20261004-001` still says 2024 TPEx awaits physical retry / quota reset of 2026-10-08, but canonical DATA evidence has now advanced to 18/18 annual acceptance. Preserve FIX_IN_PROGRESS until the original broader 2017-present aggregate/PIT/continuity acceptance is genuinely satisfied; DATA_LANE and AUDIT_LANE should reconcile outdated blocker/evidence pointers now, rather than imply 2024 TPEx is still incomplete.
+- `S2-CORR-20261007-001` remains FIX_IMPLEMENTED / DATA_LANE; V0.4 source-selection changes do not replace the first real future trading-day prospective exact-date fallback witness.
+- TWTAWU positive-control JSON/export parity and exact-window three corporate-action refs remain physical upstream NC-T01 evidence gates; do not synthesize CLEAR_NO_ACTION.
+
+### Research 01–15 and System1 sentinel
+- D16/D18 validation is active and must keep PIT/common-support, UNKNOWN-denominator and evidence lineage falsification as launch-critical consumers; no research-only contract may be promoted as a physical trading assertion.
+- System1 remains DEFAULT_LAST / SENTINEL_ONLY: no evidence in this readback requires taking over System1 implementation or changing Formal Core.
+
+### Exact next 00 audit cycle
+1. Check CORR-008 merged implementation / physical wrapper guard and one same-cut NC-T01 immutable real receipt. Do not accept S22-T11..T16 from CI-only, static proofs or lack of real W1.
+2. Independently review BUILD correction proofs for HIGH 011/012/013 and REMEDIATION quota-gate 003, keeping routing ownership explicit.
+3. Confirm DATA CORR-001 canonical pointer reconciliation against 18/18 annual acceptance; review 2026 segmented physical recapture and A1 V0.4 next prospective session only after valid observation.
+4. Retest launch-critical research PIT/continuity provenance dependencies when real new receipts arrive. Recompute dynamic priorities on latest main; no automatic real push/orders/capital/actual holdings.
+
+Room 00 module inventory: `MODULE_COUNT_NOT_CANONICALLY_DEFINED`; ticket counts refer only to the System2 correction queue, not the room's research-module inventory.
