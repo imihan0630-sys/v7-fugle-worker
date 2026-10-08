@@ -1,5 +1,5 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
-import { sha256Hex } from "./decision_archive.mjs";
+import { canonicalStringify, sha256Hex } from "./decision_archive.mjs";
 
 export const OUTCOME_HORIZONS_V0_1 = Object.freeze([1, 3, 5, 10, 20]);
 const PRICE_SPACES = new Set(["RAW", "ADJUSTED"]);
@@ -314,6 +314,18 @@ export async function buildDecisionOutcomeSnapshotV0_1({
       executionVersion: simulatedExecution.executionVersion
         ? requiredText(simulatedExecution.executionVersion, "simulatedExecution.executionVersion")
         : null,
+      executionHash: simulatedExecution.executionHash
+        ? requiredText(simulatedExecution.executionHash, "simulatedExecution.executionHash")
+        : null,
+      costModel: simulatedExecution.costModel && typeof simulatedExecution.costModel === "object"
+        ? deepFreeze({ ...simulatedExecution.costModel })
+        : null,
+      costModelVersion: simulatedExecution.costModelVersion
+        ? requiredText(simulatedExecution.costModelVersion, "simulatedExecution.costModelVersion")
+        : null,
+      taxRuleId: simulatedExecution.taxRuleId
+        ? requiredText(simulatedExecution.taxRuleId, "simulatedExecution.taxRuleId")
+        : null,
     };
     if (
       sim.holdingSessions !== null
@@ -398,6 +410,88 @@ function equalNullableNumber(a, b, tolerance = 1e-12) {
   return Math.abs(Number(a) - Number(b)) <= tolerance;
 }
 
+function parseOutcomeJsonForMonotonicity(value) {
+  if (typeof value !== "string" || !value.trim()) return null;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function pathValue(value, path) {
+  let current = value;
+  for (const key of path) {
+    if (!current || typeof current !== "object" || !(key in current)) return undefined;
+    current = current[key];
+  }
+  return current;
+}
+
+const IMMUTABLE_OUTCOME_PROVENANCE_PATHS_V0_1 = Object.freeze([
+  ["decisionId"],
+  ["symbol"],
+  ["decisionMarketDate"],
+  ["decisionTimestamp"],
+  ["strategyId"],
+  ["strategyVersion"],
+  ["regimeSnapshotId"],
+  ["regimeHash"],
+  ["priceSpace"],
+  ["corporateActionState"],
+  ["corporateActionHash"],
+  ["executionHash"],
+  ["executionVersion"],
+  ["costModel"],
+  ["costModelHash"],
+  ["costModelVersion"],
+  ["taxRuleId"],
+  ["lineage"],
+  ["simulatedExecution","executionHash"],
+  ["simulatedExecution","executionVersion"],
+  ["simulatedExecution","costModelHash"],
+  ["simulatedExecution","costModelVersion"],
+  ["simulatedExecution","taxRuleId"],
+]);
+
+function pathName(path) {
+  return path.join(".");
+}
+
+function immutableOutcomeProvenanceBlockers(existingRow, nextRow) {
+  const oldPayload = parseOutcomeJsonForMonotonicity(existingRow?.outcome_json);
+  const nextPayload = parseOutcomeJsonForMonotonicity(nextRow?.outcome_json);
+  const blockers = [];
+  if (!oldPayload || !nextPayload) {
+    if (existingRow?.outcome_json !== nextRow?.outcome_json) {
+      blockers.push("OUTCOME_JSON_PROVENANCE_UNVERIFIABLE");
+    }
+    return blockers;
+  }
+
+  for (const path of IMMUTABLE_OUTCOME_PROVENANCE_PATHS_V0_1) {
+    const oldValue = pathValue(oldPayload, path);
+    if (oldValue === undefined) continue;
+    const nextValue = pathValue(nextPayload, path);
+    if (nextValue === undefined) {
+      blockers.push(`OUTCOME_JSON_PROVENANCE_ERASURE:${pathName(path)}`);
+      continue;
+    }
+    if (canonicalStringify(oldValue) !== canonicalStringify(nextValue)) {
+      blockers.push(`OUTCOME_JSON_PROVENANCE_REVISION:${pathName(path)}`);
+    }
+  }
+  return blockers;
+}
+
+function closedSimulatedTrade(existingRow) {
+  const payload = parseOutcomeJsonForMonotonicity(existingRow?.outcome_json);
+  return payload?.simulatedExecution?.state === "CLOSED"
+    || (existingRow?.realized_return_after_cost !== null
+      && existingRow?.realized_return_after_cost !== undefined);
+}
+
 export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   if (existingRow === null || existingRow === undefined) {
     return deepFreeze({ state: "INSERT_ALLOWED", updateAllowed: true, blockers: [] });
@@ -435,19 +529,19 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   if (Number(existingRow.ambiguous_same_bar) === 1 && Number(nextRow.ambiguous_same_bar) !== 1) {
     blockers.push("AMBIGUITY_REVISION");
   }
-  if (
-    existingRow.mfe !== null && existingRow.mfe !== undefined
-    && nextRow.mfe !== null && nextRow.mfe !== undefined
-    && Number(nextRow.mfe) + 1e-12 < Number(existingRow.mfe)
-  ) {
-    blockers.push("MFE_NON_MONOTONIC");
+  if (existingRow.mfe !== null && existingRow.mfe !== undefined) {
+    if (nextRow.mfe === null || nextRow.mfe === undefined) {
+      blockers.push("MFE_ERASURE");
+    } else if (Number(nextRow.mfe) + 1e-12 < Number(existingRow.mfe)) {
+      blockers.push("MFE_NON_MONOTONIC");
+    }
   }
-  if (
-    existingRow.mae !== null && existingRow.mae !== undefined
-    && nextRow.mae !== null && nextRow.mae !== undefined
-    && Number(nextRow.mae) - 1e-12 > Number(existingRow.mae)
-  ) {
-    blockers.push("MAE_NON_MONOTONIC");
+  if (existingRow.mae !== null && existingRow.mae !== undefined) {
+    if (nextRow.mae === null || nextRow.mae === undefined) {
+      blockers.push("MAE_ERASURE");
+    } else if (Number(nextRow.mae) - 1e-12 > Number(existingRow.mae)) {
+      blockers.push("MAE_NON_MONOTONIC");
+    }
   }
   if (
     existingRow.realized_return_after_cost !== null
@@ -459,6 +553,15 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   ) {
     blockers.push("REALIZED_RETURN_REVISION");
   }
+  if (
+    closedSimulatedTrade(existingRow)
+    && existingRow.holding_sessions !== null
+    && existingRow.holding_sessions !== undefined
+    && existingRow.holding_sessions !== nextRow.holding_sessions
+  ) {
+    blockers.push("CLOSED_HOLDING_SESSIONS_REVISION");
+  }
+  blockers.push(...immutableOutcomeProvenanceBlockers(existingRow, nextRow));
   if (Date.parse(nextRow.updated_at) < Date.parse(existingRow.updated_at)) {
     blockers.push("UPDATED_AT_MOVED_BACKWARD");
   }
