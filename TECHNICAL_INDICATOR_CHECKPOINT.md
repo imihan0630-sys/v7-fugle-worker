@@ -7988,3 +7988,156 @@ A. W0: consume first real exact-window bounded TWTAWU suspension-completeness re
 B. Parent: independently consume the next genuine ordinary-session immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback quality repair.
 
 When both admissible inputs exist, immediately execute the existing D03-10 Bollinger L3 acceptance and parent-binding oracles. D03-09 remains second and additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
+
+
+## 2026-10-08 D03 — TI-1527~1544 ADX suspension/resume Wilder-state semantics + latest genuine-parent attempt narrowing
+
+Canonical D03 artifacts:
+- `research/d03_adx_suspension_resume_wilder_state_semantics_20261008_v0_1.json`;
+- `research/test_d03_adx_suspension_resume_wilder_state_semantics_v0_1.mjs`;
+- `research/d03_adx_suspension_resume_wilder_state_execution_receipt_20261008_v0_1.json`;
+- `research/d03_system1_parent_attempt_20261008_v0_2.json`.
+
+Machine execution:
+- `D03 ADX Suspension Resume Semantics Readonly` run `37728272815` = SUCCESS;
+- companion `V8 Regression Tests` run `37728272818` = SUCCESS;
+- exact tested head = `faae9cb4701d20879a53fb8eb97ff860809e3876`.
+
+### TI-1527~1531 — pure suspension uses eligible-bar chronology, not calendar decay
+
+D03 makes explicit a previously under-specified ADX state transition rule.
+
+When:
+- the suspension interval is positively certified;
+- the exact eligible-session set is certified;
+- no relevant price-basis-changing corporate action exists inside the interval;
+- symbol identity remains the same;
+- source history is hash-bound;
+
+then:
+- non-trading dates create no OHLC/TR/DM pseudo rows;
+- calendar days do not advance Wilder recurrence;
+- no arbitrary calendar-day decay is applied to TR/DM/ADX state;
+- no automatic reset occurs merely because the suspension was long;
+- the first resumed eligible bar is the next bar in eligible-session chronology;
+- its TR and DM compare to the last pre-suspension eligible bar under the same certified price basis;
+- therefore a genuine post-suspension gap is allowed to enter TR/DM rather than being erased.
+
+This is a formula/state semantics rule, not an alpha claim.
+A long suspension may remain a separate regime/context diagnostic.
+
+### TI-1532~1535 — price-basis-changing events require transformed replay
+
+If the suspension overlaps a certified ex-right/dividend, capital reduction, par-value change or equivalent technical price-basis event:
+- RAW pre-event H/L/C may not be directly bridged into RAW post-event H/L/C for promotion-grade ADX;
+- a continuity transform / technical price factor must be certified;
+- transform identity/hash must bind to the exact source-history window;
+- ADX must be recomputed on the certified continuity-transformed H/L/C history, or consume a replay-certified trusted prior state in that same price space.
+
+A text label such as `ADJUSTED_CONTINUITY` does not transform RAW bars.
+
+For Bollinger, the same rule prevents raw pre/post corporate-action closes from sharing one 20-session window without certified continuity transformation.
+
+### TI-1536~1538 — identity termination ends recursive state lineage
+
+If the old symbol identity terminates because of reorganization, share conversion, delisting or market migration:
+- old-symbol ADX/Wilder state terminates;
+- old-symbol Bollinger finite-window lineage terminates;
+- the new identity starts its own state lineage by default;
+- automatic cross-symbol recursive-state inheritance is forbidden.
+
+Only a separately versioned economic-identity continuity contract with transformed history may authorize a cross-identity bridge.
+
+Therefore “reset” at this boundary means:
+`NEW_IDENTITY_NEW_STATE_LINEAGE`,
+not:
+`RESET_AFTER_LONG_CALENDAR_GAP`.
+
+### TI-1539~1541 — arbitrary reset/wait thresholds remain separate hypotheses
+
+The following are explicitly noncanonical:
+- reset ADX after X calendar days;
+- decay Wilder state during suspension using synthetic zero-input bars;
+- reset after X eligible bars without replay evidence;
+- reseed from an arbitrary post-resume sample.
+
+Any such proposal is a new preregistered parameter-family hypothesis and cannot mutate `PF_D03_ADX_CANONICAL`.
+
+Existing warm-up rule remains:
+`ADX_STATE_CERTIFICATION = FULL_REPLAY_OR_TRUSTED_PRIOR_STATE`.
+
+The prior ~65-bar readiness behavior of KD/RSI/MACD remains non-transferable to ADX.
+
+### TI-1542 — machine falsifier
+
+Run `37728272815` passed the deterministic guard.
+It explicitly checks:
+- no automatic calendar-gap reset;
+- no synthetic zero-input decay;
+- no pseudo-bars during suspension;
+- no RAW bridge across price-basis change;
+- no recursive-state inheritance across identity termination;
+- unresolved event boundary => fail closed;
+- reset-after-X rule => new parameter-family hypothesis only.
+
+Companion V8 regression run `37728272818` also passed.
+Formal Core remains untouched.
+
+### TI-1543 — latest System1 parent physical attempt narrows but does not close the parent blocker
+
+Latest-main real run:
+- workflow: `System 1 C1 Prospective Evidence`;
+- run `37724488223`;
+- job `113139437528`;
+- head `08328c8cfd0b253f56009e4192474e31d7f6807e`;
+- market date `2026-10-07`;
+- artifact `11527267198`;
+- artifact zip SHA-256 `2c7e4581e61c4a3c5470ea670f0c0baf58058a4865a76e1595c8240d21a16559`.
+
+Physical result:
+- generation-inventory semantic validation = PASS;
+- V8.20 Formal->C1 binding semantic validation = PASS;
+- immutable C1 population read/verify = FAIL;
+- category = `FORMAL_SCAN_NOT_CONFIRMED`;
+- verification failure = `C1_GENERATION_NOT_FOUND`;
+- formalScanDate = `2026-09-29`;
+- formalPipelineComplete = false;
+- institutionReady = true;
+- qualityReady = false;
+- current missingQuality = `[QUARTER_EPS]`;
+- eligibleForResearch = false;
+- mayCountAsZeroPick = false.
+
+Compared with an earlier observed `[FINANCIAL, QUARTER_EPS]` quality blocker set, FINANCIAL is no longer missing in this physical receipt.
+
+Scientific boundary:
+this narrows the current observed blocker set but does NOT prove QUARTER_EPS is the sole causal reason Formal scan remains stale.
+A future live quality-ready run plus actual Formal scan advancement is still required.
+
+The absent 2026-10-07 C1 generation may not be synthesized retrospectively.
+
+### TI-1544 — maturity / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 current L3/60 + 2 L2/40;
+- D03-09 / D03-10 remain L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Immediate dual-track next remains physical:
+1. W0: first real exact-window, parity-certified TWTAWU bounded negative-completeness receipt -> all three TWSE corporate-action refs -> real hash-bound W0 continuity receipt;
+2. Parent: a new ordinary-session live quality-ready run with QUARTER_EPS ready, actual Formal scan advancement, genuine immutable C1 generation and authoritative V8.20 Formal->C1 binding.
+
+When both are available:
+- D03-10 runs its existing Bollinger L3 + parent-binding oracles immediately;
+- D03-09 applies the newly frozen suspension/resume semantics inside canonical Wilder FULL_REPLAY / trusted-state certification.
+
+Independent gates remain:
+- raw source-version third session;
+- T48 generation-set finalization;
+- S2-07 stabilization;
+- System2 D03 raw-vs-dedup diagnostics;
+- System1 D03 redundancy diagnostics;
+- D16 D03 predictive incrementality.
