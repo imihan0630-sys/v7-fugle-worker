@@ -148,12 +148,22 @@ function normalizeUniverse(rows, marketDate) {
   return rows.map((row, i) => {
     if (!row || typeof row !== "object") throw new Error("universe row must be an object");
     const symbol = requiredText(row.symbol, "universe[" + i + "].symbol");
-    if (seen.has(symbol)) throw new Error("duplicate universe symbol on " + marketDate + ": " + symbol);
-    seen.add(symbol);
+    const market = requiredText(row.market, "universe[" + i + "].market");
+    const key = market + "|" + symbol;
+    if (seen.has(key)) throw new Error("duplicate universe symbol on " + marketDate + ": " + key);
+    seen.add(key);
     return {
       symbol,
       companyName: row.companyName ? String(row.companyName).trim() : null,
-      market: row.market ? String(row.market).trim() : null,
+      market,
+      industry: row.industry ? String(row.industry).trim() : null,
+      membershipId: optionalText(row.membershipId),
+      membershipHash: optionalText(row.membershipHash),
+      registryId: optionalText(row.registryId),
+      registryHash: optionalText(row.registryHash),
+      replayEligible: row.replayEligible === true,
+      membershipStateAtReplay: optionalText(row.membershipStateAtReplay),
+      unknownReason: optionalText(row.unknownReason),
       excluded: row.excluded === true,
       exclusionReasons: Object.freeze([...(row.exclusionReasons || [])].map(String)),
     };
@@ -347,12 +357,220 @@ export async function verifyBulkBacktestPitUniverseReceiptV0_1(
   return receipt;
 }
 
+
+function reconcileUniverseReceiptMembersV0_1(receipt, universe) {
+  const actual = universe
+    .map((row) => ({
+      market: row.market,
+      symbol: row.symbol,
+      companyName: row.companyName,
+      industry: row.industry,
+      membershipId: row.membershipId,
+      membershipHash: row.membershipHash,
+      replayEligible: row.replayEligible,
+      membershipStateAtReplay: row.membershipStateAtReplay || (row.replayEligible ? "ACTIVE" : "UNKNOWN"),
+      unknownReason: row.unknownReason,
+    }))
+    .sort((a, b) => (a.market + "|" + a.symbol).localeCompare(b.market + "|" + b.symbol));
+  const expected = [...(receipt.members || [])];
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error("PIT universe receipt member set mismatch");
+  }
+}
+
+async function rollingDigestSeedV0_1(plan) {
+  return sha256Hex({
+    runId: plan.runId,
+    planHash: plan.planHash,
+    seed: "S2_BACKTEST_ROLLING_DIGEST_V0_1",
+  });
+}
+
+async function buildPartitionReceiptV0_1({
+  plan,
+  marketDate,
+  partitionIndex,
+  partitionCount,
+  universeReceiptHash,
+  sampleHashes,
+}) {
+  const base = {
+    runId: plan.runId,
+    planHash: plan.planHash,
+    marketDate,
+    partitionIndex,
+    partitionCount,
+    universeReceiptHash,
+    sampleCount: sampleHashes.length,
+    sampleHashes: Object.freeze([...sampleHashes]),
+    schemaVersion: "S2_BULK_BACKTEST_PARTITION_RECEIPT_V0_1",
+  };
+  const partitionReceiptHash = await sha256Hex(base);
+  return deepFreeze({ ...base, partitionReceiptHash });
+}
+
+async function verifyPartitionReceiptV0_1(receipt, plan) {
+  if (!receipt || receipt.schemaVersion !== "S2_BULK_BACKTEST_PARTITION_RECEIPT_V0_1") {
+    throw new Error("invalid partition receipt");
+  }
+  if (receipt.runId !== plan.runId || receipt.planHash !== plan.planHash) {
+    throw new Error("partition receipt plan identity mismatch");
+  }
+  const storedHash = requiredText(receipt.partitionReceiptHash, "partitionReceiptHash");
+  const base = { ...receipt };
+  delete base.partitionReceiptHash;
+  const expectedHash = await sha256Hex(base);
+  if (storedHash !== expectedHash) throw new Error("partition receipt hash mismatch");
+  if (!Array.isArray(receipt.sampleHashes) || receipt.sampleCount !== receipt.sampleHashes.length) {
+    throw new Error("partition receipt sample count mismatch");
+  }
+  return receipt;
+}
+
+async function recomputeRollingDigestV0_1(plan, partitionReceipts) {
+  let digest = await rollingDigestSeedV0_1(plan);
+  const ordered = [...partitionReceipts].sort(
+    (a, b) => a.marketDate.localeCompare(b.marketDate) || a.partitionIndex - b.partitionIndex,
+  );
+  for (const receipt of ordered) {
+    await verifyPartitionReceiptV0_1(receipt, plan);
+    digest = await sha256Hex({
+      prior: digest,
+      marketDate: receipt.marketDate,
+      partitionIndex: receipt.partitionIndex,
+      sampleHashes: receipt.sampleHashes,
+    });
+  }
+  return digest;
+}
+
+async function verifyResumeCheckpointV0_1(resumeCheckpoint, plan) {
+  if (!resumeCheckpoint) {
+    return {
+      completedDates: new Set(),
+      dateSummaries: [],
+      stateCounts: {},
+      processedSampleCount: 0,
+      partitionReceipts: [],
+      rollingDigest: await rollingDigestSeedV0_1(plan),
+    };
+  }
+  if (resumeCheckpoint.schemaVersion !== "S2_BULK_BACKTEST_CHECKPOINT_V0_1") {
+    throw new Error("resume checkpoint schemaVersion mismatch");
+  }
+  const storedHash = requiredText(resumeCheckpoint.checkpointHash, "resumeCheckpoint.checkpointHash");
+  const base = { ...resumeCheckpoint };
+  delete base.checkpointHash;
+  const expectedHash = await sha256Hex(base);
+  if (storedHash !== expectedHash) throw new Error("resume checkpoint hash mismatch");
+  if (resumeCheckpoint.runId !== plan.runId) throw new Error("resume checkpoint runId mismatch");
+  if (resumeCheckpoint.planHash !== plan.planHash) throw new Error("resume checkpoint planHash mismatch");
+
+  const completed = [...(resumeCheckpoint.completedDates || [])].map(String);
+  if (new Set(completed).size !== completed.length) throw new Error("resume checkpoint completedDates duplicate");
+  const requested = new Set(plan.marketDates);
+  if (completed.some((date) => !requested.has(date))) {
+    throw new Error("resume checkpoint contains unrequested marketDate");
+  }
+  if (JSON.stringify([...completed].sort()) !== JSON.stringify(completed)) {
+    throw new Error("resume checkpoint completedDates must be sorted");
+  }
+
+  const summaries = [...(resumeCheckpoint.dateSummaries || [])];
+  if (summaries.length !== completed.length) {
+    throw new Error("resume checkpoint date summary count mismatch");
+  }
+  const summaryByDate = new Map();
+  for (const summary of summaries) {
+    const date = assertDate(summary?.marketDate, "resumeCheckpoint.dateSummaries[].marketDate");
+    if (summaryByDate.has(date)) throw new Error("resume checkpoint duplicate date summary");
+    summaryByDate.set(date, summary);
+  }
+  for (const date of completed) {
+    if (!summaryByDate.has(date)) throw new Error("resume checkpoint missing date summary: " + date);
+  }
+
+  const partitionReceipts = [...(resumeCheckpoint.partitionReceipts || [])];
+  const partitionKeys = new Set();
+  const samplesByDate = new Map();
+  for (const receipt of partitionReceipts) {
+    await verifyPartitionReceiptV0_1(receipt, plan);
+    if (!summaryByDate.has(receipt.marketDate)) {
+      throw new Error("partition receipt belongs to incomplete date");
+    }
+    const key = receipt.marketDate + "|" + receipt.partitionIndex;
+    if (partitionKeys.has(key)) throw new Error("duplicate partition receipt: " + key);
+    partitionKeys.add(key);
+    samplesByDate.set(
+      receipt.marketDate,
+      (samplesByDate.get(receipt.marketDate) || 0) + receipt.sampleCount,
+    );
+  }
+
+  let accountedSum = 0;
+  const aggregateStateCounts = {};
+  for (const date of completed) {
+    const summary = summaryByDate.get(date);
+    if (summary.allEligibleSymbolsAccounted !== true) {
+      throw new Error("resume checkpoint date not fully accounted: " + date);
+    }
+    if (Number(summary.accountedCount) !== Number(summary.eligibleCount)) {
+      throw new Error("resume checkpoint eligible/accounted mismatch: " + date);
+    }
+    if (summary.universeReceiptState !== "READY") {
+      throw new Error("resume checkpoint universe receipt not READY: " + date);
+    }
+    if (!SHA256_RE.test(String(summary.universeReceiptHash || ""))) {
+      throw new Error("resume checkpoint universe receipt hash missing: " + date);
+    }
+    if (Number(summary.eligibleCount) === 0 && summary.emptyUniverseProven !== true) {
+      throw new Error("resume checkpoint zero-sample date lacks proved empty universe: " + date);
+    }
+    if (Number(summary.eligibleCount) > 0 && (samplesByDate.get(date) || 0) !== Number(summary.accountedCount)) {
+      throw new Error("resume checkpoint partition/sample reconciliation mismatch: " + date);
+    }
+    if (Number(summary.eligibleCount) === 0 && (samplesByDate.get(date) || 0) !== 0) {
+      throw new Error("resume checkpoint empty universe has partition samples: " + date);
+    }
+    accountedSum += Number(summary.accountedCount);
+    for (const [state, count] of Object.entries(summary.stateCounts || {})) {
+      aggregateStateCounts[state] = (aggregateStateCounts[state] || 0) + Number(count || 0);
+    }
+  }
+
+  if (accountedSum !== Number(resumeCheckpoint.processedSampleCount || 0)) {
+    throw new Error("resume checkpoint processed sample count mismatch");
+  }
+  const checkpointStateCounts = { ...(resumeCheckpoint.stateCounts || {}) };
+  const keys = [...new Set([...Object.keys(aggregateStateCounts), ...Object.keys(checkpointStateCounts)])];
+  for (const key of keys) {
+    if (Number(aggregateStateCounts[key] || 0) !== Number(checkpointStateCounts[key] || 0)) {
+      throw new Error("resume checkpoint state count mismatch: " + key);
+    }
+  }
+
+  const recomputedRollingDigest = await recomputeRollingDigestV0_1(plan, partitionReceipts);
+  if (recomputedRollingDigest !== resumeCheckpoint.rollingDigest) {
+    throw new Error("resume checkpoint rolling digest mismatch");
+  }
+
+  return {
+    completedDates: new Set(completed),
+    dateSummaries: summaries,
+    stateCounts: checkpointStateCounts,
+    processedSampleCount: accountedSum,
+    partitionReceipts,
+    rollingDigest: recomputedRollingDigest,
+  };
+}
+
 async function buildCheckpoint({
   plan,
   completedDates,
   processedSampleCount,
   stateCounts,
   dateSummaries,
+  partitionReceipts,
   rollingDigest,
   capturedAt,
 }) {
@@ -364,6 +582,7 @@ async function buildCheckpoint({
     processedSampleCount,
     stateCounts: deepFreeze({ ...stateCounts }),
     dateSummaries: Object.freeze([...(dateSummaries || [])]),
+    partitionReceipts: Object.freeze([...(partitionReceipts || [])]),
     rollingDigest,
     capturedAt,
     schemaVersion: "S2_BULK_BACKTEST_CHECKPOINT_V0_1",
@@ -372,16 +591,10 @@ async function buildCheckpoint({
   return deepFreeze({ ...base, checkpointHash });
 }
 
-function checkpointCompletedDates(resumeCheckpoint, plan) {
-  if (!resumeCheckpoint) return new Set();
-  if (resumeCheckpoint.runId !== plan.runId) throw new Error("resume checkpoint runId mismatch");
-  if (resumeCheckpoint.planHash !== plan.planHash) throw new Error("resume checkpoint planHash mismatch");
-  return new Set((resumeCheckpoint.completedDates || []).map(String));
-}
-
 export async function runBulkBacktestV0_1({
   plan,
   loadUniverse,
+  loadUniverseReceipt,
   loadHistoricalBars,
   evaluateSymbol,
   onPartition = null,
@@ -393,23 +606,25 @@ export async function runBulkBacktestV0_1({
   if (!plan || plan.schemaVersion !== "S2_BULK_BACKTEST_PLAN_V0_1") {
     throw new Error("valid backtest plan is required");
   }
+  if (plan.planIdentity?.state !== "READY") {
+    throw new Error("backtest plan identity is not READY");
+  }
   if (typeof loadUniverse !== "function") throw new Error("loadUniverse callback is required");
+  if (typeof loadUniverseReceipt !== "function") throw new Error("loadUniverseReceipt callback is required");
   if (typeof loadHistoricalBars !== "function") throw new Error("loadHistoricalBars callback is required");
   if (typeof evaluateSymbol !== "function") throw new Error("evaluateSymbol callback is required");
   if (onPartition !== null && typeof onPartition !== "function") throw new Error("onPartition must be a function");
   if (onCheckpoint !== null && typeof onCheckpoint !== "function") throw new Error("onCheckpoint must be a function");
 
   const captureTime = assertTimestamp(capturedAt, "capturedAt");
-  const completedDates = checkpointCompletedDates(resumeCheckpoint, plan);
+  const resumeState = await verifyResumeCheckpointV0_1(resumeCheckpoint, plan);
+  const completedDates = resumeState.completedDates;
   const retainedSamples = [];
-  const dateSummaries = [...(resumeCheckpoint?.dateSummaries || [])];
-  const stateCounts = { ...(resumeCheckpoint?.stateCounts || {}) };
-  let processedSampleCount = Number(resumeCheckpoint?.processedSampleCount || 0);
-  let rollingDigest = resumeCheckpoint?.rollingDigest || await sha256Hex({
-    runId: plan.runId,
-    planHash: plan.planHash,
-    seed: "S2_BACKTEST_ROLLING_DIGEST_V0_1",
-  });
+  const dateSummaries = [...resumeState.dateSummaries];
+  const stateCounts = { ...resumeState.stateCounts };
+  let processedSampleCount = resumeState.processedSampleCount;
+  const partitionReceipts = [...resumeState.partitionReceipts];
+  let rollingDigest = resumeState.rollingDigest;
   let latestCheckpoint = resumeCheckpoint || null;
 
   for (const marketDate of plan.marketDates) {
@@ -419,7 +634,12 @@ export async function runBulkBacktestV0_1({
       await loadUniverse({ marketDate, decisionTimestamp, plan }),
       marketDate,
     );
-    const eligible = universe.filter((x) => !x.excluded);
+    const universeReceipt = await verifyBulkBacktestPitUniverseReceiptV0_1(
+      await loadUniverseReceipt({ marketDate, decisionTimestamp, plan, universe }),
+      { plan, marketDate, decisionTimestamp },
+    );
+    reconcileUniverseReceiptMembersV0_1(universeReceipt, universe);
+    const eligible = universe.filter((x) => !x.excluded && x.replayEligible);
     const excludedCount = universe.length - eligible.length;
     const dateStateCounts = {};
     let dateSampleCount = 0;
@@ -545,6 +765,16 @@ export async function runBulkBacktestV0_1({
         return deepFreeze({ ...sampleBase, sampleId: "S2BT-" + sampleHash, sampleHash });
       }));
 
+      const partitionReceipt = await buildPartitionReceiptV0_1({
+        plan,
+        marketDate,
+        partitionIndex,
+        partitionCount: symbolPartitions.length,
+        universeReceiptHash: universeReceipt.receiptHash,
+        sampleHashes: partitionSamples.map((x) => x.sampleHash),
+      });
+      partitionReceipts.push(partitionReceipt);
+
       if (onPartition) {
         await onPartition(deepFreeze({
           runId: plan.runId,
@@ -552,6 +782,8 @@ export async function runBulkBacktestV0_1({
           marketDate,
           partitionIndex,
           partitionCount: symbolPartitions.length,
+          universeReceiptHash: universeReceipt.receiptHash,
+          partitionReceipt,
           samples: Object.freeze(partitionSamples),
         }));
       }
@@ -587,6 +819,11 @@ export async function runBulkBacktestV0_1({
       selectedCount,
       zeroPickDay: selectedCount === 0,
       allEligibleSymbolsAccounted: dateSampleCount === eligible.length,
+      universeReceiptHash: universeReceipt.receiptHash,
+      universeReceiptState: universeReceipt.state,
+      emptyUniverseProven: universeReceipt.emptyUniverseProven === true,
+      registryId: universeReceipt.registryId,
+      registryHash: universeReceipt.registryHash,
     });
     dateSummaries.push(dateSummary);
     completedDates.add(marketDate);
@@ -597,6 +834,7 @@ export async function runBulkBacktestV0_1({
       processedSampleCount,
       stateCounts,
       dateSummaries,
+      partitionReceipts,
       rollingDigest,
       capturedAt: captureTime,
     });
@@ -620,6 +858,7 @@ export async function runBulkBacktestV0_1({
     processedSampleCount,
     stateCounts: deepFreeze(stateCounts),
     dateSummaries: Object.freeze(dateSummaries),
+    partitionReceipts: Object.freeze(partitionReceipts),
     allRequestedDatesComplete: completed.length === plan.marketDates.length,
     hardSymbolLimit: null,
     partitionSize: plan.symbolPartitionSize,
