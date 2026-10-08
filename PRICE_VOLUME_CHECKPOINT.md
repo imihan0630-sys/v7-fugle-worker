@@ -4561,3 +4561,87 @@ FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
 
 Exact next continuation point:
 PVE-277 — audit all Wave-2 D02 evidence lanes for dependence on historical/same-slot/daily volume or range baselines and test whether any current Wave-2 admission guard can PASS while the authoritative latest expected baseline observation is stale/missing. Build a dependency matrix first; only freeze new fail-closed overlays where the feature genuinely depends on baseline freshness. Do not generalize the Wave-1 rule to baseline-independent features. Remain outcome-blind; no L4 promotion.
+
+
+## PVE-277~279 continuation — Wave-2 dependency-specific freshness/continuity and D16 binding frozen (2026-10-08)
+
+Status: PVE277_WAVE2_DEPENDENCY_MATRIX_FROZEN / PVE278_WAVE2_DEPENDENCY_SPECIFIC_ANTI_BYPASS_FROZEN / PVE279_D16_WAVE2_DATASET_BINDING_FROZEN / NO_OUTCOME_ACCESS / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### PVE-277 — Wave-2 baseline/continuity dependency audit
+
+Artifacts:
+- `research/d02_pve277_wave2_baseline_dependency_audit_v0_1.mjs`;
+- `tests/test_d02_pve277_wave2_baseline_dependency_audit_v0_1.mjs`;
+- `research/d02_pve277_wave2_baseline_dependency_matrix_v0_1.json`;
+- `research/D02_PVE277_WAVE2_BASELINE_DEPENDENCY_AUDIT_20261008_V0_1.md`;
+- validation run `37722358739`: SUCCESS;
+- 46 assertions PASS;
+- 10 legacy Wave-2 lane/family fixtures reproduced PASS without explicit immutable freshness/continuity receipt binding.
+
+Dependency classes:
+- D02-04: direct intraday baseline dependent through LOW participation.
+- D02-05: direct same-slot volume + range baseline dependent through EXTREME participation and response.
+- D02-07: daily continuity dependent, not historical-median dependent.
+- D02-08: primary provider-pressure source baseline-independent; registered incremental controls are RVOL/response dependent.
+- D02-09 PIVOT_SIGNED_VOLUME: daily continuity dependent.
+- D02-09 PARTICIPATION_TRAJECTORY: same-slot RVOL/cumulative/persistence lineage dependent.
+- D02-10: direct participation lineage dependent; allowed parents are pvSlotRvol20, pvCumvolPace20 or adjacency-valid persistence.
+- D02-11: rolling prior-20-session avgVolume20Lots/avgAmount20 baseline dependent.
+- D02-12 TIME_OF_DAY_VOLUME_CURVE: historical prior-session denominator + RVOL/cumulative controls dependent.
+- D02-12 PRICE_BY_VOLUME_PROFILE: prospective primary profile but baseline-dependent comparator controls.
+
+The defect is therefore heterogeneous. A universal H001-style gate would be incorrect.
+
+### PVE-278 — dependency-specific Wave-2 anti-bypass firewall
+
+Artifacts:
+- `research/d02_pve278_wave2_anti_bypass_firewall_v0_1.mjs`;
+- `tests/test_d02_pve278_wave2_anti_bypass_firewall_v0_1.mjs`;
+- `research/D02_PVE278_WAVE2_ANTI_BYPASS_FIREWALL_20261008_V0_1.md`;
+- validation run `37722531372`: SUCCESS;
+- 40 assertions PASS.
+
+The overlay applies only the evidence type required by each feature lineage:
+- same-slot volume freshness;
+- same-slot range freshness;
+- cumulative-prefix continuity;
+- persistence adjacency;
+- immutable daily-volume continuity;
+- exact rolling-20 prior-session freshness;
+- time-curve denominator freshness;
+- RVOL/cumulative/response control freshness.
+
+D02-08 and D02-12 PRICE_BY_VOLUME_PROFILE preserve primary-source independence; their freshness obligation attaches to incremental-comparison controls rather than falsifying the raw primary feature.
+
+### PVE-279 — downstream D16 Wave-2 dataset binding
+
+Artifacts:
+- `research/d02_pve279_d16_wave2_admission_binding_v0_1.mjs`;
+- `tests/test_d02_pve279_d16_wave2_admission_binding_v0_1.mjs`;
+- `research/D02_PVE279_D16_WAVE2_ADMISSION_BINDING_20261008_V0_1.md`;
+- validation run `37722653252`: SUCCESS;
+- 55 assertions PASS.
+
+The existing D16 V0.2 guard still names legacy `D02_L4_WAVE2_ADMISSION_V0_1`.
+PVE-279 composes with it and requires:
+- PVE-278 PASS for exact module/family;
+- outcome-blind pre-outcome receipt;
+- immutable receipt and admitted-dataset hashes;
+- exact admittedDatasetHash == d16InputDatasetHash;
+- admitted row count == D16 common-support input count.
+
+Direct legacy Wave-2 D16 consumption is therefore not sufficient under current D02 governance.
+
+### Research/maturity state
+
+PVE-277~279 are integrity/governance findings, not alpha evidence.
+No future outcome was inspected.
+No economic hypothesis changed support status.
+All 12 D02 modules remain L3.
+D02 remains 60.0%.
+Clean prospective dates remain 0.
+Gate 7 CLOSED.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-280 — audit the remaining D02-01 semantic-governance -> D16 admission path for the same admitted-dataset substitution degree of freedom, then freeze one canonical all-D02 end-to-end admission-lineage rule across D02-01 + Wave-1 + Wave-2 without changing any feature semantics, target values, outcomes or Formal Core. If D02-01 already binds the exact dataset immutably, record NO_DEFECT rather than inventing another gate.
