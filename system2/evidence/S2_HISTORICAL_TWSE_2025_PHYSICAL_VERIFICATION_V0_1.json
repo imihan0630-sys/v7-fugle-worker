@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TWSE",
+  "year": 2025,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37720726697,
+    "runNumber": 32,
+    "headSha": "836184f98726449107cdbd0ed83e2746bbbcf965",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-08T03:49:34Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37720726697",
+    "jobId": 113127496102,
+    "artifactId": 11527595746,
+    "artifactName": "system2-historical-coverage-TWSE-2025",
+    "artifactDigest": "sha256:41ab589d5f38e667f8fb61427d2053d38d9f62d23e044d22a8c7e0f441cd56df",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37720726697/artifacts/11527595746"
+  },
+  "backfill": {
+    "tradingDateCount": 243,
+    "officialRowCount": 254854,
+    "packCount": 1070,
+    "symbolCount": 1070,
+    "firstMarketDate": "2025-01-02",
+    "lastMarketDate": "2025-12-31",
+    "system1RuntimeChanged": false
+  },
+  "storageVerification": {
+    "state": "PASS",
+    "receiptId": "S2HCR-4b01e356aae94e5b1be6c40732602c342bc3ba9c43c1851b1cf6778d3063a29d",
+    "batchId": "S2-HIST-PACK-YEAR|TWSE|2025",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 1070,
+    "barCount": 254854,
+    "manifestRollingHash": "4b01e356aae94e5b1be6c40732602c342bc3ba9c43c1851b1cf6778d3063a29d",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 1070,
+    "byteGetObjectCountVerified": 1070
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 254854,
+    "freshOfficialRowCount": 254854,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0
+  },
+  "historicalUniverse": {
+    "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "membershipCount": 1096,
+    "replayEligibleCount": 1096,
+    "currentCount": 1089,
+    "delistedCount": 7
+  },
+  "coverage": {
+    "expectedSessions": 243,
+    "actualSessions": 243,
+    "historicalUniverseSize": 1070,
+    "expectedBars": 255068,
+    "actualBars": 254854,
+    "missingBars": 214,
+    "unknownBars": 76,
+    "suspensionClassifiedMissingBars": 138,
+    "unexpectedBars": 0,
+    "rawCoverageState": "PASS",
+    "structuralCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "mainMissingReasons": {
+      "OFFICIAL_SUSPENSION_INTERVAL": 138,
+      "UNKNOWN_SYMBOL_SESSION_GAP": 76
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  },
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2025
+  }
+}

@@ -1322,3 +1322,16 @@ Exact annual continuation:
 The separate TPEx cmode date-identity defect remains a lifecycle-source refinement issue; it does not invalidate the accepted 2024/TPEX raw/cold physical coverage.
 
 No System1 Formal Core/runtime, strategy/ranking/final-selection, capital/order, broker-routing or production-push authority changed.
+
+
+## 2026-10-08 2025 TWSE physical acceptance — Run #32
+
+- Workflow run #32 / ID 37720726697 concluded SUCCESS at 2026-10-08 11:49:34 Asia/Taipei; job 113127496102.
+- Annual 243 official sessions, 254854 official rows, 1070 packs/symbols; storage receipt S2HCR-4b01e356aae94e5b1be6c40732602c342bc3ba9c43c1851b1cf6778d3063a29d COMPLETE.
+- R2 HEAD and byte-GET: 1070/1070 PASS; D1 manifests/checkpoint COMPLETE; cold/fresh official row parity 254854/254854, source-row hash and canonical A1 mismatches 0.
+- Membership-session 255068; 214 gaps = 138 official suspension classified + 76 UNKNOWN retained; no unexpected bars. Data coverage PASS / replay readiness PARTIAL; PIT conservative session finality PASS; continuity remains PARTIAL_UNVERIFIED.
+- Historical universe official current/newlisting/delisting union PASS. System1 production isolation PASS.
+- Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37720726697/artifacts/11527595746 ; digest `sha256:41ab589d5f38e667f8fb61427d2053d38d9f62d23e044d22a8c7e0f441cd56df`.
+- Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2025_PHYSICAL_VERIFICATION_V0_1.json`.
+- 2017–2025 annual legs accepted 17/18; sole remaining annual market-year: 2025 TPEX. Next: 2025/TPEX annual physical backfill, subject to D1 quota / single-writer safeguards; then 2026 segmented and aggregate replay qualification.
+- No System1 Formal/runtime or strategy/ranking/final-selection/capital/order/push authority changed.
