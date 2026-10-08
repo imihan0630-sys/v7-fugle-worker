@@ -269,12 +269,15 @@ export async function runPhysicalBatch(){
   const registryRows=await db.rawQuery(`SELECT registry_id,registry_hash,membership_count,replay_eligible_count,unknown_start_count,current_count,delisted_count
     FROM s2_historical_universe_registry_receipts
     WHERE registry_id=? LIMIT 1`,[PINNED_TWSE_2025_REGISTRY.registryId]);
-  must(registryRows.length===1,"PINNED_REGISTRY_RECEIPT_MISSING");
   const membershipRows=await db.rawQuery(`SELECT registry_id,market,symbol,membership_id,membership_hash,effective_from,effective_to,end_basis,replay_eligible
     FROM s2_historical_universe_memberships
     WHERE registry_id=? AND market='TWSE'
     ORDER BY symbol,effective_from,effective_to`,[PINNED_TWSE_2025_REGISTRY.registryId]);
-  must(membershipRows.length===PINNED_TWSE_2025_REGISTRY.membershipCount,"PINNED_MEMBERSHIP_ROW_COUNT_MISMATCH");
+  const persistedRegistryReceiptPresent=registryRows.length===1;
+  const persistedMembershipRowCount=membershipRows.length;
+  if(persistedRegistryReceiptPresent){
+    must(membershipRows.length===PINNED_TWSE_2025_REGISTRY.membershipCount,"PINNED_MEMBERSHIP_ROW_COUNT_MISMATCH");
+  }
 
   const manifests=await db.rawQuery(`SELECT symbol,object_key,object_sha256,payload_hash,bar_count
     FROM s2_historical_a1_pack_manifests
@@ -294,10 +297,13 @@ export async function runPhysicalBatch(){
   }
   must(symbolBars.length>=8,"INSUFFICIENT_PHYSICAL_SYMBOL_COHORT");
   const rows0=buildRows(symbolBars,calendar.tradingDates);
-  const membershipBound=bindHistoricalMembership(rows0,membershipRows,registryRows[0]);
-  must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
-  const sp=splitDates(membershipBound.rows);
-  const allPartitioned=membershipBound.rows.map(r=>({...r,partition:sp.split(r)}));
+  const membershipBound=persistedRegistryReceiptPresent
+    ? bindHistoricalMembership(rows0,membershipRows,registryRows[0])
+    : null;
+  if(membershipBound)must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
+  const modelRows0=membershipBound ? membershipBound.rows : rows0;
+  const sp=splitDates(modelRows0);
+  const allPartitioned=modelRows0.map(r=>({...r,partition:sp.split(r)}));
   const purgedTrainRows=allPartitioned.filter(r=>r.partition==="PURGED_TRAIN_BOUNDARY");
   const purgedValidationRows=allPartitioned.filter(r=>r.partition==="PURGED_VALIDATION_BOUNDARY");
   const rows=allPartitioned.filter(r=>r.partition==="TRAIN"||r.partition==="VALIDATION"||r.partition==="TEST");
@@ -305,7 +311,9 @@ export async function runPhysicalBatch(){
   must(rows.every(r=>r.partition!=="VALIDATION"||r.outcomeDate<sp.firstTestDate),"VALIDATION_LABEL_CROSSES_TEST");
   const panel={
     market:"TWSE",year:2025,target:"NEXT_OFFICIAL_SESSION_LOG_TRADE_VALUE",
-    rowCount:rows.length,preMembershipRowCount:rows0.length,membershipBlockedRowCount:membershipBound.blockedCount,
+    rowCount:rows.length,preMembershipRowCount:rows0.length,
+    membershipBlockedRowCount:membershipBound?.blockedCount??null,
+    persistedRegistryReceiptPresent,persistedMembershipRowCount,
     purgedTrainBoundaryRowCount:purgedTrainRows.length,purgedValidationBoundaryRowCount:purgedValidationRows.length,
     issuerCount:new Set(rows.map(r=>r.symbol)).size,independentDateCount:new Set(rows.map(r=>r.decisionDate)).size,
     nominalDecisionDateCount:sp.dates.length,
@@ -315,13 +323,22 @@ export async function runPhysicalBatch(){
     firstValidationDate:sp.firstValidationDate,firstTestDate:sp.firstTestDate,
     priceReturnFeatureEnabled:false,rawPriceReturnUsed:false,
     continuityStates:[...new Set(rows.flatMap(r=>[r.currentContinuityState,r.nextContinuityState]))].sort(),
-    membershipScope:"PINNED_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
-    registryId:PINNED_TWSE_2025_REGISTRY.registryId,registryHash:PINNED_TWSE_2025_REGISTRY.registryHash,
-    membershipHashSetHash:sha256([...new Set(rows.map(r=>r.membershipHash))].sort()),
-    rowIdentityHash:sha256(rows.map(r=>[r.decisionDate,r.outcomeDate,r.symbol,r.membershipHash,r.sourceRowHash,r.nextSourceRowHash,r.partition])),
+    membershipScope:membershipBound
+      ?"PINNED_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION_D1_RECEIPT_BOUND"
+      :"BOUNDED_PHYSICAL_BAR_COHORT_MEMBERSHIP_NOT_D1_RECEIPT_BOUND",
+    registryId:membershipBound?PINNED_TWSE_2025_REGISTRY.registryId:null,
+    registryHash:membershipBound?PINNED_TWSE_2025_REGISTRY.registryHash:null,
+    durableAnnualVerifierRegistryId:PINNED_TWSE_2025_REGISTRY.registryId,
+    durableAnnualVerifierRegistryHash:PINNED_TWSE_2025_REGISTRY.registryHash,
+    membershipHashSetHash:membershipBound?sha256([...new Set(rows.map(r=>r.membershipHash))].sort()):null,
+    rowIdentityHash:sha256(rows.map(r=>[r.decisionDate,r.outcomeDate,r.symbol,r.membershipHash||null,r.sourceRowHash,r.nextSourceRowHash,r.partition])),
     dateClusterUnit:"DECISION_DATE",issuerClusterUnit:"SYMBOL",
     nextSessionBoundaryPurgeApplied:true,
-    survivorshipAwareMembershipApplied:true,
+    survivorshipAwareMembershipApplied:Boolean(membershipBound),
+    fullYearAvailabilityCohortSelection:true,
+    populationInferenceAuthorized:false,
+    d16_17L3Eligible:Boolean(membershipBound),
+    numericMethodL3Eligible:true,
   };
   const timeSeries=fitAr1(rows);
   const featureSelection=nestedFeatureSelection(rows);
@@ -337,6 +354,14 @@ export async function runPhysicalBatch(){
     rowsWrittenZero:rawDb.metrics.rowsWritten===0,
     formalCoreChanged:false,system1RuntimeUsed:false,system2StrategyAuthorityChanged:false,
     alphaClaimMade:false,priceReturnClaimMade:false,
+    promotionsEligible:{
+      D16_16_TIME_SERIES:true,
+      D16_17_PANEL_CROSS_SECTION:Boolean(membershipBound),
+      D16_18_REGULARIZATION:true,
+      D16_19_ML_CALIBRATION_TOOLING:true,
+      D16_24_DISTRIBUTIONAL_SIMULATION:true,
+      D16_25_PROBABILISTIC_DECISION:false,
+    },
   };
   return {...base,receiptHash:sha256(base)};
 }
