@@ -1652,3 +1652,42 @@ Next BUILD priority:
 1. continue the next unblocked CRITICAL correction from the canonical queue;
 2. CORR-008 remains blocked by CORR-007 independent closure;
 3. preserve physical NC-T01 and System1 Formal Core boundaries.
+
+## 2026-10-08 19:15 BUILD_LANE handoff — CORR-015 FIX_IMPLEMENTED
+
+Implementation:
+- PR #877 merged as `591728bfc1a2569e0bd5eb0d10ce71f8dd3e8055`.
+- D18 Regime vector now uses per-dimension PIT / availableAt / source-identity / component-hash / evidence-hash validation for KNOWN and CONTEXT_RAW evidence.
+- Invalid optional context remains dimension-local `UNKNOWN`; valid core evidence cannot certify a future or non-PIT optional dimension.
+- Activation, attribution and transition consumers recompute Regime evidence before use and fail closed on contamination.
+- Cross-strategy dependence/common-support comparison treats contaminated Regime attribution as `MISSING`, never zero or known performance evidence.
+- AP-07 future/non-PIT GlobalTransmission becomes UNKNOWN and cannot produce POLICY_ENABLED / POLICY_DISABLED.
+- 36 optional-dimension adversarial cases cover future-date, wrong-clock, non-PIT, missing availableAt, missing hash and tampered receipt.
+
+Exact-head PASS on `51115b843d987b03e661f5ebcea4032e6d6849d6`:
+- CORR-015 `37768619935`;
+- System2 Research CI `37768619939`;
+- V8 Regression `37768620380`;
+- V8 Repair CI `37768620096`.
+
+Merged-main PASS on `591728bfc1a2569e0bd5eb0d10ce71f8dd3e8055`:
+- CORR-015 `37768765685`;
+- System2 Research CI `37768765738`;
+- V8 Regression `37768765666`.
+
+Disposition:
+- `S2-CORR-20261008-015 = FIX_IMPLEMENTED`;
+- CRITICAL correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_015_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+
+Protected boundaries:
+- System1 Formal Core/runtime unchanged;
+- D18 remains research-only;
+- no dynamic strategy weight/activation authority;
+- no strategy threshold/ranking/final-selection/live-push/capital/order authority change.
+
+Next BUILD priority:
+1. continue the highest-severity unblocked correction from the canonical queue;
+2. do not redo CORR-009 / CORR-010 / CORR-014 / CORR-015 code-firewall work unless new contradicting evidence appears;
+3. preserve CORR-007 / CORR-008 blocker governance and DATA_LANE physical-evidence ownership.
+
