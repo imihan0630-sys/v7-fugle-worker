@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09T01:32:28+08:00
+Updated: 2026-10-09T07:44:26+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1481,6 +1481,15 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - PR #908 independently authored/merged; Actions `37817121691` ran all 4 invalid/duplicate/unqualified calendar and partial-OHLC probes; all classified `UNSAFE`.
 - Research `37817122614` and V8 Regression `37817121306` succeeded, meaning the probe execution was valid, **not** that the vulnerability was fixed.
 - Status stays `OPEN`, assigned to BUILD_LANE. Neither original acceptance nor physical/production readiness is credited.
+
+#### 2026-10-09 AUDIT_LANE second independent AP-06 calendar and unknown-NO_FILL matrix
+
+- Nine offline adverse cases returned `UNSAFE` in GitHub Actions run `37861039940`. Passing CI means successful reproduction, not CORR-013 correction.
+- Date failures: nonexistent date, noncanonical date, weekend without official session proof, reversed dates, duplicated dates, and skipped official sessions without provenance.
+- Price evidence failures: all OHLC unknown, high unknown, or low unknown in the eligible entry window yielded `state=NO_FILL`, even with `fillQuality=DATA_UNKNOWN` for the last three cases.
+- Independent test: `system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs`.
+- Detailed receipt: `system2/evidence/S2_AUDIT_CORR013_CALENDAR_UNKNOWN_NOFILL_NINE_CASES_20261009_V0_2.json`.
+- Required BUILD fix: authoritative exchange calendar/date binding, strict chronological session evidence and explicit `proofCompleteNoFill`, preserving `INCOMPLETE/DATA_UNKNOWN` rather than false non-fill denominator. Remains `OPEN`, no System1 or physical trade authorization.
 
 
 ### S2-CORR-20261008-014 — Bulk backtest can accept forged completion checkpoints and unproven PIT universes
