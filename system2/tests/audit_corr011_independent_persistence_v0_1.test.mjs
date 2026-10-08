@@ -16,7 +16,7 @@ class AuditDatabase {
       sql,params:[],
       bind(...params){this.params=params;return this;},
       async first(){
-        const table=sql.match(/FROM\\s+(s2_[A-Za-z0-9_]+)/i)?.[1];
+        const table=sql.match(/FROM\s+(s2_[A-Za-z0-9_]+)/i)?.[1];
         return table ? (db.rows.get(table+"|"+String(this.params[0]))??null) : null;
       },
     };
@@ -26,7 +26,7 @@ class AuditDatabase {
     const results=[];
     for(const st of statements){
       this.executedSql.push(st.sql);
-      const match=st.sql.match(/^INSERT INTO\\s+(s2_[A-Za-z0-9_]+)\\s*\\(([^)]+)\\)/i);
+      const match=st.sql.match(/^INSERT INTO\s+(s2_[A-Za-z0-9_]+)\s*\(([^)]+)\)/i);
       if(!match)throw new Error("AUDIT: NON-INSERT EXECUTED");
       const table=match[1],cols=match[2].split(",").map(x=>x.trim());
       const row=Object.fromEntries(cols.map((x,i)=>[x,st.params[i]]));
