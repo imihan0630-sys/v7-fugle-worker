@@ -1110,3 +1110,32 @@ Next research blocker moves to EffectTargetReceipt and D16 ModelMethodReceipt re
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core LOCKED.
+
+
+## PVE-282~288 promotion-design / future-clock overlay — 2026-10-08
+
+Target design:
+- PVE-282 baseline state = 4 PARTIAL / 10 BLOCKED / 0 READY;
+- PVE-283 state = 13 PARTIAL / 1 BLOCKED / 0 READY;
+- D02-11 remains the sole primary-metric/horizon blocker due D14 cost-quality dependence;
+- numerical targets remain 0 / 14 because PVE-287 found no legal current numerical source.
+
+Predictive method governance:
+- 12 D02 Brier lanes require exact D16-19 pre-outcome ModelMethodReceipts under PVE-284;
+- current actual receipt count = 0 / 12;
+- unrelated SDA-022 method receipt is non-reusable.
+
+Operational evidence:
+- first possible post-deploy System1 operational-acceptance schedule = 2026-10-09 00:10 Asia/Taipei for scanDate 2026-10-08;
+- this may prove System1 operational recovery only;
+- it cannot retroactively create a D02 H001 clean date.
+
+H001 clean-date state:
+- PVE-261 physical baseline remediation still absent;
+- current S2-CORR-20261007-003 remains OPEN;
+- 2026-10-08 feature-time evidence is not retroactively cleanable;
+- clean prospective date count remains 0.
+
+No hypothesis supported/rejected.
+No L4 promotion.
+No Formal optimization candidate.
