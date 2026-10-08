@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-08T18:50:00+08:00
+Updated: 2026-10-08T22:48:38+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1261,7 +1261,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - status: OPEN
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
-- blockedBy: S2-CORR-20261008-007
+- blockedBy: none (former CORR-007 prerequisite independently VERIFIED_CLOSED; CORR-008 remains OPEN)
 - scope: PR #844 physical NC-T01 wrapper / S22-T12 / S22-T16
 - observed:
   - generic remote D1 adapter can issue arbitrary SQL;
@@ -1277,6 +1277,10 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
 - finalDisposition: PENDING
+- independent AUDIT_LANE prerequisite release: PR #871 / main `35295e412911193a49f332496821fc42f8ff5f6d` resolved only CORR-007 code provenance; physical W0 and CORR-008 runtime guard not credited.
+- latest-main recheck: PR #844 head `9d690d1` is 416 commits behind main and unmergeable; use exact-head reconciliation before replacement/merge.
+- independent remaining-gate matrix: `system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json`.
+
 
 ### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
 
