@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "S2_AUDIT_CORR012_COMPETING_FIX_PR_GATE_V0_1",
+  "auditedAt": "2026-10-09T06:32:50+08:00",
+  "auditor": "System2 AUDIT_LANE",
+  "authoritativeRepo": "imihan0630-sys/v7-fugle-worker",
+  "source": "Live GitHub main, three independent PR heads, actual completed AUDIT edge-matrix GitHub Actions job logs",
+  "correction": "S2-CORR-20261008-012",
+  "officialMainStateAtAudit": "OPEN",
+  "checkType": "ADVERSARIAL_HEAD_COMPARISON_NOT_MERGED_MAIN_ACCEPTANCE",
+  "alternatives": [
+    {
+      "pullRequest": 910,
+      "head": "0a16d1b34de4f3ade5135ed71969dd43e78245a6",
+      "status": "OPEN",
+      "behindMainAtAudit": 9,
+      "commitCountAheadMainAtAudit": 3,
+      "auditMatrixRun": 37818594694,
+      "codeScope": "Separate outcome_lineage_v0_2 and outcome_persistence_v0_2 modules; additive migration 0011_outcome_lineage_versions.sql; the pull request patch does not register that migration in provision_system2_d1.mjs",
+      "corr012": {
+        "safe": 5,
+        "unsafe": 0
+      },
+      "corr013": {
+        "safe": 0,
+        "unsafe": 4
+      },
+      "ci": "Research, V8 and targeted outcome lineage PASSED"
+    },
+    {
+      "pullRequest": 911,
+      "head": "16a1867b2da0753366c642f0d6b3cf805055cfb8",
+      "status": "OPEN",
+      "behindMainAtAudit": 9,
+      "commitCountAheadMainAtAudit": 20,
+      "auditMatrixRun": 37822444433,
+      "codeScope": "Versioned outcome row and guarded persistence integrated in outcome_persistence_v0_1; version snapshot contract in outcome_tracker_v0_1; additive 0011_outcome_versioned_lineage.sql registered in System2 isolated D1 provision script; source specs and focused tests updated",
+      "corr012": {
+        "safe": 5,
+        "unsafe": 0
+      },
+      "corr013": {
+        "safe": 0,
+        "unsafe": 4
+      },
+      "ci": "Research, V8, CORR-011 persistence and dedicated outcome lineage PASSED"
+    },
+    {
+      "pullRequest": 912,
+      "head": "cb962451f58d046351e46782fff78f478fcb4b36",
+      "status": "DRAFT_PARTIAL_ONLY",
+      "behindMainAtAudit": 3,
+      "commitCountAheadMainAtAudit": 3,
+      "auditMatrixRun": 37822914635,
+      "codeScope": "Partial legacy monotonic guard only; no versioned outcome persistence/migration; draft explicitly not full correction",
+      "corr012": {
+        "safe": 4,
+        "unsafe": 1,
+        "unsafeProbe": "COST_JSON_ONLY_CHANGE"
+      },
+      "corr013": {
+        "safe": 0,
+        "unsafe": 4
+      },
+      "ci": "Research and V8 PASSED, but audit gate itself still reports one unsafe"
+    }
+  ],
+  "exactNegativeProbeIdsFor012": [
+    "COST_JSON_ONLY_CHANGE",
+    "STRATEGY_JSON_ONLY_CHANGE",
+    "CLOSED_HOLDING_ONLY_CHANGE",
+    "MFE_ERASE_ONLY",
+    "MAE_ERASE_ONLY"
+  ],
+  "competingBranches": {
+    "sharedConflictFiles": [
+      "system2/runtime/outcome_tracker_v0_1.mjs",
+      "system2/runtime/outcome_persistence_v0_1.mjs",
+      "system2/tests/outcome_persistence_v0_1.test.mjs"
+    ],
+    "migrationCollision": "Both PR #910 and PR #911 introduce a different migration numbered 0011 and alternative V0.2 outcome storage semantics. Do not merge both.",
+    "ownerRule": "Single BUILD_LANE active modification owner for each conflict unit. AUDIT_LANE does not edit runtime.",
+    "proposedIntegration": "BUILD_LANE should nominate one canonical implementation; #911 is the stronger integration candidate on visible provisioning/schema/readback coverage, subject to full post-rebase CI and independent acceptance. #910 must not be silently layered on top; #912 remains partial."
+  },
+  "mandatoryAcceptanceBeforePromote": [
+    "Reconcile selected candidate onto latest main, preserving CORR-008/011 and all other independent closed queue states.",
+    "Choose one unambiguous 0011 versioned-outcome migration and verify isolated System2 D1 provisioning is additive; avoid physical mutation without DATA/BUILD go-ahead.",
+    "Run all five AUDIT_LANE AP-05 negative probes on reconciled exact-head and verify they report SAFE, not just workflow conclusion SUCCESS.",
+    "Run full targeted V0.2 snapshot/lineage, immutable persisted data, V8 and System2 Research CI on exact merged-main head.",
+    "Verify outcomeHash, cost/execution/version/scenario lineage, known MFE/MAE, matured horizon/closed holding and separate signal-vs-simulated net cost semantics independently; no retroactive rewrite.",
+    "Do not merge/close CORR-012 based solely on draft partial #912 or green tests before main merge.",
+    "CORR-013 AP-06 remains OPEN: all four independent negative probes were UNSAFE on all three candidates; do not credit as resolved."
+  ],
+  "disposition": {
+    "state": "AUDIT_BLOCKED_PENDING_CANONICAL_BUILD_SELECTION_AND_EXACT_HEAD_REBASE",
+    "correction012StillOpen": true,
+    "correction013StillOpen": true,
+    "formalCoreImpact": "NONE",
+    "physicalAcceptance": "NOT_CLAIMED"
+  },
+  "references": {
+    "auditMatrix": "system2/tests/audit_corr012_013_edge_matrix_v0_1.test.mjs",
+    "previousNegativeEvidence": "system2/evidence/S2_AUDIT_CORR012_013_NINE_NEGATIVE_EDGE_MATRIX_20261009_V0_1.json"
+  }
+}
