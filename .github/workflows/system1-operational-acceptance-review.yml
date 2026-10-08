@@ -24,7 +24,9 @@ jobs:
         with:
           node-version: '22'
       - name: Falsify operational acceptance receipt
-        run: node tests/test_system1_operational_acceptance_v0_1.mjs
+        run: |
+          node tests/test_system1_operational_acceptance_v0_1.mjs
+          node tests/test_system1_operational_acceptance_blocker_builder_v0_1.mjs
       - name: Syntax check acceptance builder
         run: |
           node --check research/system1_operational_acceptance_v0_1.mjs

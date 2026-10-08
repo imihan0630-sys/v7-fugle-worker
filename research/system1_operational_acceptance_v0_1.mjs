@@ -29,6 +29,37 @@ function runtimeAtLeast820(v){
 }
 function validationOf(artifact){return artifact?.validation&&typeof artifact.validation==="object"?artifact.validation:null;}
 
+export function buildSystem1OperationalBlocker({
+  trigger,observedAt,code="UPSTREAM_ARTIFACT_MISSING",detail=null,upstreamReadiness=null
+}={}){
+  const now=new Date(observedAt||new Date());
+  const observedMs=now.getTime();
+  const expectedDate=Number.isFinite(observedMs)?previousTaipeiCalendarDate(now):null;
+  const normalizedCode=String(code||"UPSTREAM_ARTIFACT_MISSING");
+  const core={
+    schemaVersion:"SYSTEM1_OPERATIONAL_ACCEPTANCE_V0_1",
+    status:"BLOCKED",genuineProspective:false,
+    scanDate:upstreamReadiness?.formalScanDate||upstreamReadiness?.scanDate||null,
+    expectedScanDate:expectedDate,generationId:null,
+    sourceMainSha:null,runtimeVersion:upstreamReadiness?.runtimeVersion||null,
+    bindingId:null,formalDecisionReceiptId:null,populationN:null,formalSelectedN:null,
+    h1h5States:{},
+    trigger:{eventName:trigger?.eventName??null,schedule:trigger?.schedule??null},
+    observedAt:Number.isFinite(observedMs)?now.toISOString():null,
+    blockers:[{code:normalizedCode,detail:detail??null}],
+    firstBlocker:normalizedCode,
+    zeroPickAllowedWhenFullyVerified:true,
+    historicalBackfillPerformed:false,
+    manualReplayCanNeverBecomeGenuineProspective:true,
+    t1PendingDoesNotBlockOperationalRecovery:true,
+    operationalRecoveryOnly:true,
+    formalOptimizationCandidate:"NONE",autoSwitchAuthorized:false,
+    formalCoreLocked:true,researchOnly:true,decisionImpact:false,formalCoreImpact:false,
+    noPlanChanges:true,noTrade:true,noPush:true
+  };
+  return {...core,receiptDigest:hash(core)};
+}
+
 export function buildSystem1OperationalAcceptance({
   trigger,observedAt,c1,c2,inventory,binding,h1h5
 }={}){
