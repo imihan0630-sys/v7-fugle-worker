@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs";
 import { fetchDailyShadowA1SnapshotV0_1 } from "../runtime/daily_shadow_a1_source_v0_1.mjs";
 import { probePitHistoryCoverageV0_1 } from "../runtime/daily_shadow_history_reader_v0_1.mjs";
+import { summarizeRecent60PitEligibleGapsV0_1 } from "../runtime/recent60_pit_gap_taxonomy_v0_1.mjs";
 import { buildDailyShadowInputPreflightV0_1 } from "../runtime/daily_shadow_input_preflight_v0_1.mjs";
 import { buildOfficialTradingDatesV0_1 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
 import { fetchTwseRegulatoryLifecycleForSymbolsV0_1 } from "../runtime/twse_regulatory_lifecycle_source_v0_1.mjs";
@@ -176,6 +177,13 @@ export async function runDailyShadowInputPreflightReadonly({
     };
   }
 
+  // A breakdown classifies PIT-eligible selected rows only. Never infer that
+  // an unselected row is physically missing: it may be outside the decision
+  // clock or ineligible for another reason. Require complete denominator.
+  const recent60GapDecomposition = history.accountingComplete === true
+    ? summarizeRecent60PitEligibleGapsV0_1({history,marketDate})
+    : null;
+
   const preflight = buildDailyShadowInputPreflightV0_1({
     marketDate,
     decisionTimestamp: a1.decisionTimestamp,
@@ -193,6 +201,10 @@ export async function runDailyShadowInputPreflightReadonly({
     decisionClockMode: a1.decisionClockMode,
     preflight,
     exactSessionEvidence: {
+      recent60GapDecompositionState:recent60GapDecomposition
+        ? "CLASSIFIED_PIT_ELIGIBLE_OBSERVATIONS_ONLY"
+        : "UNAVAILABLE_UNCERTIFIED_DENOMINATOR",
+      recent60GapDecomposition,
       listingAgeCalendar: listingAgeCalendar ? {
         state: listingAgeCalendar.state,
         firstTradingDate: listingAgeCalendar.tradingDates?.[0] || null,
