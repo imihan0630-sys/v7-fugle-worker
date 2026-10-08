@@ -2638,3 +2638,37 @@ No stock outcome or Formal change.
 
 Exact next:
 BR-048 create effective-dated exposure vintages where issuer-native product/revenue/capacity evidence changes over time; no indefinite carry-forward of a static theme label.
+
+
+## BR-073 — third independent official TWSE stock-breadth date (2026-10-08)
+
+Artifact:
+- `research/br073_twse_advance_decline_third_date_20261008_v0_1.json`
+
+Official TWSE stock-only counts:
+- up 425;
+- down 540;
+- unchanged 109;
+- unmatched 3;
+- N/A 5;
+- comparable N = 1,074;
+- total state N = 1,082.
+
+Derived under the unchanged denominator:
+- advance = 39.5717%;
+- decline = 50.2793%;
+- unchanged = 10.1490%;
+- net advance-minus-decline = -10.7076 percentage points;
+- comparable coverage = 99.2606%.
+
+This is the third independent official TWSE breadth date after:
+- 2026-10-02;
+- 2026-10-07.
+
+The 2026-10-08 receipt is one evidence root. If D09-12 later consumes the same date after a same-clock official TAIEX context receipt becomes available, consumer count must not increase independent evidence-root count.
+
+D09-04 remains L3/60.
+No stock outcome or L4 promotion.
+
+Exact next:
+continue independent official TWSE dates under the same denominator; TPEx is admitted only with accepted same-clock official transport; no L4 before D16 common-support/OOS validation.
