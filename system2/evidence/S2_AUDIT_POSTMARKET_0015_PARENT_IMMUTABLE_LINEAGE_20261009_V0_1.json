@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "S2_AUDIT_POSTMARKET_0015_PARENT_IMMUTABLE_LINEAGE_V0_1",
+  "recordedAt": "2026-10-09T07:49:27+08:00",
+  "lane": "AUDIT_LANE",
+  "basis": {
+    "source": "system2/runtime/post_market_clock_gate_v0_1.mjs",
+    "verifiedMainSourceBlobSha": "3aca00bcddd683b4cc197394c3830f11356dbb31",
+    "independentTest": "system2/tests/audit_postmarket_0015_recovery_parent_v0_1.test.mjs",
+    "workflow": ".github/workflows/system2-audit-postmarket-parent-v0-1.yml",
+    "workflowRun": 37861520105,
+    "jobId": 113598140272,
+    "jobConclusion": "success",
+    "mode": "OFFLINE_SYNTHETIC_FIXTURE_ONLY"
+  },
+  "observation": "Three forged or unbound 23:45 priorFinalAttempt receipts are admitted by 00:15 preflight with state READY_FOR_DOWNSTREAM_REVALIDATION. V0.1 currently checks only parent shape, reported status, timestamp parse, hash format and time<=now; it does not recompute the hash or read back the immutable parent receipt.",
+  "cases": [
+    {
+      "id": "ARBITRARY_UNSTORED_DIGEST",
+      "accepted": true,
+      "state": "READY_FOR_DOWNSTREAM_REVALIDATION",
+      "badParent": "random 64-hex digest not tied to any prior receipt"
+    },
+    {
+      "id": "READY_RECEIPT_STATUS_FLIPPED_TO_BLOCKED",
+      "accepted": true,
+      "state": "READY_FOR_DOWNSTREAM_REVALIDATION",
+      "badParent": "digest from actually READY receipt paired with claimed BLOCKED_REQUIRED_SOURCE status"
+    },
+    {
+      "id": "IMPOSSIBLE_EARLY_PARENT_CLOCK",
+      "accepted": true,
+      "state": "READY_FOR_DOWNSTREAM_REVALIDATION",
+      "badParent": "06:00 timestamp claimed as 23:45 FINAL_FREEZE_ATTEMPT"
+    }
+  ],
+  "control": {
+    "nullPriorParentBlocked": true,
+    "legitimateSyntheticPriorBlockedReceiptAccepted": true
+  },
+  "classification": "RESEARCH_ONLY_PRE-DEPLOYMENT_INTEGRATION_RISK_NOT_FORMAL_CORRECTION",
+  "risk": "A future downstream consumer treating READY_FOR_DOWNSTREAM_REVALIDATION as immutable parent evidence might accept a fraudulent recovery lineage. No proof of current production effect; this preflight explicitly denies final freeze and actual-source certification.",
+  "mandatoryIntegrationGate": [
+    "Demand actual priorFinalAttempt receipt readback from frozen System2 store keyed by target market date, phase, strategy and 23:45 clock.",
+    "Recompute and compare receipt hash from the canonical stored payload, not user-supplied 64-hex string alone.",
+    "Enforce previous attempt local timestamp exactly 23:45 and immutable state BLOCKED_REQUIRED_SOURCE; reject receipt tamper/status swap and missing store row.",
+    "Bind same targetMarketDate T, prior firstKnownAt/observedAt and source ledger, and forbid midnight target date drift.",
+    "Add three negative cases to BUILD full downstream wiring CI; do not treat current shape preflight as permission to freeze candidates or push.",
+    "Independent AUDIT_LANE re-verification of code/physical parent after future BUILD integration."
+  ],
+  "nonClaims": {
+    "system1FormalCoreChanged": false,
+    "system2RealSourceVerified": false,
+    "system2FinalFrozen": false,
+    "system2CapacityWriteEnabled": false,
+    "system2SelectionEnabled": false,
+    "realD1Reads": false,
+    "realD1Writes": false,
+    "productionOrders": false
+  },
+  "requiredOwnership": "BUILD_LANE future preflight-to-freeze integration, AUDIT_LANE independent validation"
+}
