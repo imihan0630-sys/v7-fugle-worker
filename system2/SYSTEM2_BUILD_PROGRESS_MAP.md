@@ -1843,3 +1843,40 @@ Next BUILD priority:
 2. do not redo CORR-011 unless independent verification finds a concrete regression;
 3. preserve DATA_LANE / REMEDIATION_LANE ownership for their active directives.
 
+## 2026-10-09 01:11 BUILD_LANE handoff — CORR-011 FIX_IMPLEMENTED
+
+Implementation:
+- PR #901 merged as `98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882`.
+- Generic immutable persistence now treats caller batches as untrusted and canonically rebuilds whitelisted table/column contracts, identities, digests, operation count and SQL plans before any database prepare/transport.
+- Only regenerated INSERT statements can reach isolated System2 D1; AP-08 caller UPDATE-as-insert fails before `db.batch`.
+- Exact post-write readback verifies every inserted immutable row and measured statement/write ledgers are emitted.
+- Decision/factor/regime and execution order/fill/outcome parent lineage are fail-closed.
+- Decision corrections remain append-only in `s2_decision_corrections`.
+- CORR-012 monotonic outcome maturation rules are intentionally outside this correction.
+
+Exact-head PASS on `2f8eb9a042154668c740a56cefa02c41fa61d65a`:
+- CORR-011 `37814281548`;
+- System2 Research CI `37814281345`;
+- V8 Regression `37814281392`.
+
+Merged-main PASS on `98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882`:
+- CORR-011 `37814464487`;
+- System2 Research CI `37814464192`;
+- V8 Regression `37814464250`.
+
+Disposition:
+- `S2-CORR-20261008-011 = FIX_IMPLEMENTED`;
+- HIGH correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
+
+Protected boundaries:
+- System1 Formal Core/runtime unchanged;
+- no destructive migration or existing-history rewrite;
+- no final-selection/live-push/capital/order authority;
+- no CORR-012 outcome-policy overreach.
+
+Exact next:
+1. AUDIT_LANE independently reruns AP-08 and tampered SQL/hash/identity/table/column/concurrent-write lineage probes.
+2. BUILD_LANE continues `S2-CORR-20261008-012`.
+3. Preserve CORR-008 physical NC-T01 and DATA_LANE continuity gates as separate launch-critical work.
+
