@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T19:20:00+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-014",
+  "severity": "CRITICAL",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "f839e8ee961b85f3ec6af939455d6a023e759c0f",
+  "implementation": {
+    "pullRequest": 868,
+    "mergeCommit": "4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7",
+    "behavior": [
+      "Backtest plan identity binds dataset manifest, policy registration, evaluator code, factor bundle, Regime version, execution assumptions and cost model; selection authorization additionally requires its own receipt hash.",
+      "Every replay date requires a hash-bound PIT universe receipt tied to plan/run/date/decision clock, registry identity and exact membership hashes.",
+      "Future membership-end fields are excluded from the strategy-visible PIT universe contract.",
+      "Resume checkpoints are hash-recomputed before any loader/evaluator and reconciled to requested dates, date summaries, partition receipts, sample counts, state counts and rolling digest.",
+      "Partition receipts bind exact sample hashes into the rolling digest.",
+      "Zero-sample completion is rejected unless the PIT universe is explicitly and immutably proved empty.",
+      "AP-04 forged completed checkpoint is rejected before any universe loader or evaluator executes."
+    ]
+  },
+  "exactHeadPullRequestValidation": {
+    "head": "95ad6dbeefa0604b902e436174f86421e7b370c7",
+    "runs": [
+      {
+        "name": "System2 CORR-014 Bulk Backtest PIT Firewall V0.1",
+        "runId": 37743894631,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37743894530,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37743894466,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7",
+    "runs": [
+      {
+        "name": "System2 CORR-014 Bulk Backtest PIT Firewall V0.1",
+        "runId": 37744022901,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37744022808,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37744023076,
+        "result": "PASS"
+      }
+    ]
+  },
+  "reconciliation": {
+    "staleHandoffPullRequest": 869,
+    "reason": "PR #869 was left open and became stale against later governance changes. This handoff is rebuilt on current main without replaying stale queue/checkpoint/progress files.",
+    "currentMain": "f839e8ee961b85f3ec6af939455d6a023e759c0f"
+  },
+  "nonClaims": [
+    "BUILD_LANE does not self-close a CRITICAL correction.",
+    "CORR-014 remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+    "This proves code-level fail-closed replay/checkpoint/universe mechanics; it does not claim full historical data completeness, OOS validity or strategy alpha.",
+    "No System1 Formal Core/runtime, strategy threshold/weight/ranking, final-selection, live-push, capital or order authority changed."
+  ],
+  "exactNext": [
+    "AUDIT_LANE independently reproduces AP-04 and verifies merged-main checkpoint/PIT-universe/run-identity closure.",
+    "BUILD_LANE continues the highest-severity unblocked correction from the canonical queue.",
+    "Preserve lane ownership and physical-evidence gates; do not infer data completeness from code-level acceptance."
+  ]
+}
