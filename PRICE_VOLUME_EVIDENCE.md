@@ -6419,3 +6419,23 @@ No economic result changed. These findings lower false-positive admission risk; 
 D02 remains 60.0%; all modules L3; clean prospective dates 0; Gate 7 CLOSED; Formal Core LOCKED.
 
 Next: PVE-277 Wave-2 baseline dependency/bypass audit.
+
+
+# PVE-277~279 — Wave-2 dependency-specific anti-bypass evidence (2026-10-08)
+
+PVE-277 shows that the stale-baseline problem is not one monolithic D02 defect. It decomposes by feature lineage.
+
+Ten legal legacy Wave-2 fixtures were replayed through `D02_L4_WAVE2_ADMISSION_V0_1`; all can pass without an immutable freshness/continuity receipt. Static source/readiness lineage then separates:
+- intraday historical normalization;
+- raw daily-volume continuity;
+- rolling-20 daily history;
+- independent primary source with baseline-dependent comparator controls.
+
+PVE-278 implements that distinction. It does not force a same-slot median check onto SVB20 or provider trade pressure. Instead it requires the matching evidence object for the consumed lineage.
+
+PVE-279 closes downstream data substitution by binding the PVE-278 admitted dataset hash to D16's exact input dataset hash.
+
+This sequence materially improves evidence integrity but produces no economic result.
+D02 stays 60.0%; all modules stay L3; outcome access remains closed.
+
+Next: PVE-280 D02-01 semantic-governance downstream binding audit and unified all-D02 lineage rule.
