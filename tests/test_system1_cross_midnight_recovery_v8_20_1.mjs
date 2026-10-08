@@ -6,7 +6,7 @@ const beforePath="artifacts/Worker-before-v8_20_1.mjs";
 assert.equal(fs.existsSync(beforePath),true,"V8.20.1 pre-patch Worker artifact missing");
 const before=fs.readFileSync(beforePath,"utf8");
 
-assert.match(source,/const VERSION = "8\.20\.(?:1-cross-midnight-recovery-readback|2-idempotent-d1-snapshots)";/);
+assert.match(source,/const VERSION = "(?:8\.20\.(?:1-cross-midnight-recovery-readback|2-idempotent-d1-snapshots)|8\.21\.0-c1-generation-set-finalization)";/);
 assert.match(source,/url\.pathname === "\/api\/market-data\/status"/);
 assert.match(source,/url\.searchParams\.get\("marketDate"\)/);
 assert.match(source,/const requestedDate=url\.searchParams\.get\("marketDate"\)/,
@@ -29,8 +29,12 @@ for(const name of ["scoreCandidate","selectTomorrowCandidates","evaluateMomentum
   assert.equal(a[name].toString(),b[name].toString(),name+" changed by recovery hardening");
 }
 
-const added=source.length-before.length;
-assert.ok(added>0&&added<8000,"unexpected V8.20.1 patch size");
+const patch=fs.readFileSync("scripts/apply_v8_20_1.py","utf8");
+assert.match(patch,/cross-midnight recovery readback hardening/);
+assert.match(patch,/market status readback route/);
+assert.match(patch,/const VERSION = "8\.20\.1-cross-midnight-recovery-readback";/);
+for(const forbidden of ["scoreCandidate","selectTomorrowCandidates","evaluateMomentum","evaluateOperationSignals","saveStockConfig"])
+  assert.equal(patch.includes("function "+forbidden+"("),false,forbidden+" must not be patched by V8.20.1");
 console.log(JSON.stringify({
   ok:true,version:"8.20.1-cross-midnight-recovery-readback",
   marketStatusReadOnly:true,historicalInstitutionReadbackPreserved:true,
