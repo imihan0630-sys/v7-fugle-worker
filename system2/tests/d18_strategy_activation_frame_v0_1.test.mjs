@@ -95,29 +95,73 @@ const costContract={
   note:"same frozen research cost for baseline/challenger",
 };
 
-function regime(value,state="KNOWN") {
-  return {
+const D18_DIMENSIONS=[
+  "trendContext",
+  "breadthContext",
+  "volatilityDirection",
+  "activityDirection",
+  "concentrationContext",
+  "sizeLeadership",
+  "institutionalContext",
+  "globalTransmission",
+  "sectorRotationContext",
+];
+
+async function hashedDimension({
+  state="UNKNOWN",
+  value=null,
+  reason="fixture unknown",
+  sourceRef=null,
+  sourceIdentity=null,
+  availableAt=null,
+  pointInTimeEligible=false,
+  blockerCodes=[],
+}={}) {
+  const base={
+    state,
+    value,
+    reason,
+    sourceRef,
+    sourceIdentity,
+    availableAt,
+    pointInTimeEligible,
+    blockerCodes,
+  };
+  return {...base,evidenceHash:await sha256Hex(base)};
+}
+
+async function regime(value,state="KNOWN") {
+  const dimensions={};
+  for(const key of D18_DIMENSIONS){
+    dimensions[key]=await hashedDimension();
+  }
+  dimensions.trendContext = state==="KNOWN"
+    ? await hashedDimension({
+        state:"KNOWN",
+        value,
+        reason:null,
+        sourceRef:"a".repeat(64),
+        sourceIdentity:"A2_TAIEX_CLOSE",
+        availableAt:"2026-10-05T06:20:00.000Z",
+        pointInTimeEligible:true,
+        blockerCodes:[],
+      })
+    : await hashedDimension();
+  const base={
     vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
     marketDate,
     decisionTimestamp,
     pointInTimeEligible:true,
-    receiptHash:"regime-"+String(value)+"-"+state,
-    dimensions:{
-      trendContext:{
-        state,
-        value:state==="KNOWN"?value:null,
-        reason:state==="KNOWN"?null:"fixture unknown",
-        sourceRef:"taiex",
-      },
-    },
+    dimensions,
   };
+  return {...base,receiptHash:await sha256Hex(base)};
 }
 
 const opportunity=await makePair(counts({QUALIFIED_NOT_SELECTED:2}));
 const base={
   frameId:"D18-ACT-1",
   ...opportunity,
-  regimeVector:regime("DOWN_TREND_CONTEXT"),
+  regimeVector:await regime("DOWN_TREND_CONTEXT"),
   registration,
   costContract,
   createdAt:"2026-10-05T06:32:00.000Z",
@@ -139,7 +183,7 @@ assert.equal(replay.frameHash,disabled.frameHash);
 const enabled=await buildD18StrategyActivationFrameV0_1({
   ...base,
   frameId:"D18-ACT-2",
-  regimeVector:regime("UP_TREND_CONTEXT"),
+  regimeVector:await regime("UP_TREND_CONTEXT"),
 });
 assert.equal(enabled.challenger.state,"POLICY_ENABLED");
 assert.equal(enabled.challenger.action,"KEEP_STATIC_STRATEGY");
@@ -167,9 +211,29 @@ assert.equal(blocked.challenger.state,"DATA_UNKNOWN");
 const unknownRegime=await buildD18StrategyActivationFrameV0_1({
   ...base,
   frameId:"D18-ACT-5",
-  regimeVector:regime(null,"UNKNOWN"),
+  regimeVector:await regime(null,"UNKNOWN"),
 });
 assert.equal(unknownRegime.challenger.state,"DATA_UNKNOWN");
+
+const validRegimeForTamper=await regime("DOWN_TREND_CONTEXT");
+const tamperedRegime={
+  ...validRegimeForTamper,
+  dimensions:{
+    ...validRegimeForTamper.dimensions,
+    trendContext:{
+      ...validRegimeForTamper.dimensions.trendContext,
+      value:"UP_TREND_CONTEXT",
+    },
+  },
+};
+const tamperedActivation=await buildD18StrategyActivationFrameV0_1({
+  ...base,
+  frameId:"D18-ACT-TAMPERED-REGIME",
+  regimeVector:tamperedRegime,
+});
+assert.equal(tamperedActivation.regimeEvidenceValid,false);
+assert.equal(tamperedActivation.challenger.state,"DATA_UNKNOWN");
+assert.ok(tamperedActivation.regimeEvidenceBlockers.some((x)=>x.includes("DIMENSION_EVIDENCE_HASH_MISMATCH")));
 
 const incompletePair=await makePair(
   counts({REJECTED:9}),
