@@ -2,7 +2,7 @@ import https from "node:https";
 
 const marketDate=String(process.env.TPEX_PROBE_DATE||"2026-10-08");
 const slash=marketDate.replaceAll("-","/");
-const dailyUrl=`https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=${encodeURIComponent(slash)}`;
+const dailyUrl=`https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(slash)}&id=&response=json`;
 const openapiUrl="https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes";
 const headers={
   "Accept":"application/json,text/plain,*/*",
