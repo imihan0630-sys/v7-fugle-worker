@@ -6,7 +6,7 @@ import { sha256Hex } from "../runtime/decision_archive.mjs";
 import { SHORT_MOMENTUM_CONTRACT_V0_1 } from "../runtime/strategy_contracts_v0_1.mjs";
 import { findLimitedShadowSpec } from "../runtime/limited_shadow_v0_1.mjs";
 import { runDailyLimitedShadowOrchestratorV0_1 } from "../runtime/daily_shadow_orchestrator_v0_1.mjs";
-import { buildCorporateActionCompletenessReceiptV0_1 } from "../runtime/corporate_action_continuity_archive_v0_1.mjs";
+import { buildCorporateActionCompletenessReceiptV0_2 } from "../runtime/corporate_action_continuity_archive_v0_1.mjs";
 import { buildNct01TwseClearNoActionPromotionReceiptV0_1 } from "../runtime/nct01_continuity_replay_binding_v0_1.mjs";
 
 const marketDate = "2026-09-29";
@@ -130,7 +130,7 @@ const requiredSourceContracts = [
 ];
 
 function archiveForWindow(startDate) {
-  return buildCorporateActionCompletenessReceiptV0_1({
+  return buildCorporateActionCompletenessReceiptV0_2({
     startDate,
     endDate: marketDate,
     universeVersion: "TWSE-NCT01-ORCH-FIXTURE",
@@ -151,6 +151,20 @@ function archiveForWindow(startDate) {
     })),
     eventVersions: [],
     suspensionCoverageByExchange: { TWSE: "COMPLETE" },
+    suspensionEvidenceByExchange: {
+      TWSE: {
+        exchange: "TWSE",
+        coverageState: "COMPLETE",
+        requestedStartDate: startDate,
+        requestedEndDate: marketDate,
+        sourceId: "TWSE-TWTAWU-BOUNDED",
+        sourceFamily: "TWTAWU",
+        sourceContractVersion: "TWSE-TWTAWU-BOUNDED-V0_2",
+        receiptDigest: "d".repeat(64),
+        observedAt: "2026-09-29T07:00:00Z",
+        availabilitySemantics: "PROSPECTIVE_OBSERVED",
+      },
+    },
     generatedAt: "2026-09-29T07:00:00Z",
   });
 }
@@ -161,7 +175,7 @@ async function certifiedReceipt(replayWindow, receiptId) {
   return buildNct01TwseClearNoActionPromotionReceiptV0_1({
     receiptId,
     replayWindow,
-    archiveReceipt: archiveForWindow(dates[0]),
+    archiveReceipt: await archiveForWindow(dates[0]),
     universeState: "IN_SCOPE",
     symbolSessionEvidence: {
       expectedEligibleSymbolSessions: dates,
@@ -174,18 +188,26 @@ async function certifiedReceipt(replayWindow, receiptId) {
       expectedSessionHash: sessionHash,
       observedSessionHash: sessionHash,
     },
-    sourceEvidenceRefs: [0, 1, 2].map((i) => ({
-      sourceId: "SRC-" + i,
-      digest: String(i + 1).repeat(64),
-      observedAt: "2026-09-29T07:00:00Z",
-      availabilitySemantics: "PROSPECTIVE_OBSERVED",
-    })),
+    sourceEvidenceRefs: [
+      ...[0, 1, 2].map((i) => ({
+        sourceId: "SRC-" + i,
+        digest: String(i + 1).repeat(64),
+        observedAt: "2026-09-29T07:00:00Z",
+        availabilitySemantics: "PROSPECTIVE_OBSERVED",
+      })),
+      {
+        sourceId: "TWSE-TWTAWU-BOUNDED",
+        digest: "d".repeat(64),
+        observedAt: "2026-09-29T07:00:00Z",
+        availabilitySemantics: "PROSPECTIVE_OBSERVED",
+      },
+    ],
     sourceFamilyVersion: "TWSE-CA-EXACT-WINDOW-V0_1",
     rawHistoryAdmissionReceiptId: "RAW-HISTORY-2330-20260929",
     symbolSessionContractVersion: "S2-EXACT-SESSION-V0_4",
     sessionCalendarVersion: "TWSE-OFFICIAL-CALENDAR-V0_1",
     continuityEngineVersion: "SHARED-TECHNICAL-CONTINUITY-V0_1",
-    corporateActionRegistryVersion: "S2-CA-ARCHIVE-V0_1",
+    corporateActionRegistryVersion: "S2-CA-ARCHIVE-V0_2",
     capturedAt: "2026-09-29T07:10:00Z",
     generatedAt: "2026-09-29T07:10:00Z",
   });
