@@ -1394,7 +1394,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed: a future 2030, `pointInTimeEligible=false` global-transmission context became a KNOWN RISK_ON dimension inside a 2026 vector marked PIT eligible.
@@ -1404,4 +1404,18 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. fail affected activation, attribution and transition policy to UNKNOWN;
   4. verify component and vector hashes before downstream use.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-07.
-- finalDisposition: PENDING
+- finalDisposition: FIX_IMPLEMENTED — per-dimension Regime PIT/source/hash evidence is fail-closed; independent AUDIT_LANE verification is still required before VERIFIED_CLOSED.
+
+
+#### BUILD implementation handoff — 2026-10-08 19:15
+
+- PR #877 merged as `591728bfc1a2569e0bd5eb0d10ce71f8dd3e8055`.
+- Uniform per-dimension PIT/source/hash validation covers KNOWN and CONTEXT_RAW Regime evidence; invalid optional evidence remains dimension-local UNKNOWN.
+- Component receipt hashes, dimension evidence hashes and final vector receipt hashes are recomputed before downstream activation / attribution / transition use.
+- Cross-strategy dependence comparison treats contaminated Regime attribution as MISSING common support, never zero or valid performance evidence.
+- AP-07 future/non-PIT GlobalTransmission is UNKNOWN and cannot produce POLICY_ENABLED / POLICY_DISABLED.
+- 36 optional-dimension negative cases cover future-date, wrong-clock, non-PIT, missing availableAt, missing hash and tampered receipt.
+- Exact-head PASS: CORR-015 `37768619935`; System2 Research CI `37768619939`; V8 Regression `37768620380`; V8 Repair CI `37768620096`.
+- Merged-main PASS: CORR-015 `37768765685`; System2 Research CI `37768765738`; V8 Regression `37768765666`.
+- Durable evidence: `system2/evidence/S2_CORR_015_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+- BUILD_LANE does **not** self-close this CRITICAL correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
