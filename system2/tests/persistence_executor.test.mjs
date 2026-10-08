@@ -46,6 +46,7 @@ class MockDb {
       );
       const identityColumn =
         table === "s2_decisions" ? "decision_id" :
+        table === "s2_decision_corrections" ? "correction_id" :
         table === "s2_shadow_run_fingerprints" ? "fingerprint_id" :
         "receipt_id";
       const persisted = this.mutateInsertedRow
@@ -178,5 +179,114 @@ await assert.rejects(
   /POST_WRITE_VERIFICATION_FAILED/,
 );
 assert.equal(concurrentDb.batchCalls, 1);
+
+const lineageDecisionRow = {
+  decision_id: "D-LINEAGE-2330",
+  factor_snapshot_id: "FS-LINEAGE-2330",
+  market_date: "2026-10-08",
+  decision_timestamp: "2026-10-08T07:30:00Z",
+  strategy_id: "SHORT_MOMENTUM",
+  strategy_version: "V0.1-CONTRACT",
+  symbol: "2330",
+  candidate_state: "QUALIFIED_NOT_SELECTED",
+  reasons_json: "[]",
+  warnings_json: "[]",
+  missing_required_factors_json: "[]",
+  entry_plan_json: "{}",
+  invalidation_json: "[]",
+  regime_snapshot_id: "REG-LINEAGE-1",
+  frozen_at: "2026-10-08T07:31:00Z",
+  schema_version: "S2_DECISION_V0_1",
+  decision_hash: "d".repeat(64),
+};
+const lineageBatch = await buildSystem2PersistenceBatch({
+  batchId: "B-LINEAGE-DECISION",
+  marketDate: "2026-10-08",
+  decisionTimestamp: "2026-10-08T07:30:00Z",
+  records: [{ table: "s2_decisions", row: lineageDecisionRow }],
+  createdAt: "2026-10-08T07:31:00Z",
+});
+const lineageDb = new MockDb();
+lineageDb.rows.set("s2_symbol_factor_snapshots|FS-LINEAGE-2330", {
+  snapshot_id: "FS-LINEAGE-2330",
+  market_date: "2026-10-08",
+  decision_timestamp: "2026-10-08T07:30:00Z",
+  symbol: "2330",
+  regime_snapshot_id: "REG-LINEAGE-1",
+});
+lineageDb.rows.set("s2_market_regime_snapshots|REG-LINEAGE-1", {
+  regime_snapshot_id: "REG-LINEAGE-1",
+  market_date: "2026-10-08",
+  decision_timestamp: "2026-10-08T07:30:00Z",
+});
+const lineageApplied = await executeSystem2PersistenceBatch({
+  db: lineageDb,
+  batch: lineageBatch,
+});
+assert.equal(lineageApplied.insertedCount, 1);
+assert.equal(lineageApplied.statementLedger.lineageReadStatementCount, 2);
+
+const missingParentDb = new MockDb();
+await assert.rejects(
+  () => executeSystem2PersistenceBatch({ db: missingParentDb, batch: lineageBatch }),
+  /LINEAGE_PARENT_MISSING:s2_decisions.factor_snapshot_id/,
+);
+assert.equal(missingParentDb.batchCalls, 0);
+
+const mismatchDb = new MockDb();
+mismatchDb.rows.set("s2_symbol_factor_snapshots|FS-LINEAGE-2330", {
+  snapshot_id: "FS-LINEAGE-2330",
+  market_date: "2026-10-08",
+  decision_timestamp: "2026-10-08T07:30:00Z",
+  symbol: "2317",
+  regime_snapshot_id: "REG-LINEAGE-1",
+});
+mismatchDb.rows.set("s2_market_regime_snapshots|REG-LINEAGE-1", {
+  regime_snapshot_id: "REG-LINEAGE-1",
+  market_date: "2026-10-08",
+  decision_timestamp: "2026-10-08T07:30:00Z",
+});
+await assert.rejects(
+  () => executeSystem2PersistenceBatch({ db: mismatchDb, batch: lineageBatch }),
+  /LINEAGE_MISMATCH:decision-factor.symbol/,
+);
+assert.equal(mismatchDb.batchCalls, 0);
+
+const correctionRow = {
+  correction_id: "CORR-LINEAGE-1",
+  original_decision_id: "D-LINEAGE-2330",
+  correction_timestamp: "2026-10-08T08:00:00Z",
+  reason: "RESEARCH_METADATA_CORRECTION",
+  corrected_fields_json: '{"company_name":"TSMC"}',
+  evidence_json: '{"source":"fixture"}',
+};
+const correctionBatch = await buildSystem2PersistenceBatch({
+  batchId: "B-LINEAGE-CORRECTION",
+  marketDate: "2026-10-08",
+  decisionTimestamp: "2026-10-08T07:30:00Z",
+  records: [{ table: "s2_decision_corrections", row: correctionRow }],
+  createdAt: "2026-10-08T08:00:00Z",
+});
+const correctionApplied = await executeSystem2PersistenceBatch({
+  db: lineageDb,
+  batch: correctionBatch,
+});
+assert.equal(correctionApplied.insertedCount, 1);
+
+const orphanCorrectionDb = new MockDb();
+await assert.rejects(
+  () => executeSystem2PersistenceBatch({ db: orphanCorrectionDb, batch: correctionBatch }),
+  /LINEAGE_PARENT_MISSING:s2_decision_corrections.original_decision_id/,
+);
+assert.equal(orphanCorrectionDb.batchCalls, 0);
+
+lineageDb.rows.set("s2_decision_corrections|CORR-LINEAGE-1", {
+  ...correctionRow,
+  reason: "ATTEMPTED_REWRITE",
+});
+await assert.rejects(
+  () => executeSystem2PersistenceBatch({ db: lineageDb, batch: correctionBatch }),
+  /IMMUTABLE_CONFLICT existing row/,
+);
 
 console.log("System2 persistence executor tests passed");
