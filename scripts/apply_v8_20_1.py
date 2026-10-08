@@ -22,36 +22,7 @@ once(
   "runtime version"
 )
 
-old_inst='''    if(url.pathname==="/api/institution-status") {
-      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
-      if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
-      await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
-      const marketDate=mostRecentWeekday(taiwanDate());
-      const streak=await readInstitutionStreakMap(env,marketDate);
-      return json({marketDate,ready:streak.ready,validDates:streak.validDates,missingDates:streak.missingDates,snapshotCounts:streak.snapshotCounts},200,true);
-    }'''
-new_inst='''    if(url.pathname==="/api/institution-status") {
-      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
-      if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
-      try {
-        const today=taiwanDate();
-        const requested=String(url.searchParams.get("marketDate")||"").trim();
-        const requestedDate=requested?normalizeMarketDate(requested):null;
-        if(requested && (!requestedDate || requestedDate>today || requestedDate<shiftDateString(today,-14)))
-          return json({error:"法人狀態日期無效、未來或超過14天",noPlanChanges:true},400,true);
-        const calendarDate=requestedDate||today;
-        await loadTradingCalendar(env,Number(calendarDate.slice(0,4)));
-        const marketDate=requestedDate||mostRecentWeekday(today);
-        if(requestedDate&&!isTradingDate(requestedDate))
-          return json({error:"法人狀態日期不是交易日",noPlanChanges:true},400,true);
-        const streak=await readInstitutionStreakMap(env,marketDate);
-        return json({marketDate,ready:streak.ready,validDates:streak.validDates,missingDates:streak.missingDates,
-          snapshotCounts:streak.snapshotCounts,historicalReadback:!!requestedDate,noPlanChanges:true},200,true);
-      } catch(err) {
-        return json({error:String(err),noPlanChanges:true},400,true);
-      }
-    }'''
-once(old_inst,new_inst,"institution historical status readback")
+
 
 market_anchor='''    // 正常管理員授權的官方行情同步，不下單、不改標的或交易計畫。
     if (url.pathname === "/api/market-data") {'''
