@@ -1,0 +1,101 @@
+name: System2 CORR-015 Regime PIT Firewall V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/d18_observable_regime_vector_v0_1.mjs"
+      - "system2/runtime/d18_taiex_context_v0_1.mjs"
+      - "system2/runtime/d18_sector_rotation_context_v0_1.mjs"
+      - "system2/runtime/d18_strategy_activation_frame_v0_1.mjs"
+      - "system2/runtime/d18_regime_attribution_v0_1.mjs"
+      - "system2/runtime/d18_regime_transition_v0_1.mjs"
+      - "system2/runtime/d18_strategy_dependence_panel_v0_1.mjs"
+      - "research/d18_direction_breadth_semantics_v0_1.mjs"
+      - "system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs"
+      - "system2/tests/d18_observable_regime_vector_v0_1.test.mjs"
+      - "system2/tests/d18_taiex_context_v0_1.test.mjs"
+      - "system2/tests/d18_sector_rotation_context_v0_1.test.mjs"
+      - "system2/tests/d18_strategy_activation_frame_v0_1.test.mjs"
+      - "system2/tests/d18_regime_attribution_v0_1.test.mjs"
+      - "system2/tests/d18_regime_transition_v0_1.test.mjs"
+      - "system2/tests/d18_strategy_dependence_panel_v0_1.test.mjs"
+      - "system2/tests/d18_walk_forward_plan_v0_1.test.mjs"
+      - "tests/test_d18_direction_breadth_semantics_v0_1.mjs"
+      - ".github/workflows/system2-corr015-regime-pit-firewall-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/d18_observable_regime_vector_v0_1.mjs"
+      - "system2/runtime/d18_taiex_context_v0_1.mjs"
+      - "system2/runtime/d18_sector_rotation_context_v0_1.mjs"
+      - "system2/runtime/d18_strategy_activation_frame_v0_1.mjs"
+      - "system2/runtime/d18_regime_attribution_v0_1.mjs"
+      - "system2/runtime/d18_regime_transition_v0_1.mjs"
+      - "system2/runtime/d18_strategy_dependence_panel_v0_1.mjs"
+      - "research/d18_direction_breadth_semantics_v0_1.mjs"
+      - "system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs"
+      - ".github/workflows/system2-corr015-regime-pit-firewall-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-015 adversarial Regime PIT matrix
+        run: node system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs
+
+      - name: Observable Regime vector regression
+        run: node system2/tests/d18_observable_regime_vector_v0_1.test.mjs
+
+      - name: TAIEX context regression
+        run: node system2/tests/d18_taiex_context_v0_1.test.mjs
+
+      - name: Direction breadth regression
+        run: node tests/test_d18_direction_breadth_semantics_v0_1.mjs
+
+      - name: Sector rotation regression
+        run: node system2/tests/d18_sector_rotation_context_v0_1.test.mjs
+
+      - name: Strategy activation regression
+        run: node system2/tests/d18_strategy_activation_frame_v0_1.test.mjs
+
+      - name: Regime attribution regression
+        run: node system2/tests/d18_regime_attribution_v0_1.test.mjs
+
+      - name: Regime transition regression
+        run: node system2/tests/d18_regime_transition_v0_1.test.mjs
+
+      - name: Cross-strategy dependence regression
+        run: node system2/tests/d18_strategy_dependence_panel_v0_1.test.mjs
+
+      - name: Walk-forward regression
+        run: node system2/tests/d18_walk_forward_plan_v0_1.test.mjs
+
+      - name: Static correction assertions
+        run: |
+          set -euo pipefail
+          grep -q 'SOURCE_HASH_MISMATCH' system2/runtime/d18_observable_regime_vector_v0_1.mjs
+          grep -q 'DIMENSION_EVIDENCE_HASH_MISMATCH' system2/runtime/d18_observable_regime_vector_v0_1.mjs
+          grep -q 'REGIME_VECTOR_HASH_MISMATCH' system2/runtime/d18_observable_regime_vector_v0_1.mjs
+          grep -q 'REGIME_EVIDENCE_UNKNOWN_OR_INVALID' system2/runtime/d18_strategy_dependence_panel_v0_1.mjs
+          grep -q 'GLOBAL_TRANSMISSION_PIT_INELIGIBLE' system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs
+          echo "CORR-015 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
