@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_V0_1",
+  "recordedAt": "2026-10-09T00:38:06+08:00",
+  "role": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "correction": "S2-CORR-20261008-008",
+  "severity": "HIGH",
+  "disposition": "BLOCKED_INDEPENDENT_VERIFICATION",
+  "canonicalSource": {
+    "repo": "imihan0630-sys/v7-fugle-worker",
+    "ref": "main",
+    "file": "system2/runtime/nct01_runtime_guard_v0_1.mjs",
+    "mergeCommit": "53b15e0731be0948f89f8bc08c90661703276905"
+  },
+  "verifiedExistingEvidence": {
+    "sourceBlob": "cd85f67d035ee660cb756828afa5dc5a94b04fed",
+    "targetedGitHubRunId": 37808924586,
+    "targetedGitHubJobConclusion": "success",
+    "scope": "Existing positive/fail-closed regressions do not cover the following adversarial cases"
+  },
+  "probes": [
+    {
+      "id": "AP-008-A",
+      "class": "WRITABLE_PRAGMA_BYPASSES_LEXICAL_READONLY_FILTER",
+      "sourceLogic": "READ_PREFIX_RE = /^(SELECT|WITH|PRAGMA)\\b/i; BLOCKED_SQL_RE omits writable PRAGMA names and '=' assignment; assertNcT01ReadOnlySqlV0_1 uses only those checks",
+      "sql": [
+        "PRAGMA user_version=1729",
+        "PRAGMA writable_schema=ON",
+        "PRAGMA application_id=8675309"
+      ],
+      "observed": "All three pass the actual source regex checks; no pre-transport rejection",
+      "localIndependentSQLiteReproduction": {
+        "engine": "Python standard-library sqlite3 (in-memory SQLite)",
+        "commands": [
+          "PRAGMA user_version (before)",
+          "PRAGMA user_version=1729",
+          "PRAGMA user_version (after)",
+          "PRAGMA writable_schema (before)",
+          "PRAGMA writable_schema=ON",
+          "PRAGMA writable_schema (after)"
+        ],
+        "result": {
+          "userVersionBefore": 0,
+          "userVersionAfter": 1729,
+          "writableSchemaBefore": 0,
+          "writableSchemaAfter": 1
+        }
+      },
+      "limitation": "SQLite side effect is independently observed; real Cloudflare D1 acceptance of these PRAGMAs was NOT tested and is not required to prove a pre-transport rejection lapse"
+    },
+    {
+      "id": "AP-008-B",
+      "class": "MUTABLE_SQL_STATEMENT_TOCTOU_BATCH",
+      "sourceLogic": "wrapD1().batch reads caller-supplied statement.sql for validation then pushes original statement object to db.batch without copying and binding immutable checked SQL",
+      "fixture": "statement.sql getter returns SELECT 1 on first two reads; UPDATE s2_decisions SET rank=1 on third read",
+      "reproduction": "Two guard-side checks see SELECT; an adapter-side third read sees UPDATE; no guard revalidation",
+      "result": {
+        "sqlReads": 3,
+        "forwardedSql": "UPDATE s2_decisions SET rank=1",
+        "mutationReachesAdapter": true
+      },
+      "limitation": "Deterministic JavaScript test of existing pass-through control flow; no physical D1 mutation attempted"
+    }
+  ],
+  "acceptanceImpact": [
+    "Original criterion 'A mutating SQL attempt is rejected before remote request count increases' is not proved for writable PRAGMA or mutable statement object.",
+    "Prior targeted CI PASS and declared runner-local read-only guard do not close this uncovered adversarial surface.",
+    "Zero observed D1 rowsWritten in ordinary fixtures is insufficient to claim all inbound SQL is rejected before transport."
+  ],
+  "mandatoryBuildFix": [
+    "Replace generic PRAGMA prefix permission with an explicit audited read-only PRAGMA allowlist, with writable PRAGMA names, '=' assignments and side-effect PRAGMAs blocked pre-transport; use explicit SQL parser or fail-closed proof where suitable.",
+    "Eliminate TOCTOU by rejecting arbitrary mutable caller statement objects or reconstructing immutable adapter-native statements from individually validated/canonicalized SQL and bound params; ensure no unvalidated raw db method escape.",
+    "Add targeted negative tests proving rejectedMutationAttemptCount increments and underlying transport/batch calls remain zero for writable PRAGMA and mutable SQL getter fixtures.",
+    "Retain positive D1 SELECT and legitimate read-only metadata PRAGMA controls; verify no System1/runtime boundary changes.",
+    "Rerun exact-head targeted CORR-008 CI, NC-T01 Artifact Runner, System2 Research and V8 regressions; independently verify before closure."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core changes",
+    "No live trading/selection/notification/capital/order changes",
+    "Do not fabricate physical W0 TWTAWU or S22-T11..T16 witness"
+  ],
+  "physicalNonClaims": [
+    "No Cloudflare D1 side effect was executed",
+    "No real NC-T01 artifact-only workflow was performed",
+    "DATA_LANE continuity physical completeness remains separately pending"
+  ],
+  "verificationDecision": "Keep original CORR-008 in VERIFYING, request BUILD_LANE corrective patch; DO NOT mark VERIFIED_CLOSED"
+}
