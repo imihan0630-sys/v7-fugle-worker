@@ -1,0 +1,66 @@
+name: System2 CORR-010 Outcome Join Closed Set V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/shadow_run_fingerprint.mjs"
+      - "system2/runtime/prediction_snapshot_v0_1.mjs"
+      - "system2/tests/shadow_run_fingerprint.test.mjs"
+      - "system2/tests/prediction_snapshot_v0_1.test.mjs"
+      - "system2/tests/corr010_outcome_join_closed_set_v0_1.test.mjs"
+      - ".github/workflows/system2-corr010-outcome-join-closed-set-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/shadow_run_fingerprint.mjs"
+      - "system2/runtime/prediction_snapshot_v0_1.mjs"
+      - "system2/tests/shadow_run_fingerprint.test.mjs"
+      - "system2/tests/prediction_snapshot_v0_1.test.mjs"
+      - "system2/tests/corr010_outcome_join_closed_set_v0_1.test.mjs"
+      - ".github/workflows/system2-corr010-outcome-join-closed-set-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: CORR-010 AP-02/AP-03 adversarial reconciliation
+        run: node system2/tests/corr010_outcome_join_closed_set_v0_1.test.mjs
+
+      - name: Shadow run fingerprint regression
+        run: node system2/tests/shadow_run_fingerprint.test.mjs
+
+      - name: Prediction snapshot regression
+        run: node system2/tests/prediction_snapshot_v0_1.test.mjs
+
+      - name: Limited Shadow bundle regression
+        run: node system2/tests/limited_shadow_run_assembler_v0_1.test.mjs
+
+      - name: Static correction assertions
+        run: |
+          set -euo pipefail
+          grep -q 'verifyShadowRunFingerprintV0_1' system2/runtime/shadow_run_fingerprint.mjs
+          grep -q 'DECISION_HASH_CLOSED_SET_MISMATCH' system2/runtime/shadow_run_fingerprint.mjs
+          grep -q 'PREDICTION_DECISION_HASH_CLOSED_SET_MISMATCH' system2/runtime/prediction_snapshot_v0_1.mjs
+          grep -q 'SOURCE_SESSION_RECEIPT_NOT_PROVIDED' system2/runtime/prediction_snapshot_v0_1.mjs
+          grep -q 'DECISION_HASH_INTEGRITY_INVALID' system2/runtime/prediction_snapshot_v0_1.mjs
+          echo "CORR-010 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
