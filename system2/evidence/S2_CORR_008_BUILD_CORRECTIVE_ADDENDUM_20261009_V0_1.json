@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "S2_CORR_008_BUILD_CORRECTIVE_ADDENDUM_V0_1",
+  "recordedAt": "2026-10-09T00:49:52+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-008",
+  "severity": "HIGH",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_REVERIFICATION_PENDING",
+  "triggeringAudit": "system2/evidence/S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json",
+  "correctiveImplementation": {
+    "pullRequest": 899,
+    "exactHead": "573faeda844803036730db436dae326094416564",
+    "mergeCommit": "7f6a888c55720be6b8df049146a042f70e63f24e",
+    "fixes": [
+      "Generic PRAGMA prefix permission replaced by an explicit read-only metadata PRAGMA allowlist.",
+      "Writable/side-effect PRAGMAs including user_version assignment, writable_schema, application_id, cache_size and journal_mode are rejected before D1 transport.",
+      "Accessor/getter-backed batch statement sql/params surfaces are rejected before adapter batch execution.",
+      "Validated SQL and params are copied into fresh frozen adapter-native statements before db.batch, removing caller-object TOCTOU.",
+      "Legitimate SELECT/WITH and read-only metadata PRAGMA controls remain available."
+    ],
+    "adversarialProofs": [
+      "AP-008-A writable PRAGMA attempts increment rejectedMutationAttemptCount while underlying D1 request count remains unchanged.",
+      "AP-008-B accessor-backed mutable statement is rejected before underlying batch; sql getter is never invoked and batch/request counts remain zero."
+    ]
+  },
+  "exactHeadValidation": {
+    "head": "573faeda844803036730db436dae326094416564",
+    "runs": [
+      {
+        "name": "System2 CORR-008 NC-T01 Runtime Guard V0.1",
+        "runId": 37811513968,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "runId": 37811514005,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37811513963,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37811513986,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "7f6a888c55720be6b8df049146a042f70e63f24e",
+    "runs": [
+      {
+        "name": "System2 CORR-008 NC-T01 Runtime Guard V0.1",
+        "runId": 37811723886,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "runId": 37811723860,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37811723871,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37811723958,
+        "result": "PASS"
+      }
+    ]
+  },
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime unchanged.",
+    "No System2 strategy threshold/ranking/capacity mutation.",
+    "No live final-selection/push/capital/order authority added.",
+    "No physical D1 mutation was performed.",
+    "No physical NC-T01 W0 or SDA-022 S22-T11..T16 credit is claimed."
+  ],
+  "nonClaims": [
+    "BUILD_LANE does not independently close CORR-008.",
+    "The prior negative audit remains authoritative evidence of the pre-patch bypasses.",
+    "VERIFIED_CLOSED requires independent AUDIT_LANE re-verification on merged main.",
+    "DATA_LANE continuity completeness and a coherent real physical NC-T01 remain separate gates."
+  ]
+}
