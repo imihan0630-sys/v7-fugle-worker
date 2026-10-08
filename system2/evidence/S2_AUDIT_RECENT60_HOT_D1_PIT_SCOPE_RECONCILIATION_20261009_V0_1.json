@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "S2_AUDIT_RECENT60_HOT_D1_PIT_SCOPE_RECONCILIATION_V0_1",
+  "recordedAt": "2026-10-09T07:15:00+08:00",
+  "lane": "AUDIT_LANE",
+  "canonicalEvidenceSourcePaths": [
+    "system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json",
+    "system2/evidence/S2_RECENT60_20261008_HOT_D1_VS_PIT_PHYSICAL_SAMPLE_V0_1.json"
+  ],
+  "physicalSource": {
+    "githubActionRun": 37854849181,
+    "githubActionJob": 113576451531,
+    "artifactId": 11583895434,
+    "artifactName": "system2-recent60-hot-d1-vs-pit-37854849181-1",
+    "artifactDigest": "sha256:36c24b4b8b908afaa27247791fae7d478a584d953cebaf60066137bf08b81242",
+    "artifactMetadataVerified": "Source file, physical sample evidence and live GitHub Actions artifact metadata agree on ID/digest, run and job; independent audit did NOT reissue original D1 physical SQL"
+  },
+  "independentTest": {
+    "pullRequest": 918,
+    "source": "system2/tests/audit_recent60_hot_d1_pit_evidence_gate_v0_1.test.mjs",
+    "runId": 37858157953,
+    "jobId": 113587250907,
+    "conclusion": "success",
+    "logMarker": "AUDIT recent60 two-source evidence integrity and release blockers PASS"
+  },
+  "marketDate": "2026-10-08",
+  "observationSemantics": "2026-10-09 retrospective, post-facto; source timestamp 2026-10-08T22:39:53.496Z = 2026-10-09 06:39:53 Asia/Taipei. Not decision-time PIT knownAt.",
+  "exactPriorSessionResults": {
+    "currentUniverseCount": 1972,
+    "historyReadyCount": 46,
+    "continuityCertifiedReady": 0,
+    "expectedPitSessionMissingSymbols": 1926,
+    "expectedPitSymbolSessionsMissing": 44256,
+    "olderSelectedDateSubstitutionRiskSymbols": 1451,
+    "twse": {
+      "universe": 1086,
+      "historyReady": 22,
+      "missingSymbols": 1064,
+      "missingSymbolSessions": 24431
+    },
+    "tpex": {
+      "universe": 886,
+      "historyReady": 24,
+      "missingSymbols": 862,
+      "missingSymbolSessions": 19825
+    }
+  },
+  "sampleScope": {
+    "marketSymbolCount": 12,
+    "dateCountPerSymbol": 8,
+    "hotD1SampledIdentities": 96,
+    "hotD1ExactRowsAbsent": 96,
+    "marketDateScope": "2026-07-14 through 2026-07-23 subset",
+    "selection": "purposeful worst-gap symbols, NOT random"
+  },
+  "auditConclusions": [
+    "Physical hot D1 absence supported for only the sampled 96 specific market-symbol-date identities; 44,256 is missing expected PIT eligible session count from the gap taxonomy, not physically read-back missing hot D1 rows.",
+    "No full-universe physical absence claim; no cold R2 absence claim, no official exchange raw absence claim.",
+    "Older-date substitution risk 1,451 overlaps other missing symbol categories; do not add to 1,926.",
+    "46 history-ready stocks are not continuity-certified; 0 independently continuity-ready means no NC-T01 readiness credit from this diagnosis.",
+    "All gate failure states remain UNKNOWN/NOT_READY, not a clean zero-pick or suppressed-missing-history candidate pool.",
+    "DATA_LANE should only perform bounded R2-to-hot read-only reconciliation next; any hot D1 backfill requires explicit REMEDIATION_LANE write-budget/priority gate and PIT timestamp preservation."
+  ],
+  "correctiveQueueDisposition": "NO_NEW_CORRECTION_AND_NO_CLOSURES: recent60 D1/R2 readiness remains a separate DATA_LANE physical implementation/verification gate; current formal queue untouched.",
+  "protected": {
+    "system1FormalCore": "UNCHANGED",
+    "system1Runtime": "UNCHANGED",
+    "d1Writes": "NONE_BY_AUDIT",
+    "r2Writes": "NONE_BY_AUDIT",
+    "system2SelectionPromotion": false,
+    "productionPush": false,
+    "trading": false
+  }
+}
