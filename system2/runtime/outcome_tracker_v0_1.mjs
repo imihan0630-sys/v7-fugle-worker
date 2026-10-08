@@ -314,6 +314,18 @@ export async function buildDecisionOutcomeSnapshotV0_1({
       executionVersion: simulatedExecution.executionVersion
         ? requiredText(simulatedExecution.executionVersion, "simulatedExecution.executionVersion")
         : null,
+      executionHash: simulatedExecution.executionHash
+        ? requiredText(simulatedExecution.executionHash, "simulatedExecution.executionHash")
+        : null,
+      costModel: simulatedExecution.costModel && typeof simulatedExecution.costModel === "object"
+        ? deepFreeze({ ...simulatedExecution.costModel })
+        : null,
+      costModelVersion: simulatedExecution.costModelVersion
+        ? requiredText(simulatedExecution.costModelVersion, "simulatedExecution.costModelVersion")
+        : null,
+      taxRuleId: simulatedExecution.taxRuleId
+        ? requiredText(simulatedExecution.taxRuleId, "simulatedExecution.taxRuleId")
+        : null,
     };
     if (
       sim.holdingSessions !== null
