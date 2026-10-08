@@ -347,6 +347,63 @@ async function verifyOutcomeVersionRowV0_2(row, field = "s2_outcome_versions") {
   requireLineageEqual(outcome.executionLineage?.executionHash ?? null, row.execution_hash ?? null, "outcome.row.execution_hash");
   requireLineageEqual(outcome.executionLineage?.costModelHash ?? null, row.cost_model_hash ?? null, "outcome.row.cost_model_hash");
   requireLineageEqual(outcome.executionLineage?.taxRuleHash ?? null, row.tax_rule_hash ?? null, "outcome.row.tax_rule_hash");
+  requireLineageEqual(outcome.executionLineage?.executionVersion ?? null, row.execution_version ?? null, "outcome.row.execution_version");
+  requireLineageEqual(outcome.executionLineage?.taxRuleId ?? null, row.tax_rule_id ?? null, "outcome.row.tax_rule_id");
+  requireLineageEqual(outcome.corporateActionState, row.corporate_action_state, "outcome.row.corporate_action_state");
+
+  const horizon = outcome.horizonReturns || {};
+  for (const [column, key] of [
+    ["d1_return","D1"],
+    ["d3_return","D3"],
+    ["d5_return","D5"],
+    ["d10_return","D10"],
+    ["d20_return","D20"],
+  ]) {
+    requireLineageEqual(horizon[key] ?? null, row[column] ?? null, `outcome.row.${column}`);
+  }
+  requireLineageEqual(outcome.mfe ?? null, row.mfe ?? null, "outcome.row.mfe");
+  requireLineageEqual(outcome.mae ?? null, row.mae ?? null, "outcome.row.mae");
+  requireLineageEqual(
+    outcome.barrierObservation?.targetHitSession ?? null,
+    row.target_hit_session ?? null,
+    "outcome.row.target_hit_session",
+  );
+  requireLineageEqual(
+    outcome.barrierObservation?.stopHitSession ?? null,
+    row.stop_hit_session ?? null,
+    "outcome.row.stop_hit_session",
+  );
+  requireLineageEqual(
+    outcome.barrierObservation?.ambiguousSameBar ? 1 : 0,
+    Number(row.ambiguous_same_bar ?? 0),
+    "outcome.row.ambiguous_same_bar",
+  );
+  requireLineageEqual(
+    outcome.simulatedExecution?.realizedReturnAfterCost ?? null,
+    row.realized_return_after_cost ?? null,
+    "outcome.row.realized_return_after_cost",
+  );
+  requireLineageEqual(
+    outcome.simulatedExecution?.holdingSessions ?? null,
+    row.holding_sessions ?? null,
+    "outcome.row.holding_sessions",
+  );
+
+  const expectedSignal = JSON.stringify({
+    horizonReturns: outcome.horizonReturns,
+    benchmarkReturns: outcome.benchmarkReturns,
+    industryReturns: outcome.industryReturns,
+    relativeBenchmarkReturns: outcome.relativeBenchmarkReturns,
+    relativeIndustryReturns: outcome.relativeIndustryReturns,
+    costScenarios: outcome.costScenarios,
+    semantics: "SIGNAL_PRICE_RETURNS_AND_SCENARIO_ESTIMATES_NOT_SIMULATED_REALIZED_RETURN",
+  });
+  requireLineageEqual(expectedSignal, row.signal_return_json, "outcome.row.signal_return_json");
+  requireLineageEqual(
+    outcome.simulatedExecution ? JSON.stringify(outcome.simulatedExecution) : null,
+    row.simulated_execution_json ?? null,
+    "outcome.row.simulated_execution_json",
+  );
   return outcome;
 }
 
