@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07 Asia/Taipei",
+  "updatedAt": "2026-10-08 Asia/Taipei",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -115,7 +115,32 @@
       "COMPLETION_REPORT"
     ],
     "oldRoomCachedOutputExamplesHaveAuthority": false,
-    "oldAutomationOrHandoffOutputFormatExemption": false
+    "oldAutomationOrHandoffOutputFormatExemption": false,
+    "continuousExecutionGate": "CONTINUOUS_EXECUTION_GATE",
+    "continuousExecutionGateSource": "shared-knowledge/ROOM_BOOTSTRAP.md",
+    "continuousExecutionGateFailure": "CONTINUOUS_EXECUTION_GATE_FAIL",
+    "progressMessageIsCompletionPoint": false,
+    "progressMessageRequiresOwnerReply": false,
+    "recoverableToolFailureMustAutoContinue": true,
+    "recoverableInterruptionClasses": [
+      "TRANSIENT_TOOL_OR_CONNECTOR_ERROR",
+      "GITHUB_409_OR_CONCURRENT_MAIN_ADVANCE",
+      "STALE_BLOB_OR_BRANCH_HEAD",
+      "TRUNCATED_TOOL_OUTPUT",
+      "PAGINATION",
+      "REFORMULATABLE_SEARCH_MISS",
+      "AUTHORIZED_RETRIEVAL_CHANNEL_RATE_LIMIT_WITH_SAFE_FALLBACK",
+      "STALE_OLD_HEAD_CHECK"
+    ],
+    "continuationReinforcementDoesNotRestart": true,
+    "allowedIntentionalStopClasses": [
+      "COHERENT_REQUESTED_SEGMENT_COMPLETE",
+      "OWNER_ONLY_MFA_SECRET_LOGIN_PERMISSION_OR_AUTHORIZATION",
+      "PROTECTED_PRODUCTION_FORMAL_CORE_STRATEGY_CAPITAL_OR_TRADING_APPROVAL",
+      "ALL_SAFE_RETRIES_AND_FALLBACKS_EXHAUSTED",
+      "HARD_PRODUCT_OR_TOOL_BOUNDARY"
+    ],
+    "noFakeBackgroundExecution": true
   },
   "identities": [
     {
