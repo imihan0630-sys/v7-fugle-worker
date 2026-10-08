@@ -94,36 +94,58 @@ function normalizeRegimeLineage(lineage) {
   };
 }
 
-async function normalizeExecutionLineage(snapshot) {
-  const sim = snapshot?.simulatedExecution;
-  if (!sim || typeof sim !== "object" || Array.isArray(sim)) {
+async function normalizeExecutionLineage(snapshot, simulation) {
+  const projected = snapshot?.simulatedExecution;
+  if (!projected || typeof projected !== "object" || Array.isArray(projected)) {
     throw new Error("snapshot.simulatedExecution with immutable execution lineage is required");
   }
-  const costModel = sim.costModel;
+  if (!simulation || typeof simulation !== "object" || Array.isArray(simulation)) {
+    throw new Error("full simulation is required for execution-hash verification");
+  }
+
+  const claimedExecutionHash = requiredHash(simulation.executionHash, "simulation.executionHash");
+  const recomputedExecutionHash = await sha256Hex(stripHash(simulation, "executionHash"));
+  if (claimedExecutionHash !== recomputedExecutionHash) {
+    throw new Error("EXECUTION_HASH_MISMATCH");
+  }
+  if (projected.executionHash !== claimedExecutionHash) {
+    throw new Error("OUTCOME_EXECUTION_HASH_MISMATCH");
+  }
+
+  const costModel = simulation.order?.costModel;
   if (!costModel || typeof costModel !== "object" || Array.isArray(costModel)) {
-    throw new Error("snapshot.simulatedExecution.costModel is required");
+    throw new Error("simulation.order.costModel is required");
   }
   const costModelHash = await sha256Hex(costModel);
+  const executionVersion = requiredText(
+    simulation.executionVersion,
+    "simulation.executionVersion",
+  );
+  const costModelVersion = requiredText(
+    costModel.costModelVersion,
+    "simulation.order.costModel.costModelVersion",
+  );
+  const taxRuleId = requiredText(
+    costModel.taxRuleId,
+    "simulation.order.costModel.taxRuleId",
+  );
+
+  exactMatch(projected.state, simulation.state, "simulatedExecution.state");
+  exactMatch(projected.executionVersion, executionVersion, "simulatedExecution.executionVersion");
+  exactMatch(projected.costModelVersion, costModelVersion, "simulatedExecution.costModelVersion");
+  exactMatch(projected.taxRuleId, taxRuleId, "simulatedExecution.taxRuleId");
+  if (canonicalStringify(projected.costModel) !== canonicalStringify(costModel)) {
+    throw new Error("OUTCOME_LINEAGE_MISMATCH:simulatedExecution.costModel");
+  }
+
   return {
-    executionState: requiredText(sim.state, "snapshot.simulatedExecution.state"),
-    executionHash: requiredHash(
-      sim.executionHash,
-      "snapshot.simulatedExecution.executionHash",
-    ),
-    executionVersion: requiredText(
-      sim.executionVersion,
-      "snapshot.simulatedExecution.executionVersion",
-    ),
+    executionState: requiredText(simulation.state, "simulation.state"),
+    executionHash: claimedExecutionHash,
+    executionVersion,
     costModel: deepFreeze({ ...costModel }),
     costModelHash,
-    costModelVersion: requiredText(
-      sim.costModelVersion || costModel.costModelVersion,
-      "snapshot.simulatedExecution.costModelVersion",
-    ),
-    taxRuleId: requiredText(
-      sim.taxRuleId || costModel.taxRuleId,
-      "snapshot.simulatedExecution.taxRuleId",
-    ),
+    costModelVersion,
+    taxRuleId,
   };
 }
 
@@ -158,11 +180,12 @@ export async function buildOutcomeVersionRowV0_2({
   decisionLineage,
   regimeLineage,
   corporateActionHash,
+  simulation,
 } = {}) {
   const outcomeHash = await recomputeOutcomeHash(snapshot);
   const decision = normalizeDecisionLineage(decisionLineage);
   const regime = normalizeRegimeLineage(regimeLineage);
-  const execution = await normalizeExecutionLineage(snapshot);
+  const execution = await normalizeExecutionLineage(snapshot, simulation);
   const corporateHash = requiredHash(corporateActionHash, "corporateActionHash");
 
   exactMatch(snapshot.decisionId, decision.decisionId, "decisionId");
@@ -175,6 +198,18 @@ export async function buildOutcomeVersionRowV0_2({
   const corporateActionState = requiredText(
     snapshot.corporateActionState,
     "snapshot.corporateActionState",
+  );
+
+  exactMatch(simulation.order?.decisionId, decision.decisionId, "simulation.decisionId");
+  exactMatch(simulation.order?.strategyId, decision.strategyId, "simulation.strategyId");
+  exactMatch(simulation.order?.strategyVersion, decision.strategyVersion, "simulation.strategyVersion");
+  exactMatch(simulation.order?.symbol, decision.symbol, "simulation.symbol");
+  exactMatch(simulation.order?.decisionTimestamp, decision.decisionTimestamp, "simulation.decisionTimestamp");
+  exactMatch(simulation.order?.priceSpace, priceSpace, "simulation.priceSpace");
+  exactMatch(
+    simulation.order?.corporateActionState,
+    corporateActionState,
+    "simulation.corporateActionState",
   );
 
   const lineageBase = {
