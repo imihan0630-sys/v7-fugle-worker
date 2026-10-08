@@ -1036,3 +1036,40 @@ No target value is selected.
 No hypothesis changes support status.
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## PVE-270~276 Wave-1 freshness and downstream-consumption overlay — 2026-10-08
+
+### H001 / D02-02
+Status remains EVIDENCE_GATED / CLEAN_DATE_COUNT_ZERO.
+
+PVE-270 requires two independent future physical prerequisites:
+1. owner-approved/deployed PVE-261 baseline refresh must prove authoritative exact prior-slot freshness and provenance;
+2. CORR-003 quota remediation must independently protect System1 after-market execution and a future real trading day must produce exactly one successful business scan.
+
+Neither 2026-10-07 nor any earlier failed date can be repaired retrospectively into clean evidence.
+
+### H20 / D02-03
+Status remains CONDITIONAL_INCREMENTAL_HYPOTHESIS / OUTCOME_CLOSED.
+
+New finding: legacy H20 admission can pass without same-slot RVOL baseline freshness. PVE-273 closes this bypass.
+Future H20 evidence must prove fresh exact-slot RVOL baseline on the identical D01-owned breakout event before outcome use.
+
+No statement that high volume is necessary or sufficient is upgraded.
+
+### H003 / D02-06
+Status remains HIGHER_GATED / OUTCOME_CLOSED.
+
+New finding: PRICE_ONLY_RESPONSE vs PRICE_PLUS_VOLUME_RESPONSE requires symmetric price-geometry support and independently fresh volume effort support. Stale range baseline can contaminate both P/PV; stale volume baseline can contaminate only PV and create false apparent incrementality.
+
+PVE-274 requires clean/fresh price-range and volume baselines, identical rows/event/outcome and volume-only challenger increment.
+
+### Wave-1 program
+PVE-275 makes strengthened H001/H20/H003 prerequisites non-bypassable at pre-outcome admission.
+PVE-276 binds the exact PVE-275 admitted dataset to downstream D16 input by immutable hash.
+
+No outcome inspection.
+No hypothesis supported/rejected.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core LOCKED.
