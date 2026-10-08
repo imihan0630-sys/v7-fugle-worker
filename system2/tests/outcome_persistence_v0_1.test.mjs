@@ -213,16 +213,41 @@ assert.equal(updated.skippedIdenticalCount, 2);
 assert.equal(day1.outcomeVersionId, day3.outcomeVersionId);
 assert.ok(Math.abs(db.rows.get(`s2_outcome_versions|${day3.outcomeVersionId}`).d3_return - 0.06) < 1e-12);
 
-const changedDay1 = {
+const scalarTamper = {
   ...toS2OutcomeVersionRowV0_2(day3),
   d1_return: 0.5,
   updated_at: "2026-10-03T09:00:00Z",
 };
-const conflictBatch = await buildOutcomePersistenceBatchV0_1({
-  batchId: "OPB-CONFLICT",
+const scalarTamperBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-SCALAR-TAMPER",
   marketDate: decisionBase.decisionMarketDate,
   decisionTimestamp: decisionBase.decisionTimestamp,
-  outcomeRow: changedDay1,
+  outcomeRow: scalarTamper,
+  createdAt: "2026-10-03T09:01:00Z",
+});
+await assert.rejects(
+  () => executeOutcomePersistenceBatchV0_1({ db, batch: scalarTamperBatch }),
+  /LINEAGE_MISMATCH:outcome\.row\.d1_return/,
+);
+
+// A fully recomputed snapshot with the same frozen identity but revised mature D1
+// passes row/snapshot integrity, then fails the monotonic historical-revision gate.
+const revisedDay3 = await buildDecisionOutcomeSnapshotV0_1({
+  ...decisionBase,
+  sessions: [
+    session(1, "2026-09-30", 150),
+    session(2, "2026-10-01", 104),
+    session(3, "2026-10-02", 106),
+  ],
+  updatedAt: "2026-10-03T09:00:00Z",
+});
+assert.equal(revisedDay3.outcomeVersionId, day3.outcomeVersionId);
+assert.notEqual(revisedDay3.horizonReturns.D1, day3.horizonReturns.D1);
+const conflictBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId: "OPB-MATURE-HORIZON-REVISION",
+  marketDate: decisionBase.decisionMarketDate,
+  decisionTimestamp: decisionBase.decisionTimestamp,
+  outcomeRow: toS2OutcomeVersionRowV0_2(revisedDay3),
   createdAt: "2026-10-03T09:01:00Z",
 });
 await assert.rejects(
@@ -343,7 +368,7 @@ const wrongOutcomeBatch = await buildOutcomePersistenceBatchV0_1({
 });
 await assert.rejects(
   () => executeOutcomePersistenceBatchV0_1({ db, batch: wrongOutcomeBatch }),
-  /LINEAGE_MISMATCH:outcome_json.decisionId/,
+  /OUTCOME_SNAPSHOT_INTEGRITY:.*OUTCOME_HASH_MISMATCH/,
 );
 
 
