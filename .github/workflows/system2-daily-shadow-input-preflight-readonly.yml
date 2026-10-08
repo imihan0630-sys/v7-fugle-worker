@@ -6,6 +6,8 @@ on:
     paths:
       - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_reader_v0_1.mjs"
+      - "system2/runtime/recent60_pit_gap_taxonomy_v0_1.mjs"
+      - "system2/tests/recent60_pit_gap_taxonomy_v0_1.test.mjs"
       - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
       - "system2/runtime/stage1_assessor_policies_v0_1.mjs"
       - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
@@ -37,6 +39,7 @@ jobs:
           files=(
             system2/runtime/daily_shadow_a1_source_v0_1.mjs
             system2/runtime/daily_shadow_history_reader_v0_1.mjs
+            system2/runtime/recent60_pit_gap_taxonomy_v0_1.mjs
             system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
             system2/runtime/stage1_assessor_policies_v0_1.mjs
             system2/runtime/daily_shadow_input_preflight_v0_1.mjs
@@ -51,6 +54,9 @@ jobs:
           ! grep -Ein 'db\.prepare|db\.batch|executeSystem2PersistenceBatch|persistDailyProspectiveHistory|wrangler[[:space:]]+(deploy|delete)|PUSH_WEBHOOK_URL|V7_DB|STOCKS_KV' "${source_files[@]}"
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
           echo "Read-only/System1 isolation guard PASS"
+
+      - name: Test recent60 gap taxonomy fail-closed accounting
+        run: node system2/tests/recent60_pit_gap_taxonomy_v0_1.test.mjs
 
       - name: Run physical read-only input preflight
         env:
@@ -71,6 +77,14 @@ jobs:
           if(!Array.isArray(d.preflight?.assessors)||d.preflight.assessors.some(x=>x.state!=="READY"))throw new Error("assessor policy not READY");
           if(d.preflight.assessors.some(x=>x.system1RuntimeRequired!==false||x.system1Top6Required!==false||x.system1RankRequired!==false))throw new Error("System1 dependency firewall mismatch");
           if(d.preflight?.selectionDenominatorComplete!==true&&d.preflight?.zeroPickMayBeClaimed!==false)throw new Error("partial denominator cannot claim zero-pick");
+          const gap=d.exactSessionEvidence?.recent60GapDecomposition;
+          if(gap){
+            if(gap.storageMutationPerformed!==false||gap.strategyPromotionAuthorized!==false)throw new Error("gap taxonomy authority leak");
+            const counts=gap.localSymbolCounts;
+            if(counts.currentSymbolCount!==d.preflight.history.currentUniverseCount||counts.historyReadyCount!==d.preflight.history.historyReadyCount||counts.continuityReadyCount!==d.preflight.history.continuityReadyCount)throw new Error("gap taxonomy denominator mismatch");
+            if(Object.values(counts.primaryCauseCounts).reduce((s,n)=>s+n,0)!==counts.currentSymbolCount)throw new Error("gap taxonomy primary cause overcount");
+            if(gap.sourcePhysicalGapVsPITFilter!=="NOT_DISTINGUISHED_BY_THIS_READ_ONLY_RESULT")throw new Error("gap taxonomy incorrectly asserted physical absence");
+          } else if(d.exactSessionEvidence?.recent60GapDecompositionState!=="UNAVAILABLE_UNCERTIFIED_DENOMINATOR")throw new Error("missing gap taxonomy must fail closed");
           if(d.preflight?.finalSelectionEnabled!==false||d.preflight?.livePushEnabled!==false||d.preflight?.capitalImpact!==false||d.preflight?.orderImpact!==false)throw new Error("authority boundary mismatch");
           if(d.preflight?.system1RuntimeUsed!==false)throw new Error("System1 runtime boundary mismatch");
           console.log(JSON.stringify({
@@ -89,6 +103,11 @@ jobs:
             lifecycleState:d.exactSessionEvidence?.lifecycle?.state??null,
             lifecycleQueriedSymbolCount:d.exactSessionEvidence?.lifecycle?.queriedSymbolCount??0,
             lifecycleIntervalCount:d.exactSessionEvidence?.lifecycle?.intervalCount??0,
+            recent60GapDecompositionState:d.exactSessionEvidence?.recent60GapDecompositionState,
+            recent60ByMarket:d.exactSessionEvidence?.recent60GapDecomposition?.byMarket??null,
+            recent60PrimaryCauses:d.exactSessionEvidence?.recent60GapDecomposition?.localSymbolCounts?.primaryCauseCounts??null,
+            recent60MissingExpectedSymbolCount:d.exactSessionEvidence?.recent60GapDecomposition?.localSymbolCounts?.missingExpectedSymbolCount??null,
+            recent60MissingExpectedSessionTotal:d.exactSessionEvidence?.recent60GapDecomposition?.localSymbolCounts?.missingExpectedSessionTotal??null,
             assessorStates:d.preflight.assessors.map(x=>({strategyId:x.strategyId,state:x.state})),
             rowsRead:d.d1Metrics.rowsRead,
             rowsWritten:d.d1Metrics.rowsWritten,
