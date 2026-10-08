@@ -4816,3 +4816,124 @@ Semantic design and machine interface are complete enough for implementation, bu
 4. Execute RB-T01~T16 plus the prior 13 U2B tests and ID-T01~ID-T12.
 5. Produce first physical Taiwan date aggregate.
 6. Only then assess D18-04 L3.
+
+
+## 2026-10-08 D18-06 S1 effective-market-cap consumer interface
+
+New durable artifacts:
+- `research/D18_06_S1_EFFECTIVE_MARKET_CAP_RECEIPT_INTERFACE_20261008_V0_1.md`;
+- `research/d18_06_s1_effective_market_cap_receipt_contract_20261008_v0_1.json`.
+
+### D11 shared-owner readback
+
+Canonical corporate-action denominator research already proves:
+- registered-issued shares;
+- listed/tradable shares;
+- free-float shares;
+- EPS weighted-average shares
+are separate semantic objects.
+
+It also freezes dual-clock `knownAt` / `effectiveFromSession` logic and revision/cancellation semantics.
+
+But the shared denominator authority is still data-gated:
+- complete bounded daily dual-exchange denominator archive is not ready;
+- some supply-event denominator semantics remain unresolved;
+- prospective immutable live-date denominator capture is not yet proven.
+
+Therefore Room11 does not select/infer a denominator merely to make D18-06 executable.
+
+### S1 object
+
+Canonical consumer object:
+`D18_06_S1_EFFECTIVE_MARKET_CAP_RECEIPT_V0_1`.
+
+Two provenance-distinct source paths are allowed:
+
+1. `DIRECT_OFFICIAL_MARKET_CAP`
+   only if the official field's exact market date, definition, unit, source row/version and PIT timing are complete.
+
+2. `EFFECTIVE_SHARES_X_SAME_DAY_CLOSE`
+   only if a shared denominator-vintage receipt proves a frozen denominator type is effective on the target date and an exact same-day PIT close is bound.
+
+No numerical similarity merges the two provenance paths.
+
+### S0/S1 separation
+
+S0 is official profile observation context only.
+
+S1 may report:
+- S0_MATCHES_EFFECTIVE_DENOMINATOR;
+- S0_DIFFERS_FROM_EFFECTIVE_DENOMINATOR;
+- S0_NOT_COMPARABLE_TO_DENOMINATOR_TYPE;
+- S0_UNAVAILABLE.
+
+A numeric S0 match does not promote S1.
+A mismatch does not let Room11 overwrite the shared denominator authority.
+
+### Denominator type authority
+
+Allowed authority states:
+- CANONICAL_TYPE_FROZEN;
+- TYPE_SCOPE_PARTIAL;
+- TYPE_UNKNOWN.
+
+Only CANONICAL_TYPE_FROZEN can produce S1 READY.
+
+This prevents accidental aliasing of registered-issued/listed-tradable/free-float/EPS-weighted share bases.
+
+### Effective-vintage gate
+
+For market date T:
+the denominator receipt must prove its validity interval covers T.
+
+Source date, announcement date or nearest observation is not a substitute.
+
+Current shares may never be carried backward against historical prices without independent validity proof.
+
+Historical replay preserves the version known by T; later revisions/cancellations do not rewrite earlier receipts.
+
+### Coverage ladder
+
+- M0 MARKET_BASE_UNIVERSE;
+- M1 S0_REPORTED_SHARES_OBSERVED;
+- M2 DENOMINATOR_TYPE_AUTHORITY_READY;
+- M3 EFFECTIVE_DENOMINATOR_VINTAGE_READY;
+- M4 S1_EFFECTIVE_MARKET_CAP_READY;
+- M5 SIZE_BUCKET_ELIGIBLE.
+
+Missing S1 is never SMALL by default.
+
+### Oracle
+
+S1-T01 through S1-T18 freeze:
+- direct official-field definition/date/unit/PIT gates;
+- effective-shares + exact-close path;
+- S0-without-vintage rejection;
+- source-date vs effective-date separation;
+- historical backfill firewall;
+- revision/cancellation replay;
+- close/security identity;
+- S0 match/difference diagnostics;
+- direct vs reconstructed QA without outcome-selected path choice;
+- denominator-hash sensitivity;
+- deterministic replay.
+
+### Maturity
+
+D18-06 remains L2/40.
+
+The consumer design gap is closed.
+Physical/executable evidence remains absent:
+- no genuine S0 observer receipts;
+- no executable shared denominator-vintage authority;
+- no S1 builder;
+- no frozen size-bucket policy.
+
+### Exact next
+
+1. Track shared D11 denominator authority; do not build a second one.
+2. Capture genuine zero-extra-call S0 TWSE/TPEx receipts when engineering is authorized.
+3. Once denominator-vintage receipts are executable, implement the frozen S1 consumer.
+4. Run S1-T01~T18.
+5. Freeze size-bucket policy before outcomes.
+6. Only then assess D18-06 L3.
