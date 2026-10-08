@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "D03_PRICE_RESET_AND_IDENTITY_CONTINUITY_FAMILY_SET_V0_1",
+  "updatedAt": "2026-10-08T13:51:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_TECHNICAL_CONTINUITY_FAMILY_SET",
+  "formalCoreImpact": "NONE_LOCKED",
+  "scope": "TWSE/TPEX domestic ordinary common equity technical price continuity",
+  "estimand": "Can the selected raw or certified-transformed H/L/C price sequence be interpreted as one coherent technical price space for D03 indicators?",
+  "familySet": {
+    "version": "D03_PRICE_RESET_FAMILY_SET_V0_1",
+    "requiredPriceResetFamilies": [
+      {
+        "family": "EX_RIGHT_DIVIDEND",
+        "role": "PRICE_RESET_REQUIRED",
+        "meaning": "Exchange ex-right/ex-dividend reference-price reset family, including rights/subscription resets when represented by the canonical exchange family."
+      },
+      {
+        "family": "CAPITAL_REDUCTION",
+        "role": "PRICE_RESET_REQUIRED",
+        "meaning": "Capital-reduction events that mechanically rebase exchange price/reference space."
+      },
+      {
+        "family": "PAR_VALUE_CHANGE",
+        "role": "PRICE_RESET_REQUIRED",
+        "meaning": "Domestic ordinary-share par-value/share-unit conversion. Mechanical stock split/consolidation caused by official par-value change is mapped here and is not duplicated as a generic split family."
+      }
+    ],
+    "sessionContinuityFamily": {
+      "family": "SUSPENSION_RESUMPTION",
+      "role": "SESSION_AND_REFERENCE_CONTINUITY_REQUIRED",
+      "requiredEvidence": "Exact-window bounded source-honest suspension/resumption completeness with immutable source/digest/timing identity."
+    },
+    "identityBoundaryFamily": {
+      "family": "SECURITY_IDENTITY_TRANSITION",
+      "role": "PAIR_OR_SEQUENCE_COMPARABILITY_BLOCKER",
+      "events": [
+        "MERGER",
+        "SHARE_CONVERSION",
+        "DELISTING",
+        "MARKET_MIGRATION",
+        "IDENTIFIER_REPLACEMENT",
+        "COMPANY_DEMERGER_WHEN_SECURITY_IDENTITY_CHANGES"
+      ],
+      "defaultDisposition": "NEW_IDENTITY_NEW_TECHNICAL_LINEAGE",
+      "bridgeRule": "No cross-identity technical history inheritance unless a separately versioned same-security/economic-identity transform contract proves comparability and binds transformed history."
+    }
+  },
+  "explicitNonRequirements": [
+    "A separate generic SPLIT_REVERSE_SPLIT provider family is not required for domestic ordinary-common-equity mechanical unit changes already captured by PAR_VALUE_CHANGE.",
+    "ETF beneficiary-certificate split/reverse-split semantics are outside this ordinary-equity baseline.",
+    "Foreign/TDR/other security-class unit changes are not inherited into this family set.",
+    "Share-denominator-only events such as realized new-share listing do not automatically block raw price continuity when they do not reset exchange price space; denominator-based factors remain separately gated."
+  ],
+  "receiptRequirements": [
+    "priceResetFamilySetVersion",
+    "priceResetCoverageReceiptHash",
+    "exact selected session/date-set identity",
+    "source evidence hashes for all required price-reset families",
+    "bounded suspension/resumption receipt identity and digest",
+    "identityTransitionState",
+    "identityBoundaryEvidenceHash",
+    "continuityReceiptId",
+    "sourceHistoryHash",
+    "replayHash",
+    "decisionTimestamp and source availability clocks"
+  ],
+  "failClosedRules": [
+    "Three price-reset families clean does not certify continuity if security identity crosses a merger/share-conversion/delisting/migration boundary.",
+    "An open STOP interval without a positively certified RESUME/termination/active-through boundary may not delete expected sessions.",
+    "A legacy or status-only COMPLETE label cannot substitute for evidence-bound family coverage.",
+    "RAW bars across a certified price-basis reset may not be bridged without a certified transform.",
+    "RAW bars across an identity termination may not inherit recursive or finite-window state by default.",
+    "A price-reset-family pass cannot substitute for share-denominator vintage when a downstream factor consumes shares/market-cap."
+  ],
+  "indicatorConsequences": {
+    "bollinger": {
+      "module": "D03-10",
+      "current": "L2_40",
+      "rule": "All closes in the exact 20 eligible-session window must inhabit one certified price space and one continuing security identity. Identity termination starts a new Bollinger lineage by default."
+    },
+    "adx": {
+      "module": "D03-09",
+      "current": "L2_40",
+      "rule": "Wilder H/L/C recursion may bridge a pure certified suspension in eligible-session chronology, but must use transformed replay across price-basis reset and terminates on security-identity termination unless a separate certified bridge exists."
+    }
+  },
+  "d03W0AcceptanceExtension": {
+    "existingRequiredSources": [
+      "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
+      "TWSE_CAPITAL_REDUCTION_REFERENCE",
+      "TWSE_PAR_VALUE_CHANGE_REFERENCE",
+      "EXACT_WINDOW_TWTAWU_BOUNDED_SUSPENSION_COMPLETENESS"
+    ],
+    "addedConsumerRequirement": "The W0 receipt must expose versioned PRICE_RESET_FAMILY_SET identity and explicit same-security identity-transition disposition; absence of an identity event must itself be supported by the bounded lifecycle/identity evidence contract rather than inferred from the three price-reset families.",
+    "firstWitnessScope": "Domestic ordinary TWSE symbol only; TPEx parity and non-ordinary security classes remain independent."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "reason": "This closes an ontology/consumer ambiguity and prevents underblocking. It does not provide the first real W0 receipt or genuine parent.",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Consume the first real W0 receipt only if it binds D03_PRICE_RESET_FAMILY_SET_V0_1, exact-window suspension evidence, and explicit same-security identity-transition disposition to the selected replay. Independently consume a new ordinary-session genuine V8.20 Formal-to-C1 parent. Then run D03-10 Bollinger L3/parent-binding oracles; D03-09 additionally applies canonical Wilder full replay/trusted-state certification. Keep CORR-009 audit closure, raw third-session, T48, S2-07, dedup/redundancy and D16 incrementality separate."
+}
