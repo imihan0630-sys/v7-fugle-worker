@@ -6427,3 +6427,109 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~121 before physical R7 emission.
 5. D16 receives attribution-class and nontrading-bridge metadata alongside primitive revision roots, never missing-bar counts as votes.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-122~125 (2026-10-08)
+
+### DL-122 — security identity transition firewall
+- Durable pattern identity is securityIdentity, not market+symbol text.
+- Frozen continuity-eligible relations:
+  SAME_SECURITY;
+  SAME_SECURITY_MARKET_MIGRATION_PROVEN;
+  SAME_SECURITY_CODE_CHANGED_PROVEN_EQUIVALENT.
+- Frozen identity-break relations:
+  SUCCESSOR_SECURITY;
+  MULTI_SUCCESSOR;
+  TERMINATED_NO_SUCCESSOR.
+- IDENTITY_EQUIVALENCE_UNKNOWN fails closed.
+- Unit/share semantics must remain compatible or have a certified transform.
+- An exchange reference price derived from predecessor close/exchange ratio is a trading-mechanism object, not security-identity proof.
+- Successor security does not inherit predecessor pattern identity.
+
+### DL-123 — cross-market migration pattern continuity
+- A proven same-security TPEx/TWSE or board migration may preserve one structural episode only after:
+  exact old/new membership boundaries;
+  transition interval classification;
+  price-space continuity;
+  no successor-security event;
+  immutable identity proof.
+- Market migration remains an explicit marketRegimeBoundary.
+- One same-security migration episode = one effective opportunity root.
+- First new-market open versus last old-market close is classified MARKET_MIGRATION_BOUNDARY_GAP, not ordinary breakaway/technical gap by default.
+- No synthetic OHLC may fill the transition interval.
+
+### DL-124 — share-conversion / successor-security pattern break
+- Share conversion, merger, demerger, delisting-to-successor and other true security-identity transitions terminate predecessor D01 episode lineage.
+- Successor begins a new security namespace.
+- Successor cannot inherit:
+  episodeId;
+  opportunityId;
+  sourceHistoryHash;
+  exactSessionHash;
+  source bars;
+  clocks;
+  redundancy group;
+  feature hash.
+- D01-03 sequences cannot cross identity.
+- D01-07 base/cup lifecycle cannot inherit predecessor anchors.
+- D01-09 predecessor-close to successor-open distance is IDENTITY_TRANSITION_REFERENCE_DISTANCE, not an ordinary same-security gap.
+- Multiple successors remain event-dependency-linked but not aliases.
+
+### DL-125 — symbol reuse / transition opportunity dedup
+- Durable opportunity key requires:
+  securityIdentity;
+  membershipIntervalId;
+  detector family;
+  episode/root;
+  predictor freeze;
+  exactSessionHash;
+  sourceHistoryHash.
+- market+symbol alone is prohibited as long-horizon identity.
+- Same visible ticker reused by another security starts a new lineage.
+- Proven administrative code change preserves one opportunity root.
+- Proven same-security market migration preserves one opportunity root.
+- Different successor securities remain distinct opportunities but share a corporate-action dependency cluster.
+- Identity-transition states remain denominator-accounted and cannot be silently dropped.
+
+### External rule readback
+- TWSE rules explicitly distinguish initial-listing/reference-price mechanics from security identity.
+- A TPEx security moving to TWSE can use its last TPEx close as a listing reference basis.
+- Share conversion into a newly established company can derive a successor listing reference from predecessor close and exchange ratio.
+- The original listed company may be delisted on the share-conversion record date.
+- D01 therefore preserves the firewall:
+  reference-price linkage != same-security pattern continuity.
+
+### Test evidence
+- DL-122~125: 34/34 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-125: 547/547 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Physical owner readback
+- No physical 1101 / 2021-06-15 exact R1-R6 owner bundle had appeared before this tranche.
+- Physical R7 remains blocked.
+- D01 did not implement duplicate System2/D05 collectors.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SECURITY_IDENTITY_TRANSITION_FIREWALL = FROZEN.
+- CROSS_MARKET_PATTERN_CONTINUITY = FROZEN.
+- SUCCESSOR_PATTERN_BREAK = FROZEN.
+- SYMBOL_REUSE_TRANSITION_DEDUP = FROZEN.
+- SAME_SECURITY_MIGRATION_EXTRA_VOTE = PROHIBITED.
+- SUCCESSOR_INHERITS_PREDECESSOR_PATTERN = FALSE.
+- SDA-001 research semantics remain complete for current D01 scope; ticket stays open under cross-domain/System/D16/00 gates.
+- SDA-002 remains open under physical replay/System/D16/00 gates.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-125
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze newly-listed/relisted security warmup and insufficient-history semantics so first-session/short-history names cannot inherit predecessor context or be compared against mature-history patterns without an explicit denominator state.
+4. If R1-R6 appear, validate DL-095 plus DL-108~125 before physical R7 emission.
+5. D16 receives security-identity relation, migration boundary, successor dependency and symbol-reuse metadata together with the full denominator.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
