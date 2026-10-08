@@ -151,7 +151,10 @@ async function primaryAudit(result) {
   };
 }
 
-async function resolveMarketPayload({
+// Shared by the read-only Decision Clock A1 observer to prevent a stale
+// latest-OpenAPI endpoint from diverging from Stage-1 source selection.
+// Export only: selection behavior and live Shadow authority remain unchanged.
+export async function resolveMarketPayload({
   market,
   marketDate,
   primary,
