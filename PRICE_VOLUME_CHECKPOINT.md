@@ -4704,3 +4704,198 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-282 — re-audit latest-main readiness for the two remaining promotion-design dependencies: (1) numerical EffectTargetReceipt readiness per D02 evidence key, including any newly available D14 cost/utility provenance; and (2) actual D16 Wave-1 ModelMethodReceipt readiness for H001/H20/H003. Do not invent a numerical target or estimator. Classify each dependency as READY / PARTIAL / BLOCKED from current canonical evidence, then advance only the pieces whose provenance is genuinely complete.
+
+
+## PVE-282~288 continuation — promotion design narrowed, external dependencies frozen, first operational clock separated from clean-date credit (2026-10-08)
+
+Status: PVE282_READINESS_RECONCILED / PVE283_13_PARTIAL_1_BLOCKED / PVE284_12_PREDICTIVE_METHOD_CONTRACTS_FROZEN / PVE285_D16_D14_DEPENDENCY_REQUESTS_FROZEN / PVE286_FIRST_SYSTEM1_OPERATIONAL_CLOCK_FROZEN / PVE287_LEGAL_NUMERICAL_TARGET_SOURCES_0_OF_14 / PVE288_OPERATIONAL_RECOVERY_NE_CLEAN_DATE / CLEAN_PROSPECTIVE_DATES_0 / D02_60_PCT / GATE7_CLOSED / FORMAL_UNCHANGED.
+
+### PVE-282 — promotion-design readiness reconciliation
+
+Artifacts:
+- `research/d02_pve282_promotion_design_readiness_audit_v0_1.mjs`;
+- `tests/test_d02_pve282_promotion_design_readiness_audit_v0_1.mjs`;
+- `research/d02_pve282_promotion_design_readiness_snapshot_v0_1.json`;
+- `research/D02_PVE282_PROMOTION_DESIGN_READINESS_20261008_V0_1.md`;
+- run `37723540884`: SUCCESS;
+- V8 Regression run `37723540900`: SUCCESS;
+- 34 assertions PASS.
+
+Latest-main readiness before further D02 design work:
+- EffectTarget READY = 0 / 14;
+- PARTIAL_NUMERIC_JUSTIFICATION_MISSING = 4 / 14;
+- BLOCKED_PRIMARY_METRIC_OR_HORIZON_NOT_FROZEN = 10 / 14;
+- actual D02-specific Wave-1 D16 ModelMethodReceipts = 0 / 3.
+
+The four PARTIAL keys were D02-01, H001, H20 and H003.
+D14 had richer execution-cost semantics but no universal owner-realized cost anchor.
+The unrelated SDA-022 D16 method receipt is not reusable for D02.
+
+### PVE-283 — nine non-Wave-1 metric/horizon shells advanced outcome-blind
+
+Artifacts:
+- `research/d02_l4_effect_target_registry_v0_5.json`;
+- `research/d02_pve283_nonwave1_primary_metric_horizon_guard_v0_1.mjs`;
+- `tests/test_d02_pve283_nonwave1_primary_metric_horizon_guard_v0_1.mjs`;
+- `research/D02_PVE283_NONWAVE1_PRIMARY_METRIC_HORIZON_FREEZE_20261008_V0_1.md`;
+- run `37731944739`: SUCCESS;
+- 48 assertions PASS.
+
+Using the same PVE-282 classifier on registry V0.5:
+- READY = 0;
+- PARTIAL_NUMERIC_JUSTIFICATION_MISSING = 13;
+- BLOCKED_PRIMARY_METRIC_OR_HORIZON_NOT_FROZEN = 1.
+
+The sole intentional BLOCKED key is D02-11:LIQUIDITY_COUNTERFACTUAL because its primary utility metric/horizon depends on D14 cost-quality provenance.
+
+New primary shells:
+- D02-04 DRYUP: active lifecycle to first reacceleration / structure failure / 13:00 censor;
+- D02-05 EXTREME_PARTICIPATION: B2 predictive primary, B1/B4 non-rescuing sensitivity;
+- D02-07 SVB20: D5 predictive primary, D1/D3/D10 non-rescuing sensitivity;
+- D02-08 PROVIDER_PRESSURE: B2 predictive primary, B1/B4 sensitivity; intent remains unidentifiable;
+- D02-09 PIVOT_SIGNED_VOLUME: D5 primary after confirmed pivot, D1/D3/D10 sensitivity;
+- D02-09 PARTICIPATION_TRAJECTORY: B2 primary, B1/B4 sensitivity;
+- D02-10 TREND_VOLUME_INTERACTION: B2 return-alignment-with-pre-session-trend primary, B1/B4 sensitivity;
+- D02-12 TIME_OF_DAY_VOLUME_CURVE: B1 primary within bounded 09:00-13:00 window, B2 sensitivity only when complete;
+- D02-12 PRICE_BY_VOLUME_PROFILE: same B1 bounded-window primary, prospective-only.
+
+For the nine predictive keys, primary metric is DATE_BALANCED_BRIER_LOSS_IMPROVEMENT.
+No numerical target was frozen.
+
+### PVE-284 — D16 predictive method contract generalized to 12 keys
+
+Artifacts:
+- `research/d02_pve284_d16_predictive_model_method_guard_v0_2.mjs`;
+- `tests/test_d02_pve284_d16_predictive_model_method_guard_v0_2.mjs`;
+- `research/D02_PVE284_D16_PREDICTIVE_MODEL_METHOD_CONTRACT_20261008_V0_2.md`;
+- run `37732113572`: SUCCESS;
+- 37 assertions PASS.
+
+Covered predictive evidence keys = 12:
+H001, H20, DRYUP, EXTREME_PARTICIPATION, H003, SVB20, PROVIDER_PRESSURE,
+PIVOT_SIGNED_VOLUME, PARTICIPATION_TRAJECTORY, TREND_VOLUME_INTERACTION,
+TIME_OF_DAY_VOLUME_CURVE and PRICE_BY_VOLUME_PROFILE.
+
+D16-19 must freeze exactly one outcome-blind method receipt per key before labels/outcomes:
+- estimator;
+- calibrator;
+- preprocessing;
+- feature selection;
+- regularization;
+- train/validation/calibration partitions;
+- refit/seed/missing/class-imbalance policies;
+- model-search family and candidate count.
+
+Baseline and challenger must use identical support/partitions/method family.
+D02 does not select the estimator/calibrator.
+
+Actual frozen D02-specific method receipts at this point: 0 / 12.
+
+### PVE-285 — formal external dependency requests
+
+Artifacts:
+- `research/d02_pve285_external_dependency_request_v0_1.json`;
+- `research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md`;
+- `research/D02_PVE285_D14_COST_QUALITY_DEPENDENCY_REQUEST_20261008_V0_1.md`;
+- `research/d02_pve285_external_dependency_request_guard_v0_1.mjs`;
+- `tests/test_d02_pve285_external_dependency_request_guard_v0_1.mjs`;
+- run `37732368235`: SUCCESS;
+- 14 assertions PASS.
+
+Requests:
+- D16-19: 12 exact pre-outcome ModelMethodReceipts under PVE-284; unrelated SDA-022 receipt is not reusable.
+- D14: D02-11 cost-quality receipt or explicit UNKNOWN_BLOCKED return. Owner/broker commission provenance, minimum fee, rounding/channel, lot mechanism, statutory tax, broker-confirmed fill lifecycle, slippage/implementation shortfall and opportunity-cost semantics remain D14-owned.
+
+UNKNOWN commission/slippage may not become zero.
+Generic public fee tables may not be treated as owner actual.
+
+### PVE-286 — first eligible System1 operational acceptance clock
+
+Artifacts:
+- `research/d02_pve286_system1_first_eligible_acceptance_clock_v0_1.mjs`;
+- `tests/test_d02_pve286_system1_first_eligible_acceptance_clock_v0_1.mjs`;
+- `research/D02_PVE286_SYSTEM1_FIRST_ELIGIBLE_ACCEPTANCE_CLOCK_20261008_V0_1.md`;
+- run `37732516222`: SUCCESS;
+- 14 assertions PASS.
+
+System1 Operational Acceptance V0.1 entered main at merge commit
+`08328c8cfd0b253f56009e4192474e31d7f6807e`
+on 2026-10-08 11:48:42 Asia/Taipei.
+
+Its first possible post-deploy scheduled observation is:
+- 2026-10-09 00:10 Asia/Taipei;
+- candidate scanDate = 2026-10-08.
+
+Workflow green is not evidence.
+Only the immutable scheduled artifact can establish OPERATIONAL_RECOVERY_PASS.
+
+### PVE-287 — numerical target-source audit
+
+Artifacts:
+- `research/d02_pve287_numerical_target_source_audit_v0_1.json`;
+- `research/d02_pve287_numerical_target_source_audit_guard_v0_1.mjs`;
+- `tests/test_d02_pve287_numerical_target_source_audit_guard_v0_1.mjs`;
+- `research/D02_PVE287_NUMERICAL_TARGET_SOURCE_AUDIT_20261008_V0_1.md`;
+- run `37732723240`: SUCCESS;
+- 38 assertions PASS.
+
+Current legal numerical target sources = 0 / 14.
+
+Not legal substitutes:
+- test fixture thresholds;
+- 20/30/40-date support floors;
+- generic effect-size benchmarks;
+- unrelated SDA-022 effect/method receipts;
+- current D02 prospective outcomes;
+- unknown commission/slippage as zero.
+
+Future numerical freeze requires a new immutable allowed-rationale receipt.
+
+### PVE-288 — System1 operational recovery is not D02 clean-date credit
+
+Artifacts:
+- `research/d02_pve288_operational_recovery_vs_clean_date_split_v0_1.mjs`;
+- `tests/test_d02_pve288_operational_recovery_vs_clean_date_split_v0_1.mjs`;
+- `research/D02_PVE288_OPERATIONAL_RECOVERY_VS_CLEAN_DATE_SPLIT_20261008_V0_1.md`;
+- run `37732867210`: SUCCESS;
+- V8 Regression run `37732867156`: SUCCESS;
+- 18 assertions PASS.
+
+Latest main still shows:
+- PVE-261 baseline-refresh Production remediation has no FIX_IMPLEMENTED/deployed physical PASS;
+- current `S2-CORR-20261007-003` remains HIGH / OPEN.
+
+Therefore a future System1 OPERATIONAL_RECOVERY_PASS cannot substitute for D02 H001 clean-date eligibility.
+
+For a D02 clean H001 date, all must be true:
+1. System1 operational recovery is genuine;
+2. PVE-261 physical remediation PASS exists;
+3. remediation was deployed before feature capture;
+4. exact baseline freshness identity passes on that feature;
+5. current quota remediation physically passes and protects after-market execution;
+6. no retroactive credit.
+
+2026-10-08 intraday H001 observations cannot later be cleaned by a remediation deployed after their feature clocks.
+
+### Current D02 state after PVE-288
+
+- D02 maturity = 60.0%;
+- all 12 modules = L3;
+- clean prospective dates = 0;
+- EffectTarget target shells: 13 PARTIAL / 1 BLOCKED / 0 READY;
+- actual D02-specific predictive ModelMethodReceipts = 0 / 12;
+- legal numerical target sources = 0 / 14;
+- D02-11 awaits D14 cost-quality provenance;
+- PVE-261 physical baseline remediation remains pending;
+- S2-CORR-20261007-003 remains OPEN;
+- Gate 7 CLOSED;
+- Formal Core LOCKED;
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next continuation point:
+PVE-289 — external-receipt convergence only. Consume new immutable upstream receipts without redoing closed design work:
+(A) any D16-19 PVE-285 ModelMethodReceipt -> validate only that evidence key with PVE-284;
+(B) any D14 D02-11 cost-quality receipt -> validate ACTUAL/PARTIAL_ACTUAL/MODELED/UNKNOWN provenance before freezing D02-11 utility metric/horizon;
+(C) at/after the real scheduled System1 operational acceptance, inspect the immutable 00:10 artifact rather than workflow color; an OPERATIONAL_RECOVERY_PASS for scanDate 2026-10-08 does not create a D02 clean date;
+(D) independently consume PVE-261 physical baseline-remediation deployment and current S2-CORR-20261007-003 closure evidence if they arrive.
+Do not freeze a numerical EffectTarget until PVE-287 gains a legal immutable source. Keep clean prospective dates=0, D02=60.0%, Gate 7 CLOSED and Formal Core LOCKED until physical evidence changes those facts.
