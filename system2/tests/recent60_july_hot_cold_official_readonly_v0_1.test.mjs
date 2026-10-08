@@ -117,6 +117,27 @@ assert.equal(db.metrics.rowsWritten,0);
 assert.equal(coldCalls,1);
 assert.ok(db.sqls.every(s=>/^\s*SELECT\b/.test(s)));
 
+const batchedDb=fakeDb();
+const batched=await auditFrozenRecent60JulyHotColdV0_1({
+  db:batchedDb,objectStore:store,frozenEvidence:frozen,coldLoader,
+  batchHotManifestRead:true,
+});
+assert.equal(batched.batchedD1ReadPlanUsed,true);
+assert.equal(batched.expectedControlPlaneSelectQueries,6);
+assert.deepEqual(batched.causeCounts,result.causeCounts);
+assert.equal(batched.sampledDateIdentityCount,96);
+assert.equal(batchedDb.sqls.length,6,
+  "two month receipt SELECTs and four market-batched hot/manifest SELECTs only");
+assert.equal(batchedDb.sqls.filter(q=>q.includes("s2_historical_a1_bars")).length,2);
+assert.equal(batchedDb.sqls.filter(q=>q.includes("s2_historical_a1_segment_manifests")).length,2);
+assert.equal(batchedDb.metrics.rowsWritten,0);
+assert.ok(batchedDb.sqls.every(q=>/^\s*SELECT\b/.test(q)));
+await assert.rejects(()=>auditFrozenRecent60JulyHotColdV0_1({
+  db:fakeDb({unexpectedHotRow:true}),objectStore:store,
+  frozenEvidence:frozen,coldLoader,batchHotManifestRead:true,
+}),/batched hot row escaped sampled dates/);
+
+
 await assert.rejects(()=>auditFrozenRecent60JulyHotColdV0_1({
   db:fakeDb({wrongJulyMonth:true}),objectStore,frozenEvidence:frozen,coldLoader,
 }),/Expected values to be strictly equal/);
