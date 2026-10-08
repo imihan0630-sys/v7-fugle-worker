@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "D03_ADX_SUSPENSION_RESUME_WILDER_STATE_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-08T12:46:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "workflow": {
+    "name": "D03 ADX Suspension Resume Semantics Readonly",
+    "runId": 37728272815,
+    "headSha": "faae9cb4701d20879a53fb8eb97ff860809e3876",
+    "conclusion": "success"
+  },
+  "companionRegression": {
+    "name": "V8 Regression Tests",
+    "runId": 37728272818,
+    "headSha": "faae9cb4701d20879a53fb8eb97ff860809e3876",
+    "conclusion": "success"
+  },
+  "spec": "research/d03_adx_suspension_resume_wilder_state_semantics_20261008_v0_1.json",
+  "test": "research/test_d03_adx_suspension_resume_wilder_state_semantics_v0_1.mjs",
+  "accepted": [
+    "PURE_SUSPENSION_DOES_NOT_INSERT_PSEUDO_BARS",
+    "PURE_SUSPENSION_DOES_NOT_DECAY_OR_RESET_WILDER_STATE_ON_CALENDAR_DAYS",
+    "RESUMED_ELIGIBLE_BAR_MAY_CAPTURE_GENUINE_GAP_VIA_TR_DM",
+    "PRICE_BASIS_CHANGE_REQUIRES_CERTIFIED_TRANSFORMED_REPLAY",
+    "IDENTITY_TERMINATION_ENDS_OLD_RECURSIVE_STATE_LINEAGE",
+    "UNRESOLVED_BOUNDARY_FAILS_CLOSED",
+    "RESET_AFTER_X_DAYS_IS_A_NEW_PARAMETER_FAMILY_NOT_CANONICAL_ADX"
+  ],
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "outcomes": "CLOSED",
+    "formalCoreImpact": "NONE_LOCKED"
+  }
+}
