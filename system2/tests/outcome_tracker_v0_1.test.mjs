@@ -233,7 +233,7 @@ const costRewrite = validateMonotonicOutcomeUpdateV0_1(closedLegacy, {
   }),
   updated_at: "2026-10-07T09:00:00Z",
 });
-assert.ok(costRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModel"));
+assert.ok(costRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModelHash"));
 
 const strategyRewrite = validateMonotonicOutcomeUpdateV0_1(closedLegacy, {
   ...closedLegacy,
