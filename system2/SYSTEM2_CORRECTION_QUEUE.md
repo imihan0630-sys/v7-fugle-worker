@@ -1264,3 +1264,127 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
 - finalDisposition: PENDING
+
+### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: CRITICAL
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed:
+  - `buildFactorObservation` can retain `KNOWN` when `pointInTimeEligible=false` and `availableAt` is after the decision clock;
+  - downstream frozen-decision and Limited Shadow assembly do not enforce factor-level PIT lineage before `SELECTED`.
+- required:
+  1. one canonical decision-evidence firewall for every decision path;
+  2. exact decision clock, `pointInTimeEligible=true`, `availableAt<=decisionTimestamp`, immutable source/hash and authorized factor version for every supporting observation;
+  3. exact family-assessment-to-factor-hash lineage;
+  4. fail closed to UNKNOWN/INCOMPLETE and outcome-join-ineligible on any missing or future PIT evidence.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-01.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-010 — Outcome-join fingerprints do not enforce decision/source/strategy/version isolation
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: CRITICAL
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed:
+  - run fingerprints do not reconcile receipt date, strategy/version/spec/universe or exact decision hashes;
+  - an outcome-join-eligible SHORT_MOMENTUM bundle accepted a SWING_GROWTH fingerprint, no source receipt and an unverified decision hash.
+- required:
+  1. closed-set reconciliation across source receipt, accounting receipt, decisions and run fingerprint;
+  2. recompute every digest and require exact strategy/version/date/spec/universe equality;
+  3. reject foreign, missing, duplicate, extra or empty decision-hash coverage except a separately proved zero-pick run.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-02/AP-03.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-011 — Immutable persistence executor trusts unverified batch SQL and digest fields
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed: the executor ran caller-supplied `UPDATE s2_decisions ...` as `insertSql`, did not verify batch/row digests and reported `INSERTED`.
+- required:
+  1. regenerate INSERT-only SQL from whitelisted canonical table/column contracts;
+  2. recompute batch, row and identity hashes before transport;
+  3. measured statement ledger plus exact post-write readback;
+  4. guarded immutable lineage and correction-only append paths.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-08.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-012 — Outcome monotonic updates can rewrite cost/performance provenance and erase excursions
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed: monotonic validation accepted MFE/MAE erasure, holding-session rewrite and replacement of strategy/cost provenance in `outcome_json`.
+- required:
+  1. bind every outcome to decision, strategy/version, Regime, execution, price-space, corporate-action and cost-model hashes;
+  2. define exact per-field maturation monotonicity;
+  3. use distinct versioned outcome records for assumption changes;
+  4. keep signal-return scenarios separate from simulated fill net-after-cost results.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-05.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-013 — Execution/outcome session validation can misclassify unknown entry windows and accept reversed dates
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed:
+  - an all-null OHLC entry window became `NO_FILL` with `DATA_UNKNOWN` quality;
+  - execution and outcome paths accepted strictly numbered sessions whose market dates ran backwards.
+- required:
+  1. valid, unique, strictly increasing market dates tied to an official session calendar;
+  2. distinguish proof-complete NO_FILL from DATA_UNKNOWN/HALT/LIMIT/LIQUIDITY blocked states;
+  3. expose blocker intervals and denominator eligibility to performance aggregation.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-06.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-014 — Bulk backtest can accept forged completion checkpoints and unproven PIT universes
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: CRITICAL
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed:
+  - a forged checkpoint with invalid `checkpointHash`, all dates completed and zero samples returned `allRequestedDatesComplete=true` without invoking loaders/evaluators;
+  - universe rows have no required historical membership, availability or source lineage.
+- required:
+  1. recompute and reconcile checkpoint hash, partitions, samples, date summaries and rolling digest;
+  2. immutable PIT universe receipt per date with listing/delisting and unknown-state handling;
+  3. bind dataset, policy registration, evaluator/code, factors, Regime, execution and cost assumptions into run identity;
+  4. reject zero-sample completion without a proved empty PIT universe.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-04.
+- finalDisposition: PENDING
+
+
+### S2-CORR-20261008-015 — D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible
+
+- createdAt: 2026-10-08T11:30:54+08:00
+- severity: CRITICAL
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- observed: a future 2030, `pointInTimeEligible=false` global-transmission context became a KNOWN RISK_ON dimension inside a 2026 vector marked PIT eligible.
+- required:
+  1. one uniform PIT/source/hash validator for every Regime dimension;
+  2. dimension-level eligibility rather than a vector-wide boolean certification;
+  3. fail affected activation, attribution and transition policy to UNKNOWN;
+  4. verify component and vector hashes before downstream use.
+- durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-07.
+- finalDisposition: PENDING
