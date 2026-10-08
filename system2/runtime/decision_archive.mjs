@@ -59,6 +59,10 @@ function familyAssessmentObjectV0_1(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : null;
 }
 
+function stateNeedsDecisionEvidenceV0_1(state) {
+  return String(state || "") !== "INCOMPLETE";
+}
+
 export async function buildDecisionEvidenceFirewallV0_1({
   evaluation,
   factorObservations = [],
@@ -77,6 +81,9 @@ export async function buildDecisionEvidenceFirewallV0_1({
   const blockers = [];
   const declaredFactorRefs = uniqueTextArrayV0_1(e.factorRefs || [], "evaluation.factorRefs", blockers);
   const declaredSet = new Set(declaredFactorRefs);
+  if (stateNeedsDecisionEvidenceV0_1(e.state) && declaredFactorRefs.length === 0) {
+    blockers.push("DECISION_SUPPORTING_FACTOR_REFS_EMPTY");
+  }
   const observedSet = new Set();
   const factorLineage = [];
 
@@ -119,7 +126,7 @@ export async function buildDecisionEvidenceFirewallV0_1({
       } else if (Date.parse(availableAt) > Date.parse(decisionTimestamp)) {
         blockers.push("FACTOR_AVAILABLE_AFTER_DECISION:" + ref);
       }
-      if (!requiredText(provenance.sourceId, "factorObservation.provenance.sourceId")) {
+      if (typeof provenance.sourceId !== "string" || !provenance.sourceId.trim()) {
         blockers.push("FACTOR_SOURCE_ID_MISSING:" + ref);
       }
       if (!payloadHash) {
@@ -170,14 +177,21 @@ export async function buildDecisionEvidenceFirewallV0_1({
 
       if (!assessment) {
         blockers.push("FAMILY_ASSESSMENT_MISSING:" + family);
-      } else if (assessment.observationState === "KNOWN" && mapped.length === 0) {
-        blockers.push("KNOWN_FAMILY_WITHOUT_FACTOR_LINEAGE:" + family);
+      } else {
+        if (familySpec?.unknownBlocksEligibility === true && assessment.observationState !== "KNOWN") {
+          blockers.push("REQUIRED_FAMILY_NOT_KNOWN:" + family);
+        }
+        if (assessment.observationState === "KNOWN" && mapped.length === 0) {
+          blockers.push("KNOWN_FAMILY_WITHOUT_FACTOR_LINEAGE:" + family);
+        }
       }
 
+      const assessmentHash = assessment ? await sha256Hex(assessment) : null;
       const familyBase = {
         family,
         assessmentObservationState: assessment?.observationState || "MISSING",
         assessmentThesisState: assessment?.thesisState || "INDETERMINATE",
+        assessmentHash,
         factorRefs: mapped.map((row) => row.ref),
         factorObservationHashes: mapped.map((row) => row.observationHash),
       };
