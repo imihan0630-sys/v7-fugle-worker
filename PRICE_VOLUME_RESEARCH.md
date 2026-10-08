@@ -14036,3 +14036,22 @@ These are evidence-governance advances, not economic efficacy evidence.
 D02 stays 60.0%; all 12 modules stay L3; no L4 promotion and no Formal optimization candidate.
 
 Next research: PVE-277 Wave-2 baseline lineage audit.
+
+
+# PVE-277~279 synthesis — freshness controls must be typed by denominator lineage (2026-10-08)
+
+Wave-2 establishes a broader methodological rule than PVE-260's original H001 defect:
+
+`evidence freshness is defined by the denominator/continuity lineage actually consumed, not by a generic module label`.
+
+Three examples show why:
+1. signedVolumeBalance20 has no median denominator, so its risk is exact daily-session/unit/corporate-action continuity, not same-slot median freshness;
+2. providerTradePressureProxy is an independent source, so stale RVOL does not invalidate the raw proxy, but stale RVOL can invalidate the registered incremental comparator;
+3. avgVolume20Lots is a rolling prior-20 feature, so its correct freshness question is whether the latest expected prior eligible daily session is present, not whether a 15m slot baseline is current.
+
+PVE-278 encodes those distinctions. PVE-279 extends end-to-end lineage binding into D16.
+
+No claim of predictive efficacy follows from stronger data lineage.
+No L4 promotion follows from a gate becoming more accurate.
+
+Next: audit D02-01 semantic-governance admission for the same dataset-substitution class before declaring all-D02 admission lineage closed.
