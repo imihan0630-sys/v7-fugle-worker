@@ -1376,3 +1376,16 @@ Immutable diagnosis:
 Acceptance to proceed: review CI + V8 regression, merge candidate, verify exact official monthly FMTQIK preflight; controlled retry only after checking the single D1 writer and durable prior receipts. If source/date failure recurs, extract exact date and source envelope from artifact and classify before modifying any semantics. 2025 historical annual raw coverage remains `18/18 PASS_DATA_PARTIAL_REPLAY`; 2026 segmentation and aggregate replay NOT ACCEPTED.
 
 Protected boundaries: System1 Formal/runtime, strategies, signal semantics, ranking, capital, order, broker routing, production push untouched.
+
+
+## 2026-10-08 2026 TWSE Run #1 recovery: D1 read-only six-month inventory and unscheduled closure witness
+
+Read-only GitHub Action `System2 Historical Inventory Readonly` run #2 / `37766622566` succeeded, artifact #11544273832 (SHA-256 `dcaf789a94d73d56b46716c54c5b95bd1148c173dc5071228494dbc6c2758b87`), D1 `rowsWritten=0`, System1 runtime unused.
+
+**Verified from actual isolated D1 (not an inference from workflow green/red):** 2026 TWSE January through June each has a COMPLETE receipt, COMPLETE checkpoint and manifest counts/bar counts/rolling hashes matching its receipt. January 22,419 rows / 1,071 packs; February 12,861 / 1,072; March 23,586 / 1,075; April 21,490 / 1,078; May 21,577 / 1,082; June 22,717 / 1,083. July–September have no complete D1 month receipts. Read-only D1 control-plane proof is **not** independent R2 byte-GET or official-source reconciliation; no complete 2026 segmented acceptance claim yet.
+
+Independent event witness: CNA reported TWSE and TPEx closed on **2026-07-10** due to Typhoon Bavi (published 2026-07-09 20:32 Asia/Taipei, `https://www.cna.com.tw/news/afe/202607090360.aspx`); TWSE-hosted ETF disclosure also identifies 2026-07-10 as a typhoon-induced non-business day. Since #1 reached the July range and its old holiday-only calendar can include emergency closures, this is a **high-confidence candidate root cause** for `official historical daily table not found for TWSE`. The original run did not record the failing date, so causal identity remains unproven until live exact-calendar validation.
+
+Recovery is on main (`7498c206786be8fad05f42388be2bd720a1e5fed`): exact FMTQIK official monthly sessions, per-day logs, durable failed-date/status evidence, paced requests, prior-receipt resume. Next safe execution: one controlled 2026 TWSE segmented workflow_dispatch on latest main, only with no competing D1 writer; confirm six prior monthly receipts remain immutable, verify new July–September R2 physical evidence and System1 isolation, then record completed run artifact. Do not dispatch TPEx concurrently.
+
+Durable evidence: `system2/evidence/S2_2026_TWSE_SEGMENT_RUN1_D1_MONTHLY_INVENTORY_20261008_V0_1.json`. No System1 Formal/runtime, strategy, ranking, capital/order or production push changes.
