@@ -8405,3 +8405,131 @@ Primary physical next remains:
 Independent validation debt:
 4. after CORR-014 independent closure, future D03 OOS/walk-forward panels must bind per-date PIT universe receipts and immutable plan/checkpoint identities;
 5. keep raw third-session, T48, S2-07, D03 dedup/redundancy and D16 incrementality independent.
+
+
+## 2026-10-08 D03 — TI-1585~1602 price-reset state-memory equivalence + stale gate cleanup
+
+Canonical artifacts:
+- `research/d03_price_reset_state_memory_equivalence_20261008_v0_1.json`;
+- `research/test_d03_price_reset_state_memory_equivalence_v0_1.mjs`;
+- `research/d03_price_reset_state_memory_equivalence_execution_receipt_20261008_v0_1.json`.
+
+Canonical workflow:
+- `D03 Price Reset State Memory Equivalence Readonly`;
+- run `37777565250`;
+- job `113312153751`;
+- head `363f9cc08ff6f71f1783df37e87eee71252cc84f`;
+- conclusion SUCCESS.
+
+### TI-1585~1587 — current physical promotion conclusion
+
+No new real W0 CLEAR_NO_ACTION continuity receipt exists on latest main.
+No new genuine ordinary-session immutable C1 parent with authoritative V8.20 Formal-to-C1 binding exists.
+Therefore D03-10 and D03-09 remain L2/40.
+
+However stale governance status is corrected:
+- S2-CORR-20261008-007 = VERIFIED_CLOSED;
+- S2-CORR-20261008-009 = VERIFIED_CLOSED;
+- S2-CORR-20261008-014 remains FIX_IMPLEMENTED / independent AUDIT_LANE verification pending.
+
+Thus CORR-009 is no longer a live D03 blocker. Its decision-PIT firewall is now a closed code/governance prerequisite; physical W0/parent/PIT evidence remains independently required.
+
+### TI-1588~1591 — finite-memory versus recursive-memory theorem
+
+Bollinger20x2 is finite memory:
+- output at t depends only on the exact 20 eligible closes in the frozen formula;
+- if all exact 20 closes are strictly after the last certified price-basis reset and remain in one continuing security identity/price space, older pre-reset prices have zero direct formula influence;
+- this does not waive W0 continuity, parent identity, Layer-C known-at, exact-session or source-lineage gates.
+
+ADX14 is recursive memory:
+- elapsed bars do not create automatic amnesia;
+- a historical contamination can remain in Wilder smoothed TR/+DM/-DM and ADX state indefinitely;
+- ADX therefore still requires FULL_REPLAY, replay-certified trusted prior state, or a separately proved state-transform equivalence.
+
+This formally explains why D03-10 remains the first L3 promotion target.
+
+### TI-1592~1597 — mature Wilder affine-state equivalence candidate
+
+For a certified same-security positive affine price-basis transform:
+`P' = a P + b`, `a > 0`,
+applied uniformly to the certified pre-event prefix, machine proof establishes a mature-state equivalence candidate.
+
+State mapping:
+- previous H/L/C -> `a * H/L/C + b`;
+- smoothed TR -> `a * smoothedTR`;
+- smoothed +DM -> `a * smoothedPlusDM`;
+- smoothed -DM -> `a * smoothedMinusDM`;
+- +DI / -DI / DX / ADX remain dimensionless and unchanged at the transform boundary.
+
+Reason:
+- all H/L/C differences scale by a and additive b cancels;
+- directional sign/order is preserved for a>0;
+- Wilder smoothing is linear in the price-dimensional states;
+- DI ratios therefore remain unchanged;
+- DX/ADX consume dimensionless ratios.
+
+Machine M01 compares transformed mature-state continuation against full replay on the affine-transformed prefix and passes within floating precision.
+Local preflight final ADX absolute difference = `4.263256414560601e-14`.
+
+This is NOT yet promotion authority.
+It requires, for a real event:
+- certified affine transform over the exact prefix;
+- exact formula version;
+- mature initialized state;
+- same security identity;
+- state-lineage hash;
+- decision-time causality;
+- exact parity under the real transform's rounding/tick semantics.
+
+If transformed bars are rounded/nonlinear in a way that is not algebraically state-equivalent, use full replay instead.
+
+### TI-1598 — raw bridge falsification
+
+Machine M02 proves that simply continuing a RAW pre-event ADX state into post-reset target-basis bars diverges from certified transformed replay.
+
+Frozen rule:
+`RAW_PRE_RESET_STATE + POST_RESET_BAR != TECHNICAL_CONTINUITY`.
+
+A continuity label alone cannot repair the state.
+
+### TI-1599~1601 — Bollinger mixed-window and 20-session amnesia
+
+Machine M03:
+- with 1, 5 or 19 post-reset eligible closes, a window that mixes untransformed RAW pre-reset closes with post-reset closes materially differs from the certified transformed window;
+- RAW mixing is rejected.
+
+Machine M04:
+- at 20 post-reset eligible closes, the exact rolling Bollinger window contains no pre-reset close;
+- transformed-prefix replay and post-reset-only 20-close calculation become exactly equal in the fixture;
+- the equality remains for later windows.
+
+Therefore a future parent-specific Bollinger acceptance may treat older-than-window price-reset history as formula-irrelevant only when:
+- the exact 20-session suffix is wholly post-reset;
+- same security identity continues;
+- the price space is certified;
+- the exact session/date-set and source lineage are proven.
+
+Identity termination remains a new lineage and cannot use this finite-memory rule to inherit the old symbol.
+
+### TI-1602 — maturity / exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- active modules = 12;
+- current L3 milestone modules = 10;
+- D03-09 ADX = L2/40;
+- D03-10 Bollinger = L2/40;
+- raw source/version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Primary continuation remains dual-track:
+1. W0 — first real exact-window source-honest continuity receipt binding bounded TWTAWU evidence, D03_PRICE_RESET_FAMILY_SET_V0_1, identity-transition disposition, exact replay/source-history/session/source hashes;
+2. Parent — next genuine ordinary-session immutable C1 generation with authoritative V8.20 Formal-to-C1 binding and live official quality readiness.
+
+When both arrive:
+- D03-10 runs Bollinger L3 and parent-binding oracles immediately;
+- if its exact 20 parent sessions are wholly post-reset in one certified identity/price basis, no older transformed history is required by the Bollinger formula itself;
+- D03-09 still requires canonical FULL_REPLAY or replay-certified trusted state. The new affine mature-state theorem may become one trusted-state certification route only after a real-event exact parity and rounding proof.
+
+Keep CORR-014 audit closure, raw third-session, T48, S2-07 stabilization, System1/System2 D03 dedup/redundancy and D16 incrementality independent.
