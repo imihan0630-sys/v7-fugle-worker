@@ -6484,3 +6484,16 @@ A D02 clean date also needs pre-feature PVE-261 physical baseline remediation, e
 No economic outcomes were opened.
 No module was promoted.
 D02 remains 60.0%, clean dates remain 0, Gate 7 CLOSED, Formal Core LOCKED.
+
+
+# PVE-289 — event-driven evidence waiting replaces repeated design work (2026-10-08)
+
+The current D02 bottleneck is now producer evidence, not unresolved internal architecture.
+
+PVE-289 snapshots six independently owned states and forbids cross-lane substitution.
+No producer state changed at snapshot time:
+D16 0/12 methods; D14 D02-11 receipt absent; System1 scheduled physical acceptance not yet observed; PVE-261 physical baseline remediation absent; current CORR-003 OPEN; legal numerical target sources 0/14.
+
+The correct scientific behavior under unchanged producer state is to wait for new immutable evidence, not to generate another layer of synthetic acceptance rules.
+
+D02 remains 60.0%; clean prospective dates 0; outcomes closed.
