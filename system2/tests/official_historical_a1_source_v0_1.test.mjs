@@ -147,6 +147,20 @@ const retried = await fetchOfficialHistoricalA1DateV0_1({
 });
 assert.equal(attempts, 2);
 assert.equal(retried.ordinarySymbolCount, 1);
+
+let hasReceivedPayload=false;
+let dynamicStampCalls=0;
+const dynamicallyObserved=await fetchOfficialHistoricalA1DateV0_1({
+  market:"TWSE",marketDate:"2017-01-03",
+  observedAt:()=>{
+    assert.equal(hasReceivedPayload,true,"observation clock must run after source payload arrives");
+    dynamicStampCalls+=1;
+    return "2026-10-08T10:59:21Z";
+  },
+  fetchImpl:async()=>({ok:true,status:200,json:async()=>{hasReceivedPayload=true;return twsePayload2017;}}),
+});
+assert.equal(dynamicStampCalls,1);
+assert.equal(dynamicallyObserved.rows[0].observedAt,"2026-10-08T10:59:21Z");
 assert.equal(retried.transportMode, "PRIMARY");
 
 let tpexTransportAttempts = [];
