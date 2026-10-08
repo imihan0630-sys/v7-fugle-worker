@@ -791,7 +791,15 @@ Final disposition:
 This closure does not resolve `S2-CORR-20261006-004`, which is a separate current-session date-alignment defect.
 
 
-## S2-CORR-20261007-001 — OPEN / MEDIUM / DATA_LANE
+## S2-CORR-20261007-001 — FIX_IMPLEMENTED / MEDIUM / DATA_LANE
+
+- 2026-10-08 DATA_LANE code fix: PR #887 merged to `main` as `2e27483d586c52e15d8f1b288fdf5da5c4638e24`.
+- System2 Research CI / V8 regression PASS; latest main read-only preflight PASS.
+- Shared Stage-1 canonical primary/exact-date source selector now drives prospective A1 collector; earliest READY uses actual post-source observation bound.
+- Original 13-file V0.3 freeze preserved; distinct 15-file V0.4 epoch preregistered, old/new observation histories cannot pool.
+- Durable evidence: `system2/evidence/S2_CORR_20261007_001_A1_SHARED_SOURCE_SELECTION_V0_4_IMPLEMENTATION_20261008_V0_1.json`.
+- **Still pending:** future trading-date real exact-date fallback physical proof and independent AUDIT_LANE verification. This is **not** VERIFIED_CLOSED.
+
 
 - title: Prospective Decision Clock A1 collector diverges from Stage-1 exact-date source path
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
