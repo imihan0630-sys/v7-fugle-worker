@@ -2651,7 +2651,7 @@
         "research/d16_25_probabilistic_decision_contract_v0_1.json",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
-      "maturityPct": 60,
+      "maturityPct": 60.8,
       "modules": [
         {
           "id": "D16-01",
@@ -2868,13 +2868,13 @@
         {
           "id": "D16-23",
           "name": "Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / STRESS_REVERSE_STRESS_VALIDATION_CONTRACT_FROZEN / D07_23_KEEP_SEPARATE / TAIWAN_STRESS_HARNESS_PENDING",
-          "next": "維持 L2/40%。D07-23 持有 fundamental scenario objects；D16-23 持有 stress/reverse-stress validation methodology。下一步需 research-only Taiwan stress harness 與 replay 才可評估 L3。",
-          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EXECUTABLE_STRESS_AND_REVERSE_STRESS_HARNESS / PREREGISTERED_SCENARIOS_AND_GRID / UNKNOWN_EXPOSURE_FAIL_CLOSED / DETERMINISTIC_REPLAY_PASS / NO_FORECAST_OR_ALPHA_CLAIM",
+          "next": "Maintain L3/60%. Accumulate genuine prospective Taiwan PIT stress receipts and later realized outcomes without outcome-tuned scenario selection; compare calibration of scenario severity and realized tail behavior across independent dates/episodes. Stress diagnostics remain research validation, not Alpha or Formal policy.",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md 2026-10-08 research/d16_stress_harness_l3_v0_1.mjs + tests/test_d16_stress_harness_l3_v0_1.mjs passed Research D16 Stress Harness L3 Readonly run 37741826603 on exact head 0d3e10cda9106c876c742168bae4f3e71a607b2f; 17/17 tests PASS, research-only isolation PASS, same-head V8 Regression 37741826762 SUCCESS. Acceptance: research/D16_23_STRESS_REVERSE_STRESS_L3_ACCEPTANCE_20261008_V0_1.md."
         },
         {
           "id": "D16-24",
@@ -2899,8 +2899,8 @@
           "evidence": "D16-25 L2 specialist side is complete for merge governance. Existing PR #333 added per-Regime calibration and preregistered selective-policy evaluation. PR #340 (merge 399287ac5ad669686f5f40fcfe72ea28617fd680; head 716b9038a1437b03dc5de92ee24709918a5b2deb) added date-balanced Brier/log-loss, per-date diagnostics and calibration-in-the-large to prevent same-date row multiplicity from masquerading as independent evidence. CI PASS: System2 Research 37095784670, V8 Repair 37095784642, V8 Regression 37095784664. D16-25 owns target/prior/probability-distribution/calibration/uncertainty/ABSTAIN/decision-utility validation; D15-19 retains distinct log-growth/Fractional-Kelly/portfolio-allocation responsibility. L3 remains blocked by absence of genuine complete Taiwan PIT prediction/outcome/calibration receipts. Additional audit: research/D16_25_SELECTIVE_DENOMINATOR_ACCEPTANCE_AUDIT_20261003_V0_1.md; unchanged evaluator synthetic reproduction shows matured-subset coverage 50% -> 66.7% after one label arrives while frozen full decision coverage remains 75%. Existing probability tests PASS; synthetic-only, no L3 evidence. Latest C1 workflow run 37067696964 completed/failure; root cause not inferred from summary. Production readonly version 8.15.3-c3-quote-context, testMode=false; no mutation."
         }
       ],
-      "status": "D16_CORR004_VERIFIED_CLOSED / SDA022_T06_T10_CANONICAL / CORR005_VERIFIED_CLOSED / CORR006_VERIFIED_CLOSED / CORR007_SUSPENSION_PROVENANCE_OPEN / PHYSICAL_WRAPPER_RUNTIME_GUARD_PENDING / REAL_CLEAR_NO_ACTION_AND_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "Physical NC-T01 current gates: (A) BUILD_LANE CORR-007 evidence-bound TWSE suspension completeness; plain COMPLETE string cannot promote CLEAR_NO_ACTION; (B) physical wrapper pre-transport read-only D1/network guards + measured same-cut runtime access ledger; (C) DATA_LANE real bounded TWTAWU parity/completeness + three TWSE corporate-action exact-range sources -> versioned real CLEAR_NO_ACTION receipt. After these converge, validate one coherent S22-T11~T16 physical cut. CORR-005/006 remain VERIFIED_CLOSED code firewalls; do not count their CI artifacts as physical NC-T01. D16-SDA022-01 MDE/precision remains TARGET_VALUE_PENDING_FREEZE.",
+      "status": "D16_L3_COUNT_ADVANCED_6_OF_25 / D16_23_STRESS_HARNESS_L3 / CORR004_VERIFIED_CLOSED / CORR005_006_VERIFIED_CLOSED / CORR007_AND_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "L2→L3 clearance now has 9 remaining D16 L2 modules: D16-16/17/18/19 need executable Taiwan PIT numeric/model replay; D16-20 real PIT treatment/event cohort; D16-21 real alternative-data panel; D16-22 PIT text corpus/model-version replay; D16-24 empirical PIT distribution simulation; D16-25 genuine calibrated decision ledger. D16-23 is now L3 feasibility only. Continue batch construction only where upstream real Taiwan evidence exists; no synthetic-only promotion.",
       "lastResearchUpdate": "2026-10-03T10:03:42+08:00",
       "researchNote": "D16-25 specialist work established the conceptual/executable validation contract and D15-19 handoff, justifying L2/40%. No real calibration/PIT outcome evidence exists yet, so L3 remains closed and no Formal optimization candidate exists."
     },
