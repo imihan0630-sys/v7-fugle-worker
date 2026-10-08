@@ -4,6 +4,7 @@ import { createRemoteD1RestAdapter } from "../system2/deploy/remote_d1_rest_adap
 import { createRemoteR2S3Adapter } from "../system2/deploy/remote_r2_s3_adapter.mjs";
 import { loadHistoricalBarsFromColdPacksV0_1 } from "../system2/runtime/historical_cold_pack_store_v0_1.mjs";
 import { fetchHistoricalTwseCalendarV0_1 } from "../system2/runtime/historical_twse_calendar_v0_1.mjs";
+import { conservativeHistoricalAvailableAt } from "../system2/runtime/official_full_market_daily_history_adapter_v0_1.mjs";
 
 const VERSION="ROOM11_NUMERIC_L3_BATCH_V0_1";
 function stable(v){if(Array.isArray(v))return v.map(stable);if(v&&typeof v==="object")return Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])]));return v;}
@@ -15,7 +16,7 @@ function mse(a,b){return mean(a.map((x,i)=>(x-b[i])**2));}
 function mae(a,b){return mean(a.map((x,i)=>Math.abs(x-b[i])));}
 function quantile(xs,q){const a=[...xs].sort((x,y)=>x-y);if(!a.length)return null;const p=(a.length-1)*q,l=Math.floor(p),h=Math.ceil(p);return l===h?a[l]:a[l]+(a[h]-a[l])*(p-l);}
 function sigmoid(x){if(x>=0){const z=Math.exp(-x);return 1/(1+z);}const z=Math.exp(x);return z/(1+z);}
-function dateDecisionTs(d){return d+"T06:00:00.000Z";}
+function dateDecisionTs(d){return conservativeHistoricalAvailableAt(d);}
 
 export function guardedDb(db){
   function check(sql){
