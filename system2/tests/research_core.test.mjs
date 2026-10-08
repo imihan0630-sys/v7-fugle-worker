@@ -19,6 +19,7 @@ const known = buildFactorObservation({
     availableAt: "2026-09-26T07:00:00Z",
     capturedAt: "2026-09-26T07:30:00Z",
     pointInTimeEligible: true,
+    payloadHash: "fixture-payload-hash",
   },
   normalization: {
     method: "BOUNDED_RATIO",
@@ -74,6 +75,28 @@ const regime = buildMarketRegimeSnapshot({
   warnings: ["global macro source contract pending"],
 });
 
+const evidenceContract = {
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0",
+  evidenceFamilies: [
+    {
+      family: "PRICE_VOLUME",
+      factorIds: ["PV.RVOL20"],
+      unknownBlocksEligibility: true,
+    },
+  ],
+};
+
+const evidenceFamilyAssessments = {
+  PRICE_VOLUME: {
+    family: "PRICE_VOLUME",
+    observationState: "KNOWN",
+    thesisState: "SUPPORTIVE",
+    reasons: ["fixture"],
+    warnings: [],
+  },
+};
+
 const baseInput = {
   evaluation: {
     decisionId: "D-1",
@@ -105,6 +128,8 @@ const baseInput = {
   factorObservations: [known],
   interactionObservations: [],
   regime,
+  strategyContract: evidenceContract,
+  familyAssessments: evidenceFamilyAssessments,
   frozenAt: "2026-09-26T08:01:00Z",
 };
 
@@ -113,6 +138,9 @@ const second = await buildFrozenDecisionSnapshot(baseInput);
 
 assert.equal(first.evaluation.decisionHash, second.evaluation.decisionHash);
 assert.equal(first.schemaVersion, "S2_DECISION_V0_1");
+assert.equal(first.decisionEvidence.state, "READY");
+assert.equal(first.decisionEvidence.outcomeJoinEligible, true);
+assert.match(first.decisionEvidence.evidenceHash, /^[0-9a-f]{64}$/);
 assert.equal(Object.isFrozen(first), true);
 assert.equal(Object.isFrozen(first.evaluation), true);
 
