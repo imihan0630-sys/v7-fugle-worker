@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "S2_07_MOPS_EXACT_VERSION_POPULATION_CAPTURE4_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T12:07:37+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "status": "GENUINE_PROSPECTIVE_CAPTURE_ACCEPTED_AS_V18_INPUT",
+  "triggerPullRequest": 855,
+  "triggerHead": "6a55a52e02a738324df2aa2bc46bbc61d5a98609",
+  "workflow": {
+    "name": "System2 S2-07 MOPS Exact-Version Population V1.6 Readonly",
+    "runId": 37724622463,
+    "jobId": 113139857588,
+    "conclusion": "success",
+    "artifactId": 11527407836,
+    "artifactName": "s2-07-mops-exact-version-population-v1-6",
+    "artifactDigest": "sha256:266ae446de47034403f0846e62819d7417ade6be471fcd1f26ae3f39a605be24",
+    "artifactExpiresAt": "2026-10-22T04:07:37Z",
+    "artifactJsonSha256": "ee2f1558102504ddb2776f8e745ef10df7552f2d588dad04d41cc88d8b7d8f44"
+  },
+  "capture": {
+    "capturedAt": "2026-10-08T04:07:37.290Z",
+    "state": "PROSPECTIVE_MOPS_EXACT_VERSION_POPULATION_CAPTURED_COMPLETENESS_PENDING",
+    "stableEventUniverseHash": "b7941323ed1969a17697bc58be3d549b7e244f4dfc45b81a0bc6d5645fc305b0",
+    "prospectivePopulationHash": "1eff5b0d700a8b23ffe8a0644c0523c30bcb5b6db89241dc4c5c96e9c8cfab27",
+    "uniqueGlobalVersionKeyCount": 168,
+    "coveredSymbolCount": 23,
+    "queryKeysetExactEventCount": 23,
+    "queryDiagnosticCount": 23,
+    "queryDiagnosticBlockerCount": 0,
+    "monthOnlyVersionCount": 0,
+    "yearOnlyVersionCount": 0,
+    "sourceClockVersionKeyCollisionCount": 0,
+    "prospectiveExactVersionCaptureReady": true,
+    "expectedMopsKeysetComplete": false,
+    "noRevisionGapThroughCut": false,
+    "sourceSemanticsCertified": false,
+    "monthShardCoverageComplete": false,
+    "blockers": []
+  },
+  "acceptanceBoundaries": [
+    "This is a genuine new prospective observation and does not reuse the superseded PR-head fourth capture.",
+    "The first three accepted V1.6 captures remain immutable prior evidence.",
+    "Capture readiness does not imply expected-keyset completeness or no-revision-gap certification.",
+    "No System1 runtime/Formal Core, strategy, selection, push, capital or order authority changed."
+  ],
+  "exactNext": [
+    "Reconcile this immutable capture with the three accepted prior captures through the unchanged V1.7 append-only union engine.",
+    "Persist the V1.8 four-capture receipt and keep source-semantics/keyset/no-revision-gap gates fail-closed.",
+    "If trailing identical transitions remain below policy, collect the next genuine bounded prospective capture."
+  ]
+}
