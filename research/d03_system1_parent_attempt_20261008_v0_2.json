@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "D03_SYSTEM1_PARENT_ATTEMPT_20261008_V0_2",
+  "updatedAt": "2026-10-08T12:37:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_PARENT_GATE_PHYSICAL_READBACK",
+  "formalCoreImpact": "NONE_LOCKED",
+  "sourceEvidence": {
+    "workflow": "System 1 C1 Prospective Evidence",
+    "runId": 37724488223,
+    "jobId": 113139437528,
+    "headSha": "08328c8cfd0b253f56009e4192474e31d7f6807e",
+    "marketDate": "2026-10-07",
+    "runConclusion": "failure",
+    "artifactId": 11527267198,
+    "artifactZipSha256": "2c7e4581e61c4a3c5470ea670f0c0baf58058a4865a76e1595c8240d21a16559"
+  },
+  "validationStages": {
+    "generationInventorySemantics": "PASS",
+    "formalC1BindingReadbackSemantics": "PASS",
+    "immutableC1PopulationReadVerify": "FAIL",
+    "downstreamOperationalAcceptance": "SKIPPED_CAUSALLY"
+  },
+  "physicalReadiness": {
+    "scanDate": "2026-10-07",
+    "category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "formalScanDate": "2026-09-29",
+    "formalPipelineComplete": false,
+    "institutionDate": "2026-10-07",
+    "institutionReady": true,
+    "qualityDate": "2026-10-07",
+    "qualityReady": false,
+    "missingQuality": [
+      "QUARTER_EPS"
+    ],
+    "readErrors": {},
+    "eligibleForResearch": false,
+    "mayCountAsZeroPick": false,
+    "noTrade": true,
+    "noPush": true
+  },
+  "causalInterpretation": {
+    "bindingLedgerDefectProven": false,
+    "parentGenerationExists": false,
+    "parentState": "GENUINE_PARENT_ABSENT",
+    "currentNarrowestObservedQualityBlocker": "QUARTER_EPS",
+    "financialFamilyRecoveredRelativeToEarlierAttempt": true,
+    "formalScanAdvanced": false,
+    "causalBoundary": "This receipt proves the current upstream parent-generation absence and narrowed quality blocker set. It does not prove that QUARTER_EPS alone causally explains every reason the Formal scan remains at 2026-09-29; a future repaired live quality readback and actual Formal scan advance are still required."
+  },
+  "progressDelta": {
+    "earlierObservedMissingQuality": [
+      "FINANCIAL",
+      "QUARTER_EPS"
+    ],
+    "currentMissingQuality": [
+      "QUARTER_EPS"
+    ],
+    "delta": "FINANCIAL_REMOVED_FROM_CURRENT_MISSING_QUALITY_SET",
+    "genuineParentProgress": "BLOCKER_NARROWED_NOT_CLOSED"
+  },
+  "antiShortcuts": [
+    "C1_GENERATION_NOT_FOUND_IS_NOT_ZERO_PICK",
+    "FORMAL_SCAN_NOT_CONFIRMED_IS_NOT_NEGATIVE_INDICATOR_EVIDENCE",
+    "BINDING_SEMANTICS_TEST_PASS_DOES_NOT_PROVE_A_REAL_PARENT_EXISTS",
+    "LATER_QUALITY_REPAIR_CANNOT_SYNTHESIZE_THE_MISSING_2026_10_07_C1_GENERATION",
+    "QUARTER_EPS_CURRENTLY_MISSING_DOES_NOT_PROVE_IT_IS_THE_ONLY_FORMAL_PIPELINE_CAUSE"
+  ],
+  "moduleImpact": {
+    "D03-10": "L2_40 / genuine V8.20 parent remains pending; blocker set narrowed",
+    "D03-09": "L2_40 / genuine V8.20 parent remains pending; canonical Wilder replay remains additional"
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "maturityPromotion": false,
+    "outcomes": "CLOSED",
+    "rawSourceVersionGate": "2_OF_3"
+  },
+  "exactNextContinuationPoint": "Parent track: wait for a new ordinary-session live official-quality attempt with QUARTER_EPS ready, actual Formal scan advancement, a genuine immutable C1 generation and authoritative V8.20 Formal-to-C1 binding. Preserve the 2026-10-07 parent absence as immutable failed prospective evidence. Continue W0 independently."
+}
