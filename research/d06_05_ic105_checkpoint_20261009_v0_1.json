@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "D06_05_IC105_CHECKPOINT_V0_1",
+  "researchDate": "2026-10-09",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "mainReadBeforeWrite": "e1c74fe194b8b0cfad43a8e21108a174e5806a3e",
+  "artifact": "research/d06_05_ic105_security_class_identity_20261009_v0_1.json",
+  "parentCandidateCount": 2778,
+  "parentCandidateHash": "fnv1a64-utf8:11ab5a267ae9cd2a",
+  "confirmedNonCommonCount": 6,
+  "provisionalUpperBound": 2772,
+  "provisionalHash": "fnv1a64-utf8:447d982577761b1f",
+  "finalCertifiedCommonStockCount": null,
+  "level": "L3",
+  "maturityPct": 60,
+  "outcomesOpened": false,
+  "formalCoreImpact": "NONE",
+  "status": "IC105_CLASS_FALSIFICATION_DURABLE / DATED_IDENTITY_CERTIFICATION_PENDING / OUTCOMES_CLOSED",
+  "next": "Machine-enumerate exact-pair TPEx delisting and classify all 2778 candidates by date-effective security type/ISIN. Preserve original candidate hash; derive new common-stock cohort hash only after full certification."
+}
