@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { buildFactorObservation, buildMarketRegimeSnapshot } from "../runtime/factor_snapshot.mjs";
 import { buildFrozenDecisionSnapshot } from "../runtime/decision_archive.mjs";
+import { buildShadowSourceSessionReceipt } from "../runtime/shadow_source_session_receipt.mjs";
+import { buildShadowRunReceipt } from "../runtime/shadow_run_receipt.mjs";
+import { buildShadowRunFingerprint } from "../runtime/shadow_run_fingerprint.mjs";
 import { buildPredictionSnapshotBundleV0_1 } from "../runtime/prediction_snapshot_v0_1.mjs";
 
 const marketDate="2026-10-08";
@@ -104,6 +107,7 @@ async function decision(obs,{factorRefs=["PV.TEST@0.1"],decisionId="D-CORR009"}=
       invalidationConditions:[],
       strategyValidity:"VALID",
       entryReadiness:"BUY_ELIGIBLE",
+      shadowSpecId:"S2-SM-LS-001",
     },
     entryPlan:{},
     factorObservations:[obs],
@@ -173,36 +177,71 @@ assert.notEqual(
   changedPayload.decisionEvidence.familyLineage[0].familyAssessmentHash,
 );
 
-const sourceSessionReceipt={
+const sourceSessionReceipt=await buildShadowSourceSessionReceipt({
   receiptId:"SRC-CORR009",
   marketDate,
   decisionTimestamp,
-  sourceSessionState:"SOURCE_SESSION_READY",
-  outcomeJoinSourceEligible:true,
-};
-const runReceipt={
-  runId:"RUN-CORR009",
-  marketDate,
-  decisionTimestamp,
-  runState:"COMPLETE",
-  stateCounts:{INCOMPLETE:0,SOURCE_BLOCKED:0,SESSION_INVALID:0,ERROR:0},
-};
-const fingerprint={
-  fingerprintId:"FP-CORR009",
-  marketDate,
-  decisionTimestamp,
-  outcomeJoinEligible:true,
-  runFingerprintHash:"f".repeat(64),
-};
+  expectedSources:[{sourceId:"FIXTURE",role:"REQUIRED"}],
+  observedSources:[{
+    sourceId:"FIXTURE",
+    state:"KNOWN",
+    sourceDate:marketDate,
+    availableAt:"2026-10-08T07:20:00Z",
+    capturedAt:"2026-10-08T07:20:00Z",
+    pointInTimeEligible:true,
+    payloadHash:"c".repeat(64),
+  }],
+  capturedAt:"2026-10-08T07:20:00Z",
+});
 
+async function coherentRunEvidence(snapshot,{suffix,state}){
+  const runReceipt=buildShadowRunReceipt({
+    runId:"RUN-CORR009-"+suffix,
+    marketDate,
+    decisionTimestamp,
+    strategyId:"SHORT_MOMENTUM",
+    strategyVersion:"V0.1-CONTRACT",
+    shadowSpecId:"S2-SM-LS-001",
+    universeVersion:"U-CORR009",
+    baseUniverseSymbols:[symbol],
+    excludedSymbols:[],
+    eligibleUniverseSymbols:[symbol],
+    symbolAccounts:[{
+      symbol,
+      state,
+      decisionId:snapshot.evaluation.decisionId,
+    }],
+    capturedAt:frozenAt,
+  });
+  const fingerprint=await buildShadowRunFingerprint({
+    fingerprintId:"FP-CORR009-"+suffix,
+    marketDate,
+    decisionTimestamp,
+    strategyId:"SHORT_MOMENTUM",
+    strategyVersion:"V0.1-CONTRACT",
+    shadowSpecId:"S2-SM-LS-001",
+    universeVersion:"U-CORR009",
+    sourceSessionReceipt,
+    shadowRunReceipt:runReceipt,
+    decisionHashes:[snapshot.evaluation.decisionHash],
+    capturedAt:frozenAt,
+  });
+  assert.equal(fingerprint.outcomeJoinEligible,true);
+  return {runReceipt,fingerprint};
+}
+
+const unsafeRun=await coherentRunEvidence(ap01,{
+  suffix:"UNSAFE",
+  state:"INCOMPLETE",
+});
 const unsafePrediction=await buildPredictionSnapshotBundleV0_1({
   predictionSnapshotId:"PS-CORR009-UNSAFE",
   marketDate,
   decisionTimestamp,
   decisionSnapshots:[ap01],
   sourceSessionReceipt,
-  shadowRunReceipts:[runReceipt],
-  runFingerprints:[fingerprint],
+  shadowRunReceipts:[unsafeRun.runReceipt],
+  runFingerprints:[unsafeRun.fingerprint],
   capturedAt:frozenAt,
 });
 assert.equal(unsafePrediction.outcomeJoinEligible,false);
@@ -213,14 +252,18 @@ assert.ok(
 );
 assert.equal(unsafePrediction.cohortCounts.SELECTED,0);
 
+const safeRun=await coherentRunEvidence(valid,{
+  suffix:"SAFE",
+  state:"SELECTED",
+});
 const safePrediction=await buildPredictionSnapshotBundleV0_1({
   predictionSnapshotId:"PS-CORR009-SAFE",
   marketDate,
   decisionTimestamp,
   decisionSnapshots:[valid],
   sourceSessionReceipt,
-  shadowRunReceipts:[runReceipt],
-  runFingerprints:[fingerprint],
+  shadowRunReceipts:[safeRun.runReceipt],
+  runFingerprints:[safeRun.fingerprint],
   capturedAt:frozenAt,
 });
 assert.equal(safePrediction.outcomeJoinEligible,true);
