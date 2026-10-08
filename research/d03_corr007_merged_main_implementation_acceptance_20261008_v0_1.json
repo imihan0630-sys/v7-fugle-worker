@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "D03_CORR007_MERGED_MAIN_IMPLEMENTATION_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-08T11:39:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_CONSUMER_IMPLEMENTATION_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "observedMain": "441021801276e2359dcf473a4fd14ba92cf137d4",
+  "correction": "S2-CORR-20261008-007",
+  "canonicalQueueState": "OPEN_AUDIT_LANE_CLOSURE_PENDING",
+  "implementation": {
+    "mergeCommit": "836184f98726449107cdbd0ed83e2746bbbcf965",
+    "componentCommits": [
+      "6ecc2e33406675e73bc4d2e3e36ae0c968ba5c86",
+      "012d5dc43314276a16f9bdeb562122e0fe35dda5"
+    ],
+    "runtimeFiles": [
+      "system2/runtime/corporate_action_continuity_archive_v0_1.mjs",
+      "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
+    ],
+    "exactHeadRuns": [
+      {
+        "runId": 37720705098,
+        "name": "System2 Research CI",
+        "conclusion": "success"
+      },
+      {
+        "runId": 37720705101,
+        "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+        "conclusion": "success"
+      },
+      {
+        "runId": 37720705126,
+        "name": "System2 NC-T01 Artifact Runner V0.1",
+        "conclusion": "success"
+      },
+      {
+        "runId": 37720705066,
+        "name": "V8 Regression Tests",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "acceptedRuntimeSemantics": [
+    "S2_CA_COMPLETENESS_RECEIPT_V0_2 is machine-distinct from legacy V0_1.",
+    "Physical NC-T01 continuity promotion requires archiveReceipt.schemaVersion exactly S2_CA_COMPLETENESS_RECEIPT_V0_2.",
+    "Legacy V0_1 status-only completeness fails closed even if other evidence is present.",
+    "V0_2 status-only suspension COMPLETE without evidenceReady suspension evidence does not satisfy suspension completeness.",
+    "Suspension evidence requires exact requested interval, nonempty sourceId/sourceFamily/sourceContractVersion, 64-hex receiptDigest, observedAt and valid availability semantics.",
+    "Verified-source-timestamp evidence additionally requires availableAt.",
+    "NC-T01 requires a matching TWSE suspension sourceEvidenceRef in addition to the three corporate-action source refs.",
+    "Missing suspension ref, digest mismatch, source mismatch and late evidence fail closed to CONTINUITY_UNKNOWN.",
+    "Changing only the suspension receipt digest changes the V0_2 archive receipt hash and final continuity receiptHash.",
+    "System1 production isolation tests pass on the implementation merge."
+  ],
+  "nonClaims": [
+    "This D03 acceptance does not change the canonical correction queue from OPEN to VERIFIED_CLOSED.",
+    "No real bounded TWTAWU suspension-completeness receipt has been observed.",
+    "No real W0 CLEAR_NO_ACTION continuity receipt has been observed.",
+    "The official TWTAWU CSV/HTML export request contract remains not pinned; D03 will not guess response=csv or equivalent.",
+    "V0_2 provenance binding does not by itself prove the underlying suspension receipt's negative-completeness semantics.",
+    "No genuine V8.20 Formal-to-C1 parent has been observed for the next ordinary session.",
+    "No predictive outcome or alpha claim is created."
+  ],
+  "d03GateEffect": {
+    "before": "CORR007_V02_IMPLEMENTATION_AND_PHYSICAL_SUSPENSION_RECEIPT_PENDING",
+    "after": "CORR007_V02_IMPLEMENTATION_MACHINE_ACCEPTED / AUDIT_LANE_QUEUE_CLOSURE_PENDING / REAL_BOUNDED_SUSPENSION_RECEIPT_PENDING",
+    "d03TechnicalBlockerRemoved": "CORR007_IMPLEMENTATION_PENDING",
+    "immediateW0Blocker": "REAL_EXACT_WINDOW_TWTAWU_BOUNDED_SUSPENSION_COMPLETENESS_RECEIPT_PLUS_THREE_CA_REFS",
+    "parentTrack": "GENUINE_V8_20_PARENT_PENDING"
+  },
+  "moduleImpact": {
+    "D03-10": {
+      "level": "L2",
+      "maturityPct": 40,
+      "immediateGate": "REAL_W0_RECEIPT_AFTER_BOUNDED_TWTAWU_PHYSICAL_PROOF",
+      "laterGates": [
+        "GENUINE_V8_20_PARENT",
+        "EXACT_20_ELIGIBLE_PARENT_SESSIONS",
+        "LAYER_C_KNOWN_AT",
+        "FORMULA_SOURCE_GUARDS",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    },
+    "D03-09": {
+      "level": "L2",
+      "maturityPct": 40,
+      "immediateGate": "REAL_W0_RECEIPT_AFTER_BOUNDED_TWTAWU_PHYSICAL_PROOF",
+      "laterGates": [
+        "GENUINE_V8_20_PARENT",
+        "LAYER_C_KNOWN_AT",
+        "CANONICAL_WILDER_FULL_REPLAY_OR_TRUSTED_STATE",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION"
+      ]
+    }
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "maturityPromotion": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "W0: consume the first real exact-window TWTAWU bounded suspension-completeness receipt produced under the frozen positive-control parity contract, with immutable source/version/timing/digest and matching additive sourceEvidenceRef, then combine with all three TWSE corporate-action refs and run the real W0 continuity certifier. Parent: independently wait for a genuine ordinary-session immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback quality repair. Do not cross-credit either track."
+}
