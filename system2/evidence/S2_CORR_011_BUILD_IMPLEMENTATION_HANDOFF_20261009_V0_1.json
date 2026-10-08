@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-09T00:52:00+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-011",
+  "severity": "HIGH",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882",
+  "implementation": {
+    "pullRequest": 901,
+    "mergeCommit": "98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882",
+    "behavior": [
+      "Generic immutable persistence treats caller batches as untrusted and canonically rebuilds whitelisted table/column contracts, identities, identity digests, row digests, operation count, SQL plans and batch hash before any database prepare or transport.",
+      "Only regenerated INSERT statements can reach the isolated System2 D1 writer.",
+      "Every inserted immutable row receives exact post-write readback; divergent concurrent/post-write state fails closed.",
+      "A measured statement ledger records select/insert counts, batch transports, verified inserted rows, reported changes and statement hashes.",
+      "Decision persistence verifies factor/regime parent existence and matching date/clock/symbol lineage.",
+      "Decision corrections are append-only in s2_decision_corrections and require an existing original decision.",
+      "Outcome persistence independently rebuilds SQL/digests and verifies order-to-decision, fill-to-order and outcome-to-decision lineage.",
+      "AP-08 caller UPDATE-as-insert is rejected before db.batch."
+    ],
+    "negativeCoverage": [
+      "caller SQL tamper",
+      "batchHash tamper",
+      "rowDigest tamper",
+      "identity tamper",
+      "table tamper",
+      "unapproved column",
+      "post-write concurrent divergence",
+      "missing/mismatched decision-factor-regime lineage",
+      "orphan correction",
+      "orphan order/fill/outcome lineage"
+    ]
+  },
+  "exactHeadPullRequestValidation": {
+    "head": "2f8eb9a042154668c740a56cefa02c41fa61d65a",
+    "runs": [
+      {
+        "name": "System2 CORR-011 Immutable Persistence Firewall V0.1",
+        "runId": 37814281548,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37814281345,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37814281392,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882",
+    "runs": [
+      {
+        "name": "System2 CORR-011 Immutable Persistence Firewall V0.1",
+        "runId": 37814464487,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37814464192,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37814464250,
+        "result": "PASS"
+      }
+    ]
+  },
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime unchanged.",
+    "No destructive migration or immutable-history rewrite.",
+    "No final selection/live push/capital/order authority changed.",
+    "CORR-012 monotonic outcome maturation semantics were intentionally not changed by CORR-011."
+  ],
+  "nonClaims": [
+    "BUILD_LANE does not self-close this HIGH correction.",
+    "Independent AUDIT_LANE verification is required before VERIFIED_CLOSED.",
+    "No production trading authority or physical NC-T01 acceptance is claimed."
+  ],
+  "exactNext": [
+    "AUDIT_LANE independently reruns AP-08 and verifies pre-transport rejection, canonical SQL/hash regeneration, post-write readback and parent-lineage guards on merged main.",
+    "BUILD_LANE continues CORR-012, then CORR-013, unless a newer higher-severity canonical queue item appears."
+  ]
+}
