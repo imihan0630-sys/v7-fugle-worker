@@ -247,8 +247,8 @@ export async function probePitHistoryCoverageV0_1({
   const currentSymbols = [...new Set((snapshotBatch.symbols || []).map(
     (value) => String(value).trim(),
   ))].sort();
-  if (currentSymbols.some((symbol) => !/^[1-9][0-9]{3}$/.test(symbol))) {
-    throw new Error("daily Shadow PIT coverage requires ordinary 4-digit symbol identities");
+  if (currentSymbols.some((symbol) => !/^[A-Za-z0-9_-]{1,16}$/.test(symbol))) {
+    throw new Error("daily Shadow PIT coverage requires safe bound-parameter symbol identities");
   }
   if (currentSymbols.length > 5000) {
     throw new Error("daily Shadow PIT coverage has an unexpected unbounded universe");
