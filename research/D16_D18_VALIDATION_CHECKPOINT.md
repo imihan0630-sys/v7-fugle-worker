@@ -4937,3 +4937,12 @@ Physical/executable evidence remains absent:
 4. Run S1-T01~T18.
 5. Freeze size-bucket policy before outcomes.
 6. Only then assess D18-06 L3.
+
+
+## 2026-10-08 D16/D18 paired-policy admissibility continuation
+
+New research: `research/D16_D18_PAIRED_POLICY_ADMISSIBILITY_20261008.md`.
+
+Hypothesis: static and regime-conditioned strategy arms must use the same immutable decision-date evidence frame to identify incremental policy value. W0 continuity, W1 strategy-executable and W2 rank eligibility are distinct. N0/Nw0/Nw1/Neval/Nout and per-regime missingness must remain explicit. Full-opportunity policy effect is UNKNOWN when blocked outcomes cannot be identified; never impute zero. PA-T01~T18 freeze research-consumer adversarial checks. No outcomes opened or maturity upgraded.
+
+Exact next: refresh main, verify CORR-009~015 and NC-T01 physical receipts, then test paired immutable date frames before any promotion. Formal Core LOCKED.
