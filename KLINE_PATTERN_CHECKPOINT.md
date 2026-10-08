@@ -6308,3 +6308,122 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~115 before physical R7 emission.
 5. D16 receives primitive revision roots and cross-scale sensitivity metadata, never raw scale-count votes.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+
+## Continuation update — DL-116~121 (2026-10-08)
+
+### DL-116~118 — calendar / timezone / partial higher-timeframe formalization
+- A pre-existing DL-116~118 research note was already present on main but its originating commit added only the markdown note; the referenced standalone oracle/test artifacts were absent and KLINE_PATTERN_CHECKPOINT.md had not advanced beyond DL-115.
+- Formalization preserved the frozen research semantics and added:
+  research/pattern_dl116_118_calendar_boundary_oracle_v0_1.mjs;
+  research/pattern_dl116_118_calendar_boundary_oracle_v0_1.test.mjs;
+  research/D01_DL116_118_FORMALIZED_TEST_EVIDENCE_20261008_V0_1.md.
+- Frozen semantics:
+  historical weekly/monthly bars use exchange-local eligible symbol sessions, not fixed 5/20-day assumptions;
+  partial higher-timeframe bars remain PARTIAL_AS_OF while expected future sessions remain;
+  future observations are filtered before due-session validation;
+  calendar/source revisions do not create extra Alpha votes;
+  primitive price/calendar revision roots remain deduped across scale fanout.
+- Formalized first execution produced 35/36 PASS and exposed a real helper status-precedence defect:
+  the specific revision-vote-inflation status was overwritten by a generic accounting status.
+- Only object-spread precedence was corrected; research rule and expected fixture result were unchanged.
+- Final formalized result:
+  36/36 PASS.
+- Cumulative through DL-118:
+  473/473 PASS.
+
+### DL-119 — immutable session-attribution causality
+- Generic missing-bar state is now prohibited.
+- Session absence is causally separated into:
+  EXCHANGE_CLOSED;
+  SYMBOL_NOT_EXPECTED_TO_TRADE;
+  SYMBOL_TRADED;
+  SYMBOL_EXPECTED_NO_TRADE_CONFIRMED;
+  DATA_MISSING;
+  CONTRADICTION_BLOCKED;
+  UNKNOWN_BLOCKED.
+- Attribution precedence:
+  official exchange session;
+  certified symbol lifecycle;
+  authoritative trade/no-trade state;
+  admitted raw row;
+  provider metadata.
+- Immutable roots:
+  calendarAttributionRootId;
+  symbolLifecycleRootId;
+  timezoneAttributionRootId;
+  rawObservationRootId.
+- Frozen revision causes:
+  OFFICIAL_CALENDAR_REVISION;
+  VENDOR_TIMEZONE_ATTRIBUTION_REVISION;
+  SYMBOL_LIFECYCLE_REVISION;
+  RAW_DATA_PIPELINE_REVISION;
+  TRADE_STATUS_REVISION;
+  MULTI_ROOT_REVISION;
+  IDENTICAL_ATTRIBUTION.
+- Exchange closure, symbol suspension, missing raw row and timezone error are not interchangeable and none is an Alpha root.
+
+### DL-120 — exchange-local market-date / timezone binding
+- TWSE/TPEx canonical market timezone remains Asia/Taipei.
+- Market-date precedence:
+  official exchange-reported market date first;
+  explicit timezone-bearing trade/session timestamp as controlled fallback.
+- Provider batch date, file-name date, ingestion date and local machine date may not define the trading session.
+- UTC truncation may shift a Taiwan market observation to the wrong local date and is explicitly prohibited.
+- Batch/download after local midnight does not change the original exchange session date.
+- Parent/child and old/new-vintage common-support comparison now includes timezone/date attribution identity.
+- Timezone remap requires versioned replay and preserves old receipts.
+
+### DL-121 — nontrading denominator / gap-bridge common support
+- A raw gap remains one prior-traded/current-traded endpoint root regardless weekend/holiday calendar-day distance.
+- Intervening states are frozen as:
+  MARKET_CLOSED_ONLY;
+  SYMBOL_NOT_EXPECTED_TO_TRADE_INTERVAL;
+  EXPECTED_TO_TRADE_NO_TRADE_CONFIRMED;
+  DATA_MISSING_INTERVAL;
+  ATTRIBUTION_UNCERTAIN_INTERVAL;
+  MIXED_INTERVAL.
+- Holiday/weekend closures do not create pseudo bars or extra gap votes.
+- Suspension/resumption intervals inherit DL-066 stale-anchor/reopening semantics.
+- Confirmed no-trade eligible sessions are retained in denominator accounting and are not converted to fake zero-volume/zero-return bars.
+- Unresolved attribution blocks gap/path inference.
+- Holiday, suspension, vendor-date error and data loss cannot be pooled without explicit stratification.
+
+### Test evidence
+- DL-116~118:
+  formalized final 36/36 PASS after initial 35/36 defect discovery and correction.
+- DL-119~121:
+  40/40 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-121:
+  513/513 PASS.
+- Native Node parity and OOS/prospective performance are not claimed.
+
+### Physical owner readback
+- Latest-main search still shows no physical 1101 / 2021-06-15 exact-window continuityReceiptId or CERTIFIED_NORMAL_MATCHING owner receipt.
+- Physical R1-R6 remains incomplete.
+- Physical R7 remains blocked.
+- D01 did not implement duplicate System2/D05 source collectors.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- CALENDAR_TIMEZONE_PARTIAL_BAR_FIREWALL = FROZEN.
+- SESSION_ATTRIBUTION_CAUSALITY = FROZEN.
+- EXCHANGE_LOCAL_MARKET_DATE_BINDING = FROZEN.
+- NONTRADING_GAP_COMMON_SUPPORT = FROZEN.
+- SDA-001 research semantics remain complete for current D01 scope; ticket stays open under cross-domain/System/D16/00 gates.
+- SDA-002 remains open under physical replay/System/D16/00 gates.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-121
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze listing/migration/share-conversion boundary identity across TWSE/TPEx so exchange migration or code continuity cannot create a false continuous price pattern or duplicate opportunity.
+4. If R1-R6 appear, validate DL-095 plus DL-108~121 before physical R7 emission.
+5. D16 receives attribution-class and nontrading-bridge metadata alongside primitive revision roots, never missing-bar counts as votes.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
