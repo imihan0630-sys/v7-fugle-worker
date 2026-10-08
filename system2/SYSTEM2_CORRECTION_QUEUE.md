@@ -1372,7 +1372,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: HIGH
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed: the executor ran caller-supplied `UPDATE s2_decisions ...` as `insertSql`, did not verify batch/row digests and reported `INSERTED`.
@@ -1382,9 +1382,23 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   3. measured statement ledger plus exact post-write readback;
   4. guarded immutable lineage and correction-only append paths.
 - durable audit: `system2/evidence/S2_EXECUTION_PERFORMANCE_CROSS_STRATEGY_REGIME_BATCH_AUDIT_20261008_V0_1.json` AP-08.
-- finalDisposition: PENDING
+- finalDisposition: FIX_IMPLEMENTED — canonical immutable persistence firewall merged; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
 - independent executed negative witness (2026-10-08 22:59 Asia/Taipei): `AP-08 arbitrary UPDATE passed to mock D1 and mislabeled INSERTED`, classification `UNSAFE` from real GitHub Actions System2 Research CI run `37796797844`, job `113378243808` (V8 regression run `37796797829` success). Four dry-run probes are archived in `system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json`. This evidence confirms the **OPEN** defect, not its repair; implementation remains BUILD_LANE-owned.
 
+
+
+#### BUILD implementation handoff — 2026-10-09 00:52
+
+- PR #901 merged as `98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882`.
+- Caller persistence batches are treated as untrusted and canonically rebuilt from whitelisted table/column contracts before the first D1 prepare/transport.
+- SQL plans, row digests, identity digests, operation count and batch hash are recomputed; only regenerated INSERT statements execute.
+- Every immutable insert receives exact post-write readback; statement ledger measures read/write/transport/readback counts and hashes.
+- Decision -> factor/regime, correction -> decision, order -> decision, fill -> order and outcome -> decision lineage is guarded.
+- AP-08 caller UPDATE-as-insert is rejected before `db.batch`.
+- Exact-head PASS: CORR-011 `37814281548`; System2 Research CI `37814281345`; V8 Regression `37814281392`.
+- Merged-main PASS: CORR-011 `37814464487`; System2 Research CI `37814464192`; V8 Regression `37814464250`.
+- Durable evidence: `system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json`.
+- BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
 
 ### S2-CORR-20261008-012 — Outcome monotonic updates can rewrite cost/performance provenance and erase excursions
 
