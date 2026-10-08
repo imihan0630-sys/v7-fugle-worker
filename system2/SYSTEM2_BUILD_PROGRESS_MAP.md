@@ -1652,3 +1652,34 @@ Next BUILD priority:
 1. continue the next unblocked CRITICAL correction from the canonical queue;
 2. CORR-008 remains blocked by CORR-007 independent closure;
 3. preserve physical NC-T01 and System1 Formal Core boundaries.
+
+
+## 2026-10-08 15:33 BUILD_LANE handoff — CORR-014 FIX_IMPLEMENTED
+
+Implementation:
+- PR #868 merged as `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`.
+- Backtest plan identity binds dataset / policy / evaluator / factor / Regime / execution / cost assumptions.
+- Every replay date requires a hash-bound PIT universe receipt with exact registry/member lineage.
+- Resume checkpoint hash, completed dates, date summaries, partition/sample receipts, state counts and rolling digest are recomputed/reconciled before loaders/evaluators.
+- AP-04 forged checkpoint fails before any loader/evaluator.
+- Zero-sample completion requires a proved empty PIT universe.
+
+Exact-head PASS:
+- CORR-014 `37743894631`;
+- System2 Research CI `37743894530`;
+- V8 Regression `37743894466`.
+
+Merged-main PASS on `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`:
+- CORR-014 `37744022901`;
+- System2 Research CI `37744022808`;
+- V8 Regression `37744023076`.
+
+Disposition:
+- `S2-CORR-20261008-014 = FIX_IMPLEMENTED`;
+- CRITICAL correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+
+Next BUILD priority:
+1. check current main for concurrent CORR-015 implementation;
+2. if still OPEN/unclaimed, continue CORR-015 as the next CRITICAL correction;
+3. CORR-008 remains blocked by CORR-007 independent closure.
