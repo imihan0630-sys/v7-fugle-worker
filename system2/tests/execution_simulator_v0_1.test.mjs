@@ -110,6 +110,12 @@ assert.deepEqual(toS2SimulationFillRowsV0_1(stillOpen)[0], fillRows[0]);
 
 const outcome = await buildDecisionOutcomeSnapshotV0_1({
   decisionId: base.decisionId,
+  decisionHash: "d".repeat(64),
+  strategyId: base.strategyId,
+  strategyVersion: base.strategyVersion,
+  regimeSnapshotId: "REG-EXEC-1",
+  regimeHash: "e".repeat(64),
+  corporateActionLineageHash: "f".repeat(64),
   symbol: base.symbol,
   decisionMarketDate: base.decisionMarketDate,
   decisionTimestamp: base.decisionTimestamp,
@@ -127,6 +133,10 @@ const outcome = await buildDecisionOutcomeSnapshotV0_1({
 });
 const outcomeRow = toS2OutcomeRowV0_1(outcome);
 assert.equal(outcome.simulatedExecution.executionVersion, EXECUTION_SIMULATOR_VERSION_V0_1);
+assert.equal(outcome.executionLineage.executionHash, normal.executionHash);
+assert.match(outcome.executionLineage.costModelHash, /^[0-9a-f]{64}$/);
+assert.match(outcome.executionLineage.taxRuleHash, /^[0-9a-f]{64}$/);
+assert.equal(outcome.executionLineage.taxRuleId, costModel.taxRuleId);
 assert.equal(outcomeRow.realized_return_after_cost, normal.realizedReturnAfterCost);
 assert.equal(outcomeRow.holding_sessions, 2);
 
