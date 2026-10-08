@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "S2_AUDIT_INDEPENDENT_CODE_CLOSURE_V0_1",
+  "recordedAt": "2026-10-08T18:50:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "basis": "Latest GitHub main source readback plus independent live GitHub Actions job/step readback; previously merged BUILD patches were not changed by this audit",
+  "scope": "CODE_FIREWALL_ONLY",
+  "directives": [
+    {
+      "id": "S2-CORR-20261008-007",
+      "severity": "HIGH",
+      "mergedCommit": "836184f98726449107cdbd0ed83e2746bbbcf965",
+      "verifiedRuntimeBlobShas": {
+        "system2/runtime/corporate_action_continuity_archive_v0_1.mjs": "d12637b074d887e04c166a8206dc6b433cfe6dd2",
+        "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs": "9845861190a961a598c870caeeaad0725401e21c"
+      },
+      "adversarialAssertions": [
+        "legacy-status-only and V0.2 status-only suspension must yield CONTINUITY_UNKNOWN",
+        "missing suspension ref, source mismatch and receipt-digest mismatch fail closed",
+        "late observedAt/availableAt fail closed",
+        "matching source identity and exact-window receipt is required; hash mutation changes lineage"
+      ],
+      "observedGitHubRun": {
+        "runId": 37720705101,
+        "jobId": 113127423714,
+        "conclusion": "success",
+        "targetedStep": "Corporate-action evidence-bound suspension completeness tests"
+      },
+      "decision": "VERIFIED_CLOSED_FOR_PROVENANCE_CODE_FIREWALL",
+      "nonClaim": "No real bounded TWTAWU receipt or physical NC-T01 S22-T11..T16 acceptance is claimed; DATA_LANE/BUILD physical gates remain mandatory"
+    },
+    {
+      "id": "S2-CORR-20261008-009",
+      "severity": "CRITICAL",
+      "mergedCommit": "c7afee03aec24d1c5a3a79e71cb4c8250a67b61e",
+      "verifiedRuntimeBlobShas": {
+        "system2/runtime/decision_archive.mjs": "737dda1469ccb408c551a41c42d147a3adc4c8f1"
+      },
+      "adversarialAssertions": [
+        "AP-01 future and explicitly non-PIT factor becomes INCOMPLETE not SELECTED",
+        "rank and totalScore are null and readiness BLOCKED",
+        "outcomeJoinEligible false",
+        "missing source hash and invalid factor version fail closed",
+        "positive PIT witness remains eligible"
+      ],
+      "observedGitHubRun": {
+        "runId": 37732958236,
+        "jobId": 113166026485,
+        "conclusion": "success",
+        "targetedStep": "CORR-009 adversarial PIT firewall"
+      },
+      "decision": "VERIFIED_CLOSED_FOR_FROZEN_DECISION_PIT_CODE_FIREWALL",
+      "nonClaim": "Does not certify availability/completeness of physical sources, full selection live run or future strategy performance"
+    },
+    {
+      "id": "S2-CORR-20261008-010",
+      "severity": "CRITICAL",
+      "mergedCommit": "d0a0554960883aad3d5f85989148ef044f9e135c",
+      "verifiedRuntimeBlobShas": {
+        "system2/runtime/shadow_run_fingerprint.mjs": "e2e83a467416333b48e9d6d12e8556a0d52d900a",
+        "system2/runtime/prediction_snapshot_v0_1.mjs": "a2bcd5626a9cda6acac5c1238eac44be81b41885"
+      },
+      "adversarialAssertions": [
+        "AP-02 cross-fingerprint and missing source-session fail closed",
+        "AP-03 strategy mismatch and tampered fingerprint fail closed",
+        "duplicate/foreign/extra decision hashes fail closed",
+        "empty decision hashes without separate proved empty universe fail closed",
+        "positive matched receipts remain eligible"
+      ],
+      "observedGitHubRun": {
+        "runId": 37741728923,
+        "jobId": 113193742180,
+        "conclusion": "success",
+        "targetedStep": "CORR-010 AP-02/AP-03 adversarial reconciliation"
+      },
+      "decision": "VERIFIED_CLOSED_FOR_CLOSED_SET_OUTCOME_JOIN_CODE_FIREWALL",
+      "nonClaim": "Does not certify physical strategy-performance runs or profitability"
+    }
+  ],
+  "crossChecks": {
+    "workflowStatus": "Targeted runs' jobs and steps independently queried from GitHub API; all success",
+    "codePersistence": "All five required runtime blobs match original merged implementation blobs on queried latest main",
+    "implementationOwner": "BUILD_LANE, separate from AUDIT_LANE verification",
+    "testsExecutionByAuditor": "NOT_RERUN_LOCALLY; audited independent GitHub Actions records and exact adversarial regression assertions",
+    "protectedBoundaries": "No System1 Formal Core/runtime, System2 final selection, push, capital, order, strategy threshold or ranking changes"
+  },
+  "remainingBlockingGates": [
+    "S2-CORR-20261008-008 still requires BUILD same-cut runtime guard and fresh artifact-only execution",
+    "DATA_LANE must supply real exact-window TWTAWU/parity receipt; no physical NC-T01 credit",
+    "S2-CORR-20261008-014 code implementation merged but BUILD handoff PR #869 pending; independent verification separate",
+    "S2-CORR-20261008-015 OPEN Regime PIT contamination"
+  ],
+  "conclusion": "Independent code-layer closure of the three narrowly scoped corrective defects; no end-to-end System2 launch or physical acceptance credit"
+}

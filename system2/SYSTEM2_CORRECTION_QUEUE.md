@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-08 05:36 Asia/Taipei
+Updated: 2026-10-08T18:50:00+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -188,7 +188,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T21:01:27+08:00
 - severity: MEDIUM
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -243,6 +243,8 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - updatedAt: 2026-10-06T21:18:28+08:00
 
 ## Closed directives
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
+
 
 ### S2-CORR-20261006-004 — Institutional terminal can surface prior-session resonance as current-day monitor data
 
@@ -1084,7 +1086,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T23:45:41+08:00
 - severity: HIGH
-- status: OPEN
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1118,12 +1120,14 @@ Correction consequence:
 - `nct01_physical_receipt_v0_1.mjs`, `nct01_artifact_runner_v0_1.mjs` and their tests have not changed since merged PR #830 (`d2050fbc3379dfe618447f88f8104b31e494a633`).
 - Missing hidden-fallback evidence still defaults to false; no required `HIDDEN_FALLBACK_AUDIT_SHA256` typed ref exists in the current physical PASS ref set.
 - No BUILD implementation PR for CORR-005 was found in the recent PR range audited.
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
+
 
 ### S2-CORR-20261007-006 — NC-T01 continuity-ready witness can promote physical execution while strategy required evidence is incomplete
 
 - createdAt: 2026-10-07T23:59:18+08:00
 - severity: HIGH
-- status: OPEN
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - canonical machine authority: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1199,13 +1203,14 @@ Important boundary:
 the correction CI artifact explicitly sets `physicalAcceptanceEligible=false`.
 Therefore this closure fixes the code firewalls but does **not** credit physical S22-T11..T16.
 A real source-honest continuity receipt plus one coherent artifact-only NC-T01 run are still required.
+- governance status reconciliation (2026-10-08 18:50 Asia/Taipei): status synchronized with pre-existing canonical JSON `VERIFIED_CLOSED`; original historical discovery notes remain preserved, no new closure claim or evidence invented.
 
 
 ### S2-CORR-20261008-007 — NC-T01 CLEAR_NO_ACTION promotion does not bind TWSE suspension completeness to immutable source evidence
 
 - createdAt: 2026-10-08T06:01:00+08:00
 - severity: HIGH
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - problem:
@@ -1227,7 +1232,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   @ `cef80ec06e9ea9448f98dfdbadec4e0915b1be43`.
 - physical boundary:
   DATA_LANE still owns the real bounded TWTAWU completeness receipt. CORR-007 only makes it impossible for BUILD to promote without that receipt.
-- finalDisposition: FIX_IMPLEMENTED / AUDIT_LANE_VERIFICATION_PENDING
+- finalDisposition: VERIFIED_CLOSED — independent AUDIT_LANE code-firewall verification; physical source / end-to-end acceptance remain separate gates.
 
 #### 2026-10-08 11:40 BUILD implementation handoff
 - merged implementation: `836184f98726449107cdbd0ed83e2746bbbcf965`;
@@ -1238,7 +1243,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - independent research consumer readback: `research/d03_corr007_merged_main_implementation_acceptance_20261008_v0_1.json`;
 - HIGH correction is **not self-closed**. AUDIT_LANE must independently verify before `VERIFIED_CLOSED`;
 - physical NC-T01 remains uncredited until DATA_LANE supplies a real bounded TWTAWU receipt and one coherent run consumes it.
-
+- independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_007_009_010_20261008_V0_1.json` (merged-code blobs unchanged, fail-closed negative assertions, direct GitHub Actions job/step PASS readback; no independent local rerun or physical acceptance claim).
 
 
 ### S2-CORR-20261008-008 — NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc
@@ -1269,7 +1274,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1286,15 +1291,15 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   - exact-head PASS: CORR-009 `37732779734`, Research `37732779722`, NC-T01 Continuity `37732779809`, NC-T01 Artifact Runner `37732779729`, V8 Regression `37732779747`;
   - merged-main PASS: CORR-009 `37732958236`, Research `37732958273`, NC-T01 Continuity `37732958318`, V8 Regression `37732958351`;
   - durable BUILD handoff: `system2/evidence/S2_CORR_009_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
-- finalDisposition: FIX_IMPLEMENTED / AUDIT_LANE_VERIFICATION_PENDING
-
+- finalDisposition: VERIFIED_CLOSED — independent AUDIT_LANE code-firewall verification; physical source / end-to-end acceptance remain separate gates.
+- independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_007_009_010_20261008_V0_1.json` (merged-code blobs unchanged, fail-closed negative assertions, direct GitHub Actions job/step PASS readback; no independent local rerun or physical acceptance claim).
 
 
 ### S2-CORR-20261008-010 — Outcome-join fingerprints do not enforce decision/source/strategy/version isolation
 
 - createdAt: 2026-10-08T11:30:54+08:00
 - severity: CRITICAL
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - observed:
@@ -1310,7 +1315,8 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   - exact-head PASS: CORR-010 `37741546228`, CORR-009 regression `37741546094`, System2 Research CI `37741546128`, V8 Regression `37741546086`;
   - merged-main PASS: CORR-010 `37741728923`, CORR-009 regression `37741728744`, System2 Research CI `37741728771`, V8 Regression `37741728752`;
   - durable BUILD handoff: `system2/evidence/S2_CORR_010_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
-- finalDisposition: FIX_IMPLEMENTED — AP-02/AP-03 closed-set outcome-join lineage is fail-closed; independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.
+- finalDisposition: VERIFIED_CLOSED — independent AUDIT_LANE code-firewall verification; physical source / end-to-end acceptance remain separate gates.
+- independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_007_009_010_20261008_V0_1.json` (merged-code blobs unchanged, fail-closed negative assertions, direct GitHub Actions job/step PASS readback; no independent local rerun or physical acceptance claim).
 
 
 ### S2-CORR-20261008-011 — Immutable persistence executor trusts unverified batch SQL and digest fields
