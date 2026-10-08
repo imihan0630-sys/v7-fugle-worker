@@ -1575,7 +1575,9 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「原物料／報價傳導」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_PIT_FEASIBLE / SC029_SECOND_MONTHLY_MATERIAL_VINTAGE_RECONCILED / TWO_MONTHLY_VINTAGES_ONE_STEEL_CHAIN / MONTH0_FAILED_PASS_THROUGH_CONTROL / SC092_D16_HANDOFF_FROZEN / OUTCOMES_CLOSED / POWER_INSUFFICIENT",
+          "next": "Room11/D16 consumes research/SC092_D10_05_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freezes material-price event/chain dependence and multiplicity before outcomes; Room07 accumulates additional independent material vintages and at least one different industry/chain under unchanged lag0/1/2 and D5/D20/D60 windows."
         },
         {
           "id": "D10-06",
