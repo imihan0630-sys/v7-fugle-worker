@@ -46,3 +46,17 @@ Transaction cost/liquidity/market regime: UNKNOWN until D04/D05/D15/D16 owner ev
 ## Physical gate / exact next
 The frozen 1101 TWSE 2021-06-15 exact 61-eligible-session R1-R6 physical bundle remains unverified here; do not emit real R7 or open D16 outcomes.
 Next: re-read latest main; check physical R1-R6; if present validate DL-095 and DL-108~118 before real R7. If absent, next genuinely new D01 outcome-blind work is to separate official calendar revision, vendor timezone misalignment and symbol-specific nontrading with immutable attribution and common support. Do not build duplicate source collectors. Formal Core LOCKED, Pattern Alpha UNKNOWN, D01 60.0% / all 11 L3 unchanged.
+
+
+## 2026-10-08 formalization reconciliation
+
+The original research note was present on main, but its referenced standalone oracle/test files were not committed by the originating commit and the checkpoint had not yet advanced beyond DL-115.
+
+Formalization added:
+- `research/pattern_dl116_118_calendar_boundary_oracle_v0_1.mjs`;
+- `research/pattern_dl116_118_calendar_boundary_oracle_v0_1.test.mjs`;
+- `research/D01_DL116_118_FORMALIZED_TEST_EVIDENCE_20261008_V0_1.md`.
+
+Independent V8-equivalent execution first produced 35/36 PASS and exposed a status-precedence bug in the revision-vote fanout helper. Only object-spread precedence was corrected; research semantics and test expectation were unchanged. Final result is 36/36 PASS.
+
+Cumulative D01 deterministic equivalent execution through DL-118 is 473/473 PASS. Native Node parity and OOS/prospective performance remain unclaimed.
