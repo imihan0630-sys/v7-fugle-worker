@@ -24,6 +24,7 @@ const taiexContext = await withReceiptHash({
   marketDate,
   decisionTimestamp,
   state: "KNOWN",
+  sourceId: "A2_TAIEX_CLOSE",
   pointInTimeEligible: true,
   availableAt: "2026-10-02T06:20:00.000Z",
   historyWindowHash: "h1",
