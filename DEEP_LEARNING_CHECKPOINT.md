@@ -2903,3 +2903,24 @@ D06-05 first bounded pair corporate-action mask stored at `research/d06_05_pair_
 2. Complete TPEx interval identity-transition/delisting coverage and classify any additional issuance channel touching either pair boundary.
 3. Recompute the final event-clean exact-denominator symbol set and canonical hash; only then open the preregistered OOS/Shadow lane.
 4. Do not treat 2,778 as final sample size until those coverage gates pass.
+
+
+## 2026-10-08 D06 — IC-104 exact TPEx ex-right pair materialization
+
+- Durable artifact: `research/d06_05_pair_event_clean_support_candidate_20260924_20261002_v0_3.json`.
+- Official TPEx `exDailyQ` exact-range response 2026-09-24..2026-10-02 verified with 4 rows.
+- Rows: 8440 2026-09-30, 1784 2026-10-01, 6523 2026-10-01, 6171 2026-10-02.
+- All four are pure ex-dividend cash-only rows; stock distribution, capital-increase shares, employee shares and old-shareholder subscription quantities are all zero.
+- Ownership mask impact = NONE for these four rows.
+- Recomputed pre-outcome support: 2,962 ordinary common -> 2,783 exact denominator stable -> remove stable hard masks 1235/1441/2323/6550/3234 -> 2,778 candidate symbols.
+- Canonical candidate hash: `fnv1a64-utf8:11ab5a267ae9cd2a`.
+- 8183->6191 share-exchange lineage remains explicit; 8183 is outside common support and 6191 is denominator-contaminated.
+- Remaining fail-closed blocker: exact interval machine enumeration of the official TPEx delisted-company registry or an equivalent authoritative identity-transition list.
+- Therefore cohort state = CANDIDATE_FROZEN, not FINAL_CERTIFIED; outcome columns remain CLOSED.
+- D06-05 remains L3/60; D06 maturity unchanged.
+
+### Exact next continuation
+1. Machine-enumerate TPEx official delisted/identity-transition coverage for 2026-09-24..2026-10-02.
+2. If no additional common-support identity transition exists, promote the exact same 2,778-symbol set/hash to FINAL_CERTIFIED.
+3. Only then preregister vintage-clustered OOS/Shadow residual incrementality and open outcomes.
+4. Do not spend further effort re-fetching TPEx ex-right/dividend rows for this pair; that blocker is closed.
