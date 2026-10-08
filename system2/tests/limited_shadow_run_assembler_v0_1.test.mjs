@@ -88,15 +88,27 @@ function factor(symbol, factorId, state = "KNOWN") {
   });
 }
 
+const requiredLaunchFamilies = new Set([
+  "TECHNICAL_STRUCTURE",
+  "PRICE_VOLUME",
+  "RISK_FRICTION",
+]);
 const allKnownFamilies = Object.fromEntries(
   contract.evidenceFamilies.map((x) => [
     x.family,
-    {
-      observationState: "KNOWN",
-      thesisState: "SUPPORTIVE",
-      reasons: ["fixture known"],
-      warnings: [],
-    },
+    requiredLaunchFamilies.has(x.family)
+      ? {
+          observationState: "KNOWN",
+          thesisState: x.family === "RISK_FRICTION" ? "NEUTRAL" : "SUPPORTIVE",
+          reasons: ["fixture known"],
+          warnings: [],
+        }
+      : {
+          observationState: "UNKNOWN",
+          thesisState: "INDETERMINATE",
+          reasons: ["fixture not required"],
+          warnings: [],
+        },
   ]),
 );
 
@@ -145,6 +157,7 @@ const input = {
       factorObservations: [
         factor("2330", "TECH.TREND"),
         factor("2330", "PV.RELATIVE_VOLUME"),
+        factor("2330", "RISK.LIQUIDITY"),
       ],
       interactionObservations: [],
       sourceManifest: [{ sourceId: "A1_TW_DAILY_OHLCV_DERIVED", payloadHash: "a1-hash" }],
@@ -170,6 +183,7 @@ const input = {
       factorObservations: [
         factor("2454", "TECH.TREND"),
         factor("2454", "PV.RELATIVE_VOLUME", "UNKNOWN"),
+        factor("2454", "RISK.LIQUIDITY"),
       ],
       interactionObservations: [],
       sourceManifest: [{ sourceId: "A1_TW_DAILY_OHLCV_DERIVED", payloadHash: "a1-hash" }],
@@ -205,6 +219,8 @@ const bySymbol = Object.fromEntries(
   bundle.decisionSnapshots.map((x) => [x.evaluation.symbol, x]),
 );
 assert.equal(bySymbol["2330"].evaluation.state, "QUALIFIED_NOT_SELECTED");
+assert.equal(bySymbol["2330"].decisionEvidence.state, "READY");
+assert.equal(bySymbol["2330"].decisionEvidence.outcomeJoinEligible, true);
 assert.equal(bySymbol["2330"].evaluation.rank, null);
 assert.equal(bySymbol["2330"].evaluation.totalScore, null);
 assert.equal(bySymbol["2454"].evaluation.state, "INCOMPLETE");
