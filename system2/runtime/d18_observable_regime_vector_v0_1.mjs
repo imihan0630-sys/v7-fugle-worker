@@ -311,10 +311,6 @@ export async function buildD18ObservableRegimeVectorV0_1({
   validateReceiptClock(taiexContext, date, clock, "TAIEX_CONTEXT", reasons);
   validateReceiptClock(directionBreadth, date, clock, "DIRECTION_BREADTH", reasons);
 
-  if (sectorRotation) {
-    validateReceiptClock(sectorRotation, date, clock, "SECTOR_ROTATION", reasons);
-  }
-
   // Hard prerequisites use the same source/PIT/hash firewall as every optional dimension.
   const taiexProof = await validateDimensionSource(taiexContext, {
     marketDate: date,
