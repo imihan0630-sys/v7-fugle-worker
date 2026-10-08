@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T19:20:00+08:00",
+  "updatedAt": "2026-10-08T20:20:19+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1979,7 +1979,7 @@
       "directiveId": "S2-CORR-20261008-014",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "CRITICAL",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Bulk backtest can accept forged completion checkpoints and unproven PIT universes",
       "affectedScope": [
         "S2-19 PIT replay and bulk backtest",
@@ -2037,16 +2037,17 @@
         "Independent batch audit AP-04 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
         "Exact-head PASS: CORR-014 37743894631; System2 Research CI 37743894530; V8 Regression 37743894466.",
         "Merged-main PASS on 4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7: CORR-014 37744022901; System2 Research CI 37744022808; V8 Regression 37744023076.",
-        "AP-04 forged completion checkpoint fails before loader/evaluator execution; PIT-universe and checkpoint/run identity are hash-reconciled."
+        "AP-04 forged completion checkpoint fails before loader/evaluator execution; PIT-universe and checkpoint/run identity are hash-reconciled.",
+        "Independent AUDIT_LANE code-firewall acceptance: system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_20261008_V0_1.json; current main runtime blobs equal merged implementation, direct Actions job-step readback PASS for targeted/Research/V8; original AP-04/AP-07 negative cases examined. No independent local test rerun or physical/OOS/alpha claim."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — bulk-backtest checkpoint and PIT-universe lineage fail closed against forged completion, unproven historical membership, zero-sample completion without proved empty universe and run-identity drift. CRITICAL correction remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
-      "updatedAt": "2026-10-08T19:20:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — independent AUDIT_LANE verification of original code-level PIT/identity/UNKNOWN correction only. Historical data physical completeness, OOS/regime alpha, live activation and remaining corrections are not certified.",
+      "updatedAt": "2026-10-08T20:20:19+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-015",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "CRITICAL",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "D18 regime vectors can certify future/non-PIT optional contexts as PIT eligible",
       "affectedScope": [
         "D18 observable Regime vector",
@@ -2102,10 +2103,11 @@
         "Independent batch audit AP-07 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
         "Exact-head PASS on 51115b843d987b03e661f5ebcea4032e6d6849d6: CORR-015 37768619935; System2 Research CI 37768619939; V8 Regression 37768620380; V8 Repair CI 37768620096.",
         "Merged-main PASS on 591728bfc1a2569e0bd5eb0d10ce71f8dd3e8055: CORR-015 37768765685; System2 Research CI 37768765738; V8 Regression 37768765666.",
-        "AP-07 plus 36 optional-dimension pollution cases fail closed; contaminated Regime evidence cannot activate/deactivate or enter cross-strategy common support as known performance evidence."
+        "AP-07 plus 36 optional-dimension pollution cases fail closed; contaminated Regime evidence cannot activate/deactivate or enter cross-strategy common support as known performance evidence.",
+        "Independent AUDIT_LANE code-firewall acceptance: system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_20261008_V0_1.json; current main runtime blobs equal merged implementation, direct Actions job-step readback PASS for targeted/Research/V8; original AP-04/AP-07 negative cases examined. No independent local test rerun or physical/OOS/alpha claim."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — per-dimension Regime PIT/source/hash evidence is fail-closed; AP-07 and 36 optional-dimension adversarial cases pass; activation/attribution/transition and cross-strategy common-support consumers verify Regime evidence. CRITICAL correction remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
-      "updatedAt": "2026-10-08T19:15:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — independent AUDIT_LANE verification of original code-level PIT/identity/UNKNOWN correction only. Historical data physical completeness, OOS/regime alpha, live activation and remaining corrections are not certified.",
+      "updatedAt": "2026-10-08T20:20:19+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
