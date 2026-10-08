@@ -1,33 +1,79 @@
 import assert from "node:assert/strict";
 import { buildD18RegimeTransitionReceiptV0_1 } from "../runtime/d18_regime_transition_v0_1.mjs";
+import { sha256Hex } from "../runtime/decision_archive.mjs";
 
-const prior={
-  vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
+const D18_DIMENSIONS=[
+  "trendContext",
+  "breadthContext",
+  "volatilityDirection",
+  "activityDirection",
+  "concentrationContext",
+  "sizeLeadership",
+  "institutionalContext",
+  "globalTransmission",
+  "sectorRotationContext",
+];
+
+async function hashedDimension({
+  state="UNKNOWN",
+  value=null,
+  reason="fixture unknown",
+  sourceRef=null,
+  sourceIdentity=null,
+  availableAt=null,
+  pointInTimeEligible=false,
+  blockerCodes=[],
+}={}) {
+  const base={state,value,reason,sourceRef,sourceIdentity,availableAt,pointInTimeEligible,blockerCodes};
+  return {...base,evidenceHash:await sha256Hex(base)};
+}
+
+async function makeVector({
+  marketDate,
+  decisionTimestamp,
+  trendValue,
+  volatilityValue,
+}){
+  const dimensions={};
+  for(const key of D18_DIMENSIONS) dimensions[key]=await hashedDimension();
+  dimensions.trendContext=await hashedDimension({
+    state:"KNOWN",value:trendValue,reason:null,
+    sourceRef:"a".repeat(64),sourceIdentity:"A2_TAIEX_CLOSE",
+    availableAt:marketDate+"T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  dimensions.volatilityDirection=await hashedDimension({
+    state:"KNOWN",value:volatilityValue,reason:null,
+    sourceRef:"b".repeat(64),sourceIdentity:"A2_TAIEX_CLOSE",
+    availableAt:marketDate+"T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  dimensions.breadthContext=await hashedDimension({
+    state:"CONTEXT_RAW",value:null,reason:"U2B_PENDING",
+    sourceRef:"c".repeat(64),sourceIdentity:"D18.DIRECTION_BREADTH",
+    availableAt:marketDate+"T06:20:00.000Z",pointInTimeEligible:true,
+  });
+  const base={
+    vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
+    marketDate,
+    decisionTimestamp,
+    pointInTimeEligible:true,
+    dimensions,
+  };
+  return {...base,receiptHash:await sha256Hex(base)};
+}
+
+const prior=await makeVector({
   marketDate:"2026-10-01",
   decisionTimestamp:"2026-10-01T06:30:00.000Z",
-  pointInTimeEligible:true,
-  receiptHash:"prior-vector-hash",
-  dimensions:{
-    trendContext:{state:"KNOWN",value:"UP_TREND_CONTEXT"},
-    volatilityDirection:{state:"KNOWN",value:"VOL_EXPANDING"},
-    breadthContext:{state:"CONTEXT_RAW",value:null},
-    sizeLeadership:{state:"UNKNOWN",value:null},
-  },
-};
+  trendValue:"UP_TREND_CONTEXT",
+  volatilityValue:"VOL_EXPANDING",
+});
 
-const current={
-  vectorVersion:"D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH",
+const current=await makeVector({
   marketDate:"2026-10-02",
   decisionTimestamp:"2026-10-02T06:30:00.000Z",
-  pointInTimeEligible:true,
-  receiptHash:"current-vector-hash",
-  dimensions:{
-    trendContext:{state:"KNOWN",value:"DOWN_TREND_CONTEXT"},
-    volatilityDirection:{state:"KNOWN",value:"VOL_EXPANDING"},
-    breadthContext:{state:"CONTEXT_RAW",value:null},
-    sizeLeadership:{state:"UNKNOWN",value:null},
-  },
-};
+  trendValue:"DOWN_TREND_CONTEXT",
+  volatilityValue:"VOL_EXPANDING",
+});
 
 const base={
   receiptId:"D18-TRANS-1",
@@ -54,13 +100,16 @@ assert.equal(out.strategyImpact,false);
 const replay=await buildD18RegimeTransitionReceiptV0_1(base);
 assert.equal(replay.receiptHash,out.receiptHash);
 
+const changedCurrent=await makeVector({
+  marketDate:"2026-10-02",
+  decisionTimestamp:"2026-10-02T06:30:00.000Z",
+  trendValue:"DOWN_TREND_CONTEXT",
+  volatilityValue:"VOL_CONTRACTING",
+});
 const changed=await buildD18RegimeTransitionReceiptV0_1({
   ...base,
   receiptId:"D18-TRANS-2",
-  currentVector:{...current,receiptHash:"current-vector-hash-2",dimensions:{
-    ...current.dimensions,
-    volatilityDirection:{state:"KNOWN",value:"VOL_CONTRACTING"},
-  }},
+  currentVector:changedCurrent,
 });
 assert.notEqual(changed.receiptHash,out.receiptHash);
 assert.equal(changed.transitions.volatilityDirection.state,"CHANGED");
@@ -74,14 +123,26 @@ await assert.rejects(
   /not adjacent official sessions/,
 );
 
-await assert.rejects(
-  ()=>buildD18RegimeTransitionReceiptV0_1({
-    ...base,
-    receiptId:"D18-TRANS-nonpit",
-    currentVector:{...current,pointInTimeEligible:false},
-  }),
-  /must be PIT eligible/,
-);
+const tamperedCurrent={
+  ...current,
+  dimensions:{
+    ...current.dimensions,
+    trendContext:{
+      ...current.dimensions.trendContext,
+      value:"UP_TREND_CONTEXT",
+    },
+  },
+};
+const tampered=await buildD18RegimeTransitionReceiptV0_1({
+  ...base,
+  receiptId:"D18-TRANS-TAMPERED",
+  currentVector:tamperedCurrent,
+});
+assert.equal(tampered.state,"UNKNOWN_TRANSITION_FRAME");
+assert.equal(tampered.currentVectorEvidenceValid,false);
+assert.equal(tampered.transitions.trendContext.state,"UNKNOWN");
+assert.equal(tampered.transitions.trendContext.reason,"DIMENSION_EVIDENCE_INVALID");
+assert.ok(tampered.regimeEvidenceBlockers.some((x)=>x.includes("DIMENSION_EVIDENCE_HASH_MISMATCH")));
 
 await assert.rejects(
   ()=>buildD18RegimeTransitionReceiptV0_1({
