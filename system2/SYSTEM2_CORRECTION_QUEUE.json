@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T20:30:28.600+08:00",
+  "updatedAt": "2026-10-08T22:48:38+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1663,15 +1663,14 @@
       "assignedLane": "BUILD_LANE",
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
-      "blockedBy": [
-        "S2-CORR-20261008-007"
-      ],
+      "blockedBy": [],
       "implementationEvidence": [],
       "verificationEvidence": [
-        "00 blocking audit: system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json"
+        "00 blocking audit: system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json",
+        "AUDIT_LANE prerequisite release: CORR-007 independently VERIFIED_CLOSED on main via PR #871 / 35295e412911193a49f332496821fc42f8ff5f6d (code-only provenance firewall). This removes the CORR-007 correction dependency; CORR-008 remains OPEN and cannot claim physical NC-T01 acceptance. Evidence: system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T10:59:00+08:00"
+      "updatedAt": "2026-10-08T22:48:38+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-009",
