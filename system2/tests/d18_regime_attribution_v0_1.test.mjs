@@ -37,7 +37,19 @@ async function hashedDimension({
   pointInTimeEligible=false,
   blockerCodes=[],
 }={}) {
-  const base={state,value,reason,sourceRef,sourceIdentity,availableAt,pointInTimeEligible,blockerCodes};
+  const base={
+    state,
+    value,
+    reason,
+    sourceRef,
+    sourceIdentity,
+    sourceHashField:pointInTimeEligible ? "receiptHash" : null,
+    sourceHashRecomputed:pointInTimeEligible ? sourceRef : null,
+    sourceHashVerified:pointInTimeEligible === true,
+    availableAt,
+    pointInTimeEligible,
+    blockerCodes,
+  };
   return {...base,evidenceHash:await sha256Hex(base)};
 }
 
