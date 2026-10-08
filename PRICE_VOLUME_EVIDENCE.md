@@ -6439,3 +6439,20 @@ This sequence materially improves evidence integrity but produces no economic re
 D02 stays 60.0%; all modules stay L3; outcome access remains closed.
 
 Next: PVE-280 D02-01 semantic-governance downstream binding audit and unified all-D02 lineage rule.
+
+
+# PVE-280~281 — all-D02 downstream dataset identity closure (2026-10-08)
+
+D02-01's row-level semantic gate was found to be substantively strong, but the dataset admitted by that gate was not immutably bound to D16's input dataset. PVE-280 reproduces that substitution degree of freedom and closes it with exact dataset hash, row-count and pre-outcome timing binding.
+
+PVE-281 then routes every one of D02's 14 formal evidence keys through a single canonical end-to-end lineage entry:
+semantic -> PVE-280, Wave-1 -> PVE-276, Wave-2 -> PVE-279.
+
+The result is not a new alpha gate. It is a provenance guarantee:
+D16 may statistically evaluate only the exact row set that D02 admitted under the strengthened pre-outcome evidence contract.
+
+No outcome was inspected.
+No economic hypothesis status changed.
+No L4 promotion was authorized.
+
+Next: PVE-282 current-main EffectTarget / D16 model-method readiness audit.
