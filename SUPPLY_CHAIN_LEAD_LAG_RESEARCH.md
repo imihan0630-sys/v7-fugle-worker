@@ -3080,3 +3080,39 @@ Exact next SC-088:
 continue prospective official NIST/Commerce CHIPS observation for the first genuinely new award/disbursement/project-scope/qualification/HVM/utilization milestone. Freeze sourcePublishedAt/capturedAt and keep issuer-specific realized capacity/earnings UNKNOWN unless directly evidenced.
 
 Formal Core unchanged.
+
+
+## SC-089 / SC-090 — GlobalWafers realized supply-gap mapping and prospective event-root contract (2026-10-08)
+
+Artifacts:
+- `research/SC089_GLOBALWAFERS_NOVARA_REALIZED_SUPPLY_GAP_SUBSTITUTION_20261008_V0_1.md`
+- `research/SC090_D10_08_PROSPECTIVE_SUPPLY_GAP_EVENT_COHORT_CONTRACT_20261008_V0_1.md`
+
+Issuer-native GlobalWafers evidence now maps the Novara fire root into the SC-042 shortage/supply-gap state:
+- partial resumption;
+- cross-site support;
+- support-site capacity already tight;
+- equipment lead time;
+- installation/validation/customer-qualification delay;
+- gradual rather than instantaneous capacity/revenue recovery.
+
+Frozen:
+- `MULTI_SITE_NETWORK != INSTANT_SUBSTITUTION`;
+- `QUALIFIED_ALTERNATE_PATH != UNLIMITED_ALTERNATE_CAPACITY`;
+- `ALTERNATE_PATH_EXISTS != FULL_RECOVERY`;
+- `ONE_DISRUPTION_ROOT / MULTIPLE_CONSUMERS / ONE_INDEPENDENT_EVENT_ROOT`.
+
+The 2026-07-20 fire remains one event root. Later recovery updates do not increase event N.
+
+SC-090 freezes future D10-08 cohort semantics:
+- independent unit = SUPPLY_DISRUPTION_EVENT_ROOT;
+- milestones/descendants inherit the root;
+- D10-01/D10-04/D10-10/D17 may consume the same lineage but do not create additional independent D10-08 votes.
+
+Current issuer-native event-root N = 1.
+D10-08 remains L3/60.
+No L4 promotion.
+Formal Core unchanged.
+
+Exact next:
+SC-091 capture the next genuinely new issuer-native shortage/allocation/capacity-constraint root under the frozen cohort contract; preserve NULL observation if no new root exists.
