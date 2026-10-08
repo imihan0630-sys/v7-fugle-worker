@@ -3084,7 +3084,7 @@
         "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
         "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
-      "maturityPct": 52,
+      "maturityPct": 54.7,
       "modules": [
         {
           "id": "D18-01",
@@ -3176,12 +3176,13 @@
         {
           "id": "D18-09",
           "name": "策略權重動態配置",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「策略權重動態配置」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Use tiny discrete weight maps only; benchmark against equal/static weights and charge turnover."
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EXECUTABLE_DISCRETE_DYNAMIC_WEIGHT_FRAME / OUTCOME_BLIND_PREREGISTERED_POLICY / DETERMINISTIC_REPLAY_PASS / LIVE_POLICY_VALUE_NOT_EVALUATED",
+          "next": "Maintain L3/60%. Accumulate genuine prospective strategy-date frames and later matured outcomes. Compare the frozen tiny discrete weight map against static equal/fixed weights under identical costs, turnover and exposure-matched controls. No continuous optimizer, no post-outcome remapping, no Formal/live allocation authority before L4 evidence.",
+          "evidence": " 2026-10-08 research/d18_policy_transform_l3_v0_1.mjs + tests/test_d18_policy_transform_l3_v0_1.mjs passed Research D18 Policy Transform L3 Readonly run 37741654512 on exact head 543974699ce848d8b791bfeeab96f7324f076905; 25/25 shared D18-09/D18-12 falsification tests PASS, research-only isolation PASS, same-head V8 Regression 37741654539 SUCCESS. Acceptance: research/D18_09_DYNAMIC_WEIGHTING_L3_ACCEPTANCE_20261008_V0_1.md."
         },
         {
           "id": "D18-10",
@@ -3208,12 +3209,13 @@
         {
           "id": "D18-12",
           "name": "Drawdown-aware策略降載",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Drawdown-aware策略降載」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Compare drawdown de-risking against fixed-risk and exposure-matched controls; include missed-rebound opportunity cost."
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EXECUTABLE_DRAWDOWN_DERISK_FRAME / PRIOR_MATURED_OUTCOME_ONLY / COMPLETE_HISTORY_REQUIRED / DETERMINISTIC_REPLAY_PASS / POLICY_VALUE_NOT_EVALUATED",
+          "next": "Maintain L3/60%. Persist prospective path evidence and later compare preregistered drawdown de-risking against fixed-risk and exposure-matched controls with identical costs, turnover and missed-rebound accounting. Partial history/unresolved outcomes remain DATA_UNKNOWN. No threshold tuning from outcomes and no Formal/live exposure authority before L4.",
+          "evidence": " 2026-10-08 research/d18_policy_transform_l3_v0_1.mjs + tests/test_d18_policy_transform_l3_v0_1.mjs passed Research D18 Policy Transform L3 Readonly run 37741654512 on exact head 543974699ce848d8b791bfeeab96f7324f076905; 25/25 shared D18-09/D18-12 falsification tests PASS, research-only isolation PASS, same-head V8 Regression 37741654539 SUCCESS. Acceptance: research/D18_12_DRAWDOWN_DERISK_L3_ACCEPTANCE_20261008_V0_1.md."
         },
         {
           "id": "D18-13",
@@ -3249,8 +3251,8 @@
           "evidence": "research/D18_15_BUSINESS_CREDIT_CYCLE_STRATEGY_REGIME_20261004_V0_1.md"
         }
       ],
-      "status": "D18_PIT_VECTOR_L3_PARTIAL / D18_04_U2B_SEMANTICS_AND_MACHINE_INTERFACE_FROZEN_EXECUTABLE_EVIDENCE_PENDING / D18_06_S0_AND_S1_CONSUMER_INTERFACES_FROZEN_SHARED_DENOMINATOR_AUTHORITY_PENDING / REGIME_POLICY_OUTCOMES_NOT_OPEN",
-      "exactNextContinuationPoint": "D18-04：等待 CORR-007 + real bounded TWTAWU/priceResetFamilySet CLEAR_NO_ACTION，之後只需實作已凍結 row/aggregate builder 並跑 RB-T01~T16＋既有 U2B/identity oracles。D18-06：S0/S1 consumer interfaces 已凍結；下一步是真實零新增呼叫 S0 observer、共享 D11 denominatorType/vintage authority，以及 S1-T01~T18；未取得 executable Taiwan receipts 不升 L3。"
+      "status": "D18_L3_COUNT_ADVANCED_11_OF_15 / D18_09_DYNAMIC_WEIGHTING_L3 / D18_12_DRAWDOWN_DERISK_L3 / D18_04_U2B_EXECUTABLE_EVIDENCE_PENDING / D18_06_SHARED_DENOMINATOR_AUTHORITY_PENDING / D18_07_GLOBAL_RECEIPTS_PENDING / D18_15_BUSINESS_CREDIT_PRODUCERS_PENDING",
+      "exactNextContinuationPoint": "L2→L3 clearance now has 4 remaining D18 L2 modules: D18-04 waits CORR-007 + real CLEAR_NO_ACTION + U2B builder; D18-06 waits S0 physical observer + shared D11 denominator-vintage authority; D18-07 waits durable prospective global-risk receipts; D18-15 waits D13-18 business-cycle vintage + D22 credit producer. D18-09/12 are now L3 data-feasibility only, not L4 policy-value evidence."
     },
     {
       "id": "D19",
