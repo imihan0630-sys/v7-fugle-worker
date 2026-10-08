@@ -1884,3 +1884,28 @@ D09-14:
 
 All three remain L3/60.
 Formal Core unchanged.
+
+
+## BR-072 — D09-10 shares the immutable A1+B5 parent with D09-09 (2026-10-08)
+
+Artifact:
+- `research/BR072_D09_10_SHARED_A1_CONCENTRATION_READINESS_20261008_V0_1.md`
+
+The verified 2026-10-07 full-market A1 parent exists:
+- TWSE 1,086;
+- TPEx 887;
+- total 1,973.
+
+The remaining blocker is row-payload exposure to Room07.
+
+D09-10 now consumes the same DATA_LANE export requested by BR-043:
+`ONE_A1_B5_PARENT / MULTIPLE_RESEARCH_CONSUMERS`.
+
+D09-09 derives dispersion.
+D09-10 derives within-industry trade-value concentration and leader-removal diagnostics.
+
+No duplicate export/capture is authorized.
+D09-10 remains L3/60.
+
+Exact next:
+when the shared immutable row export arrives, compute both receipts outcome-blind from the same parent digest, then accumulate independent clean dates before L4.
