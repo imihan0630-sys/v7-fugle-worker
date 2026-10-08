@@ -1451,3 +1451,25 @@ Contract: system2/SYSTEM2_DECISION_CLOCK_A1_SHARED_SOURCE_SELECTION_V0_4.md
 Status at implementation handoff: CODE_CANDIDATE_PENDING_CI_AND_V8, not physical fallback acceptance. Required: CI, V8, merge/readback, subsequent real-date source-selection evidence, independent correction closure. Historical 2026 TWSE Jan-Jun independent R2 physical bytes and 2017-2025 18/18 data coverage remain accepted separately; continuity / exact PIT / final selection unchanged.
 
 Protected: System1 Formal/runtime, System2 strategy, ranking, live push, orders, capital and trade authority untouched.
+
+## 2026-10-09 06:40 Asia/Taipei — 2026-10-08 recent60 PIT-vs-hot-D1 physical diagnostic
+
+GitHub merged DATA_LANE PR #898 (`39145babc3f29b3e0afb33ac629d224d46428978`) created per-symbol source-honest exact-session gap taxonomy. The first post-merge read-only run 37854347400 executed at 06:35 before the **2026-10-09** trading session, observed zero current-day A1 symbols and therefore did not legitimately produce a 2026-10-09 market coverage distribution. Do not reinterpret that as missing 1972 stocks.
+
+DATA_LANE PR #915 (`d19c65e0e30dd9d75005030b20d6b20edc35e61a`) added separate bounded **retrospective** hot-D1 vs PIT-eligible row readback. Main Action Run [37854849181](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37854849181), job 113576451531, SUCCESS and immutable artifact 11583895434 (`sha256:36c24b4b8b908afaa27247791fae7d478a584d953cebaf60066137bf08b81242`). Merged-main System2 CI, V8 regression and physical readback PASS.
+
+Observed for **completed 2026-10-08 market date**, fetched at 2026-10-09 ~06:40 Asia/Taipei (NOT a prospective 2026-10-08 decision-time receipt):
+- current ordinary symbols: 1,972;
+- exact eligible prior-session history READY: 46;
+- independently continuity-ready: 0;
+- mutually exclusive primary gap classes: `EXPECTED_PIT_SESSION_MISSING=1926`, `CONTINUITY_PROOF_MISSING=46`; all other first-cause categories 0;
+- bounded hot-D1 physical crosscheck: 96 sampled exact market-symbol-prior-date identities, **96/96 `HOT_D1_ROW_ABSENT`**, zero sampled present-row PIT exclusions;
+- D1 rowsRead 489,866, rowsWritten **0**. No R2 write or production change.
+
+**Evidence limit:** absence is established only for these 96 **hot D1** market-symbol-date rows; cold R2 archives or exchange originals may still hold data. These samples do not identify full-universe per-date physical absences, nor certify PIT knowledge on 2026-10-08. Old 2026 Jan–Jun cold R2 byte PASS remains a separate storage fact, not hot recent60 readiness.
+
+**Next DATA_LANE action:** bounded read-only hot D1 versus cold R2 pack/sample reconciliation; before any persistent warmup, obtain REMEDIATION_LANE account-level D1 write-budget/priority gate, preserve old PIT/frozen metadata, then rerun exact-session and continuity checks. For the 46 history-ready symbols, NC-T01 cannot move without independent exact-window complete corporate-action and lifecycle evidence. Historical corporate-action NO_EVENT must NOT be inferred from no rows.
+
+Durable evidence: `system2/evidence/S2_RECENT60_20261008_HOT_D1_VS_PIT_PHYSICAL_SAMPLE_V0_1.json`.
+
+Protected boundaries unchanged: System1 Formal Core/runtime, System2 selection/ranking, capital, orders, production push and strategy performance all untouched.
