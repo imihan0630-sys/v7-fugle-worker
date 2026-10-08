@@ -62,8 +62,9 @@ function readOnlyR2(store){
   };
 }
 
-function classifySampleDay({hotCount,coldCount,manifestCount,receiptComplete}){
+function classifySampleDay({hotAnyCount,hotCount,coldCount,manifestCount,receiptComplete}){
   if(hotCount>0)return "HOT_D1_ROW_NOW_PRESENT_PIT_STATUS_UNDETERMINED";
+  if(hotAnyCount>0)return "HOT_D1_NON_RAW_ROW_PRESENT_RAW_STILL_ABSENT";
   if(coldCount>0&&receiptComplete)return "COLD_R2_BAR_PRESENT_HOT_D1_ABSENT";
   if(coldCount>0)return "UNRECEIPTED_COLD_R2_BAR_PRESENT_HOT_D1_ABSENT";
   if(manifestCount>0)return "COLD_MANIFEST_PRESENT_BUT_EXACT_DATE_NOT_IN_PACK";
@@ -153,15 +154,17 @@ export async function auditFrozenRecent60JulyHotColdV0_1({
       }
     }
     const checks=dates.map(date=>{
+      const hotAny=hotRows.filter(r=>r.market_date===date);
       const hotForDate=rawHot.filter(r=>r.market_date===date);
       const coldForDate=coldRows.filter(r=>r.marketDate===date);
       const category=classifySampleDay({
-        hotCount:hotForDate.length,coldCount:coldForDate.length,
+        hotAnyCount:hotAny.length,hotCount:hotForDate.length,coldCount:coldForDate.length,
         manifestCount:found.length,receiptComplete:receipts[market].complete,
       });
       causes[category]=(causes[category]||0)+1;
       return Object.freeze({
         date,classification:category,
+        hotAnyPriceSpaceRowCount:hotAny.length,
         hotRawRowCount:hotForDate.length,
         coldVerifiedByteBarCount:coldForDate.length,
         hotPitEligibleRowCount:hotForDate.filter(r=>Number(r.pit_replay_eligible)===1).length,
