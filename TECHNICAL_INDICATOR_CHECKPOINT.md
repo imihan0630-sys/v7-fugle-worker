@@ -7810,3 +7810,86 @@ A. first accept merged-main CORR-007 implementation/independent verification, th
 B. independently consume the next genuine ordinary-session immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after Production/live-readback official-quality repair.
 
 When both admissible inputs exist, execute the existing D03-10 Bollinger L3 and parent-binding oracles. D03-09 remains second and additionally requires canonical Wilder H/L/C full replay or replay-certified trusted state.
+
+
+## 2026-10-08 D03 — TI-1495~1510 CORR-007 versioned receipt compatibility gate
+
+Canonical D03 artifacts:
+- `research/D03_CORR007_VERSIONED_RECEIPT_COMPATIBILITY_GATE_20261008_V0_1.md`;
+- `research/d03_corr007_versioned_receipt_gate_cases_20261008_v0_1.json`;
+- `research/test_d03_corr007_versioned_receipt_gate_v0_1.mjs`.
+
+Upstream canonical refinement:
+- `system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json`;
+- commit `08e55e4e9e9347aae7cd5f737751c101778e516f`;
+- preferred evidence-bound schema identity = `S2_CA_COMPLETENESS_RECEIPT_V0_2`;
+- legacy status-only `S2_CA_COMPLETENESS_RECEIPT_V0_1` must fail closed for physical promotion.
+
+### TI-1495~1500 — semantic strengthening requires a machine-visible version boundary
+
+CORR-007 changes the meaning of suspension completeness from a plain COMPLETE status to immutable evidence-bound completeness.
+
+D03 therefore rejects silent semantic upgrading:
+- a legacy V0.1 receipt does not become V0.2 by adding a digest field;
+- historical V0.1 receipts must not be rewritten or relabelled;
+- a V0.2 wrapper may not carry a V0.1 status-only source contract;
+- unrelated source-capture/event schemas do not need forced version changes;
+- any alternative BUILD mechanism must preserve the same machine-visible legacy-versus-evidence-bound distinction.
+
+This is required because payload-shape inference would let stale receipts pass after the contract meaning changes.
+
+### TI-1501~1507 — executable anti-stale-receipt falsification
+
+The 16-case oracle passes.
+
+Positive control requires jointly:
+- explicit V0.2 completeness schema;
+- exact TWSE replay/archive interval;
+- COMPLETE state backed by source family and V0.2 source contract;
+- immutable 64-hex bounded receipt digest;
+- matching sourceEvidenceRef identity and digest;
+- causal observedAt or availableAt;
+- three independent corporate-action refs;
+- exact-session readiness;
+- zero partial-source rows and zero unresolved conflicts.
+
+Negative cases reject:
+- legacy V0.1, including V0.1 with a valid-looking digest;
+- V0.2 wrapper with V0.1 source semantics;
+- missing family/version;
+- invalid digest;
+- interval mismatch;
+- source-ref identity/digest mismatch;
+- late prospective or verified-source evidence;
+- fewer than three corporate-action refs;
+- partial source, unresolved conflict or exact-session failure.
+
+Observed:
+`status=PASS; cases=16; legacyV01Rejected=true; crossVersionMixRejected=true; digestMutationChangesBoundInput=true; d03MaturityPct=56.7; formalCoreImpact=NONE_LOCKED`.
+
+### TI-1508~1510 — counterevidence, maturity and exact next
+
+This gate proves only version compatibility and anti-stale-receipt behavior.
+It does not prove:
+- merged-main CORR-007 implementation;
+- independent exact-head implementation verification;
+- real bounded TWTAWU receipt;
+- physical W0 technical continuity;
+- genuine V8.20 parent;
+- OOS, walk-forward, multiple-testing, cost, fillability, market-state or alpha value.
+
+All unavailable physical claims remain UNKNOWN.
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules = 10 L3/60 + 2 L2/40;
+- D03-09 / D03-10 remain L2/40;
+- outcomes CLOSED;
+- Formal Core LOCKED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next:
+A. consume merged-main CORR-007 V0.2-equivalent implementation plus independent exact-head verification, explicitly proving legacy V0.1 fail-closed and digest/hash-chain sensitivity;
+B. then consume a real exact-window TWTAWU bounded suspension receipt bound additively with all three corporate-action refs into archive and continuity hashes;
+C. independently consume a future genuine ordinary-session immutable C1 generation and authoritative V8.20 Formal-to-C1 binding;
+D. when W0 and the genuine parent both exist, run the existing D03-10 Bollinger L3 and parent-binding oracles; D03-09 additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
