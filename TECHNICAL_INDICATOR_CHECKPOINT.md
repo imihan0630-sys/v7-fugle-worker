@@ -8533,3 +8533,151 @@ When both arrive:
 - D03-09 still requires canonical FULL_REPLAY or replay-certified trusted state. The new affine mature-state theorem may become one trusted-state certification route only after a real-event exact parity and rounding proof.
 
 Keep CORR-014 audit closure, raw third-session, T48, S2-07 stabilization, System1/System2 D03 dedup/redundancy and D16 incrementality independent.
+
+
+## 2026-10-08 D03 — TI-1603~1618 CORR-014 closure + Bollinger parent-specific post-reset finite-memory shortcut
+
+Canonical D03 artifacts:
+- `research/d03_bollinger_post_reset_parent_shortcut_spec_20261008_v0_1.json`;
+- `research/d03_bollinger_post_reset_parent_shortcut_v0_1.mjs`;
+- `research/test_d03_bollinger_post_reset_parent_shortcut_v0_1.mjs`;
+- `research/d03_bollinger_post_reset_parent_shortcut_execution_receipt_20261008_v0_1.json`.
+
+Canonical workflow:
+- `D03 Bollinger Post-Reset Parent Shortcut Readonly`;
+- run `37800889318`;
+- job `113392478117`;
+- head `d0476a06df75662e8c3887ba109d6386508ed198`;
+- conclusion SUCCESS.
+
+### TI-1603~1605 — stale CORR-014 audit debt is closed
+
+Fresh latest-main correction-queue readback confirms:
+- `S2-CORR-20261008-014 = VERIFIED_CLOSED`;
+- implementation merge = `4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7`;
+- independent AUDIT_LANE code-firewall acceptance is complete.
+
+Accepted meaning:
+- forged completion checkpoints fail closed;
+- PIT-universe identity/checkpoint/run identity are hash-reconciled;
+- survivor/current-universe callbacks cannot claim PIT-complete history without historical membership proof;
+- zero-sample completion cannot be manufactured without a separately proved empty PIT-universe receipt.
+
+D03 consequence:
+`CORR014_AUDIT_PENDING` is removed from the active blocker set.
+
+Non-credit:
+- no physical D03 historical panel is thereby created;
+- no OOS/walk-forward alpha, predictive outcome, regime robustness, cost/fillability or universe completeness is implied;
+- future D03 empirical panels still need per-date physical PIT-universe receipts.
+
+### TI-1606~1610 — parent-specific Bollinger finite-memory shortcut frozen
+
+The existing M04 theorem proved the mathematical finite-memory result.
+This round adds a parent-specific machine admission oracle.
+
+Shortcut eligibility requires all of:
+- parent-continuity binding already valid;
+- frozen Bollinger formula version `BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1`;
+- exactly 20 unique eligible parent sessions;
+- all 20 session dates strictly after the last certified price-basis reset date;
+- reset evidence known no later than the parent decision cutoff;
+- `D03_PRICE_RESET_FAMILY_SET_V0_1` identity;
+- same-security identity continuing;
+- explicit `SAME_SECURITY_CONTINUING` identity-transition disposition;
+- zero unresolved reset events;
+- zero pseudo bars.
+
+If all pass:
+`PRE_RESET_HISTORY_ZERO_DIRECT_FORMULA_INFLUENCE`.
+
+This is a formula-memory statement only.
+It does not create:
+- W0 continuity;
+- a genuine V8.20 parent;
+- Layer-C known-at;
+- technical-continuity source provenance;
+- D03-10 L3 by itself.
+
+### TI-1611~1614 — adversarial cases
+
+Machine run `37800889318` passes six deterministic cases:
+
+1. exact 20 clean post-reset parent sessions -> shortcut eligible;
+2. one retained pre-reset session -> fail closed;
+3. security identity terminated -> fail closed;
+4. reset known only after parent decision cutoff -> fail closed;
+5. unresolved reset event remains -> fail closed;
+6. only 19 eligible sessions -> fail closed.
+
+Therefore:
+`POST_RESET_20_CLEAN_SESSIONS`
+is not a soft heuristic.
+It is a strict exact-set, identity and causality condition.
+
+### TI-1615 — why this matters for the dual-track promotion path
+
+Current W0 + parent path is still physical and unchanged.
+
+But when both real inputs arrive:
+- if D03-10's exact 20 accepted parent sessions are all clean post-reset, old pre-reset transformed history is not required by the Bollinger formula itself;
+- the existing Bollinger L3 + parent-binding oracles can proceed without manufacturing or replaying formula-irrelevant older history;
+- if any retained session crosses the reset boundary, the shortcut is unavailable and the main continuity oracle still governs transformed retained closes or fail-closed behavior.
+
+This reduces future evidence work without weakening any promotion gate.
+
+### TI-1616 — ADX remains structurally different
+
+No equivalent elapsed-window amnesia is granted to D03-09.
+
+ADX remains recursive:
+- FULL_REPLAY remains canonical;
+- a replay-certified trusted state remains acceptable only under its own certification;
+- the previously proven mature affine-state transform remains a candidate route only after real-event transform/rounding parity and state-lineage certification.
+
+The new Bollinger shortcut must not be copied to ADX.
+
+### TI-1617 — current physical state
+
+No new real W0 continuity receipt exists at this readback.
+No new ordinary-session genuine immutable C1 parent with authoritative V8.20 Formal-to-C1 binding exists.
+
+Latest parent attempt remains:
+- marketDate `2026-10-07`;
+- C1 generation absent;
+- quality not ready;
+- current observed missingQuality = `QUARTER_EPS`;
+- may not count as zero-pick or negative indicator evidence.
+
+CORR-005, CORR-006, CORR-007, CORR-009 and CORR-014 are closed code/governance firewalls and must not remain in the active D03 promotion blocker list.
+
+### TI-1618 — maturity and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules;
+- 10 current L3/60 milestone modules;
+- D03-09 ADX = L2/40;
+- D03-10 Bollinger = L2/40;
+- raw source-version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Primary dual-track exact next remains physical:
+1. W0 — first real exact-window source-honest continuity receipt with bounded TWTAWU negative completeness, D03 price-reset family set, same-security identity disposition and exact replay/source/session/source hashes;
+2. Parent — next ordinary-session live-quality-ready genuine immutable C1 generation with authoritative V8.20 Formal-to-C1 binding.
+
+When both exist:
+- run the parent-specific post-reset shortcut first;
+- then run the existing D03-10 Bollinger L3 + parent-binding oracles;
+- if shortcut eligible, older pre-reset history is formula-irrelevant;
+- if shortcut ineligible, use the main continuity/transformed-history path or fail closed.
+
+D03-09 remains FULL_REPLAY/trusted-state only.
+Independent gates still open:
+- raw third source-version session;
+- T48 generation-set finalization;
+- S2-07 stabilization;
+- System2 D03 raw-vs-dedup diagnostics;
+- System1 D03 redundancy diagnostics;
+- D16 D03 predictive incrementality.
