@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildDecisionClockDailyEvidence } from "../runtime/decision_clock_daily_evidence.mjs";
-import { DECISION_CLOCK_COLLECTOR_PROVENANCE_VERSION, computeDecisionClockCollectorContractFingerprint } from "../runtime/decision_clock_collector_contract_v0_3.mjs";
+import { DECISION_CLOCK_COLLECTOR_PROVENANCE_VERSION, DECISION_CLOCK_COLLECTOR_EVIDENCE_EPOCH, computeDecisionClockCollectorContractFingerprint } from "../runtime/decision_clock_collector_contract_v0_4.mjs";
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(field + " is required");
@@ -65,6 +65,7 @@ export async function buildDecisionClockDailyBundle({
     evidence,
     collectorProvenance: {
       provenanceVersion: DECISION_CLOCK_COLLECTOR_PROVENANCE_VERSION,
+      evidenceEpoch: DECISION_CLOCK_COLLECTOR_EVIDENCE_EPOCH,
       repository: requiredText(repository, "repository"),
       workflowRunId: runId,
       workflowRunAttempt: runAttempt,
