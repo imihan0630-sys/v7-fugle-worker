@@ -151,7 +151,8 @@ test("DD-T01 complete past-only history produces deterministic exposure",()=>{
  assert.equal(a.challengerExposure,0.5);
  assert.ok(a.currentDrawdown < -0.10);
  assert.equal(a.frameHash,b.frameHash);
- assert.equal(a.priorMaturedOutcomeHistoryConsumed,true);\n assert.equal(a.currentOrFutureOutcomeAccessed,false);
+ assert.equal(a.priorMaturedOutcomeHistoryConsumed,true);
+ assert.equal(a.currentOrFutureOutcomeAccessed,false);
 });
 test("DD-T02 incomplete history coverage fails closed",()=>{
  const x=dd({historyCoverageState:"PARTIAL"});
