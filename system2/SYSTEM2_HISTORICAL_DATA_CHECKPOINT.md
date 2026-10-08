@@ -1436,3 +1436,18 @@ Run: [37769681911](https://github.com/imihan0630-sys/v7-fugle-worker/actions/run
 
 Protected boundaries: V8/System1 Formal Core, formal runtime, strategy/selection/push/capital/order unchanged.
 
+
+## 2026-10-08 DATA_LANE CORR-20261007-001 A1 Decision Clock / Stage-1 source-selection convergence
+
+Problem: prospective Decision Clock collector used latest OpenAPI only; earlier physical clock run 37577209442 observed 30/30 NOT_READY for A1, while Stage-1 Daily Shadow run 37609474459 later proved canonical exact-date 2026-10-07 TWSE (1086 ordinary rows) and TPEx (887 ordinary rows) READY. The differing collection time remains important: prior NOT_READY is not retroactively changed.
+
+Code candidate branch system2-data/corr-20261007-001-a1-collector-exact-date-20261008 reuses existing Stage-1 resolveMarketPayload selector in official_source_probes and the existing canonical exact-date date/row/OHLC parser. If latest OpenAPI is stale, non-JSON or transport-failed, clock collector may observe verified exact-date TWSE MI_INDEX or TPEx dailyQuotes; obsolete legacy TPEx source stays ineligible. The clock receipt stores both source identities, URL, primary/fallback failures and exact source date. ObservedAt/firstReady upper bound is generated AFTER selected response, never taken from retrospective SESSION_CLOSE_FINALITY.
+
+IMPORTANT FROZEN EPOCH: the original 13-file contracts/decision_clock_collector_freeze_v0_1.json remains bit-for-bit unchanged. A separate 15-file collector V0.4 contract and freeze_v0_2.json bind shared Stage-1 selector, canonical daily date parser and clock bundle implementation, with evidenceEpoch S2_CLOCK_A1_STAGE1_EXACT_DATE_ALIGNMENT_EPOCH_V0_4. Existing old prospective receipts cannot be altered or pooled with the V0.4 sample; next allowed evidence date must be a future independently confirmed official trading day AFTER merge.
+
+Evidence: system2/evidence/S2_CORR_20261007_001_A1_SHARED_SOURCE_SELECTION_V0_4_IMPLEMENTATION_20261008_V0_1.json
+Contract: system2/SYSTEM2_DECISION_CLOCK_A1_SHARED_SOURCE_SELECTION_V0_4.md
+
+Status at implementation handoff: CODE_CANDIDATE_PENDING_CI_AND_V8, not physical fallback acceptance. Required: CI, V8, merge/readback, subsequent real-date source-selection evidence, independent correction closure. Historical 2026 TWSE Jan-Jun independent R2 physical bytes and 2017-2025 18/18 data coverage remain accepted separately; continuity / exact PIT / final selection unchanged.
+
+Protected: System1 Formal/runtime, System2 strategy, ranking, live push, orders, capital and trade authority untouched.
