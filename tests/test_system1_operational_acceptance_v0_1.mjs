@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {buildSystem1OperationalAcceptance} from "../research/system1_operational_acceptance_v0_1.mjs";
+import {buildSystem1OperationalAcceptance,buildSystem1OperationalBlocker} from "../research/system1_operational_acceptance_v0_1.mjs";
 
 const scanDate="2026-10-08",generationId="C1:2026-10-08:genuine";
 const sourceMainSha="a".repeat(40),contentDigest="b".repeat(64),universeDigest="c".repeat(64);
@@ -165,8 +165,29 @@ assert.equal(zero.zeroPickAllowedWhenFullyVerified,true);
   assert.ok(codes(r).includes("FORMAL_SELECTED_COUNT_BINDING_MISMATCH"));
 }
 
+
+{
+  const blocker=buildSystem1OperationalBlocker({
+    trigger:{eventName:"schedule",schedule:"10 16 * * 1-5"},
+    observedAt:"2026-10-08T16:20:00.000Z",
+    code:"UPSTREAM_ARTIFACT_MISSING",
+    detail:{missing:[{name:"c1",path:"artifacts/system1-c1-evidence.json"}],
+      upstreamStatus:"FORMAL_SCAN_NOT_CONFIRMED",verificationFailure:"C1_GENERATION_NOT_FOUND"},
+    upstreamReadiness:{formalScanDate:"2026-10-08",runtimeVersion:"8.20.2-idempotent-d1-snapshots"}
+  });
+  assert.equal(blocker.status,"BLOCKED");
+  assert.equal(blocker.genuineProspective,false);
+  assert.equal(blocker.firstBlocker,"UPSTREAM_ARTIFACT_MISSING");
+  assert.equal(blocker.scanDate,"2026-10-08");
+  assert.equal(blocker.expectedScanDate,"2026-10-08");
+  assert.equal(blocker.runtimeVersion,"8.20.2-idempotent-d1-snapshots");
+  assert.equal(blocker.historicalBackfillPerformed,false);
+  assert.equal(blocker.manualReplayCanNeverBecomeGenuineProspective,true);
+  assert.match(blocker.receiptDigest,/^[0-9a-f]{64}$/);
+}
+
 console.log(JSON.stringify({
-  ok:true,assertions:32,genuineScheduledPass:true,genuineZeroPickPass:true,
+  ok:true,assertions:41,genuineScheduledPass:true,genuineZeroPickPass:true,
   manualReplayBlocked:true,historicalDateBlocked:true,historicalBackfillBlocked:true,
   authoritativeOriginRequired:true,exactBindingRequired:true,provenanceMatchRequired:true,
   t1PendingAllowed:true,lateEvidenceBlocked:true,heuristicInferenceForbidden:true,
