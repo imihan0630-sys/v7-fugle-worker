@@ -4899,3 +4899,40 @@ PVE-289 — external-receipt convergence only. Consume new immutable upstream re
 (C) at/after the real scheduled System1 operational acceptance, inspect the immutable 00:10 artifact rather than workflow color; an OPERATIONAL_RECOVERY_PASS for scanDate 2026-10-08 does not create a D02 clean date;
 (D) independently consume PVE-261 physical baseline-remediation deployment and current S2-CORR-20261007-003 closure evidence if they arrive.
 Do not freeze a numerical EffectTarget until PVE-287 gains a legal immutable source. Keep clean prospective dates=0, D02=60.0%, Gate 7 CLOSED and Formal Core LOCKED until physical evidence changes those facts.
+
+
+## PVE-289 — external receipt convergence state frozen (2026-10-08)
+
+Status: WAITING_EXTERNAL_RECEIPTS / CLOSED_DESIGN_WORK_NOT_REPEATED / NO_MATURITY_CHANGE.
+
+Artifacts:
+- `research/d02_pve289_external_receipt_convergence_snapshot_v0_1.json`;
+- `research/d02_pve289_external_receipt_convergence_guard_v0_1.mjs`;
+- `tests/test_d02_pve289_external_receipt_convergence_guard_v0_1.mjs`;
+- `research/D02_PVE289_EXTERNAL_RECEIPT_CONVERGENCE_20261008_V0_1.md`;
+- run `37733337848`: SUCCESS;
+- 16 assertions PASS.
+
+Latest-main convergence snapshot:
+1. D16-19 predictive method receipts: 0 / 12, WAITING_D16_METHOD_RECEIPTS.
+2. D14 D02-11 cost-quality receipt: not observed, WAITING_D14_COST_QUALITY_RECEIPT.
+3. System1 physical scheduled operational-acceptance artifact: not yet observed; first post-deploy opportunity remains 2026-10-09 00:10 Asia/Taipei for candidate scanDate 2026-10-08.
+4. PVE-261 baseline-remediation physical deployed PASS: not observed.
+5. S2-CORR-20261007-003: OPEN.
+6. Legal numerical EffectTarget source count: 0 / 14.
+
+Each receipt advances only its own lane.
+No receipt may cross-authorize another dependency.
+
+When none of these states changes:
+- do not repeat closed PVE-282~288 research;
+- do not mint a clean date;
+- do not open outcomes;
+- do not change maturity;
+- do not change Formal Core.
+
+Exact next continuation point:
+Consume the first changed immutable producer receipt only. Re-read latest main, compare the six PVE-289 convergence states, and route only changed lanes through their frozen validators:
+D16 -> PVE-284; D14 D02-11 -> PVE-285 contract; System1 operational artifact -> PVE-286/PVE-288; PVE-261 physical remediation -> PVE-270/PVE-288; S2-CORR-20261007-003 physical closure -> PVE-268/PVE-270/PVE-288; numerical target source -> PVE-287 + target-freeze precondition guard.
+If no state changed, preserve WAITING_EXTERNAL_RECEIPTS without new PVE design work.
+Current ceiling remains D02 60.0%, all modules L3, clean prospective dates 0, Gate 7 CLOSED, Formal Core LOCKED.
