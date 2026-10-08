@@ -4715,3 +4715,104 @@ Priority:
 2. If CORR-007 or wrapper guard implementation lands, validate immediately.
 3. If real bounded suspension/CLEAR_NO_ACTION receipt lands, validate priceResetFamilySetVersion and exact-window lineage.
 4. If no D16 external gate lands, continue D18-04 executable row/aggregate acceptance or D18-06 S0 physical-observer acceptance semantics.
+
+
+## 2026-10-08 D18-04 executable U2B receipt interface frozen
+
+New durable artifacts:
+- `research/D18_U2B_ROW_AGGREGATE_RECEIPT_INTERFACE_20261008_V0_1.md`;
+- `research/d18_u2b_row_aggregate_receipt_contract_20261008_v0_1.json`.
+
+### Machine interface
+
+The first executable U2B builder must emit:
+
+Row:
+`D18_U2B_ROW_V0_1`.
+
+Aggregate:
+`D18_U2B_DATE_AGGREGATE_V0_1`.
+
+Only:
+`U2B_READY_CLEAR_NO_ACTION`
+may emit non-null V0.1 priceReturn.
+
+Blocked rows remain explicit denominator members.
+
+### Required row lineage
+
+Each row binds:
+- current/prior exact session identity;
+- current/prior security identity;
+- pair comparability state;
+- current/prior source-row hashes;
+- exactPairHash;
+- continuityReceiptHash;
+- sourceHistoryHash;
+- priceResetFamilySetVersion;
+- priceResetCoverageReceiptHash;
+- bounded suspension evidence hash/interval hash;
+- membership/session/return-definition/price-space versions.
+
+Changing any critical lineage identity must change exactPairHash.
+
+### Aggregate accounting
+
+Per date preserve:
+- U0;
+- U1;
+- U2A;
+- U2B ready;
+- action-event blocked;
+- continuity unknown;
+- identity transition blocked;
+- identity equivalence unknown;
+- prior session missing;
+- session substitution blocked;
+- source revision invalid;
+- family-scope blocked;
+- late evidence blocked;
+- other blocked.
+
+Silent row dropping is forbidden.
+
+### Determinism
+
+Canonical sorted immutable row inputs must reproduce identical:
+- row receipts;
+- ordered row hash;
+- aggregate descriptors;
+- aggregate receipt hash.
+
+No insertion order/system clock/randomness may alter the result.
+
+### Execution oracle
+
+RB-T01 through RB-T16 now freeze:
+- clean ready pair;
+- lineage hash sensitivity;
+- continuity/family-version hash sensitivity;
+- blocked-row denominator preservation;
+- partition reconciliation;
+- silent-drop rejection;
+- duplicate handling;
+- order invariance;
+- insufficient-support null semantics;
+- exchange pooling guard;
+- identity-transition / late-evidence / session-substitution accounting;
+- deterministic replay.
+
+### Maturity
+
+D18-04 remains L2/40.
+
+Semantic design and machine interface are complete enough for implementation, but no executable builder or physical Taiwan date aggregate exists.
+
+### Exact next
+
+1. CORR-007 must bind real suspension evidence into continuity promotion.
+2. DATA supplies real bounded TWTAWU + three corporate-action family evidence and first hash-bound CLEAR_NO_ACTION pair.
+3. Authorized engineering implements the frozen row/aggregate builder.
+4. Execute RB-T01~T16 plus the prior 13 U2B tests and ID-T01~ID-T12.
+5. Produce first physical Taiwan date aggregate.
+6. Only then assess D18-04 L3.
