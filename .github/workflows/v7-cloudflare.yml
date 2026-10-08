@@ -78,6 +78,7 @@ on:
       - "scripts/apply_v8_19_1_pve248_candidate.py"
       - "scripts/apply_v8_19_1_pve250_prod_stamp.py"
       - "scripts/apply_v8_20_0.py"
+      - "scripts/apply_v8_20_1.py"
       - "scripts/rebase_v8_12_*.py"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
@@ -313,6 +314,8 @@ jobs:
         run: python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
       - name: Apply V8.20.0 Formal-C1 authoritative binding
         run: python3 scripts/apply_v8_20_0.py
+      - name: Apply V8.20.1 cross-midnight recovery hardening
+        run: python3 scripts/apply_v8_20_1.py
 
       - name: Syntax check Worker.js
         run: |
@@ -323,7 +326,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.20.0-formal-c1-binding-ledger";' Worker.js
+          grep -F 'const VERSION = "8.20.1-cross-midnight-recovery-readback";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
