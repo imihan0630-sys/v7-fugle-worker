@@ -1,0 +1,23 @@
+name: D02 PVE286 System1 First Eligible Acceptance Clock
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve286_system1_first_eligible_acceptance_clock_v0_1.mjs"
+      - "tests/test_d02_pve286_system1_first_eligible_acceptance_clock_v0_1.mjs"
+      - ".github/workflows/d02-pve286-system1-first-eligible-clock.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve286_system1_first_eligible_acceptance_clock_v0_1.mjs
