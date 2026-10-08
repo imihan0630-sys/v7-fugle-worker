@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "D02_PVE289_EXTERNAL_RECEIPT_CONVERGENCE_SNAPSHOT_V0_1",
+  "generatedAt": "2026-10-08 13:37 Asia/Taipei",
+  "observedMainCommit": "4a32843c97aa51f7d7f7e0ed7f6812302800ae42",
+  "status": "WAITING_NEW_IMMUTABLE_PRODUCER_RECEIPTS",
+  "d02MaturityPct": 60,
+  "cleanProspectiveDates": 0,
+  "gate7": "CLOSED",
+  "formalCore": "LOCKED",
+  "lanes": {
+    "d16PredictiveMethods": {
+      "owner": "D16-19",
+      "expectedReceiptCount": 12,
+      "validFrozenReceiptCount": 0,
+      "state": "WAITING_D16_METHOD_RECEIPTS",
+      "requestRef": "research/D02_PVE285_D16_MODEL_METHOD_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "validationRef": "research/d02_pve284_d16_predictive_model_method_guard_v0_2.mjs",
+      "advanceRule": "Advance only the exact evidence key whose immutable PVE-284-valid receipt arrives."
+    },
+    "d14D0211CostQuality": {
+      "owner": "D14",
+      "state": "WAITING_D14_COST_QUALITY_RECEIPT",
+      "receiptObserved": false,
+      "requestRef": "research/D02_PVE285_D14_COST_QUALITY_DEPENDENCY_REQUEST_20261008_V0_1.md",
+      "advanceRule": "Accept ACTUAL/PARTIAL_ACTUAL/MODELED/UNKNOWN provenance; UNKNOWN_BLOCKED is a valid return and does not freeze utility."
+    },
+    "system1OperationalAcceptance": {
+      "owner": "System1",
+      "state": "FUTURE_SCHEDULED_PHYSICAL_RECEIPT_NOT_YET_OBSERVED",
+      "firstPostDeployScheduledOpportunity": "2026-10-09T00:10:00+08:00",
+      "candidateScanDate": "2026-10-08",
+      "operationalReceiptObserved": false,
+      "advanceRule": "Consume immutable scheduled artifact only; workflow color is insufficient and operational PASS cannot itself create a D02 clean date."
+    },
+    "pve261BaselineRemediation": {
+      "owner": "Production/Class-B owner gate",
+      "state": "WAITING_PHYSICAL_DEPLOYED_PASS",
+      "physicalPassObserved": false,
+      "advanceRule": "For any clean H001 date, deployment must precede feature capture and exact feature-level baseline freshness must pass."
+    },
+    "corr003QuotaRemediation": {
+      "owner": "System2 REMEDIATION_LANE with AUDIT_LANE closure",
+      "directiveId": "S2-CORR-20261007-003",
+      "state": "OPEN",
+      "physicalClosureObserved": false,
+      "advanceRule": "Require independent physical quota-protection acceptance including System1 after-market reserve and future successful business execution."
+    },
+    "numericalTargetSource": {
+      "owner": "D02 target governance with D14/D16 dependencies",
+      "state": "NO_LEGAL_SOURCE",
+      "legalSourceCount": 0,
+      "evidenceKeyCount": 14,
+      "advanceRule": "Freeze no numerical target until a new immutable allowed-rationale source passes PVE-287 rules."
+    }
+  },
+  "allowedTransitions": [
+    "D16_METHOD_RECEIPT_ARRIVES -> VALIDATE_EXACT_KEY_ONLY",
+    "D14_COST_RECEIPT_ARRIVES -> VALIDATE_D02_11_ONLY",
+    "SYSTEM1_OPERATIONAL_ARTIFACT_ARRIVES -> UPDATE_OPERATIONAL_STATE_ONLY",
+    "PVE261_PHYSICAL_PASS_ARRIVES -> UPDATE_BASELINE_REMEDIATION_STATE_ONLY",
+    "CORR003_VERIFIED_CLOSED_WITH_PHYSICAL_ACCEPTANCE -> UPDATE_QUOTA_STATE_ONLY",
+    "LEGAL_NUMERICAL_TARGET_SOURCE_ARRIVES -> VALIDATE_TARGET_SOURCE_ONLY"
+  ],
+  "forbiddenTransitions": [
+    "NO_NEW_RECEIPT -> REPEAT_CLOSED_RESEARCH",
+    "WORKFLOW_GREEN -> PHYSICAL_RECEIPT_PASS",
+    "SYSTEM1_OPERATIONAL_PASS -> D02_CLEAN_DATE",
+    "LATE_BASELINE_REMEDIATION -> RETROACTIVE_CLEAN_DATE",
+    "FIXTURE_VALUE -> NUMERICAL_TARGET",
+    "ONE_LANE_RECEIPT -> OTHER_LANE_ADVANCE"
+  ],
+  "outcomeAccessAuthorized": false,
+  "maturityPromotionAuthorized": false,
+  "formalCoreChangeAuthorized": false
+}
