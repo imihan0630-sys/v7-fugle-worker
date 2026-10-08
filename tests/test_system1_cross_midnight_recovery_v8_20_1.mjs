@@ -9,6 +9,8 @@ const before=fs.readFileSync(beforePath,"utf8");
 assert.match(source,/const VERSION = "8\.20\.1-cross-midnight-recovery-readback";/);
 assert.match(source,/url\.pathname === "\/api\/market-data\/status"/);
 assert.match(source,/url\.searchParams\.get\("marketDate"\)/);
+assert.match(source,/const requestedDate=url\.searchParams\.get\("marketDate"\)/,
+  "V8.9.7 historical institution readback must remain present");
 assert.match(source,/historicalReadback:!!requestedDate/);
 assert.match(source,/readOnly:true,historicalBackfillPerformed:false,noPlanChanges:true,noPush:true/);
 assert.match(source,/date !== taiwanDate\(\)/,"historical market-data writes must remain forbidden");
@@ -27,7 +29,7 @@ const added=source.length-before.length;
 assert.ok(added>0&&added<8000,"unexpected V8.20.1 patch size");
 console.log(JSON.stringify({
   ok:true,version:"8.20.1-cross-midnight-recovery-readback",
-  marketStatusReadOnly:true,historicalInstitutionReadback:true,
+  marketStatusReadOnly:true,historicalInstitutionReadbackPreserved:true,
   historicalMarketWriteStillForbidden:true,formalCoreFunctionParity:true,
   system2Touched:false,noPlanChanges:true,noTrade:true,noPush:true
 }));
