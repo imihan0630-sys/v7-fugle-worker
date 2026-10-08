@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "S2_AUDIT_INDEPENDENT_CORR011_CODE_CLOSURE_V0_1",
+  "recordedAt": "2026-10-09T01:25:21+08:00",
+  "correction": "S2-CORR-20261008-011",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "scope": "ORIGINAL_IMMUTABLE_PERSISTENCE_PRETRANSPORT_AND_POSTWRITE_CODE_FIREWALL",
+  "preCorrectionNegativeEvidence": "system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json",
+  "implementation": {
+    "pr": 901,
+    "mergeCommit": "98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882",
+    "retainedRuntimeBlobs": {
+      "system2/runtime/persistence_batch.mjs": "af8c6c6d344cb7e89bc17cf6797e3faa60cd9cdf",
+      "system2/runtime/persistence_executor.mjs": "b6b3756b648058a86010183067e3a804d22b2005",
+      "system2/runtime/outcome_persistence_v0_1.mjs": "9ca7fcd562d49673b59d7f96550b440822d07350"
+    },
+    "onCurrentMainMatchMergedCode": true
+  },
+  "independentTests": {
+    "pr": 905,
+    "mergedMainCommit": "801ca357baf0d2020623c9ecddb7b68d88b0417c",
+    "path": "system2/tests/audit_corr011_independent_persistence_v0_1.test.mjs",
+    "testBlob": "9365bfbb832eb6964064a6965a7effdeafff69ac",
+    "workflows": [
+      {
+        "name": "System2 AUDIT CORR-011 Independent Immutable Persistence",
+        "runId": 37816240636,
+        "conclusion": "success",
+        "independentStep": "Independent AP-08 SQL and immutability negative reproduction"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37816240323,
+        "conclusion": "success"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37816240412,
+        "conclusion": "success"
+      }
+    ]
+  },
+  "proofs": [
+    "AP-08 caller-provided UPDATE and DELETE as insertSql rejected with zero database prepare/batch calls",
+    "Tampered batchHash, rowDigest and unauthorised table column rejected before first D1 prepare/transport",
+    "Positive source session INSERT is reconstructed from canonical contract and has exact verified post-write readback",
+    "Mock database with content tampered during write is rejected POST_WRITE_VERIFICATION_FAILED",
+    "Canonical table/identity/provenance and existing decision/factor/regime/order/fill references separately covered by merged implementation regression tests",
+    "Auditor read back all three affected runtime blob identities from current main and merged implementation"
+  ],
+  "nonClaims": [
+    "Independent tests ran in isolated mocked database adapter, not physical Cloudflare D1",
+    "Database-level triggers/foreign-keys are not independently physically deployed or verified; existing guarded-writer equivalent remains conditional on traffic using canonical executor",
+    "CORR-012 monotonic outcomes and CORR-013 trigger window handling remain OPEN; not credited by CORR-011",
+    "Historical PIT/OOS/completeness and production trading/selection authority unproven"
+  ],
+  "decision": "VERIFIED_CLOSED_CODE_FIREWALL_ONLY",
+  "remainingGates": [
+    "CORR-012 immutable cost/holding/MFE/MAE",
+    "CORR-013 sessions and NO_FILL unknown guards",
+    "CORR-20261007-003 D1 multiwriter",
+    "DATA_LANE historical acceptance and physical runtime smoke"
+  ]
+}
