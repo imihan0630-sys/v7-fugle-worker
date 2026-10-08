@@ -1,0 +1,31 @@
+name: System2 AUDIT July96 Official vs Hot Cold Evidence Gate
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_july96_official_vs_hot_cold_evidence_gate_v0_1.test.mjs"
+      - "system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json"
+      - "system2/evidence/S2_RECENT60_JULY_2026_ALL96_OFFICIAL_SOURCE_POSTFACTO_20261009_V0_1.json"
+      - "system2/evidence/S2_RECENT60_JULY_20261009_D1_ROW_READ_QUOTA_BLOCKED_V0_1.json"
+      - ".github/workflows/system2-audit-july96-source-storage-gate-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_july96_official_vs_hot_cold_evidence_gate_v0_1.test.mjs"
+      - "system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json"
+      - "system2/evidence/S2_RECENT60_JULY_2026_ALL96_OFFICIAL_SOURCE_POSTFACTO_20261009_V0_1.json"
+      - "system2/evidence/S2_RECENT60_JULY_20261009_D1_ROW_READ_QUOTA_BLOCKED_V0_1.json"
+      - ".github/workflows/system2-audit-july96-source-storage-gate-v0-1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independent July96 evidence identity and PIT temporal safety
+        run: node system2/tests/audit_july96_official_vs_hot_cold_evidence_gate_v0_1.test.mjs
