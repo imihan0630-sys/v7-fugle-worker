@@ -395,6 +395,8 @@ export async function executeOutcomePersistenceBatchV0_1({
     throw new Error("refusing non-isolated binding name");
   }
 
+  throw new Error("LEGACY_OUTCOME_PERSISTENCE_V0_1_DISABLED_USE_V0_2");
+
   const canonicalBatch = await rebuildAndVerifyOutcomePersistenceBatchV0_1(batch);
   await validateOutcomeLineageV0_1(db, canonicalBatch);
 
