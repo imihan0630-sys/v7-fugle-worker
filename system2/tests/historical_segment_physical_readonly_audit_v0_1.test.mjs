@@ -73,12 +73,9 @@ await assert.rejects(()=>auditSegmentMonthsReadonlyV0_1({
 }));
 await assert.rejects(()=>auditSegmentMonthsReadonlyV0_1({
   db:mockDb(),objectStore:store,months:[1],
-  verifyReceipt:async()=>({...await verifier({
-    db:{prepare:()=>{throw new Error("unused")},batch:()=>{throw new Error("unused")}},
-    objectStore:{putIfAbsent:()=>{throw new Error("unused")}},
-    receipt:{batch_id:batchId,receipt_id:"S2HSR-test"},
-  }),byteGetObjectCountVerified:1}),
-}));
+  verifyReceipt:async()=>({state:"VERIFIED",receiptId:"S2HSR-test",barCount:9,
+    headObjectCountVerified:2,byteGetObjectCountVerified:1,manifestRollingHash:"h"}),
+}),/Expected values to be strictly equal/);
 
 const workflow=await readFile(
   new URL("../../.github/workflows/system2-2026-twse-segment-physical-readonly.yml",import.meta.url),"utf8");
