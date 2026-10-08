@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "D03_CORR007_VERSIONED_RECEIPT_GATE_CASES_V0_1",
+  "recordedAt": "2026-10-08T10:07:00+08:00",
+  "purpose": "Falsify any path where legacy status-only completeness or a relabelled receipt can satisfy evidence-bound suspension completeness.",
+  "expectedEvidenceSchema": "S2_CA_COMPLETENESS_RECEIPT_V0_2",
+  "legacyEvidenceSchema": "S2_CA_COMPLETENESS_RECEIPT_V0_1",
+  "base": {
+    "schemaVersion": "S2_CA_COMPLETENESS_RECEIPT_V0_2",
+    "exchange": "TWSE",
+    "coverageState": "COMPLETE",
+    "requestedStartDate": "2026-09-01",
+    "requestedEndDate": "2026-10-07",
+    "sourceId": "TWSE_TWTAWU_BOUNDED_PARITY_V0_2",
+    "sourceFamily": "TWSE_TWTAWU",
+    "sourceContractVersion": "TWTAWU_BOUNDED_PARITY_V0_2",
+    "receiptDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "observedAt": "2026-10-07T13:25:00+08:00",
+    "availableAt": null,
+    "availabilitySemantics": "PROSPECTIVE_OBSERVED",
+    "decisionCutoffAt": "2026-10-07T13:30:00+08:00",
+    "archiveStartDate": "2026-09-01",
+    "archiveEndDate": "2026-10-07",
+    "sourceEvidenceRef": {
+      "sourceId": "TWSE_TWTAWU_BOUNDED_PARITY_V0_2",
+      "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "corporateActionRefCount": 3,
+    "exactSessionReady": true,
+    "partialSourceCount": 0,
+    "unresolvedConflictCount": 0
+  },
+  "cases": [
+    {"id":"V01","mutation":{},"expected":true,"reason":"valid evidence-bound V0.2"},
+    {"id":"V02","mutation":{"schemaVersion":"S2_CA_COMPLETENESS_RECEIPT_V0_1"},"expected":false,"reason":"legacy status-only schema fails closed"},
+    {"id":"V03","mutation":{"schemaVersion":"S2_CA_COMPLETENESS_RECEIPT_V0_1","receiptDigest":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},"expected":false,"reason":"adding a digest does not upgrade a legacy schema"},
+    {"id":"V04","mutation":{"schemaVersion":"S2_CA_COMPLETENESS_RECEIPT_V0_2","sourceContractVersion":"TWTAWU_STATUS_ONLY_V0_1"},"expected":false,"reason":"cross-version semantic mix rejected"},
+    {"id":"V05","mutation":{"schemaVersion":"S2_CA_COMPLETENESS_RECEIPT_V0_2","sourceFamily":""},"expected":false,"reason":"empty source family rejected"},
+    {"id":"V06","mutation":{"schemaVersion":"S2_CA_COMPLETENESS_RECEIPT_V0_2","sourceContractVersion":""},"expected":false,"reason":"empty source contract version rejected"},
+    {"id":"V07","mutation":{"receiptDigest":"short"},"expected":false,"reason":"invalid digest rejected"},
+    {"id":"V08","mutation":{"requestedEndDate":"2026-10-06"},"expected":false,"reason":"receipt interval mismatch rejected"},
+    {"id":"V09","mutation":{"sourceEvidenceRef":{"sourceId":"TWSE_TWTAWU_BOUNDED_PARITY_V0_2","digest":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}},"expected":false,"reason":"source reference digest mismatch rejected"},
+    {"id":"V10","mutation":{"sourceEvidenceRef":{"sourceId":"TWSE_TWTAWU_STATUS_ONLY_V0_1","digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},"expected":false,"reason":"source reference identity mismatch rejected"},
+    {"id":"V11","mutation":{"observedAt":"2026-10-07T13:31:00+08:00"},"expected":false,"reason":"post-cutoff prospective evidence rejected"},
+    {"id":"V12","mutation":{"availabilitySemantics":"VERIFIED_SOURCE_TIMESTAMP","availableAt":"2026-10-07T13:31:00+08:00"},"expected":false,"reason":"late verified source timestamp rejected"},
+    {"id":"V13","mutation":{"corporateActionRefCount":2},"expected":false,"reason":"suspension receipt does not replace three corporate-action refs"},
+    {"id":"V14","mutation":{"partialSourceCount":1},"expected":false,"reason":"partial source rejected"},
+    {"id":"V15","mutation":{"unresolvedConflictCount":1},"expected":false,"reason":"unresolved conflict rejected"},
+    {"id":"V16","mutation":{"exactSessionReady":false},"expected":false,"reason":"exact-session failure rejected"}
+  ]
+}
