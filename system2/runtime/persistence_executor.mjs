@@ -40,6 +40,112 @@ async function readExisting(db, operation, ledger, phase) {
   throw new Error("database prepared statement must support first() or all()");
 }
 
+function localBatchRow(batch, table, identityColumn, identityValue) {
+  const operation = batch.operations.find(
+    (op) => op.table === table && op.row?.[identityColumn] === identityValue,
+  );
+  return operation?.row || null;
+}
+
+async function readLineageParent(db, {
+  table,
+  identityColumn,
+  identityValue,
+  columns,
+}, ledger) {
+  const sql =
+    `SELECT ${columns.join(", ")} FROM ${table} WHERE ${identityColumn} = ? LIMIT 1`;
+  ledger.lineageReadStatementCount += 1;
+  ledger.lineageSql.push(sql);
+  const statement = db.prepare(sql).bind(identityValue);
+  if (typeof statement.first === "function") return await statement.first();
+  if (typeof statement.all === "function") {
+    const result = await statement.all();
+    return result?.results?.[0] ?? null;
+  }
+  throw new Error("database prepared statement must support first() or all()");
+}
+
+function requireEqual(actual, expected, code) {
+  if (actual !== expected) {
+    throw new Error(`LINEAGE_MISMATCH:${code}`);
+  }
+}
+
+async function validateImmutableLineage(db, batch, ledger) {
+  for (const operation of batch.operations) {
+    if (operation.table === "s2_decisions") {
+      const row = operation.row;
+      const factor =
+        localBatchRow(batch, "s2_symbol_factor_snapshots", "snapshot_id", row.factor_snapshot_id)
+        || await readLineageParent(db, {
+          table: "s2_symbol_factor_snapshots",
+          identityColumn: "snapshot_id",
+          identityValue: row.factor_snapshot_id,
+          columns: [
+            "snapshot_id","market_date","decision_timestamp","symbol","regime_snapshot_id",
+          ],
+        }, ledger);
+      if (!factor) {
+        throw new Error(
+          `LINEAGE_PARENT_MISSING:s2_decisions.factor_snapshot_id:${row.factor_snapshot_id}`,
+        );
+      }
+      requireEqual(factor.market_date, row.market_date, "decision-factor.market_date");
+      requireEqual(
+        factor.decision_timestamp,
+        row.decision_timestamp,
+        "decision-factor.decision_timestamp",
+      );
+      requireEqual(factor.symbol, row.symbol, "decision-factor.symbol");
+      if (
+        factor.regime_snapshot_id !== null
+        && factor.regime_snapshot_id !== undefined
+        && factor.regime_snapshot_id !== row.regime_snapshot_id
+      ) {
+        throw new Error("LINEAGE_MISMATCH:decision-factor.regime_snapshot_id");
+      }
+
+      const regime =
+        localBatchRow(batch, "s2_market_regime_snapshots", "regime_snapshot_id", row.regime_snapshot_id)
+        || await readLineageParent(db, {
+          table: "s2_market_regime_snapshots",
+          identityColumn: "regime_snapshot_id",
+          identityValue: row.regime_snapshot_id,
+          columns: ["regime_snapshot_id","market_date","decision_timestamp"],
+        }, ledger);
+      if (!regime) {
+        throw new Error(
+          `LINEAGE_PARENT_MISSING:s2_decisions.regime_snapshot_id:${row.regime_snapshot_id}`,
+        );
+      }
+      requireEqual(regime.market_date, row.market_date, "decision-regime.market_date");
+      requireEqual(
+        regime.decision_timestamp,
+        row.decision_timestamp,
+        "decision-regime.decision_timestamp",
+      );
+    }
+
+    if (operation.table === "s2_decision_corrections") {
+      const row = operation.row;
+      const decision =
+        localBatchRow(batch, "s2_decisions", "decision_id", row.original_decision_id)
+        || await readLineageParent(db, {
+          table: "s2_decisions",
+          identityColumn: "decision_id",
+          identityValue: row.original_decision_id,
+          columns: ["decision_id"],
+        }, ledger);
+      if (!decision) {
+        throw new Error(
+          `LINEAGE_PARENT_MISSING:s2_decision_corrections.original_decision_id:${row.original_decision_id}`,
+        );
+      }
+    }
+  }
+}
+
 function exactRowMatches(operation, existingRow) {
   if (!existingRow || typeof existingRow !== "object" || Array.isArray(existingRow)) return false;
   const normalized = Object.fromEntries(
@@ -69,14 +175,18 @@ export async function executeSystem2PersistenceBatch({
     insertStatementCount: 0,
     batchTransportCount: 0,
     postWriteReadbackCount: 0,
+    lineageReadStatementCount: 0,
     verifiedInsertedRowCount: 0,
     transportReportedChanges: 0,
     transportReportedChangesComplete: true,
     selectSql: [],
     insertSql: [],
+    lineageSql: [],
   };
   const inserts = [];
   const outcomes = [];
+
+  await validateImmutableLineage(db, canonicalBatch, ledger);
 
   for (const operation of canonicalBatch.operations) {
     const existing = await readExisting(db, operation, ledger, "PRE_WRITE");
@@ -155,6 +265,7 @@ export async function executeSystem2PersistenceBatch({
     insertStatementCount: ledger.insertStatementCount,
     batchTransportCount: ledger.batchTransportCount,
     postWriteReadbackCount: ledger.postWriteReadbackCount,
+    lineageReadStatementCount: ledger.lineageReadStatementCount,
     verifiedInsertedRowCount: ledger.verifiedInsertedRowCount,
     transportReportedChanges: ledger.transportReportedChangesComplete
       ? ledger.transportReportedChanges
@@ -166,6 +277,9 @@ export async function executeSystem2PersistenceBatch({
     ),
     insertStatementHashes: Object.freeze(
       await Promise.all(ledger.insertSql.map((sql) => sha256Hex(sql))),
+    ),
+    lineageStatementHashes: Object.freeze(
+      await Promise.all(ledger.lineageSql.map((sql) => sha256Hex(sql))),
     ),
   });
 
