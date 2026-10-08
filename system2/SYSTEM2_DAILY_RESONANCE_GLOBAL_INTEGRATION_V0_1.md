@@ -9,6 +9,10 @@ System 1 / V8 Formal Core impact: NONE
 
 Connect the already-frozen Daily Resonance calculation, live-adapter, episode, chart, read-model and Fugle-normalizer modules to an isolated System 2 Worker, D1 history and read-only UI/API without changing their resonance formula or enabling trading authority.
 
+## 2026-10-09 after-market clock governance notice (superseding target design; deployed behavior unchanged)
+
+The **existing deployed** System 2 Worker still reads already-frozen `s2_capacity_runs` at 19:00. This is not evidence that complete after-market source data or new daily final picks are available at 19:00. Per the owner-approved `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_POOL_CLOCK_V0_1.md`, the **target future** flow is 19:00 preliminary review, 23:45 conditional final-freeze attempt once all mandatory strategy sources are source-date/PIT/coverage qualified, and conditional 00:15 same-trading-date recovery. Both later clocks require a separate authorized runtime/Cron implementation and physical test before activation. The legacy V0.1 runtime flow below remains truthful current deployment description; no System 1 cron, Formal Core, live push or trade authority is modified by this policy.
+
 ## Runtime flow
 
 1. The 19:00 Asia/Taipei schedule reads the latest frozen `s2_capacity_runs` receipt.
