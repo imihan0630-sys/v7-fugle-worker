@@ -1095,3 +1095,18 @@ No outcomes inspected.
 No hypothesis supported/rejected.
 No maturity promotion.
 No Formal optimization candidate.
+
+
+## PVE-280~281 all-D02 downstream lineage overlay — 2026-10-08
+
+D02-01 semantic evidence now has the same exact admitted-dataset -> D16-input binding principle already frozen for Wave-1 and Wave-2.
+
+PVE-281 is the canonical all-D02 D16 entry for all 14 evidence keys.
+
+This changes no H001/H20/H003/Wave-2 economic status.
+It only removes dataset substitution as a future source of false validation.
+
+Next research blocker moves to EffectTargetReceipt and D16 ModelMethodReceipt readiness.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core LOCKED.
