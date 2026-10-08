@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D02_PVE277_WAVE2_BASELINE_DEPENDENCY_MATRIX_V0_1",
+  "generatedAt": "2026-10-08 Asia/Taipei",
+  "status": "OUTCOME_BLIND_DEPENDENCY_AUDIT",
+  "sourceAuthorities": [
+    "research/d02_l4_wave2_admission_evaluator_v0_1.mjs",
+    "scripts/apply_v8_11_0.py",
+    "research/d02_daily_volume_continuity_contract_20261003_v0_1.md",
+    "research/d02_05_climax_volume_pit_readiness_v0_1.json",
+    "research/d02_10_volume_trend_pit_readiness_v0_1.json",
+    "research/d02_11_liquidity_volume_pit_readiness_v0_1.json",
+    "research/d02_12_intraday_volume_profile_pit_readiness_v0_1.json"
+  ],
+  "lanes": {
+    "D02-04:DRYUP": {
+      "dependencyClass": "DIRECT_INTRADAY_BASELINE_DEPENDENT",
+      "reason": "LOW participation is interpreted through frozen relative-participation bands; V8.11 participationBand is derived from same-slot RVOL.",
+      "action": "FRESHNESS_RECEIPT_REQUIRED"
+    },
+    "D02-05:EXTREME_PARTICIPATION": {
+      "dependencyClass": "DIRECT_INTRADAY_VOLUME_AND_RANGE_BASELINE_DEPENDENT",
+      "reason": "EXTREME band derives from slot RVOL and priceResponseState consumes same-slot range normalization.",
+      "action": "VOLUME_AND_RANGE_FRESHNESS_REQUIRED"
+    },
+    "D02-07:SVB20": {
+      "dependencyClass": "DAILY_CONTINUITY_DEPENDENT_NOT_MEDIAN_BASELINE",
+      "reason": "signedVolumeBalance20 is direct daily volume-magnitude weighting; exact-session/unit/corporate-action continuity matters, but no historical median denominator is intrinsic.",
+      "action": "BIND_DAILY_CONTINUITY_RECEIPT"
+    },
+    "D02-08:PROVIDER_PRESSURE": {
+      "dependencyClass": "PRIMARY_SOURCE_BASELINE_INDEPENDENT_CONTROL_DEPENDENT",
+      "reason": "provider pressure proxy is independent source, but registered incremental comparison controls include OHLCV/RVOL/response.",
+      "action": "CONTROL_FRESHNESS_AT_COMPARISON"
+    },
+    "D02-09:PIVOT_SIGNED_VOLUME": {
+      "dependencyClass": "DAILY_CONTINUITY_DEPENDENT_NOT_MEDIAN_BASELINE",
+      "reason": "pivot signed-volume path needs clean daily volume continuity, not a median baseline.",
+      "action": "BIND_DAILY_CONTINUITY_RECEIPT"
+    },
+    "D02-09:PARTICIPATION_TRAJECTORY": {
+      "dependencyClass": "DIRECT_INTRADAY_BASELINE_DEPENDENT",
+      "reason": "frozen participation trajectory consumes same-slot RVOL and/or cumulative pace/persistence.",
+      "action": "INTRADAY_BASELINE_AND_PREFIX_RECEIPT"
+    },
+    "D02-10:TREND_VOLUME_INTERACTION": {
+      "dependencyClass": "DIRECT_PARTICIPATION_LINEAGE_DEPENDENT",
+      "reason": "allowed D02 participation parents are pvSlotRvol20, pvCumvolPace20 or pvPersistenceState with adjacency proof.",
+      "action": "PARTICIPATION_LINEAGE_RECEIPT"
+    },
+    "D02-11:LIQUIDITY_COUNTERFACTUAL": {
+      "dependencyClass": "ROLLING_20_SESSION_DAILY_BASELINE_DEPENDENT",
+      "reason": "avgVolume20Lots/avgAmount20 are rolling last-20 history features; missing latest expected session can be replaced by an older row unless exact-session freshness is bound.",
+      "action": "ROLLING20_SESSION_FRESHNESS_RECEIPT"
+    },
+    "D02-12:TIME_OF_DAY_VOLUME_CURVE": {
+      "dependencyClass": "HISTORICAL_INTRADAY_DENOMINATOR_AND_CONTROL_DEPENDENT",
+      "reason": "historical denominator uses prior sessions and registered comparison controls include same-slot RVOL/cumulative pace.",
+      "action": "TIME_CURVE_AND_CONTROL_FRESHNESS_RECEIPTS"
+    },
+    "D02-12:PRICE_BY_VOLUME_PROFILE": {
+      "dependencyClass": "PRIMARY_PROSPECTIVE_PROFILE_CONTROL_DEPENDENT",
+      "reason": "profile itself is prospective-only but registered comparison requires same-slot RVOL/cumulative pace controls.",
+      "action": "CONTROL_FRESHNESS_AT_COMPARISON"
+    }
+  },
+  "legacyGateFinding": "All ten tested Wave-2 lane/family fixtures can pass D02_L4_WAVE2_ADMISSION_V0_1 without explicit immutable freshness/continuity receipt binding.",
+  "maturityPromotionAuthorized": false,
+  "formalCoreChangeAuthorized": false
+}
