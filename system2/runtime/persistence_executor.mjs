@@ -13,7 +13,7 @@ function assertDb(db) {
 
 function assertBatch(batch) {
   if (!batch || typeof batch !== "object") throw new Error("persistence batch is required");
-  if (batch.schemaVersion !== "S2_PERSISTENCE_BATCH_V0_1") {
+  if (batch.schemaVersion !== "S2_PERSISTENCE_BATCH_V0_2") {
     throw new Error("unsupported persistence batch schemaVersion");
   }
   if (batch.bindingName !== "SYSTEM2_DB") {
@@ -293,6 +293,6 @@ export async function executeSystem2PersistenceBatch({
     outcomes: Object.freeze(outcomes),
     statementLedger,
     state: "PERSISTENCE_BATCH_APPLIED",
-    schemaVersion: "S2_PERSISTENCE_EXECUTION_V0_1",
+    schemaVersion: "S2_PERSISTENCE_EXECUTION_V0_2",
   });
 }
