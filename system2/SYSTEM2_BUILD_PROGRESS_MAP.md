@@ -1619,3 +1619,36 @@ Next BUILD priority:
 2. CORR-008 remains blocked by CORR-007 independent closure;
 3. preserve physical NC-T01 and System1 Formal Core boundaries.
 
+
+
+## 2026-10-08 15:10 BUILD_LANE handoff — CORR-010 FIX_IMPLEMENTED
+
+Implementation:
+- PR #864 merged as `d0a0554960883aad3d5f85989148ef044f9e135c`.
+- Closed-set outcome-join lineage now recomputes and reconciles source-session, run-accounting, decision, decision-evidence and run-fingerprint digests.
+- Exact market date / decision clock / strategy id+version / shadow spec / universe identity must match across linked receipts.
+- Decision-hash coverage must be one-to-one and closed; foreign/missing/duplicate/extra fingerprints fail closed.
+- Empty decision-hash coverage is allowed only for a separately proved zero-eligible-universe accounting case.
+- AP-02/AP-03 fail closed.
+
+Exact-head PASS:
+- CORR-010 `37741546228`;
+- CORR-009 regression `37741546094`;
+- System2 Research CI `37741546128`;
+- V8 Regression `37741546086`.
+
+Merged-main PASS on `d0a0554960883aad3d5f85989148ef044f9e135c`:
+- CORR-010 `37741728923`;
+- CORR-009 regression `37741728744`;
+- System2 Research CI `37741728771`;
+- V8 Regression `37741728752`.
+
+Disposition:
+- `S2-CORR-20261008-010 = FIX_IMPLEMENTED`;
+- CRITICAL correction remains pending independent AUDIT_LANE verification before `VERIFIED_CLOSED`;
+- durable evidence: `system2/evidence/S2_CORR_010_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json`.
+
+Next BUILD priority:
+1. continue the next unblocked CRITICAL correction from the canonical queue;
+2. CORR-008 remains blocked by CORR-007 independent closure;
+3. preserve physical NC-T01 and System1 Formal Core boundaries.
