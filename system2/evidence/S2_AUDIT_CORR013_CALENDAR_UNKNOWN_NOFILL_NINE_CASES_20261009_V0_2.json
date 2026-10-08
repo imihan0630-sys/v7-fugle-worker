@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "S2_AUDIT_CORR013_CALENDAR_NOFILL_NINE_NEGATIVE_V0_2",
+  "recordedAt": "2026-10-09T07:44:26+08:00",
+  "lane": "AUDIT_LANE",
+  "directiveId": "S2-CORR-20261008-013",
+  "correctiveStatusAtObservation": "OPEN",
+  "severity": "HIGH",
+  "target": {
+    "repository": "imihan0630-sys/v7-fugle-worker",
+    "branchBaseline": "main",
+    "module": "system2/runtime/execution_simulator_v0_1.mjs",
+    "test": "system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs",
+    "workflow": ".github/workflows/system2-audit-corr013-nofill-v0-2.yml",
+    "pr": 930,
+    "headSha": "e4fcaa6606e90829f74f519432fedb630bd4244f"
+  },
+  "execution": {
+    "workflowRunId": 37861039940,
+    "jobId": 113596536218,
+    "jobConclusion": "success",
+    "testConsequence": "The nine isolated observational tests executed successfully. The safety gate did NOT pass; 9/9 were labeled UNSAFE.",
+    "environment": "GitHub Actions offline Node 22, synthetic market sessions, no production D1/R2/Cloudflare/broker calls"
+  },
+  "negativeCases": [
+    {
+      "id": "INVALID_NONEXISTENT_DAY",
+      "state": "ENTRY_PENDING",
+      "quality": "NO_FILL",
+      "finding": "2026-09-31 nonexistent calendar date accepted"
+    },
+    {
+      "id": "NONPADDED_DATE",
+      "state": "ENTRY_PENDING",
+      "quality": "NO_FILL",
+      "finding": "noncanonical 2026-9-30 date accepted"
+    },
+    {
+      "id": "SATURDAY_NO_EXCHANGE_CALENDAR",
+      "state": "ENTRY_PENDING",
+      "quality": "NO_FILL",
+      "finding": "Saturday marketDate accepted without calendar authority"
+    },
+    {
+      "id": "REVERSED_SESSION_DATES",
+      "state": "NO_FILL",
+      "quality": "NO_FILL",
+      "finding": "contiguous sequence number 1,2 masks market date reversal"
+    },
+    {
+      "id": "DUPLICATED_SESSION_DATES",
+      "state": "NO_FILL",
+      "quality": "NO_FILL",
+      "finding": "same market date accepted twice"
+    },
+    {
+      "id": "UNPROVED_CALENDAR_GAP",
+      "state": "NO_FILL",
+      "quality": "NO_FILL",
+      "finding": "six-plus-day market date gap has no official trading-calendar receipt"
+    },
+    {
+      "id": "ALL_OHLC_UNKNOWN_DAY_TWO",
+      "state": "NO_FILL",
+      "quality": "DATA_UNKNOWN",
+      "finding": "all OHLC missing in entry window still yields NO_FILL"
+    },
+    {
+      "id": "PARTIAL_HIGH_UNKNOWN_DAY_TWO",
+      "state": "NO_FILL",
+      "quality": "DATA_UNKNOWN",
+      "finding": "highest price unknown but NO_FILL state issued"
+    },
+    {
+      "id": "PARTIAL_LOW_UNKNOWN_DAY_TWO",
+      "state": "NO_FILL",
+      "quality": "DATA_UNKNOWN",
+      "finding": "lowest price unknown but NO_FILL state issued"
+    }
+  ],
+  "summary": {
+    "negativeCases": 9,
+    "safe": 0,
+    "unsafe": 9,
+    "baselineSyntheticTwoSessionNoTouch": "NO_FILL",
+    "realMarketNoFillCertified": false,
+    "performanceEligiblePositiveClaim": false
+  },
+  "requiredBuildRemediation": [
+    "Strict canonical Gregorian YYYY-MM-DD validation for decisions, earliest execution dates and every session; invalid impossible dates fail before simulation.",
+    "Bind each simulated session to officially verified Taiwan exchange open session provenance, source date, observation/vintage hashes, and explicit PIT availableAt. A synthetic calendar is not physical proof.",
+    "Verify session dates strictly increase, unique and match the official expected trading-calendar sequence, not merely sessionNumber 1..n; fail closed on skipped/unknown date intervals.",
+    "Never emit state=NO_FILL if any eligible entry window date, source, OHLC trigger, liquidity/limit/stop/price-space provenance is insufficient for proofCompleteNoFill; maintain DATA_UNKNOWN/INCOMPLETE with separate denominator.",
+    "Add both independent nine-case and previous four-case regression tests and positive proofCompleteNoFill controls before requesting audit closure.",
+    "System2 Research CI, V8 regression and exact merged main run required; retain System1 Formal Core isolation."
+  ],
+  "openGates": [
+    "Original CORR-013 remains OPEN, assigned BUILD_LANE",
+    "Data availability, corporate-action/lifecycle continuity and PIT are independent DATA_LANE gates",
+    "No shadow performance, selected-to-filled statistics or official NO_FILL denominators can count these synthetic cases"
+  ],
+  "protected": {
+    "system1FormalCoreChanged": false,
+    "system1ProductionRuntimeChanged": false,
+    "system2ProductionSelectionChanged": false,
+    "d1Writes": 0,
+    "orders": 0,
+    "livePush": false
+  }
+}
