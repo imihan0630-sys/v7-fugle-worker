@@ -4645,3 +4645,62 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-280 — audit the remaining D02-01 semantic-governance -> D16 admission path for the same admitted-dataset substitution degree of freedom, then freeze one canonical all-D02 end-to-end admission-lineage rule across D02-01 + Wave-1 + Wave-2 without changing any feature semantics, target values, outcomes or Formal Core. If D02-01 already binds the exact dataset immutably, record NO_DEFECT rather than inventing another gate.
+
+
+## PVE-280~281 continuation — all-D02 D16 admission-lineage closure (2026-10-08)
+
+Status: PVE280_D02_01_D16_DATASET_SUBSTITUTION_DEFECT_CERTIFIED / PVE280_SEMANTIC_BINDING_FROZEN / PVE281_ALL_14_EVIDENCE_KEYS_CANONICAL_LINEAGE_FROZEN / NO_OUTCOME_ACCESS / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### PVE-280 — D02-01 semantic admission -> D16 exact dataset binding
+
+Artifacts:
+- `research/d02_pve280_d16_semantic_admission_binding_v0_1.mjs`;
+- `tests/test_d02_pve280_d16_semantic_admission_binding_v0_1.mjs`;
+- `research/D02_PVE280_D16_SEMANTIC_ADMISSION_BINDING_20261008_V0_1.md`;
+- run `37723069570`: SUCCESS;
+- 23 assertions PASS.
+
+The underlying D02-01 semantic gate is not defective at row semantics. It already enforces prospective capture, unit provenance, zero-vs-missing, suspension, corporate-action semantics, known-at clocks and frozen governed-vs-counterfactual classification.
+
+The remaining defect was dataset identity:
+`evaluateD0201SemanticDataset()` does not bind its admitted row set with an immutable admitted-dataset hash, while D16 V0.2 can otherwise accept a semantic validation receipt solely by admissionVersion/effect-target/statistical fields.
+
+PVE-280 reproduces that downstream substitution path and requires:
+- exact D02-01 admission identity;
+- semantic admission ready and fatalIntegrity=false;
+- pre-outcome/outcome-blind receipt;
+- immutable receipt hash;
+- immutable admitted dataset hash;
+- admittedDatasetHash == d16InputDatasetHash;
+- admitted row count == D16 common-support count.
+
+### PVE-281 — canonical all-D02 end-to-end lineage entry
+
+Artifacts:
+- `research/d02_pve281_canonical_end_to_end_admission_lineage_v0_1.mjs`;
+- `tests/test_d02_pve281_canonical_end_to_end_admission_lineage_v0_1.mjs`;
+- `research/D02_PVE281_CANONICAL_END_TO_END_ADMISSION_LINEAGE_20261008_V0_1.md`;
+- run `37723184760`: SUCCESS;
+- 95 assertions PASS;
+- evidence key count = 14.
+
+Canonical routing:
+- D02-01:SEMANTIC_GOVERNANCE -> PVE-280;
+- D02-02:H001 / D02-03:H20 / D02-06:H003 -> PVE-276;
+- all ten Wave-2 evidence keys/families -> PVE-279.
+
+Legacy admission versions remain component/history contracts but cannot independently satisfy current D02->D16 lineage.
+
+PVE-281 explicitly preserves D16 statistical ownership and never authorizes maturity promotion or Formal Core change.
+
+### Research state
+
+All 14 D02 evidence keys now have an end-to-end pre-outcome admission-lineage route to D16 with exact admitted-dataset binding.
+This is integrity closure, not alpha evidence.
+D02 remains 60.0%; all 12 modules remain L3.
+Clean prospective dates remain 0.
+Gate 7 CLOSED.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-282 — re-audit latest-main readiness for the two remaining promotion-design dependencies: (1) numerical EffectTargetReceipt readiness per D02 evidence key, including any newly available D14 cost/utility provenance; and (2) actual D16 Wave-1 ModelMethodReceipt readiness for H001/H20/H003. Do not invent a numerical target or estimator. Classify each dependency as READY / PARTIAL / BLOCKED from current canonical evidence, then advance only the pieces whose provenance is genuinely complete.
