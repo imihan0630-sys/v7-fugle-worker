@@ -35,6 +35,41 @@ function ownHash(receipt) {
     || null;
 }
 
+function ownHashField(receipt) {
+  if (typeof receipt?.receiptHash === "string") return "receiptHash";
+  if (typeof receipt?.featureHash === "string") return "featureHash";
+  if (typeof receipt?.bundleHash === "string") return "bundleHash";
+  return null;
+}
+
+async function orderedJsonSha256Hex(value) {
+  const bytes = new TextEncoder().encode(JSON.stringify(value));
+  if (globalThis.crypto?.subtle) {
+    const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
+    return [...new Uint8Array(digest)]
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+  const { createHash } = await import("node:crypto");
+  return createHash("sha256").update(bytes).digest("hex");
+}
+
+async function recomputeComponentHash(receipt) {
+  const field = ownHashField(receipt);
+  if (!field) return { field: null, claimed: null, recomputed: null, valid: false };
+  const claimed = String(receipt[field] || "");
+  const payload = stripHash(receipt, field);
+  const recomputed = field === "featureHash"
+    ? await orderedJsonSha256Hex(payload)
+    : await sha256Hex(payload);
+  return {
+    field,
+    claimed,
+    recomputed,
+    valid: HASH_RE.test(claimed) && claimed === recomputed,
+  };
+}
+
 function normalizeAvailableAt(receipt) {
   return receipt?.availableAt
     || receipt?.sourceObservedAt
@@ -42,7 +77,7 @@ function normalizeAvailableAt(receipt) {
     || null;
 }
 
-function validateDimensionSource(receipt, {
+async function validateDimensionSource(receipt, {
   marketDate,
   decisionTimestamp,
   tag,
@@ -76,13 +111,18 @@ function validateDimensionSource(receipt, {
   if (typeof identity !== "string" || !identity.trim()) blockers.push(tag + "_SOURCE_IDENTITY_MISSING");
 
   const hash = ownHash(receipt);
+  const componentHash = await recomputeComponentHash(receipt);
   if (!HASH_RE.test(String(hash || ""))) blockers.push(tag + "_SOURCE_HASH_MISSING_OR_INVALID");
+  else if (!componentHash.valid) blockers.push(tag + "_SOURCE_HASH_MISMATCH");
 
   return {
     ready: blockers.length === 0,
     blockers,
     sourceIdentity: identity,
     sourceRef: hash,
+    sourceHashField: componentHash.field,
+    sourceHashRecomputed: componentHash.recomputed,
+    sourceHashVerified: componentHash.valid,
     availableAt: Number.isFinite(availableMs) ? new Date(availableMs).toISOString() : null,
   };
 }
@@ -100,6 +140,9 @@ async function dimensionPayload({
     reason,
     sourceRef: proof?.sourceRef || null,
     sourceIdentity: proof?.sourceIdentity || null,
+    sourceHashField: proof?.sourceHashField || null,
+    sourceHashRecomputed: proof?.sourceHashRecomputed || null,
+    sourceHashVerified: proof?.sourceHashVerified === true,
     availableAt: proof?.availableAt || null,
     pointInTimeEligible: proof?.ready === true,
     blockerCodes: Object.freeze([...(proof?.blockers || [])]),
@@ -162,6 +205,12 @@ async function validateDimensionEvidenceRow(row) {
     }
     if (!row.sourceIdentity) blockers.push("DIMENSION_SOURCE_IDENTITY_MISSING");
     if (!HASH_RE.test(String(row.sourceRef || ""))) blockers.push("DIMENSION_SOURCE_HASH_INVALID");
+    if (row.sourceHashVerified !== true) blockers.push("DIMENSION_COMPONENT_HASH_NOT_VERIFIED");
+    if (!HASH_RE.test(String(row.sourceHashRecomputed || ""))) {
+      blockers.push("DIMENSION_COMPONENT_RECOMPUTED_HASH_INVALID");
+    } else if (row.sourceHashRecomputed !== row.sourceRef) {
+      blockers.push("DIMENSION_COMPONENT_HASH_MISMATCH");
+    }
   }
   return { valid: blockers.length === 0, blockers, recomputed };
 }
@@ -267,7 +316,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
   }
 
   // Hard prerequisites use the same source/PIT/hash firewall as every optional dimension.
-  const taiexProof = validateDimensionSource(taiexContext, {
+  const taiexProof = await validateDimensionSource(taiexContext, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "TAIEX_CONTEXT",
@@ -281,7 +330,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
   }
   reasons.push(...taiexProof.blockers);
 
-  const breadthProof = validateDimensionSource(directionBreadth, {
+  const breadthProof = await validateDimensionSource(directionBreadth, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "DIRECTION_BREADTH",
@@ -362,7 +411,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
   });
 
   // Optional contexts must independently prove date/clock/PIT/availability/source/hash.
-  const activityProof = validateDimensionSource(activityContext, {
+  const activityProof = await validateDimensionSource(activityContext, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "ACTIVITY_CONTEXT",
@@ -385,7 +434,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
     );
   }
 
-  const concentrationProof = validateDimensionSource(concentrationContext, {
+  const concentrationProof = await validateDimensionSource(concentrationContext, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "CONCENTRATION_CONTEXT",
@@ -409,7 +458,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
     );
   }
 
-  const institutionalProof = validateDimensionSource(institutionalContext, {
+  const institutionalProof = await validateDimensionSource(institutionalContext, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "INSTITUTIONAL_CONTEXT",
@@ -433,7 +482,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
     );
   }
 
-  const sizeProof = validateDimensionSource(sizeLeadership, {
+  const sizeProof = await validateDimensionSource(sizeLeadership, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "SIZE_LEADERSHIP",
@@ -442,7 +491,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
     ? await knownDimension(sizeLeadership.value, sizeProof)
     : await unknownDimension("PIT_MARKET_CAP_VINTAGE_NOT_READY", sizeProof);
 
-  const globalProof = validateDimensionSource(globalTransmission, {
+  const globalProof = await validateDimensionSource(globalTransmission, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "GLOBAL_TRANSMISSION",
@@ -451,7 +500,7 @@ export async function buildD18ObservableRegimeVectorV0_1({
     ? await knownDimension(globalTransmission.value, globalProof)
     : await unknownDimension("DURABLE_GLOBAL_DECISION_TIME_RECEIPTS_NOT_READY", globalProof);
 
-  const sectorProof = validateDimensionSource(sectorRotation, {
+  const sectorProof = await validateDimensionSource(sectorRotation, {
     marketDate: date,
     decisionTimestamp: clock,
     tag: "SECTOR_ROTATION",
