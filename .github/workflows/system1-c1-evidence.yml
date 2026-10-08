@@ -57,13 +57,14 @@ jobs:
           OPPORTUNITY_LOSS_OUTPUT: artifacts/system1-opportunity-loss-v0.3.json
         run: node tests/build_system1_h1_h5_prospective_postprocess.mjs
       - name: Build genuine prospective operational acceptance receipt
-        if: github.event_name == 'schedule'
+        if: always() && github.event_name == 'schedule'
         env:
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
           C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
           C1_INVENTORY_OUTPUT: artifacts/system1-c1-generation-inventory.json
           FORMAL_C1_BINDING_OUTPUT: artifacts/system1-formal-c1-binding.json
           H1_H5_READINESS_OUTPUT: artifacts/system1-h1-h5-readiness.json
+          C1_READINESS_OUTPUT: artifacts/system1-c1-readiness.json
           OPERATIONAL_ACCEPTANCE_OUTPUT: artifacts/system1-operational-acceptance.json
           ACCEPTANCE_EVENT_NAME: ${{ github.event_name }}
           ACCEPTANCE_SCHEDULE: ${{ github.event.schedule }}
