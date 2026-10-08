@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T00:49:52+08:00",
+  "updatedAt": "2026-10-09T01:11:08+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1823,7 +1823,7 @@
       "directiveId": "S2-CORR-20261008-011",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Immutable persistence executor trusts unverified batch SQL and digest fields",
       "affectedScope": [
         "S2-08 immutable decision persistence",
@@ -1871,13 +1871,22 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #901 merged as 98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882.",
+        "system2/evidence/S2_CORR_011_BUILD_IMPLEMENTATION_HANDOFF_20261009_V0_1.json",
+        "Canonical table/column/identity/digest/SQL regeneration, exact post-write readback, measured statement ledger, append-only decision corrections and decision/order/fill/outcome parent-lineage guards are merged.",
+        "Canonical immutable persistence rebuilds whitelisted SQL/digests/identities before transport, performs exact post-write readback and enforces decision/execution parent lineage."
+      ],
       "verificationEvidence": [
         "Independent batch audit AP-08 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
-        "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval."
+        "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval.",
+        "Exact-head PASS on 2f8eb9a042154668c740a56cefa02c41fa61d65a: CORR-011 37814281548; System2 Research CI 37814281345; V8 Regression 37814281392.",
+        "Merged-main PASS on 98fa1f0d562a4e479d9a0e0eaa2e6dfd8f06a882: CORR-011 37814464487; System2 Research CI 37814464192; V8 Regression 37814464250.",
+        "AP-08 UPDATE-as-INSERT is rejected before db.batch; SQL/hash/identity/table/column tamper, post-write divergence and parent-lineage negatives fail closed.",
+        "Independent AP-08 witness now reports SAFE under the dedicated CORR-011 gate; independent AUDIT_LANE closure review is still required."
       ],
-      "finalDisposition": "OPEN — independent AUDIT_LANE dynamic adversarial witness reproduces original HIGH defect on the current code; no implementation, no formal acceptance, no production credit.",
-      "updatedAt": "2026-10-08T22:59:13+08:00"
+      "finalDisposition": "FIX_IMPLEMENTED — caller SQL/hash/identity/table/column authority is removed from immutable persistence; AP-08 is fail-closed before db.batch, exact readback and parent lineage guards are present. Independent AUDIT_LANE verification remains required before VERIFIED_CLOSED.",
+      "updatedAt": "2026-10-09T01:11:08+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-012",
