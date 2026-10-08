@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "S2_RECENT60_PIT_COVERAGE_SQL_BOUNDED_READ_PLAN_V0_1",
+  "scope": "SYSTEM2_DATA_LANE_RESEARCH_ONLY",
+  "status": "REPOSITORY_IMPLEMENTATION_PENDING_CI_AND_PHYSICAL_RECONCILIATION",
+  "observedProblem": {
+    "source": "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+    "legacySql": "Full historical eligible CTE over all prior dates, followed by per-symbol/date grouping and ROW_NUMBER window to obtain last requiredPriorSessions",
+    "accountConcern": "Cloudflare D1 account-wide daily ROW READ limit exhausted during 2026-10-09 physical 96 July hot/cold reconciliation",
+    "realQuotaFailureRunId": 37858652385,
+    "quotaError": "D1_FREE_TIER_DAILY_ROW_READ_LIMIT_EXCEEDED",
+    "physicalQueryRowsBeforeAfterMeasured": false
+  },
+  "change": {
+    "scanFloorSource": "Exact official priorTradingDates lower bound, only when listing metadata READY and calendar contains at least requiredPriorSessions",
+    "sqlBound": "market_date >= calendar[0] AND market_date < marketDate",
+    "fallback": "When calendar missing, listing metadata not READY, or calendar shorter than required sessions, preserve legacy unbounded query",
+    "parameters": "All values bound, no interpolated user-supplied SQL",
+    "businessSemantics": "Still require exact expected session set, immutable PIT_eligible rows, source available_at <= decisionTimestamp, no revision ambiguity and independent continuity proof",
+    "neverUpgrade": [
+      "PIT",
+      "historyReady",
+      "continuityReady",
+      "NC-T01",
+      "aggregate replay"
+    ],
+    "sourceDateBackdated": false,
+    "system1FormalCoreChanged": false,
+    "productionTouched": false,
+    "billingUpgradeRequired": false
+  },
+  "tests": [
+    "61-day verified calendar produces lowerBound and five bound SQL parameters",
+    "No PIT bars remains 0 historyReady despite bounded scan",
+    "Existing 60 fully PIT rows stay historyReady but no continuity promotion",
+    "Missing calendar falls back to original SQL",
+    "Short 59-day calendar falls back to original SQL",
+    "Missing listing metadata falls back to original SQL"
+  ],
+  "acceptance": [
+    "Unit tests and existing System2 Research CI PASS",
+    "V8 Regression PASS",
+    "Merged main reader/query identity readback",
+    "Physical D1 row-read delta can be evaluated only with actual Cloudflare quota headroom and controlled read-only run after 08:00 reset",
+    "No claims of physical data completion, historical publication clocks, or continuity readiness from query optimization"
+  ]
+}
