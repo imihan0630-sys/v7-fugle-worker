@@ -1504,3 +1504,17 @@ Durable source-positive evidence: `system2/evidence/S2_RECENT60_JULY_2026_OFFICI
 After reset at midnight UTC = 08:00 Asia/Taipei, independently check D1 READ budget / single-writer with REMEDIATION_LANE, then retry the bounded #919 merged-main hot/cold physical run once (not an all-market backfill). If needed, reduce physical read surface only through separately tested source-honest change; no HOT/PIT backdating, corporate-action `NO_EVENT` inference, or NC-T01 promotion. 46 currently history-ready symbols still have 0 independent continuity-ready; the full NC-T01 continuity source receipts remain a separate prerequisite.
 
 Protected System1 V8 Formal Core/runtime, capital, push, selection and orders untouched.
+
+## 2026-10-09 07:29 Asia/Taipei — FULL 96/96 frozen July official A1 symbol/date source witness PASS (POST FACTO only)
+
+DATA_LANE PR #922 merged as `656affbff08c5671c20aaf0d376e99cfea36ddca`; System2 Research CI + V8 Regression PASS. Its independent zero-Cloudflare writer/reader official-source Action [Run #37859630615](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37859630615), job `113592009517`, SUCCESS. Immutable Artifact `11585263592`, sha256 `6e18d1cd6209ccdea06721ba81d1c27fe3830e37ff375aaa0713b625bb66f030`, retained 90 days.
+
+Original frozen high-missing 2026-10-08 Hot D1 sample from Run #37854849181 was **12 named stocks × 8 exact 2026-07-14..23 trading dates = 96 market-symbol-date identities** physically absent from isolated Hot D1 when checked earlier on 2026-10-09. The new **retrospective** official canonical exact-date GET check independently fetched all TWSE eight dates plus TPEx eight dates: 16/16 official dates source-ready, six sampled ordinary symbols per market/date, **96/96 official symbol-date presences confirmed NOW**; 0 source-date mismatch and 0 missing sampled identities among successful official responses. The workflow used **0 Cloudflare D1 reads/writes, 0 R2 reads/writes**, and System1 production isolation PASS.
+
+**Do not promote PIT from this positive evidence:** this proves official historical source *currently* has the original frozen 96 sample bars, not that each was published/known at the original July cutoff. It does not certify the other ~44,160 missing PIT eligible symbol-session identities, current Hot D1 readiness, 2026 July Cold R2 month receipts/manifests, full historic universe, MOPS/lifecycle/suspension NO_EVENT, corporate-action continuity, NC-T01 or replay. Sample is deliberately priority-selected, not random.
+
+Account free D1 **ROW READ** quota still blocked the merged-main hot/cold physical Run #37858652385 (artifact 11584838697) before any of the 96 dates could be rechecked. Do not pay/upgrade or blindly dispatch. After 2026-10-09 08:00 Asia/Taipei quota reset, first coordinate REMEDIATION_LANE budget/read contention; then make one bounded read-only hot/cold reconciliation of the exact previously frozen sample and retain both observation timestamps without rewriting the source archive.
+
+Immutable physical source evidence: `system2/evidence/S2_RECENT60_JULY_2026_ALL96_OFFICIAL_SOURCE_POSTFACTO_20261009_V0_1.json`. Earlier 4/4 source evidence and D1 quota blocker remain separately preserved in main; no overwrite.
+
+Protected: System1 Formal Core, A/B Top6, signals, push, 15-minute K, capital, orders, Cloudflare production runtime unchanged.
