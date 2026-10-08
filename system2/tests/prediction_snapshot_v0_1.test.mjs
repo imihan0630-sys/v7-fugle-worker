@@ -41,6 +41,7 @@ function factor(symbol, id, rawValue, normalizedValue) {
       availableAt: "2026-09-29T07:20:00Z",
       capturedAt: "2026-09-29T07:25:00Z",
       pointInTimeEligible: true,
+      payloadHash: "fixture-payload-hash",
     },
     normalization: {
       method: "BOUNDED_RATIO",
@@ -49,6 +50,28 @@ function factor(symbol, id, rawValue, normalizedValue) {
     qualityFlags: [],
   });
 }
+
+const predictionEvidenceContract = {
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  evidenceFamilies: [
+    {
+      family: "PRICE_VOLUME",
+      factorIds: ["PV.TEST"],
+      unknownBlocksEligibility: true,
+    },
+  ],
+};
+
+const predictionFamilyAssessments = {
+  PRICE_VOLUME: {
+    family: "PRICE_VOLUME",
+    observationState: "KNOWN",
+    thesisState: "SUPPORTIVE",
+    reasons: ["fixture"],
+    warnings: [],
+  },
+};
 
 async function decision({
   decisionId,
@@ -100,6 +123,8 @@ async function decision({
     factorObservations: [obs],
     interactionObservations: [],
     regime,
+    strategyContract: predictionEvidenceContract,
+    familyAssessments: predictionFamilyAssessments,
     frozenAt: capturedAt,
   });
 }
@@ -183,6 +208,8 @@ assert.equal(bundle.cohortCounts.IMPORTANT_REJECTED, 1);
 assert.equal(bundle.zeroPickDay, false);
 assert.equal(bundle.outcomeJoinEligible, true);
 assert.deepEqual(bundle.outcomeJoinBlockers, []);
+assert.equal(selected.decisionEvidence.state, "READY");
+assert.equal(selected.decisionEvidence.outcomeJoinEligible, true);
 
 const selectedRow = bundle.decisions.find((x) => x.decisionId === "D-SEL");
 assert.equal(selectedRow.companyName, "聯發科");
