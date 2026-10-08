@@ -410,6 +410,60 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   }
 
   const blockers = [];
+  // CORR-012: observed extrema are never allowed to disappear during maturation.
+  for (const key of ["mfe", "mae"]) {
+    if (existingRow[key] !== null && existingRow[key] !== undefined
+      && (nextRow[key] === null || nextRow[key] === undefined)) {
+      blockers.push(`EXCURSION_ERASURE:${key}`);
+    }
+  }
+
+  // A closed trade's holding period is historical evidence, not a recalculable preference.
+  if (existingRow.holding_sessions !== null && existingRow.holding_sessions !== undefined
+    && existingRow.realized_return_after_cost !== null
+    && existingRow.realized_return_after_cost !== undefined
+    && !equalNullableNumber(existingRow.holding_sessions, nextRow.holding_sessions, 0)) {
+    blockers.push("CLOSED_HOLDING_SESSIONS_REVISION");
+  }
+
+  // Fail closed on immutable context. Observations, horizons, and updatedAt may
+  // mature; price-space, strategy/execution assumptions and cost models may not.
+  let priorPayload, nextPayload;
+  try {
+    priorPayload = JSON.parse(existingRow.outcome_json);
+    nextPayload = JSON.parse(nextRow.outcome_json);
+    if (!priorPayload || typeof priorPayload !== "object" ||
+        !nextPayload || typeof nextPayload !== "object") throw new Error("invalid payload");
+  } catch {
+    blockers.push("OUTCOME_JSON_UNREADABLE");
+  }
+  if (priorPayload && nextPayload) {
+    const immutablePaths = [
+      "decisionId", "decisionHash", "symbol", "strategyId", "strategyVersion",
+      "decisionMarketDate", "decisionTimestamp", "referencePrice",
+      "referencePriceType", "priceSpace", "corporateActionState",
+      "corporateActionLineage", "regimeSnapshotHash", "regimeHash",
+      "executionHash", "costModelHash", "taxRuleHash", "entryPlan",
+      "costScenarios",
+    ];
+    for (const key of immutablePaths) {
+      if (JSON.stringify(priorPayload[key] ?? null) !== JSON.stringify(nextPayload[key] ?? null)) {
+        blockers.push(`IMMUTABLE_OUTCOME_PROVENANCE_REVISION:${key}`);
+      }
+    }
+    const priorExecution = priorPayload.simulatedExecution;
+    const nextExecution = nextPayload.simulatedExecution;
+    if (priorExecution && (
+      !nextExecution ||
+      ["executionVersion", "fillQuality"].some(
+        key => JSON.stringify(priorExecution[key] ?? null)
+          !== JSON.stringify(nextExecution[key] ?? null)
+      )
+    )) {
+      blockers.push("SIMULATED_EXECUTION_ASSUMPTION_REVISION");
+    }
+  }
+
   for (const key of ["d1_return", "d3_return", "d5_return", "d10_return", "d20_return"]) {
     const oldValue = existingRow[key];
     const nextValue = nextRow[key];
