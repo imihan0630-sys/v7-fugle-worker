@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "S2_CORR_010_BUILD_IMPLEMENTATION_HANDOFF_V0_1",
+  "recordedAt": "2026-10-08T15:10:25+08:00",
+  "owner": "SYSTEM2_BUILD_CONTROL_ROOM",
+  "correction": "S2-CORR-20261008-010",
+  "severity": "CRITICAL",
+  "status": "FIX_IMPLEMENTED_AUDIT_LANE_VERIFICATION_PENDING",
+  "observedMain": "0d3e10cda9106c876c742168bae4f3e71a607b2f",
+  "implementation": {
+    "primaryPullRequest": 864,
+    "supersededPullRequest": 862,
+    "mergeCommit": "d0a0554960883aad3d5f85989148ef044f9e135c",
+    "behavior": [
+      "Outcome-join eligibility now requires a closed-set lineage across source-session receipt, shadow-run accounting receipt, decision snapshots and run fingerprints.",
+      "Source-session, run-accounting, decision, decision-evidence and run-fingerprint digests are recomputed and verified rather than trusted as caller strings.",
+      "Market date, decision clock, strategy id/version, shadow spec and universe version must agree across linked receipts.",
+      "Decision hashes must match the complete expected decision set with no foreign, missing, duplicate or extra coverage; an empty set is legal only for separately proved zero-eligible-universe accounting.",
+      "AP-02 and AP-03 cross-strategy/version/date and mismatched-receipt attacks fail closed."
+    ]
+  },
+  "exactHeadPullRequestValidation": {
+    "head": "2e943d9cda1870abb55b7547741eed82a24e534e",
+    "runs": [
+      {
+        "name": "System2 CORR-010 Outcome Join Closed Set V0.1",
+        "runId": 37741546228,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 CORR-009 Decision PIT Firewall V0.1",
+        "runId": 37741546094,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37741546128,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37741546086,
+        "result": "PASS"
+      }
+    ]
+  },
+  "mergedMainValidation": {
+    "main": "d0a0554960883aad3d5f85989148ef044f9e135c",
+    "runs": [
+      {
+        "name": "System2 CORR-010 Outcome Join Closed Set V0.1",
+        "runId": 37741728923,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 CORR-009 Decision PIT Firewall V0.1",
+        "runId": 37741728744,
+        "result": "PASS"
+      },
+      {
+        "name": "System2 Research CI",
+        "runId": 37741728771,
+        "result": "PASS"
+      },
+      {
+        "name": "V8 Regression Tests",
+        "runId": 37741728752,
+        "result": "PASS"
+      }
+    ]
+  },
+  "nonClaims": [
+    "BUILD_LANE does not self-close a CRITICAL correction.",
+    "CORR-010 remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+    "No physical NC-T01 S22-T11..T16 credit is claimed by this correction.",
+    "No System1 Formal Core/runtime, strategy weight/threshold, final-selection, live-push, capital or order authority changed."
+  ],
+  "exactNext": [
+    "AUDIT_LANE independently reproduces AP-02/AP-03 and verifies merged-main closed-set outcome-join lineage.",
+    "BUILD_LANE continues the next unblocked CRITICAL correction from the canonical queue.",
+    "CORR-008 remains blocked by CORR-007 until independent closure."
+  ]
+}
