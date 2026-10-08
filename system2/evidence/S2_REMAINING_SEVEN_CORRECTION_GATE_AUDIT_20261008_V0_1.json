@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_V0_1",
+  "recordedAt": "2026-10-08T22:48:38+08:00",
+  "owner": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "scope": "READ_ONLY_CROSS_LANE_REAUDIT_WITH_RESOLVED_DEPENDENCY_RELEASE",
+  "canonicalStatus": {
+    "total": 24,
+    "verifiedClosed": 16,
+    "rejectedWithEvidence": 1,
+    "remaining": 7,
+    "system1FormalCore": "LOCKED"
+  },
+  "dependencyFinding": {
+    "directive": "S2-CORR-20261008-008",
+    "previousBlockedBy": [
+      "S2-CORR-20261008-007"
+    ],
+    "resolvedBy": "S2-CORR-20261008-007 = VERIFIED_CLOSED via PR #871 and commit 35295e412911193a49f332496821fc42f8ff5f6d",
+    "updatedBlockedBy": [],
+    "directiveStatusUnchanged": "OPEN",
+    "whatIsNotReleased": [
+      "CORR-008 runtime guard implementation and independent verification",
+      "Real bounded TWTAWU source receipt and three CA refs",
+      "Physical NC-T01 S22-T11..T16 coherence"
+    ]
+  },
+  "highRiskBuildAcceptance": [
+    {
+      "directive": "S2-CORR-20261008-008",
+      "state": "OPEN",
+      "assignedLane": "BUILD_LANE",
+      "openPR": 844,
+      "prHead": "9d690d120d017c8fab5424c02e0dfb8a90008a49",
+      "observedPRBehindMainByCommits": 416,
+      "mergeable": false,
+      "requirements": [
+        "Pre-transport mutation-denial guard for remote D1 query path",
+        "Fetch allowed-origin guard rejects before network call",
+        "Measured runtime forbidden access count and complete ledger, no hardcoded zero",
+        "Bind ledger hash through runtimeEvidenceDigest, hidden fallback auditDigest and final receiptHash",
+        "Negative tests mutate SQL/origin/ledger and preserve zero physical writes",
+        "Recreate or rebase stale PR head on current main; no unverified physical acceptance"
+      ]
+    },
+    {
+      "directive": "S2-CORR-20261008-011",
+      "state": "OPEN",
+      "assignedLane": "BUILD_LANE",
+      "currentMainRuntimeFile": "system2/runtime/persistence_executor.mjs",
+      "currentMainRuntimeBlobSha": "3353bfedb511cb62275f682ec63345ed3ba75bea",
+      "observedUnsafePaths": [
+        "readExisting() executes caller operation.sql.selectSql via db.prepare at line 25",
+        "executor executes caller operation.sql.insertSql via db.prepare at line 69",
+        "returns supplied batch.batchHash and rowDigest without recomputation around lines 63 and 103"
+      ],
+      "requiredIndependentProof": [
+        "AP-08 malicious UPDATE supplied as insertSql is rejected before db.batch",
+        "both SELECT and INSERT SQL constructed by exact TABLE_SPECS whitelist only",
+        "row/batch hash and identity recalculated with nonmatching values fail-closed",
+        "immutable persistence row readback verified after insertion",
+        "parent decision/order/fill/outcome integrity enforced without System1 changes"
+      ]
+    },
+    {
+      "directive": "S2-CORR-20261008-012",
+      "state": "OPEN",
+      "assignedLane": "BUILD_LANE",
+      "currentMainRuntimeFile": "system2/runtime/outcome_tracker_v0_1.mjs",
+      "currentMainRuntimeBlobSha": "e264d0a9b547cfd3c7753b77c473ab60fafb96e3",
+      "observedUnsafePaths": [
+        "MFE guard at lines 438-444 and MAE guard at lines 445-451 skip comparison if next value is null",
+        "Monotonic update validator lines 401-470 omits holding_sessions and outcome_json lineage",
+        "No storage-lineage verification of decisionHash, exact strategyVersion, executionHash, Regime evidence hash and costModelHash"
+      ],
+      "requiredIndependentProof": [
+        "AP-05 known MFE/MAE cannot revert to null",
+        "closed-trade holding_sessions cannot change",
+        "strategy/version/regime/execution/cost identity mutation rejected",
+        "changing cost assumptions forces distinct versioned outcome",
+        "simulated net cost return not mislabeled signal return"
+      ]
+    },
+    {
+      "directive": "S2-CORR-20261008-013",
+      "state": "OPEN",
+      "assignedLane": "BUILD_LANE",
+      "currentMainRuntimeFile": "system2/runtime/execution_simulator_v0_1.mjs",
+      "currentMainRuntimeBlobSha": "0df527ded888ed99cd93437100bd8df00b09d822",
+      "observedUnsafePaths": [
+        "normalizeSessions lines 85-104 validates sequential sessionNumber but not strictly increasing valid YYYY-MM-DD marketDate",
+        "if entry window reaches entryValidity, lines 659-679 assign state=NO_FILL even when blockedObservations includes DATA_UNKNOWN"
+      ],
+      "requiredIndependentProof": [
+        "AP-06 reversed, duplicated, malformed dates rejected before simulation",
+        "only fully known entry window may earn proofCompleteNoFill",
+        "missing/blocked OHLC cannot produce genuine NO_FILL",
+        "official calendar and certified nontrading gaps explicit",
+        "invalid/unknown observations accounted separately from trigger denominators"
+      ]
+    }
+  ],
+  "otherLaneOutstanding": [
+    {
+      "directive": "S2-CORR-20261004-001",
+      "lane": "DATA_LANE",
+      "state": "FIX_IN_PROGRESS",
+      "remaining": "Historical TPEx physical annual backfill and coverage receipts; no paid upgrade and quota budget must be independently checked"
+    },
+    {
+      "directive": "S2-CORR-20261007-001",
+      "lane": "DATA_LANE",
+      "state": "FIX_IMPLEMENTED",
+      "remaining": "Real trading-day prospective A1 exact-date fallback witness; source-selection code fix does not by itself establish physical timing proof"
+    },
+    {
+      "directive": "S2-CORR-20261007-003",
+      "lane": "REMEDIATION_LANE",
+      "state": "OPEN",
+      "remaining": "UTC-day account-wide D1 free quota measured write reservations, push-path write guard, priority gate and adaptive measured usage; no paid upgrade"
+    }
+  ],
+  "verificationBoundary": {
+    "method": "GitHub canonical main file/directive readback and PR compare, not dynamic code execution",
+    "newRuntimeCodeChanged": false,
+    "testsRerun": false,
+    "rawSourceObserved": "latest main at time of audit",
+    "system1FormalOrProductionTradingChanged": false
+  },
+  "actionablePriority": [
+    "BUILD: repair high-risk immutable persistence executor CORR-011 and its pre-transport SQL trust boundary",
+    "BUILD: implement CORR-008 new exact-head physical wrapper guard, supersede 416-commit stale PR",
+    "BUILD: close CORR-012 and CORR-013 with targeted negative evidence",
+    "DATA: complete physical source witness and protected history after account-wide quota budgeting",
+    "REMEDIATION: enforce quota UTC-day gate and no high-write ordinary push"
+  ]
+}
