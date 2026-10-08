@@ -4,6 +4,7 @@ import { sha256Hex } from "./decision_archive.mjs";
 export const OUTCOME_HORIZONS_V0_1 = Object.freeze([1, 3, 5, 10, 20]);
 const PRICE_SPACES = new Set(["RAW", "ADJUSTED"]);
 const CORPORATE_ACTION_STATES = new Set(["CLEAR", "ADJUSTED", "UNKNOWN"]);
+const HASH_RE = /^[a-f0-9]{64}$/;
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(`${field} is required`);
@@ -26,6 +27,89 @@ function finiteOrNull(value, field) {
   if (value === null || value === undefined) return null;
   if (!Number.isFinite(value)) throw new Error(`${field} must be finite or null`);
   return Number(value);
+}
+
+function requiredHash(value, field) {
+  const text = requiredText(value, field);
+  if (!HASH_RE.test(text)) throw new Error(`${field} must be a lowercase SHA-256 hex digest`);
+  return text;
+}
+
+function optionalHash(value, field) {
+  if (value === null || value === undefined) return null;
+  return requiredHash(value, field);
+}
+
+function parseJsonObjectOrNull(value) {
+  if (typeof value !== "string" || !value.trim()) return null;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function canonicalImmutableOutcomeLineage(snapshot) {
+  if (!snapshot || typeof snapshot !== "object") return {};
+  return {
+    decisionId: snapshot.decisionId ?? null,
+    decisionHash: snapshot.decisionHash ?? null,
+    symbol: snapshot.symbol ?? null,
+    decisionMarketDate: snapshot.decisionMarketDate ?? null,
+    decisionTimestamp: snapshot.decisionTimestamp ?? null,
+    strategyId: snapshot.strategyId ?? null,
+    strategyVersion: snapshot.strategyVersion ?? null,
+    regimeSnapshotId: snapshot.regimeSnapshotId ?? null,
+    regimeHash: snapshot.regimeHash ?? null,
+    priceSpace: snapshot.priceSpace ?? null,
+    corporateActionState: snapshot.corporateActionState ?? null,
+    corporateActionLineageHash: snapshot.corporateActionLineageHash ?? null,
+    costScenarioSetHash: snapshot.costScenarioSetHash ?? null,
+    executionHash: snapshot.executionLineage?.executionHash
+      ?? snapshot.simulatedExecution?.executionHash
+      ?? snapshot.executionHash
+      ?? null,
+    executionVersion: snapshot.executionLineage?.executionVersion
+      ?? snapshot.simulatedExecution?.executionVersion
+      ?? snapshot.executionVersion
+      ?? null,
+    costModelHash: snapshot.executionLineage?.costModelHash
+      ?? snapshot.simulatedExecution?.costModelHash
+      ?? snapshot.costModelHash
+      ?? snapshot.costModel
+      ?? null,
+    taxRuleHash: snapshot.executionLineage?.taxRuleHash
+      ?? snapshot.simulatedExecution?.taxRuleHash
+      ?? snapshot.taxRuleHash
+      ?? null,
+    taxRuleId: snapshot.executionLineage?.taxRuleId
+      ?? snapshot.simulatedExecution?.taxRuleId
+      ?? snapshot.taxRuleId
+      ?? null,
+  };
+}
+
+function immutableLineageDifferences(existingSnapshot, nextSnapshot) {
+  const a = canonicalImmutableOutcomeLineage(existingSnapshot);
+  const b = canonicalImmutableOutcomeLineage(nextSnapshot);
+  const differences = [];
+  for (const key of Object.keys(a)) {
+    const oldValue = a[key];
+    const newValue = b[key];
+    if (oldValue === null || oldValue === undefined) {
+      if (newValue !== null && newValue !== undefined && key === "strategyId") {
+        differences.push(key);
+      }
+      continue;
+    }
+    const oldCanonical = typeof oldValue === "object" ? JSON.stringify(oldValue) : String(oldValue);
+    const newCanonical = typeof newValue === "object" ? JSON.stringify(newValue) : String(newValue);
+    if (newValue === null || newValue === undefined || oldCanonical !== newCanonical) {
+      differences.push(key);
+    }
+  }
+  return differences;
 }
 
 function simpleReturn(end, start) {
@@ -245,6 +329,12 @@ function costScenarioReturns(horizonReturns, costScenarios) {
 
 export async function buildDecisionOutcomeSnapshotV0_1({
   decisionId,
+  decisionHash,
+  strategyId,
+  strategyVersion,
+  regimeSnapshotId,
+  regimeHash,
+  corporateActionLineageHash,
   symbol,
   decisionMarketDate,
   decisionTimestamp,
@@ -261,6 +351,15 @@ export async function buildDecisionOutcomeSnapshotV0_1({
   simulatedExecution = null,
 } = {}) {
   const id = requiredText(decisionId, "decisionId");
+  const frozenDecisionHash = requiredHash(decisionHash, "decisionHash");
+  const frozenStrategyId = requiredText(strategyId, "strategyId");
+  const frozenStrategyVersion = requiredText(strategyVersion, "strategyVersion");
+  const frozenRegimeSnapshotId = requiredText(regimeSnapshotId, "regimeSnapshotId");
+  const frozenRegimeHash = requiredHash(regimeHash, "regimeHash");
+  const frozenCorporateActionLineageHash = requiredHash(
+    corporateActionLineageHash,
+    "corporateActionLineageHash",
+  );
   const code = requiredText(symbol, "symbol");
   const date = requiredText(decisionMarketDate, "decisionMarketDate");
   const decisionTime = timestamp(decisionTimestamp, "decisionTimestamp");
@@ -289,6 +388,7 @@ export async function buildDecisionOutcomeSnapshotV0_1({
   );
   const normalizedSessions = normalizeSessions(sessions, date, asOf, space);
   const normalizedCosts = normalizeCostScenarios(costScenarios);
+  const costScenarioSetHash = await sha256Hex(normalizedCosts);
   const returns = horizonMap(normalizedSessions, ref, benchmarkRef, industryRef);
   const excursions = excursion(normalizedSessions, ref);
   const barriers = barrierObservation(normalizedSessions, entryPlan);
@@ -298,6 +398,42 @@ export async function buildDecisionOutcomeSnapshotV0_1({
     if (!simulatedExecution || typeof simulatedExecution !== "object") {
       throw new Error("simulatedExecution must be an object or null");
     }
+    const executionHash = requiredHash(
+      simulatedExecution.executionHash,
+      "simulatedExecution.executionHash",
+    );
+    const executionVersion = requiredText(
+      simulatedExecution.executionVersion,
+      "simulatedExecution.executionVersion",
+    );
+    const executionOrder = simulatedExecution.order;
+    if (!executionOrder || typeof executionOrder !== "object") {
+      throw new Error("simulatedExecution.order is required for lineage");
+    }
+    if (executionOrder.decisionId !== id) throw new Error("simulatedExecution decisionId mismatch");
+    if (executionOrder.strategyId !== frozenStrategyId) throw new Error("simulatedExecution strategyId mismatch");
+    if (executionOrder.strategyVersion !== frozenStrategyVersion) {
+      throw new Error("simulatedExecution strategyVersion mismatch");
+    }
+    if (executionOrder.symbol !== code) throw new Error("simulatedExecution symbol mismatch");
+    if (executionOrder.decisionTimestamp !== decisionTime) {
+      throw new Error("simulatedExecution decisionTimestamp mismatch");
+    }
+    if (executionOrder.priceSpace !== space) throw new Error("simulatedExecution priceSpace mismatch");
+    if (executionOrder.corporateActionState !== caState) {
+      throw new Error("simulatedExecution corporateActionState mismatch");
+    }
+    const frozenCostModel = executionOrder.costModel;
+    if (!frozenCostModel || typeof frozenCostModel !== "object") {
+      throw new Error("simulatedExecution.order.costModel is required");
+    }
+    const costModelHash = await sha256Hex(frozenCostModel);
+    const taxRuleId = requiredText(frozenCostModel.taxRuleId, "simulatedExecution.order.costModel.taxRuleId");
+    const taxRuleHash = await sha256Hex({
+      taxRuleId,
+      transactionTaxRate: frozenCostModel.transactionTaxRate,
+      taxSemantics: frozenCostModel.taxSemantics,
+    });
     sim = {
       state: requiredText(simulatedExecution.state, "simulatedExecution.state"),
       realizedReturnAfterCost: finiteOrNull(
@@ -311,9 +447,11 @@ export async function buildDecisionOutcomeSnapshotV0_1({
       fillQuality: simulatedExecution.fillQuality
         ? requiredText(simulatedExecution.fillQuality, "simulatedExecution.fillQuality")
         : null,
-      executionVersion: simulatedExecution.executionVersion
-        ? requiredText(simulatedExecution.executionVersion, "simulatedExecution.executionVersion")
-        : null,
+      executionHash,
+      executionVersion,
+      costModelHash,
+      taxRuleId,
+      taxRuleHash,
     };
     if (
       sim.holdingSessions !== null
@@ -332,8 +470,44 @@ export async function buildDecisionOutcomeSnapshotV0_1({
   if (industryRef === null) warnings.push("INDUSTRY_REFERENCE_MISSING");
 
   const performanceEligible = caState !== "UNKNOWN";
-  const base = {
+  const executionLineage = sim
+    ? deepFreeze({
+        executionHash: sim.executionHash,
+        executionVersion: sim.executionVersion,
+        costModelHash: sim.costModelHash,
+        taxRuleId: sim.taxRuleId,
+        taxRuleHash: sim.taxRuleHash,
+      })
+    : null;
+
+  const identityMaterial = {
     decisionId: id,
+    decisionHash: frozenDecisionHash,
+    strategyId: frozenStrategyId,
+    strategyVersion: frozenStrategyVersion,
+    regimeSnapshotId: frozenRegimeSnapshotId,
+    regimeHash: frozenRegimeHash,
+    priceSpace: space,
+    corporateActionState: caState,
+    corporateActionLineageHash: frozenCorporateActionLineageHash,
+    costScenarioSetHash,
+    executionHash: executionLineage?.executionHash ?? null,
+    costModelHash: executionLineage?.costModelHash ?? null,
+    taxRuleHash: executionLineage?.taxRuleHash ?? null,
+  };
+  const outcomeVersionId = await sha256Hex(identityMaterial);
+
+  const base = {
+    outcomeVersionId,
+    decisionId: id,
+    decisionHash: frozenDecisionHash,
+    strategyId: frozenStrategyId,
+    strategyVersion: frozenStrategyVersion,
+    regimeSnapshotId: frozenRegimeSnapshotId,
+    regimeHash: frozenRegimeHash,
+    corporateActionLineageHash: frozenCorporateActionLineageHash,
+    costScenarioSetHash,
+    executionLineage,
     symbol: code,
     decisionMarketDate: date,
     decisionTimestamp: decisionTime,
@@ -358,7 +532,7 @@ export async function buildDecisionOutcomeSnapshotV0_1({
     performanceEligible,
     warnings: Object.freeze(warnings),
     updatedAt: asOf,
-    schemaVersion: "S2_DECISION_OUTCOME_V0_1",
+    schemaVersion: "S2_DECISION_OUTCOME_V0_2",
   };
 
   const outcomeHash = await sha256Hex(base);
@@ -387,6 +561,67 @@ export function toS2OutcomeRowV0_1(snapshot) {
       ? finiteOrNull(sim.realizedReturnAfterCost, "simulatedExecution.realizedReturnAfterCost")
       : null,
     holding_sessions: sim?.holdingSessions ?? null,
+    outcome_json: JSON.stringify(snapshot),
+    updated_at: requiredText(snapshot.updatedAt, "updatedAt"),
+  });
+}
+
+export function toS2OutcomeVersionRowV0_2(snapshot) {
+  if (!snapshot || typeof snapshot !== "object") throw new Error("outcome snapshot is required");
+  if (snapshot.schemaVersion !== "S2_DECISION_OUTCOME_V0_2") {
+    throw new Error("V0.2 outcome snapshot is required");
+  }
+  const h = snapshot.horizonReturns || {};
+  const b = snapshot.barrierObservation || {};
+  const sim = snapshot.simulatedExecution || null;
+  const execution = snapshot.executionLineage || null;
+  return Object.freeze({
+    outcome_version_id: requiredHash(snapshot.outcomeVersionId, "outcomeVersionId"),
+    decision_id: requiredText(snapshot.decisionId, "decisionId"),
+    decision_hash: requiredHash(snapshot.decisionHash, "decisionHash"),
+    strategy_id: requiredText(snapshot.strategyId, "strategyId"),
+    strategy_version: requiredText(snapshot.strategyVersion, "strategyVersion"),
+    symbol: requiredText(snapshot.symbol, "symbol"),
+    decision_timestamp: requiredText(snapshot.decisionTimestamp, "decisionTimestamp"),
+    regime_snapshot_id: requiredText(snapshot.regimeSnapshotId, "regimeSnapshotId"),
+    regime_hash: requiredHash(snapshot.regimeHash, "regimeHash"),
+    price_space: requiredText(snapshot.priceSpace, "priceSpace"),
+    corporate_action_state: requiredText(snapshot.corporateActionState, "corporateActionState"),
+    corporate_action_lineage_hash: requiredHash(
+      snapshot.corporateActionLineageHash,
+      "corporateActionLineageHash",
+    ),
+    cost_scenario_set_hash: requiredHash(snapshot.costScenarioSetHash, "costScenarioSetHash"),
+    execution_hash: optionalHash(execution?.executionHash, "executionLineage.executionHash"),
+    execution_version: execution?.executionVersion ?? null,
+    cost_model_hash: optionalHash(execution?.costModelHash, "executionLineage.costModelHash"),
+    tax_rule_id: execution?.taxRuleId ?? null,
+    tax_rule_hash: optionalHash(execution?.taxRuleHash, "executionLineage.taxRuleHash"),
+    d1_return: finiteOrNull(h.D1, "horizonReturns.D1"),
+    d3_return: finiteOrNull(h.D3, "horizonReturns.D3"),
+    d5_return: finiteOrNull(h.D5, "horizonReturns.D5"),
+    d10_return: finiteOrNull(h.D10, "horizonReturns.D10"),
+    d20_return: finiteOrNull(h.D20, "horizonReturns.D20"),
+    mfe: finiteOrNull(snapshot.mfe, "mfe"),
+    mae: finiteOrNull(snapshot.mae, "mae"),
+    target_hit_session: b.targetHitSession ?? null,
+    stop_hit_session: b.stopHitSession ?? null,
+    ambiguous_same_bar: b.ambiguousSameBar ? 1 : 0,
+    signal_return_json: JSON.stringify({
+      horizonReturns: snapshot.horizonReturns,
+      benchmarkReturns: snapshot.benchmarkReturns,
+      industryReturns: snapshot.industryReturns,
+      relativeBenchmarkReturns: snapshot.relativeBenchmarkReturns,
+      relativeIndustryReturns: snapshot.relativeIndustryReturns,
+      costScenarios: snapshot.costScenarios,
+      semantics: "SIGNAL_PRICE_RETURNS_AND_SCENARIO_ESTIMATES_NOT_SIMULATED_REALIZED_RETURN",
+    }),
+    realized_return_after_cost: sim
+      ? finiteOrNull(sim.realizedReturnAfterCost, "simulatedExecution.realizedReturnAfterCost")
+      : null,
+    holding_sessions: sim?.holdingSessions ?? null,
+    simulated_execution_json: sim ? JSON.stringify(sim) : null,
+    outcome_hash: requiredHash(snapshot.outcomeHash, "outcomeHash"),
     outcome_json: JSON.stringify(snapshot),
     updated_at: requiredText(snapshot.updatedAt, "updatedAt"),
   });
@@ -435,19 +670,17 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   if (Number(existingRow.ambiguous_same_bar) === 1 && Number(nextRow.ambiguous_same_bar) !== 1) {
     blockers.push("AMBIGUITY_REVISION");
   }
-  if (
-    existingRow.mfe !== null && existingRow.mfe !== undefined
-    && nextRow.mfe !== null && nextRow.mfe !== undefined
-    && Number(nextRow.mfe) + 1e-12 < Number(existingRow.mfe)
-  ) {
-    blockers.push("MFE_NON_MONOTONIC");
+  if (existingRow.mfe !== null && existingRow.mfe !== undefined) {
+    if (nextRow.mfe === null || nextRow.mfe === undefined) blockers.push("MFE_ERASED");
+    else if (Number(nextRow.mfe) + 1e-12 < Number(existingRow.mfe)) {
+      blockers.push("MFE_NON_MONOTONIC");
+    }
   }
-  if (
-    existingRow.mae !== null && existingRow.mae !== undefined
-    && nextRow.mae !== null && nextRow.mae !== undefined
-    && Number(nextRow.mae) - 1e-12 > Number(existingRow.mae)
-  ) {
-    blockers.push("MAE_NON_MONOTONIC");
+  if (existingRow.mae !== null && existingRow.mae !== undefined) {
+    if (nextRow.mae === null || nextRow.mae === undefined) blockers.push("MAE_ERASED");
+    else if (Number(nextRow.mae) - 1e-12 > Number(existingRow.mae)) {
+      blockers.push("MAE_NON_MONOTONIC");
+    }
   }
   if (
     existingRow.realized_return_after_cost !== null
@@ -459,6 +692,24 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   ) {
     blockers.push("REALIZED_RETURN_REVISION");
   }
+  if (
+    existingRow.realized_return_after_cost !== null
+    && existingRow.realized_return_after_cost !== undefined
+    && existingRow.holding_sessions !== nextRow.holding_sessions
+  ) {
+    blockers.push("CLOSED_HOLDING_SESSIONS_REVISION");
+  }
+
+  const existingSnapshot = parseJsonObjectOrNull(existingRow.outcome_json);
+  const nextSnapshot = parseJsonObjectOrNull(nextRow.outcome_json);
+  if (!existingSnapshot || !nextSnapshot) {
+    blockers.push("OUTCOME_JSON_LINEAGE_UNVERIFIABLE");
+  } else {
+    for (const field of immutableLineageDifferences(existingSnapshot, nextSnapshot)) {
+      blockers.push(`IMMUTABLE_OUTCOME_PROVENANCE_REVISION:${field}`);
+    }
+  }
+
   if (Date.parse(nextRow.updated_at) < Date.parse(existingRow.updated_at)) {
     blockers.push("UPDATED_AT_MOVED_BACKWARD");
   }
