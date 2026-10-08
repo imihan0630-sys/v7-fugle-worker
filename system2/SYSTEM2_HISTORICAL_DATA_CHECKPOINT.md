@@ -1420,3 +1420,19 @@ Run: [37769681911](https://github.com/imihan0630-sys/v7-fugle-worker/actions/run
 - Acceptance gates: PR CI PASS + V8 regression PASS, merge and read back latest main; only after D1 quota reset and single-writer/no-collision confirmation execute one controlled 2026 TWSE segmented rerun; validate old receipts are reused without modification and July–September R2 byte-GET/official date identity/evidence are PASS.
 - System1 Formal Core, V8 production runtime, orders, capital, push, signals and source-integrity semantics remain untouched.
 
+
+
+## 2026-10-08 19:41 Asia/Taipei — January–June 2026 TWSE independent D1/R2 physical byte proof PASS
+
+- Canonical readonly physical Action: [Run #37771226567](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37771226567), job `113291014214`, head `e6a1feec8e9185c583b17aefcdbff9d3d094dd49`; workflow concluded SUCCESS on 2026-10-08 19:40:59 Asia/Taipei.
+- Existing six D1 COMPLETE receipts (Jan–Jun 2026 TWSE), their checkpoints, manifests and manifest rolling hashes independently match after R2 HEAD + complete byte GET.
+- Monthly packs / bars: Jan `1,071 / 22,419`; Feb `1,072 / 12,861`; Mar `1,075 / 23,586`; Apr `1,078 / 21,490`; May `1,082 / 21,577`; Jun `1,083 / 22,717`.
+- Aggregate `6,461/6,461` R2 HEAD and `6,461/6,461` independent byte SHA-256 PASS; `124,650` cold bars checked against frozen physical storage receipts.
+- Isolated D1 this audit: rowsRead `38,778`, rowsWritten `0`; R2 PUT `0`. System1 production isolation PASS. No price/history rewritten.
+- Artifact `11547382438` digest `sha256:84800b204b198757cd1f316579e10201a15e3cd512150b5efd5dd28bfdb55b40`.
+- Durable evidence: `system2/evidence/S2_2026_TWSE_JAN_JUN_INDEPENDENT_R2_BYTE_VERIFICATION_20261008_V0_1.json`.
+- Scope warning: this independent physical audit does **not** reconfirm freshly served official daily price rows, prove original `observedAt` or `completed_at` accuracy (Jan–Jun pre-fix timestamps remain flagged), certify corporate-action continuity, prove recent 60-session Stage-1 history, or unlock aggregate strategy replay.
+- July–September 2026 TWSE still need receipt creation/physical verification when D1 budget allows; 2017–2025 annual historical 18/18 raw coverage already accepted. 2026 TPEx segmented separately pending. D1 budget ownership stays in REMEDIATION_LANE; no duplicated account-level quota gate here.
+
+Protected boundaries: V8/System1 Formal Core, formal runtime, strategy/selection/push/capital/order unchanged.
+
