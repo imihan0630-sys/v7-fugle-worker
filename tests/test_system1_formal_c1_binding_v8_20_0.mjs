@@ -36,7 +36,7 @@ await api.ensureD1Schema(env);
 const day="2026-10-06";
 const decision=day+"T10:05:00.000Z";
 const effectiveVersion=(source.match(/const VERSION = "([^"]+)";/)||[])[1]||"";
-const version=["8.20.0-formal-c1-binding-ledger","8.20.1-cross-midnight-recovery-readback"].includes(effectiveVersion)
+const version=["8.20.0-formal-c1-binding-ledger","8.20.1-cross-midnight-recovery-readback","8.20.2-idempotent-d1-snapshots"].includes(effectiveVersion)
   ? effectiveVersion : "8.20.0-formal-c1-binding-ledger";
 const sourceSha="a".repeat(40);
 const plans=[
@@ -170,7 +170,7 @@ await t("BIND-T10 scanDate query returns all explicit bindings without choosing 
 
 // protected API + schema + integration wiring
 await t("protected readback route and append-only schema are wired",async()=>{
-  assert.match(source,/const VERSION = "8\.20\.(?:0-formal-c1-binding-ledger|1-cross-midnight-recovery-readback)";/);
+  assert.match(source,/const VERSION = "8\.20\.(?:0-formal-c1-binding-ledger|1-cross-midnight-recovery-readback|2-idempotent-d1-snapshots)";/);
   assert.match(source,/CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings/);
   assert.match(source,/formal_decision_receipt_id TEXT NOT NULL UNIQUE/);
   assert.match(source,/c1_generation_id TEXT NOT NULL UNIQUE/);
