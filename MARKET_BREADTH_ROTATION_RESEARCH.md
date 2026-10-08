@@ -2672,3 +2672,30 @@ No stock outcome or L4 promotion.
 
 Exact next:
 continue independent official TWSE dates under the same denominator; TPEx is admitted only with accepted same-clock official transport; no L4 before D16 common-support/OOS validation.
+
+
+## BR-074 — D09-04 three-date breadth D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/BR074_D09_04_THREE_DATE_ADVANCE_DECLINE_D16_HANDOFF_20261008_V0_1.md`
+- `research/BR074_D09_04_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Independent official TWSE market-date roots now equal 3:
+- 2026-10-02;
+- 2026-10-07;
+- 2026-10-08.
+
+The independent unit is the market-date breadth root. D5/D20/D60 horizons, D09-12 consumption, index-context joins and multiple transforms do not increase independent N.
+
+Current:
+- independent date N = 3;
+- predictive/stock outcomes opened = 0;
+- inference readiness = POWER_INSUFFICIENT;
+- D09-04 remains L3/60.
+
+Room11/D16 must freeze date clustering/weighting, common support, horizon multiplicity, missing TPEx/strategy-universe policy, redundancy controls and power disposition before any predictive access.
+
+Exact next:
+continue official TWSE dates outcome-blind; consume D16 method return when available; no L4 until prospective/OOS evidence is adequate under the frozen method.
+
+Formal Core unchanged.
