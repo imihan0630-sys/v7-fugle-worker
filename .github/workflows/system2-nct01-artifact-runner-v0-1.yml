@@ -10,6 +10,12 @@ on:
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - "system2/runtime/daily_shadow_readonly_context_v0_1.mjs"
+      - "system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs"
+      - "system2/tests/nct01_runtime_guard_v0_1.test.mjs"
+      - "system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_readonly_context_v0_1.test.mjs"
       - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
       - "system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs"
       - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
@@ -27,6 +33,12 @@ on:
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
+      - "system2/runtime/nct01_runtime_guard_v0_1.mjs"
+      - "system2/runtime/daily_shadow_readonly_context_v0_1.mjs"
+      - "system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs"
+      - "system2/tests/nct01_runtime_guard_v0_1.test.mjs"
+      - "system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_readonly_context_v0_1.test.mjs"
       - "system2/tests/nct01_physical_receipt_v0_1.test.mjs"
       - "system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs"
       - "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
@@ -53,6 +65,18 @@ jobs:
 
       - name: Bounded PIT history prefetch semantics
         run: node system2/tests/daily_shadow_history_prefetch_v0_1.test.mjs
+
+      - name: Measured NC-T01 runtime guard regression
+        run: node system2/tests/nct01_runtime_guard_v0_1.test.mjs
+
+      - name: Read-only physical source context regression
+        run: node system2/tests/daily_shadow_readonly_context_v0_1.test.mjs
+
+      - name: Physical wrapper fail-closed regression
+        run: node system2/tests/nct01_physical_readonly_guard_v0_1.test.mjs
+
+      - name: Physical wrapper syntax check
+        run: node --check system2/scripts/run_nct01_physical_artifact_readonly_v0_1.mjs
 
       - name: NC-T01 artifact runner core
         run: node system2/tests/nct01_artifact_runner_v0_1.test.mjs
