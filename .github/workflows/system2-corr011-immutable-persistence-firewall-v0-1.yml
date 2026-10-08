@@ -1,0 +1,73 @@
+name: System2 CORR-011 Immutable Persistence Firewall V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/persistence_batch.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/tests/persistence_batch.test.mjs"
+      - "system2/tests/persistence_executor.test.mjs"
+      - "system2/tests/outcome_persistence_v0_1.test.mjs"
+      - "system2/tests/audit_high_adversarial_witness_011_012_013_v0_1.test.mjs"
+      - ".github/workflows/system2-corr011-immutable-persistence-firewall-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/persistence_batch.mjs"
+      - "system2/runtime/persistence_executor.mjs"
+      - "system2/runtime/outcome_persistence_v0_1.mjs"
+      - "system2/tests/persistence_batch.test.mjs"
+      - "system2/tests/persistence_executor.test.mjs"
+      - "system2/tests/outcome_persistence_v0_1.test.mjs"
+      - ".github/workflows/system2-corr011-immutable-persistence-firewall-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Persistence batch contract regression
+        run: node system2/tests/persistence_batch.test.mjs
+
+      - name: Immutable executor adversarial regression
+        run: node system2/tests/persistence_executor.test.mjs
+
+      - name: Outcome parent-lineage regression
+        run: node system2/tests/outcome_persistence_v0_1.test.mjs
+
+      - name: Independent AP-08 witness must be SAFE
+        run: |
+          set -euo pipefail
+          node system2/tests/audit_high_adversarial_witness_011_012_013_v0_1.test.mjs | tee /tmp/corr011-audit.log
+          grep -F '"directive":"S2-CORR-20261008-011","probe":"AP-08-CALLER-UPDATE-AS-INSERT","state":"SAFE"' /tmp/corr011-audit.log
+
+      - name: Static correction assertions
+        run: |
+          set -euo pipefail
+          grep -q 'rebuildAndVerifySystem2PersistenceBatch' system2/runtime/persistence_executor.mjs
+          grep -q 'PERSISTENCE_SQL_PLAN_MISMATCH' system2/runtime/persistence_batch.mjs
+          grep -q 'POST_WRITE_VERIFICATION_FAILED' system2/runtime/persistence_executor.mjs
+          grep -q 'LINEAGE_PARENT_MISSING:s2_decisions.factor_snapshot_id' system2/runtime/persistence_executor.mjs
+          grep -q 'rebuildAndVerifyOutcomePersistenceBatchV0_1' system2/runtime/outcome_persistence_v0_1.mjs
+          grep -q 'LINEAGE_PARENT_MISSING:s2_sim_orders.decision_id' system2/runtime/outcome_persistence_v0_1.mjs
+          echo "CORR-011 static assertions PASS"
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          test -n "$base"
+          git diff --exit-code "$base" HEAD -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
