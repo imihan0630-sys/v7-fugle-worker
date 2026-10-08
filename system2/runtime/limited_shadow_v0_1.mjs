@@ -185,6 +185,8 @@ export async function buildLimitedShadowDecisionSnapshot({
     factorObservations: factorObservations || [],
     interactionObservations: interactionObservations || [],
     regime,
+    strategyContract: contract,
+    familyAssessments: assessment.familyAssessments || {},
     frozenAt,
   });
 }
