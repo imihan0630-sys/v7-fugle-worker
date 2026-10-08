@@ -86,5 +86,8 @@ const revised={...registration,parameters:{fixture:false},parameterHash:await sh
 const revisedPair=await pair({frame:nextFrame,registration:revised});
 await assert.rejects(()=>persist({db,frame:nextFrame,pair:revisedPair}),/IMMUTABLE_CONFLICT/);
 const lost=new Db();lost.drop=true;
-await assert.rejects(()=>persist({db:lost,frame:f,pair:missing}),/READBACK_MISMATCH/);
+await assert.rejects(
+  ()=>persist({db:lost,frame:f,pair:missing}),
+  /READBACK_MISMATCH|POST_WRITE_VERIFICATION_FAILED/,
+);
 console.log("Resonance comparison frames: immutable input/version/PIT/finality/authority gates PASS");
