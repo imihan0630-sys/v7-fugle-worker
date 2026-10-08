@@ -29,7 +29,7 @@ const costRewrite=checked({
   outcome_json:JSON.stringify({strategyId:"SHORT_MOMENTUM",costModel:"COST_V99"}),
 });
 assert.equal(costRewrite.updateAllowed,false);
-assert.ok(costRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModel"));
+assert.ok(costRewrite.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModelHash"));
 
 const strategyRewrite=checked({
   outcome_json:JSON.stringify({strategyId:"SWING_GROWTH",costModel:"COST_V1"}),
