@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "S2_RECENT60_2026_JULY_ALL96_OFFICIAL_SOURCE_POSTFACTO_PHYSICAL_V0_1",
+  "authority": "GITHUB_ACTIONS_MERGED_MAIN_PHYSICAL_JOB_LOGS_AND_ARTIFACT",
+  "status": "PASS_OFFICIAL_SOURCE_POST_FACTO_FROZEN_SAMPLE_96_OF_96",
+  "originalGap": {
+    "marketDate": "2026-10-08",
+    "workflowRunId": 37854849181,
+    "artifactId": 11583895434,
+    "physicalHotD1RowsAbsent": 96,
+    "sampledMarketSymbolCount": 12,
+    "sampledExactTradingDates": 8,
+    "frozenSampleGitBlobSha": "5346c9cf908b5ed66266460dc342fce803c2369c"
+  },
+  "officialProofRun": {
+    "id": 37859630615,
+    "runNumber": 1,
+    "jobId": 113592009517,
+    "conclusion": "success",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37859630615",
+    "headSha": "656affbff08c5671c20aaf0d376e99cfea36ddca",
+    "observedOn": "2026-10-09 Asia/Taipei",
+    "artifact": {
+      "id": 11585263592,
+      "name": "system2-recent60-july-96-official-37859630615-1",
+      "digest": "sha256:6e18d1cd6209ccdea06721ba81d1c27fe3830e37ff375aaa0713b625bb66f030",
+      "sizeBytes": 1770
+    }
+  },
+  "observations": [
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-14",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-15",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-16",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-17",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-20",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-21",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-22",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TWSE",
+      "marketDate": "2026-07-23",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-14",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-15",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-16",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-17",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-20",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-21",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-22",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    },
+    {
+      "market": "TPEX",
+      "marketDate": "2026-07-23",
+      "sourceDateIdentityVerified": true,
+      "originalFrozenSampleSymbolsFound": 6,
+      "originalFrozenSampleSymbolsTotal": 6,
+      "sourceDateMismatches": 0,
+      "sourcePublicationClockAtHistoricalDecision": "UNKNOWN"
+    }
+  ],
+  "aggregate": {
+    "marketDateChecks": 16,
+    "marketDateReady": 16,
+    "marketDateUnverified": 0,
+    "originalSampledSymbolDateIdentities": 96,
+    "originalSampledIdentitiesNowVisibleInCanonicalOfficialSource": 96,
+    "originalSampledIdentitiesMissingDespiteReadyOfficialDate": 0,
+    "officialSourceMarketCount": 2,
+    "officialExactDatesPerMarket": 8,
+    "sourceDateMismatchCount": 0
+  },
+  "confidenceBoundaries": {
+    "confirmed": "For this non-random twelve-symbol July sample, all 96 original missing hot-D1 symbol-date pairs are now available from official canonical historical data endpoints with exact requested date identities.",
+    "notConfirmed": [
+      "2026 July actual source publication firstKnownAt or availability at historical decision clock",
+      "Any Cold R2 July month COMPLETE receipt, corresponding manifest or byte-verified pack existence",
+      "Current Hot D1 physical row presence or PIT eligibility after the original earlier D1 absence probe",
+      "Whole-universe or whole-sixty-session completeness",
+      "Corporate action, suspension, listing, delisting and NO_EVENT evidence",
+      "NC-T01 technical continuity, stage1 promotion, frozen decision or valid zero-pick"
+    ],
+    "sampleBias": "ORIGINAL_PRIORITY_CHOSEN_12_SYMBOLS_8_MISSING_DATES_NOT_RANDOM_STATISTICAL_SAMPLE",
+    "d1ReadQuotaBlockedRun": 37858652385,
+    "d1ReadQuotaError": "CLOUDFLARE_D1_FREE_TIER_DAILY_ROW_READ_LIMIT_EXCEEDED"
+  },
+  "execution": {
+    "cloudflareSecretsUsed": false,
+    "d1RowsRead": 0,
+    "d1RowsWritten": 0,
+    "r2ObjectReads": 0,
+    "r2ObjectWrites": 0,
+    "system1FormalCoreChanges": 0,
+    "system1RuntimeChanges": 0
+  },
+  "nextActions": [
+    "When D1 read budget resets midnight UTC and REMEDIATION_LANE confirms account-wide reading priorities, run PR #919 original physical hot/cold audit under single-writer/read-budget control",
+    "If no COMPLETE July month cold receipts/manifests, budget and carry out proper segmented history ingestion rather than backdate past PIT cutoffs",
+    "Preserve original 96 D1 absent evidence and this post-facto source proof as two independent immutable observation times",
+    "Pursue independent 46 history-ready-stock 60-session corporate-action and lifecycle completeness evidence for NC-T01"
+  ]
+}
