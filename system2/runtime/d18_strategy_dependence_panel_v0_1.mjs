@@ -54,10 +54,11 @@ export async function buildD18StrategyDependencePanelV0_1({
   const expected=new Set(strategyKeys);
   const seenDecisionIds=new Set();
   const accepted=[];
+  const observedDateKeys=new Set();
+  const excludedByDateStrategy=new Map();
 
   for(const [i,row] of attributionObservations.entries()){
     if(!row || typeof row!=="object") throw new Error(`attributionObservations[${i}] must be object`);
-    if(row.state!=="KNOWN") throw new Error("only KNOWN attribution observations may enter dependence panel");
     if(row.semantics!=="DESCRIPTIVE_REGIME_ATTRIBUTION_NOT_POLICY_VALUE") {
       throw new Error("attribution semantics mismatch");
     }
@@ -72,6 +73,19 @@ export async function buildD18StrategyDependencePanelV0_1({
     if(seenDecisionIds.has(decisionId)) throw new Error(`duplicate decisionId: ${decisionId}`);
     seenDecisionIds.add(decisionId);
     if(!candidateStates.includes(requiredText(row.candidateState,"attribution.candidateState"))) continue;
+
+    observedDateKeys.add(row.marketDate);
+    if(row.state!=="KNOWN" || row.regimeEvidenceValid!==true) {
+      const mapKey=`${row.marketDate}|${key}`;
+      if(!excludedByDateStrategy.has(mapKey)) excludedByDateStrategy.set(mapKey,[]);
+      excludedByDateStrategy.get(mapKey).push({
+        decisionId,
+        state:row.state || "UNKNOWN",
+        regimeEvidenceValid:row.regimeEvidenceValid===true,
+        blockers:[...(row.regimeEvidenceBlockers || [])].map(String),
+      });
+      continue;
+    }
 
     const value=metricId==="GROSS_RETURN" ? row.grossReturn : row.relativeBenchmarkReturn;
     if(value===null || value===undefined || !Number.isFinite(Number(value))) {
@@ -89,7 +103,7 @@ export async function buildD18StrategyDependencePanelV0_1({
     });
   }
 
-  const dates=sortedUnique(accepted.map(x=>x.marketDate));
+  const dates=sortedUnique([...observedDateKeys]);
   const grouped=new Map();
   for(const row of accepted){
     const k=`${row.marketDate}|${row.strategyKey}`;
@@ -103,12 +117,19 @@ export async function buildD18StrategyDependencePanelV0_1({
       const key=`${strategy.strategyId}@${strategy.strategyVersion}`;
       const rows=grouped.get(`${date}|${key}`) || [];
       if(!rows.length){
+        const excluded=excludedByDateStrategy.get(`${date}|${key}`) || [];
         cells[key]={
           state:"MISSING",
           value:null,
           decisionCount:0,
           symbolCount:0,
-          reason:"NO_KNOWN_ATTRIBUTION_ROW",
+          reason:excluded.length
+            ? "REGIME_EVIDENCE_UNKNOWN_OR_INVALID"
+            : "NO_KNOWN_ATTRIBUTION_ROW",
+          excludedDecisionIds:Object.freeze(excluded.map(x=>x.decisionId)),
+          regimeEvidenceBlockers:Object.freeze(
+            sortedUnique(excluded.flatMap(x=>x.blockers)),
+          ),
         };
         continue;
       }
@@ -154,6 +175,8 @@ export async function buildD18StrategyDependencePanelV0_1({
     expectedStrategies:Object.freeze(strategies),
     includedCandidateStates:Object.freeze(candidateStates),
     acceptedAttributionCount:accepted.length,
+    excludedRegimeEvidenceCount:[...excludedByDateStrategy.values()].reduce((sum,rows)=>sum+rows.length,0),
+    regimeEvidenceRequired:true,
     independentDateCount:dates.length,
     dateRows:Object.freeze(dateRows),
     pairwise:Object.freeze(pairwise),

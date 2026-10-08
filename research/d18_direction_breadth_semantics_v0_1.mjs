@@ -200,6 +200,8 @@ export function buildDirectionBreadthResearchV0_1({
     reason: total.knownComparable > 0 ? null : "NO_COMPARABLE_DIRECTION_ROWS",
     marketDate: snapshotBatch.marketDate,
     decisionTimestamp: snapshotBatch.decisionTimestamp,
+    availableAt: snapshotBatch.observedAt || null,
+    pointInTimeEligible: snapshotBatch.pointInTimeEligible === true,
     sourceBatchId: snapshotBatch.batchId,
     sourceBatchHash: snapshotBatch.batchHash,
     universeSemantics: "TWSE_TPEX_ORDINARY_SYMBOLS_FROM_READY_A1_BATCH",

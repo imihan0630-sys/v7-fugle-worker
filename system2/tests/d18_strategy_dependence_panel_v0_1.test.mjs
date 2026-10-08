@@ -5,6 +5,8 @@ import { buildD18StrategyDependencePanelV0_1 } from "../runtime/d18_strategy_dep
 async function attr({id,strategy,date,value,symbol="2330",state="QUALIFIED_NOT_SELECTED"}) {
   const base={
     state:"KNOWN",
+    regimeEvidenceValid:true,
+    regimeEvidenceBlockers:[],
     semantics:"DESCRIPTIVE_REGIME_ATTRIBUTION_NOT_POLICY_VALUE",
     policyValueEstimated:false,
     causalClaimMade:false,
@@ -74,12 +76,28 @@ await assert.rejects(
   /mixed attribution horizons/,
 );
 
-await assert.rejects(
-  ()=>buildD18StrategyDependencePanelV0_1({
-    ...input,
-    attributionObservations:[{...rows[0],state:"UNKNOWN"}],
-  }),
-  /only KNOWN attribution observations/,
+const contaminated=await buildD18StrategyDependencePanelV0_1({
+  ...input,
+  panelId:"P-CONTAMINATED",
+  attributionObservations:[
+    ...rows.filter((x)=>x.decisionId!=="B1"),
+    {
+      ...rows.find((x)=>x.decisionId==="B1"),
+      state:"UNKNOWN",
+      regimeEvidenceValid:false,
+      regimeEvidenceBlockers:["REGIME_VECTOR_EVIDENCE_INVALID"],
+    },
+  ],
+});
+assert.equal(contaminated.excludedRegimeEvidenceCount,1);
+assert.equal(contaminated.dateRows[0].cells["B@V1"].state,"MISSING");
+assert.equal(contaminated.dateRows[0].cells["B@V1"].reason,"REGIME_EVIDENCE_UNKNOWN_OR_INVALID");
+assert.equal(contaminated.dateRows[0].cells["B@V1"].value,null);
+assert.deepEqual(
+  contaminated.dateRows[0].cells["B@V1"].regimeEvidenceBlockers,
+  ["REGIME_VECTOR_EVIDENCE_INVALID"],
 );
+assert.equal(contaminated.pairwise[0].commonDateCount,1);
+assert.deepEqual(contaminated.pairwise[0].commonDates,["2026-10-03"]);
 
 console.log("D18 strategy dependence panel tests: PASS");

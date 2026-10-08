@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { validateD18ObservableRegimeVectorV0_1 } from "./d18_observable_regime_vector_v0_1.mjs";
 
 export const D18_STRATEGY_ACTIVATION_FRAME_VERSION = "D18_STRATEGY_ACTIVATION_FRAME_V0_1_RESEARCH";
 const REGIME_VECTOR_VERSION = "D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH";
@@ -218,7 +219,10 @@ export async function buildD18StrategyActivationFrameV0_1({
   if (iso(regimeVector.decisionTimestamp, "regimeVector.decisionTimestamp") !== decisionTimestamp) {
     throw new Error("regime decisionTimestamp mismatch");
   }
-  const regimeHash = requiredText(regimeVector.receiptHash, "regimeVector.receiptHash");
+  const regimeHash = typeof regimeVector.receiptHash === "string"
+    ? regimeVector.receiptHash
+    : null;
+  const regimeValidation = await validateD18ObservableRegimeVectorV0_1(regimeVector);
 
   const reg = await validateRegistration(registration, {
     strategyId,
@@ -231,8 +235,11 @@ export async function buildD18StrategyActivationFrameV0_1({
   if (!BASELINE_STATES.has(baseline)) throw new Error("unsupported baseline state");
 
   const dimension = regimeVector.dimensions?.[reg.parameters.regimeDimension] || null;
+  const dimensionValidation = regimeValidation.dimensions?.[reg.parameters.regimeDimension] || null;
   const regimeKnown =
-    regimeVector.pointInTimeEligible === true
+    regimeValidation.valid === true
+    && dimensionValidation?.valid === true
+    && dimension?.pointInTimeEligible === true
     && dimension?.state === "KNOWN"
     && dimension?.value !== null
     && dimension?.value !== undefined;
@@ -286,7 +293,10 @@ export async function buildD18StrategyActivationFrameV0_1({
     outcomeJoinEligible: runFingerprint.outcomeJoinEligible === true,
     regimeVectorHash: regimeHash,
     regimeVectorVersion: regimeVector.vectorVersion,
+    regimeEvidenceValid: regimeValidation.valid === true,
+    regimeEvidenceBlockers: Object.freeze([...regimeValidation.blockers]),
     regimeDimension: reg.parameters.regimeDimension,
+    regimeDimensionEvidenceValid: dimensionValidation?.valid === true,
     regimeState: dimension?.state || "MISSING",
     regimeValue: regimeKnown ? String(dimension.value) : null,
     registration: reg,
