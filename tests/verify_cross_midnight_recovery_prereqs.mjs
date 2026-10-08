@@ -4,7 +4,7 @@ const origin="https://fugle-test.imihan0630.workers.dev";
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const marketDate=String(process.env.RECOVERY_MARKET_DATE||"").trim();
 assert.ok(token,"V7_ADMIN_TOKEN required");
-assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/,"RECOVERY_MARKET_DATE required");
+assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,"RECOVERY_MARKET_DATE required");
 
 const headers={"x-admin-token":token,"accept":"application/json"};
 async function get(path){
