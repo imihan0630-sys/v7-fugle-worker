@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T01:32:28+08:00",
+  "updatedAt": "2026-10-09T07:44:26+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -2005,10 +2005,11 @@
       "verificationEvidence": [
         "Independent batch audit AP-06 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
         "AUDIT_LANE independent dynamic negative reproduction (four isolated GitHub Actions dry-run witnesses; ALL UNSAFE): system2/evidence/S2_AUDIT_HIGH_DYNAMIC_REPRO_011_012_013_20261008_V0_1.json; PR #890, Research run 37796797844, job 113378243808, V8 run 37796797829. BUILD_LANE fix + independent retest required; CI PASS is test execution, not security approval.",
-        "2026-10-09 independent nine-case negative edge matrix: system2/evidence/S2_AUDIT_CORR012_013_NINE_NEGATIVE_EDGE_MATRIX_20261009_V0_1.json; PR #908 merged fa820bbce49c91169cdf2ad4699750e1460baa45; Actions 37817121691 observed 4 UNSAFE cases; System2 Research 37817122614 PASS, V8 37817121306 PASS. Green CI means probes executed, NOT corrected."
+        "2026-10-09 independent nine-case negative edge matrix: system2/evidence/S2_AUDIT_CORR012_013_NINE_NEGATIVE_EDGE_MATRIX_20261009_V0_1.json; PR #908 merged fa820bbce49c91169cdf2ad4699750e1460baa45; Actions 37817121691 observed 4 UNSAFE cases; System2 Research 37817122614 PASS, V8 37817121306 PASS. Green CI means probes executed, NOT corrected.",
+        "AUDIT_LANE nine-case independent execution/calendar/NO_FILL diagnostic: system2/evidence/S2_AUDIT_CORR013_CALENDAR_UNKNOWN_NOFILL_NINE_CASES_20261009_V0_2.json; GitHub Actions 37861039940 PASS means 9 probes executed, all 9 found UNSAFE (accepted invalid/reordered/unproven dates and DATA_UNKNOWN falsely classified state=NO_FILL). Does not certify physical calendar and does not close this correction."
       ],
-      "finalDisposition": "OPEN — independent observational negative acceptance confirms unresolved invalid/duplicate/unqualified session dates and partial unknown OHLC -> NO_FILL; BUILD_LANE patch then AUDIT_LANE retest required; no physical trading credit.",
-      "updatedAt": "2026-10-09T01:32:28+08:00"
+      "finalDisposition": "OPEN — AUDIT_LANE V0.2 negative evidence confirms impossible/noncanonical/weekend/double/reversed/skipped dates can be accepted and fully/partially unknown entry-window OHLC can yield state NO_FILL. BUILD_LANE must implement official-calendar sequence+proofCompleteNoFill contract, independently retest all nine, and preserve UNKNOWN denominator; no live/physical authority.",
+      "updatedAt": "2026-10-09T07:44:26+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-014",
