@@ -89,7 +89,8 @@ jobs:
           grep -q 'DIMENSION_EVIDENCE_HASH_MISMATCH' system2/runtime/d18_observable_regime_vector_v0_1.mjs
           grep -q 'REGIME_VECTOR_HASH_MISMATCH' system2/runtime/d18_observable_regime_vector_v0_1.mjs
           grep -q 'REGIME_EVIDENCE_UNKNOWN_OR_INVALID' system2/runtime/d18_strategy_dependence_panel_v0_1.mjs
-          grep -q 'GLOBAL_TRANSMISSION_PIT_INELIGIBLE' system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs
+          grep -q 'tag + "_PIT_INELIGIBLE"' system2/runtime/d18_observable_regime_vector_v0_1.mjs
+          grep -q 'inputKey:"globalTransmission"' system2/tests/corr015_regime_pit_firewall_v0_1.test.mjs
           echo "CORR-015 static assertions PASS"
 
       - name: System1 production isolation
