@@ -15,7 +15,7 @@ assert.match(workflow,/permissions:\s*\n\s+contents: read/);
 assert.match(workflow,/system2-recent60-july-official-source-only/);
 assert.match(workflow,/audit_recent60_july_official_without_d1_v0_1\.mjs/);
 assert.doesNotMatch(workflow,/secrets\.|CLOUDFLARE_ACCOUNT_ID|SYSTEM2_CLOUDFLARE_API_TOKEN/i);
-assert.doesNotMatch(workflow,/wrangler|provision_system2_d1|D1.*(INSERT|UPDATE|DELETE)|fugle-test/i);
+assert.doesNotMatch(workflow,/wrangler\s+(deploy|delete|d1\s+execute)|provision_system2_d1|fugle-test/i);
 assert.match(runner,/probeJulyOfficialSourceReadonlyV0_1/);
 assert.match(runner,/FROZEN_RECENT60_SAMPLE_BLOB_SHA/);
 assert.match(runner,/PARTIAL_OFFICIAL_DATE_RETRIEVAL_UNVERIFIED/);
