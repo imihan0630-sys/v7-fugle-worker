@@ -147,6 +147,16 @@ await assert.rejects(
 assert.equal(identityDb.prepareCount, 0);
 assert.equal(identityDb.batchCalls, 0);
 
+const tamperedTable = JSON.parse(JSON.stringify(batch));
+tamperedTable.operations[0].table = "s2_decisions";
+const tableDb = new MockDb();
+await assert.rejects(
+  () => executeSystem2PersistenceBatch({ db: tableDb, batch: tamperedTable }),
+  /column is not whitelisted|PERSISTENCE_/,
+);
+assert.equal(tableDb.prepareCount, 0);
+assert.equal(tableDb.batchCalls, 0);
+
 const tamperedColumn = JSON.parse(JSON.stringify(batch));
 tamperedColumn.operations[0].row.unapproved_column = "NOPE";
 const columnDb = new MockDb();
