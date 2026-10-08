@@ -99,11 +99,15 @@ jobs:
           python3 scripts/apply_v8_19_1_pve248_candidate.py
           python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
           python3 scripts/apply_v8_20_0.py
+          python3 scripts/apply_v8_20_1.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Verify transport-retry contract offline
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
-        run: node tests/test_v8_9_7_recovery_hardening.mjs
+        run: |
+          node tests/test_v8_9_7_recovery_hardening.mjs
+          node tests/test_system1_cross_midnight_recovery_v0_1.mjs
+          node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
       - name: Recover official quality only for 2026-10-06
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}

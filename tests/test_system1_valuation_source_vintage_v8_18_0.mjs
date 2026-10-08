@@ -23,7 +23,12 @@ for(const path of ['v7-regression.yml','v7-repair-ci.yml','v7-cloudflare.yml']){
  const chain=[...workflow.matchAll(/python3 (scripts\/apply_v8_[\d_]+\.py)/g)].map(m=>m[1]);
  assert.equal(chain.filter(x=>x==='scripts/apply_v8_18_0.py').length,1);
  assert.equal(chain.indexOf('scripts/apply_v8_18_0.py'),chain.indexOf('scripts/apply_v8_17_0.py')+1);
- if(chain.includes('scripts/apply_v8_20_0.py')){
+ if(chain.includes('scripts/apply_v8_20_1.py')){
+   assert.equal(chain.indexOf('scripts/apply_v8_19_0.py'),chain.indexOf('scripts/apply_v8_18_0.py')+1);
+   assert.equal(chain.indexOf('scripts/apply_v8_20_0.py'),chain.indexOf('scripts/apply_v8_19_0.py')+1);
+   assert.equal(chain.indexOf('scripts/apply_v8_20_1.py'),chain.indexOf('scripts/apply_v8_20_0.py')+1);
+   assert.ok(workflow.includes('const VERSION = \"8.20.1-cross-midnight-recovery-readback\";'),path+' V8.20.1 exact candidate version guard');
+ } else if(chain.includes('scripts/apply_v8_20_0.py')){
    assert.equal(chain.indexOf('scripts/apply_v8_19_0.py'),chain.indexOf('scripts/apply_v8_18_0.py')+1);
    assert.equal(chain.indexOf('scripts/apply_v8_20_0.py'),chain.indexOf('scripts/apply_v8_19_0.py')+1);
    assert.ok(workflow.includes('const VERSION = \"8.20.0-formal-c1-binding-ledger\";'),path+' V8.20 exact candidate version guard');

@@ -21,7 +21,11 @@ assert.match(quality,/QUALITY_MARKET_DATE/);
 assert.match(quality,/readonlyPreviewNonJson/);
 assert.match(quality,/readonlyPreviewAccepted/);
 assert.match(quality,/bodyPrefix:text\.slice\(0,240\)/);
-assert.match(quality,/attempt<=3/);
+assert.match(quality,/for\(let attempt=0;attempt<3;attempt\+\+\)/,
+  "administrator transport retry remains capped at 3");
+assert.match(quality,/const maxAttempts=5/,"read-only EPS preview gets bounded 5-attempt recovery only");
+assert.match(quality,/attempt<=maxAttempts/);
+assert.match(quality,/\[0,2000,5000,10000,15000\]/);
 assert.match(quality,/text\\\/html/);
 assert.match(quality,/fetchBufferedOfficialSource/);
 

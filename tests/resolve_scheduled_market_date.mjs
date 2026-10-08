@@ -15,3 +15,14 @@ export function resolveScheduledMarketDate({now=new Date(),triggerSchedule=""}={
   }
   return date;
 }
+export function resolveScheduledMarketContext({now=new Date(),triggerSchedule=""}={}){
+  const instant=now instanceof Date?now:new Date(now);
+  if(!Number.isFinite(instant.getTime())) throw new Error("INVALID_SCHEDULE_CLOCK");
+  const {date:today}=taipeiParts(instant);
+  const schedule=String(triggerSchedule||"").trim();
+  const marketDate=resolveScheduledMarketDate({now:instant,triggerSchedule:schedule});
+  return {
+    marketDate,today,
+    crossMidnightFallback:schedule==="45 15 * * 1-5"&&marketDate<today
+  };
+}

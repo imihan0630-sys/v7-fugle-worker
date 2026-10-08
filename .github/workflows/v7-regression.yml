@@ -95,6 +95,7 @@ jobs:
           python3 scripts/apply_v8_19_1_pve248_candidate.py
           python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
           python3 scripts/apply_v8_20_0.py
+          python3 scripts/apply_v8_20_1.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -103,7 +104,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.20.0-formal-c1-binding-ledger";' Worker.js
+          grep -F 'const VERSION = "8.20.1-cross-midnight-recovery-readback";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_formal_c1_bindings' Worker.js
           grep -F 'url.pathname === "/api/research/formal-c1-binding"' Worker.js
@@ -212,7 +213,6 @@ jobs:
           node tests/test_v8_14_3_closure_receipt_memo.mjs
           node tests/test_v8_14_4_history_memory_compaction.mjs
           node tests/test_v8_15_0_c1_population_receipts.mjs
-          node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_v8_15_1_c1_capture_integrity.mjs
           node tests/test_v8_15_2_c3_research_capture.mjs
           node tests/test_v8_15_3_c3_quote_context.mjs
@@ -239,6 +239,8 @@ jobs:
           node tests/test_sda016_formal_c1_binding_contract_v0_1.mjs
           node tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs
           node tests/test_system1_formal_c1_binding_v8_20_0.mjs
+          node tests/test_system1_cross_midnight_recovery_v0_1.mjs
+          node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
           node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
