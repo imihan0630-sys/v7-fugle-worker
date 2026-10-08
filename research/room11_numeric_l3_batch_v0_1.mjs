@@ -17,7 +17,7 @@ function quantile(xs,q){const a=[...xs].sort((x,y)=>x-y);if(!a.length)return nul
 function sigmoid(x){if(x>=0){const z=Math.exp(-x);return 1/(1+z);}const z=Math.exp(x);return z/(1+z);}
 function dateDecisionTs(d){return d+"T06:00:00.000Z";}
 
-function guardedDb(db){
+export function guardedDb(db){
   function check(sql){
     const t=String(sql||"").trim();
     must(/^(SELECT|WITH|PRAGMA)\b/i.test(t),"READONLY_SQL_REQUIRED");
