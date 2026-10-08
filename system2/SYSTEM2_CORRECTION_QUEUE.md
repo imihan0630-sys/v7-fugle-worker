@@ -1258,7 +1258,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 
 - createdAt: 2026-10-08T10:59:00+08:00
 - severity: HIGH
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
 - blockedBy: none (former CORR-007 prerequisite independently VERIFIED_CLOSED; CORR-008 remains OPEN)
@@ -1276,7 +1276,7 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
   6. fail-closed regressions for mutation/origin attempts and missing/incomplete guard.
 - durable audit:
   `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
-- finalDisposition: FIX_IMPLEMENTED — corrective PR #899 closes AP-008-A writable-PRAGMA and AP-008-B mutable-statement TOCTOU bypasses; prior negative evidence preserved; independent AUDIT_LANE re-verification is still required before VERIFIED_CLOSED.
+- finalDisposition: VERIFIED_CLOSED — independently verified pre-transport code firewall; real W0 / S22-T11..16 physical acceptance remains separately blocked.
 - independent AUDIT_LANE prerequisite release: PR #871 / main `35295e412911193a49f332496821fc42f8ff5f6d` resolved only CORR-007 code provenance; physical W0 and CORR-008 runtime guard not credited.
 - latest-main recheck: PR #844 head `9d690d1` is 416 commits behind main and unmergeable; use exact-head reconciliation before replacement/merge.
 - independent remaining-gate matrix: `system2/evidence/S2_REMAINING_SEVEN_CORRECTION_GATE_AUDIT_20261008_V0_1.json`.
@@ -1318,6 +1318,15 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Prior negative audit `S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json` remains preserved as pre-patch evidence.
 - Durable corrective evidence: `system2/evidence/S2_CORR_008_BUILD_CORRECTIVE_ADDENDUM_20261009_V0_1.json`.
 - BUILD_LANE does **not** self-close this HIGH correction; AUDIT_LANE re-verification is still mandatory.
+
+#### Independent AUDIT_LANE retest and scoped closure — 2026-10-09 01:20
+
+- Original AP-008-A/AP-008-B negative audit kept in evidence; BUILD corrected both in PR #899.
+- AUDIT independently authored and GitHub Actions executed `system2/tests/audit_corr008_independent_guard_v0_1.test.mjs` (PR #903 merged): run `37815539230` PASS; System2 Research `37815539131` PASS; V8 Regression `37815539031` PASS.
+- Runtime source blob `472ec41c37b157e37bc6dafa3257f33819ca910c` remains identical to corrected implementation merge.
+- Scoped independent closure: `system2/evidence/S2_AUDIT_INDEPENDENT_CORR008_CODE_CLOSURE_20261009_V0_1.json`.
+- **Non-claim:** does not prove real TWTAWU/CA receipts, physical NC-T01 S22-T11..16, OOS, alpha or live trading authorization.
+
 
 ### S2-CORR-20261008-009 — Frozen decisions can promote explicitly non-PIT or future factor evidence
 
