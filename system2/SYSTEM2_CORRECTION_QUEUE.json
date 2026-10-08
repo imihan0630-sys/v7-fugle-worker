@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T01:11:08+08:00",
+  "updatedAt": "2026-10-09T01:20:23+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1611,7 +1611,7 @@
       "directiveId": "S2-CORR-20261008-008",
       "createdAt": "2026-10-08T10:59:00+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc",
       "affectedScope": [
         "System2 physical NC-T01 S22-T12/S22-T16",
@@ -1682,10 +1682,11 @@
         "AUDIT_LANE negative verification found AP-008-A writable PRAGMA and AP-008-B mutable statement.sql TOCTOU bypass of pre-transport mutation defense: system2/evidence/S2_CORR_008_INDEPENDENT_SQL_MUTATION_BYPASS_AUDIT_20261009_V0_1.json. Current code may NOT be declared VERIFIED_CLOSED. No actual Cloudflare D1 write/physical pass claim.",
         "Exact-head PASS on 573faeda844803036730db436dae326094416564: CORR-008 37811513968; Artifact Runner 37811514005; System2 Research CI 37811513963; V8 Regression 37811513986.",
         "Merged-main PASS on 7f6a888c55720be6b8df049146a042f70e63f24e: CORR-008 37811723886; Artifact Runner 37811723860; System2 Research CI 37811723871; V8 Regression 37811723958.",
-        "AP-008-A/AP-008-B are now covered by targeted negative regressions; independent AUDIT_LANE re-verification remains required."
+        "AP-008-A/AP-008-B are now covered by targeted negative regressions; independent AUDIT_LANE re-verification remains required.",
+        "Independent AUDIT_LANE adversarial dynamic CI code verification: system2/evidence/S2_AUDIT_INDEPENDENT_CORR008_CODE_CLOSURE_20261009_V0_1.json. Independent test PR #903 merged; run 37815539230 PASS; System2 Research 37815539131 PASS; V8 Regression 37815539031 PASS; fixed runtime blob 472ec41 unchanged on main. AP-008-A/-B genuinely fail closed, measured ledger preserved; separate physical W0 NOT credited."
       ],
-      "finalDisposition": "FIX_IMPLEMENTED — corrective PR #899 closes the writable-PRAGMA and mutable-statement TOCTOU bypasses found by independent audit. Prior negative evidence is preserved. Independent AUDIT_LANE re-verification is still required before VERIFIED_CLOSED; physical NC-T01 acceptance remains separate.",
-      "updatedAt": "2026-10-09T00:49:52+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — independent AUDIT_LANE original CORR-008 pre-transport code-firewall acceptance, including PRAGMA and mutable batch SQL counterexamples. No physical NC-T01 W0, bounded TWTAWU completeness or S22-T11..T16 claim; subsequent DATA/physical milestones separately gated.",
+      "updatedAt": "2026-10-09T01:20:23+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-009",

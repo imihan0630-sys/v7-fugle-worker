@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "S2_AUDIT_INDEPENDENT_CORR008_CODE_CLOSURE_V0_1",
+  "recordedAt": "2026-10-09T01:20:23+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "correction": "S2-CORR-20261008-008",
+  "verificationScope": "ORIGINAL_PHYSICAL_WRAPPER_PRETRANSPORT_CODE_GUARD_ONLY",
+  "verificationBasis": {
+    "mainQueueBlob": "872eebd946bd5a3d4372190a2703b0871bda54a0",
+    "implementationMergedPR": 899,
+    "implementationMergeCommit": "7f6a888c55720be6b8df049146a042f70e63f24e",
+    "runtime": "system2/runtime/nct01_runtime_guard_v0_1.mjs",
+    "verifiedRuntimeBlob": "472ec41c37b157e37bc6dafa3257f33819ca910c",
+    "runtimeUnchangedSinceImplementationMerge": true,
+    "independentPR": 903,
+    "independentMergeCommit": "685dd825c49f9779cc9e9f8e9e7e32b0534bb1f8",
+    "testPath": "system2/tests/audit_corr008_independent_guard_v0_1.test.mjs",
+    "testBlob": "522ba8f4e6ab294c2df29fc7930d32cd3aaed701",
+    "independentRun": {
+      "id": 37815539230,
+      "conclusion": "success",
+      "jobId": 113443095700,
+      "step": "Independently authored CORR-008 AP-008-A and AP-008-B negative tests",
+      "stepConclusion": "success"
+    },
+    "samePRResearchRun": {
+      "id": 37815539131,
+      "conclusion": "success"
+    },
+    "samePRV8Run": {
+      "id": 37815539031,
+      "conclusion": "success"
+    },
+    "implementationMergedMainRunIds": [
+      37811723886,
+      37811723860,
+      37811723871,
+      37811723958
+    ]
+  },
+  "independentAcceptance": [
+    "AP-008-A: all 11 dangerous SQL forms rejected by standalone checker AND guarded prepare; remote D1 prepare/request/batch/network counts unchanged",
+    "AP-008-B: SQL getter and params getter never called, underlying batch count unchanged",
+    "Approved SELECT and metadata read-only PRAGMA continue to work",
+    "Validated SQL/parameter values copied as frozen objects; subsequent caller mutation cannot change adapter-supplied SQL or bound params",
+    "Rejected attempts are measured in D1 guard ledger and immutable hash evidence",
+    "GitHub Actions independently executes separate AUDIT-authored negative test on merged implementation; System2 Research and V8 regressions pass",
+    "No runtime modifications by AUDIT_LANE"
+  ],
+  "validationLimits": [
+    "No real Cloudflare D1 write or mutating SQL physically executed",
+    "No real bounded TWTAWU physical continuity receipt consumed",
+    "No NC-T01 coherent manual physical W0 acceptance / S22-T11–T16 authorization",
+    "This is NOT full-platform readiness, trading permission, strategy performance, OOS, live selection, push or capital/order approval"
+  ],
+  "disposition": "VERIFIED_CLOSED_CODE_FIREWALL_ONLY",
+  "remainingGates": [
+    "DATA_LANE real bounded TWTAWU suspension+3 CA refs",
+    "One coherent manual workflow_dispatch NC-T01 artifact-only execution",
+    "Independent 00/AUDIT physical S22-T11–T16 recomputation and acceptance",
+    "CORR-011/012/013 independent immutability/fill fidelity defects are separate"
+  ],
+  "system1FormalCoreImpact": "NONE_LOCKED"
+}
