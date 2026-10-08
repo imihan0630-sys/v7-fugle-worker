@@ -2613,3 +2613,28 @@ Exact next:
 consume the first real C1 scheduled run when observable and inspect the actual readiness/population artifact. Only a scanDate=2026-10-07 same-generation complete/readback-verified research-eligible parent may unlock the frozen Above-MA builder. No substitute universe.
 
 Formal Core unchanged.
+
+
+## BR-047 — AI data-center theme spans different formal industries (2026-10-08)
+
+Artifact:
+- `research/BR047_AI_DATA_CENTER_CROSS_INDUSTRY_THEME_BRIDGE_20261008_V0_1.md`
+
+A second theme family now validates the D09-11 many-to-many bridge beyond ABF.
+
+Current official/issuer-native bridge:
+- 2382 Quanta — TWSE Computer and Peripheral Equipment — AI/cloud server product/manufacturing edge;
+- 2308 Delta — TWSE Electronic Parts/Components — AI data-center power/cooling/infrastructure edge.
+
+Frozen:
+- `THEME_MEMBERSHIP != FORMAL_INDUSTRY_MEMBERSHIP`;
+- `SHARED_THEME != SHARED_ECONOMIC_EDGE`;
+- `SHARED_THEME != EQUAL_EXPOSURE_WEIGHT`.
+
+Exposure magnitude remains UNKNOWN unless issuer-native and scope-compatible.
+
+D09-11 remains L3/60.
+No stock outcome or Formal change.
+
+Exact next:
+BR-048 create effective-dated exposure vintages where issuer-native product/revenue/capacity evidence changes over time; no indefinite carry-forward of a static theme label.
