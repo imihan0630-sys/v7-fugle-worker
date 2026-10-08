@@ -1,3 +1,4 @@
+import {fetchBufferedNodeHttps} from "./official_source_fetch_v0_1.mjs";
 const DEFAULT_ATTEMPTS=5;
 const BACKOFF_MS=[0,750,1500,3000,5000];
 
@@ -28,7 +29,8 @@ function networkRetryable(error){
     || /UND_ERR_SOCKET|ECONNRESET|ETIMEDOUT|EAI_AGAIN/i.test(cause);
 }
 export async function fetchOfficialMarketPayload({
-  market,sourceUrl,fetchImpl=globalThis.fetch,sleepImpl=sleep,attempts=DEFAULT_ATTEMPTS,timeoutMs=30000
+  market,sourceUrl,fetchImpl=globalThis.fetch,nodeHttpsImpl=fetchBufferedNodeHttps,
+  sleepImpl=sleep,attempts=DEFAULT_ATTEMPTS,timeoutMs=30000
 }={}){
   if(!["TWSE","TPEx"].includes(market))throw new Error("OFFICIAL_MARKET_UNSUPPORTED");
   if(typeof fetchImpl!=="function")throw new Error("OFFICIAL_MARKET_FETCH_REQUIRED");
@@ -37,10 +39,13 @@ export async function fetchOfficialMarketPayload({
   let last=null;
   for(let attempt=1;attempt<=attempts;attempt++){
     try{
-      const response=await fetchImpl(sourceUrl,{
-        method:"GET",headers:officialMarketRequestHeaders(market),redirect:"follow",
-        signal:AbortSignal.timeout(timeoutMs)
-      });
+      const headers=officialMarketRequestHeaders(market);
+      const response=market==="TPEx"
+        ? await nodeHttpsImpl(sourceUrl,{method:"GET",headers,redirect:"follow"},timeoutMs)
+        : await fetchImpl(sourceUrl,{
+            method:"GET",headers,redirect:"follow",
+            signal:AbortSignal.timeout(timeoutMs)
+          });
       if(!response?.ok){
         const status=Number(response?.status);
         const preview=await response.text().catch(()=>"");
@@ -53,7 +58,8 @@ export async function fetchOfficialMarketPayload({
         let payload;
         try{payload=JSON.parse(text);}
         catch{throw new Error("OFFICIAL_MARKET_NON_JSON:"+text.slice(0,120));}
-        return {payload,attemptsUsed:attempt,httpStatus:Number(response.status),requestHeaders:officialMarketRequestHeaders(market)};
+        return {payload,attemptsUsed:attempt,httpStatus:Number(response.status),requestHeaders:headers,
+          transport:market==="TPEx"?"node-https":"fetch"};
       }
     }catch(error){
       if(error?.httpStatus&&!retryableOfficialMarketStatus(error.httpStatus))throw error;
