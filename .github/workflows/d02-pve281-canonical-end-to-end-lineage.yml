@@ -1,0 +1,23 @@
+name: D02 PVE281 Canonical End-to-End Admission Lineage
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve281_canonical_end_to_end_admission_lineage_v0_1.mjs"
+      - "tests/test_d02_pve281_canonical_end_to_end_admission_lineage_v0_1.mjs"
+      - ".github/workflows/d02-pve281-canonical-end-to-end-lineage.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve281_canonical_end_to_end_admission_lineage_v0_1.mjs
