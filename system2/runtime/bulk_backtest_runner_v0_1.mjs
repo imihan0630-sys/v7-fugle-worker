@@ -288,6 +288,8 @@ export async function buildBulkBacktestPitUniverseReceiptV0_1({
     );
 
   const blockerCodes = [];
+  const normalizedRegistryHash = optionalSha256(registryHash, "registryHash");
+  if (!normalizedRegistryHash) blockerCodes.push("UNIVERSE_REGISTRY_HASH_MISSING");
   for (const member of normalizedMembers) {
     if (!member.replayEligible) {
       blockerCodes.push("UNIVERSE_MEMBER_NOT_REPLAY_ELIGIBLE:" + member.market + "|" + member.symbol);
@@ -309,7 +311,7 @@ export async function buildBulkBacktestPitUniverseReceiptV0_1({
     marketDate: date,
     decisionTimestamp: decision,
     registryId: requiredText(registryId, "registryId"),
-    registryHash: optionalSha256(registryHash, "registryHash"),
+    registryHash: normalizedRegistryHash,
     historicalUniverseSnapshotHash: optionalSha256(
       historicalUniverseSnapshotHash,
       "historicalUniverseSnapshotHash",
@@ -635,7 +637,13 @@ export async function runBulkBacktestV0_1({
       marketDate,
     );
     const universeReceipt = await verifyBulkBacktestPitUniverseReceiptV0_1(
-      await loadUniverseReceipt({ marketDate, decisionTimestamp, plan, universe }),
+      await loadUniverseReceipt({
+        marketDate,
+        decisionTimestamp,
+        plan,
+        universe,
+        capturedAt: captureTime,
+      }),
       { plan, marketDate, decisionTimestamp },
     );
     reconcileUniverseReceiptMembersV0_1(universeReceipt, universe);
