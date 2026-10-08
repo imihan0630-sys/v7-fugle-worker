@@ -5,6 +5,10 @@ Status: CANONICAL_BUILD_PROGRESS_MAP
 Scope: System 2 engineering/research build sequence  
 System 1 / V8 Formal Core impact: NONE
 
+## 2026-10-09 owner-approved two-stage after-market readiness (design only)
+
+Reference: `system2/SYSTEM2_POST_MARKET_DATA_READINESS_AND_POOL_CLOCK_V0_1.md`. Future target: 19:00 preliminary research receipt; 23:45 verified source- and PIT-gated final capacity attempt; conditional 00:15 follow-up for the same explicit trading date T when incomplete. **This does not change current deployed 19:00 refresh**, does not claim 23:45 availability or activate Shadow selection. S2-02/S2-07/S2-08/S2-09/S2-10 retain existing statuses until separate implementation and physical acceptance. Require same-date source hashes, coverage and per-strategy prerequisites, no backdated firstKnownAt, no silent overwrite or invented zero-pick. Free-plan constraints, DATA/REMEDIATION ownership and System1 Formal Core isolation remain unchanged.
+
 ## Purpose
 
 This file is the canonical engineering progress map for System 2. It separates:
