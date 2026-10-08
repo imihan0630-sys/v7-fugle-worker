@@ -1228,3 +1228,28 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - physical boundary:
   DATA_LANE still owns the real bounded TWTAWU completeness receipt. CORR-007 only makes it impossible for BUILD to promote without that receipt.
 - finalDisposition: PENDING
+
+
+### S2-CORR-20261008-008 — NC-T01 physical wrapper runtime guard is declarative and D1 read-only is post-hoc
+
+- createdAt: 2026-10-08T10:59:00+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- blockedBy: S2-CORR-20261008-007
+- scope: PR #844 physical NC-T01 wrapper / S22-T12 / S22-T16
+- observed:
+  - generic remote D1 adapter can issue arbitrary SQL;
+  - current wrapper checks `rowsWritten=0` after execution rather than blocking mutations before transport;
+  - `sameCutRuntimeEvidence()` sets `instrumented=true` and `runtimeForbiddenAccessCount=0` as literals.
+- required:
+  1. runner-local pre-transport D1 read-only guard;
+  2. frozen allowed-origin network guard;
+  3. measured same-cut runtime guard ledger;
+  4. runtimeForbiddenAccessCount derived from measured counters;
+  5. ledger digest bound through runtimeEvidenceDigest -> auditDigest -> `HIDDEN_FALLBACK_AUDIT_SHA256` -> final receiptHash;
+  6. fail-closed regressions for mutation/origin attempts and missing/incomplete guard.
+- durable audit:
+  `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`.
+- finalDisposition: PENDING
