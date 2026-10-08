@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T10:59:00+08:00",
+  "updatedAt": "2026-10-08T11:40:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1532,7 +1532,7 @@
       "directiveId": "S2-CORR-20261008-007",
       "createdAt": "2026-10-08T06:01:00+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "NC-T01 CLEAR_NO_ACTION promotion does not bind TWSE suspension completeness to immutable source evidence",
       "affectedScope": [
         "System2 NC-T01 S22-T13/S22-T15/S22-T16",
@@ -1587,13 +1587,19 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "Merged implementation commit 836184f98726449107cdbd0ed83e2746bbbcf965 with component commits 6ecc2e33406675e73bc4d2e3e36ae0c968ba5c86 / 012d5dc43314276a16f9bdeb562122e0fe35dda5.",
+        "Regression/CI follow-ups 10f1ae0ddeadc5ec93440e4b63e3fda90f1904da / 0e1154e046ee5247accad8fa36cb1c444f38cef0 / 41062003cc34e605ea22effb40ad3249e35764e0.",
+        "Exact-head PASS: System2 Research CI 37720705098; NC-T01 Continuity Replay Binding 37720705101; NC-T01 Artifact Runner 37720705126; V8 Regression Tests 37720705066.",
+        "BUILD handoff: system2/evidence/S2_CORR_007_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json.",
+        "Independent research consumer readback: research/d03_corr007_merged_main_implementation_acceptance_20261008_v0_1.json."
+      ],
       "verificationEvidence": [
         "00 minimal BUILD/DATA interface: system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json @ commit eaa0e609eb48727b6047100d9848ccbc4b921594.",
         "00 schema-versioning refinement: evidence-bound completeness should be machine-distinct from legacy status-only V0.1; canonical handoff updated @ commit 08e55e4e9e9347aae7cd5f737751c101778e516f."
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T06:25:00+08:00"
+      "finalDisposition": "FIX_IMPLEMENTED — V0.2 evidence-bound TWSE suspension completeness and additive suspension sourceEvidenceRef firewall are merged and exact-head validated. HIGH correction remains pending independent AUDIT_LANE verification; no physical NC-T01 credit is claimed.",
+      "updatedAt": "2026-10-08T11:40:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-008",
