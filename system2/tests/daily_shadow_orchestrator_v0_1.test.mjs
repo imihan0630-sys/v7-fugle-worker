@@ -156,16 +156,26 @@ const history = {
   "6488": priorBars("6488", "TPEX", 340),
 };
 
-const allKnown = Object.fromEntries(
-  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => [
-    x.family,
-    {
-      observationState: "KNOWN",
-      thesisState: "SUPPORTIVE",
-      reasons: ["fixture-known"],
-      warnings: [],
-    },
-  ]),
+const stage1Families = Object.fromEntries(
+  SHORT_MOMENTUM_CONTRACT_V0_1.evidenceFamilies.map((x) => {
+    const required = ["TECHNICAL_STRUCTURE", "PRICE_VOLUME", "RISK_FRICTION"].includes(x.family);
+    return [
+      x.family,
+      required
+        ? {
+            observationState: "KNOWN",
+            thesisState: x.family === "RISK_FRICTION" ? "NEUTRAL" : "SUPPORTIVE",
+            reasons: ["fixture-known-from-a1-factor-lineage"],
+            warnings: [],
+          }
+        : {
+            observationState: "UNKNOWN",
+            thesisState: "INDETERMINATE",
+            reasons: ["fixture-nonblocking-family-not-wired"],
+            warnings: [],
+          },
+    ];
+  }),
 );
 
 const result = await runDailyLimitedShadowOrchestratorV0_1({
@@ -195,7 +205,7 @@ const result = await runDailyLimitedShadowOrchestratorV0_1({
 
     if (symbol === "2317") {
       return {
-        familyAssessments: allKnown,
+        familyAssessments: stage1Families,
         entryReadiness: "WAIT",
         activeHardInvalidationIds: ["FAILED_BREAKOUT"],
         importantRejected: true,
@@ -204,7 +214,7 @@ const result = await runDailyLimitedShadowOrchestratorV0_1({
     }
 
     return {
-      familyAssessments: allKnown,
+      familyAssessments: stage1Families,
       entryReadiness: "BUY_ELIGIBLE",
       entryPlan: {
         entryZoneLow: 1500,
@@ -282,7 +292,7 @@ await assert.rejects(
     a1SymbolSnapshotBatch: incompleteA1,
     loadPriorHistoricalBars: async ({ symbol }) => history[symbol] || [],
     resolveContinuityState: async () => "CLEAR_NO_ACTION",
-    assessSymbol: async () => ({ familyAssessments: allKnown, entryReadiness: "WATCH" }),
+    assessSymbol: async () => ({ familyAssessments: stage1Families, entryReadiness: "WATCH" }),
   }),
   /A1_SYMBOL_BATCH_NOT_READY/,
 );
@@ -303,7 +313,7 @@ await assert.rejects(
     regime,
     a1SymbolSnapshotBatch: a1,
     loadPriorHistoricalBars: async ({ symbol }) => history[symbol],
-    assessSymbol: async () => ({ familyAssessments: allKnown, entryReadiness: "WATCH" }),
+    assessSymbol: async () => ({ familyAssessments: stage1Families, entryReadiness: "WATCH" }),
   }),
   /cannot enable final selection/,
 );
