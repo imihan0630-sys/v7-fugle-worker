@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T20:20:19+08:00",
+  "updatedAt": "2026-10-08T20:30:28.600+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1029,7 +1029,7 @@
       "directiveId": "S2-CORR-20261007-001",
       "createdAt": "2026-10-07T16:27:32+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Prospective Decision Clock A1 collector diverges from Stage-1 exact-date source path",
       "affectedScope": [
         "System2 prospective Decision Clock / source-arrival evidence collector",
@@ -1095,10 +1095,15 @@
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
       "blockedBy": null,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "DATA_LANE PR #887 merged to main as 2e27483d586c52e15d8f1b288fdf5da5c4638e24. Shared Stage1 A1 primary/exact-date selection reused by read-only Decision Clock; source identity, exact official date and post-response clock retained.",
+        "PR #887 System2 verify and V8 regression PASS; merged-main System2 Research CI PASS and Daily Shadow read-only preflight PASS.",
+        "Old 13-file frozen clock manifest unchanged; distinct V0.4 contract and 15-file freeze created. Evidence: system2/evidence/S2_CORR_20261007_001_A1_SHARED_SOURCE_SELECTION_V0_4_IMPLEMENTATION_20261008_V0_1.json.",
+        "Live real-trading-date exact-fallback physical witness NOT YET VERIFIED; correction remains FIX_IMPLEMENTED pending independent physical audit, no self-closure."
+      ],
       "verificationEvidence": [],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T19:16:52+08:00"
+      "finalDisposition": "FIX_IMPLEMENTED_SOURCE_SELECTION_AND_EPOCH_ISOLATION; REAL_PROSPECTIVE_FALLBACK_WITNESS_AND_INDEPENDENT_VERIFICATION_PENDING",
+      "updatedAt": "2026-10-08T20:30:28.600+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-002",
