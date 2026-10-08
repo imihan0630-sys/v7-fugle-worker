@@ -5,91 +5,237 @@ const TABLE_SPECS = deepFreeze({
   s2_infrastructure_checks: {
     order: 1100,
     identity: ["check_id"],
+    columns: [
+      "check_id","check_type","check_timestamp","environment","binding_name",
+      "schema_version","expected_payload_json","observed_payload_json","status",
+      "check_hash","notes",
+    ],
   },
   s2_historical_ingest_batches: {
     order: 1,
     identity: ["batch_id"],
+    columns: [
+      "batch_id","dataset_lane","dataset_start_boundary","source_id","source_name",
+      "source_url","first_market_date","last_market_date","row_count",
+      "pit_eligible_count","unknown_availability_count","captured_at","batch_hash",
+      "schema_version",
+    ],
   },
   s2_historical_a1_bars: {
     order: 2,
     identity: ["bar_id"],
-    // bar_id is content-addressed.  Re-observation metadata may differ when an
+    columns: [
+      "bar_id","batch_id","canonical_key","market_date","market","symbol","company_name",
+      "price_space","open_price","high_price","low_price","close_price","volume_shares",
+      "trade_value","transactions","change_value","continuity_state","source_id",
+      "source_name","source_url","source_row_hash","observed_at","available_at",
+      "availability_basis","pit_availability_class","pit_replay_eligible","captured_at",
+      "bar_hash","schema_version",
+    ],
+    // bar_id is content-addressed. Re-observation metadata may differ when an
     // identical official row is fetched again after an interrupted backfill.
-    // First-write observation provenance remains immutable; these fields do
-    // not create a false content conflict.
     equivalenceIgnore: ["batch_id", "observed_at", "captured_at"],
   },
   s2_backtest_runs: {
     order: 3,
     identity: ["run_id"],
+    columns: [
+      "run_id","plan_hash","dataset_version","strategy_id","strategy_version","policy_id",
+      "policy_version","first_market_date","last_market_date","requested_date_count",
+      "completed_date_count","processed_sample_count","state_counts_json",
+      "date_summaries_json","all_requested_dates_complete","hard_symbol_limit",
+      "partition_size","selection_policy_authorized","rolling_digest","captured_at",
+      "run_hash","schema_version",
+    ],
   },
   s2_backtest_checkpoints: {
     order: 4,
     identity: ["checkpoint_hash"],
+    columns: [
+      "checkpoint_hash","run_id","plan_hash","completed_through_date",
+      "completed_dates_json","processed_sample_count","state_counts_json",
+      "date_summaries_json","rolling_digest","captured_at","schema_version",
+    ],
   },
   s2_historical_base_samples: {
     order: 5,
     identity: ["sample_id"],
+    columns: [
+      "sample_id","base_dataset_id","backtest_run_id","market_date","decision_timestamp",
+      "symbol","company_name","market","strategy_id","strategy_version","policy_id",
+      "policy_version","candidate_state","archive_cohort","rank_value","total_score",
+      "strategy_validity","entry_readiness","factor_bundle_hash","factor_bundle_version",
+      "pit_replay_hash","source_available_at","core_metrics_json","factor_observations_json",
+      "regime_json","entry_plan_json","thesis_json","invalidation_json","reasons_json",
+      "warnings_json","outcome_attached","outcome_ref","archive_hash","schema_version",
+    ],
   },
   s2_source_session_receipts: {
     order: 10,
     identity: ["receipt_id"],
+    columns: [
+      "receipt_id","market_date","decision_timestamp","source_session_state",
+      "required_blockers_json","optional_gaps_json","source_rows_json",
+      "extra_observed_sources_json","expected_source_count","observed_source_count",
+      "outcome_join_source_eligible","source_session_hash","captured_at","schema_version",
+    ],
   },
   s2_market_regime_snapshots: {
     order: 20,
     identity: ["regime_snapshot_id"],
+    columns: [
+      "regime_snapshot_id","market_date","decision_timestamp","regime_version",
+      "labels_json","states_json","factor_observations_json","source_receipts_json",
+      "unknowns_json","snapshot_hash",
+    ],
   },
   s2_industry_snapshots: {
     order: 30,
     identity: ["industry_snapshot_id"],
+    columns: [
+      "industry_snapshot_id","market_date","decision_timestamp","industry_key",
+      "classification_version","factor_bundle_version","factors_json",
+      "source_manifest_json","completeness_state","snapshot_hash",
+    ],
   },
   s2_symbol_factor_snapshots: {
     order: 40,
     identity: ["snapshot_id"],
+    columns: [
+      "snapshot_id","market_date","decision_timestamp","symbol","company_name",
+      "factor_bundle_version","regime_snapshot_id","industry_snapshot_id",
+      "core_metrics_json","factor_observations_json","interaction_observations_json",
+      "source_manifest_json","completeness_state","unknowns_json","captured_at",
+      "snapshot_hash",
+    ],
   },
   s2_decisions: {
     order: 50,
     identity: ["decision_id"],
+    columns: [
+      "decision_id","factor_snapshot_id","market_date","decision_timestamp","strategy_id",
+      "strategy_version","symbol","company_name","candidate_state","strategy_validity",
+      "entry_readiness","source_readiness","shadow_spec_id","evaluation_mode","rank_value",
+      "total_score","reasons_json","warnings_json","missing_required_factors_json",
+      "entry_plan_json","thesis_json","invalidation_json","regime_snapshot_id","frozen_at",
+      "schema_version","decision_hash",
+    ],
+  },
+  s2_decision_corrections: {
+    order: 55,
+    identity: ["correction_id"],
+    columns: [
+      "correction_id","original_decision_id","correction_timestamp","reason",
+      "corrected_fields_json","evidence_json",
+    ],
   },
   s2_shadow_runs: {
     order: 60,
     identity: ["run_id"],
+    columns: [
+      "run_id","market_date","decision_timestamp","strategy_id","strategy_version",
+      "shadow_spec_id","universe_version","run_state","base_universe_count",
+      "excluded_count","eligible_count","accounted_count","completion_rate",
+      "state_counts_json","unaccounted_symbols_json","symbol_accounts_json",
+      "warnings_json","captured_at",
+    ],
   },
   s2_strategy_ordering_receipts: {
     order: 70,
     identity: ["ordering_receipt_id"],
+    columns: [
+      "ordering_receipt_id","market_date","decision_timestamp","purpose","strategy_id",
+      "strategy_version","ordering_policy_id","ordering_policy_version","candidate_count",
+      "ordered_candidates_json","ordering_hash","captured_at","schema_version",
+    ],
   },
   s2_ranking_experiment_receipts: {
     order: 80,
     identity: ["experiment_receipt_id"],
+    columns: [
+      "experiment_receipt_id","experiment_id","experiment_version","hypothesis_id",
+      "market_date","decision_timestamp","purpose","strategy_id","strategy_version",
+      "baseline_policy_id","baseline_policy_version","baseline_ordering_hash",
+      "challenger_policy_id","challenger_policy_version","challenger_ordering_hash",
+      "same_candidate_set","common_support_symbols_json","baseline_only_symbols_json",
+      "challenger_only_symbols_json","rank_deltas_json","outcome_attached",
+      "experiment_hash","captured_at","schema_version",
+    ],
   },
   s2_rank05_displacement_receipts: {
     order: 90,
     identity: ["receipt_id"],
+    columns: [
+      "receipt_id","experiment_id","experiment_version","market_date","decision_timestamp",
+      "incumbent_symbol","incumbent_episode_id","incumbent_pool_sessions","incumbent_json",
+      "challenger_symbol","challenger_json","classification","shadow_displacement_eligible",
+      "action","outcome_attached","receipt_hash","captured_at","schema_version",
+    ],
   },
   s2_capacity_runs: {
     order: 100,
     identity: ["capacity_run_id"],
+    columns: [
+      "capacity_run_id","market_date","decision_timestamp","global_max","per_strategy_max",
+      "ordering_policy_id","ordering_policy_version","retained_json","removed_json",
+      "admitted_new_json","capacity_overflow_json","global_pool_json",
+      "active_assignments_json","active_non_assignments_json","counts_json",
+      "capacity_hash","captured_at","schema_version",
+    ],
   },
   s2_candidate_lifecycle_receipts: {
     order: 110,
     identity: ["lifecycle_receipt_id"],
+    columns: [
+      "lifecycle_receipt_id","candidate_episode_id","symbol","market_date",
+      "transition_timestamp","from_state","to_state","memberships_json","reason_codes_json",
+      "evidence_refs_json","capacity_eligible","position_monitor","lifecycle_hash",
+      "schema_version",
+    ],
   },
   s2_candidate_reentry_receipts: {
     order: 120,
     identity: ["reentry_receipt_id"],
+    columns: [
+      "reentry_receipt_id","symbol","previous_episode_id","new_episode_id",
+      "requalified_decision_id","reentry_timestamp","reason_codes_json","reentry_hash",
+      "schema_version",
+    ],
   },
   s2_strategy_overlap_receipts: {
     order: 130,
     identity: ["receipt_id"],
+    columns: [
+      "receipt_id","experiment_id","experiment_version","market_date","decision_timestamp",
+      "strategy_a_json","strategy_b_json","shared_core_families_json","distinct_core_a_json",
+      "distinct_core_b_json","shared_all_families_json","diagnostics_json",
+      "independent_same_clock_validity","naive_strategy_count_bonus_allowed",
+      "overlap_priority_effect_authorized","research_state","overlap_hash","captured_at",
+      "schema_version",
+    ],
   },
   s2_candidate_concentration_receipts: {
     order: 140,
     identity: ["receipt_id"],
+    columns: [
+      "receipt_id","experiment_id","experiment_version","market_date","decision_timestamp",
+      "classification_version","global_count","known_industry_count","unknown_industry_count",
+      "known_industry_coverage","unknown_industry_symbols_json","industry_rows_json",
+      "largest_industry_json","industry_hhi_known_only","strategy_membership_counts_json",
+      "multi_strategy_symbol_count","effect_authorization_json","warnings_json",
+      "concentration_hash","captured_at","schema_version",
+    ],
   },
   s2_shadow_run_fingerprints: {
     order: 1000,
     identity: ["fingerprint_id"],
+    columns: [
+      "fingerprint_id","market_date","decision_timestamp","strategy_id","strategy_version",
+      "shadow_spec_id","universe_version","source_session_hash","shadow_accounting_hash",
+      "decision_hashes_json","ordering_hashes_json","ranking_experiment_hashes_json",
+      "capacity_hash","lifecycle_hashes_json","run_fingerprint_state","blockers_json",
+      "outcome_join_eligible","run_fingerprint_hash","captured_at","schema_version",
+    ],
     mustBeLast: true,
   },
 });
@@ -115,13 +261,19 @@ function tableSpec(table) {
   return [name, spec];
 }
 
-function normalizeRow(row, table) {
+function normalizeRow(row, table, spec) {
   if (!row || typeof row !== "object" || Array.isArray(row)) {
     throw new Error(`${table} row must be an object`);
   }
   const entries = Object.entries(row);
   if (!entries.length) throw new Error(`${table} row cannot be empty`);
-  for (const [key] of entries) assertIdentifier(key, `${table} column`);
+  const allowed = new Set(spec?.columns || []);
+  for (const [key] of entries) {
+    assertIdentifier(key, `${table} column`);
+    if (!allowed.has(key)) {
+      throw new Error(`${table} column is not whitelisted: ${key}`);
+    }
+  }
   return Object.fromEntries(entries.sort(([a], [b]) => a.localeCompare(b)));
 }
 
@@ -177,9 +329,10 @@ export async function buildSystem2PersistenceBatch({
     const record = records[i];
     if (!record || typeof record !== "object") throw new Error(`records[${i}] is required`);
     const [table, spec] = tableSpec(record.table);
-    const row = normalizeRow(record.row, table);
+    const row = normalizeRow(record.row, table, spec);
     const identity = identityObject(row, spec.identity, table);
     const key = identityKey(table, identity);
+    const identityDigest = await sha256Hex({ table, identity });
     const rowDigest = await sha256Hex(row);
 
     if (seen.has(key)) {
@@ -195,6 +348,7 @@ export async function buildSystem2PersistenceBatch({
       tableOrder: spec.order,
       identity,
       identityKey: key,
+      identityDigest,
       row,
       rowDigest,
       verifyMode: "ABSENT_OR_IDENTICAL",
