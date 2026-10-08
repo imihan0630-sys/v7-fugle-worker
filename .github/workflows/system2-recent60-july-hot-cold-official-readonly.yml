@@ -1,0 +1,65 @@
+name: System2 Recent60 July Hot Cold Official Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-recent60-july-hot-cold-official-readonly.yml"
+      - "system2/runtime/recent60_july_hot_cold_source_readonly_v0_1.mjs"
+      - "system2/runtime/recent60_july_official_source_probe_v0_1.mjs"
+      - "system2/scripts/audit_recent60_july_hot_cold_official_readonly_v0_1.mjs"
+      - "system2/tests/recent60_july_hot_cold_official_readonly_v0_1.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-recent60-july-hot-cold-official-readonly
+  cancel-in-progress: false
+
+jobs:
+  physical:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Test frozen-sample identity and read-only safety
+        run: |
+          set -euo pipefail
+          node system2/tests/recent60_july_hot_cold_official_readonly_v0_1.test.mjs
+          node --check system2/scripts/audit_recent60_july_hot_cold_official_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Read 96 frozen date identities against isolated hot D1, cold R2 and official exact-date GET
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_RECENT60_JULY_BRIDGE_OUTPUT: /tmp/s2-recent60-july-hot-cold-source-readonly.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_recent60_july_hot_cold_official_readonly_v0_1.mjs
+
+      - name: Preserve physical or blocked immutable audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-recent60-july-hot-cold-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-recent60-july-hot-cold-source-readonly.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm production isolation unchanged
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production isolation PASS"
