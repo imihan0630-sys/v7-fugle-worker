@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T15:10:25+08:00",
+  "updatedAt": "2026-10-08T15:33:03+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1976,7 +1976,7 @@
       "directiveId": "S2-CORR-20261008-014",
       "createdAt": "2026-10-08T11:30:54+08:00",
       "severity": "CRITICAL",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Bulk backtest can accept forged completion checkpoints and unproven PIT universes",
       "affectedScope": [
         "S2-19 PIT replay and bulk backtest",
@@ -2026,12 +2026,17 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [
-        "Independent batch audit AP-04 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45."
+      "implementationEvidence": [
+        "PR #868 merged as 4dfa01cb3dd47845ed768e261f6a3d3d9191a9f7.",
+        "system2/evidence/S2_CORR_014_BUILD_IMPLEMENTATION_HANDOFF_20261008_V0_1.json"
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T11:30:54+08:00"
+      "verificationEvidence": [
+        "Independent batch audit AP-04 on main d900cc7e3a2ee12ff8fa6133dd199b29db8f6e45.",
+        "Exact-head PASS: CORR-014 37743894631; System2 Research CI 37743894530; V8 Regression 37743894466.",
+        "Merged-main PASS on 4dfa01cb: CORR-014 37744022901; System2 Research CI 37744022808; V8 Regression 37744023076."
+      ],
+      "finalDisposition": "FIX_IMPLEMENTED — bulk backtest plan identity, PIT-universe receipts, partition/sample lineage and resume checkpoint integrity are merged and exact-head/merged-main validated. AP-04 is rejected before loaders/evaluators, and zero-sample completion requires a proved empty PIT universe. CRITICAL correction remains pending independent AUDIT_LANE verification before VERIFIED_CLOSED.",
+      "updatedAt": "2026-10-08T15:33:03+08:00"
     },
     {
       "directiveId": "S2-CORR-20261008-015",
