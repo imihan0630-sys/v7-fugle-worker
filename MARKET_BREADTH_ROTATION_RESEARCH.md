@@ -2860,3 +2860,27 @@ The BR077 root is shared by D09-06 and D09-07; consumer count does not increase 
 D09-06 remains L3/60. L4 stays method/outcome gated by D16 and member-level breadth/concentration controls.
 
 Exact next: append the next official 34-industry rank/percentile snapshot under unchanged semantics and consume the D16 date-clustered persistence/reversal method receipt before forward outcome inference.
+
+
+## BR-080 — D09-08 two-date size-leadership reversal (2026-10-09)
+
+Artifact:
+- `research/BR080_D09_08_SIZE_LEADERSHIP_REVERSAL_20261009_V0_1.md`
+
+Two genuine common-complete official TRI dates now show a full reversal at the large/mid extremes:
+- 2026-10-01 D1 ordering = LARGE > SMALL > MID;
+- 2026-10-08 D1 ordering = MID > SMALL > LARGE.
+
+Transitions:
+- LARGE rank 1 -> 3;
+- MID rank 3 -> 1;
+- SMALL rank 2 -> 2.
+
+Frozen:
+- `SIZE_LEADERSHIP_NOT_PERMANENT_STYLE_LABEL`;
+- `COMMON_TRI_BASIS_REQUIRED`;
+- `TWO_DATES_NOT_PREDICTIVE_REGIME`.
+
+This is a transition consumer of the two already accepted common-complete date roots and does not increment independent complete-date N beyond 2.
+
+D09-08 remains L3/60; inference remains POWER_INSUFFICIENT. Exact next: accumulate more common-complete TRI dates and consume the D16 date-level method before predictive interpretation.
