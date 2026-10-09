@@ -2918,3 +2918,22 @@ Frozen:
 - same-date Sector RS incremental content is relative sign/magnitude, not a second independent ranking signal.
 
 D09-02 remains L3/60. L4 still needs independent prospective dates/OOS evidence and incremental validation after absolute return/rank, breadth, concentration, regime and physical-cycle controls.
+
+
+## BR-082 — D09-03 Residual RS leave-one-out formula audit (2026-10-09)
+
+Artifact:
+- `research/BR082_D09_03_RESIDUAL_RS_LEAVE_ONE_OUT_FORMULA_AUDIT_20261009_V0_1.md`
+
+Current runtime `Worker.js` groups peers by `industry + return20StartDate`, subtracts the candidate's own ret20 from the peer sum, decrements peer count by one and emits sectorReturn20 only when at least two other peers remain.
+
+Therefore the implemented residual primitive is:
+`residualSectorRs20 = own.ret20 - leave-one-out peer sectorReturn20`.
+
+Frozen:
+- `CANDIDATE_SELF_RETURN_NOT_INCLUDED_IN_PEER_BENCHMARK`;
+- `SAME_INDUSTRY_ALONE_IS_NOT_ENOUGH; RETURN_WINDOW_START_MUST_MATCH`.
+
+The 2026-10-08 System1 parent is physically absent (`C1_GENERATION_NOT_FOUND`), so no promotion-grade live Residual RS cross-section may be reconstructed for that date.
+
+D09-03 remains L3/60. Exact next: on the next genuine immutable ordinary-session stock parent, freeze the full Residual RS cross-section with classification vintage, return20StartDate, peerCount and UNKNOWN states; then request D16 redundancy/OOS validation against own ret20, Sector RS, K-line, Price-Volume and regime.
