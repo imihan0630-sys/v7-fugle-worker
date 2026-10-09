@@ -30,5 +30,13 @@
   "missing": "UNKNOWN_NOT_ZERO",
   "formalCore": "LOCKED",
   "maturityChange": false,
-  "next": "Append genuine independent date receipts; freeze label and episode method before outcome access."
+  "next": "Append genuine independent date receipts; freeze label and episode method before outcome access.",
+  "officialDistinctMarketDateN": 3,
+  "decisionClockEligibleN": "UNKNOWN",
+  "sourceClockAudit": "research/ROOM11_BR074_SOURCE_CLOCK_AUDIT_20261010.md",
+  "clockEvidence": {
+    "2026-10-02": "CAPTURED_AT_15_48_REQUIRES_HASH",
+    "2026-10-07": "CAPTURED_AT_23_55_26_LATE_FOR_18_00",
+    "2026-10-08": "CAPTURED_AT_MISSING"
+  }
 }
