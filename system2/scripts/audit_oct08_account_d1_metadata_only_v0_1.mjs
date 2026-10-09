@@ -24,8 +24,8 @@ const query=`query D1Daily($accountTag: String!, $start: Date!, $end: Date!) {
 let result;
 try{
  const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
- const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||
-  process.env.CLOUDFLARE_API_TOKEN;
+ const token=process.env.CLOUDFLARE_API_TOKEN||
+  process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
  if(!accountId||!token)throw new Error("ACCOUNT_GRAPHQL_READONLY_CREDENTIALS_UNAVAILABLE");
  const observedAt=new Date().toISOString();
  const day=observedAt.slice(0,10);
