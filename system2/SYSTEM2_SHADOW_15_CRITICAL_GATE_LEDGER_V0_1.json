@@ -70,6 +70,16 @@
         "37925023052"
       ],
       "status": "OFFLINE_ATOMIC_CAS_SQL_PLAN_TESTED_PHYSICAL_WRITER_PENDING"
+    },
+    {
+      "id": "F08",
+      "pr": 1005,
+      "commit": "6cb0202eb6c53eddef294dcb1cb61ab8e86b5cff",
+      "ci": [
+        "37928686294",
+        "37928686377"
+      ],
+      "status": "OFFLINE_EXACT_CAS_RETURNING_22_COLUMN_READBACK_PAYLOAD_CI_PASS_PHYSICAL_D1_UNVERIFIED"
     }
   ],
   "mandatoryProtections": {
