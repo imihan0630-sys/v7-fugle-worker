@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "BR076_D09_12_20261008_SAME_CLOCK_ELIGIBILITY_V0_1",
+  "status": "BREADTH_ROOT_PRESENT / SAME_CLOCK_A2_NOT_OBSERVED / RETROSPECTIVE_BACKFILL_FORBIDDEN / KEEP_L3",
+  "module": "D09-12",
+  "marketDate": "2026-10-08",
+  "observedMainBeforeWrite": "bc37b3881a4614c82a2ef58ebdbbd8eb3e35a762",
+  "breadthRoot": {
+    "ref": "research/br073_twse_advance_decline_third_date_20261008_v0_1.json",
+    "source": "TWSE_OFFICIAL_MI_INDEX",
+    "up": 425,
+    "down": 540,
+    "flat": 109,
+    "unmatched": 3,
+    "notComparable": 5,
+    "comparableN": 1074,
+    "totalN": 1082,
+    "netAdvanceMinusDeclinePct": -10.707635009310987,
+    "evidenceRoot": "TWSE_MARKET_DATE_BREADTH_ROOT",
+    "reusableByD0912": true,
+    "duplicateIndependentN": false
+  },
+  "taiexProspectiveSameClock": {
+    "state": "NOT_OBSERVED",
+    "repositoryWorkflowAudit": "NO_2026_10_08_SYSTEM2_PROSPECTIVE_CLOCK_EVIDENCE_RUN_WITH_A2_FOUND",
+    "retrospectiveOfficialCloseNowAvailable": true,
+    "retrospectiveClose": 49313.44,
+    "retrospectivePromotionAuthorized": false
+  },
+  "classification": "PROSPECTIVE_BREADTH_ONLY_CONTROL / NOT_A_GENUINE_D09_12_JOINT_RECEIPT",
+  "independentGenuineSameClockJointN": 1,
+  "stockOutcomesOpened": false,
+  "formalCoreChanged": false,
+  "invariants": [
+    "CURRENT_RETRIEVABILITY_DOES_NOT_BACKFILL_PRIOR_SAME_CLOCK_OBSERVATION",
+    "D09_04_BREADTH_ROOT_REUSE_DOES_NOT_INCREMENT_PROJECT_EVIDENCE_ROOT_N",
+    "BREADTH_WITHOUT_PROSPECTIVE_A2_IS_NOT_D09_12_JOINT_RECEIPT"
+  ],
+  "exactNext": "Capture the next completed Taiwan session with both official TWSE breadth and A2 TAIEX context observed prospectively before one frozen decision cutoff; preserve TPEx as UNKNOWN unless equally verified."
+}
