@@ -7,7 +7,7 @@ import { loadHistoricalBarsFromColdPacksV0_1 } from "../system2/runtime/historic
 import { materializeHistoricalA1PackRowsV0_1 } from "../system2/runtime/historical_pack_store_v0_1.mjs";
 import { fetchHistoricalTwseCalendarV0_1 } from "../system2/runtime/historical_twse_calendar_v0_1.mjs";
 import { conservativeHistoricalAvailableAt } from "../system2/runtime/official_full_market_daily_history_adapter_v0_1.mjs";
-import { historicalUniverseMembershipActiveOnDateV0_1 } from "../system2/runtime/historical_universe_registry_v0_1.mjs";
+import { historicalUniverseMembershipActiveOnDateV0_1, buildHistoricalUniverseRegistryV0_1 } from "../system2/runtime/historical_universe_registry_v0_1.mjs";
 import { buildD08TwseHistoricalUniverseSourceV0_1, buildD08SemanticUniverseIdentityV0_1 } from "../system2/runtime/d08_twse_historical_universe_source_v0_1.mjs";
 
 const VERSION="ROOM11_NUMERIC_L3_BATCH_V0_2";
@@ -201,6 +201,40 @@ function normalizeMembershipRow(row){
     endBasis:row.end_basis||null,
     replayEligible:Number(row.replay_eligible)===1,
   };
+}
+
+
+export async function buildPinnedAnnualExactEquivalentRegistryV0_1(liveOfficialUniverse,expected=PINNED_TWSE_2025_REGISTRY){
+  must(liveOfficialUniverse?.registry?.memberships?.length>0,"LIVE_OFFICIAL_REGISTRY_REQUIRED");
+  const sr=liveOfficialUniverse.sourceReceipt||{};
+  must(sr.currentSourceHash===expected.sourceReceipt.currentSourceHash,"ANNUAL_EQUIVALENT_CURRENT_SOURCE_HASH_MISMATCH");
+  must(sr.newListingSourceHash===expected.sourceReceipt.newListingSourceHash,"ANNUAL_EQUIVALENT_NEWLISTING_SOURCE_HASH_MISMATCH");
+  must(sr.delistingSourceHash===expected.sourceReceipt.delistingSourceHash,"ANNUAL_EQUIVALENT_DELISTING_SOURCE_HASH_MISMATCH");
+
+  const sourceRows=liveOfficialUniverse.registry.memberships.map((m)=>({
+    market:m.market,symbol:m.symbol,companyName:m.companyName,industry:m.industry,
+    memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,
+    sourceId:m.sourceId,sourceName:m.sourceName,sourceUrl:m.sourceUrl,sourceRowHash:m.sourceRowHash,
+  }));
+  const firstTradingDateByMarketSymbol=Object.fromEntries(
+    liveOfficialUniverse.registry.memberships
+      .filter((m)=>m.firstTradingDate)
+      .map((m)=>[m.market+"|"+m.symbol,m.firstTradingDate]),
+  );
+  const registry=await buildHistoricalUniverseRegistryV0_1({
+    registryId:expected.registryId,
+    sourceRows,
+    firstTradingDateByMarketSymbol,
+    datasetStartDate:"2025-01-01",
+    observedAt:expected.observedAt,
+  });
+  must(registry.registryHash===expected.registryHash,"ANNUAL_EQUIVALENT_REGISTRY_HASH_MISMATCH");
+  must(registry.membershipCount===expected.membershipCount,"ANNUAL_EQUIVALENT_MEMBERSHIP_COUNT_MISMATCH");
+  must(registry.replayEligibleCount===expected.replayEligibleCount,"ANNUAL_EQUIVALENT_REPLAY_COUNT_MISMATCH");
+  must(registry.unknownStartCount===expected.unknownStartCount,"ANNUAL_EQUIVALENT_UNKNOWN_START_MISMATCH");
+  must(registry.currentCount===expected.currentCount,"ANNUAL_EQUIVALENT_CURRENT_COUNT_MISMATCH");
+  must(registry.delistedCount===expected.delistedCount,"ANNUAL_EQUIVALENT_DELISTED_COUNT_MISMATCH");
+  return registry;
 }
 
 export function bindHistoricalMembership(rows,membershipRows,registryReceipt,expectedRegistry=PINNED_TWSE_2025_REGISTRY){
@@ -457,6 +491,7 @@ export async function runPhysicalBatch(){
     must(liveOfficialUniverse.registry.unknownStartCount===0,"LIVE_OFFICIAL_UNIVERSE_UNKNOWN_START");
     must(liveOfficialUniverse.registry.replayEligibleCount===liveOfficialUniverse.registry.membershipCount,"LIVE_OFFICIAL_UNIVERSE_REPLAY_INCOMPLETE");
     liveOfficialSemanticIdentity=buildD08SemanticUniverseIdentityV0_1(liveOfficialUniverse.registry);
+    exactEquivalentAnnualRegistry=await buildPinnedAnnualExactEquivalentRegistryV0_1(liveOfficialUniverse);
   }
 
   const symbolBars=[];
@@ -502,10 +537,10 @@ export async function runPhysicalBatch(){
   const rows0=buildRows(symbolBars,calendar.tradingDates);
   const membershipAuthorityMode=persistedRegistryReceiptPresent
     ?"D1_PERSISTED_OFFICIAL_UNIVERSE_REGISTRY"
-    :"FRESH_OFFICIAL_TWSE_RESEARCH_ARTIFACT";
+    :"AUTHORIZED_EXACT_EQUIVALENT_ANNUAL_ARTIFACT";
   const membershipBound=persistedRegistryReceiptPresent
     ? bindHistoricalMembership(rows0,membershipRows,registryRows[0])
-    : bindHistoricalMembershipFromRegistry(rows0,liveOfficialUniverse.registry);
+    : bindHistoricalMembershipFromRegistry(rows0,exactEquivalentAnnualRegistry);
   must(membershipBound.rows.length>0,"NO_MEMBERSHIP_BOUND_ROWS");
 
   const modelRows0=membershipBound.rows;
@@ -532,8 +567,8 @@ export async function runPhysicalBatch(){
     priceReturnFeatureEnabled:false,rawPriceReturnUsed:false,
     continuityStates:[...new Set(rows.flatMap(r=>[r.currentContinuityState,r.nextContinuityState]))].sort(),
     membershipScope:membershipAuthorityMode,
-    registryId:persistedRegistryReceiptPresent?PINNED_TWSE_2025_REGISTRY.registryId:liveOfficialUniverse.registry.registryId,
-    registryHash:persistedRegistryReceiptPresent?PINNED_TWSE_2025_REGISTRY.registryHash:liveOfficialUniverse.registry.registryHash,
+    registryId:PINNED_TWSE_2025_REGISTRY.registryId,
+    registryHash:PINNED_TWSE_2025_REGISTRY.registryHash,
     semanticRegistryHash:persistedRegistryReceiptPresent?null:liveOfficialSemanticIdentity.semanticRegistryHash,
     durableAnnualVerifierRegistryId:PINNED_TWSE_2025_REGISTRY.registryId,
     durableAnnualVerifierRegistryHash:PINNED_TWSE_2025_REGISTRY.registryHash,
@@ -570,7 +605,7 @@ export async function runPhysicalBatch(){
     panel,panelFeasibility,
     membershipEvidence:persistedRegistryReceiptPresent
       ? {authorityMode:membershipAuthorityMode,registryId:PINNED_TWSE_2025_REGISTRY.registryId,registryHash:PINNED_TWSE_2025_REGISTRY.registryHash,cohortMembershipHashSetHash:panel.membershipHashSetHash}
-      : {authorityMode:membershipAuthorityMode,observedAt:liveOfficialUniverse.registry.observedAt,registryId:liveOfficialUniverse.registry.registryId,registryHash:liveOfficialUniverse.registry.registryHash,semanticRegistryHash:liveOfficialSemanticIdentity.semanticRegistryHash,sourceReceipt:liveOfficialUniverse.sourceReceipt,cohortMembershipHashSetHash:panel.membershipHashSetHash,cohortMemberships:liveOfficialUniverse.registry.memberships.filter(m=>symbolBars.some(([symbol])=>symbol===m.symbol)).map(m=>({symbol:m.symbol,memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,effectiveFrom:m.effectiveFrom,effectiveTo:m.effectiveTo,startBasis:m.startBasis,endBasis:m.endBasis,membershipId:m.membershipId,membershipHash:m.membershipHash,sourceId:m.sourceId,sourceRowHash:m.sourceRowHash}))},
+      : {authorityMode:membershipAuthorityMode,observedAt:exactEquivalentAnnualRegistry.observedAt,registryId:exactEquivalentAnnualRegistry.registryId,registryHash:exactEquivalentAnnualRegistry.registryHash,semanticRegistryHash:liveOfficialSemanticIdentity.semanticRegistryHash,sourceReceipt:liveOfficialUniverse.sourceReceipt,cohortMembershipHashSetHash:panel.membershipHashSetHash,exactEquivalentToPinnedAnnualRegistry:true,cohortMemberships:exactEquivalentAnnualRegistry.memberships.filter(m=>symbolBars.some(([symbol])=>symbol===m.symbol)).map(m=>({symbol:m.symbol,memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,effectiveFrom:m.effectiveFrom,effectiveTo:m.effectiveTo,startBasis:m.startBasis,endBasis:m.endBasis,membershipId:m.membershipId,membershipHash:m.membershipHash,sourceId:m.sourceId,sourceRowHash:m.sourceRowHash}))},
     timeSeries,featureSelection,calibration:cal,monteCarlo,
     d1Metrics,
     rowsWrittenZero:Number(d1Metrics.rowsWritten||0)===0,
