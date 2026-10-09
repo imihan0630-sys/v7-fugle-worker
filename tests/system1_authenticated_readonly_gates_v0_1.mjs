@@ -24,6 +24,26 @@ export function safeDateTokens(items){
  }).slice(0,5);
 }
 
+export function assessInstitutionPhysicalSnapshot(raw,targetDate) {
+ if(raw?.marketDate!==targetDate||raw?.ready!==true||
+   !Array.isArray(raw.validDates)||!Array.isArray(raw.missingDates)||
+   !Array.isArray(raw.snapshotCounts))return false;
+ const valid=raw.validDates,missing=raw.missingDates;
+ if(missing.length!==0||valid.length!==3||new Set(valid).size!==3||
+   !valid.includes(targetDate))return false;
+ const currentMs=Date.parse(targetDate+"T00:00:00Z");
+ if(!Number.isFinite(currentMs))return false;
+ return valid.every(date=>{
+   if(typeof date!=="string"||!/^20[0-9]{2}-[0-9]{2}-[0-9]{2}$/.test(date))return false;
+   const dayMs=Date.parse(date+"T00:00:00Z");
+   if(!Number.isFinite(dayMs)||new Date(dayMs).toISOString().slice(0,10)!==date||
+     dayMs>currentMs||currentMs-dayMs>14*86400000)return false;
+   const rows=raw.snapshotCounts.filter(entry=>entry?.date===date);
+   return rows.length===1&&rows[0].complete===true&&
+     Number.isInteger(rows[0].stockCount)&&rows[0].stockCount>=1500;
+ });
+}
+
 export function assessReadiness(endpoints,marketDate=MARKET_DATE){
  const reasons=[];
  const s=endpoints?.scan||{},m=endpoints?.market||{},
@@ -34,7 +54,7 @@ export function assessReadiness(endpoints,marketDate=MARKET_DATE){
    m.twseReady!==true||m.tpexReady!==true)
    reasons.push("OFFICIAL_MARKET_READBACK_INCOMPLETE");
  if(i.httpStatus!==200||i.marketDate!==marketDate||i.ready!==true||
-   i.historicalReadback!==true)
+   i.physicalSnapshotsVerified!==true)
    reasons.push("THREE_TRADING_DAY_INSTITUTION_READBACK_INCOMPLETE");
  const datasets=["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"];
  if(q.httpStatus!==200||q.marketDate!==marketDate||q.indexReady!==true||
@@ -45,7 +65,7 @@ export function assessReadiness(endpoints,marketDate=MARKET_DATE){
   operationalRecoveryPass:false, // Cannot promote retrospective scan to prospective C1/C2.
   blockers:reasons};
 }
-function summarize(name,raw,status){
+export function summarize(name,raw,status){
  const obj={httpStatus:status,accepted:status===200};
  if(status!==200||!raw||typeof raw!=="object")return obj;
  if(name==="scan"){
@@ -65,7 +85,7 @@ function summarize(name,raw,status){
  } else if(name==="institution"){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.ready=raw.ready===true;
-  obj.historicalReadback=raw.historicalReadback===true;
+  obj.physicalSnapshotsVerified=assessInstitutionPhysicalSnapshot(raw,obj.marketDate);
   // Only export date tokens; never pass unfiltered Worker strings into evidence.
   obj.validTradingDates=safeDateTokens(raw.validDates);
   obj.validTradingDateCount=Array.isArray(raw.validDates)?raw.validDates.length:null;
@@ -75,6 +95,12 @@ function summarize(name,raw,status){
     raw.validDates.filter(x=>typeof x==="string").map(x=>x.length).slice(0,3):[];
   obj.missingTradingDates=safeDateTokens(raw.missingDates);
   obj.missingTradingDateCount=Array.isArray(raw.missingDates)?raw.missingDates.length:null;
+  const valid=new Set(obj.validTradingDates);
+  obj.physicalSnapshots=Array.isArray(raw.snapshotCounts)?
+    raw.snapshotCounts.filter(item=>valid.has(item?.date)).map(item=>({
+      date:String(item.date),complete:item.complete===true,
+      stockCount:Number.isInteger(item.stockCount)?item.stockCount:null
+    })).slice(0,3):[];
  } else if(name==="quality"){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.indexReady=raw.index?.ready===true;
