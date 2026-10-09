@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "D06_IC108_CHECKPOINT",
+  "module": "D06-05",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "artifact": "research/d06_05_ic108_dated_market_transfer_counterexample_20261010_v0_1.json",
+  "status": "IC108_RESEARCH_ONLY_DURABLE",
+  "level": "L3",
+  "maturityPct": 60,
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED",
+  "next": "IC109 official bilingual name recovery; then date-valid 2778 security identities and TPEx interval enumeration."
+}
