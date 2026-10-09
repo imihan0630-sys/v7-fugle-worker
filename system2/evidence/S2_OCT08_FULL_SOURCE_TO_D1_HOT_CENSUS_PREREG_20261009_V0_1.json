@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "S2_OCT08_FULL_FROZEN_SOURCE_D1_HOT_CENSUS_PREREG_V0_1",
+  "createdDate": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "state": "CODE_CANDIDATE_NO_CLOUDFLARE_PHYSICAL_RUN",
+  "lane": "DATA_LANE",
+  "changeClass": "A",
+  "officialCutoff": "2026-10-08",
+  "dateSet": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "markets": [
+    "TWSE",
+    "TPEX"
+  ],
+  "frozenOfficialSource": {
+    "evidencePath": "system2/evidence/S2_OCT08_TWSE_TPEX_OFFICIAL_12_DATE_PHYSICAL_SOURCE_ACCEPTANCE_20261009_V0_1.json",
+    "runId": 37878847039,
+    "marketDateReceipts": 12,
+    "ordinaryStockDateRowsTotal": 11843,
+    "twseOrdinaryRowTotal": 6518,
+    "tpexOrdinaryRowTotal": 5325
+  },
+  "design": {
+    "step1": "Re-fetch and compare all 12 canonical official source full normalized OHLC/VOL/value hashes; halt any revised official source before D1 SQL",
+    "step2": "Every official source market+date sorted 4-digit stock key is compared with isolated System2 Hot D1 RAW entries in bounded 10..50-symbol indexed IN batches (default 50)",
+    "expectedIndexedD1QueriesAtDefaultChunkSize": 240,
+    "hardMaximumD1SelectQueries": 1200,
+    "hardMaximumRowsRead": 150000,
+    "revisionRule": "Duplicate RAW physical rows on same source-key are MULTIVERSION_BLOCKED, never opportunistically choose favorable version",
+    "sourceValueRule": "Compare open/high/low/close/volumeShares/tradeValue/transactions with source values; classify missing/multi/mismatch per exact symbol-day",
+    "coverageResultRule": "PASS_ALL_11843_SOURCE_KEYS_MATCH_D1_VALUES_ONLY is direction source->D1, NOT absence proof of D1-only extra records, historical clock or PIT eligibility",
+    "noObservedAtBackdating": true,
+    "noD1Mutation": true,
+    "noR2Mutation": true
+  },
+  "files": {
+    "runtime": "system2/runtime/oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+    "runner": "system2/scripts/audit_oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+    "tests": "system2/tests/oct08_full_source_to_hot_d1_census_readonly_v0_1.test.mjs",
+    "workflow": ".github/workflows/system2-oct08-full-source-hot-d1-census-manual.yml"
+  },
+  "executionPolicy": {
+    "manualOnly": true,
+    "noPushTrigger": true,
+    "noCronSchedule": true,
+    "requiresAck": [
+      "cross_system_d1_read_budget_confirmed",
+      "no_competing_d1_writer"
+    ],
+    "quotaCorrection": "S2-CORR-20261007-003",
+    "quotaOwner": "REMEDIATION_LANE",
+    "concurrencyGroup": "system2-isolated-d1-writer",
+    "noBillingUpgrade": true,
+    "doNotDispatchUntilQuotaCoordination": true
+  },
+  "prohibitedPromotions": [
+    "HISTORIC_FIRST_KNOWN_AT",
+    "PIT_REPLAY_ELIGIBILITY",
+    "NO_EVENT",
+    "TECHNICAL_CONTINUITY",
+    "NC_T01",
+    "FULL_2026_MARKET_YEAR_PASS",
+    "STRATEGY_FINAL_LIVE",
+    "SYSTEM1_FORMAL_CORE"
+  ],
+  "recommendedFollowup": "Run 36-key scout first on confirmed read budget; if mostly absent avoid the 240-query census until controlled date-scoped missing-key repair is budgeted. If scout mostly matched, run this full census before any full-market 2026/10/08 storage-complete announcement."
+}
