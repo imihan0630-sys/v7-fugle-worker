@@ -23,7 +23,7 @@ for(const target of targets){
     headers:{
       accept:"application/json,text/plain,*/*",
       referer:"https://www.tpex.org.tw/zh-tw/mainboard/trading/info/altered.html",
-      "user-agent":"System2-DATA-LANE-tpex-cmode-contract-probe/0.1",
+      "user-agent":"System2-DATA-LANE-tpex-cmode-contract-probe/0.2",
     },
     signal:AbortSignal.timeout(30000),
   });
@@ -31,8 +31,19 @@ for(const target of targets){
   let payload=null;
   let parseError=null;
   try{payload=JSON.parse(rawText);}catch(error){parseError=String(error?.message||error);}
+  const primaryTable=Array.isArray(payload?.tables)&&payload.tables.length?payload.tables[0]:null;
+  const tableFields=Array.isArray(primaryTable?.fields)?primaryTable.fields.map(clean):[];
+  const tableData=Array.isArray(primaryTable?.data)?primaryTable.data:[];
   const aaData=Array.isArray(payload?.aaData)?payload.aaData:[];
-  const targetRows=aaData.filter((row)=>Array.isArray(row)&&clean(row[0])===target.symbol);
+  const rows=tableData.length?tableData:aaData;
+  const symbolIndex=tableFields.length
+    ? tableFields.findIndex((field)=>field.includes("證券代號")||field==="代號")
+    : 0;
+  const stopIndex=tableFields.length
+    ? tableFields.findIndex((field)=>field.includes("停止交易"))
+    : 6;
+  const targetRows=rows.filter((row)=>Array.isArray(row)&&symbolIndex>=0&&clean(row[symbolIndex])===target.symbol);
+  const targetStopMarkers=targetRows.map((row)=>stopIndex>=0?clean(row[stopIndex]):null);
   receipts.push({
     market:"TPEX",
     ...target,
@@ -46,15 +57,24 @@ for(const target of targets){
     topLevelScalarFields:payload&&typeof payload==="object"
       ?Object.fromEntries(Object.entries(payload).filter(([,v])=>["string","number","boolean"].includes(typeof v)).slice(0,50))
       :{},
+    tableTitle:clean(primaryTable?.title),
+    tableDate:clean(primaryTable?.date),
+    tableTotalCount:Number(primaryTable?.totalCount??tableData.length),
+    tableFields,
+    tableDataCount:tableData.length,
     aaDataCount:aaData.length,
-    firstRowLength:Array.isArray(aaData[0])?aaData[0].length:null,
+    selectedRowSource:tableData.length?"tables[0].data":"aaData",
+    firstRowLength:Array.isArray(rows[0])?rows[0].length:null,
+    symbolIndex,
+    stopIndex,
     targetRowCount:targetRows.length,
+    targetStopMarkers,
     targetRows:targetRows.slice(0,5).map((row)=>row.map(clean)),
     responseHead:rawText.slice(0,500),
   });
 }
 const out={
-  schemaVersion:"S2_TPEX_CMODE_CONTRACT_PROBE_V0_1",
+  schemaVersion:"S2_TPEX_CMODE_CONTRACT_PROBE_V0_2",
   observedAt:new Date().toISOString(),
   sourceAuthority:"TPEx",
   endpoint,

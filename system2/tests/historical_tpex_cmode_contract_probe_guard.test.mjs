@@ -12,6 +12,10 @@ assert.ok(!/historical_pack_year_backfill|provision_system2_d1|wrangler\s+(deplo
 assert.match(script,/2023-04-10/);
 assert.match(script,/2023-10-12/);
 assert.match(script,/targetRows/);
+assert.match(script,/tables\?\.\[0\]/);
+assert.match(script,/tableFields/);
+assert.match(script,/targetStopMarkers/);
+assert.match(script,/field\.includes\("停止交易"\)/);
 assert.match(script,/topLevelKeys/);
 assert.match(script,/payloadHash/);
 assert.ok(!/createRemoteD1RestAdapter|createRemoteR2S3Adapter|db\.prepare/.test(script));
