@@ -1050,6 +1050,18 @@ Correction consequence:
 - This does **not** create a quota-safe morning window by itself: several credentialed writer workflows can still physically mutate D1 on ordinary main push.
 - Therefore CORR-003 must budget/reserve across trigger classes; time-of-day and concurrency ordering alone are insufficient.
 
+
+#### 2026-10-09 11:45 00 cross-system quota impact acceptance extension
+
+- Scope escalation: cross-database D1 Free quota is a **shared Cloudflare account** safety issue with documented System1 after-market Production impact, not only a System2 annual-history throughput issue.
+- The **existing correction** stays HIGH / OPEN / REMEDIATION_LANE; no new ticket, implementation-owner takeover, Formal Core mutation or paid upgrade.
+- Physical readback source: PVE-263 run `37649543821` / job `112888965126` shows 2026-10-07 System1 23:35 / 23:55 invocation and `INVOKED_EXECUTION_FAILED_D1_QUOTA`; PVE-264 run `37650006684` / job `112890551584` shows 124629 SYSTEM2_DB writes, 1869 V7_DB writes, 126498 account-wide rowsWritten. 00 independently read back the collectors' job/step/artifact status; the values are from their immutable source evidence.
+- Additional CORR-003 acceptance gates are **mandatory**:
+  - Account-wide D1 quota reservation must explicitly protect System1 23:35/23:55 after-market Production business execution/persistence in V7_DB as well as System2 P0 Daily Shadow; independently measured after-market reserve required, not an invented fixed number. A real later trading-day primary/recovery business-execution receipt must prove normal persistence; avoid duplicate business scans.
+  - Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.
+- Durable 00 evidence: `shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json` @ prior commit `9f32b9104794a7a1e7878fc38e17135add50a864`.
+- Closure **not** authorized until measured account-wide reservations, push/schedule gating, cross-system after-market physical business-success/readback, and independent AUDIT_LANE review PASS. UNKNOWN usage/reserve must fail closed. Do not invent reserve estimates.
+
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
 - severity: HIGH
