@@ -2726,3 +2726,75 @@ Exact next:
 accumulate genuinely new common-complete official TRI dates and consume D16 method return when available.
 
 Formal Core unchanged.
+
+
+## BR-076 — 2026-10-08 D09-12 same-clock eligibility guard
+
+Artifact:
+- `research/br076_d09_12_20261008_same_clock_eligibility_v0_1.json`
+
+The 2026-10-08 official TWSE breadth root exists through BR-073:
+- up 425 / down 540 / flat 109;
+- comparable N 1,074;
+- net advance-minus-decline share -10.7076 percentage points.
+
+Repository and Actions audit found no genuine 2026-10-08 prospective A2 TAIEX close/context observation under the same decision clock.
+
+Therefore 2026-10-08 is frozen as:
+`PROSPECTIVE_BREADTH_ONLY_CONTROL / NOT_A_GENUINE_D09_12_JOINT_RECEIPT`.
+
+Current retrievability of the official 2026-10-08 TAIEX close cannot be backfilled into prior same-clock evidence.
+
+D09-12 remains L3/60.
+Independent genuine same-clock joint receipt N remains 1.
+No outcome opened.
+
+## BR-077 — seventh official TWSE sector lifecycle date
+
+Artifact:
+- `research/br077_twse_sector_lifecycle_seventh_date_20261008_v0_1.json`
+
+Official TWSE 2026-10-08 industry total-return block was frozen on 2026-10-09 12:24 Asia/Taipei, before the 2026-10-09 regular-session close.
+
+Unchanged 34-industry semantics:
+- positive industries = 17/34 = 50.0%;
+- state = MIXED_PARTICIPATION;
+- prior 2026-10-07 state = 25/34 positive = MIXED_PARTICIPATION;
+- direction = NARROWING_WITHIN_MIXED.
+
+Top3:
+1. 油電燃氣 +3.04%;
+2. 通信網路 +1.02%;
+3. 水泥 +0.83%.
+
+Prior top3:
+- 玻璃陶瓷;
+- 塑膠;
+- 油電燃氣.
+
+Top3 overlap = 1/3.
+Top3 turnover = 2/3.
+
+Top-quartile leader set uses ranks 1-9.
+Top9 overlap with 2026-10-07 = 4/9:
+- 油電燃氣;
+- 塑膠;
+- 紡織纖維;
+- 橡膠.
+
+This is one shared official root consumed by D09-06 and D09-07; consumer count does not create two independent evidence roots.
+
+Sequence length:
+7 official dates:
+2026-09-23, 09-24, 09-30, 10-01, 10-02, 10-07, 10-08.
+
+D09-06 remains L3/60.
+D09-07 remains L3/60.
+The 2026-10-09 close was not opened at capture, so the next-session close endpoint remained immature.
+
+Exact next:
+- continue append-only official 34-industry states;
+- keep D16 lifecycle/OOS method as the L4 gate;
+- add effective-dated member breadth/concentration before treating sector-index leadership as broad member leadership.
+
+Formal Core unchanged.
