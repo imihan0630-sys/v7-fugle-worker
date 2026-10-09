@@ -2833,3 +2833,30 @@ Inference remains POWER_INSUFFICIENT.
 Exact next remains additional common-complete TRI dates plus the BR-075 D16 method gate.
 
 Formal Core unchanged.
+
+
+## BR-079 — D09-06 full-industry rank transition (2026-10-08)
+
+Artifact:
+- `research/br079_d09_06_full_industry_rank_transition_20261008_v0_1.json`
+
+Using the same official BR077 2026-10-08 TWSE 34-industry root and the BR045 2026-10-07 full-rank baseline, D09-06 now has a second complete rank transition under unchanged semantics.
+
+Cross-sectional result:
+- average absolute rank move = 10.0588 places across 34 industries;
+- unchanged-rank count = 1;
+- top-quartile entries = 5;
+- top-quartile exits = 5;
+- largest rise: communication-network 26 -> 2;
+- largest fall: glass/ceramics 1 -> 33.
+
+The participation label remained MIXED on both dates, yet top3 turnover was 2/3, top9 retention was 4/9 and full-universe rank churn was large.
+
+Frozen rule:
+`PARTICIPATION_STATE != LEADERSHIP_IDENTITY`.
+
+The BR077 root is shared by D09-06 and D09-07; consumer count does not increase independent market-date N.
+
+D09-06 remains L3/60. L4 stays method/outcome gated by D16 and member-level breadth/concentration controls.
+
+Exact next: append the next official 34-industry rank/percentile snapshot under unchanged semantics and consume the D16 date-clustered persistence/reversal method receipt before forward outcome inference.
