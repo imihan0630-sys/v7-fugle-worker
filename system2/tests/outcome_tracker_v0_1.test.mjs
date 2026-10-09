@@ -246,4 +246,41 @@ await assert.rejects(
   /mixed price spaces/,
 );
 
+
+const erasedMfe = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row, mfe: null,
+});
+assert.ok(erasedMfe.blockers.includes("EXCURSION_ERASURE:mfe"));
+
+const erasedMae = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row, mae: null,
+});
+assert.ok(erasedMae.blockers.includes("EXCURSION_ERASURE:mae"));
+
+const modifiedCost = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({
+    ...JSON.parse(row.outcome_json),
+    costScenarios: { BASE_COST: { revised: true } },
+  }),
+});
+assert.ok(modifiedCost.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costScenarios"));
+
+const closedRow = {
+  ...row, holding_sessions: 5, realized_return_after_cost: 0.05,
+};
+const alteredHolding = validateMonotonicOutcomeUpdateV0_1(closedRow, {
+  ...closedRow, holding_sessions: 6,
+});
+assert.ok(alteredHolding.blockers.includes("CLOSED_HOLDING_SESSIONS_REVISION"));
+
+const switchedPriceSpace = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({
+    ...JSON.parse(row.outcome_json),
+    priceSpace: "RAW",
+  }),
+});
+assert.ok(switchedPriceSpace.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:priceSpace"));
+
 console.log("System2 decision outcome tracker V0.1 tests passed");
