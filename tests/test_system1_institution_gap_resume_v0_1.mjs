@@ -7,8 +7,12 @@ const status={
 assert.deepEqual(planMissingInstitutionDates(status,"2026-10-08"),{
  alreadyReady:false,repairDates:["2026-10-06"],tradingDateCount:3
 });
-assert.deepEqual(planMissingInstitutionDates({...status,ready:true,historicalReadback:true,
- validDates:["2026-10-08","2026-10-07","2026-10-06"],missingDates:[]},"2026-10-08").repairDates,[]);
+const ready={...status,ready:true,historicalReadback:false,
+ validDates:["2026-10-08","2026-10-07","2026-10-06"],missingDates:[],
+ snapshotCounts:["2026-10-08","2026-10-07","2026-10-06"].map(date=>({date,stockCount:1800,complete:true}))};
+assert.deepEqual(planMissingInstitutionDates(ready,"2026-10-08"),{
+ alreadyReady:true,repairDates:[],tradingDateCount:3,physicalSnapshotsVerified:true
+});
 const invalid=[
  [{...status,marketDate:"2026-10-09"},"2026-10-08"],
  [{...status,missingDates:null},"2026-10-08"],
@@ -18,8 +22,13 @@ const invalid=[
  [{...status,missingDates:["2026-09-01"]},"2026-10-08"],
  [{...status,ready:true},"2026-10-08"],
  [{...status,validDates:["2026-10-07","2026-10-06"],missingDates:["2026-10-05"]},"2026-10-08"],
- [{...status,validDates:["2026-10-08"]},"2026-10-08"]
+ [{...status,validDates:["2026-10-08"]},"2026-10-08"],
+ [{...ready,snapshotCounts:undefined},"2026-10-08"],
+ [{...ready,snapshotCounts:[]},"2026-10-08"],
+ [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,complete:false}:x)},"2026-10-08"],
+ [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,stockCount:0}:x)},"2026-10-08"],
+ [{...ready,snapshotCounts:[...ready.snapshotCounts,ready.snapshotCounts[0]]},"2026-10-08"]
 ];
 for(const [bad,target] of invalid)assert.throws(()=>planMissingInstitutionDates(bad,target));
-console.log(JSON.stringify({ok:true,oneDateResumed:true,readyNoWrite:true,
+console.log(JSON.stringify({ok:true,oneDateResumed:true,readyNoWrite:true,threePhysicalSnapshotsRequired:true,nonexistentHistoricalReadbackNotRequired:true,
  refusals:invalid.length,manualOnly:true,noScan:true,noPush:true}));
