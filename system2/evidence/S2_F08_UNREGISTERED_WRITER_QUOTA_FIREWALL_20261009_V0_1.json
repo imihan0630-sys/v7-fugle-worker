@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "S2_F08_UNREGISTERED_WRITER_QUOTA_FIREWALL_EVIDENCE_V0_1",
+  "asOfDate": "2026-10-09",
+  "executionLane": "BUILD_LANE",
+  "formalCoreImpact": "NONE",
+  "scope": "SYSTEM2_CLASS_A_OFFLINE_ONLY",
+  "implementationPR": 1025,
+  "mergedMain": "7595161a29987242533b4a6d0e33adc25542618d",
+  "codePaths": [
+    "system2/runtime/f08_quota_registered_writer_dispatch_preflight_v0_1.mjs",
+    "system2/tests/f08_quota_registered_writer_dispatch_preflight_v0_1.test.mjs"
+  ],
+  "githubCIEvidence": {
+    "system2Research": {
+      "runId": 37936967126,
+      "result": "PASS",
+      "testFiles": 285,
+      "marker": "F08_DRYRUN_UNREGISTERED_WRITER_2_BASE_13_ADVERSARIAL_NO_PHYSICAL_AUTHORITY_PASS"
+    },
+    "v8Regression": {
+      "runId": 37936967048,
+      "result": "PASS"
+    },
+    "productionIsolation": "PASS"
+  },
+  "writerRegistryObservation": {
+    "registryPath": "system2/config/d1_account_writer_registry_v0_1.json",
+    "count": 16,
+    "writerIdRequired": "F08_OUTCOME_REVISION_APPEND",
+    "matchingCount": 0,
+    "registryModified": false
+  },
+  "failClosed": {
+    "missingWriterRegistry": "QUOTA_BUDGET_DEFER_NO_WRITER_DISPATCH",
+    "writeCostRequiresMeasuredD1RowsWrittenEvidence": true,
+    "readCostRequiresMeasuredD1RowsReadEvidence": true,
+    "system1WriteReserveMustBeAuthorized": true,
+    "system1ReadReserveMustBeAuthorized": true,
+    "accountUsageMustBeKnown": true,
+    "quotaDecisionGrantTextAloneUntrusted": true,
+    "callerSuppliedGrantCannotAuthorizePhysicalD1": true,
+    "noInjectedDatabaseHandle": true,
+    "bindingContract": "SYSTEM2_DB_ONLY",
+    "ordinaryPushPhysicalForbidden": true,
+    "schemaAndPITPhysicalAcceptanceStillMissing": true,
+    "physicalAdapterConnected": false
+  },
+  "unperformed": {
+    "cloudflareD1ReadQueries": 0,
+    "cloudflareD1WriteQueries": 0,
+    "physicalSchemaMigration": false,
+    "realBrokerTrades": false,
+    "paidPlanChange": false,
+    "system1FormalCoreChange": false,
+    "workerCronOrPushChange": false,
+    "quotaReservationCreated": false
+  },
+  "quantification": {
+    "passed": 22,
+    "total": 75,
+    "remaining": 53,
+    "progressPercent": 29.3,
+    "fullyAcceptedGates": 0,
+    "F08": {
+      "passed": 2,
+      "total": 5
+    },
+    "A07PhysicalAccepted": false,
+    "correction012": "OPEN",
+    "correction013": "OPEN"
+  },
+  "next": "REMEDIATION_LANE owns measured account-wide register/gate policy and System1 23:35/23:55 write/read reserves; BUILD_LANE may integrate actual isolated physical writer only after permission and F07 physical schema plus B10/B11 official PIT; AUDIT_LANE independently certifies. This merged dry-run preflight is not a physically witnessed reservation or write."
+}
