@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_EXISTING_ARTIFACT_INDEPENDENT_REHYDRATION_PREREG_20261010_V0_1",
+  "issue": 1026,
+  "directive": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "state": "LOCAL_REAL_ARCHIVE_INDEPENDENT_READBACK_PASS_WORKFLOW_CI_AND_REAL_GITHUB_RUN_PENDING",
+  "archive": {
+    "run": 37944021198,
+    "job": 113865467788,
+    "artifactId": 11623192826,
+    "archiveBytes": 507396,
+    "archiveSha256": "7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f",
+    "uncompressedJsonName": "s2-issue1026-p05-oct08-frozen-official-11843-key-manifest.json",
+    "uncompressedBytes": 5042260,
+    "uncompressedSha256": "fa38cbc9bbda4f99ca5a8bbc5e83ee5c324847c15fc599c8dd5412ccf14ef4c6",
+    "frozenOriginalRun": 37878847039,
+    "retentionDays": 90
+  },
+  "independentRetrospectiveSourceValidation": {
+    "sourceStockDateKeys": 11843,
+    "uniqueMarketDateSymbolKeys": 11843,
+    "marketDateReceipts": 12,
+    "perDayKeyIdentitiesMatchingOriginalReceipt": 12,
+    "perDaySourceValueHashesMatchingOriginalReceipt": 12,
+    "aggregateKeyIdentityHash": "67ea4601ab7ea6300ab1cf0a54ba4eafb7d834c03ac83413536273c7dbabe654",
+    "aggregateSourceKeyValueHash": "2f6c4d8362168cad11c4c230fd26fa06aa189fe87567314aa7a4f8798b006139",
+    "twseKeys": 6518,
+    "tpexKeys": 5325,
+    "retrospectiveOnlyRecords": 11843,
+    "historicalOriginalFirstKnownAtCertified": 0,
+    "historicalAvailableAtCertified": 0,
+    "actualHotD1PresenceCertified": 0,
+    "actualHotD1MissingKeys": "UNKNOWN",
+    "actualHotD1VersionCounts": "UNKNOWN",
+    "originalPITReplayAuthorized": false
+  },
+  "newCode": [
+    "system2/runtime/issue1026_p05_archived_manifest_independent_audit_v0_1.mjs",
+    "system2/tests/issue1026_p05_archived_manifest_independent_audit_v0_1.test.mjs",
+    "system2/scripts/audit_issue1026_p05_archived_manifest_offline_v0_1.mjs",
+    ".github/workflows/system2-issue1026-p05-archived-manifest-offline-audit.yml"
+  ],
+  "governance": {
+    "p03RealWriterGateRuns": 5,
+    "p03WriterClasses": 4,
+    "p03DocumentedSupportChecks": 3,
+    "p03TotalSupportChecks": 8,
+    "p03RealAuthenticatedPhysicalGrantsAccepted": 0,
+    "p05DocumentedSupportChecks": 4,
+    "p05TotalSupportChecks": 9,
+    "physical36ScoutCompleted": 0,
+    "physical11843CensusCompleted": 0,
+    "independentPhysicalGatesClosed": 0,
+    "independentPhysicalGatesTotal": 5,
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false
+  },
+  "warning": "SOURCE_ONLY receipt is not a real Hot D1 census. Historical original firstKnownAt/availableAt unknown. D1 absent/present/version unknown. Missing-only repair cannot be inferred.",
+  "safety": {
+    "newOfficialHttpSourceFetch": 0,
+    "cloudflareD1SqlReads": 0,
+    "cloudflareD1SqlWrites": 0,
+    "r2Calls": 0,
+    "quotaReservations": 0,
+    "system1FormalChanged": false,
+    "billingChanged": false
+  },
+  "handoff": {
+    "remediation": "Need independent System1 P01/P02 reserve and bounded account GraphQL lag/headroom and real quota ledger grant.",
+    "audit": "Independently verify ZIP and JSON SHA256, full source-key lineage; never promote P05 physical, original 19 criteria pending."
+  }
+}
