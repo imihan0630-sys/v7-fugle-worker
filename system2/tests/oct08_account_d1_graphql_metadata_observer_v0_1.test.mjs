@@ -17,6 +17,9 @@ const policy={directiveId:"S2-CORR-20261007-003",
  reserveNumberAuthorized:false,authorizedReserveRows:null,
  readReserveNumberAuthorized:false,authorizedReadReserveRows:null};
 const v=parse({payload:payload(),quotaDay:day});
+// Cloudflare may return errors:null for a clean response; still fail on errors[].
+const nullErrorV=parse({payload:{...payload(),errors:null},quotaDay:day});
+assert.equal(nullErrorV.rowsReadLowerBound,v.rowsReadLowerBound);
 assert.equal(v.databaseGroupCount,2);
 assert.equal(v.rowsReadLowerBound,783697);
 assert.equal(v.rowsWrittenLowerBound,27919);
