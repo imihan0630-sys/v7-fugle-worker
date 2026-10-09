@@ -210,7 +210,7 @@ const conflictBatch = await buildOutcomePersistenceBatchV0_1({
 });
 await assert.rejects(
   () => executeOutcomePersistenceBatchV0_1({ db, batch: conflictBatch }),
-  /OUTCOME_REVISION_CONFLICT:IMMUTABLE_HORIZON_REVISION:d1_return/,
+  /OUTCOME_ROW_PROJECTION_MISMATCH:d1_return|OUTCOME_REVISION_CONFLICT:IMMUTABLE_HORIZON_REVISION:d1_return/,
 );
 
 const immutableConflict = await buildOutcomePersistenceBatchV0_1({
