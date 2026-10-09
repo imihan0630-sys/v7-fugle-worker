@@ -29,6 +29,16 @@
         "37882891207"
       ],
       "status": "A1_ASSessor_PIT_BOUND_RESEARCH_ONLY_MISSING_RISK_REWARD_AND_SWING_PARENTS"
+    },
+    {
+      "id": "D07",
+      "pr": 962,
+      "commit": "bc37b3881a4614c82a2ef58ebdbbd8eb3e35a762",
+      "ci": [
+        "37883312633",
+        "37883312640"
+      ],
+      "status": "TWO_MARKET_MINIMUM_SOURCE_ROW_HASH_AND_PIT_PREFLIGHT_CODED_NO_PHYSICAL_PIT"
     }
   ],
   "mandatoryProtections": {
@@ -79,10 +89,10 @@
     {
       "id": "D07",
       "lane": "BUILD_LANE",
-      "state": "ASSESSOR_INTEGRATION_PARTIAL",
+      "state": "DUAL_MARKET_SOURCE_AND_UNIVERSE_PREFLIGHT_CODED_PARTIAL",
       "acceptance": "Actual full-universe same-date PIT source snapshots -> strategy-specific assessment with no lookahead or fabricated values",
       "correctionId": null,
-      "next": "Wire policy-authorized A1 limited Shadow assay after D06 and B10",
+      "next": "DATA_LANE physical B10/B11 same-date official A1 bytes/source first-known-time, complete 2-market live universe, lifecycle/PIT and NC-T01 evidence; then wire D06 assessor and verify D08 frozen candidates with independent audit",
       "verified": false
     },
     {
