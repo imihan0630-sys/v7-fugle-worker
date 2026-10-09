@@ -20,3 +20,12 @@ export function verifyManualQualityPrereqs(market,institution,targetDate){
  },institutionValidTradingDateCount:proof.tradingDateCount,
    selectedCount:null,noPlanMutation:true,noSelection:true,noPush:true};
 }
+
+// Resume a partially finished HISTORICAL quality import without downloading
+// expensive official MOPS financial HTML and EPS documents twice.
+// Never skip sources for regular scheduled/non-recovery quality runs.
+export function canReuseHeavyMopsSources(recoveryOnly,existingQuality){
+ return recoveryOnly===true &&
+   existingQuality?.datasets?.FINANCIAL?.ready===true &&
+   existingQuality?.datasets?.QUARTER_EPS?.ready===true;
+}
