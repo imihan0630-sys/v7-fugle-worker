@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "S2_CORR012_EXECUTION_COST_PROVENANCE_PROJECTION_V0_1",
+  "recordedDate": "2026-10-09",
+  "correction": "S2-CORR-20261008-012",
+  "owner": "BUILD_LANE",
+  "status": "PARTIAL_IMPLEMENTED_MAIN_MERGED_FULL_OUTCOME_VERSIONING_PENDING",
+  "mergedPR": 951,
+  "mergedMain": "96b72bee7be9aa9a48bed35431909bb2aacfceac",
+  "exactPRHead": "3a52665b240577557303fd93445137eb0991ebb3",
+  "testedWorkflows": {
+    "system2ResearchCI": 37877834604,
+    "v8Regression": 37877834646,
+    "auditCorr012013": 37877834603,
+    "auditCorr013CalendarNoFill": 37877834633,
+    "auditCorr013UnknownLaterClose": 37877834721,
+    "allConclusions": "success"
+  },
+  "implementation": [
+    "toOutcomeSimulatedExecutionV0_1 carries simulator SHA256 executionHash, executionVersion, copied canonical costModel, costModelVersion and taxRuleId",
+    "buildDecisionOutcomeSnapshotV0_1 validates and preserves execution SHA shape, normalized fee/tax/slippage model rates, model identity and tax rule",
+    "validateMonotonicOutcomeUpdateV0_1 rejects replacing executionHash, cost/tax identity, cost rate or simulator lineage status in existing outcome",
+    "Existing safe horizon maturation remains allowed; invalid cost-model/adapter hashes are rejected",
+    "Per-simulation lineage status explicitly HASH_CARRIED_FROM_SIMULATOR_NOT_INDEPENDENT_SOURCE_PROOF"
+  ],
+  "outstanding": [
+    "Do not treat caller-provided SHA256 as source-independent authentication",
+    "Add separately versioned append-only outcome rows for changed cost/Regime/exec assumptions, full decision/regime parent hash binding and physical D1 readback",
+    "D1 migration V0.2 from conflicting PR #910/#911 requires fresh-main reconciliation, CI, independent audit and separate change",
+    "CORR012 HIGH remains OPEN until independently verified by AUDIT_LANE",
+    "CORR013 official calendar/NC-T01 PIT, D1 budget and full selection are independent"
+  ],
+  "protected": {
+    "system1FormalCore": false,
+    "system1Runtime": false,
+    "workerDeployment": false,
+    "capitalImpact": false,
+    "realOrders": false,
+    "livePushEnabled": false,
+    "cloudflareReads": 0,
+    "cloudflareWrites": 0,
+    "paidUpgrade": false
+  }
+}
