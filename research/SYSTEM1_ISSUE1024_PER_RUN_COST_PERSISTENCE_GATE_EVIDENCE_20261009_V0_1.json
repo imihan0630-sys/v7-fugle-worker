@@ -76,10 +76,6 @@
       "PVE266 run 37651086323 job 112894288513"
     ],
     "moreHealthyDaysFound": 0,
-    "eligibleBusinessSuccessDates": [
-      "2026-09-21",
-      "2026-09-22"
-    ],
     "fullyPersistedSameGenerationBusinessDatesVerified": [],
     "wholeV7DbUtcDays": [
       {
@@ -142,7 +138,11 @@
       "D1CronWindowAuditRows": 0
     },
     "laterNaturalPersistenceEvidence": "NOT_OBSERVED",
-    "earliestFutureCandidateOfficialSession": "2026-10-12"
+    "earliestFutureCandidateOfficialSession": "2026-10-12",
+    "observedCronSuccessDatesOnly": [
+      "2026-09-21",
+      "2026-09-22"
+    ]
   },
   "producerProgress": {
     "P01": {
