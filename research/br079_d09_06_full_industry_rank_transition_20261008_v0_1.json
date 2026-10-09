@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "BR079_D09_06_FULL_INDUSTRY_RANK_TRANSITION_V0_1",
+  "status": "RESEARCH_ONLY / SECOND_FULL_RANK_TRANSITION / SHARED_ROOT_WITH_BR077 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "module": "D09-06",
+  "priorDate": "2026-10-07",
+  "currentDate": "2026-10-08",
+  "capturedAt": "2026-10-09T17:12:31+08:00",
+  "observedMainBeforeWrite": "9b5e762d57f68b28318c56664c525b7a38d3f759",
+  "sourceRoot": "BR077_TWSE_SECTOR_LIFECYCLE_SEVENTH_DATE_V0_1",
+  "independentEvidenceRootIncrement": 0,
+  "fullIndustryN": 34,
+  "avgAbsRankDelta": 10.058823529411764,
+  "unchangedRankCount": 1,
+  "topQuartileEntrants": [
+    {
+      "industry": "通信網路",
+      "rankPrev": 26,
+      "rankNow": 2,
+      "rankDelta": 24
+    },
+    {
+      "industry": "水泥",
+      "rankPrev": 16,
+      "rankNow": 3,
+      "rankDelta": 13
+    },
+    {
+      "industry": "觀光餐旅",
+      "rankPrev": 22,
+      "rankNow": 5,
+      "rankDelta": 17
+    },
+    {
+      "industry": "居家生活",
+      "rankPrev": 24,
+      "rankNow": 8,
+      "rankDelta": 16
+    },
+    {
+      "industry": "化學",
+      "rankPrev": 29,
+      "rankNow": 9,
+      "rankDelta": 20
+    }
+  ],
+  "topQuartileExits": [
+    {
+      "industry": "運動休閒",
+      "rankPrev": 7,
+      "rankNow": 12,
+      "rankDelta": -5
+    },
+    {
+      "industry": "造紙",
+      "rankPrev": 8,
+      "rankNow": 18,
+      "rankDelta": -10
+    },
+    {
+      "industry": "電器電纜",
+      "rankPrev": 5,
+      "rankNow": 30,
+      "rankDelta": -25
+    },
+    {
+      "industry": "玻璃陶瓷",
+      "rankPrev": 1,
+      "rankNow": 33,
+      "rankDelta": -32
+    },
+    {
+      "industry": "綠能環保",
+      "rankPrev": 4,
+      "rankNow": 34,
+      "rankDelta": -30
+    }
+  ],
+  "interpretation": [
+    "Cross-sectional leadership churn is broad: average absolute rank movement exceeds 10 positions across 34 industries.",
+    "Five industries entered and five exited the top quartile between adjacent official dates.",
+    "Participation state and leadership identity remain separate dimensions.",
+    "This receipt reuses BR077 source root and does not increase independent market-date N."
+  ],
+  "frozenRules": [
+    "PARTICIPATION_STATE_NOT_EQUAL_LEADERSHIP_IDENTITY",
+    "ONE_OFFICIAL_ROOT_MANY_CONSUMERS_NOT_MANY_INDEPENDENT_SAMPLES",
+    "RANK_CHANGE_NOT_EQUAL_FORWARD_ALPHA",
+    "NO_OUTCOME_ACCESS"
+  ],
+  "maturity": {
+    "level": "L3",
+    "maturityPct": 60,
+    "promote": false
+  },
+  "exactNext": "Append the next official 34-industry rank/percentile snapshot under unchanged semantics; accumulate independent market dates; consume D16 date-clustered persistence/reversal method receipt before any forward outcome inference."
+}
