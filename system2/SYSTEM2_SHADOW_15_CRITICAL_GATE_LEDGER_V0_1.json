@@ -49,6 +49,17 @@
         "37884540527"
       ],
       "status": "D07_SOURCE_SHA_TO_D08_COMPLETE_PER_STRATEGY_SYMBOL_ACCOUNTING_AND_FALSE_ZERO_GUARD_CODED_NOT_PHYSICAL"
+    },
+    {
+      "id": "H05",
+      "subcheck": "H05-C3",
+      "pr": 973,
+      "commit": "0c1e5c964c9d907ecbdcb7b277120ec63dde5a75",
+      "ci": [
+        "37890214312",
+        "37890214343"
+      ],
+      "status": "17_SYNTHETIC_ADVERSE_EXECUTION_CASES_PASS_NO_OFFICIAL_CALENDAR_OR_REAL_PIT"
     }
   ],
   "mandatoryProtections": {
@@ -627,10 +638,10 @@
     {
       "id": "H05",
       "lane": "AUDIT_LANE",
-      "state": "CORRECTION_OPEN",
+      "state": "CORR013_C3_EXTREME_DAILY_EXECUTION_NEGATIVES_TESTED_OTHERS_OPEN",
       "acceptance": "Independent adverse review and verified closure of CORR-013 actual calendar and NO_FILL denominator",
       "correctionId": "S2-CORR-20261008-013",
-      "next": "Audit full session date-set, unknown bars, gap/limit fill and downstream denominator",
+      "next": "H05-C2 obtain full official exchange session set, H05-C4 independently audit selected-triggered-profitable denominators and H05-C5 receive CORR-013 VERIFIED_CLOSED independent receipt. H05-C3 offline 17-case matrix is done, not physical PIT.",
       "verified": false,
       "checks": [
         {
@@ -648,8 +659,8 @@
         {
           "checkId": "H05-C3",
           "criterion": "同根 K 停利停損／停復牌／極端漲跌停反例",
-          "evidenceRef": null,
-          "checkPassed": false
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/973",
+          "checkPassed": true
         },
         {
           "checkId": "H05-C4",
@@ -665,10 +676,10 @@
         }
       ],
       "quantified": {
-        "checksPassed": 1,
+        "checksPassed": 2,
         "checksTotal": 5,
-        "checksRemaining": 4,
-        "progressPercent": 20
+        "checksRemaining": 3,
+        "progressPercent": 40
       }
     },
     {
@@ -770,10 +781,10 @@
     "schemaVersion": "S2_SHADOW_15_GATE_CHECKPOINT_COUNTS_V0_1",
     "asOfDate": "2026-10-09",
     "scoring": "Equal-weight binary criterion checklist, NOT elapsed effort estimate or readiness authorization",
-    "passedChecks": 21,
+    "passedChecks": 22,
     "totalChecks": 75,
-    "remainingChecks": 54,
-    "progressPercent": 28,
+    "remainingChecks": 53,
+    "progressPercent": 29.3,
     "fullyAcceptedGates": 0,
     "pendingPhysicalReadback": true
   }
