@@ -19,6 +19,16 @@
         "37881169601"
       ],
       "status": "READONLY_PARENT_PREFLIGHT_CI_PASS_NO_PHYSICAL_D1"
+    },
+    {
+      "id": "D06",
+      "pr": 960,
+      "commit": "2c712ab656cf2592272e7dd1889583d60e77bec8",
+      "ci": [
+        "37882891186",
+        "37882891207"
+      ],
+      "status": "A1_ASSessor_PIT_BOUND_RESEARCH_ONLY_MISSING_RISK_REWARD_AND_SWING_PARENTS"
     }
   ],
   "mandatoryProtections": {
@@ -60,10 +70,10 @@
     {
       "id": "D06",
       "lane": "BUILD_LANE",
-      "state": "POLICY_PREREG_PARTIAL",
+      "state": "A1_SOURCE_HONEST_EVIDENCE_POLICY_CODED_PARTIAL",
       "acceptance": "Freeze first Shadow per-strategy required families, exclusions, assessor thresholds and versions before future outcomes",
       "correctionId": null,
-      "next": "Develop independent prereg assessor contract for SHORT_MOMENTUM first; do not invent optimized scores",
+      "next": "Wire trustworthy PIT source receipts and independently validated RISK.REWARD_RISK into source-family policy; separately preregister testable unoptimized Alpha thresholds and version before any BUY_ELIGIBLE selection",
       "verified": false
     },
     {
