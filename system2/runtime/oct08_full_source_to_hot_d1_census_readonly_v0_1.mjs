@@ -104,6 +104,10 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
    const block=await db.prepare(query).bind(...symbols,source.marketDate,source.market).all();
    const d1Rows=block?.results;
    assert.ok(Array.isArray(d1Rows)&&d1Rows.length<=151,"bounded source batch D1 response invalid");
+   // A full LIMIT 151 result might hide additional RAW versions and requested
+   // symbols. Classifying such omitted keys as absent would be unsafe.
+   assert.ok(d1Rows.length<151,
+    "HOT_D1_QUERY_RESULT_TRUNCATED_UNSAFE_FOR_ABSENCE_CLASSIFICATION");
    assert.ok(Number(db.metrics.rowsRead||0)<=maxRowsRead,
     "D1_READ_BUDGET_HARD_CAP_AFTER_QUERY");
    assert.equal(db.metrics.rowsWritten,0,"D1 unexpected mutation");
