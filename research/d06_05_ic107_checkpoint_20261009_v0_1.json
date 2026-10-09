@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "D06_IC107_CHECKPOINT",
+  "module": "D06-05",
+  "readBeforeWriteMain": "706ba37772934c5ef40a8b560eec9164ca692f78",
+  "artifact": "research/d06_05_ic107_full_twse_delisting_overlap_audit_20261009_v0_1.json",
+  "officialRows": 265,
+  "overlap": 60,
+  "additionalOlder": 47,
+  "knownNonCommon": 6,
+  "flaggedUnion": 66,
+  "flaggedHash": "fnv1a64-utf8:058580e7692e5bf1",
+  "unflaggedNotCertified": 2712,
+  "finalCertified": null,
+  "level": "L3",
+  "maturityPct": 60,
+  "outcomes": "CLOSED",
+  "formalImpact": "NONE",
+  "next": "Certify dated security type and ISIN for candidate 2778, exact-interval TPEx delisting and 60 historical code overlaps; freeze a new final hash only with complete proof."
+}
