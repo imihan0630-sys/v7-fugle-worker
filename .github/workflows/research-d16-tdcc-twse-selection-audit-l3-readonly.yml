@@ -1,0 +1,48 @@
+name: Research D16 TDCC TWSE Selection Audit L3 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs"
+      - "tests/test_d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs"
+      - ".github/workflows/research-d16-tdcc-twse-selection-audit-l3-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run D16-21 selection-bias falsification suite
+        run: node tests/test_d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs
+      - name: Build real prospective TWSE TDCC coverage receipt
+        env:
+          D16_21_OUTPUT: /tmp/d16-21-selection-audit.json
+        run: |
+          set -euo pipefail
+          node research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs > /tmp/d16-21-selection-audit.log
+          test -s /tmp/d16-21-selection-audit.json
+          node -e 'const fs=require("fs");const x=JSON.parse(fs.readFileSync("/tmp/d16-21-selection-audit.json","utf8"));if(x.scope!=="TWSE_CURRENT_ORDINARY_COMMON_EQUITY_ONLY"||x.tpexScope!=="OUT_OF_SCOPE_NOT_INHERITED")process.exit(2);if(x.targetUniverse.targetN<500)process.exit(3);if(x.coverage.knownN+x.coverage.missingN!==x.targetUniverse.targetN)process.exit(4);if(x.coverage.silentDrop||x.coverage.missingImputed||x.outcomeAccessed||x.alphaClaimMade||x.formalCoreChanged)process.exit(5);if(!x.targetUniverse.rawHash||!x.alternativeData.rawHash||!x.receiptHash)process.exit(6);console.log(JSON.stringify({receiptHash:x.receiptHash,capturedAt:x.capturedAt,targetN:x.targetUniverse.targetN,knownN:x.coverage.knownN,missingN:x.coverage.missingN,targetCoverage:x.coverage.targetCoverage,tdccSourceDate:x.alternativeData.sourceDate,extraTdccOrdinaryN:x.coverage.extraTdccOrdinaryN,twseHash:x.targetUniverse.rawHash,tdccHash:x.alternativeData.rawHash}))'
+      - name: Confirm research-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|deploy|CLOUDFLARE|ADMIN_TOKEN|THREEMIN|INSERT|UPDATE|DELETE|CREATE TABLE|DROP TABLE' research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs
+          grep -F 'outcomeAccessed:false' research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs
+          grep -F 'formalCoreChanged:false' research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs
+          echo "D16-21 research-only selection-audit boundary PASS"
+      - name: Upload physical receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: d16-21-tdcc-twse-selection-audit-${{ github.sha }}
+          path: /tmp/d16-21-selection-audit.json
+          if-no-files-found: error
+          retention-days: 30
