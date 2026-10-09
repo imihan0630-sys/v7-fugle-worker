@@ -3441,3 +3441,13 @@ BUILD next: deliver/accept the already active CORR-012/013 and data-readiness pr
 - This is **partial code protection only**, not proof of data/selection/strategy performance or end-to-end denominator safety. Canonical `S2-CORR-20261008-013 = OPEN`. It requires independent actual exchange session calendar and source receipts, complete downstream consumer scan, per-window PIT and execution cost proof, independent AUDIT_LANE re-verification.
 - `S2-CORR-20261008-012` stays OPEN pending full parent lineage and append-only outcome versioning.
 - Evidence: `system2/evidence/S2_CORR013_D18_DOWNSTREAM_DENOMINATOR_GUARD_20261009_V0_1.json`. Next BUILD: complete real official-session and versioned outcome contracts without changing protected System1 formal outputs. DATA_LANE original TWSE 2026 Jul–Sep physical audit remains separate and must not be inferred from this module.
+
+
+## 2026-10-09 BUILD_LANE — CORR-012 simulator execution/cost projection provenance guard (partial)
+
+- PR [#951](https://github.com/imihan0630-sys/v7-fugle-worker/pull/951) merged main `96b72bee7be9aa9a48bed35431909bb2aacfceac`. This is a restricted continuation of overlapping old PRs #910/#911, **not** a forced merger of conflicting legacy schema or branches.
+- `toOutcomeSimulatedExecutionV0_1` carries the simulator executionHash, executionVersion, canonical fee/slippage/tax costModel, costModelVersion and taxRuleId. `buildDecisionOutcomeSnapshotV0_1` preserves and validates them; `validateMonotonicOutcomeUpdateV0_1` rejects within-version execution/cost lineage rewrites. Legal maturity still works and negative tests cover changed execution SHA/cost rate/tax identity.
+- Exact head `3a52665b240577557303fd93445137eb0991ebb3`: System2 Research CI `37877834604` PASS, V8 `37877834646` PASS, independent CORR012/013 matrix `37877834603` PASS, independent CORR013 date/no-fill `37877834633` PASS, unknown-before-later-close `37877834721` PASS.
+- A shape-valid execution hash carried from an in-memory simulator **is not** independent physical source proof. A later assumption change requires a distinct outcome version; the additive V0.2 table, full decision/regime parent revalidation, performance consumer wiring and independently audited D1 readback are not completed. `S2-CORR-20261008-012` stays **OPEN**, not closed by passing CI.
+- No System1 Formal Core/Worker/production Cron, funding, orders, push, Cloudflare D1/R2 I/O or paid services changed.
+- Durable evidence: `system2/evidence/S2_CORR012_EXECUTION_COST_PROJECTION_HANDOFF_20261009_V0_1.json`. Next BUILD priority remains versioned append-only outcome lineage and independent acceptance; CORR-013 calendar and denominator physical evidence remain independently OPEN.
