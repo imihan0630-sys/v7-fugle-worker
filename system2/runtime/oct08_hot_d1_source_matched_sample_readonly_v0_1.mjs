@@ -150,6 +150,8 @@ export async function auditOct08HotD1BoundedSourceMatchedReadV0_1({
   }
  }
  assert.equal(checks.length,36);
+ assert.ok(Number(db.metrics.rowsRead||0)<=maxD1RowsRead,
+  "D1_READ_BUDGET_CAP_EXCEEDED");
  const counts=Object.fromEntries([...new Set(checks.map(x=>x.state))]
   .map(state=>[state,checks.filter(x=>x.state===state).length]));
  const matched=checks.filter(x=>x.state==="HOT_D1_RAW_BAR_MATCHED_AT_CURRENT_OBSERVATION").length;
