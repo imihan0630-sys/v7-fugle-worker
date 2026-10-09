@@ -1432,8 +1432,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Above-MA廣度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / BR068A_SCHEDULER_LATENCY_GUARD_VALIDATED / BR068B_ACTUAL_SCHEDULED_RUN_37652129851 / SCAN_DATE_2026_10_07 / FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND / MAY_COUNT_AS_ZERO_PICK_FALSE / PARENT_MISSING_CONFIRMED / KEEP_L2",
-          "next": "Upstream official-quality transport repair must be production/live-readback verified on a later ordinary session; consume next actual scheduled C1 artifact only. Require PARENT_COMPLETE && READBACK_VERIFIED && ELIGIBLE_FOR_RESEARCH; if PASS run frozen Above-MA20/60 builder outcome-blind. Do not re-investigate scheduler latency, substitute another universe, backfill history or use selected-only denominator."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / BR068C_RUN_37808995747_CONSUMED / SCAN_20261008 / GENERATION_INVENTORY_SEMANTICS_PASS / FORMAL_C1_BINDING_SEMANTICS_PASS / IMMUTABLE_C1_POPULATION_READ_VERIFY_FAIL / C1_GENERATION_NOT_FOUND / OPERATIONAL_ACCEPTANCE_BLOCKED_UPSTREAM_ARTIFACT_MISSING / KEEP_L2",
+          "next": "Consume only a later new ordinary-session scheduled System1 C1 artifact after upstream parent-generation repair is physically live. Require PARENT_COMPLETE && READBACK_VERIFIED && ELIGIBLE_FOR_RESEARCH; then immediately run the frozen MA20/MA60 Above-MA builder outcome-blind. Never synthesize the missing 2026-10-08 parent or substitute another universe."
         },
         {
           "id": "D09-06",
