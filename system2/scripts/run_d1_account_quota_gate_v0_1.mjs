@@ -95,19 +95,93 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
       freshnessGuarantee: "NOT_AVAILABLE",
     });
   }
-  const groups = payload?.data?.viewer?.accounts?.[0]?.d1AnalyticsAdaptiveGroups;
-  if (!Array.isArray(groups)) {
+  const accounts = payload?.data?.viewer?.accounts;
+  if (!Array.isArray(accounts) || accounts.length !== 1) {
     return Object.freeze({
       known: false,
       quotaDay,
       rowsWritten: null,
       rowsRead: null,
-      error: "D1_ANALYTICS_GROUPS_MISSING",
-      freshnessGuarantee: "NOT_AVAILABLE",
+      error: "D1_ANALYTICS_ACCOUNT_CARDINALITY_INVALID",
+      freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
     });
   }
-  const rowsWritten = groups.reduce((sum, row) => sum + Number(row?.sum?.rowsWritten || 0), 0);
-  const rowsRead = groups.reduce((sum, row) => sum + Number(row?.sum?.rowsRead || 0), 0);
+  const groups = accounts[0]?.d1AnalyticsAdaptiveGroups;
+  if (!Array.isArray(groups) || groups.length === 0) {
+    return Object.freeze({
+      known: false,
+      quotaDay,
+      rowsWritten: null,
+      rowsRead: null,
+      error: "D1_ANALYTICS_GROUPS_EMPTY_OR_MISSING",
+      freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+    });
+  }
+
+  const identities = new Set();
+  let rowsWritten = 0;
+  let rowsRead = 0;
+  for (let index = 0; index < groups.length; index += 1) {
+    const row = groups[index];
+    const date = row?.dimensions?.date;
+    const databaseId = row?.dimensions?.databaseId;
+    const written = row?.sum?.rowsWritten;
+    const read = row?.sum?.rowsRead;
+    const validMetric = (value) =>
+      typeof value === "number"
+      && Number.isSafeInteger(value)
+      && value >= 0;
+
+    if (date !== quotaDay || typeof databaseId !== "string" || !databaseId.trim()) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_IDENTITY_INVALID",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+    const identity = date + "|" + databaseId.trim();
+    if (identities.has(identity)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_IDENTITY_DUPLICATE",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+    identities.add(identity);
+
+    if (!validMetric(written) || !validMetric(read)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_SUM_PARTIAL_OR_INVALID",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+
+    rowsWritten += written;
+    rowsRead += read;
+    if (!Number.isSafeInteger(rowsWritten) || !Number.isSafeInteger(rowsRead)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_AGGREGATE_OVERFLOW",
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+  }
   return Object.freeze({
     known: true,
     quotaDay,
@@ -117,7 +191,7 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
     source: "CLOUDFLARE_D1_GRAPHQL_ACCOUNT_ANALYTICS",
     usageSemantics: "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
     freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
-    mitigation: "NON_RELEASING_SAME_DAY_RESERVATIONS_PLUS_MAX_OBSERVED_LEDGER",
+    mitigation: "STRICT_COMPLETE_GROUPS_PLUS_NON_RELEASING_SAME_DAY_RESERVATIONS_PLUS_MAX_OBSERVED_LEDGER",
   });
 }
 
