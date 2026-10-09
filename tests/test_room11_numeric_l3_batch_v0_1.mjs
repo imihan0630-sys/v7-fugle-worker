@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import {
-  buildRows, splitDates, bindHistoricalMembership, bindHistoricalMembershipFromRegistry, buildPanelFeasibility, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
+  buildRows, splitDates, bindHistoricalMembership, bindHistoricalMembershipFromRegistry, buildPinnedAnnualExactEquivalentRegistryV0_1, buildPanelFeasibility, fitAr1, nestedFeatureSelection, calibration, blockBootstrap, guardedDb
 } from "../research/room11_numeric_l3_batch_v0_1.mjs";
+import { buildHistoricalUniverseRegistryV0_1 } from "../system2/runtime/historical_universe_registry_v0_1.mjs";
 
 let passed=0;
 function test(name,fn){try{fn();passed++;console.log("PASS",name);}catch(e){console.error("FAIL",name,e?.stack||e);process.exitCode=1;}}
+async function testAsync(name,fn){try{await fn();passed++;console.log("PASS",name);}catch(e){console.error("FAIL",name,e?.stack||e);process.exitCode=1;}}
 function throws(name,fn,re){test(name,()=>assert.throws(fn,re));}
 function isoDay(n){
  const d=new Date(Date.UTC(2025,0,2+n,12));
@@ -185,6 +187,40 @@ throws("NB-T06J duplicate issuer-date panel cell rejected",()=>{
  buildPanelFeasibility([r,r,...Array.from({length:80},(_,i)=>({...r,decisionDate:`2025-02-${String((i%28)+1).padStart(2,"0")}`,symbol:String(1201+(i%8)),membershipId:"X"+i}))]);
 },/DUPLICATE_ISSUER_DATE/);
 
+
+
+await testAsync("NB-T06K exact annual-equivalent registry reproduces pinned identity only from matching source hashes",async()=>{
+ const observedAt="2026-10-08T03:35:20.819Z";
+ const sourceRows=[
+  {market:"TWSE",symbol:"1101",companyName:"A",industry:"X",memberState:"CURRENT",listingDate:"2000-01-01",delistingDate:null,sourceId:"CUR",sourceName:"CUR",sourceUrl:"u1",sourceRowHash:"1".repeat(64)},
+  {market:"TWSE",symbol:"1102",companyName:"B",industry:"Y",memberState:"DELISTED",listingDate:"2001-01-01",delistingDate:"2025-06-01",sourceId:"DEL",sourceName:"DEL",sourceUrl:"u2",sourceRowHash:"2".repeat(64)},
+ ];
+ const live=await buildHistoricalUniverseRegistryV0_1({registryId:"LIVE",sourceRows,datasetStartDate:"2025-01-01",observedAt});
+ const expectedRegistry=await buildHistoricalUniverseRegistryV0_1({registryId:"ANNUAL",sourceRows,datasetStartDate:"2025-01-01",observedAt});
+ const sourceReceipt={currentSourceHash:"a".repeat(64),newListingSourceHash:"b".repeat(64),delistingSourceHash:"c".repeat(64)};
+ const expected={
+  registryId:"ANNUAL",registryHash:expectedRegistry.registryHash,membershipCount:2,replayEligibleCount:2,unknownStartCount:0,currentCount:1,delistedCount:1,
+  observedAt,sourceReceipt,
+ };
+ const rebuilt=await buildPinnedAnnualExactEquivalentRegistryV0_1({registry:live,sourceReceipt},expected);
+ assert.equal(rebuilt.registryHash,expectedRegistry.registryHash);
+ assert.equal(rebuilt.registryId,"ANNUAL");
+ assert.equal(rebuilt.membershipCount,2);
+});
+
+await testAsync("NB-T06L changed official source hash rejects annual-equivalent authority",async()=>{
+ const observedAt="2026-10-08T03:35:20.819Z";
+ const sourceRows=[
+  {market:"TWSE",symbol:"1101",companyName:"A",industry:"X",memberState:"CURRENT",listingDate:"2000-01-01",delistingDate:null,sourceId:"CUR",sourceName:"CUR",sourceUrl:"u1",sourceRowHash:"1".repeat(64)},
+ ];
+ const live=await buildHistoricalUniverseRegistryV0_1({registryId:"LIVE",sourceRows,datasetStartDate:"2025-01-01",observedAt});
+ const expectedRegistry=await buildHistoricalUniverseRegistryV0_1({registryId:"ANNUAL",sourceRows,datasetStartDate:"2025-01-01",observedAt});
+ const expected={registryId:"ANNUAL",registryHash:expectedRegistry.registryHash,membershipCount:1,replayEligibleCount:1,unknownStartCount:0,currentCount:1,delistedCount:0,observedAt,sourceReceipt:{currentSourceHash:"a".repeat(64),newListingSourceHash:"b".repeat(64),delistingSourceHash:"c".repeat(64)}};
+ await assert.rejects(
+  buildPinnedAnnualExactEquivalentRegistryV0_1({registry:live,sourceReceipt:{...expected.sourceReceipt,currentSourceHash:"d".repeat(64)}},expected),
+  /ANNUAL_EQUIVALENT_CURRENT_SOURCE_HASH_MISMATCH/
+ );
+});
 
 test("NB-T07 AR1 baseline executable on multiple issuers",()=>{
  const r=fitAr1(panel);
