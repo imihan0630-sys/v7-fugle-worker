@@ -16,6 +16,12 @@ on:
         type: boolean
         default: false
 
+      read_budget_evidence_path:
+        description: "Reviewed GitHub-main DATA_LANE/REMEDIATION_LANE quota-day read headroom receipt path"
+        required: true
+        type: string
+        default: ""
+
 permissions:
   contents: read
 
@@ -39,8 +45,17 @@ jobs:
           node system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs
           node --check system2/scripts/audit_oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs
           git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fail-closed account-wide read-budget preflight (no D1 I/O)
+        env:
+          S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
+          S2_NO_COMPETING_D1_WRITER_CONFIRMED: ${{ inputs.no_competing_writer }}
+          S2_OCT08_BUDGET_GATE_RESULT: /tmp/s2-oct08-read-budget-evidence-preflight.json
+        run: |
+          node system2/tests/oct08_readonly_d1_account_budget_qualification_v0_1.test.mjs
+          node system2/scripts/qualify_oct08_readonly_d1_account_budget_v0_1.mjs SAMPLE_36
       - name: Bounded 12-source SHA256 recheck then 36 indexed D1 SELECT samples only
         env:
+          S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           S2_D1_READ_BUDGET_CONFIRMED: ${{ inputs.d1_read_budget_confirmed }}
@@ -53,6 +68,7 @@ jobs:
         with:
           name: s2-oct08-d1-samples-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/s2-oct08-hot-d1-source-matched-sample.json
+            /tmp/s2-oct08-read-budget-evidence-preflight.json
           if-no-files-found: warn
           retention-days: 90
       - name: System1 Formal/production isolation
