@@ -1,0 +1,66 @@
+name: System2 TWSE2026 Jul-Sep Independent Physical Manual Readonly
+
+# Dedicated 2026-07..09 immutable cold storage readback. Manual-only:
+# no push, schedule, workflow_run or automatic retry. Coordinate quota first.
+on:
+  workflow_dispatch:
+    inputs:
+      read_budget_coordinated:
+        description: "REMEDIATION_LANE confirms account-wide D1 read budget headroom"
+        required: true
+        type: boolean
+        default: false
+      no_concurrent_writer:
+        description: "No competing D1 writers; source run 37871005381 is terminal"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  physical:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main' && inputs.read_budget_coordinated && inputs.no_concurrent_writer
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify zero-write guard tests
+        run: |
+          node system2/tests/twse2026_jul_sep_independent_physical_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Independently verify monthly D1 receipts and R2 full SHA256
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_PHYSICAL_READ_BUDGET_COORDINATED: ${{ inputs.read_budget_coordinated }}
+          SYSTEM2_PHYSICAL_NO_CONCURRENT_WRITER_ACK: ${{ inputs.no_concurrent_writer }}
+          SYSTEM2_TWSE_JUL_SEP_PHYSICAL_OUTPUT: /tmp/s2-twse2026-jul-sep-physical.json
+        run: node system2/scripts/audit_twse2026_jul_sep_independent_physical_readonly_v0_1.mjs
+      - name: Preserve PASS or BLOCKED evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-twse2026-jul-sep-independent-physical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-twse2026-jul-sep-physical.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Confirm System1 Formal/production isolation
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production isolation PASS"

@@ -1610,3 +1610,20 @@ Important producer-contract nuance: an existing Jan–Jun receipt with an alread
 The proposed PASS label is **`PASS_ARTIFACT_INTERNAL_RECEIPTS_ONLY`**, not independent new R2/D1 readback, historic PIT, original firstKnownAt, NC-T01 continuity, 2026 market-year PASS, full-market replay or trading authority. Physical terminal-run result and real Action artifact have NOT yet been observed at this code-candidate milestone. Canonical preregistration: `system2/evidence/S2_TWSE2026_OCT09_ONE_SHOT_ARTIFACT_AUDIT_PREREG_20261009_V0_1.json`.
 
 Next: PR System2/V8 CI PASS, latest-main conflict check, merge if only Class A safe; after the original writer reaches terminal state, audit original ZIP and month receipts; if passed, request separate independent no-write storage verification before updating market-year matrix. Any partial/failed writer is preserved as BLOCKED with exact failed month, with no blind retrigger / billing upgrade. System1 Formal/runtime unchanged.
+
+## 2026-10-09 DATA_LANE — July–September 2026 independent cold-storage physical audit prepared (manual-only)
+
+Original TWSE 2026 Jul–Sep writer Run 37871005381 is separate and must reach terminal SUCCESS before any month-completion claim. PR #944 installed a zero-Cloudflare GitHub artifact verifier; it does not independently prove Cloudflare R2 stored bytes or current D1 receipt state.
+
+The existing Jan–Jun physical verifier V0.1 restricts months to 1–6. Changing its runtime would trigger an expensive push-based physical workflow, so DATA_LANE prepared a separate manual-only July–September independent physical gate without changing the old verifier:
+- system2/runtime/twse2026_jul_sep_independent_physical_readonly_v0_1.mjs
+- system2/scripts/audit_twse2026_jul_sep_independent_physical_readonly_v0_1.mjs
+- system2/tests/twse2026_jul_sep_independent_physical_readonly_v0_1.test.mjs
+- .github/workflows/system2-twse2026-jul-sep-independent-physical-manual.yml
+- system2/evidence/S2_TWSE2026_JUL_SEP_INDEPENDENT_PHYSICAL_GATE_PREREG_20261009_V0_1.json
+
+Runner prerequisites before storage access: original Run 37871005381 attempt 1 SHA 687432470b8ec81126356edb03d993d8d69df82a completed SUCCESS; explicit REMEDIATION_LANE account D1 READ budget confirmation; and no competing writer. Uses same concurrency group as existing isolated D1 writer. The workflow has only workflow_dispatch and two manual confirmations, with no push, schedule or workflow_run automation.
+
+Complete D1 receipts/checkpoints for months 7,8,9 must match exact batch ID, counts and rolling digest. Existing cold-store verifier re-HEADs every R2 object and full-byte GET SHA256 verifies all payloads. Absent/mismatched months remain BLOCKED and preserve fail-closed output. Neither D1 nor R2 writes are performed.
+
+Status: CODE_CANDIDATE_NOT_PHYSICALLY_EXECUTED; requires CI/V8, latest-main review/merge, and later explicit coordinated manual physical execution. No independent Jul–Sep physical PASS can be claimed yet. Original PIT clocks, corporate action/NO_EVENT, NC-T01, full market-year replay and live selection remain blocked. System1 Formal/runtime untouched.
