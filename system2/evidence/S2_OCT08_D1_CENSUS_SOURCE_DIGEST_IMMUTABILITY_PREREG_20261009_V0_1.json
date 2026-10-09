@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "S2_OCT08_FULL_SOURCE_CENSUS_IMMUTABLE_LINEAGE_HANDOFF_PREREG_V0_1",
+  "date": "2026-10-09",
+  "recordedAt": "2026-10-09T18:11:09+08:00",
+  "ownerLane": "DATA_LANE",
+  "linkedCorrection": "S2-CORR-20261007-003",
+  "correctionStatus": "HIGH_FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY",
+  "motivation": "The offline repair planner previously accepted a bare sourceReceiptsMatched=12 flag without checking per-market-date frozen source digests in the actual census artifact.",
+  "changeSummary": [
+    "Full 11843-key read-only census now retains twelve market/date official SHA256+count source revalidation receipts and an aggregate deterministic SHA256 digest",
+    "Offline missing-only planner requires exact all-12 immutable source receipts and aggregate digest before preparing any candidate batch",
+    "Repair plan digest binds the exact census source digest, preserving PIT provenance and resisting mismatched-revision carryover",
+    "Tampered digest, wrong individual source hash and missing source receipt adversarial tests fail closed"
+  ],
+  "expectedTests": {
+    "censusPositiveKeyCount": 11843,
+    "censusPositiveDbSelects": 240,
+    "requiredReceipts": 12,
+    "plannerPositive": "NO_MISSING_KEYS_FOUND_IN_SOURCE_TO_D1_DIRECTION_ONLY",
+    "adversarial": [
+      "11/12 source receipt missing",
+      "One market-date source hash mismatch",
+      "Aggregate source lineage digest mismatch",
+      "Existing missing/mismatch/multiversion quarantine regression"
+    ]
+  },
+  "limits": {
+    "physicalD1ReadPerformed": false,
+    "physicalD1WritePerformed": false,
+    "newBackfillAuthorized": false,
+    "existingOct08SourceOnlyAcceptanceUnchanged": true,
+    "retroactiveFirstKnownAtPermitted": false,
+    "pitCertified": false,
+    "system1FormalChanged": false,
+    "cloudflarePaidPlan": false
+  },
+  "status": "PREREG_PENDING_CI_AND_INDEPENDENT_PHYSICAL_CENSUS",
+  "auditHandoff": "AUDIT_LANE uses hashes to independently compare D1 census report to the frozen official source receipt. DATA_LANE cannot self-close CORR-003."
+}

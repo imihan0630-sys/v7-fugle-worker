@@ -76,6 +76,14 @@ function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
 const success=await audit({db:mockDb(),evidence,fetchDate});
 assert.equal(success.result,"PASS_ALL_11843_SOURCE_KEYS_MATCH_D1_VALUES_ONLY");
 assert.equal(success.sourceReceiptsMatched,12);
+assert.equal(success.sourceRevalidationReceipts.length,12);
+assert.equal(success.sourceRevalidationDigest.length,64);
+for(const row of success.sourceRevalidationReceipts){
+ const expected=evidence.officialWindow.samples.find(x=>x.market===row.market
+  &&x.marketDate===row.marketDate);
+ assert.equal(row.normalizedBarSha256,expected.normalizedBarSha256);
+ assert.equal(row.ordinarySymbolCount,expected.ordinarySymbolCount);
+}
 assert.equal(success.sourceSymbolDayKeys,11843);
 assert.equal(success.counts.matched,11843);
 assert.equal(success.actualD1Queries,240);
