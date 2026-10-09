@@ -1580,8 +1580,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「產能／擴產／稼動率」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / UMC_ISSUER_NATIVE_TRUE_UTILIZATION_65_70_78_79_85 / LOW_UTILIZATION_CONTROL_2024Q1_65 / SHIPMENT_GROWTH_NOT_HIGH_UTILIZATION / SC069_2026Q3_GT90_GUIDANCE_PREREGISTERED / 20261028_REALIZATION_PENDING / OUTCOMES_CLOSED",
-          "next": "SC-070 on first official UMC 2026Q3 release: capture issuer-native utilization with sourcePublishedAt/capturedAt, evaluate only the preregistered >90% guidance threshold, preserve unavailable fields as UNKNOWN, keep stock outcomes closed, then assess bounded D16 handoff eligibility. A second-issuer true-utilization control remains optional."
+          "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / UMC_ISSUER_NATIVE_TRUE_UTILIZATION_65_70_78_79_85 / LOW_UTILIZATION_CONTROL_2024Q1_65 / SC069_2026Q3_GT90_GUIDANCE_PREREGISTERED / SC094_PSMC_REVENUE_NOT_UTILIZATION_PROXY_CONTROL / 20261028_REALIZATION_PENDING / OUTCOMES_CLOSED",
+          "next": "SC-070 on first official UMC 2026Q3 release: evaluate only the preregistered >90% utilization threshold with source/capture clocks. Continue seeking a second Taiwan issuer that directly discloses comparable utilization percentage. Preserve revenue/shipments/ASP/capacity/utilization as separate states; never synthesize utilization from revenue."
         },
         {
           "id": "D10-05",
