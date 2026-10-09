@@ -44,3 +44,12 @@ Until this return exists:
 `D09_04_PREDICTIVE_OUTCOME_ACCESS = CLOSED`.
 
 Formal Core unchanged.
+
+## Room11 D16 method return — 2026-10-10
+
+- Method receipt: `research/ROOM11_BR074_D16_METHOD_RECEIPT_20261010.md`.
+- Machine state: `research/room11_br074_method_state_20261010.json`.
+- Estimand: equal-market-date TWSE breadth association with preregistered D5/D20/D60 benchmark-return family, not causal or policy alpha.
+- Independent N=3; exact sign-flip minimum p=0.125 one-sided / 0.25 two-sided under ideal null assumptions.
+- `POWER_INSUFFICIENT`; predictive outcome access remains `CLOSED`; no maturity or Formal change.
+- Next: append official independent dates outcome-blind; later freeze real label/clock and dependence-aware test before outcomes.
