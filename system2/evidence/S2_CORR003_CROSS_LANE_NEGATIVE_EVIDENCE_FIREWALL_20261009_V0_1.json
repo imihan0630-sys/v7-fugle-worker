@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_CORR003_CROSS_LANE_NEGATIVE_EVIDENCE_FIREWALL_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "REMEDIATION_LANE",
+  "asOfTaipei": "2026-10-09 22:22",
+  "baselineMainSha": "2e70f06d0bb6c72b3b5b64d546f834d5ee6afcd7",
+  "type": "SOURCE_LEVEL_CROSS_PRODUCER_REGRESSION_NOT_CLOSURE",
+  "readOnlyEvidenceOnly": true,
+  "producerSources": [
+    "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+    "research/SYSTEM1_ISSUE1024_CRON_SINK_FAILURE_TRIANGULATION_20261009_V0_1.json",
+    "system2/evidence/S2_ISSUE1026_P03_REAL_MULTIWRITER_QUOTA_DEFER_MATRIX_20261009_V0_1.json",
+    "system2/evidence/S2_ISSUE1026_P03_P05_ACCOUNT_GRAPHQL_NONAUTHORIZING_REAL_RUN_20261009_V0_1.json",
+    "system2/evidence/S2_CORR003_P01_P05_PRODUCER_RECEIPT_RECONCILIATION_20261009_V0_1.json"
+  ],
+  "sourceBlobHashes": {
+    "system1CronSink": "322348f3c0509d2aec56724dc85afeebf7b39f7d",
+    "dataMatrix": "36b4f2f869603a4329d14243e08e248b9156532a"
+  },
+  "verdict": {
+    "disposition": "INTEGRATED_NEGATIVE_PHYSICAL_EVIDENCE_NO_PROMOTION",
+    "scope": "REMEDIATION_READONLY_OFFLINE_SOURCE_LEVEL",
+    "auditOwner": "AUDIT_LANE",
+    "correctionStatus": "HIGH_VERIFYING",
+    "originalCriteriaTraced": 19,
+    "supportChecksDocumented": 15,
+    "supportChecksTotal": 38,
+    "observedRealGateRuns": 5,
+    "observedWriterClasses": 4,
+    "accountUsageBasis": "GRAPHQL_LOWER_BOUND_NOT_SPENDABLE_HEADROOM",
+    "cronFailureClassification": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+    "physicalGatesAccepted": 0,
+    "physicalGatesTotal": 5,
+    "physicalD1ReadAuthorized": false,
+    "physicalD1WriteAuthorized": false,
+    "physicalQuotaGrantConfirmed": false,
+    "blockers": [
+      "P01_SYSTEM1_WRITE_RESERVE_NOT_AUTHORIZED",
+      "P02_SYSTEM1_READ_RESERVE_NOT_AUTHORIZED",
+      "P03_MULTIWRITER_REAL_GRANT_RESULT_CHAIN_MISSING",
+      "P04_LATER_NORMAL_SYSTEM1_PERSISTENCE_NOT_VERIFIED",
+      "P05_HOT_D1_36_AND_11843_NOT_RUN",
+      "ACCOUNT_GRAPHQL_LAG_AND_HEADROOM_UNKNOWN",
+      "AUDIT_INDEPENDENT_PHYSICAL_APPROVAL_PENDING"
+    ]
+  },
+  "nonMutating": {
+    "cloudflareD1SqlCalls": 0,
+    "cloudflareR2Calls": 0,
+    "workerDeployments": 0,
+    "quotaGrants": 0,
+    "paidUpgrades": 0,
+    "formalCoreChanges": 0
+  },
+  "next": "AUDIT_LANE independently reviews cross-lane negative evidence only; System1 #1024 natural 10/12 session; DATA_LANE #1026 remains gated."
+}
