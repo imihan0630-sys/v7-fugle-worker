@@ -1405,7 +1405,9 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「Sector RS產業相對強弱」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / BR081_20261008_SAME_AUTHORITY_TOTAL_RETURN_SECTOR_RS / MARKET_TRI_MINUS_0P99 / ABS_POSITIVE_17_OF_34 / POSITIVE_SECTOR_RS_25_OF_34 / NEGATIVE_ABSOLUTE_BUT_POSITIVE_RS_8 / SAME_DATE_COMMON_BENCHMARK_RANK_IDENTITY / OUTCOMES_CLOSED",
+          "next": "Append independent future Sector RS dates on the same official total-return basis; test whether relative sign/magnitude and persistence add value beyond same-date absolute industry return/rank, breadth, concentration, regime and physical-cycle controls; freeze D16 date-clustered/OOS method before forward outcome access."
         },
         {
           "id": "D09-03",
