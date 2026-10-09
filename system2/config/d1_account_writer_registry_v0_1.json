@@ -147,11 +147,11 @@
       "id": "OCT09_2026_TWSE_ONE_SHOT",
       "workflow": ".github/workflows/system2-2026-twse-oct09-one-shot.yml",
       "priority": "P1",
-      "writerClass": "P1_RETIRED_ONE_SHOT",
-      "physicalMutation": false,
-      "pushPhysicalAllowed": false,
+      "writerClass": "P1_CONTROLLED_BULK_DATA_ONE_SHOT",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": true,
       "reservationModel": {
-        "type": "RETIRED_DATE_GATED"
+        "type": "CALLER_REQUIRED"
       }
     },
     {
