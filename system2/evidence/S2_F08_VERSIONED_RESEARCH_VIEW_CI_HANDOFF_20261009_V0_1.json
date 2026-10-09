@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_F08_VERSIONED_RESEARCH_VIEW_CI_HANDOFF_20261009_V0_1",
+  "date": "2026-10-09",
+  "owner": "BUILD_LANE",
+  "scope": "SYSTEM2_RESEARCH_ONLY",
+  "implementationPR": 1019,
+  "mergedMain": "680cf3bbe1ad57e0976d83ff0727f43bee0e0300",
+  "code": [
+    "system2/runtime/f08_versioned_outcome_research_view_v0_1.mjs",
+    "system2/tests/f08_versioned_outcome_research_view_v0_1.test.mjs"
+  ],
+  "evidence": {
+    "system2Research": {
+      "runId": 37934181637,
+      "result": "PASS",
+      "files": 282,
+      "logMarker": "F08_VERSIONED_RESEARCH_VIEW_2_POSITIVE_13_NEGATIVE_SOURCE_UNCERTIFIED_PASS"
+    },
+    "v8Regression": {
+      "runId": 37934181682,
+      "result": "PASS"
+    },
+    "productionIsolation": "PASS",
+    "positiveCases": 2,
+    "negativeCases": 13
+  },
+  "guarantees": {
+    "entireRevisionChainAudited": true,
+    "immutableAncestryAndStrategyVersionBound": true,
+    "signalHorizonObservationsExplicitlyUncertified": true,
+    "modeledExecutionNeverCertified": true,
+    "modeledNoFillNeverCertified": true,
+    "certifiedStrategyReturn": null,
+    "certifiedTradeCount": null,
+    "certifiedWinRate": null,
+    "executionDenominators": null,
+    "costAndExecutionHashLineagePreserved": true,
+    "sourcePITIndependentlyVerified": false,
+    "physicalD1ReadbackVerified": false,
+    "accountWideQuotaGranted": false,
+    "physicalD1ReadWritePerformed": false,
+    "productionWorkerCronChanged": false,
+    "system1FormalCoreChanged": false,
+    "finalSelectionEnabled": false,
+    "realOrders": false,
+    "pushOrCapitalChanged": false,
+    "paidTierChanged": false
+  },
+  "quantified": {
+    "passed": 22,
+    "total": 75,
+    "remaining": 53,
+    "percent": 29.3,
+    "fullyAcceptedGates": 0,
+    "f08Passed": 2,
+    "f08Total": 5
+  },
+  "blockedBy": [
+    "S2-CORR-20261007-003 independent quota acceptance / System1-first D1 read/write reserve",
+    "F07 D1 physical staged 0011 schema acceptance",
+    "B10/B11 official PIT/session/lifecycle and physical source",
+    "S2-CORR-20261008-012/013 independent AUDIT_LANE closure"
+  ],
+  "exactNext": "BUILD may prepare isolated offline writer or downstream lineage quality checks; physical D1 migration/writes and performance promotion remain disallowed without account-wide reservation, official source PIT and independent AUDIT evidence."
+}
