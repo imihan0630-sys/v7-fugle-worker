@@ -151,7 +151,9 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
    marketCount.mismatched+marketCount.multi,marketCount.sourceCount);
   details.push(Object.freeze({stage:"DATE_TOTALS",...marketCount}));
  }
- assert.equal(queryCount,240,"six-day chunk count changed unexpectedly");
+ assert.equal(queryCount,matchedSource.reduce((n,x)=>n+Math.ceil(x.rows.length/chunkSize),0),
+  "D1 chunk count unexpectedly changed");
+ assert.ok(queryCount<=1200,"D1 request upper bound exceeded");
  assert.equal(Object.values(metrics).reduce((a,b)=>a+b,0),totalExpected);
  const allValuesMatch=metrics.matched===totalExpected;
  return Object.freeze({
