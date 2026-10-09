@@ -116,6 +116,36 @@ await assert.rejects(()=>audit({db:buildDb({rowsReadPerCall:35001}),
 await assert.rejects(()=>audit({db:buildDb({rowsReadPerCall:1000}),
  evidence:frozen,fetchDate}),/D1_READ_BUDGET_CAP_EXCEEDED/);
 
+// Unknown D1 rowsRead must never be interpreted as 0 or as free headroom.
+// These adversarial fixtures intentionally avoid any Cloudflare request.
+for(const unknown of [undefined,null,Number.NaN,Number.POSITIVE_INFINITY,-1,"0",0.25]){
+ const probe=buildDb();
+ probe.metrics.rowsRead=unknown;
+ await assert.rejects(()=>audit({db:probe,evidence:frozen,fetchDate}),
+  /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+ assert.equal(probe.metrics.requestCount,0,
+  "unknown pre-query read metrics must prevent all D1 SELECTs");
+}
+// A remote adapter may lose metrics AFTER responding. That must not
+// be accepted as a valid audit just because the matched bar is present.
+const lostMetrics=buildDb();
+const originalPrepare=lostMetrics.prepare;
+lostMetrics.prepare=sql=>{
+ const statement=originalPrepare(sql);
+ return {bind(...args){
+  const bound=statement.bind(...args);
+  return {async all(){
+   const data=await bound.all();
+   lostMetrics.metrics.rowsRead=Number.NaN;
+   return data;
+  }};
+ }};
+};
+await assert.rejects(()=>audit({db:lostMetrics,evidence:frozen,fetchDate}),
+ /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+assert.equal(lostMetrics.metrics.requestCount,1,
+ "post-query loss must stop before second D1 SELECT");
+
 const workflow=await readFile(new URL(
  "../../.github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",
  import.meta.url),"utf8");
