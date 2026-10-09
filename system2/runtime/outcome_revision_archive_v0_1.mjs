@@ -30,7 +30,7 @@ function omitHash(v, field) {
 async function checkOutcome(outcome) {
   object(outcome, "outcome");
   const claimed = hash(outcome.outcomeHash, "outcome.outcomeHash");
-  if (typeof outcome.updatedAt !== "string" || !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$/.test(outcome.updatedAt) || !Number.isFinite(Date.parse(outcome.updatedAt))) { throw new Error("OUTCOME_REVISION_OUTCOME_CLOCK_INVALID"); }
+  if (typeof outcome.updatedAt !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(outcome.updatedAt) || !Number.isFinite(Date.parse(outcome.updatedAt))) { throw new Error("OUTCOME_REVISION_OUTCOME_CLOCK_INVALID"); }
   if (claimed !== await sha256Hex(omitHash(outcome, "outcomeHash"))) {
     throw new Error("OUTCOME_REVISION_SNAPSHOT_HASH_MISMATCH");
   }
