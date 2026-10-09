@@ -1,0 +1,391 @@
+{
+  "schemaVersion": "D06_05_IC107_FULL_TWSE_DELISTING_OVERLAP_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "baseMainObserved": "3614fdddbef55d2654e43997421c95a63b8633ec",
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "url": "https://www.twse.com.tw/rwd/en/company/suspendListing?response=html",
+    "renderedPageRowsParsed": 265,
+    "newestDelistingDate": "2026/09/01",
+    "oldestDelistingDate": "2001/01/20",
+    "sourceCompleteness": "PAGE_ROWS_PARSED_NOT_FULL_HISTORICAL_COVERAGE_CERTIFIED",
+    "retrievedAt": "2026-10-09T04:10:36.237Z"
+  },
+  "candidate": {
+    "path": "research/d06_05_pair_event_clean_support_candidate_20260924_20261002_v0_3.json",
+    "count": 2778,
+    "hash": "fnv1a64-utf8:11ab5a267ae9cd2a",
+    "tradeDatePair": [
+      "2026-09-24",
+      "2026-10-02"
+    ]
+  },
+  "findings": {
+    "fullDisplayedTwseHistoricalDelistingOverlapCount": 60,
+    "priorRecentOverlapCount": 13,
+    "additionalOlderOverlapCount": 47,
+    "overlapSymbolsHash": "fnv1a64-utf8:303907cd0c1b1fc4",
+    "overlapRecords": [
+      {
+        "delistingDate": "2007/10/20",
+        "company": null,
+        "symbol": "1107"
+      },
+      {
+        "delistingDate": "2007/04/11",
+        "company": null,
+        "symbol": "1207"
+      },
+      {
+        "delistingDate": "2004/04/28",
+        "company": null,
+        "symbol": "1458"
+      },
+      {
+        "delistingDate": "2018/07/11",
+        "company": "LILONTEX",
+        "symbol": "1469"
+      },
+      {
+        "delistingDate": "2022/04/21",
+        "company": "YUNGTAY",
+        "symbol": "1507"
+      },
+      {
+        "delistingDate": "2004/12/16",
+        "company": null,
+        "symbol": "1534"
+      },
+      {
+        "delistingDate": "2022/01/27",
+        "company": "Enterex International Limited",
+        "symbol": "1592"
+      },
+      {
+        "delistingDate": "2007/10/15",
+        "company": null,
+        "symbol": "1601"
+      },
+      {
+        "delistingDate": "2017/11/21",
+        "company": "Tai-I",
+        "symbol": "1613"
+      },
+      {
+        "delistingDate": "2018/01/02",
+        "company": "PIHSIANG",
+        "symbol": "1729"
+      },
+      {
+        "delistingDate": "2006/08/08",
+        "company": null,
+        "symbol": "1807"
+      },
+      {
+        "delistingDate": "2002/11/04",
+        "company": null,
+        "symbol": "2301"
+      },
+      {
+        "delistingDate": "2005/07/05",
+        "company": null,
+        "symbol": "2318"
+      },
+      {
+        "delistingDate": "2007/06/20",
+        "company": null,
+        "symbol": "2333"
+      },
+      {
+        "delistingDate": "2006/07/12",
+        "company": null,
+        "symbol": "2335"
+      },
+      {
+        "delistingDate": "2010/10/16",
+        "company": null,
+        "symbol": "2341"
+      },
+      {
+        "delistingDate": "2024/11/19",
+        "company": null,
+        "symbol": "2358"
+      },
+      {
+        "delistingDate": "2015/12/28",
+        "company": null,
+        "symbol": "2361"
+      },
+      {
+        "delistingDate": "2006/07/12",
+        "company": null,
+        "symbol": "2378"
+      },
+      {
+        "delistingDate": "2009/07/12",
+        "company": null,
+        "symbol": "2381"
+      },
+      {
+        "delistingDate": "2015/07/07",
+        "company": "WINTEK CORP.",
+        "symbol": "2384"
+      },
+      {
+        "delistingDate": "2009/04/08",
+        "company": null,
+        "symbol": "2396"
+      },
+      {
+        "delistingDate": "2006/05/10",
+        "company": null,
+        "symbol": "2407"
+      },
+      {
+        "delistingDate": "2007/03/19",
+        "company": null,
+        "symbol": "2410"
+      },
+      {
+        "delistingDate": "2008/01/14",
+        "company": null,
+        "symbol": "2418"
+      },
+      {
+        "delistingDate": "2008/09/01",
+        "company": null,
+        "symbol": "2432"
+      },
+      {
+        "delistingDate": "2005/05/03",
+        "company": null,
+        "symbol": "2435"
+      },
+      {
+        "delistingDate": "2024/11/19",
+        "company": null,
+        "symbol": "2443"
+      },
+      {
+        "delistingDate": "2003/06/18",
+        "company": null,
+        "symbol": "2445"
+      },
+      {
+        "delistingDate": "2019/05/13",
+        "company": "CPT",
+        "symbol": "2475"
+      },
+      {
+        "delistingDate": "2007/12/24",
+        "company": null,
+        "symbol": "2479"
+      },
+      {
+        "delistingDate": "2008/10/27",
+        "company": null,
+        "symbol": "2494"
+      },
+      {
+        "delistingDate": "2020/11/10",
+        "company": "Unity",
+        "symbol": "2499"
+      },
+      {
+        "delistingDate": "2006/02/07",
+        "company": null,
+        "symbol": "2533"
+      },
+      {
+        "delistingDate": "2006/12/19",
+        "company": null,
+        "symbol": "2811"
+      },
+      {
+        "delistingDate": "2007/04/30",
+        "company": null,
+        "symbol": "2827"
+      },
+      {
+        "delistingDate": "2022/08/04",
+        "company": "TLDC",
+        "symbol": "2841"
+      },
+      {
+        "delistingDate": "2005/06/13",
+        "company": null,
+        "symbol": "2902"
+      },
+      {
+        "delistingDate": "2022/06/27",
+        "company": "COASTER",
+        "symbol": "2936"
+      },
+      {
+        "delistingDate": "2004/11/15",
+        "company": null,
+        "symbol": "3001"
+      },
+      {
+        "delistingDate": "2008/01/10",
+        "company": null,
+        "symbol": "3020"
+      },
+      {
+        "delistingDate": "2005/11/13",
+        "company": null,
+        "symbol": "3039"
+      },
+      {
+        "delistingDate": "2007/06/20",
+        "company": null,
+        "symbol": "3142"
+      },
+      {
+        "delistingDate": "2022/09/26",
+        "company": "GPI",
+        "symbol": "3383"
+      },
+      {
+        "delistingDate": "2019/05/02",
+        "company": "GET",
+        "symbol": "3519"
+      },
+      {
+        "delistingDate": "2023/06/26",
+        "company": "STI",
+        "symbol": "3536"
+      },
+      {
+        "delistingDate": "2019/06/26",
+        "company": "SCSC",
+        "symbol": "3579"
+      },
+      {
+        "delistingDate": "2016/08/03",
+        "company": "JTouch",
+        "symbol": "3584"
+      },
+      {
+        "delistingDate": "2020/01/09",
+        "company": "C.E.C",
+        "symbol": "5259"
+      },
+      {
+        "delistingDate": "2021/07/05",
+        "company": "AC&C INT'L",
+        "symbol": "6131"
+      },
+      {
+        "delistingDate": "2005/11/07",
+        "company": null,
+        "symbol": "6132"
+      },
+      {
+        "delistingDate": "2022/06/29",
+        "company": "Billionton",
+        "symbol": "6172"
+      },
+      {
+        "delistingDate": "2007/08/21",
+        "company": null,
+        "symbol": "6280"
+      },
+      {
+        "delistingDate": "2022/09/26",
+        "company": "AOC",
+        "symbol": "6289"
+      },
+      {
+        "delistingDate": "2026/01/22",
+        "company": "YMC",
+        "symbol": "6423"
+      },
+      {
+        "delistingDate": "2021/04/01",
+        "company": "Pharmally International Holding Company Limited",
+        "symbol": "6452"
+      },
+      {
+        "delistingDate": "2017/02/02",
+        "company": "TNA",
+        "symbol": "6702"
+      },
+      {
+        "delistingDate": "2026/06/23",
+        "company": "SHINFOX ENERGY",
+        "symbol": "6806"
+      },
+      {
+        "delistingDate": "2022/03/03",
+        "company": "KEYSHEEN (CAYMAN) HOLDINGS CO., LIMITED",
+        "symbol": "8427"
+      },
+      {
+        "delistingDate": "2007/04/11",
+        "company": null,
+        "symbol": "9801"
+      }
+    ],
+    "knownNonCommonCodes": [
+      "0051",
+      "0053",
+      "0057",
+      "0061",
+      "9103",
+      "9110"
+    ],
+    "combinedDiagnosticFlagCount": 66,
+    "combinedDiagnosticFlagHash": "fnv1a64-utf8:058580e7692e5bf1",
+    "notFlaggedByTheseTwoTests": 2712,
+    "important": "60 historical delisting-code overlaps are diagnostic identity-review flags, NOT 60 proven invalid instruments. 66 flags combine 60 unresolved historical overlaps with six confirmed non-common securities. The 2712 not-flagged are NOT certified common stock."
+  },
+  "hypotheses": [
+    {
+      "hypothesis": "Recent delist history is sufficient to identify candidate historical-code collisions.",
+      "support": "13 overlaps in 2021-2026 subset.",
+      "falsification": "Full 265-row rendered official TWSE list intersects the same frozen 2778-symbol candidate in 60 distinct codes, revealing 47 older overlaps.",
+      "alternatives": "Code reuse, market migration, legacy custody records, different issuer or ISIN, historical data carry-forward.",
+      "failureConditions": "Page may omit historical entries; displayed list is not a complete dated TWSE+TPEx instrument master.",
+      "decision": "REJECT_RECENT_ONLY_COMPLETENESS"
+    },
+    {
+      "hypothesis": "Historical delisting-code overlap proves ineligible common stock on both TDCC dates.",
+      "support": "Delisting history creates legitimate identity discontinuity risk.",
+      "falsification": "Historical code overlap alone does not prove issuer continuity or date-effective trading status.",
+      "alternatives": "New security reuses code, transferred listing, custody retention.",
+      "failureConditions": "Missing dated ISIN/security type/market eligibility prevents definitive exclusion.",
+      "decision": "UNKNOWN_NOT_AUTO_EXCLUDED"
+    }
+  ],
+  "researchControls": {
+    "pointInTime": "This source was retrieved on 2026-10-09, not a reconstructed 2026-09-24/10-02 first-known security master; do not backfill to historical decision clock.",
+    "outOfSample": "No OOS or historical Shadow constructed.",
+    "walkForward": "Freeze dates/identity contract and validate independent TDCC vintage pairs before outcomes.",
+    "biases": [
+      "survivorship",
+      "lookahead",
+      "selection",
+      "source_coverage",
+      "multiple_testing",
+      "data_mining",
+      "overfitting",
+      "factor_redundancy",
+      "market_regime_dependence"
+    ],
+    "transactionCostAndLiquidity": "No tradability or liquidity certification; no return-based or execution claims.",
+    "crossModuleDedup": "Identity review receipt shared once; do not count it as independent institution/margin/borrow/passive/crowding alpha.",
+    "missingData": "UNKNOWN_NOT_ZERO_OR_BAD"
+  },
+  "level": "L3",
+  "maturityPct": 60,
+  "finalCertifiedCount": null,
+  "formalOptimizationCandidate": "NONE",
+  "status": "IC107_FULL_DISPLAYED_TWSE_DELISTING_OVERLAP_60 / 47_ADDITIONAL_OLDER_IDENTITY_FLAGS / FINAL_SECURITY_IDENTITY_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Verify authoritative TPEx exact-interval delisting and identity transitions; obtain date-effective TWSE/TPEx security-type and ISIN identity for both 2026-09-24 and 2026-10-02, resolve all 60 historical code overlaps and remaining symbols. Then independently hash a newly certified cohort, preregister TDCC-vintage-clustered OOS/Shadow tests. Do not remove 60 on code history alone."
+}
