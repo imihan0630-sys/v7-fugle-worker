@@ -1,0 +1,390 @@
+{
+  "schemaVersion": "S1_ISSUE1024_POSTHOLIDAY_NATIVE_RUN_ARTIFACT_RECONCILIATION_V0_1",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "owner": "SYSTEM1_PRODUCER_LANE",
+  "baselineMainSha": "a37698500bdad069e6db161e8c1a1595c5c0645f",
+  "observedAtTaipei": "2026-10-10T07:19:39+08:00",
+  "observationScope": "READONLY_NATIVE_GITHUB_ACTIONS_RUN_AND_ARTIFACT_METADATA_PLUS_EXISTING_SOURCE_LEVEL_RECEIPTS",
+  "sourceVerification": {
+    "githubNativeRunCount": 9,
+    "githubNativeArtifactsWithReportedSha256": 6,
+    "originalRunMetadataNotSameAsPhysicalCloudflareOperationMeta": true,
+    "cloudflareSqlReadsNew": 0,
+    "cloudflareSqlWritesNew": 0,
+    "cloudflareActionsDispatchesNew": 0,
+    "nativeSourceMetadataContainsPerOperationD1Cost": false,
+    "artifactDigestScope": "GitHub ZIP digest; not per-operation D1 checksum"
+  },
+  "nativeSourceRecords": [
+    {
+      "key": "PVE271",
+      "runId": 37694052477,
+      "jobId": 113041122665,
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "event": "push",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-07T22:06:58Z",
+      "artifactId": 11514945619,
+      "artifactZipSha256": "7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+      "businessClassification": "HISTORICAL_TWO_HEALTHY_DAILY_ENVELOPES_ONLY",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T06:06:58.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "PVE272",
+      "runId": 37694255555,
+      "jobId": 113041830751,
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "event": "push",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-07T22:08:47Z",
+      "artifactId": 11514766351,
+      "artifactZipSha256": "cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+      "businessClassification": "CRON_ROW_HISTORY_NOT_GENERATION_MATCHED_KV",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T06:08:47.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "PVE263",
+      "runId": 37649543821,
+      "jobId": 112888965126,
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "event": "push",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-07T16:07:18Z",
+      "artifactId": 11495752402,
+      "artifactZipSha256": "ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+      "businessClassification": "OBSERVED_2026_10_07_D1_QUOTA_FAILURE_AND_2355_LEASE",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T00:07:18.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "PVE264",
+      "runId": 37650006684,
+      "jobId": 112890551584,
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "event": "push",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-07T16:10:44Z",
+      "artifactId": 11495133236,
+      "artifactZipSha256": "188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+      "businessClassification": "ACCOUNT_WHOLE_UTC_DAY_NOT_PER_OPERATION",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T00:10:44.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "C1_OCT08",
+      "runId": 37808995747,
+      "jobId": 113420649062,
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "event": "schedule",
+      "conclusion": "failure",
+      "runCreatedUtc": "2026-10-08T16:28:00Z",
+      "artifactId": 11565090033,
+      "artifactZipSha256": "a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+      "businessClassification": "MISSING_C1_GENERATION_FOR_OCT08",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-09T00:28:00.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "C1_OCT09_HOLIDAY",
+      "runId": 37958877283,
+      "jobId": 113916309205,
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "conclusion": "failure",
+      "runCreatedUtc": "2026-10-09T16:24:22Z",
+      "artifactId": 11631116248,
+      "artifactZipSha256": "4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+      "businessClassification": "OCT09_HOLIDAY_C1_GENERATION_NOT_FOUND_NOT_ZERO_PICK",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283",
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-10T00:24:22.000+08:00",
+      "businessClockAtUtc": "2026-10-09T16:24:26Z",
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "OCT09_HOLIDAY_OFFICIAL_SYNC",
+      "runId": 37956058324,
+      "jobId": 113906737784,
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-09T16:01:26Z",
+      "artifactId": null,
+      "artifactZipSha256": null,
+      "businessClassification": "ALL_BUSINESS_STAGES_SKIPPED_MARKET_HOLIDAY",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324",
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:01:26.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "OCT10_0002_MIRROR",
+      "runId": 37956199815,
+      "jobId": 113907219078,
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-09T16:02:34Z",
+      "artifactId": null,
+      "artifactZipSha256": null,
+      "businessClassification": "ALREADY_VERIFIED_2026_09_29_NO_NEW_WRITE",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815",
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:02:34.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    },
+    {
+      "key": "OCT10_0003_HEALTH",
+      "runId": 37956358193,
+      "jobId": 113907758481,
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "conclusion": "success",
+      "runCreatedUtc": "2026-10-09T16:03:52Z",
+      "artifactId": null,
+      "artifactZipSha256": null,
+      "businessClassification": "SKIPPED_OUTSIDE_TRADING_DAY_WINDOW",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193",
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:03:52.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
+    }
+  ],
+  "realHistoricalObserved": [
+    {
+      "tradingDate": "2026-09-21",
+      "utcQuotaDay": "2026-09-21",
+      "observedCronRow": 1893,
+      "cronAtUtc": "2026-09-21T15:35:35Z",
+      "cronAtTaipei": "2026-09-21T23:35:35+08:00",
+      "cronBusinessStatus": "SUCCESS",
+      "V7DbWholeDay": {
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "writeQueries": 2331,
+        "readQueries": 23994
+      },
+      "primaryPerOperation": {
+        "rowsWritten": null,
+        "rowsRead": null,
+        "indexWriteAmplification": null,
+        "retries": null
+      },
+      "recovery": {
+        "invoked": "UNKNOWN",
+        "rowsWritten": null,
+        "rowsRead": null
+      },
+      "sameGenerationKvD1C1Readback": false,
+      "sourceRuns": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "tradingDate": "2026-09-22",
+      "utcQuotaDay": "2026-09-22",
+      "observedCronRow": 2173,
+      "cronAtUtc": "2026-09-22T15:35:31Z",
+      "cronAtTaipei": "2026-09-22T23:35:31+08:00",
+      "cronBusinessStatus": "SUCCESS",
+      "V7DbWholeDay": {
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "writeQueries": 1199,
+        "readQueries": 9938
+      },
+      "primaryPerOperation": {
+        "rowsWritten": null,
+        "rowsRead": null,
+        "indexWriteAmplification": null,
+        "retries": null
+      },
+      "recovery": {
+        "invoked": "UNKNOWN",
+        "rowsWritten": null,
+        "rowsRead": null
+      },
+      "sameGenerationKvD1C1Readback": false,
+      "sourceRuns": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "tradingDate": "2026-10-07",
+      "utcQuotaDay": "2026-10-07",
+      "primary": {
+        "atTaipei": "2026-10-07T23:36:10+08:00",
+        "businessStatus": "FAILED_D1_ROW_WRITE_QUOTA",
+        "perOperationRowsWritten": null,
+        "perOperationRowsRead": null
+      },
+      "recovery": {
+        "leaseAtUtc": "2026-10-07T15:55:03.803Z",
+        "leaseAtTaipei": "2026-10-07T23:55:03.803+08:00",
+        "invoked": "LEASE_OBSERVED",
+        "businessPersistenceSucceeded": false,
+        "perOperationRowsWritten": null,
+        "perOperationRowsRead": null
+      },
+      "V7DbWholeDay": {
+        "rowsWritten": 1869,
+        "rowsRead": 431323
+      },
+      "system2DbWholeDay": {
+        "rowsWritten": 124629,
+        "rowsRead": 3943636
+      },
+      "accountWholeDay": {
+        "rowsWritten": 126498,
+        "rowsRead": 4374959
+      },
+      "sameUtcAccountCollisionObserved": true,
+      "sourceRuns": [
+        "PVE263",
+        "PVE264"
+      ]
+    }
+  ],
+  "postHolidayNewNegative": {
+    "marketDate": "2026-10-09",
+    "holiday": "OFFICIAL_TWSE_NATIONAL_DAY_SUBSTITUTE",
+    "holidayCalendarUrl": "https://wwwc.twse.com.tw/zh/trading/holiday.html",
+    "c1ScanDate": "2026-10-09",
+    "c1RunId": 37958877283,
+    "c1JobId": 113916309205,
+    "c1ArtifactId": 11631116248,
+    "c1ArtifactSha256": "4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+    "c1Category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "c1Failure": "C1_GENERATION_NOT_FOUND",
+    "c1AcceptanceFailure": "UPSTREAM_ARTIFACT_MISSING",
+    "mayCountAsZeroPick": false,
+    "officialSyncRunId": 37956058324,
+    "officialSyncStatus": "SUCCESS_BUT_MARKET_INSTITUTION_QUALITY_AND_RECOVERY_ALL_SKIPPED",
+    "mirrorRunId": 37956199815,
+    "mirrorPlanDate": "2026-09-29",
+    "mirrorNewWrite": false,
+    "healthRunId": 37956358193,
+    "healthBusinessSkipped": true,
+    "doesNotProveNaturalOct12Primary": true,
+    "doesNotProveOct08Backfill": true
+  },
+  "costAttribution": {
+    "dailyWriteEnvelopeOnly": {
+      "min": 1635,
+      "max": 2825,
+      "dateCount": 2,
+      "eligibleAsConservativeNumericReserve": false
+    },
+    "dailyReadEnvelopeOnly": {
+      "min": 19533,
+      "max": 133037,
+      "dateCount": 2,
+      "eligibleAsConservativeNumericReserve": false
+    },
+    "primary2335": {
+      "rowsWritten": null,
+      "rowsRead": null,
+      "indexWriteAmplification": null,
+      "queryAmplification": null,
+      "retryCost": null
+    },
+    "conditionalRecovery2355": {
+      "wasInvokedOnFuture20261012": null,
+      "rowsWritten": null,
+      "rowsRead": null,
+      "queryAmplification": null,
+      "retryCost": null
+    },
+    "graphqlLagBound": "UNKNOWN",
+    "sameUtcDayNoCollision": "NOT_PROVEN_FOR_NEXT_ORDINARY_SESSION",
+    "indexedAmplification": "UNKNOWN",
+    "conservativeReserveCandidateRowsWritten": null,
+    "conservativeReserveCandidateRowsRead": null,
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null
+  },
+  "p04Prospective": {
+    "nextOrdinaryTradingDay": "2026-10-12",
+    "asOfDate": "2026-10-10",
+    "primaryNaturalBusinessExecuted": null,
+    "recoveryNaturallyTriggered": null,
+    "planAndConfigKvGenerationReadback": null,
+    "dailyReportKvGenerationReadback": null,
+    "cronAuditD1GenerationReadback": null,
+    "leaseD1GenerationReadback": null,
+    "formalC1ParentGenerationReadback": null,
+    "externalPlanVerification": null,
+    "sharedAccountQuotaCollisionAbsence": null,
+    "oneSuccessfulBusinessScanDeduplication": null,
+    "physicallyQualified": false,
+    "naturalScheduledWindowOccurredAsOfCapture": false
+  },
+  "preservedAuditCounters": {
+    "P01": {
+      "support": 3,
+      "total": 7,
+      "physicallyQualified": false
+    },
+    "P02": {
+      "support": 3,
+      "total": 7,
+      "physicallyQualified": false
+    },
+    "P04": {
+      "support": 2,
+      "total": 7,
+      "physicallyQualified": false
+    },
+    "corr003PhysicalAccepted": 0,
+    "corr003PhysicalTotal": 5,
+    "severity": "HIGH",
+    "status": "VERIFYING"
+  },
+  "newIndependentStructure": "research/system1_issue1024_cross_store_lineage_gate_v0_1.mjs",
+  "newTest": "system2/tests/system1_issue1024_cross_store_lineage_gate_v0_1.test.mjs",
+  "auditBoundary": {
+    "newPhysicalCloudflareOperationCount": 0,
+    "formalCoreEdited": false,
+    "workerEdited": false,
+    "cronEdited": false,
+    "schedulesEdited": false,
+    "capitalPushOrdersEdited": false,
+    "paidTierChanged": false,
+    "reserveAuthorizationGranted": false,
+    "independentAuditAcceptance": false
+  },
+  "next": "After natural 2026-10-12 23:35 and conditional 23:55, re-read actual Worker/KV/D1/C1 quota receipts and run the strict cross-store matcher. Distinguish physical authenticator from offline structural guard. REMEDIATION_LANE receives only provenance; AUDIT_LANE independently accepts."
+}
