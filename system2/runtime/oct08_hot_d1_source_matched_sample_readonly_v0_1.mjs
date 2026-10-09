@@ -119,7 +119,9 @@ export async function auditOct08HotD1BoundedSourceMatchedReadV0_1({
  const checks=[];
  for(const item of verified){
   for(const original of item.picks){
-   assert.ok(Number(db.metrics.rowsRead||0)<=maxD1RowsRead,
+   assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
+    "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
+   assert.ok(db.metrics.rowsRead<=maxD1RowsRead,
     "D1_READ_BUDGET_CAP_EXCEEDED");
    await onStage({stage:"HOT_D1_BOUNDED_SAMPLE",market:item.market,
     marketDate:item.marketDate,symbol:original.symbol});
@@ -150,7 +152,9 @@ export async function auditOct08HotD1BoundedSourceMatchedReadV0_1({
   }
  }
  assert.equal(checks.length,36);
- assert.ok(Number(db.metrics.rowsRead||0)<=maxD1RowsRead,
+ assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
+  "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
+ assert.ok(db.metrics.rowsRead<=maxD1RowsRead,
   "D1_READ_BUDGET_CAP_EXCEEDED");
  const counts=Object.fromEntries([...new Set(checks.map(x=>x.state))]
   .map(state=>[state,checks.filter(x=>x.state===state).length]));
