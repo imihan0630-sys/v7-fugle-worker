@@ -68,6 +68,7 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           OFFICIAL_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          V7_DATA_ONLY_RECOVERY: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && 'true' || 'false' }}
         run: node tests/prepare_market_cache.mjs
       - name: Sync official institutions and missing recent trading days (no plan changes)
         if: >-
@@ -78,9 +79,10 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           OFFICIAL_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          V7_DATA_ONLY_RECOVERY: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && 'true' || 'false' }}
         run: node tests/sync_institution_data.mjs
       - name: Verify prior-session market + institution prerequisites after midnight
-        if: steps.calendar.outputs.proceed == 'true' && steps.calendar.outputs.cross_midnight_fallback == 'true'
+        if: steps.calendar.outputs.proceed == 'true' && steps.calendar.outputs.cross_midnight_fallback == 'true' && github.event_name == 'schedule'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           RECOVERY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
