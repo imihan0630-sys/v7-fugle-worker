@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "S2_CORR003_INDEPENDENT_A5_A6_POST_REMEDIATION_AND_A7_ADVERSARIAL_REVERIFY_V0_1",
+  "ticket": "S2-CORR-20261007-003",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditDate": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "examinedMain": "40a536157478dfa31f35cc155d3a0df0b039d28a",
+  "remediationPR994Merge": "0c74919d4746f27f14aec44d1841c01a4f32f12b",
+  "independentPR": 1000,
+  "sourceTest": "system2/tests/audit_corr003_a5a6_independent_legacy_hash_reverify_20261009_v0_1.test.mjs",
+  "exactHeadCi": {
+    "head": "bb7edcb8c3059da6c483b55846025530e3f4daab",
+    "system2": {
+      "run": 37924636321,
+      "job": 113800523510,
+      "status": "SUCCESS",
+      "executedTestFiles": 276
+    },
+    "v8": {
+      "run": 37924636337,
+      "job": 113800523163,
+      "status": "SUCCESS"
+    },
+    "interpretation": "Test-run success certifies replay execution, not physical acceptance or absence of UNSAFE probes."
+  },
+  "verified": {
+    "A5": "PASS_FAIL_CLOSED_FOR_ENUMERATED_MALFORMED_GRAPHQL_GROUP_AND_ACCOUNT_CARDINALITY_CASES",
+    "A6": "PASS_FAIL_CLOSED_FOR_ENUMERATED_MALFORMED_LEDGER_AND_PRODUCTION_FULL_IDENTITY_HASH_TAMPER",
+    "sourceLevelA1A4": "PR #989 independent negative/positive boundary tests still run in System2 Research CI; no physical closure",
+    "reserve": "System1 write reserve false/null; read reserve false/null; 2825 measured not promoted",
+    "physicalCloudflareOperations": 0,
+    "system1ProductionMutation": false,
+    "billingChange": false
+  },
+  "newDefect": {
+    "id": "A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA",
+    "observed": "Production loadQuotaLedger accepts legacy hash sha256(observed payload) for a receipt whose payload declares current S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_2 schema. With the same legacy hash and same observed payload, a different status or expected_payload_json still yields integrityState=VALID. Synthetic otherwise-authorized Daily Shadow decision becomes QUOTA_RESERVATION_GRANTED.",
+    "result": "UNSAFE",
+    "actualCloudflareIncidentObserved": false,
+    "exactFailedCriterion": "Current/V0.2 D1 reservation/result receipt metadata must be committed to immutable identity (check_id, type, expected_payload_json, observed_payload_json, status, check_hash), and its integrity cannot be authenticated by legacy payload-only hash.",
+    "conflictUnit": "system2/scripts/run_d1_account_quota_gate_v0_1.mjs",
+    "implementingLane": "REMEDIATION_LANE",
+    "attackCases": [
+      {
+        "case": "V0.2 receipt with legacy payload-only hash",
+        "loaderIntegrity": "VALID"
+      },
+      {
+        "case": "V0.2 with status=TAMPERED same legacy hash",
+        "loaderIntegrity": "VALID"
+      },
+      {
+        "case": "V0.2 with altered expected_payload_json same legacy hash",
+        "loaderIntegrity": "VALID"
+      },
+      {
+        "case": "V0.2 with complete immutable identity hash and tampered status",
+        "loaderIntegrity": "INVALID"
+      }
+    ],
+    "remedyAcceptance": [
+      "Reject legacy payload-only hash for all V0.2+ receipts; require full identity hash at least for current schema.",
+      "If legitimate older receipts need backward compatibility, restrict legacy acceptance to explicitly proven legacy payload schema/history, never arbitrary V0.2 row metadata; do not silently rewrite historical receipts.",
+      "Re-run fake D1 loader with the exact synthetic status and expected payload mutations, asserting INVALID/QUOTA_BUDGET_DEFER, and preserve a positive test for authentic V0.2 full-identity receipts.",
+      "Keep failure/partial/unknown reservations same-day non-releasing, never infer GraphQL freshness, preserve System1 reserves false/null and no paid tier."
+    ]
+  },
+  "scope": "OFFLINE_AUDIT_ONLY_NO_REAL_D1_IO",
+  "goLiveAuthority": false,
+  "closureRequirements": [
+    "A7 repaired by REMEDIATION_LANE and independently verified",
+    "Evidence-qualified System1 write/read reserve",
+    "Bounded real account-wide UTC-day multiple physical writers grant/result/no quota rejection",
+    "Real later trading day System1 23:35/23:55 persisted business operation without quota collision",
+    "Original CORR-003 physical acceptance requirements"
+  ],
+  "auditDisposition": "A5_A6_SOURCE_LEVEL_ACCEPTED_A7_NEW_SOURCE_LEVEL_DEFECT_REOPEN_CORR003_TO_REMEDIATION_NO_VERIFIED_CLOSED"
+}
