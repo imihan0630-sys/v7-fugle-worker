@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_INDEPENDENT_ADVERSARIAL_REVIEW_PREREG_V0_1",
+  "issue": "S2-CORR-20261007-003",
+  "reviewDate": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "reviewingRoom": "System 2｜歷史資料工程室",
+  "type": "CROSS_LANE_INDEPENDENT_READ_ONLY_COUNTEREXAMPLE_AUDIT",
+  "status": "PR_CI_REPRO_PENDING_REMEDIATION_REVIEW",
+  "sourceOfTruth": "GitHub main",
+  "originalImplementation": {
+    "pr": 980,
+    "merge": "f3b7e30c00ae7d5407d8dd277753e32c59ce72b0",
+    "evidencePr": 981,
+    "formalQueueState": "FIX_IMPLEMENTED",
+    "closureAuthority": "AUDIT_LANE",
+    "quotaRuntimeBlob": "419253483e2052a85fd87fbad6cce73d1fe4caa4",
+    "quotaGateScriptBlob": "3da617b7d1247c79690181756e3a49ac5a0790e3"
+  },
+  "observedPostMergePhysicalDefer": {
+    "runId": 37893508023,
+    "jobId": 113699597256,
+    "runHead": "f3b7e30c00ae7d5407d8dd277753e32c59ce72b0",
+    "result": "SUCCESS_AS_GITHUB_RUN_BUT_QUOTA_BUDGET_DEFER_NO_DATA_WRITE",
+    "quotaDay": "2026-10-09",
+    "analyticsRowsWritten": 26919,
+    "analyticsRowsRead": 697831,
+    "source": "Cloudflare D1 GraphQL account analytics as printed in immutable GitHub job logs",
+    "deferReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+    "sampleIsolatedD1Mutation": false,
+    "artifactId": 11599088341,
+    "artifactDigest": "sha256:40576763167f2f4da9c9208c30f8563943fc0ec66703d997776437b33c18ddf8"
+  },
+  "positiveObservations": [
+    "16 shared-group workflows registered: 13 physical and 3 read-only",
+    "13 physical writer workflows declare common quota gate and result reconciliation action",
+    "Ordinary P2/P3 push under gate yields PUSH_READ_ONLY_ONLY",
+    "No account usage or unsupported System1 after-market reserve -> QUOTA_BUDGET_DEFER",
+    "Real 2026-10-09 head run proves Cloudflare account GraphQL and safe deferral, not full multiwriter success",
+    "Zero Cloudflare plan/billing changes observed in implementation review"
+  ],
+  "adversarialTargets": [
+    {
+      "id": "A1_FIXED_MEASURED_CALLER_UNDERESTIMATE",
+      "priority": "HIGH",
+      "issue": "Annual historical workflow accepts user quota_reservation_rows override but FIXED_MEASURED evaluator admits 1 instead of measured 7358, if otherwise account reserve authorized. Required measured-cost lower bound or independently documented safe override; explicit fail-closed for 0/underestimate."
+    },
+    {
+      "id": "A2_ZERO_READ_RESERVATION_NEAR_HARD_LIMIT",
+      "priority": "HIGH",
+      "issue": "Near 5M/day D1 rowsRead hard cap, default requestedRowsRead=0 can still admit physically reading writer. Need measured/conservative read reservation, sufficient buffer and no false known headroom."
+    },
+    {
+      "id": "A3_FAILURE_SKIP_RESULT_RECEIPT",
+      "priority": "MEDIUM",
+      "issue": "Writer result workflows use success-only conditional; failure after reservation yields no result reconciliation and may leave full reservation stranded for the entire UTC day. Need failure receipt/reconcile with partial metrics, preserving conservative outstanding if after-state unknown."
+    },
+    {
+      "id": "A4_LEDGER_COLLISION_IDEMPOTENCY_UNPROVEN",
+      "priority": "MEDIUM",
+      "issue": "Ledger receipt INSERT OR IGNORE does not independently verify identical already-existing receipt by check_id and hash before reporting persistence, risking silent conflicting-duplicate acceptance. Must compare actual persisted row hash/identity and fail on conflict."
+    }
+  ],
+  "independentClosureRequirements": [
+    "Correct unsafe reservation underestimation and read limit headroom under adversarial regression",
+    "Independent audit of ledger idempotency and failed-run result handling",
+    "Physical bounded postmerge multiwriter UTC-day reservation/result reconciliation",
+    "Evidence-authorized System1 23:35/23:55 reserve from sufficient healthy days, not synthetic 2825",
+    "Later normal real System1 after-market business-execution physical persistence, zero hard D1 quota collision",
+    "Historical DATA_LANE actual 2026-10-08 D1 physical proof remains separate"
+  ],
+  "protected": {
+    "changeIsOnlyAuditCodeAndEvidence": true,
+    "noSystem1FormalCoreMutation": true,
+    "noQuotaRuntimeMutation": true,
+    "noProductionWorkflowsChanged": true,
+    "noCloudflareAccountUsageByThisAudit": true,
+    "noPaidUpgrade": true,
+    "doNotMarkVerifiedClosed": true
+  },
+  "handoff": {
+    "remediationLane": "System 2｜補強修復室",
+    "auditLane": "System 2｜獨立稽核顧問室",
+    "dataLane": "System 2｜歷史資料工程室",
+    "instruction": "Treat these as independent evidence and regression tasks against CORR003; do not self-close or assume physical writes were tested; retain ticket FIX_IMPLEMENTED until AUDIT_LANE updates after closure criteria."
+  }
+}
