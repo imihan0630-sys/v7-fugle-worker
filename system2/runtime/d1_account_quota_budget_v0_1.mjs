@@ -306,7 +306,9 @@ export function evaluateD1AccountQuotaReservationV0_1({
   outstandingReservedRowsWritten = 0,
   outstandingReservedRowsRead = 0,
   protectedDailyShadowReserveRows = 13130,
+  protectedDailyShadowReserveRowsRead = 583256,
   launchAcceptanceReserveRows = 0,
+  launchAcceptanceReserveRowsRead = 0,
   requestedRowsWritten = null,
   requestedRowsRead = null,
 } = {}) {
@@ -367,6 +369,10 @@ export function evaluateD1AccountQuotaReservationV0_1({
     launchAcceptanceReserveRows,
     "launchAcceptanceReserveRows",
   );
+  const launchReadReserve = nonNegativeInteger(
+    launchAcceptanceReserveRowsRead,
+    "launchAcceptanceReserveRowsRead",
+  );
 
   if (
     !system1ReservePolicy
@@ -388,13 +394,39 @@ export function evaluateD1AccountQuotaReservationV0_1({
     });
   }
 
+  if (
+    system1ReservePolicy.readReserveNumberAuthorized !== true
+    || !Number.isInteger(Number(system1ReservePolicy.authorizedReadReserveRows))
+    || Number(system1ReservePolicy.authorizedReadReserveRows) <= 0
+  ) {
+    return Object.freeze({
+      state: "QUOTA_BUDGET_DEFER",
+      physicalAllowed: false,
+      quotaDay: accountUsage.quotaDay,
+      reasonCodes: Object.freeze(["SYSTEM1_AFTER_MARKET_READ_RESERVE_NOT_AUTHORIZED"]),
+      adaptiveMaxDates: 0,
+      requestedRowsWritten: null,
+      requestedRowsRead: null,
+      rowsWrittenUsed: usedWritten,
+      rowsReadUsed: usedRead,
+      paidUpgradeAuthorized: false,
+    });
+  }
+
   const system1Reserve = positiveInteger(
     system1ReservePolicy.authorizedReserveRows,
     "system1ReservePolicy.authorizedReserveRows",
   );
+  const system1ReadReserve = positiveInteger(
+    system1ReservePolicy.authorizedReadReserveRows,
+    "system1ReservePolicy.authorizedReadReserveRows",
+  );
   const reserveForDailyShadow = writer.priority === "P0"
     ? 0
     : nonNegativeInteger(protectedDailyShadowReserveRows, "protectedDailyShadowReserveRows");
+  const reserveForDailyShadowRead = writer.priority === "P0"
+    ? 0
+    : nonNegativeInteger(protectedDailyShadowReserveRowsRead, "protectedDailyShadowReserveRowsRead");
 
   const writeHeadroomBeforeRequest = Math.max(
     0,
@@ -428,8 +460,11 @@ export function evaluateD1AccountQuotaReservationV0_1({
       rowsWrittenUsed: usedWritten,
       rowsReadUsed: usedRead,
       system1ReserveRows: system1Reserve,
+      system1ReadReserveRows: system1ReadReserve,
       protectedDailyShadowReserveRows: reserveForDailyShadow,
+      protectedDailyShadowReserveRowsRead: reserveForDailyShadowRead,
       launchAcceptanceReserveRows: launchReserve,
+      launchAcceptanceReserveRowsRead: launchReadReserve,
       outstandingReservedRowsWritten: outstandingWritten,
       outstandingReservedRowsRead: outstandingRead,
       quotaLedgerRowsWrittenReserve: D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
@@ -455,7 +490,12 @@ export function evaluateD1AccountQuotaReservationV0_1({
     + launchReserve
     + requestedWritten
     + D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE;
-  const projectedRead = usedRead + outstandingRead + requestedRead;
+  const projectedRead = usedRead
+    + outstandingRead
+    + system1ReadReserve
+    + reserveForDailyShadowRead
+    + launchReadReserve
+    + requestedRead;
 
   if (
     projectedWritten > D1_FREE_LIMITS.rowsWrittenPerUtcDay
@@ -483,8 +523,11 @@ export function evaluateD1AccountQuotaReservationV0_1({
       rowsWrittenUsed: usedWritten,
       rowsReadUsed: usedRead,
       system1ReserveRows: system1Reserve,
+      system1ReadReserveRows: system1ReadReserve,
       protectedDailyShadowReserveRows: reserveForDailyShadow,
+      protectedDailyShadowReserveRowsRead: reserveForDailyShadowRead,
       launchAcceptanceReserveRows: launchReserve,
+      launchAcceptanceReserveRowsRead: launchReadReserve,
       outstandingReservedRowsWritten: outstandingWritten,
       outstandingReservedRowsRead: outstandingRead,
       quotaLedgerRowsWrittenReserve: D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
@@ -512,8 +555,11 @@ export function evaluateD1AccountQuotaReservationV0_1({
     rowsWrittenUsed: usedWritten,
     rowsReadUsed: usedRead,
     system1ReserveRows: system1Reserve,
+    system1ReadReserveRows: system1ReadReserve,
     protectedDailyShadowReserveRows: reserveForDailyShadow,
+    protectedDailyShadowReserveRowsRead: reserveForDailyShadowRead,
     launchAcceptanceReserveRows: launchReserve,
+    launchAcceptanceReserveRowsRead: launchReadReserve,
     outstandingReservedRowsWritten: outstandingWritten,
     outstandingReservedRowsRead: outstandingRead,
     quotaLedgerRowsWrittenReserve: D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
