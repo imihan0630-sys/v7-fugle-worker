@@ -12,6 +12,9 @@ on:
       - "tests/test_system1_institution_gap_resume_v0_1.mjs"
       - "tests/verify_cross_midnight_recovery_prereqs.mjs"
       - "tests/trading_day_gate.mjs"
+      - "tests/system1_manual_quality_prereqs_v0_1.mjs"
+      - "tests/test_system1_manual_quality_prereqs_v0_1.mjs"
+      - "tests/sync_official_quality.mjs"
 
 permissions:
   contents: read
@@ -33,3 +36,5 @@ jobs:
           node --check tests/sync_institution_data.mjs
           node --check tests/verify_cross_midnight_recovery_prereqs.mjs
           node tests/test_system1_institution_gap_resume_v0_1.mjs
+          node --check tests/sync_official_quality.mjs
+          node tests/test_system1_manual_quality_prereqs_v0_1.mjs
