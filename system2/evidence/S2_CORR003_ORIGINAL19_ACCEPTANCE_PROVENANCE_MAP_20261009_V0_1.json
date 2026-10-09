@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "S2_CORR003_ORIGINAL_19_CRITERIA_EVIDENCE_MAP_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "recordedOn": "2026-10-09",
+  "producer": "REMEDIATION_LANE",
+  "queueOwner": "AUDIT_LANE",
+  "queueAtRead": "HIGH_VERIFYING",
+  "latestBaseline": "24c2f57c79cd09f906ed4ecc025ecdeb633cfcff",
+  "classification": "READ_ONLY_TRACEABILITY_MAP_NOT_AN_AUDIT_ACCEPTANCE_CERTIFICATE",
+  "originalCriteriaCount": 19,
+  "criteriaMappedCount": 19,
+  "sourceOnlyCriteriaCount": 15,
+  "realPhysicalProofPendingCriteriaCount": 3,
+  "historicalPhysicalNegativeCriteriaCount": 1,
+  "independentPhysicalGatePassCount": 0,
+  "independentPhysicalGateTotal": 5,
+  "verifiedCode": "A1_A7_INDEPENDENT_SOURCE_LEVEL_PASS",
+  "hardConstraints": {
+    "system1WriteReserveAuthorized": false,
+    "system1WriteReserve": null,
+    "system1ReadReserveAuthorized": false,
+    "system1ReadReserve": null,
+    "observedWholeV7WriteMax2825IsNotAuthorization": true,
+    "observedWholeV7ReadMax133037IsNotAuthorization": true,
+    "originalAuditQueueMustNotBeMutated": true,
+    "noPhysicalD1SQLForThisMap": true,
+    "noBillingOrSystem1RuntimeChanges": true
+  },
+  "realSourceReceipts": {
+    "auditPr": 1017,
+    "auditEvidence": "system2/evidence/S2_CORR003_INDEPENDENT_PHYSICAL_CLOSURE_GATE_20261009_V0_1.json",
+    "realBudgetDeferRuns": [
+      37907066382,
+      37918290130
+    ],
+    "historicalFailedAccountDay": {
+      "date": "2026-10-07",
+      "system1Reads": 431323,
+      "system1Writes": 1869,
+      "system2Reads": 3943636,
+      "system2Writes": 124629,
+      "accountReads": 4374959,
+      "accountWrites": 126498,
+      "businessPersistence": "FAILED_D1_QUOTA",
+      "sourceRun": 37650006684
+    },
+    "healthySystem1WholeV7Days": [
+      {
+        "date": "2026-09-21",
+        "rowsWritten": 2825,
+        "rowsRead": 133037
+      },
+      {
+        "date": "2026-09-22",
+        "rowsWritten": 1635,
+        "rowsRead": 19533
+      }
+    ]
+  },
+  "extraDataLanePhysicalReadback": {
+    "canonicalP05Gate": "P05_ORIGINAL_PHYSICAL_CRITERIA",
+    "officialSourceKeys": 11843,
+    "hotD1ScoutTarget": 36,
+    "hotD1ScoutRead": 0,
+    "hotD1FullCensusTarget": 11843,
+    "hotD1FullCensusRead": 0,
+    "missingKeys": "UNKNOWN",
+    "notAnIndependent20thCorrectionCriterion": true
+  },
+  "canonicalProducerIssues": [
+    {
+      "lane": "SYSTEM1",
+      "number": 1024,
+      "role": "P01_P02_P04_REAL_AFTERMARKET_PRODUCER"
+    },
+    {
+      "lane": "DATA_LANE",
+      "number": 1026,
+      "role": "P03_P05_REAL_D1_PRODUCER"
+    }
+  ],
+  "criteria": [
+    {
+      "criterionNumber": 1,
+      "exactCanonicalCriterion": "Ordinary push of any Recent A1 warmup implementation/source/workflow file cannot physically mutate D1 history; push-path regression proves test/read-only behavior.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_REGRESSION_PUSH_READ_ONLY",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 2,
+      "exactCanonicalCriterion": "Schedule/manual physical warmup is guarded by the same account-level UTC-day budget/reservation contract used by other high-write System2 writers.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_SHARED_GATE_CONTRACT_REAL_GRANT_PENDING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 3,
+      "exactCanonicalCriterion": "The contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, with vendor-version/source provenance.",
+      "trackedGates": [
+        "P01",
+        "P02",
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_FREE_LIMIT_100K_5M_RESET_UTC",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 4,
+      "exactCanonicalCriterion": "Budget/reservation uses measured rowsWritten; regression includes the observed ~6x logical-row amplification case and index-amplified estimates.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_MEASURED_INDEX_AMPLIFICATION",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 5,
+      "exactCanonicalCriterion": "A later bulk/warmup workflow can explicitly QUOTA_BUDGET_DEFER before predictable free-tier exhaustion; deferral cannot be mislabeled data/source failure.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_DEFER_AND_REAL_DEFER_RECEIPTS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 6,
+      "exactCanonicalCriterion": "Protected Daily Shadow/launch-critical evidence has explicit priority/reservation over discretionary history warming, without changing trading/data semantics.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_PRIORITY_REQUIRES_REAL_MULTIWRITER_PROOF",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 7,
+      "exactCanonicalCriterion": "Warmup max physical dates can shrink below five when quota headroom is insufficient.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_ADAPTIVE_WARMUP",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 8,
+      "exactCanonicalCriterion": "Unknown account-wide usage fails conservatively; no exact remaining quota is invented.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_UNKNOWN_FAIL_CLOSED_AND_REAL_DEFER",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 9,
+      "exactCanonicalCriterion": "No paid-plan upgrade, billing mutation, System1 change, strategy/ranking/final-selection/push/capital/order authority change.",
+      "trackedGates": [
+        "P05"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_NO_CORE_BILLING_MUTATION",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 10,
+      "exactCanonicalCriterion": "Independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without a quota-collision failure.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_MULTIWRITER_SAME_UTC_DAY_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING"
+    },
+    {
+      "criterionNumber": 11,
+      "exactCanonicalCriterion": "A registry test enumerates all workflows using the isolated D1 writer authority and fails if a physical writer lacks an explicit writerClass/priority/quota-gate contract.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_REGISTRY_16_WRITERS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 12,
+      "exactCanonicalCriterion": "Daily Shadow scheduled P0 work is protected; a later push/manual physical run cannot consume D1 without a granted reservation and can emit an explicit quota deferral/read-only state.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_P0_PRIORITY_REAL_MULTIWRITER_PROOF_PENDING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 13,
+      "exactCanonicalCriterion": "P2/P3 ordinary push paths cannot silently perform discretionary/maintenance physical D1 mutation; regression covers Recent A1 warmup, hot-history bootstrap, real-source smoke, and at least one maintenance/deploy path.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_P2_P3_PUSH_GUARDS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 14,
+      "exactCanonicalCriterion": "Observed same-day sequence equivalent to 13,130 scheduled Daily Shadow + another push acceptance + bulk/warmup writers is budgeted deterministically so lower-priority work defers before Cloudflare hard rejection.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_13130_PLUS_WRITERS_SAME_DAY_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING"
+    },
+    {
+      "criterionNumber": 15,
+      "exactCanonicalCriterion": "Account-wide D1 quota reservation must explicitly protect System1 23:35/23:55 after-market Production business execution/persistence in V7_DB as well as System2 P0 Daily Shadow; independently measured after-market reserve required, not an invented fixed number. A real later trading-day primary/recovery business-execution receipt must prove normal persistence; avoid duplicate business scans.",
+      "trackedGates": [
+        "P01",
+        "P02",
+        "P04"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_SYSTEM1_WRITE_READ_RESERVE_AND_LATER_BUSINESS_PERSIST_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING"
+    },
+    {
+      "criterionNumber": 16,
+      "exactCanonicalCriterion": "Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.",
+      "trackedGates": [
+        "P03",
+        "P04"
+      ],
+      "evidenceClass": "HISTORICAL_PHYSICAL_FAILURE_EVIDENCED_NO_FORWARD_CLOSURE",
+      "evidenceKey": "PHYSICAL_HISTORICAL_2026_10_07_COLLISION_RECONCILED_FAILURE_NOT_FUTURE_SUCCESS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "2026_10_07_ACCOUNT_COLLISION_NEGATIVE_EVIDENCE_REAL; POST_FIX_NO_COLLISION_NOT_YET_OBSERVED"
+    },
+    {
+      "criterionNumber": 17,
+      "exactCanonicalCriterion": "Independent negative test: GraphQL adaptive usage group with missing/null/partial rowsRead or rowsWritten cannot yield known usage or QUOTA_RESERVATION_GRANTED.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A5_GRAPHQL_PARTIAL_UNKNOWN",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 18,
+      "exactCanonicalCriterion": "Independent negative test: malformed or unverifiable same-UTC-day reservation ledger row cannot disappear from outstanding budget; must cause explicit quota ledger integrity defer/block.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A6_LEDGER_INVALID",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    },
+    {
+      "criterionNumber": 19,
+      "exactCanonicalCriterion": "A7 independent replay: Current V0.2 reservation/result receipt hashed with legacy payload-only hash and modified status/expected_payload_json MUST return ledger integrity INVALID / QUOTA_BUDGET_DEFER; authentic V0.2 full-identity receipt must pass. A bounded, evidence-qualified legacy receipt positive path, if supported, must not grant current-model spoof.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A7_CURRENT_HASH_LEGACY_TAMPER_BLOCK",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null
+    }
+  ],
+  "nonPromotion": "Source tests, GitHub workflow green, official source-only keys, or historical failure do not qualify later same-day multiwriter/system1 operational physical acceptance. Only AUDIT_LANE may certify closure."
+}
