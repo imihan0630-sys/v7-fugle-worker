@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "S2_OCT08_HOT_D1_MISSING_KEY_DRYRUN_REPAIR_PREREG_V0_1",
+  "date": "2026-10-09",
+  "classification": "DATA_LANE_CLASS_A_OFFLINE",
+  "status": "PLANNER_CODE_PENDING_CI_NO_PHYSICAL_D1_CENSUS_AVAILABLE",
+  "purpose": "After a complete future Oct01–Oct08 source→Hot D1 11,843-key read-only census, calculate deterministic exact missing-key proposed repair batches and quarantine preexisting conflicts without any write or PIT backdating",
+  "dependencies": {
+    "frozenOfficialEvidence": "system2/evidence/S2_OCT08_TWSE_TPEX_OFFICIAL_12_DATE_PHYSICAL_SOURCE_ACCEPTANCE_20261009_V0_1.json",
+    "sourceEvidenceRun": 37878847039,
+    "fullHotD1CensusRuntime": "system2/runtime/oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+    "fullHotD1CensusExecutionStatus": "UNEXECUTED_BUDGET_GATED",
+    "D1QuotaCorrection": "S2-CORR-20261007-003_OPEN_REMEDIATION_LANE"
+  },
+  "acceptance": {
+    "sourceKeys": 11843,
+    "dateCount": 6,
+    "markets": [
+      "TWSE",
+      "TPEX"
+    ],
+    "exactFullCensusSchema": "S2_OCT08_FULL_FROZEN_SOURCE_TO_HOT_D1_KEYS_READONLY_V0_1",
+    "requiredOriginalCensusConditions": [
+      "all 12 market-day totals",
+      "all expected 11843 source keys accounted",
+      "discrepancy key uniqueness and class/count parity",
+      "census 0 D1 rowsWritten",
+      "no claimed historic PIT or System1 authority",
+      "original official GitHub evidence SHA and dates stable"
+    ],
+    "missingClass": "HOT_D1_KEY_ABSENT",
+    "quarantineClasses": [
+      "HOT_D1_SOURCE_VALUES_MISMATCH",
+      "HOT_D1_RAW_MULTIVERSION"
+    ],
+    "planningBatchLimit": 50,
+    "plannedMissingKeyEstimateIsNotCloudflareRowsWrittenQuota": true
+  },
+  "files": {
+    "runtime": "system2/runtime/oct08_missing_key_repair_dryrun_planner_v0_1.mjs",
+    "runner": "system2/scripts/build_oct08_missing_key_repair_dryrun_offline_v0_1.mjs",
+    "tests": "system2/tests/oct08_missing_key_repair_dryrun_planner_v0_1.test.mjs"
+  },
+  "guardrails": {
+    "zeroCloudflareRequests": true,
+    "noD1ReadsOrWrites": true,
+    "noR2Touches": true,
+    "noProductionRuntimeChange": true,
+    "noHistoricalFirstKnownAtBackdating": true,
+    "noPastPITPromotion": true,
+    "noOverwritingConflictingExistingBars": true,
+    "noAutomaticExecution": true,
+    "mustIndependentlyRevalidateSourceAndPhysicalMissingBeforeAnyFutureWrites": true,
+    "mustReceiveAccountWideD1QuotaBudgetAndSingleWriterGateBeforeFutureWrites": true,
+    "noPaidUpgrade": true
+  },
+  "completion": "Do not claim repaired, physically ingested, D1 complete or historic PIT. A dry-run repair plan only prepares explicit quarantined/nonquarantined evidence after future verified read-only full census."
+}
