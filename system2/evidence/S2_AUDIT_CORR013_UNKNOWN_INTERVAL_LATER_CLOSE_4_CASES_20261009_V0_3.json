@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "S2_AUDIT_CORR013_UNKNOWN_PRIOR_INTERVAL_LATER_ELIGIBLE_CLOSE_V0_3",
+  "recordedAt": "2026-10-09T10:42:41+08:00",
+  "auditor": "System2 independent AUDIT_LANE",
+  "officialCorrection": "S2-CORR-20261008-013",
+  "mainStatusAtObservation": "OPEN",
+  "purpose": "Verify whether earlier unobserved fills can be ignored after later observed close while marking performanceEligible true.",
+  "source": {
+    "repo": "imihan0630-sys/v7-fugle-worker",
+    "mainPath": "system2/runtime/execution_simulator_v0_1.mjs",
+    "mainBlob": "0df527ded888ed99cd93437100bd8df00b09d822",
+    "test": "system2/tests/audit_corr013_unknown_before_later_close_v0_3.test.mjs",
+    "independentActionsRunId": 37875799902,
+    "jobId": 113643991167,
+    "jobConclusion": "success",
+    "independentPositiveControl": "Two complete consecutive sessions close cleanly: CLOSED, performanceEligible true, blockedObservations empty.",
+    "execution": "GitHub Actions Node22 dry-run synthetic OHLC. No real D1, broker, order, Cloudflare production or sources accessed."
+  },
+  "observations": [
+    {
+      "id": "UNKNOWN_EXIT_THEN_TARGET",
+      "state": "CLOSED",
+      "performanceEligible": true,
+      "blockedPhase": "EXIT",
+      "blockedReason": "EXIT_OHLC_INCOMPLETE",
+      "unknownOnSession": 2,
+      "realizedReturnAfterCost": 0.07245833087990916,
+      "disposition": "UNSAFE"
+    },
+    {
+      "id": "UNKNOWN_EXIT_THEN_STOP",
+      "state": "CLOSED",
+      "performanceEligible": true,
+      "blockedPhase": "EXIT",
+      "blockedReason": "EXIT_OHLC_INCOMPLETE",
+      "unknownOnSession": 2,
+      "realizedReturnAfterCost": -0.056633875614894635,
+      "disposition": "UNSAFE"
+    },
+    {
+      "id": "UNKNOWN_LIQUIDITY_AT_TARGET_THEN_STOP",
+      "state": "CLOSED",
+      "performanceEligible": true,
+      "blockedPhase": "EXIT",
+      "blockedReason": "EXECUTABLE_LIQUIDITY_UNKNOWN",
+      "unknownOnSession": 2,
+      "realizedReturnAfterCost": -0.056633875614894635,
+      "disposition": "UNSAFE"
+    },
+    {
+      "id": "UNKNOWN_ENTRY_THEN_LATE_ENTRY_THEN_TARGET",
+      "state": "CLOSED",
+      "performanceEligible": true,
+      "blockedPhase": "ENTRY",
+      "blockedReason": "ENTRY_OHLC_INCOMPLETE",
+      "unknownOnSession": 1,
+      "realizedReturnAfterCost": 0.07245833087990916,
+      "disposition": "UNSAFE"
+    }
+  ],
+  "counts": {
+    "probes": 4,
+    "unsafe": 4,
+    "safe": 0
+  },
+  "whyItMatters": "A path-dependent BUY_STOP fill or target/stop may have occurred during an UNKNOWN session; later observed close does not prove a unique original entry/exit chronology or realized cost. Although blockedObservations correctly retain DATA_UNKNOWN, final CLOSED and performanceEligible=true can contaminate simulated return, selected->triggered, triggered->profitable and cost/fill denominators.",
+  "rootCauseHypothesis": "execution_simulator_v0_1.mjs records DATA_UNKNOWN in blockedObservations, but later CLOSED/eligible state requires only an exitFill and fails to check unresolved earlier causal unknowns (performanceEligible: state === CLOSED).",
+  "buildOwnerRequirements": [
+    "Fail closed on unresolved earlier ENTRY or EXIT DATA_UNKNOWN intervals before accepting subsequent fill as uniquely proven.",
+    "Distinguish true deterministic NO_FILL evidence from missing-calendar, missing OHLC, execution liquidity UNKNOWN and unknown sequence.",
+    "An explicitly blocked official HALT/LIMIT session with independently known non-executability is not automatically equivalent to UNKNOWN: retain correct category-specific treatment.",
+    "Preserve positive clean CLOSE/NO_FILL/AMBIGUOUS cases, show performanceEligible=false and explicit blocker intervals for each negative case.",
+    "Re-run all nine prior CORR013 v0.2 cases and these four new v0.3 cases; independently evaluate against exact merged-main, not only branch CI.",
+    "Do not rewrite old virtual history or equate signal return with actual net fill."
+  ],
+  "physicalNonClaims": [
+    "Synthetic scenarios only, no physical Taiwanese official session-calendar completeness proof.",
+    "No real brokerage fill history or genuine P&L was produced.",
+    "No System1 Formal Core, live push, capital, strategy ranking or order change.",
+    "A successful CI job shows these UNSAFE witnesses were reproduced and DOES NOT mean the defect was repaired."
+  ],
+  "decision": "KEEP_CORR013_OPEN_BUILD_LANE_REPAIR_REQUIRED"
+}
