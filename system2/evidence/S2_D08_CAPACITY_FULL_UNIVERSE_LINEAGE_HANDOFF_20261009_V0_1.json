@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "S2_D08_CAPACITY_UNIVERSE_LINK_HANDOFF_V0_1",
+  "date": "2026-10-09",
+  "lane": "BUILD_LANE",
+  "criticalGate": "D08",
+  "disposition": "PARTIAL_OFFLINE_UNIVERSE_TO_CAPACITY_FIREWALL_MERGED",
+  "mergedPR": 965,
+  "mergedMainCommit": "6bc75abab5cd696c84c50c378d4c14010e45f875",
+  "exactTestHead": "8bc78aebb2247b2a55ed2b15be7010ca12bbabaf",
+  "ci": {
+    "system2Research": {
+      "runId": 37884540617,
+      "conclusion": "success"
+    },
+    "v8Regression": {
+      "runId": 37884540527,
+      "conclusion": "success"
+    }
+  },
+  "module": "system2/runtime/d08_capacity_universe_lineage_gate_v0_1.mjs",
+  "tests": "system2/tests/d08_capacity_universe_lineage_gate_v0_1.test.mjs",
+  "implemented": [
+    "Binds D07 source/batch SHA and exact date to every contributing strategy run and matching decision snapshots",
+    "Fails closed on missing/duplicate/excluded-while-ranked symbols, missing per-symbol diagnostics and false full-universe denominator",
+    "Validates strategy run receipt identity, orchestration hash, INCOMPLETE count, factor UNKNOWN contradicted by BUY_ELIGIBLE and corresponding capacity accounting hashes",
+    "Validates capacity receipt SHA, global 12/per-strategy 3 maxima and forbids outside-market candidates",
+    "Returns canonicalZeroPickDay=null and zeroPickCertified=false even when upstream synthetic capacity claims CAPACITY_ZERO_PICK_READY",
+    "No D1 reads/writes: offline 1050-symbol synthetic fixture, missing symbol, mixed exclusion, forged date, false zero, rogue symbol and absent TPEx tests"
+  ],
+  "remaining": [
+    "D07 accepts only internally source-consistent batch receipt, not independently authenticated exchange bytes, full listed security universe, TPEX total count nor real firstKnownAt",
+    "D06 does not have independent risk reward source and SWING FUNDAMENTAL/INDUSTRY evidence",
+    "B10 latest D1 and B11 official PIT/NC-T01 incomplete; REMEDIATION A07 global D1 quota contract pending",
+    "Actual frozen capacity selected pool, atomic D1 persistence/readback and independent AUDIT acceptance pending"
+  ],
+  "canonical15GateStatus": "PARTIAL_NOT_VERIFIED",
+  "passedGateCount": 0,
+  "protected": {
+    "system1FormalCoreModified": false,
+    "productionWorkerModified": false,
+    "productionCronModified": false,
+    "d1ReadOps": 0,
+    "d1WriteOps": 0,
+    "r2Writes": 0,
+    "paidTier": false,
+    "liveSelectionEnabled": false,
+    "realOrders": false,
+    "capitalImpact": false,
+    "livePush": false
+  }
+}
