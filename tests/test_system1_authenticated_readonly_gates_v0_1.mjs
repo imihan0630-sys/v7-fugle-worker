@@ -10,7 +10,7 @@ assert.deepEqual(safeDateTokens(["2026/10/08"]),["2026-10-08"]);
 assert.deepEqual(safeDateTokens(["20261008"]),["2026-10-08"]);
 assert.deepEqual(safeDateTokens(["private","2026-10-07"]),["2026-10-07"]);
 const healthy={
- scan:{httpStatus:200,scanDate:"2026-10-08"},
+ scan:{httpStatus:200,scanDate:"2026-10-08",pipelineComplete:true},
  market:{httpStatus:200,marketDate:"2026-10-08",ready:true,twseReady:true,tpexReady:true},
  institution:{httpStatus:200,marketDate:"2026-10-08",ready:true,physicalSnapshotsVerified:true},
  quality:{httpStatus:200,marketDate:"2026-10-08",indexReady:true,tdccReady:true,
@@ -19,12 +19,20 @@ const healthy={
 const valid=assessReadiness(healthy);
 assert.equal(valid.allInputReadbacksReady,true);
 assert.equal(valid.formalScanPresent,true);
+assert.equal(valid.formalScanComplete,true);
 assert.equal(valid.operationalRecoveryPass,false);
 assert.deepEqual(valid.blockers,[]);
 const noScan=assessReadiness({...healthy,scan:{...healthy.scan,scanDate:"2026-09-29"}});
 assert.equal(noScan.allInputReadbacksReady,true);
 assert.equal(noScan.formalScanPresent,false);
 assert.deepEqual(noScan.blockers,["FORMAL_SCAN_DATE_NOT_CONFIRMED"]);
+const partialScan=assessReadiness({...healthy,scan:{...healthy.scan,pipelineComplete:false}});
+assert.equal(partialScan.allInputReadbacksReady,true);
+assert.equal(partialScan.formalScanPresent,true);
+assert.equal(partialScan.formalScanComplete,false);
+assert.deepEqual(partialScan.blockers,["FORMAL_SCAN_PIPELINE_INCOMPLETE"]);
+assert.equal(partialScan.operationalRecoveryPass,false);
+
 const fail=assessReadiness({
  ...healthy,
  market:{...healthy.market,tpexReady:false},
