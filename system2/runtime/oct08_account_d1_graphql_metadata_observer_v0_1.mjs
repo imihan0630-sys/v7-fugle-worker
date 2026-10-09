@@ -11,7 +11,7 @@ export const OCT08_D1_METADATA_LIMITS=Object.freeze({
 const isCount=n=>Number.isSafeInteger(n)&&n>=0;
 const sha=value=>createHash("sha256").update(JSON.stringify(value)).digest("hex");
 export function parseOct08AccountD1GraphqlV0_1({payload,quotaDay}={}){
- assert.match(quotaDay||"",/^\\d{4}-\\d{2}-\\d{2}$/,"UTC quota date required");
+ assert.match(quotaDay||"",/^\d{4}-\d{2}-\d{2}$/,"UTC quota date required");
  assert.ok(payload&&typeof payload==="object","GRAPHQL_RESPONSE_MISSING");
  assert.ok(!Array.isArray(payload.errors)||payload.errors.length===0,
   "GRAPHQL_PARTIAL_OR_ERROR_RESPONSE");
