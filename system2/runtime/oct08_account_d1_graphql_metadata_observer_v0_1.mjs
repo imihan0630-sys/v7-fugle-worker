@@ -15,7 +15,7 @@ export function parseOct08AccountD1GraphqlV0_1({payload,quotaDay}={}){
  assert.ok(payload&&typeof payload==="object","GRAPHQL_RESPONSE_MISSING");
  assert.ok(!Array.isArray(payload.errors)||payload.errors.length===0,
   "GRAPHQL_PARTIAL_OR_ERROR_RESPONSE");
- assert.ok(payload.errors===undefined||Array.isArray(payload.errors),
+ assert.ok(payload.errors===undefined||payload.errors===null||Array.isArray(payload.errors),
   "GRAPHQL_ERRORS_MALFORMED");
  const accounts=payload?.data?.viewer?.accounts;
  assert.ok(Array.isArray(accounts)&&accounts.length===1,
