@@ -112,6 +112,10 @@ await assert.rejects(()=>audit({db:buildDb(),evidence:frozen,
 await assert.rejects(()=>audit({db:buildDb({rowsReadPerCall:35001}),
  evidence:frozen,fetchDate}),/D1_READ_BUDGET_CAP_EXCEEDED/);
 
+// The final one of 36 indexed reads must obey the same read quota cap.
+await assert.rejects(()=>audit({db:buildDb({rowsReadPerCall:1000}),
+ evidence:frozen,fetchDate}),/D1_READ_BUDGET_CAP_EXCEEDED/);
+
 const workflow=await readFile(new URL(
  "../../.github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",
  import.meta.url),"utf8");
