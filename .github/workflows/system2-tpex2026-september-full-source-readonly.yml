@@ -1,0 +1,43 @@
+name: System2 TPEx 2026 September Full Proxy Source Readonly
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-tpex2026-september-full-source-readonly.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-tpex2026-september-source-readonly
+  cancel-in-progress: false
+jobs:
+  september_source:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline adversarial proof and System1 isolation
+        run: |
+          node system2/tests/tpex2026_september_full_proxy_source_probe_v0_1.test.mjs
+          node --check system2/runtime/tpex2026_september_full_proxy_source_probe_v0_1.mjs
+          node --check system2/scripts/probe_tpex2026_september_full_proxy_source_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Public official TPEx September all TWSE proxy dates only
+        env:
+          S2_TPEX2026_SEP_SOURCE_PROBE_OUTPUT: /tmp/s2-tpex2026-september-full-proxy-source.json
+        run: node system2/scripts/probe_tpex2026_september_full_proxy_source_readonly_v0_1.mjs
+      - name: Preserve PASS or BLOCKED source-only immutable run artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-tpex2026-sep-proxy-full-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-tpex2026-september-full-proxy-source.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: System1 Formal isolation
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
