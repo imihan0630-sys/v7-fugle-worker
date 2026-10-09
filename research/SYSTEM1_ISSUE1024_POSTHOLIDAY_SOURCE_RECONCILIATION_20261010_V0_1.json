@@ -11,7 +11,9 @@
     "originalRunMetadataNotSameAsPhysicalCloudflareOperationMeta": true,
     "cloudflareSqlReadsNew": 0,
     "cloudflareSqlWritesNew": 0,
-    "cloudflareActionsDispatchesNew": 0
+    "cloudflareActionsDispatchesNew": 0,
+    "nativeSourceMetadataContainsPerOperationD1Cost": false,
+    "artifactDigestScope": "GitHub ZIP digest; not per-operation D1 checksum"
   },
   "nativeSourceRecords": [
     {
@@ -26,7 +28,11 @@
       "artifactZipSha256": "7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
       "businessClassification": "HISTORICAL_TWO_HEALTHY_DAILY_ENVELOPES_ONLY",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T06:06:58.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "PVE272",
@@ -40,7 +46,11 @@
       "artifactZipSha256": "cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
       "businessClassification": "CRON_ROW_HISTORY_NOT_GENERATION_MATCHED_KV",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T06:08:47.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "PVE263",
@@ -54,7 +64,11 @@
       "artifactZipSha256": "ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
       "businessClassification": "OBSERVED_2026_10_07_D1_QUOTA_FAILURE_AND_2355_LEASE",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T00:07:18.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "PVE264",
@@ -68,7 +82,11 @@
       "artifactZipSha256": "188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
       "businessClassification": "ACCOUNT_WHOLE_UTC_DAY_NOT_PER_OPERATION",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-08T00:10:44.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "C1_OCT08",
@@ -82,7 +100,11 @@
       "artifactZipSha256": "a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
       "businessClassification": "MISSING_C1_GENERATION_FOR_OCT08",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-09T00:28:00.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "C1_OCT09_HOLIDAY",
@@ -96,7 +118,11 @@
       "artifactZipSha256": "4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
       "businessClassification": "OCT09_HOLIDAY_C1_GENERATION_NOT_FOUND_NOT_ZERO_PICK",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283",
-      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN"
+      "shaClassification": "GITHUB_ARTIFACT_METADATA_DIGEST_ONLY_NOT_CONTENT_REDOWNLOADED_THIS_TURN",
+      "runCreatedTaipei": "2026-10-10T00:24:22.000+08:00",
+      "businessClockAtUtc": "2026-10-09T16:24:26Z",
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "OCT09_HOLIDAY_OFFICIAL_SYNC",
@@ -110,7 +136,11 @@
       "artifactZipSha256": null,
       "businessClassification": "ALL_BUSINESS_STAGES_SKIPPED_MARKET_HOLIDAY",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324",
-      "shaClassification": "NO_ARTIFACT_ON_RUN"
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:01:26.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "OCT10_0002_MIRROR",
@@ -124,7 +154,11 @@
       "artifactZipSha256": null,
       "businessClassification": "ALREADY_VERIFIED_2026_09_29_NO_NEW_WRITE",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815",
-      "shaClassification": "NO_ARTIFACT_ON_RUN"
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:02:34.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     },
     {
       "key": "OCT10_0003_HEALTH",
@@ -138,7 +172,11 @@
       "artifactZipSha256": null,
       "businessClassification": "SKIPPED_OUTSIDE_TRADING_DAY_WINDOW",
       "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193",
-      "shaClassification": "NO_ARTIFACT_ON_RUN"
+      "shaClassification": "NO_ARTIFACT_ON_RUN",
+      "runCreatedTaipei": "2026-10-10T00:03:52.000+08:00",
+      "businessClockAtUtc": null,
+      "rowsWrittenPerOperation": null,
+      "rowsReadPerOperation": null
     }
   ],
   "realHistoricalObserved": [
@@ -301,7 +339,6 @@
   "p04Prospective": {
     "nextOrdinaryTradingDay": "2026-10-12",
     "asOfDate": "2026-10-10",
-    "natural2355NoLaterThanNow": false,
     "primaryNaturalBusinessExecuted": null,
     "recoveryNaturallyTriggered": null,
     "planAndConfigKvGenerationReadback": null,
@@ -312,7 +349,8 @@
     "externalPlanVerification": null,
     "sharedAccountQuotaCollisionAbsence": null,
     "oneSuccessfulBusinessScanDeduplication": null,
-    "physicallyQualified": false
+    "physicallyQualified": false,
+    "naturalScheduledWindowOccurredAsOfCapture": false
   },
   "preservedAuditCounters": {
     "P01": {
