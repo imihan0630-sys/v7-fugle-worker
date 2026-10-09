@@ -113,6 +113,17 @@ await assert.rejects(()=>audit({db:cappedDb,evidence,fetchDate}),
  /HOT_D1_QUERY_RESULT_TRUNCATED_UNSAFE_FOR_ABSENCE_CLASSIFICATION/);
 assert.equal(cappedDb.metrics.requestCount,1);
 assert.equal(cappedDb.metrics.rowsWritten,0);
+// Incomplete/invalid D1 read accounting must not masquerade as zero cost.
+const unknownReadDb=mockDb();
+unknownReadDb.metrics.rowsRead=Number.NaN;
+await assert.rejects(()=>audit({db:unknownReadDb,evidence,fetchDate}),
+ /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+assert.equal(unknownReadDb.metrics.requestCount,0);
+const negativeReadDb=mockDb();
+negativeReadDb.metrics.rowsRead=-1;
+await assert.rejects(()=>audit({db:negativeReadDb,evidence,fetchDate}),
+ /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+assert.equal(negativeReadDb.metrics.requestCount,0);
 await assert.rejects(()=>audit({db:mockDb(),evidence:{
  ...evidence,officialWindow:{...evidence.officialWindow,
  samples:evidence.officialWindow.samples.slice(1)}},fetchDate}));
