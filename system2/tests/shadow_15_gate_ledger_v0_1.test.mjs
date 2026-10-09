@@ -25,7 +25,7 @@ assert.equal(o.passedGateCount,o.gates.filter(g=>g.verified).length);
 assert.equal(o.totalGateCount,o.gates.length);
 assert.equal(o.unverifiedGateCount,o.gates.length-o.passedGateCount);
 assert.equal(o.mandatoryProtections.system1FormalCore,"NO_CHANGES");
-assert.equal(o.mandatoryProtections.realOrders,"DISABLED");
+assert.equal(o.mandatoryProtections.brokerOrders,"DISABLED");
 assert.equal(o.mandatoryProtections.unknownAsZero,"FORBIDDEN");
 assert.notEqual(o.gates.find(g=>g.id==="F08").verified,true);
 assert.notEqual(o.gates.find(g=>g.id==="F07").verified,true);
