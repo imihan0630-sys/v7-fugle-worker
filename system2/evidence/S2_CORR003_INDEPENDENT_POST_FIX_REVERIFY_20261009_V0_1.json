@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "S2_CORR003_INDEPENDENT_POST_FIX_ADVERSARIAL_REVERIFY_20261009_V0_1",
+  "auditLane": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "severity": "HIGH",
+  "auditedAtTaipei": "2026-10-09T18:09:35+08:00",
+  "canonicalBaseline": "765fb2b969030a174539dcac80c7bf06aa3eb8be",
+  "independentBranchBase": "3082acf88da005fd236360d731f3193df4885738",
+  "implementationMergedPR": 985,
+  "implementationMerge": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+  "priorEvidenceMergePR": 986,
+  "priorEvidenceMerge": "765fb2b969030a174539dcac80c7bf06aa3eb8be",
+  "independentPR": 989,
+  "independentTest": "system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs",
+  "execution": {
+    "mechanism": "GitHub Actions Node test; production helper imports, independent criteria and in-memory stubbed GraphQL response",
+    "researchCi": {
+      "runId": 37915666601,
+      "jobId": 113771104069,
+      "conclusion": "SUCCESS",
+      "executedSystem2TestFiles": 273
+    },
+    "v8Regression": {
+      "runId": 37915666467,
+      "jobId": 113771103227,
+      "conclusion": "SUCCESS"
+    },
+    "physicalCloudflareD1IO": 0,
+    "physicalCloudflareR2IO": 0,
+    "productionWorkerChanges": 0,
+    "billingChanges": 0
+  },
+  "independentA1A4": {
+    "scope": "SOURCE_LEVEL_ENUMERATED_BOUNDARIES_ONLY_NOT_PHYSICAL_ACCEPTANCE",
+    "disposition": "PASS",
+    "A1": {
+      "underMinimum": [
+        0,
+        1,
+        7357
+      ],
+      "underMinimumResult": "QUOTA_BUDGET_DEFER",
+      "atOrAbove": [
+        7358,
+        7359,
+        10000
+      ],
+      "atOrAboveResult": "QUOTA_RESERVATION_GRANTED_ONLY_SYNTHETIC_AUTHORIZED_SYSTEM1_AND_READ_COST",
+      "verifiedWriteMinimum": 7358
+    },
+    "A2": {
+      "nearHardLimitRowsRead": 4999999,
+      "annualUnknownReadModelRequestedRead": 0,
+      "observed": "QUOTA_BUDGET_DEFER",
+      "dailyShadowReadMinimum": 583256,
+      "exactProjectedBoundary": 5000000,
+      "oneOver": "QUOTA_BUDGET_DEFER",
+      "recentA1RegistryReadMinimum": 1047112,
+      "measurementRun": 37550201160,
+      "measurementJob": 112563652301,
+      "recentA1PhysicalJobLogVerified": {
+        "runId": 37550201160,
+        "jobId": 112563652301,
+        "logTimestampUtc": "2026-10-07T00:09:30.788Z",
+        "observedRowsRead": 1047112,
+        "observedRowsWritten": 57880,
+        "source": "Independently fetched GitHub Actions job log; exact rowsRead and rowsWritten line match",
+        "registryReadRows": 1047112,
+        "registryEvidenceIdMatches": true
+      }
+    },
+    "A3": {
+      "registryPhysicalWriters": 13,
+      "alwaysFinalizerAndJobStatusCoverage": "13/13",
+      "failureResultRetainsReservation": true,
+      "retryAdditiveReservation": true,
+      "overrunNonReleasing": true,
+      "unknownAfterNonReleasing": true,
+      "utcResetWindowScoped": true,
+      "physicalFailureFinalizerRunNotProven": true
+    },
+    "A4": {
+      "exactDuplicate": "IDEMPOTENT",
+      "mutatedCheckId": "CONFLICT",
+      "mutatedCheckType": "CONFLICT",
+      "mutatedExpectedPayload": "CONFLICT",
+      "mutatedObservedPayload": "CONFLICT",
+      "mutatedStatus": "CONFLICT",
+      "mutatedHash": "CONFLICT",
+      "physicalD1ConflictingWriteTestNotPerformed": true
+    },
+    "analyticsFreshnessPolicy": "NOT_DOCUMENTED_BY_VENDOR_LOWER_BOUND_NO_FABRICATED_FRESHNESS_SECONDS_OR_SAFETY_PERCENTAGE",
+    "sameDayReservations": "NON_RELEASING"
+  },
+  "newNegativeFindings": [
+    {
+      "id": "A5_GRAPHQL_PARTIAL_SUM_KNOWN_ZERO",
+      "reproduced": true,
+      "state": "UNSAFE",
+      "observed": "Actual queryAccountUsage code invoked with synthetic HTTP 200 GraphQL groups; a group missing sum.rowsRead yielded known=true and rowsRead=0; evaluating registered P0 Daily Shadow under synthetic otherwise-authorized reserves yielded QUOTA_RESERVATION_GRANTED.",
+      "exactFailedCriterion": "UNKNOWN_ACCOUNT_WIDE_READ_USAGE_MUST_NOT_BE_COERCED_TO_ZERO_OR_GRANT_PHYSICAL_MUTATION",
+      "conflictUnit": "system2/scripts/run_d1_account_quota_gate_v0_1.mjs",
+      "implementationOwner": "REMEDIATION_LANE",
+      "suggestedFix": "Validate each returned group has complete finite nonnegative integer rowsRead/rowsWritten and sufficient account/date identity; malformed/partial metrics must become known=false/QUOTA_BUDGET_DEFER. Add adversarial tests for missing/null/malformed sums and ambiguous/incomplete aggregation. Do not assume GraphQL freshness."
+    },
+    {
+      "id": "A6_MALFORMED_RESERVATION_LEDGER_SILENT_DROP",
+      "reproduced": true,
+      "state": "UNSAFE",
+      "observed": "Actual summarizeD1QuotaLedgerRowsV0_1 with an unparseable same-day reservation row silently omitted it, reporting outstandingReservedRowsWritten=0/outstandingReservedRowsRead=0; synthetic otherwise-authorized P0 evaluation was QUOTA_RESERVATION_GRANTED.",
+      "exactFailedCriterion": "MALFORMED_UNREADABLE_OR_UNVERIFIABLE_SAME_DAY_RESERVATION_MUST_FAIL_CLOSED_NOT_DISAPPEAR_FROM_BUDGET",
+      "conflictUnit": "system2/runtime/d1_account_quota_budget_v0_1.mjs",
+      "implementationOwner": "REMEDIATION_LANE",
+      "suggestedFix": "Reject malformed/duplicate/incomplete ledger rows or surface unknown ledger-integrity state; never silently skip reservations or replace missing numeric usage by 0. Validate receipt identity/version/hash and UTC-day association before budget calculations; add negative tests."
+    }
+  ],
+  "system1Guard": {
+    "writeReserveAuthorized": false,
+    "writeReserveRows": null,
+    "readReserveAuthorized": false,
+    "readReserveRows": null,
+    "observedWholeV7MaxRowsWritten": 2825,
+    "observedMaxNotPromoted": true
+  },
+  "formalScopeDiff": {
+    "comparison": "ced79512f44689b01bc792c04e468128408f4042..a5977af950ed7902a4ac4d965edc18dd62ca30d2 + a5977af..765fb2b",
+    "protectedSystem1CorePathsInEitherDiff": 0,
+    "formalSignalsAndCapitalModifiedByPR985Or986": false,
+    "productionBehaviorDeploymentNotPhysicallyTested": true
+  },
+  "missingClosureEvidence": [
+    "Evidence-qualified System1 write and read reserve, not 2825 by inference",
+    "Bounded real multiwriter UTC-day with physical reservation and result receipts and no D1 quota collision",
+    "Subsequent real Taiwan trading-day System1 23:35/23:55 business execution and normal persistence without collision",
+    "Full original CORR-003 physical acceptance criteria, registry and PIT/UNKNOWN safety",
+    "Independent verification of repaired A5/A6 fail-closed scenarios after REMEDIATION changes"
+  ],
+  "disposition": {
+    "sourceLevelOriginalA1A4": "PASS_ENUMERATED_CASES",
+    "newSourceLevelA5A6": "FAIL_2_OF_2",
+    "highTicket": "MUST_REMAIN_NOT_VERIFIED_CLOSED",
+    "route": "REMEDIATION_LANE_SAME_CORRECTION_NO_DUPLICATE_TICKET",
+    "proposedTicketState": "FIX_IN_PROGRESS",
+    "modificationOwnerForBothConflicts": "SYSTEM2_REMEDIATION_ROOM",
+    "auditLaneWillReverifyAfterRepair": true,
+    "cloudflareFreeTierOnly": true,
+    "productionAuthorizationGranted": false
+  }
+}

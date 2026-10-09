@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T16:30:28+08:00",
+  "updatedAt": "2026-10-09T18:09:35+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "FIX_IN_PROGRESS",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1210,7 +1210,8 @@
         "Writer-priority inventory frozen from latest-main workflow readback: system2/evidence/S2_CORR_20261007_003_D1_WRITER_PRIORITY_INVENTORY_20261007_V0_1.json @ 1e0d8531dd2431509b5b613f799eb7b5ae3c5e08.",
         "Daily Shadow Diagnostic had two physical runs on 2026-10-07: scheduled run 37609474459 wrote 13,130 rows and later push run 37639310893 still wrote 1,296 rows; same-day known Daily Shadow subtotal = 14,426 rowsWritten. A later push can be cheaper because data already exists, but it is not read-only and may not bypass the account-level budget gate.",
         "Same-day workflow history shows physical writer activity is multi-class: Historical Pack Real-Source Smoke fired repeatedly from push, Daily Resonance Deploy fired repeatedly from push, Daily Shadow had schedule+push, annual backfill had multiple manual attempts, and Recent A1 warmup had schedule. Concurrency serialized these classes but did not budget the account-wide daily quota.",
-        "Cross-system incident and priority escalation: PRICE_VOLUME_CHECKPOINT.md PVE-263/264/267, PRICE_VOLUME_EVIDENCE.md PVE-263/264/267 and shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json. PVE-263 real KV/lease evidence on 2026-10-07 proves System1 primary/recovery invoked but D1 quota blocked persistence; PVE-264 Cloudflare analytics: SYSTEM2_DB=124629, V7_DB=1869, account=126498 rowsWritten. No invented quota reserve or paid upgrade."
+        "Cross-system incident and priority escalation: PRICE_VOLUME_CHECKPOINT.md PVE-263/264/267, PRICE_VOLUME_EVIDENCE.md PVE-263/264/267 and shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json. PVE-263 real KV/lease evidence on 2026-10-07 proves System1 primary/recovery invoked but D1 quota blocked persistence; PVE-264 Cloudflare analytics: SYSTEM2_DB=124629, V7_DB=1869, account=126498 rowsWritten. No invented quota reserve or paid upgrade.",
+        "Independent audit source-level counterexamples (not physical Cloudflare evidence), both 2/2 UNSAFE: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json; route existing HIGH ticket back to REMEDIATION_LANE, do not self-close."
       ],
       "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
       "requiredCorrection": [
@@ -1229,7 +1230,9 @@
         "P0 protected operational/launch evidence (normal scheduled Daily Shadow and future controlled persisted SHORT_MOMENTUM/rank/capacity acceptance) receives reservation before lower-priority writers. Daily Shadow manual/push physical acceptance may write only when the shared quota gate grants a protected reservation; otherwise it must defer or remain read-only.",
         "P2 discretionary warmup/bootstrap ordinary push paths must not physically mutate D1. Schedule/manual physical warmups require quota reservation and quota-adaptive batch size.",
         "P3 maintenance/smoke ordinary push paths should be test/read-only by default; physical smoke/schema mutation requires explicit manual acceptance or a genuine schema need plus quota reservation. Existing deploy read-only schema fast paths must be preserved.",
-        "Writer priority must not be inferred merely from concurrency order. The quota gate must classify P0/P1/P2/P3 intent before mutation."
+        "Writer priority must not be inferred merely from concurrency order. The quota gate must classify P0/P1/P2/P3 intent before mutation.",
+        "A5: Partial/missing/non-numeric Cloudflare GraphQL D1 sum.rowsRead/sum.rowsWritten fields must mark account usage UNKNOWN and QUOTA_BUDGET_DEFER, not known=0; do not invent vendor freshness.",
+        "A6: Malformed/incomplete/invalid same-UTC-day quota reservation/result ledger rows must fail closed; cannot be silently skipped or coerced to zero active reservation."
       ],
       "acceptanceCriteria": [
         "Ordinary push of any Recent A1 warmup implementation/source/workflow file cannot physically mutate D1 history; push-path regression proves test/read-only behavior.",
@@ -1247,7 +1250,9 @@
         "P2/P3 ordinary push paths cannot silently perform discretionary/maintenance physical D1 mutation; regression covers Recent A1 warmup, hot-history bootstrap, real-source smoke, and at least one maintenance/deploy path.",
         "Observed same-day sequence equivalent to 13,130 scheduled Daily Shadow + another push acceptance + bulk/warmup writers is budgeted deterministically so lower-priority work defers before Cloudflare hard rejection.",
         "Account-wide D1 quota reservation must explicitly protect System1 23:35/23:55 after-market Production business execution/persistence in V7_DB as well as System2 P0 Daily Shadow; independently measured after-market reserve required, not an invented fixed number. A real later trading-day primary/recovery business-execution receipt must prove normal persistence; avoid duplicate business scans.",
-        "Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA."
+        "Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.",
+        "Independent negative test: GraphQL adaptive usage group with missing/null/partial rowsRead or rowsWritten cannot yield known usage or QUOTA_RESERVATION_GRANTED.",
+        "Independent negative test: malformed or unverifiable same-UTC-day reservation ledger row cannot disappear from outstanding budget; must cause explicit quota ledger integrity defer/block."
       ],
       "protectedBoundaries": [
         "System1 Formal Core/runtime",
@@ -1301,10 +1306,11 @@
         "00 read-only job/step/artifact metadata verification: PVE-263 run 37649543821 / job 112888965126 / artifact 11495752402 SUCCESS and PVE-264 run 37650006684 / job 112890551584 / artifact 11495133236 SUCCESS. This confirms physical evidence collectors executed; raw analytics interpretation derives from their recorded receipts. No new quota-gate implementation or physical correction closure performed.",
         "PENDING_INDEPENDENT_AUDIT",
         "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED.",
-        "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4"
+        "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4",
+        "2026-10-09 independent exact-head CI: PR #989 test system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs; Research run 37915666601 PASS (273 test files), V8 run 37915666467 PASS. Source-level A1-A4 enumerated safeguards PASS only; separate GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO and MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP both UNSAFE. No Cloudflare physical mutation. Exact new evidence: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json"
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-09T16:30:28+08:00"
+      "finalDisposition": "REMEDIATION_REOPENED_BY_AUDIT_A5_A6_SOURCE_FAIL_OPEN_PHYSICAL_CLOSURE_PENDING",
+      "updatedAt": "2026-10-09T18:09:35+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
