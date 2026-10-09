@@ -46,6 +46,7 @@ jobs:
         id: calendar
         env:
           V7_TRIGGER_SCHEDULE: ${{ github.event.schedule }}
+          V7_RECOVERY_DATA_ONLY_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date || '' }}
         run: node tests/trading_day_gate.mjs
       - name: Sync today's official market data (no target changes or orders)
         if: >-
@@ -54,7 +55,7 @@ jobs:
            (github.event_name != 'workflow_dispatch' || (inputs.market_date == '' && inputs.quality_only != true && inputs.data_only != true)))
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          OFFICIAL_MARKET_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date || steps.calendar.outputs.market_date }}
+          OFFICIAL_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
         run: node tests/prepare_market_cache.mjs
       - name: Sync official institutions and missing recent trading days (no plan changes)
         if: >-
@@ -63,7 +64,7 @@ jobs:
            (github.event_name != 'workflow_dispatch' || (inputs.market_date == '' && inputs.quality_only != true && inputs.data_only != true)))
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          OFFICIAL_MARKET_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date || steps.calendar.outputs.market_date }}
+          OFFICIAL_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
         run: node tests/sync_institution_data.mjs
       - name: Verify prior-session market + institution prerequisites after midnight
         if: steps.calendar.outputs.proceed == 'true' && steps.calendar.outputs.cross_midnight_fallback == 'true'
