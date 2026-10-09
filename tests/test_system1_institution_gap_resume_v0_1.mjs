@@ -27,6 +27,8 @@ const invalid=[
  [{...ready,snapshotCounts:[]},"2026-10-08"],
  [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,complete:false}:x)},"2026-10-08"],
  [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,stockCount:0}:x)},"2026-10-08"],
+ [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,stockCount:1499}:x)},"2026-10-08"],
+ [{...ready,snapshotCounts:ready.snapshotCounts.map(x=>x.date==="2026-10-08"?{...x,stockCount:1500.1}:x)},"2026-10-08"],
  [{...ready,snapshotCounts:[...ready.snapshotCounts,ready.snapshotCounts[0]]},"2026-10-08"]
 ];
 for(const [bad,target] of invalid)assert.throws(()=>planMissingInstitutionDates(bad,target));
