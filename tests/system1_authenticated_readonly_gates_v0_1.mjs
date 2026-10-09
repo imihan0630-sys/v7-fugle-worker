@@ -54,14 +54,23 @@ function summarize(name,raw,status){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.ready=raw.ready===true;
   obj.historicalReadback=raw.historicalReadback===true;
-  obj.validTradingDates=Array.isArray(raw.validDates)?
-    raw.validDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
+  // Only export date tokens; never pass unfiltered Worker strings into evidence.
+  const safeDates=items=>Array.isArray(items)?items.flatMap(value=>{
+    if(typeof value!=="string")return [];
+    const found=value.match(/20\\d{2}[-/]\\d{2}[-/]\\d{2}|20\\d{6}/);
+    if(!found)return [];
+    let date=found[0].replaceAll("/","-");
+    if(date.length===8)date=date.slice(0,4)+"-"+date.slice(4,6)+"-"+date.slice(6);
+    return [date];
+  }).slice(0,5):[];
+  obj.validTradingDates=safeDates(raw.validDates);
   obj.validTradingDateCount=Array.isArray(raw.validDates)?raw.validDates.length:null;
   obj.validDateEntryKinds=Array.isArray(raw.validDates)?
     [...new Set(raw.validDates.map(v=>Array.isArray(v)?"array":typeof v))].slice(0,3):[];
-  obj.missingTradingDates=Array.isArray(raw.missingDates)?
-    raw.missingDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
-  obj.missingTradingDateCount=obj.missingTradingDates.length;
+  obj.validDateStringLengths=Array.isArray(raw.validDates)?
+    raw.validDates.filter(x=>typeof x==="string").map(x=>x.length).slice(0,3):[];
+  obj.missingTradingDates=safeDates(raw.missingDates);
+  obj.missingTradingDateCount=Array.isArray(raw.missingDates)?raw.missingDates.length:null;
  } else if(name==="quality"){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.indexReady=raw.index?.ready===true;
