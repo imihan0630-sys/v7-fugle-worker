@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_OCT08_A7_QUOTA_DEPENDENCY_DATA_LANE_HANDOFF_V0_1",
+  "asOf": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "lane": "DATA_LANE",
+  "mainReadSha": "bfc8b6d94ab524ba7a6ce79a1990171683520279",
+  "independentAudit": {
+    "pr": 1000,
+    "evidence": "system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json",
+    "A5": "SOURCE_LEVEL_PASS",
+    "A6": "SOURCE_LEVEL_PASS",
+    "A7": "UNSAFE_LEGACY_PAYLOAD_ONLY_HASH_ACCEPTED_FOR_V02_METADATA",
+    "physicalIncidentProven": false
+  },
+  "remediationOwner": "REMEDIATION_LANE",
+  "closureOwner": "AUDIT_LANE",
+  "sourceProof": {
+    "cutoff": "2026-10-08",
+    "marketDays": 6,
+    "marketDateSourceCells": 12,
+    "ordinaryStockDateKeys": 11843,
+    "sourceOnly": true
+  },
+  "currentEngineering": {
+    "quotaReadOnlyCodePr": 1001,
+    "acceptance": "PASS_CODE_CI_NOT_PHYSICAL_D1",
+    "readOnlyBudgetState": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "readReserveAuthorized": false,
+    "writeReserveAuthorized": false,
+    "census36": "NOT_DISPATCHED",
+    "census11843": "NOT_DISPATCHED",
+    "missingRepair": "DRYRUN_CODE_ONLY_NO_PHYSICAL_CENSUS",
+    "D1NewRowsRead": 0,
+    "D1NewRowsWritten": 0
+  },
+  "safetyDecision": {
+    "physicalD1Write": "PROHIBITED_UNTIL_SEVEN_PLUS_LEDGER_GATES_AND_GRANTED_QUOTA",
+    "physicalD1Read": "DEFER_UNTIL_GENUINE_ACCOUNT_READ_ATTESTATION_AND_SYSTEM1_READ_RESERVE",
+    "neverTreatUnknownReadAsZero": true,
+    "neverTreat2825WritesAsReserve": true,
+    "neverUseA7LegacyHashAsCurrentReceiptIntegrity": true,
+    "retroPITBackfill": false,
+    "noMutationOfOriginalSnapshot": true
+  },
+  "handoff": [
+    "REMEDIATION_LANE repairs A7 in owned conflict unit",
+    "AUDIT_LANE revalidates A7 and confirms ledger integrity",
+    "DATA_LANE obtains independently evidenced read headroom and no-competing-writer acknowledgement before optional manual 36-key sampled census",
+    "Review actual 36-key outcome before 11843-key full read-only census",
+    "Only a complete actual census may feed existing offline missing-key planner; conflicts quarantined"
+  ],
+  "noSelfClosure": true,
+  "changesToSystem1Formal": false,
+  "changesToProduction": false,
+  "changesToBilling": false
+}
