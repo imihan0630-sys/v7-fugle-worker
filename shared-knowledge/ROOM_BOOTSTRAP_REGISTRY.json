@@ -46,6 +46,13 @@
     "projectReplyTimestampPolicy": "MANDATORY_TAIPEI_TIMESTAMP_AT_END_FAIL_CLOSED",
     "projectReplyTimestampPolicySource": "shared-knowledge/ROOM_BOOTSTRAP.md",
     "projectReplyTimestampFormat": "日期：YYYY/MM/DD｜台北時間：HH:mm",
+    "projectChatOperationalBootstrapGate": "MANDATORY_REAL_MAIN_AND_CHECKPOINT_READBACK_NOT_MEMORY_ASSUMPTION",
+    "projectChatOperationalBootstrapGateSource": "shared-knowledge/ROOM_BOOTSTRAP.md",
+    "projectChatInstructionsSeed": "shared-knowledge/CHATGPT_PROJECT_INSTRUCTIONS_SEED_20261009.md",
+    "projectChatSettingsCannotBeChangedByRepoDocs": true,
+    "substantiveTurnStartEndElapsedRequired": true,
+    "substantiveTurnClockEvidence": "ONLY_OBSERVED_ASIA_TAIPEI_TIME_NO_FABRICATED_DURATION",
+    "substantiveTurnElapsedPlacement": "IMMEDIATELY_BEFORE_SINGLE_FINAL_TAIPEI_TIMESTAMP_LINE",
     "projectReplyTimestampTimezone": "Asia/Taipei",
     "projectReplyTimestampAppliesToNewRooms": true,
     "system2GoLivePriorityDirective": "shared-knowledge/SYSTEM2_GO_LIVE_PRIORITY_DIRECTIVE_20261007_V0_1.md",
@@ -486,7 +493,11 @@
       "title": "System 1｜選股邏輯／正式系統",
       "aliases": [
         "System 1",
-        "System1"
+        "System1",
+        "System 1｜建置總控室",
+        "System 1 建置總控室",
+        "System1建置總控室",
+        "System 1｜選股邏輯／正式系統"
       ],
       "type": "system",
       "defaultMode": "Chat",

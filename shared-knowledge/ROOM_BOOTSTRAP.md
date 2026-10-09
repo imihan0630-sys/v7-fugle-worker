@@ -549,3 +549,45 @@ Canonical audit map:
 核心判準：
 
 **能自己修、能自己重試、能自己往下做，就繼續做；進度訊息只直播，不當煞車。**
+
+## 十七、新聊天室記憶／規則落實驗證（MANDATORY）
+
+### 1. 區分三層來源
+
+- **ChatGPT 記憶**：可協助找出使用者偏好，但不是保證每次新聊天室都讀到全部規則的執行機制。
+- **ChatGPT 專案指示**：由使用者在各自 Project 設定；它不能由本 GitHub Markdown 檔案自動修改。短版可貼用模板：`shared-knowledge/CHATGPT_PROJECT_INSTRUCTIONS_SEED_20261009.md`。
+- **GitHub 最新 main**：唯一正式工程／研究事實來源。聊天室每次開始實質工作或收到「繼續」，須實際恢復 main、registry、專屬 checkpoint 與 next action。**沒有工具讀回，不得宣稱完成恢復**。
+
+不同 ChatGPT Project（例如 PhotoAnchor）有獨立 repo 和個別指示；不得因本 repo 規則跨越資料／工具／正式作業隔離。
+
+### 2. 新聊天室啟動驗證（OPERATIONAL_BOOTSTRAP_GATE）
+
+新聊天室收到極短啟動詞後，在第一個實質修改或正式進度宣告前必須確認：
+
+1. `mainHeadVerified`：真實取得當次 main HEAD SHA，而不是貼舊 SHA。
+2. `bootstrapFilesVerified`：真實讀到 `AGENTS.md`、本檔及 registry；明確對應聊天室 identity。
+3. `assignedCheckpointVerified`：真實讀到該聊天室主責 checkpoint／task queue／correction queue；明確列出不屬本室的事項。
+4. `exactNextAction`：取自該 checkpoint 的尚未完成事項；若有併行改動，重查 latest main 並 reconcile。
+5. `approvalBoundary`：標清不在自動授權內的 merge／部署／正式掃描／交易／推播／MFA／Secret／Class B/C 等操作。
+6. `timestampFooterReady`：遵守本檔第十三節當次台北時間結尾 gate。
+
+無法取得任一必要來源時，輸出 `NOT_VERIFIED` 與缺失內容，不得假稱 `READY`，亦不得以歷史記憶補假進度。對於專案指示是否實際已設定，無確認能力時標 `NOT_VERIFIED`。
+
+### 3. 本輪開始／結束／耗時
+
+凡有實質研究、程式修補、驗收、資料恢復、稽核或進度交接，採用以下形式，並維持最末行仍是第十三節的唯一 timestamp footer：
+
+```text
+本輪開始：YYYY/MM/DD HH:mm（台北）
+本輪結束：YYYY/MM/DD HH:mm（台北）
+本輪耗時：N 分鐘（以可核對的實際時間計算）
+日期：YYYY/MM/DD｜台北時間：HH:mm
+```
+
+開始與結束須以本輪實際可取得的當地時刻計算；不得拿舊訊息時間冒充本輪開始，不得將等待使用者的時間當作持續施工時間。若無可靠起點，應明寫 `本輪耗時：無可靠起點，未計算`，不能編造。簡短非工作回覆仍須有第十三節 footer，但可省略前三行。
+
+### 4. 交接及進度合約
+
+正式進度報告應以可查核 inventory／gate／queue 填入 `TOTAL／COMPLETED／REMAINING／COMPLETION_RATE`；無權威分母就明寫未定義，禁止虛構。必要時附 PR／commit／run 實證、現在阻塞、`exactNextAction` 與**明確下一個負責聊天室／Lane**。未併入 main 的 PR、未啟動的 workflow 和未讀回的 Worker 不能宣稱正式完成。
+
+以上規範屬文件型執行約定，不能控制或改寫 ChatGPT 平台記憶機制；每個聊天室仍須實際使用可用的 GitHub 工具核驗。
