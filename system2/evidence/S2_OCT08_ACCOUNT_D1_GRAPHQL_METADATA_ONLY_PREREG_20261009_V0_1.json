@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "S2_OCT08_ACCOUNT_D1_GRAPHQL_METADATA_ONLY_PREREG_V0_1",
+  "date": "2026-10-09",
+  "lane": "DATA_LANE",
+  "scope": "CLASS_A_METADATA_ONLY_ACCOUNT_USAGE_OBSERVATION",
+  "correctionId": "S2-CORR-20261007-003",
+  "latestIndependentQueueState": "FIX_IN_PROGRESS",
+  "independentAudit": "A1_A4_SOURCE_LEVEL_PASS_A5_A6_FAIL_OPEN",
+  "a5a6OwnedBy": "REMEDIATION_LANE",
+  "purpose": "Observe strict actual account-wide D1 analytics from Cloudflare GraphQL without opening any SQL connection, verify partial/missing row metrics do not silently become zero, never claim the read-only probes are authorized",
+  "workflow": ".github/workflows/system2-oct08-account-d1-metadata-only.yml",
+  "runtime": "system2/runtime/oct08_account_d1_graphql_metadata_observer_v0_1.mjs",
+  "script": "system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs",
+  "test": "system2/tests/oct08_account_d1_graphql_metadata_observer_v0_1.test.mjs",
+  "physicalScope": {
+    "cloudflareGraphqlObservationRequestsMaximum": 1,
+    "cloudflareD1SqlQueries": 0,
+    "d1RowsReadGeneratedByObserver": 0,
+    "d1RowsWrittenGeneratedByObserver": 0,
+    "r2ApiCalls": 0,
+    "system1FormalRuntimeChanges": 0,
+    "paidTierChanges": 0
+  },
+  "readCensusLimits": {
+    "sample36PerExecutionMaxRowsRead": 35000,
+    "full11843PerExecutionMaxRowsRead": 150000,
+    "accountDailyPublishedRowsReadLimit": 5000000,
+    "protectedP0ShadowReadFloor": 583256
+  },
+  "frozenPreconditions": {
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false,
+    "graphQlFreshnessGuaranteed": false,
+    "accountReservationLedgerFromThisObserver": "NOT_READ",
+    "externalNoCompetingWriterEvidenceProven": false,
+    "readHeadroomCertified": false
+  },
+  "expectedResult": "ACCOUNT_GRAPHQL_LOWER_BOUND_METADATA_ONLY_NO_D1_READ_OR_WRITE_AUTHORITY",
+  "failClosedControls": [
+    "Reject missing/null/fractional/negative/NaN read/write fields",
+    "Reject partial GraphQL errors and missing account groups",
+    "Reject wrong UTC quota day and duplicate database groups",
+    "Reject aggregated overflow and possible truncated groups",
+    "Always block D1 read/write authorization even with valid observational counters"
+  ],
+  "handoff": {
+    "recipient": "AUDIT_LANE",
+    "mayCloseCorrection": false,
+    "mayGrantQuotaReservation": false,
+    "mayBackdatePIT": false,
+    "mayPlanRepairsWithoutFullD1Census": false
+  },
+  "sourceBaseline": {
+    "officialOct08TWSETPEXCells": 12,
+    "officialSourceStockDateKeys": 11843,
+    "physicalD1Census": "NOT_EXECUTED"
+  }
+}
