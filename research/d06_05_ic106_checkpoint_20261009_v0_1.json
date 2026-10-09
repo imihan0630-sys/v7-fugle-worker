@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "D06_05_IC106_CHECKPOINT",
+  "module": "D06-05",
+  "artifact": "research/d06_05_ic106_security_identity_tracker_reconciliation_20261009_v0_1.json",
+  "count": 2778,
+  "knownNonCommon": 6,
+  "upperBound": 2772,
+  "finalCount": null,
+  "level": "L3",
+  "maturityPct": 60,
+  "next": "Synchronize tracker then certify date-effective security types and TPEx delisting before final cohort.",
+  "formalCoreImpact": "NONE"
+}
