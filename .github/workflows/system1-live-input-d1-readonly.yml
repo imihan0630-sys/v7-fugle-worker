@@ -1,0 +1,45 @@
+name: System1 Live Input and D1 Readonly Gates
+
+on:
+  pull_request:
+    paths:
+      - "tests/system1_authenticated_readonly_gates_v0_1.mjs"
+      - "tests/test_system1_authenticated_readonly_gates_v0_1.mjs"
+      - ".github/workflows/system1-live-input-d1-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify guarded script syntax and refusal cases
+        run: |
+          node --check tests/system1_authenticated_readonly_gates_v0_1.mjs
+          node tests/test_system1_authenticated_readonly_gates_v0_1.mjs
+  live-readonly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Fetch four authenticated GET-only readbacks and account D1 sampled metrics
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node tests/system1_authenticated_readonly_gates_v0_1.mjs
+      - name: Preserve sanitized failure and readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-live-input-d1-readonly-${{ github.run_id }}
+          path: artifacts/system1-authenticated-readonly-gates.json
+          retention-days: 30
+          if-no-files-found: error
