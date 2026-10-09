@@ -451,3 +451,64 @@ The existing real account physical evidence remains unchanged:
 - it is not a substitute for bounded future multiwriter physical acceptance.
 
 System1 write/read reserves remain unauthorized/null and 2,825 remains observational only.
+
+
+## A7 legacy payload-hash compatibility firewall
+
+Independent AUDIT_LANE PR #1000 confirmed A5/A6 fail closed but found that the production ledger loader accepted a payload-only legacy hash for a current V0.2 receipt. Because the payload-only hash does not commit `status` or `expected_payload_json`, mutated metadata could remain authenticated.
+
+### Current receipt rule
+
+For V0.2+ reservation/result payload schemas:
+- payload-only legacy hash is forbidden;
+- the stored hash must equal the full immutable receipt identity hash over:
+  - check_id
+  - check_type
+  - expected_payload_json
+  - observed_payload_json
+  - status
+
+A V0.2+ row presenting `sha256(observed payload)` is:
+`LEDGER_LEGACY_HASH_CONTRACT_INVALID`
+
+and the account gate remains fail closed.
+
+### Proven historical V0.1 compatibility
+
+The original PR #980 implementation wrote:
+- `S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1`
+- `S2_D1_ACCOUNT_BUDGET_RESULT_V0_1`
+- `S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1`
+- payload-only `sha256(payload)`.
+
+Those historical rows are not rewritten.
+
+Legacy payload-only hash is accepted only if every frozen V0.1 condition is true:
+- receipt payload schema is exactly the V0.1 schema matching check_type;
+- budgetVersion is exactly `S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1`;
+- expected payload contains exactly:
+  - directiveId = `S2-CORR-20261007-003`
+  - accountWide = true
+  - paidUpgradeAuthorized = false
+- payload itself has `paidUpgradeAuthorized=false`;
+- payload itself has `system1FormalCoreChanged=false`;
+- reservation status is exactly `QUOTA_RESERVATION_GRANTED`;
+- result status equals payload.resultState and is one of the original V0.1 states:
+  - `RESULT_RECONCILED_ACCOUNT_DELTA`
+  - `RESULT_ACCOUNT_USAGE_UNKNOWN`.
+
+Any metadata drift, extra expected-metadata key, schema/budget upgrade, paid-plan mutation, or status mismatch invalidates legacy authentication.
+
+### Compatibility boundary
+
+This compatibility exists only to read already-created historical V0.1 receipts.
+
+It must never:
+- authenticate a V0.2+ receipt;
+- upgrade or rewrite a historical receipt;
+- infer a paid tier;
+- release a same-day reservation;
+- weaken A1-A6;
+- authorize System1 reserve values.
+
+A7 is source-level integrity hardening. It does not itself establish physical multiwriter acceptance or close CORR-003.
