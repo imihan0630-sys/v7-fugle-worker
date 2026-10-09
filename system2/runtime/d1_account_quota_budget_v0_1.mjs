@@ -560,7 +560,7 @@ export function evaluateD1QuotaResultVarianceV0_1({
   });
 }
 
-export function summarizeD1QuotaLedgerRowsV0_1(rows = []) {
+export function summarizeD1QuotaLedgerRowsV0_1(rows = [], { quotaDay = null } = {}) {
   const reservations = new Map();
   const results = new Map();
   let maxObservedRowsWrittenAfter = 0;
@@ -570,6 +570,7 @@ export function summarizeD1QuotaLedgerRowsV0_1(rows = []) {
     let payload = null;
     try { payload = JSON.parse(row?.observed_payload_json); } catch {}
     if (!payload?.runKey) continue;
+    if (quotaDay && payload?.quotaDay && payload.quotaDay !== quotaDay) continue;
 
     if (row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1") {
       reservations.set(payload.runKey, payload);
