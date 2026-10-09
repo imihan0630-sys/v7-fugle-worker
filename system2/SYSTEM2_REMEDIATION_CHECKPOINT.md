@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-09 16:30 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY
+Updated: 2026-10-09 18:23 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS / A5_A6_FAIL_CLOSED_REMEDIATION
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -11,180 +11,112 @@ Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 Severity: HIGH  
 Routing: REMEDIATION_LANE  
-Implementation state: `FIX_IMPLEMENTED`  
-Verification state: `PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4`
+Queue status: `FIX_IN_PROGRESS`  
+Modification owner for A5/A6: `SYSTEM2_REMEDIATION_ROOM`
 
-REMEDIATION_LANE must not mark this directive `VERIFIED_CLOSED`.
+REMEDIATION_LANE must return this HIGH correction only to `FIX_IMPLEMENTED`; it must not self-mark `VERIFIED_CLOSED`.
 
-## Independent challenge that reopened the fix
+## Independent A5/A6 challenge
 
-PR #983 / #984 independently reproduced 4/4 closure blockers:
-- A1 measured write reservation could be undercut;
-- A2 physical read cost could be treated as zero near 5M/day;
-- A3 failed/partial writers skipped result receipts;
-- A4 duplicate ledger receipt identity was not proven.
+Independent AUDIT_LANE reverify PR #989 / main merge `ff5a59e6e1cb4aec34bcac89884b58fba3bf85cd` independently passed the enumerated A1-A4 source cases and reproduced two new fail-open defects:
 
-Canonical audit evidence remains immutable:
-- `system2/evidence/S2_CORR_003_INDEPENDENT_ADVERSARIAL_CI_ACCEPTANCE_20261009_V0_1.json`
-- `system2/tests/d1_account_quota_adversarial_independent_audit_20261009.test.mjs`
+### A5 — GraphQL partial sum coerced to known zero
 
-## Remediation implementation
+Conflict unit:
+`system2/scripts/run_d1_account_quota_gate_v0_1.mjs`
 
-PR #985:
-- head: `0aa9311720dbe50b9e8482855cfe43c901ee8a03`
-- merge: `a5977af950ed7902a4ac4d965edc18dd62ca30d2`
-- System2 Research CI `37905200346`: PASS
-- V8 Regression `37905200365`: PASS
-- latest-main drift before merge: 0
+Observed:
+- synthetic HTTP 200 GraphQL account group had `sum.rowsWritten=2000` but missing `sum.rowsRead`;
+- current parser used numeric fallback and returned `known=true / rowsRead=0`;
+- under synthetic otherwise-authorized reserves, P0 Daily Shadow could receive `QUOTA_RESERVATION_GRANTED`.
 
-Durable implementation evidence:
-`system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`
+Required:
+- each returned D1 analytics group must have complete, finite, nonnegative integer `rowsRead` and `rowsWritten`;
+- date/database identity must be complete and unambiguous;
+- missing/null/string/negative/fractional/non-finite/duplicate-identity/partial groups must make account usage UNKNOWN;
+- UNKNOWN account usage must remain `QUOTA_BUDGET_DEFER`;
+- do not invent vendor freshness or a hidden safety percentage.
 
-## A1 — write reservation floor
+### A6 — malformed same-day ledger row silently disappeared
 
-`FIXED_MEASURED` is now a minimum, not a replaceable default.
+Conflict unit:
+`system2/runtime/d1_account_quota_budget_v0_1.mjs`
 
-Annual measured floor:
-- 7,358 rowsWritten
+Observed:
+- same-day reservation row with malformed `observed_payload_json` was caught then silently skipped;
+- outstanding rowsWritten/rowsRead became zero;
+- synthetic otherwise-authorized P0 evaluation could then grant.
 
-Regression:
-- 0 / 1 / 7,357 -> `QUOTA_BUDGET_DEFER`
-- 7,358 / higher -> may proceed only if every other reservation prerequisite is evidence-qualified
+Required:
+- malformed/incomplete/invalid same-day reservation/result rows must create explicit ledger-integrity UNKNOWN/BLOCKED semantics;
+- unknown reservation cost must never be coerced to zero;
+- production load must validate receipt identity, allowed version/type, UTC quota-day association and receipt hash/readback integrity before budget calculation;
+- duplicate or structurally ambiguous reservation/result identities must fail closed;
+- same-day integrity failure must not manufacture headroom.
 
-`CALLER_REQUIRED` values without registry evidence/minimum do not establish safe cost.
+Canonical independent evidence:
+- `system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json`
+- `system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs`
+- System2 Research CI `37915666601` PASS / 273 test files
+- V8 Regression `37915666467` PASS
+- physical Cloudflare IO by audit: zero
 
-## A2 — read budget
+## A1-A4 status
 
-Registry version:
-`S2_D1_ACCOUNT_WRITER_REGISTRY_V0_2`
+A1-A4 source-level enumerated cases remain PASS after PR #985:
+- A1 verified write floor
+- A2 read-cost contract/hard cap
+- A3 failure/partial result finalizer + same-day non-release
+- A4 duplicate exact-identity conflict
 
-All 16 shared writer workflows declare read reservation semantics.
+A5/A6 remediation must not weaken A1-A4.
 
-Measured physical read floors:
-- Daily Shadow: 583,256 rowsRead — run 37609474459
-- Recent A1: 1,047,112 rowsRead — run 37550201160 / job 112563652301
+## System1 protected reserve remains UNKNOWN
 
-Other physical writers:
-`READ_COST_EVIDENCE_REQUIRED`
-
-Unknown read cost is never zero.
-
-Account read projection includes:
-- current account GraphQL lower-bound observation
-- outstanding same-day System2 read reservations
-- System1 read reserve
-- protected P0 Daily Shadow read reserve for lower-priority work
-- current writer reservation
-
-Above 5,000,000 rowsRead/day -> fail before mutation.
-
-### GraphQL freshness
-
-Cloudflare documents D1 rowsRead/rowsWritten GraphQL metrics but no project-usable guaranteed realtime freshness bound was found.
-
-Policy:
-- GraphQL = lower-bound observation
-- do not invent lag seconds or hidden safety percentage
-- retain max prior observed ledger usage
-- never release same-day reservation before UTC reset
-
-## A3 — result evidence on failure/partial execution
-
-13/13 physical writer workflows now use:
-`always() && steps.quota.outputs.physical_allowed == 'true'`
-
-All bind:
-`execution_outcome: ${{ job.status }}`
-
-Result receipt records success/failure/partial/unknown/cross-day states when finalizer executes.
-
-Reservation policy:
-`NEVER_RELEASE_BEFORE_UTC_RESET`
-
-Tests cover:
-- failed/partial result
-- unknown after-usage
-- reservation overrun
-- retry
-- UTC-day rollover
-
-## A4 — immutable duplicate receipt identity
-
-Before/after persistence, exact `check_id` is read back.
-
-Idempotent only when all match:
-- check_id
-- check_type
-- expected_payload_json
-- observed_payload_json
-- status
-- check_hash
-
-Conflict:
-`D1_QUOTA_LEDGER_IDEMPOTENCY_CONFLICT`
-
-Missing exact readback:
-`D1_QUOTA_LEDGER_RECEIPT_READBACK_MISSING`
-
-## System1 protected reserve remains fail-closed
-
-Write reserve:
+Write:
+- observed whole-V7 max rowsWritten = 2,825
 - healthy dates = 2
-- observed max = 2,825
 - `reserveNumberAuthorized=false`
 - `authorizedReserveRows=null`
 
-Read reserve:
+Read:
 - `readReserveNumberAuthorized=false`
 - `authorizedReadReserveRows=null`
 
-2,825 is not promoted to a formal reserve. No read value is fabricated.
+Do not promote 2,825 or fabricate a read reserve.
 
 ## Protected boundaries
 
-No change to:
+Do not modify:
 - System 1 Formal Core
 - formal trading signals
 - capital allocation
-- production business behavior
-- System 2 final/live selection authority
-- Cloudflare billing or paid tier
+- System1 production business behavior
+- System2 final/live selection authority
+- Cloudflare billing / paid tier
 
-No large D1 physical mutation was run merely to validate A1-A4.
+Do not run large physical D1 mutation tests merely to prove A5/A6.
 
-## DATA_LANE continuation
+## Execution order
 
-Historical data room may continue:
-- quota-budgeted read-only D1 evidence;
-- 36-key / 11,843-key Oct08 read-only census when account rowsRead headroom is proven;
-- offline missing-key/conflict/PIT planning.
+1. Harden GraphQL parser for complete identity + strict rowsRead/rowsWritten metrics.
+2. Harden same-day ledger summarizer to surface explicit integrity failure rather than skip/coerce.
+3. Add production ledger identity/version/hash validation before summary.
+4. Add A5 adversarial matrix: missing/null/string/negative/fractional/non-finite metric, missing date/databaseId, duplicate identity, valid multi-db aggregate.
+5. Add A6 adversarial matrix: malformed JSON, missing runKey/quotaDay/cost, wrong schema/type/day identity, duplicate runKey ambiguity, malformed result, invalid hash/readback.
+6. Re-run prior A1-A4 tests to prove no regression.
+7. Targeted tests -> System2 Research CI -> V8 Regression.
+8. latest-main drift check -> merge implementation -> merged-main readback.
+9. Evidence-only Queue/checkpoint update to `FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY_A5_A6`.
+10. Hand back to AUDIT_LANE; DATA_LANE remains read-only/evidence-qualified until all physical prerequisites are proven.
 
-Physical write remains blocked unless **all** are true:
-1. registered physical writer;
-2. evidence-qualified write floor;
-3. evidence-qualified read floor;
-4. known conservative account usage;
-5. evidence-authorized System1 write reserve;
-6. evidence-authorized System1 read reserve;
-7. shared quota gate grants `QUOTA_RESERVATION_GRANTED`.
+## Physical proof boundary
 
-Do not bypass `READ_COST_EVIDENCE_REQUIRED` or `QUOTA_BUDGET_DEFER`.
+A5/A6 are source/integrity fail-closed defects and can be fixed/tested offline without consuming D1 quota.
 
-## AUDIT_LANE exact reverify
-
-Independently re-run:
-1. A1 1-row annual override and exact write-floor boundary.
-2. A2 4,999,999 rowsRead scenario, measured Daily Shadow boundary and unknown-read writer.
-3. A3 all 13 failure finalizers, partial/unknown/non-release/retry/cross-day behavior.
-4. A4 exact duplicate vs altered payload/hash/status/type.
-5. GraphQL lower-bound/lag mitigation.
-6. System1 write/read reserves remain unauthorized/null.
-7. no System1 Formal Core/production/billing mutation.
-
-Even if source reverify passes, final HIGH closure still requires the previously frozen physical multiwriter/System1 after-market acceptance evidence.
-
-## Exact next continuation point
-
-- REMEDIATION_LANE: implementation complete; remain idle unless independent reverify returns a specific failed conflict unit.
-- AUDIT_LANE: independently reverify A1-A4 from latest main.
-- DATA_LANE: proceed only with read-only/evidence-qualified quota work; do not force physical writes without proven read/write/account/System1 reserves.
+Physical closure of CORR-003 still separately requires:
+- evidence-qualified System1 write/read reserves;
+- bounded real multiwriter UTC-day grant/result/no-collision evidence;
+- later real System1 23:35/23:55 normal business persistence;
+- original physical acceptance criteria;
+- independent AUDIT_LANE closure.
