@@ -1,7 +1,7 @@
 // Issue 1026 P03/P05 read-only checkpoint evidence. This does not call Cloudflare.
 import {readFile,writeFile} from "node:fs/promises";
 import {assessIssue1026P03P05SafeEvidenceV0_1} from "../runtime/issue1026_p03_p05_safe_evidence_review_v0_1.mjs";
-const rel=p=>new URL("../"+p,import.meta.url);
+const rel=p=>new URL("../../"+p,import.meta.url);
 const load=async p=>JSON.parse(await readFile(rel(p),"utf8"));
 const out=process.env.S2_ISSUE1026_SAFE_EVIDENCE_OUTPUT
  ||"/tmp/s2-issue1026-p03-p05-safe-defer-evidence.json";

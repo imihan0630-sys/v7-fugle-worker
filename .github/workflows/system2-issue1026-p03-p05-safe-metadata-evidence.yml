@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/system2-issue1026-p03-p05-safe-metadata-evidence.yml"
+      - "system2/scripts/assess_issue1026_p03_p05_safe_evidence_v0_1.mjs"
+      - "system2/tests/issue1026_p03_p05_safe_evidence_review_v0_1.test.mjs"
 permissions:
   contents: read
 concurrency:
