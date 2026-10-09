@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_AUDIT_CORR003_DYNAMIC_D1_WORKFLOW_CENSUS_V0_1",
+  "date": "2026-10-09",
+  "lane": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "correctionId": "S2-CORR-20261007-003",
+  "baselineMainCommit": "9bdcaa4204ebb05c065e55198fdb0d435f602f8b",
+  "source": "GitHub main .github/workflows files and existing correction evidence; no Cloudflare access",
+  "independentObservations": {
+    "sharedGroup": "system2-isolated-d1-writer",
+    "sharedGroupWorkflowsFound": 16,
+    "workflowsWithPushTrigger": 7,
+    "pushTriggeredPaths": [
+      ".github/workflows/system2-historical-d1-physical-smoke.yml",
+      ".github/workflows/system2-historical-pack-real-source-smoke.yml",
+      ".github/workflows/system2-hot-history-bootstrap.yml",
+      ".github/workflows/system2-2026-twse-oct09-one-shot.yml",
+      ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+      ".github/workflows/system2-daily-shadow-diagnostic.yml",
+      ".github/workflows/system2-resonance-deploy.yml"
+    ],
+    "warning": "These 7 are trigger+entrypoint exposures. A push trigger alone is not proof each run physically wrote D1; per-run actual write counts require physical receipts.",
+    "freeTierRisk": "Shared concurrency serializes jobs but does not implement an account-wide System1-first UTC-day quota reservation or verify safe physical headroom."
+  },
+  "readOnlyTest": {
+    "file": "system2/tests/audit_corr003_d1_writer_trigger_census_v0_1.test.mjs",
+    "scope": "Enumerates entire .github/workflows directory dynamically, exposes all shared-group triggers, potential push entrypoints, and credentialed ungrouped candidates.",
+    "controls": [
+      "Push added to otherwise manual fixture must be flagged",
+      "Concurrency group removed from credentialed physical fixture must be flagged",
+      "Manual-only fixture must not be misclassified as push",
+      "Unhandled YAML trigger syntax is UNKNOWN, not assumed safe"
+    ],
+    "checkStatus": "TEST_FILE_COMMITTED_PENDING_CI",
+    "note": "An observational PASS means complete scan/test execution, not D1 quota safety. UNSAFE findings must remain visible in CI output."
+  },
+  "previousEvidence": [
+    "system2/evidence/S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_20261008_V0_1.json",
+    "system2/evidence/S2_CORR_20261007_003_D1_WRITER_PRIORITY_INVENTORY_20261007_V0_1.json",
+    "system2/SYSTEM2_CORRECTION_QUEUE.json"
+  ],
+  "restrictions": {
+    "correctionStatusUnchanged": "OPEN",
+    "responsibleImplementationLane": "REMEDIATION_LANE",
+    "physicalCloudflareD1ReadWrite": 0,
+    "billingMutation": false,
+    "system1FormalCoreModified": false,
+    "system1ProductionRuntimeModified": false,
+    "strategyOrSelectionChanges": false,
+    "livePush": false,
+    "realOrders": false
+  },
+  "followup": "REMEDIATION_LANE must implement fail-closed account-wide System1-first quota reservations and push-path read-only deferral, then AUDIT_LANE independently verifies negative collision scenarios and bounded real account UTC-day evidence."
+}
