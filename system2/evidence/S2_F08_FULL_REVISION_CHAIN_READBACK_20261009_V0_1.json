@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "S2_F08_FULL_REVISION_CHAIN_READBACK_EVIDENCE_V0_1",
+  "executionDate": "2026-10-09",
+  "executionLane": "BUILD_LANE",
+  "scope": "SYSTEM2_RESEARCH_OFFLINE_ONLY",
+  "implementationPR": 1010,
+  "mergedMainCommit": "d35cfc2bd4565414030ac378984988394185e6e4",
+  "gitHubReadbackRequired": true,
+  "testEvidence": {
+    "researchCI": {
+      "id": 37930794443,
+      "result": "SUCCESS",
+      "testFiles": 279,
+      "logMarker": "F08_CHAIN_READBACK_15_NEGATIVE_AND_2_POSITIVE_OFFLINE_PASS_NO_PHYSICAL_AUTHORITY"
+    },
+    "v8Regression": {
+      "id": 37930794435,
+      "result": "SUCCESS"
+    },
+    "mainCodePaths": [
+      "system2/runtime/f08_outcome_atomic_cas_append_plan_v0_1.mjs",
+      "system2/tests/f08_outcome_atomic_cas_append_plan_v0_1.test.mjs"
+    ]
+  },
+  "checks": {
+    "genesisRequired": true,
+    "contiguousOrdinals": true,
+    "revisionHashProof": true,
+    "previousHashAndMaturity": true,
+    "strict22FieldIdentity": true,
+    "orderedRowsRequired": true,
+    "monotonicObservationClock": true,
+    "boundedLimit": "maxRevisions + 1",
+    "rejectOverflows": true,
+    "detectReorderTamperExtra": true,
+    "syntheticPositiveCount": 2,
+    "syntheticNegativeCount": 15
+  },
+  "physicalClaims": {
+    "cloudflareD1Reads": 0,
+    "cloudflareD1Writes": 0,
+    "r2Reads": 0,
+    "r2Writes": 0,
+    "productionMigration": false,
+    "authenticatedPIT": false,
+    "independentPhysicalReadback": false,
+    "accountQuotaReserved": false,
+    "fullPhysicalChainCertified": false,
+    "shadowFinalSelectionAuthorized": false,
+    "realTrading": false
+  },
+  "gateStatus": {
+    "passedChecks": 22,
+    "totalChecks": 75,
+    "remainingChecks": 53,
+    "fullyAcceptedGates": 0,
+    "f08ChecksPassed": 2,
+    "f08ChecksTotal": 5,
+    "correction012": "OPEN",
+    "correction013": "OPEN",
+    "quotaCorrection003": "FIX_IN_PROGRESS_REMEDIATION_LANE_OWNED"
+  },
+  "continuation": "Use full chain audit only as a future readback verifier after independent A07 quota grant, F07 physical D1 schema, physical source PIT and AUDIT_LANE acceptance. Do not confuse local fixtures with physical completion."
+}
