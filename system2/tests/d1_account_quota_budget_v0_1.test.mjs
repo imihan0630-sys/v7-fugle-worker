@@ -134,7 +134,7 @@ assert.equal(annualResolved.readState,"READ_RESERVATION_EVIDENCE_REQUIRED");
 const readExact = evaluateD1AccountQuotaReservationV0_1({
   writer: byId.DAILY_SHADOW_DIAGNOSTIC,
   eventName: "schedule",
-  accountUsage: usage(1000,5000000-583256),
+  accountUsage: usage(1000,5000000-583256-5000),
   system1ReservePolicy: authorizedReserve,
 });
 assert.equal(readExact.state,"QUOTA_RESERVATION_GRANTED");
@@ -143,7 +143,7 @@ assert.equal(readExact.projectedRowsRead,5000000);
 const readOver = evaluateD1AccountQuotaReservationV0_1({
   writer: byId.DAILY_SHADOW_DIAGNOSTIC,
   eventName: "schedule",
-  accountUsage: usage(1000,5000000-583256+1),
+  accountUsage: usage(1000,5000000-583256-5000+1),
   system1ReservePolicy: authorizedReserve,
 });
 assert.equal(readOver.state,"QUOTA_BUDGET_DEFER");
