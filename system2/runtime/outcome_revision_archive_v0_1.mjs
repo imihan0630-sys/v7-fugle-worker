@@ -201,10 +201,8 @@ export async function buildS2FrozenOutcomeRevisionV0_1({
   return receipt;
 }
 
-export function toS2FrozenOutcomeRevisionRowV0_1(receipt) {
-  if (!receipt || receipt.schemaVersion !== S2_OUTCOME_REVISION_ARCHIVE_VERSION_V0_1) {
-    throw new Error("OUTCOME_REVISION_RECEIPT_NOT_VALIDATED");
-  }
+export async function toS2FrozenOutcomeRevisionRowV0_1(receipt) {
+  await verifyS2FrozenOutcomeRevisionV0_1(receipt);
   return Object.freeze({
     revision_id: receipt.revisionId,
     revision_hash: receipt.revisionHash,
