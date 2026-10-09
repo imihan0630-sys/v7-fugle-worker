@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "06",
+  "moduleId": "D08-19",
+  "researchDateTaipei": "2026-10-10",
+  "evidenceLineage": {
+    "origin": "2026-10-09 local Room06 research artifact; persisted without redoing prior mathematics",
+    "localSource": "room06_d07_d08_research_20261009.json",
+    "sourceTrackerAtRead": "2026-10-10T02:14:51+08:00",
+    "sourceFamily": "analytic model, not Taiwan historical observations",
+    "sourceReferences": [
+      "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/free-cash-flow-valuation",
+      "https://rpc.cfainstitute.org/research/financial-analysts-journal/1998/a-simple-valuation-model-and-growth-expectations"
+    ]
+  },
+  "title": "Reverse FCFF DCF market-implied expectations: non-identification and Taiwan PIT contract",
+  "model": {
+    "type": "synthetic two-stage enterprise FCFF, not observed stock evidence",
+    "fcff0": 100,
+    "explicitYears": 5,
+    "terminalGrowth": 0.03,
+    "targetEnterpriseValue": 1700,
+    "explicitFcff": "FCFF_t = FCFF_0*(1+g)^t",
+    "terminalValue": "TV_5 = FCFF_5*(1+gT)/(r-gT)",
+    "enterpriseValue": "sum_{t=1..5}(FCFF_t/(1+r)^t)+TV_5/(1+r)^5",
+    "requiredDomain": "r>gT; r>-1; g>-1; same currency and FCFF definition",
+    "solver": "fixed discount rate and terminal assumptions; root in g; never infer a unique g when r/gT/margins/reinvestment are unknown"
+  },
+  "verifiedSyntheticCases": [
+    {
+      "r": 0.08,
+      "impliedG": -0.012735478172059557,
+      "terminalShare": 0.7735122115513539,
+      "reconstructedEV": 1700.0000000000853
+    },
+    {
+      "r": 0.1,
+      "impliedG": 0.06415461030962753,
+      "terminalShare": 0.7334161888563292,
+      "reconstructedEV": 1700
+    },
+    {
+      "r": 0.12,
+      "impliedG": 0.1284945730149316,
+      "terminalShare": 0.699122138721746,
+      "reconstructedEV": 1699.9999999967388
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Observed enterprise price uniquely identifies required cash-flow growth.",
+      "support": "Under fixed internally consistent cash flows, r and gT, inverse root can be solved.",
+      "counter": "Same 1700 EV requires g from -1.27% to +12.85% as r changes 8%-12%; one price underdetermines several unknowns.",
+      "alternative": "Discount-rate risk premium, terminal duration, margin path, reinvestment intensity, capital structure or non-operating assets.",
+      "failure": "Any model-input vintage is not fixed at the observation cutoff; multiple/no admissible roots; r<=gT."
+    },
+    {
+      "id": "H2",
+      "claim": "Higher implied growth proves overvaluation.",
+      "support": "Conditional on fixed and plausible reinvestment/return assumptions, demanding implied growth is a useful expectation stress.",
+      "counter": "High incremental return on capital and long competitive-advantage period can justify higher growth; low growth can be a value trap.",
+      "alternative": "Pricing power, accounting-intangible intensity, cyclicality, capital intensity, risk compensation.",
+      "failure": "Forecast growth independent of reinvestment/return-on-invested-capital identity or terminal cash flows economically impossible."
+    },
+    {
+      "id": "H3",
+      "claim": "Implied growth minus consensus is tradable alpha.",
+      "support": "A pre-decision PIT expectation gap may represent information disagreement.",
+      "counter": "Stale/optimistic consensus, timing mismatch, overlapping existing momentum/growth/valuation, trading costs and regime exposure can eliminate incrementality.",
+      "alternative": "Risk premium, peer shocks, sector mix, stale forecasts and accounting revision.",
+      "failure": "No authorized pre-decision consensus/guidance vintage or no independent OOS/Shadow evidence."
+    }
+  ],
+  "reinvestmentAndTerminalGuards": {
+    "identity": "Sustainable growth ≈ incremental ROIC × reinvestment rate only under explicit stable-capital-return assumptions; FCFF cannot grow independently of required reinvestment.",
+    "terminalShareInterpretation": "~70%-77% of synthetic EV from terminal value; high sensitivity, not proof of mispricing.",
+    "reject": "Do not label high implied g overvaluation without testing margin/ROIC/reinvestment/terminal assumptions; terminal r<=gT is invalid, not infinite positive evidence.",
+    "financialInstitutions": "Use D08-18 institution-specific equity/regulatory capital semantics; do not force industrial FCFF/WACC model."
+  },
+  "taiwanPitContract": {
+    "decisionCutoff": "fixed market close/observation clock and next tradable session",
+    "requiredParents": [
+      "priceSourceDateAndKnownAt",
+      "shareCountAndCorporateActionKnownAt",
+      "cashDebtLeaseMinorityPreferredNonOperatingBridgeKnownAt",
+      "reportedCFOCapexTaxWorkingCapitalAndFCFFDefinitionKnownAt",
+      "filingFirstObservedAtAndVersion",
+      "discountRateModelAndD07_18InputsKnownAt",
+      "D07_26TaxShieldUsabilityKnownAt",
+      "analystOrGuidanceExpectationVintageIfAuthorized",
+      "sectorAndHistoricalMembershipAsOfDate",
+      "sourcePayloadHashAndCaptureClock"
+    ],
+    "unknownRule": "UNKNOWN_NEVER_ZERO_OR_PRESENT_DAY_BACKFILL",
+    "equityToEnterpriseBridge": "Do not treat market capitalization as EV; reconcile cash, debt, leases, minorities, preferred and non-operating items with consistent PIT accounting and ownership scope.",
+    "corrections": "append-only vintage; later filings do not overwrite earlier knownAt"
+  },
+  "validationPlan": {
+    "sample": "Predefine Taiwan industrial cohorts across >=2 industries and >=2 dates, include delisted/negative-FCFF/illiquid cases as explicit eligibility or UNKNOWN.",
+    "beforeOutcomes": "Freeze solver domain, discount/terminal sensitivity grid, share-count bridge, coverage, peer membership, accounting versions, date clusters, control factors and hypothesis count.",
+    "controls": [
+      "raw PE/PB and historical percentiles D08-03",
+      "profitability and growth D07-02/04/05",
+      "WACC assumptions D07-18",
+      "tax D07-26",
+      "sector and size/liquidity",
+      "market state dependency D18 only"
+    ],
+    "postUnlock": "Only after physical PIT and D16 preregistration: purged walk-forward/OOS, clustered by date/issuer, multiple-testing control, after-cost and regime robustness; no historical Shadow fabrication."
+  },
+  "sdaTicket": "SDA-008",
+  "levelDecision": {
+    "from": "L0/0",
+    "evidenceEligible": "L2/40",
+    "l3": "BLOCKED_TAIWAN_PIT_PHYSICAL_REPLAY",
+    "maturityChangeAuthorizedOnlyAfterTrackerSync": true
+  },
+  "outcomes": "CLOSED",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Freeze 2-industry 2-date Taiwan issuer EV bridge and vintage receipts, stress terminal/ROIC/reinvestment consistency; preserve source/UNKNOWN; no outcome join."
+}
