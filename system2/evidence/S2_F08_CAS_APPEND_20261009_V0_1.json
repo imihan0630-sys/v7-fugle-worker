@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "S2_F08_CAS_EVIDENCE_V0_1",
+  "pr": 1002,
+  "commit": "ef5d28251c195368be60b2ef1958fbec3fc06b03",
+  "ci": {
+    "research": 37925023054,
+    "v8": 37925023052
+  },
+  "status": "OFFLINE_CI_PASS_PHYSICAL_D1_UNVERIFIED",
+  "checkProgress": {
+    "passed": 22,
+    "total": 75
+  },
+  "next": "A07 quota and physical D1 migration plus audited writer required"
+}

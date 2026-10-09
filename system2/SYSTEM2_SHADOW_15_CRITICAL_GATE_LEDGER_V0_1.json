@@ -60,6 +60,16 @@
         "37890214343"
       ],
       "status": "17_SYNTHETIC_ADVERSE_EXECUTION_CASES_PASS_NO_OFFICIAL_CALENDAR_OR_REAL_PIT"
+    },
+    {
+      "id": "F08",
+      "pr": 1002,
+      "commit": "ef5d28251c195368be60b2ef1958fbec3fc06b03",
+      "ci": [
+        "37925023054",
+        "37925023052"
+      ],
+      "status": "OFFLINE_ATOMIC_CAS_SQL_PLAN_TESTED_PHYSICAL_WRITER_PENDING"
     }
   ],
   "mandatoryProtections": {
@@ -547,7 +557,7 @@
       "state": "READONLY_PREFLIGHT_MERGED",
       "acceptance": "Atomic isolated D1 append writer, verified source parents and prior revision, quota reservation and exact write/readback",
       "correctionId": "S2-CORR-20261008-012",
-      "next": "PR #958 read-only preflight merged; still implement budget-authorized atomic writer + real D1 evidence",
+      "next": "A07 quota physical reservation and F07 physical schema acceptance; integrate tested single-statement CAS into isolated D1 writer with reserved cost, real parent/predecessor/returning readback, independent PIT and AUDIT.",
       "verified": false,
       "checks": [
         {
