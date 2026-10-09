@@ -1625,3 +1625,12 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - BUILD_LANE does **not** self-close this CRITICAL correction; AUDIT_LANE must independently verify before `VERIFIED_CLOSED`.
 - independent AUDIT_LANE verification: `system2/evidence/S2_AUDIT_INDEPENDENT_CODE_CLOSURE_014_015_20261008_V0_1.json` (merged-code identity, targeted adversarial tests and GitHub Actions PASS, with explicit limits).
 
+
+## 2026-10-09 18:09 Asia/Taipei — CORR-003 independent A1–A4 reverify; A5/A6 new blockers
+
+- Source-level A1–A4 prescribed positive/negative boundary tests independently PASSed on PR #989 (System2 Research CI `37915666601` PASS; V8 Regression `37915666467` PASS; 273 System2 test files). This is **not physical D1 acceptance**.
+- Independent negative `GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO`: **UNSAFE** — actual quota gate GraphQL parser accepts an HTTP-200 partial metric group without `rowsRead` as known `rowsRead=0`; synthetic otherwise-evidence-authorized P0 evaluator then grants a physical reservation. This is a source-level fail-closed gap, not evidence Cloudflare delivered such a payload.
+- Independent negative `MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP`: **UNSAFE** — actual ledger summarizer discards an unparsable reservation, returning outstanding read/write reservation zero; synthetic otherwise-authorized P0 evaluator then grants. This is a source-level potential underbudget, not observed physical corruption.
+- Full evidence: `system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json`; test: `system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs`.
+- **Status routed back to `FIX_IN_PROGRESS` / `REMEDIATION_LANE`**, same existing HIGH directive; conflict units `system2/scripts/run_d1_account_quota_gate_v0_1.mjs` (A5 GraphQL validation) and `system2/runtime/d1_account_quota_budget_v0_1.mjs` (A6 ledger integrity). AUDIT_LANE must independently reverify corrections; no auditor-owned runtime modifications.
+- Write/read System1 reserves remain `false/null`; measured `2,825` stays observational only. Physical closure still requires evidence-qualified System1 reserve, bounded real multiwriter UTC day, next real System1 23:35/23:55 normal persistence without quota collision, and all original physical acceptance criteria. No change to System1 Formal Core, trading signals, capital, production runtime, or billing.
