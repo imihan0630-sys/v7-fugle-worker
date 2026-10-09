@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "S2_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1",
+  "schemaVersion": "S2_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_2",
   "directiveId": "S2-CORR-20261007-003",
   "evidenceState": "INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS",
   "authorizedReserveRows": null,
@@ -19,5 +19,11 @@
     "PRICE_VOLUME_CHECKPOINT.md"
   ],
   "system1FormalCoreChanged": false,
-  "paidUpgradeAuthorized": false
+  "paidUpgradeAuthorized": false,
+  "readReserveNumberAuthorized": false,
+  "authorizedReadReserveRows": null,
+  "readEvidenceState": "SYSTEM1_AFTER_MARKET_D1_READ_COST_NOT_EVIDENCE_QUALIFIED",
+  "readRule": "Do not assume System1 23:35/23:55 D1 rowsRead cost is zero. Until independent evidence authorizes a conservative read reserve, System2 physical mutation must defer.",
+  "analyticsFreshnessState": "GRAPHQL_REALTIME_FRESHNESS_NOT_DOCUMENTED",
+  "analyticsLagMitigation": "Treat GraphQL daily totals as lower-bound observations; keep same-UTC-day reservations non-releasing and preserve max observed ledger usage."
 }
