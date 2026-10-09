@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "S2_D1_ACCOUNT_WRITER_REGISTRY_V0_1",
+  "schemaVersion": "S2_D1_ACCOUNT_WRITER_REGISTRY_V0_2",
   "directiveId": "S2-CORR-20261007-003",
   "accountScope": "CLOUDFLARE_WORKERS_FREE_ACCOUNT_WIDE",
   "concurrencyGroup": "system2-isolated-d1-writer",
@@ -15,6 +15,11 @@
         "type": "FIXED_MEASURED",
         "rowsWritten": 13130,
         "evidence": "run 37609474459"
+      },
+      "readReservationModel": {
+        "type": "FIXED_MEASURED",
+        "rowsRead": 583256,
+        "evidence": "Daily Shadow Diagnostic run 37609474459 D1 metrics requestCount=797 rowsRead=583256 rowsWritten=13130"
       }
     },
     {
@@ -28,6 +33,12 @@
         "type": "FIXED_MEASURED",
         "rowsWritten": 7358,
         "evidence": "max accepted annual sample in S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -38,7 +49,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -53,6 +73,11 @@
         "rowsWrittenPerDate": 11576,
         "maxDates": 5,
         "evidence": "run 37550201160"
+      },
+      "readReservationModel": {
+        "type": "FIXED_MEASURED",
+        "rowsRead": 1047112,
+        "evidence": "Recent A1 Hot History Warmup run 37550201160 job 112563652301 rowsRead=1047112 rowsWritten=57880"
       }
     },
     {
@@ -63,7 +88,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -74,7 +108,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -85,7 +128,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -96,7 +148,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -107,7 +168,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -118,7 +188,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -129,7 +208,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -140,7 +228,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": false,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -151,7 +248,16 @@
       "physicalMutation": true,
       "pushPhysicalAllowed": true,
       "reservationModel": {
-        "type": "CALLER_REQUIRED"
+        "type": "CALLER_REQUIRED",
+        "minimumRowsWritten": null,
+        "evidence": null,
+        "state": "WRITE_COST_EVIDENCE_REQUIRED"
+      },
+      "readReservationModel": {
+        "type": "CALLER_REQUIRED",
+        "minimumRowsRead": null,
+        "evidence": null,
+        "state": "READ_COST_EVIDENCE_REQUIRED"
       }
     },
     {
@@ -162,6 +268,9 @@
       "physicalMutation": false,
       "pushPhysicalAllowed": false,
       "reservationModel": {
+        "type": "NONE"
+      },
+      "readReservationModel": {
         "type": "NONE"
       }
     },
@@ -174,6 +283,9 @@
       "pushPhysicalAllowed": false,
       "reservationModel": {
         "type": "NONE"
+      },
+      "readReservationModel": {
+        "type": "NONE"
       }
     },
     {
@@ -185,7 +297,12 @@
       "pushPhysicalAllowed": false,
       "reservationModel": {
         "type": "NONE"
+      },
+      "readReservationModel": {
+        "type": "NONE"
       }
     }
-  ]
+  ],
+  "analyticsUsageSemantics": "GRAPHQL_DAILY_ACCOUNT_TOTAL_IS_LOWER_BOUND_NOT_REALTIME_GUARANTEE",
+  "sameUtcDayReservationReleasePolicy": "NEVER_RELEASE_BEFORE_UTC_RESET"
 }
