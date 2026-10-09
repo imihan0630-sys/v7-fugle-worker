@@ -1,0 +1,54 @@
+name: System2 Oct08 D1 Account Metadata Only Readonly
+
+# A single GraphQL account-usage observation. No D1 SQL, R2, billing or deployment.
+# This is NOT authorization to launch October 36-key or 11,843-key census.
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-oct08-account-d1-metadata-only.yml"
+      - "system2/runtime/oct08_account_d1_graphql_metadata_observer_v0_1.mjs"
+      - "system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs"
+      - "system2/tests/oct08_account_d1_graphql_metadata_observer_v0_1.test.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-oct08-d1-account-metadata-only
+  cancel-in-progress: false
+
+jobs:
+  cloudflare_account_metadata_readonly:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify metadata parser and fail-closed no-authorization contracts
+        run: |
+          node system2/tests/oct08_account_d1_graphql_metadata_observer_v0_1.test.mjs
+          node --check system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: GraphQL account metadata ONLY, no D1 SQL read or write
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          S2_OCT08_ACCOUNT_D1_METADATA_OUTPUT: /tmp/s2-oct08-account-d1-metadata-only.json
+        run: node system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs
+      - name: Preserve observed or BLOCKED metadata evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-oct08-account-d1-metadata-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-oct08-account-d1-metadata-only.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: System1 Formal and Worker isolation
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
