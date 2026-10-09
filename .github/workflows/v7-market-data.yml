@@ -109,8 +109,9 @@ jobs:
       - name: Historical official quality recovery
         if: >-
           github.event_name == 'workflow_dispatch' && inputs.market_date != '' &&
-          (inputs.data_only != true || inputs.data_scope == 'quality' || inputs.data_scope == 'all') &&
-          steps.calendar.outputs.proceed == 'true'
+          (inputs.data_only != true ||
+           ((inputs.data_scope == 'quality' || inputs.data_scope == 'all') &&
+            steps.calendar.outputs.proceed == 'true'))
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ inputs.market_date }}
