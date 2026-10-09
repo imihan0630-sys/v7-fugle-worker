@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "S2_CORR003_A7_INDEPENDENT_SOURCE_LEVEL_REVERIFY_20261009_V0_1",
+  "correctionId": "S2-CORR-20261007-003",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditAsOfTaipei": "2026-10-09T20:51:39+08:00",
+  "baselineMain": "b8fd1291b16daa353a82588ece4c0b410506d5f1",
+  "remediation": {
+    "pr": 1008,
+    "merge": "7325d4343aecad1847ef6b176b95167d5d74705a",
+    "implementationOwner": "REMEDIATION_LANE"
+  },
+  "independent": {
+    "pr": 1013,
+    "sourceTest": "system2/tests/audit_corr003_a7_post_remediation_independent_20261009_v0_1.test.mjs",
+    "readOnlyOffline": true,
+    "productionLoaderInvokedWithStubD1": true,
+    "physicalCloudflareReads": 0,
+    "physicalCloudflareWrites": 0
+  },
+  "ci": {
+    "research": {
+      "run": 37932644800,
+      "job": 113826890306,
+      "conclusion": "SUCCESS",
+      "system2TestFilesExecuted": 280
+    },
+    "v8": {
+      "run": 37932644642,
+      "job": 113826889705,
+      "conclusion": "SUCCESS",
+      "testSummary": "12/12 PASS"
+    },
+    "isolation": "Production isolation guard PASS"
+  },
+  "independentlyAssertedSourceCases": {
+    "A7": {
+      "result": "PASS_FOR_ENUMERATED_SOURCE_LEVEL_CASES",
+      "v02LegacyPayloadHash": "INVALID",
+      "v02LegacyStatusTampered": "INVALID",
+      "v02LegacyExpectedPayloadTampered": "INVALID",
+      "v02FullImmutableIdentity": "VALID",
+      "historicalV01Reservation": "VALID",
+      "historicalV01ReservationResultPair": "VALID",
+      "v01MetadataDriftCasesRejected": 5,
+      "previousExploitDecision": "QUOTA_BUDGET_DEFER"
+    },
+    "A5": "PASS_FAIL_CLOSED_IN_REPLAYED_GRAPHQL_NEGATIVES",
+    "A6": "PASS_FAIL_CLOSED_IN_REPLAYED_LEDGER_NEGATIVES",
+    "A1ToA4": "RETAINED_IN_RESEARCH_CI_PREVIOUS_INDEPENDENT_REPLAY; no new physical reverify performed this run",
+    "System1Reserve": {
+      "writeAuthorized": false,
+      "authorizedWriteRows": null,
+      "readAuthorized": false,
+      "authorizedReadRows": null,
+      "observedMaxWholeV7RowsWritten": 2825,
+      "promotedToReserve": false
+    },
+    "freshness": "Cloudflare GraphQL observations LOWER_BOUND; NOT_DOCUMENTED_BY_VENDOR freshness; no safety percent invented",
+    "sameUtcDay": "NEVER_RELEASE_BEFORE_UTC_RESET"
+  },
+  "formalProtection": {
+    "scopeDiff": "PR #1008 implementation scope confined to system2 quota gate, tests and docs; no System1 Formal Core mutation by audit PR",
+    "formalSignalsModified": false,
+    "capitalModified": false,
+    "system1ProductionModified": false,
+    "paidUpgrade": false
+  },
+  "disposition": {
+    "A7": "SOURCE_LEVEL_INDEPENDENTLY_VERIFIED",
+    "ticketStatus": "VERIFYING",
+    "verifiedClosed": false,
+    "reason": "HIGH physical-closure acceptance cannot be inferred from offline CI",
+    "requiredBeforeClosure": [
+      "Evidence-qualified, independently approved System1 account-wide D1 write AND read reserves",
+      "Bounded real multiwriter same UTC-day account-wide reservation/grant/result reconcile and no quota collision",
+      "Later real Taiwan trading date System1 23:35/23:55 normal business execution persistence with no quota collision",
+      "All original CORR-003 acceptance criteria including real quota headroom, read-only historical/PIT evidence and unaffected System1 production",
+      "Final independent readback after physical proof without changing System1 Formal Core or billing"
+    ],
+    "physicalAcceptance": false
+  },
+  "evidenceBoundary": "No actual Cloudflare D1/R2, no production deployments or billing actions; synthetic System1 authorization in tests is not operational authority."
+}
