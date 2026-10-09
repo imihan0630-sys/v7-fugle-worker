@@ -22,6 +22,12 @@ on:
         type: string
         default: ""
 
+      scout_acceptance_evidence_path:
+        description: "AUDIT_LANE independently accepted REAL 36-key physical Scout receipt, main-tracked JSON"
+        required: true
+        type: string
+        default: ""
+
 permissions:
   contents: read
 
@@ -48,6 +54,7 @@ jobs:
       - name: Fail-closed account-wide read-budget preflight (no D1 I/O)
         env:
           S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
+          S2_OCT08_PRIOR_SCOUT_ACCEPTANCE_PATH: ${{ inputs.scout_acceptance_evidence_path }}
           S2_D1_NO_COMPETING_WRITER_CONFIRMED: ${{ inputs.no_competing_d1_writer }}
           S2_OCT08_BUDGET_GATE_RESULT: /tmp/s2-oct08-read-budget-evidence-preflight.json
         run: |
@@ -56,6 +63,7 @@ jobs:
       - name: Rehash all 12 frozen official source days before bounded D1 full-key census
         env:
           S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
+          S2_OCT08_PRIOR_SCOUT_ACCEPTANCE_PATH: ${{ inputs.scout_acceptance_evidence_path }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           S2_D1_CENSUS_BUDGET_CONFIRMED: ${{ inputs.cross_system_d1_read_budget_confirmed }}
