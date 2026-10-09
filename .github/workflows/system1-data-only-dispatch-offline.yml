@@ -10,6 +10,8 @@ on:
       - "tests/sync_institution_data.mjs"
       - "tests/system1_institution_gap_resume_v0_1.mjs"
       - "tests/test_system1_institution_gap_resume_v0_1.mjs"
+      - "tests/verify_cross_midnight_recovery_prereqs.mjs"
+      - "tests/trading_day_gate.mjs"
 
 permissions:
   contents: read
@@ -29,4 +31,5 @@ jobs:
       - name: Exact three-trading-date institution resumption refusal tests
         run: |
           node --check tests/sync_institution_data.mjs
+          node --check tests/verify_cross_midnight_recovery_prereqs.mjs
           node tests/test_system1_institution_gap_resume_v0_1.mjs
