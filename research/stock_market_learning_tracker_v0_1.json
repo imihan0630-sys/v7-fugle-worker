@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-09T10:12:01+08:00",
+  "updatedAt": "2026-10-09T11:14:26+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -720,8 +720,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「持股集中度／Ownership」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "D06_05_L3_SOURCE_PIT_REPLAY_READY / SAME_GENERATION_LINEAGE_PASS / CORPORATE_ACTION_DENOMINATOR_GUARD_FROZEN / TPEX_EXRIGHT_EXACT_PAIR_ROWS_PASS / FOUR_CASH_ONLY_NO_NEW_MASK / CLEAN_SUPPORT_CANDIDATE_2778_HASH_FROZEN / FINAL_TPEX_IDENTITY_CERTIFICATION_PENDING / HOLDER_IDENTITY_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-          "next": "完成 2026/09/24→2026/10/02 的 TPEx（櫃買中心）官方終止上櫃／身分轉換完整機器枚舉，或取得等價權威 exact-range（精確區間）清單。若沒有額外 common-support（共同母體）身分轉換，直接把已凍結的 2,778 檔、hash（指紋）`fnv1a64-utf8:11ab5a267ae9cd2a` 從 CANDIDATE_FROZEN（候選凍結）升為 FINAL_CERTIFIED（最終認證），代號集合不得改動；之後才預註冊 TDCC（集保結算所）版本群聚 OOS／Shadow（樣本外／影子）殘差增量驗證並開啟結果欄位。"
+          "status": "D06_05_L3_SOURCE_PIT_REPLAY_READY / IC106_SECURITY_CLASS_MIXTURE_CONFIRMED / SIX_NON_COMMON_IN_2778 / PROVISIONAL_COMMON_STOCK_UPPER_BOUND_2772 / DATED_IDENTITY_AND_TPEX_DELISTING_PENDING / FINAL_COMMON_STOCK_SUPPORT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "先依 IC105/IC106 已持久化證據處理 2,778 個四位數候選代號中的 4 檔 ETF、2 檔 TDR；2,772 僅為已知排除後的上界，不能宣告最終普通股母體。完整取得 2026/09/24 與 2026/10/02 兩個日期有效的 TWSE/TPEx 商品類型、ISIN 身分及櫃買終止上櫃／換股逐列完整性，對所有候選代號認證並另建最終普通股集合與新指紋。原 2,778 指紋只保留為未分類四位數候選；13 個歷史終止上市代號重疊仍為 UNKNOWN，不可自動扣除。最後才預註冊集保版本群聚樣本外／影子殘差增量驗證；結果欄位維持關閉。"
         },
         {
           "id": "D06-06",
