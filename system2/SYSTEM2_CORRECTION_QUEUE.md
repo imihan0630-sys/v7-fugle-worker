@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09T07:44:26+08:00
+Updated: 2026-10-09T10:42:41+08:00
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1490,6 +1490,12 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Independent test: `system2/tests/audit_corr013_calendar_unknown_no_fill_matrix_v0_2.test.mjs`.
 - Detailed receipt: `system2/evidence/S2_AUDIT_CORR013_CALENDAR_UNKNOWN_NOFILL_NINE_CASES_20261009_V0_2.json`.
 - Required BUILD fix: authoritative exchange calendar/date binding, strict chronological session evidence and explicit `proofCompleteNoFill`, preserving `INCOMPLETE/DATA_UNKNOWN` rather than false non-fill denominator. Remains `OPEN`, no System1 or physical trade authorization.
+
+#### AUDIT_LANE causal UNKNOWN then later CLOSE — 2026-10-09 10:42 Asia/Taipei
+
+- Formal evidence: `system2/evidence/S2_AUDIT_CORR013_UNKNOWN_INTERVAL_LATER_CLOSE_4_CASES_20261009_V0_3.json`; independent test PR #943, Actions `37875799902` completed successfully with **4/4 UNSAFE** negative witnesses.
+- Missing ENTRY/EXIT OHLC or unknown executable liquidity can be silently followed by `state=CLOSED`, `performanceEligible=true`, and a nonnull positive or negative after-cost simulated return. Prior `blockedObservations` is retained but not used to veto downstream performance.
+- This is a new path-dependent AP-06 continuation blocker, **not** a new counted directive, no real execution and not a successful repair. BUILD_LANE must fail closed on unresolved causal unknown intervals while preserving genuinely observed closed-position controls.
 
 
 ### S2-CORR-20261008-014 — Bulk backtest can accept forged completion checkpoints and unproven PIT universes
