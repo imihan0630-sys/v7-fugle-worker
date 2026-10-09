@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09T10:42:41+08:00
+Updated: 2026-10-09 14:26 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -976,7 +976,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T19:16:52+08:00
 - severity: HIGH
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -1036,10 +1036,24 @@ Correction consequence:
   - no paid-plan upgrade, System1 change, strategy/ranking/final-selection/push/capital/order authority change;
   - independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without quota-collision failure.
 - ownerDecisionRequired: false
-- implementationEvidence: []
-- verificationEvidence: []
+- implementationEvidence:
+  - PR #980 merged as `f3b7e30c00ae7d5407d8dd277753e32c59ce72b0`; implementation head `edca9e0a037418499deb3b8f77ca8570ddee105e`.
+  - System2 Research CI `37893287729` PASS; V8 Regression `37893287751` PASS; latest-main drift immediately before merge = 0.
+  - Canonical account-budget contract: `system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md`; registry: `system2/config/d1_account_writer_registry_v0_1.json`.
+  - Registry covers all 16 workflows sharing `system2-isolated-d1-writer`; 13 are physical writers and all are quota-gated/priority-classified.
+  - Live gate reads account-wide `d1AnalyticsAdaptiveGroups`, emits compact reservation/result receipts in `s2_infrastructure_checks`, and fails `QUOTA_BUDGET_DEFER` when account usage is unknown.
+  - Current System1 after-market reserve evidence remains insufficient: two healthy dates, observed max 2,825, `reserveNumberAuthorized=false`, `authorizedReserveRows=null`; 2,825 is not used as an invented reserve.
+  - Daily Shadow P0 measured reserve = 13,130 rowsWritten. Recent A1 uses 11,576 rowsWritten/date and quota-adaptive max dates <=5.
+  - P2/P3 ordinary push physical mutation is blocked/read-only; schema mutation without grant fails `D1_SCHEMA_MUTATION_REQUIRES_QUOTA_RESERVATION`.
+  - Quota ledger reserves 8 rowsWritten for reservation+result table/index amplification.
+  - Durable implementation + DATA_LANE/AUDIT_LANE handoff evidence: `system2/evidence/S2_CORR_20261007_003_IMPLEMENTATION_EVIDENCE_20261009_V0_1.json`.
+  - Protected boundaries unchanged: no System1 Formal Core/business-logic mutation and no Cloudflare paid-plan/billing mutation.
+- verificationEvidence:
+  - Pre-implementation independent audits remain canonical: warmup push mutation audit, reusable infrastructure-check quota-gate audit, reset-window writer-trigger audit, and PVE-263/PVE-264 metadata verification.
+  - `PENDING_INDEPENDENT_AUDIT` — repository implementation is not physical closure.
+  - Closure still requires bounded physical multi-writer evidence plus a later real System1 after-market business execution that persists normally without D1 quota rejection.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-07T19:43:05+08:00
+- updatedAt: 2026-10-09T14:26:07+08:00
 
 
 #### 2026-10-08 05:36 independent reset-window / writer-trigger audit
@@ -1061,6 +1075,18 @@ Correction consequence:
   - Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.
 - Durable 00 evidence: `shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json` @ prior commit `9f32b9104794a7a1e7878fc38e17135add50a864`.
 - Closure **not** authorized until measured account-wide reservations, push/schedule gating, cross-system after-market physical business-success/readback, and independent AUDIT_LANE review PASS. UNKNOWN usage/reserve must fail closed. Do not invent reserve estimates.
+
+
+#### 2026-10-09 14:26 REMEDIATION implementation handoff
+
+- Repository implementation is complete at `FIX_IMPLEMENTED`; HIGH correction is **not** independently closed.
+- Account budget is shared across SYSTEM2_DB and V7_DB; separate D1 IDs do not imply quota isolation.
+- Unknown account usage or unauthorized System1 after-market reserve => `QUOTA_BUDGET_DEFER`; no headroom is invented.
+- All shared-writer workflows are registry-covered and physical writers use the common account-level gate.
+- Recent A1 ordinary push is non-mutating; schedule/manual warmup is adaptive to measured rowsWritten/date.
+- DATA_LANE handoff: continue the 2026-10-08 physical historical acceptance from latest main using the quota gate. Preserve reservation/defer artifact, account-wide before/after analytics and PIT/immutability evidence. Never bypass a defer.
+- AUDIT_LANE handoff: independently verify repository semantics plus future physical multi-writer/System1 after-market evidence before `VERIFIED_CLOSED`.
+- No automatic paid-plan upgrade is authorized.
 
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 

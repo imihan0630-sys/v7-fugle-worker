@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_IMPLEMENTATION_EVIDENCE_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "recordedAt": "2026-10-09T14:26:07+08:00",
+  "implementationLane": "REMEDIATION_LANE",
+  "state": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_AUDIT_AND_PHYSICAL_ACCEPTANCE",
+  "implementation": {
+    "pr": 980,
+    "headSha": "edca9e0a037418499deb3b8f77ca8570ddee105e",
+    "mergeSha": "f3b7e30c00ae7d5407d8dd277753e32c59ce72b0",
+    "system2ResearchCi": {
+      "runId": 37893287729,
+      "result": "PASS"
+    },
+    "v8Regression": {
+      "runId": 37893287751,
+      "result": "PASS"
+    },
+    "incidentalReadonlyWorkflow": {
+      "runId": 37893287732,
+      "result": "PASS",
+      "acceptanceRole": "NONE"
+    },
+    "latestMainDriftBeforeMerge": {
+      "ahead": 0,
+      "changedFiles": []
+    }
+  },
+  "quotaContract": {
+    "plan": "WORKERS_FREE",
+    "accountWide": true,
+    "rowsWrittenPerUtcDay": 100000,
+    "rowsReadPerUtcDay": 5000000,
+    "resetAtUtc": "00:00",
+    "paidUpgradeAuthorized": false,
+    "sourceEvidence": "system2/evidence/S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_20261007_V0_1.json"
+  },
+  "writerRegistry": {
+    "path": "system2/config/d1_account_writer_registry_v0_1.json",
+    "registeredWorkflowCount": 16,
+    "physicalWriterCount": 13,
+    "priorities": [
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "READ_ONLY"
+    ],
+    "unregisteredPhysicalWriterPolicy": "FAIL_CLOSED",
+    "concurrencyGroup": "system2-isolated-d1-writer",
+    "concurrencyIsBudget": false
+  },
+  "implementationSemantics": {
+    "accountUsageSource": "Cloudflare GraphQL d1AnalyticsAdaptiveGroups",
+    "unknownAccountUsage": "QUOTA_BUDGET_DEFER",
+    "system1ReserveUnknown": "QUOTA_BUDGET_DEFER",
+    "pushDiscretionaryMutation": "PUSH_READ_ONLY_ONLY",
+    "recentA1MeasuredRowsWrittenPerDate": 11576,
+    "recentA1PhysicalMaxDates": 5,
+    "recentA1BatchSizing": "min(5,floor(protectedWriteHeadroom/11576))",
+    "dailyShadowMeasuredReserveRows": 13130,
+    "reservationLedger": "s2_infrastructure_checks",
+    "reservationReceipt": "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
+    "resultReceipt": "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1",
+    "quotaLedgerRowsWrittenReserve": 8,
+    "schemaMutationWithoutReservation": "D1_SCHEMA_MUTATION_REQUIRES_QUOTA_RESERVATION",
+    "billingMutation": false
+  },
+  "system1Reserve": {
+    "policyEvidence": "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+    "healthyAfterMarketDateCount": 2,
+    "observedWholeV7DailyMaxRowsWritten": 2825,
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "interpretation": "2825 is observed evidence only and is not promoted into a reservation number. System2 physical mutation must remain fail-conservative until independent reserve evidence authorizes a value.",
+    "system1FormalCoreChanged": false
+  },
+  "regressionEvidence": [
+    "Unknown account-wide usage defers before mutation.",
+    "Unauthorized System1 after-market reserve defers before mutation.",
+    "P2/P3 ordinary push cannot physically mutate D1.",
+    "Recent A1 adaptive sizing uses measured 11576 rowsWritten/date and can shrink below five.",
+    "Known 78368 same-day write sequence causes lower-priority warmup deferral instead of Cloudflare hard rejection.",
+    "Daily Shadow P0 reservation is protected in the synthetic authorized-reserve test envelope.",
+    "Every workflow sharing system2-isolated-d1-writer is present in the canonical writer registry.",
+    "Every physical writer workflow binds the reusable quota gate or the quota-controlled schema mutation flag.",
+    "Quota gate contains no billing/subscription/payment/plan-upgrade mutation."
+  ],
+  "protectedBoundaries": {
+    "system1FormalCoreChanged": false,
+    "system1BusinessLogicChanged": false,
+    "system2StrategyRankingFinalSelectionChanged": false,
+    "livePushCapitalOrderAuthorityChanged": false,
+    "pitUnknownHistoryImmutabilityWeakened": false,
+    "paidPlanUpgradePerformed": false
+  },
+  "remainingUnknown": [
+    "System1 after-market reserve is not yet evidence-authorized; only two healthy dates exist in PVE-271/PVE-272.",
+    "No post-merge bounded physical multi-writer UTC-day acceptance has yet demonstrated real reservation/result reconciliation without quota collision.",
+    "A later real trading-day System1 23:35/23:55 business execution must persist normally with no D1 quota rejection before independent closure.",
+    "2026-10-08 historical physical acceptance/repair continuation remains DATA_LANE work and must use this quota gate."
+  ],
+  "dataLaneHandoff": {
+    "targetRoom": "System 2｜歷史資料工程室",
+    "task": "Continue 2026-10-08 physical acceptance using latest main and the merged account-level D1 quota gate.",
+    "requiredFirstReads": [
+      "system2/SYSTEM2_CORRECTION_QUEUE.md",
+      "system2/SYSTEM2_CORRECTION_QUEUE.json",
+      "system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md",
+      "system2/config/d1_account_writer_registry_v0_1.json",
+      "system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md"
+    ],
+    "requirements": [
+      "Do not bypass QUOTA_BUDGET_DEFER.",
+      "Capture reservation/defer artifact and account-wide D1 analytics before/after any physical writer.",
+      "Preserve 2026-10-08 PIT/source/immutability semantics and existing missing-key conflict quarantine.",
+      "If System1 reserve remains unauthorized, record the deferral as correct fail-safe evidence instead of inventing headroom.",
+      "Do not purchase or assume a paid Cloudflare plan."
+    ],
+    "physicalAcceptanceState": "PENDING_DATA_LANE"
+  },
+  "auditHandoff": {
+    "targetLane": "AUDIT_LANE",
+    "state": "PENDING_INDEPENDENT_AUDIT",
+    "mayCloseOnlyAfter": [
+      "Repository implementation acceptance criteria independently pass.",
+      "Bounded physical multi-writer UTC-day or equivalent physical acceptance shows no quota-collision failure.",
+      "Evidence-authorized System1 after-market reserve is active.",
+      "A later real System1 after-market primary/recovery business execution persists normally without quota rejection."
+    ]
+  }
+}
