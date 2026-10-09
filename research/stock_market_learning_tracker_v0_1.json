@@ -2653,7 +2653,7 @@
         "research/d16_25_probabilistic_decision_contract_v0_1.json",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
-      "maturityPct": 64.8,
+      "maturityPct": 65.6,
       "modules": [
         {
           "id": "D16-01",
@@ -2848,13 +2848,13 @@
         {
           "id": "D16-21",
           "name": "Alternative Data Provenance／Selection Bias替代資料來源與選樣偏誤",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Alternative Data Provenance／Selection Bias替代資料來源與選樣偏誤」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / ALT_DATA_SELECTION_BIAS_AND_REPRESENTATIVENESS_CONTRACT_FROZEN / D16_11_SCOPE_DEDUP_ONLY / TAIWAN_ALT_DATA_PANEL_PENDING",
-          "next": "維持 L2/40%。D16-11 持有 generic provenance；D16-21 僅持有 alternative-data selection/coverage/leakage/representativeness。下一步需真實 Taiwan alt-data panel、entity-link、entry/exit 與 vendor-version replay 才可評估 L3。",
-          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TWSE_CURRENT_PROSPECTIVE_TDCC_SELECTION_BIAS_AUDIT / 1089_OF_1089_TARGET_COVERAGE / 1874_NON_TARGET_FOUR_DIGIT_EXTRAS_VISIBLE / 13_OF_13_FALSIFICATION_PASS / TPEX_OUT_OF_SCOPE / OUTCOMES_CLOSED",
+          "next": "維持 L3/60%。保留 2026-10-09 physical prospective cut；只在未來獨立 TDCC weekly vintages 重跑，週資料不得因 daily reuse 增加獨立樣本。追蹤 TWSE target-universe entry/exit、TDCC schema/source drift；TPEx 必須另有官方 target-universe receipt。任何 L4 outcome 前先凍結不重複 D06 的 alternative-data estimand 與 common-support population。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md + research/D16_21_TDCC_TWSE_SELECTION_BIAS_L3_ACCEPTANCE_20261009_V0_1.md; exact head bbec1d5ed3cd0e87813b34d47f47668bcf5dc586; CI 37885609409 SUCCESS; V8 Regression 37885609413 SUCCESS; 13/13 tests; capture 2026-10-09T04:48:48.414Z; TWSE target 1089, TDCC known 1089, missing 0, extra ordinary 1874; receipt d6d1f589bfb17e221e874cd2a8a7cb788d9d12f1aee7a1cf68e51e7f8cb48447; artifact 11596412242 sha256:2fa629f484f7eb5eb27a39407bad5ed3bcd4b7b6c80ab1c8637f5b59e7ff50e2."
         },
         {
           "id": "D16-22",
@@ -2901,8 +2901,8 @@
           "evidence": "D16-25 L2 specialist side is complete for merge governance. Existing PR #333 added per-Regime calibration and preregistered selective-policy evaluation. PR #340 (merge 399287ac5ad669686f5f40fcfe72ea28617fd680; head 716b9038a1437b03dc5de92ee24709918a5b2deb) added date-balanced Brier/log-loss, per-date diagnostics and calibration-in-the-large to prevent same-date row multiplicity from masquerading as independent evidence. CI PASS: System2 Research 37095784670, V8 Repair 37095784642, V8 Regression 37095784664. D16-25 owns target/prior/probability-distribution/calibration/uncertainty/ABSTAIN/decision-utility validation; D15-19 retains distinct log-growth/Fractional-Kelly/portfolio-allocation responsibility. L3 remains blocked by absence of genuine complete Taiwan PIT prediction/outcome/calibration receipts. Additional audit: research/D16_25_SELECTIVE_DENOMINATOR_ACCEPTANCE_AUDIT_20261003_V0_1.md; unchanged evaluator synthetic reproduction shows matured-subset coverage 50% -> 66.7% after one label arrives while frozen full decision coverage remains 75%. Existing probability tests PASS; synthetic-only, no L3 evidence. Latest C1 workflow run 37067696964 completed/failure; root cause not inferred from summary. Production readonly version 8.15.3-c3-quote-context, testMode=false; no mutation."
         }
       ],
-      "status": "D16_L3_COUNT_ADVANCED_11_OF_25 / D16_22_TAIWAN_SOURCE_LOCAL_TEXT_PIPELINE_L3_ACCEPTED / D16_17_EXACT_EQUIVALENT_SOURCE_DRIFT_BLOCKED / D16_20_21_25_L2_REMAIN / SDA022_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "L2 清零攻堅剩 D16-17/20/21/25。優先 D16-21：重用真實 TDCC weekly vintages，建立 PIT official target-universe coverage + entry/exit + entity-link + source-version selection-bias audit；D16-17 不得放寬 source hash，等待 durable row-level membership authority；D16-20 需 real Taiwan treatment cohort/pre-treatment covariates/overlap；D16-25 只接受 genuine canonical CalibrationReceipt->decision ledger。D16-22 已 L3，open-world LLM remains unvalidated.",
+      "status": "D16_L3_COUNT_ADVANCED_12_OF_25 / D16_21_TDCC_SELECTION_BIAS_L3_ACCEPTED / D16_22_TAIWAN_SOURCE_LOCAL_TEXT_PIPELINE_L3_ACCEPTED / D16_17_SOURCE_VINTAGE_BLOCKED / D16_20_25_L2_REMAIN / SDA022_PHYSICAL_NCT01_PENDING / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "L2 清零攻堅剩 D16-17/20/25。D16-17 等 durable row-level historical membership authority；D16-20 需真實 Taiwan treatment/control panel + pre-treatment PIT covariates + overlap/positivity diagnostics，D20-07 只能提供 source/design feasibility 不可直接繼承；D16-25 需 genuine canonical stock-return CalibrationReceipt -> PredictiveDecisionReceipt，C1 first genuine probability cut 尚未出現。D16-21 已 L3，TPEx/outcomes remain closed.",
       "lastResearchUpdate": "2026-10-03T10:03:42+08:00",
       "researchNote": "D16-25 specialist work established the conceptual/executable validation contract and D15-19 handoff, justifying L2/40%. No real calibration/PIT outcome evidence exists yet, so L3 remains closed and no Formal optimization candidate exists."
     },
