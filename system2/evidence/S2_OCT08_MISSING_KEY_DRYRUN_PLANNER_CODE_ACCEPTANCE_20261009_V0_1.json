@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "S2_OCT08_MISSING_KEY_DRYRUN_PLANNER_CODE_ACCEPTANCE_20261009_V0_1",
+  "date": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "lane": "DATA_LANE",
+  "changeClass": "A",
+  "result": "PASS_CODE_CI_AND_GITHUB_MAIN_READBACK_NO_PHYSICAL_CLOUDFLARE_D1_CENSUS",
+  "pr": 974,
+  "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/974",
+  "mergedCommit": "fadcbd1a179ff6d9122d20b3937ded04d6fd3944",
+  "prHead": "a9d467adb3dccb91d0e180095b73e68c1fa5e3f4",
+  "ci": {
+    "researchPr": {
+      "runId": 37890385743,
+      "conclusion": "success"
+    },
+    "v8Pr": {
+      "runId": 37890385615,
+      "conclusion": "success"
+    },
+    "researchPostMerge": {
+      "runId": 37890496116,
+      "conclusion": "success"
+    }
+  },
+  "mainReadbackFile": "system2/runtime/oct08_missing_key_repair_dryrun_planner_v0_1.mjs",
+  "mainReadbackBlob": "4a174f639053d834db46938493a664ffb67cc084",
+  "protected": {
+    "cloudflareCalls": 0,
+    "d1RowsWritten": 0,
+    "r2ObjectsTouched": 0,
+    "system1FormalChanged": false,
+    "productionRuntimeChanged": false,
+    "paidUpgrade": false,
+    "liveSelection": false,
+    "originalHistoricalFirstKnownAtBackdating": false
+  },
+  "notCertified": [
+    "Actual 36-pair sampled D1 physical run",
+    "Actual complete Oct1–8 11,843-key D1 physical readback",
+    "Physical missing-key list",
+    "Any October Hot D1 repair/insert",
+    "Historical PIT/no-event/continuity",
+    "2026 annual replay or full-market pass"
+  ],
+  "existingQuotaCorrection": {
+    "id": "S2-CORR-20261007-003",
+    "status": "OPEN",
+    "owner": "REMEDIATION_LANE"
+  },
+  "resumption": "Do not reimplement same planner. After REMEDIATION_LANE verified D1 budget/no writer, start manual 36-pair sample, decide full 11,843-key read-only census; only after full valid physical artifact feed offline missing-only plan; any write remains separately authorized, idempotent, budgeted and prospective-clock."
+}
