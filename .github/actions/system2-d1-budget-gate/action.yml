@@ -1,0 +1,46 @@
+name: System2 D1 Account Budget Gate
+description: Shared account-level Cloudflare D1 Free quota reservation/result gate for System2 physical writers.
+inputs:
+  writer_id:
+    description: Registered writer ID from system2/config/d1_account_writer_registry_v0_1.json
+    required: true
+  requested_rows_written:
+    description: Conservative rowsWritten reservation when registry requires caller evidence
+    required: false
+    default: ""
+  requested_rows_read:
+    description: Conservative rowsRead reservation
+    required: false
+    default: "0"
+  mode:
+    description: reserve or result
+    required: false
+    default: "reserve"
+  reservation_receipt_path:
+    description: Reservation receipt path for result reconciliation
+    required: false
+    default: "/tmp/system2-d1-budget-reservation.json"
+outputs:
+  physical_allowed:
+    value: ${{ steps.gate.outputs.physical_allowed }}
+  state:
+    value: ${{ steps.gate.outputs.state }}
+  adaptive_max_dates:
+    value: ${{ steps.gate.outputs.adaptive_max_dates }}
+  reservation_receipt_path:
+    value: ${{ steps.gate.outputs.reservation_receipt_path }}
+runs:
+  using: composite
+  steps:
+    - id: gate
+      shell: bash
+      env:
+        SYSTEM2_D1_WRITER_ID: ${{ inputs.writer_id }}
+        SYSTEM2_D1_REQUESTED_ROWS_WRITTEN: ${{ inputs.requested_rows_written }}
+        SYSTEM2_D1_REQUESTED_ROWS_READ: ${{ inputs.requested_rows_read }}
+        SYSTEM2_D1_GATE_MODE: ${{ inputs.mode }}
+        SYSTEM2_D1_RESERVATION_RECEIPT_PATH: ${{ inputs.reservation_receipt_path }}
+        SYSTEM2_D1_GATE_OUTPUT: ${{ inputs.mode == 'result' && '/tmp/system2-d1-budget-result.json' || '/tmp/system2-d1-budget-reservation.json' }}
+      run: |
+        set -euo pipefail
+        node system2/scripts/run_d1_account_quota_gate_v0_1.mjs
