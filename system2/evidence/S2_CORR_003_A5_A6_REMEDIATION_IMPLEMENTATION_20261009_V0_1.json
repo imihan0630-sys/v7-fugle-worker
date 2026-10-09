@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "S2_CORR_003_A5_A6_REMEDIATION_IMPLEMENTATION_20261009_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "recordedAt": "2026-10-09T18:39:00+08:00",
+  "implementationLane": "REMEDIATION_LANE",
+  "state": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY_A5_A6",
+  "trigger": {
+    "independentAuditMerge": "ff5a59e6e1cb4aec34bcac89884b58fba3bf85cd",
+    "independentPr": 989,
+    "evidence": "system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json",
+    "findings": [
+      "A5_GRAPHQL_PARTIAL_SUM_KNOWN_ZERO",
+      "A6_MALFORMED_RESERVATION_LEDGER_SILENT_DROP"
+    ]
+  },
+  "implementation": {
+    "pr": 994,
+    "head": "c24c9a9cfb26c2854f665beb68f8a4068fd431be",
+    "merge": "0c74919d4746f27f14aec44d1841c01a4f32f12b",
+    "finalSystem2ResearchCi": {
+      "runId": 37918280572,
+      "jobId": 113779717874,
+      "conclusion": "PASS"
+    },
+    "finalV8Regression": {
+      "runId": 37918280554,
+      "jobId": 113779716832,
+      "conclusion": "PASS"
+    },
+    "priorIterationNotes": [
+      "First System2 CI exposed an over-strict generic rollover interpretation; remediation preserved prior-day offline rollover while keeping production same-day identity strict.",
+      "Second System2 CI exposed the same boundary in the new remediation test; the negative case was correctly moved to production identity mode rather than weakening runtime fail-close."
+    ],
+    "changedFiles": [
+      "system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md",
+      "system2/SYSTEM2_REMEDIATION_CHECKPOINT.md",
+      "system2/runtime/d1_account_quota_budget_v0_1.mjs",
+      "system2/scripts/run_d1_account_quota_gate_v0_1.mjs",
+      "system2/tests/d1_account_quota_a5_a6_failclosed_v0_1.test.mjs"
+    ],
+    "mergedMainReadback": true
+  },
+  "A5": {
+    "status": "SOURCE_LEVEL_FIXED",
+    "priorFailure": "Missing sum.rowsRead in an HTTP-200 GraphQL group was coerced to 0 and could yield known=true.",
+    "fix": [
+      "Require exactly one account result and at least one analytics group.",
+      "Require group date exactly equal requested UTC quota day.",
+      "Require non-empty databaseId.",
+      "Require rowsRead and rowsWritten to be JavaScript safe nonnegative integer numbers.",
+      "Reject missing/null/string/negative/fractional/non-finite metrics.",
+      "Reject duplicate date+databaseId identities and aggregate overflow.",
+      "Invalid/partial groups return known=false with rowsRead/rowsWritten null.",
+      "Quota evaluator therefore returns QUOTA_BUDGET_DEFER / ACCOUNT_WIDE_D1_USAGE_UNKNOWN."
+    ],
+    "finalIndependentAuditProbeReplay": {
+      "marker": "GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO",
+      "state": "SAFE",
+      "parserKnown": false,
+      "parserRowsRead": null,
+      "syntheticOtherwiseAuthorizedDecision": "QUOTA_BUDGET_DEFER",
+      "physicalCloudflareIo": false
+    },
+    "dedicatedMatrix": [
+      "valid two-database aggregate",
+      "missing rowsRead",
+      "missing rowsWritten",
+      "null metric",
+      "numeric string",
+      "negative metric",
+      "fractional metric",
+      "non-finite metric",
+      "missing/wrong date",
+      "missing/blank databaseId",
+      "duplicate identity",
+      "empty groups",
+      "missing/zero/multiple account results"
+    ],
+    "freshnessPolicy": "NOT_DOCUMENTED_BY_VENDOR; no freshness seconds or safety percentage invented"
+  },
+  "A6": {
+    "status": "SOURCE_LEVEL_FIXED",
+    "priorFailure": "Malformed same-day reservation JSON was silently skipped, making outstanding read/write reservation zero.",
+    "fix": [
+      "Ledger summary exposes integrityState VALID/INVALID.",
+      "Malformed/incomplete/ambiguous same-day rows do not disappear.",
+      "Integrity INVALID saturates outstanding write/read to 100000/5000000 as a blocking sentinel, not a usage claim.",
+      "Evaluator explicitly returns QUOTA_BUDGET_DEFER / D1_QUOTA_LEDGER_INTEGRITY_INVALID when ledger integrity is not VALID.",
+      "Production loader requires receipt identity validation before budgeting.",
+      "Production loader validates check_id, check_type, expected/observed payload, status, schema/directive/budget identity, check_timestamp and stored hash.",
+      "Current full identity hash and bounded legacy payload hash are supported; mismatch blocks.",
+      "Generic summarizer still permits legitimate prior-UTC-day rollover exclusion; production current-day SELECT treats wrong-day reservation identity as invalid."
+    ],
+    "finalIndependentAuditProbeReplay": {
+      "marker": "MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP",
+      "state": "SAFE",
+      "conservativeReservedRowsWritten": 100000,
+      "conservativeReservedRowsRead": 5000000,
+      "syntheticOtherwiseAuthorizedDecision": "QUOTA_BUDGET_DEFER",
+      "physicalCloudflareIo": false
+    },
+    "dedicatedMatrix": [
+      "malformed observed JSON",
+      "missing runKey/quotaDay/write/read cost",
+      "string cost",
+      "unknown check type",
+      "duplicate reservation runKey",
+      "orphan result",
+      "malformed result metric",
+      "production missing/invalid hash",
+      "production bad check ID",
+      "unsupported schema",
+      "wrong production quota day",
+      "bad timestamp",
+      "tampered stored hash",
+      "wrong timestamp UTC day"
+    ]
+  },
+  "priorA1A4": {
+    "state": "PASS_ENUMERATED_CASES_PRESERVED",
+    "auditLogMarker": "S2_CORR003_REVERIFY",
+    "sourceLevelA1A4": "PASS_FOR_ENUMERATED_CASES",
+    "physicalAcceptance": false
+  },
+  "system1Protection": {
+    "formalCoreChanged": false,
+    "tradingSignalsChanged": false,
+    "capitalAllocationChanged": false,
+    "productionBehaviorChanged": false,
+    "observedWholeV7MaxRowsWritten": 2825,
+    "writeReserveAuthorized": false,
+    "authorizedWriteReserveRows": null,
+    "readReserveAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "rule": "Do not promote 2825 or any unknown read cost into an authorized reserve."
+  },
+  "cloudflareCostBoundary": {
+    "paidTierChanged": false,
+    "billingMutationImplemented": false,
+    "largePhysicalD1WriteTestPerformed": false,
+    "freeTierOnly": true
+  },
+  "concurrentDataLane": {
+    "pr996ChangedFiles": [
+      "system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md",
+      "system2/evidence/S2_OCT09_ACCOUNT_D1_GRAPHQL_READONLY_PHYSICAL_USAGE_ACCEPTANCE_20261009_V0_1.json"
+    ],
+    "conflictWithA5A6Files": false
+  },
+  "dataLaneHandoff": {
+    "allowed": [
+      "Read-only account/D1 evidence when read headroom is proven.",
+      "Oct08 36-key / 11843-key read-only census under strict metadata/read budget guards.",
+      "Offline missing-key repair planning, conflict quarantine, PIT/immutability validation."
+    ],
+    "physicalWriteStillRequires": [
+      "registered physical writer",
+      "evidence-qualified write cost",
+      "evidence-qualified read cost",
+      "known conservative account usage",
+      "evidence-authorized System1 write reserve",
+      "evidence-authorized System1 read reserve",
+      "VALID quota ledger integrity",
+      "QUOTA_RESERVATION_GRANTED"
+    ],
+    "doNotBypass": [
+      "ACCOUNT_WIDE_D1_USAGE_UNKNOWN",
+      "READ_COST_EVIDENCE_REQUIRED",
+      "D1_QUOTA_LEDGER_INTEGRITY_INVALID",
+      "QUOTA_BUDGET_DEFER"
+    ]
+  },
+  "auditHandoff": {
+    "authority": "AUDIT_LANE_ONLY",
+    "reverify": [
+      "Replay missing/null/string/invalid GraphQL rowsRead/rowsWritten and duplicate identity cases.",
+      "Verify partial GraphQL returns known=false and cannot grant physical mutation.",
+      "Replay malformed same-day reservation/result rows and confirm explicit integrity INVALID.",
+      "Verify malformed ledger cannot yield outstanding 0 and cannot grant.",
+      "Verify production check-id/schema/hash/timestamp tamper blocks.",
+      "Verify legitimate UTC rollover remains supported without weakening current-day production identity.",
+      "Re-run A1-A4 enumerated cases.",
+      "Confirm System1 write/read reserve still false/null and no Formal Core/production/billing changes."
+    ],
+    "mayMarkVerifiedClosed": false,
+    "physicalClosureStillPending": [
+      "evidence-qualified System1 write/read reserve",
+      "bounded real multiwriter UTC-day grant/result/no-collision",
+      "later real System1 23:35/23:55 normal persistence",
+      "original CORR-003 physical acceptance criteria"
+    ]
+  }
+}

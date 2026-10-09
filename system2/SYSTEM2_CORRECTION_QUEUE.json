@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T18:09:35+08:00",
+  "updatedAt": "2026-10-09T18:39:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IN_PROGRESS",
+      "status": "FIX_IMPLEMENTED",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1297,7 +1297,18 @@
         "Independent adversarial test file was converted from non-failing reproduction to fail-on-regression acceptance; merged-main source reports reproducedFindingCount=0 while preserving original immutable PR #983/#984 evidence.",
         "PR #985 head 0aa9311720dbe50b9e8482855cfe43c901ee8a03: System2 Research CI 37905200346 PASS; V8 Regression 37905200365 PASS; Actual Holdings readonly 37905200501 PASS (not acceptance evidence).",
         "Latest-main drift immediately before #985 merge was zero; merged-main readback on a5977af950ed7902a4ac4d965edc18dd62ca30d2 confirms A1-A4, 16/16 read models, 13 physical writers, System1 reserves still unauthorized/null and no paid-plan authority.",
-        "Durable A1-A4 remediation evidence: system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json."
+        "Durable A1-A4 remediation evidence: system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json.",
+        "A5/A6 remediation PR #994 merged as 0c74919d4746f27f14aec44d1841c01a4f32f12b after independent PR #989 routed both fail-open defects back to REMEDIATION_LANE.",
+        "A5 fixed: GraphQL D1 usage parser rejects partial/missing/null/string/negative/fractional/non-finite rowsRead/rowsWritten, invalid/missing quota-day or database identity, duplicate identity, ambiguous account cardinality and empty groups; invalid usage returns known=false and cannot grant physical mutation.",
+        "A5 final CI replay marker GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO is SAFE: parserKnown=false, parserRowsRead=null, synthetic otherwise-authorized decision=QUOTA_BUDGET_DEFER.",
+        "A6 fixed: malformed/incomplete/ambiguous same-day ledger rows return integrityState=INVALID rather than disappearing; invalid ledger uses hard-cap blocking sentinel 100000 write / 5000000 read and evaluator explicitly returns D1_QUOTA_LEDGER_INTEGRITY_INVALID.",
+        "A6 production loader validates current-day receipt structure and exact check identity, allowed schema/directive/budget identity, timestamp and stored hash before budgeting; tampered hash returns LEDGER_CHECK_HASH_MISMATCH.",
+        "A6 final CI replay marker MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP is SAFE: conservative reservedWritten=100000, reservedRead=5000000, synthetic otherwise-authorized decision=QUOTA_BUDGET_DEFER.",
+        "Legitimate prior-UTC-day rollover remains supported in generic/offline summarization; production current-day ledger identity stays strict.",
+        "Dedicated A5/A6 adversarial matrix system2/tests/d1_account_quota_a5_a6_failclosed_v0_1.test.mjs PASS on final System2 Research CI 37918280572; prior A1-A4 independent reverify markers remain PASS.",
+        "Final PR #994 V8 Regression 37918280554 PASS; implementation head c24c9a9cfb26c2854f665beb68f8a4068fd431be.",
+        "Merged-main readback on 0c74919d4746f27f14aec44d1841c01a4f32f12b confirms no metric-zero fallback, explicit ledger integrity defer, production identity/hash/day validation, System1 write/read reserves still unauthorized/null and no paid-tier authority.",
+        "Durable A5/A6 evidence: system2/evidence/S2_CORR_003_A5_A6_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json."
       ],
       "verificationEvidence": [
         "Codepath audit confirms .github/workflows/system2-recent-a1-hot-history-warmup.yml allows ordinary main push on watched warmup paths to enter the credentialed physical D1 mutation step; job guard checks only github.ref==refs/heads/main. Durable evidence: system2/evidence/S2_CORR_20261007_003_WARMUP_PUSH_MUTATION_AUDIT_20261007_V0_1.json @ 164fa2c1213e4726e01d42c34187d4cb06d76631.",
@@ -1307,10 +1318,11 @@
         "PENDING_INDEPENDENT_AUDIT",
         "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED.",
         "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4",
-        "2026-10-09 independent exact-head CI: PR #989 test system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs; Research run 37915666601 PASS (273 test files), V8 run 37915666467 PASS. Source-level A1-A4 enumerated safeguards PASS only; separate GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO and MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP both UNSAFE. No Cloudflare physical mutation. Exact new evidence: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json"
+        "2026-10-09 independent exact-head CI: PR #989 test system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs; Research run 37915666601 PASS (273 test files), V8 run 37915666467 PASS. Source-level A1-A4 enumerated safeguards PASS only; separate GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO and MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP both UNSAFE. No Cloudflare physical mutation. Exact new evidence: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json",
+        "PENDING_INDEPENDENT_REVERIFY_A5_A6"
       ],
-      "finalDisposition": "REMEDIATION_REOPENED_BY_AUDIT_A5_A6_SOURCE_FAIL_OPEN_PHYSICAL_CLOSURE_PENDING",
-      "updatedAt": "2026-10-09T18:09:35+08:00"
+      "finalDisposition": "PENDING_INDEPENDENT_REVERIFY_A5_A6_AND_PHYSICAL_CLOSURE",
+      "updatedAt": "2026-10-09T18:39:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
