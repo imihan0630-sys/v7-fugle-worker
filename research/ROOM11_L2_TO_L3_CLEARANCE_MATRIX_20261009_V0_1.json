@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "ROOM11_L2_TO_L3_CLEARANCE_MATRIX_V0_1",
+  "room": "11｜統計驗證與策略市場狀態研究室",
+  "recordedDate": "2026-10-09",
+  "status": "SIX_REMAINING_L2_EXACT_BLOCKERS_FROZEN",
+  "formalCore": "LOCKED",
+  "acceptedPendingTrackerPatch": {
+    "module": "D18-06",
+    "acceptedLevel": "L3",
+    "acceptance": "research/D18_06_SIZE_STRATEGY_INTERACTION_L3_ACCEPTANCE_20261009_V0_1.md",
+    "trackerPatchReceipt": "research/ROOM11_D18_06_L3_TRACKER_PATCH_RECEIPT_20261009_V0_1.json"
+  },
+  "remaining": [
+    {
+      "module": "D16-17",
+      "topic": "Panel / Cross-sectional Models",
+      "blockerClass": "IMMUTABLE_MEMBERSHIP_AUTHORITY",
+      "currentEvidence": [
+        "physical numeric panel exists",
+        "official 2025 TWSE universe artifact exists",
+        "exact-equivalent rebuild correctly failed closed on source-vintage drift"
+      ],
+      "minimumPromotionTrigger": [
+        "retained immutable original-year row-level universe membership with source/version/hash",
+        "or a newly captured annual panel whose row memberships are immutable at the same evidence cut",
+        "executable panel builder with date clustering and missingness preserved",
+        "deterministic replay and common-support audit"
+      ],
+      "forbiddenShortcut": "current mutable TWSE membership may not backfill 2025 membership"
+    },
+    {
+      "module": "D16-20",
+      "topic": "Causal Inference",
+      "blockerClass": "REAL_TREATMENT_CONTROL_PANEL",
+      "preferredCandidate": "TWSE official Attention / Disposition designation quasi-experiment",
+      "currentEvidence": [
+        "official TWSE historical Attention/Disposition source and event clock are feasible",
+        "Taiwan price/session/short-side covariate sources exist",
+        "no same-cut untreated eligible candidate pool receipt exists"
+      ],
+      "minimumPromotionTrigger": [
+        "official treatment designation timestamp/version",
+        "frozen pre-treatment PIT covariates",
+        "same-cut untreated eligible candidate pool",
+        "explicit inclusion/exclusion reason ledger",
+        "overlap/positivity/common-support diagnostics",
+        "deterministic replay with post-treatment outcomes still closed"
+      ],
+      "forbiddenShortcut": "treated-only event rows cannot establish causal-panel feasibility"
+    },
+    {
+      "module": "D16-25",
+      "topic": "Probabilistic Decision / Bayesian / Uncertainty",
+      "blockerClass": "CANONICAL_CALIBRATION_RECEIPT",
+      "currentEvidence": [
+        "D16-19 calibration tooling is L3",
+        "decision/uncertainty contracts and ABSTAIN semantics are frozen",
+        "no genuine canonical Taiwan stock-return CalibrationReceipt exists"
+      ],
+      "minimumPromotionTrigger": [
+        "one genuine canonical D16-19 CalibrationReceipt over a frozen Taiwan PIT population",
+        "matching complete decision ledger",
+        "matured outcome join with dual denominator coverage",
+        "uncertainty/risk-coverage/ABSTAIN replay",
+        "no second calibrator or probability authority"
+      ],
+      "forbiddenShortcut": "synthetic or diagnostic probability series cannot promote D16-25"
+    },
+    {
+      "module": "D18-04",
+      "topic": "Breadth Participation × Strategy",
+      "blockerClass": "REAL_CLEAR_NO_ACTION_U2B_PAIR",
+      "currentEvidence": [
+        "CORR-007 code provenance binding VERIFIED_CLOSED",
+        "real TWTAWU positive JSON/CSV parity exists",
+        "U2B semantics and row/aggregate machine interface are frozen"
+      ],
+      "minimumPromotionTrigger": [
+        "real bounded TWTAWU negative-suspension completeness for the exact pair window",
+        "three required corporate-action family source refs on same window",
+        "hash-bound CLEAR_NO_ACTION continuity receipt",
+        "one physical U2B_READY_CLEAR_NO_ACTION Taiwan pair",
+        "row/aggregate builder passes RB-T01..T16 plus identity/U2B oracles"
+      ],
+      "forbiddenShortcut": "positive source parity is not negative completeness and cannot imply NO_EVENT"
+    },
+    {
+      "module": "D18-07",
+      "topic": "Risk-on / Risk-off",
+      "blockerClass": "GLOBAL_TRANSMISSION_RECEIPTS",
+      "currentEvidence": [
+        "domestic Taiwan risk context is PIT-feasible",
+        "CBC USD/TWD prospective feasibility exists",
+        "prior US cash close feasibility exists",
+        "global composite receipt family is incomplete"
+      ],
+      "minimumPromotionTrigger": [
+        "freeze selected global input family before outcomes",
+        "durable source/version/observedAt/availableAt receipts for every selected global input",
+        "Taiwan decision-clock and holiday/session alignment",
+        "revision-vintage semantics for macro releases where applicable",
+        "executable domestic-only/global-only/incremental context builder with UNKNOWN fail-closed"
+      ],
+      "forbiddenShortcut": "domestic weak tape or one US/global input cannot be relabeled composite GLOBAL_RISK_OFF"
+    },
+    {
+      "module": "D18-15",
+      "topic": "Business / Credit Cycle × Strategy",
+      "blockerClass": "UPSTREAM_CYCLE_PRODUCERS",
+      "currentEvidence": [
+        "D13-18 business-cycle semantics/falsification are frozen but real-time vintage remains pending",
+        "D22 credit primitives exist, but D22-11 credit-supply shock remains unidentified",
+        "D18-15 strategy-interaction contract already separates producer/consumer roles"
+      ],
+      "minimumPromotionTrigger": [
+        "D13-18 first-known business-cycle state receipt with vintage-complete components",
+        "D22 credit-cycle producer receipt with explicit supply-vs-demand identification or frozen bounded credit context",
+        "same decision-clock join into D18-15 context",
+        "executable strategy-interaction frame with UNKNOWN fail-closed",
+        "no outcome-tuned cycle classification"
+      ],
+      "forbiddenShortcut": "later revised macro data or generic credit conditions cannot backfill a historical cycle state"
+    }
+  ],
+  "fastestLikelyOrder": [
+    "D18-04 when DATA_LANE negative-completeness receipt lands",
+    "D16-20 if official designation same-cut untreated-pool receipt is built",
+    "D16-25 when first genuine D16-19 CalibrationReceipt lands",
+    "D16-17 when immutable row-level membership authority becomes available",
+    "D18-07 when global receipt family is frozen",
+    "D18-15 after D13-18 and D22-11 producer maturity"
+  ],
+  "maturityRule": "No module promotes from design alone; each trigger must be physically executable/replayable under the repository L3 gate.",
+  "noFormalChange": true
+}
