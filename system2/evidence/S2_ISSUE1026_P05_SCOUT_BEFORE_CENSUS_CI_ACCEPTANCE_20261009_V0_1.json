@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_36_KEY_SCOUT_BEFORE_11843_CENSUS_CODE_ACCEPTANCE_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "classification": "CLASS_A_SOURCE_LEVEL_CODE_AND_FAIL_CLOSED_TEST_ACCEPTANCE_ONLY",
+  "state": "SOURCE_LEVEL_GUARD_ACCEPTED_REAL_PHYSICAL_P05_REMAINS_PENDING",
+  "originalPr": {
+    "number": 1050,
+    "state": "CLOSED_UNMERGED_CONCURRENT_CHECKPOINT_CONFLICT",
+    "physicalD1Ops": 0
+  },
+  "acceptedPr": {
+    "number": 1051,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1051",
+    "merged": true,
+    "mergeSha": "e88e0ba2afe4c6085d4e2385e7833a59cb4d3b2e",
+    "headSha": "8e16cdf26e975175adcf7c65a8c8f878d652087b"
+  },
+  "prChecks": [
+    {
+      "name": "System2 Research CI",
+      "runId": 37945932942,
+      "conclusion": "success"
+    },
+    {
+      "name": "V8 Regression Tests",
+      "runId": 37945932902,
+      "conclusion": "success"
+    }
+  ],
+  "mainChecks": [
+    {
+      "name": "System2 Research CI",
+      "runId": 37946123853,
+      "conclusion": "success"
+    },
+    {
+      "name": "V8 Regression Tests",
+      "runId": 37946123841,
+      "conclusion": "success"
+    }
+  ],
+  "mainReadback": {
+    "runtimeSourcePath": "system2/runtime/issue1026_p05_prior_scout_physical_gate_v0_1.mjs",
+    "runtimeSourceBlob": "2d3de075c7edaca9183af22348fb93e3168f271e",
+    "workflowPath": ".github/workflows/system2-oct08-full-source-hot-d1-census-manual.yml",
+    "workflowBlob": "caa630013ba0ff5e25971d12a9bc616545c3dee6",
+    "testPath": "system2/tests/oct08_readonly_d1_account_budget_qualification_v0_1.test.mjs",
+    "testBlob": "45b660e5b57a4473ec6f80965f911eb780f98946",
+    "scoutBeforeBudgetGuardVerified": true
+  },
+  "guard": {
+    "mode": "FULL_11843",
+    "priorMandatory": "AUDIT_LANE_INDEPENDENT_REAL_36_OF_36_SCOUT_ACCEPTANCE_MAIN_JSON",
+    "actualRunJobArtifact": "REQUIRED_EXACT_GITHUB_ACTIONS_AND_SHA256",
+    "sampleCompleteness": "TWSE_AND_TPEX_SIX_DATES_EACH_THREE_UNIQUE_SOURCE_MATCHED_RAW",
+    "priorRowsReadCap": 35000,
+    "priorD1Writes": 0,
+    "fullCensusSeparateRowsReadCap": 150000,
+    "currentUtcDayAccountBudgetAttestationStillRequired": true,
+    "system1ReadReserveStillRequired": true,
+    "competingWriterCoordinationRequired": true,
+    "scoutIsNecessaryButNotSufficient": true,
+    "sourceOnlyManifestNotAcceptableAsScout": true
+  },
+  "physicalState": {
+    "p03SupportChecksDocumented": 3,
+    "p03SupportChecksTotal": 8,
+    "p05SupportChecksDocumented": 4,
+    "p05SupportChecksTotal": 9,
+    "oct08OfficialMarketDateSourceReceipts": 12,
+    "oct08OfficialSourceStockDateKeys": 11843,
+    "officialPerKeySourceManifestRunId": 37944021198,
+    "physicalHotD1ScoutAcceptedKeys": 0,
+    "physicalHotD1ScoutExpectedKeys": 36,
+    "physicalHotD1CensusAcceptedKeys": 0,
+    "physicalHotD1CensusExpectedKeys": 11843,
+    "physicalHotD1MissingKeyCount": "UNKNOWN",
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false,
+    "originalPhysicalGatesAccepted": 0,
+    "totalOriginalPhysicalGates": 5,
+    "correctionStatus": "VERIFYING"
+  },
+  "safety": {
+    "allPositivePhysicalSamplesInTestsAreSyntheticFixtures": true,
+    "quotaReservationCreated": false,
+    "physicalD1SqlSelectsExecuted": 0,
+    "physicalD1SqlWritesExecuted": 0,
+    "cloudflareR2Calls": 0,
+    "system1FormalRuntimeChanged": false,
+    "cloudflareBillingChanged": false
+  },
+  "handoff": {
+    "REMEDIATION_LANE": "Require independently accepted System1 read/write reserves, bounded account GraphQL lag/headroom and non-releasing shared ledger; cannot promote off CI or source-only receipts.",
+    "AUDIT_LANE": "Review original Issue 1026 P05 ordering, independent valid future 36 key Scout receipt, then separate 11,843 budget grant and D1 readback. Code PASS is not P05 physical PASS.",
+    "DATA_LANE": "Do not dispatch manual D1 workflows at unauthorized false/null reserve. Once prerequisites qualified Scout first; only later census; never infer physical missing count from source."
+  }
+}
