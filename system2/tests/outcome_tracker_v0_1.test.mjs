@@ -246,4 +246,75 @@ await assert.rejects(
   /mixed price spaces/,
 );
 
+
+const erasedMfe = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row, mfe: null,
+});
+assert.ok(erasedMfe.blockers.includes("EXCURSION_ERASURE:mfe"));
+
+const erasedMae = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row, mae: null,
+});
+assert.ok(erasedMae.blockers.includes("EXCURSION_ERASURE:mae"));
+
+const modifiedCost = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({
+    ...JSON.parse(row.outcome_json),
+    costScenarios: { BASE_COST: { revised: true } },
+  }),
+});
+assert.ok(modifiedCost.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costScenarios"));
+
+const closedRow = {
+  ...row, holding_sessions: 5, realized_return_after_cost: 0.05,
+};
+const alteredHolding = validateMonotonicOutcomeUpdateV0_1(closedRow, {
+  ...closedRow, holding_sessions: 6,
+});
+assert.ok(alteredHolding.blockers.includes("CLOSED_HOLDING_SESSIONS_REVISION"));
+
+const switchedPriceSpace = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({
+    ...JSON.parse(row.outcome_json),
+    priceSpace: "RAW",
+  }),
+});
+assert.ok(switchedPriceSpace.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:priceSpace"));
+
+
+const costModelReplacement = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({...JSON.parse(row.outcome_json),costModel:"REPLACED"}),
+});
+assert.ok(costModelReplacement.blockers.includes("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costModel"));
+
+const revisionOfOriginalSession = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({...JSON.parse(row.outcome_json),
+    sessions:[{...JSON.parse(row.outcome_json).sessions[0],sourceHash:"f".repeat(64)},
+      ...JSON.parse(row.outcome_json).sessions.slice(1)]}),
+});
+assert.ok(revisionOfOriginalSession.blockers.includes("IMMUTABLE_OUTCOME_SESSION_REVISION:1"));
+
+const forgedCostReturn = validateMonotonicOutcomeUpdateV0_1(day1Row, {
+  ...row,
+  outcome_json: JSON.stringify({...JSON.parse(row.outcome_json),
+    costScenarios:{...JSON.parse(row.outcome_json).costScenarios,
+      BASE_COST:{...JSON.parse(row.outcome_json).costScenarios.BASE_COST,
+        horizonReturns:{...JSON.parse(row.outcome_json).costScenarios.BASE_COST.horizonReturns,D1:0.99}}}}),
+});
+assert.ok(forgedCostReturn.blockers.includes("COST_SCENARIO_RETURN_MISMATCH:BASE_COST:D1"));
+
+const inconsistentScalar = validateMonotonicOutcomeUpdateV0_1(day1Row,{
+  ...row,mae:row.mae-0.01,
+});
+assert.ok(inconsistentScalar.blockers.includes("OUTCOME_JSON_SCALAR_MISMATCH:mae"));
+
+const erasedSessionHistory = validateMonotonicOutcomeUpdateV0_1(day1Row,{
+  ...row,outcome_json: JSON.stringify({...JSON.parse(row.outcome_json),sessions:[]}),
+});
+assert.ok(erasedSessionHistory.blockers.includes("OUTCOME_SESSION_HISTORY_ERASURE"));
+
 console.log("System2 decision outcome tracker V0.1 tests passed");

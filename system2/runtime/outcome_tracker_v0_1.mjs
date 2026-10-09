@@ -1,5 +1,5 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
-import { sha256Hex } from "./decision_archive.mjs";
+import { sha256Hex, canonicalStringify } from "./decision_archive.mjs";
 
 export const OUTCOME_HORIZONS_V0_1 = Object.freeze([1, 3, 5, 10, 20]);
 const PRICE_SPACES = new Set(["RAW", "ADJUSTED"]);
@@ -410,6 +410,135 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
   }
 
   const blockers = [];
+  // CORR-012: observed extrema are never allowed to disappear during maturation.
+  for (const key of ["mfe", "mae"]) {
+    if (existingRow[key] !== null && existingRow[key] !== undefined
+      && (nextRow[key] === null || nextRow[key] === undefined)) {
+      blockers.push(`EXCURSION_ERASURE:${key}`);
+    }
+  }
+
+  // A closed trade's holding period is historical evidence, not a recalculable preference.
+  if (existingRow.holding_sessions !== null && existingRow.holding_sessions !== undefined
+    && existingRow.realized_return_after_cost !== null
+    && existingRow.realized_return_after_cost !== undefined
+    && !equalNullableNumber(existingRow.holding_sessions, nextRow.holding_sessions, 0)) {
+    blockers.push("CLOSED_HOLDING_SESSIONS_REVISION");
+  }
+
+  // Fail closed on immutable context. Observations, horizons, and updatedAt may
+  // mature; price-space, strategy/execution assumptions and cost models may not.
+  let priorPayload, nextPayload;
+  try {
+    priorPayload = JSON.parse(existingRow.outcome_json);
+    nextPayload = JSON.parse(nextRow.outcome_json);
+    if (!priorPayload || typeof priorPayload !== "object" ||
+        !nextPayload || typeof nextPayload !== "object") throw new Error("invalid payload");
+  } catch {
+    blockers.push("OUTCOME_JSON_UNREADABLE");
+  }
+  if (priorPayload && nextPayload) {
+    const immutablePaths = [
+      "decisionId", "decisionHash", "symbol", "strategyId", "strategyVersion",
+      "decisionMarketDate", "decisionTimestamp", "referencePrice",
+      "referencePriceType", "priceSpace", "corporateActionState",
+      "corporateActionLineage", "regimeSnapshotHash", "regimeHash",
+      "executionHash", "costModelHash", "taxRuleHash", "entryPlan",
+      "costModel", "taxModel", "commissionModel", "slippageModel",
+      "costAssumptions", "executionAssumptions", "regime", "regimeId",
+    ];
+    for (const key of immutablePaths) {
+      if (canonicalStringify(priorPayload[key] ?? null) !== canonicalStringify(nextPayload[key] ?? null)) {
+        blockers.push(`IMMUTABLE_OUTCOME_PROVENANCE_REVISION:${key}`);
+      }
+    }
+    // Scenario returns mature with horizons. Freeze only cost model identity/rate,
+    // never the horizonReturns sub-object that legitimately gains observations.
+    const costContract = scenarios => Object.fromEntries(
+      Object.entries(scenarios ?? {}).map(([id, item]) => [
+        id, { roundTripCostRate: item?.roundTripCostRate, semantics: item?.semantics },
+      ]),
+    );
+    if (canonicalStringify(costContract(priorPayload.costScenarios))
+        !== canonicalStringify(costContract(nextPayload.costScenarios))) {
+      blockers.push("IMMUTABLE_OUTCOME_PROVENANCE_REVISION:costScenarios");
+    }
+
+    // Once a source session was observed, neither its date/source hash nor its
+    // OHLC/continuity details may be retroactively replaced during maturation.
+    if (!Array.isArray(priorPayload.sessions) || !Array.isArray(nextPayload.sessions)) {
+      blockers.push("OUTCOME_SESSION_LINEAGE_UNPROVEN");
+    } else if (nextPayload.sessions.length < priorPayload.sessions.length) {
+      blockers.push("OUTCOME_SESSION_HISTORY_ERASURE");
+    } else {
+      for (let index = 0; index < priorPayload.sessions.length; index += 1) {
+        if (canonicalStringify(priorPayload.sessions[index])
+            !== canonicalStringify(nextPayload.sessions[index])) {
+          blockers.push("IMMUTABLE_OUTCOME_SESSION_REVISION:" + (index + 1));
+        }
+      }
+    }
+
+    // The projected signal-minus-cost scenarios are not simulated fill returns.
+    // A forged rewrite of any already-published scenario return is prohibited.
+    const scenarios = nextPayload.costScenarios || {};
+    const rawHorizonReturns = nextPayload.horizonReturns || {};
+    for (const [scenarioId, scenario] of Object.entries(scenarios)) {
+      const rate = scenario?.roundTripCostRate;
+      if (!Number.isFinite(rate) || rate < 0
+          || scenario?.semantics !== "SIGNAL_RETURN_MINUS_COST_SCENARIO_NOT_REALIZED_FILL_RETURN") {
+        blockers.push("COST_SCENARIO_CONTRACT_INVALID:" + scenarioId);
+        continue;
+      }
+      for (const horizon of OUTCOME_HORIZONS_V0_1) {
+        const key = "D" + horizon;
+        const expected = rawHorizonReturns[key] === null || rawHorizonReturns[key] === undefined
+          ? null : rawHorizonReturns[key] - rate;
+        if (!equalNullableNumber(scenario?.horizonReturns?.[key], expected)) {
+          blockers.push("COST_SCENARIO_RETURN_MISMATCH:" + scenarioId + ":" + key);
+        }
+      }
+    }
+
+    // Scalar read models must never diverge from the immutable outcome payload.
+    // Historical minimal/unverifiable payloads are not eligible for in-place maturation.
+    if (priorPayload.decisionId !== undefined && priorPayload.decisionId !== existingRow.decision_id) {
+      blockers.push("OUTCOME_JSON_PRIOR_IDENTITY_MISMATCH");
+    }
+    if (nextPayload.decisionId !== nextRow.decision_id) {
+      blockers.push("OUTCOME_JSON_NEXT_IDENTITY_MISMATCH");
+    }
+    for (const [column, value] of [
+      ["mfe", nextPayload.mfe], ["mae", nextPayload.mae],
+      ["d1_return", nextPayload.horizonReturns?.D1],
+      ["d3_return", nextPayload.horizonReturns?.D3],
+      ["d5_return", nextPayload.horizonReturns?.D5],
+      ["d10_return", nextPayload.horizonReturns?.D10],
+      ["d20_return", nextPayload.horizonReturns?.D20],
+      ["realized_return_after_cost", nextPayload.simulatedExecution?.realizedReturnAfterCost ?? null],
+      ["holding_sessions", nextPayload.simulatedExecution?.holdingSessions ?? null],
+    ]) {
+      if (!equalNullableNumber(nextRow[column], value)) {
+        blockers.push("OUTCOME_JSON_SCALAR_MISMATCH:" + column);
+      }
+    }
+    if (nextPayload.updatedAt !== nextRow.updated_at) {
+      blockers.push("OUTCOME_JSON_UPDATED_AT_MISMATCH");
+    }
+
+    const priorExecution = priorPayload.simulatedExecution;
+    const nextExecution = nextPayload.simulatedExecution;
+    if (priorExecution && (
+      !nextExecution ||
+      ["executionVersion", "fillQuality"].some(
+        key => JSON.stringify(priorExecution[key] ?? null)
+          !== JSON.stringify(nextExecution[key] ?? null)
+      )
+    )) {
+      blockers.push("SIMULATED_EXECUTION_ASSUMPTION_REVISION");
+    }
+  }
+
   for (const key of ["d1_return", "d3_return", "d5_return", "d10_return", "d20_return"]) {
     const oldValue = existingRow[key];
     const nextValue = nextRow[key];
