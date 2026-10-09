@@ -65,7 +65,7 @@ for(const c of cases){
 }
 assert.equal(cases.length,4);
 const clean=await simulateTaiwanLongDailyPlanV0_1({
-  ...plan,simOrderId:"AUDIT13-V3-CLEAN",sessions:[entry,target],
+  ...plan,simOrderId:"AUDIT13-V3-CLEAN",sessions:[entry,bar(2,"2026-10-01",{open:101,high:110,low:99,close:108})],
 });
 assert.equal(clean.state,"CLOSED");
 assert.equal(clean.performanceEligible,true);
