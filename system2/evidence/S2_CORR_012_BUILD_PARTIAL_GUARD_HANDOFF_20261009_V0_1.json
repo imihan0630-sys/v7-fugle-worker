@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_CORR012_BUILD_PARTIAL_GUARD_HANDOFF_V0_1",
+  "recordedDate": "2026-10-09",
+  "correctionDirective": "S2-CORR-20261008-012",
+  "assignedLane": "BUILD_LANE",
+  "disposition": "PARTIAL_IMPLEMENTED_MERGED_MAIN_AUDIT_AND_FULL_LINEAGE_PENDING",
+  "canonicalQueueStatusIntended": "OPEN",
+  "mergedPr": 939,
+  "mergedCommit": "96b971e2db2ce365a2dccc10a42819a7853ec2f3",
+  "regressionHead": "ac742e691bf420b5c271ae735f0aea0a3ba95edf",
+  "tests": {
+    "system2ResearchCI": {
+      "runId": 37870100698,
+      "conclusion": "success"
+    },
+    "v8Regression": {
+      "runId": 37870100654,
+      "conclusion": "success"
+    },
+    "immutablePersistenceFirewall": {
+      "runId": 37870100655,
+      "conclusion": "success"
+    },
+    "independentEdgeProbeExecution": {
+      "runId": 37870100675,
+      "conclusion": "success"
+    }
+  },
+  "independentObservations": {
+    "corr012": {
+      "probes": [
+        "COST_JSON_ONLY_CHANGE",
+        "STRATEGY_JSON_ONLY_CHANGE",
+        "CLOSED_HOLDING_ONLY_CHANGE",
+        "MFE_ERASE_ONLY",
+        "MAE_ERASE_ONLY"
+      ],
+      "result": "5_OF_5_REJECTED_ON_PR_HEAD_NOT_INDEPENDENT_CLOSURE"
+    },
+    "corr013": {
+      "probes": [
+        "INVALID_SEPTEMBER_31",
+        "DUPLICATE_DATE",
+        "UNPROVED_OFFICIAL_SESSION_GAP",
+        "PARTIAL_UNKNOWN_OHLC_WINDOW"
+      ],
+      "result": "4_OF_4_UNSAFE_OPEN"
+    }
+  },
+  "implemented": [
+    "matured MFE and MAE erasure prohibited",
+    "closed holding-period and realized net-return rewrites prohibited",
+    "immutable strategy/cost/price-space/corporate-action/regime/entry-plan context changes rejected when stored",
+    "old session observations must be preserved byte-canonically; no truncation or revisions of source/date/OHLC",
+    "cost scenario identity/rate and derived signal-minus-cost horizon returns checked without equating to simulated fill economics",
+    "outcome_json projections must match scalar outcome table values during maturation",
+    "before D1 persistence, recompute complete outcome snapshot SHA256 and verify all numeric scalar read columns"
+  ],
+  "notYetProven": [
+    "full decision, strategy-version, regime, execution, cost and tax parent hash bindings in all new snapshots",
+    "append-only separately versioned outcome history for changes in assumptions instead of in-place schema upgrades",
+    "AUDIT_LANE independent re-verification of merged code and producer/consumer trust boundary",
+    "real physical cost-aware simulated execution outcomes and prospective PIT/OOS performance readiness"
+  ],
+  "environmentImpact": {
+    "cloudflareD1Reads": 0,
+    "cloudflareD1Writes": 0,
+    "cloudflareWorkerDeployment": false,
+    "system1FormalCoreModified": false,
+    "system1ProductionModified": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false
+  },
+  "ownership": "BUILD_LANE; final HIGH closure belongs to independent AUDIT_LANE"
+}

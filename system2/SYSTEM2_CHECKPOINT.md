@@ -3407,3 +3407,15 @@ BUILD next: deliver/accept the already active CORR-012/013 and data-readiness pr
 - PR-head System2 Research CI and V8 Regression PASS; main file readback confirmed after merge. No Worker/Cron, D1, migration, API, secret, paid data source or System1 files were changed. No actual physical source, next-day monitor/capacity freeze or D1 write success is certified.
 - Exact next BUILD work remains the HIGH `S2-CORR-20261008-012` and then `-013` (both OPEN at observed canonical queue), together with non-conflicting downstream clock integration only after DATA_LANE PIT/source and REMEDIATION_LANE quota gates. The existing draft CORR-012 PR #912 is not completed or authorized for merge by this checkpoint.
 - 23:45/00:15 production schedule deployment remains **NOT AUTHORIZED / NOT DEPLOYED**. Existing System2 19:00 bounded reader and System1 formal 23:35/23:55 schedule unchanged.
+
+## 2026-10-09 BUILD_LANE — CORR-012 first protective tranche merged; HIGH still OPEN
+
+- PR #939 merged into main as `96b971e2db2ce365a2dccc10a42819a7853ec2f3`. The stale draft #912 was *not* merged as-is.
+- Rebased original draft's monotonic guard onto latest main, then extended protection for historic session/source immutability, cost-model lineage, projected cost scenario/horizon consistency and JSON-to-scalar consistency.
+- In the isolated outcome persistence executor, complete snapshot SHA256 is recomputed and numeric projections are checked **before any D1 write**; attempts to forge a fresh outer batch hash cannot authenticate altered underlying outcome data.
+- PR-head CI: System2 Research `37870100698` PASS; V8 Regression `37870100654` PASS; CORR-011 immutable persistence regression `37870100655` PASS; independent CORR-012/013 edge probe `37870100675` PASS.
+- The edge probe classified 5/5 original CORR-012 tamper attempts SAFE (rejected), while 4/4 CORR-013 date/no-fill probes remain UNSAFE and are **not** repaired by this PR.
+- The corrective tranche is **PARTIAL_IMPLEMENTED / canonical S2-CORR-20261008-012 stays OPEN**, pending full decision/strategy/version/Regime/exec/cost hash binding, append-only separately versioned outcome records for assumption changes and independent AUDIT_LANE proof before VERIFIED_CLOSED.
+- No Cloudflare D1 reads/writes, no real worker/Cron, no System1 Formal Core, no live final selections, no push or orders. Historical-data continuity still remains DATA_LANE owned.
+- Durable evidence: `system2/evidence/S2_CORR_012_BUILD_PARTIAL_GUARD_HANDOFF_20261009_V0_1.json`. Next BUILD: finish CORR-012 producer-to-persistence provenance and maturation versioning; then CORR-013 official-session/unknown-NO_FILL repairs. Correction Queue remains source of truth; do not silently promote by checkpoint text.
+
