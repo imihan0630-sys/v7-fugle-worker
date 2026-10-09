@@ -8,8 +8,13 @@ const override=String(process.env.V7_RECOVERY_DATA_ONLY_DATE||'').trim();
 if(override){
   if(triggerSchedule) throw new Error('manual date is not allowed for cron');
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-  const delta=Date.parse(today+'T00:00:00Z')-Date.parse(override+'T00:00:00Z');
-  if(!Number.isFinite(delta)||delta<0||delta>86400000) throw new Error('manual data-only date must be today or yesterday');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(override)) throw new Error('manual data-only date must be YYYY-MM-DD');
+  const parsed=new Date(override+'T00:00:00Z');
+  if(!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==override)
+    throw new Error('manual data-only date invalid');
+  const delta=Date.parse(today+'T00:00:00Z')-parsed.getTime();
+  if(!Number.isFinite(delta)||delta<0||delta>7*86400000)
+    throw new Error('manual data-only date exceeds seven-day weekend/holiday recovery window');
 }
 const date=override||context.marketDate;
 await api.loadTradingCalendar({},Number(date.slice(0,4)));
