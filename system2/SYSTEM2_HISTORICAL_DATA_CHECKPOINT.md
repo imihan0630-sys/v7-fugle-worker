@@ -1768,3 +1768,21 @@ The earlier PR #991 handoff's `FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY` p
 DATA_LANE pre-registered one isolated **Cloudflare GraphQL account metadata-only** observation: `system2/evidence/S2_OCT08_ACCOUNT_D1_GRAPHQL_METADATA_ONLY_PREREG_20261009_V0_1.json`. New `system2/runtime/oct08_account_d1_graphql_metadata_observer_v0_1.mjs`, `system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs`, `system2/tests/oct08_account_d1_graphql_metadata_observer_v0_1.test.mjs` and path-scoped one-shot `.github/workflows/system2-oct08-account-d1-metadata-only.yml` use exactly one metadata GraphQL request, strict missing/null/partial counter validation and **ZERO physical D1 SELECT/INSERT or R2 calls**. Even valid account metrics are *lower-bound* observational evidence, not independent realtime headroom or ledger reconciliation. The tool always returns `physicalD1ReadAuthorized=false`, `physicalD1WriteAuthorized=false`; no manual boolean approval. PR CI, merge and a new physical metadata-only GraphQL result are separate evidence stages: **not claimed until independently observed**.
 
 Existing completed-session official source remains TWSE+TPEx 12/12 cells / 11,843 source-symbol-days through 2026-10-08. Physical 36-key and full 11,843-key D1 SQL census remain **NOT EXECUTED** until evidenced account read budget and no-competing-writer conditions exist; no D1 repair, backdated PIT, NC-T01 promotion, Worker/Formal/paid changes. GraphQL account observation alone cannot grant any D1 read/write authorization.
+
+## 2026-10-09 18:33 Asia/Taipei DATA_LANE — actual Cloudflare account GraphQL readonly counters; Hot D1 census still BLOCKED
+
+**Physical non-D1-SQL observation PASS, no quota grants.** Durable receipt: `system2/evidence/S2_OCT09_ACCOUNT_D1_GRAPHQL_READONLY_PHYSICAL_USAGE_ACCEPTANCE_20261009_V0_1.json`.
+
+Path-scoped GraphQL-only workflow [run 37918290130](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918290130) observed at **2026-10-09T10:33:14.906Z**:
+- account-wide UTC-day `rowsRead` lower bound: **880,643**;
+- account-wide UTC-day `rowsWritten` lower bound: **27,056**;
+- GraphQL source freshness guarantee: **NOT DOCUMENTED BY VENDOR**;
+- source account group read-only metadata query: 1; physical Cloudflare D1 SQL SELECT/INSERT: **0**;
+- [immutable artifact 11610697488](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918290130/artifacts/11610697488) digest `sha256:1bc1f6049ac15f18ab22b1e90db585b384146893651760d581050f1742261d62`;
+- offline metadata adversarial marker: `OCT08_ACCOUNT_D1_METADATA_ONLY_POSITIVE_AND_18_ADVERSARIAL_FAIL_CLOSED_PASS`.
+
+PR #992 added strict no-D1-SQL observer, PR #993 aligned Cloudflare account-token precedence, PR #995 allowed valid GraphQL `errors:null` while retaining fail-closed response-metric/partial-error guards. Earlier runs [37917686180](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37917686180) and [37918014240](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918014240) safely failed without D1 SQL and are preserved as negative evidence.
+
+**Read headroom remains UNPROVEN**, notwithstanding `880,643`: System1 after-market read reserve `false/null`, write reserve `false/null`, same-day account reservation ledger not independently reconciled by this metadata query, Cloudflare GraphQL may lag. A5/A6 independent AUDIT_LANE reverify has re-routed CORR-003 as **HIGH / FIX_IN_PROGRESS / REMEDIATION_LANE**; DATA_LANE cannot fix its quota runtime conflict units or close it. No full physical D1 read/write permission was granted; never infer `5M - 880643` as an available spendable budget.
+
+Official 2026-10-01/02/05/06/07/08 TWSE+TPEx source 12/12 and **11,843 source-stock-date keys** remain source-only; **36-key D1 sample NOT RUN**, **11,843-key D1 census NOT RUN**, missing physical D1 key count UNKNOWN, missing-only repair proposals not generated from a real census. Next: REMEDIATION repairs A5/A6, AUDIT re-verifies System1 reserves plus conservative account-wide read headroom/no competing writers, DATA_LANE then runs manual indexed D1 read-only scout and census if actually justified. No System1 Formal/trade/Worker mutation, R2 writes, paid plan, original historical PIT certification or retroactive event availability.

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "S2_OCT09_ACCOUNT_D1_GRAPHQL_READONLY_PHYSICAL_USAGE_ACCEPTANCE_V0_1",
+  "observationCategory": "CLOUDFLARE_ACCOUNT_GRAPHQL_READONLY_METADATA_PHYSICAL_PROOF",
+  "date": "2026-10-09",
+  "lane": "DATA_LANE",
+  "handoffTo": "AUDIT_LANE",
+  "correctionId": "S2-CORR-20261007-003",
+  "correctionCanonicalStatus": "HIGH_FIX_IN_PROGRESS_A5_A6_PENDING_REMEDIATION",
+  "implementation": {
+    "pr": 992,
+    "merge": "5811cce5257d90a12c01588bde2e84c9fd15ea3f",
+    "tokenFixPr": 993,
+    "tokenFixMerge": "ed9a9dbde9a701bbeafd846a62dd1e26bfa6c515",
+    "graphqlNullErrorsFixPr": 995,
+    "graphqlNullErrorsMerge": "6033315c0143000f7f03c905df8333300541094e"
+  },
+  "physicalObservation": {
+    "workflowRunId": 37918290130,
+    "jobId": 113779747175,
+    "workflow": "System2 Oct08 D1 Account Metadata Only Readonly",
+    "githubUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918290130",
+    "runConclusion": "success",
+    "graphQlStepConclusion": "success",
+    "observedAtUTC": "2026-10-09T10:33:14.906Z",
+    "observedAtTaipei": "2026-10-09T18:33:14+08:00",
+    "quotaDayUTC": "2026-10-09",
+    "rowsReadAccountAggregateLowerBound": 880643,
+    "rowsWrittenAccountAggregateLowerBound": 27056,
+    "provider": "CLOUDFLARE_D1_GRAPHQL_ACCOUNT_ANALYTICS",
+    "accountScope": "SYSTEM1_AND_SYSTEM2_SAME_CLOUDFLARE_ACCOUNT",
+    "freshnessGuarantee": "NOT_DOCUMENTED_BY_VENDOR",
+    "artifactId": 11610697488,
+    "artifactName": "s2-oct08-account-d1-metadata-only-37918290130-1",
+    "artifactDigest": "sha256:1bc1f6049ac15f18ab22b1e90db585b384146893651760d581050f1742261d62",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918290130/artifacts/11610697488",
+    "jobAdversarialTestMarker": "OCT08_ACCOUNT_D1_METADATA_ONLY_POSITIVE_AND_18_ADVERSARIAL_FAIL_CLOSED_PASS"
+  },
+  "priorDiagnosticObservations": [
+    {
+      "run": 37907066382,
+      "observedAtUTC": "2026-10-09T08:46:58Z",
+      "rowsReadLowerBound": 782497,
+      "rowsWrittenLowerBound": 26919,
+      "quotaGate": "QUOTA_BUDGET_DEFER",
+      "actualHotD1WarmupWrites": 0
+    },
+    {
+      "run": 37917686180,
+      "observation": "BLOCKED_ACCOUNT_GRAPHQL_METADATA_UNAVAILABLE_NO_PHYSICAL_D1_AUTHORITY",
+      "reason": "GRAPHQL_PARTIAL_OR_ERROR_RESPONSE",
+      "artifactId": 11611056067
+    },
+    {
+      "run": 37918014240,
+      "observation": "BLOCKED_ACCOUNT_GRAPHQL_METADATA_UNAVAILABLE_NO_PHYSICAL_D1_AUTHORITY",
+      "reason": "GRAPHQL_ERRORS_MALFORMED"
+    }
+  ],
+  "readAndWriteAuthorization": {
+    "currentSystem1ReadReserveAuthorized": false,
+    "currentSystem1ReadReserveRows": null,
+    "currentSystem1WriteReserveAuthorized": false,
+    "currentSystem1WriteReserveRows": null,
+    "observedSystem1V7DailyWriteMaxNotAuthorizedReserve": 2825,
+    "currentCensusReadBudgetHeadroomProven": false,
+    "rawAccountGraphQlIsNotRealtimeCertificate": true,
+    "accountLedgerPhysicallyReconciledByMetadataObserver": false,
+    "readOnlyCensusPhysicalAllowed": false,
+    "physicalD1WriteAllowed": false,
+    "sharedQuotaReservationGranted": false
+  },
+  "physicalImpact": {
+    "cloudflareGraphqlUsageQueries": 1,
+    "cloudflareD1SqlQueriesExecutedByMetadataObserver": 0,
+    "cloudflareD1RowsReadByMetadataObserver": 0,
+    "cloudflareD1RowsWrittenByMetadataObserver": 0,
+    "cloudflareR2RequestsByObserver": 0,
+    "system1ProductionRuntimeChanged": false,
+    "paidPlanChanged": false
+  },
+  "octoberCut": {
+    "asOfDate": "2026-10-08",
+    "twseTpexOfficialSourceDayCells": 12,
+    "officialStockDateRows": 11843,
+    "hotD1Sample36PhysicalState": "NOT_RUN",
+    "hotD1Full11843PhysicalState": "NOT_RUN",
+    "hotD1MissingKeyCount": "UNKNOWN",
+    "historicalPITReplayCertified": false,
+    "corporateActionContinuityCertified": false
+  },
+  "interpretation": "PHYSICAL_ACCOUNT_GRAPHQL_METADATA_PASS_BUT_READ_HEADROOM_AND_PHYSICAL_D1_CENSUS_BLOCKED",
+  "nonClaims": [
+    "Cloudflare GraphQL lower-bound counters do not establish remaining hard quota",
+    "The observed counter difference across separate polls is not attributed to the DATA_LANE observer",
+    "Nothing in this evidence grants quota reservations or physical D1 read/write permission",
+    "No retroactive original firstKnownAt/availableAt or PIT is asserted",
+    "DATA_LANE does not independently close S2-CORR-20261007-003"
+  ],
+  "nextAction": "REMEDIATION_LANE repairs A5/A6; AUDIT_LANE re-verifies and records account read reserve/headroom and no competing writer; only then consider 36-key exact indexed read-only D1 proof, later 11843-key census and offline missing-only repair plan"
+}
