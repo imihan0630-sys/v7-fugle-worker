@@ -22,6 +22,16 @@ on:
         required: false
         default: false
         type: boolean
+      data_scope:
+        description: 'When data_only=true, run exactly one stage (market/institution/quality), or explicit all'
+        required: false
+        default: market
+        type: choice
+        options:
+          - market
+          - institution
+          - quality
+          - all
 permissions:
   contents: read
 concurrency:
@@ -41,6 +51,7 @@ jobs:
           RECOVERY_INPUT_MARKET_DATE: ${{ inputs.market_date }}
           RECOVERY_INPUT_QUALITY_ONLY: ${{ inputs.quality_only }}
           RECOVERY_INPUT_DATA_ONLY: ${{ inputs.data_only }}
+          RECOVERY_INPUT_DATA_SCOPE: ${{ inputs.data_scope }}
         run: node tests/verify_official_data_dispatch_inputs.mjs
       - name: Skip official exchange holidays safely
         id: calendar
@@ -50,7 +61,8 @@ jobs:
         run: node tests/trading_day_gate.mjs
       - name: Sync today's official market data (no target changes or orders)
         if: >-
-          (github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date != '') ||
+          (github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date != '' &&
+           (inputs.data_scope == 'market' || inputs.data_scope == 'all') && steps.calendar.outputs.proceed == 'true') ||
           (steps.calendar.outputs.proceed == 'true' && steps.calendar.outputs.cross_midnight_fallback != 'true' &&
            (github.event_name != 'workflow_dispatch' || (inputs.market_date == '' && inputs.quality_only != true && inputs.data_only != true)))
         env:
@@ -59,7 +71,8 @@ jobs:
         run: node tests/prepare_market_cache.mjs
       - name: Sync official institutions and missing recent trading days (no plan changes)
         if: >-
-          (github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date != '') ||
+          (github.event_name == 'workflow_dispatch' && inputs.data_only == true && inputs.market_date != '' &&
+           (inputs.data_scope == 'institution' || inputs.data_scope == 'all') && steps.calendar.outputs.proceed == 'true') ||
           (steps.calendar.outputs.proceed == 'true' && steps.calendar.outputs.cross_midnight_fallback != 'true' &&
            (github.event_name != 'workflow_dispatch' || (inputs.market_date == '' && inputs.quality_only != true && inputs.data_only != true)))
         env:
@@ -92,7 +105,10 @@ jobs:
         run: node tests/recover_after_market.mjs
 
       - name: Historical official quality recovery
-        if: github.event_name == 'workflow_dispatch' && inputs.market_date != ''
+        if: >-
+          github.event_name == 'workflow_dispatch' && inputs.market_date != '' &&
+          (inputs.data_only != true || inputs.data_scope == 'quality' || inputs.data_scope == 'all') &&
+          steps.calendar.outputs.proceed == 'true'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ inputs.market_date }}
