@@ -1,0 +1,326 @@
+{
+  "schemaVersion": "SYSTEM1_ISSUE1024_P01_P02_P04_READONLY_SOURCE_INTAKE_V0_1",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "parentDirective": "S2-CORR-20261007-003",
+  "ownerLane": "SYSTEM1_PRODUCER_READONLY_EVIDENCE",
+  "upstreamMainAtCollection": "667a8e8287fb306f408d400f386326be76a93ac0",
+  "observedAtTaipei": "2026-10-09T21:58:08+08:00",
+  "observationScope": "EXISTING_REAL_GITHUB_ACTIONS_LOGS_KV_AND_GRAPHQL_READONLY_NOT_NEW_PHYSICAL_WORK",
+  "primarySources": [
+    {
+      "key": "PVE271",
+      "runId": 37694052477,
+      "jobId": 113041122665,
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "sourceMarker": "D02_PVE271_RESULT=",
+      "artifactId": 11514945619,
+      "artifactZipSha256": "7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
+      "readOnly": true
+    },
+    {
+      "key": "PVE272",
+      "runId": 37694255555,
+      "jobId": 113041830751,
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "sourceMarker": "D02_PVE272_RESULT=",
+      "artifactId": 11514766351,
+      "artifactZipSha256": "cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
+      "readOnly": true
+    },
+    {
+      "key": "PVE263",
+      "runId": 37649543821,
+      "jobId": 112888965126,
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "sourceMarker": "D02_PVE263_RESULT=",
+      "artifactId": 11495752402,
+      "artifactZipSha256": "ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
+      "readOnly": true
+    },
+    {
+      "key": "PVE264",
+      "runId": 37650006684,
+      "jobId": 112890551584,
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "sourceMarker": "D02_PVE264_RESULT=",
+      "artifactId": 11495133236,
+      "artifactZipSha256": "188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
+      "readOnly": true
+    },
+    {
+      "key": "C1_OCT08",
+      "runId": 37808995747,
+      "jobId": 113420649062,
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "artifactId": 11565090033,
+      "artifactZipSha256": "a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+      "readOnly": true
+    },
+    {
+      "key": "OCT09_QUOTA_DEFER",
+      "runId": 37907066382,
+      "jobId": 113742974317,
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37907066382",
+      "readOnly": true
+    },
+    {
+      "key": "OCT09_ACCOUNT_METADATA",
+      "runId": 37918290130,
+      "jobId": 113779747175,
+      "headSha": "6033315c0143000f7f03c905df8333300541094e",
+      "sourceUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37918290130",
+      "readOnly": true
+    }
+  ],
+  "directRealCronRows": [
+    {
+      "cronRowId": 1893,
+      "utcScheduledAt": "2026-09-21T15:35:35.000Z",
+      "taipei": "2026-09-21 23:35:35",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    },
+    {
+      "cronRowId": 2173,
+      "utcScheduledAt": "2026-09-22T15:35:31.000Z",
+      "taipei": "2026-09-22 23:35:31",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    }
+  ],
+  "sourceCoverage": {
+    "PVE271Window": [
+      "2026-09-15",
+      "2026-10-07"
+    ],
+    "PVE272CronMinUtc": "2026-09-14T01:00:00.766Z",
+    "PVE272CronMaxUtc": "2026-10-07T09:13:00.000Z",
+    "PVE272CronRows": 4745,
+    "healthyAfterMarketCronDates": [
+      "2026-09-21",
+      "2026-09-22"
+    ],
+    "healthyDatesCount": 2
+  },
+  "accountUsageObservations": [
+    {
+      "utcDay": "2026-09-21",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "writeQueries": 2331,
+        "readQueries": 23994
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-09-22",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "writeQueries": 1199,
+        "readQueries": 9938
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-10-07",
+      "classification": "SYSTEM1_AFTER_MARKET_INVOCATION_FAILED_D1_QUOTA",
+      "V7_DB": {
+        "rowsWritten": 1869,
+        "rowsRead": 431323,
+        "writeQueries": 1663,
+        "readQueries": 31749
+      },
+      "SYSTEM2_DB": {
+        "rowsWritten": 124629,
+        "rowsRead": 3943636,
+        "writeQueries": 20897,
+        "readQueries": 3795
+      },
+      "accountTotals": {
+        "rowsWritten": 126498,
+        "rowsRead": 4374959,
+        "writeQueries": 22560,
+        "readQueries": 35544
+      },
+      "primaryFailureTaipei": "2026-10-07 23:36:10",
+      "recoveryLeaseUtc": "2026-10-07T15:55:03.803Z",
+      "recoverySuccessfulBusinessPersisted": false,
+      "quotaCollisionWitnessed": true,
+      "source": [
+        "PVE263",
+        "PVE264"
+      ]
+    },
+    {
+      "utcDay": "2026-10-09",
+      "classification": "SHARED_ACCOUNT_METADATA_LOWER_BOUNDS_NOT_LIVE_REMAINING_QUOTA",
+      "observations": [
+        {
+          "runId": 37907066382,
+          "rowsWrittenLowerBound": 26919,
+          "rowsReadLowerBound": 782497,
+          "physicalWrite": false,
+          "state": "QUOTA_BUDGET_DEFER"
+        },
+        {
+          "runId": 37918290130,
+          "rowsWrittenLowerBound": 27056,
+          "rowsReadLowerBound": 880643,
+          "physicalWrite": false,
+          "state": "OBSERVED_ACCOUNT_USAGE_ONLY_READ_HEADROOM_NOT_CERTIFIED"
+        }
+      ],
+      "rowsReadSpendableHeadroomCertified": false
+    }
+  ],
+  "businessPersistence": {
+    "lastScanAttemptFromPVE263": {
+      "requestedDate": "2026-10-07",
+      "generatedTaipei": "2026/10/07 23:36:10",
+      "status": "FAILED",
+      "failureClass": "D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT",
+      "scanDate": null,
+      "selectedCount": null
+    },
+    "lastAfterMarketScanFromPVE263": {
+      "scanDate": "2026-09-29",
+      "generatedTaipei": "2026/09/30 05:18:52",
+      "selectedCount": 2,
+      "pipelineComplete": false,
+      "dailyReportGeneratedAt": null
+    },
+    "leaseFromPVE263": {
+      "date": "2026-10-07",
+      "leaseUpdatedUtc": "2026-10-07T15:55:03.803Z",
+      "snapshot": null
+    },
+    "scheduledC1AfterOct08": {
+      "intendedTradingDate": "2026-10-08",
+      "runId": 37808995747,
+      "trigger": "schedule",
+      "startedUtc": "2026-10-08T16:28:00Z",
+      "taipei": "2026-10-09 00:28",
+      "conclusion": "FAILURE",
+      "blockers": [
+        "C1_GENERATION_NOT_FOUND",
+        "UPSTREAM_ARTIFACT_MISSING"
+      ],
+      "genuineProspective": false,
+      "mayCountAsZeroPick": false,
+      "normalBusinessPersistReadback": false,
+      "sourceArtifactId": 11565090033
+    },
+    "subsequentNaturallyScheduledHealthyRealBusinessPersisted": false,
+    "verifiedSingleScanDeduplication": false,
+    "exactPlanReportCronD1Readback": false
+  },
+  "tradingCalendar": {
+    "source": "https://wwwc.twse.com.tw/zh/trading/holiday.html",
+    "marketHoliday": "2026-10-09",
+    "reason": "National Day observed",
+    "weekend": [
+      "2026-10-10",
+      "2026-10-11"
+    ],
+    "earliestNextOrdinaryTradeDay": "2026-10-12",
+    "futureSessionEvidenceCollected": false,
+    "safety": "Do not relabel holiday cron or manual replay as a natural trading-day business acceptance receipt"
+  },
+  "workPackages": [
+    {
+      "id": "P01",
+      "supportChecksDocumented": 3,
+      "supportChecksTotal": 7,
+      "qualified": false,
+      "newEvidence": "Direct witness of two actual after-market SUCCESS cron row IDs + whole-day rowsWritten and 10/07 D1_ERROR",
+      "missing": [
+        "at least one later genuine healthy trading-day 23:35 primary execution with persisted business parents",
+        "per-execution rowsWritten and indexed write amplification/retry attribution",
+        "independently authorized conservative reserve margin"
+      ]
+    },
+    {
+      "id": "P02",
+      "supportChecksDocumented": 3,
+      "supportChecksTotal": 7,
+      "qualified": false,
+      "newEvidence": "Direct witness of two whole-day V7_DB rowsRead, readQueries, 10/07 high read load and 10/09 lower-bound metadata",
+      "missing": [
+        "23:35 primary/conditional 23:55 per-execution rowsRead with retries",
+        "separate baseline vs extra workload, graphQL reporting lag and query/index amplification",
+        "independent read reserve approval"
+      ]
+    },
+    {
+      "id": "P04",
+      "supportChecksDocumented": 2,
+      "supportChecksTotal": 7,
+      "qualified": false,
+      "newEvidence": "10/07 quota D1_ERROR and 10/08 scheduled C1 original BLOCKED; two old Cron SUCCESS not enough for later P04",
+      "missing": [
+        "later ordinary trading-day naturally scheduled primary business plan+report+cron D1 readback",
+        "conditional recovery only if genuinely invoked, de-duplicated business scan",
+        "same-UTC-day account-wide no-quota-collision, proven business persistence SHA"
+      ]
+    }
+  ],
+  "physicalQualification": {
+    "P01": false,
+    "P02": false,
+    "P04": false,
+    "readReserveAuthorized": false,
+    "writeReserveAuthorized": false,
+    "authorizedReserveRows": null,
+    "authorizedReadReserveRows": null,
+    "allPhysicalGatesQualified": 0,
+    "totalPhysicalGates": 5,
+    "correctionId": "S2-CORR-20261007-003",
+    "correctionStatus": "VERIFYING",
+    "auditOwner": "AUDIT_LANE",
+    "noInferredReserveFromTwoDays": true
+  },
+  "changeSafety": {
+    "newD1Queries": 0,
+    "newD1Writes": 0,
+    "newProductionCronRuns": 0,
+    "newCloudflareApiCalls": 0,
+    "system1FormalCoreChanged": false,
+    "system1ProductionChanged": false,
+    "paidBillingChanged": false,
+    "newSecretsAccessed": false,
+    "physicalMigration": false,
+    "normalizedTradeRecommendations": false
+  },
+  "nextProducerAction": "On/after the actual 2026-10-12 ordinary session, read existing scheduled 23:35 primary and, if invoked, 23:55 recovery, matching lease/plan/report business persistence and D1 per-execution cost with same UTC-day GraphQL lag; classify missing/non-invoked as UNKNOWN. Do not create an artificial business run. Deliver source links and receipts to REMEDIATION/AUDIT for independent decision."
+}
