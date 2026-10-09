@@ -1,0 +1,7 @@
+{
+  "module": "D08-03",
+  "date": "2026-10-10",
+  "observation": "The 2026 archive job stopped when the official response status was not OK. The exact date is not present in the available log.",
+  "next": "Identify the exact date using a research-only diagnostic; preserve unknown observations; do not inspect returns.",
+  "formalCoreChanged": false
+}
