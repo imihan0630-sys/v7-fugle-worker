@@ -7,6 +7,9 @@ on:
       - ".github/workflows/system1-data-only-dispatch-offline.yml"
       - "tests/verify_official_data_dispatch_inputs.mjs"
       - "tests/test_system1_official_data_dispatch_v0_1.mjs"
+      - "tests/sync_institution_data.mjs"
+      - "tests/system1_institution_gap_resume_v0_1.mjs"
+      - "tests/test_system1_institution_gap_resume_v0_1.mjs"
 
 permissions:
   contents: read
@@ -23,3 +26,7 @@ jobs:
         run: node --check tests/verify_official_data_dispatch_inputs.mjs
       - name: Assert quality-only and data-only never scan
         run: node tests/test_system1_official_data_dispatch_v0_1.mjs
+      - name: Exact three-trading-date institution resumption refusal tests
+        run: |
+          node --check tests/sync_institution_data.mjs
+          node tests/test_system1_institution_gap_resume_v0_1.mjs
