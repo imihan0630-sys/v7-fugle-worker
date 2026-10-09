@@ -2937,3 +2937,19 @@ Frozen:
 The 2026-10-08 System1 parent is physically absent (`C1_GENERATION_NOT_FOUND`), so no promotion-grade live Residual RS cross-section may be reconstructed for that date.
 
 D09-03 remains L3/60. Exact next: on the next genuine immutable ordinary-session stock parent, freeze the full Residual RS cross-section with classification vintage, return20StartDate, peerCount and UNKNOWN states; then request D16 redundancy/OOS validation against own ret20, Sector RS, K-line, Price-Volume and regime.
+
+
+## BR-083 — D09-01 2026 TPEx effective-dated reclassification control
+
+Artifact:
+- `research/BR083_D09_01_TPEX_EFFECTIVE_DATED_RECLASSIFICATION_2026_V0_1.md`
+
+TPEx officially announced 13 company industry-category changes on 2026-05-19 with an explicit effective date of 2026-06-01. This creates a current-year cross-market membership-vintage witness.
+
+Frozen:
+- `CLASSIFICATION_ANNOUNCED_AT != CLASSIFICATION_EFFECTIVE_AT`;
+- `CURRENT_INDUSTRY_LABEL_CANNOT_BE_BACKFILLED_BEFORE_EFFECTIVE_DATE`.
+
+The 13 migrations include 1595 and 3131 into semiconductor, 4905 from communication-network to biotech/medical, and 6125 from optoelectronics to electrical machinery. Sector RS, Residual RS peer sets, breadth and concentration replays spanning 2026-06-01 must use the correct membership vintage.
+
+D09-01 remains L3/60. Exact next: maintain append-only TWSE/TPEx announcedAt/effectiveFrom/effectiveTo vintages and prospectively capture the next new classification announcement before its effective date.
