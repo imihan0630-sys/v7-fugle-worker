@@ -1566,3 +1566,11 @@ Docs: `system2/SYSTEM2_TWTAWU_POSITIVE_JSON_CSV_PARITY_READONLY_V0_1.md`.
 Preregistered evidence: `system2/evidence/S2_TWTAWU_POSITIVE_JSON_CSV_PARITY_DIAGNOSTIC_PREREG_20261009_V0_1.json`.
 
 System1 Formal Core, production runtime/Cron, selection strategy, push, capital and orders unchanged.
+
+## 2026-10-09 DATA_LANE — TWTAWU JSON positive PASS / MS950 CSV charset blocker diagnosed
+
+After PR #936 merged `ffc70aac82c10812a1c1b5cc49081210a4df1cee`, the no-secret public TWTAWU positive-parity physical Action `37868242821` was correctly fail-closed, NOT an NC-T01 pass. Official JSON exact positive-control interval 2026-08-13..14 returned HTTP 200, accepted official schema, 1 event row including real 1218 suspension/resumption. CSV export candidate returned HTTP 200, `Content-Type: text/csv;charset=ms950`; V0.1 used `Response.text()` default UTF8, so the Chinese CSV column contract was unreadable (`CSV official header not proven`). Original reported CSV hash applied to decoded/re-encoded UTF8 text and MUST NOT be reused as a real source-byte digest. Artifact #11588654924 sha256 `208f6be2673f96ad7f1ddf7531a4bdb3be4dd3a3e2ff577d18c9bacaee937841` preserved with BLOCKED.
+
+Independent DATA_LANE correction `system2-data/twtawu-ms950-raw-byte-parity-fix-20261009` obtains true bytes via `Response.arrayBuffer`, hashes the original bytes before charset transformation, decodes explicit MS950/CP950/Big5 through `TextDecoder('big5',{fatal:true})`, and fails closed on other content types, unsupported or corrupt encodings. Deterministic Big5 fixture/regression was added. Re-run once via existing no-Cloudflare post-merge workflow after CI PASS; do not manually dispatch a duplicate.
+
+Evidence: `system2/evidence/S2_TWTAWU_MS950_CSV_ENCODING_BLOCKER_20261009_V0_1.json`. Source export provenance, range exhaustiveness, absence/no suspension and original PIT clocks are unproven, even if re-run CSV row sets match. Corporate-action continuity / NC-T01 promotion remain blocked; System1 production/Formal, capital, orders and push unchanged.
