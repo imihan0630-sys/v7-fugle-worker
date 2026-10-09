@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "S2_00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_V0_1",
+  "status": "INDEPENDENT_READ_ONLY_GOVERNANCE_AUDIT_NO_PHYSICAL_PROMOTION",
+  "recordedAtUtc": "2026-10-09T03:44:00.633Z",
+  "recordedAtTaipei": "2026-10-09 11:44:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "observedMainBeforeWrite": "2508ada67d6d44532aa63a19144d3184df9eefe0",
+  "sourceMethods": [
+    "Latest main bootstrap, Registry, 00 checkpoint, correction queue and evidence file readbacks",
+    "Independent GitHub Actions job/step/artifact metadata and selected original job log readbacks",
+    "Official TWSE web page readback showing bounded date, whole-market option and CSV; not an export request exhaustiveness proof"
+  ],
+  "verificationLimitations": [
+    "No physical Cloudflare D1 or R2 source reads/writes by Room00",
+    "Original ZIP evidence contents not downloaded or independently recomputed",
+    "No new NC-T01 physical execution or complete continuity receipt",
+    "No implementation, System1 runtime, worker, scheduler, strategy, selection, notification or trading authority modified"
+  ],
+  "factualDeltas": {
+    "twtawuPositiveParity": {
+      "disposition": "POSITIVE_PARITY_PASS_NEGATIVE_COMPLETENESS_NOT_PROVEN",
+      "immutableSource": "system2/evidence/S2_TWTAWU_POSITIVE_JSON_CSV_PHYSICAL_PARITY_20261009_V0_1.json",
+      "runId": 37868573025,
+      "jobId": 113621076062,
+      "artifactId": 11589476886,
+      "artifactZipDigest": "sha256:9357725b1a5bbe4263dbc054f130cee836b57b9683636246272f903acc3ddca9",
+      "jobStepObservations": [
+        "Strict offline positive parity and no-promotion regressions: success",
+        "Read official bounded 1218 TWTAWU JSON and candidate CSV: success",
+        "Preserve positive physical PASS or blocked export contract: success",
+        "Confirm System1 isolation: success"
+      ],
+      "query": {
+        "sourceId": "TWSE_TWTAWU",
+        "market": "TWSE",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "symbolScope": "ALL_LISTED_SECURITIES",
+        "knownPositiveSymbol": "1218"
+      },
+      "json": {
+        "status": 200,
+        "rowCount": 1,
+        "rawByteSha256": "35ea58176c3e95d14b0ad8cad401b23b9bf127705775ac96d4fca7635901b64f"
+      },
+      "csv": {
+        "status": 200,
+        "rowCount": 1,
+        "rawByteSha256": "61730005722e21b5f247f8d64c522461370453b077559723fb952dff453ef5de",
+        "charset": "MS950",
+        "decodedWith": "Big5"
+      },
+      "rowSetParity": true,
+      "notProved": [
+        "official CSV query/range identity as independently certified export contract",
+        "complete source range and absence of pagination/truncation",
+        "revision/cancellation completeness",
+        "same-window negative suspension completeness",
+        "original decision-time PIT/source availability",
+        "real CLEAR_NO_ACTION continuity receipt",
+        "W0/W1 NC-T01 physical readiness"
+      ],
+      "interpretation": "The positive sample verifies same-authority representation agreement (L2), NOT independent completeness or a no-suspension proof."
+    },
+    "crossSystemD1Quota": {
+      "disposition": "PROVEN_ACCOUNT_SHARED_RISK_REMEDIATION_REQUIRED",
+      "assignedCorrection": "S2-CORR-20261007-003",
+      "canonicalCorrectionStatus": "OPEN",
+      "physicalSourceDocuments": [
+        "PRICE_VOLUME_CHECKPOINT.md PVE-263/PVE-264/PVE-267",
+        "PRICE_VOLUME_EVIDENCE.md PVE-263/PVE-264/PVE-267"
+      ],
+      "historicalUtcQuotaDay": "2026-10-07",
+      "cloudflareFreeRowsWrittenPerUtcDayFromFrozenCorrectionContract": 100000,
+      "accountUsage": {
+        "system2DbRowsWritten": 124629,
+        "system1V7DbRowsWritten": 1869,
+        "accountRowsWritten": 126498
+      },
+      "accountUsageRun": {
+        "runId": 37650006684,
+        "jobId": 112890551584,
+        "artifactId": 11495133236,
+        "artifactDigest": "sha256:188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+        "jobsAndAuditStepsSuccess": true
+      },
+      "system1Impact": {
+        "runId": 37649543821,
+        "jobId": 112888965126,
+        "artifactId": 11495752402,
+        "artifactDigest": "sha256:ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+        "failureClass": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+        "sourceDate": "2026-10-07",
+        "scope": "System1 after-market 23:35 primary + 23:55 recovery evidence"
+      },
+      "attributionCaveat": "Physical analytics are account totals; not every System2 write is attributed to one workflow. Do not infer exact available reserve from two historical dates.",
+      "escalation": "P0_SHARED_ACCOUNT_PRODUCTION_PROTECTION_IN_00_PRIORITY",
+      "requiredRemediation": [
+        "Account-level UTC-day measured reservation/consumption before discretionary System2 writes",
+        "Explicit evidence-derived System1 23:35/23:55 production persistence reserve, no fabricated number",
+        "Protect Stage1 System2 P0 operation; defer P2/P3 historical/backfill and push-trigger writes first",
+        "No physical D1 writes when account usage/row amplification or reservation unknown",
+        "Independent cross-system after-market evidence of successful business execution and normal persistence before closure",
+        "No owner-unapproved billing plan change"
+      ]
+    },
+    "recentPIT": {
+      "historicalRunId": 37854849181,
+      "marketDate": "2026-10-08",
+      "universeCount": 1972,
+      "historyReady": 46,
+      "continuityReady": 0,
+      "missingExpectedSymbolSessions": 44256,
+      "sampledJulyHotD1AbsentIdentities": 96,
+      "sampleNature": "Priority top-missing selection; not random nor full-universe proof",
+      "octoberOfficialSourceRunId": 37878847039,
+      "octoberOfficialDatedMarketReceipts": {
+        "passed": 12,
+        "expected": 12,
+        "rows": 11843
+      },
+      "octoberHotD1Bridge": "UNVERIFIED",
+      "interpretation": "Partial-symbol independent Shadow allowed only for exact eligible symbols/clock/inputs; full universe denominator must retain UNKNOWN. No forced fill or synthetic zero-pick."
+    }
+  },
+  "nct01MatrixCurrent": {
+    "frozenOracle": "system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json",
+    "samePhysicalCutObserved": false,
+    "w0Verified": false,
+    "w1Verified": false,
+    "tests": [
+      {
+        "id": "S22-T11",
+        "code": "STATIC_DESIGN_PRESERVED",
+        "physical": "PENDING",
+        "reason": "Require same-cut proof System1 Top6/rank unavailable"
+      },
+      {
+        "id": "S22-T12",
+        "code": "CORR005_AND_CORR008_CODE_GUARDS_VERIFIED",
+        "physical": "PENDING",
+        "reason": "Need same-cut measured ledger + manifest/hidden-fallback evidence"
+      },
+      {
+        "id": "S22-T13",
+        "code": "W1_CONTRACT_READY",
+        "physical": "BLOCKED",
+        "reason": "No real exact replay CLEAR_NO_ACTION continuity and W1 strategy-required evidence ready receipt"
+      },
+      {
+        "id": "S22-T14",
+        "code": "ZERO_PICK_FIREWALL_VERIFIED",
+        "physical": "PENDING",
+        "reason": "No real W1, therefore no legitimate physical zero-pick or candidates"
+      },
+      {
+        "id": "S22-T15",
+        "code": "TYPED_REF_CONTRACT_FROZEN",
+        "physical": "PENDING",
+        "reason": "11 exact typed digest refs not verified on one real execution cut"
+      },
+      {
+        "id": "S22-T16",
+        "code": "READONLY_RUNNER_MERGED",
+        "physical": "BLOCKED",
+        "reason": "No coherent immutable real physical artifact with independent 00 readback"
+      }
+    ],
+    "physicalPassTally": 0,
+    "requiredPhysicalPassTally": 6,
+    "result": "PHYSICAL_NCT01_NOT_ACCEPTED",
+    "antiShortcut": "No CI green/static clean/positive parity alone may be promoted to physical T11..T16 PASS."
+  },
+  "priorityAndExactContinuation": [
+    {
+      "priority": "P0",
+      "owner": "REMEDIATION_LANE",
+      "action": "Implement shared account D1 quota gate with System1 after-market reserve; independent Auditor verifies cross-database future physical sequence",
+      "gate": "CORR-003 OPEN"
+    },
+    {
+      "priority": "P0",
+      "owner": "DATA_LANE",
+      "action": "Upgrade real TWTAWU positive parity to official bounded range/absence completeness; prove exact witness replay window + three corporate-action families, then genuine W0 with immutable source lineage",
+      "gate": "TWTAWU NEGATIVE_COMPLETENESS NOT PROVEN"
+    },
+    {
+      "priority": "P0",
+      "owner": "BUILD_LANE + DATA_LANE + AUDIT_LANE",
+      "action": "Produce read-only/artifact-only real SHORT_MOMENTUM W1 and NC-T01 same-cut receipt, then independent matrix T11..T16 recomputation",
+      "gate": "PHYSICAL NC-T01 PENDING"
+    },
+    {
+      "priority": "P1",
+      "owner": "BUILD_LANE",
+      "action": "Complete CORR012 append-only physical D1/parent readback and CORR013 official-calendar/no-fill denominator physical proof; never promote model performance from uncertified fill",
+      "gate": "CORR-012/013 OPEN"
+    },
+    {
+      "priority": "P1",
+      "owner": "RESEARCH_01_TO_15",
+      "action": "Consume only changed genuine PIT/continuity/denominator evidence; avoid duplicate semantic contracts or synthetic improvement credit",
+      "gate": "RESEARCH_ONLY"
+    },
+    {
+      "priority": "SENTINEL",
+      "owner": "SYSTEM1",
+      "action": "Formal Core remains LOCKED; newly proven shared quota impact justifies protection escalation, not takeover of System1 business logic",
+      "gate": "FORMAL_CORE_LOCKED"
+    }
+  ],
+  "correctiveStatusChangeAuthorized": false,
+  "researchModuleCount": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
