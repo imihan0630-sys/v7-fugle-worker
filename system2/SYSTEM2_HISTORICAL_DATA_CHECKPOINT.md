@@ -1586,3 +1586,15 @@ Exact all-listed positive-control interval 2026-08-13..2026-08-14: JSON official
 Immutable Evidence: `system2/evidence/S2_TWTAWU_POSITIVE_JSON_CSV_PHYSICAL_PARITY_20261009_V0_1.json`. Before a negative bounded interval can be called complete, independently characterize export query contract, source-backed range exhaustiveness and no-truncation, repeat known-positive control, and bind full source revisions, suspension and PIT semantics. AUDIT_LANE owns eventual closure.
 
 DATA_LANE next critical independent workload remains 60-session historical PIT/NC-T01 continuity. Account-level D1 READ/WRITE budget remains REMEDIATION_LANE-owned, and fixed 2026-10-08 manual read-cost probe must not be launched blindly.
+
+## 2026-10-09 09:05 Asia/Taipei — Indexed 60-session D1 real READ-cost observation PASS, zero continuity promotion
+
+DATA_LANE's manual-only post-reset physical workflow [Run 37867913378](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37867913378) completed SUCCESS at 2026-10-09 09:05:29 Asia/Taipei, run attempt 1, head `76d3ddc5349b0d9bc69ca5d8a49d5457911f30c5`. Job `113618994793`; immutable artifact `11589146195`, digest `sha256:e14750120d839eedf5b6586ed439b2e5a297f92910509aa6c50d75aef751cc65`. Physical script and System1 isolation guards PASS.
+
+For **retrospective 2026-10-08 market date**, the current-symbol indexed 50-symbol-batch read plan observed 1,972 ordinary symbols, 46 bar-history eligible, **0 continuity-ready**, 41 Cloudflare isolated System2 D1 requests, **462,025 actual D1 rowsRead and 0 rowsWritten**. The physical query executes successfully after the account quota reset, but `rowsReadSavingsVsHistoricalBaseline=UNMEASURED_NOT_COMPARABLE`: there is **no** matched old-query read-cost control that would establish actual savings.
+
+This read occurred on 2026-10-09, not at the 2026-10-08 historical decision cutoff. Therefore original `firstKnownAt`, 60-session PIT replay, historical corporate-action/lifecycle/suspension `NO_EVENT`, NC-T01 continuity, full-universe replay, and zero-pick/strategy promotion all remain **UNPROVEN/BLOCKED**. Do not reinterpret the earlier independent July 96/96 post-facto official source presence as hot D1/cold R2/PIT completeness.
+
+Frozen evidence: `system2/evidence/S2_RECENT60_INDEXED_READ_COST_PHYSICAL_ACCEPTANCE_20261009_V0_1.json`. Prior manual-only preregistration remains unchanged as a distinct earlier record.
+
+**Next gate:** GitHub main `687432470b8ec81126356edb03d993d8d69df82a` launched guarded TWSE 2026 Jul–Sep one-shot [Run 37871005381](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37871005381), with preflight PASS and backfill running as observed at this handoff. Do not label the three months complete until final real run artifact, month-level receipts, D1 manifest, R2 HEAD/full-byte SHA256, and quota/single-writer isolation are independently read back. No TPEx concurrent writer or additional D1-heavy probe. REMEDIATION_LANE owns account-level quota coordination. System1 Formal/runtime untouched.
