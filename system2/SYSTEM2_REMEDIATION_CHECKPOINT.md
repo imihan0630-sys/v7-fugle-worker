@@ -275,3 +275,16 @@ Read-back main base: `793bf6fa5f4474a4879fbcb6e04ec686b0a946bb`. **REMEDIATION_L
 **Counts unchanged**: 15/38 documented supporting checks, 0/5 independently physically accepted gates, 19/19 original criteria traced but not closed. Write/read reserve authorizations false/null. A1–A7 independently source-level PASS, ticket HIGH/VERIFYING. No owner/billing/Cloudflare/System1 Formal/production mutations.
 
 **Exact next:** System1 #1024 genuine 10/12 natural 23:35/conditional 23:55 receipts plus per-execution read/write costs and independent reserves; DATA #1026 no D1 sample/writer until account-wide read budget / ledger / System1 reserves are independently qualified; AUDIT independently accepts or rejects P01–P05 and original 19. This evidence is **not** physical acceptance or execution authorization.
+
+
+## 2026-10-09 22:22 Taipei — CORR-003 cross-lane negative-evidence firewall (Class A, offline only)
+
+**New producer delta since PR #1042:**
+- System1 #1024 PR #1041 / merge `79769cc308bcbb60bff79451d45311b30bd3a21f`: missing cron D1 audit row in the 10/07 23:35/23:55 window coexists with a real failed 23:36:10 primary attempt and 23:55 lease. Canonical classification is **INVOKED_EXECUTION_FAILED_D1_QUOTA**, not UNOBSERVED and not a successful recovery. Historical logical rows are not physical quota rows.
+- DATA #1026 PR #1043 / merge `2e70f06d0bb6c72b3b5b64d546f834d5ee6afcd7`: five real same-2026-10-09 UTC account-day GitHub gate results across four registered writer classes (P0/P2/P3); all **PUSH_READ_ONLY_ONLY** or **QUOTA_BUDGET_DEFER**, downstream D1 mutation steps skipped. A successful workflow is protective denial, not physically granted P0/other writer persistence.
+
+**REMEDIATION owned follow-up:** Add reusable offline `system2/runtime/corr003_cross_lane_negative_evidence_firewall_v0_1.mjs`, test `system2/tests/corr003_cross_lane_negative_evidence_firewall_v0_1.test.mjs` and frozen source-level regression verdict `system2/evidence/S2_CORR003_CROSS_LANE_NEGATIVE_EVIDENCE_FIREWALL_20261009_V0_1.json`. It cross-compares System1 cron-vs-failed-business signals, DATA's own five-gate validation, GraphQL lower bound (not spendable headroom), both unapproved System1 reserves, independent AUDIT P01–P05 and the 19 original correction criteria. Adversarial negatives prevent cron disappearance / caller grant / forged P05 readback / approved reserve / stale audit from promoting physical acceptance. This code is **not imported into the Cloudflare runtime or the D1 gate**, and is not a quota grant authority.
+
+**Current authoritative counts remain unchanged:** A1–A7 source-only independent PASS; 15/38 supporting observations, **0/5 physical gates accepted**; original 19/19 mapped, HIGH/VERIFYING; P05 0/36 + 0/11,843 Hot D1, missing UNKNOWN. No D1 SQL, R2, System1 Formal/runtime, bills, schedules or pushes touched by remediation.
+
+**Next receiving lanes:** System1 #1024 for genuine 10/12 normal 23:35/conditional 23:55 per-run read/write attribution and later business D1 readback; DATA #1026 for real authenticated ledger / P03 multiwriter / P05 cautious samples only after independent qualified reserves and budget; AUDIT_LANE solely accepts final physical gates. Do not self-close or dispatch physical work.
