@@ -2,6 +2,11 @@ name: System2 Fugle Raw Hot History Bootstrap
 
 on:
   workflow_dispatch:
+    inputs:
+      quota_reservation_rows:
+        description: "Evidence-based conservative D1 rowsWritten reservation"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -34,7 +39,19 @@ jobs:
           node --check system2/scripts/run_daily_shadow_fugle_hot_history_bootstrap.mjs
           git diff --exit-code -- Worker.js wrangler.toml
 
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: FUGLE_RAW_HOT_HISTORY_BOOTSTRAP
+          requested_rows_written: ${{ inputs.quota_reservation_rows }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Bootstrap bounded raw history into isolated D1
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -63,11 +80,26 @@ jobs:
             "; continuity remains UNVERIFIED.\n");
           NODE
 
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: FUGLE_RAW_HOT_HISTORY_BOOTSTRAP
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Preserve bootstrap receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system2-fugle-raw-hot-history-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/system2-fugle-raw-hot-history.json
+          path: |
+            /tmp/system2-fugle-raw-hot-history.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 90
