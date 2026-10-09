@@ -1953,3 +1953,14 @@ Room11/D16 method receipt is required before any predictive access.
 D09-04 remains L3/60.
 
 Exact next: continue outcome-blind official dates and consume the D16 method return when it lands.
+
+
+## 2026-10-09 BR-076 / BR-077
+
+BR-076: 2026-10-08 TWSE breadth root exists, but no genuine same-clock prospective A2 TAIEX observation was found. Retrospective A2 backfill is forbidden. D09-12 remains L3/60 and genuine same-clock joint N remains 1.
+
+BR-077: 2026-10-08 official 34-industry total-return snapshot was captured at 2026-10-09 12:24 Asia/Taipei before the 2026-10-09 regular-session close. 17/34 industries were positive, so participation remains MIXED. Versus 2026-10-07, participation narrowed from 25/34 positive. Top3 became oil/gas, communication-network and cement; top3 overlap is 1/3 and turnover 2/3. Top9 retention is 4/9. Official lifecycle date count is now 7.
+
+One 2026-10-08 official root is shared by D09-06 and D09-07; consumer count does not duplicate independent N. Both remain L3/60. L4 remains gated by D16 validation and member-level breadth/concentration evidence.
+
+Exact next: keep D09-12 waiting for a genuinely same-clock TWSE-breadth plus A2-TAIEX session; continue D09-06/07 official append-only sector roots under unchanged semantics. Formal Core unchanged.
