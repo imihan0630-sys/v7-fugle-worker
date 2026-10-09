@@ -608,5 +608,10 @@
       ]
     }
   ],
-  "formalCoreImpact": "NONE"
+  "formalCoreImpact": "NONE",
+  "captureCommitSha": "0e8ed18fd028c34ab00552a9187e2414ec98fd91",
+  "room11FirstKnownAtUpperBound": "2026-10-09T04:39:10Z",
+  "firstKnownAtSemantics": "CONSERVATIVE_GITHUB_COMMIT_UPPER_BOUND_NOT_SOURCE_PUBLISHED_AT",
+  "pitEligibleAtOrAfter": "2026-10-09T04:39:10Z",
+  "sourcePublishedAtAuthentication": "SOURCE_REPORTED_MOPS_TIME_ONLY"
 }
