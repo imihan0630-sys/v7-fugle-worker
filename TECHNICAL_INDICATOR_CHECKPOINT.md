@@ -8841,3 +8841,29 @@ Independent remaining gates:
 5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
 6. Keep certified symbol-session/corporate-action lineage, immutable parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
 7. Formal Core remains unchanged.
+
+
+## Continuation update — TI-1655 through TI-1672
+
+- TI-1655~1659 consume the new physical TWSE TWTAWU positive-parity receipt without promoting its scope. GitHub Actions run 37868573025 / job 113621076062 on head 432fe6b068437c85ffa2abd924caf19577278e83 completed SUCCESS and produced artifact 11589476886 with digest sha256:9357725b1a5bbe4263dbc054f130cee836b57b9683636246272f903acc3ddca9.
+- TI-1660~1663 verify the exact 2026-08-13..2026-08-14 all-listed query. Official JSON returned 457 original bytes with SHA-256 35ea58176c3e95d14b0ad8cad401b23b9bf127705775ac96d4fca7635901b64f. Official CSV returned 217 original bytes with SHA-256 61730005722e21b5f247f8d64c522461370453b077559723fb952dff453ef5de, declared MS950, and was strictly decoded through Big5. Each representation normalized to one row and reproduced the real 1218 suspension on 2026-08-13 and resumption on 2026-08-14.
+- TI-1664~1666 retain the prior UTF-8 decoding failure as negative engineering evidence. Source bytes must be hashed before charset decoding; decoded/re-encoded text hashes cannot substitute for source identity. The corrected physical run closes only the positive transport/representation falsification prerequisite.
+- TI-1667~1669 classify the receipt as L2 same-authority representation parity. Both representations share the TWSE authority, producer family and domain. They do not establish L4 independent semantic attestation, independent backend ancestry, exact-range exhaustiveness, no-pagination/truncation, revision/cancellation coverage or original decision-time availability.
+- TI-1670 adds an 18-case executable consumer oracle. It separates positive parity, negative completeness and W0 readiness. Empty JSON + empty CSV remains UNKNOWN unless the export contract, bounded-range exhaustiveness, no truncation, revision coverage, source coverage and decision-time causality are all independently proven.
+- TI-1671 requires W0 to add certified symbol sessions, corporate-action ancestry, identity-transition disposition and continuity-receipt hash binding after negative completeness. The current physical receipt passes positive parity only; negative completeness=false and W0Ready=false.
+- TI-1672 freezes scientific limits. No historical PIT availability, outcome, alpha, OOS, walk-forward, multiple-testing, cost, fillability or market-state conclusion is created.
+- New research artifacts:
+  - research/D03_TWTAWU_PHYSICAL_PARITY_CONSUMER_20261009_V0_1.md
+  - research/d03_twtawu_physical_parity_consumer_cases_20261009_v0_1.json
+  - research/test_d03_twtawu_physical_parity_consumer_v0_1.mjs
+- No D03 module promotion and no FORMAL_OPTIMIZATION_CANDIDATE. D03 remains 56.7%; 12 modules = 10 L3 + 2 L2. Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. TWTAWU positive JSON/CSV row-set parity is physically accepted at L2 only. Do not rerun or relabel it as negative completeness.
+2. W0 next needs an independently pinned official export/query contract, exact-range exhaustiveness, no-truncation/pagination evidence, revision/cancellation coverage and a causal exact replay-window negative witness. Then bind certified symbol-session, corporate-action, identity-transition and continuity-receipt hash lineage.
+3. Parent lane remains unchanged: obtain the next ordinary-session live-quality-ready immutable C1 generation with authoritative V8.20 Formal-to-C1 binding.
+4. Independent semantic source attestation remains UNKNOWN because the two TWTAWU representations share the same authority/producer family.
+5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
+6. Keep immutable parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
+7. Formal Core remains unchanged.
