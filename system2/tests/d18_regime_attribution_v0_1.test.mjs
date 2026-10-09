@@ -203,4 +203,48 @@ assert.equal(tamperedAttribution.regimeEvidenceValid,false);
 assert(tamperedAttribution.reasons.includes("REGIME_VECTOR_EVIDENCE_INVALID"));
 assert.equal(Object.keys(tamperedAttribution.discreteRegimeLabels).length,0);
 
+
+const forgedClosedOutcomeBase={
+  ...outcomeBase,
+  simulatedExecution:{
+    state:"CLOSED",realizedReturnAfterCost:0.92,holdingSessions:2,
+    fillQuality:"FILLED",executionVersion:"S2-SYNTHETIC",
+  },
+};
+const forgedClosedOutcome={
+  ...forgedClosedOutcomeBase,
+  outcomeHash:await sha256Hex(forgedClosedOutcomeBase),
+};
+const gatedClosed=await buildD18RegimeAttributionReceiptV0_1({
+  ...base,receiptId:"D18-ATTR-UNCERTIFIED-CLOSED",
+  outcomeSnapshot:forgedClosedOutcome,
+});
+assert.equal(gatedClosed.state,"MATURED");
+assert.equal(gatedClosed.metrics.stockReturn,0.04);
+assert.equal(gatedClosed.signalHorizonObservationOnly,true);
+assert.equal(gatedClosed.metrics.simulatedExecution.realizedReturnAfterCost,null);
+assert.equal(gatedClosed.metrics.simulatedExecution.executionDenominatorEligible,false);
+assert.equal(gatedClosed.executionEvidenceGate.classification,"MODELED_CLOSED_NOT_CERTIFIED");
+assert.equal(gatedClosed.certifiedExecutionReturn,null);
+assert.equal(gatedClosed.certifiedSelectedToTriggeredDenominator,null);
+assert.equal(gatedClosed.certifiedNoFillDenominator,null);
+
+const callerClaimsProvenNoFillBase={
+  ...outcomeBase,
+  simulatedExecution:{
+    state:"NO_FILL",proofCompleteNoFill:true,
+    noFillDenominatorEligible:true,calendarProof:"VERIFIED",
+    realizedReturnAfterCost:null,
+  },
+};
+const callerClaimsProvenNoFill=await buildD18RegimeAttributionReceiptV0_1({
+  ...base,receiptId:"D18-ATTR-UNVERIFIED-NOFILL",
+  outcomeSnapshot:{...callerClaimsProvenNoFillBase,
+    outcomeHash:await sha256Hex(callerClaimsProvenNoFillBase)},
+});
+assert.equal(callerClaimsProvenNoFill.executionEvidenceGate.classification,"NO_FILL_NOT_CERTIFIED");
+assert.equal(callerClaimsProvenNoFill.executionEvidenceGate.noFillDenominatorEligible,false);
+assert.equal(callerClaimsProvenNoFill.certifiedNoFillDenominator,null);
+assert.match(callerClaimsProvenNoFill.attributionVersion,/V0_2/);
+
 console.log("D18 regime attribution tests: PASS");
