@@ -728,7 +728,9 @@ export async function simulateTaiwanLongDailyPlanV0_1({
     fillQuality = "DATA_UNKNOWN";
     grossReturn = null;
     netReturn = null;
-    if (!entryFill) fills = [];
+    // Candidate price touches are still visible in entryFill/exitFill for
+    // forensic diagnostics, but must NOT become persisted simulated fills.
+    fills = [];
   }
   const base = {
     order,
@@ -746,6 +748,7 @@ export async function simulateTaiwanLongDailyPlanV0_1({
     blockedObservations: Object.freeze(blockedObservations),
     proofCompleteNoFill: false,
     noFillDenominatorEligible: false,
+    fillsSuppressedDueToUnknown: uncertainInterval && state === "DATA_INCOMPLETE",
     sessionProofVersion: "S2_CORR013_CHRONOLOGY_UNKNOWN_WINDOW_V0_2",
     calendarProof: "NO_INDEPENDENT_OFFICIAL_CALENDAR_RECEIPT",
     simulatedAt: asOf,
