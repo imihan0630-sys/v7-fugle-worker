@@ -12,6 +12,18 @@ const ENDPOINTS=[
  {name:"quality",path:"/api/quality-status?marketDate="+MARKET_DATE}
 ];
 export const safeNumber=x=>Number.isFinite(Number(x))&&x!==null&&x!==""?Number(x):null;
+export function safeDateTokens(items){
+ if(!Array.isArray(items))return [];
+ return items.flatMap(value=>{
+  if(typeof value!=="string")return [];
+  const found=value.match(/20[0-9]{2}[-/][0-9]{2}[-/][0-9]{2}|20[0-9]{6}/);
+  if(!found)return [];
+  let date=found[0].replaceAll("/","-");
+  if(date.length===8)date=date.slice(0,4)+"-"+date.slice(4,6)+"-"+date.slice(6);
+  return [date];
+ }).slice(0,5);
+}
+
 export function assessReadiness(endpoints,marketDate=MARKET_DATE){
  const reasons=[];
  const s=endpoints?.scan||{},m=endpoints?.market||{},
@@ -55,21 +67,13 @@ function summarize(name,raw,status){
   obj.ready=raw.ready===true;
   obj.historicalReadback=raw.historicalReadback===true;
   // Only export date tokens; never pass unfiltered Worker strings into evidence.
-  const safeDates=items=>Array.isArray(items)?items.flatMap(value=>{
-    if(typeof value!=="string")return [];
-    const found=value.match(/20\\d{2}[-/]\\d{2}[-/]\\d{2}|20\\d{6}/);
-    if(!found)return [];
-    let date=found[0].replaceAll("/","-");
-    if(date.length===8)date=date.slice(0,4)+"-"+date.slice(4,6)+"-"+date.slice(6);
-    return [date];
-  }).slice(0,5):[];
-  obj.validTradingDates=safeDates(raw.validDates);
+  obj.validTradingDates=safeDateTokens(raw.validDates);
   obj.validTradingDateCount=Array.isArray(raw.validDates)?raw.validDates.length:null;
   obj.validDateEntryKinds=Array.isArray(raw.validDates)?
     [...new Set(raw.validDates.map(v=>Array.isArray(v)?"array":typeof v))].slice(0,3):[];
   obj.validDateStringLengths=Array.isArray(raw.validDates)?
     raw.validDates.filter(x=>typeof x==="string").map(x=>x.length).slice(0,3):[];
-  obj.missingTradingDates=safeDates(raw.missingDates);
+  obj.missingTradingDates=safeDateTokens(raw.missingDates);
   obj.missingTradingDateCount=Array.isArray(raw.missingDates)?raw.missingDates.length:null;
  } else if(name==="quality"){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
