@@ -29,14 +29,15 @@ function classify(path, source) {
   const sharedWriterGroup = /^\s*group:\s*system2-isolated-d1-writer\s*$/m.test(source);
   const hasSystem2Credentials = /SYSTEM2_CLOUDFLARE_API_TOKEN/.test(source);
   const declaredExecutionEntrypoint = physicalEntry.test(source);
+  const unknownEventSyntax = events === null;
   const push = events?.includes("push") ?? false;
   const schedule = events?.includes("schedule") ?? false;
   const reservationsInWorkflow = /(?:ACCOUNT_WIDE_D1_RESERVATION_GRANTED|D1_RESERVATION_GRANT|D1_QUOTA_RESERVATION_TOKEN)/.test(source);
   return {
     path, events: events ?? ["UNPARSEABLE_TRIGGER"],
     sharedWriterGroup, hasSystem2Credentials, declaredExecutionEntrypoint,
-    push, schedule,
-    pushWriterExposure: push && sharedWriterGroup && declaredExecutionEntrypoint,
+    push, schedule, unknownEventSyntax,
+    pushWriterExposure: (push || unknownEventSyntax) && sharedWriterGroup && declaredExecutionEntrypoint,
     ungroupedPhysicalEntrypoint: hasSystem2Credentials && declaredExecutionEntrypoint && !sharedWriterGroup,
     reservationProofObservedAtWorkflowLevel: reservationsInWorkflow,
   };
@@ -51,6 +52,7 @@ assert.ok(cohort.length > 0, "isolated D1 writer registry missing");
 assert.equal(new Set(cohort.map(x => x.path)).size, cohort.length);
 const pushWriters = cohort.filter(x => x.pushWriterExposure);
 const ungrouped = rows.filter(x => x.ungroupedPhysicalEntrypoint);
+const unknownTriggers = rows.filter(x => x.unknownEventSyntax && (x.sharedWriterGroup || x.hasSystem2Credentials));
 // Negative controls: the scanner must notice a dangerous push being introduced,
 // and the loss of the concurrency group, and must not mistake manual for push.
 const fixture = [
@@ -67,6 +69,8 @@ const lostGroup = pushFixture.replace("group: system2-isolated-d1-writer", "grou
 assert.equal(classify("fixture/ungrouped.yml", lostGroup).ungroupedPhysicalEntrypoint, true);
 assert.equal(eventNames("name: unknown\non: [push, workflow_dispatch]"), null,
   "unhandled YAML trigger forms must not be silently counted as no-push");
+assert.equal(classify("fixture/inline-on.yml", pushFixture.replace("on:\n  push:\n  workflow_dispatch:", "on: [push, workflow_dispatch]")).pushWriterExposure, true,
+  "unparsed on: syntax must be conservatively flagged as a writer exposure");
 
 for (const row of cohort) {
   console.log("SYSTEM2_AUDIT_CORR003_WRITER " + JSON.stringify(row));
@@ -81,6 +85,7 @@ console.log("SYSTEM2_AUDIT_CORR003_SUMMARY " + JSON.stringify({
   pushEntrypointPaths: pushWriters.map(x => x.path),
   ungroupedCandidateCount: ungrouped.length,
   ungroupedCandidatePaths: ungrouped.map(x => x.path),
+  unknownTriggerCandidatePaths: unknownTriggers.map(x => x.path),
   globalDailyBudgetPhysicallyVerified: false,
   status: "OBSERVATIONAL_AUDIT_ONLY_CORR003_STILL_OPEN",
   auditProbePassed: true,
