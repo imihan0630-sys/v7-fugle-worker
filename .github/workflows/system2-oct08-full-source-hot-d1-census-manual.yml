@@ -16,6 +16,12 @@ on:
         default: false
         description: "All cross-system D1 writers coordinated; no competitor"
 
+      read_budget_evidence_path:
+        description: "Reviewed GitHub-main DATA_LANE/REMEDIATION_LANE quota-day read headroom receipt path"
+        required: true
+        type: string
+        default: ""
+
 permissions:
   contents: read
 
@@ -39,8 +45,17 @@ jobs:
           node system2/tests/oct08_full_source_to_hot_d1_census_readonly_v0_1.test.mjs
           node --check system2/scripts/audit_oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs
           git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fail-closed account-wide read-budget preflight (no D1 I/O)
+        env:
+          S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
+          S2_D1_NO_COMPETING_WRITER_CONFIRMED: ${{ inputs.no_competing_d1_writer }}
+          S2_OCT08_BUDGET_GATE_RESULT: /tmp/s2-oct08-read-budget-evidence-preflight.json
+        run: |
+          node system2/tests/oct08_readonly_d1_account_budget_qualification_v0_1.test.mjs
+          node system2/scripts/qualify_oct08_readonly_d1_account_budget_v0_1.mjs FULL_11843
       - name: Rehash all 12 frozen official source days before bounded D1 full-key census
         env:
+          S2_OCT08_READ_BUDGET_ATTESTATION_PATH: ${{ inputs.read_budget_evidence_path }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           S2_D1_CENSUS_BUDGET_CONFIRMED: ${{ inputs.cross_system_d1_read_budget_confirmed }}
@@ -53,6 +68,7 @@ jobs:
         with:
           name: s2-oct08-full-d1-census-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/s2-oct08-full-source-hot-d1-census.json
+            /tmp/s2-oct08-read-budget-evidence-preflight.json
           if-no-files-found: warn
           retention-days: 90
       - name: Protect System1 Formal runtime
