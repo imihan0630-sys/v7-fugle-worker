@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "S2_CORR013_BUILD_PARTIAL_FAIL_CLOSED_V0_2",
+  "correction": "S2-CORR-20261008-013",
+  "owner": "BUILD_LANE",
+  "mainBaseAtStart": "ef4d8f3f202e6b6eec54352e2a747fa259fc9032",
+  "implementationStatus": "PARTIAL_CODE_GUARD_AWAITING_FULL_CALENDAR_PARENT_PROOF_AND_AUDIT",
+  "releaseAuthorization": "RESEARCH_SHADOW_ONLY_NO_STRATEGY_PROMOTION",
+  "codeChanges": [
+    "Strict canonical Gregorian YYYY-MM-DD, weekday sanity, unique increasing session dates in both simulation and outcome trackers",
+    "Long unproved session gaps (>3 calendar days) fail closed; shorter gaps DO NOT prove exchange calendar continuity",
+    "Missing OHLC during eligible entry window becomes DATA_INCOMPLETE and cannot be finalized as NO_FILL",
+    "Earlier unknown/blocked entry or exit evidence prevents later apparent CLOSED simulations from entering returns/performance; tentative fills not persisted",
+    "Unknown outcome OHLC disables performance eligibility; signal observation fields preserved with warnings",
+    "Legacy synthetic NO_FILL still labeled NO_FILL with proofCompleteNoFill=false, noFillDenominatorEligible=false; downstream must check flags before counting denominator",
+    "Clean known OHLC synthetic later CLOSE still eligible at code-model level but physical source/PIT and actual execution not certified"
+  ],
+  "independentAuditsAtEarlierHead": {
+    "head": "33b6e58f309677877e07a25fa4361832e32ea8ba",
+    "calendarNoFillV0_2": {
+      "run": 37876353868,
+      "conclusion": "success",
+      "negativeProbes": 9,
+      "safe": 9,
+      "unsafe": 0
+    },
+    "unknownThenLaterCloseV0_3": {
+      "run": 37876353927,
+      "conclusion": "success",
+      "negativeProbes": 4,
+      "safe": 4,
+      "unsafe": 0,
+      "syntheticCleanClosePositive": true
+    },
+    "originalCorr012013V0_1": {
+      "run": 37876353862,
+      "conclusion": "success",
+      "note": "Legacy observer classifies DATA_INCOMPLETE return as UNSAFE if no exception, even though newer V0.2 and V0.3 explicitly accept DATA_INCOMPLETE. Preserve this discrepancy; do not alter AUDIT_LANE test or claim all old observations safe."
+    }
+  },
+  "pending": [
+    "Post-edit full CI System2 + V8 + independent audits on latest PR head",
+    "Independent authenticated exchange calendar date-set receipt and longest holiday-gap continuity",
+    "Bind exact source hashes, PIT/firstKnownAt/availableAt, corporate actions, and full-window source availability to execution",
+    "Version-aware downstream denominator and fill/persistence consumers must enforce noFillDenominatorEligible=false",
+    "AUDIT_LANE independent end-to-end closure; do not mark FIX_IMPLEMENTED or VERIFIED_CLOSED at this stage"
+  ],
+  "protected": {
+    "cloudflareD1RowsRead": 0,
+    "cloudflareD1RowsWritten": 0,
+    "cloudflareWorkerRuntimeChanged": false,
+    "system1FormalCoreChanged": false,
+    "productionTradingAuthorized": false,
+    "capitalImpact": false,
+    "ordersEnabled": false,
+    "livePushEnabled": false
+  }
+}
