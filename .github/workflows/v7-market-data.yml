@@ -116,6 +116,7 @@ jobs:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ inputs.market_date }}
           QUALITY_RECOVERY_ONLY: '1'
+          V7_DATA_ONLY_RECOVERY: ${{ github.event_name == 'workflow_dispatch' && inputs.data_only == true && 'true' || 'false' }}
         run: node tests/sync_official_quality.mjs
 
       - name: Historical after-market recovery
