@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
 import {readFile} from "node:fs/promises";
 import {buildOct08MissingKeyRepairPlanOfflineV0_1 as plan}
  from "../runtime/oct08_missing_key_repair_dryrun_planner_v0_1.mjs";
@@ -8,6 +9,15 @@ const official=JSON.parse(await readFile(
  import.meta.url),"utf8"));
 const dateList=official.officialWindow.dates;
 const counts=official.officialWindow.samples;
+const sourceRevalidationReceipts=dateList.flatMap(marketDate=>
+ ["TWSE","TPEX"].map(market=>{
+  const source=counts.find(x=>x.market===market&&x.marketDate===marketDate);
+  assert.ok(source);
+  return {market,marketDate,ordinarySymbolCount:source.ordinarySymbolCount,
+   normalizedBarSha256:source.normalizedBarSha256};
+ }));
+const sourceRevalidationDigest=createHash("sha256").update(
+ JSON.stringify(sourceRevalidationReceipts)).digest("hex");
 assert.equal(counts.length,12);
 assert.equal(counts.reduce((n,x)=>n+x.ordinarySymbolCount,0),11843);
 const fieldType=[
@@ -44,6 +54,7 @@ function fullCensus(problems=[]){
    "BLOCKED_OCT08_MISSING_MISMATCHED_OR_MULTIVERSION_D1_KEYS":
    "PASS_ALL_11843_SOURCE_KEYS_MATCH_D1_VALUES_ONLY",
   marketDateCutoff:"2026-10-08",sourceReceiptsMatched:12,
+  sourceRevalidationReceipts,sourceRevalidationDigest,
   exactTradingDates:dateList,sourceSymbolDayKeys:11843,
   actualD1Queries:days.reduce((n,x)=>n+x.d1ReadRequests,0),
   counts:agg,discrepancies:[...issues,...days],
@@ -61,6 +72,7 @@ assert.equal(base.actualD1Queries,240);
 const pass=fail(base);
 assert.equal(pass.result,"NO_MISSING_KEYS_FOUND_IN_SOURCE_TO_D1_DIRECTION_ONLY");
 assert.equal(pass.planDigest.length,64);
+assert.equal(pass.censusSourceRevalidationDigest,sourceRevalidationDigest);
 assert.equal(pass.officialStockDateKeys,11843);
 assert.equal(pass.proposedBatches.length,0);
 assert.equal(pass.permissionToWrite,false);
@@ -89,6 +101,13 @@ assert.equal(first.r2ObjectsTouchedByPlanner,0);
 assert.equal(first.system1RuntimeUsed,false);
 
 const changes=[
+ [()=>({...problem,sourceRevalidationReceipts:problem.sourceRevalidationReceipts.slice(1)}),
+  "census source lineage"],
+ [()=>({...problem,sourceRevalidationDigest:"f".repeat(64)}),
+  "census source lineage digest"],
+ [()=>({...problem,sourceRevalidationReceipts:problem.sourceRevalidationReceipts.map(
+  (row,i)=>i===0?{...row,normalizedBarSha256:"a".repeat(64)}:row)}),
+  "census source lineage"],
  [()=>({...problem,result:"PASS_ALL_11843_SOURCE_KEYS_MATCH_D1_VALUES_ONLY"}),"contradicts counts"],
  [()=>({...problem,counts:{...problem.counts,missing:2}}),"global denominator"],
  [()=>({...problem,discrepancies:problem.discrepancies.filter(x=>
