@@ -976,7 +976,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T19:16:52+08:00
 - severity: HIGH
-- status: VERIFYING
+- status: FIX_IN_PROGRESS
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -1088,6 +1088,11 @@ Correction consequence:
 - DATA_LANE handoff: continue the 2026-10-08 physical historical acceptance from latest main using the quota gate. Preserve reservation/defer artifact, account-wide before/after analytics and PIT/immutability evidence. Never bypass a defer.
 - AUDIT_LANE handoff: independently verify repository semantics plus future physical multi-writer/System1 after-market evidence before `VERIFIED_CLOSED`.
 - No automatic paid-plan upgrade is authorized.
+
+
+#### 2026-10-09 16:11 REMEDIATION adversarial reopen
+
+Independent PR #983/#984 reproduced 4/4 source-level closure blockers (A1 write reservation underestimation, A2 read-budget blind spot, A3 failure result receipt skipped, A4 ledger duplicate idempotency unproven). REMEDIATION_LANE has reopened only these conflict units from latest main `f1511388b036b64646ce61b8ced273c10cda3b51`. Prior audit evidence is preserved. The ticket is not closed; protected System1 and billing boundaries remain unchanged.
 
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
