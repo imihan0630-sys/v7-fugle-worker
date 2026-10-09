@@ -1,0 +1,52 @@
+name: System2 Issue1026 P03 P05 Metadata Only Defer Evidence
+# One new source-only metadata sample at first merge; optional explicit dispatch.
+# Cloudflare GraphQL ACCOUNT metrics ONLY; no D1 SQL read/write, no R2.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-issue1026-p03-p05-safe-metadata-evidence.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-issue1026-metadata-only
+  cancel-in-progress: false
+jobs:
+  safe_evidence:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline Issue1026 preregistered no quota bypass and System1 isolation
+        env:
+          S2_ISSUE1026_SAFE_EVIDENCE_OUTPUT: /tmp/s2-issue1026-p03-p05-safe-defer-evidence.json
+        run: |
+          node system2/tests/issue1026_p03_p05_safe_evidence_review_v0_1.test.mjs
+          node system2/scripts/assess_issue1026_p03_p05_safe_evidence_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: One current UTC-day Cloudflare account GraphQL metadata-only observation
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          S2_OCT08_ACCOUNT_D1_METADATA_OUTPUT: /tmp/s2-issue1026-account-graphql-metadata-only.json
+        run: node system2/scripts/audit_oct08_account_d1_metadata_only_v0_1.mjs
+      - name: Preserve reviewed non-authorizing report and real GraphQL or BLOCKED receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-issue1026-p03p05-metadata-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/s2-issue1026-p03-p05-safe-defer-evidence.json
+            /tmp/s2-issue1026-account-graphql-metadata-only.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 Formal/production runtime
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
