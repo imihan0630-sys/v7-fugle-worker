@@ -1627,3 +1627,20 @@ Runner prerequisites before storage access: original Run 37871005381 attempt 1 S
 Complete D1 receipts/checkpoints for months 7,8,9 must match exact batch ID, counts and rolling digest. Existing cold-store verifier re-HEADs every R2 object and full-byte GET SHA256 verifies all payloads. Absent/mismatched months remain BLOCKED and preserve fail-closed output. Neither D1 nor R2 writes are performed.
 
 Status: CODE_CANDIDATE_NOT_PHYSICALLY_EXECUTED; requires CI/V8, latest-main review/merge, and later explicit coordinated manual physical execution. No independent Jul–Sep physical PASS can be claimed yet. Original PIT clocks, corporate action/NO_EVENT, NC-T01, full market-year replay and live selection remain blocked. System1 Formal/runtime untouched.
+
+## 2026-10-09 10:56 Asia/Taipei — TWSE 2026 Jul–Sep quota-reset historical producer PASS and immutable GitHub artifact integrity PASS
+
+DATA_LANE original guarded [Run 37871005381](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37871005381) completed SUCCESS (attempt 1, head 687432470b8ec81126356edb03d993d8d69df82a; job 113628894913, artifact 11592890938, ZIP digest sha256:eb359f3cd6d6be12b80beecf1c6db813b4a5d7a76e4a941c30c2155a4946766e). Preflight PASS; System1 production isolation PASS. Exactly six old Jan–Jun months were ALREADY_RECEIPTED with the previously frozen receipt IDs and hashes, no rewrite.
+
+New exact official TWSE FMTQIK month calendars and canonical daily A1 source data physically acquired, persisted and producer-verified:
+- 2026-07: 22 official sessions, 23,826 raw bars, 1,086 R2 objects, 1,086/1,086 HEAD plus full-byte SHA256, receipt S2HSR-c7c8785ab0c401314a747f03b7dc2eb384daafb09aa6b7fb5f7979126029d44a, COMPLETE / VERIFIED;
+- 2026-08: 21 sessions, 22,810 bars, 1,088 R2 objects, 1,088/1,088 HEAD plus full-byte SHA256, receipt S2HSR-ad64baf9a9aaee2e56cdb5ceef69ae2793d68f3e77fd95f52f18b61ea2f01157, COMPLETE / VERIFIED;
+- 2026-09: 20 sessions, 21,700 bars, 1,088 R2 objects, 1,088/1,088 HEAD plus full-byte SHA256, receipt S2HSR-b929bc93e0bc1310d891a0e4f40cf0024addff246e338ea18e7c2760ebf3a384, COMPLETE / VERIFIED.
+
+**New July–September total: 63 official sessions, 68,336 bar rows, 3,262 physical objects.** Same-run D1 usage metrics: requests 431, rowsRead 29,315, rowsWritten 26,387. Existing Jan–Jun independent previous physical evidence covers another 6,461 objects / 124,650 bars; total 9-month cold segments: 9,723 objects / 192,986 bars. This is completed calendar-month storage, NOT 2026 full-year readiness.
+
+Independent zero-Cloudflare artifact audit [Run 37876920965](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37876920965) completed SUCCESS, returned PASS_ARTIFACT_INTERNAL_RECEIPTS_ONLY (0 blockers), verified exact original run/attempt/head, original immutable ZIP digest, strict nine-month accounting, Jan–Jun frozen receipt parity and internal producer-reported Jul–Sep head/full-byte/manifest counters. Audit Artifact 11592812149, digest sha256:12348f3ddc6fc7eaf0c3ae53d783a3ac40ad24e7f8a363d74faed673150c7097. It did NOT perform independent D1/R2 cloud reads.
+
+Freeze: system2/evidence/S2_TWSE2026_JUL_SEP_ORIGINAL_AND_ARTIFACT_PHYSICAL_PASS_20261009_V0_1.json. Exact status: PASS_ORIGINAL_PRODUCER_PHYSICAL_AND_GITHUB_ARTIFACT_INTEGRITY_NOT_INDEPENDENT_STORAGE_REREAD.
+
+Next independent July–September D1/R2 reread tool is merged in PR #947, manual-only workflow .github/workflows/system2-twse2026-jul-sep-independent-physical-manual.yml. Do not dispatch before REMEDIATION_LANE account-wide D1 READ budget coordination, and no competing writer. Do not advance 2026 full-year market coverage matrix to PASS, do not infer historic firstKnownAt/PIT, corporate action or suspension NO_EVENT, NC-T01, replay, System2 live selection or trading. D1/R2 physical reread PASS would certify cold storage only. TPEx 2026 backfill sequencing is separate and quota-gated. System1 Formal/runtime unchanged.
