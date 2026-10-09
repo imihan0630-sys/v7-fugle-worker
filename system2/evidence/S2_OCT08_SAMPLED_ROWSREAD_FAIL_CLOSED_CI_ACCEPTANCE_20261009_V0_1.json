@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "S2_OCT08_SAMPLED_HOT_D1_ROWSREAD_FAIL_CLOSED_CI_ACCEPTANCE_V0_1",
+  "recordedAt": "2026-10-09T10:45:09.846Z",
+  "classification": "DATA_LANE_CLASS_A_RESEARCH_ONLY",
+  "change": {
+    "pullRequest": 998,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/998",
+    "mergeSha": "81ba6e812bfab3988b861b9e377907dd639e188b",
+    "runtimeFile": "system2/runtime/oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+    "runtimeMainBlobSha": "b2e4a169172a59b786f535ff378154039ee4b4d2",
+    "testFile": "system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs",
+    "testMainBlobSha": "a0f9b088dab80086438e66787b4139e5404a4767",
+    "checkpointMainBlobSha": "004dc55217c87bb0f156c77ce532bca0c63c2796"
+  },
+  "tests": {
+    "headSystem2ResearchCI": {
+      "runId": 37919192406,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37919192406",
+      "conclusion": "SUCCESS"
+    },
+    "headV8Regression": {
+      "runId": 37919192524,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37919192524",
+      "conclusion": "SUCCESS"
+    },
+    "postMergeMainResearchCI": {
+      "runId": 37919371320,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37919371320",
+      "conclusion": "SUCCESS"
+    },
+    "unknownMetricsAdversarialCases": 8,
+    "classes": [
+      "undefined",
+      "null",
+      "NaN",
+      "Infinity",
+      "negative",
+      "numeric string",
+      "fractional",
+      "metrics lost after first SELECT"
+    ],
+    "failureCode": "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED"
+  },
+  "acceptance": "PASS_SOURCE_LEVEL_FAIL_CLOSED_AND_CI_NOT_PHYSICAL_D1_COVERAGE",
+  "accountReadObservation": {
+    "accountGraphqlRunId": 37918290130,
+    "rowsReadLowerBound": 880643,
+    "rowsWrittenLowerBound": 27056,
+    "actualAccountHeadroomEvidence": "UNPROVEN_DUE_ANALYTICS_LAG_RESERVES_AND_LEDGER"
+  },
+  "quotaCorrection": {
+    "id": "S2-CORR-20261007-003",
+    "statusAtReadback": "HIGH_FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY_A5_A6",
+    "system1WriteReserveAuthorised": false,
+    "system1ReadReserveAuthorised": false,
+    "closureOwner": "AUDIT_LANE"
+  },
+  "oct08Census": {
+    "officialSourceMarketDates": 12,
+    "ordinaryStockDateKeys": 11843,
+    "physicalSampleExecuted": 0,
+    "physicalFullCensusExecuted": 0,
+    "actualMissingKeys": "UNKNOWN",
+    "physicalMissingKeyRepairRuns": 0
+  },
+  "cloudflareUsageDuringPatch": {
+    "d1RowsRead": 0,
+    "d1RowsWritten": 0,
+    "r2Operations": 0
+  },
+  "protected": {
+    "system1FormalCoreChanged": false,
+    "productionWorkerChanged": false,
+    "capitalOrdersPushChanged": false,
+    "paidTierChanged": false,
+    "historicPitOrContinuityPromoted": false
+  },
+  "auditHandoff": "DATA_LANE evidence for independent validation of sampled D1 reader only. Does NOT close CORR-003 or authorize sampled/full D1 physical reads or any write."
+}
