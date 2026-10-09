@@ -1,0 +1,78 @@
+name: System2 2026 TWSE Oct09 Quota Reset Segments One-Shot
+
+# Explicit owner-requested single push launch following 2026-10-09 Taipei 08:00 reset.
+# No schedule, no public input, no second-market write, and no billing upgrade.
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-2026-twse-oct09-one-shot.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Fail closed outside owner-authorized Taiwan quota-reset day
+        run: |
+          node -e 'const p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Taipei",year:"numeric",month:"numeric",day:"numeric",hour:"numeric",hourCycle:"h23"}).formatToParts(new Date()).filter(x=>x.type!=="literal").map(x=>[x.type,Number(x.value)]));if(p.year!==2026||p.month!==10||p.day!==9||p.hour<8)throw Error("ONE_SHOT_OUTSIDE_2026_10_09_TAIPEI_POST_RESET");console.log("S2_TWSE_2026_QUOTA_RESET_DATE_GATE_PASS",p)'
+      - name: Existing System2 D1 segmented schema verification SELECT only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_segment_schema_readonly_preflight_v0_1.mjs
+      - name: Confirm immutable System1 production files unmodified
+        run: git diff --exit-code -- Worker.js wrangler.toml
+
+  backfill:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Controlled receipt-aware 2026 TWSE completed-months backfill
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_HISTORY_SEGMENT_MARKET: TWSE
+          SYSTEM2_HISTORY_SEGMENT_OUTPUT: /tmp/system2-current-year-segments-TWSE.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_current_year_segment_backfill_v0_1.mjs | tee /tmp/system2-current-year-segments-TWSE.log
+      - name: Preserve result or fail-closed diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-2026-twse-oct09-one-shot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-current-year-segments-TWSE.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protected System1 production isolation
+        if: always()
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "Production isolation PASS"

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_2026_TWSE_POST_RESET_ONE_SHOT_DISPATCH_AUTHORIZATION_V0_1",
+  "date": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "status": "PREPARED_PENDING_CI_MERGE_AND_REAL_WORKFLOW_RESULT",
+  "authority": "User explicitly requested catching yesterday's data blocked by quota as soon as reset passed",
+  "baseline": {
+    "upstream": "GitHub main",
+    "basedOnHead": "cb87d338c164f8a242cc5f2110d2004011c6b802",
+    "priorOriginalRunId": 37740634959,
+    "priorQuotaBlockedRunId": 37769681911,
+    "priorQuotaError": "Cloudflare D1 daily free-tier row write limit exceeded before backfill started",
+    "priorPhysicallyVerifiedJanToJunRunId": 37771226567,
+    "priorPhysicallyVerifiedMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "priorPhysicallyVerifiedR2Objects": 6461,
+    "priorPhysicallyVerifiedBars": 124650
+  },
+  "goal": {
+    "market": "TWSE",
+    "year": 2026,
+    "completedMonthsThrough": 9,
+    "newTargetMonths": [
+      7,
+      8,
+      9
+    ],
+    "alreadyReceiptedMonths": "Jan-Jun immutable receipt-aware skip or fail closed on inconsistent state",
+    "tpexConcurrent": false,
+    "currentOctoberIncluded": false
+  },
+  "execution": {
+    "workflow": ".github/workflows/system2-2026-twse-oct09-one-shot.yml",
+    "trigger": "PUSH_MAIN_WHEN_WORKFLOW_FIRST_ADDED",
+    "timeGate": "2026-10-09 Asia/Taipei >=08:00 and before next calendar date",
+    "scope": "one-time repo-research D1/R2 historical backfill only",
+    "concurrencyGroup": "system2-isolated-d1-writer",
+    "existingScript": "system2/scripts/historical_current_year_segment_backfill_v0_1.mjs",
+    "priorReadOnlySchemaPreflight": true,
+    "noDuplicatedMigration": true,
+    "officialExactTWSETradingSessionCalendar": true,
+    "sourceDateAndOHLCFailClosed": true,
+    "d1DailyWriteBudgetRemaining": "UNKNOWN_RESET_TIME_NOT_A_QUOTA_BALANCE_PROOF",
+    "automaticRetry": false,
+    "paidTierUpgrade": false,
+    "scheduleAdded": false,
+    "system1FormalCoreChanged": false,
+    "productionWorkerChanged": false
+  },
+  "acceptance": [
+    "PR System2 CI and V8 regression pass before merge",
+    "At merge re-check single D1 writer absence and that workflow changes have no broader trigger",
+    "Actual Actions run on latest main must show SELECT-only preflight pass",
+    "Jan-Jun prior receipts remain identical and each skipped month verified",
+    "July-September each has canonical official source-date month receipt, complete D1 manifest and physical R2 HEAD + full byte SHA256",
+    "Source unknown and current-month values never filled or invented",
+    "If any failure, preserve exact failed month and source envelope in retained Action artifact without PASS claim"
+  ],
+  "noPromotion": [
+    "Historical monthly data completion does not establish full NC-T01 corporate-action continuity",
+    "No automatic System2 trading/live selection authority",
+    "No complete PIT/OOS replay declaration",
+    "Do not initiate TPEX while TWSE backfill is active"
+  ]
+}
