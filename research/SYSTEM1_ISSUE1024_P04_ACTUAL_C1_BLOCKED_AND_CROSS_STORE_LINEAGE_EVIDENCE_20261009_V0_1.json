@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "SYSTEM1_ISSUE1024_P04_ACTUAL_C1_BLOCKED_CROSS_STORE_LINEAGE_V0_1",
+  "issueNumber": 1024,
+  "correctionId": "S2-CORR-20261007-003",
+  "lane": "SYSTEM1_PRODUCER_READONLY",
+  "sourceHeadAtDesign": "3bb8273304192f358728ed312626307fbef690b6",
+  "historicSourceFiles": [
+    "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+    "research/SYSTEM1_ISSUE1024_CRON_SINK_FAILURE_TRIANGULATION_20261009_V0_1.json",
+    "research/SYSTEM1_ISSUE1024_PER_RUN_COST_PERSISTENCE_GATE_EVIDENCE_20261009_V0_1.json"
+  ],
+  "canonicalRealEvidence": {
+    "source": "GitHub ACTIONS JOB ORIGINAL LOGS, not synthetic",
+    "runId": 37808995747,
+    "jobId": 113420649062,
+    "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+    "workflow": "System 1 C1 Prospective Evidence",
+    "event": "schedule",
+    "createdAtUtc": "2026-10-08T16:28:00Z",
+    "createdAtTaipei": "2026-10-09 00:28:00",
+    "targetScanDate": "2026-10-08",
+    "scheduledResult": "FAILURE",
+    "c1CaptureMarker": {
+      "c1EvidenceBlocked": true,
+      "category": "FORMAL_SCAN_NOT_CONFIRMED",
+      "verificationFailure": "C1_GENERATION_NOT_FOUND",
+      "mayCountAsZeroPick": false
+    },
+    "operationalAcceptanceMarker": {
+      "ok": false,
+      "status": "BLOCKED",
+      "genuineProspective": false,
+      "generationId": null,
+      "runtimeVersion": null,
+      "bindingId": null,
+      "formalSelectedN": null,
+      "firstBlocker": "UPSTREAM_ARTIFACT_MISSING",
+      "formalCoreImpact": false,
+      "noPlanChanges": true
+    },
+    "artifact": {
+      "id": 11565090033,
+      "zipSha256": "a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+      "name": "system1-c1-evidence-37808995747.zip"
+    },
+    "proofUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+    "interpretation": "Scheduled C1 failed because same-generation authoritative Formal parent is absent; cannot infer natural after-market success, latest KV plan/readback, D1 cron persistence or genuine zero picks. Collector failure does not independently prove no 23:35 Worker invocation."
+  },
+  "codeBoundaries": {
+    "workerFile": "Worker.js",
+    "runtimeSHAObservedInLiveFor20261008": null,
+    "dailyConfigAndPlanAndReportStore": "STOCKS_KV",
+    "cronAuditAndLeaseStore": "V7_DB",
+    "c1FormalProducer": "AFTER_MARKET_SCAN_PIPELINE",
+    "c1SameGenerationAttributionRealReadback": false,
+    "cronD1RowSchemaIncludesC1GenerationId": false,
+    "planKvSnapshotAndCronD1RowCanBeJoinedSolelyByDate": false,
+    "correlationWithoutIdentityIsNotCertification": true,
+    "prospectiveCollectorMustBeScheduleEvent": true,
+    "laterManualRunCannotBackfillProspective": true,
+    "nextOrdinaryTradingSession": "2026-10-12"
+  },
+  "producerGate": {
+    "module": "research/system1_issue1024_p04_cross_store_lineage_gate_v0_1.mjs",
+    "test": "system2/tests/system1_issue1024_p04_cross_store_lineage_gate_v0_1.test.mjs",
+    "scope": "OFFLINE_ONLY",
+    "sourceMetadataAuthenticityNotVerifiedByCaller": true,
+    "positiveFixtureAlwaysUntrusted": true,
+    "noPhysicalWrites": true,
+    "noPhysicalReads": true,
+    "fullP04AcceptanceByThisModule": false,
+    "physicalSourceAndGenerationHashIndependentAuditPending": true
+  },
+  "observedCurrentState": {
+    "P01": {
+      "supportChecks": 3,
+      "requiredChecks": 7,
+      "qualified": false,
+      "per2355ActualRowsWritten": null,
+      "per2335ActualRowsWritten": null,
+      "authorizedReserveRows": null
+    },
+    "P02": {
+      "supportChecks": 3,
+      "requiredChecks": 7,
+      "qualified": false,
+      "per2355ActualRowsRead": null,
+      "per2335ActualRowsRead": null,
+      "authorizedReadReserveRows": null
+    },
+    "P04": {
+      "supportChecks": 2,
+      "requiredChecks": 7,
+      "qualified": false,
+      "genuineLaterSuccessfulSessionCount": 0,
+      "eligibleP04PhysicalReceipt": false
+    },
+    "independentPhysicalAcceptanceGatesQualified": 0,
+    "totalIndependentPhysicalAcceptanceGates": 5,
+    "correctionStatus": "VERIFYING"
+  },
+  "nextProducer": "After natural 2026-10-12 23:35 primary and conditional 23:55 if truly executed, get independently witnessed source/run provenance, physical KV config+plan+report and D1 cron/lease readbacks plus 00:10-schedule genuine C1 exact parent and UTC-day full D1 cost. Never dispatch a manual scan or infer a per-run zero cost. Independently reconcile absence of 23:55 rather than assume non-triggered.",
+  "safety": {
+    "cloudflareCallsThisChange": 0,
+    "d1QueriesThisChange": 0,
+    "d1WritesThisChange": 0,
+    "workerEdits": 0,
+    "cronEdits": 0,
+    "formalCoreEdits": 0,
+    "billingEdits": 0,
+    "secretEdits": 0,
+    "actualOrders": 0,
+    "productionPushes": 0
+  }
+}
