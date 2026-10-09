@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "BR081_D09_02_SECTOR_RS_20261008_V0_1",
+  "status": "RESEARCH_ONLY / PROSPECTIVE_SECTOR_RS_CROSS_SECTION / SAME_AUTHORITY_SAME_BASIS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "module": "D09-02",
+  "tradeDate": "2026-10-08",
+  "capturedAt": "2026-10-09T17:12:31+08:00",
+  "observedMainBeforeWrite": "0c5c6d60b5eeb8c406673dce6cb699f83eed3080",
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "report": "MI_INDEX",
+    "marketBenchmark": "發行量加權股價報酬指數",
+    "marketDailyPct": -0.99,
+    "industryFamily": "34 official industry total-return indices",
+    "sameAuthority": true,
+    "sameReturnBasis": true
+  },
+  "crossSection": {
+    "industryN": 34,
+    "absolutePositiveN": 17,
+    "positiveSectorRsN": 25,
+    "negativeAbsoluteButPositiveSectorRsN": 8,
+    "negativeAbsoluteButPositiveSectorRs": [
+      {
+        "industry": "造紙",
+        "industryPct": -0.01,
+        "sectorRsPp": 0.98
+      },
+      {
+        "industry": "航運",
+        "industryPct": -0.05,
+        "sectorRsPp": 0.94
+      },
+      {
+        "industry": "生技醫療",
+        "industryPct": -0.12,
+        "sectorRsPp": 0.87
+      },
+      {
+        "industry": "電子通路",
+        "industryPct": -0.56,
+        "sectorRsPp": 0.43
+      },
+      {
+        "industry": "電機機械",
+        "industryPct": -0.76,
+        "sectorRsPp": 0.23
+      },
+      {
+        "industry": "汽車",
+        "industryPct": -0.79,
+        "sectorRsPp": 0.2
+      },
+      {
+        "industry": "電子零組件",
+        "industryPct": -0.9,
+        "sectorRsPp": 0.09
+      },
+      {
+        "industry": "電腦及週邊設備",
+        "industryPct": -0.95,
+        "sectorRsPp": 0.04
+      }
+    ],
+    "topSectorRs": [
+      {
+        "industry": "油電燃氣",
+        "industryPct": 3.04,
+        "sectorRsPp": 4.03
+      },
+      {
+        "industry": "通信網路",
+        "industryPct": 1.02,
+        "sectorRsPp": 2.01
+      },
+      {
+        "industry": "水泥",
+        "industryPct": 0.83,
+        "sectorRsPp": 1.82
+      },
+      {
+        "industry": "紡織纖維",
+        "industryPct": 0.82,
+        "sectorRsPp": 1.81
+      },
+      {
+        "industry": "觀光餐旅",
+        "industryPct": 0.54,
+        "sectorRsPp": 1.53
+      }
+    ],
+    "rankIdentity": true
+  },
+  "frozenFindings": [
+    "ABSOLUTE_POSITIVE_RETURN_NOT_EQUAL_POSITIVE_SECTOR_RS",
+    "SAME_DATE_COMMON_BENCHMARK_SUBTRACTION_PRESERVES_CROSS_SECTIONAL_RANK",
+    "SECTOR_RS_INCREMENTAL_CONTENT_IS_RELATIVE_SIGN_AND_MAGNITUDE_NOT_A_NEW_SAME_DATE_RANK",
+    "RANK_PERSISTENCE_REQUIRES_MULTIPLE_INDEPENDENT_DATES",
+    "NO_FORWARD_OUTCOME_ACCESS"
+  ],
+  "maturity": {
+    "level": "L3",
+    "maturityPct": 60,
+    "promote": false
+  },
+  "exactNext": "Append independent future Sector RS dates on the same official total-return basis; test sign/persistence and incremental value after absolute return/rank, breadth, concentration, regime and physical-cycle controls; freeze D16 method before forward outcome access."
+}
