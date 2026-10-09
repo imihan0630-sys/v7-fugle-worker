@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_CORR012_IMMUTABLE_REVISION_ARCHIVE_HANDOFF_V0_1",
+  "recordedDate": "2026-10-09",
+  "directive": "S2-CORR-20261008-012",
+  "assignedLane": "BUILD_LANE",
+  "canonicalQueueDisposition": "OPEN",
+  "implementationStatus": "PARTIAL_OFFLINE_APPEND_ONLY_ARCHIVE_MERGED_NOT_PHYSICALLY_APPLIED",
+  "mergedPr": 954,
+  "mergedCommit": "2c571e7d86f4870c7edae83e052d82c7cf2b4911",
+  "exactTestHead": "a0dee4afe1b9b10b4c76f25cb7a6e22b8bcc9c67",
+  "ci": {
+    "system2Research": {
+      "runId": 37878858723,
+      "conclusion": "success",
+      "testFilesExecuted": 256,
+      "sqliteMigrationsInMemory": 11,
+      "sqliteTablesInMemory": 56,
+      "schemaVersion": "1.1"
+    },
+    "v8Regression": {
+      "runId": 37878858613,
+      "conclusion": "success"
+    }
+  },
+  "changedFiles": [
+    "system2/runtime/outcome_revision_archive_v0_1.mjs",
+    "system2/sql/0011_outcome_revision_archive_staged.sql",
+    "system2/tests/outcome_revision_archive_v0_1.test.mjs"
+  ],
+  "implemented": [
+    "Frozen canonical outcome revision hash chain bound to decisionHash, strategy/version, regime snapshot ID/hash, executionHash/version, cost and tax version, price-space, corporate-action hash and signal cost scenario hash",
+    "Same-lineage maturity creates a distinct revision ID and binds previous revision hash; no UPDATE of earlier receipt",
+    "Changed commission, tax, slippage, strategy, regime or execution assumption requires fresh lineage genesis rather than rewriting an old record",
+    "Frozen receipt and snapshot SHA256 recomputed before immutable D1 row representation; step-by-step monotonic outcome validation and session prefix preservation",
+    "SQLite append-only staged table with unique (decision_id,lineage_hash,revision_number), anti-UPDATE/DELETE triggers, evidence-only non-certified flags",
+    "Offline test verified 3 SQLite INSERTs and blocked 6 tamper/overwrite/duplicate/certification attempts, plus hash and revision-chain negatives"
+  ],
+  "notYetProven": [
+    "The staged SQL migration was included in CI's in-memory SQLite schema checks but is NOT listed in physical System2 D1 provisioner and has NOT been applied to Cloudflare D1",
+    "No production D1 writing path, physical parent decision/regime readback, or account-wide quota reservation has been authorized",
+    "Caller-provided decision/regime/corporateAction hashes are shape checked and cross-consistent but are NOT independently authenticated against physical originals",
+    "No external historical firstKnownAt/PIT, NC-T01, corporate-action/NO_EVENT, full-universe, settlement or actual simulated trading fill proof",
+    "Independent AUDIT_LANE closure and full end-to-end immutable reader/append-writer integration remain outstanding",
+    "CORR-013 official calendar and no-fill denominator proof and CORR-003 quota coordination remain independently OPEN"
+  ],
+  "protected": {
+    "system1FormalCoreModified": false,
+    "productionWorkerModified": false,
+    "cronModified": false,
+    "cloudflareD1RowsRead": 0,
+    "cloudflareD1RowsWritten": 0,
+    "r2Writes": 0,
+    "liveSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "realOrdersEnabled": false,
+    "paidUpgrade": false
+  },
+  "nextOwnerActions": {
+    "build": "Add isolated append-only D1 writer behind proven quota reservation; independent exact parent physical readback, chain-position readback and immutable audit, then expose version-aware performance readers",
+    "remediation": "Establish account-wide physical D1 read/write quota reservations for competing writers (CORR-003)",
+    "data": "Supply exact PIT and market session, corporate action, suspension and lifecycle continuity receipts",
+    "audit": "Independently attack archived revision hash-chain, SQLite schema triggers and physical D1 writer before changing correction status"
+  }
+}
