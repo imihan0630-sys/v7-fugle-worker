@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex, canonicalStringify } from "./decision_archive.mjs";
+import { assertCanonicalMarketDateV0_1, assertObservedSessionSequenceV0_1 } from "./market_session_date_guard_v0_1.mjs";
 
 export const OUTCOME_HORIZONS_V0_1 = Object.freeze([1, 3, 5, 10, 20]);
 const PRICE_SPACES = new Set(["RAW", "ADJUSTED"]);
@@ -39,6 +40,7 @@ function normalizeSessions(sessions, decisionMarketDate, updatedAt, priceSpace) 
   const sorted = [...sessions].sort((a, b) => a.sessionNumber - b.sessionNumber);
   const out = [];
   let expected = 1;
+  let previousMarketDate = null;
 
   for (let i = 0; i < sorted.length; i += 1) {
     const raw = sorted[i];
@@ -48,7 +50,9 @@ function normalizeSessions(sessions, decisionMarketDate, updatedAt, priceSpace) 
     }
     expected += 1;
 
-    const marketDate = requiredText(raw.marketDate, `sessions[${i}].marketDate`);
+    const marketDate = assertCanonicalMarketDateV0_1(raw.marketDate, `sessions[${i}].marketDate`);
+    assertObservedSessionSequenceV0_1(previousMarketDate, marketDate, `sessions[${i}].marketDate`);
+    previousMarketDate = marketDate;
     if (marketDate <= decisionMarketDate) {
       throw new Error("outcome session must be after decision marketDate");
     }
@@ -262,7 +266,7 @@ export async function buildDecisionOutcomeSnapshotV0_1({
 } = {}) {
   const id = requiredText(decisionId, "decisionId");
   const code = requiredText(symbol, "symbol");
-  const date = requiredText(decisionMarketDate, "decisionMarketDate");
+  const date = assertCanonicalMarketDateV0_1(decisionMarketDate, "decisionMarketDate");
   const decisionTime = timestamp(decisionTimestamp, "decisionTimestamp");
   const asOf = timestamp(updatedAt, "updatedAt");
   if (Date.parse(asOf) < Date.parse(decisionTime)) {
@@ -330,8 +334,14 @@ export async function buildDecisionOutcomeSnapshotV0_1({
   if (caState === "UNKNOWN") warnings.push("CORPORATE_ACTION_STATE_UNKNOWN");
   if (benchmarkRef === null) warnings.push("BENCHMARK_REFERENCE_MISSING");
   if (industryRef === null) warnings.push("INDUSTRY_REFERENCE_MISSING");
+  const missingPriceWindow = normalizedSessions.some(row =>
+    ![row.open, row.high, row.low, row.close].every(Number.isFinite)
+  );
+  if (missingPriceWindow) warnings.push("OUTCOME_PRICE_WINDOW_INCOMPLETE");
 
-  const performanceEligible = caState !== "UNKNOWN";
+  // Separate signal-return observations from any executable fill/performance
+  // certification. Missing OHLC cannot be silently promoted by later bars.
+  const performanceEligible = caState !== "UNKNOWN" && !missingPriceWindow;
   const base = {
     decisionId: id,
     symbol: code,
@@ -342,6 +352,8 @@ export async function buildDecisionOutcomeSnapshotV0_1({
     priceSpace: space,
     corporateActionState: caState,
     observedSessionCount: normalizedSessions.length,
+    sessionCalendarProof: "INDEPENDENT_EXCHANGE_SESSION_CALENDAR_NOT_VERIFIED",
+    sessionChronologyGuardVersion: "S2_CORR013_CHRONOLOGY_UNKNOWN_WINDOW_V0_2",
     maturedHorizons: Object.freeze(maturedHorizons),
     horizonReturns: returns.stock,
     benchmarkReturns: returns.benchmark,
