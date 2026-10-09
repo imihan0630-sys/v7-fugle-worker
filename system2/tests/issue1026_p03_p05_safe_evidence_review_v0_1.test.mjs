@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
+import {spawnSync} from "node:child_process";
 import {assessIssue1026P03P05SafeEvidenceV0_1 as assess}
  from "../runtime/issue1026_p03_p05_safe_evidence_review_v0_1.mjs";
 const load=async p=>JSON.parse(await readFile(new URL("../"+p,import.meta.url),"utf8"));
@@ -59,4 +60,21 @@ assert.match(wf,/push:[\s\S]*paths:/);
 assert.doesNotMatch(wf,/^\s*schedule:|^\s*workflow_run:/m);
 assert.match(wf,/audit_oct08_account_d1_metadata_only_v0_1\.mjs/);
 assert.doesNotMatch(wf,/wrangler.*(deploy|d1)|INSERT INTO|UPDATE .+ SET|DELETE FROM/i);
+// Integration: verify actual CLI path resolution, not only imported pure functions.
+const cliPath=new URL("../scripts/assess_issue1026_p03_p05_safe_evidence_v0_1.mjs",import.meta.url);
+const output="/tmp/s2-issue1026-offline-script-acceptance.json";
+const cli=spawnSync(process.execPath,[cliPath.pathname],{
+ encoding:"utf8",timeout:15000,
+ env:{...process.env,S2_ISSUE1026_SAFE_EVIDENCE_OUTPUT:output},
+});
+assert.equal(cli.status,0,cli.stderr+"\n"+cli.stdout);
+assert.match(cli.stdout,/S2_ISSUE1026_P03_P05_EVIDENCE_ONLY/);
+const cliEvidence=JSON.parse(await readFile(output,"utf8"));
+assert.equal(cliEvidence.state,"P03_P05_PHYSICAL_ACCEPTANCE_DEFER");
+assert.equal(cliEvidence.physicalD1SelectAuthorizedByAssessment,false);
+assert.equal(cliEvidence.physicalD1MutationAuthorizedByAssessment,false);
+assert.equal(cliEvidence.p05.physicalMissingKeys,"UNKNOWN");
+assert.equal(cliEvidence.physicalD1SqlReadsPerformed,0);
+assert.equal(cliEvidence.physicalD1SqlWritesPerformed,0);
+
 console.log("S2_ISSUE1026_P03_P05_OFFLINE_2_BASELINES_8_FALSIFICATION_RULES_PASS");
