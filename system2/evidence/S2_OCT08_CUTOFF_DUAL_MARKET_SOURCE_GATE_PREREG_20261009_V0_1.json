@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "S2_OCT08_LAST_COMPLETED_SESSION_AND_DUAL_MARKET_SOURCE_GATE_PREREG_V0_1",
+  "classification": "DATA_LANE_CLASS_A_SOURCE_ONLY",
+  "status": "PREREG_UNEXECUTED_SOURCE_PROBE",
+  "asOf": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "latestCompleteTradingDate": "2026-10-08",
+  "marketHolidayNextDay": "2026-10-09_NATIONAL_DAY_OBSERVED_CLOSED",
+  "exactOctWindowSessions": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "markets": [
+    "TWSE",
+    "TPEX"
+  ],
+  "totalExpectedOfficialDateReceipts": 12,
+  "storageContract": {
+    "cold": "COMPLETED_MONTHS_THROUGH_2026_09_30",
+    "currentMonth": "OCTOBER_01_TO_08_HOT_OR_BRIDGE_MUST_BE_VERIFIED_NOT_ASSUMED",
+    "mustNotPresentSept30AsOverallLatestHistoricalMarketDate": true,
+    "mustNotWritePartialOctoberIntoImmutableFullMonthColdReceipt": true,
+    "rawOfficialSourcePresenceDoesNotImplyHotD1PhysicalPresence": true
+  },
+  "existingEvidence": {
+    "janSepTwseSourceAndProducerPhysical": "system2/evidence/S2_TWSE2026_JUL_SEP_ORIGINAL_AND_ARTIFACT_PHYSICAL_PASS_20261009_V0_1.json",
+    "oct08Snapshot": {
+      "source": "system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json",
+      "ordinarySymbolCount": 1972,
+      "twseOrdinaryCount": 1086,
+      "tpexOrdinaryCount": 886,
+      "pitHistoryReadyCount": 46,
+      "technicalContinuityReadyCount": 0,
+      "missingExpectedPitSessionCount": 44256,
+      "retrospectiveNotProspectiveFirstKnown": true
+    },
+    "originalHotJulySample": {
+      "source": "system2/evidence/S2_RECENT60_20261008_HOT_D1_VS_PIT_PHYSICAL_SAMPLE_V0_1.json",
+      "selectedExactPairCount": 96,
+      "absentHotD1Pairs": 96,
+      "notEvidenceThatOct1To8Missing": true
+    }
+  },
+  "researchProbe": {
+    "runtime": "system2/runtime/oct08_latest_completed_source_gate_v0_1.mjs",
+    "runner": "system2/scripts/audit_oct08_latest_completed_official_source_readonly_v0_1.mjs",
+    "workflow": ".github/workflows/system2-oct08-official-source-readonly.yml",
+    "tests": "system2/tests/oct08_latest_completed_source_gate_v0_1.test.mjs",
+    "sourceMode": "TWSE FMTQIK Oct exact trading dates then primary canonical TWSE/TPEx historical daily A1 for all six sessions, real source-date and normalized source hash",
+    "timeClass": "POST_FACTO_SOURCE_OBSERVATION_NOT_HISTORIC_PIT",
+    "guard": "Even source PASS leaves D1/R2 October physical presence and PIT continuity unverified",
+    "zeroCloudflareCalls": true,
+    "onceOnWorkflowFileMerge": true,
+    "manualFallback": true,
+    "noSchedule": true
+  },
+  "next": {
+    "mustVerifyForBothMarkets": [
+      "all six exact source market-day receipts",
+      "hot D1 row presence by market/date with bounded SELECT, coordinated D1 read budget",
+      "original clock provenance and PIT earliest known time",
+      "NC-T01 corporate-action/lifecycle completeness"
+    ],
+    "requiresRemediationBeforeStorageReadsOrWrites": "S2-CORR-20261007-003",
+    "doesNotAuthorize": "D1 backfill, live production, trading, strategy promotion, no-event, formal core change, paid upgrade"
+  },
+  "protected": {
+    "system1Formal": false,
+    "system1Runtime": false,
+    "system2Strategy": false,
+    "productionPush": false,
+    "capitalOrders": false
+  }
+}
