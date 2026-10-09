@@ -1,0 +1,12 @@
+{
+  "module": "D06-05",
+  "sourceLanguage": "zh-TW",
+  "officialPage": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&startYear=&type=html",
+  "comparisonPage": "https://www.twse.com.tw/rwd/en/company/suspendListing?response=html",
+  "retrievalMethod": "web-rendered official page, manual symbol+historical-date cross-check",
+  "pageRows": 265,
+  "englishBlankMatched": 36,
+  "scope": "historical issuer-name recovery only; NOT time-valid 2026 listing certification",
+  "rawSourceArchive": "NOT_PERSISTED",
+  "PIT": "UNKNOWN_FOR_DECISION_DATE"
+}
