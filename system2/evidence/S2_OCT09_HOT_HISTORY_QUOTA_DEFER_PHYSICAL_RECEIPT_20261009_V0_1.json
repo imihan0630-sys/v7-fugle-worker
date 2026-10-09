@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "S2_OCT09_HOT_HISTORY_ACCOUNT_QUOTA_DEFER_RECEIPT_V0_1",
+  "auditDate": "2026-10-09",
+  "lane": "DATA_LANE",
+  "mainHeadAtStart": "100278a6ffe0c3a6ae045cdff813191e1d2b4172",
+  "run": {
+    "id": 37907066382,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37907066382",
+    "jobId": 113742974317,
+    "trigger": "schedule",
+    "sourceHead": "765fb2b969030a174539dcac80c7bf06aa3eb8be",
+    "artifactId": 11604589121
+  },
+  "accountQuotaReceipt": {
+    "quotaDay": "2026-10-09",
+    "state": "QUOTA_BUDGET_DEFER",
+    "physicalAllowed": false,
+    "reasonCodes": [
+      "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED"
+    ],
+    "rowsWrittenUsed": 26919,
+    "rowsReadUsed": 782497,
+    "accountUsageEvidence": "CLOUDFLARE_D1_GRAPHQL_ACCOUNT_ANALYTICS",
+    "graphQlSemantics": "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
+    "system1ReserveEvidenceState": "INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS",
+    "system1ReserveAuthorized": false
+  },
+  "workflowExecution": {
+    "githubJobConclusion": "success",
+    "reserveGateConclusion": "success",
+    "physicalWarmupStep": "skipped",
+    "quotaReconcileStep": "skipped",
+    "d1RowsWrittenByWarmup": 0
+  },
+  "correction": {
+    "id": "S2-CORR-20261007-003",
+    "status": "FIX_IMPLEMENTED",
+    "independentReview": "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4",
+    "fixPR": 985
+  },
+  "dataCut": {
+    "lastCompletedMarketDate": "2026-10-08",
+    "officialSourceDateMarketCellsVerified": 12,
+    "officialSymbolDateKeysVerified": 11843,
+    "hotD1PhysicalCoverage": "NOT_VERIFIED",
+    "hotD1OctoberGapFill": "NOT_EXECUTED",
+    "pitHistory": "NOT_VERIFIED"
+  },
+  "acceptance": "BLOCKED_PHYSICAL_D1_BACKFILL_BY_QUOTA_POLICY",
+  "nonClaims": [
+    "A completed workflow does not certify any D1 history insertion",
+    "Source-only 11843 keys does not certify D1 presence",
+    "No retrospective firstKnownAt, availableAt, PIT or NC-T01 continuity promotion"
+  ],
+  "next": "Wait for independently verified account-wide D1 read/write and System1 headroom; then 36-key read-only scout, 11843-key read-only census and missing-only offline planner; writes separately budget-gated",
+  "protected": [
+    "System1 Formal Core",
+    "Worker production runtime",
+    "capital/orders/push",
+    "paid tier"
+  ]
+}
