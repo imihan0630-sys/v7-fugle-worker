@@ -19,6 +19,12 @@ export const PINNED_TWSE_2025_REGISTRY=Object.freeze({
   unknownStartCount:0,
   currentCount:1089,
   delistedCount:7,
+  observedAt:"2026-10-08T03:35:20.819Z",
+  sourceReceipt:Object.freeze({
+    currentSourceHash:"154d8129ab0db28404b93ca46ce8057f71f036d440d1592b53f8dd5fc2048115",
+    newListingSourceHash:"bb70678fc001770c7e86ef9471e0ff96b8fe87b6852545a485ab18d1610f7b91",
+    delistingSourceHash:"a80693f2ab3c94b024ed830c73e64f2a0d122fdba806148edce38bf1570fc143",
+  }),
 });
 export const PINNED_TWSE_2025_ANNUAL_EVIDENCE=Object.freeze({
   runId:37720726697,
