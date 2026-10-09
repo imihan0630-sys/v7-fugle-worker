@@ -57,6 +57,11 @@ assert.ok(priorValidator.includes("physicalSnapshotsVerified"));
 assert.ok(!priorValidator.includes("institution.historicalReadback"),
   "Worker status has no historicalReadback contract");
 assert.ok(instIngest.includes("planMissingInstitutionDates(status,marketDate)"));
+assert.ok(instIngest.includes("fetchBufferedOfficialSource(url,"));
+assert.ok(instIngest.includes("maxAttempts:2"));
+assert.ok(!instIngest.includes("fetch(url,{headers:{accept:'application/json'}"),
+  "Manual official institution transport must buffer and retry entire body");
+assert.ok(gapResume.includes("stockCount)>=1500"));
 assert.ok(!instIngest.includes("status.historicalReadback"));
 assert.ok(gapResume.includes("status.snapshotCounts"));
 assert.ok(gapResume.includes("matches[0].complete,true"));
