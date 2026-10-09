@@ -1,0 +1,56 @@
+name: System2 Issue1026 P05 Archived Manifest Key Audit Offline
+# Scope: rehydrate one EXISTING GitHub source-only artifact; no D1/R2 quota usage.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-issue1026-p05-archived-manifest-offline-audit.yml"
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: system2-issue1026-p05-archived-manifest-audit
+  cancel-in-progress: false
+jobs:
+  archived_key_audit:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit and adversarial tests before reading the immutable archive
+        run: |
+          node system2/tests/issue1026_p05_archived_manifest_independent_audit_v0_1.test.mjs
+          node --check system2/scripts/audit_issue1026_p05_archived_manifest_offline_v0_1.mjs
+      - name: Retrieve EXACT pre-existing immutable 11843-key SOURCE_ONLY artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 2 \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/imihan0630-sys/v7-fugle-worker/actions/artifacts/11623192826/zip" \
+            --output /tmp/s2-issue1026-p05-original-archive.zip
+          echo "7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f  /tmp/s2-issue1026-p05-original-archive.zip" | sha256sum --check
+          unzip -p /tmp/s2-issue1026-p05-original-archive.zip \
+            s2-issue1026-p05-oct08-frozen-official-11843-key-manifest.json \
+            > /tmp/s2-issue1026-p05-original-11843.json
+          echo "fa38cbc9bbda4f99ca5a8bbc5e83ee5c324847c15fc599c8dd5412ccf14ef4c6  /tmp/s2-issue1026-p05-original-11843.json" | sha256sum --check
+      - name: Independently verify all 11843 original source keys, PIT and version unknown
+        env:
+          S2_ISSUE1026_P05_ARCHIVED_SOURCE_MANIFEST_PATH: /tmp/s2-issue1026-p05-original-11843.json
+          S2_ISSUE1026_P05_AUDIT_OUTPUT: /tmp/s2-issue1026-p05-independent-artifact-key-audit.json
+        run: node system2/scripts/audit_issue1026_p05_archived_manifest_offline_v0_1.mjs
+      - name: Preserve source-only PASS or BLOCKED evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-issue1026-p05-existing-archive-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1026-p05-independent-artifact-key-audit.json
+          if-no-files-found: warn
+          retention-days: 90
