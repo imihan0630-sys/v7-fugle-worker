@@ -20,9 +20,20 @@ export function planMissingInstitutionDates(status,targetDate){
       "Institution three-trading-date inventory outside 14 days");
   }
   assert.ok(all.includes(targetDate),"Target trading date missing from institutional authority inventory");
-  if(status.ready===true&&status.historicalReadback===true){
+  if(status.ready===true){
     assert.equal(missing.length,0,"Ready status has missing institution dates");
-    return {alreadyReady:true,repairDates:[],tradingDateCount:3};
+    assert.equal(valid.length,3,"Ready status must contain three valid trading dates");
+    // Production Worker returns snapshotCounts (date, stockCount, complete),
+    // not historicalReadback. Reconcile its physical evidence instead.
+    assert.ok(Array.isArray(status.snapshotCounts),"Institution physical snapshot inventory unavailable");
+    for(const date of valid){
+      const matches=status.snapshotCounts.filter(row=>row?.date===date);
+      assert.equal(matches.length,1,"Expected one physical institution snapshot for "+date);
+      assert.equal(matches[0].complete,true,"Incomplete institution snapshot "+date);
+      assert.ok(Number.isFinite(Number(matches[0].stockCount))&&Number(matches[0].stockCount)>0,
+        "Institution stock count must be positive for "+date);
+    }
+    return {alreadyReady:true,repairDates:[],tradingDateCount:3,physicalSnapshotsVerified:true};
   }
   assert.equal(status.ready,false,"Inconsistent institution readiness; manual mutation denied");
   assert.ok(missing.length>0,"Incomplete institution readback without known missing date; manual mutation denied");
