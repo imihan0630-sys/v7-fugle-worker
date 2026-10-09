@@ -796,12 +796,25 @@ export function toS2SimulationFillRowsV0_1(simulation) {
 
 export function toOutcomeSimulatedExecutionV0_1(simulation) {
   if (!simulation || typeof simulation !== "object") throw new Error("simulation is required");
+  const executionHash = requiredText(simulation.executionHash, "simulation.executionHash");
+  if (!/^[a-f0-9]{64}$/.test(executionHash)) {
+    throw new Error("simulation.executionHash must be SHA256 hex");
+  }
+  const costModel = simulation.order?.costModel;
+  if (!costModel || typeof costModel !== "object" || Array.isArray(costModel)) {
+    throw new Error("simulation.order.costModel is required");
+  }
   return deepFreeze({
     state: requiredText(simulation.state, "simulation.state"),
     realizedReturnAfterCost: simulation.realizedReturnAfterCost,
     holdingSessions: simulation.holdingSessions,
     fillQuality: requiredText(simulation.fillQuality, "simulation.fillQuality"),
-    executionVersion: EXECUTION_SIMULATOR_VERSION_V0_1,
+    executionHash,
+    executionVersion: requiredText(simulation.executionVersion, "simulation.executionVersion"),
+    costModel: deepFreeze({ ...costModel }),
+    costModelVersion: requiredText(costModel.costModelVersion, "simulation.order.costModel.costModelVersion"),
+    taxRuleId: requiredText(costModel.taxRuleId, "simulation.order.costModel.taxRuleId"),
+    lineageStatus: "HASH_CARRIED_FROM_SIMULATOR_NOT_INDEPENDENT_SOURCE_PROOF",
   });
 }
 
