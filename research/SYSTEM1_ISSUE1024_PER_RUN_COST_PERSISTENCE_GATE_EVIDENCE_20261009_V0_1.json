@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "S1_ISSUE1024_PER_RUN_COST_PERSISTENCE_BOUNDARY_V0_1",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "SYSTEM1_PRODUCER_READONLY_CLASS_A",
+  "originalMainBeforeChanges": "bdf5dc9165ec73dc4b2738197e0f97bb3941fd17",
+  "relatedMergedEvidence": [
+    "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+    "research/SYSTEM1_ISSUE1024_CRON_SINK_FAILURE_TRIANGULATION_20261009_V0_1.json"
+  ],
+  "newGuard": "research/system1_issue1024_physical_evidence_attribution_gate_v0_1.mjs",
+  "test": "system2/tests/system1_issue1024_physical_evidence_attribution_gate_v0_1.test.mjs",
+  "sourceLevelPersistenceTopology": {
+    "sourceFile": "Worker.js",
+    "sourceHead": "bdf5dc9165ec73dc4b2738197e0f97bb3941fd17",
+    "currentRepoSourceNotDeployedRuntimeAttestation": true,
+    "config": {
+      "function": "saveStockConfig",
+      "store": "STOCKS_KV",
+      "physicalD1CostFromOperation": null,
+      "readback": "KV updatedAt and stocks must match",
+      "notD1PlanTable": true
+    },
+    "snapshot": {
+      "function": "runAfterMarketScanCore",
+      "key": "V7_LAST_AFTER_MARKET_SCAN",
+      "store": "STOCKS_KV",
+      "requiresPipelineComplete": true,
+      "physicalD1CostFromOperation": null
+    },
+    "dailyReport": {
+      "keyPattern": "V7_DAILY_REPORT:<marketDate>",
+      "store": "STOCKS_KV",
+      "requiresSentAndSameDate": true,
+      "physicalD1CostFromOperation": null
+    },
+    "attempt": {
+      "key": "V7_LAST_SCAN_ATTEMPT",
+      "store": "STOCKS_KV",
+      "successOrFailureIsNotD1ReportReadback": true
+    },
+    "cronAudit": {
+      "function": "writeCronRun",
+      "table": "v7_cron_runs",
+      "store": "V7_DB",
+      "catchReturnsStoredFalse": true,
+      "physicalD1ReadbackPreviouslyVerifiedOnTwoOldCronDates": true,
+      "perRunRowsWrittenMetaPersisted": false,
+      "perRunRowsReadMetaPersisted": false
+    },
+    "lease": {
+      "function": "acquireSignalStateLease/persistSignalStateLease/releaseSignalLease",
+      "tableOrKey": "V7_AFTER_MARKET_LEASE:<date>",
+      "store": "V7_DB",
+      "mustVerifySingleRunAndRecoveryIdempotency": true
+    },
+    "externalPlan": {
+      "function": "sendTo3Min",
+      "destination": "EXTERNAL_3MIN",
+      "notEvidenceForD1Persistence": true
+    },
+    "criticalSeparation": "Historical V7_DB GraphQL account rowsRead/rowsWritten are for all UTC-day D1 operations, while stock config, latest plan, report and attempt are KV; a successful cron audit row is not proof all KV/external and business pipeline readbacks succeeded."
+  },
+  "existingRealReceipts": {
+    "genuineSourceCountDistinct": 10,
+    "sources": [
+      "PVE271 run 37694052477 job 113041122665",
+      "PVE272 run 37694255555 job 113041830751",
+      "PVE263 run 37649543821 job 112888965126",
+      "PVE264 run 37650006684 job 112890551584",
+      "C1 run 37808995747 job 113420649062",
+      "Oct09 quota-defer run 37907066382 job 113742974317",
+      "Oct09 GraphQL run 37918290130 job 113779747175",
+      "PVE251 run 37649041814 job 112887225789",
+      "PVE262 run 37649249573 job 112887945915",
+      "PVE266 run 37651086323 job 112894288513"
+    ],
+    "moreHealthyDaysFound": 0,
+    "eligibleBusinessSuccessDates": [
+      "2026-09-21",
+      "2026-09-22"
+    ],
+    "fullyPersistedSameGenerationBusinessDatesVerified": [],
+    "wholeV7DbUtcDays": [
+      {
+        "date": "2026-09-21",
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "writeQueries": 2331,
+        "readQueries": 23994,
+        "runId": 37694052477,
+        "jobId": 113041122665,
+        "artifactId": 11514945619,
+        "sourceCommit": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+        "actualPrimaryD1WriteCost": null,
+        "actualPrimaryD1ReadCost": null,
+        "actualRecoveryInvoked": "UNKNOWN",
+        "sameGenerationKvReadback": "UNKNOWN"
+      },
+      {
+        "date": "2026-09-22",
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "writeQueries": 1199,
+        "readQueries": 9938,
+        "runId": 37694052477,
+        "jobId": 113041122665,
+        "artifactId": 11514945619,
+        "sourceCommit": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+        "actualPrimaryD1WriteCost": null,
+        "actualPrimaryD1ReadCost": null,
+        "actualRecoveryInvoked": "UNKNOWN",
+        "sameGenerationKvReadback": "UNKNOWN"
+      }
+    ],
+    "observedDailyEnvelopeOnly": {
+      "minRowsWritten": 1635,
+      "maxRowsWritten": 2825,
+      "minRowsRead": 19533,
+      "maxRowsRead": 133037,
+      "writeSpreadFactor": 1.72782874617737,
+      "readSpreadFactor": 6.810884144780628,
+      "notAReservationCandidate": true,
+      "noPerOperationIsolation": true
+    },
+    "quotaFailureDay": {
+      "date": "2026-10-07",
+      "runIds": [
+        37649543821,
+        37650006684,
+        37649249573
+      ],
+      "V7RowsWritten": 1869,
+      "V7RowsRead": 431323,
+      "System2RowsWritten": 124629,
+      "System2RowsRead": 3943636,
+      "accountRowsWritten": 126498,
+      "accountRowsRead": 4374959,
+      "primaryAttempt": "FAILED_D1_WRITE_LIMIT",
+      "recoveryLeaseObserved": "2026-10-07T15:55:03.803Z",
+      "recoveryBusinessSuccess": "NOT_PROVEN",
+      "D1CronWindowAuditRows": 0
+    },
+    "laterNaturalPersistenceEvidence": "NOT_OBSERVED",
+    "earliestFutureCandidateOfficialSession": "2026-10-12"
+  },
+  "producerProgress": {
+    "P01": {
+      "documentedSupportChecks": 3,
+      "totalChecks": 7,
+      "notYetDocumented": 4,
+      "physicallyQualified": false,
+      "reserveProposal": "NO_NUMERIC_CANDIDATE_YET",
+      "authorizedReserveRows": null,
+      "authorization": false,
+      "blocking": [
+        "per operation 23:35 + if invoked 23:55 rowsWritten and indexed amplification",
+        "natural later session with complete business readback",
+        "normal vs failure/retry physical cost distribution",
+        "independent risk and quota reserve approval"
+      ]
+    },
+    "P02": {
+      "documentedSupportChecks": 3,
+      "totalChecks": 7,
+      "notYetDocumented": 4,
+      "physicallyQualified": false,
+      "reserveProposal": "NO_NUMERIC_CANDIDATE_YET",
+      "authorizedReserveRows": null,
+      "authorization": false,
+      "blocking": [
+        "per-operation 23:35 and conditional 23:55 rowsRead exact physical metadata",
+        "query/index amplification and retry costs",
+        "account GraphQL late/unknown usage and margin source",
+        "independent read reserve approval"
+      ]
+    },
+    "P04": {
+      "documentedSupportChecks": 2,
+      "totalChecks": 7,
+      "notYetDocumented": 5,
+      "physicallyQualified": false,
+      "blocking": [
+        "later genuine ordinary trading day primary natural run",
+        "recovery actual state and dedup no double-success",
+        "KV config/plan/report same-run verified and D1 cron/lease readback",
+        "account no collision that UTC day",
+        "genuine prior-event artifact IDs and hashes verified independently"
+      ]
+    }
+  },
+  "safety": {
+    "repoEvidenceOnly": true,
+    "physicalD1ReadsThisChange": 0,
+    "physicalD1WritesThisChange": 0,
+    "workflowDispatches": 0,
+    "productionWorkerEdits": 0,
+    "realStockOrderEdits": 0,
+    "system1FormalCoreEdits": 0,
+    "paidTierChanges": 0,
+    "secretHandling": false,
+    "correctionClosingAuthority": "AUDIT_LANE_ONLY"
+  },
+  "handoff": {
+    "to": "System 2｜補強修復室",
+    "audit": "System 2｜獨立稽核顧問室",
+    "next": "Only if actual 2026-10-12 natural after-market run occurs, collect its existing independent KV/D1/lease/cron/GraphQL receipts with qualified read headroom; otherwise maintain UNKNOWN and protected reserve false/null."
+  }
+}
