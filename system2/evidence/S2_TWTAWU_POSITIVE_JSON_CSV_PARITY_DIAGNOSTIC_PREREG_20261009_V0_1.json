@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "S2_TWTAWU_POSITIVE_JSON_CSV_PARITY_PREREGISTERED_DIAGNOSTIC_V0_1",
+  "owner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "lane": "DATA_LANE",
+  "state": "IMPLEMENTED_IN_BRANCH_PHYSICAL_SOURCE_PARITY_NOT_YET_OBSERVED",
+  "knownPositive": {
+    "market": "TWSE",
+    "symbol": "1218",
+    "companyName": "泰山",
+    "suspendedDate": "2026-08-13",
+    "resumedDate": "2026-08-14",
+    "originalPhysicalRunId": 37488505236,
+    "originalPhysicalJobId": 112354734503,
+    "sourceArtifactHash": "10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857",
+    "evidence": "system2/evidence/S2_STAGE1_TWTAWU_BOUNDED_JSON_CSV_PARITY_HANDOFF_20261008_V0_2.json"
+  },
+  "boundedDiagnostic": {
+    "startDate": "2026-08-13",
+    "endDate": "2026-08-14",
+    "queryType": "3",
+    "jsonOfficialUrl": "https://www.twse.com.tw/rwd/zh/afterTrading/TWTAWU?startDate=20260813&endDate=20260814&querytype=3&response=json",
+    "csvCandidateUrl": "https://www.twse.com.tw/rwd/zh/afterTrading/TWTAWU?startDate=20260813&endDate=20260814&querytype=3&response=csv",
+    "csvTransportContractVerified": false,
+    "jsonAndCsvBothCheckedInLiveRun": false,
+    "frozenBeforeObservation": true
+  },
+  "codePaths": [
+    "system2/runtime/twtawu_positive_json_csv_parity_diagnostic_v0_1.mjs",
+    "system2/tests/twtawu_positive_json_csv_parity_diagnostic_v0_1.test.mjs",
+    "system2/scripts/probe_twtawu_positive_json_csv_parity_readonly_v0_1.mjs",
+    ".github/workflows/system2-twtawu-positive-json-csv-parity-readonly.yml"
+  ],
+  "sourceAcceptanceGates": [
+    "JSON and CSV endpoint GET only, bounded same requested start/end/querytype",
+    "JSON stat OK, fields/data, strict TWTAWU symbol/suspend/resume fields",
+    "CSV parser must find same official field header, reject HTML and malformed rows",
+    "Known real 1218 suspended/resumed row must appear in both",
+    "Full normalized row sets equal; any mismatch BLOCKED",
+    "Independent source/export provenance plus completeness guarantees still separate"
+  ],
+  "outputs": {
+    "matchedPositiveState": "MATCHED_POSITIVE_PARITY_DIAGNOSTIC_ONLY",
+    "blockedState": "BLOCKED_POSITIVE_PARITY_UNVERIFIED",
+    "sameScopeOfficialExportContractProven": false,
+    "exactRangeCompletenessProven": false,
+    "absenceCertifiesNoSuspension": false,
+    "noEventMayBeClaimed": false,
+    "technicalContinuityCertified": false,
+    "ncT01PromotionAuthorized": false,
+    "originalAug2026FirstKnownAtReconstructed": false
+  },
+  "resourceSafety": {
+    "d1Reads": 0,
+    "d1Writes": 0,
+    "r2Writes": 0,
+    "noSecrets": true,
+    "noSystem1Runtime": true,
+    "noNewPaidSources": true,
+    "noWorkerDeployment": true
+  },
+  "next": "CI and V8 regression pass then merge; auto-run official positive-readonly probe and inspect actual response. If match, still require independent CSV export route verification, range completeness, revision/suspension family and original PIT before any negative-complete claim."
+}
