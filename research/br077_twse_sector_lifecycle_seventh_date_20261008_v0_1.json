@@ -1,0 +1,394 @@
+{
+  "schemaVersion": "BR077_TWSE_SECTOR_LIFECYCLE_SEVENTH_DATE_V0_1",
+  "status": "RESEARCH_ONLY / SEVENTH_OFFICIAL_DATE / CAPTURED_BEFORE_NEXT_CLOSE / D1_OUTCOME_NOT_MATURE / FORMAL_CORE_UNCHANGED",
+  "modules": [
+    "D09-06",
+    "D09-07"
+  ],
+  "sourceTradeDate": "2026-10-08",
+  "capturedAt": "2026-10-09T12:24:00+08:00",
+  "nextSessionCloseNotYetMatureAtCapture": true,
+  "observedMainBeforeWrite": "adacc6f9999919a0212d078a056362fc1e2fb02c",
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "report": "MI_INDEX",
+    "url": "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261008&response=html&type=ALLBUT0999",
+    "indexType": "34 official industry total-return indices",
+    "sourceClass": "OFFICIAL_EXCHANGE"
+  },
+  "frozenSemantics": {
+    "rank": "daily total-return pct descending",
+    "leaderSet": "same-date top quartile = ranks 1-9 of 34",
+    "broadParticipation": "positive-industry share >= 75%",
+    "mixedParticipation": "40% <= positive-industry share < 75%",
+    "narrowParticipation": "positive-industry share < 40%",
+    "top3Turnover": "1 - top3 overlap with prior snapshot / 3",
+    "thresholdsChanged": false
+  },
+  "rows": [
+    {
+      "industry": "油電燃氣",
+      "tri": 250.9,
+      "dailyPct": 3.04,
+      "rank": 1,
+      "percentileRank": 100,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "通信網路",
+      "tri": 580.66,
+      "dailyPct": 1.02,
+      "rank": 2,
+      "percentileRank": 96.96969696969697,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "水泥",
+      "tri": 295.54,
+      "dailyPct": 0.83,
+      "rank": 3,
+      "percentileRank": 93.93939393939394,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "紡織纖維",
+      "tri": 922.68,
+      "dailyPct": 0.82,
+      "rank": 4,
+      "percentileRank": 90.9090909090909,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "觀光餐旅",
+      "tri": 163.89,
+      "dailyPct": 0.54,
+      "rank": 5,
+      "percentileRank": 87.87878787878788,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "塑膠",
+      "tri": 980.78,
+      "dailyPct": 0.5,
+      "rank": 6,
+      "percentileRank": 84.84848484848484,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "橡膠",
+      "tri": 357.55,
+      "dailyPct": 0.48,
+      "rank": 7,
+      "percentileRank": 81.81818181818181,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "居家生活",
+      "tri": 115.71,
+      "dailyPct": 0.45,
+      "rank": 8,
+      "percentileRank": 78.78787878787878,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "化學",
+      "tri": 395.56,
+      "dailyPct": 0.33,
+      "rank": 9,
+      "percentileRank": 75.75757575757575,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "食品",
+      "tri": 3424.68,
+      "dailyPct": 0.32,
+      "rank": 10,
+      "percentileRank": 72.72727272727273,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "建材營造",
+      "tri": 1055.61,
+      "dailyPct": 0.28,
+      "rank": 11,
+      "percentileRank": 69.6969696969697,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "運動休閒",
+      "tri": 65.28,
+      "dailyPct": 0.2,
+      "rank": 12,
+      "percentileRank": 66.66666666666667,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "貿易百貨",
+      "tri": 419.59,
+      "dailyPct": 0.12,
+      "rank": 13,
+      "percentileRank": 63.63636363636363,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "資訊服務",
+      "tri": 656.08,
+      "dailyPct": 0.07,
+      "rank": 14,
+      "percentileRank": 60.60606060606061,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "鋼鐵",
+      "tri": 232,
+      "dailyPct": 0.06,
+      "rank": 15,
+      "percentileRank": 57.57575757575758,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "其他",
+      "tri": 544.65,
+      "dailyPct": 0.04,
+      "rank": 16,
+      "percentileRank": 54.54545454545455,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "化學生技醫療",
+      "tri": 285.78,
+      "dailyPct": 0.02,
+      "rank": 17,
+      "percentileRank": 51.515151515151516,
+      "compositeOverlap": true
+    },
+    {
+      "industry": "造紙",
+      "tri": 464.06,
+      "dailyPct": -0.01,
+      "rank": 18,
+      "percentileRank": 48.484848484848484,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "航運",
+      "tri": 471.46,
+      "dailyPct": -0.05,
+      "rank": 19,
+      "percentileRank": 45.45454545454545,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "生技醫療",
+      "tri": 138.01,
+      "dailyPct": -0.12,
+      "rank": 20,
+      "percentileRank": 42.42424242424242,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電子通路",
+      "tri": 1119.92,
+      "dailyPct": -0.56,
+      "rank": 21,
+      "percentileRank": 39.39393939393939,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電機機械",
+      "tri": 913.94,
+      "dailyPct": -0.76,
+      "rank": 22,
+      "percentileRank": 36.36363636363637,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "汽車",
+      "tri": 530.21,
+      "dailyPct": -0.79,
+      "rank": 23,
+      "percentileRank": 33.333333333333336,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電子零組件",
+      "tri": 2109.33,
+      "dailyPct": -0.9,
+      "rank": 24,
+      "percentileRank": 30.303030303030305,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電腦及週邊設備",
+      "tri": 1190.21,
+      "dailyPct": -0.95,
+      "rank": 25,
+      "percentileRank": 27.272727272727273,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電子工業",
+      "tri": 6483.26,
+      "dailyPct": -1.07,
+      "rank": 26,
+      "percentileRank": 24.242424242424242,
+      "compositeOverlap": true
+    },
+    {
+      "industry": "數位雲端",
+      "tri": 43.1,
+      "dailyPct": -1.08,
+      "rank": 27,
+      "percentileRank": 21.21212121212121,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "其他電子",
+      "tri": 526.25,
+      "dailyPct": -1.13,
+      "rank": 28,
+      "percentileRank": 18.181818181818183,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "半導體",
+      "tri": 3180.47,
+      "dailyPct": -1.18,
+      "rank": 29,
+      "percentileRank": 15.151515151515152,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "電器電纜",
+      "tri": 193.67,
+      "dailyPct": -1.25,
+      "rank": 30,
+      "percentileRank": 12.121212121212121,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "金融保險",
+      "tri": 7023.25,
+      "dailyPct": -1.68,
+      "rank": 31,
+      "percentileRank": 9.090909090909092,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "光電",
+      "tri": 131.16,
+      "dailyPct": -2.01,
+      "rank": 32,
+      "percentileRank": 6.0606060606060606,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "玻璃陶瓷",
+      "tri": 194.13,
+      "dailyPct": -2.56,
+      "rank": 33,
+      "percentileRank": 3.0303030303030303,
+      "compositeOverlap": false
+    },
+    {
+      "industry": "綠能環保",
+      "tri": 149.51,
+      "dailyPct": -2.58,
+      "rank": 34,
+      "percentileRank": 0,
+      "compositeOverlap": false
+    }
+  ],
+  "snapshot": {
+    "positiveN": 17,
+    "negativeN": 17,
+    "totalN": 34,
+    "positiveShare": 0.5,
+    "state": "MIXED_PARTICIPATION",
+    "top3": [
+      "油電燃氣 3.04%",
+      "通信網路 1.02%",
+      "水泥 0.83%"
+    ],
+    "top9": [
+      "油電燃氣",
+      "通信網路",
+      "水泥",
+      "紡織纖維",
+      "觀光餐旅",
+      "塑膠",
+      "橡膠",
+      "居家生活",
+      "化學"
+    ],
+    "priorDate": "2026-10-07",
+    "priorPositiveN": 25,
+    "priorPositiveShare": 0.7352941176470589,
+    "priorState": "MIXED_PARTICIPATION",
+    "priorTop3": [
+      "玻璃陶瓷",
+      "塑膠",
+      "油電燃氣"
+    ],
+    "top3OverlapPrev": 1,
+    "top3Turnover": 0.6666666666666666,
+    "priorTop9": [
+      "玻璃陶瓷",
+      "塑膠",
+      "油電燃氣",
+      "綠能環保",
+      "電器電纜",
+      "紡織纖維",
+      "運動休閒",
+      "造紙",
+      "橡膠"
+    ],
+    "top9OverlapPrev": 4,
+    "top9RetentionFromPrior": 0.4444444444444444,
+    "participationTransition": "MIXED_PARTICIPATION -> MIXED_PARTICIPATION",
+    "breadthDirection": "NARROWING_WITHIN_MIXED"
+  },
+  "sequenceState": {
+    "officialDateCount": 7,
+    "dates": [
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-07",
+      "2026-10-08"
+    ]
+  },
+  "antiLeakage": {
+    "stockOutcomesOpened": false,
+    "nextSessionCloseOpened": false,
+    "currentDayIndustryOutcomeOpened": false,
+    "sameRootDedup": "D09-06 and D09-07 consume one 2026-10-08 official root; consumer count does not increase independent evidence-root N."
+  },
+  "interpretation": [
+    "Participation remained MIXED but fell from 25/34 positive industries to 17/34.",
+    "Top3 turnover rose to 2/3; oil/gas persisted while glass/ceramics and plastics left the top3.",
+    "Top-quartile overlap with the prior date is 4/9, indicating material leadership churn.",
+    "This is lifecycle-state evidence only; no forward persistence or alpha is claimed."
+  ],
+  "maturity": {
+    "d09_06": {
+      "level": "L3",
+      "maturityPct": 60,
+      "promote": false
+    },
+    "d09_07": {
+      "level": "L3",
+      "maturityPct": 60,
+      "promote": false
+    },
+    "reason": "Seventh independent official date strengthens lifecycle and rotation-state evidence, but D16 method/common-support and member-level concentration remain incomplete."
+  },
+  "exactNext": [
+    "Append the next official 34-industry snapshot under unchanged semantics.",
+    "Freeze D16 date-clustered persistence/reversal method before opening D1/D5/D20/D60 outcomes.",
+    "Add effective-dated member breadth/concentration for leader sectors.",
+    "Keep D09-06/D09-07/D09-04/D09-12 shared-root dedup explicit."
+  ]
+}
