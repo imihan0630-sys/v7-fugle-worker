@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "S2_CORR003_P01_P05_PRODUCER_RECEIPT_RECONCILIATION_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "REMEDIATION_LANE",
+  "artifactType": "IMMUTABLE_READONLY_INTAKE_CROSS_PRODUCER_NO_PHYSICAL_PROMOTION",
+  "observedAtTaipei": "2026-10-09T22:11:34+08:00",
+  "baselineMainSha": "793bf6fa5f4474a4879fbcb6e04ec686b0a946bb",
+  "sourceReceipts": [
+    {
+      "lane": "SYSTEM1",
+      "issue": 1024,
+      "sourcePath": "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+      "sourceBlobSha": "6b0fa61f951a3e8dfba3e20550b5d8ba88b2da38",
+      "producerPr": 1037,
+      "producerMergeSha": "d8c743ec5acd96b9b27f9a130c0f51f17875c8af",
+      "scope": [
+        "P01",
+        "P02",
+        "P04"
+      ],
+      "classification": "GENUINE_HISTORICAL_GITHUB_KV_GRAPHQL_READONLY_NO_NEW_BUSINESS_RUN"
+    },
+    {
+      "lane": "DATA_LANE",
+      "issue": 1026,
+      "sourcePath": "system2/evidence/S2_ISSUE1026_P03_P05_ACCOUNT_GRAPHQL_NONAUTHORIZING_REAL_RUN_20261009_V0_1.json",
+      "sourceBlobSha": "aee593e9abb0a6ebd82e1444b4e2e26c60d1cdc6",
+      "producerPrs": [
+        1038,
+        1039,
+        1040
+      ],
+      "scope": [
+        "P03",
+        "P05"
+      ],
+      "classification": "ACTUAL_ACCOUNT_GRAPHQL_METADATA_ONLY_NOT_D1_SQL"
+    }
+  ],
+  "originalPhysicalInventory": "system2/evidence/S2_CORR003_P01_P05_PHYSICAL_EVIDENCE_GAP_INVENTORY_20261009_V0_1.json",
+  "independentAuditGate": "system2/evidence/S2_CORR003_INDEPENDENT_PHYSICAL_CLOSURE_GATE_20261009_V0_1.json",
+  "originalCriteriaMapped": 19,
+  "originalAcceptancePhysicalStatus": "PENDING_AUDIT",
+  "supportingEvidence": {
+    "checksDocumented": 15,
+    "checksTotal": 38,
+    "meaning": "PROVENANCE_STRENGTHENED_NOT_NEW_GATE_ACCEPTANCE_OR_INCREMENTAL_SUPPORT_CHECK"
+  },
+  "verifiedA1A7": "INDEPENDENT_SOURCE_LEVEL_PASS_ONLY",
+  "system1": {
+    "healthyAfterMarketCronRows": [
+      {
+        "cronRowId": 1893,
+        "taipei": "2026-09-21 23:35:35",
+        "status": "SUCCESS",
+        "exactBusinessPersistenceReadbackVerified": false
+      },
+      {
+        "cronRowId": 2173,
+        "taipei": "2026-09-22 23:35:31",
+        "status": "SUCCESS",
+        "exactBusinessPersistenceReadbackVerified": false
+      }
+    ],
+    "healthyDatesObserved": 2,
+    "accountWholeV7DbDailyUsage": [
+      {
+        "utcDay": "2026-09-21",
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "per2335CostKnown": false,
+        "physicalBusinessReadbackSameGeneration": false
+      },
+      {
+        "utcDay": "2026-09-22",
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "per2335CostKnown": false,
+        "physicalBusinessReadbackSameGeneration": false
+      }
+    ],
+    "afterMarketOct07Failure": "FAILED",
+    "oct08FollowupC1": "FAILURE",
+    "laterHealthyPersistenceReadback": false,
+    "perRunReadWriteCostEvidenceQualified": false,
+    "authorizedWriteReserve": false,
+    "authorizedReadReserve": false,
+    "nextNaturalEligibleTradingDate": "2026-10-12"
+  },
+  "data": {
+    "physicalAccountObservation": {
+      "runId": 37941792137,
+      "jobId": 113857752036,
+      "sourceHeadSha": "aaa796ca2db436cc31f19d08f94691f0c9faae30",
+      "artifactId": 11621798195,
+      "artifactDigest": "sha256:963724d54534fc95b6520a094428921886f51cafb9f88d7658e1617452df0cdc",
+      "quotaDay": "2026-10-09",
+      "observedAtUTC": "2026-10-09T14:07:12.779Z",
+      "rowsReadLowerBound": 990891,
+      "rowsWrittenLowerBound": 27060,
+      "analyticsLagGuarantee": "NOT_DOCUMENTED_BY_VENDOR",
+      "readHeadroomProven": false,
+      "writeHeadroomProven": false
+    },
+    "graphqlOnly": true,
+    "d1SqlQueries": 0,
+    "d1Writes": 0,
+    "priorObservedAccountLowerBounds": {
+      "utcDay": "2026-10-09",
+      "rowsWrittenLowerBound": 27056,
+      "rowsReadLowerBound": 880643,
+      "runId": 37918290130
+    },
+    "usageDifferencesMustNotBeWriterAttributed": true,
+    "hotD1ScoutCompleted": 0,
+    "hotD1FullCensusCompleted": 0,
+    "physicalMissingKeys": "UNKNOWN",
+    "actualPostFixMultiwriterGrantResultProven": false
+  },
+  "gateStatus": {
+    "P01": false,
+    "P02": false,
+    "P03": false,
+    "P04": false,
+    "P05": false,
+    "independentlyQualified": 0,
+    "total": 5
+  },
+  "auditOwnedCorrectionStatus": "HIGH_VERIFYING",
+  "protected": {
+    "noPhysicalD1SQLByRemediation": true,
+    "noQuotaGrantOrReserveApproval": true,
+    "noSystem1FormalCoreOrRuntimeChanges": true,
+    "noBillingUpgrade": true,
+    "noQueueMutation": true,
+    "sourceOnlyIsNotPhysical": true
+  },
+  "next": {
+    "system1Issue": 1024,
+    "dataIssue": 1026,
+    "auditor": "System 2｜獨立稽核顧問室",
+    "system1": "Wait for natural 2026-10-12 session and obtain actual 23:35/conditional 23:55 per-run costs plus normal same-generation business D1 persist; independently approve read/write reserve before P03/P05.",
+    "dataLane": "No manual 36/11843 D1 SQL until qualified read protection; no multiwriter mutation until authenticated reservation grant; latest GraphQL lower bound is observation, not authorization.",
+    "remediation": "Reconcile each new producer run/job/artifact against same UTC day, retained immutable previous observations and source version; leave physical 0/5 until auditor approves.",
+    "closure": "AUDIT_LANE_ONLY"
+  }
+}
