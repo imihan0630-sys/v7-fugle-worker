@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "S2_SHADOW_15_CRITICAL_GATE_LEDGER_V0_1",
+  "asOfDate": "2026-10-09",
+  "canonicalSource": "GitHub main; this ledger is not a substitute for latest Correction Queue",
+  "purpose": "Track the user-prioritized 15 remaining Shadow-activation acceptance gates; each VERIFIED_PASS requires real independent evidence",
+  "scope": "SYSTEM2_SHADOW_ONLY",
+  "baselineMainCommit": "959e5015c4afc9efb098ad3df00eb23f74694897",
+  "passedGateCount": 0,
+  "totalGateCount": 15,
+  "unverifiedGateCount": 15,
+  "interpretation": "0/15 formally accepted at this initial gate-specific baseline; many have implemented components; this is NOT an overall platform completion percentage",
+  "recentPartialEvidence": [
+    {
+      "id": "F08",
+      "pr": 958,
+      "commit": "959e5015c4afc9efb098ad3df00eb23f74694897",
+      "ci": [
+        "37881169551",
+        "37881169601"
+      ],
+      "status": "READONLY_PARENT_PREFLIGHT_CI_PASS_NO_PHYSICAL_D1"
+    }
+  ],
+  "mandatoryProtections": {
+    "system1FormalCore": "NO_CHANGES",
+    "capital": "DISABLED",
+    "brokerOrders": "DISABLED",
+    "unapprovedCloudflareWrites": "FORBIDDEN",
+    "unknownAsZero": "FORBIDDEN",
+    "newPaidPlan": "NOT_AUTHORIZED"
+  },
+  "gates": [
+    {
+      "id": "A07",
+      "lane": "REMEDIATION_LANE",
+      "state": "BLOCKED_GLOBAL_QUOTA_CONTRACT",
+      "acceptance": "Account-wide System1-first D1 READ/WRITE reservation with negative no-overdraft tests",
+      "correctionId": "S2-CORR-20261007-003",
+      "next": "Complete coordinated per-writer reserve/commit/fail-closed budget evidence before System2 heavy physical work",
+      "verified": false
+    },
+    {
+      "id": "B10",
+      "lane": "DATA_LANE",
+      "state": "CURRENT_D1_UNVERIFIED",
+      "acceptance": "Actual latest TWSE/TPEx hot D1 stock bars and source date Oct08, paired full-universe readback",
+      "correctionId": "S2-CORR-20261004-001",
+      "next": "Physical same-day two-market hot store completeness + PIT readback under budget gate",
+      "verified": false
+    },
+    {
+      "id": "B11",
+      "lane": "DATA_LANE",
+      "state": "SOURCE_PARTIAL",
+      "acceptance": "Independent official date set, suspensions, corporate action and exact PIT continuity per stock/session",
+      "correctionId": "S2-CORR-20261004-001",
+      "next": "Resolve NC-T01/NO_EVENT and missing intervals with dated authority receipts",
+      "verified": false
+    },
+    {
+      "id": "D06",
+      "lane": "BUILD_LANE",
+      "state": "POLICY_PREREG_PARTIAL",
+      "acceptance": "Freeze first Shadow per-strategy required families, exclusions, assessor thresholds and versions before future outcomes",
+      "correctionId": null,
+      "next": "Develop independent prereg assessor contract for SHORT_MOMENTUM first; do not invent optimized scores",
+      "verified": false
+    },
+    {
+      "id": "D07",
+      "lane": "BUILD_LANE",
+      "state": "ASSESSOR_INTEGRATION_PARTIAL",
+      "acceptance": "Actual full-universe same-date PIT source snapshots -> strategy-specific assessment with no lookahead or fabricated values",
+      "correctionId": null,
+      "next": "Wire policy-authorized A1 limited Shadow assay after D06 and B10",
+      "verified": false
+    },
+    {
+      "id": "D08",
+      "lane": "BUILD_LANE",
+      "state": "CAPACITY_PHYSICAL_PENDING",
+      "acceptance": "PIT complete daily strategy assessments, RANK/capacity receipt persisted and physically read back under 12/3 caps",
+      "correctionId": null,
+      "next": "Verify run denominator, actual daily capacity run and same-day D1 hash",
+      "verified": false
+    },
+    {
+      "id": "E05",
+      "lane": "BUILD_LANE",
+      "state": "CLOCK_GATE_OFFLINE_ONLY",
+      "acceptance": "23:45 source-vintage/strategy PIT checked final attempt; physical immutable receipt and no blind finalization",
+      "correctionId": null,
+      "next": "Offline clock gate exists; separate safe dispatch and source receipts required",
+      "verified": false
+    },
+    {
+      "id": "E06",
+      "lane": "BUILD_LANE",
+      "state": "CLOCK_GATE_OFFLINE_ONLY",
+      "acceptance": "Only prior blocked date T can recover at 00:15 T+1 with authentic parent hash + next official session",
+      "correctionId": null,
+      "next": "Add physical manual/conditional runner with explicit T and identical PIT/version gate; no unauthorized Cron",
+      "verified": false
+    },
+    {
+      "id": "E07",
+      "lane": "BUILD_LANE",
+      "state": "FROZEN_ARCHIVE_PARTIAL",
+      "acceptance": "All candidates, exclusions and zero-pick/unknown counts frozen as immutable decision objects and physical D1 readback",
+      "correctionId": null,
+      "next": "Integrate authorized daily assessor decisions, corrections append only",
+      "verified": false
+    },
+    {
+      "id": "F07",
+      "lane": "BUILD_LANE",
+      "state": "STAGED_SQL_NOT_PHYSICAL",
+      "acceptance": "Apply additive append-only outcome revisions SQL in isolated D1 with schema and trigger physical readback",
+      "correctionId": "S2-CORR-20261007-003",
+      "next": "Stage 0011 exists; need global budget reservation and independent schema readback",
+      "verified": false
+    },
+    {
+      "id": "F08",
+      "lane": "BUILD_LANE",
+      "state": "READONLY_PREFLIGHT_MERGED",
+      "acceptance": "Atomic isolated D1 append writer, verified source parents and prior revision, quota reservation and exact write/readback",
+      "correctionId": "S2-CORR-20261008-012",
+      "next": "PR #958 read-only preflight merged; still implement budget-authorized atomic writer + real D1 evidence",
+      "verified": false
+    },
+    {
+      "id": "H04",
+      "lane": "AUDIT_LANE",
+      "state": "CORRECTION_OPEN",
+      "acceptance": "Independent adverse review and verified closure of CORR-012 entire outcome provenance/maturation chain",
+      "correctionId": "S2-CORR-20261008-012",
+      "next": "Audit parent PIT, versioned write/read, anti-rewrite and costs before closure",
+      "verified": false
+    },
+    {
+      "id": "H05",
+      "lane": "AUDIT_LANE",
+      "state": "CORRECTION_OPEN",
+      "acceptance": "Independent adverse review and verified closure of CORR-013 actual calendar and NO_FILL denominator",
+      "correctionId": "S2-CORR-20261008-013",
+      "next": "Audit full session date-set, unknown bars, gap/limit fill and downstream denominator",
+      "verified": false
+    },
+    {
+      "id": "H07",
+      "lane": "BUILD_LANE",
+      "state": "END_TO_END_PENDING",
+      "acceptance": "Multiple real eligible sessions: data->strategy->ranking->frozen decision->virtual fill->outcome/performance exact D1 readback",
+      "correctionId": null,
+      "next": "Perform prospective shadow-only dry and physical acceptance with zero-pick days included",
+      "verified": false
+    },
+    {
+      "id": "H09",
+      "lane": "OWNER_GATE",
+      "state": "OWNER_DECISION_REQUIRED",
+      "acceptance": "Explicit owner go/no-go after protected infra, PIT proof and independent end-to-end CI/physical acceptance",
+      "correctionId": null,
+      "next": "Only request go/no-go once all mandatory safety/evidence gates are actually verified",
+      "verified": false
+    }
+  ]
+}
