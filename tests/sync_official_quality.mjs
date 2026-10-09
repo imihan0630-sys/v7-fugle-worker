@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {verifyManualQualityPrereqs} from './system1_manual_quality_prereqs_v0_1.mjs';
+import {verifyManualQualityPrereqs,canReuseHeavyMopsSources} from './system1_manual_quality_prereqs_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
@@ -142,7 +142,7 @@ else console.log(JSON.stringify({historicalQualityReuse:true,kind:'ANNOUNCEMENTS
 // no reason to repeat dozens of third-party HTML/POST source reads.
 // Source reads are skipped only when both physical Worker cache flags are true;
 // scheduled ordinary sync still refreshes its authoritative source payloads.
-const financialEpsCached=recoveryOnly&&datasetReady('FINANCIAL')&&datasetReady('QUARTER_EPS');
+const financialEpsCached=canReuseHeavyMopsSources(recoveryOnly,existingQuality);
 if(financialEpsCached) {
   console.log(JSON.stringify({historicalQualityReuseHeavySources:true,marketDate,
     financialReady:true,quarterEpsReady:true,noSourceMutation:true,noD1Write:true}));
