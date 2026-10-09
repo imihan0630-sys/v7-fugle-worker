@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_36_SCOUT_BEFORE_FULL_CENSUS_PREREG_20261009_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "classification": "CLASS_A_NON_MUTATING_PHYSICAL_D1_GUARD_HARDENING",
+  "state": "CODE_CANDIDATE_PENDING_PR_CI_NEGATIVE_RUNTIME_PROOF",
+  "observedProblem": "The existing FULL_11843 readonly account budget qualification required one current read-headroom attestation but did not independently require previous actual successful 36-key Hot D1 scout. An over-optimistic headroom attestation could jump directly to full D1 census, breaking Issue 1026 acceptance order.",
+  "changeSet": [
+    "Add issue1026_p05_prior_scout_physical_gate_v0_1.mjs, strict source result 36/36 per three symbols for all twelve market-days, source-matched state, no multi/version/missing, read cost and immutable real run/artifact identity.",
+    "QualifyOct08D1ReadonlyBudgetV0_1 FULL_11843 now first requires prior audited physical Scout acceptance; SAMPLE_36 remains separately qualified by existing 35k cap.",
+    "Require main-tracked scout physical acceptance JSON path through FULL_11843 workflow and loader before any remote D1 adapter or SQL construction.",
+    "Extend existing quota budget tests with synthetic fixtures and adversarial attempted bypass cases.",
+    "Keep physical execution conditional on separate valid System1 read reserve, fresh account-wide GraphQL+lag/ledger proof, no competing writer and independent AUDIT_LANE acceptance."
+  ],
+  "currentActual": {
+    "oct08OfficialSourceKeys": 11843,
+    "oct08SourceManifestRun": 37944021198,
+    "sourceManifestPhysicalRunResult": "PASS_11843_OFFICIAL_SOURCE_KEYS_ONLY_NO_D1_CENSUS",
+    "hotD1ScoutKeysActuallyExecuted": 0,
+    "hotD1FullCensusKeysActuallyExecuted": 0,
+    "physicalD1MissingKeys": "UNKNOWN",
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false,
+    "corr003PhysicalGatesPassed": 0,
+    "corr003PhysicalGatesTotal": 5
+  },
+  "noAuthorization": {
+    "priorScoutEvidencePathCurrentlyExists": false,
+    "physicallyVerifiedScoutAccepted": false,
+    "fullCensusPhysicalQueryAuthorized": false,
+    "quotaReservationGranted": false,
+    "syntheticTestsCannotQualifyRealAccount": true,
+    "cloudflareD1ReadsPerformed": 0,
+    "cloudflareD1WritesPerformed": 0,
+    "r2Calls": 0,
+    "system1FormalCoreChanged": false,
+    "billingChanged": false
+  },
+  "handoff": [
+    "REMEDIATION_LANE: preserve P01/P02 reserve prerequisites, obtain authenticated same-UTC-day account ledger/GraphQL lag-headroom and verify no competing writer.",
+    "AUDIT_LANE: review exact 36-key physical scout artifact, original frozen official source hash lineage and source-matched sample before accepting source Scout; never accept synthetic fixtures.",
+    "DATA_LANE: only after independently audited Scout PASS and separate FULL_11843 quota-day read attestation may full census be considered; actual physical missing keys remain UNKNOWN."
+  ],
+  "acceptanceCriteria": [
+    "Original sample 36 complete per all TWSE+TPEX six source dates, immutable original run/job/head/action artifact digest, exact 36 source-matched values.",
+    "GitHub main-tracked independent auditor review proof, not a checkbox.",
+    "Observed D1 query cost and zero writes with maximum 35k rowsRead; new 150k census quota attestation mandatory.",
+    "Offline negative tests and V8 regression PASS, main merge and exact file readback; no D1 operations."
+  ]
+}
