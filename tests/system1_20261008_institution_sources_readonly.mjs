@@ -1,4 +1,4 @@
-import {mkdir,writeFile} from "node:fs/promises";
+import {mkdir,writeFile,readFile} from "node:fs/promises";
 import {fetchBufferedOfficialSource} from "./official_source_fetch_v0_1.mjs";
 const date="2026-10-08";
 const sources={
@@ -11,6 +11,7 @@ const report={schemaVersion:"SYSTEM1_20261008_OFFICIAL_INSTITUTION_SOURCE_V0_1",
   streakThreeTradingDatesVerified:false,formalScanVerified:false,
   noCredentials:true,noPost:true,noD1Write:true,noPlanChanges:true,noTrade:true,noPush:true,
   sources:{}};
+const sourcePayloads={};
 for(const market of ["TWSE","TPEx"]){
   const r={httpStatus:null,reachable:false,officialStatus:null,officialDate:null,tableCount:null,reportedRowCount:null,errorClass:null};
   try{
@@ -20,6 +21,7 @@ for(const market of ["TWSE","TPEx"]){
     r.httpStatus=response.status;
     if(response.ok){
       const p=await response.json();
+      sourcePayloads[market]=p;
       r.reachable=true;
       r.officialStatus=p?.stat??p?.status??null;
       r.officialDate=p?.date??p?.Date??null;
@@ -50,6 +52,41 @@ report.workerMinimumCompleteStocks=1500;
 report.ordinaryCountClearsMinimum=report.uniqueOrdinaryStockCountSum>=1500;
 report.ordinaryCodeSetsMayOverlap=true; // Sum is not proof of unique cross-market union.
 report.bothOfficialInstitutionSourcesReachable=report.sources.TWSE.reachable&&report.sources.TPEx.reachable;
+// Independently execute the exact production *base* Worker source validator
+// in memory. This is a source-only preflight, not a deployed build/PIT claim.
+report.baseWorkerValidator={attempted:false,ok:false,counts:null,errorClass:null};
+if(report.sources.TWSE.reachable&&report.sources.TPEx.reachable){
+  report.baseWorkerValidator.attempted=true;
+  try{
+    const worker=await readFile(new URL("../Worker.js",import.meta.url),"utf8");
+    const module=await import("data:text/javascript;base64,"+
+      Buffer.from(worker+"\nexport {validateInstitutionData,institutionSourceUrls};").toString("base64"));
+    const officialUrls=module.institutionSourceUrls(date);
+    // Mirror protected sync's ordinary-share filtering exactly.
+    const twse=sourcePayloads.TWSE;
+    const codeIndex=twse.fields?.indexOf("證券代號");
+    if(codeIndex<0)throw Error("MISSING_CODE_FIELD");
+    const ordinaryTwse={...twse,data:twse.data.filter(row=>
+      /^[1-9][0-9]{3}$/.test(String(row[codeIndex]).trim()))};
+    const validated=module.validateInstitutionData({
+      ...officialUrls,twsePayload:ordinaryTwse,tpexPayload:sourcePayloads.TPEx
+    },date);
+    report.baseWorkerValidator.ok=true;
+    report.baseWorkerValidator.counts=validated.counts;
+    report.baseWorkerValidator.ordinaryUnionAtLeast1500=validated.counts.total>=1500;
+    // Never log validated.stocks: it contains per-stock institutional trades.
+  }catch(error){
+    const message=String(error?.message||error);
+    report.baseWorkerValidator.errorClass=
+      /來源|URL/i.test(message)?"OFFICIAL_URL_MISMATCH":
+      /日期|交易日|官方法人資料/i.test(message)?"OFFICIAL_DATE_OR_STATUS_MISMATCH":
+      /欄位|結構|FIELD|CODE_FIELD/i.test(message)?"OFFICIAL_SCHEMA_MISMATCH":
+      /數值|買賣超|重複/i.test(message)?"OFFICIAL_NUMERIC_OR_DUPLICATE_MISMATCH":
+      /覆蓋|不足|1500/i.test(message)?"OFFICIAL_COVERAGE_INSUFFICIENT":
+      "OFFICIAL_VALIDATOR_OTHER_ERROR";
+  }
+}
+
 await mkdir("artifacts",{recursive:true});
 await writeFile("artifacts/system1-20261008-institution-sources-readonly.json",JSON.stringify(report,null,2)+"\n");
 console.log("SYSTEM1_20261008_INSTITUTION_SOURCE_READONLY="+JSON.stringify(report));
