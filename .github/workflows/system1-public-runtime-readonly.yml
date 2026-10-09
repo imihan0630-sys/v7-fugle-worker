@@ -1,0 +1,32 @@
+name: System1 Public Runtime Readonly Evidence
+
+on:
+  pull_request:
+    paths:
+      - "tests/system1_public_runtime_evidence.mjs"
+      - ".github/workflows/system1-public-runtime-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate read-only probe source
+        run: node --check tests/system1_public_runtime_evidence.mjs
+      - name: Read public runtime version and storage metadata only
+        run: node tests/system1_public_runtime_evidence.mjs
+      - name: Save sanitized public-readonly receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-public-runtime-readonly-${{ github.run_id }}
+          path: artifacts/system1-public-runtime-readonly.json
+          retention-days: 30
+          if-no-files-found: warn
