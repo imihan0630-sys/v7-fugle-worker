@@ -1,3 +1,4 @@
+import {planMissingInstitutionDates} from './system1_institution_gap_resume_v0_1.mjs';
 import assert from 'node:assert/strict';
 const origin='https://fugle-test.imihan0630.workers.dev';
 const now=new Date();
@@ -45,13 +46,34 @@ async function sync(date) {
   assert.equal(result.verified,true);assert.equal(result.noPlanChanges,true);
   console.log(JSON.stringify({officialInstitutionCached:true,...result}));return result;
 }
-const current=await sync(marketDate);
-for(const missingDate of current.streak.missingDates || []) await sync(missingDate);
-const statusResponse=await admin('/api/institution-status');
+// For explicit historical data-only recovery, read the authority's exact
+// three-trading-day gaps first. Never rewrite the already-valid two sessions.
+let backfilledDates=[];
+if(manualDataOnly){
+  const priorResponse=await admin('/api/institution-status?marketDate='+encodeURIComponent(marketDate));
+  assert.equal(priorResponse.ok,true,'Manual institution inventory unavailable; no D1 writes');
+  const plan=planMissingInstitutionDates(await priorResponse.json(),marketDate);
+  console.log(JSON.stringify({manualInstitutionGapPlan:true,marketDate,
+    alreadyReady:plan.alreadyReady,repairDates:plan.repairDates,noSelection:true,noPush:true}));
+  for(const missingDate of plan.repairDates){
+    await sync(missingDate); // Only actual missing dates, at most three.
+    backfilledDates.push(missingDate);
+  }
+}else{
+  const current=await sync(marketDate);
+  for(const missingDate of current.streak.missingDates || []) await sync(missingDate);
+  backfilledDates=[...(current.streak.missingDates||[])];
+}
+// Explicit historical recovery MUST read back the same marketDate, not today's
+// default: a holiday/default-date check would produce a false recovery failure.
+const statusPath='/api/institution-status'+(manualDataOnly?'?marketDate='+encodeURIComponent(marketDate):'');
+const statusResponse=await admin(statusPath);
 assert.equal(statusResponse.ok,true);
 const status=await statusResponse.json();
 assert.equal(status.marketDate,marketDate);assert.equal(status.ready,true,'Current three trading dates must all be complete');
+if(manualDataOnly) assert.equal(status.historicalReadback,true,'Manual historical institution readback incomplete');
 console.log(JSON.stringify({currentInstitutionReadback:status}));
 const after=await config();
 assert.deepEqual(after,before,'Institution synchronization must not change targets, capital or plans');
-console.log(JSON.stringify({institutionDataOnly:true,marketDate,currentDateVerified:true,backfilledDates:current.streak.missingDates || [],configurationUnchanged:true,noSelection:true,noExternalPlanWrite:true,noPush:true}));
+console.log(JSON.stringify({institutionDataOnly:true,marketDate,currentDateVerified:true,
+  backfilledDates,configurationUnchanged:true,noSelection:true,noExternalPlanWrite:true,noPush:true}));
