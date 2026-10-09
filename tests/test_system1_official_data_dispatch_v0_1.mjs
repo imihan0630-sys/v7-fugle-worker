@@ -8,6 +8,7 @@ const marketIngest=await readFile(new URL("./prepare_market_cache.mjs",import.me
 const instIngest=await readFile(new URL("./sync_institution_data.mjs",import.meta.url),"utf8");
 const priorValidator=await readFile(new URL("./verify_cross_midnight_recovery_prereqs.mjs",import.meta.url),"utf8");
 const gapResume=await readFile(new URL("./system1_institution_gap_resume_v0_1.mjs",import.meta.url),"utf8");
+const qualityIngest=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 
 const cases=[
   {marketDate:"2026-10-08",dataOnly:true,dataScope:"market",qualityOnly:false,scanAllowed:false},
@@ -83,6 +84,11 @@ assert.ok(historyQuality.includes("inputs.data_scope == 'quality'"));
 assert.ok(historyQuality.includes("inputs.data_scope == 'all'"));
 assert.ok(historyQuality.includes("inputs.data_only != true"));
 assert.ok(historyQuality.includes("steps.calendar.outputs.proceed == 'true'"));
+assert.ok(historyQuality.includes("V7_DATA_ONLY_RECOVERY:"));
+assert.ok(qualityIngest.includes("verifyManualQualityPrereqs("));
+assert.ok(qualityIngest.includes("manualQualityPrerequisitesVerified"));
+assert.ok(qualityIngest.includes("admin('/api/institution-status?marketDate='"));
+
 const manualScan=workflow.slice(workflow.indexOf("      - name: Historical after-market recovery\n"));
 assert.ok(manualScan.includes("inputs.quality_only != true && inputs.data_only != true"));
 const scheduledScan=step("Recover missing same-day analysis after complete data (skip prior success)","Historical official quality recovery");
