@@ -85,6 +85,13 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
  }
  assert.equal(matchedSource.length,12);
  assert.equal(totalExpected,11843,"frozen official October 6-session rowset expectation drift");
+ // Bind the census to twelve exact official rowset hashes, not a count-only
+ // sourceReceiptsMatched flag that a downstream planner cannot verify.
+ const sourceRevalidationReceipts=Object.freeze(matchedSource.map(x=>
+  Object.freeze({market:x.market,marketDate:x.marketDate,
+   ordinarySymbolCount:x.expected,normalizedBarSha256:x.frozenHash})));
+ const sourceRevalidationDigest=createHash("sha256").update(
+  JSON.stringify(sourceRevalidationReceipts)).digest("hex");
  const details=[],metrics={matched:0,missing:0,mismatched:0,multi:0};
  let queryCount=0;
  for(const source of matchedSource){
@@ -169,6 +176,7 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
   result:allValuesMatch?"PASS_ALL_11843_SOURCE_KEYS_MATCH_D1_VALUES_ONLY":
    "BLOCKED_OCT08_MISSING_MISMATCHED_OR_MULTIVERSION_D1_KEYS",
   marketDateCutoff:"2026-10-08",sourceReceiptsMatched:12,
+  sourceRevalidationReceipts,sourceRevalidationDigest,
   exactTradingDates:Object.freeze([...dates]),sourceSymbolDayKeys:totalExpected,
   selectedD1ChunkSize:chunkSize,actualD1Queries:queryCount,
   counts:Object.freeze(metrics),
