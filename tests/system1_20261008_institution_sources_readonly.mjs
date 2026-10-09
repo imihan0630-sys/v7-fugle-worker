@@ -1,4 +1,5 @@
 import {mkdir,writeFile} from "node:fs/promises";
+import {fetchBufferedOfficialSource} from "./official_source_fetch_v0_1.mjs";
 const date="2026-10-08";
 const sources={
   TWSE:"https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=20261008&selectType=ALL",
@@ -13,8 +14,9 @@ const report={schemaVersion:"SYSTEM1_20261008_OFFICIAL_INSTITUTION_SOURCE_V0_1",
 for(const market of ["TWSE","TPEx"]){
   const r={httpStatus:null,reachable:false,officialStatus:null,officialDate:null,tableCount:null,reportedRowCount:null,errorClass:null};
   try{
-    const response=await fetch(sources[market],{
-      method:"GET",headers:{accept:"application/json"},signal:AbortSignal.timeout(26000)});
+    const response=await fetchBufferedOfficialSource(sources[market],{
+      method:"GET",headers:{accept:"application/json"},timeoutMs:55000
+    },{maxAttempts:2});
     r.httpStatus=response.status;
     if(response.ok){
       const p=await response.json();
