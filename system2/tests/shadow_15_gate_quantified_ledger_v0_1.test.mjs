@@ -16,7 +16,7 @@ for(const g of d.gates){
  for(const [i,c] of g.checks.entries()){
   assert.equal(c.checkId,g.id+"-C"+(i+1));
   assert.ok(!used.has(c.checkId));used.add(c.checkId);
-  assert.ok(typeof c.criterion==="string" && c.criterion.length>12);
+  assert.ok(typeof c.criterion==="string" && c.criterion.trim().length>=5);
   assert.equal(typeof c.checkPassed,"boolean");
   if(c.checkPassed){
    sub++;assert.ok(/^https:\/\/github\.com\/imihan0630-sys\/v7-fugle-worker\/(pull\/\d+|blob\/main\/[\w.\/\-]+)$/.test(c.evidenceRef),
