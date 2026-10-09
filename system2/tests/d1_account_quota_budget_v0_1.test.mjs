@@ -19,6 +19,8 @@ const authorizedReserve = {
   evidenceState: "SYNTHETIC_AUTHORIZED_TEST_ONLY",
   reserveNumberAuthorized: true,
   authorizedReserveRows: 5000,
+  readReserveNumberAuthorized: true,
+  authorizedReadReserveRows: 5000,
 };
 const unauthorizedReserve = {
   evidenceState: "INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS",
