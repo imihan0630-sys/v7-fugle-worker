@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { assertCanonicalMarketDateV0_1, assertObservedSessionSequenceV0_1 } from "./market_session_date_guard_v0_1.mjs";
 
 export const EXECUTION_SIMULATOR_VERSION_V0_1 = "S2_TW_DAILY_EXECUTION_SIMULATOR_V0_1";
 
@@ -86,6 +87,7 @@ function normalizeSessions(sessions, {
   const sorted = [...sessions].sort((a, b) => a.sessionNumber - b.sessionNumber);
   const out = [];
   let expected = 1;
+  let previousMarketDate = null;
 
   for (let i = 0; i < sorted.length; i += 1) {
     const raw = sorted[i];
@@ -95,7 +97,9 @@ function normalizeSessions(sessions, {
     }
     expected += 1;
 
-    const marketDate = requiredText(raw.marketDate, `sessions[${i}].marketDate`);
+    const marketDate = assertCanonicalMarketDateV0_1(raw.marketDate, `sessions[${i}].marketDate`);
+    assertObservedSessionSequenceV0_1(previousMarketDate, marketDate, `sessions[${i}].marketDate`);
+    previousMarketDate = marketDate;
     if (marketDate <= decisionMarketDate) {
       throw new Error("execution session must be after decision marketDate");
     }
@@ -447,9 +451,9 @@ export async function simulateTaiwanLongDailyPlanV0_1({
   const sId = requiredText(strategyId, "strategyId");
   const sVersion = requiredText(strategyVersion, "strategyVersion");
   const code = requiredText(symbol, "symbol");
-  const decisionDate = requiredText(decisionMarketDate, "decisionMarketDate");
+  const decisionDate = assertCanonicalMarketDateV0_1(decisionMarketDate, "decisionMarketDate");
   const decisionTime = isoTimestamp(decisionTimestamp, "decisionTimestamp");
-  const earliestDate = requiredText(earliestEligibleMarketDate, "earliestEligibleMarketDate");
+  const earliestDate = assertCanonicalMarketDateV0_1(earliestEligibleMarketDate, "earliestEligibleMarketDate");
   if (earliestDate <= decisionDate) {
     throw new Error("earliestEligibleMarketDate must be after decisionMarketDate");
   }
@@ -520,6 +524,10 @@ export async function simulateTaiwanLongDailyPlanV0_1({
       ambiguityReason: "CORPORATE_ACTION_STATE_UNKNOWN",
       possibleOutcomes: Object.freeze([]),
       blockedObservations: Object.freeze([]),
+      proofCompleteNoFill: false,
+      noFillDenominatorEligible: false,
+      sessionProofVersion: "S2_CORR013_CHRONOLOGY_UNKNOWN_WINDOW_V0_2",
+      calendarProof: "NO_INDEPENDENT_OFFICIAL_CALENDAR_RECEIPT",
       simulatedAt: asOf,
       performanceEligible: false,
       executionVersion: EXECUTION_SIMULATOR_VERSION_V0_1,
@@ -658,7 +666,13 @@ export async function simulateTaiwanLongDailyPlanV0_1({
 
   if (!entryFill) {
     const entryWindowFinalized = rows.length >= entryValidity;
-    if (entryWindowFinalized) {
+    if (entryWindowFinalized && blockedObservations.some(x => x.phase === "ENTRY")) {
+      // An unobserved/blocked eligible entry can hide a prior fill; it cannot
+      // be counted as NO_FILL just because no later bar touched the trigger.
+      state = "DATA_INCOMPLETE";
+      fillQuality = "DATA_UNKNOWN";
+      fills = [];
+    } else if (entryWindowFinalized) {
       const lastBlocker = blockedObservations.at(-1) || null;
       fillQuality = lastBlocker?.fillQuality || "NO_FILL";
       const nonFill = buildNonFill({
@@ -706,6 +720,16 @@ export async function simulateTaiwanLongDailyPlanV0_1({
       : 0;
   }
 
+  // A later known exit does not establish a historical realized return
+  // when an earlier eligible entry/exit observation was unknown or blocked.
+  const uncertainInterval = blockedObservations.length > 0;
+  if (uncertainInterval && (state === "CLOSED" || state === "NO_FILL")) {
+    state = "DATA_INCOMPLETE";
+    fillQuality = "DATA_UNKNOWN";
+    grossReturn = null;
+    netReturn = null;
+    if (!entryFill) fills = [];
+  }
   const base = {
     order,
     sessions: Object.freeze(rows),
@@ -720,6 +744,10 @@ export async function simulateTaiwanLongDailyPlanV0_1({
     ambiguityReason,
     possibleOutcomes: Object.freeze(possibleOutcomes),
     blockedObservations: Object.freeze(blockedObservations),
+    proofCompleteNoFill: false,
+    noFillDenominatorEligible: false,
+    sessionProofVersion: "S2_CORR013_CHRONOLOGY_UNKNOWN_WINDOW_V0_2",
+    calendarProof: "NO_INDEPENDENT_OFFICIAL_CALENDAR_RECEIPT",
     simulatedAt: asOf,
     performanceEligible: state === "CLOSED",
     executionVersion: EXECUTION_SIMULATOR_VERSION_V0_1,
