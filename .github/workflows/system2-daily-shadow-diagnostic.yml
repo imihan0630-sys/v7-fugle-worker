@@ -48,7 +48,17 @@ jobs:
           node system2/tests/persistence_executor.test.mjs
           node system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: DAILY_SHADOW_DIAGNOSTIC
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - name: Persist and read back isolated daily diagnostics
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -69,6 +79,7 @@ jobs:
           fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`Daily diagnostic: ${r.state}\n\nDate: ${r.marketDate}; symbols observed: ${r.symbolCount}; UNKNOWN factors: ${r.unknownFactorCount}. No capacity/zero-pick/SELECTED claim.\n`);
           NODE
       - name: Read public diagnostic and authority state
+        if: steps.quota.outputs.physical_allowed == 'true'
         run: |
           node --input-type=module <<'NODE'
           import fs from "node:fs";
@@ -88,6 +99,17 @@ jobs:
           console.log(JSON.stringify({result:"PASS",reads},null,2));
           fs.writeFileSync("/tmp/system2-daily-diagnostic-readback.json",JSON.stringify({result:"PASS",reads},null,2));
           NODE
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: DAILY_SHADOW_DIAGNOSTIC
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - name: Preserve execution receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -96,5 +118,7 @@ jobs:
           path: |
             /tmp/system2-daily-diagnostic.json
             /tmp/system2-daily-diagnostic-readback.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 90
