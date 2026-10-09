@@ -207,6 +207,48 @@ async function main() {
     reservePolicyPath ? new URL(`../../${reservePolicyPath.replace(/^\.\//, "")}`, import.meta.url) : DEFAULT_RESERVE_POLICY_PATH,
   );
 
+  if (mode === "reserve" && (
+    writer.physicalMutation === false
+    || (eventName === "push" && writer.pushPhysicalAllowed !== true)
+  )) {
+    const decision = evaluateD1AccountQuotaReservationV0_1({
+      writer,
+      eventName,
+      accountUsage: { known: false, quotaDay },
+      system1ReservePolicy,
+    });
+    const out = Object.freeze({
+      schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_1",
+      budgetVersion: D1_ACCOUNT_QUOTA_BUDGET_VERSION,
+      directiveId: "S2-CORR-20261007-003",
+      writerId,
+      writerClass: writer.writerClass,
+      priority: writer.priority,
+      eventName,
+      runKey,
+      quotaDay,
+      ...decision,
+      accountUsage: { known: false, quotaDay, source: "NOT_QUERIED_NON_MUTATING_PATH" },
+      ledger: null,
+      system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
+      system1ReserveAuthorized: system1ReservePolicy.reserveNumberAuthorized === true,
+      ledgerCheckHash: null,
+      paidUpgradeAuthorized: false,
+      system1FormalCoreChanged: false,
+    });
+    const outputPath = env("SYSTEM2_D1_GATE_OUTPUT", "/tmp/system2-d1-budget-reservation.json");
+    await writeFile(outputPath, JSON.stringify(out, null, 2) + "\n");
+    await setOutput("physical_allowed", "false");
+    await setOutput("state", out.state);
+    await setOutput("adaptive_max_dates", out.adaptiveMaxDates ?? "");
+    await setOutput("reservation_receipt_path", outputPath);
+    await appendSummary(
+      `D1 account quota gate: ${writerId} — ${out.state}; no Cloudflare D1 call performed on this non-mutating path.`,
+    );
+    console.log(JSON.stringify(out, null, 2));
+    return;
+  }
+
   const db = await createRemoteD1RestAdapter({
     accountId,
     apiToken: env("SYSTEM2_CLOUDFLARE_API_TOKEN") || token,
