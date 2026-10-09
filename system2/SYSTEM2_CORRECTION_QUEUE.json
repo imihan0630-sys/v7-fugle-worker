@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T18:39:00+08:00",
+  "updatedAt": "2026-10-09T19:32:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "FIX_IN_PROGRESS",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1211,7 +1211,8 @@
         "Daily Shadow Diagnostic had two physical runs on 2026-10-07: scheduled run 37609474459 wrote 13,130 rows and later push run 37639310893 still wrote 1,296 rows; same-day known Daily Shadow subtotal = 14,426 rowsWritten. A later push can be cheaper because data already exists, but it is not read-only and may not bypass the account-level budget gate.",
         "Same-day workflow history shows physical writer activity is multi-class: Historical Pack Real-Source Smoke fired repeatedly from push, Daily Resonance Deploy fired repeatedly from push, Daily Shadow had schedule+push, annual backfill had multiple manual attempts, and Recent A1 warmup had schedule. Concurrency serialized these classes but did not budget the account-wide daily quota.",
         "Cross-system incident and priority escalation: PRICE_VOLUME_CHECKPOINT.md PVE-263/264/267, PRICE_VOLUME_EVIDENCE.md PVE-263/264/267 and shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json. PVE-263 real KV/lease evidence on 2026-10-07 proves System1 primary/recovery invoked but D1 quota blocked persistence; PVE-264 Cloudflare analytics: SYSTEM2_DB=124629, V7_DB=1869, account=126498 rowsWritten. No invented quota reserve or paid upgrade.",
-        "Independent audit source-level counterexamples (not physical Cloudflare evidence), both 2/2 UNSAFE: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json; route existing HIGH ticket back to REMEDIATION_LANE, do not self-close."
+        "Independent audit source-level counterexamples (not physical Cloudflare evidence), both 2/2 UNSAFE: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json; route existing HIGH ticket back to REMEDIATION_LANE, do not self-close.",
+        "2026-10-09 A7 independent adversarial replay: V0.2 receipt using legacy payload-only hash is accepted by loadQuotaLedger even after changing status or expected_payload_json. Test: system2/tests/audit_corr003_a5a6_independent_legacy_hash_reverify_20261009_v0_1.test.mjs; source-level only; no real Cloudflare incident claimed."
       ],
       "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
       "requiredCorrection": [
@@ -1232,7 +1233,8 @@
         "P3 maintenance/smoke ordinary push paths should be test/read-only by default; physical smoke/schema mutation requires explicit manual acceptance or a genuine schema need plus quota reservation. Existing deploy read-only schema fast paths must be preserved.",
         "Writer priority must not be inferred merely from concurrency order. The quota gate must classify P0/P1/P2/P3 intent before mutation.",
         "A5: Partial/missing/non-numeric Cloudflare GraphQL D1 sum.rowsRead/sum.rowsWritten fields must mark account usage UNKNOWN and QUOTA_BUDGET_DEFER, not known=0; do not invent vendor freshness.",
-        "A6: Malformed/incomplete/invalid same-UTC-day quota reservation/result ledger rows must fail closed; cannot be silently skipped or coerced to zero active reservation."
+        "A6: Malformed/incomplete/invalid same-UTC-day quota reservation/result ledger rows must fail closed; cannot be silently skipped or coerced to zero active reservation.",
+        "A7: Restrict legacy payload-only hash compatibility to independently proven historical receipt schema, and require full immutable identity hash for V0.2+ quota reservations/results; tampered V0.2 status/expected_payload_json must fail closed, retaining genuine legacy readback semantics without rewriting history."
       ],
       "acceptanceCriteria": [
         "Ordinary push of any Recent A1 warmup implementation/source/workflow file cannot physically mutate D1 history; push-path regression proves test/read-only behavior.",
@@ -1252,7 +1254,8 @@
         "Account-wide D1 quota reservation must explicitly protect System1 23:35/23:55 after-market Production business execution/persistence in V7_DB as well as System2 P0 Daily Shadow; independently measured after-market reserve required, not an invented fixed number. A real later trading-day primary/recovery business-execution receipt must prove normal persistence; avoid duplicate business scans.",
         "Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.",
         "Independent negative test: GraphQL adaptive usage group with missing/null/partial rowsRead or rowsWritten cannot yield known usage or QUOTA_RESERVATION_GRANTED.",
-        "Independent negative test: malformed or unverifiable same-UTC-day reservation ledger row cannot disappear from outstanding budget; must cause explicit quota ledger integrity defer/block."
+        "Independent negative test: malformed or unverifiable same-UTC-day reservation ledger row cannot disappear from outstanding budget; must cause explicit quota ledger integrity defer/block.",
+        "A7 independent replay: Current V0.2 reservation/result receipt hashed with legacy payload-only hash and modified status/expected_payload_json MUST return ledger integrity INVALID / QUOTA_BUDGET_DEFER; authentic V0.2 full-identity receipt must pass. A bounded, evidence-qualified legacy receipt positive path, if supported, must not grant current-model spoof."
       ],
       "protectedBoundaries": [
         "System1 Formal Core/runtime",
@@ -1319,10 +1322,11 @@
         "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED.",
         "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4",
         "2026-10-09 independent exact-head CI: PR #989 test system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs; Research run 37915666601 PASS (273 test files), V8 run 37915666467 PASS. Source-level A1-A4 enumerated safeguards PASS only; separate GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO and MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP both UNSAFE. No Cloudflare physical mutation. Exact new evidence: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json",
-        "PENDING_INDEPENDENT_REVERIFY_A5_A6"
+        "PENDING_INDEPENDENT_REVERIFY_A5_A6",
+        "PR #1000 independent Research CI 37924636321 SUCCESS (276 System2 test files), V8 37924636337 SUCCESS. Independently replayed A5 and A6 malformed input fail-closed PASS; new A7 legacy payload-hash metadata bypass UNSAFE in actual loader with stub D1. Evidence: system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json. NO physical D1 test or VERIFIED_CLOSED."
       ],
-      "finalDisposition": "PENDING_INDEPENDENT_REVERIFY_A5_A6_AND_PHYSICAL_CLOSURE",
-      "updatedAt": "2026-10-09T18:39:00+08:00"
+      "finalDisposition": "REMEDIATION_REOPENED_BY_AUDIT_A7_LEGACY_HASH_IDENTITY_BYPASS_AND_PHYSICAL_CLOSURE_PENDING",
+      "updatedAt": "2026-10-09T19:32:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
