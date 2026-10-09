@@ -5058,3 +5058,137 @@ Priority attack order:
 5. D16-25 genuine canonical CalibrationReceipt -> decision ledger; no second calibrator and no diagnostic-target substitution.
 
 SDA-016, SDA-017 and SDA-022 remain governed separately and are not closed by these L3 feasibility promotions.
+
+
+## 2026-10-09 L2->L3 campaign — D16-17 physical blocker + D16-22 L3 acceptance
+
+### D16-17 panel/cross-section exact-equivalent membership attempt
+
+New durable blocker:
+`research/D16_17_EXACT_EQUIVALENT_MEMBERSHIP_REBUILD_BLOCKER_20261009_V0_1.md`.
+
+Room11 hardened the existing numeric physical runner so that a missing persisted 2025 TWSE row-level membership receipt could be substituted only by an authorized exact-equivalent reconstruction.
+
+Pinned annual authority:
+- registryId `S2-DATA-TWSE-2025-OFFICIAL-UNION-V0.1`;
+- registryHash `8d6d57a6a7791a95cd48c4cb98ddb41a9af2ce6415d619995bafcaf5a1915535`;
+- membershipCount 1096;
+- replayEligibleCount 1096;
+- current 1089;
+- delisted 7;
+- observedAt `2026-10-08T03:35:20.819Z`;
+- annual artifact id 11527595746;
+- annual artifact digest `sha256:41ab589d5f38e667f8fb61427d2053d38d9f62d23e044d22a8c7e0f441cd56df`.
+
+Exact-equivalent reconstruction was required to reproduce:
+- the exact three official source hashes;
+- exact observedAt;
+- exact annual registry hash/id/counts;
+- row-level membership semantics.
+
+Pure fail-closed suite:
+22/22 PASS.
+
+Physical run:
+`37884556010`.
+
+Result:
+FAIL_CLOSED with
+`ANNUAL_EQUIVALENT_CURRENT_SOURCE_HASH_MISMATCH`.
+
+Interpretation:
+the current TWSE listed-company source has changed relative to the accepted annual source cut. Today's mutable current universe may not be backdated into the 2025 historical membership authority.
+
+No membership hash/count relaxation is allowed.
+
+D16-17 remains L2/40.
+
+Required repair:
+persist/export exact row-level historical-universe memberships in future accepted annual evidence artifacts, or locate an immutable retained source payload from the original 2025 source cut.
+
+### D16-22 Taiwan source-local text pipeline L3
+
+New durable evidence:
+- `research/d16_22_taiwan_material_disclosure_corpus_20261009_v0_1.json`;
+- `research/d16_22_text_pipeline_l3_v0_1.mjs`;
+- `tests/test_d16_22_text_pipeline_l3_v0_1.mjs`;
+- `research/D16_22_TAIWAN_TEXT_PIPELINE_L3_ACCEPTANCE_20261009_V0_1.md`.
+
+Real corpus:
+- 8 real Taiwan material disclosures;
+- 4 issuers: 2330, 2454, 2537, 3037;
+- Fugle content type FCNT000004;
+- exact target_id replay;
+- original MOPS URL/timestamp/title/structured description preserved.
+
+Critical PIT clock:
+first GitHub commit containing the full exact corpus:
+`0e8ed18fd028c34ab00552a9187e2414ec98fd91`.
+
+Conservative Room11 firstKnownAt:
+`2026-10-09T04:39:10Z`.
+
+Historical MOPS source timestamps are NOT used as Room11 historical first-known clocks.
+
+Executable baseline:
+- modelVersion `D16_22_SOURCE_LOCAL_LEXICON_V0_1`;
+- tokenizerVersion `UNICODE_NFKC_SUBSTRING_V0_1`;
+- promptTemplateVersion `NO_LLM_SOURCE_LOCAL_RULES_V0_1`;
+- lexiconHash `08a314baa9b9cee51a2a1049ac9ae671bf14550e67c6cb6ef96d4d59ffccaa87`.
+
+No external LLM, network retrieval, market outcome or current/future return is consumed.
+
+Contamination baseline:
+entity/date/number redaction preserves the source-local feature counts.
+
+Simple baseline:
+title-only transform is retained separately from full-text transform.
+
+Dedicated test suite:
+15/15 PASS.
+
+Physical CI:
+- workflow `Research D16 Text Pipeline L3 Readonly`;
+- exact head `5adb632c8686fb47846e12943fe544e242bdee72`;
+- run `37885008617`: SUCCESS;
+- receiptHash `58e89bb5ef6df9166c048a63f3b1dc36b60c39c61fd18e0ce62396cc98e6a2a7`;
+- artifact id `11594994975`;
+- artifact digest `sha256:ef15f58fda236b47e9695aba089699f1dbde22bc8ed4c87b6c2c23763afd6dbc`;
+- research-only/no-network isolation PASS.
+
+Same-head V8 Regression:
+run `37885008498`: SUCCESS.
+
+Promotion:
+D16-22 L2/40 -> L3/60.
+
+Scope:
+`TAIWAN_SOURCE_LOCAL_TEXT_TRANSFORMATION_PIPELINE` only.
+
+Not validated:
+- open-world LLM historical PIT;
+- pretrained-model knowledge-cutoff safety;
+- text Alpha;
+- sentiment Alpha;
+- source-independent vote.
+
+D16 domain now:
+- L4 = 10;
+- L3 = 11;
+- L2 = 4;
+- maturity = 64.8%.
+
+Remaining D16 L2:
+D16-17, D16-20, D16-21, D16-25.
+
+### Exact next continuation
+
+1. Prioritize D16-21 using existing genuine TDCC weekly vintages:
+   - 2026-09-24 -> 2026-10-02;
+   - source/version clocks already frozen;
+   - entry/exit 22/12 already observed;
+   - exact row-level 2026-10-02 entity-linked panel exists.
+2. Add a PIT official target-universe coverage receipt and explicit selection-bias diagnostics; do not relabel D06 economic ownership conclusions as D16-21 evidence.
+3. D16-17 remains blocked until durable row-level historical memberships exist.
+4. D16-20 still needs real treatment cohort/pre-treatment covariates/overlap.
+5. D16-25 still requires genuine canonical CalibrationReceipt -> decision ledger.
