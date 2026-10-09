@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-09 20:27 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY_A7
+Updated: 2026-10-09 21:15 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / PHYSICAL_EVIDENCE_COORDINATION / CORR003_HIGH_VERIFYING_AUDIT_OWNED
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -194,3 +194,55 @@ Even if A7 passes, final HIGH closure still separately requires:
 - REMEDIATION_LANE: A7 implementation complete; remain idle unless independent reverify returns an exact failed conflict unit.
 - AUDIT_LANE: independently reverify A7 and prior source-level safeguards.
 - DATA_LANE: continue quota-safe read-only/evidence-qualified work; physical mutation remains gate-controlled.
+
+## 2026-10-09 21:15 Asia/Taipei — CORR-003 P01–P05 physical evidence intake (do not self-close)
+
+Canonical **current** correction state is AUDIT_LANE-owned `HIGH / VERIFYING`, not this old A7 pre-audit cursor. Independent PR #1013 A7 source-level accepted; independent PR #1017 / merge `a4a7640b3ffb9e9b2d7b5c68d927c71e9d675c00` froze the last five physical gates. No A1–A7 reimplementation is warranted.
+
+**Actual read baseline for this intake:** `f9d76ac8445e9eb31c1629b3f768332eddabe39a` (recheck newest main at merge/readback).
+
+**New durable REMEDIATION evidence:** `system2/evidence/S2_CORR003_P01_P05_PHYSICAL_EVIDENCE_GAP_INVENTORY_20261009_V0_1.json`.
+Test: `system2/tests/corr003_p01_p05_physical_evidence_gap_inventory_v0_1.test.mjs`.
+
+**Qualification boundary:** 0 / 5 independently accepted PHYSICAL gates. Only 15 / 38 bounded *supporting evidence/intake subchecks* documented; these are **not** gate PASS or reserve authorization.
+
+| Gate | Documented intake / total subchecks | Physical accepted | Exact next proof producer |
+|---|---:|---|---|
+| P01 System1 write reserve | 3/7 | NO | System 1｜建置總控室: extra normal trading-day production receipt, per-run primary/recovery write attribution, retries/index amplification, approval |
+| P02 System1 read reserve | 3/7 | NO | System 1｜建置總控室: genuine 23:35/23:55 rowsRead by run, failed/retry read amplification, conservative approved read reserve |
+| P03 multiwriter UTC day | 3/8 | NO | REMEDIATION + DATA physical producer only after genuine read/write policy approvals, account headroom + valid ledger and shared gate grant; AUDIT independent reconciliation |
+| P04 later System1 trading-day persistence | 2/7 | NO | System 1｜建置總控室: genuine later trading-day 23:35 normal business D1 persist, conditional recovery if invoked, one-scan/idempotence, account no-collision |
+| P05 original physical criteria | 4/9 | NO | DATA_LANE: evidence-qualified Oct08 read-only 36-key / 11,843-key Hot D1, PIT/immutability; AUDIT reconciles all original 19 acceptance criteria |
+
+### Newly extracted *real* System1 D1 read evidence — not zero, but not authorized
+
+PVE-271 `37694052477` job `113041122665` and independent all-history PVE-272 `37694255555` job `113041830751` were read directly from GitHub logs.
+
+- 2026-09-21 healthy: whole-day V7_DB 2,825 rowsWritten / **133,037 rowsRead**, 2,331 writeQueries / 23,994 readQueries.
+- 2026-09-22 healthy: whole-day V7_DB 1,635 rowsWritten / **19,533 rowsRead**, 1,199 writeQueries / 9,938 readQueries.
+- Healthy dates across available cron history = exactly **2**. Whole-day envelopes are not 23:35-only costs, nor accepted reserve values.
+- 2026-10-07 failed: PVE-263 `37649543821` job `112888965126` shows primary failed D1 quota and 23:55 lease entry; PVE-264 `37650006684` job `112890551584`: V7_DB **1,869 writes / 431,323 reads**, SYSTEM2_DB **124,629 writes / 3,943,636 reads**, same-account totals **126,498 writes / 4,374,959 reads**. This demonstrates shared-account collision, not normal production recovery.
+
+Real account lower-bound observations on 2026-10-09:
+- run `37907066382`: 26,919 writes / 782,497 reads, physically **DEFER**, not writer commit;
+- run `37918290130`: 27,056 writes / 880,643 reads, GraphQL metadata only; not certified spendable headroom.
+
+Later 2026-10-09 00:28 scheduled collector run `37808995747` job `113420649062` for 2026-10-08 reported `C1_GENERATION_NOT_FOUND / UPSTREAM_ARTIFACT_MISSING`; no same-generation persisted Formal parent, not a normal successful P04 receipt.
+
+System1 reserve source `system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json` is **unchanged**:
+- `reserveNumberAuthorized=false`, `authorizedReserveRows=null`;
+- `readReserveNumberAuthorized=false`, `authorizedReadReserveRows=null`.
+Neither 2,825 written nor 133,037 read may be promoted into authorized headroom.
+
+DATA_LANE source-only Oct08 = 12/12 market/date receipts / 11,843 source keys, but Hot D1 scout 0/36 and full census 0/11,843. Physical missing-key count remains UNKNOWN. Both actual D1 read-only workflows remain `READ_ONLY_D1_BUDGET_EVIDENCE_DEFER` without independently qualified account rowsRead, System1 reserve, lag and competing writer attestation. Do not dispatch.
+
+### Authority and exact continuation
+
+- **REMEDIATION_LANE (this room):** maintain evidence matrix, reconcile incoming genuine System1/DATA receipts, diagnose cross-account ledger and reservations read-only, do not directly mutate audit-owned Queue or System1 runtime.
+- **System 1｜建置總控室:** P01/P02/P04 producer evidence; actual 23:35 primary, conditional 23:55 recovery, real rowsWritten/rowsRead and normal business persistence with unique source/clock/UTC day. Do not request production changes or secrets.
+- **System 2｜歷史資料工程室:** P03 bounded registered-writer physical receipts and P05 Oct08 36/11843 Hot D1 read-only checks **only after** signed account read budget and shared quota gate authorization; otherwise offline planning/defer receipts.
+- **System 2｜獨立稽核顧問室:** independently accept or reject each P01–P05 real physical gate and all original 19 acceptance criteria; only AUDIT_LANE may set `VERIFIED_CLOSED`.
+
+No new Cloudflare D1 SQL, Worker deployment, System1 Formal Core, production business logic, signals, capital, push, paid plan or secret mutation was performed by this intake. GitHub CI success attests only to the inventory guard and repository preservation, never the physical closeout.
+
+**Exact next REMEDIATION action:** consume System1's independently sourced day-level D1 evidence and genuine next-session post-market business receipts. If absent, maintain 0/5 physical accepted and no System2 physical write grant.

@@ -1,0 +1,453 @@
+{
+  "schemaVersion": "S2_CORR003_PHYSICAL_EVIDENCE_GAP_INVENTORY_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "producingLane": "REMEDIATION_LANE",
+  "status": "EVIDENCE_INVENTORY_AND_HANDOFF_ONLY_NO_PHYSICAL_GATE_PROMOTION",
+  "baselineMain": "f9d76ac8445e9eb31c1629b3f768332eddabe39a",
+  "reviewedIndependentClosure": "system2/evidence/S2_CORR003_INDEPENDENT_PHYSICAL_CLOSURE_GATE_20261009_V0_1.json",
+  "reviewedIndependentA7": "system2/evidence/S2_CORR003_A7_INDEPENDENT_SOURCELEVEL_REVERIFY_20261009_V0_1.json",
+  "canonicalQueueAuthority": "AUDIT_LANE",
+  "queueStateAtReview": "HIGH_VERIFYING",
+  "verifiedCodeScope": "A1_TO_A7_INDEPENDENT_SOURCE_LEVEL_PASS",
+  "physicalGateCount": 5,
+  "qualifiedPhysicalGateCount": 0,
+  "reviewedOriginalAcceptanceCriteriaCount": 19,
+  "measurementKind": "REAL_GITHUB_JOB_LOGS_AND_FROZEN_CLOUDFLARE_D1_ANALYTICS_OBSERVATIONS_NOT_OPERATIONAL_QUOTA_APPROVAL",
+  "physicalEvidenceSources": [
+    {
+      "run": 37694052477,
+      "job": 113041122665,
+      "kind": "REAL_READONLY_SYSTEM1_V7_CRON_AND_D1_GRAPHQL",
+      "purpose": "PVE-271: 2 healthy dates and daily rowsWritten/rowsRead"
+    },
+    {
+      "run": 37694255555,
+      "job": 113041830751,
+      "kind": "REAL_READONLY_SYSTEM1_ALL_CRON_HISTORY_AND_D1_GRAPHQL",
+      "purpose": "PVE-272: confirms only 2 healthy dates across cron history"
+    },
+    {
+      "run": 37649543821,
+      "job": 112888965126,
+      "kind": "REAL_READONLY_SYSTEM1_FAILED_BUSINESS_SIDE_EFFECT",
+      "purpose": "PVE-263: primary failed quota, 23:55 lease entry; not recovered success"
+    },
+    {
+      "run": 37650006684,
+      "job": 112890551584,
+      "kind": "REAL_READONLY_CLOUDFLARE_ACCOUNT_D1_GRAPHQL",
+      "purpose": "PVE-264: shared-account 2026-10-07 collision and both database reads/writes"
+    },
+    {
+      "run": 37907066382,
+      "job": 113742974317,
+      "kind": "REAL_SHARED_ACCOUNT_QUOTA_DEFER_NO_HISTORY_WRITE",
+      "purpose": "account measured 26919 written / 782497 read; QUOTA_BUDGET_DEFER",
+      "source": "system2/evidence/S2_OCT09_HOT_HISTORY_QUOTA_DEFER_PHYSICAL_RECEIPT_20261009_V0_1.json"
+    },
+    {
+      "run": 37918290130,
+      "job": 113779747175,
+      "kind": "REAL_GRAPHQL_ACCOUNT_METADATA_ONLY",
+      "purpose": "2026-10-09 27056 written / 880643 read lower-bound only",
+      "source": "system2/evidence/S2_OCT09_ACCOUNT_D1_GRAPHQL_READONLY_PHYSICAL_USAGE_ACCEPTANCE_20261009_V0_1.json"
+    },
+    {
+      "run": 37808995747,
+      "job": 113420649062,
+      "kind": "REAL_SCHEDULED_SYSTEM1_PROSPECTIVE_RECEIPT_BLOCKED",
+      "purpose": "2026-10-08 parent unconfirmed, C1_GENERATION_NOT_FOUND / UPSTREAM_ARTIFACT_MISSING",
+      "source": "research/BR068C_D09_05_FIRST_POST_DEPLOY_OPERATIONAL_ACCEPTANCE_FAILURE_20261009_V0_1.md"
+    }
+  ],
+  "system1MeasuredDailyUsage": [
+    {
+      "quotaDay": "2026-09-21",
+      "businessHealthy": true,
+      "sourceRuns": [
+        37694052477,
+        37694255555
+      ],
+      "v7RowsWritten": 2825,
+      "v7RowsRead": 133037,
+      "writeQueries": 2331,
+      "readQueries": 23994,
+      "measurementScope": "WHOLE_V7_DB_UTC_DAY_NOT_23_35_ONLY"
+    },
+    {
+      "quotaDay": "2026-09-22",
+      "businessHealthy": true,
+      "sourceRuns": [
+        37694052477,
+        37694255555
+      ],
+      "v7RowsWritten": 1635,
+      "v7RowsRead": 19533,
+      "writeQueries": 1199,
+      "readQueries": 9938,
+      "measurementScope": "WHOLE_V7_DB_UTC_DAY_NOT_23_35_ONLY"
+    },
+    {
+      "quotaDay": "2026-10-07",
+      "businessHealthy": false,
+      "sourceRuns": [
+        37649543821,
+        37650006684
+      ],
+      "v7RowsWritten": 1869,
+      "v7RowsRead": 431323,
+      "writeQueries": 1663,
+      "readQueries": 31749,
+      "measurementScope": "WHOLE_V7_DB_UTC_DAY_WITH_AFTER_MARKET_D1_WRITE_QUOTA_FAILURE"
+    }
+  ],
+  "historicalCollision": {
+    "quotaDay": "2026-10-07",
+    "system2RowsWritten": 124629,
+    "system1RowsWritten": 1869,
+    "accountRowsWritten": 126498,
+    "system2RowsRead": 3943636,
+    "system1RowsRead": 431323,
+    "accountRowsRead": 4374959,
+    "hardWrittenLimit": 100000,
+    "hardReadLimit": 5000000,
+    "system1FailureClass": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+    "primarySideEffect": "FAILED_2026_10_07_23_36_10_TAIPEI",
+    "recoveryLeaseObservedAt": "2026-10-07T15:55:03.803Z",
+    "noBusinessPersistenceSuccessClaim": true
+  },
+  "laterScheduledAttempt": {
+    "sourceTradingDate": "2026-10-08",
+    "run": 37808995747,
+    "job": 113420649062,
+    "artifact": 11565090033,
+    "event": "schedule",
+    "result": "BLOCKED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "firstBlocker": "UPSTREAM_ARTIFACT_MISSING",
+    "genuineProspective": false,
+    "cannotCertifyNormal23_35Persistence": true,
+    "cannotInferRecoverySuccess": true
+  },
+  "accountObservations": [
+    {
+      "utcDay": "2026-10-09",
+      "run": 37907066382,
+      "rowsWrittenLowerBound": 26919,
+      "rowsReadLowerBound": 782497,
+      "decision": "QUOTA_BUDGET_DEFER",
+      "physicalWrite": false
+    },
+    {
+      "utcDay": "2026-10-09",
+      "run": 37918290130,
+      "rowsWrittenLowerBound": 27056,
+      "rowsReadLowerBound": 880643,
+      "decision": "METADATA_ONLY_NOT_SPENDABLE_HEADROOM_CERTIFICATE",
+      "physicalWrite": false
+    }
+  ],
+  "system1Policy": {
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "observedMaxWholeDayHealthyWrite": 2825,
+    "observedMaxWholeDayHealthyRead": 133037,
+    "unapprovedCandidatesAreNotAuthority": true
+  },
+  "workPackages": [
+    {
+      "id": "P01_SYSTEM1_WRITE_RESERVE",
+      "owner": "REMEDIATION_LANE_COORDINATION_SYSTEM1_PRODUCER",
+      "supportChecks": [
+        [
+          "healthy_day_write_metrics_read_from_real_logs",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "all_available_cron_history_two_healthy_dates",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "abnormal_day_write_quota_failure_real_receipt",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "more_healthy_dates_and_normal_vs_abnormal_workload",
+          "MISSING"
+        ],
+        [
+          "primary_vs_recovery_per_run_written_attribution_and_retry",
+          "MISSING"
+        ],
+        [
+          "conservative_reserve_candidate_with_variation_evidence",
+          "MISSING"
+        ],
+        [
+          "independent_system1_reserve_approval_receipt",
+          "MISSING"
+        ]
+      ],
+      "qualifyingPhysicalAcceptance": false,
+      "missingOwnerInputs": [
+        "at least one additional genuine healthy ordinary-session day, with complete cron/lease/business persistence provenance",
+        "same-UTC-day V7_DB write cost with explicit before/after and classification of non-after-market work",
+        "recovery/no-recovery outcomes including retries and indexed amplification",
+        "independent reserve-policy signed/traceable approval; owner risk decision if required"
+      ],
+      "supportChecksDocumented": 3,
+      "supportChecksTotal": 7,
+      "supportChecksMissing": 4
+    },
+    {
+      "id": "P02_SYSTEM1_READ_RESERVE",
+      "owner": "REMEDIATION_LANE_COORDINATION_SYSTEM1_PRODUCER",
+      "supportChecks": [
+        [
+          "healthy_day_v7_rows_read_real_logs_two_dates",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "abnormal_day_v7_rows_read_real_log",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "daily_read_measurement_scope_not_zero_documented",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "per_23_35_23_55_read_attribution",
+          "MISSING"
+        ],
+        [
+          "retry_failure_and_read_amplification_bounds",
+          "MISSING"
+        ],
+        [
+          "conservative_real_read_reserve_candidate_with_freshness_uncertainty",
+          "MISSING"
+        ],
+        [
+          "independent_system1_read_reserve_approval_receipt",
+          "MISSING"
+        ]
+      ],
+      "qualifyingPhysicalAcceptance": false,
+      "missingOwnerInputs": [
+        "System1 23:35 primary and, if invoked, 23:55 recovery reads by run/UTC day",
+        "per-query D1 rows_read metadata, index amplification and retry/concurrency evidence",
+        "full-day and business-window distinctions and conservative headroom model",
+        "independent read reserve approval; no zero/default substitute"
+      ],
+      "supportChecksDocumented": 3,
+      "supportChecksTotal": 7,
+      "supportChecksMissing": 4
+    },
+    {
+      "id": "P03_MULTIWRITER_UTC_DAY",
+      "owner": "REMEDIATION_LANE_PLUS_DATA_LANE_PHYSICAL_PRODUCERS_AUDIT_LANE_ACCEPTANCE",
+      "supportChecks": [
+        [
+          "shared_account_two_database_collision_measured",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "real_quota_gate_defer_run_identified",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "account_graphql_lower_bound_second_observation_identified",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "authorized_system1_read_write_reserves",
+          "MISSING"
+        ],
+        [
+          "post_fix_real_same_day_multiwriter_grant_and_result",
+          "MISSING"
+        ],
+        [
+          "p0_priority_and_p2_p3_defer_physical_conflict_free",
+          "MISSING"
+        ],
+        [
+          "failed_partial_retry_and_cross_utc_day_real_receipts",
+          "MISSING"
+        ],
+        [
+          "auditor_verified_no_quota_collision_and_ledger_hash_reconcile",
+          "MISSING"
+        ]
+      ],
+      "qualifyingPhysicalAcceptance": false,
+      "missingOwnerInputs": [
+        "first qualify P01/P02; verify account headroom and same-day ledger integrity",
+        "prefer existing real receipts; if not enough, registered writer + bounded user-authorized execution only after real gate GRANTED",
+        "same UTC-day reservation/check ID/hash/result and no collision evidence across writer classes"
+      ],
+      "supportChecksDocumented": 3,
+      "supportChecksTotal": 8,
+      "supportChecksMissing": 5
+    },
+    {
+      "id": "P04_LATER_TRADING_DAY_SYSTEM1_PERSISTENCE",
+      "owner": "SYSTEM1_PRODUCTION_EVIDENCE_OWNER_THEN_AUDIT_LANE",
+      "supportChecks": [
+        [
+          "2026_10_07_primary_quota_failure_receipt",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "2026_10_08_followup_scheduled_c1_absence_negative_receipt",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "subsequent_ordinary_trading_day_23_35_actual_primary",
+          "MISSING"
+        ],
+        [
+          "23_55_if_triggered_recovery_or_proven_not_invoked",
+          "MISSING"
+        ],
+        [
+          "business_scan_and_d1_normal_persistence_readback",
+          "MISSING"
+        ],
+        [
+          "account_day_no_quota_rejection_evidence",
+          "MISSING"
+        ],
+        [
+          "at_most_one_business_scan_recovery_idempotency",
+          "MISSING"
+        ]
+      ],
+      "qualifyingPhysicalAcceptance": false,
+      "missingOwnerInputs": [
+        "future actual TWSE/TPEX cash-trading session, naturally scheduled 23:35 and conditional 23:55",
+        "production business status + D1 persisted generation/plan/daily report/checkpoint and immutable hashes",
+        "account-wide same-day before/after usage and absence of quota collision",
+        "lease/cron deduplication; do not fabricate a recovery run"
+      ],
+      "supportChecksDocumented": 2,
+      "supportChecksTotal": 7,
+      "supportChecksMissing": 5
+    },
+    {
+      "id": "P05_ORIGINAL_PHYSICAL_CRITERIA",
+      "owner": "REMEDIATION_EVIDENCE_COORDINATION_DATA_LANE_AUDIT_LANE_CLOSE",
+      "supportChecks": [
+        [
+          "original_19_correction_acceptance_criteria_read",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "independent_a1_a7_source_level_pass_read",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "real_shared_account_failure_and_two_defer_observations_classified",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "oct08_12_of_12_source_only_11843_keys_classified",
+          "EVIDENCE_DOCUMENTED"
+        ],
+        [
+          "oct08_36_key_hot_d1_physical_scout",
+          "MISSING"
+        ],
+        [
+          "oct08_11843_key_hot_d1_physical_census",
+          "MISSING"
+        ],
+        [
+          "source_key_pit_missing_key_conflict_immutable_reconcile",
+          "MISSING"
+        ],
+        [
+          "real_ledger_graphql_utc_day_same_account_reconcile",
+          "MISSING"
+        ],
+        [
+          "audit_independently_accepts_every_original_physical_criterion",
+          "MISSING"
+        ]
+      ],
+      "qualifyingPhysicalAcceptance": false,
+      "oct08OfficialSourceDaysAccepted": 12,
+      "oct08OfficialSourceDaysTotal": 12,
+      "oct08OfficialSourceKeys": 11843,
+      "physicalD1ScoutExecuted": 0,
+      "physicalD1ScoutTarget": 36,
+      "physicalD1CensusExecuted": 0,
+      "physicalD1CensusTarget": 11843,
+      "physicalMissingKeyCount": "UNKNOWN",
+      "missingOwnerInputs": [
+        "DATA_LANE evidence-qualified read headroom + System1 read reserve + signed review, then 36-key scout",
+        "full 11843-key only if independently budgeted read-only gate qualifies",
+        "PIT/source-key/missing/conflict/immutability actual Hot D1 readback",
+        "AUDIT_LANE independently map all 19 original acceptance criteria to physical/code evidence"
+      ],
+      "supportChecksDocumented": 4,
+      "supportChecksTotal": 9,
+      "supportChecksMissing": 5
+    }
+  ],
+  "safety": {
+    "system1FormalCoreChanged": false,
+    "system1ProductionBehaviorChanged": false,
+    "system1TradingSignalsChanged": false,
+    "capitalChanged": false,
+    "notificationChanged": false,
+    "cloudflareBillingChanged": false,
+    "secretsAccessed": false,
+    "physicalD1ReadsThisRemediationTurn": 0,
+    "physicalD1WritesThisRemediationTurn": 0,
+    "noSyntheticReserveApproval": true,
+    "syntheticCiDoesNotCountAsPhysical": true,
+    "sourceOnlyIsNotHotD1": true,
+    "codePassIsNotPhysicalPass": true
+  },
+  "handoffs": [
+    {
+      "to": "System 1｜建置總控室",
+      "lane": "SYSTEM1_PRODUCTION_EVIDENCE_OWNER",
+      "tasks": [
+        "P01/P02: collect per-clock actual 23:35/23:55 D1 rows_written/rows_read and indexed write/read metadata, retries, successful and failed business persistence; propose evidence not unauthorized fixed reserve",
+        "P04: next genuine trading-session normal primary/recovery business persistence + D1 receipts + account no-quota-collision; owner approval for protected production changes if ever required"
+      ],
+      "changeBoundary": "READ_ONLY_EVIDENCE_ONLY_FORMAL_CORE_UNCHANGED"
+    },
+    {
+      "to": "System 2｜歷史資料工程室",
+      "lane": "DATA_LANE",
+      "tasks": [
+        "P03: only bounded real registered writer receipts after all gate prerequisites; otherwise read-only metadata/defer evidence",
+        "P05: Oct08 36-key / 11843-key D1 read-only check only when independently verified read headroom; no inferred missing key counts"
+      ],
+      "changeBoundary": "NO_UNAUTHORIZED_D1_READ_OR_WRITE"
+    },
+    {
+      "to": "System 2｜獨立稽核顧問室",
+      "lane": "AUDIT_LANE",
+      "tasks": [
+        "Independently inspect P01/P02 reserve candidates, P03 same-day multiwriter receipts, P04 later System1 persisted business evidence, P05 original 19 criteria; alone authorizes VERIFIED_CLOSED"
+      ],
+      "changeBoundary": "DO_NOT_PROMOTE_SYNTHETIC_OR_SOURCE_ONLY"
+    },
+    {
+      "to": "System 2｜補強修復室",
+      "lane": "REMEDIATION_LANE",
+      "tasks": [
+        "Maintain canonical evidence/gap matrix and remediation checkpoint, reconcile genuine newly contributed System1/DATA receipts, avoid modifying audit-owned Queue or protected System1 runtime"
+      ],
+      "changeBoundary": "OWN_CONFLICT_UNITS_ONLY"
+    }
+  ],
+  "supportChecksDocumentedTotal": 15,
+  "supportChecksTotal": 38
+}
