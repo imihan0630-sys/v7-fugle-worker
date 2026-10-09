@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "S2_CORR003_INDEPENDENT_PHYSICAL_CLOSURE_GATE_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "reviewDate": "2026-10-09",
+  "baselineMainSha": "2c8dc6040d48dfd6658062b2d4f20815e1ffbf26",
+  "codeAcceptance": {
+    "A1_A7": "INDEPENDENT_SOURCE_LEVEL_PASS",
+    "pr": 1013,
+    "mergeSha": "985eefcf325e2e2c011a23f4dbb5f5e197b995d3",
+    "researchCi": 37932974994,
+    "v8Regression": 37932974728
+  },
+  "closureState": "PHYSICAL_GATES_PENDING_NO_VERIFIED_CLOSED",
+  "prerequisiteGates": [
+    {
+      "id": "P01_SYSTEM1_WRITE_RESERVE",
+      "state": "PENDING",
+      "evidenceQualified": false,
+      "proofRef": null,
+      "physicalProof": null,
+      "blockingDetail": "Only 2 healthy System1 business dates; observed 2825 whole-V7 rowsWritten is NOT authorized; reserveNumberAuthorized=false, authorizedReserveRows=null."
+    },
+    {
+      "id": "P02_SYSTEM1_READ_RESERVE",
+      "state": "PENDING",
+      "evidenceQualified": false,
+      "proofRef": null,
+      "physicalProof": null,
+      "blockingDetail": "System1 after-market D1 rowsRead reserve remains false/null, no independently accepted measured conservative read reserve."
+    },
+    {
+      "id": "P03_MULTIWRITER_UTC_DAY",
+      "state": "PENDING",
+      "evidenceQualified": false,
+      "proofRef": null,
+      "physicalProof": null,
+      "blockingDetail": "No accepted same-UTC-day real physical reserve->write->result receipts with protected System1 and multiple distinct System2 writer classes and no hard quota collision."
+    },
+    {
+      "id": "P04_LATER_TRADING_DAY_SYSTEM1_PERSISTENCE",
+      "state": "PENDING",
+      "evidenceQualified": false,
+      "proofRef": null,
+      "physicalProof": null,
+      "blockingDetail": "No independently accepted subsequent real trading-day System1 23:35/23:55 primary/recovery actual business persistence without D1 quota failure; 2026-10-09 is not a trading day per existing audit."
+    },
+    {
+      "id": "P05_ORIGINAL_PHYSICAL_CRITERIA",
+      "state": "PENDING",
+      "evidenceQualified": false,
+      "proofRef": null,
+      "physicalProof": null,
+      "blockingDetail": "Original CORR-003 physical acceptance and account D1 ledger/readback still need independent reconciliation; October 36/11843 Hot D1 scout/census was not executed, System2 physical historical coverage UNKNOWN."
+    }
+  ],
+  "documentedReadOnlyPhysicalObservations": [
+    {
+      "type": "REAL_GRAPHQL_ACCOUNT_LOWER_BOUND",
+      "quotaDay": "2026-10-09",
+      "run": 37907066382,
+      "job": 113742974317,
+      "rowsWritten": 26919,
+      "rowsRead": 782497,
+      "disposition": "QUOTA_BUDGET_DEFER",
+      "physicalD1Mutation": false,
+      "source": "system2/evidence/S2_OCT09_HOT_HISTORY_QUOTA_DEFER_PHYSICAL_RECEIPT_20261009_V0_1.json"
+    },
+    {
+      "type": "REAL_GRAPHQL_ACCOUNT_LOWER_BOUND",
+      "quotaDay": "2026-10-09",
+      "run": 37918290130,
+      "job": 113779747175,
+      "rowsWritten": 27056,
+      "rowsRead": 880643,
+      "disposition": "ACCOUNT_METADATA_ONLY_NOT_QUOTA_CERTIFICATE",
+      "physicalD1Mutation": false,
+      "source": "system2/evidence/S2_OCT09_ACCOUNT_D1_GRAPHQL_READONLY_PHYSICAL_USAGE_ACCEPTANCE_20261009_V0_1.json"
+    }
+  ],
+  "historicalCollision": {
+    "quotaDay": "2026-10-07",
+    "accountRowsWritten": 126498,
+    "system2RowsWritten": 124629,
+    "system1RowsWritten": 1869,
+    "system1QuotaFailure": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+    "source": "shared-knowledge/00_TWTAWU_QUOTA_NCT01_LAUNCH_GATE_AUDIT_20261009_V0_1.json"
+  },
+  "sourceOnlyStorage": {
+    "officialSourceKeys": 11843,
+    "d1Readback36": "NOT_RUN",
+    "d1Readback11843": "NOT_RUN",
+    "physicalMissingKeys": "UNKNOWN"
+  },
+  "closures": [
+    "Never accept successful CI, GitHub workflow success, source-only rows, GraphQL lower bound or a deferred D1 writer as proof of physical success.",
+    "Never interpret 2825 measured System1 rowsWritten as authorized write reserve; do not infer unknown rowsRead as 0.",
+    "Never dispatch D1 physical writer simply to fill an audit slot while evidence-based reservations are false/null.",
+    "Ticket remains VERIFYING until every gate independently accepted with genuine source-based physical evidence; no paid-plan or Formal Core authority."
+  ],
+  "protected": {
+    "system1FormalCoreUnmodified": true,
+    "system1TradingSignalsUnmodified": true,
+    "capitalUnmodified": true,
+    "productionRuntimeUnmodified": true,
+    "cloudflareBillingUnmodified": true,
+    "physicalD1IOPerformedByAudit": 0
+  }
+}
