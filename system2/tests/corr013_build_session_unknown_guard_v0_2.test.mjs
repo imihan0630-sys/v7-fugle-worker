@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { simulateTaiwanLongDailyPlanV0_1 } from "../runtime/execution_simulator_v0_1.mjs";
+import { simulateTaiwanLongDailyPlanV0_1, toS2SimulationFillRowsV0_1 } from "../runtime/execution_simulator_v0_1.mjs";
 import { buildDecisionOutcomeSnapshotV0_1 } from "../runtime/outcome_tracker_v0_1.mjs";
 
 const plan={
@@ -68,6 +68,9 @@ for(const [id,rows] of [
  assert.equal(receipt.performanceEligible,false,id);
  assert.equal(receipt.realizedReturnAfterCost,null,id);
  assert.ok(receipt.blockedObservations.length>0,id);
+ assert.equal(receipt.fillsSuppressedDueToUnknown,true,id);
+ assert.equal(receipt.fills.length,0,id);
+ assert.equal(toS2SimulationFillRowsV0_1(receipt).length,0,id);
 }
 const clean=await simulateTaiwanLongDailyPlanV0_1({
  ...plan,simOrderId:"CLEAN-CLOSED",
