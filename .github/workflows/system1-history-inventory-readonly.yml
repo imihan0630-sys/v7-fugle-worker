@@ -1,0 +1,36 @@
+name: System1 History Inventory Read-only
+
+on:
+  pull_request:
+    paths:
+      - 'tests/audit_system1_history_inventory_readonly.mjs'
+      - '.github/workflows/system1-history-inventory-readonly.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit production history inventory read-only
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          HISTORY_INVENTORY_OUTPUT: artifacts/system1-history-inventory-readonly.json
+        run: |
+          node --check tests/audit_system1_history_inventory_readonly.mjs
+          node tests/audit_system1_history_inventory_readonly.mjs
+      - name: Preserve diagnostic evidence (not historical acceptance)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-history-readonly-${{ github.run_id }}
+          path: artifacts/system1-history-inventory-readonly.json
+          if-no-files-found: warn
+          retention-days: 90
