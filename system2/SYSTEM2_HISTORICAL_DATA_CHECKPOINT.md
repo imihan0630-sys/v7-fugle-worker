@@ -1736,3 +1736,13 @@ Frozen JSON: `system2/evidence/S2_CORR_003_INDEPENDENT_ADVERSARIAL_CI_ACCEPTANCE
 
 **Responsibility boundary:** REMEDIATION_LANE owns quota runtime/workflow corrections; AUDIT_LANE owns `S2-CORR-20261007-003` independent status/closure; DATA_LANE owns October source-to-Hot-D1 physical proof. Do not dispatch 36-key pilot or 11,843-key D1 census until read budget and no-competing-writer evidence are verified; no history backdate/PIT promotion. Once remediation and audit certify budget, continue existing PR #968/#971 READ-ONLY D1 proofs and PR #974 offline missing-key repair planner without rebuilding their code. `S2-CORR-20261004-001` remains DATA_LANE historical backfill tracking.
 
+
+## 2026-10-09 16:46 Asia/Taipei DATA_LANE — scheduled Hot History warmup correctly deferred, zero historical writes
+
+Frozen execution evidence: `system2/evidence/S2_OCT09_HOT_HISTORY_QUOTA_DEFER_PHYSICAL_RECEIPT_20261009_V0_1.json`; [GitHub run 37907066382](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37907066382), job `113742974317`, artifact `11604589121`.
+
+The job itself returned GitHub Actions `SUCCESS` but the actual quota reservation gate returned `QUOTA_BUDGET_DEFER` and `physicalAllowed=false`, reason `SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED`. The physical `Warm recent official A1 history into isolated D1` step and reconciliation step were **SKIPPED**, so **zero Hot D1 rows were written by this warmup**. Do not interpret job success as historical ingest success.
+
+The receipt observed account usage `rowsWritten=26,919`, `rowsRead=782,497` (Cloudflare account GraphQL aggregate lower bound; no guaranteed realtime freshness), `system1ReserveEvidenceState=INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS`. This is an account-protection deferral, not source invalidity and not a granted quota reservation.
+
+CORR-003 PR #985 has since been merged as `FIX_IMPLEMENTED` but independently remains `PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4`; read/write probes remain blocked until independent read-budget and no-competing-writer authorization. October 1–8 official dual-market 12/12 and 11,843 symbol-date source keys remain **SOURCE_ONLY_PASS**; the merged 36-key read-only pilot, full 11,843-key D1 census and offline repair planner have **no physical D1 census** yet. Never backdate firstKnownAt/availableAt or claim PIT/NC-T01 continuity. No System1 Formal Core, production Worker, trade, push, capital or paid tier changes.
