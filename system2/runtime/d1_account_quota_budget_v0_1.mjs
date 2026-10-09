@@ -303,6 +303,7 @@ export function evaluateD1AccountQuotaReservationV0_1({
   eventName,
   accountUsage,
   system1ReservePolicy,
+  ledgerIntegrityState = "VALID",
   outstandingReservedRowsWritten = 0,
   outstandingReservedRowsRead = 0,
   protectedDailyShadowReserveRows = 13130,
@@ -348,6 +349,19 @@ export function evaluateD1AccountQuotaReservationV0_1({
       physicalAllowed: false,
       quotaDay: accountUsage?.quotaDay || null,
       reasonCodes: Object.freeze(["ACCOUNT_WIDE_D1_USAGE_UNKNOWN"]),
+      adaptiveMaxDates: 0,
+      requestedRowsWritten: null,
+      requestedRowsRead: null,
+      paidUpgradeAuthorized: false,
+    });
+  }
+
+  if (ledgerIntegrityState !== "VALID") {
+    return Object.freeze({
+      state: "QUOTA_BUDGET_DEFER",
+      physicalAllowed: false,
+      quotaDay: accountUsage.quotaDay,
+      reasonCodes: Object.freeze(["D1_QUOTA_LEDGER_INTEGRITY_INVALID"]),
       adaptiveMaxDates: 0,
       requestedRowsWritten: null,
       requestedRowsRead: null,
