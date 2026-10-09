@@ -40,7 +40,6 @@ runs:
         SYSTEM2_D1_REQUESTED_ROWS_READ: ${{ inputs.requested_rows_read }}
         SYSTEM2_D1_GATE_MODE: ${{ inputs.mode }}
         SYSTEM2_D1_RESERVATION_RECEIPT_PATH: ${{ inputs.reservation_receipt_path }}
-        SYSTEM2_D1_GATE_OUTPUT: ${{ inputs.mode == 'result' && '/tmp/system2-d1-budget-result.json' || '/tmp/system2-d1-budget-reservation.json' }}
       run: |
         set -euo pipefail
         node system2/scripts/run_d1_account_quota_gate_v0_1.mjs
