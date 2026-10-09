@@ -4,9 +4,10 @@ import { spawnSync } from "node:child_process";
 import { buildDecisionOutcomeSnapshotV0_1 } from "../runtime/outcome_tracker_v0_1.mjs";
 import { simulateTaiwanLongDailyPlanV0_1,toOutcomeSimulatedExecutionV0_1 }
   from "../runtime/execution_simulator_v0_1.mjs";
-import { buildS2FrozenOutcomeRevisionV0_1 }
+import { buildS2FrozenOutcomeRevisionV0_1, toS2FrozenOutcomeRevisionRowV0_1 }
   from "../runtime/outcome_revision_archive_v0_1.mjs";
-import { buildS2F08ConditionalAppendPlanV0_1 as plan }
+import { buildS2F08ConditionalAppendPlanV0_1 as plan,
+  verifyS2F08ConditionalAppendReadbackPayloadV0_1 as inspectReadback }
   from "../runtime/f08_outcome_atomic_cas_append_plan_v0_1.mjs";
 
 const decision={
@@ -161,3 +162,54 @@ const res=spawnSync("python3",["-c",py],{
 assert.equal(res.status,0,res.stderr||res.stdout);
 assert.match(res.stdout,/F08_ATOMIC_CAS_SQLITE_PASS/);
 console.log("F08 offline one-statement SQLite CAS proposal tests PASS; no Cloudflare D1 calls");
+// F08 partial offline proof: exact RETURNING + all 22 stored columns, while
+// refusing to infer physical Cloudflare/D1 or quota acceptance from fake rows.
+const frozenRow = await toS2FrozenOutcomeRevisionRowV0_1(first);
+const returning = {
+  revision_id:frozenRow.revision_id,revision_hash:frozenRow.revision_hash,
+  decision_id:frozenRow.decision_id,lineage_hash:frozenRow.lineage_hash,
+  revision_number:frozenRow.revision_number,
+};
+const inspected = await inspectReadback({
+  plan:genesis,receipt:first,returnedRows:[returning],readbackRows:[frozenRow],
+});
+assert.equal(inspected.status,"PAYLOAD_MATCH_UNCERTIFIED_PHYSICAL");
+assert.equal(inspected.checkedColumns,22);
+assert.equal(inspected.physicalExecutionVerified,false);
+assert.equal(inspected.physicalReadbackVerified,false);
+assert.equal(inspected.accountQuotaGranted,false);
+assert.equal(inspected.f08C3Accepted,false);
+assert.match(inspected.exactReadbackQuery.sql,/WHERE revision_id = \?/);
+assert.equal(inspected.exactReadbackQuery.params.length,5);
+assert.equal(Object.isFrozen(inspected),true);
+await inspectReadback({
+  plan:revision,receipt:next,previousReceipt:first,
+  returnedRows:[{
+    ...returning,
+    revision_id:next.revisionId,revision_hash:next.revisionHash,revision_number:2,
+  }],
+  readbackRows:[await toS2FrozenOutcomeRevisionRowV0_1(next)],
+});
+for(const err of [
+  {returnedRows:[],readbackRows:[frozenRow],reason:/CAS_RETURNING_NOT_EXACTLY_ONE/},
+  {returnedRows:[returning,returning],readbackRows:[frozenRow],reason:/CAS_RETURNING_NOT_EXACTLY_ONE/},
+  {returnedRows:[{...returning,revision_hash:"f".repeat(64)}],readbackRows:[frozenRow],reason:/RETURNING_IDENTITY_MISMATCH/},
+  {returnedRows:[returning],readbackRows:[],reason:/PERSISTED_NOT_EXACTLY_ONE/},
+  {returnedRows:[returning],readbackRows:[frozenRow,frozenRow],reason:/PERSISTED_NOT_EXACTLY_ONE/},
+  {returnedRows:[returning],readbackRows:[{...frozenRow,cost_model_hash:"f".repeat(64)}],reason:/PERSISTED_VALUE_MISMATCH:cost_model_hash/},
+  {returnedRows:[returning],readbackRows:[{...frozenRow,receipt_json:"{}"}],reason:/PERSISTED_VALUE_MISMATCH:receipt_json/},
+  {returnedRows:[returning],readbackRows:[{...frozenRow,unexpected:true}],reason:/PERSISTED_SHAPE_MISMATCH/},
+]) {
+  await assert.rejects(()=>inspectReadback({
+    plan:genesis,receipt:first,returnedRows:err.returnedRows,
+    readbackRows:err.readbackRows,
+  }),err.reason);
+}
+await assert.rejects(()=>inspectReadback({
+  plan:{...genesis,sql:"DELETE FROM s2_decisions"},receipt:first,
+  returnedRows:[returning],readbackRows:[frozenRow],
+}),/PLAN_NOT_CANONICAL/);
+await assert.rejects(()=>inspectReadback({
+  plan:revision,receipt:next,returnedRows:[returning],readbackRows:[frozenRow],
+}),/PREVIOUS_RECEIPT_REQUIRED/);
+console.log("F08_CAS_EXACT_READBACK_PAYLOAD_11_CASES_PASS_UNCERTIFIED_PHYSICAL");
