@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "S2_20261008_LATEST_COMPLETED_SOURCE_RECEIPTS_PHYSICAL_ACCEPTANCE_V0_1",
+  "createdOn": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "category": "DATA_LANE_CLASS_A",
+  "disposition": "PASS_12_OF_12_OFFICIAL_TWSE_TPEX_POST_FACTO_SOURCE_RECEIPTS_STORAGE_PIT_NOT_VERIFIED",
+  "verifiedRun": {
+    "runId": 37878847039,
+    "jobId": 113653590991,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37878847039",
+    "runAttempt": 1,
+    "headSha": "39ca8dce38fa675874074609fb32d9c44321e944",
+    "status": "completed",
+    "conclusion": "success",
+    "artifactId": 11593830777,
+    "artifactName": "system2-oct08-twse-tpex-official-source-37878847039-1",
+    "artifactDigest": "sha256:7b765d4b59ef5e9211f4ba03ab7f97462ba192e065140b6b6c5da3ec1b024a49"
+  },
+  "cutoff": "2026-10-08",
+  "octoberFullMonthColdReceiptAuthorized": false,
+  "officialWindow": {
+    "dates": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
+    ],
+    "marketCount": 2,
+    "sessionCount": 6,
+    "marketDateReceiptCount": 12,
+    "sourceResult": "PASS_20261001_08_12_OFFICIAL_SOURCE_DATE_RECEIPTS_ONLY",
+    "byMarket": {
+      "TWSE": {
+        "days": 6,
+        "ordinarySymbolSourceRows": 6518
+      },
+      "TPEX": {
+        "days": 6,
+        "ordinarySymbolSourceRows": 5325
+      }
+    },
+    "samples": [
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-01",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1086,
+        "normalizedBarSha256": "442fdbbd40656f0a5fe45c95fbaf568247226f8eada0307e0bc81091134a06b3",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-01",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 887,
+        "normalizedBarSha256": "a71bff9b2ca8afdcee4a2e516558bccc37a57ab9c6d47d57b9eb762123d9df4a",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-02",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1086,
+        "normalizedBarSha256": "6fa764f4b2542773ce2b21b77c9112ae02daa2b78c33cf98a3896dbf0b25f6a7",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-02",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 888,
+        "normalizedBarSha256": "83b16ee16e9ef066646ec7102e0a6d2f482fd9e4ff92e494114895429be45c25",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-05",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1087,
+        "normalizedBarSha256": "58dc7223d9bfe738dee7c07e81550e4c042c0aaf1f4a7918b7b7b9552b5d33cd",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-05",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 888,
+        "normalizedBarSha256": "3f61f7b9ee113e83936428281de22748d97d84a819ab6ce9dba4ffd23f47ef4b",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-06",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1087,
+        "normalizedBarSha256": "2c39c854a809d26ecfb3a15b06640b5d77be5068a00ccf8f71173eb55b49ea10",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-06",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 889,
+        "normalizedBarSha256": "ba1a2fa07ce9a8ae9f3f2ccef32f556dbe5d2ad2c6c7e158a85f90b092b7ccdb",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-07",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1086,
+        "normalizedBarSha256": "d8229f089747c568ae02d229147794347d8ae03e398c13799a57233cbf9a1062",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-07",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 887,
+        "normalizedBarSha256": "f0031077631d93d31070ac02e8c553e2fb4cd592a2d57f4a1faa507627eba98e",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TWSE",
+        "marketDate": "2026-10-08",
+        "sourceId": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 1086,
+        "normalizedBarSha256": "aa7539aa801cb33429195f746d6bf7d43ed7b225cd776602236483e1fcf2b2a6",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      },
+      {
+        "market": "TPEX",
+        "marketDate": "2026-10-08",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "ordinarySymbolCount": 886,
+        "normalizedBarSha256": "aee6e43b7f7c1314f67d2cf4bae591ec620ec89ff5d59303d4a07f91429e6f6e",
+        "sourceTransport": "PRIMARY",
+        "dataClock": "POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN"
+      }
+    ]
+  },
+  "sourceSemantics": {
+    "bothMarketPrimaryCanonicalOnly": true,
+    "sourceMarketDateMatched": true,
+    "rawPriceSpace": true,
+    "oct9NationalDayObservedClosed": true,
+    "backfillRetrievalTimeIsNotHistoricalFirstKnownAt": true,
+    "tpexIndependentHolidayScheduleCertified": false
+  },
+  "existingSystem2SnapshotOct08": {
+    "source": "system2/evidence/S2_RECENT60_20261008_FULL_GAP_ARTIFACT_READBACK_20261009_V0_1.json",
+    "universe1972": true,
+    "historyEligible46": true,
+    "continuityEligible0": true,
+    "recent60MissingExpectedSessions44256": true
+  },
+  "gapPolicy": {
+    "oct1To8HotD1RowPresenceVerified": false,
+    "oct1To8ColdR2StorageVerified": false,
+    "independentlyReplayedPointInTimeHistory": false,
+    "corpActionAndHaltNoEventCertified": false,
+    "nct01ContinuityCertified": false,
+    "marketYearFullPass": false,
+    "liveTradingPromotionAllowed": false,
+    "action": "Before ANY claim fully populated through Oct08, coordinate REMEDIATION_LANE D1 read-budget and run six-date two-market D1 bounded physical inventory against market-date official source receipts. Preserve original clocks. Require idempotent repairs only for independently proven absent rows and only under authorized D1 write gate."
+  },
+  "cloudflare": {
+    "d1ReadsPerformed": 0,
+    "d1WritesPerformed": 0,
+    "r2Calls": 0,
+    "paidUpgrade": false
+  },
+  "protected": {
+    "system1FormalCoreChanged": false,
+    "system1RuntimeChanged": false,
+    "system2StrategyChanged": false,
+    "ordersCapitalPushChanged": false
+  }
+}
