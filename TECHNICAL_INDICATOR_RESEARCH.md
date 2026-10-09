@@ -3832,3 +3832,30 @@ D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09/D03-10 remain L2/40;
 5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
 6. Keep immutable parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
 7. Formal Core remains unchanged.
+
+
+## Continuation update — TI-1673 through TI-1692
+
+- TI-1673~1677 consume the new physical October source receipt without converting it into historical PIT evidence. System2 DATA_LANE run 37878847039 / job 113653590991 on head 39ca8dce38fa675874074609fb32d9c44321e944 completed successfully and produced artifact 11593830777 with digest sha256:7b765d4b59ef5e9211f4ba03ab7f97462ba192e065140b6b6c5da3ec1b024a49.
+- TI-1678~1681 accept 12 of 12 canonical official source-date receipts across TWSE and TPEx for six completed sessions from 2026-10-01 through 2026-10-08. The bounded receipt has 6,518 TWSE and 5,325 TPEx ordinary stock-date rows, 11,843 combined, with payload-date identity, primary transport, RAW price space and normalized bar hashes.
+- TI-1682~1685 preserve the evidence clock exactly as POST_FACTO_SOURCE_OBSERVATION_NOT_ORIGINAL_FIRST_KNOWN. Later retrieval proves later source availability and supports outcome-blind formula/mechanism replay. It does not prove that the same bytes/version/row were known by the original decision cutoff.
+- TI-1686 freezes three separate clocks: market-data date, physical observation time and decision cutoff. Market-date equality cannot collapse the other two clocks. Backdating observedAt/firstKnownAt to the bar date is a hard failure.
+- TI-1687~1689 add a 20-case executable firewall with four cumulative states: POST_FACTO_SOURCE_ONLY, PIT_INPUT_READY, W0_READY and OUTCOME_JOIN_READY. The current evidence passes only POST_FACTO_SOURCE_ONLY. PITReady=false, W0Ready=false and outcomeJoinReady=false.
+- TI-1690 prevents storage laundering. The unexecuted 11,843-key Hot D1 census cannot be counted as storage completeness. Even a later all-key storage match would not reconstruct original firstKnownAt. Value mismatch or RAW multiversion is STORAGE_CONFLICT, not permission to choose a favorable row.
+- TI-1691 keeps parent and denominator gates separate. Outcome joins additionally require a genuine immutable parent, complete population denominator and bound cost/fillability assumptions after W0.
+- TI-1692 freezes scientific limits. Six adjacent dates are date-clustered source evidence, not OOS/walk-forward evidence. Alpha, selection bias, multiple testing, cost, fillability, market-state robustness and independent incrementality remain UNKNOWN.
+- New research artifacts:
+  - research/D03_POST_FACTO_INDICATOR_CLOCK_FIREWALL_20261009_V0_1.md
+  - research/d03_post_facto_indicator_clock_cases_20261009_v0_1.json
+  - research/test_d03_post_facto_indicator_clock_v0_1.mjs
+- No D03 module promotion and no FORMAL_OPTIMIZATION_CANDIDATE. D03 remains 56.7%; 12 modules = 10 L3 + 2 L2. Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Current October 12/12 official-source evidence is POST_FACTO_SOURCE_ONLY. It may support formula/mechanism replay diagnostics but may not open PIT admission, W0 or outcomes.
+2. Await the quota-authorized read-only 36-key scout and, only with proven read headroom, the full 11,843-key Hot D1 census. Consume its discrepancies as storage evidence only; never backdate firstKnownAt or availability.
+3. W0 still needs causal exact-window availability, certified exact symbol sessions, corporate-action ancestry, halt/no-event coverage, identity-transition disposition and continuity-receipt hash binding.
+4. Parent remains the next ordinary-session live-quality-ready immutable C1 generation with authoritative V8.20 Formal-to-C1 binding.
+5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
+6. Keep independent semantic source attestation, parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
+7. Formal Core remains unchanged.
