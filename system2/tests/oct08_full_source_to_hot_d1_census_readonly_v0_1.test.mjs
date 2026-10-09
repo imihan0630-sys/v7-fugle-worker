@@ -38,7 +38,7 @@ async function fetchDate({market,marketDate}){
   transportMode:"PRIMARY",ordinarySymbolCount:rows.length,rows};
 }
 function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
- initialWrites=0,costPerQuery=0,truncated=false}={}){
+ initialWrites=0,costPerQuery=0,truncated=false,regressAtCall=0}={}){
  const metrics={rowsRead:0,rowsWritten:initialWrites,requestCount:0};
  return {
   metrics,database:{name:badDatabase?"V7_DB":"system2-research"},
@@ -68,6 +68,7 @@ function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
     if(truncated)result=Array.from({length:151},(_,i)=>({...vals[0],
      bar_hash:i.toString(16).padStart(64,"0")}));
     metrics.rowsRead+=result.length+costPerQuery;
+    if(metrics.requestCount===regressAtCall)metrics.rowsRead=0;
     return {results:result};
    }};}};
   },
@@ -132,6 +133,13 @@ negativeReadDb.metrics.rowsRead=-1;
 await assert.rejects(()=>audit({db:negativeReadDb,evidence,fetchDate}),
  /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
 assert.equal(negativeReadDb.metrics.requestCount,0);
+// A valid numeric counter can still rewind on a later SQL response.
+// Do not interpret a reset as renewed read headroom.
+const revertedCounterDb=mockDb({regressAtCall:2});
+await assert.rejects(()=>audit({db:revertedCounterDb,evidence,fetchDate}),
+ /D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED/);
+assert.equal(revertedCounterDb.metrics.requestCount,2);
+assert.equal(revertedCounterDb.metrics.rowsWritten,0);
 await assert.rejects(()=>audit({db:mockDb(),evidence:{
  ...evidence,officialWindow:{...evidence.officialWindow,
  samples:evidence.officialWindow.samples.slice(1)}},fetchDate}));
