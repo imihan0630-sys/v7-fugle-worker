@@ -1706,3 +1706,36 @@ Observed latest `main` before reconciliation: `8d8237d5c765782e120f2258d55633a7d
 4. Retest launch-critical research PIT/continuity provenance dependencies when real new receipts arrive. Recompute dynamic priorities on latest main; no automatic real push/orders/capital/actual holdings.
 
 Room 00 module inventory: `MODULE_COUNT_NOT_CANONICALLY_DEFINED`; ticket counts refer only to the System2 correction queue, not the room's research-module inventory.
+
+## 2026-10-09 11:40 Asia/Taipei — 00 source-to-storage / NC-T01 critical-path reconciliation
+
+Readback main before this audit write: `357e84980ea7e424c7d8ddeb9d1e16b48b3d0c11`. This is an independent latest-main governance/source readback, NOT a physical cloud-data test or workflow execution by Room 00. Canonical queue after Room-00 administrative-only correction: 24 total; VERIFIED_CLOSED 18; REJECTED_WITH_EVIDENCE 1; FIX_IN_PROGRESS 1; FIX_IMPLEMENTED 1; OPEN 3. Formal Core LOCKED; final/live selection, push, capital, orders, actual holdings all unauthorized.
+
+### 1. Corrected upstream code-gate dependency
+- `S2-CORR-20261008-007` VERIFIED_CLOSED code firewall; `-008` VERIFIED_CLOSED following merged #895 and #899 with independent AUDIT_LANE #903 / exact negative proofs, including writable PRAGMA and batch SQL TOCTOU. Old physical wrapper PR #844 was **CLOSED SUPERSEDED**, never to be merged. Neither code closure proves physical NC-T01 W0/W1 or S22-T11..T16.
+- `S2-CORR-20261008-011` VERIFIED_CLOSED code-level immutable SQL/digest guard via #901 and independent audit, but physical D1 schema/parent/append-only outcome maturation and Stage-1 capacity acceptance remain independent.
+- `S2-CORR-20261008-012` HIGH OPEN, despite partial merged monotonic guard #939, cost lineage #951 and staged append-only revision archive #954; archived SQL migration is **IN-MEMORY CI ONLY**, not applied to Cloudflare D1; no reserved-budget physical append writer, parent source readback, or independent full-lineage closure.
+- `S2-CORR-20261008-013` HIGH OPEN, despite partial session/unknown guards #945 and downstream D18 exclusion #949; authentic exchange-calendar/short-gap PIT completeness, every downstream fill/NO_FILL denominator consumer, and independent closure are pending.
+- `S2-CORR-20261007-003` REMEDIATION_LANE HIGH OPEN account-wide UTC-day D1 read/write reservation and ordinary-push writer safety. No paid tier is authorized. Separate physical Cloudflare reads/writes must be budget coordinated.
+
+### 2. DATA_LANE current-source and PIT/storage distinction
+- 2017–2025 TWSE/TPEx **18/18 annual market-year raw storage legs accepted**, but replay/continuity remain PARTIAL. `S2-CORR-20261004-001` governance-only canonical machine + markdown pointers now supersede the old 2024 TPEx run #30 quota text; 001 stays FIX_IN_PROGRESS for 2026/current PIT/aggregate work. Reconciliation commits `a849ec5848aebd189b0b9960ad07dd877342a7e7` and `357e84980ea7e424c7d8ddeb9d1e16b48b3d0c11`.
+- 2026/TWSE January–June physical R2 readback 6461/6461 previously accepted; July–September original producer R2+artifact checks report 3262 objects / 68336 bars, but independent cold D1/R2 reread remains pending and requires quota coordination. Earlier Jan–Jun capture/completion clocks are flagged PRE_FIX, not retrospectively repaired.
+- Source-only canonical 2026-10-01/02/05/06/07/08 TWSE+TPEx official daily source 12/12 PASS, 11843 normalized market-symbol-date source rows, run `37878847039`. These are post-facto source receipts, not Oct01–Oct08 hot D1 row proof, original firstKnownAt, or full October cold receipt.
+- Independent Oct08 Recent60 hot-D1/PIT physical diagnostic run `37854849181`: current universe 1972; historyReady 46; continuityReady 0; missingExpectedPITEligibleSymbolSessionTotal 44256; 96/96 top-missing sampled July hot D1 identities physically absent. The targeted sample is NOT a random full-universe absence proof; older source row substitution stays forbidden.
+- `S2-CORR-20261007-001` DATA_LANE FIX_IMPLEMENTED V0.4 prospective collector requires a **new** actual future trading-day exact-date fallback witness; do not retrofit prior observed samples or market holidays.
+
+### 3. Re-evaluated Stage-1 bottleneck ordering — no blanket 60-session full-market veto
+1. **P0 DATA / BUILD parallel:** first real bounded TWTAWU official positive parity, exact replay-window no-suspension source identity plus three corporate-action source refs -> immutable W0 continuity; only strategy required-input-complete W1 can certify physical NC-T01. Existing CORR-007/008 code firewall closures do not substitute for live receipt.
+2. **P0 DATA / REMEDIATION parallel:** measured shared D1 account quota reservation and bounded date/symbol hot PIT presence/bridge audit. Prioritize real W1-eligible bounded evidence first while preserving the full 1972-symbol accounting/UNKNOWN exclusions; 44256 gap does not mean every symbol must be warm before a truthful partial/advisory Shadow evaluation, nor allow synthetic zero-pick/forced capacity.
+3. **P1 BUILD:** complete CORR-012/013 physical/parent/calendar/denominator integration and independent red-to-green adversarial retests before any certified performance, no-fill, or persistence promotion. These safeguards cannot silently qualify the physical W1 set without source proofs.
+4. **P1 01–15 research:** D16/Room11 common support, PIT, negative/positive source and no-double-count receipts consumed when real Stage-1 evidence arrives. Research-only contract/progress never equals physical launch.
+5. **System1 sentinel:** no new proven safety/shared-runtime comparator escalation here; Formal Core remains LOCKED.
+
+### Exact next Room-00 continuation
+- Re-read current main; identify first *real immutable* TWTAWU parity/continuity receipt and first same-cut NC-T01 W0/W1; recompute acceptance matrix T11..T16 only from physically observed complete chain, no CI-only promotion.
+- Independently check REMEDIATION-LANE CORR-003 quota gate and DATA six-Oct-session hot D1 physical presence/readback. Do not dispatch account-wide cloud writes from Room 00.
+- Verify later BUILD CORR-012/013 exact-head/offline and physical provenance proofs, require external AUDIT_LANE closure. Keep CORR-001/007-001 outstanding until their own scoped physical evidence is accepted.
+- Reconcile any newer main commit before touching queue and preserve separated System1/System2 discovery/rank/trade policy, owner-gated actual funds, and immutable source clocks.
+
+Room-00 module count: `MODULE_COUNT_NOT_CANONICALLY_DEFINED`. 24 correction tickets are System2's cross-lane repair inventory, not 00's own module denominator.
