@@ -1,0 +1,60 @@
+name: System2 Oct08 Full Frozen-Source Hot D1 Census Manual Readonly
+
+# Explicit manual-only full 11843 official symbol-date key census;
+# no main push, schedule, workflow_run, writes, R2 or paid provider.
+on:
+  workflow_dispatch:
+    inputs:
+      cross_system_d1_read_budget_confirmed:
+        required: true
+        type: boolean
+        default: false
+        description: "REMEDIATION_LANE verified account-wide read quota/reserve"
+      no_competing_d1_writer:
+        required: true
+        type: boolean
+        default: false
+        description: "All cross-system D1 writers coordinated; no competitor"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  full_readonly_census:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main' && inputs.cross_system_d1_read_budget_confirmed && inputs.no_competing_d1_writer
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Pure offline counterexamples and System1 isolation
+        run: |
+          node system2/tests/oct08_full_source_to_hot_d1_census_readonly_v0_1.test.mjs
+          node --check system2/scripts/audit_oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Rehash all 12 frozen official source days before bounded D1 full-key census
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          S2_D1_CENSUS_BUDGET_CONFIRMED: ${{ inputs.cross_system_d1_read_budget_confirmed }}
+          S2_D1_NO_COMPETING_WRITER_CONFIRMED: ${{ inputs.no_competing_d1_writer }}
+          S2_OCT08_FULL_D1_CENSUS_RESULT: /tmp/s2-oct08-full-source-hot-d1-census.json
+        run: node system2/scripts/audit_oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs
+      - name: Preserve PASS or BLOCKED full-key evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-oct08-full-d1-census-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-oct08-full-source-hot-d1-census.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 Formal runtime
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
