@@ -162,3 +162,43 @@ assert.throws(()=>inspect({marketDate:"2026-02-30"}),/INVALID_MARKET_DATE/);
 assert.throws(()=>inspect({marketDate:"bad"}),/INVALID_MARKET_DATE/);
 assert.throws(()=>inspect(null),/INVALID_EVIDENCE_OBJECT/);
 console.log("S1_ISSUE1024_P01_P02_P04_2_SOURCE_AND_STRUCTURAL_19_NEGATIVE_UNTRUSTED_NO_D1_PASS");
+
+const provenance=JSON.parse(readFileSync(new URL(
+  "../../research/SYSTEM1_ISSUE1024_PER_RUN_COST_PERSISTENCE_GATE_EVIDENCE_20261009_V0_1.json",
+  import.meta.url,
+),"utf8"));
+assert.equal(provenance.existingRealReceipts.genuineSourceCountDistinct,10);
+assert.equal(provenance.existingRealReceipts.moreHealthyDaysFound,0);
+assert.deepEqual(provenance.existingRealReceipts.observedCronSuccessDatesOnly,
+  ["2026-09-21","2026-09-22"]);
+assert.deepEqual(provenance.existingRealReceipts.fullyPersistedSameGenerationBusinessDatesVerified,[]);
+const oldDays=provenance.existingRealReceipts.wholeV7DbUtcDays;
+assert.equal(oldDays.length,2);
+assert.deepEqual(oldDays.map(x=>x.rowsWritten),[2825,1635]);
+assert.deepEqual(oldDays.map(x=>x.rowsRead),[133037,19533]);
+assert.ok(oldDays.every(x=>x.actualPrimaryD1WriteCost===null &&
+  x.actualPrimaryD1ReadCost===null &&
+  x.sameGenerationKvReadback==="UNKNOWN"));
+assert.equal(provenance.existingRealReceipts.observedDailyEnvelopeOnly.notAReservationCandidate,true);
+assert.equal(provenance.existingRealReceipts.quotaFailureDay.accountRowsWritten,126498);
+assert.equal(provenance.existingRealReceipts.quotaFailureDay.accountRowsRead,4374959);
+for(const code of ["P01","P02","P04"]){
+ assert.equal(provenance.producerProgress[code].physicallyQualified,false);
+}
+assert.equal(provenance.producerProgress.P01.authorizedReserveRows,null);
+assert.equal(provenance.producerProgress.P02.authorizedReserveRows,null);
+assert.equal(provenance.safety.physicalD1ReadsThisChange,0);
+assert.equal(provenance.safety.physicalD1WritesThisChange,0);
+
+// Contract is derived from current committed Worker source but the CI is
+// NOT proof that any specific production Worker deployment has this SHA.
+const worker=readFileSync(new URL("../../Worker.js",import.meta.url),"utf8");
+assert.ok(worker.includes('const LAST_SCAN_KEY = "V7_LAST_AFTER_MARKET_SCAN"'));
+assert.ok(worker.includes("async function saveStockConfig("));
+assert.ok(worker.includes("await env.STOCKS_KV.put("));
+assert.ok(worker.includes('const reportKey = `V7_DAILY_REPORT:${marketDate}`'));
+assert.ok(worker.includes("async function writeCronRun("));
+assert.ok(worker.includes("INSERT INTO v7_cron_runs"));
+assert.ok(worker.includes("async function runAfterMarketScan("));
+assert.ok(worker.includes('const lockKey=`V7_AFTER_MARKET_LEASE:${requestedDate}`'));
+console.log("S1_ISSUE1024_SOURCE_TOPOLOGY_10_REAL_RUNS_2_CRON_DATES_NO_PHYSICAL_PROMOTION_PASS");
