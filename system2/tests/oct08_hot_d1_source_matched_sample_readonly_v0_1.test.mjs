@@ -39,7 +39,7 @@ const fetchDate=async({market,marketDate})=>{
 };
 function buildDb({missingSymbol="none",mismatchSymbol="none",
  revisionsSymbol="none",wrongDatabase=false,writeCount=0,
- rowsReadPerCall=2}={}){
+ rowsReadPerCall=2,regressAtCall=0}={}){
  const metrics={requestCount:0,rowsRead:0,rowsWritten:writeCount};
  const prepare=sql=>{
   assert.match(sql,/^SELECT\b/);
@@ -49,6 +49,7 @@ function buildDb({missingSymbol="none",mismatchSymbol="none",
    return {async all(){
     metrics.requestCount++;
     metrics.rowsRead+=rowsReadPerCall;
+    if(metrics.requestCount===regressAtCall)metrics.rowsRead=0;
     const original=payloads.get(market+"|"+marketDate)?.find(x=>x.symbol===symbol);
     if(!original)return {results:[]};
     if(symbol===missingSymbol)return {results:[]};
@@ -145,6 +146,13 @@ await assert.rejects(()=>audit({db:lostMetrics,evidence:frozen,fetchDate}),
  /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
 assert.equal(lostMetrics.metrics.requestCount,1,
  "post-query loss must stop before second D1 SELECT");
+// Second request resetting a perfectly numeric read counter to zero
+// must not silently grant more D1 reads.
+const revertedCounterDb=buildDb({regressAtCall:2});
+await assert.rejects(()=>audit({db:revertedCounterDb,evidence:frozen,fetchDate}),
+ /D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED/);
+assert.equal(revertedCounterDb.metrics.requestCount,2);
+assert.equal(revertedCounterDb.metrics.rowsWritten,0);
 
 const workflow=await readFile(new URL(
  "../../.github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",

@@ -93,7 +93,7 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
  const sourceRevalidationDigest=createHash("sha256").update(
   JSON.stringify(sourceRevalidationReceipts)).digest("hex");
  const details=[],metrics={matched:0,missing:0,mismatched:0,multi:0};
- let queryCount=0;
+ let queryCount=0,lastCertifiedRowsRead=null;
  for(const source of matchedSource){
   const rowSet=source.rows;
   const marketCount={market:source.market,marketDate:source.marketDate,
@@ -104,6 +104,9 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
     "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
    assert.ok(db.metrics.rowsRead<=maxRowsRead,
     "D1_READ_BUDGET_HARD_CAP_BEFORE_QUERY");
+   assert.ok(lastCertifiedRowsRead===null||db.metrics.rowsRead>=lastCertifiedRowsRead,
+    "D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED");
+   const beforeRowsRead=db.metrics.rowsRead;
    const batch=rowSet.slice(i,i+chunkSize);
    const symbols=batch.map(r=>r.symbol);
    assert.equal(new Set(symbols).size,batch.length);
@@ -121,6 +124,9 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
     "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
    assert.ok(db.metrics.rowsRead<=maxRowsRead,
     "D1_READ_BUDGET_HARD_CAP_AFTER_QUERY");
+   assert.ok(db.metrics.rowsRead>=beforeRowsRead,
+    "D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED");
+   lastCertifiedRowsRead=db.metrics.rowsRead;
    assert.equal(db.metrics.rowsWritten,0,"D1 unexpected mutation");
    const whitelisted=new Set(symbols),seen=new Map();
    for(const r of d1Rows){
