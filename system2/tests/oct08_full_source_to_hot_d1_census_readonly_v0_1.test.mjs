@@ -38,7 +38,7 @@ async function fetchDate({market,marketDate}){
   transportMode:"PRIMARY",ordinarySymbolCount:rows.length,rows};
 }
 function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
- initialWrites=0,costPerQuery=0}={}){
+ initialWrites=0,costPerQuery=0,truncated=false}={}){
  const metrics={rowsRead:0,rowsWritten:initialWrites,requestCount:0};
  return {
   metrics,database:{name:badDatabase?"V7_DB":"system2-research"},
@@ -65,6 +65,8 @@ function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
     let result=missing?vals.filter(r=>!key(r)):vals;
     if(mismatch)result=result.map(r=>key(r)?{...r,close_price:-1}:r);
     if(versioned)for(const r of [...result])if(key(r))result.push({...r,bar_hash:"b".repeat(64)});
+    if(truncated)result=Array.from({length:151},(_,i)=>({...vals[0],
+     bar_hash:i.toString(16).padStart(64,"0")}));
     metrics.rowsRead+=result.length+costPerQuery;
     return {results:result};
    }};}};
@@ -104,6 +106,24 @@ const lowCost=mockDb({costPerQuery:150001});
 await assert.rejects(()=>audit({db:lowCost,evidence,fetchDate}),
  /D1_READ_BUDGET_HARD_CAP_AFTER_QUERY/);
 assert.equal(lowCost.metrics.requestCount,1);
+// The SQL LIMIT 151 can hide rows for a requested symbol when RAW versions
+// proliferate; a full result must never become 49 false-missing repair intents.
+const cappedDb=mockDb({truncated:true});
+await assert.rejects(()=>audit({db:cappedDb,evidence,fetchDate}),
+ /HOT_D1_QUERY_RESULT_TRUNCATED_UNSAFE_FOR_ABSENCE_CLASSIFICATION/);
+assert.equal(cappedDb.metrics.requestCount,1);
+assert.equal(cappedDb.metrics.rowsWritten,0);
+// Incomplete/invalid D1 read accounting must not masquerade as zero cost.
+const unknownReadDb=mockDb();
+unknownReadDb.metrics.rowsRead=Number.NaN;
+await assert.rejects(()=>audit({db:unknownReadDb,evidence,fetchDate}),
+ /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+assert.equal(unknownReadDb.metrics.requestCount,0);
+const negativeReadDb=mockDb();
+negativeReadDb.metrics.rowsRead=-1;
+await assert.rejects(()=>audit({db:negativeReadDb,evidence,fetchDate}),
+ /D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED/);
+assert.equal(negativeReadDb.metrics.requestCount,0);
 await assert.rejects(()=>audit({db:mockDb(),evidence:{
  ...evidence,officialWindow:{...evidence.officialWindow,
  samples:evidence.officialWindow.samples.slice(1)}},fetchDate}));

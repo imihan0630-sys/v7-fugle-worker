@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_OCT08_D1_READONLY_CENSUS_TRUNCATION_AND_METERING_GUARD_PREREG_V0_1",
+  "createdAt": "2026-10-09T18:07:02+08:00",
+  "lane": "DATA_LANE",
+  "task": "Census read-only safety: prevent false missing-key classification on capped D1 queries or unknown rowsRead accounting",
+  "initialDataState": {
+    "officialSourceDateCells": 12,
+    "officialSymbolDateKeys": 11843,
+    "sourceOnlyVerified": true,
+    "hotD1PhysicalCensus": "NOT_EXECUTED",
+    "missingKeyWrite": "NOT_AUTHORIZED"
+  },
+  "riskCases": [
+    {
+      "case": "TRUNCATED_151_RAW_VERSIONS",
+      "priorBehavior": "D1 SQL LIMIT 151 returns exactly 151 rows; later symbol keys may be omitted, misclassified HOT_D1_KEY_ABSENT",
+      "requiredBehavior": "HOT_D1_QUERY_RESULT_TRUNCATED_UNSAFE_FOR_ABSENCE_CLASSIFICATION before producing any partial PASS or repair plan"
+    },
+    {
+      "case": "UNKNOWN_READ_METRIC",
+      "priorBehavior": "Number(NaN||0)=0 could bypass local maxRowsRead guard",
+      "requiredBehavior": "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED before query"
+    },
+    {
+      "case": "NEGATIVE_READ_METRIC",
+      "priorBehavior": "negative read metric <= maximum despite corrupt metering",
+      "requiredBehavior": "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED before query"
+    }
+  ],
+  "codePaths": [
+    "system2/runtime/oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+    "system2/tests/oct08_full_source_to_hot_d1_census_readonly_v0_1.test.mjs"
+  ],
+  "testsPlanned": [
+    "Existing positive 11843 source keys / 240 SELECT fixture",
+    "Capped 151-row RAW multi-version negative",
+    "Unknown NaN rowsRead before query negative",
+    "Negative rowsRead before query negative",
+    "Pre-existing source revision, source fallback, D1 isolation and read hard-cap negatives"
+  ],
+  "method": "Class A offline fail-closed research safeguard; no Cloudflare D1/R2 requests; no secrets; CI/V8 regression gate required",
+  "quotaCorrection": {
+    "id": "S2-CORR-20261007-003",
+    "status": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY",
+    "closedByDataLane": false
+  },
+  "physicalD1ReadsExecuted": 0,
+  "physicalD1WritesExecuted": 0,
+  "system1FormalCoreChanged": false,
+  "productionRuntimeChanged": false,
+  "paidPlanChanged": false,
+  "acceptance": "PREREG_ONLY_PENDING_CI"
+}
