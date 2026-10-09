@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "S2_TPEX2026_MAY_JUNE_FULL_MONTH_PRIMARY_SOURCE_PREREG_20261009_V0_1",
+  "lane": "DATA_LANE",
+  "type": "CLASS_A_SOURCE_ONLY",
+  "status": "CODE_PENDING_CI_REAL_PUBLIC_SOURCE_HTTP",
+  "months": [
+    {
+      "month": 5,
+      "proxyDatesExpected": 20
+    },
+    {
+      "month": 6,
+      "proxyDatesExpected": 21
+    }
+  ],
+  "sourceOnlyDateTarget": 41,
+  "preexistingMonthBaseline": "system2/evidence/S2_TPEX2026_NINE_MONTH_18_SAMPLE_CANONICAL_SOURCE_REAL_ACCEPTANCE_20261009_V0_1.json",
+  "crossCheck": "Exact frozen per-month calendar digest and first last source date raw-bar normalized SHA256",
+  "sourceTransport": "PRIMARY_ONLY",
+  "differentMonthProvenance": "No synthetic fixture may promote source coverage",
+  "physicalD1Reads": 0,
+  "physicalD1Writes": 0,
+  "physicalR2Calls": 0,
+  "historicalPITOrStoragePromotionAllowed": false,
+  "independentTpexCalendarCertified": false,
+  "system1FormalCoreChanged": false,
+  "coordination": "May June matrix executes public TPEx source only, after guarded PR merge. Per-month artifact accepted separately; failure cannot be relabelled as 41/41."
+}

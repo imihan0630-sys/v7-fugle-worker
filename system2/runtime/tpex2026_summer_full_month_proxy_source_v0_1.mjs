@@ -25,7 +25,7 @@ export async function probeTpex2026SummerMonthSourceV0_1({
  dailyFn=fetchOfficialHistoricalA1DateV0_1,
  onStage=()=>{},pauseMs=450,
 }={}){
- assert.ok([7,8].includes(month),"Only preregistered July and August 2026");
+ assert.ok([5,6,7,8].includes(month),"Only preregistered May to August 2026");
  assert.equal(typeof calendarFn,"function");
  assert.equal(typeof dailyFn,"function");
  assert.equal(typeof onStage,"function");
@@ -37,7 +37,7 @@ export async function probeTpex2026SummerMonthSourceV0_1({
  assert.equal(frozen?.state,"PASS_9_MONTHS_18_CANONICAL_TPEX_SOURCE_SAMPLES_NOT_FULL_RANGE");
  const monthProof=frozen?.source?.monthlyCalendarProxyReceipts?.find(x=>x.month===month);
  const prior=frozen?.source?.sampleReceipts?.filter(x=>x.month===month);
- const expectedCount=month===7?22:21;
+ const expectedCount=({5:20,6:21,7:22,8:21})[month];
  assert.equal(monthProof?.twseOfficialSessionCount,expectedCount,
   "FROZEN_SOURCE_MONTH_COUNT_UNEXPECTED");
  assert.match(monthProof?.twseTradingDateSetSha256||"",/^[a-f0-9]{64}$/);

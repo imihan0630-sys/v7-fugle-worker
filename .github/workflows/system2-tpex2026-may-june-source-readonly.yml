@@ -1,0 +1,49 @@
+name: System2 TPEx 2026 May June Monthly Source Readonly
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-tpex2026-may-june-source-readonly.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-tpex2026-may-june-monthly-readonly
+  cancel-in-progress: false
+jobs:
+  official_source:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: false
+      matrix:
+        month: [5, 6]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Fail-closed source fixtures, syntax and System1 isolation
+        run: |
+          node system2/tests/tpex2026_may_june_full_month_proxy_source_v0_1.test.mjs
+          node system2/tests/tpex2026_summer_full_month_proxy_source_v0_1.test.mjs
+          node --check system2/scripts/probe_tpex2026_may_june_source_readonly_v0_1.mjs
+          node --check system2/runtime/tpex2026_summer_full_month_proxy_source_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Official TPEx primary dates under frozen May June calendar proxy
+        env:
+          S2_TPEX2026_MAY_JUNE_MONTH: ${{ matrix.month }}
+          S2_TPEX2026_MAY_JUNE_OUTPUT: /tmp/s2-tpex2026-may-june-${{ matrix.month }}-source.json
+        run: node system2/scripts/probe_tpex2026_may_june_source_readonly_v0_1.mjs
+      - name: Preserve both monthly immutable SOURCE_ONLY receipts or blockers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-tpex2026-may-june-${{ matrix.month }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-tpex2026-may-june-${{ matrix.month }}-source.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 Formal and runtime
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
