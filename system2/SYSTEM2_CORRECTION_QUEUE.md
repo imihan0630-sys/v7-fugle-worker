@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09 18:39 Asia/Taipei
+Updated: 2026-10-09 20:27 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1128,6 +1128,29 @@ Independent PR #989 routed two additional fail-open defects back to REMEDIATION_
 - No System1 Formal Core, trading, capital, production or Cloudflare billing change.
 
 Status returns to `FIX_IMPLEMENTED`. Independent AUDIT_LANE must reverify A5/A6 and remains the only HIGH closure authority. Physical closure gates remain pending.
+
+
+#### 2026-10-09 20:27 REMEDIATION A7 implementation complete
+
+Independent PR #1000 accepted A5/A6 source-level fail-closed behavior but reproduced `A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA`. PR #1008 merged as `7325d4343aecad1847ef6b176b95167d5d74705a`.
+
+- **A7 PASS at source level:** V0.2+ quota receipts cannot authenticate with payload-only legacy hash.
+- V0.2+ requires the full immutable identity hash over check_id/check_type/expected payload/observed payload/status.
+- Legacy payload-only hash remains supported only for exact historical V0.1 reservation/result schema with V0.1 budget version, frozen expected metadata, no paid/Formal-Core mutation and original V0.1 status contract.
+- Historical V0.1 rows are not rewritten.
+- Independent A7 probe replay on final CI is **SAFE**:
+  - V0.2 legacy receipt = INVALID
+  - tampered status = INVALID
+  - tampered expected payload = INVALID
+  - synthetic otherwise-authorized decision = `QUOTA_BUDGET_DEFER`
+- Authentic V0.2 full identity and authentic V0.1 legacy reservation/result positive cases remain VALID.
+- Dedicated test: `system2/tests/d1_account_quota_a7_legacy_hash_identity_v0_1.test.mjs`.
+- System2 Research CI `37929940237` PASS; V8 Regression `37929940232` PASS.
+- Durable evidence: `system2/evidence/S2_CORR_003_A7_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`.
+- System1 write/read reserve remains `false/null`; observed 2,825 is not promoted.
+- No System1 Formal Core, trading, capital, production business logic or Cloudflare billing change.
+
+Status returns to `FIX_IMPLEMENTED`. Independent AUDIT_LANE must reverify A7 and retains sole HIGH closure authority. Original physical closure gates remain pending.
 
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
