@@ -55,7 +55,7 @@ for(const m of [1,2,3,4]){
   return a.marketDate===dates(m)[0]?{...z,rows:z.rows.map((r,i)=>i===0?{...r,close:r.close+.1}:r)}:z;
  }}),/FROZEN_PRIOR_SAMPLE_ROWSET_DIGEST_CHANGED/);
 }
-await assert.rejects(()=>run(9),/Only preregistered/);
+await assert.rejects(()=>probe({month:9}),/Only preregistered/);
 const wf=await readFile(new URL("../../.github/workflows/system2-tpex2026-jan-apr-monthly-source-readonly.yml",import.meta.url),"utf8");
 const script=await readFile(new URL("../scripts/probe_tpex2026_jan_apr_source_readonly_v0_1.mjs",import.meta.url),"utf8");
 assert.match(wf,/max-parallel: 2/);
