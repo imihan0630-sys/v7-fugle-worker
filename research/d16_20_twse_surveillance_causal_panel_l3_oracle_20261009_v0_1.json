@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D16_20_TWSE_SURVEILLANCE_CAUSAL_PANEL_L3_ORACLE_V0_1",
+  "owner": "ROOM11_D16",
+  "module": "D16-20",
+  "status": "PRE_PHYSICAL_L3_ORACLE_FROZEN",
+  "treatmentFamily": "TWSE_SURVEILLANCE_DESIGNATION",
+  "firstPanelConstraint": "ONE_FROZEN_TREATMENT_CLASS_ONLY",
+  "requiredParents": [
+    "OFFICIAL_TREATMENT_RECEIPT",
+    "SAME_CUT_UNTREATED_ELIGIBLE_POOL_RECEIPT",
+    "PIT_PRE_TREATMENT_COVARIATE_RECEIPTS",
+    "INCLUSION_EXCLUSION_LEDGER",
+    "RULE_VINTAGE_RECEIPT"
+  ],
+  "outcomeBlind": true,
+  "tests": [
+    {
+      "id": "CAUS-T01",
+      "case": "REAL_TREATMENT_AND_REAL_SAME_CUT_UNTREATED_POOL",
+      "expect": "PANEL_BUILD_ELIGIBLE"
+    },
+    {
+      "id": "CAUS-T02",
+      "case": "TREATED_ONLY_NO_UNTREATED_POOL",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T03",
+      "case": "CURRENT_MEMBERSHIP_BACKFILLS_HISTORICAL_CONTROL_POOL",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T04",
+      "case": "POST_TREATMENT_COVARIATE",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T05",
+      "case": "FUTURE_TREATED_CONTROLS_REMOVED_WITH_HINDSIGHT",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T06",
+      "case": "EXCLUDED_SYMBOL_WITHOUT_REASON",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T07",
+      "case": "ATTENTION_AND_DISPOSITION_SILENTLY_POOLED",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T08",
+      "case": "RULE_VINTAGE_UNKNOWN",
+      "expect": "FAIL"
+    },
+    {
+      "id": "CAUS-T09",
+      "case": "TREATED_COMMON_SUPPORT_EMPTY",
+      "expect": "DESCRIPTIVE_ONLY_CAUSAL_ESTIMATION_NOT_ELIGIBLE"
+    },
+    {
+      "id": "CAUS-T10",
+      "case": "IDENTICAL_IMMUTABLE_INPUTS",
+      "expect": "IDENTICAL_PANEL_HASH"
+    },
+    {
+      "id": "CAUS-T11",
+      "case": "TREATMENT_SOURCE_ROW_CHANGES",
+      "expect": "PANEL_HASH_CHANGES"
+    },
+    {
+      "id": "CAUS-T12",
+      "case": "OUTCOME_FIELDS_PRESENT_BEFORE_PANEL_FREEZE",
+      "expect": "FAIL"
+    }
+  ],
+  "mandatoryDiagnostics": [
+    "treatedN",
+    "eligibleUntreatedN",
+    "covariateMissingness",
+    "commonSupportShare",
+    "treatedOutsideSupportN",
+    "untreatedOutsideSupportN",
+    "standardizedCovariateDifferences"
+  ],
+  "forbiddenClaims": [
+    "CAUSAL_EFFECT_ESTABLISHED",
+    "UNCONFOUNDEDNESS_PROVEN",
+    "RD_IDENTIFICATION_AUTHORIZED_FROM_THRESHOLD_EXISTENCE_ALONE",
+    "ALPHA_PROVEN"
+  ],
+  "promotionRule": "D16-20 L3 only after one genuine Taiwan PIT panel passes the oracle; L3 means causal-data feasibility, not causal-effect validity.",
+  "formalCoreImpact": "NONE"
+}
