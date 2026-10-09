@@ -18,6 +18,13 @@ Rules:
 
 Canonical source: `shared-knowledge/ROOM_BOOTSTRAP.md` section 13 and `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`.
 
+### New-room operating verification and elapsed-time receipts
+
+- A chat's remembered preferences do **not** prove that current GitHub rules/checkpoints were read. At first contact or after the owner's `繼續`, fetch current `main`, the room bootstrap registry, and the assigned checkpoint; report the verified HEAD SHA and exact next action. If access fails, distinguish `NOT_VERIFIED` from `READY`; do not infer from chat memory.
+- Follow the canonical continuation checklist in `shared-knowledge/ROOM_BOOTSTRAP.md` section 17. The copy-ready ChatGPT Project-instructions template is `shared-knowledge/CHATGPT_PROJECT_INSTRUCTIONS_SEED_20261009.md`. GitHub docs do not silently change ChatGPT's Project Settings.
+- For a substantive research/engineering/audit turn, additionally report actual start time, end time, and elapsed duration immediately **above** the unique final Taipei timestamp line. Use only observable/known clock values and never invent elapsed minutes. Very short non-work replies retain the mandatory one-line timestamp.
+- Before handoff or user-visible progress completion, show canonical task counts (or state that an authoritative denominator is unavailable), evidence, blocker and named receiving lane. Protected merges, Worker deployment, live scans, trades, pushes and secret work retain their existing approval boundaries.
+
 Read `VERSIONING.md` before assigning any new version number. Version level is determined by architecture vs feature vs bug-fix scope, not by commit count.\n\nFor a new/replacement ChatGPT thread, use `shared-knowledge/ROOM_BOOTSTRAP.md` first. For System 1, read the current requirement/checkpoint state before loading history. Read `PROJECT_HISTORY.md` only when the current checkpoint/spec is insufficient or historical rationale is materially needed; do not load the full chronology for routine continuation. GitHub/runtime evidence overrides remembered chat state.\n\nRead REQUIREMENTS_30.md in full before changes. It records the user's latest authoritative specification and explicit incomplete acceptance items. Older Worker comments and prior versions are not the specification.
 
 - Thousand-price pool: official close >=1000, at most3. Non-thousand: official close <1000, at most3. No cross-pool filling, no forced six. Official close <10 excludes; =10 may qualify.
