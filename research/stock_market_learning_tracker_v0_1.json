@@ -1442,8 +1442,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Sector Rotation族群輪動」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "OFFICIAL_TWSE_ROTATION_PIT_FEASIBLE / BR045_FULL_34_INDUSTRY_TOTAL_RETURN_BASELINE_FROZEN / APPEND_ONLY_RANK_CONTRACT / BR044_SEVEN_SECTOR_CONTINUITY_TRANSITION_OBSERVED / OUTCOMES_CLOSED / KEEP_L3",
-          "next": "Append the next independent official TWSE 34-industry total-return receipt under the frozen BR045 universe/rank contract; compute deltaPercentileRank/rotationVelocity only across comparable taxonomy versions; require member breadth/concentration before leadership interpretation; no L4 before multiple independent prospective transitions and D16 OOS validation."
+          "status": "OFFICIAL_TWSE_ROTATION_PIT_FEASIBLE / BR077_SEVENTH_OFFICIAL_DATE_20261008 / TOP9_OVERLAP_4_OF_9 / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "Continue official 34-industry append-only receipts under unchanged BR045 rank semantics; keep taxonomy comparable and route L4 validation through D16."
         },
         {
           "id": "D09-07",
@@ -1452,8 +1452,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「領導股／主流族群生命週期」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / SIX_OFFICIAL_DATES / BR061_20261007_MIXED_25_OF_34 / BR070_D16_DATE_LEVEL_HANDOFF / TOP3_TURNOVER_33P33 / WIDENING_WITHIN_MIXED / STOCK_LEVEL_PARTIAL / POWER_INSUFFICIENT / KEEP_L3",
-          "next": "Room11/D16 must consume research/BR070_D09_07_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freeze the date-clustered lifecycle method before predictive access; Room07 continues official 34-industry append-only snapshots outcome-blind."
+          "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / SEVEN_OFFICIAL_DATES / BR077_20261008_MIXED_17_OF_34 / TOP3_TURNOVER_66P67 / TOP9_RETENTION_44P44 / NARROWING_WITHIN_MIXED / POWER_INSUFFICIENT / KEEP_L3",
+          "next": "Continue official 34-industry snapshots under unchanged semantics; BR077 was frozen before the 2026-10-09 close; D16 method and member-level breadth/concentration remain required before L4."
         },
         {
           "id": "D09-08",
@@ -1502,8 +1502,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_FIRST_GENUINE_SAME_CLOCK_RECEIPT / BR071_OUTCOME_BLIND_D16_HANDOFF / DATE_LEVEL_UNIT_FROZEN / TPEx_SCOPE_UNKNOWN / SHARED_BREADTH_ROOT_DEDUP / POWER_INSUFFICIENT / OUTCOMES_CLOSED / KEEP_L3",
-          "next": "Room11/D16 must consume research/BR071_D09_12_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md and freeze the same-clock interaction method before predictive access; Room07 accumulates independent same-clock receipts under unchanged semantics."
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / BR066_FIRST_GENUINE_SAME_CLOCK_RECEIPT / BR076_20261008_BREADTH_ONLY_A2_NOT_OBSERVED / RETROSPECTIVE_BACKFILL_FORBIDDEN / POWER_INSUFFICIENT / KEEP_L3",
+          "next": "Capture the next session with TWSE breadth and A2 TAIEX context both observed before one frozen cutoff; 2026-10-08 stays breadth-only; D16 interaction method remains required before L4."
         },
         {
           "id": "D09-13",
