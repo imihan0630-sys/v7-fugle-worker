@@ -1553,3 +1553,16 @@ DATA_LANE now provides a separate **manual-only** read-only workflow `system2-re
 **Do not launch without REMEDIATION_LANE quota/single-reader coordination.** This is a retrospective physical cost probe, not a rerun of original PIT first-known data and never upgrades history/continuity, corporate-action no-event, NC-T01, zero-pick or strategy replay. Evidence: `system2/evidence/S2_RECENT60_INDEXED_READ_COST_POST_RESET_MANUAL_GATE_20261009_V0_1.json`.
 
 System1 Formal Core/runtime, A/B Top6, 15-minute K signal, push, capital and orders untouched.
+
+## 2026-10-09 DATA_LANE — TWTAWU positive JSON/CSV export-contract discovery without Cloudflare
+
+Frozen NC-T01 witness contract still lacks authoritative bounded TWSE TWTAWU suspension **negative completeness**. The previously verified 1218 泰山 event (suspension 2026-08-13; resumption 2026-08-14) is an ideal falsification-first positive witness. Previous DATA_LANE handoff requires reproducing this real row in an independent official export representation before attempting empty-range certification.
+
+New Class A bounded no-secret read-only candidate `system2-data/twtawu-positive-json-csv-diagnostic-20261009`: preserve the existing TWSE official JSON TWTAWU request, and **experimentally** request the same parameters with `response=csv` (not asserted to be a verified official CSV transport until actual source evidence). Hash full response bodies, strictly compare normalized source symbol/suspension/resumption sets and require the same known real 1218 row. An HTML/error/incomplete/changed row result stays BLOCKED and artifact evidence is retained. The workflow runs on a `main` merge, with no Cloudflare credentials, D1/R2 requests, Worker deployment or paid data services.
+
+**Absolute negative-completeness firewall:** even matched positive JSON/CSV is only a diagnostic of rowset parity on the specific two-date range; these may share the same incomplete backend. `exactRangeCompletenessProven=false`, `absenceCertifiesNoSuspension=false`, `noEventMayBeClaimed=false`, `ncT01PromotionAuthorized=false`, old August firstKnownAt unproven. Independent verified export route / range query identity / truncation / revisions / full required family and prospective PIT still required. This does not fill the 44,256 symbol-session recent60 gaps or the 0 continuity READY blocker.
+
+Docs: `system2/SYSTEM2_TWTAWU_POSITIVE_JSON_CSV_PARITY_READONLY_V0_1.md`.
+Preregistered evidence: `system2/evidence/S2_TWTAWU_POSITIVE_JSON_CSV_PARITY_DIAGNOSTIC_PREREG_20261009_V0_1.json`.
+
+System1 Formal Core, production runtime/Cron, selection strategy, push, capital and orders unchanged.
