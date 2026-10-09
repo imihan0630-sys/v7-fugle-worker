@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "S2_OCT08_READONLY_ACCOUNT_D1_BUDGET_GATE_CODE_ACCEPTANCE_V0_1",
+  "recordedAt": "2026-10-09T19:42:00+08:00",
+  "lane": "DATA_LANE",
+  "class": "A_RESEARCH_ONLY",
+  "implementation": {
+    "pullRequest": 1001,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1001",
+    "mergeCommit": "e3bd2f078cc51c2efb80f381689e88a2b8e03d56",
+    "mainReadback": true,
+    "readbackFiles": [
+      {
+        "path": "system2/runtime/oct08_readonly_d1_account_budget_qualification_v0_1.mjs",
+        "blobSha": "4bb815d68a7d27716918dcd17288f7c45c4488d9"
+      },
+      {
+        "path": "system2/scripts/qualify_oct08_readonly_d1_account_budget_v0_1.mjs",
+        "blobSha": "6fd648459f4132963c227fabc2ec74ea76ee8205"
+      }
+    ]
+  },
+  "ci": {
+    "pullRequest": {
+      "system2Research": {
+        "runId": 37924812424,
+        "conclusion": "SUCCESS",
+        "testFilesExecuted": 276,
+        "syntheticPositiveProfiles": 2,
+        "adversarialScenarios": 20,
+        "negativePhysicalQueries": 0
+      },
+      "v8Regression": {
+        "runId": 37924812691,
+        "conclusion": "SUCCESS"
+      }
+    },
+    "postMergeMain": {
+      "system2Research": {
+        "runId": 37924968835,
+        "conclusion": "SUCCESS"
+      },
+      "v8Regression": {
+        "runId": 37924968693,
+        "conclusion": "SUCCESS"
+      }
+    }
+  },
+  "acceptance": "PASS_SOURCE_LEVEL_ACCOUNT_READ_BUDGET_FAIL_CLOSED_MAIN_MERGED_NO_PHYSICAL_D1_CENSUS",
+  "actualCurrentBudgetState": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+  "currentSystem1ReadReserve": {
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null
+  },
+  "currentSystem1WriteReserve": {
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null
+  },
+  "physicalEvidence": {
+    "census36Key": "NOT_DISPATCHED",
+    "census11843Key": "NOT_DISPATCHED",
+    "newD1RowsRead": 0,
+    "newD1RowsWritten": 0,
+    "newR2Operations": 0,
+    "qualifiedCurrentReadAttestation": "NONE"
+  },
+  "officialSource": {
+    "sourceMarketDateReceipts": 12,
+    "sourceSymbolDateKeys": 11843,
+    "cutoff": "2026-10-08",
+    "officialSourceOnly": true
+  },
+  "safeguards": [
+    "Workflow requires separately reviewed current UTC quota-day account rowsRead attestation path",
+    "36-key and 11843-key runner separately enforce qualification before creating remote D1 client",
+    "Fail-closed on unauthorized or unknown System1 read reserve, invalid ledger, stale/unknown GraphQL lower-bound or unqualified lag allowance",
+    "Protect 583256 rowsRead P0 reserve and declared 35000/150000 rowsRead research caps",
+    "Do not equate GitHub workflow success to D1 persisted source coverage; do not backdate firstKnownAt or PIT eligibility"
+  ],
+  "handoff": {
+    "to": "AUDIT_LANE",
+    "status": "EVIDENCE_READY_FOR_INDEPENDENT_REVIEW",
+    "correctionId": "S2-CORR-20261007-003",
+    "closureOwner": "AUDIT_LANE",
+    "selfClosed": false,
+    "quotaEvidenceOwner": "REMEDIATION_LANE",
+    "nextPhysicalStep": "after genuine account quota and System1 read reserve evidence run the 36-key manual scout, then review 11843-key full census"
+  },
+  "protected": {
+    "system1FormalCoreChanged": false,
+    "productionWorkerChanged": false,
+    "productionPushChanged": false,
+    "capitalOrdersChanged": false,
+    "paidTierEnabled": false
+  },
+  "notes": "The synthetic authorization positive cases are test-only with synthetic reserve receipts. Their success does not establish real System1 authorization. Source-level acceptance must not be promoted to physical D1 or market-year PIT acceptance."
+}
