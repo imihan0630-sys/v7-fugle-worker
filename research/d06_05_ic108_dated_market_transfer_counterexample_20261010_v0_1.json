@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "D06_IC108",
+  "module": "D06-05",
+  "evidence": {
+    "symbol": "6423",
+    "twseDelisted": "2026-01-22",
+    "tpexTradedFrom": "2026-01-22",
+    "symbol2": "6806",
+    "twseDelisted2": "2026-06-23"
+  },
+  "certifiedSupport": "UNKNOWN",
+  "formalImpact": "NONE",
+  "next": "Verify time-valid security identity before final support."
+}
