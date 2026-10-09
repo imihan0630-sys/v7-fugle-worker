@@ -20,7 +20,7 @@ const regime={
   marketDate:decision.marketDate,decisionTimestamp:decision.decisionTimestamp,
 };
 const bar=(n,date,close)=>({
-  sessionNumber:n,marketDate:date,availableAt:"2026-10-09T08:00:00Z",
+  sessionNumber:n,marketDate:date,availableAt:date+"T08:30:00Z",
   priceSpace:"ADJUSTED",open:close,high:close+1,low:close-1,close,
   volumeShares:100000,tradingState:"NORMAL",executableLiquidity:"AVAILABLE",
   limitState:"NONE",sourceId:"SYNTHETIC-TEST",
