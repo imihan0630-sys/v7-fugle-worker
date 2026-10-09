@@ -5,6 +5,9 @@ import {
   D1_ACCOUNT_QUOTA_BUDGET_VERSION,
   D1_FREE_LIMITS,
   evaluateD1AccountQuotaReservationV0_1,
+  evaluateD1QuotaResultVarianceV0_1,
+  summarizeD1QuotaLedgerRowsV0_1,
+  verifyD1QuotaLedgerReceiptIdentityV0_1,
   utcQuotaDay,
 } from "../runtime/d1_account_quota_budget_v0_1.mjs";
 
@@ -89,6 +92,7 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
       rowsWritten: null,
       rowsRead: null,
       error: payload?.errors?.[0]?.message || `HTTP_${response.status}`,
+      freshnessGuarantee: "NOT_AVAILABLE",
     });
   }
   const groups = payload?.data?.viewer?.accounts?.[0]?.d1AnalyticsAdaptiveGroups;
@@ -99,6 +103,7 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
       rowsWritten: null,
       rowsRead: null,
       error: "D1_ANALYTICS_GROUPS_MISSING",
+      freshnessGuarantee: "NOT_AVAILABLE",
     });
   }
   const rowsWritten = groups.reduce((sum, row) => sum + Number(row?.sum?.rowsWritten || 0), 0);
@@ -110,13 +115,16 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
     rowsRead,
     databaseGroupCount: groups.length,
     source: "CLOUDFLARE_D1_GRAPHQL_ACCOUNT_ANALYTICS",
+    usageSemantics: "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
+    freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+    mitigation: "NON_RELEASING_SAME_DAY_RESERVATIONS_PLUS_MAX_OBSERVED_LEDGER",
   });
 }
 
 async function loadQuotaLedger(db, quotaDay) {
   const { start, end } = quotaDayBounds(quotaDay);
   const rows = await db.rawQuery(
-    `SELECT check_type, observed_payload_json, check_timestamp
+    `SELECT check_id, check_type, observed_payload_json, check_timestamp
        FROM s2_infrastructure_checks
       WHERE check_timestamp >= ? AND check_timestamp <= ?
         AND check_type IN (
@@ -126,38 +134,52 @@ async function loadQuotaLedger(db, quotaDay) {
       ORDER BY check_timestamp`,
     [start, end],
   );
-  const reservations = new Map();
-  const completed = new Set();
-  let maxObservedRowsWrittenAfter = 0;
-  for (const row of rows) {
-    let payload = null;
-    try { payload = JSON.parse(row.observed_payload_json); } catch {}
-    if (!payload?.runKey) continue;
-    if (row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1") {
-      reservations.set(payload.runKey, payload);
-    } else {
-      completed.add(payload.runKey);
-      if (Number.isFinite(Number(payload.accountRowsWrittenAfter))) {
-        maxObservedRowsWrittenAfter = Math.max(
-          maxObservedRowsWrittenAfter,
-          Number(payload.accountRowsWrittenAfter),
-        );
-      }
-    }
-  }
-  const outstanding = [...reservations.entries()]
-    .filter(([key]) => !completed.has(key))
-    .reduce((sum, [, payload]) => sum + Number(payload.requestedRowsWritten || 0), 0);
-  return Object.freeze({
-    outstandingReservedRowsWritten: outstanding,
-    reservationCount: reservations.size,
-    completedCount: completed.size,
-    maxObservedRowsWrittenAfter,
+  return summarizeD1QuotaLedgerRowsV0_1(rows, { quotaDay });
+}
+
+function ledgerExpectedPayloadJson() {
+  return JSON.stringify({
+    directiveId: "S2-CORR-20261007-003",
+    accountWide: true,
+    paidUpgradeAuthorized: false,
   });
 }
 
+async function readLedgerReceiptById(db, checkId) {
+  return db.prepare(
+    `SELECT check_id, check_type, expected_payload_json, observed_payload_json,
+            status, check_hash
+       FROM s2_infrastructure_checks
+      WHERE check_id = ?
+      LIMIT 1`,
+  ).bind(checkId).first();
+}
+
 async function persistLedgerReceipt(db, { checkType, checkId, at, payload, status }) {
-  const checkHash = sha256(payload);
+  const expectedPayloadJson = ledgerExpectedPayloadJson();
+  const observedPayloadJson = JSON.stringify(payload);
+  const checkHash = sha256({
+    checkId,
+    checkType,
+    expectedPayloadJson,
+    observedPayloadJson,
+    status,
+  });
+  const intended = Object.freeze({
+    checkId,
+    checkType,
+    expectedPayloadJson,
+    observedPayloadJson,
+    status,
+    checkHash,
+  });
+
+  const before = await readLedgerReceiptById(db, checkId);
+  if (before) {
+    const verified = verifyD1QuotaLedgerReceiptIdentityV0_1(before, intended);
+    return Object.freeze({ checkHash, inserted: false, idempotent: verified.idempotent });
+  }
+
   const result = await db.prepare(
     `INSERT OR IGNORE INTO s2_infrastructure_checks (
        check_id, check_type, check_timestamp, environment, binding_name,
@@ -171,18 +193,30 @@ async function persistLedgerReceipt(db, { checkType, checkId, at, payload, statu
     "system2-research",
     "SYSTEM2_DB",
     "1.1",
-    JSON.stringify({
-      directiveId: "S2-CORR-20261007-003",
-      accountWide: true,
-      paidUpgradeAuthorized: false,
-    }),
-    JSON.stringify(payload),
+    expectedPayloadJson,
+    observedPayloadJson,
     status,
     checkHash,
-    "Compact account-level D1 Free quota reservation/result receipt; no trading authority.",
+    "Immutable account-level D1 Free quota reservation/result receipt; same-id conflicts fail closed.",
   ).run();
   if (result?.success === false) throw new Error("quota ledger receipt write failed");
-  return Object.freeze({ checkHash });
+
+  const readback = await readLedgerReceiptById(db, checkId);
+  if (!readback) throw new Error("D1_QUOTA_LEDGER_RECEIPT_READBACK_MISSING");
+  const verified = verifyD1QuotaLedgerReceiptIdentityV0_1(readback, intended);
+  return Object.freeze({
+    checkHash,
+    inserted: true,
+    idempotent: verified.idempotent,
+  });
+}
+
+function resultStateFor({ executionOutcome, variance, crossedUtcDay }) {
+  const outcome = String(executionOutcome || "unknown").toUpperCase().replace(/[^A-Z0-9_]/g, "_");
+  const day = crossedUtcDay ? "_CROSS_UTC_DAY" : "";
+  if (!variance.usageKnown) return `RESULT_${outcome}_USAGE_UNKNOWN${day}_NON_RELEASING`;
+  if (variance.anyOverrun) return `RESULT_${outcome}_OBSERVED_OVERRUN${day}_NON_RELEASING`;
+  return `RESULT_${outcome}_OBSERVED${day}_NON_RELEASING`;
 }
 
 async function main() {
@@ -197,14 +231,16 @@ async function main() {
     "SYSTEM2_D1_RUN_KEY",
     `${env("GITHUB_RUN_ID", "local")}:${env("GITHUB_RUN_ATTEMPT", "1")}:${writerId}`,
   );
-  const quotaDay = utcQuotaDay(new Date());
+  const currentQuotaDay = utcQuotaDay(new Date());
   const registry = await loadJson(REGISTRY_PATH);
   const writer = registry.writers.find((row) => row.id === writerId);
   if (!writer) throw new Error(`UNREGISTERED_D1_WRITER:${writerId}`);
 
   const reservePolicyPath = env("SYSTEM2_SYSTEM1_RESERVE_EVIDENCE_PATH");
   const system1ReservePolicy = await loadJson(
-    reservePolicyPath ? new URL(`../../${reservePolicyPath.replace(/^\.\//, "")}`, import.meta.url) : DEFAULT_RESERVE_POLICY_PATH,
+    reservePolicyPath
+      ? new URL(`../../${reservePolicyPath.replace(/^\.\//, "")}`, import.meta.url)
+      : DEFAULT_RESERVE_POLICY_PATH,
   );
 
   if (mode === "reserve" && (
@@ -214,11 +250,11 @@ async function main() {
     const decision = evaluateD1AccountQuotaReservationV0_1({
       writer,
       eventName,
-      accountUsage: { known: false, quotaDay },
+      accountUsage: { known: false, quotaDay: currentQuotaDay },
       system1ReservePolicy,
     });
     const out = Object.freeze({
-      schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_1",
+      schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_2",
       budgetVersion: D1_ACCOUNT_QUOTA_BUDGET_VERSION,
       directiveId: "S2-CORR-20261007-003",
       writerId,
@@ -226,9 +262,13 @@ async function main() {
       priority: writer.priority,
       eventName,
       runKey,
-      quotaDay,
+      quotaDay: currentQuotaDay,
       ...decision,
-      accountUsage: { known: false, quotaDay, source: "NOT_QUERIED_NON_MUTATING_PATH" },
+      accountUsage: {
+        known: false,
+        quotaDay: currentQuotaDay,
+        source: "NOT_QUERIED_NON_MUTATING_PATH",
+      },
       ledger: null,
       system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
       system1ReserveAuthorized: system1ReservePolicy.reserveNumberAuthorized === true,
@@ -261,73 +301,117 @@ async function main() {
     if (reservation.runKey !== runKey || reservation.writerId !== writerId) {
       throw new Error("reservation receipt identity mismatch");
     }
-    const after = await queryAccountUsage({ accountId, token, quotaDay });
+    if (!reservation.quotaDay) throw new Error("reservation quotaDay missing");
+
+    const executionOutcome = env("SYSTEM2_D1_EXECUTION_OUTCOME", "unknown");
+    const reservationQuotaDay = reservation.quotaDay;
+    const crossedUtcDay = currentQuotaDay !== reservationQuotaDay;
+    const after = await queryAccountUsage({ accountId, token, quotaDay: reservationQuotaDay });
+    const currentDayUsage = crossedUtcDay
+      ? await queryAccountUsage({ accountId, token, quotaDay: currentQuotaDay })
+      : null;
+
+    const observedDeltaRowsWritten =
+      after.known && Number.isFinite(Number(reservation.rowsWrittenUsed))
+        ? Math.max(0, after.rowsWritten - Number(reservation.rowsWrittenUsed))
+        : null;
+    const observedDeltaRowsRead =
+      after.known && Number.isFinite(Number(reservation.rowsReadUsed))
+        ? Math.max(0, after.rowsRead - Number(reservation.rowsReadUsed))
+        : null;
+
+    const variance = evaluateD1QuotaResultVarianceV0_1({
+      reservedRowsWritten: reservation.requestedRowsWritten ?? 0,
+      reservedRowsRead: reservation.requestedRowsRead ?? 0,
+      observedDeltaRowsWritten,
+      observedDeltaRowsRead,
+    });
+    const resultState = resultStateFor({ executionOutcome, variance, crossedUtcDay });
     const at = new Date().toISOString();
     const payload = Object.freeze({
-      schemaVersion: "S2_D1_ACCOUNT_BUDGET_RESULT_V0_1",
+      schemaVersion: "S2_D1_ACCOUNT_BUDGET_RESULT_V0_2",
       budgetVersion: D1_ACCOUNT_QUOTA_BUDGET_VERSION,
       directiveId: "S2-CORR-20261007-003",
       runKey,
       writerId,
       writerClass: writer.writerClass,
       priority: writer.priority,
-      quotaDay,
+      quotaDay: reservationQuotaDay,
+      resultObservedAtQuotaDay: currentQuotaDay,
+      crossedUtcDay,
+      executionOutcome,
       reservationCheckHash: reservation.ledgerCheckHash || null,
       reservedRowsWritten: reservation.requestedRowsWritten,
+      reservedRowsRead: reservation.requestedRowsRead,
       accountRowsWrittenBefore: reservation.rowsWrittenUsed,
+      accountRowsReadBefore: reservation.rowsReadUsed,
       accountRowsWrittenAfter: after.known ? after.rowsWritten : null,
       accountRowsReadAfter: after.known ? after.rowsRead : null,
-      accountDeltaRowsWrittenUpperBound:
-        after.known && Number.isFinite(Number(reservation.rowsWrittenUsed))
-          ? Math.max(0, after.rowsWritten - Number(reservation.rowsWrittenUsed))
-          : null,
+      accountDeltaRowsWrittenUpperBound: observedDeltaRowsWritten,
+      accountDeltaRowsReadUpperBound: observedDeltaRowsRead,
       accountUsageKnownAfter: after.known,
-      resultState: after.known ? "RESULT_RECONCILED_ACCOUNT_DELTA" : "RESULT_ACCOUNT_USAGE_UNKNOWN",
+      accountUsageSemantics: "GRAPHQL_ACCOUNT_DAILY_LOWER_BOUND_NOT_REALTIME_GUARANTEE",
+      variance,
+      reservationReleasePolicy: "NEVER_RELEASE_BEFORE_UTC_RESET",
+      currentDayUsage: currentDayUsage
+        ? {
+          known: currentDayUsage.known,
+          quotaDay: currentDayUsage.quotaDay,
+          rowsWritten: currentDayUsage.rowsWritten,
+          rowsRead: currentDayUsage.rowsRead,
+        }
+        : null,
+      resultState,
       paidUpgradeAuthorized: false,
       system1FormalCoreChanged: false,
     });
     const persisted = await persistLedgerReceipt(db, {
       checkType: "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1",
-      checkId: `S2-D1-BUDGET:${quotaDay}:${runKey}:RESULT`,
+      checkId: `S2-D1-BUDGET:${reservationQuotaDay}:${runKey}:RESULT`,
       at,
       payload,
-      status: payload.resultState,
+      status: resultState,
     });
-    const out = { ...payload, ledgerCheckHash: persisted.checkHash };
+    const out = { ...payload, ledgerCheckHash: persisted.checkHash, ledgerIdempotent: persisted.idempotent };
     const outputPath = env("SYSTEM2_D1_GATE_OUTPUT", "/tmp/system2-d1-budget-result.json");
     await writeFile(outputPath, JSON.stringify(out, null, 2) + "\n");
     await appendSummary(
-      `D1 quota result: ${writerId} — ${payload.resultState}; account rowsWritten after: ${payload.accountRowsWrittenAfter ?? "UNKNOWN"}.`,
+      `D1 quota result: ${writerId} — ${resultState}; outcome=${executionOutcome}; reservation remains non-releasing until UTC reset.`,
     );
     console.log(JSON.stringify(out, null, 2));
     return;
   }
 
-  const usage = await queryAccountUsage({ accountId, token, quotaDay });
-  const ledger = await loadQuotaLedger(db, quotaDay);
+  const usage = await queryAccountUsage({ accountId, token, quotaDay: currentQuotaDay });
+  const ledger = await loadQuotaLedger(db, currentQuotaDay);
   const accountUsage = usage.known
     ? Object.freeze({
       ...usage,
       rowsWritten: Math.max(usage.rowsWritten, ledger.maxObservedRowsWrittenAfter),
+      rowsRead: Math.max(usage.rowsRead, ledger.maxObservedRowsReadAfter),
+      ledgerLowerBoundApplied: true,
     })
     : usage;
+
   const decision = evaluateD1AccountQuotaReservationV0_1({
     writer,
     eventName,
     accountUsage,
     system1ReservePolicy,
     outstandingReservedRowsWritten: ledger.outstandingReservedRowsWritten,
+    outstandingReservedRowsRead: ledger.outstandingReservedRowsRead,
     protectedDailyShadowReserveRows: integerEnv("SYSTEM2_D1_DAILY_SHADOW_RESERVE_ROWS", 13130),
     launchAcceptanceReserveRows: integerEnv("SYSTEM2_D1_LAUNCH_ACCEPTANCE_RESERVE_ROWS", 0),
     requestedRowsWritten: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_WRITTEN", null),
-    requestedRowsRead: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_READ", 0),
+    requestedRowsRead: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_READ", null),
   });
 
   const at = new Date().toISOString();
   let ledgerCheckHash = null;
+  let ledgerIdempotent = null;
   if (decision.physicalAllowed === true) {
     const payload = Object.freeze({
-      schemaVersion: "S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
+      schemaVersion: "S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_2",
       budgetVersion: D1_ACCOUNT_QUOTA_BUDGET_VERSION,
       directiveId: "S2-CORR-20261007-003",
       runKey,
@@ -335,9 +419,11 @@ async function main() {
       writerClass: writer.writerClass,
       priority: writer.priority,
       eventName,
-      quotaDay,
+      quotaDay: currentQuotaDay,
       requestedRowsWritten: decision.requestedRowsWritten,
       requestedRowsRead: decision.requestedRowsRead,
+      verifiedMinimumRowsWritten: decision.verifiedMinimumRowsWritten,
+      verifiedMinimumRowsRead: decision.verifiedMinimumRowsRead,
       adaptiveMaxDates: decision.adaptiveMaxDates,
       rowsWrittenUsed: decision.rowsWrittenUsed,
       rowsReadUsed: decision.rowsReadUsed,
@@ -347,27 +433,35 @@ async function main() {
       protectedDailyShadowReserveRows: decision.protectedDailyShadowReserveRows,
       launchAcceptanceReserveRows: decision.launchAcceptanceReserveRows,
       outstandingReservedRowsWritten: decision.outstandingReservedRowsWritten,
+      outstandingReservedRowsRead: decision.outstandingReservedRowsRead,
       rowsWrittenLimit: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
       rowsReadLimit: D1_FREE_LIMITS.rowsReadPerUtcDay,
       resetAtUtc: D1_FREE_LIMITS.resetAtUtc,
       accountUsageSource: accountUsage.source,
+      accountUsageSemantics: accountUsage.usageSemantics,
+      accountUsageFreshnessGuarantee: accountUsage.freshnessGuarantee,
+      analyticsLagPolicy: decision.analyticsLagPolicy,
       system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
-      system1ReserveEvidencePath: reservePolicyPath || "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+      system1ReserveEvidencePath:
+        reservePolicyPath
+        || "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+      reservationReleasePolicy: "NEVER_RELEASE_BEFORE_UTC_RESET",
       paidUpgradeAuthorized: false,
       system1FormalCoreChanged: false,
     });
     const persisted = await persistLedgerReceipt(db, {
       checkType: "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
-      checkId: `S2-D1-BUDGET:${quotaDay}:${runKey}:RESERVATION`,
+      checkId: `S2-D1-BUDGET:${currentQuotaDay}:${runKey}:RESERVATION`,
       at,
       payload,
       status: "QUOTA_RESERVATION_GRANTED",
     });
     ledgerCheckHash = persisted.checkHash;
+    ledgerIdempotent = persisted.idempotent;
   }
 
   const out = Object.freeze({
-    schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_1",
+    schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_2",
     budgetVersion: D1_ACCOUNT_QUOTA_BUDGET_VERSION,
     directiveId: "S2-CORR-20261007-003",
     writerId,
@@ -375,13 +469,14 @@ async function main() {
     priority: writer.priority,
     eventName,
     runKey,
-    quotaDay,
+    quotaDay: currentQuotaDay,
     ...decision,
     accountUsage,
     ledger,
     system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
     system1ReserveAuthorized: system1ReservePolicy.reserveNumberAuthorized === true,
     ledgerCheckHash,
+    ledgerIdempotent,
     paidUpgradeAuthorized: false,
     system1FormalCoreChanged: false,
   });
@@ -393,14 +488,14 @@ async function main() {
   await setOutput("adaptive_max_dates", out.adaptiveMaxDates ?? "");
   await setOutput("reservation_receipt_path", outputPath);
   await appendSummary(
-    `D1 account quota gate: ${writerId} — ${out.state}; physicalAllowed=${out.physicalAllowed}; quotaDay=${quotaDay}; account rowsWritten=${accountUsage.known ? accountUsage.rowsWritten : "UNKNOWN"}; System1 reserve=${out.system1ReserveAuthorized ? system1ReservePolicy.authorizedReserveRows : "UNAUTHORIZED/UNKNOWN"}.`,
+    `D1 account quota gate: ${writerId} — ${out.state}; physicalAllowed=${out.physicalAllowed}; quotaDay=${currentQuotaDay}; rowsWritten=${accountUsage.known ? accountUsage.rowsWritten : "UNKNOWN"}; rowsRead=${accountUsage.known ? accountUsage.rowsRead : "UNKNOWN"}; System1 reserve=${out.system1ReserveAuthorized ? system1ReservePolicy.authorizedReserveRows : "UNAUTHORIZED/UNKNOWN"}.`,
   );
   console.log(JSON.stringify(out, null, 2));
 }
 
 main().catch(async (error) => {
   const payload = {
-    schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_ERROR_V0_1",
+    schemaVersion: "S2_D1_ACCOUNT_BUDGET_GATE_ERROR_V0_2",
     state: "QUOTA_BUDGET_DEFER",
     physicalAllowed: false,
     error: String(error?.message || error),
