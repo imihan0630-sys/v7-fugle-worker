@@ -6709,3 +6709,235 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~131 before physical R7 emission.
 5. D16 receives listing-mechanic placebo, listing-age/cohort, security-identity and transition-class metadata with full denominators.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-132~134 (2026-10-08)
+
+### DL-132 — corporate-name / issuer-alias identity firewall
+- Legal company name, short name, board suffix and historical brand/name changes are descriptive aliases, not durable security identity.
+- Conservative normalization may support source reconciliation:
+  Unicode / whitespace / punctuation / known board-suffix normalization and exact official alias intersection.
+- Fuzzy similarity, edit distance, brand stem or token overlap may not stitch history.
+- Identity proof hierarchy is frozen:
+  canonical security identity;
+  issuer/security-class linkage;
+  exact official symbol + membership interval + authoritative alias linkage;
+  name aliases only as supporting evidence.
+- A proven same-security name change preserves pattern lineage and does not create a new vote.
+- Same/similar name with different security identity remains a distinct security.
+- Alias timeline is append-only and versioned.
+
+### DL-133 — same-code different-issuer collision
+- market+symbol equality is insufficient for long-horizon continuity.
+- Same code with different security/issuer identity is a collision.
+- Code reuse after delisting starts a new lineage.
+- Overlapping same-code/different-identity claims fail closed as IDENTITY_BOUNDARY_CONFLICT.
+- Current issuer may not be backfilled into an older membership interval.
+- Historical-universe reconciliation may use conservative aliases only while preserving same-code/different-company rejection.
+- Collision/unknown states remain denominator-accounted.
+
+### DL-134 — R1/R7 issuer-alias lineage integration
+- R1 may expose:
+  securityIdentity;
+  issuerIdentity;
+  securityClass;
+  membershipIntervalId;
+  canonicalSymbol;
+  aliasTimelineVersion;
+  issuerAliasSetHash;
+  identityEvidenceHash;
+  identityResolutionState.
+- Alias strings are explanation/source-reconciliation metadata, not informationRoot, score, vote or pattern confirmation.
+- R7 durable identity remains:
+  securityIdentity + membershipIntervalId + exactSessionHash + sourceHistoryHash + detector/episode identity.
+- Display-name-only changes do not require a geometry-hash change.
+- Identity remap creates a new R1 version and downstream replay; old R7 remains immutable.
+- Parent and child must use the same identity/alias-lineage version.
+
+### Test evidence
+- DL-132~134:
+  27/27 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-134:
+  620/620 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Physical owner readback
+- Latest-main search before this tranche still found no physical 1101 / 2021-06-15 continuityReceiptId / CERTIFIED_NORMAL_MATCHING owner bundle.
+- Physical R1-R6 remains incomplete.
+- Physical R7 remains blocked.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- ISSUER_ALIAS_FIREWALL = FROZEN.
+- SAME_CODE_COLLISION_FIREWALL = FROZEN.
+- R1_R7_ALIAS_LINEAGE_INTEGRATION = FROZEN.
+- FUZZY_NAME_HISTORY_STITCH = PROHIBITED.
+- CURRENT_ISSUER_BACKFILL = PROHIBITED.
+- ALIAS_METADATA_ALPHA_ROOT = FALSE.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-134
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze same-issuer different-security-class identity so common/preferred/TDR/warrant/CB/payment-certificate histories cannot be stitched merely because issuer identity matches.
+4. If R1-R6 appear, validate DL-095 plus DL-108~134 before physical R7 emission.
+5. D16 receives identity-resolution/alias-lineage/collision metadata with full denominators.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-135~137 (2026-10-08)
+
+### DL-135 — same-issuer different-security-class firewall
+- Same issuer does not imply same security.
+- Domestic ordinary common equity remains the D01 first-wave class.
+- Preferred equity / TDR / warrant / convertible or exchangeable bond / subscription right / payment certificate and other non-ordinary classes do not silently enter ordinary-equity history.
+- Same issuer + different securityClass => separate security identity.
+- Class conversion/exercise/redemption does not create one continuous OHLC path without explicit canonical equivalence.
+- Different classes may have different price units/reference rules/expiry/leverage/liquidity mechanics, so issuer identity is not a price-pattern common parent.
+
+### DL-136 — issuer-event context vs security opportunity
+- One issuer event receives issuerEventContextId and may be referenced by multiple security-level R7 observations.
+- Each security still preserves its own securityIdentity/securityClass/history/session/pattern episode.
+- Multiple affected securities are not aliases.
+- One issuer event affecting common/preferred/warrant does not create one independent vote per security.
+- Cross-security price geometry is not a D01 common parent.
+- Shared issuer event becomes a dependency cluster for D16, not a vote multiplier.
+
+### DL-137 — security-class transition/conversion admission
+- SAME_SECURITY_CLASS_ADMINISTRATIVE_CHANGE may preserve history only with identity and price-space proof.
+- DIFFERENT_CLASS_SUCCESSOR_SECURITY / CONVERSION_INTO_EXISTING_COMMON_SHARE / CONVERSION_INTO_NEW_COMMON_SHARE / MULTI_CONSIDERATION_TRANSITION break source-instrument pattern continuity.
+- CB/warrant/preferred history may not be inserted into common-share history.
+- Existing common-share target preserves its own historical lineage.
+- Newly created target common security uses DL-126 listing warmup and cannot borrow non-equity predecessor bars.
+- Mixed cash/securities/fractional consideration payoff transforms remain outside D01.
+
+### Test evidence
+- DL-132~134:
+  27/27 PASS.
+- DL-135~137:
+  25/25 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-137:
+  645/645 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- ISSUER_ALIAS_FIREWALL = FROZEN.
+- SAME_CODE_COLLISION_FIREWALL = FROZEN.
+- R1_R7_ALIAS_LINEAGE_INTEGRATION = FROZEN.
+- SECURITY_CLASS_FIREWALL = FROZEN.
+- ISSUER_EVENT_SECURITY_OPPORTUNITY_SPLIT = FROZEN.
+- CLASS_TRANSITION_ADMISSION = FROZEN.
+- SAME_ISSUER_EXTRA_PATTERN_VOTE = PROHIBITED.
+- CROSS_CLASS_HISTORY_STITCH = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-137
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze odd-lot/regular-lot and alternate trading-channel representation identity so the same common-share price event cannot be duplicated across trading venues/lot regimes as separate pattern evidence.
+4. If R1-R6 appear, validate DL-095 plus DL-108~137 before physical R7 emission.
+5. D16 receives issuer-event dependency and security-class metadata with the full denominator.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-138~140 (2026-10-08)
+
+### DL-138 — same-security trading-channel representation firewall
+- Frozen channel classes:
+  REGULAR_LOT;
+  INTRADAY_ODD_LOT;
+  AFTER_HOURS_ODD_LOT;
+  AFTER_HOURS_FIXED_PRICE;
+  BLOCK_TRADE;
+  OTHER_OFFICIAL_CHANNEL;
+  CHANNEL_UNKNOWN.
+- Same security across channels does not imply identical price observation.
+- Every D01 canonical bar must bind:
+  canonicalBarSourceId;
+  channelCompositionVersion;
+  included/excluded trading channels;
+  marketSessionDate;
+  sourceHistoryHash.
+- Channel-specific observations may not be silently fused into a custom bar unless the canonical owner/source contract explicitly defines the aggregation.
+- Multiple channels on the same security/date share a dependency root and do not multiply votes.
+- Pre-regime channel absence is CHANNEL_NOT_YET_AVAILABLE_BY_DESIGN, not DATA_MISSING.
+
+### DL-139 — session-mechanism price-discovery / confirmation firewall
+- Frozen mechanism classes:
+  opening call auction;
+  regular continuous;
+  closing call auction;
+  intraday odd-lot call auction;
+  after-hours odd-lot call auction;
+  after-hours fixed price;
+  block trade;
+  volatility-interruption call auction;
+  unknown.
+- After-hours fixed-price trading using the regular-session close is execution/liquidity context, not a second price confirmation.
+- Odd-lot prices may differ from regular prices but cannot silently replace/fuse with regular geometry.
+- Auction sub-observations do not create extra votes over the same canonical OHLC bar.
+- Block-trade price does not enter first-wave D01 canonical pattern geometry by default.
+
+### DL-140 — trading-channel regime vintage / common support
+- Every channel receipt binds rule version, effective interval and source-channel-composition version.
+- Modern channel data may not be backfilled before the channel existed.
+- Unknown source composition fails closed.
+- Parent/child and old/new-vintage comparison require compatible channel composition and mechanism regime.
+- sameSecurityDateChannelClusterId preserves cross-channel dependence without inventing independent vote count.
+- Frozen denominator states:
+  CHANNEL_OBSERVED;
+  CHANNEL_NOT_YET_AVAILABLE_BY_DESIGN;
+  CHANNEL_SOURCE_MISSING;
+  CHANNEL_COMPOSITION_UNKNOWN_BLOCKED;
+  MECHANISM_RULE_UNKNOWN_BLOCKED.
+
+### External primary-source readback
+- TWSE officially separates regular trading, intraday odd-lot, after-hours odd-lot, after-hours fixed-price and block trading.
+- Intraday odd-lot began on 2020-10-26, first matches at 09:10 and uses periodic call auctions.
+- After-hours fixed-price trading uses the same-day regular-session closing price.
+- These mechanism differences support D01's channel-dependence firewall and prohibit counting repeated/mechanically fixed observations as independent price discovery.
+
+### Test evidence
+- DL-135~137:
+  25/25 PASS.
+- DL-138~140:
+  22/22 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-140:
+  667/667 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- SECURITY_CLASS_FIREWALL = FROZEN.
+- ISSUER_EVENT_SECURITY_OPPORTUNITY_SPLIT = FROZEN.
+- CLASS_TRANSITION_ADMISSION = FROZEN.
+- TRADING_CHANNEL_REPRESENTATION = FROZEN.
+- SESSION_MECHANISM_FIREWALL = FROZEN.
+- CHANNEL_REGIME_VINTAGE = FROZEN.
+- MULTI_CHANNEL_EXTRA_PATTERN_VOTE = PROHIBITED.
+- SILENT_CHANNEL_FUSION = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-140
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze canonical daily OHLC composition/finality across delayed-close, no-regular-trade and trading-mechanism reforms so a change in what counts as the official daily close cannot masquerade as a pattern change.
+4. If R1-R6 appear, validate DL-095 plus DL-108~140 before physical R7 emission.
+5. D16 receives channel-regime/composition/dependency metadata with full denominators.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
