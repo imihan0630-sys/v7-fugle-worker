@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_FULL_OCT08_11843_REAL_OFFICIAL_SOURCE_KEY_MANIFEST_ACCEPTANCE_20261009_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "classification": "REAL_PUBLIC_SOURCE_ONLY_PHYSICAL_HTTP_RECEIPT_NOT_D1_SQL",
+  "state": "ACCEPTED_FULL_FROZEN_SOURCE_KEY_MANIFEST_SOURCE_ONLY_NOT_P05_PHYSICAL_PASS",
+  "acceptanceRun": {
+    "id": 37944021198,
+    "jobId": 113865467788,
+    "headSha": "eea2a110e9df6f34dffe3e58362bea58ce32a172",
+    "workflow": "System2 Issue1026 P05 Frozen Oct08 Source Key Manifest Readonly",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37944021198",
+    "jobConclusion": "success",
+    "frozenOriginalOfficialRun": 37878847039,
+    "sourceOriginalHeadSha": "39ca8dce38fa675874074609fb32d9c44321e944",
+    "implementationPR": 1044,
+    "artifactId": 11623192826,
+    "artifactName": "s2-issue1026-p05-oct08-official-source-keys-37944021198-1",
+    "artifactDigest": "sha256:7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f",
+    "artifactZipBytes": 507396,
+    "artifactRetentionDays": 90
+  },
+  "exactSourceScope": {
+    "marketDateCutoff": "2026-10-08",
+    "dates": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
+    ],
+    "markets": [
+      "TWSE",
+      "TPEX"
+    ],
+    "marketDateReceipts": 12,
+    "verifiedOfficialStockDateKeys": 11843,
+    "twseKeys": 6518,
+    "tpexKeys": 5325,
+    "manifestSourceKeyValueAggregateSha256": "2f6c4d8362168cad11c4c230fd26fa06aa189fe87567314aa7a4f8798b006139",
+    "sourceOnlyPrimaryTransport": true,
+    "perMarketDate": [
+      {
+        "market": "TWSE",
+        "date": "2026-10-01",
+        "sourceKeys": 1086
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-01",
+        "sourceKeys": 887
+      },
+      {
+        "market": "TWSE",
+        "date": "2026-10-02",
+        "sourceKeys": 1086
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-02",
+        "sourceKeys": 888
+      },
+      {
+        "market": "TWSE",
+        "date": "2026-10-05",
+        "sourceKeys": 1087
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-05",
+        "sourceKeys": 888
+      },
+      {
+        "market": "TWSE",
+        "date": "2026-10-06",
+        "sourceKeys": 1087
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-06",
+        "sourceKeys": 889
+      },
+      {
+        "market": "TWSE",
+        "date": "2026-10-07",
+        "sourceKeys": 1086
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-07",
+        "sourceKeys": 887
+      },
+      {
+        "market": "TWSE",
+        "date": "2026-10-08",
+        "sourceKeys": 1086
+      },
+      {
+        "market": "TPEX",
+        "date": "2026-10-08",
+        "sourceKeys": 886
+      }
+    ]
+  },
+  "authoritativeBoundaries": {
+    "sourceKeyPresenceInOfficialData": true,
+    "hotD1KeyPresencePhysicallyCertified": false,
+    "realHotD1ScoutKeysQueried": 0,
+    "realHotD1FullCensusKeysQueried": 0,
+    "physicalMissingKeys": "UNKNOWN",
+    "physicalDuplicatesOrMultiversion": "UNKNOWN",
+    "pointInTimeOriginalFirstKnownAtCertified": false,
+    "originalHistoricalAvailableAtCertified": false,
+    "corporateActionNoEventCertified": false,
+    "officialSourceKeyValuesAreNotD1StoredBarHashes": true,
+    "independentTpexCalendarCertified": false,
+    "fullOctoberMarketMonthCertified": false,
+    "full2026HistoryCertified": false,
+    "selectionOrLiveTradingAuthorized": false
+  },
+  "quotaAndSafety": {
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false,
+    "p03MultiwriterPhysicalAccepted": false,
+    "p05FullPhysicalAccepted": false,
+    "cloudflareD1SQLReads": 0,
+    "cloudflareD1SQLWrites": 0,
+    "cloudflareR2Calls": 0,
+    "accountGraphQLQueriesBySourceRun": 0,
+    "system1FormalWorkerChanged": false,
+    "cloudflarePaidPlanChanged": false
+  },
+  "acceptanceGovernance": {
+    "p03SupportChecks": 3,
+    "p03SupportTotal": 8,
+    "p05SupportChecks": 4,
+    "p05SupportTotal": 9,
+    "originalCorr003Status": "VERIFYING",
+    "independentAuditorMustApprove": true,
+    "evidenceRetentionRisk": "GitHub Actions artifact retention is 90 days; this main JSON freezes aggregate digest, original run/artifact identity and market-date counts. Rehydrate full per-key manifest only from immutable artifact while retained or independently re-observe official sources with full frozen SHA256 equality, never fabricate keys.",
+    "next": "REMEDIATION independently qualify P01/P02 System1 read/write reserves and account ledger/GraphQL lag+no competing writer; then DATA_LANE sample 36 physical D1 keys under separately authorized 35k rowsRead ceiling, followed by separately qualified 11,843 census under 150k ceiling. P03 authenticated multiwriter grant/results still pending; do not infer from this SOURCE_ONLY result."
+  }
+}
