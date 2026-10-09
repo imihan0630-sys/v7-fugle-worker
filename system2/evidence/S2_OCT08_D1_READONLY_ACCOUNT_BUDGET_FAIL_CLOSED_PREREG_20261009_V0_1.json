@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_OCT08_DATA_LANE_READONLY_D1_ACCOUNT_BUDGET_GATE_PREREG_V0_1",
+  "recordedAt": "2026-10-09T19:35:51+08:00",
+  "lane": "DATA_LANE",
+  "changeClass": "A_RESEARCH_ONLY",
+  "scope": [
+    "36-key 2026-10-01..08 TWSE/TPEx Hot D1 RAW source-match scout",
+    "11843-key full frozen official source to Hot D1 census"
+  ],
+  "reason": "Previous manual workflows could reach Cloudflare D1 with only manually checked Boolean flags; they did not machine-verify a current, qualified account-wide rowsRead budget.",
+  "actualPhysicalState": {
+    "latestRunChecked": 37907066382,
+    "lastGateState": "QUOTA_BUDGET_DEFER",
+    "sampledKeysPhysicallyAudited": 0,
+    "fullSourceKeysPhysicallyAudited": 0,
+    "newD1QueriesFromThisChange": 0,
+    "newD1RowsReadFromThisChange": 0,
+    "newD1RowsWrittenFromThisChange": 0,
+    "currentSystem1ReadReserveAuthorized": false,
+    "currentSystem1AuthorizedReadReserveRows": null,
+    "currentSystem1WriteReserveAuthorized": false,
+    "evidenceState": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER"
+  },
+  "invariants": [
+    "No new Cloudflare D1 adapter before valid attestation and canonical reserve policy match",
+    "Evidence from REMEDIATION_LANE and independent review required, not only a checkbox",
+    "Same UTC quota day; captured <10 min and review time after capture; no retroactive clock assertions",
+    "Require lower-bound GraphQL account usage, non-releasing same-day ledger, finite independently evidenced lag exposure, protected P0 and genuine System1 read reserve",
+    "36-key cap 35000 rowsRead; full census cap 150000 rowsRead",
+    "Physical read-only attestation has no authority to write or to certify PIT, NC-T01, or market-year replay"
+  ],
+  "affectedFiles": [
+    "system2/runtime/oct08_readonly_d1_account_budget_qualification_v0_1.mjs",
+    "system2/scripts/qualify_oct08_readonly_d1_account_budget_v0_1.mjs",
+    "system2/tests/oct08_readonly_d1_account_budget_qualification_v0_1.test.mjs",
+    "system2/scripts/audit_oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+    "system2/scripts/audit_oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+    ".github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",
+    ".github/workflows/system2-oct08-full-source-hot-d1-census-manual.yml"
+  ],
+  "beforePhysicalReadMustHave": [
+    "Real Cloudflare account-wide same UTC day GraphQL rowsRead",
+    "Valid non-releasing same-day ledger and max observed rowsRead",
+    "System1 authorized read reserve in current canonical independent reserve policy",
+    "P0 Daily Shadow read protection 583256 rowsRead",
+    "Evidence-qualified lag bound and no competing writers",
+    "Signed-reviewed auditable path in GitHub main matching workflow and exact query ceiling"
+  ],
+  "noBackfillWritesAuthorized": true,
+  "noSystem1ProductionChange": true,
+  "noPaidPlan": true,
+  "handoff": "AUDIT_LANE independently review guard code and test output; REMEDIATION_LANE alone qualifies account read headroom. DATA_LANE will not self-certify CORR-003 closure."
+}
