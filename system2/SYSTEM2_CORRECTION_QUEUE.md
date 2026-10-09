@@ -1686,3 +1686,13 @@ A real source-honest continuity receipt plus one coherent artifact-only NC-T01 r
 - Test: `system2/tests/audit_corr003_a5a6_independent_legacy_hash_reverify_20261009_v0_1.test.mjs`; evidence: `system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json`.
 - Route **same HIGH CORR-003** to **FIX_IN_PROGRESS / REMEDIATION_LANE**. Only REMEDIATION owns `system2/scripts/run_d1_account_quota_gate_v0_1.mjs`. The auditor does not alter this conflict unit. Separate fix must require full identity hashing for V0.2+ and only allow verifiable, bounded historical legacy compatibility.
 - System1 reserved write/read values remain **false/null**. Observed 2,825 rowsWritten is not an authorized reserve. No physical D1, R2, System1 Formal Core, production, billing, trading signal or capital mutation performed. Physical multiwriter UTC-day / System1 23:35 and 23:55 real persistence / original closure gates **remain open**.
+
+## 2026-10-09 20:51 Asia/Taipei — CORR-003 A7 independent source-level verification
+
+- REMEDIATION PR #1008 merge `7325d4343aec` independently audited against latest main, without adopting implementation-owner assertions.
+- AUDIT_LANE PR #1013 executed the actual D1 ledger loader under controlled fake D1 inputs, Research CI **37932644800 PASS** (280 System2 test files) and V8 Regression **37932644642 PASS** (12/12).
+- **A7 independent source-level PASS**: V0.2 payload-only legacy hash, status mutation, and expected-payload mutation all fail closed; authentic V0.2 full-identity receipt VALID; independently assembled historical V0.1 reservation and reservation/result pair VALID; five V0.1 metadata/schema/budget/paid tamper cases INVALID.
+- A5 malformed GraphQL and A6 corrupted ledger source-level replays remain PASS. A1–A4 established boundaries remain in the CI suite; not reclassified as physical.
+- Independent source-level evidence: `system2/evidence/S2_CORR003_A7_INDEPENDENT_SOURCELEVEL_REVERIFY_20261009_V0_1.json`. Test: `system2/tests/audit_corr003_a7_post_remediation_independent_20261009_v0_1.test.mjs`.
+- **HIGH directive transitions to VERIFYING, not VERIFIED_CLOSED.** Real bounded same-UTC-day multiwriter physical grant/result/no-collision acceptance, independently evidence-qualified System1 D1 write/read reserves, and subsequent real Taiwan trading-day System1 23:35/23:55 normal persisted business operation are still absent. Original physical acceptance criteria remain fully binding.
+- System1 write/read reserves remain **false/null** and observed `2825` rowsWritten is **not** an approved reserve. No D1/R2 production mutation, trading signal, System1 Formal Core, capital, Cloudflare billing or paid tier change was used for this audit.
