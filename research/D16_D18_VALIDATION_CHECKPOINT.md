@@ -5192,3 +5192,135 @@ D16-17, D16-20, D16-21, D16-25.
 3. D16-17 remains blocked until durable row-level historical memberships exist.
 4. D16-20 still needs real treatment cohort/pre-treatment covariates/overlap.
 5. D16-25 still requires genuine canonical CalibrationReceipt -> decision ledger.
+
+
+## 2026-10-09 L2->L3 campaign — D16-21 TDCC selection-bias physical acceptance
+
+New durable evidence:
+- `research/d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs`;
+- `tests/test_d16_21_tdcc_twse_selection_audit_l3_v0_1.mjs`;
+- `research/D16_21_TDCC_TWSE_SELECTION_BIAS_L3_ACCEPTANCE_20261009_V0_1.md`.
+
+### Bounded accepted scope
+
+`TWSE_CURRENT_PROSPECTIVE_TDCC_SELECTION_BIAS_AUDIT`.
+
+This is intentionally not Taiwan-wide.
+
+TPEx:
+`OUT_OF_SCOPE_NOT_INHERITED`.
+
+### Physical source pair
+
+Target:
+TWSE current listed-company OpenAPI `t187ap03_L`, four-digit ordinary-company codes only.
+
+Alternative data:
+TDCC official open-data `1-5` weekly shareholding distribution.
+
+Entity link:
+exact security code only.
+
+### Physical run
+
+Exact head:
+`bbec1d5ed3cd0e87813b34d47f47668bcf5dc586`.
+
+Research CI:
+`37885609409` SUCCESS.
+
+V8 Regression:
+`37885609413` SUCCESS.
+
+Falsification:
+13/13 PASS.
+
+Capture:
+`2026-10-09T04:48:48.414Z`.
+
+TDCC source date:
+`2026-10-08`.
+
+TWSE target:
+1089.
+
+TDCC known among target:
+1089.
+
+Missing:
+0.
+
+Coverage:
+1.0.
+
+TDCC four-digit grade-17 securities outside TWSE target:
+1874.
+
+The extra population proves:
+`TDCC_FOUR_DIGIT_SECURITY != TWSE_CURRENT_ORDINARY_EQUITY`.
+
+Source hashes:
+- TWSE: `ea39c46335ac3de8158dadba6e8920dda9f60d8e19899663ccde7b25415cf134`;
+- TDCC: `4fcc6cab6365c78d4938f2dc7e260578ac9d8ba32a63bf4a4c406444d46f86e4`.
+
+Receipt:
+`d6d1f589bfb17e221e874cd2a8a7cb788d9d12f1aee7a1cf68e51e7f8cb48447`.
+
+Artifact:
+- id `11596412242`;
+- digest `sha256:2fa629f484f7eb5eb27a39407bad5ed3bcd4b7b6c80ab1c8637f5b59e7ff50e2`.
+
+### Selection-bias semantics
+
+Every target symbol is KNOWN or MISSING.
+No silent dropping and no zero/neutral imputation.
+
+Industry missingness remains visible.
+
+Current target universe is used only for the current prospective cut.
+It is forbidden from backfilling the older 2026-09-24 or 2026-10-02 TDCC vintages.
+
+Existing D06 2026-09-24 -> 2026-10-02 vendor-panel facts remain separate:
+- common 4056;
+- added 22;
+- removed 12.
+
+Those facts establish entry/exit/source-panel drift, not historical target-universe coverage.
+
+### Semantic firewall
+
+TDCC:
+- weekly ownership stock, not flow;
+- holder identity UNKNOWN;
+- passive share UNKNOWN;
+- daily reuse of one weekly vintage does not add independent evidence.
+
+D06 retains ownership/chip economics.
+D16-21 owns alternative-data provenance/coverage/entity-link/selection/vendor-platform bias diagnostics.
+
+No outcome or Alpha is opened.
+
+### Promotion
+
+D16-21:
+L2/40 -> L3/60.
+
+D16 domain:
+- L4 = 10;
+- L3 = 12;
+- L2 = 3;
+- maturity = 65.6%.
+
+Remaining D16 L2:
+D16-17, D16-20, D16-25.
+
+### Exact next continuation
+
+1. D16-20: do not inherit D20-07 maturity. Build/consume a real treatment-control panel with:
+   - official Taiwan designation treatment clock;
+   - frozen pre-treatment PIT covariates;
+   - untreated candidate pool;
+   - common-support / overlap / positivity diagnostics;
+   - no outcome access.
+2. D16-17 remains blocked on durable row-level historical membership authority.
+3. D16-25 remains blocked on a genuine canonical stock-return CalibrationReceipt and decision-population ledger; diagnostic trade-value calibration is not admissible.
