@@ -1,0 +1,45 @@
+name: System2 Issue1026 P03 P05 Real Offline Failclosed Gates
+# Safe source-only negative receipt. No D1 SQL, no Cloudflare credentials.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-issue1026-real-offline-failclosed-gates.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-issue1026-p03p05-offline-no-db
+  cancel-in-progress: false
+jobs:
+  physical_guard_non_auth:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline P03 matrix and P05 missing-census/36/full guard tests
+        run: |
+          node system2/tests/issue1026_p03_cross_writer_defer_validate_v0_1.test.mjs
+          node system2/tests/oct08_missing_key_repair_dryrun_planner_v0_1.test.mjs
+          node system2/tests/oct08_readonly_d1_account_budget_qualification_v0_1.test.mjs
+          node --check system2/scripts/verify_issue1026_p03p05_offline_no_d1_failclosed_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Actually run fail-closed operational CLI for P03 and both P05 D1 profiles
+        env:
+          S2_ISSUE1026_OFFLINE_FAILCLOSED_OUTPUT: /tmp/s2-issue1026-p03p05-offline-negative-acceptance.json
+        run: node system2/scripts/verify_issue1026_p03p05_offline_no_d1_failclosed_v0_1.mjs
+      - name: Preserve non-authorizing PASS or BLOCKED real offline receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-issue1026-p03p05-actual-offline-failclosed-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1026-p03p05-offline-negative-acceptance.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect V8 Formal and production
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
