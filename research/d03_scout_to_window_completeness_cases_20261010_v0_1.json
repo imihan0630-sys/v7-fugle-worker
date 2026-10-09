@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "D03_SCOUT_TO_WINDOW_COMPLETENESS_CASES_V0_1",
+  "currentState": "CODE_GUARD_ONLY",
+  "physical": {
+    "scoutAccepted": 0,
+    "scoutExpected": 36,
+    "censusAccepted": 0,
+    "censusExpected": 11843,
+    "missingKeyCount": "UNKNOWN",
+    "d1Reads": 0,
+    "d1Writes": 0
+  },
+  "cases": [
+    {"id":"T01","input":{"codeGuard":true},"expected":"CODE_GUARD_ONLY"},
+    {"id":"T02","input":{"syntheticScout":true},"expected":"REJECT_PHYSICAL_CREDIT"},
+    {"id":"T03","input":{"physicalScoutRun":false},"expected":"MISSING_UNKNOWN"},
+    {"id":"T04","input":{"scoutKeys":36,"uniqueKeys":35},"expected":"REJECT_DUPLICATE_KEY"},
+    {"id":"T05","input":{"scoutKeys":36,"strataCovered":11},"expected":"REJECT_STRATUM_GAP"},
+    {"id":"T06","input":{"scoutKeys":36,"sourceMismatch":1},"expected":"REJECT_SOURCE_MISMATCH"},
+    {"id":"T07","input":{"scoutKeys":36,"missingRows":1},"expected":"SCOUT_NEGATIVE_STORAGE_EVIDENCE"},
+    {"id":"T08","input":{"scoutKeys":36,"multiVersionRows":1},"expected":"STORAGE_CONFLICT"},
+    {"id":"T09","input":{"scoutKeys":36,"writes":1},"expected":"REJECT_NOT_READ_ONLY"},
+    {"id":"T10","input":{"scoutKeys":36,"rowsRead":35001},"expected":"REJECT_READ_CAP"},
+    {"id":"T11","input":{"scoutPass":true,"inferPopulationComplete":true},"expected":"REJECT_OVERPROMOTION"},
+    {"id":"T12","input":{"scoutPass":true,"inferMissingRate":true,"probabilitySample":false},"expected":"REJECT_SELECTION_BIAS"},
+    {"id":"T13","input":{"censusRun":true,"scoutAcceptedFirst":false},"expected":"REJECT_SEQUENCE"},
+    {"id":"T14","input":{"censusKeys":11843,"uniqueKeys":11842},"expected":"REJECT_CENSUS_DUPLICATE_OR_GAP"},
+    {"id":"T15","input":{"censusKeys":11843,"allMatched":true,"inferHistoricalFirstKnown":true},"expected":"REJECT_CLOCK_LAUNDERING"},
+    {"id":"T16","input":{"censusKeys":11843,"allMatched":true,"stage":"CENSUS_STORAGE_EVIDENCE"},"expected":"ACCEPT_STORAGE_ONLY"},
+    {"id":"T17","input":{"storageComplete":true,"exactSessions":false},"expected":"REJECT_INDICATOR_WINDOW"},
+    {"id":"T18","input":{"storageComplete":true,"exactSessions":true,"causalLineage":false},"expected":"REJECT_INDICATOR_WINDOW"},
+    {"id":"T19","input":{"storageComplete":true,"exactSessions":true,"causalLineage":true,"continuityHashBound":false},"expected":"REJECT_INDICATOR_WINDOW"},
+    {"id":"T20","input":{"storageComplete":true,"exactSessions":true,"causalLineage":true,"continuityHashBound":true,"decisionCutoffBound":true},"expected":"INDICATOR_WINDOW_PIT_READY"}
+  ],
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED"
+}
