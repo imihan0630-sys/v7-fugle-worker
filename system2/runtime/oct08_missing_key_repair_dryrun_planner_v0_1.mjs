@@ -71,6 +71,17 @@ export function buildOct08MissingKeyRepairPlanOfflineV0_1({
  ].includes(census.result),"full terminal census result required");
  assert.equal(census.marketDateCutoff,"2026-10-08");
  assert.equal(census.sourceReceiptsMatched,12);
+ // The offline plan must be bound to each immutable official daily rowset,
+ // not just a claimed count of twelve completed source checks.
+ const verifiedSourceLineage=DATES.flatMap(marketDate=>MARKETS.map(market=>{
+  const source=sourceByKey.get(key(market,marketDate));
+  return {market,marketDate,ordinarySymbolCount:source.ordinarySymbolCount,
+   normalizedBarSha256:source.normalizedBarSha256};
+ }));
+ assert.deepEqual(census.sourceRevalidationReceipts,verifiedSourceLineage,
+  "census source lineage does not match immutable frozen official receipts");
+ assert.equal(census.sourceRevalidationDigest,hash(verifiedSourceLineage),
+  "census source lineage digest mismatch");
  assert.deepEqual(census.exactTradingDates,DATES);
  assert.equal(census.sourceSymbolDayKeys,11843);
  assert.equal(census.observedD1?.rowsWritten,0,"original census must be physically read-only");
@@ -176,7 +187,8 @@ export function buildOct08MissingKeyRepairPlanOfflineV0_1({
  assert.equal(census.result,expectedDisposition,"census result contradicts counts");
 
  const deterministic={sourceRun:37878847039,cutoff:"2026-10-08",
-  officialFullSourceKeyCount:11843,censusObservations:{
+  officialFullSourceKeyCount:11843,
+  censusSourceRevalidationDigest:census.sourceRevalidationDigest,censusObservations:{
    result:census.result,counts:actual,sourceDateCount:12,
    queryCount:census.actualD1Queries,
   },proposal:proposed,quarantine,daySummaries};
@@ -187,6 +199,7 @@ export function buildOct08MissingKeyRepairPlanOfflineV0_1({
    "REVIEW_ONLY_MISSING_KEY_CANDIDATES_AND_QUARANTINE_NO_WRITES",
   generatedAt:observedAt,planDigest:hash(deterministic),
   sourceEvidenceGitHubRunId:37878847039,
+  censusSourceRevalidationDigest:census.sourceRevalidationDigest,
   officialStockDateKeys:11843,
   matchedAtRetrospectiveCut:actual.matched,
   missingKeyCandidateCount:actual.missing,
