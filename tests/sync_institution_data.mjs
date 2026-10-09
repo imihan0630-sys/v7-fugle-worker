@@ -71,7 +71,11 @@ const statusResponse=await admin(statusPath);
 assert.equal(statusResponse.ok,true);
 const status=await statusResponse.json();
 assert.equal(status.marketDate,marketDate);assert.equal(status.ready,true,'Current three trading dates must all be complete');
-if(manualDataOnly) assert.equal(status.historicalReadback,true,'Manual historical institution readback incomplete');
+if(manualDataOnly) {
+  const receipt=planMissingInstitutionDates(status,marketDate);
+  assert.equal(receipt.alreadyReady,true,'Manual historical institution three-date physical readback incomplete');
+  assert.equal(receipt.physicalSnapshotsVerified,true,'Manual historical institution physical inventory unverified');
+}
 console.log(JSON.stringify({currentInstitutionReadback:status}));
 const after=await config();
 assert.deepEqual(after,before,'Institution synchronization must not change targets, capital or plans');
