@@ -94,6 +94,6 @@ assert.match(workflow,/d1-account-metadata-only/);
 assert.match(workflow,/system2-research/);
 assert.match(workflow,/read-only.*account.*metadata|metadata.*only/i);
 assert.doesNotMatch(workflow,/wrangler.*deploy|R2_ACCESS_KEY|PUSH_WEBHOOK/);
-assert.doesNotMatch(cli,/createRemoteD1RestAdapter|\\.prepare\\s*\\(|\\.batch\\s*\\(|\\.run\\s*\\(/);
+assert.doesNotMatch(cli,/createRemoteD1RestAdapter|\.prepare\s*\(|\.batch\s*\(|\.run\s*\(/);
 assert.match(cli,/graphql/);
 console.log("OCT08_ACCOUNT_D1_METADATA_ONLY_POSITIVE_AND_18_ADVERSARIAL_FAIL_CLOSED_PASS");
