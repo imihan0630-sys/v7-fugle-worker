@@ -1,5 +1,7 @@
 export const D1_ACCOUNT_QUOTA_BUDGET_VERSION = "S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1";
 
+export const D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE = 8; // reservation + result; each row touches table, PK, UNIQUE hash and time/type index
+
 export const D1_FREE_LIMITS = Object.freeze({
   rowsWrittenPerUtcDay: 100000,
   rowsReadPerUtcDay: 5000000,
@@ -277,7 +279,8 @@ export function evaluateD1AccountQuotaReservationV0_1({
     + system1Reserve
     + reserveForDailyShadow
     + launchReserve
-    + requestedWritten;
+    + requestedWritten
+    + D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE;
   const projectedRead = usedRead + requestedRead;
 
   if (
@@ -304,6 +307,7 @@ export function evaluateD1AccountQuotaReservationV0_1({
       protectedDailyShadowReserveRows: reserveForDailyShadow,
       launchAcceptanceReserveRows: launchReserve,
       outstandingReservedRowsWritten: outstanding,
+      quotaLedgerRowsWrittenReserve: D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
       paidUpgradeAuthorized: false,
     });
   }
@@ -325,6 +329,7 @@ export function evaluateD1AccountQuotaReservationV0_1({
     protectedDailyShadowReserveRows: reserveForDailyShadow,
     launchAcceptanceReserveRows: launchReserve,
     outstandingReservedRowsWritten: outstanding,
+    quotaLedgerRowsWrittenReserve: D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
     projectedRowsWritten: projectedWritten,
     projectedRowsRead: projectedRead,
     rowsWrittenLimit: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
