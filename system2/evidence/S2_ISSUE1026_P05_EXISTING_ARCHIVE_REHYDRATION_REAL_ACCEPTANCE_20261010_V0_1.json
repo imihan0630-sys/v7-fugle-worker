@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_ORIGINAL_ARTIFACT_REHYDRATION_REAL_ACCEPTANCE_20261010_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "state": "REAL_EXISTING_ARCHIVE_SOURCE_ONLY_REHYDRATION_ACCEPTED_P03_P05_PHYSICAL_PENDING",
+  "implementation": {
+    "prNumber": 1056,
+    "merged": true,
+    "mergeSha": "9bb42ec5d405dce34fe8844a479d2574d103da4a",
+    "sourceRuntime": "system2/runtime/issue1026_p05_archived_manifest_independent_audit_v0_1.mjs",
+    "runtimeBlobSha": "ca0f8bbe21e4ce504fe216c7cd706f14017f1044",
+    "negativeTestCases": 22,
+    "prResearchCi": {
+      "runId": 38004142767,
+      "conclusion": "success"
+    },
+    "prV8Regression": {
+      "runId": 38004142760,
+      "conclusion": "success"
+    }
+  },
+  "realRun": {
+    "runId": 38004261921,
+    "jobId": 114069302287,
+    "conclusion": "success",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38004261921",
+    "executedFromMainSha": "9bb42ec5d405dce34fe8844a479d2574d103da4a",
+    "originalZipHashStep": "PASS",
+    "originalJsonHashStep": "PASS",
+    "unitAdversarialStep": "PASS_22",
+    "independentSourceKeyAuditStep": "PASS_11843_RETROSPECTIVE_SOURCE_ONLY",
+    "artifactId": 11650860727,
+    "artifactName": "s2-issue1026-p05-existing-archive-audit-38004261921-1",
+    "artifactDigest": "sha256:077f9070dbccfb8698bf365f98f2b17f59c0da1201297c5497cfec3bd35b4cf1",
+    "artifactBytes": 2041
+  },
+  "originalArchive": {
+    "artifactId": 11623192826,
+    "runId": 37944021198,
+    "jobId": 113865467788,
+    "zipBytes": 507396,
+    "zipSha256": "7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f",
+    "jsonBytes": 5042260,
+    "jsonSha256": "fa38cbc9bbda4f99ca5a8bbc5e83ee5c324847c15fc599c8dd5412ccf14ef4c6",
+    "sourceIdentityHash": "67ea4601ab7ea6300ab1cf0a54ba4eafb7d834c03ac83413536273c7dbabe654",
+    "sourceValueHash": "2f6c4d8362168cad11c4c230fd26fa06aa189fe87567314aa7a4f8798b006139"
+  },
+  "results": {
+    "sourceMarketDateReceiptsIndependentlyVerified": 12,
+    "sourceStockDateKeysIndependentlyVerified": 11843,
+    "sourceKeyDuplicates": 0,
+    "twseSourceKeys": 6518,
+    "tpexSourceKeys": 5325,
+    "sourcePerDateIdentityHashMatches": 12,
+    "sourcePerDateValueHashMatches": 12,
+    "allSourceRetrospectiveUnqualifiedKeys": 11843,
+    "originalHistoricalFirstKnownAtQualifiedKeys": 0,
+    "historicalOriginalAvailableAtQualifiedKeys": 0,
+    "hotD1RealPhysicalKeysObserved": 0,
+    "hotD1RealPhysicalScoutExecuted": 0,
+    "hotD1RealPhysicalCensusExecuted": 0,
+    "physicalD1MissingKeys": "UNKNOWN",
+    "physicalD1MultiVersionKeys": "UNKNOWN",
+    "permissionToWrite": false,
+    "originalPITReplayAuthorized": false
+  },
+  "quota": {
+    "system1WriteReserveAuthorized": false,
+    "system1AuthorizedWriteReserveRows": null,
+    "system1ReadReserveAuthorized": false,
+    "system1AuthorizedReadReserveRows": null,
+    "graphQl20261009RowsWrittenLowerBound": 27060,
+    "graphQl20261009RowsReadLowerBound": 990891,
+    "graphQlLagBoundCertified": false,
+    "accountSafeSpendableHeadroomCertified": false,
+    "quotaReservationGranted": false,
+    "realP03QualifiedGrantedWriterChains": 0
+  },
+  "p03": {
+    "documentedSupportChecks": 3,
+    "totalSupportChecks": 8,
+    "realNegativeQuotaGateRuns": 5,
+    "distinctRealWriterClasses": 4,
+    "priorities": [
+      "P0",
+      "P2",
+      "P3"
+    ],
+    "realAuthenticatedSuccessMultiwriterChains": 0,
+    "physicalAcceptance": "PENDING"
+  },
+  "p05": {
+    "documentedSupportChecks": 4,
+    "totalSupportChecks": 9,
+    "sourceKeys": 11843,
+    "physicalScout": "0/36",
+    "physicalCensus": "0/11843",
+    "physicalAcceptance": "PENDING"
+  },
+  "originalAudit": {
+    "A1toA7SourceLevel": "PASS",
+    "independentP01toP05Accepted": 0,
+    "total": 5,
+    "correctionStatus": "HIGH_VERIFYING"
+  },
+  "safety": {
+    "newD1SqlReadQueriesExecuted": 0,
+    "newD1SqlWriteQueriesExecuted": 0,
+    "cloudflareR2Calls": 0,
+    "newOfficialMarketHttpSourceFetches": 0,
+    "newCloudflareGraphQlQueries": 0,
+    "paidTierChange": false,
+    "system1FormalRuntimeChanged": false
+  },
+  "handoff": {
+    "remediation": "Original-archive integrity and retrospective PIT blocks are now independently reproducible. Need System1 P01/P02 reserve and bounded same-UTC-day account quota/ledger/lag/no competing writer; no physical D1 dispatch.",
+    "audit": "Verify Run 38004261921/Job 114069302287/Artifact 11650860727 and 22 adversarial tests; do not accept Hot D1 P05 missing/version/PIT or P03 physical quota from this source-only receipt."
+  }
+}
