@@ -321,4 +321,35 @@ await assert.rejects(
   /LINEAGE_MISMATCH:outcome_json.decisionId/,
 );
 
+
+const forensicBefore = JSON.stringify(db.rows.get("s2_outcomes|D-PERSIST-2330"));
+const forgedCostPayload = {
+  ...day3, costModel:"SWITCHED_AFTER_FACT",
+  outcomeHash: day3.outcomeHash, // preserves the old hash: must be rejected
+};
+const forgedCostBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId:"OPB-FORGED-COST-JSON",
+  marketDate:decisionBase.decisionMarketDate,decisionTimestamp:decisionBase.decisionTimestamp,
+  outcomeRow:{...toS2OutcomeRowV0_1(day3),
+    outcome_json:JSON.stringify(forgedCostPayload)},
+  createdAt:"2026-10-03T09:01:00Z",
+});
+await assert.rejects(
+  ()=>executeOutcomePersistenceBatchV0_1({db,batch:forgedCostBatch}),
+  /OUTCOME_SNAPSHOT_HASH_MISMATCH/,
+);
+assert.equal(JSON.stringify(db.rows.get("s2_outcomes|D-PERSIST-2330")),forensicBefore);
+
+const forgedScalarBatch = await buildOutcomePersistenceBatchV0_1({
+  batchId:"OPB-FORGED-SCALAR",
+  marketDate:decisionBase.decisionMarketDate,decisionTimestamp:decisionBase.decisionTimestamp,
+  outcomeRow:{...toS2OutcomeRowV0_1(day3),d3_return:0.97},
+  createdAt:"2026-10-03T09:01:00Z",
+});
+await assert.rejects(
+  ()=>executeOutcomePersistenceBatchV0_1({db,batch:forgedScalarBatch}),
+  /OUTCOME_ROW_PROJECTION_MISMATCH:d3_return/,
+);
+assert.equal(JSON.stringify(db.rows.get("s2_outcomes|D-PERSIST-2330")),forensicBefore);
+
 console.log("System2 outcome persistence V0.1 tests passed");
