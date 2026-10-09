@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "S2_CORR_003_A7_REMEDIATION_IMPLEMENTATION_20261009_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "implementationLane": "REMEDIATION_LANE",
+  "state": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY_A7",
+  "implementationBaseline": {
+    "pr": 1008,
+    "head": "3b974b13721288ebb0f5e9a0c3c551442dd71895",
+    "merge": "7325d4343aecad1847ef6b176b95167d5d74705a",
+    "mergeObservedAtTaipei": "2026-10-09T20:27:25+08:00",
+    "system2ResearchCi": {
+      "runId": 37929940237,
+      "jobId": 113817904322,
+      "conclusion": "PASS"
+    },
+    "v8Regression": {
+      "runId": 37929940232,
+      "jobId": 113817904652,
+      "conclusion": "PASS"
+    },
+    "latestMainDriftBeforeMerge": {
+      "ahead": 0,
+      "changedFiles": []
+    },
+    "changedFiles": [
+      "system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md",
+      "system2/SYSTEM2_REMEDIATION_CHECKPOINT.md",
+      "system2/scripts/run_d1_account_quota_gate_v0_1.mjs",
+      "system2/tests/d1_account_quota_a7_legacy_hash_identity_v0_1.test.mjs"
+    ],
+    "mergedMainReadback": true
+  },
+  "trigger": {
+    "independentAuditPr": 1000,
+    "independentAuditMerge": "48e0bac560247a330aed8d5d11ab74f0759b92b4",
+    "evidence": "system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json",
+    "test": "system2/tests/audit_corr003_a5a6_independent_legacy_hash_reverify_20261009_v0_1.test.mjs",
+    "defect": "A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA"
+  },
+  "diagnosis": {
+    "priorBehavior": "Production loadQuotaLedger accepted either the full immutable receipt identity hash or sha256(observed payload) without restricting the payload-only path to historical V0.1 schemas.",
+    "exploit": "A V0.2 receipt could retain the same payload-only hash while changing status or expected_payload_json and still pass integrity validation.",
+    "risk": "Current receipt metadata could be detached from immutable identity and create false valid ledger provenance under otherwise-authorized synthetic quota inputs."
+  },
+  "fix": {
+    "currentReceiptRule": [
+      "V0.2+ reservation/result receipts cannot use payload-only legacy hash.",
+      "V0.2+ must authenticate with the full immutable identity hash over check_id, check_type, expected_payload_json, observed_payload_json and status."
+    ],
+    "legacyV01Compatibility": [
+      "Payload-only hash remains readable only for exact historical V0.1 reservation/result payload schema.",
+      "budgetVersion must equal S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.",
+      "expected metadata must contain exactly directiveId/accountWide/paidUpgradeAuthorized with canonical values.",
+      "payload paidUpgradeAuthorized must be false.",
+      "payload system1FormalCoreChanged must be false.",
+      "V0.1 reservation status must be QUOTA_RESERVATION_GRANTED.",
+      "V0.1 result status must equal payload.resultState and be RESULT_RECONCILED_ACCOUNT_DELTA or RESULT_ACCOUNT_USAGE_UNKNOWN.",
+      "Historical V0.1 rows are not rewritten."
+    ],
+    "failureCode": "LEDGER_LEGACY_HASH_CONTRACT_INVALID"
+  },
+  "regression": {
+    "exactIndependentProbeReplay": {
+      "marker": "A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA",
+      "status": "SAFE",
+      "v02LegacyReceiptAccepted": "INVALID",
+      "tamperedStatusAccepted": "INVALID",
+      "tamperedExpectedPayloadAccepted": "INVALID",
+      "syntheticOtherwiseAuthorizedDecision": "QUOTA_BUDGET_DEFER",
+      "actualCloudflareIo": false
+    },
+    "dedicatedTest": "system2/tests/d1_account_quota_a7_legacy_hash_identity_v0_1.test.mjs",
+    "positiveCases": [
+      "Authentic V0.2 full-identity receipt remains VALID.",
+      "Authentic historical V0.1 payload-hash reservation remains VALID.",
+      "Authentic historical V0.1 payload-hash reservation+result pair remains VALID."
+    ],
+    "negativeCases": [
+      "V0.2 payload-only hash rejected.",
+      "V0.2 payload-only hash plus status tamper rejected.",
+      "V0.2 payload-only hash plus expected metadata tamper rejected.",
+      "V0.2 full-identity row with status tamper and stale hash rejected.",
+      "V0.1 status/expected metadata/budget/schema/paid flag drift rejected.",
+      "V0.1 result status mismatch rejected."
+    ],
+    "a1A6Preserved": true
+  },
+  "system1Protection": {
+    "formalCoreChanged": false,
+    "tradingSignalsChanged": false,
+    "capitalAllocationChanged": false,
+    "productionBusinessLogicChanged": false,
+    "writeReserveAuthorized": false,
+    "authorizedWriteReserveRows": null,
+    "readReserveAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "observedWholeV7MaxRowsWritten": 2825,
+    "observedValuePromoted": false
+  },
+  "cloudflareBoundary": {
+    "physicalD1MutationForA7": false,
+    "paidTierChanged": false,
+    "billingMutation": false
+  },
+  "auditHandoff": {
+    "closureAuthority": "AUDIT_LANE_ONLY",
+    "reverify": [
+      "Replay exact V0.2 legacy payload-only hash attack.",
+      "Replay V0.2 status and expected_payload_json mutation with unchanged legacy hash.",
+      "Confirm authentic V0.2 full identity hash remains valid.",
+      "Confirm authentic historical V0.1 payload-only reservation/result receipts remain valid.",
+      "Confirm V0.1 metadata/schema/budget/status drift rejects with ledger integrity invalid.",
+      "Re-run A1-A6 source-level regressions.",
+      "Confirm System1 write/read reserve remains false/null.",
+      "Confirm no Formal Core/production/billing mutation."
+    ],
+    "mayMarkVerifiedClosed": false,
+    "physicalClosureStillPending": [
+      "evidence-qualified System1 write/read reserve",
+      "bounded real multiwriter UTC-day grant/result/no-quota-collision evidence",
+      "later real System1 23:35/23:55 normal persistence",
+      "original CORR-003 physical acceptance criteria"
+    ]
+  },
+  "dataLaneHandoff": {
+    "rule": "A7 source integrity is implemented, but DATA_LANE must still honor current read-budget/account evidence and all CORR-003 physical write prerequisites.",
+    "doNotForcePhysicalWrite": true
+  }
+}

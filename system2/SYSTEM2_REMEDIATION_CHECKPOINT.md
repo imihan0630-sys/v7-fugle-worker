@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-09 20:24 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS / A7_LEGACY_HASH_IDENTITY_REMEDIATION
+Updated: 2026-10-09 20:27 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY_A7
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -11,85 +11,186 @@ Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 Severity: HIGH  
 Routing: REMEDIATION_LANE  
-Queue status: `FIX_IN_PROGRESS`  
-Modification owner for A7: `SYSTEM2_REMEDIATION_ROOM`
+Implementation state: `FIX_IMPLEMENTED`  
+Verification state: `PENDING_INDEPENDENT_REVERIFY_A7`
 
-REMEDIATION_LANE may return this HIGH correction only to `FIX_IMPLEMENTED`; it must not self-mark `VERIFIED_CLOSED`.
+REMEDIATION_LANE must not mark this directive `VERIFIED_CLOSED`.
 
 ## Independent A7 challenge
 
-Independent AUDIT_LANE PR #1000 / evidence on main routed one new source-level defect back to REMEDIATION:
+Independent AUDIT_LANE PR #1000 independently accepted enumerated A5/A6 source-level fail-closed cases and reproduced:
 
 `A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA`
 
-Canonical evidence:
+Canonical audit evidence:
 - `system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json`
 - `system2/tests/audit_corr003_a5a6_independent_legacy_hash_reverify_20261009_v0_1.test.mjs`
 - exact-head Research CI `37924636321` PASS
 - V8 Regression `37924636337` PASS
-- A5/A6 independently PASS at enumerated source level
-- A7 independently UNSAFE
-- physical Cloudflare IO by audit: zero
+- audit performed zero physical Cloudflare IO
 
-## A7 exact failure
+## A7 remediation implementation
 
-Current production `loadQuotaLedger` accepts either:
-1. current full immutable identity hash, or
-2. legacy `sha256(observed payload)`.
+PR #1008:
+- head: `3b974b13721288ebb0f5e9a0c3c551442dd71895`
+- merge: `7325d4343aecad1847ef6b176b95167d5d74705a`
+- System2 Research CI `37929940237`: PASS
+- V8 Regression `37929940232`: PASS
+- latest-main drift before merge: 0
+- no physical D1 mutation required
 
-The legacy branch is not currently restricted to actual historical V0.1 receipts.
+Durable implementation evidence:
+`system2/evidence/S2_CORR_003_A7_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`
 
-Therefore a payload declaring current:
-`S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_2`
+## A7 — current V0.2+ receipt identity
 
-can retain the same payload-only hash while mutating:
-- `status`, or
-- `expected_payload_json`
+The production loader no longer accepts a payload-only legacy hash for a current receipt.
 
-and still reach `integrityState=VALID`.
+V0.2+ reservation/result receipts require the full immutable identity hash over:
+- check_id
+- check_type
+- expected_payload_json
+- observed_payload_json
+- status
 
-Under synthetic otherwise-authorized reserves this can lead to `QUOTA_RESERVATION_GRANTED`.
+If a V0.2+ row presents the payload-only legacy hash, the ledger becomes INVALID with:
+`LEDGER_LEGACY_HASH_CONTRACT_INVALID`.
 
-## Required remediation
+The evaluator therefore remains:
+`QUOTA_BUDGET_DEFER`.
 
-1. V0.2+ reservation/result receipts must require the full immutable identity hash:
-   - check_id
-   - check_type
-   - expected_payload_json
-   - observed_payload_json
-   - status
-2. Legacy payload-only hash may be accepted only for explicitly proven historical V0.1 receipt schema.
-3. Legacy V0.1 acceptance must additionally require:
-   - `budgetVersion=S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1`
-   - frozen expected metadata: directiveId/accountWide/paidUpgradeAuthorized
-   - exact V0.1 schema for check type
-   - reservation status exactly `QUOTA_RESERVATION_GRANTED`
-   - result status exactly equals payload.resultState and is one of original V0.1 result states
-   - no extra expected-metadata keys
-4. Do not rewrite historical V0.1 receipts.
-5. Any V0.2+ row using payload-only hash must return ledger integrity INVALID and cause `QUOTA_BUDGET_DEFER`.
-6. Preserve A1-A6, same-day non-release, UTC rollover, System1 reserve false/null and no paid-tier behavior.
+## Proven historical V0.1 compatibility
+
+Original PR #980 physically defined legacy receipts as:
+- reservation schema `S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1`
+- result schema `S2_D1_ACCOUNT_BUDGET_RESULT_V0_1`
+- budget version `S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1`
+- check hash = `sha256(observed payload)`
+
+Those historical rows are not rewritten.
+
+Payload-only hash remains valid only when all are true:
+1. payload schema is the exact V0.1 schema matching check_type;
+2. budgetVersion is exactly `S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1`;
+3. expected payload contains exactly:
+   - directiveId=`S2-CORR-20261007-003`
+   - accountWide=true
+   - paidUpgradeAuthorized=false
+4. payload `paidUpgradeAuthorized=false`;
+5. payload `system1FormalCoreChanged=false`;
+6. reservation status exactly `QUOTA_RESERVATION_GRANTED`;
+7. result status equals payload.resultState and is one of:
+   - `RESULT_RECONCILED_ACCOUNT_DELTA`
+   - `RESULT_ACCOUNT_USAGE_UNKNOWN`.
+
+Any schema/budget/status/expected-metadata/paid flag drift invalidates legacy authentication.
+
+## Final A7 regression
+
+Final System2 CI replay of independent attack:
+
+`A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA`
+- status: SAFE
+- V0.2 legacy receipt: INVALID
+- tampered status: INVALID
+- tampered expected payload: INVALID
+- synthetic otherwise-authorized decision: `QUOTA_BUDGET_DEFER`
+- actual Cloudflare IO: false
+
+Dedicated regression:
+`system2/tests/d1_account_quota_a7_legacy_hash_identity_v0_1.test.mjs`
+
+Positive cases:
+- authentic V0.2 full-identity receipt = VALID
+- authentic V0.1 legacy reservation = VALID
+- authentic V0.1 legacy reservation + result pair = VALID
+
+Negative cases:
+- V0.2 payload-only legacy hash
+- V0.2 legacy status mutation
+- V0.2 legacy expected-payload mutation
+- V0.2 full-identity row with stale hash after metadata mutation
+- V0.1 status drift
+- V0.1 expected metadata drift/extra key
+- V0.1 budget/schema drift
+- V0.1 paid flag drift
+- V0.1 result status mismatch
+
+## A1-A6 preservation
+
+The same final System2 Research CI includes prior CORR-003 suites.
+
+Independent replay log still reports:
+- A5 malformed GraphQL = PASS_FAIL_CLOSED
+- A6 malformed ledger = PASS_FAIL_CLOSED
+- production full-identity tamper = PASS_FAIL_CLOSED
+- A7 legacy metadata spoof = SAFE
+
+A1-A4 tests remain in the full research suite.
+
+## System1 reserve remains fail closed
+
+Write:
+- observed whole-V7 max rowsWritten = 2,825
+- `reserveNumberAuthorized=false`
+- `authorizedReserveRows=null`
+
+Read:
+- `readReserveNumberAuthorized=false`
+- `authorizedReadReserveRows=null`
+
+2,825 remains observational only.
 
 ## Protected boundaries
 
-No modification to:
-- System1 Formal Core
-- trading signals
+No change to:
+- System 1 Formal Core
+- formal trading signals
 - capital allocation
 - System1 production business logic
 - System2 final/live selection authority
 - Cloudflare billing / paid tier
 
-No large physical D1 mutation is required for A7 source-level remediation.
+No large D1 physical mutation was used for A7.
 
-## Exact next
+## DATA_LANE continuation
 
-- Patch only the legacy-hash compatibility path and tests/docs.
-- Run A7 exact attack replay plus positive authentic V0.1 legacy and V0.2 full-identity cases.
-- Re-run A1-A6.
-- System2 Research CI + V8 Regression.
-- latest-main drift check.
-- merge implementation.
-- merged-main readback.
-- evidence-only Queue/checkpoint update to `FIX_IMPLEMENTED / PENDING_INDEPENDENT_REVERIFY_A7`.
-- return to AUDIT_LANE for independent reverify; physical closure remains separate.
+A7 source integrity is now implemented, but physical D1 mutation remains subject to all existing account-level quota prerequisites.
+
+DATA_LANE may continue quota-safe read-only evidence, census and offline planning.
+
+Do not force physical writes while any of these remain unresolved:
+- account usage UNKNOWN
+- writer read/write cost evidence incomplete
+- System1 write reserve unauthorized
+- System1 read reserve unauthorized
+- quota ledger integrity INVALID
+- shared gate returns `QUOTA_BUDGET_DEFER`
+
+## AUDIT_LANE exact reverify
+
+Independently re-run from latest main:
+
+1. V0.2 receipt with payload-only hash -> INVALID.
+2. V0.2 status mutation with unchanged payload-only hash -> INVALID.
+3. V0.2 expected_payload_json mutation with unchanged payload-only hash -> INVALID.
+4. Authentic V0.2 full-identity receipt -> VALID.
+5. Authentic historical V0.1 payload-hash reservation -> VALID.
+6. Authentic historical V0.1 reservation/result pair -> VALID.
+7. V0.1 metadata/schema/budget/status mutation -> INVALID.
+8. Invalid A7 ledger cannot grant physical quota.
+9. Re-run A1-A6 source-level regressions.
+10. Confirm System1 write/read reserves remain false/null.
+11. Confirm no Formal Core / production / billing mutation.
+
+Even if A7 passes, final HIGH closure still separately requires:
+- evidence-qualified System1 write/read reserve;
+- bounded real multiwriter UTC-day physical grant/result/no-collision;
+- later real System1 23:35/23:55 normal persistence;
+- original CORR-003 physical acceptance criteria.
+
+## Exact next continuation point
+
+- REMEDIATION_LANE: A7 implementation complete; remain idle unless independent reverify returns an exact failed conflict unit.
+- AUDIT_LANE: independently reverify A7 and prior source-level safeguards.
+- DATA_LANE: continue quota-safe read-only/evidence-qualified work; physical mutation remains gate-controlled.

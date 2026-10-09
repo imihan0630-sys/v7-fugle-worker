@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T19:32:00+08:00",
+  "updatedAt": "2026-10-09T20:27:25+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IN_PROGRESS",
+      "status": "FIX_IMPLEMENTED",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1311,7 +1311,16 @@
         "Dedicated A5/A6 adversarial matrix system2/tests/d1_account_quota_a5_a6_failclosed_v0_1.test.mjs PASS on final System2 Research CI 37918280572; prior A1-A4 independent reverify markers remain PASS.",
         "Final PR #994 V8 Regression 37918280554 PASS; implementation head c24c9a9cfb26c2854f665beb68f8a4068fd431be.",
         "Merged-main readback on 0c74919d4746f27f14aec44d1841c01a4f32f12b confirms no metric-zero fallback, explicit ledger integrity defer, production identity/hash/day validation, System1 write/read reserves still unauthorized/null and no paid-tier authority.",
-        "Durable A5/A6 evidence: system2/evidence/S2_CORR_003_A5_A6_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json."
+        "Durable A5/A6 evidence: system2/evidence/S2_CORR_003_A5_A6_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json.",
+        "A7 remediation PR #1008 merged as 7325d4343aecad1847ef6b176b95167d5d74705a after independent PR #1000 routed A7 legacy hash identity bypass to REMEDIATION_LANE.",
+        "A7 fixed: V0.2+ quota receipts can no longer authenticate with payload-only legacy sha256(observed payload); full immutable identity hash is required.",
+        "Legacy payload-only hash remains accepted only for exact historical V0.1 reservation/result payload schemas with budgetVersion S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1, frozen expected metadata and original V0.1 status contract.",
+        "Historical V0.1 quota receipts are read-compatible and are not rewritten.",
+        "Final CI replay marker A7_LEGACY_PAYLOAD_HASH_ACCEPTS_MUTATED_V02_RECEIPT_METADATA is SAFE: V0.2 legacy receipt INVALID, status tamper INVALID, expected-payload tamper INVALID, synthetic otherwise-authorized decision QUOTA_BUDGET_DEFER.",
+        "Dedicated A7 test system2/tests/d1_account_quota_a7_legacy_hash_identity_v0_1.test.mjs proves authentic V0.2 full-identity and authentic V0.1 legacy reservation/result positive cases while rejecting V0.1 metadata/schema/budget/status drift.",
+        "PR #1008 System2 Research CI 37929940237 PASS; V8 Regression 37929940232 PASS; latest-main drift before merge zero.",
+        "Merged-main readback on 7325d4343aecad1847ef6b176b95167d5d74705a confirms LEDGER_LEGACY_HASH_CONTRACT_INVALID, V0.1-only legacy schema/budget/status guards, System1 write/read reserves false/null and no paid-tier authority.",
+        "Durable A7 evidence: system2/evidence/S2_CORR_003_A7_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json."
       ],
       "verificationEvidence": [
         "Codepath audit confirms .github/workflows/system2-recent-a1-hot-history-warmup.yml allows ordinary main push on watched warmup paths to enter the credentialed physical D1 mutation step; job guard checks only github.ref==refs/heads/main. Durable evidence: system2/evidence/S2_CORR_20261007_003_WARMUP_PUSH_MUTATION_AUDIT_20261007_V0_1.json @ 164fa2c1213e4726e01d42c34187d4cb06d76631.",
@@ -1323,10 +1332,11 @@
         "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4",
         "2026-10-09 independent exact-head CI: PR #989 test system2/tests/audit_corr003_post_fix_independent_reverify_20261009_v0_1.test.mjs; Research run 37915666601 PASS (273 test files), V8 run 37915666467 PASS. Source-level A1-A4 enumerated safeguards PASS only; separate GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO and MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP both UNSAFE. No Cloudflare physical mutation. Exact new evidence: system2/evidence/S2_CORR003_INDEPENDENT_POST_FIX_REVERIFY_20261009_V0_1.json",
         "PENDING_INDEPENDENT_REVERIFY_A5_A6",
-        "PR #1000 independent Research CI 37924636321 SUCCESS (276 System2 test files), V8 37924636337 SUCCESS. Independently replayed A5 and A6 malformed input fail-closed PASS; new A7 legacy payload-hash metadata bypass UNSAFE in actual loader with stub D1. Evidence: system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json. NO physical D1 test or VERIFIED_CLOSED."
+        "PR #1000 independent Research CI 37924636321 SUCCESS (276 System2 test files), V8 37924636337 SUCCESS. Independently replayed A5 and A6 malformed input fail-closed PASS; new A7 legacy payload-hash metadata bypass UNSAFE in actual loader with stub D1. Evidence: system2/evidence/S2_CORR003_A5_A6_INDEPENDENT_REVERIFY_A7_20261009_V0_1.json. NO physical D1 test or VERIFIED_CLOSED.",
+        "PENDING_INDEPENDENT_REVERIFY_A7"
       ],
-      "finalDisposition": "REMEDIATION_REOPENED_BY_AUDIT_A7_LEGACY_HASH_IDENTITY_BYPASS_AND_PHYSICAL_CLOSURE_PENDING",
-      "updatedAt": "2026-10-09T19:32:00+08:00"
+      "finalDisposition": "PENDING_INDEPENDENT_REVERIFY_A7_AND_PHYSICAL_CLOSURE",
+      "updatedAt": "2026-10-09T20:27:25+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
