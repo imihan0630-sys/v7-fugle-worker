@@ -39,6 +39,16 @@
         "37883312640"
       ],
       "status": "TWO_MARKET_MINIMUM_SOURCE_ROW_HASH_AND_PIT_PREFLIGHT_CODED_NO_PHYSICAL_PIT"
+    },
+    {
+      "id": "D08",
+      "pr": 965,
+      "commit": "6bc75abab5cd696c84c50c378d4c14010e45f875",
+      "ci": [
+        "37884540617",
+        "37884540527"
+      ],
+      "status": "D07_SOURCE_SHA_TO_D08_COMPLETE_PER_STRATEGY_SYMBOL_ACCOUNTING_AND_FALSE_ZERO_GUARD_CODED_NOT_PHYSICAL"
     }
   ],
   "mandatoryProtections": {
@@ -98,10 +108,10 @@
     {
       "id": "D08",
       "lane": "BUILD_LANE",
-      "state": "CAPACITY_PHYSICAL_PENDING",
+      "state": "D07_TO_D08_CAPACITY_LINEAGE_FIREWALL_CODED_PARTIAL",
       "acceptance": "PIT complete daily strategy assessments, RANK/capacity receipt persisted and physically read back under 12/3 caps",
       "correctionId": null,
-      "next": "Verify run denominator, actual daily capacity run and same-day D1 hash",
+      "next": "DATA_LANE B10/B11 authentic full exchange market and PIT/NC-T01, D06 proven essential factors, REMEDIATION A07 quota, then isolated D1 daily capacity atomic persistence and independent audit",
       "verified": false
     },
     {
