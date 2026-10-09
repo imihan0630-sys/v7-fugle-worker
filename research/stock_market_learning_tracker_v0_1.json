@@ -1462,8 +1462,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「大型股vs小型股領導」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / TWO_COMMON_COMPLETE_SIZE_TRI_DATES / BR078_20261008_MID_GT_SMALL_GT_LARGE / TRADING_CALENDAR_CORRECTED_NEXT_SESSION_20261012 / D5_D20_D60_REFERENCE_JOIN_PENDING / BR075_D16_PREREG / POWER_INSUFFICIENT / KEEP_L3",
-          "next": "Accumulate additional common-complete TRI dates; BR078 next-session D1 endpoint first matures at the 2026-10-12 close; join D5/D20/D60 only on compatible official TRI references; D16 method remains required before predictive access."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / COMMON_COMPLETE_SIZE_TRI_DATES_N_2 / BR037_20261001 / BR078_20261008 / BR080_D1_EXTREME_ORDER_REVERSAL / LARGE_1_TO_3 / MID_3_TO_1 / SMALL_2_TO_2 / OUTCOMES_CLOSED / POWER_INSUFFICIENT",
+          "next": "Accumulate additional common-complete Taiwan50/MidCap100/SmallCap300 TRI dates; maintain common basis and effective membership; consume D16 date-level dependence/horizon multiplicity/sector composition/liquidity/breadth/concentration/regime method before predictive interpretation; no price-index splice or missing-value fill."
         },
         {
           "id": "D09-09",
