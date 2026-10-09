@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P03_P05_SAFE_METADATA_ONLY_PREREG_20261009_V0_1",
+  "issueNumber": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "owner": "DATA_LANE",
+  "runClassification": "CLASS_A_NON_AUTHORIZING_ACCOUNT_GRAPHQL_AND_OFFLINE_EVIDENCE",
+  "state": "PREREGISTERED_PENDING_PR_CI_AND_PUBLIC_WORKFLOW_RUN",
+  "expected": "P03_P05_PHYSICAL_ACCEPTANCE_DEFER",
+  "p03": {
+    "priorChecksDocumented": 3,
+    "total": 8,
+    "realGrantResultChain": "MISSING",
+    "system1ProtectedReserves": "UNAUTHORIZED"
+  },
+  "p05": {
+    "priorChecksDocumented": 4,
+    "total": 9,
+    "d1ScoutExecuted": 0,
+    "d1ScoutTarget": 36,
+    "d1CensusExecuted": 0,
+    "d1CensusTarget": 11843,
+    "missingKeyCount": "UNKNOWN"
+  },
+  "readOnlyGraphQl": {
+    "requestsPerJob": 1,
+    "semantics": "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
+    "vendorGuarantee": "NOT_DOCUMENTED_BY_VENDOR",
+    "notSameDaySpendableHeadroomProof": true
+  },
+  "permissions": {
+    "d1SQLAllowed": false,
+    "d1WritesAllowed": false,
+    "d1ReadSampleDispatchAllowed": false,
+    "d1FullCensusDispatchAllowed": false,
+    "r2CallsAllowed": false,
+    "quotaReservationGrantAllowed": false,
+    "cloudflareBillingChangeAllowed": false,
+    "system1FormalChangesAllowed": false
+  },
+  "handoffTo": [
+    "REMEDIATION_LANE",
+    "AUDIT_LANE"
+  ],
+  "next": "Independent P01/P02 reserve authorization + integrity/lag and multiwriter quota-day receipts required before physical SQL. Zero-check marks remain NOT RUN. CI success alone does not change P03/P05 statuses."
+}
