@@ -260,3 +260,18 @@ These GitHub issues are **durable cross-room handoff requests, not automatic act
 **REMEDIATION_LANE next action:** consume new original run/job/artifact receipts from #1024/#1026 if their owner lanes produce them; reconcile the immutable evidence gap matrix without changing its historical provenance or audit-owned Correction Queue. If no genuine data, remain 0/5 physical qualified; do not dispatch D1 probes and do not set `VERIFIED_CLOSED`.
 
 **AUDIT_LANE final receiving room:** `System 2｜獨立稽核顧問室` independently decides acceptance against the original 19 CORR-003 criteria; `S2-CORR-20261007-003` remains HIGH / VERIFYING.
+
+
+## 2026-10-09 22:11 Asia/Taipei — genuine #1024/#1026 producer receipt reconciliation (no gate promotion)
+
+Read-back main base: `793bf6fa5f4474a4879fbcb6e04ec686b0a946bb`. **REMEDIATION_LANE only**, no change to historical intake or AUDIT-owned queue. Immutable additive reconciliation:
+- `system2/evidence/S2_CORR003_P01_P05_PRODUCER_RECEIPT_RECONCILIATION_20261009_V0_1.json`;
+- `system2/tests/corr003_p01_p05_producer_receipt_reconciliation_v0_1.test.mjs`.
+
+**System1 real producer PR #1037**, merge `d8c743ec5acd96b9b27f9a130c0f51f17875c8af`, frozen `research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json`: actual 23:35 SUCCESS cron IDs 1893 (09/21) and 2173 (09/22), whole-UTC-day V7_DB write/read, but no per-run cost or same-generation business D1 readback; 10/07 primary quota failed and 23:55 lease is NOT a successful recovery. 10/09 holiday; next normal session 10/12 subject to actual calendar.
+
+**DATA real producer #1026**, [run 37941792137](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37941792137), job 113857752036, artifact 11621798195 (`sha256:963724d54534fc95b6520a094428921886f51cafb9f88d7658e1617452df0cdc`), `system2/evidence/S2_ISSUE1026_P03_P05_ACCOUNT_GRAPHQL_NONAUTHORIZING_REAL_RUN_20261009_V0_1.json`: 2026-10-09T14:07:12.779Z actual same-account GraphQL-only rowsWritten lower bound **27,060**, rowsRead lower bound **990,891**. Compared with earlier 27,056 / 880,643 lower bounds; **do not attribute differences to a writer or certify spendable quota**. Analytics lag unknown, no P03 same-day authenticated post-fix grant/result; **0 D1 SQL reads/writes**. P05 Hot D1 remains 0/36 and 0/11,843; physical missing keys UNKNOWN.
+
+**Counts unchanged**: 15/38 documented supporting checks, 0/5 independently physically accepted gates, 19/19 original criteria traced but not closed. Write/read reserve authorizations false/null. A1–A7 independently source-level PASS, ticket HIGH/VERIFYING. No owner/billing/Cloudflare/System1 Formal/production mutations.
+
+**Exact next:** System1 #1024 genuine 10/12 natural 23:35/conditional 23:55 receipts plus per-execution read/write costs and independent reserves; DATA #1026 no D1 sample/writer until account-wide read budget / ledger / System1 reserves are independently qualified; AUDIT independently accepts or rejects P01–P05 and original 19. This evidence is **not** physical acceptance or execution authorization.
