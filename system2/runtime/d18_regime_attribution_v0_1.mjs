@@ -1,8 +1,9 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
 import { validateD18ObservableRegimeVectorV0_1 } from "./d18_observable_regime_vector_v0_1.mjs";
+import { classifyS2ExecutionDenominatorV0_1 } from "./execution_denominator_guard_v0_1.mjs";
 
-export const D18_REGIME_ATTRIBUTION_VERSION = "D18_REGIME_ATTRIBUTION_V0_1_RESEARCH";
+export const D18_REGIME_ATTRIBUTION_VERSION = "D18_REGIME_ATTRIBUTION_V0_2_RESEARCH_EXECUTION_DENOMINATOR_FENCED";
 const VECTOR_VERSION = "D18_OBSERVABLE_REGIME_VECTOR_V0_1_RESEARCH";
 const HORIZONS = new Set([1, 3, 5, 10, 20]);
 
@@ -179,6 +180,12 @@ export async function buildD18RegimeAttributionReceiptV0_1({
     }
   }
 
+  const executionGate = classifyS2ExecutionDenominatorV0_1(
+    outcomeSnapshot.simulatedExecution ?? null,
+  );
+
+  // Signal-horizon returns and simulated fill/net returns are distinct.
+  // A modeled fill cannot acquire real execution authority through attribution.
   const metrics = state === "MATURED"
     ? deepFreeze({
         horizon: h,
@@ -193,9 +200,10 @@ export async function buildD18RegimeAttributionReceiptV0_1({
         simulatedExecution: outcomeSnapshot.simulatedExecution
           ? deepFreeze({
               state: outcomeSnapshot.simulatedExecution.state,
-              realizedReturnAfterCost: finiteOrNull(
-                outcomeSnapshot.simulatedExecution.realizedReturnAfterCost,
-              ),
+              realizedReturnAfterCost: null,
+              modeledReturnIsNotCertified: true,
+              executionDenominatorEligible: false,
+              executionEvidenceClassification: executionGate.classification,
               holdingSessions: outcomeSnapshot.simulatedExecution.holdingSessions ?? null,
               fillQuality: outcomeSnapshot.simulatedExecution.fillQuality ?? null,
               executionVersion: outcomeSnapshot.simulatedExecution.executionVersion ?? null,
@@ -225,6 +233,11 @@ export async function buildD18RegimeAttributionReceiptV0_1({
     unknownRegimeDimensions: unknowns,
     outcomeHash,
     outcomeUpdatedAt,
+    executionEvidenceGate: executionGate,
+    signalHorizonObservationOnly: true,
+    certifiedExecutionReturn: null,
+    certifiedSelectedToTriggeredDenominator: null,
+    certifiedNoFillDenominator: null,
     outcomePriceSpace: outcomeSnapshot.priceSpace || null,
     corporateActionState: outcomeSnapshot.corporateActionState || null,
     requestedHorizon: h,
