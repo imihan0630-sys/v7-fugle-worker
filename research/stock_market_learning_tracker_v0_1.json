@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.8
+    "maturityWeightedPct": 47.9
   },
   "domains": [
     {
@@ -2653,7 +2653,7 @@
         "research/d16_25_probabilistic_decision_contract_v0_1.json",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
-      "maturityPct": 64,
+      "maturityPct": 64.8,
       "modules": [
         {
           "id": "D16-01",
@@ -2808,9 +2808,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Panel／Cross-sectional Models面板與橫截面模型」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / PHYSICAL_NUMERIC_PANEL_EXISTS / OFFICIAL_2025_TWSE_UNIVERSE_ARTIFACT_EXISTS / PERSISTED_ROW_LEVEL_MEMBERSHIP_RECEIPT_ABSENT / SURVIVORSHIP_AWARE_PANEL_L3_BLOCKED",
-          "next": "維持 L2/40%。2025 TWSE 官方 current+new-listing+delisting union 的 physical artifact 已存在，但 annual verifier 僅在記憶體建 registry，沒有可供 Room11 消費的 D1 row-level registry receipt/membership；因此 bounded full-year-availability cohort 不得冒充 survivorship-aware issuer×date panel。下一步取得 durable consumable membership receipt 或授權 exact equivalent 後重跑 panel gate。",
-          "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md"
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / PHYSICAL_NUMERIC_PANEL_EXISTS / OFFICIAL_2025_TWSE_UNIVERSE_ARTIFACT_EXISTS / EXACT_EQUIVALENT_REBUILD_PHYSICALLY_FAIL_CLOSED_ON_SOURCE_VINTAGE_DRIFT / DURABLE_ROW_LEVEL_MEMBERSHIP_AUTHORITY_STILL_ABSENT",
+          "next": "維持 L2/40%。2026-10-09 exact-equivalent fallback 已用 22/22 純反證測試驗證，但 physical run 37884556010 因 ANNUAL_EQUIVALENT_CURRENT_SOURCE_HASH_MISMATCH fail-closed；今天的 mutable current TWSE source 不得回填 2025 historical membership。下一步只接受原年度 cut 的 retained immutable source payload，或新的 annual evidence version 直接持久化 row-level memberships，再重跑 panel gate。",
+          "evidence": "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md + research/d16_25_probability_validation_v0_1.mjs + shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md + research/D16_17_EXACT_EQUIVALENT_MEMBERSHIP_REBUILD_BLOCKER_20261009_V0_1.md; run 37884556010 physical fail-closed; no promotion."
         },
         {
           "id": "D16-18",
@@ -2859,13 +2859,13 @@
         {
           "id": "D16-22",
           "name": "NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / NLP_LLM_PIT_CONTAMINATION_AND_REPLAY_CONTRACT_FROZEN / POINT_IN_TIME_TEXT_PIPELINE_PENDING",
-          "next": "維持 L2/40%。下一步需 PIT text corpus＋immutable document clocks＋fixed model/prompt/version＋contamination/redaction baseline tests；一般現代 LLM 歷史回測不得直接升 L3。",
-          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / SOURCE_LOCAL_TEXT_PIPELINE_EXECUTABLE / CONSERVATIVE_GITHUB_FIRST_KNOWN_BOUND / 15_OF_15_FALSIFICATION_PASS / PHYSICAL_RECEIPT_PASS / OPEN_WORLD_LLM_NOT_VALIDATED / OUTCOMES_CLOSED",
+          "next": "維持 L3/60%。下一步 prospectively capture 新的 MOPS material disclosures under immutable firstKnown receipts；若引入 encoder/LLM challenger，必須在 outcome 前凍結 model/version/prompt/retrieval state，並與同 parent corpus 的 title-only/source-local baseline 比較。Open-world LLM historical PIT 仍未驗證；無多日期 prospective outcomes 不開 L4。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md + research/D16_22_TAIWAN_TEXT_PIPELINE_L3_ACCEPTANCE_20261009_V0_1.md; corpus commit 0e8ed18fd028c34ab00552a9187e2414ec98fd91; exact-head 5adb632c8686fb47846e12943fe544e242bdee72; text CI 37885008617 SUCCESS; V8 Regression 37885008498 SUCCESS; artifact 11594994975 sha256:ef15f58fda236b47e9695aba089699f1dbde22bc8ed4c87b6c2c23763afd6dbc; receipt 58e89bb5ef6df9166c048a63f3b1dc36b60c39c61fd18e0ce62396cc98e6a2a7."
         },
         {
           "id": "D16-23",
@@ -2901,8 +2901,8 @@
           "evidence": "D16-25 L2 specialist side is complete for merge governance. Existing PR #333 added per-Regime calibration and preregistered selective-policy evaluation. PR #340 (merge 399287ac5ad669686f5f40fcfe72ea28617fd680; head 716b9038a1437b03dc5de92ee24709918a5b2deb) added date-balanced Brier/log-loss, per-date diagnostics and calibration-in-the-large to prevent same-date row multiplicity from masquerading as independent evidence. CI PASS: System2 Research 37095784670, V8 Repair 37095784642, V8 Regression 37095784664. D16-25 owns target/prior/probability-distribution/calibration/uncertainty/ABSTAIN/decision-utility validation; D15-19 retains distinct log-growth/Fractional-Kelly/portfolio-allocation responsibility. L3 remains blocked by absence of genuine complete Taiwan PIT prediction/outcome/calibration receipts. Additional audit: research/D16_25_SELECTIVE_DENOMINATOR_ACCEPTANCE_AUDIT_20261003_V0_1.md; unchanged evaluator synthetic reproduction shows matured-subset coverage 50% -> 66.7% after one label arrives while frozen full decision coverage remains 75%. Existing probability tests PASS; synthetic-only, no L3 evidence. Latest C1 workflow run 37067696964 completed/failure; root cause not inferred from summary. Production readonly version 8.15.3-c3-quote-context, testMode=false; no mutation."
         }
       ],
-      "status": "D16_L3_COUNT_ADVANCED_10_OF_25 / FOUR_MODULE_REAL_TWSE_NUMERIC_L3_BATCH_ACCEPTED / D16_17_MEMBERSHIP_GATE_BLOCKED / D16_20_21_22_25_L2_REMAIN / SDA022_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D16 L2→L3 clearance remaining five: D16-17 requires durable consumable survivorship-aware historical-universe membership receipt then panel replay; D16-20 requires real Taiwan PIT treatment/event cohort + pre-treatment covariates + overlap/positivity; D16-21 requires real entity-linked alternative-data panel with entry/exit/vendor-version replay; D16-22 requires PIT text corpus + immutable document/model/prompt clocks; D16-25 requires genuine canonical CalibrationReceipt→decision ledger with uncertainty/risk-coverage/ABSTAIN. Numeric batch run 37805085401 accepted D16-16/18/19/24 at L3 feasibility only; no Alpha or full-market inference.",
+      "status": "D16_L3_COUNT_ADVANCED_11_OF_25 / D16_22_TAIWAN_SOURCE_LOCAL_TEXT_PIPELINE_L3_ACCEPTED / D16_17_EXACT_EQUIVALENT_SOURCE_DRIFT_BLOCKED / D16_20_21_25_L2_REMAIN / SDA022_PHYSICAL_NCT01_PENDING / EFFECT_TARGET_PENDING / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "L2 清零攻堅剩 D16-17/20/21/25。優先 D16-21：重用真實 TDCC weekly vintages，建立 PIT official target-universe coverage + entry/exit + entity-link + source-version selection-bias audit；D16-17 不得放寬 source hash，等待 durable row-level membership authority；D16-20 需 real Taiwan treatment cohort/pre-treatment covariates/overlap；D16-25 只接受 genuine canonical CalibrationReceipt->decision ledger。D16-22 已 L3，open-world LLM remains unvalidated.",
       "lastResearchUpdate": "2026-10-03T10:03:42+08:00",
       "researchNote": "D16-25 specialist work established the conceptual/executable validation contract and D15-19 handoff, justifying L2/40%. No real calibration/PIT outcome evidence exists yet, so L3 remains closed and no Formal optimization candidate exists."
     },
