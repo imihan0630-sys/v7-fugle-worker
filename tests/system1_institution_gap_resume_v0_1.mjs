@@ -30,8 +30,8 @@ export function planMissingInstitutionDates(status,targetDate){
       const matches=status.snapshotCounts.filter(row=>row?.date===date);
       assert.equal(matches.length,1,"Expected one physical institution snapshot for "+date);
       assert.equal(matches[0].complete,true,"Incomplete institution snapshot "+date);
-      assert.ok(Number.isFinite(Number(matches[0].stockCount))&&Number(matches[0].stockCount)>0,
-        "Institution stock count must be positive for "+date);
+      assert.ok(Number.isInteger(Number(matches[0].stockCount))&&Number(matches[0].stockCount)>=1500,
+        "Institution stock count below production 1500-stock completion threshold for "+date);
     }
     return {alreadyReady:true,repairDates:[],tradingDateCount:3,physicalSnapshotsVerified:true};
   }
