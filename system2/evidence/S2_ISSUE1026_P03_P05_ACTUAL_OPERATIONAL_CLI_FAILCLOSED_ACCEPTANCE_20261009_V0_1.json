@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_ISSUE1026_REAL_P03_P05_ACTUAL_OFFLINE_GUARDS_CLI_ACCEPTANCE_20261009_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "acceptanceClass": "REAL_GITHUB_RUN_EXISTING_OPERATIONAL_CLI_NEGATIVE_SAFE_ACCEPTANCE_ONLY",
+  "state": "PASS_NONAUTHORIZING_PHYSICAL_D1_DEFER_MECHANISMS",
+  "realRun": {
+    "id": 37945180573,
+    "jobId": 113869498497,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37945180573",
+    "headSha": "c3a6eabef08cef6318f05a8c5ca6dcf58acf5903",
+    "conclusion": "success",
+    "testingPR": 1047,
+    "artifactId": 11621929400,
+    "artifactName": "s2-issue1026-p03p05-actual-offline-failclosed-37945180573-1",
+    "artifactDigest": "sha256:64fcec3eb282ea43d79aaba20ad30d00a3384891d96eb4813c88aee92f3e193d",
+    "artifactZipBytes": 1366,
+    "sourceJobSteps": {
+      "p03FrozenRealMatrixAndP05SyntheticRegression": "success",
+      "trueOperationalCliEntryPoints": "success",
+      "artifactPreserve": "success",
+      "system1Isolation": "success"
+    }
+  },
+  "actualObserved": {
+    "rawOutputResult": "PASS_P03_REAL_NEGATIVE_MATRIX_AND_P05_BOTH_GATES_FAIL_CLOSED",
+    "p03RealWriterGateRunsValidated": 5,
+    "writerClasses": 4,
+    "p03AuthenticatedGrantToBusinessResultChainsQualified": 0,
+    "p05SourceOnlyOfficialKeys": 11843,
+    "p05Physical36ScoutQueries": 0,
+    "p05PhysicalFullCensusQueries": 0,
+    "p05PhysicalMissingKeys": "UNKNOWN",
+    "p05Actual36ReadonlyBudgetGuard": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "p05Actual11843ReadonlyBudgetGuard": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "p05ActualMissingOnlyRepairCli": "BLOCKED_INCOMPLETE_OR_UNTRUSTED_PHYSICAL_CENSUS_NO_REPAIR_PLAN",
+    "missingOnlyRepairPermissionToWrite": false
+  },
+  "safety": {
+    "allCloudflareTokensRemovedFromOperationalCLIEnvironment": true,
+    "cloudflareD1SqlSelects": 0,
+    "cloudflareD1SqlMutations": 0,
+    "cloudflareR2Calls": 0,
+    "cloudflareGraphQLQueries": 0,
+    "quotaGrantCreated": false,
+    "system1FormalChanged": false,
+    "productionWorkerChanged": false,
+    "cloudflareBillingChanged": false
+  },
+  "authorizationState": {
+    "system1WriteReserveApproved": false,
+    "system1ReadReserveApproved": false,
+    "p03RealMultiwriterPhysicalClosure": false,
+    "p05D1PhysicalClosure": false,
+    "originalCorr003IndependentPhysicalGatesAccepted": 0,
+    "originalCorr003IndependentPhysicalGatesTotal": 5,
+    "correctionStatus": "VERIFYING"
+  },
+  "independentHandoff": {
+    "remediationLane": "Cross-reference original P03 negative quotas and Issue1024 production reserves; do not accept a GraphQL usage lower bound or this offline PASS as permission to run physical D1.",
+    "auditLane": "Independently read original Run 37945180573 logs/Artifact; inspect 19 original criteria; do not promote P03/P05 from accepted negative controls to real physical acceptance.",
+    "dataLane": "Only after independent reserve and account lag+ledger proof should 36-key Scout be separately authorized; 11843 census needs another evaluation and cannot inherit Scout grant."
+  }
+}
