@@ -1,3 +1,4 @@
+import {requireOct08ReadonlyBudgetQualificationV0_1} from "./qualify_oct08_readonly_d1_account_budget_v0_1.mjs";
 import assert from "node:assert/strict";
 import {readFile,writeFile} from "node:fs/promises";
 import {createRemoteD1RestAdapter} from "../deploy/remote_d1_rest_adapter.mjs";
@@ -14,6 +15,8 @@ try{
   "REMEDIATION_LANE_CROSS_SYSTEM_D1_READ_QUOTA_NOT_CONFIRMED");
  assert.equal(process.env.S2_D1_NO_COMPETING_WRITER_CONFIRMED,"true",
   "NO_COMPETING_D1_WRITER_CONFIRMATION_REQUIRED");
+ const qualifiedReadBudget=await requireOct08ReadonlyBudgetQualificationV0_1("FULL_11843");
+ console.log("S2_OCT08_D1_READ_BUDGET_EVIDENCE "+JSON.stringify(qualifiedReadBudget));
  const id=process.env.CLOUDFLARE_ACCOUNT_ID;
  const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
  assert.ok(id&&token,"isolated D1 research credentials required");
