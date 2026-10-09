@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "S2_OCT08_D1_READONLY_ROWSREAD_MONOTONIC_CI_ACCEPTANCE_20261009_V0_1",
+  "lane": "DATA_LANE",
+  "class": "A",
+  "acceptance": "PASS_PR_CI_V8_POSTMERGE_MAIN_CI_AND_GITHUB_BLOB_READBACK_NO_PHYSICAL_D1_CENSUS",
+  "baselineMain": "889e781e5ebd0877e9255fd128608d8d87f796b3",
+  "pr": 1012,
+  "prHeadSha": "901a13addd9ec109c60f80172c805cd87b040ec6",
+  "mergeSha": "b8fd1291b16daa353a82588ece4c0b410506d5f1",
+  "ci": {
+    "prHeadSystem2Research": {
+      "runId": 37932363506,
+      "conclusion": "SUCCESS"
+    },
+    "prHeadV8Regression": {
+      "runId": 37932363593,
+      "conclusion": "SUCCESS"
+    },
+    "postmergeMainSystem2Research": {
+      "runId": 37932516942,
+      "conclusion": "SUCCESS"
+    }
+  },
+  "readback": [
+    {
+      "path": "system2/runtime/oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+      "blobSha": "721e3bf121ad11bc9ca60273265df1baa0f0ca5e"
+    },
+    {
+      "path": "system2/runtime/oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+      "blobSha": "a4d0e1ec0d45843d658dae4c5cdec6024a70f9c1"
+    },
+    {
+      "path": "system2/tests/oct08_full_source_to_hot_d1_census_readonly_v0_1.test.mjs",
+      "blobSha": "5ef778bc2a7cfdc11aad8dd7b31a3673f9899932"
+    },
+    {
+      "path": "system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs",
+      "blobSha": "f4dd213bbe35b7becde7dae686dc23a7dd1d0a8d"
+    }
+  ],
+  "falsification": "Simulated numeric cumulative rowsRead regression on second D1 SELECT rejects with D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED, preserves positive and prior malformed-read-budget tests; runner/test CI-only",
+  "sources": {
+    "officialSessionMarketDateReceiptsAccepted": "12/12 SOURCE_ONLY",
+    "officialSourceKeys": 11843
+  },
+  "physical": {
+    "sampledSourceToD1KeysAudited": 0,
+    "sampledDenominator": 36,
+    "fullSourceToD1KeysAudited": 0,
+    "fullDenominator": 11843,
+    "physicalReadsExecutedByPatch": 0,
+    "physicalWritesExecutedByPatch": 0,
+    "physicalMissingKeysCount": "UNKNOWN"
+  },
+  "gates": {
+    "system1ReadReserveAuthorized": false,
+    "system1WriteReserveAuthorized": false,
+    "physicalReadHeadroomQualified": false,
+    "correction003FinalClosed": false,
+    "correction003Owner": "REMEDIATION_LANE",
+    "independentAuditor": "AUDIT_LANE",
+    "allowPhysicalD1Read": false,
+    "allowPhysicalD1Write": false
+  },
+  "scopeUnchanged": [
+    "System1 Formal Core",
+    "System1 production Worker runtime",
+    "System2 live selection and push",
+    "D1/R2 physical storage",
+    "Paid Cloudflare tier",
+    "Original firstKnownAt/PIT/NC-T01"
+  ],
+  "next": "AUDIT_LANE independently completes A7 and quota acceptance; qualified actual account read budget plus no competing writer; then 36-key scout -> budgeted full 11843-key census -> offline missing-key planner -> separate physical write authorization."
+}
