@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "S2_F08_EXACT_READBACK_PAYLOAD_EVIDENCE_V0_1",
+  "observedDate": "2026-10-09",
+  "owningLane": "BUILD_LANE",
+  "sourceMainBeforeChange": "278b61b9cc8aa1d74f908665e90cb6caa8c15fcf",
+  "implementationPR": 1005,
+  "mergeCommit": "6cb0202eb6c53eddef294dcb1cb61ab8e86b5cff",
+  "protectedScope": "SYSTEM2_SHADOW_OFFLINE_ONLY",
+  "changedPaths": [
+    "system2/runtime/f08_outcome_atomic_cas_append_plan_v0_1.mjs",
+    "system2/tests/f08_outcome_atomic_cas_append_plan_v0_1.test.mjs"
+  ],
+  "CI": {
+    "system2Research": {
+      "runId": 37928686294,
+      "conclusion": "success",
+      "testFiles": 278,
+      "marker": "F08_CAS_EXACT_READBACK_PAYLOAD_11_CASES_PASS_UNCERTIFIED_PHYSICAL"
+    },
+    "v8Regression": {
+      "runId": 37928686377,
+      "conclusion": "success"
+    },
+    "sqliteSchema": {
+      "migrations": 11,
+      "tables": 56,
+      "mode": "CI_MEMORY_ONLY"
+    }
+  },
+  "codeEvidence": {
+    "canonicalPlanRebuilt": true,
+    "CASReturningColumns": 5,
+    "exactPersistedColumns": 22,
+    "zeroOrDuplicateResponseFailClosed": true,
+    "wrongCostOrReceiptJsonFailClosed": true,
+    "alteredSQLPlanFailClosed": true,
+    "physicalD1ReadOrWritePerformed": false,
+    "physicalD1SchemaMigrationApplied": false,
+    "accountBudgetReservationGranted": false,
+    "physicalD1ReadbackVerified": false,
+    "independentPITAttestation": false,
+    "historicalOutcomesCertified": false
+  },
+  "acceptance": {
+    "F08CheckPassed": 2,
+    "F08CheckTotal": 5,
+    "F08C3": "UNVERIFIED_PHYSICAL_WRITER_AND_QUOTA_RESERVATION",
+    "totalPassedChecks": 22,
+    "totalChecks": 75,
+    "fullyAcceptedGates": 0,
+    "correction012": "OPEN_UNTIL_INDEPENDENT_AUDIT_AND_PHYSICAL_SOURCE_PROOF",
+    "correction013": "OPEN",
+    "correction003": "FIX_IN_PROGRESS_REMEDIATION_LANE_OWNED"
+  },
+  "next": [
+    "REMEDIATION_LANE and AUDIT_LANE must independently validate account-wide D1 read/write quota, System1-first reserves, physical multiwriter coordination (A07).",
+    "BUILD_LANE may only continue offline/isolated readback and writer safeguards; do not dispatch physical F08 or stage SQL 0011 migration until A07 authorization and F07 physical acceptance.",
+    "DATA_LANE remains owner of official source / session / PIT population. AUDIT_LANE alone may close HIGH/CRITICAL corrections.",
+    "Future physical writer must compare exact returned and SELECT readback rows against immutable expected receipt and distinguish zero RETURNING from successful append or proven idempotence."
+  ],
+  "bounds": {
+    "system1FormalCoreChanged": false,
+    "system1WorkerOrCronChanged": false,
+    "system2FinalSelectionEnabled": false,
+    "realTrading": false,
+    "pushOrCapitalChanged": false,
+    "paidTierChanged": false
+  }
+}
