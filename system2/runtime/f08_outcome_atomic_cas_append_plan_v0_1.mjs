@@ -130,3 +130,81 @@ export async function buildS2F08ConditionalAppendPlanV0_1({
   };
   return deepFreeze({...proof,planHash:await sha256Hex(proof)});
 }
+// CORR-012 / F08 isolated payload-integrity stage. This inspector cannot
+// attest that the supplied rows came from physical D1; the future quota-gated
+// writer must separately attest the actual SQL execution and physical readback.
+// A zero-row CAS response is NEVER successful or silently idempotent.
+export async function verifyS2F08ConditionalAppendReadbackPayloadV0_1({
+  plan, receipt, previousReceipt = null, returnedRows, readbackRows,
+} = {}) {
+  if (!plan || typeof plan !== "object" || Array.isArray(plan)) {
+    throw new Error("F08_READBACK_PLAN_REQUIRED");
+  }
+  // Reconstruct from the immutable outcome inputs; a caller-created planHash
+  // does not authorize arbitrary SQL or accidentally changed parameters.
+  const canonical = await buildS2F08ConditionalAppendPlanV0_1({
+    receipt, previousReceipt, bindingName:"SYSTEM2_DB",
+  });
+  if (plan.planHash !== canonical.planHash ||
+      plan.sql !== canonical.sql ||
+      JSON.stringify(plan.params) !== JSON.stringify(canonical.params) ||
+      plan.targetBinding !== "SYSTEM2_DB") {
+    throw new Error("F08_READBACK_PLAN_NOT_CANONICAL");
+  }
+  if (!Array.isArray(returnedRows) || returnedRows.length !== 1) {
+    throw new Error("F08_READBACK_CAS_RETURNING_NOT_EXACTLY_ONE");
+  }
+  const expectedRow = await toS2FrozenOutcomeRevisionRowV0_1(receipt);
+  const returned = returnedRows[0];
+  const returningKeys = ["revision_id","revision_hash","decision_id","lineage_hash","revision_number"];
+  if (!returned || typeof returned !== "object" || Array.isArray(returned) ||
+      JSON.stringify(Object.keys(returned).sort()) !==
+        JSON.stringify([...returningKeys].sort())) {
+    throw new Error("F08_READBACK_RETURNING_SHAPE_MISMATCH");
+  }
+  for (const key of returningKeys) {
+    if (returned[key] !== expectedRow[key]) {
+      throw new Error("F08_READBACK_RETURNING_IDENTITY_MISMATCH:"+key);
+    }
+  }
+  if (!Array.isArray(readbackRows) || readbackRows.length !== 1) {
+    throw new Error("F08_READBACK_PERSISTED_NOT_EXACTLY_ONE");
+  }
+  const observed = readbackRows[0];
+  if (!observed || typeof observed !== "object" || Array.isArray(observed) ||
+      JSON.stringify(Object.keys(observed).sort()) !==
+        JSON.stringify([...EXPECTED_COLUMNS].sort())) {
+    throw new Error("F08_READBACK_PERSISTED_SHAPE_MISMATCH");
+  }
+  for (const key of EXPECTED_COLUMNS) {
+    if (observed[key] !== expectedRow[key]) {
+      throw new Error("F08_READBACK_PERSISTED_VALUE_MISMATCH:"+key);
+    }
+  }
+  const query = {
+    sql:"SELECT "+EXPECTED_COLUMNS.join(", ")+" FROM "+TBL+
+      " WHERE revision_id = ? AND revision_hash = ? AND decision_id = ?"+
+      " AND lineage_hash = ? AND revision_number = ?",
+    params:returningKeys.map(key=>expectedRow[key]),
+  };
+  // All booleans remain false even when synthetic/stubbed readback is equal.
+  // Independent cloud transport, quota receipt and PIT/source attestation
+  // cannot be produced from this pure function or its hash.
+  const result = {
+    schemaVersion:"S2_F08_CAS_READBACK_PAYLOAD_INSPECTION_V0_1",
+    status:"PAYLOAD_MATCH_UNCERTIFIED_PHYSICAL",
+    planHash:canonical.planHash,
+    revisionHash:expectedRow.revision_hash,
+    checkedColumns:EXPECTED_COLUMNS.length,
+    returnCount:1,readbackCount:1,
+    exactReadbackQuery:query,
+    physicalExecutionVerified:false,
+    physicalReadbackVerified:false,
+    accountQuotaGranted:false,
+    pitSourceIndependentlyAuthenticated:false,
+    f08C3Accepted:false,
+    system1FormalCoreImpact:false,
+    finalSelectionEnabled:false,
+  };
+  return deepFreeze({...result,inspectionHash:await sha256Hex(result)});
+}
