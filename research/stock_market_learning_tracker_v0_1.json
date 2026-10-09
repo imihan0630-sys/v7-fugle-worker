@@ -1492,8 +1492,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「題材股與正式產業分類橋接」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / BR046_ABF_MANY_TO_MANY / BR047_AI_DATACENTER_SECOND_THEME / BR048_DELTA_EFFECTIVE_DATED_EXPOSURE_VINTAGES / PRODUCT_SHIPPING_TO_SYSTEM_SOLUTION_TO_MOU / CLOCK_PRECISION_PRESERVED / EXPOSURE_MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED",
-          "next": "BR-049V seek an issuer/theme exposure reduction, cancellation, supersession or expiry control so effective-dated theme membership supports exits as well as additions; preserve source-clock precision and UNKNOWN magnitude; no L4 until independent prospective issuers/dates and D16 OOS validation."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / ABF_AND_AI_DATACENTER_MANY_TO_MANY_BRIDGES / EFFECTIVE_DATED_EXPOSURE_VINTAGES / BR079_HISTORICAL_THEME_EXIT_CONTROL / ACTIVE_TO_TERMINATED_WITH_RESIDUAL_OBLIGATION_SEMANTICS / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "Capture a genuinely prospective issuer-native exposure reduction, cancellation, expiry or supersession under the same effective-dated theme contract; preserve residual obligations, source-clock precision and UNKNOWN exposure magnitude; no L4 before independent prospective issuers/dates and D16 validation."
         },
         {
           "id": "D09-12",
