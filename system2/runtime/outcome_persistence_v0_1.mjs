@@ -352,6 +352,36 @@ async function validateOutcomeLineageV0_1(db, batch) {
     if (record.table === "s2_outcomes") {
       const outcome = parseJsonObject(record.row.outcome_json, "s2_outcomes.outcome_json");
       requireLineageEqual(outcome.decisionId, record.row.decision_id, "outcome_json.decisionId");
+
+      // Recalculate the snapshot digest rather than accepting a caller-signed
+      // JSON or a fresh batchHash as proof of underlying source provenance.
+      const { outcomeHash, ...signedOutcomeFields } = outcome;
+      const recalculatedHash = await sha256Hex(signedOutcomeFields);
+      if (!/^[0-9a-f]{64}$/.test(String(outcomeHash || ""))
+          || recalculatedHash !== outcomeHash) {
+        throw new Error("OUTCOME_SNAPSHOT_HASH_MISMATCH");
+      }
+      const numericProjection = [
+        ["d1_return", outcome.horizonReturns?.D1],
+        ["d3_return", outcome.horizonReturns?.D3],
+        ["d5_return", outcome.horizonReturns?.D5],
+        ["d10_return", outcome.horizonReturns?.D10],
+        ["d20_return", outcome.horizonReturns?.D20],
+        ["mfe", outcome.mfe], ["mae", outcome.mae],
+        ["realized_return_after_cost", outcome.simulatedExecution?.realizedReturnAfterCost ?? null],
+        ["holding_sessions", outcome.simulatedExecution?.holdingSessions ?? null],
+      ];
+      for (const [column, payloadValue] of numericProjection) {
+        const stored = record.row[column];
+        if (!(stored === null || stored === undefined
+          ? payloadValue === null || payloadValue === undefined
+          : Number.isFinite(payloadValue) && Number(stored) === Number(payloadValue))) {
+          throw new Error("OUTCOME_ROW_PROJECTION_MISMATCH:" + column);
+        }
+      }
+      requireLineageEqual(outcome.updatedAt, record.row.updated_at,
+        "outcome_json.updatedAt");
+
       const decision = await readCanonicalParent(db, {
         table: "s2_decisions",
         identityColumn: "decision_id",
