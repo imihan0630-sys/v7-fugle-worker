@@ -96,6 +96,6 @@ assert.match(workflow,/read-only.*account.*metadata|metadata.*only/i);
 assert.doesNotMatch(workflow,/wrangler.*deploy|R2_ACCESS_KEY|PUSH_WEBHOOK/);
 assert.doesNotMatch(cli,/createRemoteD1RestAdapter|\.prepare\s*\(|\.batch\s*\(|\.run\s*\(/);
 assert.match(cli,/graphql/);
-assert.match(cli,/const token=process.env.CLOUDFLARE_API_TOKEN\\|\\|/);
-assert.match(workflow,/CLOUDFLARE_API_TOKEN: \\$\\{\\{ secrets.CLOUDFLARE_API_TOKEN \\}\\}/);
+assert.ok(cli.includes("const token=process.env.CLOUDFLARE_API_TOKEN||"));
+assert.ok(workflow.includes("CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}"));
 console.log("OCT08_ACCOUNT_D1_METADATA_ONLY_POSITIVE_AND_18_ADVERSARIAL_FAIL_CLOSED_PASS");
