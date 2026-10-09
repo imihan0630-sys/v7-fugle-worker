@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "S2_OCT08_D1_READONLY_MONOTONIC_ROWSREAD_COUNTER_GUARD_PREREG_20261009_V0_1",
+  "lane": "DATA_LANE",
+  "class": "A",
+  "marketDateCutoff": "2026-10-08",
+  "researchStatus": "SOURCE_LEVEL_PATCH_PENDING_PR_CI",
+  "baselineMain": "889e781e5ebd0877e9255fd128608d8d87f796b3",
+  "problem": "Existing read-only sampled/full October hot D1 probes validate individual rowsRead observations are finite and below their hard cap, but do not enforce monotonicity across indexed queries; reset-to-zero can falsely renew headroom.",
+  "scopes": [
+    {
+      "module": "system2/runtime/oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+      "hardReadCap": 35000,
+      "physicalScoutKeys": 36
+    },
+    {
+      "module": "system2/runtime/oct08_full_source_to_hot_d1_census_readonly_v0_1.mjs",
+      "hardReadCap": 150000,
+      "physicalSourceKeys": 11843
+    }
+  ],
+  "falsification": [
+    "Valid counter before SQL, reset to numeric zero on second SQL: fail closed after exactly 2 queries; do not claim 0 new reads.",
+    "Retain positive normal-scan fixture for each reader.",
+    "Retain unknown/null/NaN and hard-cap guards.",
+    "Do not attempt any real Cloudflare D1 SQL until separate account-read budget evidence and no competing writer are confirmed."
+  ],
+  "expectedEvidence": "PR System2 Research CI + V8 Regression and merged-main readback; no physical data coverage acceptance implied",
+  "physicalCloudflareD1Selects": 0,
+  "physicalCloudflareD1Writes": 0,
+  "cloudflareR2Calls": 0,
+  "system1FormalChanged": false,
+  "system2LiveAuthorityChanged": false,
+  "paidTierChanged": false,
+  "physicalCensusState": "NOT_EXECUTED",
+  "correction003IndependentAuditOwnedBy": "AUDIT_LANE",
+  "next": "Review PR CI, conflict-check latest main, merge only if green and within Class A isolation, then freeze acceptance; physical scout and full census remain deferred."
+}
