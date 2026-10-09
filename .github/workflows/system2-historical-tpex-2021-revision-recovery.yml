@@ -2,6 +2,11 @@ name: System2 Historical 2021 TPEx Revision Recovery
 
 on:
   workflow_dispatch:
+    inputs:
+      quota_reservation_rows:
+        description: "Evidence-based conservative D1 rowsWritten reservation for recovery persistence"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -22,12 +27,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Migrate isolated System2 D1 additive revision lineage schema
+      - name: Verify required isolated D1 schema without mutation
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
-        run: node system2/deploy/provision_system2_d1.mjs
+          SYSTEM2_D1_SCHEMA_MUTATION_ALLOWED: "false"
+        run: node system2/deploy/ensure_system2_d1_ready.mjs
 
   recover:
     needs: migrate
@@ -42,7 +47,19 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: TPEX_2021_REVISION_RECOVERY
+          requested_rows_written: ${{ inputs.quota_reservation_rows }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Capture immutable baseline plus prospective official revision overlay
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -58,6 +75,7 @@ jobs:
             | tee /tmp/system2-historical-revision-TPEX-2021.log
 
       - name: Physically re-verify 2021 TPEx through PIT revision lineage
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -72,6 +90,18 @@ jobs:
           node system2/scripts/historical_market_year_verify_v0_1.mjs \
             | tee /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.log
 
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: TPEX_2021_REVISION_RECOVERY
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Upload 2021 TPEx revision recovery evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -80,6 +110,8 @@ jobs:
           path: |
             /tmp/system2-historical-revision-TPEX-2021.json
             /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 30
 
