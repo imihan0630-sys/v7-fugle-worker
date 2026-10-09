@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_INDEPENDENT_AUDIT_PARTIAL_VERIFY_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "recordedAt": "2026-10-09T15:22:16+08:00",
+  "auditLane": "AUDIT_LANE",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "reviewedMainSha": "e947a48e7f364edafc737c8eec7852e7ded3e89e",
+  "reviewedImplementation": {
+    "pr": 980,
+    "mergeSha": "f3b7e30c00ae7d5407d8dd277753e32c59ce72b0",
+    "handoffPr": 981,
+    "implementationEvidence": "system2/evidence/S2_CORR_20261007_003_IMPLEMENTATION_EVIDENCE_20261009_V0_1.json"
+  },
+  "auditDisposition": "PARTIAL_VERIFIED_REPOSITORY_GATES_AND_ONE_REAL_QUOTA_DEFER_NOT_VERIFIED_CLOSED",
+  "requestedDirectiveStatus": "VERIFYING",
+  "physicalClosureAuthorized": false,
+  "positiveFindings": [
+    {
+      "item": "Canonical main implementation",
+      "state": "PASS_REPOSITORY_IMPLEMENTED",
+      "basis": "PR #980 and #981 merged; shared evaluator/runtime/action, workflow changes, registry, tests, checkpoint and queue physically exist in main."
+    },
+    {
+      "item": "Formal CI isolated regression",
+      "state": "PASS_CI_ONLY",
+      "basis": "PR980 head System2 Research CI 37893287729 and V8 Regression 37893287751 SUCCESS; does not prove independent live multi-writer behavior."
+    },
+    {
+      "item": "Account-budget contract",
+      "state": "PASS_STATIC",
+      "basis": "Evaluator constants 100000 account rowsWritten/day, 5000000 rowsRead/day, 00:00 UTC; accounting incorporates indexed write amplification and 8 rowsWritten reservation/result overhead."
+    },
+    {
+      "item": "Explicit writer authorities",
+      "state": "PASS_16_SHARED_CONCURRENCY_REGISTRY_SCOPE_ONLY",
+      "basis": "Main registry has 16 workflows sharing system2-isolated-d1-writer, of which 13 declare physical mutation; independent inspection of all 13 found shared quota action, writer ID, physical allow guard, and result-mode path."
+    },
+    {
+      "item": "P2/P3 ordinary push safety",
+      "state": "PASS_STATIC_AND_REAL_NONMUTATING_PUSH",
+      "basis": "Gate rejects ordinary push for P2/P3; real Hot History Bootstrap postmerge run 37893507856 logged NOT_QUERIED_NON_MUTATING_PATH and P2 mutation was skipped while workflow success did not signify physical backfill."
+    },
+    {
+      "item": "Unknown System1 reserve truthfulness",
+      "state": "PASS_CONSERVATIVE_FAIL_CLOSED",
+      "basis": "Only two historically healthy System1 after-market dates. Observed whole-V7 daily max 2825 is NOT authorized as reserve; policy reserveNumberAuthorized=false, authorizedReserveRows=null."
+    },
+    {
+      "item": "Real Cloudflare account usage / allowed-deferred path",
+      "state": "PASS_ONE_REAL_PHYSICAL_DEFER_PATH_NOT_WRITER_COMMIT",
+      "basis": "Postmerge run 37893508023 backfill job 113699597256 called GraphQL and isolated D1 ledger-read: observed account rowsWritten=26919, rowsRead=697831, outstanding reservation=0; evaluator emitted QUOTA_BUDGET_DEFER with SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED. Physical writer step skipped; artifact 11599088341 preserved result. GitHub workflow conclusion SUCCESS is only a protected-defer outcome, not historical ingest."
+    },
+    {
+      "item": "Billing and Formal boundary",
+      "state": "PASS_REPOSITORY_REVIEW_SCOPE",
+      "basis": "PR980 changed System2 research quota modules/workflows, no System1 Formal Core files or billing plan changes; no evidence of paid upgrade."
+    }
+  ],
+  "unmetClosureCriteria": [
+    {
+      "item": "Authorized System1 reserve",
+      "state": "BLOCKED",
+      "reason": "n=2 healthy after-market dates only; no accepted reserve-number evidence. Until authorized the quota gate correctly defers all System2 physical mutation."
+    },
+    {
+      "item": "Real same-UTC-day multi-writer physical acceptance",
+      "state": "NOT_DONE",
+      "reason": "One measured postmerge QUOTA_BUDGET_DEFER without physical write is not grant -> writer rowsWritten -> result receipt reconciliation for competing priorities."
+    },
+    {
+      "item": "Real later trading-day System1 primary/recovery persisted receipt",
+      "state": "NOT_DONE",
+      "reason": "No independently accepted subsequent 23:35/23:55 business-execution+persisted D1 proof without quota rejection; 2026-10-09 was stock-market holiday."
+    },
+    {
+      "item": "DATA_LANE Oct08 physical hot-history acceptance",
+      "state": "NOT_DONE",
+      "reason": "Official 12/12 source-day receipts exist, but 36-pair and 11843-pair October D1 hot physical readback are still not documented as executed/accepted."
+    }
+  ],
+  "auditWatchlist": [
+    {
+      "item": "Result reconciliation on failed writer",
+      "severity": "VERIFY_BEFORE_CLOSURE",
+      "observation": "Physical writer workflows inspected set result reconciliation condition to steps.quota.outputs.physical_allowed == 'true' && success(). If a granted writer fails mid-write, no result-mode receipt is recorded, leaving the reservation outstanding until UTC reset. This is fail-conservative but not a complete per-run actual-write reconciliation; require bounded failure-path evidence or an audited mechanism."
+    },
+    {
+      "item": "Read-cost accounting",
+      "severity": "VERIFY_BEFORE_CLOSURE",
+      "observation": "Common action defaults requested_rows_read to zero and current reservation ledger sums outstanding requestedRowsWritten only. Current GraphQL rowsRead is observed, but proof of predicted/competing read-heavy workload headroom remains absent; do not claim the 5M/day read budget is fully collision-proof."
+    },
+    {
+      "item": "Registry inventory scope",
+      "severity": "SCOPE_LIMIT",
+      "observation": "Independent static scope checked all 16 workflows sharing system2-isolated-d1-writer, not all 249 workflows in the repository; further audit should reject any other credentialed, physical System2 D1 mutation outside the registered authority group."
+    },
+    {
+      "item": "Analytics recency",
+      "severity": "SCOPE_LIMIT",
+      "observation": "GraphQL grouped analytics returns observed account usage, but no independent bound on provider publication lag/interval was proven. For allowed write bursts preserve conservative headroom and evaluate actual post-write metadata before closing."
+    }
+  ],
+  "protectedBoundaries": {
+    "system1FormalCoreChanged": false,
+    "paidCloudflareUpgradePerformed": false,
+    "system2LiveSelectionEnabled": false,
+    "actualD1WriteByAudit": false,
+    "noPITBackdating": true
+  },
+  "routing": {
+    "remediationLane": "Keep existing implementation under REMEDIATION_LANE; respond to closure watchlist without bypassing safety.",
+    "dataLane": "Do not treat quota code CI as physical Oct08 Hot D1 coverage. Start with budget-safe manual scout only after independent READ headroom/no writer attestation.",
+    "auditLane": "Continue independent live multi-writer, reserve calibration and System1 business persistence verification before VERIFIED_CLOSED.",
+    "ownerDecision": "No paid tier and no System1 Formal Core edits approved."
+  },
+  "supersedes": "PENDING_INDEPENDENT_AUDIT placeholder only; preserves older diagnostic and remediation evidence"
+}
