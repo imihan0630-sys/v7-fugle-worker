@@ -66,7 +66,7 @@ export function auditTwse2026Oct09OneShotArtifactV0_1({run,payload,baseline}={})
       fail("MONTH_NONPOSITIVE_COUNTS");
     if(month<=6){
       const old=frozen.get(month);
-      if(!old||row.state!=="ALREADY_RECEIPTED"||row.repairVerification!=="VERIFIED"||
+      if(!old||row.state!=="ALREADY_RECEIPTED"||!((row.checkpointRepairPerformed===false&&row.repairVerification===null)||(row.checkpointRepairPerformed===true&&row.repairVerification==="VERIFIED"))||
         row.receiptId!==old.receiptId||row.manifestRollingHash!==old.manifestRollingHash||
         row.packCount!==old.packCount||row.barCount!==old.barCount)
         fail("JAN_JUN_FROZEN_MONTH_RECEIPT_DRIFT");
