@@ -92,6 +92,11 @@ assert.ok(historyQuality.includes("steps.calendar.outputs.proceed == 'true'"));
 assert.ok(historyQuality.includes("V7_DATA_ONLY_RECOVERY:"));
 assert.ok(qualityIngest.includes("verifyManualQualityPrereqs("));
 assert.ok(qualityIngest.includes("manualQualityPrerequisitesVerified"));
+assert.ok(qualityIngest.includes("canReuseHeavyMopsSources(recoveryOnly,existingQuality)"));
+assert.ok(qualityIngest.indexOf("if(financialEpsCached)")>=0);
+assert.ok(qualityIngest.indexOf("if(financialEpsCached)")<qualityIngest.indexOf("const epsRows=helpers.parseOfficialCsv("));
+assert.ok(qualityIngest.includes("historicalQualityReuseHeavySources:true"));
+
 assert.ok(qualityIngest.includes("admin('/api/institution-status?marketDate='"));
 
 const manualScan=workflow.slice(workflow.indexOf("      - name: Historical after-market recovery\n"));
