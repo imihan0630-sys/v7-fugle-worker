@@ -233,7 +233,8 @@ export function evaluateD1AccountQuotaReservationV0_1({
       - outstanding
       - system1Reserve
       - reserveForDailyShadow
-      - launchReserve,
+      - launchReserve
+      - D1_QUOTA_LEDGER_ROWS_WRITTEN_RESERVE,
   );
   const reservation = resolveWriterReservationV0_1({
     writer,
