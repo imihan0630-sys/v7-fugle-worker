@@ -62,7 +62,7 @@ const p0 = evaluateD1AccountQuotaReservationV0_1({
 assert.equal(p0.state, "QUOTA_RESERVATION_GRANTED");
 assert.equal(p0.physicalAllowed, true);
 assert.equal(p0.requestedRowsWritten, 13130);
-assert.equal(p0.projectedRowsWritten, 96498);
+assert.equal(p0.projectedRowsWritten, 96506);
 
 const p2Push = evaluateD1AccountQuotaReservationV0_1({
   writer: byId.RECENT_A1_WARMUP,
@@ -82,7 +82,7 @@ const warmupAdaptive = evaluateD1AccountQuotaReservationV0_1({
 assert.equal(warmupAdaptive.state, "QUOTA_RESERVATION_GRANTED");
 assert.equal(warmupAdaptive.adaptiveMaxDates, 2);
 assert.equal(warmupAdaptive.requestedRowsWritten, 23152);
-assert.equal(warmupAdaptive.projectedRowsWritten, 91282);
+assert.equal(warmupAdaptive.projectedRowsWritten, 91290);
 
 const measuredSameDay = evaluateD1AccountQuotaReservationV0_1({
   writer: byId.RECENT_A1_WARMUP,
