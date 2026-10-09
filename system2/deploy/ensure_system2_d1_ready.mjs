@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken = process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+const schemaMutationAllowed = process.env.SYSTEM2_D1_SCHEMA_MUTATION_ALLOWED !== "false";
 
 assert.ok(accountId, "CLOUDFLARE_ACCOUNT_ID is required");
 assert.ok(apiToken, "SYSTEM2_CLOUDFLARE_API_TOKEN is required");
@@ -103,6 +104,9 @@ if (matches.length !== 1) {
     databaseCount: matches.length,
     schemaMutationPerformed: false,
   }));
+  if (!schemaMutationAllowed) {
+    throw new Error("D1_SCHEMA_MUTATION_REQUIRES_QUOTA_RESERVATION");
+  }
   await import("./provision_system2_d1.mjs");
 } else {
   const databaseId = matches[0].uuid || matches[0].id;
@@ -144,6 +148,9 @@ if (matches.length !== 1) {
       missingTables,
       schemaMutationPerformed: false,
     }, null, 2));
+    if (!schemaMutationAllowed) {
+      throw new Error("D1_SCHEMA_MUTATION_REQUIRES_QUOTA_RESERVATION");
+    }
     await import("./provision_system2_d1.mjs");
   }
 }

@@ -49,7 +49,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: OCT09_2026_TWSE_ONE_SHOT
+          requested_rows_written: ${{ vars.SYSTEM2_OCT09_ONE_SHOT_QUOTA_RESERVATION_ROWS || '0' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Controlled receipt-aware 2026 TWSE completed-months backfill
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -61,12 +73,27 @@ jobs:
         run: |
           set -euo pipefail
           node system2/scripts/historical_current_year_segment_backfill_v0_1.mjs | tee /tmp/system2-current-year-segments-TWSE.log
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: OCT09_2026_TWSE_ONE_SHOT
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Preserve result or fail-closed diagnostic artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system2-2026-twse-oct09-one-shot-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/system2-current-year-segments-TWSE.json
+          path: |
+            /tmp/system2-current-year-segments-TWSE.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 90
       - name: Protected System1 production isolation

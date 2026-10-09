@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "S2_D1_ACCOUNT_WRITER_REGISTRY_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "accountScope": "CLOUDFLARE_WORKERS_FREE_ACCOUNT_WIDE",
+  "concurrencyGroup": "system2-isolated-d1-writer",
+  "writers": [
+    {
+      "id": "DAILY_SHADOW_DIAGNOSTIC",
+      "workflow": ".github/workflows/system2-daily-shadow-diagnostic.yml",
+      "priority": "P0",
+      "writerClass": "P0_PROTECTED_OPERATIONAL_EVIDENCE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": true,
+      "reservationModel": {
+        "type": "FIXED_MEASURED",
+        "rowsWritten": 13130,
+        "evidence": "run 37609474459"
+      }
+    },
+    {
+      "id": "HISTORICAL_ANNUAL_BACKFILL",
+      "workflow": ".github/workflows/system2-historical-pack-2017-backfill.yml",
+      "priority": "P1",
+      "writerClass": "P1_CONTROLLED_BULK_DATA",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "FIXED_MEASURED",
+        "rowsWritten": 7358,
+        "evidence": "max accepted annual sample in S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION"
+      }
+    },
+    {
+      "id": "HISTORICAL_CURRENT_YEAR_SEGMENT",
+      "workflow": ".github/workflows/system2-historical-current-year-segment-backfill.yml",
+      "priority": "P1",
+      "writerClass": "P1_CONTROLLED_BULK_DATA",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "RECENT_A1_WARMUP",
+      "workflow": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+      "priority": "P2",
+      "writerClass": "P2_DISCRETIONARY_WARMUP_HIGH_WRITE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "PER_DATE_MEASURED",
+        "rowsWrittenPerDate": 11576,
+        "maxDates": 5,
+        "evidence": "run 37550201160"
+      }
+    },
+    {
+      "id": "HOT_HISTORY_BOOTSTRAP",
+      "workflow": ".github/workflows/system2-hot-history-bootstrap.yml",
+      "priority": "P2",
+      "writerClass": "P2_DISCRETIONARY_WARMUP",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "FUGLE_RAW_HOT_HISTORY_BOOTSTRAP",
+      "workflow": ".github/workflows/system2-fugle-raw-hot-history-bootstrap.yml",
+      "priority": "P2",
+      "writerClass": "P2_DISCRETIONARY_WARMUP",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "HISTORICAL_REAL_SOURCE_SMOKE",
+      "workflow": ".github/workflows/system2-historical-pack-real-source-smoke.yml",
+      "priority": "P3",
+      "writerClass": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "HISTORICAL_D1_PHYSICAL_SMOKE",
+      "workflow": ".github/workflows/system2-historical-d1-physical-smoke.yml",
+      "priority": "P3",
+      "writerClass": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "HISTORICAL_D1_BOUNDED_SMOKE",
+      "workflow": ".github/workflows/system2-historical-d1-bounded-smoke.yml",
+      "priority": "P3",
+      "writerClass": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "ISOLATED_D1_PROVISION",
+      "workflow": ".github/workflows/system2-isolated-d1-provision.yml",
+      "priority": "P3",
+      "writerClass": "P3_SCHEMA_MAINTENANCE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "RESONANCE_DEPLOY",
+      "workflow": ".github/workflows/system2-resonance-deploy.yml",
+      "priority": "P3",
+      "writerClass": "P3_DEPLOY_WITH_CONDITIONAL_D1_WRITE",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "TPEX_2021_REVISION_RECOVERY",
+      "workflow": ".github/workflows/system2-historical-tpex-2021-revision-recovery.yml",
+      "priority": "P3",
+      "writerClass": "P3_SPECIAL_RECOVERY",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "OCT09_2026_TWSE_ONE_SHOT",
+      "workflow": ".github/workflows/system2-2026-twse-oct09-one-shot.yml",
+      "priority": "P1",
+      "writerClass": "P1_CONTROLLED_BULK_DATA_ONE_SHOT",
+      "physicalMutation": true,
+      "pushPhysicalAllowed": true,
+      "reservationModel": {
+        "type": "CALLER_REQUIRED"
+      }
+    },
+    {
+      "id": "OCT08_FULL_SOURCE_HOT_D1_CENSUS",
+      "workflow": ".github/workflows/system2-oct08-full-source-hot-d1-census-manual.yml",
+      "priority": "READ_ONLY",
+      "writerClass": "READ_ONLY_AUDIT",
+      "physicalMutation": false,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "NONE"
+      }
+    },
+    {
+      "id": "OCT08_SOURCE_MATCHED_READONLY",
+      "workflow": ".github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",
+      "priority": "READ_ONLY",
+      "writerClass": "READ_ONLY_AUDIT",
+      "physicalMutation": false,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "NONE"
+      }
+    },
+    {
+      "id": "TWSE2026_JUL_SEP_READONLY",
+      "workflow": ".github/workflows/system2-twse2026-jul-sep-independent-physical-manual.yml",
+      "priority": "READ_ONLY",
+      "writerClass": "READ_ONLY_AUDIT",
+      "physicalMutation": false,
+      "pushPhysicalAllowed": false,
+      "reservationModel": {
+        "type": "NONE"
+      }
+    }
+  ]
+}

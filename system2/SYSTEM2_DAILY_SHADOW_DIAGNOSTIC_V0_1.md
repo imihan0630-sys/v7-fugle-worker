@@ -14,7 +14,7 @@ The new diagnostic orchestrator executes the authorized portion daily: official 
 ## Execution and time contract
 
 - GitHub Actions `System2 Daily Shadow Diagnostic` targets main only, using the existing `system2-research` environment and non-cancelling `system2-isolated-d1-writer` concurrency group.
-- Scheduled at 18:35 Taipei on weekdays; push/manual runs provide physical acceptance. GitHub schedule can be delayed and is not an exact Decision Clock or guaranteed pre-19:00 delivery.
+- Scheduled at 18:35 Taipei on weekdays. Schedule/push/manual physical persistence all require the shared account-level D1 quota reservation gate; a denied reservation yields explicit quota deferral/read-only evidence rather than touching D1. GitHub schedule can be delayed and is not an exact Decision Clock or guaranteed pre-19:00 delivery.
 - Each invocation derives its market date from actual Taipei wall time. Before 13:30 it records a skip without market/calendar calls. Official non-trading dates record a skip; unavailable calendar fails closed.
 - Source observation time is a diagnostic clock, never the authorized prospective Decision Clock or proof of official publication time. First-known fields explicitly mean this observation's upper bound only.
 - Stale/undated/duplicate/future/incomplete market data are archived as diagnostics and cannot enter factor computation. Source audit includes raw row count, reported dates and payload hash, including stale HTTP-200 responses.
@@ -77,3 +77,10 @@ PR #307 merged `011cc6b300ac99b350c187e7d7f3a2ca447780e2`. PR System2 CI 3697892
 PR #308 merged `b5148bd121a1db1f9061e354afbd5513434be047`. PR System2 CI 36981377643 (rerun after concurrency cancellation) and V8 36981377677 PASS; main System2 CI 36981526267, V8 36981526271 and diagnostic writer 36981526309 PASS. Exact D1 receipt and all three public GETs (diagnostic, health, operations) verified HTTP 200. Run `S2-DAILY-DIAGNOSTIC:2026-10-02:36981526309:1`, actual observation `2026-10-02T08:00:02.600Z`.
 
 TWSE and TPEx both returned HTTP 200 with reported date `1151001` (2026-10-01); raw counts 1380 and 11871 respectively. Today's normalized ordinary count is 0 because stale rows are correctly rejected, not because an assessor produced zero picks. Prospective history `SKIPPED_SOURCE_NOT_READY`; positive live historical ingest remains unverified. Operations `UPSTREAM_CAPACITY_RECEIPT_MISSING`, upstreamCapacity=null, activeSymbolCount=0; health CAPTURE_DISABLED, schema 1.1. Source, immutable persistence, public diagnostic readback and fail-closed skip are physically verified. S2-07 remains incomplete pending real same-date inputs, authorized assessors, validated regime and continuity; no capacity/zero-pick/selection claim. Full evidence: `system2/evidence/daily_prospective_history_physical_acceptance_20261002.json`. 19:00 audit has not yet happened at this observation.
+
+
+## Shared account D1 budget
+
+Daily Shadow is registered as `P0_PROTECTED_OPERATIONAL_EVIDENCE` under `system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md`.
+
+The measured scheduled reservation baseline is 13,130 rowsWritten. Lower-priority P1/P2/P3 work must preserve this headroom. Daily Shadow itself still defers if account usage is unknown or the required System1 after-market reserve has not been independently authorized; it may not consume quota by assuming separate database isolation.

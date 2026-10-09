@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "S2_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "evidenceState": "INSUFFICIENT_FULL_HISTORY_HEALTHY_DAYS",
+  "authorizedReserveRows": null,
+  "healthyAfterMarketDateCount": 2,
+  "healthyDates": [
+    "2026-09-21",
+    "2026-09-22"
+  ],
+  "observedWholeV7DailyRowsWritten": {
+    "min": 1635,
+    "max": 2825
+  },
+  "reserveNumberAuthorized": false,
+  "rule": "Do not convert the observed 2825 whole-V7 daily upper envelope into an account reserve until independent evidence authorizes it. Unknown reserve => conservative quota deferral for System2 physical mutation.",
+  "source": [
+    "research/d02_pve271_system1_after_market_reserve_evidence_v0_1.mjs",
+    "PRICE_VOLUME_CHECKPOINT.md"
+  ],
+  "system1FormalCoreChanged": false,
+  "paidUpgradeAuthorized": false
+}

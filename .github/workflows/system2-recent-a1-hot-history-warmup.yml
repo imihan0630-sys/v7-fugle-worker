@@ -47,11 +47,23 @@ jobs:
           node --check system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs
           git diff --exit-code -- Worker.js wrangler.toml
 
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: RECENT_A1_WARMUP
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Warm recent official A1 history into isolated D1
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           SYSTEM2_CONFIRM: WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY
+          SYSTEM2_HOT_HISTORY_MAX_DATES: ${{ steps.quota.outputs.adaptive_max_dates }}
         run: |
           set -euo pipefail
           test -n "$CLOUDFLARE_ACCOUNT_ID"
@@ -61,7 +73,7 @@ jobs:
           import fs from "node:fs";
           const receipt=JSON.parse(fs.readFileSync("/tmp/system2-recent-a1-hot-history.json","utf8"));
           if(receipt.result!=="PASS"||receipt.databaseName!=="system2-research")throw new Error("wrong warmup/database");
-          if(receipt.maxDatesPerRun!==5||receipt.requiredSessions!==60)throw new Error("warmup bounds changed");
+          if(receipt.maxDatesPerRun<1||receipt.maxDatesPerRun>5||receipt.requiredSessions!==60)throw new Error("quota-adaptive warmup bounds changed");
           if(receipt.historyCoverageOnly!==true||receipt.continuityPromotionPerformed!==false||receipt.continuityStateForNewRows!=="UNVERIFIED")throw new Error("continuity firewall changed");
           if(receipt.strategyEvaluationPerformed!==false||receipt.capacityRunProduced!==false||receipt.zeroPickClaimed!==false||receipt.selectionAuthority!==false)throw new Error("selection authority leak");
           if(receipt.livePushEnabled!==false||receipt.orderImpact!==false||receipt.system1RuntimeUsed!==false)throw new Error("production boundary leak");
@@ -73,11 +85,26 @@ jobs:
             ". Continuity remains UNVERIFIED.\n");
           NODE
 
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: RECENT_A1_WARMUP
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Preserve warmup receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system2-recent-a1-hot-history-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/system2-recent-a1-hot-history.json
+          path: |
+            /tmp/system2-recent-a1-hot-history.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 90
