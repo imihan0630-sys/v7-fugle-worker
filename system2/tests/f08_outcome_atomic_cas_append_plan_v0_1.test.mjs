@@ -213,3 +213,45 @@ await assert.rejects(()=>inspectReadback({
   plan:revision,receipt:next,returnedRows:[returning],readbackRows:[frozenRow],
 }),/PREVIOUS_RECEIPT_REQUIRED/);
 console.log("F08_CAS_EXACT_READBACK_PAYLOAD_11_CASES_PASS_UNCERTIFIED_PHYSICAL");
+// Whole-chain readback prevents a single valid tail from masking a missing,
+// reordered, overwritten or extra historical revision.
+importedF08ChainTests: {
+  const { auditS2F08RevisionChainReadbackV0_1: auditChain } =
+    await import("../runtime/f08_outcome_atomic_cas_append_plan_v0_1.mjs");
+  const r1 = await toS2FrozenOutcomeRevisionRowV0_1(first);
+  const r2 = await toS2FrozenOutcomeRevisionRowV0_1(next);
+  const chain = await auditChain({
+    receiptChain:[first,next],readbackRows:[r1,r2],maxRevisions:20,
+  });
+  assert.equal(chain.status,"OFFLINE_CHAIN_MATCH_NOT_PHYSICAL_CERTIFICATION");
+  assert.equal(chain.revisionCount,2);
+  assert.equal(chain.exactBoundedReadbackPlan.params[2],21);
+  assert.match(chain.exactBoundedReadbackPlan.sql,/ORDER BY revision_number ASC LIMIT \?/);
+  assert.equal(chain.chainCompleteInPhysicalD1,false);
+  assert.equal(chain.physicalD1ReadbackVerified,false);
+  assert.equal(chain.accountWideQuotaGranted,false);
+  assert.equal(chain.sourcePITIndependentlyVerified,false);
+  assert.equal(Object.isFrozen(chain),true);
+  assert.equal((await auditChain({receiptChain:[first,next],readbackRows:[r1,r2],maxRevisions:20})).auditHash,chain.auditHash);
+  const negatives = [
+    {receiptChain:[],readbackRows:[],error:/EXPECTED_RECEIPTS/},
+    {receiptChain:[next],readbackRows:[r2],error:/GENESIS_REQUIRED/},
+    {receiptChain:[first,next],readbackRows:[r1],error:/COUNT_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,r2,{...r2}],error:/COUNT_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r2,r1],error:/STORED_REVISION_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,{...r2,revision_number:3}],error:/STORED_REVISION_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,{...r2,receipt_json:"{}"}],error:/STORED_REVISION_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,{...r2,cost_model_hash:"f".repeat(64)}],error:/STORED_REVISION_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,{...r2,revision_id:"unexpected"}],error:/STORED_REVISION_MISMATCH/},
+    {receiptChain:[first,next],readbackRows:[r1,{...r2,extra_column:true}],error:/COLUMN_SHAPE_INVALID/},
+    {receiptChain:[first,first],readbackRows:[r1,r1],error:/GAP_OR_REORDERED_RECEIPT/},
+    {receiptChain:[first,next],readbackRows:[r1,r2],maxRevisions:1,error:/EXPECTED_RECEIPTS/},
+    {receiptChain:[first,next],readbackRows:[r1,r2],maxRevisions:1001,error:/UNSAFE_BOUNDED_LIMIT/},
+    {receiptChain:[first,next],readbackRows:[r1,r2],bindingName:"V7_DB",error:/FORBIDDEN_BINDING/},
+    {receiptChain:[first,{...next,revisionHash:"f".repeat(64)}],readbackRows:[r1,r2],error:/RECEIPT_HASH_MISMATCH/},
+  ];
+  for (const v of negatives) {
+    await assert.rejects(()=>auditChain({...v,receiptChain:v.receiptChain,readbackRows:v.readbackRows}),v.error);
+  }
+  console.log("F08_CHAIN_READBACK_15_NEGATIVE_AND_2_POSITIVE_OFFLINE_PASS_NO_PHYSICAL_AUTHORITY");
+}

@@ -208,3 +208,93 @@ export async function verifyS2F08ConditionalAppendReadbackPayloadV0_1({
   };
   return deepFreeze({...result,inspectionHash:await sha256Hex(result)});
 }
+// F08 / CORR-012: inspect a WHOLE caller-supplied revision-chain readback,
+// not just the latest row. The bounded query is a future reader contract only;
+// this function performs ZERO D1/Cloudflare operations or physical attestation.
+// No snapshot may be declared complete because a synthetic chain was matched.
+export async function auditS2F08RevisionChainReadbackV0_1({
+  receiptChain, readbackRows, bindingName = "SYSTEM2_DB", maxRevisions = 100,
+} = {}) {
+  if (bindingName !== "SYSTEM2_DB") throw new Error("F08_CHAIN_FORBIDDEN_BINDING");
+  if (!Number.isSafeInteger(maxRevisions) || maxRevisions < 1 || maxRevisions > 1000)
+    throw new Error("F08_CHAIN_UNSAFE_BOUNDED_LIMIT");
+  if (!Array.isArray(receiptChain) || receiptChain.length === 0 ||
+      receiptChain.length > maxRevisions)
+    throw new Error("F08_CHAIN_EXPECTED_RECEIPTS_INVALID_OR_OVERSIZE");
+  if (!Array.isArray(readbackRows) || readbackRows.length === 0 ||
+      readbackRows.length > maxRevisions)
+    throw new Error("F08_CHAIN_READBACK_INCOMPLETE_OR_LIMIT_OVERFLOW");
+  // Missing, duplicate, unrecognized and extra rows never get dropped to
+  // manufacture a fully observed time series or a clean zero outcome.
+  if (receiptChain.length !== readbackRows.length)
+    throw new Error("F08_CHAIN_READBACK_COUNT_MISMATCH");
+  const first = receiptChain[0];
+  if (first?.revisionNumber !== 1 || first.previousRevisionHash !== null)
+    throw new Error("F08_CHAIN_GENESIS_REQUIRED");
+  const seen = new Set();
+  let prev = null;
+  let previousUpdatedAt = -Infinity;
+  for (let i = 0; i < receiptChain.length; i++) {
+    const receipt = receiptChain[i];
+    if (!receipt || receipt.revisionNumber !== i + 1)
+      throw new Error("F08_CHAIN_GAP_OR_REORDERED_RECEIPT");
+    if (receipt.lineageHash !== first.lineageHash ||
+        receipt.parentLineage?.decisionId !== first.parentLineage?.decisionId)
+      throw new Error("F08_CHAIN_PARENT_OR_LINEAGE_SWITCH");
+    if (seen.has(receipt.revisionHash))
+      throw new Error("F08_CHAIN_DUPLICATE_REVISION");
+    seen.add(receipt.revisionHash);
+    // Recalculate immutable hashes and reapply the exact atomic CAS
+    // predecessor/maturity policy; do NOT trust caller-provided version flags.
+    await buildS2F08ConditionalAppendPlanV0_1({
+      receipt, previousReceipt:prev, bindingName,
+    });
+    const row = await toS2FrozenOutcomeRevisionRowV0_1(receipt);
+    const observed = readbackRows[i];
+    if (!observed || typeof observed !== "object" || Array.isArray(observed) ||
+        JSON.stringify(Object.keys(observed).sort()) !==
+          JSON.stringify([...EXPECTED_COLUMNS].sort()))
+      throw new Error("F08_CHAIN_READBACK_COLUMN_SHAPE_INVALID");
+    for (const col of EXPECTED_COLUMNS) {
+      if (observed[col] !== row[col])
+        throw new Error("F08_CHAIN_STORED_REVISION_MISMATCH:"+col);
+    }
+    // The exact database query must be ordered. Out-of-order readback is
+    // not re-sorted because sorting could hide a broken source contract.
+    if (observed.revision_number !== i + 1)
+      throw new Error("F08_CHAIN_UNORDERED_DB_RESULT");
+    const currentClock = Date.parse(receipt.outcome.updatedAt);
+    if (!Number.isFinite(currentClock) || currentClock <= previousUpdatedAt)
+      throw new Error("F08_CHAIN_NON_MONOTONIC_CLOCK");
+    previousUpdatedAt = currentClock;
+    prev = receipt;
+  }
+  const sql = "SELECT "+EXPECTED_COLUMNS.join(", ")+
+    " FROM "+TBL+" WHERE decision_id = ? AND lineage_hash = ?"+
+    " ORDER BY revision_number ASC LIMIT ?";
+  const readbackPlan = {
+    sql,
+    params:[first.parentLineage.decisionId,first.lineageHash,maxRevisions + 1],
+    overflowRule:"FAIL_IF_RETURNED_MORE_THAN_MAX_OR_COUNT_DIFFERS",
+  };
+  const base = {
+    schemaVersion:"S2_F08_REVISION_CHAIN_READBACK_INSPECTION_V0_1",
+    status:"OFFLINE_CHAIN_MATCH_NOT_PHYSICAL_CERTIFICATION",
+    decisionId:first.parentLineage.decisionId,
+    lineageHash:first.lineageHash,
+    revisionCount:receiptChain.length,
+    genesisHash:first.revisionHash,
+    observedTipHash:prev.revisionHash,
+    exactBoundedReadbackPlan:readbackPlan,
+    structuralChainChecked:true,
+    physicalD1ReadbackVerified:false,
+    physicalD1WriteAuthorized:false,
+    accountWideQuotaGranted:false,
+    sourcePITIndependentlyVerified:false,
+    chainCompleteInPhysicalD1:false,
+    simulatedPerformanceCertified:false,
+    selectionAuthorized:false,
+    system1FormalCoreImpact:false,
+  };
+  return deepFreeze({...base,auditHash:await sha256Hex(base)});
+}
