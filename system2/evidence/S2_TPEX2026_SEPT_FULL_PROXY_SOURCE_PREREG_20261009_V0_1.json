@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "S2_TPEX2026_SEPT_FULL_TWSE_PROXY_MONTH_SOURCE_PREREG_V0_1",
+  "lane": "DATA_LANE",
+  "class": "A",
+  "status": "PROPOSED_CODE_PENDING_CI_AND_REAL_PUBLIC_SOURCE_PROOF",
+  "month": "2026-09",
+  "calendarSource": "TWSE_FTMQIK_PROXY_ONLY",
+  "expectedTradingDateCount": 20,
+  "expectedDateSetHash": "e9d2d4b8289666facc9f92e018801a2ade0002992f1759ad964485646d593036",
+  "priorSamples": [
+    "2026-09-01",
+    "2026-09-30"
+  ],
+  "priorEvidence": "system2/evidence/S2_TPEX2026_NINE_MONTH_18_SAMPLE_CANONICAL_SOURCE_REAL_ACCEPTANCE_20261009_V0_1.json",
+  "expectedPass": "PASS_20_OF_20_TWSE_PROXY_DATES_TPEX_CANONICAL_SOURCE_ONLY",
+  "physicalWrites": 0,
+  "cloudflareD1Calls": 0,
+  "cloudflareR2Calls": 0,
+  "fullTpexOfficialCalendarCertified": false,
+  "retrospectivePITCertified": false,
+  "fullYearStorageCertified": false,
+  "outputNotTradeEligible": true,
+  "next": "After PR CI and merge, inspect one-shot on-main public source workflow artifact, freeze exact dates/hashes. Do not perform physical D1/R2 until separate account-wide budget evidence."
+}
