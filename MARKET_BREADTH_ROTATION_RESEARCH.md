@@ -2884,3 +2884,37 @@ Frozen:
 This is a transition consumer of the two already accepted common-complete date roots and does not increment independent complete-date N beyond 2.
 
 D09-08 remains L3/60; inference remains POWER_INSUFFICIENT. Exact next: accumulate more common-complete TRI dates and consume the D16 date-level method before predictive interpretation.
+
+
+## BR-081 — D09-02 same-basis Sector RS cross-section (2026-10-08)
+
+Artifact:
+- `research/br081_d09_02_sector_rs_20261008_v0_1.json`
+
+The official TWSE MI_INDEX source supplies both the market total-return benchmark and the 34 official industry total-return indices on one authority/basis.
+
+For 2026-10-08:
+- market total-return index daily return = -0.99%;
+- absolute-positive industries = 17/34;
+- positive Sector RS industries = 25/34;
+- 8 industries had negative absolute return but still positive Sector RS.
+
+Examples of negative absolute return / positive RS:
+- paper -0.01%, RS +0.98pp;
+- shipping -0.05%, RS +0.94pp;
+- biotech -0.12%, RS +0.87pp;
+- electronic distribution -0.56%, RS +0.43pp;
+- machinery -0.76%, RS +0.23pp;
+- autos -0.79%, RS +0.20pp;
+- electronic parts -0.90%, RS +0.09pp;
+- computer/peripherals -0.95%, RS +0.04pp.
+
+Critical redundancy result:
+subtracting one common same-date market benchmark preserves the entire cross-sectional ranking.
+
+Frozen:
+- `ABSOLUTE_POSITIVE_RETURN != POSITIVE_SECTOR_RS`;
+- `RANK(SECTOR_RS) == RANK(INDUSTRY_RETURN)` for a common same-date benchmark;
+- same-date Sector RS incremental content is relative sign/magnitude, not a second independent ranking signal.
+
+D09-02 remains L3/60. L4 still needs independent prospective dates/OOS evidence and incremental validation after absolute return/rank, breadth, concentration, regime and physical-cycle controls.
