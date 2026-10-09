@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_TWSE2026_OCT09_ONE_SHOT_ARTIFACT_READONLY_AUDIT_PREREG_V0_1",
+  "status": "CODE_CANDIDATE_PENDING_CI_MERGE_AND_ORIGINAL_RUN_TERMINAL",
+  "classification": "CLASS_A_DATA_LANE_READONLY",
+  "exactTarget": {
+    "runId": 37871005381,
+    "headSha": "687432470b8ec81126356edb03d993d8d69df82a",
+    "attempt": 1,
+    "sourceWorkflow": "System2 2026 TWSE Oct09 Quota Reset Segments One-Shot",
+    "originalDate": "2026-10-09",
+    "originalMarket": "TWSE",
+    "expectedMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "baseline": {
+    "immutableSource": "system2/evidence/S2_2026_TWSE_JAN_JUN_INDEPENDENT_R2_BYTE_VERIFICATION_20261008_V0_1.json",
+    "verifiedMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "mandatoryGates": [
+    "GitHub original run first attempt exact SHA, main/push, completed/success",
+    "Exactly one unexpired artifact with matching workflow-run binding and SHA-256 ZIP digest",
+    "Strict year/TWSE/completed month cutoff October 2026, ordered exactly nine complete months",
+    "January-June frozen immutable original receipt ID, hash, bars and packs equal baseline, accepted checkpoint finalization semantics",
+    "July-September new COMPLETE each, with official trading-date counts, exact from/to/batch key, D1 manifest counters and internal producer-reported R2 HEAD and full-byte SHA256 counts",
+    "No fallback treating partial/failed output, empty source, missing month or receipt mismatch as success",
+    "No Cloudflare APIs, secrets, D1/R2 calls, production order/push, historic PIT promotion"
+  ],
+  "scopeLimitations": [
+    "Validating immutable GitHub artifact bytes is not an independent reread of D1 and R2 storage",
+    "Producer reported physical verification counts must later be independently cross-checked against storage",
+    "No historic actual firstKnownAt or original July-September PIT availability derived",
+    "No full-market corporate-action/suspension NO_EVENT or NC-T01 continuity inferred",
+    "A PASS here is a narrow ARTIFACT_INTERNAL_RECEIPTS_ONLY result and never a fully validated 2026 market-year matrix PASS"
+  ],
+  "automation": {
+    "newWorkflow": ".github/workflows/system2-twse2026-oct09-one-shot-artifact-audit-readonly.yml",
+    "triggers": [
+      "on exact source workflow completion",
+      "manual zero-Cloudflare read-only fallback"
+    ],
+    "noSchedule": true,
+    "noWriter": true
+  },
+  "tests": "system2/tests/historical_current_year_segment_one_shot_artifact_acceptance_v0_1.test.mjs",
+  "formalCoreChanged": false,
+  "system2StrategyChanged": false,
+  "billingUpgrade": false,
+  "externalMutationAuthorized": false
+}
