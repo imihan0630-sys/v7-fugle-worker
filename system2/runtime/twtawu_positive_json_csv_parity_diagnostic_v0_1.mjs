@@ -16,7 +16,7 @@ const HEADERS=Object.freeze({
   Referer:"https://www.twse.com.tw/zh/trading/historical/twtawu.html",
 });
 const requiredFields=["證券代號","暫停交易日期","恢復交易日期"];
-const digest=body=>createHash("sha256").update(body,"utf8").digest("hex");
+const digest=bytes=>createHash("sha256").update(bytes).digest("hex");
 const normal=field=>String(field??"").replace(/\uFEFF/g,"").replace(/\s+/g,"").replace(/[　]/g,"").trim();
 
 export function buildTwtaWuDiagnosticUrlV0_1(format,{startDate,endDate}=TWTAWU_POSITIVE_CONTROL){
@@ -122,16 +122,38 @@ function hasPositive(rows,expected){
   return rows.includes(key);
 }
 
+export function decodeOfficialTwtaWuBytesV0_1(bytes,contentType,format){
+  if(!(bytes instanceof Uint8Array))throw new Error("raw source bytes required");
+  if(!["json","csv"].includes(format))throw new Error("source format invalid");
+  const media=String(contentType||"");
+  if(format==="json"&&!/application\/json/i.test(media))
+    throw new Error("official JSON content-type mismatch");
+  if(format==="csv"&&!/text\/csv/i.test(media))
+    throw new Error("official CSV content-type mismatch");
+  const charset=media.match(/(?:^|;)\s*charset\s*=\s*["']?([a-z0-9_-]+)/i)?.[1]?.toLowerCase()||"utf-8";
+  const encoding=charset==="ms950"||charset==="cp950"||charset==="big5"?
+    "big5":charset==="utf-8"||charset==="utf8"?"utf-8":null;
+  if(!encoding)throw new Error("unsupported official charset "+charset);
+  const text=new TextDecoder(encoding,{fatal:true}).decode(bytes);
+  return {text,encoding,declaredCharset:charset};
+}
+
 async function acquire(url,fetchImpl,timeoutMs){
   const response=await fetchImpl(url,{
     method:"GET",headers:HEADERS,signal:AbortSignal.timeout(timeoutMs),
   });
-  const text=await response.text();
+  if(!response||typeof response.arrayBuffer!=="function")
+    throw new Error("physical source byte transport not available");
+  const bytes=new Uint8Array(await response.arrayBuffer());
+  const contentType=response.headers?.get?.("content-type")||null;
+  const format=new URL(url).searchParams.get("response");
+  // Hash original bytes before charset transcoding, not altered text.
+  const hash=digest(bytes);
+  const {text,encoding,declaredCharset}=decodeOfficialTwtaWuBytesV0_1(bytes,contentType,format);
   return {
     status:Number(response.status),ok:response.ok===true,
-    contentType:response.headers?.get?.("content-type")||null,
-    rawByteCount:Buffer.byteLength(text,"utf8"),
-    hash:digest(text),body:text,
+    contentType,declaredCharset,encoding,
+    rawByteCount:bytes.byteLength,hash,body:text,
   };
 }
 
@@ -173,6 +195,7 @@ export async function probeTwtaWuPositiveJsonCsvParityV0_1({
     report.observations.json={
       httpStatus:response.status,contentType:response.contentType,
       rawByteCount:response.rawByteCount,sha256:response.hash,
+      declaredCharset:response.declaredCharset,decodedWith:response.encoding,
       observedAt:observedAt(),
     };
     if(!response.ok)throw new Error("official JSON response HTTP "+response.status);
@@ -185,6 +208,7 @@ export async function probeTwtaWuPositiveJsonCsvParityV0_1({
     report.observations.csvCandidate={
       httpStatus:exportResponse.status,contentType:exportResponse.contentType,
       rawByteCount:exportResponse.rawByteCount,sha256:exportResponse.hash,
+      declaredCharset:exportResponse.declaredCharset,decodedWith:exportResponse.encoding,
       observedAt:observedAt(),
     };
     if(!exportResponse.ok)throw new Error("unverified CSV export candidate HTTP "+exportResponse.status);
