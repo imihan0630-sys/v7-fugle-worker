@@ -137,6 +137,16 @@ console.log(JSON.stringify({officialAnnouncementSchemas:{TWSE:{fields:Object.key
 await sync({kind:'ANNOUNCEMENTS',twseUrl:announcementTwse,tpexUrl:announcementTpex,twsePayload:announcementsTwse,tpexPayload:announcementsTpex});
 }
 else console.log(JSON.stringify({historicalQualityReuse:true,kind:'ANNOUNCEMENTS',marketDate}));
+// A partially recovered historical quality date may already have BOTH
+// expensive MOPS FINANCIAL + QUARTER_EPS snapshots. In that case there is
+// no reason to repeat dozens of third-party HTML/POST source reads.
+// Source reads are skipped only when both physical Worker cache flags are true;
+// scheduled ordinary sync still refreshes its authoritative source payloads.
+const financialEpsCached=recoveryOnly&&datasetReady('FINANCIAL')&&datasetReady('QUARTER_EPS');
+if(financialEpsCached) {
+  console.log(JSON.stringify({historicalQualityReuseHeavySources:true,marketDate,
+    financialReady:true,quarterEpsReady:true,noSourceMutation:true,noD1Write:true}));
+} else {
 const epsRows=helpers.parseOfficialCsv(await (await publicSource('https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv')).text());
 const marketOptions=helpers.parseMopsMarketOptions(await (await publicSource('https://mopsov.twse.com.tw/mops/web/t163sb04')).text());
 console.log(JSON.stringify({officialMopsMarketOptions:marketOptions}));
@@ -222,6 +232,7 @@ for(let start=0;start<universe.length;start+=2) {
 }
 if(!datasetReady('QUARTER_EPS')) await sync({kind:'QUARTER_EPS',year,quarter,reports,financialSnapshot});
 else console.log(JSON.stringify({historicalQualityReuse:true,kind:'QUARTER_EPS',marketDate}));
+}
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
 const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);
 const finalStatus=await statusResponse.json();
