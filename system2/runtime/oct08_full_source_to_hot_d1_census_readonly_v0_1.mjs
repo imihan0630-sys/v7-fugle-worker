@@ -93,7 +93,9 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
    sourceCount:rowSet.length,matched:0,missing:0,mismatched:0,multi:0,
    d1ReadRequests:0};
   for(let i=0;i<rowSet.length;i+=chunkSize){
-   assert.ok(Number(db.metrics.rowsRead||0)<=maxRowsRead,
+   assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
+    "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
+   assert.ok(db.metrics.rowsRead<=maxRowsRead,
     "D1_READ_BUDGET_HARD_CAP_BEFORE_QUERY");
    const batch=rowSet.slice(i,i+chunkSize);
    const symbols=batch.map(r=>r.symbol);
@@ -108,7 +110,9 @@ export async function auditOct08FullSourceKeysHotD1ReadonlyV0_1({
    // symbols. Classifying such omitted keys as absent would be unsafe.
    assert.ok(d1Rows.length<151,
     "HOT_D1_QUERY_RESULT_TRUNCATED_UNSAFE_FOR_ABSENCE_CLASSIFICATION");
-   assert.ok(Number(db.metrics.rowsRead||0)<=maxRowsRead,
+   assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
+    "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
+   assert.ok(db.metrics.rowsRead<=maxRowsRead,
     "D1_READ_BUDGET_HARD_CAP_AFTER_QUERY");
    assert.equal(db.metrics.rowsWritten,0,"D1 unexpected mutation");
    const whitelisted=new Set(symbols),seen=new Map();
