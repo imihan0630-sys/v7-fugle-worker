@@ -56,7 +56,9 @@ function summarize(name,raw,status){
   obj.historicalReadback=raw.historicalReadback===true;
   obj.validTradingDates=Array.isArray(raw.validDates)?
     raw.validDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
-  obj.validTradingDateCount=obj.validTradingDates.length;
+  obj.validTradingDateCount=Array.isArray(raw.validDates)?raw.validDates.length:null;
+  obj.validDateEntryKinds=Array.isArray(raw.validDates)?
+    [...new Set(raw.validDates.map(v=>Array.isArray(v)?"array":typeof v))].slice(0,3):[];
   obj.missingTradingDates=Array.isArray(raw.missingDates)?
     raw.missingDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
   obj.missingTradingDateCount=obj.missingTradingDates.length;
