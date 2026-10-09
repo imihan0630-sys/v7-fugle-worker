@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "S2_TWSE2026_JUL_SEP_POST_RESET_ORIGINAL_RUN_AND_ARTIFACT_ACCEPTANCE_V0_1",
+  "createdOn": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "status": "PASS_ORIGINAL_PRODUCER_PHYSICAL_AND_GITHUB_ARTIFACT_INTEGRITY_NOT_INDEPENDENT_STORAGE_REREAD",
+  "originalRun": {
+    "id": 37871005381,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37871005381",
+    "attempt": 1,
+    "event": "push",
+    "headSha": "687432470b8ec81126356edb03d993d8d69df82a",
+    "status": "completed",
+    "conclusion": "success",
+    "jobId": 113628894913,
+    "preflightJobId": 113628841165,
+    "artifactId": 11592890938,
+    "artifactName": "system2-2026-twse-oct09-one-shot-37871005381-1",
+    "artifactDigest": "sha256:eb359f3cd6d6be12b80beecf1c6db813b4a5d7a76e4a941c30c2155a4946766e",
+    "producerResult": "PASS_CURRENT_YEAR_COMPLETED_MONTH_SEGMENTS",
+    "d1Usage": {
+      "requestCount": 431,
+      "rowsRead": 29315,
+      "rowsWritten": 26387
+    },
+    "source": "OFFICIAL_CANONICAL_EXACT_DATE_TWSE_DAILY_AND_FMTQIK_MONTHLY_CALENDAR_POST_FACTO",
+    "currentIncompleteOctoberExcluded": true,
+    "system1ProductionIsolation": "PASS"
+  },
+  "existingJanJun": {
+    "state": "6_OF_6_ALREADY_RECEIPTED_IMMUTABLE_UNCHANGED",
+    "priorPhysicalEvidence": "system2/evidence/S2_2026_TWSE_JAN_JUN_INDEPENDENT_R2_BYTE_VERIFICATION_20261008_V0_1.json",
+    "priorArtifactId": 11547382438,
+    "priorRunId": 37771226567,
+    "priorR2Objects": 6461,
+    "priorBars": 124650,
+    "newAuditProof": "PASS_FROZEN_RECEIPT_IDS_HASHES_PACKS_AND_BARS_ALL_SIX"
+  },
+  "newJulSep": {
+    "market": "TWSE",
+    "year": 2026,
+    "months": [
+      {
+        "month": 7,
+        "exactTradingSessions": 22,
+        "barCount": 23826,
+        "packCount": 1086,
+        "receiptId": "S2HSR-c7c8785ab0c401314a747f03b7dc2eb384daafb09aa6b7fb5f7979126029d44a",
+        "manifestRollingHash": "c7c8785ab0c401314a747f03b7dc2eb384daafb09aa6b7fb5f7979126029d44a",
+        "state": "COMPLETE",
+        "producerVerification": "VERIFIED",
+        "r2HeadVerified": 1086,
+        "r2FullByteSha256Verified": 1086
+      },
+      {
+        "month": 8,
+        "exactTradingSessions": 21,
+        "barCount": 22810,
+        "packCount": 1088,
+        "receiptId": "S2HSR-ad64baf9a9aaee2e56cdb5ceef69ae2793d68f3e77fd95f52f18b61ea2f01157",
+        "manifestRollingHash": "ad64baf9a9aaee2e56cdb5ceef69ae2793d68f3e77fd95f52f18b61ea2f01157",
+        "state": "COMPLETE",
+        "producerVerification": "VERIFIED",
+        "r2HeadVerified": 1088,
+        "r2FullByteSha256Verified": 1088
+      },
+      {
+        "month": 9,
+        "exactTradingSessions": 20,
+        "barCount": 21700,
+        "packCount": 1088,
+        "receiptId": "S2HSR-b929bc93e0bc1310d891a0e4f40cf0024addff246e338ea18e7c2760ebf3a384",
+        "manifestRollingHash": "b929bc93e0bc1310d891a0e4f40cf0024addff246e338ea18e7c2760ebf3a384",
+        "state": "COMPLETE",
+        "producerVerification": "VERIFIED",
+        "r2HeadVerified": 1088,
+        "r2FullByteSha256Verified": 1088
+      }
+    ],
+    "totalSessions": 63,
+    "totalBars": 68336,
+    "totalR2Packs": 3262,
+    "allThreeProducerVerification": "VERIFIED",
+    "sourceRowsMatchedBars": true
+  },
+  "githubArtifactIndependentAudit": {
+    "runId": 37876920965,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37876920965",
+    "jobId": 113647517963,
+    "status": "completed",
+    "conclusion": "success",
+    "artifactId": 11592812149,
+    "artifactDigest": "sha256:12348f3ddc6fc7eaf0c3ae53d783a3ac40ad24e7f8a363d74faed673150c7097",
+    "validatedOriginalJsonSha256": "4bf367bf0dfdd7565f6287767a1f7b308420178021e4ae534a1a8e3948a9a614",
+    "result": "PASS_ARTIFACT_INTERNAL_RECEIPTS_ONLY",
+    "missingOrAlteredMonthErrors": 0,
+    "cloudflareReads": 0,
+    "cloudflareWrites": 0
+  },
+  "nineMonthHistoricalColdSegmentSubtotal": {
+    "existingFirstSixPlusNewThreeR2Packs": 9723,
+    "bars": 192986,
+    "monthCount": 9
+  },
+  "stillBlocked": {
+    "independentJulySeptemberCloudflareStorageReread": true,
+    "monthlyHistoryDoesNotProveFull2026CalendarYear": true,
+    "historicSourceFirstKnownAtAtDecisionTime": true,
+    "historicRevisionAndCorporateActionCompleteness": true,
+    "suspensionNoEvent": true,
+    "nct01TechnicalContinuity": true,
+    "fullMarketExactPITReplay": true,
+    "strategySimulationPromotion": true,
+    "system2LiveTradingAuthority": true
+  },
+  "next": {
+    "independentPhysicalVerifierMergedPr": 947,
+    "workflow": ".github/workflows/system2-twse2026-jul-sep-independent-physical-manual.yml",
+    "automaticDispatch": false,
+    "requiresOriginalSuccess": true,
+    "requiresRemediationAccountReadBudgetCoordination": true,
+    "requiresNoConcurrentWriter": true,
+    "tpexBackfillMustNotCompeteWithTwseWriter": true,
+    "billingUpgradeAuthorized": false
+  },
+  "protected": {
+    "system1FormalCoreTouched": false,
+    "system1ProductionRuntimeTouched": false,
+    "system2SelectionAndStrategyTouched": false,
+    "capitalOrdersPushTouched": false
+  }
+}
