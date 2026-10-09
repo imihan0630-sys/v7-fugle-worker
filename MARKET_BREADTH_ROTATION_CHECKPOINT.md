@@ -1964,3 +1964,30 @@ BR-077: 2026-10-08 official 34-industry total-return snapshot was captured at 20
 One 2026-10-08 official root is shared by D09-06 and D09-07; consumer count does not duplicate independent N. Both remain L3/60. L4 remains gated by D16 validation and member-level breadth/concentration evidence.
 
 Exact next: keep D09-12 waiting for a genuinely same-clock TWSE-breadth plus A2-TAIEX session; continue D09-06/07 official append-only sector roots under unchanged semantics. Formal Core unchanged.
+
+
+## BR-068C — first post-deploy System1 operational-acceptance attempt consumed (2026-10-09)
+
+Artifact:
+- `research/BR068C_D09_05_FIRST_POST_DEPLOY_OPERATIONAL_ACCEPTANCE_FAILURE_20261009_V0_1.md`
+
+Physical scheduled evidence:
+- workflow: System 1 C1 Prospective Evidence;
+- run 37808995747 / job 113420649062;
+- scheduled event, started 2026-10-09 00:28 Asia/Taipei;
+- head 53b15e0731be0948f89f8bc08c90661703276905;
+- artifact 11565090033;
+- artifact digest sha256:a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30.
+
+Stage results:
+- generation-inventory semantics PASS;
+- V8.20 Formal-C1 binding semantics PASS;
+- immutable C1 population read/verify FAIL;
+- collector: scanDate=2026-10-08 / FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND / mayCountAsZeroPick=false;
+- operational acceptance: BLOCKED / genuineProspective=false / firstBlocker=UPSTREAM_ARTIFACT_MISSING.
+
+Therefore the first legal post-deploy scheduled opportunity did occur, but no admissible 2026-10-08 immutable C1 parent existed.
+
+D09-05 remains L2/40.
+Frozen builder remains ready.
+Next: consume only a later new ordinary-session genuine C1 parent; no retrospective synthesis and no alternate universe.
