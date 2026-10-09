@@ -67,7 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: s2-oct08-full-d1-census-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/s2-oct08-full-source-hot-d1-census.json
+          path: |
+            /tmp/s2-oct08-full-source-hot-d1-census.json
             /tmp/s2-oct08-read-budget-evidence-preflight.json
           if-no-files-found: warn
           retention-days: 90
