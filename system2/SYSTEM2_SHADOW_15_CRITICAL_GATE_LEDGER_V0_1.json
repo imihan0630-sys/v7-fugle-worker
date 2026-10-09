@@ -90,6 +90,16 @@
         "37930794435"
       ],
       "status": "WHOLE_REVISION_CHAIN_OFFLINE_NEGATIVE_READBACK_GUARD_CI_PASS_NO_PHYSICAL_D1"
+    },
+    {
+      "id": "F08",
+      "pr": 1019,
+      "commit": "680cf3bbe1ad57e0976d83ff0727f43bee0e0300",
+      "ci": [
+        "37934181637",
+        "37934181682"
+      ],
+      "status": "VERSIONED_OUTCOME_RESEARCH_VIEW_CI_PASS_UNCERTIFIED_EXECUTION_AND_NO_PHYSICAL_D1"
     }
   ],
   "mandatoryProtections": {
