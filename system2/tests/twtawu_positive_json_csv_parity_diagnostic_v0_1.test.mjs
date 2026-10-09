@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   TWTAWU_PARITY_DIAGNOSTIC_VERSION,
   TWTAWU_POSITIVE_CONTROL,
   buildTwtaWuDiagnosticUrlV0_1,
   parseCsvRecordsStrictV0_1,
+  decodeOfficialTwtaWuBytesV0_1,
   parseTwtaWuJsonRowsV0_1,
   parseTwtaWuCsvRowsV0_1,
   decodeTwtaWuDateV0_1,
@@ -25,6 +28,16 @@ const csv=[
   '1,1218,"泰山",115/08/13,8:00,115/08/14,8:00',
   '2,2330,"台積電",115/08/13,13:30,115/08/17,8:00',
 ].join("\r\n");
+const csvBig5=execFileSync("iconv",["-f","UTF-8","-t","BIG5"],{input:csv});
+const decodedBig5=decodeOfficialTwtaWuBytesV0_1(
+  new Uint8Array(csvBig5),"text/csv;charset=ms950","csv");
+assert.equal(decodedBig5.text,csv);
+assert.equal(decodedBig5.encoding,"big5");
+assert.equal(decodedBig5.declaredCharset,"ms950");
+assert.throws(()=>decodeOfficialTwtaWuBytesV0_1(
+  new Uint8Array(csvBig5),"text/html;charset=ms950","csv"),/content-type mismatch/);
+assert.throws(()=>decodeOfficialTwtaWuBytesV0_1(
+  new Uint8Array(csvBig5),"text/csv;charset=gbk","csv"),/unsupported official charset/);
 assert.equal(TWTAWU_PARITY_DIAGNOSTIC_VERSION,"S2_TWTAWU_POSITIVE_JSON_CSV_DIAGNOSTIC_V0_1");
 assert.match(buildTwtaWuDiagnosticUrlV0_1("json"),/startDate=20260813&endDate=20260814&querytype=3&response=json/);
 assert.match(buildTwtaWuDiagnosticUrlV0_1("csv"),/response=csv$/);
@@ -37,17 +50,23 @@ assert.throws(()=>parseTwtaWuJsonRowsV0_1('{"stat":"NO_DATA"}'),/official status
 assert.throws(()=>parseTwtaWuCsvRowsV0_1("<html>Not CSV</html>"),/CSV official header/);
 assert.throws(()=>parseCsvRecordsStrictV0_1('"bad csv'),/unclosed quote/);
 
-function mockFetch({jsonBody=json,csvBody=csv,csvStatus=200}={}){
+function mockFetch({
+  jsonBody=json,csvBody=csv,csvStatus=200,
+  csvMedia="text/csv;charset=ms950",csvRawBytes=null,
+}={}){
   const urls=[];
   const impl=async(url,options)=>{
     assert.equal(options.method,"GET");
     assert.ok(!String(url).includes("fugle-test"));
     urls.push(url);
     const isCsv=new URL(url).searchParams.get("response")==="csv";
+    const bytes=isCsv?(csvRawBytes||execFileSync("iconv",[
+      "-f","UTF-8","-t","BIG5",
+    ],{input:csvBody})):Buffer.from(jsonBody,"utf8");
     return {
       ok:isCsv?csvStatus===200:true,status:isCsv?csvStatus:200,
-      headers:{get:()=>isCsv?"text/csv":"application/json"},
-      async text(){return isCsv?csvBody:jsonBody;},
+      headers:{get:()=>isCsv?csvMedia:"application/json;charset=UTF-8"},
+      async arrayBuffer(){return Uint8Array.from(bytes).buffer;},
     };
   };
   return {impl,urls};
@@ -64,6 +83,12 @@ assert.equal(receipt.jsonCsvRowSetParity,true);
 assert.equal(receipt.observations.json.positiveControlPresent,true);
 assert.equal(receipt.observations.csvCandidate.positiveControlPresent,true);
 assert.equal(receipt.observations.json.normalizedRowCount,2);
+assert.equal(receipt.observations.csvCandidate.decodedWith,"big5");
+assert.equal(receipt.observations.csvCandidate.declaredCharset,"ms950");
+assert.equal(receipt.observations.csvCandidate.rawByteCount,csvBig5.length);
+assert.equal(receipt.observations.csvCandidate.sha256,
+  createHash("sha256").update(csvBig5).digest("hex"));
+
 assert.ok(receipt.observations.csvCandidate.observedAt>receipt.observations.json.observedAt);
 assert.equal(receipt.sameScopeOfficialExportContractProven,false);
 assert.equal(receipt.exactRangeCompletenessProven,false);
@@ -80,6 +105,8 @@ for(const variant of [
   {csvBody:csv.replace("2330","2331")},
   {csvBody:"<html>WAF response</html>"},
   {csvStatus:520},
+  {csvMedia:"text/csv;charset=gbk"},
+  {csvRawBytes:Buffer.from(csv,"utf8")},
   {jsonBody:JSON.stringify({stat:"OK",fields,data:[]})},
   {jsonBody:JSON.stringify({stat:"NO_DATA",fields,data:rows})},
   {jsonBody:JSON.stringify({stat:"OK",fields,data:[...rows,rows[0]]})},

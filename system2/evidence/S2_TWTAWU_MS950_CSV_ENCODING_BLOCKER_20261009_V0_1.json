@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "S2_TWTAWU_MS950_RAW_BYTE_DIAGNOSTIC_CORRECTION_V0_1",
+  "owner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "observedRun": {
+    "id": 37868242821,
+    "jobId": 113620020960,
+    "headSha": "ffc70aac82c10812a1c1b5cc49081210a4df1cee",
+    "conclusion": "failure",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37868242821",
+    "artifactId": 11588654924,
+    "artifactSha256": "208f6be2673f96ad7f1ddf7531a4bdb3be4dd3a3e2ff577d18c9bacaee937841",
+    "outcome": "BLOCKED_POSITIVE_PARITY_UNVERIFIED"
+  },
+  "observations": {
+    "json": {
+      "httpStatus": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "normalizedRowCount": 1,
+      "positiveControlPresent": true,
+      "observedAt": "2026-10-09T01:07:53.237Z"
+    },
+    "csvCandidate": {
+      "httpStatus": 200,
+      "contentType": "text/csv;charset=ms950",
+      "corruptedPriorUtf8TextByteCount": 347,
+      "encoding": "MS950_CHINESE",
+      "observedAt": "2026-10-09T01:07:53.633Z",
+      "priorReportedHashSemantics": "SHA256_OF_WRONGLY_UTF8_DECODED_THEN_REENCODED_TEXT_NOT_SOURCE_BYTES",
+      "priorCsvHeaderNotProven": true
+    }
+  },
+  "rootCause": "Runner used Response.text() UTF-8 default against official candidate export declared charset=ms950; required Chinese header could not parse. Original report FAILED_CLOSED correctly. This neither disproves CSV source content nor proves bounded-range completeness.",
+  "correction": {
+    "readTransport": "Response.arrayBuffer()",
+    "decode": "TextDecoder(big5,{fatal:true}) for ms950/cp950/big5, strict UTF-8 for JSON and explicit UTF8; fail-closed unsupported charset/media",
+    "hashSemantics": "SHA256 actual HTTP response bytes BEFORE decoding",
+    "newReceiptFields": [
+      "declaredCharset",
+      "decodedWith",
+      "rawByteCount",
+      "sha256"
+    ],
+    "tests": [
+      "real Big5 fixture from iconv UTF8-to-BIG5",
+      "raw byte SHA256 identity",
+      "wrong media/charset/bytes fail-closed",
+      "original canonical positive/mismatch tests unchanged"
+    ]
+  },
+  "authority": {
+    "candidateOfficialCsvTransportIndependentlyVerified": false,
+    "negativeCompletenessProven": false,
+    "noEventMayBeClaimed": false,
+    "ncT01Promoted": false,
+    "d1RowsWritten": 0,
+    "system1RuntimeMutated": false
+  },
+  "next": "Re-run automated bounded positive source probe after CI/main merge; preserve decoded CSV artifact and source hashes; follow-up independent completeness still mandatory."
+}
