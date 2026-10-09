@@ -117,16 +117,27 @@ export async function auditOct08HotD1BoundedSourceMatchedReadV0_1({
   rawQuery(){throw Error("D1 unrestricted query prohibited");},
  };
  const checks=[];
+ let lastCertifiedRowsRead=null;
  for(const item of verified){
   for(const original of item.picks){
    assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
     "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
    assert.ok(db.metrics.rowsRead<=maxD1RowsRead,
     "D1_READ_BUDGET_CAP_EXCEEDED");
+   assert.ok(lastCertifiedRowsRead===null||db.metrics.rowsRead>=lastCertifiedRowsRead,
+    "D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED");
+   const beforeRowsRead=db.metrics.rowsRead;
    await onStage({stage:"HOT_D1_BOUNDED_SAMPLE",market:item.market,
     marketDate:item.marketDate,symbol:original.symbol});
    const resp=await ro.prepare(sql)
     .bind(original.symbol,item.marketDate,item.market).all();
+   assert.ok(Number.isSafeInteger(db.metrics.rowsRead)&&db.metrics.rowsRead>=0,
+    "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED");
+   assert.ok(db.metrics.rowsRead<=maxD1RowsRead,
+    "D1_READ_BUDGET_CAP_EXCEEDED");
+   assert.ok(db.metrics.rowsRead>=beforeRowsRead,
+    "D1_ROWS_READ_COUNTER_REGRESSED_FAIL_CLOSED");
+   lastCertifiedRowsRead=db.metrics.rowsRead;
    const records=resp?.results;
    assert.ok(Array.isArray(records)&&records.length<=10,"bounded D1 response invalid");
    for(const r of records){
