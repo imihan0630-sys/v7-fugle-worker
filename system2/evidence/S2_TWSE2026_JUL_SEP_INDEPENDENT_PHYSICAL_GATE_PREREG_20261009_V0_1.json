@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "S2_TWSE2026_JUL_SEP_INDEPENDENT_PHYSICAL_READONLY_GATE_PREREG_V0_1",
+  "date": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "classification": "CLASS_A_DATA_LANE",
+  "status": "CANDIDATE_NOT_PHYSICALLY_EXECUTED",
+  "target": {
+    "originalRunId": 37871005381,
+    "originalRunHeadSha": "687432470b8ec81126356edb03d993d8d69df82a",
+    "originalRunAttempt": 1,
+    "market": "TWSE",
+    "year": 2026,
+    "months": [
+      7,
+      8,
+      9
+    ]
+  },
+  "prerequisites": [
+    "Original backfill workflow completed SUCCESS exactly once",
+    "REMEDIATION_LANE coordinated account-wide D1 READ headroom",
+    "No concurrent D1 writer",
+    "Explicit manual-only workflow_dispatch on latest main"
+  ],
+  "workflow": ".github/workflows/system2-twse2026-jul-sep-independent-physical-manual.yml",
+  "runner": "system2/scripts/audit_twse2026_jul_sep_independent_physical_readonly_v0_1.mjs",
+  "pureVerifier": "system2/runtime/twse2026_jul_sep_independent_physical_readonly_v0_1.mjs",
+  "tests": "system2/tests/twse2026_jul_sep_independent_physical_readonly_v0_1.test.mjs",
+  "acceptance": [
+    "All 3 exact monthly batch IDs have immutable COMPLETE receipt and checkpoint",
+    "Receipt hash ID binds to rolling SHA256 hash",
+    "D1 manifest pack/bar counts match each month",
+    "For every R2 object: HEAD metadata and full fetched byte SHA256 is verified by existing physical receipt verifier",
+    "0 D1 rows written, 0 R2 objects written",
+    "90-day immutable PASS or BLOCKED GitHub Actions artifact exists"
+  ],
+  "boundaries": {
+    "doesNotMutateSystem1": true,
+    "doesNotModifyExistingJanJunVerifier": true,
+    "noMainPushTrigger": true,
+    "noSchedule": true,
+    "noAutomaticBilling": true,
+    "noRealtimeSelection": true,
+    "mayReadD1AndR2OnlyWithApprovedQuotaHeadroom": true,
+    "doesNotProveOriginalPITClock": true,
+    "doesNotProveCorporateActionNoEvent": true,
+    "doesNotPromoteNCT01": true,
+    "doesNotAssert2026MarketYearFullCoverage": true
+  },
+  "interpretation": "Only completed original TWSE July–September monthly cold storage; source publication clocks, original PIT decision-time availability, source/revision/corporate-action completeness and full replay stay blocked separately."
+}
