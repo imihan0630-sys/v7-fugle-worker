@@ -99,9 +99,12 @@ export function summarize(name,raw,status){
     raw.validDates.filter(x=>typeof x==="string").map(x=>x.length).slice(0,3):[];
   obj.missingTradingDates=safeDateTokens(raw.missingDates);
   obj.missingTradingDateCount=Array.isArray(raw.missingDates)?raw.missingDates.length:null;
-  const valid=new Set(obj.validTradingDates);
+  // Include the physically PARTIAL date as well as complete dates. Without
+  // this union, a reader sees only the two successful days and misses the
+  // 10/8 incomplete D1 row that must be replaced.
+  const expected=new Set([...obj.validTradingDates,...obj.missingTradingDates]);
   obj.physicalSnapshots=Array.isArray(raw.snapshotCounts)?
-    raw.snapshotCounts.filter(item=>valid.has(item?.date)).map(item=>({
+    raw.snapshotCounts.filter(item=>expected.has(item?.date)).map(item=>({
       date:String(item.date),complete:item.complete===true,
       stockCount:Number.isInteger(item.stockCount)?item.stockCount:null
     })).slice(0,3):[];
