@@ -59,6 +59,17 @@ assert.equal(sourceShape.validTradingDateCount,3);
 assert.equal(sourceShape.physicalSnapshots.length,3);
 assert.ok(!("historicalReadback" in sourceShape));
 assert.equal(assessReadiness({...healthy,institution:sourceShape}).allInputReadbacksReady,true);
+const partialWorker={
+ marketDate:target,ready:false,validDates:dates.slice(1),missingDates:[target],
+ snapshotCounts:dates.map(date=>({date,stockCount:date===target?1068:1800,
+   complete:date!==target}))
+};
+const partialSummary=summarize("institution",partialWorker,200);
+assert.equal(partialSummary.physicalSnapshotsVerified,false);
+assert.equal(partialSummary.physicalSnapshots.length,3);
+assert.equal(partialSummary.physicalSnapshots.find(x=>x.date===target)?.stockCount,1068);
+assert.equal(partialSummary.physicalSnapshots.find(x=>x.date===target)?.complete,false);
+assert.equal(assessReadiness({...healthy,institution:partialSummary}).allInputReadbacksReady,false);
 const badInstitution=[
  {...institutionalWorker,ready:false},
  {...institutionalWorker,missingDates:[target],validDates:dates.slice(1)},
