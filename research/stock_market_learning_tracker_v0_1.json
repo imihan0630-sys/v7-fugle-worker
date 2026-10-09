@@ -1442,8 +1442,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Sector Rotation族群輪動」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "OFFICIAL_TWSE_ROTATION_PIT_FEASIBLE / BR077_SEVENTH_OFFICIAL_DATE_20261008 / TOP9_OVERLAP_4_OF_9 / OUTCOMES_CLOSED / KEEP_L3",
-          "next": "Continue official 34-industry append-only receipts under unchanged BR045 rank semantics; keep taxonomy comparable and route L4 validation through D16."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / FULL_34_INDUSTRY_RANK_PERCENTILE / BR045_20261007_BASELINE / BR077_20261008_SHARED_OFFICIAL_ROOT / BR079_SECOND_FULL_RANK_TRANSITION / AVG_ABS_RANK_MOVE_10P06 / TOP_QUARTILE_5_IN_5_OUT / PARTICIPATION_STATE_NE_LEADERSHIP_IDENTITY / OUTCOMES_CLOSED",
+          "next": "Append the next official 34-industry rank/percentile snapshot under unchanged semantics; keep shared-root dedup explicit; consume D16 date-clustered persistence/reversal method receipt before D1/D5/D20/D60 outcome access; add member-level breadth/concentration redundancy controls."
         },
         {
           "id": "D09-07",
