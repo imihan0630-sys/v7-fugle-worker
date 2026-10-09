@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P03_REAL_SAME_UTC_DAY_CROSS_WRITER_DEFER_MATRIX_20261009_V0_1",
+  "issueNumber": 1026,
+  "parentDirective": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "sourceScope": "EXISTING_REAL_GITHUB_ACTIONS_RUNS_LOGS_AND_STEPS_READONLY",
+  "utcQuotaDay": "2026-10-09",
+  "evidenceClassification": "PHYSICAL_GATE_INVOCATION_AND_NEGATIVE_DEFER_RECEIPTS_ONLY",
+  "observedRuns": [
+    {
+      "runId": 37904464537,
+      "jobId": 113734470048,
+      "runHeadSha": "595725a8e205fe8dbc861aac5f6b8b9ca03855c9",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:21:34Z",
+      "writerId": "HISTORICAL_REAL_SOURCE_SMOKE",
+      "priority": "P3",
+      "writerClass": "HISTORICAL_REAL_SOURCE_SMOKE",
+      "gateState": "PUSH_READ_ONLY_ONLY",
+      "gateReason": "PUSH_NON_MUTATING_POLICY",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Migrate isolated System2 D1 to schema 1.1",
+          "result": "skipped"
+        },
+        {
+          "name": "Fetch one bounded real month, pack, persist and read back",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": null,
+      "artifactDigest": null
+    },
+    {
+      "runId": 37905379641,
+      "jobId": 113737464210,
+      "runHeadSha": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:30:32Z",
+      "writerId": "DAILY_SHADOW_DIAGNOSTIC",
+      "priority": "P0",
+      "writerClass": "DAILY_SHADOW_DIAGNOSTIC",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist and read back isolated daily diagnostics",
+          "result": "skipped"
+        },
+        {
+          "name": "Read public diagnostic and authority state",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604132056,
+      "artifactDigest": "sha256:a7397b577f80c470be2c55289040653170ed48c4a049397b293b0887f98bbbb8"
+    },
+    {
+      "runId": 37905379742,
+      "jobId": 113737623181,
+      "runHeadSha": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:30:32Z",
+      "writerId": "HOT_HISTORY_BOOTSTRAP",
+      "priority": "P2",
+      "writerClass": "HOT_HISTORY_BOOTSTRAP",
+      "gateState": "PUSH_READ_ONLY_ONLY",
+      "gateReason": "PUSH_NON_MUTATING_POLICY",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist bounded recent PIT history",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604048897,
+      "artifactDigest": "sha256:25009502feab41b11c468b9f8a2230f88cd52d617b231758f204d74c9b22c74d"
+    },
+    {
+      "runId": 37907066382,
+      "jobId": 113742974317,
+      "runHeadSha": "765fb2b969030a174539dcac80c7bf06aa3eb8be",
+      "trigger": "schedule",
+      "startedAt": "2026-10-09T08:46:45Z",
+      "writerId": "RECENT_A1_WARMUP",
+      "priority": "P2",
+      "writerClass": "RECENT_A1_WARMUP",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Warm recent official A1 history into isolated D1",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604589121,
+      "artifactDigest": null
+    },
+    {
+      "runId": 37919630100,
+      "jobId": 113784161116,
+      "runHeadSha": "81ba6e812bfab3988b861b9e377907dd639e188b",
+      "trigger": "schedule",
+      "startedAt": "2026-10-09T10:46:16Z",
+      "writerId": "DAILY_SHADOW_DIAGNOSTIC",
+      "priority": "P0",
+      "writerClass": "DAILY_SHADOW_DIAGNOSTIC",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist and read back isolated daily diagnostics",
+          "result": "skipped"
+        },
+        {
+          "name": "Read public diagnostic and authority state",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11611279609,
+      "artifactDigest": "sha256:dee7cba45b5bab95ce98634544f2025f7b95ada775fd8368770d9299c7f21c51"
+    }
+  ],
+  "crossSystemProducer": {
+    "issueNumber": 1024,
+    "evidencePath": "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+    "reserveReadAuthorized": false,
+    "reserveWriteAuthorized": false,
+    "healthyAfterMarketDates": 2,
+    "healthyWholeDbRowsWrittenObservedMaxNotReserve": 2825,
+    "healthyWholeDbRowsReadObservedMaxNotReserve": 133037,
+    "ordinaryNextTradeDay": "2026-10-12",
+    "genuineNextBusinessPersistenceCertified": false
+  },
+  "accountMetadataObservation": {
+    "source": "system2/evidence/S2_ISSUE1026_P03_P05_ACCOUNT_GRAPHQL_NONAUTHORIZING_REAL_RUN_20261009_V0_1.json",
+    "runId": 37941792137,
+    "observedAtUTC": "2026-10-09T14:07:12.779Z",
+    "rowsReadLowerBound": 990891,
+    "rowsWrittenLowerBound": 27060,
+    "spendableBudgetCertified": false
+  },
+  "p03": {
+    "documentedSupportChecks": 3,
+    "totalSupportChecks": 8,
+    "qualifiedSameUtcDayPostFixMultiwriterGrantAndResultCount": 0,
+    "validReservationCheckIdsAndAuthenticatedHashesForPostFixGrants": [],
+    "realP0ProtectedAndP2P3DeferConfirmedFromThisMatrix": false,
+    "why": "Actual real P0/P2/P3 safe deferral and push nonmutation are observed, but P0 received no approved grant, no real post-fix same-day authenticated reserve->mutation->readback/result across multiple writers; authenticated ledger payload/hash and quota-day overrun are unproven.",
+    "physicalAcceptance": "PENDING",
+    "dataLaneCannotCloseTicket": true
+  },
+  "p05": {
+    "documentedSupportChecks": 4,
+    "totalSupportChecks": 9,
+    "realOctoberD1ScoutKeysRead": 0,
+    "realOctoberD1CensusKeysRead": 0,
+    "physicalMissingKeys": "UNKNOWN",
+    "independentPhysicalReadback": false,
+    "physicalAcceptance": "PENDING"
+  },
+  "methodology": {
+    "realPhysicalEvidence": "Action run/job identities, non-authorizing quota gate outputs and skipped downstream business-write steps",
+    "unknown": "The gate itself may read Cloudflare account metadata or D1 ledger; do not assume zero Cloudflare D1 SQL reads for the entire workflow from a skipped mutation stage",
+    "notProven": [
+      "post-fix multiwriter physical success",
+      "Cloudflare account headroom",
+      "authenticated reservation ledger check_id/hash/payload readback",
+      "same-day physical P0 reservation",
+      "P2/P3 multiwriter fairness",
+      "P05 physical Hot D1 key presence or PIT"
+    ]
+  },
+  "next": [
+    "REMEDIATION/AUDIT independent review of this negative source-receipt matrix; do not promote P03 to GRANTED.",
+    "System1 P01/P02 independent read/write reserve authorization and later business readback required before any new physical D1 execution.",
+    "P05 actual 36-key read-only scout only with independently qualified headroom+attestation; full 11843-key requires separate grant.",
+    "Do not modify System1 Formal/Worker/billing or dispatch physical writes for artificial evidence."
+  ],
+  "safety": {
+    "physicalD1SqlReadsExecutedByEvidenceAssembly": 0,
+    "physicalD1WritesExecutedByEvidenceAssembly": 0,
+    "cloudflareR2CallsExecutedByEvidenceAssembly": 0,
+    "system1FormalRuntimeChanged": false,
+    "billingChanged": false
+  }
+}
