@@ -91,12 +91,13 @@ jobs:
             | tee /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.log
 
       - name: Reconcile shared account D1 budget result
-        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        if: always() && steps.quota.outputs.physical_allowed == 'true'
         uses: ./.github/actions/system2-d1-budget-gate
         with:
           writer_id: TPEX_2021_REVISION_RECOVERY
           mode: result
           reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+          execution_outcome: ${{ job.status }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
