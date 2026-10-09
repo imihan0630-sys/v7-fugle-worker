@@ -6,6 +6,8 @@ const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",
 const gate=await readFile(new URL("./trading_day_gate.mjs",import.meta.url),"utf8");
 const marketIngest=await readFile(new URL("./prepare_market_cache.mjs",import.meta.url),"utf8");
 const instIngest=await readFile(new URL("./sync_institution_data.mjs",import.meta.url),"utf8");
+const priorValidator=await readFile(new URL("./verify_cross_midnight_recovery_prereqs.mjs",import.meta.url),"utf8");
+const gapResume=await readFile(new URL("./system1_institution_gap_resume_v0_1.mjs",import.meta.url),"utf8");
 
 const cases=[
   {marketDate:"2026-10-08",dataOnly:true,dataScope:"market",qualityOnly:false,scanAllowed:false},
@@ -44,6 +46,20 @@ assert.ok(gate.includes("override||context.marketDate"));
 assert.ok(gate.includes("delta>7*86400000"));
 assert.ok(gate.includes("parsed.toISOString().slice(0,10)!==override"));
 assert.ok(gate.includes("api.isTradingDate(date)"));
+assert.ok(priorValidator.includes("assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/"),
+  "Cross-midnight date regex must match actual YYYY-MM-DD");
+assert.ok(!priorValidator.includes("/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/"),
+  "Cross-midnight date regex must not use doubled JS regex escaping");
+assert.ok(priorValidator.includes("planMissingInstitutionDates(institution,marketDate)"),
+  "Fallback must check authority's exact three-session inventory");
+assert.ok(priorValidator.includes("physicalSnapshotsVerified"));
+assert.ok(!priorValidator.includes("institution.historicalReadback"),
+  "Worker status has no historicalReadback contract");
+assert.ok(instIngest.includes("planMissingInstitutionDates(status,marketDate)"));
+assert.ok(!instIngest.includes("status.historicalReadback"));
+assert.ok(gapResume.includes("status.snapshotCounts"));
+assert.ok(gapResume.includes("matches[0].complete,true"));
+
 const markets=step("Sync today's official market data (no target changes or orders)","Sync official institutions and missing recent trading days (no plan changes)");
 const inst=step("Sync official institutions and missing recent trading days (no plan changes)","Verify prior-session market + institution prerequisites after midnight");
 for(const [section,kind] of [[markets,"market"],[inst,"institution"]]){
