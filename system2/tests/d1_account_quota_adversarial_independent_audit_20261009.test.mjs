@@ -84,7 +84,7 @@ assert.ok(readBlindSpot.reasonCodes.includes("WRITER_READ_RESERVATION_EVIDENCE_R
 const shadow=find("DAILY_SHADOW_DIAGNOSTIC");
 const readHardLimit=evaluateD1AccountQuotaReservationV0_1({
  writer:shadow,eventName:"schedule",
- accountUsage:mkUsage(1000,5000000-shadow.readReservationModel.rowsRead+1),
+ accountUsage:mkUsage(1000,5000000-shadow.readReservationModel.rowsRead-5000+1),
  system1ReservePolicy:fakeAuthorizedSystem1,
 });
 assert.equal(readHardLimit.state,"QUOTA_BUDGET_DEFER");
