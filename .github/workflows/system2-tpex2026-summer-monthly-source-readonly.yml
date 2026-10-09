@@ -1,0 +1,48 @@
+name: System2 TPEx 2026 July August Monthly Source Readonly
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-tpex2026-summer-monthly-source-readonly.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-tpex2026-summer-monthly-readonly
+  cancel-in-progress: false
+jobs:
+  official_source:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: false
+      matrix:
+        month: [7, 8]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Adversarial fixtures and System1 isolation
+        run: |
+          node system2/tests/tpex2026_summer_full_month_proxy_source_v0_1.test.mjs
+          node --check system2/runtime/tpex2026_summer_full_month_proxy_source_v0_1.mjs
+          node --check system2/scripts/probe_tpex2026_summer_month_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Official TPEx PRIMARY historical dailyQuotes on exact verified TWSE proxy dates
+        env:
+          S2_TPEX2026_SUMMER_MONTH: ${{ matrix.month }}
+          S2_TPEX2026_SUMMER_OUTPUT: /tmp/s2-tpex2026-summer-${{ matrix.month }}-source.json
+        run: node system2/scripts/probe_tpex2026_summer_month_readonly_v0_1.mjs
+      - name: Preserve month-specific source PASS or BLOCKED evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-tpex2026-summer-${{ matrix.month }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-tpex2026-summer-${{ matrix.month }}-source.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 runtime boundaries
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
