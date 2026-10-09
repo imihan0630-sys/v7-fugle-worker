@@ -98,7 +98,8 @@ export async function evaluateD06LimitedShadowEvidenceV0_1(ctx={}) {
   const sourceIssues=[];
   if(bundle.pointInTimeEligible!==true||time(bundle.availableAt)===null
       ||time(bundle.availableAt)>time(ctx.decisionTimestamp)
-      ||time(bundle.observedAt)===null||time(bundle.observedAt)<time(bundle.availableAt)) {
+      ||time(bundle.observedAt)===null||time(bundle.observedAt)<time(bundle.availableAt)
+      ||time(bundle.observedAt)>time(ctx.decisionTimestamp)) {
     sourceIssues.push("D06_SOURCE_PIT_UNPROVEN");
   }
   if(bundle.continuityEligible!==true || !["CLEAR_NO_ACTION","ADJUSTED_CONTINUITY"].includes(bundle.continuityState)) {
