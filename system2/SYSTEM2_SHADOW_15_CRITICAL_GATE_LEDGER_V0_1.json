@@ -80,6 +80,16 @@
         "37928686377"
       ],
       "status": "OFFLINE_EXACT_CAS_RETURNING_22_COLUMN_READBACK_PAYLOAD_CI_PASS_PHYSICAL_D1_UNVERIFIED"
+    },
+    {
+      "id": "F08",
+      "pr": 1010,
+      "commit": "d35cfc2bd4565414030ac378984988394185e6e4",
+      "ci": [
+        "37930794443",
+        "37930794435"
+      ],
+      "status": "WHOLE_REVISION_CHAIN_OFFLINE_NEGATIVE_READBACK_GUARD_CI_PASS_NO_PHYSICAL_D1"
     }
   ],
   "mandatoryProtections": {
