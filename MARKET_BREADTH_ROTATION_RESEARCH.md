@@ -2798,3 +2798,38 @@ Exact next:
 - add effective-dated member breadth/concentration before treating sector-index leadership as broad member leadership.
 
 Formal Core unchanged.
+
+
+## BR-078 — D09-08 second common-complete size-TRI date (2026-10-09)
+
+Artifact:
+- `research/BR078_D09_08_SECOND_COMMON_COMPLETE_SIZE_TRI_DATE_20261008_V0_1.md`
+
+The completed 2026-10-08 TWSE session supplies all three size legs on one official total-return-index basis:
+- Taiwan 50 TRI: -1.28%;
+- Mid-Cap 100 TRI: -0.03%;
+- Small-Cap 300 TRI: -0.25%.
+
+Frozen D1 ordering:
+`MID > SMALL > LARGE`.
+
+Spreads:
+- small - large = +1.03 percentage points;
+- mid - large = +1.25 percentage points;
+- small - mid = -0.22 percentage points.
+
+Independent unit remains:
+`COMMON_COMPLETE_SIZE_TRI_MARKET_DATE`.
+
+Complete-date N:
+`1 -> 2`.
+
+D5/D20/D60 compatible reference joins remain PENDING; no price-index splice, interpolation, carry-forward or zero fill is allowed.
+
+The receipt was frozen before the 2026-10-09 close, so the next-session close endpoint remained unopened.
+
+D09-08 remains L3/60.
+Inference remains POWER_INSUFFICIENT.
+Exact next remains additional common-complete TRI dates plus the BR-075 D16 method gate.
+
+Formal Core unchanged.
