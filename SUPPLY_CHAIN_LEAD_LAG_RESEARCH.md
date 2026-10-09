@@ -3236,3 +3236,21 @@ Frozen:
 D10-08 remains L3/60.
 
 Formal Core unchanged.
+
+
+## SC-094 — PSMC revenue growth is not utilization (2026-10-09)
+
+Artifact:
+- `research/SC094_PSMC_REVENUE_NOT_UTILIZATION_CONTROL_20261009_V0_1.md`
+
+PSMC 6770 provides a clean second-issuer proxy falsification. Official monthly revenue rose sequentially from NTD 5,045,881k in 2026-04 to NTD 7,665,064k in 2026-09, with positive MoM growth in each step. The September figure was published 2026-10-08.
+
+But the observed monthly-revenue source does not disclose a comparable wafer-fab utilization percentage.
+
+Frozen:
+- `REVENUE_GROWTH != IDENTIFIED_UTILIZATION`;
+- `CONSECUTIVE_REVENUE_GROWTH != PROOF_OF_FULL_UTILIZATION`.
+
+UMC remains the true-utilization positive issuer. PSMC is a negative proxy-control; utilization remains UNKNOWN.
+
+D10-04 remains L3/60. UMC 2026Q3 >90% preregistration remains frozen for 2026-10-28; second-issuer direct utilization percentage remains optional/open.
