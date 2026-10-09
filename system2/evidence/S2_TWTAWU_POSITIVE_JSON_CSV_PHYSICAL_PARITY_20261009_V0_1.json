@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "S2_TWTAWU_POSITIVE_JSON_CSV_PHYSICAL_PARITY_20261009_V0_1",
+  "owner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+  "lane": "DATA_LANE",
+  "disposition": "PASS_REAL_POSITIVE_ROWSET_PARITY_DIAGNOSTIC_ONLY",
+  "physicalRun": {
+    "runId": 37868573025,
+    "runNumber": 2,
+    "jobId": 113621076062,
+    "headSha": "432fe6b068437c85ffa2abd924caf19577278e83",
+    "conclusion": "success",
+    "createdAt": "2026-10-09T01:11:40Z",
+    "completedAt": "2026-10-09T01:11:55Z",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37868573025",
+    "artifactId": 11589476886,
+    "artifactDigest": "sha256:9357725b1a5bbe4263dbc054f130cee836b57b9683636246272f903acc3ddca9",
+    "artifactName": "system2-twtawu-positive-parity-37868573025-1"
+  },
+  "fixedQuery": {
+    "market": "TWSE",
+    "sourceId": "TWSE_TWTAWU",
+    "startDate": "2026-08-13",
+    "endDate": "2026-08-14",
+    "queryType": "3",
+    "symbolScope": "ALL_LISTED_SECURITIES",
+    "knownPositiveWitness": "1218 泰山 2026-08-13 suspend -> 2026-08-14 resume"
+  },
+  "jsonObservation": {
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "responseRawBytes": 457,
+    "rawByteSha256": "35ea58176c3e95d14b0ad8cad401b23b9bf127705775ac96d4fca7635901b64f",
+    "observedAt": "2026-10-09T01:11:49.933Z",
+    "normalizedRowCount": 1,
+    "positiveControlPresent": true,
+    "decodedWith": "utf-8"
+  },
+  "csvObservation": {
+    "httpStatus": 200,
+    "contentType": "text/csv;charset=ms950",
+    "responseRawBytes": 217,
+    "rawByteSha256": "61730005722e21b5f247f8d64c522461370453b077559723fb952dff453ef5de",
+    "observedAt": "2026-10-09T01:11:50.200Z",
+    "normalizedRowCount": 1,
+    "positiveControlPresent": true,
+    "decodedWith": "big5"
+  },
+  "rowSetIdentity": "EQUAL_NORMALIZED_SYMBOL_SUSPENDED_RESUMED_ROWS_ON_POSITIVE_2026_08_13_14",
+  "jsonCsvRowSetParity": true,
+  "positiveProof": {
+    "known1218EventBothRepresentations": true,
+    "bothOfficialOriginDomain": "www.twse.com.tw",
+    "bothRawByteHashesCaptured": true,
+    "zeroD1Read": true,
+    "zeroD1Write": true,
+    "zeroR2Write": true,
+    "productionIsolation": "PASS"
+  },
+  "rejectedPromotion": {
+    "sameScopeOfficialExportContractProven": false,
+    "exactRangeCompletenessProven": false,
+    "noTruncationOrPaginationProof": false,
+    "independentBackendProof": false,
+    "revisionOrCancellationCoverage": false,
+    "sourceCoverageComplete": false,
+    "suspensionCoverageComplete": false,
+    "negativeNoSuspensionCertified": false,
+    "noEventMayBeClaimed": false,
+    "original2026_08FirstKnownAtProven": false,
+    "technicalContinuityCertified": false,
+    "ncT01PromotionAuthorized": false,
+    "system2StrategyReady": false
+  },
+  "priorFailureRun": {
+    "id": 37868242821,
+    "artifactId": 11588654924,
+    "state": "BLOCKED_POSITIVE_PARITY_UNVERIFIED",
+    "failure": "CSV MS950 source decoded as UTF8; old hash was transcoded text, not source bytes",
+    "retainedAsNegativeEvidence": true
+  },
+  "nextEvidenceGates": [
+    "Independently pin official CSV export/query contract and row-count/truncation/response-range exhaustiveness",
+    "Repeat known-positive interval with exact bounded query identity and explicit source-vintage",
+    "Independently cross-check negative witness exact PIT replay range; no empty-result promotion until proof",
+    "Bind full corporate-action revision/cancellation/absence source coverage, TWTAWU suspension completeness and MOPS/lifecycle evidence",
+    "Independent NC-T01 physical receipt/hash lineage audit by AUDIT_LANE before promotion"
+  ],
+  "protected": {
+    "system1FormalCoreUnchanged": true,
+    "system1ProductionRuntimeUnchanged": true,
+    "capitalOrderPushUnchanged": true,
+    "historyNotRewritten": true,
+    "shadowNoSignalAuthority": true
+  }
+}
