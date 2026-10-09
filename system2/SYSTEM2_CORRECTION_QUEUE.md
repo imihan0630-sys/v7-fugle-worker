@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-09 14:26 Asia/Taipei
+Updated: 2026-10-09 18:39 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1109,6 +1109,25 @@ PR #985 merged as `a5977af950ed7902a4ac4d965edc18dd62ca30d2`.
 - Durable evidence: `system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`.
 
 Status returns to `FIX_IMPLEMENTED`. Independent AUDIT_LANE must re-run A1-A4 and retains sole HIGH closure authority. Physical multiwriter/System1 after-market acceptance remains separate and pending.
+
+
+#### 2026-10-09 18:39 REMEDIATION A5/A6 implementation complete
+
+Independent PR #989 routed two additional fail-open defects back to REMEDIATION_LANE. PR #994 merged as `0c74919d4746f27f14aec44d1841c01a4f32f12b`.
+
+- **A5 PASS at source level:** partial/missing/null/string/negative/fractional/non-finite GraphQL D1 rowsRead/rowsWritten and invalid/duplicate group identity now return `known=false`; no `|| 0` metric fallback remains.
+- **A5 final independent probe replay:** `GQL_PARTIAL_ROWS_READ_TREATED_AS_ZERO = SAFE`; parserKnown=false, rowsRead=null, synthetic otherwise-authorized decision=`QUOTA_BUDGET_DEFER`.
+- **A6 PASS at source level:** malformed/incomplete/ambiguous same-day quota ledger rows no longer silently disappear; `integrityState=INVALID` blocks with a hard-cap sentinel and explicit `D1_QUOTA_LEDGER_INTEGRITY_INVALID`.
+- Production ledger load validates receipt structure, check ID, schema/directive/budget identity, UTC-day timestamp and stored hash before budgeting.
+- **A6 final independent probe replay:** `MALFORMED_RESERVATION_LEDGER_ROW_SILENT_SKIP = SAFE`; conservative outstanding write/read = 100000 / 5000000 and decision=`QUOTA_BUDGET_DEFER`.
+- Generic/offline prior-UTC-day rollover remains supported; production current-day ledger identity remains strict.
+- Final System2 Research CI `37918280572` PASS; V8 Regression `37918280554` PASS.
+- Dedicated matrix: `system2/tests/d1_account_quota_a5_a6_failclosed_v0_1.test.mjs`.
+- Durable evidence: `system2/evidence/S2_CORR_003_A5_A6_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`.
+- System1 write/read reserve remains `false/null`; observed 2,825 is still not a formal reserve.
+- No System1 Formal Core, trading, capital, production or Cloudflare billing change.
+
+Status returns to `FIX_IMPLEMENTED`. Independent AUDIT_LANE must reverify A5/A6 and remains the only HIGH closure authority. Physical closure gates remain pending.
 
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
