@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "S2_CORR013_DOWNSTREAM_DENOMINATOR_GUARD_IMPLEMENTATION_V0_1",
+  "observationDate": "2026-10-09",
+  "correction": "S2-CORR-20261008-013",
+  "assignedLane": "BUILD_LANE",
+  "disposition": "PARTIAL_GUARD_MERGED_MAIN_FULL_OFFICIAL_PROOF_PENDING",
+  "mergedPr": 949,
+  "mergedMainCommit": "3939e348c39e426531034ae81436f63f8a69d810",
+  "exactTestHead": "5dd6283387e64c692fb4a12eaefdeaf2ebc33616",
+  "tests": {
+    "system2Research": {
+      "runId": 37877277761,
+      "conclusion": "success"
+    },
+    "v8Regression": {
+      "runId": 37877277718,
+      "conclusion": "success"
+    },
+    "regimePitFirewall": {
+      "runId": 37877277842,
+      "conclusion": "success"
+    }
+  },
+  "sourceFiles": [
+    "system2/runtime/execution_denominator_guard_v0_1.mjs",
+    "system2/runtime/d18_regime_attribution_v0_1.mjs",
+    "system2/tests/execution_denominator_guard_v0_1.test.mjs",
+    "system2/tests/d18_regime_attribution_v0_1.test.mjs"
+  ],
+  "behavior": [
+    "Resists caller-supplied proofCompleteNoFill=true and noFillDenominatorEligible=true as nonauthoritative booleans",
+    "Does not count selected-to-triggered, confirmed fills, certified NO_FILL, realized PnL or profitable trades from synthetic MODEL_ONLY states",
+    "D18 attribution still preserves strictly observational price-horizon returns separately from modeled fills",
+    "D18 projected simulation realizedReturnAfterCost always null pending genuine independent PIT/calendar/executable fills",
+    "D18 attribution receipt version bumped V0.1 to V0.2 so historical receipts and hashes are not overwritten",
+    "No physical external source, Cloudflare read/write, Worker deploy or System1 Formal/Core mutation"
+  ],
+  "knownLimitations": [
+    "Classifier is deliberately permanently fail-closed in V0.1: a future distinct version must accept source-authenticated physical independently audited calendar/PIT/fill receipts before any certified denominator",
+    "Other strategy performance consumers must be verified independently to avoid bypass; not a declaration of systemwide denominator compliance",
+    "CORR-013 end-to-end release requires actual exchange calendar exact session set, date and vintage receipts, source hash, cost and intraday sequencing proofs",
+    "CORR-012 full decision/strategy/version/regime/exec/cost provenance and outcome append-only versioning still open",
+    "Independent AUDIT_LANE verification required; never mark HIGH VERIFIED_CLOSED from BUILD tests"
+  ],
+  "remainingCorr012Status": "OPEN",
+  "remainingCorr013Status": "OPEN",
+  "authorization": {
+    "system1FormalCore": false,
+    "system1ProductionRuntime": false,
+    "system2LiveSelection": false,
+    "paidTier": false,
+    "realOrders": false,
+    "capital": false,
+    "livePush": false,
+    "cloudflareReads": 0,
+    "cloudflareWrites": 0
+  }
+}
