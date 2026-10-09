@@ -3181,3 +3181,58 @@ Prospective post-SC087 event N unchanged.
 
 Exact next:
 continue SC-088 from the SC-087 freeze and admit only genuinely post-freeze official events with financing instrument, conditionality, realized funding and physical realization stored separately.
+
+
+## 2026-10-09 prospective null-observation continuation
+
+### SC-086 — D10-13 BIS post-freeze null
+
+Artifact:
+- `research/SC086_D10_13_BIS_POST_FREEZE_NULL_20261009_V0_1.md`
+
+Official bounded BIS observation at 2026-10-09 17:12 Asia/Taipei:
+- latest visible BIS News & Updates item = 2026-10-02 administrative enforcement settlement;
+- latest visible 2026 Federal Register BIS publication = 2026-09-24 polysilicon stockpiling rule;
+- no genuinely new post-SC047 rule/list/license vintage observed in the bounded official scope.
+
+Frozen:
+- `NO_EVENT_DATE_IS_DATA`;
+- `BOUNDED_NO_EVENT != PROOF_NO_RELEVANT_POLICY_ANYWHERE`;
+- issuer exposure remains UNKNOWN without contemporaneous issuer-native evidence.
+
+D10-13 remains L3/60.
+
+### SC-088 — D10-14 CHIPS post-freeze null
+
+Artifact:
+- `research/SC088_D10_14_CHIPS_POST_FREEZE_NULL_20261009_V0_1.md`
+
+Official NIST CHIPS News & Releases observation:
+- latest visible item remains 2026-09-16 Anderon final R&D award;
+- no genuinely new post-SC087 award/disbursement/project-scope/qualification/HVM/utilization press release observed through this bounded capture.
+
+Lifecycle states remain separate:
+award / grant / tax credit / conditional loan / executed loan / funded tranche / realized disbursement / verified capex / facility / qualification / HVM / utilization / scope revision.
+
+D10-14 remains L3/60.
+
+### SC-091 — D10-08 bounded no-new-root observation
+
+Artifact:
+- `research/SC091_D10_08_BOUNDED_NULL_EVENT_ROOT_20261009_V0_1.md`
+
+Bounded issuer-native search lanes included GlobalWafers, TSMC, UMC and MediaTek plus current-date issuer-hosted semiconductor supply-disruption / shortage / allocation / capacity-constraint discovery.
+
+No second genuinely new issuer-native supply-gap event root was observed in that bounded scope.
+
+Current independent issuer-native event-root N remains 1:
+GlobalWafers Novara fire and its recovery descendants remain one root.
+
+Frozen:
+- `NO_NEW_ROOT_DATE_IS_DATA`;
+- `DESCENDANT_RECOVERY_UPDATE != NEW_EVENT_ROOT`;
+- `BOUNDED_NO_NEW_ROOT != PROOF_NO_SUPPLY_GAP_ANYWHERE`.
+
+D10-08 remains L3/60.
+
+Formal Core unchanged.
