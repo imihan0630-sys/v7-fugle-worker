@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
+import {planMissingInstitutionDates} from "./system1_institution_gap_resume_v0_1.mjs";
 
 const origin="https://fugle-test.imihan0630.workers.dev";
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const marketDate=String(process.env.RECOVERY_MARKET_DATE||"").trim();
 assert.ok(token,"V7_ADMIN_TOKEN required");
-assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/,"RECOVERY_MARKET_DATE required");
+assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,"RECOVERY_MARKET_DATE required");
 
 const headers={"x-admin-token":token,"accept":"application/json"};
 async function get(path){
@@ -22,7 +23,9 @@ assert.equal(market.markets?.TPEx?.ready,true);
 const institution=await get("/api/institution-status?marketDate="+encodeURIComponent(marketDate));
 assert.equal(institution.marketDate,marketDate);
 assert.equal(institution.ready,true,"Previous-session institution streak incomplete; fail closed");
-assert.equal(institution.historicalReadback,true);
+const receipt=planMissingInstitutionDates(institution,marketDate);
+assert.equal(receipt.alreadyReady,true,"Three dated institution snapshots incomplete");
+assert.equal(receipt.physicalSnapshotsVerified,true,"Institution physical snapshots not verified");
 console.log(JSON.stringify({
   ok:true,marketDate,crossMidnightPrerequisitesVerified:true,
   marketCounts:{TWSE:market.markets.TWSE.count,TPEx:market.markets.TPEx.count},

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {verifyManualQualityPrereqs,canReuseHeavyMopsSources} from './system1_manual_quality_prereqs_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
@@ -61,6 +62,20 @@ async function readonlyPreview(body,label) {
   }
   throw new Error(label+' transient retries exhausted after '+maxAttempts+' attempts: '+JSON.stringify(lastMeta));
 }
+if(String(process.env.V7_DATA_ONLY_RECOVERY||"").toLowerCase()==="true"){
+  assert.ok(requestedMarketDate,"Manual data-only quality requires an explicit market date");
+  // GET-only physical prerequisites: fail before any official large source download
+  // or a D1 quality-data POST when market/institution input is incomplete.
+  const [marketResponse,institutionResponse]=await Promise.all([
+    admin('/api/market-data/status?marketDate='+encodeURIComponent(marketDate)),
+    admin('/api/institution-status?marketDate='+encodeURIComponent(marketDate))
+  ]);
+  assert.equal(marketResponse.ok,true,'Official market prerequisite status unavailable');
+  assert.equal(institutionResponse.ok,true,'Official institution prerequisite status unavailable');
+  const receipt=verifyManualQualityPrereqs(
+    await marketResponse.json(),await institutionResponse.json(),marketDate);
+  console.log(JSON.stringify({manualQualityPrerequisitesVerified:true,...receipt}));
+}
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
 const recoveryOnly=String(process.env.QUALITY_RECOVERY_ONLY || '')==='1';
 let existingQuality=null;
@@ -122,6 +137,16 @@ console.log(JSON.stringify({officialAnnouncementSchemas:{TWSE:{fields:Object.key
 await sync({kind:'ANNOUNCEMENTS',twseUrl:announcementTwse,tpexUrl:announcementTpex,twsePayload:announcementsTwse,tpexPayload:announcementsTpex});
 }
 else console.log(JSON.stringify({historicalQualityReuse:true,kind:'ANNOUNCEMENTS',marketDate}));
+// A partially recovered historical quality date may already have BOTH
+// expensive MOPS FINANCIAL + QUARTER_EPS snapshots. In that case there is
+// no reason to repeat dozens of third-party HTML/POST source reads.
+// Source reads are skipped only when both physical Worker cache flags are true;
+// scheduled ordinary sync still refreshes its authoritative source payloads.
+const financialEpsCached=canReuseHeavyMopsSources(recoveryOnly,existingQuality);
+if(financialEpsCached) {
+  console.log(JSON.stringify({historicalQualityReuseHeavySources:true,marketDate,
+    financialReady:true,quarterEpsReady:true,noSourceMutation:true,noD1Write:true}));
+} else {
 const epsRows=helpers.parseOfficialCsv(await (await publicSource('https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv')).text());
 const marketOptions=helpers.parseMopsMarketOptions(await (await publicSource('https://mopsov.twse.com.tw/mops/web/t163sb04')).text());
 console.log(JSON.stringify({officialMopsMarketOptions:marketOptions}));
@@ -207,6 +232,7 @@ for(let start=0;start<universe.length;start+=2) {
 }
 if(!datasetReady('QUARTER_EPS')) await sync({kind:'QUARTER_EPS',year,quarter,reports,financialSnapshot});
 else console.log(JSON.stringify({historicalQualityReuse:true,kind:'QUARTER_EPS',marketDate}));
+}
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
 const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);
 const finalStatus=await statusResponse.json();

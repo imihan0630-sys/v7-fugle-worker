@@ -1,0 +1,30 @@
+name: System1 20261008 Official Source Readonly
+
+on:
+  pull_request:
+    paths:
+      - "tests/system1_20261008_official_sources_readonly.mjs"
+      - ".github/workflows/system1-20261008-official-sources-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --check tests/system1_20261008_official_sources_readonly.mjs
+      - name: Check 2026-10-08 TWSE TPEx official sources without any Worker writes
+        run: node tests/system1_20261008_official_sources_readonly.mjs
+      - name: Save sanitized source-only receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-20261008-official-source-readonly-${{ github.run_id }}
+          path: artifacts/system1-official-source-20261008-readonly.json
+          retention-days: 30
+          if-no-files-found: warn

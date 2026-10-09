@@ -1,0 +1,31 @@
+name: System1 20261008 Institution Sources Readonly
+
+on:
+  pull_request:
+    paths:
+      - "tests/system1_20261008_institution_sources_readonly.mjs"
+      - ".github/workflows/system1-20261008-institution-sources-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate read-only institution source script
+        run: node --check tests/system1_20261008_institution_sources_readonly.mjs
+      - name: Check Oct8 official institution source responses
+        run: node tests/system1_20261008_institution_sources_readonly.mjs
+      - name: Preserve sanitized source-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-20261008-institution-sources-${{ github.run_id }}
+          path: artifacts/system1-20261008-institution-sources-readonly.json
+          retention-days: 30
+          if-no-files-found: warn

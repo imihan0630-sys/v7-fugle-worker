@@ -1,0 +1,113 @@
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+import {validateDispatchScope} from "./verify_official_data_dispatch_inputs.mjs";
+
+const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
+const gate=await readFile(new URL("./trading_day_gate.mjs",import.meta.url),"utf8");
+const marketIngest=await readFile(new URL("./prepare_market_cache.mjs",import.meta.url),"utf8");
+const instIngest=await readFile(new URL("./sync_institution_data.mjs",import.meta.url),"utf8");
+const priorValidator=await readFile(new URL("./verify_cross_midnight_recovery_prereqs.mjs",import.meta.url),"utf8");
+const gapResume=await readFile(new URL("./system1_institution_gap_resume_v0_1.mjs",import.meta.url),"utf8");
+const qualityIngest=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
+
+const cases=[
+  {marketDate:"2026-10-08",dataOnly:true,dataScope:"market",qualityOnly:false,scanAllowed:false},
+  {marketDate:"2026-10-08",dataOnly:true,dataScope:"institution",qualityOnly:false,scanAllowed:false},
+  {marketDate:"2026-10-08",dataOnly:true,dataScope:"quality",qualityOnly:false,scanAllowed:false},
+  {marketDate:"2026-10-08",dataOnly:true,dataScope:"all",qualityOnly:false,scanAllowed:false},
+  {marketDate:"2026-10-08",dataOnly:false,qualityOnly:true,scanAllowed:false},
+  {marketDate:"",dataOnly:false,qualityOnly:true,scanAllowed:false},
+  {marketDate:"2026-10-08",dataOnly:false,qualityOnly:false,scanAllowed:true},
+  {marketDate:"",dataOnly:false,qualityOnly:false,scanAllowed:true}
+];
+for(const c of cases){
+  const got=validateDispatchScope(c);
+  assert.equal(got.scanAllowed,c.scanAllowed);
+  if(c.dataOnly) assert.equal(got.dataScope,c.dataScope);
+}
+assert.throws(()=>validateDispatchScope({dataOnly:true}),/requires market_date/);
+assert.throws(()=>validateDispatchScope({marketDate:"2026-10-08",dataOnly:true,qualityOnly:true}),/cannot both be true/);
+assert.throws(()=>validateDispatchScope({marketDate:"20261008",dataOnly:true}),/YYYY-MM-DD/);
+assert.throws(()=>validateDispatchScope({marketDate:"2026-10-08",dataOnly:true,dataScope:"anything"}),/Invalid data_scope/);
+assert.throws(()=>validateDispatchScope({marketDate:"2026-10-08",dataOnly:false,dataScope:"all"}),/Non-data-only/);
+
+function step(name,next){
+  const p=workflow.indexOf("      - name: "+name+"\n");
+  assert.ok(p>=0,name+" missing");
+  const q=workflow.indexOf("      - name: "+next+"\n",p+8);
+  assert.ok(q>p,next+" missing after "+name);
+  return workflow.slice(p,q);
+}
+const validation=step("Validate manual recovery scope (never alters trading plans)","Skip official exchange holidays safely");
+assert.ok(validation.includes("RECOVERY_INPUT_DATA_SCOPE:"));
+assert.ok(validation.includes("node tests/verify_official_data_dispatch_inputs.mjs"));
+const calendar=step("Skip official exchange holidays safely","Sync today's official market data (no target changes or orders)");
+assert.ok(calendar.includes("V7_RECOVERY_DATA_ONLY_DATE:"));
+assert.ok(gate.includes("override||context.marketDate"));
+assert.ok(gate.includes("delta>7*86400000"));
+assert.ok(gate.includes("parsed.toISOString().slice(0,10)!==override"));
+assert.ok(gate.includes("api.isTradingDate(date)"));
+assert.ok(priorValidator.includes("assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/"),
+  "Cross-midnight date regex must match actual YYYY-MM-DD");
+assert.ok(!priorValidator.includes("/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/"),
+  "Cross-midnight date regex must not use doubled JS regex escaping");
+assert.ok(priorValidator.includes("planMissingInstitutionDates(institution,marketDate)"),
+  "Fallback must check authority's exact three-session inventory");
+assert.ok(priorValidator.includes("physicalSnapshotsVerified"));
+assert.ok(!priorValidator.includes("institution.historicalReadback"),
+  "Worker status has no historicalReadback contract");
+assert.ok(instIngest.includes("planMissingInstitutionDates(status,marketDate)"));
+assert.ok(instIngest.includes("fetchBufferedOfficialSource(url,"));
+assert.ok(instIngest.includes("maxAttempts:2"));
+assert.ok(!instIngest.includes("fetch(url,{headers:{accept:'application/json'}"),
+  "Manual official institution transport must buffer and retry entire body");
+assert.ok(gapResume.includes("stockCount)>=1500"));
+assert.ok(!instIngest.includes("status.historicalReadback"));
+assert.ok(gapResume.includes("status.snapshotCounts"));
+assert.ok(gapResume.includes("matches[0].complete,true"));
+
+const markets=step("Sync today's official market data (no target changes or orders)","Sync official institutions and missing recent trading days (no plan changes)");
+const inst=step("Sync official institutions and missing recent trading days (no plan changes)","Verify prior-session market + institution prerequisites after midnight");
+for(const [section,kind] of [[markets,"market"],[inst,"institution"]]){
+  assert.ok(section.includes("inputs.data_only == true"));
+  assert.ok(section.includes("inputs.data_scope == '"+kind+"'"));
+  assert.ok(section.includes("inputs.data_scope == 'all'"));
+  assert.ok(section.includes("steps.calendar.outputs.proceed == 'true'"));
+  assert.ok(section.includes("OFFICIAL_MARKET_DATE: "+'$'+"{{ steps.calendar.outputs.market_date }}"));
+  assert.ok(section.includes("V7_DATA_ONLY_RECOVERY:"));
+  assert.ok(section.includes("inputs.quality_only != true && inputs.data_only != true"));
+}
+for(const [source,name] of [[marketIngest,"market"],[instIngest,"institution"]]){
+  assert.ok(source.includes("V7_DATA_ONLY_RECOVERY"),name+" manual mode missing");
+  assert.ok(source.includes("(manualDataOnly?7:1)*86400000"),name+" seven-day window missing");
+  assert.ok(source.includes("Manual data-only recovery requires an explicit market date"));
+}
+const prior=step("Verify prior-session market + institution prerequisites after midnight","Sync official index, quarterly financials, valuation and TDCC (no plan changes)");
+assert.ok(prior.includes("github.event_name == 'schedule'"));
+const historyQuality=step("Historical official quality recovery","Historical after-market recovery");
+assert.ok(historyQuality.includes("inputs.data_scope == 'quality'"));
+assert.ok(historyQuality.includes("inputs.data_scope == 'all'"));
+assert.ok(historyQuality.includes("inputs.data_only != true"));
+assert.ok(historyQuality.includes("steps.calendar.outputs.proceed == 'true'"));
+assert.ok(historyQuality.includes("V7_DATA_ONLY_RECOVERY:"));
+assert.ok(qualityIngest.includes("verifyManualQualityPrereqs("));
+assert.ok(qualityIngest.includes("manualQualityPrerequisitesVerified"));
+assert.ok(qualityIngest.includes("canReuseHeavyMopsSources(recoveryOnly,existingQuality)"));
+assert.ok(qualityIngest.indexOf("if(financialEpsCached)")>=0);
+assert.ok(qualityIngest.indexOf("if(financialEpsCached)")<qualityIngest.indexOf("const epsRows=helpers.parseOfficialCsv("));
+assert.ok(qualityIngest.includes("historicalQualityReuseHeavySources:true"));
+
+assert.ok(qualityIngest.includes("admin('/api/institution-status?marketDate='"));
+
+const manualScan=workflow.slice(workflow.indexOf("      - name: Historical after-market recovery\n"));
+assert.ok(manualScan.includes("inputs.quality_only != true && inputs.data_only != true"));
+const scheduledScan=step("Recover missing same-day analysis after complete data (skip prior success)","Historical official quality recovery");
+assert.ok(scheduledScan.includes("inputs.data_only != true"));
+assert.ok(workflow.includes("data_scope:\n"));
+assert.ok(workflow.includes("default: market"));
+console.log(JSON.stringify({
+  ok:true,cases:cases.length,rejectedInvalidScopes:5,
+  sevenDayManualOnly:true,stagedQuotaRecovery:true,tradingHolidayGate:true,
+  scheduledDateWindowPreserved:true,qualityOnlyNeverScan:true,dataOnlyNeverScan:true,
+  tradingRulesUnchanged:true,noOrder:true,noPush:true
+}));

@@ -1,3 +1,5 @@
+import {planMissingInstitutionDates} from './system1_institution_gap_resume_v0_1.mjs';
+import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 import assert from 'node:assert/strict';
 const origin='https://fugle-test.imihan0630.workers.dev';
 const now=new Date();
@@ -6,7 +8,11 @@ const requestedMarketDate=String(process.env.OFFICIAL_MARKET_DATE || '').trim();
 const marketDate=requestedMarketDate || today;
 assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,'OFFICIAL_MARKET_DATE must be YYYY-MM-DD');
 assert.ok(marketDate<=today,'OFFICIAL_MARKET_DATE cannot be in the future');
-assert.ok(Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z')<=86400000,'OFFICIAL_MARKET_DATE exceeds one-day scheduled recovery window');
+const manualDataOnly=String(process.env.V7_DATA_ONLY_RECOVERY||'').toLowerCase()==='true';
+if(manualDataOnly) assert.ok(requestedMarketDate,'Manual data-only recovery requires an explicit market date');
+const dateAgeMs=Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z');
+assert.ok(dateAgeMs<=(manualDataOnly?7:1)*86400000,
+  manualDataOnly?'Manual data-only recovery exceeds seven-day window':'OFFICIAL_MARKET_DATE exceeds one-day scheduled recovery window');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN authorization is required');
 const adminHeaders={'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'};
 async function admin(path,options={}) {
@@ -28,8 +34,13 @@ async function sync(date) {
   const twseUrl=`https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${date.replaceAll('-','')}&selectType=ALL`;
   const tpexUrl=`https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=${encodeURIComponent(`${Number(year)-1911}/${month}/${day}`)}&id=&response=json`;
   const [twsePayload,tpexPayload]=await Promise.all([twseUrl,tpexUrl].map(async url=>{
-    const response=await fetch(url,{headers:{accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(45000)});
-    assert.equal(response.ok,true,`Official institution source HTTP ${response.status}`);return response.json();
+    // TWSE T86 can exceed a single GitHub-hosted runner's 45s body-read
+    // budget. Retry only bounded transport/source failures, never Worker POSTs.
+    const response=await fetchBufferedOfficialSource(url,{
+      headers:{accept:'application/json'},timeoutMs:55000
+    },{maxAttempts:2});
+    assert.equal(response.ok,true,`Official institution source HTTP ${response.status}`);
+    return response.json();
   }));
   // Retain date/schema, omit non-ordinary instruments before transferring the large official table.
   const codeIndex=twsePayload.fields?.indexOf('證券代號');
@@ -41,13 +52,38 @@ async function sync(date) {
   assert.equal(result.verified,true);assert.equal(result.noPlanChanges,true);
   console.log(JSON.stringify({officialInstitutionCached:true,...result}));return result;
 }
-const current=await sync(marketDate);
-for(const missingDate of current.streak.missingDates || []) await sync(missingDate);
-const statusResponse=await admin('/api/institution-status');
+// For explicit historical data-only recovery, read the authority's exact
+// three-trading-day gaps first. Never rewrite the already-valid two sessions.
+let backfilledDates=[];
+if(manualDataOnly){
+  const priorResponse=await admin('/api/institution-status?marketDate='+encodeURIComponent(marketDate));
+  assert.equal(priorResponse.ok,true,'Manual institution inventory unavailable; no D1 writes');
+  const plan=planMissingInstitutionDates(await priorResponse.json(),marketDate);
+  console.log(JSON.stringify({manualInstitutionGapPlan:true,marketDate,
+    alreadyReady:plan.alreadyReady,repairDates:plan.repairDates,noSelection:true,noPush:true}));
+  for(const missingDate of plan.repairDates){
+    await sync(missingDate); // Only actual missing dates, at most three.
+    backfilledDates.push(missingDate);
+  }
+}else{
+  const current=await sync(marketDate);
+  for(const missingDate of current.streak.missingDates || []) await sync(missingDate);
+  backfilledDates=[...(current.streak.missingDates||[])];
+}
+// Explicit historical recovery MUST read back the same marketDate, not today's
+// default: a holiday/default-date check would produce a false recovery failure.
+const statusPath='/api/institution-status'+(manualDataOnly?'?marketDate='+encodeURIComponent(marketDate):'');
+const statusResponse=await admin(statusPath);
 assert.equal(statusResponse.ok,true);
 const status=await statusResponse.json();
 assert.equal(status.marketDate,marketDate);assert.equal(status.ready,true,'Current three trading dates must all be complete');
+if(manualDataOnly) {
+  const receipt=planMissingInstitutionDates(status,marketDate);
+  assert.equal(receipt.alreadyReady,true,'Manual historical institution three-date physical readback incomplete');
+  assert.equal(receipt.physicalSnapshotsVerified,true,'Manual historical institution physical inventory unverified');
+}
 console.log(JSON.stringify({currentInstitutionReadback:status}));
 const after=await config();
 assert.deepEqual(after,before,'Institution synchronization must not change targets, capital or plans');
-console.log(JSON.stringify({institutionDataOnly:true,marketDate,currentDateVerified:true,backfilledDates:current.streak.missingDates || [],configurationUnchanged:true,noSelection:true,noExternalPlanWrite:true,noPush:true}));
+console.log(JSON.stringify({institutionDataOnly:true,marketDate,currentDateVerified:true,
+  backfilledDates,configurationUnchanged:true,noSelection:true,noExternalPlanWrite:true,noPush:true}));

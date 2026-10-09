@@ -1,0 +1,40 @@
+name: System1 Official Data-only Dispatch Offline Guard
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v7-market-data.yml"
+      - ".github/workflows/system1-data-only-dispatch-offline.yml"
+      - "tests/verify_official_data_dispatch_inputs.mjs"
+      - "tests/test_system1_official_data_dispatch_v0_1.mjs"
+      - "tests/sync_institution_data.mjs"
+      - "tests/system1_institution_gap_resume_v0_1.mjs"
+      - "tests/test_system1_institution_gap_resume_v0_1.mjs"
+      - "tests/verify_cross_midnight_recovery_prereqs.mjs"
+      - "tests/trading_day_gate.mjs"
+      - "tests/system1_manual_quality_prereqs_v0_1.mjs"
+      - "tests/test_system1_manual_quality_prereqs_v0_1.mjs"
+      - "tests/sync_official_quality.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate scope script syntax
+        run: node --check tests/verify_official_data_dispatch_inputs.mjs
+      - name: Assert quality-only and data-only never scan
+        run: node tests/test_system1_official_data_dispatch_v0_1.mjs
+      - name: Exact three-trading-date institution resumption refusal tests
+        run: |
+          node --check tests/sync_institution_data.mjs
+          node --check tests/verify_cross_midnight_recovery_prereqs.mjs
+          node tests/test_system1_institution_gap_resume_v0_1.mjs
+          node --check tests/sync_official_quality.mjs
+          node tests/test_system1_manual_quality_prereqs_v0_1.mjs

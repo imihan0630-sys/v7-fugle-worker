@@ -1,0 +1,35 @@
+name: System1 Exact Institution Gap Readonly
+
+on:
+  pull_request:
+    paths:
+      - "tests/system1_institution_gap_resume_v0_1.mjs"
+      - "tests/system1_institution_gap_inventory_readonly.mjs"
+      - "tests/sync_institution_data.mjs"
+      - ".github/workflows/system1-institution-gap-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify exact-gap script source
+        run: node --check tests/system1_institution_gap_inventory_readonly.mjs
+      - name: Read real three-session gap inventory without D1 writes
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/system1_institution_gap_inventory_readonly.mjs
+      - name: Preserve exact-gap receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-institution-exact-gap-${{ github.run_id }}
+          path: artifacts/system1-institution-exact-gap-inventory.json
+          retention-days: 30
+          if-no-files-found: warn
