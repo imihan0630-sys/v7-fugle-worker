@@ -67,7 +67,45 @@
       "acceptance": "Account-wide System1-first D1 READ/WRITE reservation with negative no-overdraft tests",
       "correctionId": "S2-CORR-20261007-003",
       "next": "Complete coordinated per-writer reserve/commit/fail-closed budget evidence before System2 heavy physical work",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "A07-C1",
+          "criterion": "共享 D1 額度缺口已登記並指派修復責任",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/SYSTEM2_CORRECTION_QUEUE.json",
+          "checkPassed": true
+        },
+        {
+          "checkId": "A07-C2",
+          "criterion": "System1 優先的跨作業額度預留契約",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "A07-C3",
+          "criterion": "各寫入者預留／提交／釋放的原子協調",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "A07-C4",
+          "criterion": "超額／並發／中止負向測試全部 PASS",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "A07-C5",
+          "criterion": "真實 D1 額度計數及獨立讀回",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "B10",
@@ -76,7 +114,45 @@
       "acceptance": "Actual latest TWSE/TPEx hot D1 stock bars and source date Oct08, paired full-universe readback",
       "correctionId": "S2-CORR-20261004-001",
       "next": "Physical same-day two-market hot store completeness + PIT readback under budget gate",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "B10-C1",
+          "criterion": "兩市場最近行情的官方樣本及來源研究證據",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md",
+          "checkPassed": true
+        },
+        {
+          "checkId": "B10-C2",
+          "criterion": "最新指定日期雙市場 Hot D1 實際筆數回讀",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B10-C3",
+          "criterion": "所有來源原始位元組與 firstKnownAt 證據",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B10-C4",
+          "criterion": "當日官方完整股票母體對帳",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B10-C5",
+          "criterion": "跨 R2/D1/PIT 獨立稽核通過",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "B11",
@@ -85,7 +161,45 @@
       "acceptance": "Independent official date set, suspensions, corporate action and exact PIT continuity per stock/session",
       "correctionId": "S2-CORR-20261004-001",
       "next": "Resolve NC-T01/NO_EVENT and missing intervals with dated authority receipts",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "B11-C1",
+          "criterion": "官方交易日／NC-T01 連續性阻擋程式與離線測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "B11-C2",
+          "criterion": "最新期間交易所官方完整日期集合讀回",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B11-C3",
+          "criterion": "停復牌、NO_EVENT、公司行動逐股驗證",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B11-C4",
+          "criterion": "來源首次可知時間及連續性實體讀回",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "B11-C5",
+          "criterion": "反例與跨市場獨立稽核通過",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "D06",
@@ -94,7 +208,45 @@
       "acceptance": "Freeze first Shadow per-strategy required families, exclusions, assessor thresholds and versions before future outcomes",
       "correctionId": null,
       "next": "Wire trustworthy PIT source receipts and independently validated RISK.REWARD_RISK into source-family policy; separately preregister testable unoptimized Alpha thresholds and version before any BUY_ELIGIBLE selection",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "D06-C1",
+          "criterion": "SHORT_MOMENTUM、SWING_GROWTH 策略版本與必要因子預註冊",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/strategy_contracts_v0_1.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D06-C2",
+          "criterion": "A1 PIT 因子完整性／UNKNOWN 必要來源攔截，CI PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/960",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D06-C3",
+          "criterion": "RISK.REWARD_RISK 獨立來源及進出場風險驗證",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D06-C4",
+          "criterion": "SWING 基本面／產業 PIT 來源接入",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D06-C5",
+          "criterion": "策略參數定版、OOS/Shadow 反證與稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 2,
+        "checksTotal": 5,
+        "checksRemaining": 3,
+        "progressPercent": 40
+      }
     },
     {
       "id": "D07",
@@ -103,7 +255,45 @@
       "acceptance": "Actual full-universe same-date PIT source snapshots -> strategy-specific assessment with no lookahead or fabricated values",
       "correctionId": null,
       "next": "DATA_LANE physical B10/B11 same-date official A1 bytes/source first-known-time, complete two-market live universe, lifecycle/PIT and NC-T01 evidence; then wire D06 assessor and validate D08 actual candidates with independent audit",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "D07-C1",
+          "criterion": "TWSE／TPEx A1 股票母體與同日快照適配器",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/a1_symbol_snapshot_adapter.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D07-C2",
+          "criterion": "兩市場最低覆蓋、日期、來源雜湊及 PIT 預檢 CI PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/962",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D07-C3",
+          "criterion": "最新完整雙市場母體實體來源重驗",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D07-C4",
+          "criterion": "經實證的 D06 策略逐股評估完整接入",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D07-C5",
+          "criterion": "前瞻無偷看資料選股輸出與獨立稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 2,
+        "checksTotal": 5,
+        "checksRemaining": 3,
+        "progressPercent": 40
+      }
     },
     {
       "id": "D08",
@@ -112,7 +302,45 @@
       "acceptance": "PIT complete daily strategy assessments, RANK/capacity receipt persisted and physically read back under 12/3 caps",
       "correctionId": null,
       "next": "DATA_LANE B10/B11 authentic full exchange market and PIT/NC-T01, D06 proven essential factors, REMEDIATION A07 quota, then isolated D1 daily capacity atomic persistence and independent audit",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "D08-C1",
+          "criterion": "容量／排名／分母不可變收據與 12/3 安全上限測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D08-C2",
+          "criterion": "D07→D08 每股評估／排除／零入選一致性負向 CI PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/965",
+          "checkPassed": true
+        },
+        {
+          "checkId": "D08-C3",
+          "criterion": "真實全母體與各策略 PIT 評估結果一致",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D08-C4",
+          "criterion": "實體 D1 容量凍結、追加寫入及重讀雜湊",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "D08-C5",
+          "criterion": "實體零入選／部分覆蓋／跨市場獨立驗收",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 2,
+        "checksTotal": 5,
+        "checksRemaining": 3,
+        "progressPercent": 40
+      }
     },
     {
       "id": "E05",
@@ -121,7 +349,45 @@
       "acceptance": "23:45 source-vintage/strategy PIT checked final attempt; physical immutable receipt and no blind finalization",
       "correctionId": null,
       "next": "Offline clock gate exists; separate safe dispatch and source receipts required",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "E05-C1",
+          "criterion": "23:45 來源時點 Gate 離線契約與測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/post_market_clock_gate_v0_1.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "E05-C2",
+          "criterion": "23:45 真正官方來源 PIT 再查",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E05-C3",
+          "criterion": "當日策略及候選母體凍結防偷看連結",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E05-C4",
+          "criterion": "安全派送與持久化完整運作",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E05-C5",
+          "criterion": "真實交易日獨立驗收",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "E06",
@@ -130,7 +396,45 @@
       "acceptance": "Only prior blocked date T can recover at 00:15 T+1 with authentic parent hash + next official session",
       "correctionId": null,
       "next": "Add physical manual/conditional runner with explicit T and identical PIT/version gate; no unauthorized Cron",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "E06-C1",
+          "criterion": "00:15 跨日條件恢復 Gate 離線契約與測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/post_market_clock_gate_v0_1.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "E06-C2",
+          "criterion": "上一阻擋決策及 SHA 實體親緣驗證",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E06-C3",
+          "criterion": "跨日與下一官方交易日來源再驗證",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E06-C4",
+          "criterion": "合法補查派送、不可覆寫及讀回",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E06-C5",
+          "criterion": "假日／跨年／缺盤負向稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "E07",
@@ -139,7 +443,45 @@
       "acceptance": "All candidates, exclusions and zero-pick/unknown counts frozen as immutable decision objects and physical D1 readback",
       "correctionId": null,
       "next": "Integrate authorized daily assessor decisions, corrections append only",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "E07-C1",
+          "criterion": "不可變策略決策與 Frozen Snapshot 模組",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/decision_archive.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "E07-C2",
+          "criterion": "研究 Shadow 每日決策資料結構及凍結哈希測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/runtime/limited_shadow_run_assembler_v0_1.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "E07-C3",
+          "criterion": "真實每日含排除與未知分母候選凍結",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E07-C4",
+          "criterion": "實體 D1 不可回寫存證與回讀",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "E07-C5",
+          "criterion": "全交易日與追溯原始來源獨立稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 2,
+        "checksTotal": 5,
+        "checksRemaining": 3,
+        "progressPercent": 40
+      }
     },
     {
       "id": "F07",
@@ -148,7 +490,45 @@
       "acceptance": "Apply additive append-only outcome revisions SQL in isolated D1 with schema and trigger physical readback",
       "correctionId": "S2-CORR-20261007-003",
       "next": "Stage 0011 exists; need global budget reservation and independent schema readback",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "F07-C1",
+          "criterion": "追加式 Outcome 修訂資料表 0011 SQL 已預備",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/954",
+          "checkPassed": true
+        },
+        {
+          "checkId": "F07-C2",
+          "criterion": "記憶體 SQLite 防 UPDATE／DELETE／重複寫入測試 PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/954",
+          "checkPassed": true
+        },
+        {
+          "checkId": "F07-C3",
+          "criterion": "22 欄、3 索引、2 觸發器的 D1 唯讀結構檢核 CI PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/969",
+          "checkPassed": true
+        },
+        {
+          "checkId": "F07-C4",
+          "criterion": "獨立 System2 D1 實際 Schema 套用及來源認證讀回",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "F07-C5",
+          "criterion": "限額、觸發器、不可變歷史實體獨立驗收",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 3,
+        "checksTotal": 5,
+        "checksRemaining": 2,
+        "progressPercent": 60
+      }
     },
     {
       "id": "F08",
@@ -157,7 +537,45 @@
       "acceptance": "Atomic isolated D1 append writer, verified source parents and prior revision, quota reservation and exact write/readback",
       "correctionId": "S2-CORR-20261008-012",
       "next": "PR #958 read-only preflight merged; still implement budget-authorized atomic writer + real D1 evidence",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "F08-C1",
+          "criterion": "executionHash／成本稅率版本化雜湊鏈測試 PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/951",
+          "checkPassed": true
+        },
+        {
+          "checkId": "F08-C2",
+          "criterion": "D1 決策／Regime／前版績效父層唯讀檢查 CI PASS",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/958",
+          "checkPassed": true
+        },
+        {
+          "checkId": "F08-C3",
+          "criterion": "額度預留的原子追加寫入器及競態防護",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "F08-C4",
+          "criterion": "真實 D1 同版／新版本寫入與讀回驗證",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "F08-C5",
+          "criterion": "獨立 PIT、成本、來源不可覆寫稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 2,
+        "checksTotal": 5,
+        "checksRemaining": 3,
+        "progressPercent": 40
+      }
     },
     {
       "id": "H04",
@@ -166,7 +584,45 @@
       "acceptance": "Independent adverse review and verified closure of CORR-012 entire outcome provenance/maturation chain",
       "correctionId": "S2-CORR-20261008-012",
       "next": "Audit parent PIT, versioned write/read, anti-rewrite and costs before closure",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "H04-C1",
+          "criterion": "CORR-012 成本／績效不可變負向測試已納入 CI",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/954",
+          "checkPassed": true
+        },
+        {
+          "checkId": "H04-C2",
+          "criterion": "AUDIT_LANE 完整獨立對抗性測試",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H04-C3",
+          "criterion": "實體決策／Regime／成本／PIT 父層核對",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H04-C4",
+          "criterion": "正式接受回執與衝突工單解除",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H04-C5",
+          "criterion": "Correction Queue 獨立 VERIFIED_CLOSED",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "H05",
@@ -175,7 +631,45 @@
       "acceptance": "Independent adverse review and verified closure of CORR-013 actual calendar and NO_FILL denominator",
       "correctionId": "S2-CORR-20261008-013",
       "next": "Audit full session date-set, unknown bars, gap/limit fill and downstream denominator",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "H05-C1",
+          "criterion": "NO_FILL／未知時序與交易日異常的離線負向測試",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "H05-C2",
+          "criterion": "官方交易日集合的全期間實體匹配",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H05-C3",
+          "criterion": "同根 K 停利停損／停復牌／極端漲跌停反例",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H05-C4",
+          "criterion": "選出／觸發／獲利分母一致性獨立稽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H05-C5",
+          "criterion": "CORR-013 獨立 VERIFIED_CLOSED",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "H07",
@@ -184,7 +678,45 @@
       "acceptance": "Multiple real eligible sessions: data->strategy->ranking->frozen decision->virtual fill->outcome/performance exact D1 readback",
       "correctionId": null,
       "next": "Perform prospective shadow-only dry and physical acceptance with zero-pick days included",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "H07-C1",
+          "criterion": "Shadow 資料→策略→容量離線分段組裝與 CI",
+          "evidenceRef": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/main/system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs",
+          "checkPassed": true
+        },
+        {
+          "checkId": "H07-C2",
+          "criterion": "連續多個真實交易日官方資料與策略評估",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H07-C3",
+          "criterion": "每日凍結＋模擬成交＋成本後結果實體入庫",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H07-C4",
+          "criterion": "歷史版本、零入選與盈虧驗收",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H07-C5",
+          "criterion": "完整前瞻 Shadow 端到端獨立簽核",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 1,
+        "checksTotal": 5,
+        "checksRemaining": 4,
+        "progressPercent": 20
+      }
     },
     {
       "id": "H09",
@@ -193,7 +725,56 @@
       "acceptance": "Explicit owner go/no-go after protected infra, PIT proof and independent end-to-end CI/physical acceptance",
       "correctionId": null,
       "next": "Only request go/no-go once all mandatory safety/evidence gates are actually verified",
-      "verified": false
+      "verified": false,
+      "checks": [
+        {
+          "checkId": "H09-C1",
+          "criterion": "保護性啟用清單全部關卡認證收齊",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H09-C2",
+          "criterion": "System1 核心隔離及安全監控驗收",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H09-C3",
+          "criterion": "使用者確認首批策略／時段／資源限制",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H09-C4",
+          "criterion": "明確 Shadow go/no-go 授權",
+          "evidenceRef": null,
+          "checkPassed": false
+        },
+        {
+          "checkId": "H09-C5",
+          "criterion": "受控啟用後獨立日誌與復原演練",
+          "evidenceRef": null,
+          "checkPassed": false
+        }
+      ],
+      "quantified": {
+        "checksPassed": 0,
+        "checksTotal": 5,
+        "checksRemaining": 5,
+        "progressPercent": 0
+      }
     }
-  ]
+  ],
+  "quantifiedProgress": {
+    "schemaVersion": "S2_SHADOW_15_GATE_CHECKPOINT_COUNTS_V0_1",
+    "asOfDate": "2026-10-09",
+    "scoring": "Equal-weight binary criterion checklist, NOT elapsed effort estimate or readiness authorization",
+    "passedChecks": 21,
+    "totalChecks": 75,
+    "remainingChecks": 54,
+    "progressPercent": 28,
+    "fullyAcceptedGates": 0,
+    "pendingPhysicalReadback": true
+  }
 }
