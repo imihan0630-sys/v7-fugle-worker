@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P05_FULL_OCT08_OFFICIAL_SOURCE_KEYS_PREREG_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "owner": "DATA_LANE",
+  "category": "CLASS_A_SOURCE_ONLY_NO_D1_IO",
+  "status": "PREREG_CODE_NOT_REAL_OFFICIAL_SOURCE_EXECUTION_YET",
+  "source": "TWSE and TPEx official A1 canonical historical daily PRIMARY",
+  "originalFrozenRun": 37878847039,
+  "marketDates": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "expectations": {
+    "marketDateReceipts": 12,
+    "officialSourceStockDateKeys": 11843,
+    "twseRows": 6518,
+    "tpexRows": 5325,
+    "sourceNormalizedRowsetHash": "validate_against_each_immutable_oct08_receipt_before_key_enumeration",
+    "keyIdentityDigest": "SHA256_JSON_SORTED_TUPLE_ORDER_MARKETDATE_MARKET_SYMBOL",
+    "perSourceKeyValueDigest": "SHA256_JSON_SYMBOL_OPEN_HIGH_LOW_CLOSE_VOLUME_TRADEVALUE_TRANSACTIONS"
+  },
+  "noPromotion": {
+    "noD1PhysicalKeyPresence": true,
+    "hotD1ScoutExecuted": 0,
+    "hotD1FullCensusExecuted": 0,
+    "physicalMissingKeys": "UNKNOWN",
+    "noHistoricalPITFirstKnownAt": true,
+    "noCorporateActionContinuity": true,
+    "noBilling": true,
+    "noSystem1WorkerOrFormalChange": true,
+    "noQuotaGrant": true
+  },
+  "physicalCost": {
+    "cloudflareD1SQLReads": 0,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Calls": 0
+  },
+  "workflow": "One GitHub workflow path-scoped main push or explicit dispatch; file artifact per key, GitHub action PASS required before acceptance.",
+  "next": "After genuine public source run, freeze exact artifact digest+per-date key set lineage in GitHub main. This does not qualify D1 scout/census."
+}
