@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {assessReadiness,safeNumber} from "./system1_authenticated_readonly_gates_v0_1.mjs";
+import {assessReadiness,safeNumber,safeDateTokens} from "./system1_authenticated_readonly_gates_v0_1.mjs";
 assert.equal(safeNumber(undefined),null);
 assert.equal(safeNumber(null),null);
 assert.equal(safeNumber(""),null);
 assert.equal(safeNumber("1036"),1036);
+assert.deepEqual(safeDateTokens(["2026-10-08"]),["2026-10-08"]);
+assert.deepEqual(safeDateTokens(["2026/10/08"]),["2026-10-08"]);
+assert.deepEqual(safeDateTokens(["20261008"]),["2026-10-08"]);
+assert.deepEqual(safeDateTokens(["private","2026-10-07"]),["2026-10-07"]);
 const healthy={
  scan:{httpStatus:200,scanDate:"2026-10-08"},
  market:{httpStatus:200,marketDate:"2026-10-08",ready:true,twseReady:true,tpexReady:true},
