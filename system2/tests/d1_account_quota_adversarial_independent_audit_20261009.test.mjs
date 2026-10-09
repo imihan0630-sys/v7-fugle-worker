@@ -21,6 +21,7 @@ const find=id=>{
 const fakeAuthorizedSystem1={
  evidenceState:"SYNTHETIC_ADVERSARIAL_AUDIT_NOT_OPERATIONAL",
  reserveNumberAuthorized:true,authorizedReserveRows:5000,
+ readReserveNumberAuthorized:true,authorizedReadReserveRows:5000,
 };
 const mkUsage=(rowsWritten,rowsRead)=>({
  known:true,quotaDay:"2026-10-09",rowsWritten,rowsRead,
