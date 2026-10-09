@@ -87,6 +87,14 @@ if(report.sources.TWSE.reachable&&report.sources.TPEx.reachable){
   }
 }
 
+// A successful GitHub job must mean official source ADMISSION passed, not
+// just that the diagnostic JSON was uploaded without a thrown exception.
+report.sourceAdmissionReady=Boolean(report.bothOfficialInstitutionSourcesReachable&&
+  report.sources.TWSE.officialDate==="20261008"&&
+  report.sources.TPEx.officialDate==="20261008"&&
+  report.baseWorkerValidator.ok===true&&
+  report.baseWorkerValidator.counts?.total>=1500);
 await mkdir("artifacts",{recursive:true});
 await writeFile("artifacts/system1-20261008-institution-sources-readonly.json",JSON.stringify(report,null,2)+"\n");
 console.log("SYSTEM1_20261008_INSTITUTION_SOURCE_READONLY="+JSON.stringify(report));
+if(!report.sourceAdmissionReady)process.exitCode=1;
