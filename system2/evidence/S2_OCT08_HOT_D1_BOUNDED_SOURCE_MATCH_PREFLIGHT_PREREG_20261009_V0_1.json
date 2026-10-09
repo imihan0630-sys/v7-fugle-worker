@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "S2_OCT08_BOUNDED_SOURCE_MATCHED_HOT_D1_PROBE_PREREG_V0_1",
+  "classification": "DATA_LANE_CLASS_A",
+  "state": "CODE_ONLY_MANUAL_PHYSICAL_NOT_EXECUTED",
+  "date": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "referenceCutoff": "2026-10-08",
+  "originalSourceEvidence": "system2/evidence/S2_OCT08_TWSE_TPEX_OFFICIAL_12_DATE_PHYSICAL_SOURCE_ACCEPTANCE_20261009_V0_1.json",
+  "originalSourcePhysicalRunId": 37878847039,
+  "markets": [
+    "TWSE",
+    "TPEX"
+  ],
+  "exactDates": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "physicalPlan": {
+    "phase1": "Re-fetch 12 historical canonical official source snapshots, require identical exact full normalized bar SHA256 against Oct09 frozen receipt; any source drift stops before D1 SELECT",
+    "phase2": "For every market+date, deterministic sorted first/middle/last ordinary 4-digit symbol; 12*3=36 exact market-symbol-date physical hot D1 indexed SELECT with LIMIT 10",
+    "method": "Sampled full OHLC/volume/value match to the official source, track D1 available_at, observed_at, availability_basis, PIT flag and continuity without rewriting",
+    "sqlIndex": "s2_historical_a1_symbol_date (symbol,market_date,price_space)",
+    "d1SelectMax": 36,
+    "d1RowsReadLocalGuard": 35000,
+    "d1Writes": 0,
+    "r2Reads": 0,
+    "r2Writes": 0,
+    "status": "ONLY_SAMPLED_PASS_36_DOES_NOT_PROVE_FULL_MARKET_COMPLETENESS",
+    "noFullUniverseAuthority": true,
+    "noHistoricFirstKnownAtBackdating": true,
+    "noSourceRevisionRewriting": true,
+    "noCorporateActionNoEvent": true
+  },
+  "files": {
+    "runtime": "system2/runtime/oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+    "script": "system2/scripts/audit_oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+    "tests": "system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs",
+    "workflow": ".github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml"
+  },
+  "executionPolicy": {
+    "automaticRunOnMainPush": false,
+    "schedule": false,
+    "manualOnly": true,
+    "manualInputs": [
+      "d1_read_budget_confirmed",
+      "no_competing_writer"
+    ],
+    "coordinationOwner": "REMEDIATION_LANE",
+    "activeQuotaCorrection": "S2-CORR-20261007-003",
+    "noCloudflareReadWithoutBudget": true,
+    "noUnexpectedPaidUpgrade": true,
+    "isolatedD1Only": true,
+    "workflowConcurrencyGroup": "system2-isolated-d1-writer"
+  },
+  "nextIfFail": "Use sampled classification to determine exact dates/symbols of physically missing hot bars; only after account-wide quota and additional full-universe physical reconciliation may DATA_LANE design authorized idempotent missing-key rehydration. Older decision snapshots remain immutable.",
+  "protected": {
+    "system1FormalCore": false,
+    "system1ProductionRuntime": false,
+    "system2Selection": false,
+    "capital": false,
+    "orders": false,
+    "push": false
+  }
+}

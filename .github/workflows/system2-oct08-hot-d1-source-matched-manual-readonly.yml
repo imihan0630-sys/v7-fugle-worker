@@ -1,0 +1,60 @@
+name: System2 Oct08 Hot D1 Source-Matched Sample Manual Readonly
+
+# Physically read at most 36 indexed market-symbol-dates, AFTER revalidating
+# all 12 frozen official source hashes. Explicit manual only, no push or schedule.
+on:
+  workflow_dispatch:
+    inputs:
+      d1_read_budget_confirmed:
+        description: "REMEDIATION_LANE confirms account-wide System1/System2 D1 read headroom"
+        required: true
+        type: boolean
+        default: false
+      no_competing_writer:
+        description: "All other D1 writers coordinated; no competing writer active"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  bounded_read:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main' && inputs.d1_read_budget_confirmed && inputs.no_competing_writer
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline fail-closed sample tests and production isolation
+        run: |
+          node system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs
+          node --check system2/scripts/audit_oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Bounded 12-source SHA256 recheck then 36 indexed D1 SELECT samples only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          S2_D1_READ_BUDGET_CONFIRMED: ${{ inputs.d1_read_budget_confirmed }}
+          S2_NO_COMPETING_D1_WRITER_CONFIRMED: ${{ inputs.no_competing_writer }}
+          S2_OCT08_BOUNDED_D1_RESULT: /tmp/s2-oct08-hot-d1-source-matched-sample.json
+        run: node system2/scripts/audit_oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs
+      - name: Preserve PASS or BLOCKED immutable sampled evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-oct08-d1-samples-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-oct08-hot-d1-source-matched-sample.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: System1 Formal/production isolation
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
