@@ -1667,3 +1667,19 @@ DATA_LANE implemented independent **public official source-only** Oct1–8 dual-
 
 **Non-promotion:** even a 12/12 public source PASS is `SOURCE_ONLY`, not physical D1 hot-history presence, October bridge completion, 60-session PIT, NC-T01 corporate-action NO_EVENT, continuity or trading authority. Next gate requires bounded per-market/date *physical* hot D1 presence/integrity read-back only after REMEDIATION_LANE account-wide D1 budget coordination (S2-CORR-20261007-003), with immutable original source/decision clocks. Do not backdate October 9 retrieval to October 1–8 PIT. Any absent hot D1 rows require explicitly budgeted, idempotent, date-scoped rehydration research — never silent zero fill or unattended writer.
 
+## 2026-10-09 DATA_LANE — Oct01–Oct08 official dual-market 12/12 physical source-date probe PASS, D1/Bridge still UNVERIFIED
+
+New Class A official-source-only [Run 37878847039](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37878847039), job 113653590991 on merged main 39ca8dce38fa675874074609fb32d9c44321e944, completed SUCCESS. 10 adversarial/source guards and System1 isolation PASS. GitHub Artifact 11593830777 digest sha256:7b765d4b59ef5e9211f4ba03ab7f97462ba192e065140b6b6c5da3ec1b024a49.
+
+Source results are exactly 6 official TWSE FMTQIK October trading dates through 2026-10-08, and BOTH markets' canonical primary daily source response for every date; 12/12 real source-day receipts PASS, with exact payload marketDate, unique four-digit ordinary symbols and normalized OHLC/volume/value hashes:
+- 10-01 TWSE 1,086 / TPEX 887 ordinary source rows;
+- 10-02 TWSE 1,086 / TPEX 888;
+- 10-05 TWSE 1,087 / TPEX 888;
+- 10-06 TWSE 1,087 / TPEX 889;
+- 10-07 TWSE 1,086 / TPEX 887;
+- 10-08 TWSE 1,086 / TPEX 886.
+
+Six-session **official-source** subtotals: TWSE 6,518 stock-date rows, TPEx 5,325 stock-date rows, combined 11,843 retrospective canonical source market-symbol-day rows. These are NOT measured hot D1 or cold R2 inserted counts, nor proof every OHLC field is non-null. The source-only guard used ZERO Cloudflare API calls and produced no D1/R2 writes.
+
+Frozen immutable source evidence: system2/evidence/S2_OCT08_TWSE_TPEX_OFFICIAL_12_DATE_PHYSICAL_SOURCE_ACCEPTANCE_20261009_V0_1.json. Next PHYSICAL gate is a quota-coordinated, bounded six-session TWSE/TPEx *hot D1 presence and hash/source-version* census, with REMEDIATION_LANE high quota S2-CORR-20261007-003 still OPEN. Existing Oct08 snapshot universe 1,972 is not enough to infer six days of D1 historical bar physical presence. Do not count official source post-facto GET as original 10-01..10-08 firstKnownAt or replay eligibility; NC-T01 corporate-action/lifecycle and 60-session missing sessions remain BLOCKED. Full-month immutable October R2 segment is not expected before month ends. No silent backfill, PIT rewriting, strategy/live System2 or System1 changes.
+
