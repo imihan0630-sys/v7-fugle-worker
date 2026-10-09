@@ -325,6 +325,52 @@ export async function buildDecisionOutcomeSnapshotV0_1({
     ) {
       throw new Error("simulatedExecution.holdingSessions must be a non-negative integer or null");
     }
+    if (simulatedExecution.executionHash !== null
+        && simulatedExecution.executionHash !== undefined) {
+      const hash = requiredText(simulatedExecution.executionHash,
+        "simulatedExecution.executionHash");
+      if (!/^[a-f0-9]{64}$/.test(hash)) {
+        throw new Error("simulatedExecution.executionHash must be SHA256 hex");
+      }
+      sim.executionHash = hash;
+    }
+    const suppliedCost = simulatedExecution.costModel;
+    if (suppliedCost !== null && suppliedCost !== undefined) {
+      if (!suppliedCost || typeof suppliedCost !== "object" || Array.isArray(suppliedCost)) {
+        throw new Error("simulatedExecution.costModel must be an object");
+      }
+      const keys = ["commissionRate","minimumCommission","transactionTaxRate",
+        "entrySlippageRate","exitSlippageRate"];
+      const frozenCost = {};
+      for (const key of keys) {
+        const n = suppliedCost[key];
+        if (!Number.isFinite(n) || n < 0) {
+          throw new Error("simulatedExecution.costModel." + key + " must be non-negative");
+        }
+        frozenCost[key] = Number(n);
+      }
+      for (const key of ["costModelVersion","taxRuleId",
+        "commissionSemantics","taxSemantics"]) {
+        frozenCost[key] = requiredText(suppliedCost[key],
+          "simulatedExecution.costModel." + key);
+      }
+      sim.costModel = deepFreeze(frozenCost);
+      sim.costModelVersion = requiredText(simulatedExecution.costModelVersion,
+        "simulatedExecution.costModelVersion");
+      sim.taxRuleId = requiredText(simulatedExecution.taxRuleId,
+        "simulatedExecution.taxRuleId");
+      if (sim.costModelVersion !== sim.costModel.costModelVersion
+          || sim.taxRuleId !== sim.costModel.taxRuleId) {
+        throw new Error("SIMULATED_COST_LINEAGE_MISMATCH");
+      }
+    } else if (simulatedExecution.costModelVersion || simulatedExecution.taxRuleId) {
+      throw new Error("SIMULATED_COST_MODEL_MISSING");
+    }
+    if (simulatedExecution.lineageStatus !== undefined) {
+      sim.lineageStatus = requiredText(simulatedExecution.lineageStatus,
+        "simulatedExecution.lineageStatus");
+    }
+
   }
 
   const maturedHorizons = OUTCOME_HORIZONS_V0_1.filter(
@@ -542,7 +588,8 @@ export function validateMonotonicOutcomeUpdateV0_1(existingRow, nextRow) {
     const nextExecution = nextPayload.simulatedExecution;
     if (priorExecution && (
       !nextExecution ||
-      ["executionVersion", "fillQuality"].some(
+      ["executionVersion", "fillQuality", "executionHash", "costModelVersion",
+        "taxRuleId", "costModel", "lineageStatus"].some(
         key => JSON.stringify(priorExecution[key] ?? null)
           !== JSON.stringify(nextExecution[key] ?? null)
       )
