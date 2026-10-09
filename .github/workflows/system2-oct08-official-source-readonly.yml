@@ -1,0 +1,51 @@
+name: System2 Oct08 Last Session TWSE TPEx Official Readonly
+
+# Fixed 2026-10-08 latest completed market date. 6 dates x 2 official markets.
+# Public official endpoints only. Zero Cloudflare account secrets, D1 or R2 IO.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-oct08-official-source-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-oct08-public-official-source-only
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check latest-complete-session exact dates and fail-closed tests
+        run: |
+          node system2/tests/oct08_latest_completed_source_gate_v0_1.test.mjs
+          node --check system2/runtime/oct08_latest_completed_source_gate_v0_1.mjs
+          node --check system2/scripts/audit_oct08_latest_completed_official_source_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Probe TWSE and TPEx Oct1-8 official canonical historical A1 dates, no Cloudflare
+        env:
+          S2_OCT08_SOURCE_GATE_OUTPUT: /tmp/system2-oct08-source-gate.json
+        run: node system2/scripts/audit_oct08_latest_completed_official_source_readonly_v0_1.mjs
+      - name: Retain immutable PASS or BLOCKED source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-oct08-twse-tpex-official-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-oct08-source-gate.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Verify protected System1 production isolation
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production isolation PASS"
