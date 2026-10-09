@@ -1,0 +1,29 @@
+name: System2 AUDIT CORR013 Unknown Then Later Close V0.3
+on:
+  pull_request:
+    paths:
+      - "system2/tests/audit_corr013_unknown_before_later_close_v0_3.test.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr013-unknown-later-close-v0-3.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/tests/audit_corr013_unknown_before_later_close_v0_3.test.mjs"
+      - "system2/runtime/execution_simulator_v0_1.mjs"
+      - ".github/workflows/system2-audit-corr013-unknown-later-close-v0-3.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independently test prior UNKNOWN intervals before later eligible close
+        run: node system2/tests/audit_corr013_unknown_before_later_close_v0_3.test.mjs
+      - name: Simulator syntax
+        run: node --check system2/runtime/execution_simulator_v0_1.mjs
