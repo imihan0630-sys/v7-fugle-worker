@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T10:42:41+08:00",
+  "updatedAt": "2026-10-09T11:39:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -153,7 +153,9 @@
         "2024 TPEx fresh run 37593983170 (#29) used fix-bearing head 5c50a246bf91f9b1bc37c99f082bdfec467d5f09 and confirmed inputs 2024/TPEX, but the backfill job was cancelled at the configured 60-minute timeout before source-range completion; Physical verify was skipped, no coverage artifact was produced, and System1 isolation PASSed. Annual script fetches the full official range before pack/persistence, so source acquisition has no durable resume checkpoint.",
         "Fresh annual run 37611914140 (#30) failed in migrate before backfill because Cloudflare D1 returned HTTP 400 free-tier daily row-write limit exceeded; backfill/physical verify were skipped and no coverage artifact was produced.",
         "Run #30 blocker resets no earlier than 2026-10-08T00:00:00Z = 2026-10-08 08:00 Asia/Taipei per Cloudflare error; no paid-plan upgrade is authorized.",
-        "Run #30 is not evidence of 2024 TPEx source/data failure because annual backfill never started; cross-workflow quota recurrence is separately routed to S2-CORR-20261007-003."
+        "Run #30 is not evidence of 2024 TPEx source/data failure because annual backfill never started; cross-workflow quota recurrence is separately routed to S2-CORR-20261007-003.",
+        "2026-10-09 00 audit historical supersession: canonical DATA_LANE checkpoint confirms 2017–2025 raw annual TWSE/TPEx 18/18 accepted; 2024 TPEx run 37714783081, 2025 TWSE 37720726697, 2025 TPEx 37730512780. Data coverage PASS is distinct from PIT replay readiness and Stage-1 approval.",
+        "2026-10-09 DATA_LANE exact current cutoff: official TWSE and TPEx October 1–8 12/12 dated-source results PASS in run 37878847039, but Cloudflare hot D1 row presence and original firstKnownAt remain UNVERIFIED; 2026 TWSE Jul–Sep physical producer+artifact PASS without independent storage reread and 2026 TPEx segment unaccepted."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -279,15 +281,16 @@
         "Independent readback confirms historical_pack_year_backfill_v0_1.mjs still performs a read-only s2_schema_meta schema_version query and fails closed unless schemaVersion=1.1 before annual persistence.",
         "System2 Research CI 37612590153 SUCCESS and V8 Regression 37612590073 SUCCESS on d5031e1966da1fd75ec0499d17fabc19ca459d83.",
         "Independent verification: system2/evidence/S2_CORR_20261004_001_RUN30_QUOTA_HARDENING_AUDIT_20261007_V0_1.json @ d60a0bb7b0fd9db1ab64d798f763e950516659c9.",
-        "Disposition: direct run #30 redundant-provision cause repaired at repository level; 2024 TPEx physical acceptance remains pending a fresh post-reset run."
+        "Disposition: direct run #30 redundant-provision cause repaired at repository level; 2024 TPEx physical acceptance remains pending a fresh post-reset run.",
+        "00 independent latest-main administrative consistency readback (2026-10-09): source system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md and evidence S2_HISTORICAL_TPEX_2024_PHYSICAL_VERIFICATION_V0_1.json, S2_HISTORICAL_TWSE_2025_PHYSICAL_VERIFICATION_V0_1.json, S2_HISTORICAL_TPEX_2025_PHYSICAL_VERIFICATION_V0_1.json, S2_OCT08_TWSE_TPEX_OFFICIAL_12_DATE_PHYSICAL_SOURCE_ACCEPTANCE_20261009_V0_1.json. Scope/cursor reconciled without claim of 2026 full-year or aggregate PIT replay."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T19:34:03+08:00",
+      "updatedAt": "2026-10-09T11:39:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": "Current 2024 TPEx physical retry is blocked until the Cloudflare D1 free-tier daily row-write quota resets at 2026-10-08 08:00 Asia/Taipei. Repository timeout hardening is ready, but run #30 never reached backfill because migrate hit the quota ceiling. No paid upgrade is authorized."
+      "blockedBy": "2017–2025 annual TWSE/TPEx raw-market-year data coverage was physically accepted 18/18, including 2024 TPEx run #31, 2025 TWSE #32 and 2025 TPEx #33. Remaining scope is 2026 segmented TWSE/TPEx storage, historical/PIT/continuity and aggregate replay qualification; 2026-10-08 current-session hot D1 source-to-storage completeness remains unverified. S2-CORR-20261007-003 D1 account-wide write/read quota coordination is an active separate blocker. Do not repeat old 2024 TPEx quota/date failure as current."
     },
     {
       "directiveId": "S2-CORR-20261004-002",
