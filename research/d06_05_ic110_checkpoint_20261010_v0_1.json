@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "D06_IC110_CHECKPOINT_V0_1",
+  "module": "D06-05",
+  "status": "IC110_INSTRUMENT_IDENTITY_AND_HOLIDAY_FALSIFICATION_BRANCH_DURABLE_MAIN_PENDING",
+  "artifact": "research/d06_05_ic110_instrument_identity_calendar_falsification_20261010_v0_1.json",
+  "priorArtifacts": [
+    "research/d06_05_ic108_checkpoint_20261010_v0_1.json",
+    "research/d06_05_ic109_checkpoint_20261010_v0_1.json"
+  ],
+  "researchBranch": "research/d06-ic108-ic109-20261010",
+  "mainAtPrewrite": "a37698500bdad069e6db161e8c1a1595c5c0645f",
+  "branchBeforeCheckpoint": "bc758dd11ed0aaf5e3af75440e351b7528133f26",
+  "observedAt": "2026-10-09T23:09:12.202Z",
+  "evidence": {
+    "issuer6423UniformNumber": "12894399",
+    "issuer6806ConvertibleBondInstrument": "68061",
+    "officialHoliday20261009": true,
+    "candidate": 2778,
+    "knownNonCommon": 6,
+    "provisionalUpperBound": 2772,
+    "historicalTWSEOverlap": 60,
+    "finalCertified": "UNKNOWN",
+    "sourceDateIdentityCoverage": "UNKNOWN",
+    "tpexDelistingIntervalCompleteness": "UNKNOWN"
+  },
+  "level": "L3",
+  "maturityPct": 60,
+  "domainMaturityPct": 55.6,
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED",
+  "trackerSync": "NOT_UPDATED_PENDING_MAIN_INTEGRATION",
+  "pullRequest": "CREATE_BLOCKED_BY_TOOL_SAFETY_CHECK",
+  "next": "Research control room 00 to integrate isolated research branch safely, then re-read main and reconcile tracker without overwriting concurrent changes. Continue exact-dated identity certification 2026-09-24/2026-10-02 and full TPEx interval delisting. For D06-18, next valid trading session only; no 2026-10-09 holiday live receipt. No outcome join or maturity promotion."
+}
