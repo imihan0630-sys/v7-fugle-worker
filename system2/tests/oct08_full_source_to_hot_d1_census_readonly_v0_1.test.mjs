@@ -46,7 +46,7 @@ function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
    assert.match(query,/^SELECT\b/);
    assert.match(query,/FROM s2_historical_a1_bars WHERE symbol IN \(/);
    assert.match(query,/price_space='RAW' LIMIT 151$/);
-   return {bind(...args){return{async all(){
+   return {bind(...args){return {async all(){
     metrics.requestCount++;
     const marketDate=args.at(-2),market=args.at(-1);
     const source=data.get(market+"|"+marketDate);
@@ -67,7 +67,7 @@ function mockDb({missing=false,mismatch=false,versioned=false,badDatabase=false,
     if(versioned)for(const r of [...result])if(key(r))result.push({...r,bar_hash:"b".repeat(64)});
     metrics.rowsRead+=result.length+costPerQuery;
     return {results:result};
-   }}};},
+   }};}};
   },
  };
 }
