@@ -188,15 +188,6 @@ const malformedCases = [
       requestedRowsRead: "40000",
     }),
   }],
-  ["wrong reservation quota day", {
-    check_type: "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
-    observed_payload_json: JSON.stringify({
-      runKey: "r",
-      quotaDay: "2026-10-08",
-      requestedRowsWritten: 7358,
-      requestedRowsRead: 40000,
-    }),
-  }],
   ["unknown check type", {
     check_type: "OTHER",
     observed_payload_json: JSON.stringify({
@@ -278,6 +269,7 @@ const expectedJson = JSON.stringify({
 });
 function productionReservationRow({
   runKey = "prod",
+  quotaDay = "2026-10-09",
   timestamp = "2026-10-09T02:00:00.000Z",
   checkIdOverride = null,
   checkHashOverride = null,
@@ -288,11 +280,11 @@ function productionReservationRow({
     budgetVersion: "S2_D1_ACCOUNT_QUOTA_BUDGET_V0_2",
     directiveId: "S2-CORR-20261007-003",
     runKey,
-    quotaDay: "2026-10-09",
+    quotaDay,
     requestedRowsWritten: 7358,
     requestedRowsRead: 40000,
   };
-  const checkId = checkIdOverride ?? "S2-D1-BUDGET:2026-10-09:" + runKey + ":RESERVATION";
+  const checkId = checkIdOverride ?? "S2-D1-BUDGET:" + quotaDay + ":" + runKey + ":RESERVATION";
   const observed = JSON.stringify(payload);
   const status = "QUOTA_RESERVATION_GRANTED";
   const checkHash = checkHashOverride ?? sha256({
@@ -324,6 +316,7 @@ for (const [name, row] of [
   ["missing hash", { ...productionReservationRow(), check_hash: null }],
   ["bad check id", productionReservationRow({ checkIdOverride: "BAD" })],
   ["bad schema", productionReservationRow({ schemaVersion: "UNKNOWN" })],
+  ["wrong production quota day", productionReservationRow({ quotaDay: "2026-10-08" })],
   ["bad timestamp", productionReservationRow({ timestamp: "not-a-time" })],
 ]) {
   const summary = summarizeD1QuotaLedgerRowsV0_1(
