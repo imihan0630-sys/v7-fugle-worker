@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "SYSTEM1_ISSUE1024_CRON_SINK_FAILURE_TRIANGULATION_V0_1",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "parentEvidence": "research/SYSTEM1_ISSUE1024_P01_P02_P04_REAL_GITHUB_D1_PRODUCER_EVIDENCE_20261009_V0_1.json",
+  "baselineMain": "aaa796ca2db436cc31f19d08f94691f0c9faae30",
+  "lane": "SYSTEM1_PRODUCER_EVIDENCE_ONLY",
+  "scope": "DIRECT_IMMUTABLE_GITHUB_ACTIONS_LOGS_AND_REPO_SOURCE_NOT_NEW_PHYSICAL_READ",
+  "runs": [
+    {
+      "key": "PVE251",
+      "runId": 37649041814,
+      "jobId": 112887225789,
+      "headSha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814",
+      "jobConclusion": "success",
+      "sourceLogMarker": "D02_PVE251_RESULT=",
+      "artifactId": 11494952595,
+      "artifactZipSha256": "8bde99fd35e86ac1fedb03b6dcccf5ca5ddccab199d8e472d3ffdca173b85b8d",
+      "originalResult": {
+        "readOnly": true,
+        "mutationCount": 0,
+        "productionVersionObserved": "8.20.0-formal-c1-binding-ledger",
+        "familyConfigured": "35,55 15 * * mon-fri",
+        "afterMarketRows": 0,
+        "latestAfterMarketDate": null,
+        "oracleSchedulePass": false,
+        "reasonCodes": [
+          "PRIMARY_23_35_READBACK_MISSING",
+          "RECOVERY_23_55_READBACK_MISSING"
+        ]
+      }
+    },
+    {
+      "key": "PVE262",
+      "runId": 37649249573,
+      "jobId": 112887945915,
+      "headSha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573",
+      "jobConclusion": "success",
+      "sourceLogMarker": "D02_PVE262_RESULT=",
+      "artifactId": 11495881660,
+      "artifactZipSha256": "d4251f93ba2945ade04c46442589b2e7dad067ea83ebc88a517bd5fba609a5d4",
+      "originalResult": {
+        "readOnly": true,
+        "mutationCount": 0,
+        "configuredSchedule": "35,55 15 * * mon-fri",
+        "queryUtcWindowStart": "2026-10-07T15:20:00.000Z",
+        "queryUtcWindowEnd": "2026-10-07T16:10:00.000Z",
+        "queryTaipeiWindow": [
+          "2026-10-07 23:20",
+          "2026-10-08 00:10"
+        ],
+        "rawD1CronWindowRowCount": 0,
+        "latestPersistedCronRowId": 4745,
+        "latestPersistedCronUtc": "2026-10-07T09:13:00.000Z",
+        "latestPersistedCronTaipei": "2026-10-07 17:13"
+      }
+    },
+    {
+      "key": "PVE266",
+      "runId": 37651086323,
+      "jobId": 112894288513,
+      "headSha": "04204366bcd86ca6c1286e58f38b464445677888",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37651086323",
+      "jobConclusion": "success",
+      "sourceLogMarker": "D02_PVE266_RESULT=",
+      "artifactId": 11496820189,
+      "artifactZipSha256": "f66687b57b79f6416b169c8c9e1ea5c8907d803ad1ca96d4570b440d5466b5ff",
+      "originalResult": {
+        "readOnly": true,
+        "mutationCount": 0,
+        "utcWindowStart": "2026-10-07T00:00:00.000Z",
+        "utcWindowEnd": "2026-10-08T00:00:00.000Z",
+        "system2LogicalA1Bars": 18460,
+        "system2LogicalManifests": 1538,
+        "system2IngestBatches": 21,
+        "system2ResonanceRuns": 1,
+        "physicalRowsWrittenAttributedToSpecificWriter": null,
+        "physicalIndexAmplificationKnown": false
+      }
+    }
+  ],
+  "independentBusinessSideEffects": {
+    "sourceKey": "PVE263",
+    "runId": 37649543821,
+    "jobId": 112888965126,
+    "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+    "attempt": {
+      "status": "FAILED",
+      "requestedDate": "2026-10-07",
+      "generatedAtTaipei": "2026/10/07 23:36:10",
+      "error": "D1_ERROR: Your account has exceeded D1's free tier daily row write limit."
+    },
+    "recoveryLease": [
+      {
+        "updatedAtTaipei": "2026/10/07 23:55:03",
+        "updatedAtUtc": "2026-10-07T15:55:03.803Z",
+        "snapshot": null
+      }
+    ],
+    "afterMarketLatest": {
+      "scanDate": "2026-09-29",
+      "pipelineComplete": false,
+      "dailyReportGeneratedAt": null
+    },
+    "classification": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+    "sourceClassificationFunction": "research/d02_pve269_schedule_evidence_fusion_v0_1.mjs"
+  },
+  "repoSourceObservation": {
+    "path": "Worker.js",
+    "referenceCommit": "aaa796ca2db436cc31f19d08f94691f0c9faae30",
+    "functionName": "writeCronRun",
+    "behavior": "Catches D1 cron INSERT failure and returns { stored:false,error }; caller awaits without requiring stored===true. Thus cron audit row absence does not prove runtime noninvocation. This is SOURCE-LEVEL current repo observation, not independent live deployed SHA attestation.",
+    "productionChangeAuthorized": false
+  },
+  "negativeEvidenceLogic": {
+    "configuredScheduleProven": true,
+    "rawD1CronRowsInExactWindow": 0,
+    "primarySideEffectObserved": true,
+    "recoveryLeaseObserved": true,
+    "failedBusinessAttemptObserved": true,
+    "canConcludeCronNotInvoked": false,
+    "canConcludeCronAuditWriteSucceeded": false,
+    "canConcludeRecoveryBusinessSucceeded": false,
+    "canConcludeBusinessPersistenceVerified": false,
+    "expectedFusionState": "INVOKED_EXECUTION_FAILED_D1_QUOTA",
+    "canCountNaturalP04Success": false,
+    "historicalReclassificationOrRewriteForbidden": true
+  },
+  "quotaAttribution": {
+    "utcDay": "2026-10-07",
+    "system2DbPhysicalRowsWrittenFromPVE264": 124629,
+    "system1V7DbPhysicalRowsWrittenFromPVE264": 1869,
+    "accountPhysicalRowsWrittenFromPVE264": 126498,
+    "physicalRowsWrittenPer2355Or2335": null,
+    "system2TableLogicalRowsAreNotSameAsAccountPhysicalWriteRows": true,
+    "doNotAssignAllPhysicalWritesToA1": true,
+    "doNotPromoteWholeDayEnvelopeToReserve": true
+  },
+  "remainingAcceptance": {
+    "p01": "UNQUALIFIED_EXACT_23_35_WRITES_UNKNOWN",
+    "p02": "UNQUALIFIED_EXACT_23_35_READS_UNKNOWN",
+    "p04": "UNQUALIFIED_LATER_ORDINARY_SESSION_NORMAL_PERSISTENCE_ABSENT",
+    "accountReadReserveRowsAuthorized": null,
+    "accountWriteReserveRowsAuthorized": null,
+    "independentlyAcceptedCorr003PhysicalGates": 0,
+    "totalCorr003PhysicalGates": 5,
+    "correctionStatus": "VERIFYING",
+    "nextNaturalTradingDay": "2026-10-12",
+    "nextEvidenceProducer": "System 1｜建置總控室",
+    "nextVerifier": "System 2｜獨立稽核顧問室"
+  },
+  "safety": {
+    "additionalCloudflareApiCalls": 0,
+    "additionalD1ReadQueries": 0,
+    "additionalD1WriteQueries": 0,
+    "newProductionScheduledScans": 0,
+    "workerFormalCoreChanged": false,
+    "secretAccess": false,
+    "paidPlanChanged": false,
+    "syntheticQuotaAuthorization": false
+  }
+}
