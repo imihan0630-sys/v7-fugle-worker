@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D20_13_L3_UPSTREAM_FIELD_AUDIT_V0_1",
+  "auditAtAsiaTaipei": "2026-10-09",
+  "ownerRoom": "13｜行為金融與市場心理研究室",
+  "module": "D20-13",
+  "researchOnly": true,
+  "outcomesOpened": false,
+  "formalCore": "LOCKED",
+  "baselineMainSha": "c58d7d4e4dce73e7f9a0474b16195ebbdd1b982b",
+  "sourcePaths": [
+    "research/d20_13_twse_borrow_constraint_l3_readiness_v0_1.json",
+    "research/d20_13_first_live_twse_borrow_constraint_capture_v0_1.json",
+    "research/d06_18_twse_sbl_live_slot_20261007_v0_1.json"
+  ],
+  "observedSlot": {
+    "date": "2026-10-07",
+    "windowStart": "2026-10-07T15:15:02+08:00",
+    "windowEnd": "2026-10-07T15:21:05+08:00",
+    "qualified": true,
+    "observedSymbols": 5,
+    "nonNullRateSymbol": "3532",
+    "competitiveBidFeePct": 4,
+    "displayedLendQty": 0,
+    "displayedBorrowQty": 0
+  },
+  "requiredFieldAudit": {
+    "pass": [
+      "security",
+      "transactionType",
+      "recallNotificationTerm",
+      "sourceDate",
+      "rate/depth fields",
+      "quote-persistence rule vintage",
+      "schemaVersion"
+    ],
+    "partial": [
+      {
+        "field": "capturedAt",
+        "evidence": "captureWindow.startedAt/completedAt only; no per-symbol acquisition timestamp"
+      },
+      {
+        "field": "firstKnownAt",
+        "evidence": "firstKnownAtSemantics.researchObservationUpperBound only; provider publication minute UNKNOWN"
+      },
+      {
+        "field": "sourceUrl",
+        "evidence": "sourcePagePattern and symbol known; no independently stored per-symbol exact URL"
+      },
+      {
+        "field": "contentHash",
+        "evidence": "sha256 covers normalized selected core fields, not full raw source page"
+      },
+      {
+        "field": "pointInTimeEligible",
+        "evidence": "captureWindow.slotQualified and aggregate note, not per-row explicit eligibility"
+      }
+    ],
+    "missing": [
+      "requestedAt"
+    ]
+  },
+  "count": {
+    "pass": 7,
+    "partial": 5,
+    "missing": 1,
+    "total": 13
+  },
+  "decision": "DO_NOT_PROMOTE_D20_13_YET_FIELD_PROVENANCE_INCOMPLETE",
+  "reasoning": "Genuine in-slot TWSE source feasibility exists, but the frozen 13-field receipt contract is not fully proven; absent request/per-symbol timing cannot be reconstructed after the fact. The earlier D06-18 L3 decision is upstream economics-only and does not automatically confer D20-13 promotion.",
+  "clockGuard": "Without per-security acquisition time, use 2026-10-07T15:21:05+08:00 as conservative batch-observed upper bound. Never replay this data as known at 15:20 or at 14:57:19.04 trade time.",
+  "unknown": [
+    "requestedAt",
+    "exact provider publication time",
+    "per-symbol acquisition time",
+    "true total lendable inventory",
+    "true utilization",
+    "investor motive",
+    "TPEx parity",
+    "predictive alpha"
+  ],
+  "structuralAlternatives": [
+    "hedging",
+    "settlement needs",
+    "loan recall",
+    "lender concentration",
+    "institutional financing",
+    "liquidity",
+    "quote persistence",
+    "market rule vintage"
+  ],
+  "duplicateVoteGuard": "D06 owns lending economics, D14 execution feasibility, D20 only conditional residual mispricing persistence; same primitive never votes twice.",
+  "next": "Seek contemporaneously persisted original request/per-symbol acquisition logs; do not fabricate missing timestamps. If absent, keep this receipt SOURCE_FEASIBLE_BUT_PROMOTION_INCOMPLETE and collect new in-slot receipt with complete fields. Freeze L4 residual tests and OOS/WF/transaction costs before outcome joins.",
+  "maturityChange": false,
+  "formalOptimizationCandidate": "NONE"
+}
