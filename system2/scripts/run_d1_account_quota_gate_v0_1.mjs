@@ -227,6 +227,46 @@ async function loadQuotaLedger(db, quotaDay) {
       status: row.status,
     });
     const legacyPayloadHash = sha256(payload);
+    const legacyExpectedMetadataValid = (() => {
+      let expected;
+      try {
+        expected = JSON.parse(row.expected_payload_json);
+      } catch {
+        return false;
+      }
+      if (!expected || typeof expected !== "object" || Array.isArray(expected)) return false;
+      const keys = Object.keys(expected).sort();
+      if (JSON.stringify(keys) !== JSON.stringify([
+        "accountWide",
+        "directiveId",
+        "paidUpgradeAuthorized",
+      ])) return false;
+      return expected.directiveId === "S2-CORR-20261007-003"
+        && expected.accountWide === true
+        && expected.paidUpgradeAuthorized === false;
+    })();
+    const legacySchemaValid = row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1"
+      ? payload.schemaVersion === "S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1"
+      : payload.schemaVersion === "S2_D1_ACCOUNT_BUDGET_RESULT_V0_1";
+    const legacyBudgetValid =
+      payload.budgetVersion === "S2_D1_ACCOUNT_QUOTA_BUDGET_V0_1";
+    const legacyStatusValid = row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1"
+      ? row.status === "QUOTA_RESERVATION_GRANTED"
+      : (
+        row.status === payload.resultState
+        && [
+          "RESULT_RECONCILED_ACCOUNT_DELTA",
+          "RESULT_ACCOUNT_USAGE_UNKNOWN",
+        ].includes(row.status)
+      );
+    const legacyPayloadHashAllowed =
+      row.check_hash === legacyPayloadHash
+      && legacySchemaValid
+      && legacyBudgetValid
+      && legacyExpectedMetadataValid
+      && legacyStatusValid
+      && payload.paidUpgradeAuthorized === false
+      && payload.system1FormalCoreChanged === false;
     const timestampDay = new Date(row.check_timestamp).toISOString().slice(0, 10);
     if (timestampDay !== quotaDay) {
       return Object.freeze({
@@ -242,12 +282,14 @@ async function loadQuotaLedger(db, quotaDay) {
         conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
       });
     }
-    if (row.check_hash !== identityHash && row.check_hash !== legacyPayloadHash) {
+    if (row.check_hash !== identityHash && !legacyPayloadHashAllowed) {
       return Object.freeze({
         ...summary,
         integrityState: "INVALID",
         integrityErrors: Object.freeze([Object.freeze({
-          code: "LEDGER_CHECK_HASH_MISMATCH",
+          code: row.check_hash === legacyPayloadHash
+            ? "LEDGER_LEGACY_HASH_CONTRACT_INVALID"
+            : "LEDGER_CHECK_HASH_MISMATCH",
           rowIndex: index,
           detail: row.check_id,
         })]),
