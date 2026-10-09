@@ -120,9 +120,10 @@ await assert.rejects(()=>verifyS2FrozenOutcomeRevisionV0_1({
   ...genesis,revisionHash:"f".repeat(64),
 }),/RECEIPT_HASH_MISMATCH/);
 
-const row1=toS2FrozenOutcomeRevisionRowV0_1(genesis);
-const row2=toS2FrozenOutcomeRevisionRowV0_1(revision);
-const rowAlternative=toS2FrozenOutcomeRevisionRowV0_1(newLineage);
+await assert.rejects(()=>toS2FrozenOutcomeRevisionRowV0_1({...genesis,decisionHash:"f".repeat(64)}),/RECEIPT_HASH_MISMATCH/);
+const row1=await toS2FrozenOutcomeRevisionRowV0_1(genesis);
+const row2=await toS2FrozenOutcomeRevisionRowV0_1(revision);
+const rowAlternative=await toS2FrozenOutcomeRevisionRowV0_1(newLineage);
 assert.equal(row1.revision_id,genesis.revisionId);
 assert.equal(row2.previous_revision_hash,genesis.revisionHash);
 assert.equal(row1.certified_performance,0);
