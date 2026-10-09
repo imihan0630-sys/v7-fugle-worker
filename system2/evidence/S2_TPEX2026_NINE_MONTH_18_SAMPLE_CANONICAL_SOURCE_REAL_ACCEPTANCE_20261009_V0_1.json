@@ -1,0 +1,365 @@
+{
+  "schemaVersion": "S2_TPEX2026_CANONICAL_SOURCE_NINE_MONTH_18_SAMPLE_REAL_ACCEPTANCE_20261009_V0_1",
+  "evidenceType": "RETROSPECTIVE_PUBLIC_OFFICIAL_SOURCE_ONLY_PHYSICAL_HTTP_ACCEPTANCE",
+  "lane": "DATA_LANE",
+  "scope": "2026-01_to_2026-09_TPEX_FIRST_LAST_TWSE_CALENDAR_PROXY_ONLY",
+  "state": "PASS_9_MONTHS_18_CANONICAL_TPEX_SOURCE_SAMPLES_NOT_FULL_RANGE",
+  "execution": {
+    "runId": 37878065621,
+    "jobId": 113651097072,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37878065621",
+    "headSha": "9a22d8710628a9cfe5bedce8a3d7a524564cc144",
+    "event": "push",
+    "runConclusion": "SUCCESS",
+    "physicalPublicSourceChecks": 18,
+    "syntheticSourceGuards": "NINE_ADVERSARIAL_GUARDS_PASS",
+    "artifactId": 11593430972,
+    "artifactName": "system2-tpex2026-canonical-source-37878065621-1",
+    "artifactSha256": "sha256:bbb5f0cd2c374b153b110ee679e78e4c4a8338a8641179245fd48a4bbbea4b8f",
+    "artifactBytes": 2450
+  },
+  "source": {
+    "months": 9,
+    "sampledPrimarySourceDates": 18,
+    "sampledStockDateRows": 15898,
+    "market": "TPEX",
+    "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+    "transportMode": "PRIMARY",
+    "sampleReceipts": [
+      {
+        "month": 1,
+        "marketDate": "2026-01-02",
+        "ordinarySymbolCount": 872,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "e53a2ff12dc68093e1f341bea70f158f34c688d3f620e19a7a994e959a1bd573",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 1,
+        "marketDate": "2026-01-30",
+        "ordinarySymbolCount": 876,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "56efdf75fdf275772c6f636fc50d5197afa081e24acd60016b30215d1777f392",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 2,
+        "marketDate": "2026-02-02",
+        "ordinarySymbolCount": 876,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "6402994fb3ecf913a30f8c35f14f098291fc2514c4c802aa5289e351187dbedb",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 2,
+        "marketDate": "2026-02-26",
+        "ordinarySymbolCount": 878,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "d645f450cddd1c08ce3cf898098e63435d7dadbcd5ba06e902923e7f0954f10b",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 3,
+        "marketDate": "2026-03-02",
+        "ordinarySymbolCount": 878,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "93f2b1ebf3ef5fcebbc6c00ea66c7fa5fabccf735294b8ce4f9f43be7ca7957a",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 3,
+        "marketDate": "2026-03-31",
+        "ordinarySymbolCount": 881,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "ae60cabe07b4fd0e17015aad74f6cba717fbc76e4dbf254468be63cf0b137a27",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 4,
+        "marketDate": "2026-04-01",
+        "ordinarySymbolCount": 879,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "fb3623960f5125b747308636c61c5ec5a62797bed36a96835e7f27d83f6124ae",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 4,
+        "marketDate": "2026-04-30",
+        "ordinarySymbolCount": 883,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "d2ffa823717fb542a6c541cc1aa8f4057bb8a43efb247dc25946e3115528a4be",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 5,
+        "marketDate": "2026-05-04",
+        "ordinarySymbolCount": 883,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "974d3cdfeb918d630a43fd31cba2b5292cde1aee84493d3cd912d0c4163de040",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 5,
+        "marketDate": "2026-05-29",
+        "ordinarySymbolCount": 887,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "770117428c7d2d1fb3e2bd5bcc587b13c7c115fc4c8ef67fed72dd79a306fdb5",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 6,
+        "marketDate": "2026-06-01",
+        "ordinarySymbolCount": 887,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "79ec8c4ec41ab1a904e3f8ae3adcb441c51f61ccd33ce207bfee5fd002303b93",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 6,
+        "marketDate": "2026-06-30",
+        "ordinarySymbolCount": 889,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "6e17d4b140fe72980670177a73b67923739f8c25132d230bbe34b9d644b7a6a5",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 7,
+        "marketDate": "2026-07-01",
+        "ordinarySymbolCount": 889,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "dcefe264133099eb8c691a57a34d94ec70b3351edecc8549ce385a7d510e417f",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 7,
+        "marketDate": "2026-07-31",
+        "ordinarySymbolCount": 888,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "cab71d2546374a695a440880a2178f4e70cbd52204bd8ddabbf5eb94417bbbfd",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 8,
+        "marketDate": "2026-08-03",
+        "ordinarySymbolCount": 888,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "c79ec8531368bdfdec1ba7d3be97181be3fb7ac928aa066ee0c6fa737ef04aa9",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 8,
+        "marketDate": "2026-08-31",
+        "ordinarySymbolCount": 888,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "39895ed488e35c6f347673cb574b37107836c27f077ee39dfb04883c92fef973",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 9,
+        "marketDate": "2026-09-01",
+        "ordinarySymbolCount": 888,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "be470d94bda50bde8c456bc5655c177cf6b4af75fe41ff3b51c32e5b791da996",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      },
+      {
+        "month": 9,
+        "marketDate": "2026-09-30",
+        "ordinarySymbolCount": 888,
+        "sourceId": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+        "transportMode": "PRIMARY",
+        "sourceDateEvidenceBasis": "PAYLOAD_DATE",
+        "normalizedBarSha256": "7b8b0942ad820cb78715b0aa85a3e553d30b96d9c75648b508d9adbeb7895aa0",
+        "originalDecisionFirstKnownAtCertified": false,
+        "officialTpexMarketSessionCertified": false
+      }
+    ],
+    "monthlyCalendarProxyReceipts": [
+      {
+        "month": 1,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 21,
+        "twseTradingDateSetSha256": "5e66b90e0573105aebcd008ed95217fb9ce3af32eec30a3b1f090d1301c49c92",
+        "tpexCanonicalSampleDates": [
+          "2026-01-02",
+          "2026-01-30"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 2,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 12,
+        "twseTradingDateSetSha256": "25ab3cefdb4b90349bc1c813f4a344da3586017a2ff1c7225e6ec20f6b1f4179",
+        "tpexCanonicalSampleDates": [
+          "2026-02-02",
+          "2026-02-26"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 3,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 22,
+        "twseTradingDateSetSha256": "c717437e91f5cb2983a55c6687c99b886b77f2ecaf1bd6a7a187ac9546a96e7c",
+        "tpexCanonicalSampleDates": [
+          "2026-03-02",
+          "2026-03-31"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 4,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 20,
+        "twseTradingDateSetSha256": "c1216aad474094aedce9d645f0eba7589c3885d005ac88c8f0b8164e204af579",
+        "tpexCanonicalSampleDates": [
+          "2026-04-01",
+          "2026-04-30"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 5,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 20,
+        "twseTradingDateSetSha256": "39934564b7da30397345ac551f1a301aa870de02e9471ebb33cea2912b73cdf3",
+        "tpexCanonicalSampleDates": [
+          "2026-05-04",
+          "2026-05-29"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 6,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 21,
+        "twseTradingDateSetSha256": "3540ed708f7cffb01733e4f24a57485f0681e0344b73d329e6344cee8ea1f8a1",
+        "tpexCanonicalSampleDates": [
+          "2026-06-01",
+          "2026-06-30"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 7,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 22,
+        "twseTradingDateSetSha256": "0b5319732f5cf4f085dc7f7ba4cce89f699625689ac99396ae2dc31d160ccb80",
+        "tpexCanonicalSampleDates": [
+          "2026-07-01",
+          "2026-07-31"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 8,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 21,
+        "twseTradingDateSetSha256": "b2757c44b01287cca9334e14d2ed8031c9c2f60a27ca7b011870ab52a7dc92e1",
+        "tpexCanonicalSampleDates": [
+          "2026-08-03",
+          "2026-08-31"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      },
+      {
+        "month": 9,
+        "proxyCalendar": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+        "twseOfficialSessionCount": 20,
+        "twseTradingDateSetSha256": "e9d2d4b8289666facc9f92e018801a2ade0002992f1759ad964485646d593036",
+        "tpexCanonicalSampleDates": [
+          "2026-09-01",
+          "2026-09-30"
+        ],
+        "tpexCanonicalSampleCount": 2,
+        "state": "CANONICAL_PRIMARY_DATE_MATCH_SAMPLE_PASS_PROXY_CALENDAR_ONLY"
+      }
+    ]
+  },
+  "boundaries": {
+    "fullTpexSourceDateRangeAccepted": false,
+    "tpexIndependentOfficialCalendarCertified": false,
+    "retrospectiveHistoricFirstKnownAtCertified": false,
+    "historicalPITReplayCertified": false,
+    "corporateActionNoEventCertified": false,
+    "technicalContinuityCertified": false,
+    "physicalD1R2StorageCertified": false,
+    "marketYear2026FullPass": false,
+    "liveSelectionAuthorized": false,
+    "system1RuntimeTouched": false,
+    "cloudflareD1Reads": 0,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Calls": 0,
+    "billingChanged": false
+  },
+  "relatedCorrection": {
+    "id": "S2-CORR-20261007-003",
+    "latestStatus": "VERIFYING_AFTER_INDEPENDENT_A7_SOURCE_LEVEL_PASS",
+    "physicalQuotaGrantFromThisRun": false
+  },
+  "next": [
+    "Advance from sampled dates to bounded exact full-date 2026 TPEx official-source acceptance, preserving primary-only and independent-session-calendar limits.",
+    "Obtain account-wide read/write budget attestation and no-competing-writer proof; only then physical segmented TPEx cold backfill.",
+    "Do not promote to replay/PIT/NC-T01 or trading on source-only evidence."
+  ]
+}
