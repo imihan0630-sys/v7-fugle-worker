@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D06_05_IC106_V0_1",
+  "date": "2026-10-09",
+  "owner": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "parentCandidateCount": 2778,
+  "parentHash": "fnv1a64-utf8:11ab5a267ae9cd2a",
+  "nonCommon": [
+    "0051",
+    "0053",
+    "0057",
+    "0061",
+    "9103",
+    "9110"
+  ],
+  "remainingUpperBound": 2772,
+  "remainingHash": "fnv1a64-utf8:447d982577761b1f",
+  "falsification": "Even complete delisting evidence cannot promote the original 2778 candidate as certified common shares: six ETF/TDR identities already contradict that label.",
+  "historicalDelistedOverlapCount": 13,
+  "overlapTreatment": "UNKNOWN_NOT_AUTO_EXCLUDED",
+  "finalCommonStockCount": null,
+  "sourceCompleteness": "PENDING",
+  "level": "L3",
+  "maturityPct": 60,
+  "formalImpact": "NONE",
+  "outcomes": "CLOSED",
+  "next": "Reconcile tracker with IC105; date-effective type and TPEx delisting/identity verification before new final cohort/hash and any OOS/Shadow."
+}
