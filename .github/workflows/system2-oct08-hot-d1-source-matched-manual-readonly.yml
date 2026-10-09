@@ -67,7 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: s2-oct08-d1-samples-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/s2-oct08-hot-d1-source-matched-sample.json
+          path: |
+            /tmp/s2-oct08-hot-d1-source-matched-sample.json
             /tmp/s2-oct08-read-budget-evidence-preflight.json
           if-no-files-found: warn
           retention-days: 90
