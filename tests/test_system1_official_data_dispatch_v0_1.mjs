@@ -26,9 +26,9 @@ function stepBody(name,nextName) {
   return workflow.slice(begin,end);
 }
 const gate=await readFile(new URL("./trading_day_gate.mjs",import.meta.url),"utf8");
-assert.match(workflow,/V7_RECOVERY_DATA_ONLY_DATE:.*inputs\\.market_date/);
+assert.ok(workflow.includes("V7_RECOVERY_DATA_ONLY_DATE:") && workflow.includes("inputs.market_date"));
 assert.match(gate,/V7_RECOVERY_DATA_ONLY_DATE/);
-assert.match(gate,/override\\|\\|context\\.marketDate/);
+assert.ok(gate.includes("override||context.marketDate"));
 assert.match(gate,/delta>86400000/);
 const validation=stepBody("Validate manual recovery scope (never alters trading plans)","Skip official exchange holidays safely");
 assert.match(validation,/node tests\/verify_official_data_dispatch_inputs\.mjs/);
@@ -37,7 +37,7 @@ const institutions=stepBody("Sync official institutions and missing recent tradi
 for(const section of [market,institutions]) {
   assert.match(section,/inputs\.data_only == true && inputs\.market_date != ''/);
   assert.match(section,/inputs\.quality_only != true && inputs\.data_only != true/);
-  assert.match(section,/OFFICIAL_MARKET_DATE:.*steps\\.calendar\\.outputs\\.market_date/);
+  assert.ok(section.includes('OFFICIAL_MARKET_DATE: '+ '$' + '{{ steps.calendar.outputs.market_date }}'));
 }
 const historicalQuality=stepBody("Historical official quality recovery","Historical after-market recovery");
 assert.match(historicalQuality,/if: github\.event_name == 'workflow_dispatch' && inputs\.market_date != ''\n/);
