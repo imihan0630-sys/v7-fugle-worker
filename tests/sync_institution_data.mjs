@@ -1,4 +1,5 @@
 import {planMissingInstitutionDates} from './system1_institution_gap_resume_v0_1.mjs';
+import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 import assert from 'node:assert/strict';
 const origin='https://fugle-test.imihan0630.workers.dev';
 const now=new Date();
@@ -33,8 +34,13 @@ async function sync(date) {
   const twseUrl=`https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${date.replaceAll('-','')}&selectType=ALL`;
   const tpexUrl=`https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=${encodeURIComponent(`${Number(year)-1911}/${month}/${day}`)}&id=&response=json`;
   const [twsePayload,tpexPayload]=await Promise.all([twseUrl,tpexUrl].map(async url=>{
-    const response=await fetch(url,{headers:{accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(45000)});
-    assert.equal(response.ok,true,`Official institution source HTTP ${response.status}`);return response.json();
+    // TWSE T86 can exceed a single GitHub-hosted runner's 45s body-read
+    // budget. Retry only bounded transport/source failures, never Worker POSTs.
+    const response=await fetchBufferedOfficialSource(url,{
+      headers:{accept:'application/json'},timeoutMs:55000
+    },{maxAttempts:2});
+    assert.equal(response.ok,true,`Official institution source HTTP ${response.status}`);
+    return response.json();
   }));
   // Retain date/schema, omit non-ordinary instruments before transferring the large official table.
   const codeIndex=twsePayload.fields?.indexOf('證券代號');
