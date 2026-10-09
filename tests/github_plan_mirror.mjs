@@ -54,6 +54,20 @@ function decryptEnvelope(envelope,secret) {
   ]).toString("utf8");
 }
 
+// Deliberately whitelist a diagnostic category: never print Worker response bodies,
+// payloads, admin tokens, or arbitrary server error text into public Actions logs.
+function classifyWorkerHttpFailure(status,body) {
+  const message=typeof body?.error==="string" ? body.error : "";
+  if(status===401 || status===403) return "ADMIN_AUTH_REJECTED";
+  if(/D1_ERROR/i.test(message) && /daily row read limit/i.test(message)) return "D1_FREE_TIER_DAILY_ROW_READ_LIMIT";
+  if(/D1_ERROR/i.test(message) && /daily row write limit/i.test(message)) return "D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT";
+  if(/D1_ERROR/i.test(message)) return "D1_ERROR_UNCLASSIFIED";
+  if(status===503 && /Storage bindings unavailable/i.test(message)) return "STORAGE_BINDINGS_UNAVAILABLE";
+  if(status===409) return "WORKER_CONFLICT";
+  if(status>=500) return "WORKER_SERVER_ERROR_UNCLASSIFIED";
+  return "WORKER_HTTP_REJECTED";
+}
+
 async function admin(path,options={}) {
   const token=requireSecret();
   const response=await fetch(ORIGIN+path,{
@@ -67,7 +81,7 @@ async function admin(path,options={}) {
     signal:AbortSignal.timeout(60000)
   });
   const body=await response.json().catch(()=>({}));
-  if(!response.ok) throw new Error("Worker "+path+" HTTP "+response.status);
+  if(!response.ok) throw new Error("Worker "+path+" HTTP "+response.status+" ["+classifyWorkerHttpFailure(response.status,body)+"]");
   return body;
 }
 
@@ -174,6 +188,15 @@ async function selfTest() {
   assert.equal(decryptEnvelope(envelope,secret),payload);
   assert.throws(()=>decryptEnvelope(envelope,secret+"wrong"));
   assert.equal(Object.prototype.hasOwnProperty.call(envelope,"payloadJson"),false);
+  // Quota diagnosis must be actionable, without echoing untrusted error bodies.
+  assert.equal(classifyWorkerHttpFailure(500,{error:"Error: D1_ERROR: Your account has exceeded D1's free tier daily row read limit."}),"D1_FREE_TIER_DAILY_ROW_READ_LIMIT");
+  assert.equal(classifyWorkerHttpFailure(500,{error:"D1_ERROR: daily row write limit"}),"D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT");
+  assert.equal(classifyWorkerHttpFailure(500,{error:"D1_ERROR: other storage exception"}),"D1_ERROR_UNCLASSIFIED");
+  assert.equal(classifyWorkerHttpFailure(401,{error:"any confidential text"}),"ADMIN_AUTH_REJECTED");
+  assert.equal(classifyWorkerHttpFailure(503,{error:"Storage bindings unavailable"}),"STORAGE_BINDINGS_UNAVAILABLE");
+  assert.equal(classifyWorkerHttpFailure(500,{error:"unrecognized secret text"}),"WORKER_SERVER_ERROR_UNCLASSIFIED");
+  assert.equal(classifyWorkerHttpFailure(500,null),"WORKER_SERVER_ERROR_UNCLASSIFIED");
+
   console.log(JSON.stringify({ok:true,encryptionRoundTrip:true,wrongKeyRejected:true,plaintextInEnvelope:false}));
 }
 

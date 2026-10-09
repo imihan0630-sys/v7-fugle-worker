@@ -1,0 +1,24 @@
+name: System1 Mirror Diagnostics Offline Self-Test
+
+on:
+  pull_request:
+    paths:
+      - "tests/github_plan_mirror.mjs"
+      - ".github/workflows/system1-mirror-diagnostics-offline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify script syntax
+        run: node --check tests/github_plan_mirror.mjs
+      - name: Offline encryption and classified-failure tests
+        run: node tests/github_plan_mirror.mjs self-test
