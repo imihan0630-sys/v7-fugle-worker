@@ -4,7 +4,14 @@ const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worke
 const api=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {loadTradingCalendar,isTradingDate};').toString('base64'));
 const triggerSchedule=String(process.env.V7_TRIGGER_SCHEDULE || '').trim();
 const context=resolveScheduledMarketContext({now:new Date(),triggerSchedule});
-const date=context.marketDate;
+const override=String(process.env.V7_RECOVERY_DATA_ONLY_DATE||'').trim();
+if(override){
+  if(triggerSchedule) throw new Error('manual date is not allowed for cron');
+  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const delta=Date.parse(today+'T00:00:00Z')-Date.parse(override+'T00:00:00Z');
+  if(!Number.isFinite(delta)||delta<0||delta>86400000) throw new Error('manual data-only date must be today or yesterday');
+}
+const date=override||context.marketDate;
 await api.loadTradingCalendar({},Number(date.slice(0,4)));
 const proceed=api.isTradingDate(date);
 if(process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT,
