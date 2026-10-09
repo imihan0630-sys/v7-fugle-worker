@@ -57,7 +57,17 @@
       "oneOver": "QUOTA_BUDGET_DEFER",
       "recentA1RegistryReadMinimum": 1047112,
       "measurementRun": 37550201160,
-      "measurementJob": 112563652301
+      "measurementJob": 112563652301,
+      "recentA1PhysicalJobLogVerified": {
+        "runId": 37550201160,
+        "jobId": 112563652301,
+        "logTimestampUtc": "2026-10-07T00:09:30.788Z",
+        "observedRowsRead": 1047112,
+        "observedRowsWritten": 57880,
+        "source": "Independently fetched GitHub Actions job log; exact rowsRead and rowsWritten line match",
+        "registryReadRows": 1047112,
+        "registryEvidenceIdMatches": true
+      }
     },
     "A3": {
       "registryPhysicalWriters": 13,
