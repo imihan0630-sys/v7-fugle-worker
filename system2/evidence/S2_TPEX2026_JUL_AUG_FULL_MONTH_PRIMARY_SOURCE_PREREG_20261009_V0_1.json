@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "S2_TPEX2026_JUL_AUG_FULL_MONTH_PRIMARY_SOURCE_PREREG_20261009_V0_1",
+  "lane": "DATA_LANE",
+  "type": "CLASS_A_PUBLIC_SOURCE_ONLY",
+  "status": "CODE_PENDING_CI_AND_REAL_SOURCE_RUN",
+  "source": "TPEx official dailyQuotes PRIMARY only",
+  "proxy": "TWSE FMTQIK monthly proxy dates",
+  "months": [
+    {
+      "month": 7,
+      "sourceDateCount": 22
+    },
+    {
+      "month": 8,
+      "sourceDateCount": 21
+    }
+  ],
+  "expectedSourceDateCount": 43,
+  "legacyFallbackAcceptable": false,
+  "frozenEvidence": "system2/evidence/S2_TPEX2026_NINE_MONTH_18_SAMPLE_CANONICAL_SOURCE_REAL_ACCEPTANCE_20261009_V0_1.json",
+  "identities": [
+    "exact calendar date set sha",
+    "first and last previously physically accepted sample bar hashes",
+    "row source payload date and primary transport",
+    "RAW four-digit ordinary share rows",
+    "normalized per-date OHLC volume value digest"
+  ],
+  "physicalD1Writes": 0,
+  "physicalD1Reads": 0,
+  "physicalR2Calls": 0,
+  "originalPIT": false,
+  "independentTpexCalendarCertified": false,
+  "otherMonthsComplete": false,
+  "storageCertified": false,
+  "liveSelectionAuthorized": false,
+  "process": "Merge path-scoped source-only workflow after CI. Inspect both real month matrix jobs independently; freeze immutable receipts only if both complete PASS. If partial, preserve last month PASS and report other month blocker separately."
+}
