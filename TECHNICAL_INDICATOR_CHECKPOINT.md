@@ -8894,3 +8894,36 @@ Independent remaining gates:
 5. When W0 + genuine parent exist, evaluate the Bollinger post-reset 20-session parent shortcut and canonical D03-10 admission. D03-09 still requires FULL_REPLAY or independently replay-certified trusted state.
 6. Keep independent semantic source attestation, parent-child reconciliation, T48, S2-07, D03 dedup/redundancy and D16 incrementality as separate gates.
 7. Formal Core remains unchanged.
+
+
+## TI-1693~1712 — Scout-to-window completeness firewall (2026-10-10)
+
+### New canonical evidence consumed
+
+- Main commit `b81ed318e0b3a3a94ac2f9acd2385d1ab7d4b7bc` accepts the Issue #1026 source-level ordering guard: an independently accepted real 36-key Hot D1 Scout must precede any 11,843-key census.
+- The evidence still reports physical Scout 0/36, census 0/11,843, missing-key count UNKNOWN, System1 read/write reserves false and zero physical D1 reads/writes.
+- Main commit `9c1fce52ec858dfd020ce0c89c17e31ab419164a` records the actual 2026-10-08 C1 attempt as BLOCKED / C1_GENERATION_NOT_FOUND / UPSTREAM_ARTIFACT_MISSING. It is not a genuine parent and not a zero-pick.
+- Main commit `db2645817cc5c68d74a0f68d4823438c8a4fb13f` independently rejects CORR-003 physical closure: 0/5 physical gates accepted.
+
+### D03 inference boundary
+
+D03 freezes four cumulative states: CODE_GUARD_ONLY, SCOUT_STORAGE_EVIDENCE, CENSUS_STORAGE_EVIDENCE, and INDICATOR_WINDOW_PIT_READY. A real 36-key Scout can detect gross query/market-date/key/hash defects at bounded cost but cannot establish the other 11,807 keys, estimate a population missing rate without probability sampling, or prove historical availability. A later 11,843-key equality can prove storage equality for one frozen observation cut only; it cannot reconstruct firstKnownAt/availableAt or replace exact symbol sessions, causal corporate-action and halt/no-event ancestry, identity-transition disposition, and hash-bound continuity.
+
+The 20-case executable oracle in `research/test_d03_scout_to_window_completeness_v0_1.mjs` passes. It rejects synthetic/code-only physical credit, nonexecution-as-absence, incomplete strata, duplicate/source-mismatched/multiversion rows, writes/read-cap breach, Scout-to-population overpromotion, non-probability missing-rate inference, census-before-Scout, historical clock laundering, and storage-complete but lineage-incomplete indicator windows.
+
+### Bias / falsification disposition
+
+- PIT/look-ahead: post-facto observation cannot be backdated.
+- Selection bias: the deterministic 36-key safety sample is not a statistical population sample.
+- Date clustering: six adjacent sessions across two markets are not OOS or walk-forward evidence.
+- Multiple testing/overfitting: the gate validates provenance mechanics only and performs no indicator parameter search.
+- Redundancy: it creates no independent price-information root.
+- Costs, fillability, price-limit effects, performance under halts/ex-rights and market-state efficacy remain UNKNOWN.
+
+### Module disposition
+
+D03-09 ADX and D03-10 Bollinger remain L2/40. ADX still requires canonical Wilder FULL_REPLAY or a separately replay-certified trusted state. Bollinger still requires exact 20 eligible parent sessions plus causal reset/continuity lineage. All other D03 modules retain current levels. Outcomes remain closed, no FORMAL_OPTIMIZATION_CANDIDATE exists, and Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-1712
+
+Await independently accepted positive System1 read reserve and same-UTC-day account headroom, then consume a real authenticated read-only 36-key Scout without promoting it to population completeness or PIT. Only after independent Scout acceptance and a separate budget grant may the 11,843-key census run. Treat any census result as storage evidence until exact sessions, causal clocks, action/halt/identity lineage and continuity hashes pass. Parent track separately waits for the next ordinary-session genuine immutable C1 with authoritative V8.20 binding. Then evaluate D03-10 first; keep D03-09 on full-replay or replay-certified trusted-state requirements. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
