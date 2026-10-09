@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "D06_IC110_EVIDENCE_V0_1",
+  "module": "D06-05",
+  "relatedModules": [
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-11",
+    "D06-14",
+    "D06-16",
+    "D06-18"
+  ],
+  "classification": "RESEARCH_ONLY",
+  "observedAt": "2026-10-09T23:09:05.295Z",
+  "sourceDateScope": [
+    "2025-10-16",
+    "2026-05-12",
+    "2026-10-05"
+  ],
+  "mainAtPrewrite": "a37698500bdad069e6db161e8c1a1595c5c0645f",
+  "title": "Issuer identity vs instrument identity, cross-market history and closed-market clock",
+  "evidence": [
+    {
+      "id": "IC110-E1",
+      "source": "TPEx official announcement 11401020361",
+      "url": "https://www.tpex.org.tw/storage/eb_data/11410/11401020361.html",
+      "published": "2025-10-16",
+      "code": "6423",
+      "issuerName": "億而得微電子股份有限公司",
+      "issuerUniformNumber": "12894399",
+      "meaning": "Historical issuer identity and OTC listing application; not an ISIN or an exact-date 2026-09-24/2026-10-02 listing-status certificate"
+    },
+    {
+      "id": "IC110-E2",
+      "source": "TPEx official announcement 11504003941",
+      "url": "https://www.tpex.org.tw/storage/eb_data/11505/11504003941.html",
+      "published": "2026-05-12",
+      "issuerCode": "6806",
+      "instrumentCode": "68061",
+      "instrumentName": "森崴能源一",
+      "instrumentType": "CONVERTIBLE_BOND",
+      "meaning": "Issuer stock code and convertible bond security code are distinct instruments; bond trading suspension is not common-stock trading-status evidence"
+    },
+    {
+      "id": "IC110-E3",
+      "source": "TWSE official delisted list",
+      "url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+      "historicalEvent": [
+        {
+          "code": "6423",
+          "date": "2026-01-22"
+        },
+        {
+          "code": "6806",
+          "date": "2026-06-23"
+        }
+      ],
+      "meaning": "TWSE venue exit alone does not prove all-market security death or continuity"
+    },
+    {
+      "id": "IC110-E4",
+      "source": "TWSE official trading calendar notice 1150205958",
+      "url": "https://www.twse.com.tw/zh/announcement/announcement/list.html",
+      "published": "2026-10-05",
+      "closedDate": "2026-10-09",
+      "meaning": "Official holiday; no new 2026-10-09 regular-session evidence can be created by retrying a live slot; 2026-10-10 is Saturday"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Four-digit code or same issuer name identifies a unique historical ordinary share",
+      "support": "Stock codes commonly track issuers within a venue",
+      "falsification": "Known ETF/TDR in 2778 and issuer 6806 vs convertible bond 68061 demonstrate product distinctions",
+      "alternative": "Instrument type, venue, ISIN, security-class and effective date may differ",
+      "failureCondition": "A source-defined unique historical instrument key proves no collision for every date",
+      "verdict": "REJECT_UNIVERSAL"
+    },
+    {
+      "id": "H2",
+      "claim": "TWSE delisting equals all-market untradeable",
+      "support": "Delisting ends trading on the TWSE venue",
+      "falsification": "IC108 established 6423 same-day venue transfer; IC110 issuer identification supports historical linkage, not date certification",
+      "alternative": "Transfer, merger, suspension, total cessation, identifier reuse",
+      "failureCondition": "Dated cross-market registry establishes all-venue exit for a specific instrument",
+      "verdict": "REJECT_UNIVERSAL"
+    },
+    {
+      "id": "H3",
+      "claim": "Issuer-level event can be joined as stock-level margin/short/borrow evidence",
+      "support": "Issuer corporate events may affect many instruments",
+      "falsification": "68061 convertible bond is not the 6806 ordinary share; no type-specific crosswalk is provided",
+      "alternative": "Different rights, units, eligibility, trading rules and borrowing availability",
+      "failureCondition": "Source provides exact instrument-level type and date-valid mapping",
+      "verdict": "REJECT_UNTYPED_JOIN"
+    },
+    {
+      "id": "H4",
+      "claim": "Missing 2026-10-09 market receipt equals zero financing/borrow/crowding signal",
+      "support": "None",
+      "falsification": "TWSE official 2026-10-05 notice declares 2026-10-09 market holiday",
+      "alternative": "No valid trading session; missing live slot must not be interpreted as zero flow",
+      "failureCondition": "Verified actual exchange session exists contrary to official calendar",
+      "verdict": "REJECT_ZERO_IMPUTATION"
+    }
+  ],
+  "admissionGate": {
+    "requiredKey": [
+      "issuerUniformNumber_or_issuerIdentity",
+      "securityCode",
+      "securityType",
+      "marketVenue",
+      "validFrom",
+      "validTo",
+      "sourceVersion",
+      "firstKnownAt",
+      "observedAt",
+      "ISIN_if_available"
+    ],
+    "sourceDateTargets": [
+      "2026-09-24",
+      "2026-10-02"
+    ],
+    "candidateCount": 2778,
+    "knownNonCommon": 6,
+    "provisionalUpperBound": 2772,
+    "twseHistoricalOverlap": 60,
+    "finalCommonStockCount": "UNKNOWN",
+    "issuer6423Dated20260924": "UNKNOWN",
+    "issuer6423Dated20261002": "UNKNOWN",
+    "issuer6806Dated20260924": "UNKNOWN",
+    "issuer6806Dated20261002": "UNKNOWN",
+    "tpexDelistingCompleteness": "UNKNOWN",
+    "historicalShadow": "NOT_FABRICATED",
+    "outcomes": "CLOSED",
+    "formalCore": "LOCKED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "validationProtocol": {
+    "PIT": "Use each exact dated source vintage and firstKnownAt; 2026-10-10 retrieval is audit evidence, not a backdated decision receipt",
+    "OOS": "After exact-date identity certification and preregistration, use genuinely later independent TDCC vintage pairs; do not count 2778 symbols as 2778 independent dates",
+    "walkForward": "Purge overlapping target windows and embargo where necessary; freeze identity rules before outcome joins",
+    "bias": "Check survivorship, re-used identifiers, missingness, hindsight exclusions and corporate-action denominator drift",
+    "multipleTesting": "Register all feature, cutoff, subgroup and time-window variations; no post-hoc best-pick",
+    "redundancy": "Control direct price, volume, liquidity, institution, leverage, actual SBL short, ETF/index flow; deduplicate common primitive receipts",
+    "cost": "Check market venue, tradability, spread, slippage, borrow eligibility, fee, capacity and regime stratification",
+    "regime": "Stratify transfer/suspension, active/inactive markets and event days",
+    "conclusion": "Only source/semantic falsification. No realized returns, no L4, no ranking/BUY/SELL/production change."
+  },
+  "next": "Preserve IC108/IC109 branch; seek safe PR through 00 integrator; independently acquire exact-dated 2026-09-24 and 2026-10-02 TPEx/TWSE instrument identity and complete interval delisting, then certify 2778 candidate codes. Next valid session for live-slot D06-18 only; holiday/weekend are not zero-flow observations."
+}
