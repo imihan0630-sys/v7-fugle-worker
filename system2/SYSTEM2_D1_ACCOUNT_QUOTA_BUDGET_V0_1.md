@@ -215,3 +215,133 @@ DATA_LANE next physical acceptance must use this gate for the 2026-10-08 histori
 - historical PIT/immutability evidence.
 
 Independent AUDIT_LANE closure additionally requires a bounded future multi-writer UTC day or equivalent physical evidence, and a real later trading-day System1 after-market receipt showing normal persistence with no quota rejection.
+
+
+## V0.2 adversarial hardening — PR #983/#984 follow-up
+
+Independent adversarial CI reproduced four closure blockers after the original V0.1 implementation. V0.2 closes those source-level bypasses while preserving the original account-wide/free-tier design.
+
+### A1 — measured write cost is a hard lower bound
+
+For `FIXED_MEASURED` writers:
+- the registry measurement is the minimum permitted rowsWritten reservation;
+- a caller may supply a larger conservative reservation;
+- a caller may not lower the verified minimum;
+- 0, 1, or any value below the verified minimum returns `QUOTA_BUDGET_DEFER` with `WRITER_WRITE_RESERVATION_BELOW_VERIFIED_MINIMUM`.
+
+Example:
+- annual history verified write floor = 7,358 rowsWritten;
+- manual `quota_reservation_rows=1` cannot replace 7,358.
+
+For `CALLER_REQUIRED` writers, a numeric caller input is not proof by itself. The registry must contain an evidence-backed minimum and evidence reference before caller values can grant physical mutation. Missing evidence remains fail closed.
+
+### A2 — read-cost reservation is mandatory
+
+Every registered writer declares `readReservationModel`.
+
+Known physical measurements:
+- Daily Shadow Diagnostic: 583,256 rowsRead from run 37609474459;
+- Recent A1 Hot History Warmup: 1,047,112 rowsRead from run 37550201160 / job 112563652301.
+
+Unknown writer read cost:
+- state = `READ_COST_EVIDENCE_REQUIRED`;
+- caller value 0 is not interpreted as zero cost;
+- caller value alone cannot create evidence;
+- physical mutation remains `QUOTA_BUDGET_DEFER` until a verified read-cost floor is registered.
+
+The account projection includes:
+- current account rowsRead lower-bound observation;
+- all same-UTC-day outstanding System2 read reservations;
+- evidence-authorized System1 read reserve;
+- protected Daily Shadow read reserve for lower-priority writers;
+- writer requested/verified read reservation.
+
+Projected rowsRead above 5,000,000/day returns `ROWS_READ_DAILY_BUDGET_EXCEEDED` before physical mutation.
+
+### System1 read reserve remains UNKNOWN
+
+The System1 after-market evidence file now distinguishes write and read reserve evidence.
+
+Current state remains:
+- write reserve not authorized;
+- read reserve not authorized;
+- observed 2,825 rowsWritten is not promoted into a write reserve;
+- no System1 rowsRead value is fabricated.
+
+Either missing reserve keeps System2 physical mutation fail conservative.
+
+### GraphQL analytics lag / freshness policy
+
+Cloudflare documents D1 rowsRead/rowsWritten metrics via GraphQL Analytics but does not provide this contract with a guaranteed real-time freshness bound.
+
+Therefore V0.2 treats GraphQL daily totals as:
+`ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND`
+
+Mitigation:
+- same-UTC-day reservations are never released early;
+- result receipts do not release reservations even after success;
+- the gate takes max(current GraphQL value, prior max observed result-receipt value);
+- UNKNOWN account usage remains `QUOTA_BUDGET_DEFER`;
+- actual observed cost above reservation is recorded as `RESULT_RESERVATION_OVERRUN_NON_RELEASING`.
+
+This favors temporary over-reservation over false headroom.
+
+### A3 — success/failure/partial result accounting
+
+Every physical writer result finalizer uses:
+`always() && steps.quota.outputs.physical_allowed == 'true'`
+
+Every result action receives:
+`execution_outcome: ${{ job.status }}`
+
+A result receipt is attempted for:
+- success;
+- failure after partial mutation;
+- other terminal job states where GitHub executes the finalizer.
+
+Result receipts preserve:
+- original reservation identity;
+- execution outcome;
+- before/after account lower-bound observations when available;
+- read/write upper-bound deltas;
+- overrun state;
+- cross-UTC-day state.
+
+If after-usage is unknown, the result is explicitly `USAGE_UNKNOWN_NON_RELEASING`.
+
+Same-day reservations are never released before 00:00 UTC. Retry attempts therefore reserve independently and cannot reclaim uncertain prior consumption. UTC-day rollover naturally ends the prior day accounting window.
+
+### A4 — immutable ledger duplicate semantics
+
+`INSERT OR IGNORE` is no longer accepted as proof by itself.
+
+Before/after ledger persistence, the gate reads the exact `check_id` and verifies:
+- check_id;
+- check_type;
+- expected_payload_json;
+- observed_payload_json;
+- status;
+- check_hash.
+
+Exact identity:
+`SKIPPED_IDENTICAL_EXISTING_RECEIPT`
+
+Same ID with changed hash/payload/status/type:
+`D1_QUOTA_LEDGER_IDEMPOTENCY_CONFLICT`
+
+An ignored insert without exact readback is a hard error:
+`D1_QUOTA_LEDGER_RECEIPT_READBACK_MISSING`
+
+The V0.2 receipt hash commits to check ID, check type, expected payload, observed payload and status.
+
+## V0.2 physical-proof boundary
+
+A1–A4 can be proven through deterministic source/unit/workflow tests without intentionally consuming large D1 quota.
+
+Repository-level remediation does not itself certify:
+- evidence-qualified System1 write/read reserves;
+- a bounded real multiwriter account-day;
+- later successful real System1 23:35/23:55 persistence;
+- DATA_LANE 2026-10-08 write promotion.
+
+Those remain independent physical acceptance items. A HIGH correction remains non-closable by REMEDIATION_LANE.
