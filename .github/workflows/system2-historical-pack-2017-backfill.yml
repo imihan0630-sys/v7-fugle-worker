@@ -25,6 +25,11 @@ on:
         options:
           - TWSE
           - TPEX
+      quota_reservation_rows:
+        description: "Optional evidence-based override; blank uses measured annual reservation"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -58,7 +63,19 @@ jobs:
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
         run: node system2/scripts/historical_annual_resume_preflight_v0_1.mjs
 
+      - name: Reserve shared account D1 budget
+        id: quota
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: HISTORICAL_ANNUAL_BACKFILL
+          requested_rows_written: ${{ inputs.quota_reservation_rows }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Backfill selected-year packed history
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -69,7 +86,7 @@ jobs:
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
         run: node system2/scripts/historical_pack_year_backfill_v0_1.mjs
       - name: Persist bounded 2021 TPEx PIT revision lineage
-        if: ${{ inputs.year == '2021' && inputs.market == 'TPEX' }}
+        if: ${{ steps.quota.outputs.physical_allowed == 'true' && inputs.year == '2021' && inputs.market == 'TPEX' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -83,6 +100,7 @@ jobs:
           set -euo pipefail
           node system2/scripts/historical_tpex_2021_revision_overlay_v0_1.mjs | tee /tmp/system2-historical-revision-lineage-TPEX-2021.log
       - name: Physically verify selected-year market coverage and R2 byte hashes
+        if: steps.quota.outputs.physical_allowed == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -95,12 +113,27 @@ jobs:
         run: |
           set -euo pipefail
           node system2/scripts/historical_market_year_verify_v0_1.mjs | tee /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.log
+      - name: Reconcile shared account D1 budget result
+        if: steps.quota.outputs.physical_allowed == 'true' && success()
+        uses: ./.github/actions/system2-d1-budget-gate
+        with:
+          writer_id: HISTORICAL_ANNUAL_BACKFILL
+          mode: result
+          reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Upload selected-year physical coverage evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}
-          path: /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.json
+          path: |
+            /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.json
+            /tmp/system2-d1-budget-reservation.json
+            /tmp/system2-d1-budget-result.json
           if-no-files-found: warn
           retention-days: 30
       - name: Upload bounded 2021 TPEx revision-lineage evidence
