@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {verifyManualQualityPrereqs} from './system1_manual_quality_prereqs_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
@@ -60,6 +61,20 @@ async function readonlyPreview(body,label) {
     return result;
   }
   throw new Error(label+' transient retries exhausted after '+maxAttempts+' attempts: '+JSON.stringify(lastMeta));
+}
+if(String(process.env.V7_DATA_ONLY_RECOVERY||"").toLowerCase()==="true"){
+  assert.ok(requestedMarketDate,"Manual data-only quality requires an explicit market date");
+  // GET-only physical prerequisites: fail before any official large source download
+  // or a D1 quality-data POST when market/institution input is incomplete.
+  const [marketResponse,institutionResponse]=await Promise.all([
+    admin('/api/market-data/status?marketDate='+encodeURIComponent(marketDate)),
+    admin('/api/institution-status?marketDate='+encodeURIComponent(marketDate))
+  ]);
+  assert.equal(marketResponse.ok,true,'Official market prerequisite status unavailable');
+  assert.equal(institutionResponse.ok,true,'Official institution prerequisite status unavailable');
+  const receipt=verifyManualQualityPrereqs(
+    await marketResponse.json(),await institutionResponse.json(),marketDate);
+  console.log(JSON.stringify({manualQualityPrerequisitesVerified:true,...receipt}));
 }
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
 const recoveryOnly=String(process.env.QUALITY_RECOVERY_ONLY || '')==='1';
