@@ -95,19 +95,93 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
       freshnessGuarantee: "NOT_AVAILABLE",
     });
   }
-  const groups = payload?.data?.viewer?.accounts?.[0]?.d1AnalyticsAdaptiveGroups;
-  if (!Array.isArray(groups)) {
+  const accounts = payload?.data?.viewer?.accounts;
+  if (!Array.isArray(accounts) || accounts.length !== 1) {
     return Object.freeze({
       known: false,
       quotaDay,
       rowsWritten: null,
       rowsRead: null,
-      error: "D1_ANALYTICS_GROUPS_MISSING",
-      freshnessGuarantee: "NOT_AVAILABLE",
+      error: "D1_ANALYTICS_ACCOUNT_CARDINALITY_INVALID",
+      freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
     });
   }
-  const rowsWritten = groups.reduce((sum, row) => sum + Number(row?.sum?.rowsWritten || 0), 0);
-  const rowsRead = groups.reduce((sum, row) => sum + Number(row?.sum?.rowsRead || 0), 0);
+  const groups = accounts[0]?.d1AnalyticsAdaptiveGroups;
+  if (!Array.isArray(groups) || groups.length === 0) {
+    return Object.freeze({
+      known: false,
+      quotaDay,
+      rowsWritten: null,
+      rowsRead: null,
+      error: "D1_ANALYTICS_GROUPS_EMPTY_OR_MISSING",
+      freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+    });
+  }
+
+  const identities = new Set();
+  let rowsWritten = 0;
+  let rowsRead = 0;
+  for (let index = 0; index < groups.length; index += 1) {
+    const row = groups[index];
+    const date = row?.dimensions?.date;
+    const databaseId = row?.dimensions?.databaseId;
+    const written = row?.sum?.rowsWritten;
+    const read = row?.sum?.rowsRead;
+    const validMetric = (value) =>
+      typeof value === "number"
+      && Number.isSafeInteger(value)
+      && value >= 0;
+
+    if (date !== quotaDay || typeof databaseId !== "string" || !databaseId.trim()) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_IDENTITY_INVALID",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+    const identity = date + "|" + databaseId.trim();
+    if (identities.has(identity)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_IDENTITY_DUPLICATE",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+    identities.add(identity);
+
+    if (!validMetric(written) || !validMetric(read)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_GROUP_SUM_PARTIAL_OR_INVALID",
+        invalidGroupIndex: index,
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+
+    rowsWritten += written;
+    rowsRead += read;
+    if (!Number.isSafeInteger(rowsWritten) || !Number.isSafeInteger(rowsRead)) {
+      return Object.freeze({
+        known: false,
+        quotaDay,
+        rowsWritten: null,
+        rowsRead: null,
+        error: "D1_ANALYTICS_AGGREGATE_OVERFLOW",
+        freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
+      });
+    }
+  }
   return Object.freeze({
     known: true,
     quotaDay,
@@ -117,14 +191,15 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
     source: "CLOUDFLARE_D1_GRAPHQL_ACCOUNT_ANALYTICS",
     usageSemantics: "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
     freshnessGuarantee: "NOT_DOCUMENTED_BY_VENDOR",
-    mitigation: "NON_RELEASING_SAME_DAY_RESERVATIONS_PLUS_MAX_OBSERVED_LEDGER",
+    mitigation: "STRICT_COMPLETE_GROUPS_PLUS_NON_RELEASING_SAME_DAY_RESERVATIONS_PLUS_MAX_OBSERVED_LEDGER",
   });
 }
 
 async function loadQuotaLedger(db, quotaDay) {
   const { start, end } = quotaDayBounds(quotaDay);
   const rows = await db.rawQuery(
-    `SELECT check_id, check_type, observed_payload_json, check_timestamp
+    `SELECT check_id, check_type, expected_payload_json, observed_payload_json,
+            status, check_hash, check_timestamp
        FROM s2_infrastructure_checks
       WHERE check_timestamp >= ? AND check_timestamp <= ?
         AND check_type IN (
@@ -134,7 +209,56 @@ async function loadQuotaLedger(db, quotaDay) {
       ORDER BY check_timestamp`,
     [start, end],
   );
-  return summarizeD1QuotaLedgerRowsV0_1(rows, { quotaDay });
+
+  const summary = summarizeD1QuotaLedgerRowsV0_1(rows, {
+    quotaDay,
+    requireReceiptIdentity: true,
+  });
+  if (summary.integrityState !== "VALID") return summary;
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    const payload = JSON.parse(row.observed_payload_json);
+    const identityHash = sha256({
+      checkId: row.check_id,
+      checkType: row.check_type,
+      expectedPayloadJson: row.expected_payload_json,
+      observedPayloadJson: row.observed_payload_json,
+      status: row.status,
+    });
+    const legacyPayloadHash = sha256(payload);
+    const timestampDay = new Date(row.check_timestamp).toISOString().slice(0, 10);
+    if (timestampDay !== quotaDay) {
+      return Object.freeze({
+        ...summary,
+        integrityState: "INVALID",
+        integrityErrors: Object.freeze([Object.freeze({
+          code: "LEDGER_CHECK_TIMESTAMP_WRONG_UTC_DAY",
+          rowIndex: index,
+          detail: timestampDay,
+        })]),
+        outstandingReservedRowsWritten: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
+        outstandingReservedRowsRead: D1_FREE_LIMITS.rowsReadPerUtcDay,
+        conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
+      });
+    }
+    if (row.check_hash !== identityHash && row.check_hash !== legacyPayloadHash) {
+      return Object.freeze({
+        ...summary,
+        integrityState: "INVALID",
+        integrityErrors: Object.freeze([Object.freeze({
+          code: "LEDGER_CHECK_HASH_MISMATCH",
+          rowIndex: index,
+          detail: row.check_id,
+        })]),
+        outstandingReservedRowsWritten: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
+        outstandingReservedRowsRead: D1_FREE_LIMITS.rowsReadPerUtcDay,
+        conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
+      });
+    }
+  }
+
+  return summary;
 }
 
 function ledgerExpectedPayloadJson() {
@@ -398,6 +522,7 @@ async function main() {
     eventName,
     accountUsage,
     system1ReservePolicy,
+    ledgerIntegrityState: ledger.integrityState,
     outstandingReservedRowsWritten: ledger.outstandingReservedRowsWritten,
     outstandingReservedRowsRead: ledger.outstandingReservedRowsRead,
     protectedDailyShadowReserveRows: integerEnv("SYSTEM2_D1_DAILY_SHADOW_RESERVE_ROWS", 13130),

@@ -345,3 +345,109 @@ Repository-level remediation does not itself certify:
 - DATA_LANE 2026-10-08 write promotion.
 
 Those remain independent physical acceptance items. A HIGH correction remains non-closable by REMEDIATION_LANE.
+
+
+## A5/A6 independent fail-open hardening
+
+Independent AUDIT_LANE PR #989 reproduced two additional source-level fail-open defects after A1-A4 passed enumerated reverify. These are repaired in the same HIGH correction and do not alter the original Free-tier architecture.
+
+### A5 — partial GraphQL metrics are UNKNOWN, never zero
+
+The account-wide GraphQL parser requires exactly one account result and at least one D1 analytics group.
+
+Every returned group must contain:
+- `dimensions.date` exactly equal to the requested UTC quota day;
+- a non-empty `dimensions.databaseId`;
+- `sum.rowsWritten` as a JavaScript finite safe nonnegative integer number;
+- `sum.rowsRead` as a JavaScript finite safe nonnegative integer number.
+
+The parser rejects as UNKNOWN:
+- missing rowsRead or rowsWritten;
+- null metrics;
+- numeric strings;
+- negative/fractional/non-finite values;
+- missing/wrong date;
+- missing/blank databaseId;
+- duplicate date+databaseId identity;
+- missing/empty/multiple account groups;
+- empty analytics groups;
+- aggregate safe-integer overflow.
+
+There is no `|| 0` fallback for quota usage.
+
+Any such case returns:
+- `known=false`;
+- rowsWritten = null;
+- rowsRead = null;
+
+and the quota evaluator returns `QUOTA_BUDGET_DEFER / ACCOUNT_WIDE_D1_USAGE_UNKNOWN`.
+
+GraphQL freshness remains `NOT_DOCUMENTED_BY_VENDOR`; this hardening does not invent freshness seconds, safety percentages or hidden headroom.
+
+### A6 — malformed same-day ledger cannot disappear
+
+Quota ledger summarization now returns an explicit:
+- `integrityState=VALID`, or
+- `integrityState=INVALID`.
+
+Malformed/incomplete/ambiguous same-day ledger content is never skipped.
+
+Integrity-invalid examples:
+- unparsable observed payload JSON;
+- missing runKey;
+- invalid/missing quotaDay;
+- missing/non-numeric reservation rowsWritten/rowsRead;
+- wrong-day reservation;
+- unknown check type;
+- duplicate reservation/result runKey;
+- result without matching reservation;
+- malformed result after-usage metrics;
+- production receipt missing check ID/hash/status/expected payload;
+- unsupported receipt schema/directive/budget identity;
+- check ID inconsistent with quotaDay/runKey/type;
+- invalid check timestamp.
+
+On ledger integrity failure the summarizer conservatively saturates:
+- outstandingReservedRowsWritten = 100,000;
+- outstandingReservedRowsRead = 5,000,000;
+
+and marks:
+`SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE`.
+
+This is a safety blocking sentinel, not a claim that those rows were actually consumed.
+
+The production gate also passes `ledgerIntegrityState` to the evaluator; any value other than VALID explicitly returns:
+`QUOTA_BUDGET_DEFER / D1_QUOTA_LEDGER_INTEGRITY_INVALID`.
+
+### Production receipt identity/hash verification
+
+The production ledger SELECT reads:
+- check_id;
+- check_type;
+- expected_payload_json;
+- observed_payload_json;
+- status;
+- check_hash;
+- check_timestamp.
+
+Before budgeting:
+1. structural/receipt identity validation is performed with `requireReceiptIdentity=true`;
+2. check ID must equal `S2-D1-BUDGET:<payload quotaDay>:<runKey>:<RESERVATION|RESULT>`;
+3. timestamp must belong to the current queried UTC-day SELECT window;
+4. the stored check hash must match either:
+   - current full immutable identity hash (ID/type/expected payload/observed payload/status), or
+   - the explicitly supported legacy payload hash for pre-A4 receipts.
+
+A hash mismatch blocks with `LEDGER_CHECK_HASH_MISMATCH`.
+
+Legacy compatibility is intentionally bounded; malformed legacy data does not receive permissive defaults.
+
+## A5/A6 physical-proof boundary
+
+A5/A6 correctness is validated with deterministic in-memory HTTP/ledger adversarial tests and does not require spending scarce D1 quota.
+
+The existing real account physical evidence remains unchanged:
+- prior real GraphQL usage read + safe quota defer is positive infrastructure evidence;
+- it is not a substitute for bounded future multiwriter physical acceptance.
+
+System1 write/read reserves remain unauthorized/null and 2,825 remains observational only.

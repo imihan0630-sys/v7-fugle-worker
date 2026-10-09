@@ -303,6 +303,7 @@ export function evaluateD1AccountQuotaReservationV0_1({
   eventName,
   accountUsage,
   system1ReservePolicy,
+  ledgerIntegrityState = "VALID",
   outstandingReservedRowsWritten = 0,
   outstandingReservedRowsRead = 0,
   protectedDailyShadowReserveRows = 13130,
@@ -348,6 +349,19 @@ export function evaluateD1AccountQuotaReservationV0_1({
       physicalAllowed: false,
       quotaDay: accountUsage?.quotaDay || null,
       reasonCodes: Object.freeze(["ACCOUNT_WIDE_D1_USAGE_UNKNOWN"]),
+      adaptiveMaxDates: 0,
+      requestedRowsWritten: null,
+      requestedRowsRead: null,
+      paidUpgradeAuthorized: false,
+    });
+  }
+
+  if (ledgerIntegrityState !== "VALID") {
+    return Object.freeze({
+      state: "QUOTA_BUDGET_DEFER",
+      physicalAllowed: false,
+      quotaDay: accountUsage.quotaDay,
+      reasonCodes: Object.freeze(["D1_QUOTA_LEDGER_INTEGRITY_INVALID"]),
       adaptiveMaxDates: 0,
       requestedRowsWritten: null,
       requestedRowsRead: null,
@@ -606,46 +620,187 @@ export function evaluateD1QuotaResultVarianceV0_1({
   });
 }
 
-export function summarizeD1QuotaLedgerRowsV0_1(rows = [], { quotaDay = null } = {}) {
+export function summarizeD1QuotaLedgerRowsV0_1(
+  rows = [],
+  { quotaDay = null, requireReceiptIdentity = false } = {},
+) {
   const reservations = new Map();
   const results = new Map();
   let maxObservedRowsWrittenAfter = 0;
   let maxObservedRowsReadAfter = 0;
 
-  for (const row of rows || []) {
-    let payload = null;
-    try { payload = JSON.parse(row?.observed_payload_json); } catch {}
-    if (!payload?.runKey) continue;
-    if (quotaDay && payload?.quotaDay && payload.quotaDay !== quotaDay) continue;
+  const invalid = (code, rowIndex, detail = null) => Object.freeze({
+    integrityState: "INVALID",
+    integrityErrors: Object.freeze([Object.freeze({ code, rowIndex, detail })]),
+    outstandingReservedRowsWritten: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
+    outstandingReservedRowsRead: D1_FREE_LIMITS.rowsReadPerUtcDay,
+    reservationCount: reservations.size,
+    resultCount: results.size,
+    maxObservedRowsWrittenAfter,
+    maxObservedRowsReadAfter,
+    sameDayReservationReleasePolicy: "NEVER_RELEASE_BEFORE_UTC_RESET",
+    conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
+  });
+  const strictNonNegativeInteger = (value) =>
+    typeof value === "number"
+    && Number.isSafeInteger(value)
+    && value >= 0;
+  const validQuotaDay = (value) =>
+    typeof value === "string"
+    && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && Number.isFinite(Date.parse(value + "T00:00:00.000Z"));
+  const allowedSchema = (type, version) => {
+    const prefix = type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1"
+      ? "S2_D1_ACCOUNT_BUDGET_RESERVATION_V0_"
+      : "S2_D1_ACCOUNT_BUDGET_RESULT_V0_";
+    return typeof version === "string"
+      && [prefix + "1", prefix + "2", prefix + "3"].includes(version);
+  };
 
-    if (row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1") {
+  for (let rowIndex = 0; rowIndex < (rows || []).length; rowIndex += 1) {
+    const row = rows[rowIndex];
+    if (!row || typeof row !== "object") {
+      return invalid("LEDGER_ROW_NOT_OBJECT", rowIndex);
+    }
+
+    const type = row.check_type;
+    if (![
+      "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1",
+      "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1",
+    ].includes(type)) {
+      return invalid("LEDGER_CHECK_TYPE_INVALID", rowIndex, type ?? null);
+    }
+
+    let payload;
+    try {
+      payload = JSON.parse(row.observed_payload_json);
+    } catch {
+      return invalid("LEDGER_OBSERVED_PAYLOAD_JSON_INVALID", rowIndex);
+    }
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      return invalid("LEDGER_OBSERVED_PAYLOAD_NOT_OBJECT", rowIndex);
+    }
+    if (typeof payload.runKey !== "string" || !payload.runKey.trim()) {
+      return invalid("LEDGER_RUN_KEY_MISSING", rowIndex);
+    }
+    if (!validQuotaDay(payload.quotaDay)) {
+      return invalid("LEDGER_QUOTA_DAY_INVALID", rowIndex, payload.quotaDay ?? null);
+    }
+
+    if (requireReceiptIdentity) {
+      if (typeof row.check_id !== "string" || !row.check_id.trim()) {
+        return invalid("LEDGER_CHECK_ID_MISSING", rowIndex);
+      }
+      if (typeof row.check_hash !== "string" || !/^[a-f0-9]{64}$/.test(row.check_hash)) {
+        return invalid("LEDGER_CHECK_HASH_INVALID", rowIndex);
+      }
+      if (typeof row.status !== "string" || !row.status.trim()) {
+        return invalid("LEDGER_STATUS_MISSING", rowIndex);
+      }
+      if (typeof row.expected_payload_json !== "string") {
+        return invalid("LEDGER_EXPECTED_PAYLOAD_MISSING", rowIndex);
+      }
+      try {
+        const expected = JSON.parse(row.expected_payload_json);
+        if (!expected || typeof expected !== "object" || Array.isArray(expected)) {
+          return invalid("LEDGER_EXPECTED_PAYLOAD_NOT_OBJECT", rowIndex);
+        }
+      } catch {
+        return invalid("LEDGER_EXPECTED_PAYLOAD_JSON_INVALID", rowIndex);
+      }
+      if (!allowedSchema(type, payload.schemaVersion)) {
+        return invalid("LEDGER_SCHEMA_VERSION_INVALID", rowIndex, payload.schemaVersion ?? null);
+      }
+      if (payload.directiveId !== "S2-CORR-20261007-003") {
+        return invalid("LEDGER_DIRECTIVE_ID_INVALID", rowIndex, payload.directiveId ?? null);
+      }
+      if (typeof payload.budgetVersion !== "string" || !payload.budgetVersion.trim()) {
+        return invalid("LEDGER_BUDGET_VERSION_MISSING", rowIndex);
+      }
+      const suffix = type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1"
+        ? "RESERVATION"
+        : "RESULT";
+      const expectedCheckId = "S2-D1-BUDGET:"
+        + payload.quotaDay + ":" + payload.runKey + ":" + suffix;
+      if (row.check_id !== expectedCheckId) {
+        return invalid("LEDGER_CHECK_IDENTITY_MISMATCH", rowIndex, row.check_id);
+      }
+      if (typeof row.check_timestamp !== "string" || !Number.isFinite(Date.parse(row.check_timestamp))) {
+        return invalid("LEDGER_CHECK_TIMESTAMP_INVALID", rowIndex);
+      }
+    }
+
+    const belongsToRequestedDay = !quotaDay || payload.quotaDay === quotaDay;
+    if (!belongsToRequestedDay) {
+      if (type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1") continue;
+      if (!requireReceiptIdentity) continue;
+      return invalid("LEDGER_RESERVATION_WRONG_QUOTA_DAY", rowIndex, payload.quotaDay);
+    }
+
+    if (type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESERVATION_V0_1") {
+      if (
+        !strictNonNegativeInteger(payload.requestedRowsWritten)
+        || !strictNonNegativeInteger(payload.requestedRowsRead)
+      ) {
+        return invalid("LEDGER_RESERVATION_COST_INVALID", rowIndex);
+      }
+      if (reservations.has(payload.runKey)) {
+        return invalid("LEDGER_DUPLICATE_RESERVATION_RUN_KEY", rowIndex, payload.runKey);
+      }
       reservations.set(payload.runKey, payload);
-    } else if (row.check_type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1") {
-      results.set(payload.runKey, payload);
-      if (Number.isFinite(Number(payload.accountRowsWrittenAfter))) {
-        maxObservedRowsWrittenAfter = Math.max(
-          maxObservedRowsWrittenAfter,
-          Number(payload.accountRowsWrittenAfter),
-        );
+      continue;
+    }
+
+    if (typeof payload.resultState !== "string" || !payload.resultState.trim()) {
+      return invalid("LEDGER_RESULT_STATE_MISSING", rowIndex);
+    }
+    for (const [field, value] of [
+      ["accountRowsWrittenAfter", payload.accountRowsWrittenAfter],
+      ["accountRowsReadAfter", payload.accountRowsReadAfter],
+    ]) {
+      if (value !== null && value !== undefined && !strictNonNegativeInteger(value)) {
+        return invalid("LEDGER_RESULT_METRIC_INVALID:" + field, rowIndex);
       }
-      if (Number.isFinite(Number(payload.accountRowsReadAfter))) {
-        maxObservedRowsReadAfter = Math.max(
-          maxObservedRowsReadAfter,
-          Number(payload.accountRowsReadAfter),
-        );
-      }
+    }
+    if (results.has(payload.runKey)) {
+      return invalid("LEDGER_DUPLICATE_RESULT_RUN_KEY", rowIndex, payload.runKey);
+    }
+    results.set(payload.runKey, payload);
+    if (strictNonNegativeInteger(payload.accountRowsWrittenAfter)) {
+      maxObservedRowsWrittenAfter = Math.max(
+        maxObservedRowsWrittenAfter,
+        payload.accountRowsWrittenAfter,
+      );
+    }
+    if (strictNonNegativeInteger(payload.accountRowsReadAfter)) {
+      maxObservedRowsReadAfter = Math.max(
+        maxObservedRowsReadAfter,
+        payload.accountRowsReadAfter,
+      );
     }
   }
 
-  // V0.2 safety rule: a same-UTC-day result receipt never releases the reservation.
-  // GraphQL is treated as a lower-bound observation and can lag; only the UTC reset
-  // ends the reservation accounting window.
+  for (const runKey of results.keys()) {
+    if (!reservations.has(runKey)) {
+      return invalid("LEDGER_RESULT_WITHOUT_RESERVATION", -1, runKey);
+    }
+  }
+
   const outstandingReservedRowsWritten = [...reservations.values()]
-    .reduce((sum, payload) => sum + Number(payload.requestedRowsWritten || 0), 0);
+    .reduce((sum, payload) => sum + payload.requestedRowsWritten, 0);
   const outstandingReservedRowsRead = [...reservations.values()]
-    .reduce((sum, payload) => sum + Number(payload.requestedRowsRead || 0), 0);
+    .reduce((sum, payload) => sum + payload.requestedRowsRead, 0);
+
+  if (
+    !Number.isSafeInteger(outstandingReservedRowsWritten)
+    || !Number.isSafeInteger(outstandingReservedRowsRead)
+  ) {
+    return invalid("LEDGER_RESERVATION_AGGREGATE_OVERFLOW", -1);
+  }
 
   return Object.freeze({
+    integrityState: "VALID",
+    integrityErrors: Object.freeze([]),
     outstandingReservedRowsWritten,
     outstandingReservedRowsRead,
     reservationCount: reservations.size,
@@ -653,6 +808,7 @@ export function summarizeD1QuotaLedgerRowsV0_1(rows = [], { quotaDay = null } = 
     maxObservedRowsWrittenAfter,
     maxObservedRowsReadAfter,
     sameDayReservationReleasePolicy: "NEVER_RELEASE_BEFORE_UTC_RESET",
+    conservativeBlockPolicy: null,
   });
 }
 
