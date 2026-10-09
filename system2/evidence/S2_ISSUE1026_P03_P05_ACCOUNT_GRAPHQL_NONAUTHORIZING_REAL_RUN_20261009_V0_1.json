@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P03_P05_ACCOUNT_GRAPHQL_NONAUTHORIZING_REAL_PHYSICAL_OBSERVATION_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "observedDateTaipei": "2026-10-09",
+  "state": "REAL_GRAPHQL_ACCOUNT_USAGE_OBSERVED_P03_P05_PHYSICAL_ACCEPTANCE_DEFER",
+  "codeAcceptance": {
+    "implementationPR": 1038,
+    "repairPR": 1039,
+    "repairMergeSha": "aaa796ca2db436cc31f19d08f94691f0c9faae30",
+    "ciResearch": "PASS",
+    "v8Regression": "PASS",
+    "firstAttemptFailureRun": 37941333665,
+    "firstAttemptNegativeEvidencePath": "system2/evidence/S2_ISSUE1026_P03_P05_FIRST_REAL_RUN_SAFE_DEFER_NEGATIVE_20261009_V0_1.json",
+    "mainObserverRun": 37941792137
+  },
+  "realAccountObservation": {
+    "runId": 37941792137,
+    "jobId": 113857752036,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37941792137",
+    "sourceHeadSha": "aaa796ca2db436cc31f19d08f94691f0c9faae30",
+    "event": "push",
+    "jobConclusion": "success",
+    "offlineEvidenceStepConclusion": "success",
+    "cloudflareGraphQlStepConclusion": "success",
+    "artifactId": 11621798195,
+    "artifactName": "s2-issue1026-p03p05-metadata-only-37941792137-1",
+    "artifactDigest": "sha256:963724d54534fc95b6520a094428921886f51cafb9f88d7658e1617452df0cdc",
+    "accountScope": "CLOUDFLARE_SYSTEM1_SYSTEM2_D1_SHARED_ACCOUNT",
+    "quotaDay": "2026-10-09",
+    "observedAtUTC": "2026-10-09T14:07:12.779Z",
+    "observedAtTaipei": "2026-10-09T22:07:12.779+08:00",
+    "rowsReadLowerBound": 990891,
+    "rowsWrittenLowerBound": 27060,
+    "analyticsLagGuarantee": "NOT_DOCUMENTED_BY_VENDOR",
+    "usageSemantics": "ACCOUNT_DAILY_AGGREGATE_LOWER_BOUND",
+    "readHeadroomProven": false,
+    "writeHeadroomProven": false
+  },
+  "offlineSafeguards": {
+    "state": "P03_P05_PHYSICAL_ACCEPTANCE_DEFER",
+    "p03DocumentedSupportChecks": 3,
+    "p03TotalSupportChecks": 8,
+    "p05DocumentedSupportChecks": 4,
+    "p05TotalSupportChecks": 9,
+    "d1PhysicalScoutExecuted": 0,
+    "d1PhysicalScoutTarget": 36,
+    "d1PhysicalCensusExecuted": 0,
+    "d1PhysicalCensusTarget": 11843,
+    "physicalMissingKeyCount": "UNKNOWN",
+    "system1ReadReserveNumberAuthorized": false,
+    "system1AuthorizedReadReserveRows": null,
+    "system1WriteReserveNumberAuthorized": false,
+    "system1AuthorizedWriteReserveRows": null,
+    "quotaReservationGranted": false,
+    "physicalD1ReadAuthorized": false,
+    "physicalD1WriteAuthorized": false,
+    "physicalMultiwriterAccepted": false,
+    "physicalOriginalCriteriaAccepted": false
+  },
+  "physicalImpact": {
+    "cloudflareAccountGraphQLMetadataQueries": 1,
+    "cloudflareD1SqlQueries": 0,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Calls": 0,
+    "system1WorkerRuntimeChanged": false,
+    "system1FormalCoreChanged": false,
+    "billingChanged": false
+  },
+  "handoffs": [
+    {
+      "lane": "REMEDIATION_LANE",
+      "message": "Consume this lower-bound read-only observation only as P03 metadata context; do not infer current spendable headroom or substitute authorized System1 read/write reserves. Correlate genuine P0 P2 P3 same-day physical ledger only after gate GRANTED."
+    },
+    {
+      "lane": "AUDIT_LANE",
+      "message": "Physical P03/P05 remain pending, A7 source-level PASS. Do not close by successful metadata workflow or CI. Need authenticated original physical 19 criteria and System1 aftermarket success."
+    }
+  ],
+  "noClaims": [
+    "No post-fix real same-UTC-day multiwriter grant/result chain proved",
+    "No P03 quota-day P0 protection versus P2/P3 physical acceptance",
+    "No actual October Hot D1 36 or 11843 SQL census",
+    "No missing-key 0 estimate, no original PIT/firstKnownAt, no D1/R2 data promotion",
+    "One single Cloudflare GraphQL query never grants account-wide spendable D1 quota"
+  ]
+}
