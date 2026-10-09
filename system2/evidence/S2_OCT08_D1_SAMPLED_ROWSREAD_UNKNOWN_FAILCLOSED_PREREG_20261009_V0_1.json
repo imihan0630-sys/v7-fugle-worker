@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "S2_OCT08_HOT_D1_SAMPLED_ROWSREAD_METRICS_FAIL_CLOSED_V0_1",
+  "recordedAtUTC": "2026-10-09T10:41:18.303Z",
+  "executionLane": "DATA_LANE",
+  "classification": "CLASS_A_RESEARCH_READ_ONLY_SAFETY_FIX",
+  "finding": "Existing sampled October D1 auditor used Number(db.metrics.rowsRead||0) on its before/after cap checks. Missing/NaN metrics could be coerced to zero, obscuring read consumption. This is not an observed physical D1 leak and no D1 requests are authorized by this patch.",
+  "fix": "Require Number.isSafeInteger(db.metrics.rowsRead) and nonnegative values before each sampled indexed SELECT and after each response/final return; reject missing, null, NaN, Infinity, negative, numeric string and fractional metrics explicitly.",
+  "files": [
+    "system2/runtime/oct08_hot_d1_source_matched_sample_readonly_v0_1.mjs",
+    "system2/tests/oct08_hot_d1_source_matched_sample_readonly_v0_1.test.mjs"
+  ],
+  "adversarialFixtureCount": 8,
+  "fixtureInputs": [
+    "undefined",
+    "null",
+    "NaN",
+    "Infinity",
+    "-1",
+    "string '0'",
+    "0.25",
+    "post-query NaN"
+  ],
+  "expectedDisposition": "D1_ROWS_READ_METRICS_UNKNOWN_FAIL_CLOSED",
+  "physicalCloudflareSQLReadsByThisPatch": 0,
+  "physicalCloudflareSQLWritesByThisPatch": 0,
+  "oldSourceEvidence": {
+    "runId": 37878847039,
+    "sourceMarketDateCells": 12,
+    "sourceOrdinaryStockDateKeys": 11843,
+    "marketDateCutoff": "2026-10-08"
+  },
+  "latestAccountMetadataObservation": {
+    "runId": 37918290130,
+    "observedAt": "2026-10-09T10:33:14.906Z",
+    "rowsReadLowerBound": 880643,
+    "rowsWrittenLowerBound": 27056,
+    "realtimeHeadroomCertified": false
+  },
+  "upstreamQuotaCorrection": {
+    "id": "S2-CORR-20261007-003",
+    "status": "HIGH_FIX_IN_PROGRESS",
+    "independentA5A6": "OPEN_UNDER_REMEDIATION_LANE",
+    "system1WriteReserveAuthorized": false,
+    "system1ReadReserveAuthorized": false
+  },
+  "dataCensus": {
+    "sampledHotD1Physical": "NOT_EXECUTED",
+    "allSourceKeysHotD1Physical": "NOT_EXECUTED",
+    "missingKeyCount": "UNKNOWN",
+    "historicalPIT": "UNVERIFIED"
+  },
+  "codeAcceptanceStatus": "PENDING_PR_HEAD_CI_V8_REGRESSION_AND_MERGED_MAIN_READBACK",
+  "auditLaneUse": "Independent source-level counterexample evidence only, NOT CORR-003 closure or data completion",
+  "noPaidPlanChange": true,
+  "system1FormalCoreChanged": false,
+  "notAuthorized": [
+    "physical D1 read without independently evidenced headroom",
+    "physical D1 write",
+    "retroactive availableAt/PIT certification",
+    "System2 final selection promotion"
+  ]
+}
