@@ -54,7 +54,12 @@ function summarize(name,raw,status){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.ready=raw.ready===true;
   obj.historicalReadback=raw.historicalReadback===true;
-  obj.validTradingDateCount=Array.isArray(raw.validDates)?raw.validDates.length:null;
+  obj.validTradingDates=Array.isArray(raw.validDates)?
+    raw.validDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
+  obj.validTradingDateCount=obj.validTradingDates.length;
+  obj.missingTradingDates=Array.isArray(raw.missingDates)?
+    raw.missingDates.filter(d=>typeof d==="string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(d)).slice(0,5):[];
+  obj.missingTradingDateCount=obj.missingTradingDates.length;
  } else if(name==="quality"){
   obj.marketDate=typeof raw.marketDate==="string"?raw.marketDate:null;
   obj.indexReady=raw.index?.ready===true;
