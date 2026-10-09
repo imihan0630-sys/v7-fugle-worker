@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "S2_RECENT60_INDEXED_D1_READ_COST_PHYSICAL_ACCEPTANCE_V0_1",
+  "source": "MERGED_MAIN_GITHUB_ACTIONS_PHYSICAL_WORKFLOW_LOG_AND_ARTIFACT",
+  "status": "PASS_ACTUAL_D1_READ_MEASURED_REPLAY_NOT_CERTIFIED",
+  "run": {
+    "id": 37867913378,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37867913378",
+    "jobId": 113618994793,
+    "runAttempt": 1,
+    "headSha": "76d3ddc5349b0d9bc69ca5d8a49d5457911f30c5",
+    "conclusion": "success",
+    "observedAt": "2026-10-09T01:05:29.637Z",
+    "artifact": {
+      "id": 11589146195,
+      "name": "system2-recent60-indexed-read-cost-37867913378-1",
+      "digest": "sha256:e14750120d839eedf5b6586ed439b2e5a297f92910509aa6c50d75aef751cc65"
+    }
+  },
+  "fixedMarketDate": "2026-10-08",
+  "currentObservationClockClass": "POST_FACTO_DIAGNOSTIC_NO_ORIGINAL_PIT_ELIGIBILITY",
+  "observed": {
+    "ordinarySymbolCount": 1972,
+    "historyReadyCount": 46,
+    "continuityReadyCount": 0,
+    "measuredD1": {
+      "requestCount": 41,
+      "rowsRead": 462025,
+      "rowsWritten": 0
+    },
+    "queryCodeVersion": "SYMBOL_INDEX_SCOPED_BOUNDED_50",
+    "rowsReadSavingsVsHistoricalBaseline": "UNMEASURED_NOT_COMPARABLE"
+  },
+  "interpretation": [
+    "Real post-reset Cloudflare isolated System2 D1 query cost measured successfully; no D1 writes.",
+    "The physical read-count may not be equated to causal savings versus previous query design without a comparable same-cut controlled run.",
+    "Historical 2026-10-08 firstKnownAt and PIT availability were NOT proved by this 2026-10-09 read.",
+    "Only 46 symbols passed a historical bar eligibility check and zero passed independent corporate-action/lifecycle continuity.",
+    "Official July frozen 96/96 source presence is separate from R2/D1 storage and exact historical PIT proof.",
+    "An active guarded TWSE 2026 Jul-Sep one-shot backfill from Run 37871005381 is independent and must not be preempted or raced by new D1 writer/reader jobs."
+  ],
+  "noPromotion": {
+    "pITPromotionAuthorized": false,
+    "technicalContinuityCertified": false,
+    "ncT01PromotionAuthorized": false,
+    "noEventMayBeClaimed": false,
+    "zeroPickClaimAllowed": false,
+    "system1RuntimeUsed": false,
+    "liveSelectionAuthority": false,
+    "capitalOrderPushImpact": false
+  },
+  "next": [
+    "Wait for one-shot 2026 TWSE Jul-Sep Run 37871005381 to reach terminal status; independently audit physical month receipts, R2 byte/hash and D1 write quotas, without assuming success.",
+    "Coordinate any further account-level D1 read/write actions with REMEDIATION_LANE; do not dispatch TPEx while TWSE historical writer runs.",
+    "For 46 eligible bar-history symbols independently prove NC-T01 corporate-action/lifecycle/stop-resume complete scope and original cutoff, retaining UNKNOWN until proven."
+  ],
+  "protected": [
+    "System1 Formal Core and deployed runtime",
+    "System2 live selection, strategy, push, orders and capital",
+    "Immutable older prospective/PIT records"
+  ]
+}
