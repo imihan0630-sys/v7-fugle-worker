@@ -1616,8 +1616,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「缺貨／供需缺口事件」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "DEDICATED_SHORTAGE_EVENT_CONTRACT / TAIWAN_PIT_SOURCE_FEASIBLE / SC089_GLOBALWAFERS_ISSUER_NATIVE_REALIZED_SUPPLY_GAP / CROSS_SITE_SUBSTITUTION_CONSTRAINED_BY_CAPACITY_AND_QUALIFICATION / SC090_EVENT_ROOT_DEDUP_FROZEN / ISSUER_EVENT_ROOT_N_1 / OUTCOMES_CLOSED",
-          "next": "SC-091 capture the next genuinely new issuer-native shortage/allocation/capacity-constraint event root under SC-090; descendant recovery updates inherit the same root; preserve NULL observation when no new root exists; no L4 before multiple independent roots plus D16 event-level validation."
+          "status": "DEDICATED_SHORTAGE_EVENT_CONTRACT / TAIWAN_PIT_SOURCE_FEASIBLE / SC089_GLOBALWAFERS_ISSUER_NATIVE_REALIZED_SUPPLY_GAP / SC090_EVENT_ROOT_DEDUP_FROZEN / SC091_20261009_BOUNDED_NULL_NO_NEW_ROOT / ISSUER_EVENT_ROOT_N_1 / OUTCOMES_CLOSED / KEEP_L3",
+          "next": "Continue SC090 event-root cohort: capture the next genuinely new issuer-native shortage/allocation/capacity-constraint root; otherwise preserve bounded NULL observations append-only. Descendant recovery updates inherit the same root. No L4 before multiple independent roots plus D16 event-level validation."
         },
         {
           "id": "D10-09",
@@ -1656,8 +1656,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / SC047_CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION / SC075_POST_FREEZE_NULL_DENOMINATOR / SC085_20261008_BOUNDED_BIS_NEWS_AND_FEDERAL_REGISTER_NULL / NO_NEW_POST_FREEZE_BIS_RULE_LIST_LICENSE_VINTAGE_OBSERVED / HISTORICAL_20260924_POLYSILICON_RULE_NOT_NEW_EVENT / OUTCOMES_CLOSED",
-          "next": "SC-086 continue prospective official BIS News/Federal Register observation for the first genuinely new post-SC047 rule/list/license vintage. Preserve no-event observations append-only. On first qualifying event freeze publication/effective/expiry clocks; issuer/customer/destination/product exposure remains UNKNOWN without compatible contemporaneous issuer-native evidence; preregister outcome windows before any revenue/margin/stock test."
+          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / SC047_CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION / SC075_SC085_SC086_POST_FREEZE_NULL_DENOMINATORS / NO_NEW_POST_SC047_BIS_RULE_LIST_LICENSE_VINTAGE_OBSERVED_THROUGH_20261009T1712 / OUTCOMES_CLOSED",
+          "next": "Continue prospective official BIS News/Federal Register observation. Freeze the first genuinely new post-SC047 rule/list/license vintage with publication/effective/expiry clocks; issuer exposure remains UNKNOWN absent compatible contemporaneous issuer-native evidence; preserve NULL dates append-only."
         },
         {
           "id": "D10-14",
@@ -1666,8 +1666,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / GLOBALWAFERS_REALIZED_SUPPORT_AND_PHYSICAL_MILESTONES / FOXCONN_WISCONSIN_SCOPE_RESET_CONTROL / SC087_POST_FREEZE_CHIPS_NULL / SC093_POLICY_FINANCE_INSTRUMENT_FIREWALL / CONDITIONAL_LOAN_NOT_DISBURSEMENT / PROSPECTIVE_POST_SC087_EVENT_N_UNCHANGED / OUTCOMES_CLOSED",
-          "next": "Continue SC-088 prospectively from SC-087 freeze: admit only genuinely post-freeze official industrial-policy events with sourcePublishedAt/capturedAt; store grant/tax-credit/conditional-loan/executed-loan/funded-tranche/equity consideration and physical realization states separately; no Taiwan issuer sign without direct exposure evidence; no L4 before D16 common-support validation."
+          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / GLOBALWAFERS_REALIZED_SUPPORT_AND_PHYSICAL_MILESTONES / FOXCONN_WISCONSIN_SCOPE_RESET_CONTROL / SC087_SC088_POST_FREEZE_CHIPS_NULL_DENOMINATORS / SC093_POLICY_FINANCE_INSTRUMENT_FIREWALL / OUTCOMES_CLOSED",
+          "next": "Continue post-SC087 official CHIPS observation; admit only genuinely post-freeze award/disbursement/project-scope/qualification/HVM/utilization milestones with sourcePublishedAt/capturedAt; separate grant/tax-credit/loan/equity/funded-tranche from physical realization; no L4 before D16 common-support validation."
         }
       ]
     },
