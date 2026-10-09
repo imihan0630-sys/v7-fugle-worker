@@ -6,7 +6,11 @@ const requestedMarketDate=String(process.env.OFFICIAL_MARKET_DATE || '').trim();
 const marketDate=requestedMarketDate || today;
 assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,'OFFICIAL_MARKET_DATE must be YYYY-MM-DD');
 assert.ok(marketDate<=today,'OFFICIAL_MARKET_DATE cannot be in the future');
-assert.ok(Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z')<=86400000,'OFFICIAL_MARKET_DATE exceeds one-day scheduled recovery window');
+const manualDataOnly=String(process.env.V7_DATA_ONLY_RECOVERY||'').toLowerCase()==='true';
+if(manualDataOnly) assert.ok(requestedMarketDate,'Manual data-only recovery requires an explicit market date');
+const dateAgeMs=Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z');
+assert.ok(dateAgeMs<=(manualDataOnly?7:1)*86400000,
+  manualDataOnly?'Manual data-only recovery exceeds seven-day window':'OFFICIAL_MARKET_DATE exceeds one-day scheduled recovery window');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN authorization is required');
 const adminHeaders={'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'};
 async function admin(path,options={}) {
