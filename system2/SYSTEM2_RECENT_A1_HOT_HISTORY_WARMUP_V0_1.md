@@ -59,8 +59,9 @@ GitHub Actions workflow:
 `.github/workflows/system2-recent-a1-hot-history-warmup.yml`
 
 - one run per day at 16:30 Asia/Taipei plus manual dispatch;
-- a main-branch push touching this lane also runs one physical warmup;
-- maximum five trading dates per run;
+- a main-branch push touching this lane is tests/planning only and must not physically mutate D1;
+- schedule/manual physical warmup requires the shared account-level D1 quota reservation gate;
+- maximum five trading dates per run, quota-adaptive downward using the measured 11,576 rowsWritten/date calibration;
 - target window 60 prior sessions;
 - shared `system2-isolated-d1-writer` concurrency preserves isolated D1 serialization;
 - no Cloudflare Cron slot is added.
@@ -87,3 +88,10 @@ V0.1 therefore:
 - does not infer holidays from weekdays alone and does not relabel a current-year calendar as a prior-year calendar.
 
 For the 2026-10-03 anchor, the 60-session target is contained within 2026, so the prior-year source is unnecessary. Cross-year calendar support remains a separate source-contract task before it is needed operationally.
+
+
+## Account-level D1 quota gate
+
+See `system2/SYSTEM2_D1_ACCOUNT_QUOTA_BUDGET_V0_1.md`.
+
+Recent A1 is P2 discretionary high-write work. It cannot consume protected System1/Daily-Shadow headroom. If account usage or the System1 after-market reserve is unknown, or fewer than one calibrated date fits, the run must stop before mutation as `QUOTA_BUDGET_DEFER`.
