@@ -1,0 +1,45 @@
+name: System2 Issue1026 P05 Frozen Oct08 Source Key Manifest Readonly
+# 12 bounded canonical official HTTP market/date source rows, zero Cloudflare D1/R2.
+# No quota authority, first-triggered on newly merged workflow, or manual only.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-issue1026-p05-oct08-source-key-manifest-readonly.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-issue1026-p05-official-source-manifest
+  cancel-in-progress: false
+jobs:
+  source_only_manifest:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Source-only unit and adversity tests plus System1 isolation
+        run: |
+          node system2/tests/issue1026_p05_oct08_source_key_manifest_v0_1.test.mjs
+          node --check system2/runtime/issue1026_p05_oct08_source_key_manifest_v0_1.mjs
+          node --check system2/scripts/probe_issue1026_p05_oct08_source_key_manifest_official_only_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Retrieve 12 frozen official source days and enumerate 11843 keys
+        env:
+          S2_ISSUE1026_P05_SOURCE_KEY_MANIFEST_OUTPUT: /tmp/s2-issue1026-p05-oct08-frozen-official-11843-key-manifest.json
+        run: node system2/scripts/probe_issue1026_p05_oct08_source_key_manifest_official_only_v0_1.mjs
+      - name: Preserve PASS or BLOCKED source manifest (NOT physical D1 coverage)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-issue1026-p05-oct08-official-source-keys-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1026-p05-oct08-frozen-official-11843-key-manifest.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 Formal Worker
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
