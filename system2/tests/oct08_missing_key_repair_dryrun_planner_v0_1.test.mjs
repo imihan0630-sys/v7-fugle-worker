@@ -105,7 +105,7 @@ const changes=[
  [()=>({...problem,historicPITReplayAuthorized:true}),"Expected values"],
  [()=>({...problem,result:"BLOCKED_FAIL_CLOSED_FULL_SOURCE_TO_D1_READ_ONLY"}),"full terminal"],
  [()=>({...problem,discrepancies:problem.discrepancies.map(x=>x.stage==="DATE_TOTALS"
-  &&x.market==="TWSE"&&x.marketDate==="2026-10-01"?{...x,missing:0,matched:x.matched+1}:x)}),"detail/summary"],
+  &&x.market==="TWSE"&&x.marketDate==="2026-10-01"?{...x,missing:0,matched:x.matched+1}:x)}),"detail incomplete"],
  [()=>({...problem,actualD1Queries:239}),"day query provenance"],
 ];
 for(const [build,message] of changes){
