@@ -1,0 +1,54 @@
+name: System2 TWSE2026 Oct09 One-Shot Artifact Readonly Audit
+
+# Read-only Github evidence verifier for exactly original Run 37871005381 attempt 1.
+# Never uses Cloudflare secrets, D1/R2, cron, trading data write or production worker.
+on:
+  workflow_run:
+    workflows:
+      - "System2 2026 TWSE Oct09 Quota Reset Segments One-Shot"
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: system2-twse2026-oct09-original-artifact-readonly
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.id == 37871005381)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test immutable monthly receipts and provenance fail-closed gates
+        run: |
+          node system2/tests/historical_current_year_segment_one_shot_artifact_acceptance_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Audit original GitHub artifact without Cloudflare access
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SYSTEM2_TWSE2026_OCT09_AUDIT_OUTPUT: /tmp/s2-twse2026-oct09-artifact-audit.json
+        run: node system2/scripts/audit_twse2026_oct09_one_shot_artifact_readonly_v0_1.mjs
+
+      - name: Preserve PASS or BLOCKED original-artifact evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-twse2026-oct09-artifact-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-twse2026-oct09-artifact-audit.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm System1 production isolation
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "Production isolation PASS"
