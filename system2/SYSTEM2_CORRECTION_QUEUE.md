@@ -976,7 +976,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T19:16:52+08:00
 - severity: HIGH
-- status: FIX_IN_PROGRESS
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -1093,6 +1093,22 @@ Correction consequence:
 #### 2026-10-09 16:11 REMEDIATION adversarial reopen
 
 Independent PR #983/#984 reproduced 4/4 source-level closure blockers (A1 write reservation underestimation, A2 read-budget blind spot, A3 failure result receipt skipped, A4 ledger duplicate idempotency unproven). REMEDIATION_LANE has reopened only these conflict units from latest main `f1511388b036b64646ce61b8ced273c10cda3b51`. Prior audit evidence is preserved. The ticket is not closed; protected System1 and billing boundaries remain unchanged.
+
+
+#### 2026-10-09 16:30 REMEDIATION A1-A4 implementation complete
+
+PR #985 merged as `a5977af950ed7902a4ac4d965edc18dd62ca30d2`.
+
+- **A1 PASS at source level:** verified write-cost floors cannot be undercut by manual values.
+- **A2 PASS at source level:** unknown D1 read cost is not zero; measured read floors are enforced; 5M/day projection and P0/System1 read headroom are protected.
+- **A3 PASS at source/workflow level:** 13/13 physical writer finalizers run on failure/partial outcomes and same-day reservations are non-releasing.
+- **A4 PASS at source level:** duplicate ledger identities require exact immutable readback; conflicting duplicates fail closed.
+- GraphQL account analytics are treated as lower-bound observations; no realtime freshness value is invented.
+- System1 2,825 observed rowsWritten remains **not authorized** as a reserve; System1 read reserve is also UNKNOWN/null.
+- System2 Research CI `37905200346` PASS; V8 Regression `37905200365` PASS.
+- Durable evidence: `system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json`.
+
+Status returns to `FIX_IMPLEMENTED`. Independent AUDIT_LANE must re-run A1-A4 and retains sole HIGH closure authority. Physical multiwriter/System1 after-market acceptance remains separate and pending.
 
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
