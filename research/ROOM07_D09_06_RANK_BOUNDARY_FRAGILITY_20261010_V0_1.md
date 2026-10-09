@@ -1,0 +1,5 @@
+# D09-06 research-only continuation, 2026-10-10
+
+Frozen sources: `research/br045_twse_full_industry_rank_baseline_20261007_v0_1.json` and `research/br077_twse_sector_lifecycle_seventh_date_20261008_v0_1.json`.
+
+From the existing 34-index rank vectors, Spearman rank correlation is 0.1107715814. Top-three boundary return gap changed from 2.44 to 0.01 percentage point; top-nine boundary gap changed from 0.02 to 0.01. Removing two overlapping composite parents as sensitivity only yields 32-index rho 0.0843108504, mean absolute rank change 9.625 and top-eight retention 3/8. The canonical 34-index denominator and its 4/9 top-nine retention remain unchanged. This is one additional descriptive consumer of two existing roots, not new independent market dates. No forward outcomes were opened. Small rank boundary gaps weaken leader-set stability inference. Alternative explanations: common market shock, overlapping indices, member composition and short-term return dispersion. D16 date-level, OOS, cost, redundancy and regime gates remain pending. D09-06 stays L3/60. Next: genuinely new official 34-index dates and D16 method before outcome access. Formal Core unchanged.
