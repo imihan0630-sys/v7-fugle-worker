@@ -3471,3 +3471,12 @@ BUILD next: deliver/accept the already active CORR-012/013 and data-readiness pr
 - Exact PR head `20d7600f3c9e4a3dadb335abcfd62223d7c2d87b`: System2 Research CI `37882891186` PASS and V8 Regression `37882891207` PASS. Tests cover wrong versions/dates, tampered hash, future timestamps, factor duplication, missing required families and unknown continuity.
 - `D06` remains **PARTIAL**, `D07` incomplete and `15-gate passed=0/15`. To continue: independently PIT-verify complete A1/TWSE+TPEx and entry reward/risk, preregister non-optimized testable assessor policy, wire existing daily orchestrator to exact contemporaneous evidence and conduct independent OOS/Shadow. `A07` remains REMEDIATION_LANE owned, `B10/B11` DATA_LANE; no cross-lane writes or quota use.
 - No System1 Formal Core, Worker/Cron production changes, live funds/orders/push, paid plan, physical D1/R2 reads or writes.
+
+
+## 2026-10-09 BUILD_LANE — 15-gate D07 dual-market universe preflight V0.1 merged (partial)
+
+- PR [#962](https://github.com/imihan0630-sys/v7-fugle-worker/pull/962) merged main `bc37b3881a4614c82a2ef58ebdbbd8eb3e35a762`: `system2/runtime/d07_dual_market_universe_preflight_v0_1.mjs` plus adversarial tests and `SYSTEM2_D07_DUAL_MARKET_UNIVERSE_PREFLIGHT_V0_1.md`.
+- Recomputed canonical A1 batch/source-session SHA and per-stock raw-field SHA; verified per-source PIT/date/identity and deterministic dual-market ordinary equity denominator. Research fixture's lowered minimum may NEVER bypass baseline TWSE 600 / TPEx 450 ordinary-symbol protections. A green fixture still returns `READY_FOR_INDEPENDENT_PHYSICAL_PIT_REVALIDATION`, never physicalPITVerified or fullUniverseCertified; minimum counts are not a physically authenticated exact official security universe.
+- Exact PR head `74eaaaf120bcb29d7e71e8a8fc1758f7e9409e1f`: System2 Research CI `37883312633` PASS, V8 Regression `37883312640` PASS. Full positive 600+450 synthetic coverage plus floor-override, 449 TPEx, missing required TPEx, stale source, changed raw fields/receipt/batch negatives PASS.
+- D07 15-gate ledger remains **PARTIAL**, overall 0/15 formally passed. Real B10/B11 physical source byte/time, D1 PIT, exact exchange/lifecycle/NC-T01, D06 missing trade reward-risk and fundamentals, and D08 selected-capacity readback still blocked. No automatic daily selection or production action enabled.
+- Does not change System1 Formal Core, Worker/Cron, physical D1/R2 reads/writes, real orders/capital/push, paid plan.
