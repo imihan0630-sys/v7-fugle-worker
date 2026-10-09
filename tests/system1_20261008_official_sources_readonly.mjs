@@ -24,10 +24,11 @@ for(const market of ["TWSE","TPEx"]){
   entry.returnedKeys=Object.keys(p||{}).slice(0,22);
   entry.dateField=p?.date??p?.Date??null;
   entry.statusField=p?.stat??p?.status??null;
-  entry.possibleRowCount=Array.isArray(p?.data9)?p.data9.length:
-    Array.isArray(p?.data)?p.data.length:
-    Array.isArray(p?.tables)?p.tables.length:
-    Array.isArray(p?.aaData)?p.aaData.length:null;
+  entry.tableCount=Array.isArray(p?.tables)?p.tables.length:null;
+  entry.officialDateMatched=String(entry.dateField||"")===marketDate.replaceAll("-","");
+  entry.officialStatusOk=String(entry.statusField||"").toLowerCase()==="ok";
+  entry.officialPayloadAdmissible=entry.officialDateMatched&&entry.officialStatusOk&&
+    Number(entry.tableCount)>0;
  }catch(e){
   const msg=String(e?.message||"");
   entry.errorClass=msg.includes("RETRY_EXHAUSTED")?"RETRY_EXHAUSTED":
@@ -37,6 +38,8 @@ for(const market of ["TWSE","TPEx"]){
  receipt.sources[market]=entry;
 }
 receipt.bothSourcesReachable=receipt.sources.TWSE.reachable&&receipt.sources.TPEx.reachable;
+receipt.bothOfficialSourceResponsesAdmissible=receipt.sources.TWSE.officialPayloadAdmissible===true&&
+  receipt.sources.TPEx.officialPayloadAdmissible===true;
 await mkdir("artifacts",{recursive:true});
 await writeFile("artifacts/system1-official-source-20261008-readonly.json",JSON.stringify(receipt,null,2)+"\n");
 console.log("SYSTEM1_OFFICIAL_20261008_SOURCE_READONLY="+JSON.stringify(receipt));
