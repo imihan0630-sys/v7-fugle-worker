@@ -198,7 +198,8 @@ async function queryAccountUsage({ accountId, token, quotaDay, fetchImpl = globa
 async function loadQuotaLedger(db, quotaDay) {
   const { start, end } = quotaDayBounds(quotaDay);
   const rows = await db.rawQuery(
-    `SELECT check_id, check_type, observed_payload_json, check_timestamp
+    `SELECT check_id, check_type, expected_payload_json, observed_payload_json,
+            status, check_hash, check_timestamp
        FROM s2_infrastructure_checks
       WHERE check_timestamp >= ? AND check_timestamp <= ?
         AND check_type IN (
@@ -208,7 +209,56 @@ async function loadQuotaLedger(db, quotaDay) {
       ORDER BY check_timestamp`,
     [start, end],
   );
-  return summarizeD1QuotaLedgerRowsV0_1(rows, { quotaDay });
+
+  const summary = summarizeD1QuotaLedgerRowsV0_1(rows, {
+    quotaDay,
+    requireReceiptIdentity: true,
+  });
+  if (summary.integrityState !== "VALID") return summary;
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    const payload = JSON.parse(row.observed_payload_json);
+    const identityHash = sha256({
+      checkId: row.check_id,
+      checkType: row.check_type,
+      expectedPayloadJson: row.expected_payload_json,
+      observedPayloadJson: row.observed_payload_json,
+      status: row.status,
+    });
+    const legacyPayloadHash = sha256(payload);
+    const timestampDay = new Date(row.check_timestamp).toISOString().slice(0, 10);
+    if (timestampDay !== quotaDay) {
+      return Object.freeze({
+        ...summary,
+        integrityState: "INVALID",
+        integrityErrors: Object.freeze([Object.freeze({
+          code: "LEDGER_CHECK_TIMESTAMP_WRONG_UTC_DAY",
+          rowIndex: index,
+          detail: timestampDay,
+        })]),
+        outstandingReservedRowsWritten: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
+        outstandingReservedRowsRead: D1_FREE_LIMITS.rowsReadPerUtcDay,
+        conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
+      });
+    }
+    if (row.check_hash !== identityHash && row.check_hash !== legacyPayloadHash) {
+      return Object.freeze({
+        ...summary,
+        integrityState: "INVALID",
+        integrityErrors: Object.freeze([Object.freeze({
+          code: "LEDGER_CHECK_HASH_MISMATCH",
+          rowIndex: index,
+          detail: row.check_id,
+        })]),
+        outstandingReservedRowsWritten: D1_FREE_LIMITS.rowsWrittenPerUtcDay,
+        outstandingReservedRowsRead: D1_FREE_LIMITS.rowsReadPerUtcDay,
+        conservativeBlockPolicy: "SATURATE_ACCOUNT_HARD_LIMIT_ON_LEDGER_INTEGRITY_FAILURE",
+      });
+    }
+  }
+
+  return summary;
 }
 
 function ledgerExpectedPayloadJson() {
@@ -472,6 +522,7 @@ async function main() {
     eventName,
     accountUsage,
     system1ReservePolicy,
+    ledgerIntegrityState: ledger.integrityState,
     outstandingReservedRowsWritten: ledger.outstandingReservedRowsWritten,
     outstandingReservedRowsRead: ledger.outstandingReservedRowsRead,
     protectedDailyShadowReserveRows: integerEnv("SYSTEM2_D1_DAILY_SHADOW_RESERVE_ROWS", 13130),
