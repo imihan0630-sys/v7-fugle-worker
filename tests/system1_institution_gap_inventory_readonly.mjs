@@ -10,12 +10,18 @@ if([401,403].includes(response.status))throw new Error("NORMAL_ADMIN_AUTH_REJECT
 if(!response.ok)throw new Error("INSTITUTION_STATUS_HTTP_"+response.status);
 const body=await response.json();
 const plan=planMissingInstitutionDates(body,date);
+const expectedDates=new Set([...(body.validDates||[]),...(body.missingDates||[])]);
+const physicalSnapshots=Array.isArray(body.snapshotCounts)?
+  body.snapshotCounts.filter(row=>expectedDates.has(String(row?.date||"")))
+  .map(row=>({date:String(row.date),complete:row.complete===true,
+    stockCount:Number(row.stockCount||0)})):[];
 const output={
  schemaVersion:"SYSTEM1_EXACT_INSTITUTION_GAPS_READONLY_V0_1",
  observedAt:new Date().toISOString(),marketDate:date,
- httpStatus:response.status,ready:body.ready===true,historicalReadback:body.historicalReadback===true,
+ httpStatus:response.status,ready:body.ready===true,physicalReadbackVerified:plan.alreadyReady===true,
  validTradingDates:[...body.validDates],missingTradingDates:[...body.missingDates],
  plannedRepairDates:plan.repairDates,
+ physicalSnapshots,completeKnownPhysicalCount:physicalSnapshots.filter(x=>x.complete&&x.stockCount>0).length,
  mustNotReimportValidDates:true,noWorkerPost:true,noD1Write:true,noPlanChanges:true,noSelection:true,noPush:true,
  proofScope:"DATE_INVENTORY_ONLY_NOT_PRODUCTION_RECOVERY_ACCEPTANCE"
 };
