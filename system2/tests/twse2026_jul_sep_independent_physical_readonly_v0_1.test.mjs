@@ -8,24 +8,33 @@ const key=m=>"S2-HIST-SEGMENT-MONTH|TWSE|2026|"+String(m).padStart(2,"0");
 function fixture({missing=null,missingCheckpoint=null,hashMismatch=null,writeCount=0,
   receiptsWithWrongMarket=false,monthsWithCorruptFullByte=null}={}){
   const queries=[],verified=[];
-  const db={database:{name:"system2-research"},metrics:{rowsWritten:writeCount,rowsRead:0,requestCount:0},
+  const db={
+    database:{name:"system2-research"},
+    metrics:{rowsWritten:writeCount,rowsRead:0,requestCount:0},
     prepare(sql){
       queries.push(sql);
       assert.match(sql,/^\s*SELECT\b/);
-      return {bind(id){const m=Number(id.slice(-2));return {async first(){
-        if(sql.includes("s2_historical_segment_ingest_receipts")){
-          if(m===missing)return null;
-          return {batch_id:key(m),receipt_id:"S2HSR-"+hash(m),
-            market:receiptsWithWrongMarket&&m===8?"TPEX":"TWSE",year:2026,month:m,
-            state:"COMPLETE",pack_count:310,bar_count:22000,
-            manifest_rolling_hash:hash(m),completed_at:"2026-10-09T02:00:00Z"};
-        }
-        if(m===missingCheckpoint)return null;
-        return {state:"COMPLETE",rolling_hash:m===hashMismatch?hash(4):hash(m),
-          expected_pack_count:310,expected_bar_count:22000,
-          object_ready_count:310,manifest_committed_count:310,next_pack_index:310};
-      }}};
-    }},
+      return {
+        bind(id){
+          const m=Number(id.slice(-2));
+          return {
+            async first(){
+              if(sql.includes("s2_historical_segment_ingest_receipts")){
+                if(m===missing)return null;
+                return {batch_id:key(m),receipt_id:"S2HSR-"+hash(m),
+                  market:receiptsWithWrongMarket&&m===8?"TPEX":"TWSE",year:2026,month:m,
+                  state:"COMPLETE",pack_count:310,bar_count:22000,
+                  manifest_rolling_hash:hash(m),completed_at:"2026-10-09T02:00:00Z"};
+              }
+              if(m===missingCheckpoint)return null;
+              return {state:"COMPLETE",rolling_hash:m===hashMismatch?hash(4):hash(m),
+                expected_pack_count:310,expected_bar_count:22000,
+                object_ready_count:310,manifest_committed_count:310,next_pack_index:310};
+            },
+          };
+        },
+      };
+    },
   };
   const store={backend:"CLOUDFLARE_R2_S3",bucketName:"system2-historical-research",
     head:async()=>null,get:async()=>null};
