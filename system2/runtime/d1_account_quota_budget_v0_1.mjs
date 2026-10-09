@@ -733,6 +733,7 @@ export function summarizeD1QuotaLedgerRowsV0_1(
     const belongsToRequestedDay = !quotaDay || payload.quotaDay === quotaDay;
     if (!belongsToRequestedDay) {
       if (type === "SYSTEM2_D1_ACCOUNT_BUDGET_RESULT_V0_1") continue;
+      if (!requireReceiptIdentity) continue;
       return invalid("LEDGER_RESERVATION_WRONG_QUOTA_DAY", rowIndex, payload.quotaDay);
     }
 
