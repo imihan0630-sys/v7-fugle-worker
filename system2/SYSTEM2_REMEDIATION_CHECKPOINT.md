@@ -1,6 +1,6 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-09 21:15 Asia/Taipei
+Updated: 2026-10-09 21:27 Asia/Taipei
 Status: ACTIVE / REMEDIATION_LANE / PHYSICAL_EVIDENCE_COORDINATION / CORR003_HIGH_VERIFYING_AUDIT_OWNED
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -246,3 +246,17 @@ DATA_LANE source-only Oct08 = 12/12 market/date receipts / 11,843 source keys, b
 No new Cloudflare D1 SQL, Worker deployment, System1 Formal Core, production business logic, signals, capital, push, paid plan or secret mutation was performed by this intake. GitHub CI success attests only to the inventory guard and repository preservation, never the physical closeout.
 
 **Exact next REMEDIATION action:** consume System1's independently sourced day-level D1 evidence and genuine next-session post-market business receipts. If absent, maintain 0/5 physical accepted and no System2 physical write grant.
+
+## 2026-10-09 21:27 Asia/Taipei — producer-lane evidence issue routing
+
+Follow-up to readback-confirmed merged PR #1023 (`56894e604f82ee1a6652b57144c43b5681fa935e`). Canonical frozen evidence is `system2/evidence/S2_CORR003_P01_P05_PHYSICAL_EVIDENCE_GAP_INVENTORY_20261009_V0_1.json` (15/38 supporting observations, 0/5 independently qualified physical gates).
+
+**System 1 producer issue:** [#1024](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024) — assigned by **Lane description**, not GitHub username; `System 1｜建置總控室` supplies genuine read-only P01 write reserve, P02 read reserve and P04 23:35/conditional 23:55 normal persistence source evidence. Exact proof fields: UTC/Taipei clock, genuine run/job/immutable SHA, whole-day vs per-execution D1 rowsWritten/rowsRead, failure/retry/amplification, authenticated business plan/cron result, lease de-duplication, confirmed no shared-account collision. Existing n=2 healthy dates cannot authorize either reserve.
+
+**DATA producer issue:** [#1026](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1026) — `System 2｜歷史資料工程室` owns P03 registered multiwriter grant/result receipt evidence **only after qualified quota approval**, and P05 budget-qualified Oct08 36-key then 11,843-key Hot D1 read-only census. Source-only 12/12 and 11,843 source keys remain NOT Hot D1 readback; physical missing-key count UNKNOWN.
+
+These GitHub issues are **durable cross-room handoff requests, not automatic activation of other ChatGPT rooms**, not owner approvals, and not independently accepted evidence. Do not infer that a producer has executed work merely because an issue exists.
+
+**REMEDIATION_LANE next action:** consume new original run/job/artifact receipts from #1024/#1026 if their owner lanes produce them; reconcile the immutable evidence gap matrix without changing its historical provenance or audit-owned Correction Queue. If no genuine data, remain 0/5 physical qualified; do not dispatch D1 probes and do not set `VERIFIED_CLOSED`.
+
+**AUDIT_LANE final receiving room:** `System 2｜獨立稽核顧問室` independently decides acceptance against the original 19 CORR-003 criteria; `S2-CORR-20261007-003` remains HIGH / VERIFYING.
