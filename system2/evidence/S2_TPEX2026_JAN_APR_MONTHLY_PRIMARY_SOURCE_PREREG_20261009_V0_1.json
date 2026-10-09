@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "S2_TPEX2026_JAN_APR_PRIMARY_SOURCE_PREREG_V0_1",
+  "lane": "DATA_LANE",
+  "class": "A_SOURCE_ONLY",
+  "state": "CODE_PENDING_CI_AND_REAL_SOURCE_PROBE",
+  "months": [
+    {
+      "month": 1,
+      "expectedProxyDates": 21
+    },
+    {
+      "month": 2,
+      "expectedProxyDates": 12
+    },
+    {
+      "month": 3,
+      "expectedProxyDates": 22
+    },
+    {
+      "month": 4,
+      "expectedProxyDates": 20
+    }
+  ],
+  "expectedTotalProxyDates": 75,
+  "preexistingMaySepPhysicalSourceAcceptedDates": 104,
+  "conditionalJanSepTotal": 179,
+  "frozenOriginalSamples": "system2/evidence/S2_TPEX2026_NINE_MONTH_18_SAMPLE_CANONICAL_SOURCE_REAL_ACCEPTANCE_20261009_V0_1.json",
+  "immutableValidation": "TWSE date-set SHA256 + prior first/last stock counts and normalized OHLCV SHA256 + official TPEx PRIMARY date ID and RAW stock uniqueness",
+  "legacyTpexFallbackAuthorized": false,
+  "maxParallelExternalOfficialSourceCalls": 2,
+  "cloudflareD1Reads": 0,
+  "cloudflareD1Writes": 0,
+  "cloudflareR2Calls": 0,
+  "tpexIndependentCalendarCertified": false,
+  "physicalStorageCertified": false,
+  "originalPITCertified": false,
+  "liveTradingAuthorized": false,
+  "acceptanceRule": "each real 2026 monthly source job must independently complete success; do not promote full month based on only prereg or test"
+}
