@@ -614,6 +614,7 @@ export function verifyD1QuotaLedgerReceiptIdentityV0_1(existing, intended) {
   const fields = [
     ["check_id", "checkId"],
     ["check_type", "checkType"],
+    ["expected_payload_json", "expectedPayloadJson"],
     ["observed_payload_json", "observedPayloadJson"],
     ["status", "status"],
     ["check_hash", "checkHash"],
