@@ -1,0 +1,51 @@
+name: System2 TPEx2026 Nine-Month Canonical Source Readonly
+
+# Data Lane Class A public-source-only sample. Zero Cloudflare APIs/credentials.
+# 9 months x first+last TWSE-calendar dates, TPEx primary canonical dailyQuotes only.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-tpex2026-canonical-source-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-tpex2026-canonical-source-readonly
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify public-source sample and fail-closed data contract
+        run: |
+          node system2/tests/tpex2026_monthly_canonical_source_probe_v0_1.test.mjs
+          node --check system2/runtime/tpex2026_monthly_canonical_source_probe_v0_1.mjs
+          node --check system2/scripts/probe_tpex2026_canonical_source_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Probe nine months of official TPEx canonical dailyQuotes with no Cloudflare access
+        env:
+          S2_TPEX2026_CANONICAL_PROBE_OUTPUT: /tmp/s2-tpex2026-canonical-source-probe.json
+        run: node system2/scripts/probe_tpex2026_canonical_source_readonly_v0_1.mjs
+      - name: Preserve public-source PASS or BLOCKED artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-tpex2026-canonical-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-tpex2026-canonical-source-probe.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: System1 Formal and runtime isolation
+        if: always()
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production isolation PASS"

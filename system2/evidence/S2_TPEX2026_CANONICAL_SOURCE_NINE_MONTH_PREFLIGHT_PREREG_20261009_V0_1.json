@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "S2_TPEX2026_OFFICIAL_CANONICAL_MONTHLY_SOURCE_PREFLIGHT_PREREG_V0_1",
+  "researchLane": "DATA_LANE",
+  "class": "A",
+  "status": "CODE_CANDIDATE_UNEXECUTED",
+  "date": "2026-10-09",
+  "timezone": "Asia/Taipei",
+  "goal": "Verify current-year TPEx primary-only official dailyQuotes historical-date content and strict month/date identity, without touching Cloudflare",
+  "scope": {
+    "market": "TPEX",
+    "year": 2026,
+    "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "sampling": "first_and_last_trading_date_in_each_TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL_proxy",
+    "sampleCount": 18,
+    "monthlyCalendarQueries": 9,
+    "fullHistoryIngest": false
+  },
+  "expectedPass": "PASS_9_MONTHS_18_CANONICAL_TPEX_SOURCE_SAMPLES_NOT_FULL_RANGE",
+  "reasonsNotToClaimFullBackfill": [
+    "18 sampled dates do not prove all trading dates",
+    "TWSE market official FMTQIK session list is only a proxy for TPEx independent exchange calendar",
+    "Contemporaneous historic release publication times and PIT firstKnownAt cannot be backdated from October source fetch",
+    "Corporate-action suspensions/cancellations and NO_EVENT not proven",
+    "No D1 receipts, R2 bytes, complete history or replay are touched"
+  ],
+  "canonicalSource": "A1_TPEX_DAILY_QUOTES_HISTORICAL",
+  "forbiddenCanonicalFallback": "legacy otc_quotes_no1430 不含定價 is definitionally different and not substitute for dailyQuotes canonical volume/trade value/transactions",
+  "strictChecks": [
+    "Nine exact completed calendar months of 2026 (Jan-Sep)",
+    "TWSE FMTQIK monthly official date response must match month, sorted unique Gregorian dates",
+    "Two sampled dates for each month: first and last",
+    "TPEx canonical dailyQuotes payload exact source date and accepted date-evidence basis",
+    "Primary transport only",
+    "At least 300 ordinary four-digit stocks each sampled day",
+    "Normalized RAW rows identity, no duplicate symbols",
+    "Post-facto source capture has no trading authorization"
+  ],
+  "files": [
+    "system2/runtime/tpex2026_monthly_canonical_source_probe_v0_1.mjs",
+    "system2/scripts/probe_tpex2026_canonical_source_readonly_v0_1.mjs",
+    "system2/tests/tpex2026_monthly_canonical_source_probe_v0_1.test.mjs",
+    ".github/workflows/system2-tpex2026-canonical-source-readonly.yml"
+  ],
+  "launchPolicy": "No Cloudflare secrets nor runtime; once on merge of workflow file to main for a single bounded official-source read-only smoke, plus manual optional fallback; no recurring schedule",
+  "costPolicy": {
+    "cloudflareD1ReadRequests": 0,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Calls": 0,
+    "paidUpgrade": false
+  },
+  "existingBackfillStatus": "TWSE Jan-Sep storage producer and Artifact integrity PASS in evidence S2_TWSE2026_JUL_SEP_ORIGINAL_AND_ARTIFACT_PHYSICAL_PASS_20261009_V0_1.json; TPEX 2026 storage not accepted",
+  "nextGates": [
+    "Review real source smoke Artifact; if BLOCKED diagnose source transport/data integrity without legacy substitution",
+    "REMEDIATION_LANE clears account-wide quota and single-writer coordination before any TPEX D1/R2 backfill",
+    "Only then use existing receipt-aware segmented monthly TPEX backfill with immutable proof; later independent storage byte and PIT/continuity checks"
+  ],
+  "system1FormalChanged": false,
+  "liveSystem2Changed": false
+}
