@@ -1,6 +1,8 @@
 // DATA_LANE / Class A: offline-only prerequisite for physical OCT08 D1 SELECT.
 // Never substitute manual booleans or a cached GraphQL lower-bound for verified account headroom.
 import assert from "node:assert/strict";
+import {verifyIssue1026P05PriorPhysicalScoutV0_1}
+ from "./issue1026_p05_prior_scout_physical_gate_v0_1.mjs";
 
 const MODES=Object.freeze({
  SAMPLE_36:Object.freeze({workflow:".github/workflows/system2-oct08-hot-d1-source-matched-manual-readonly.yml",readCeiling:35000,writerId:"OCT08_SOURCE_MATCHED_READONLY"}),
@@ -14,10 +16,15 @@ function nonnegative(x,label,{strictlyPositive=false}={}){
 }
 export function qualifyOct08D1ReadonlyBudgetV0_1({
  mode,attestation,system1ReservePolicy,writerRegistry,now,
+ scoutAcceptance,
  noCompetingWriterConfirmed=false,
 }={}){
  assert.ok(Object.hasOwn(MODES,mode),"unknown exact D1 read-only census profile");
  const profile=MODES[mode];
+ // Acceptance sequencing is an independent hard gate: even a hypothetical
+ // fully funded account must NEVER bypass the 36-key physical Scout.
+ const scoutProof=mode==="FULL_11843"?
+  verifyIssue1026P05PriorPhysicalScoutV0_1({scoutAcceptance,now}):null;
  assert.equal(noCompetingWriterConfirmed,true,"independent no-competing-writer acknowledgment required");
  assert.equal(attestation?.schemaVersion,"S2_OCT08_READONLY_ACCOUNT_BUDGET_ATTESTATION_V0_1");
  assert.equal(attestation?.directiveId,"S2-CORR-20261007-003");
@@ -85,6 +92,8 @@ export function qualifyOct08D1ReadonlyBudgetV0_1({
   quotaDay:day,mode,readCeiling:profile.readCeiling,
   conservativeProjectedRowsRead:budgeted,accountHardLimit:HARD_LIMIT,
   actualD1QueriesExecutedByPreflight:0,d1RowsWrittenByPreflight:0,
+  previouslyAcceptedScoutRunId:scoutProof?.sourceRunId??null,
+  previousScoutRowsReadObserved:scoutProof?.rowsReadObserved??null,
   physicalD1WriteAuthorized:false,originalHistoricalPITProven:false,
  });
 }
