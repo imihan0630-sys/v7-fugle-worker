@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "S2_ISSUE1026_P03_P05_SAFE_METADATA_ONLY_FIRST_RUN_NEGATIVE_20261009_V0_1",
+  "issue": 1026,
+  "directiveId": "S2-CORR-20261007-003",
+  "lane": "DATA_LANE",
+  "classification": "NON_AUTHORIZING_FAIL_CLOSED_NEGATIVE_PHYSICAL_WORKFLOW_OBSERVATION",
+  "run": {
+    "id": 37941333665,
+    "jobId": 113856179628,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37941333665",
+    "mainHead": "5b91e83fe200389e3538e3c24f87fa6333ff170c",
+    "conclusion": "failure",
+    "artifactId": 11621398605,
+    "artifactDigest": "sha256:0a3c4638e9cedae6d93fceac18b39e1e2bfbd87bd5dc56c53cca851fd7cc086a"
+  },
+  "realExecution": {
+    "offlinePureAdversarialTests": "PASS",
+    "offlineCLIStep": "FAIL_EXIT_1",
+    "rootCause": "CLI system2/scripts module relative path incorrectly prepended ../ to already repo-root system2/evidence paths; attempted system2/system2/evidence, file not found",
+    "accountGraphQlStep": "SKIPPED",
+    "physicalD1SQLReads": 0,
+    "physicalD1SQLWrites": 0,
+    "cloudflareR2Calls": 0,
+    "quotaGranted": false,
+    "scoutExecuted": 0,
+    "censusExecuted": 0,
+    "physicalMissingKeys": "UNKNOWN"
+  },
+  "repair": {
+    "path": "system2/scripts/assess_issue1026_p03_p05_safe_evidence_v0_1.mjs",
+    "change": "Resolve repo-root evidence path from scripts via ../../ rather than ../",
+    "test": "Integration spawn real CLI as child process and check emitted fail-closed report; retains adversarial fixture tests",
+    "workflow": "Path-scoped rerun on workflow/script/test change, one metadata-only GraphQL query after offline PASS"
+  },
+  "acceptance": "NEGATIVE_SAFE_DEFER_DOES_NOT_ADVANCE_P03_P05"
+}
