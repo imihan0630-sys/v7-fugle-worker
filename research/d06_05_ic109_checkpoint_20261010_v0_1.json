@@ -1,1 +1,22 @@
-{"module":"D06-05","status":"IC109_NAME_SOURCE_CHECK","nameRows":36,"finalSupport":"UNKNOWN","formalCore":"LOCKED"}
+{
+  "module": "D06-05",
+  "status": "IC109_BILINGUAL_NAME_RECOVERY_RESEARCH_ONLY",
+  "artifact": "research/d06_05_ic109_historical_name_map_20261010_v0_1.json",
+  "sourcePair": [
+    "TWSE English delisting list",
+    "TWSE Chinese delisting list"
+  ],
+  "joinKey": "delisting date + code",
+  "englishMissing": 36,
+  "matchedChineseNames": 36,
+  "verifiedHistoricalIdentityOnly": true,
+  "dated20260924": "UNKNOWN",
+  "dated20261002": "UNKNOWN",
+  "tpexIntervalCompleteness": "UNKNOWN",
+  "finalCertified": "UNKNOWN",
+  "level": "L3",
+  "maturityPct": 60,
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED",
+  "next": "Use exact-dated identity registry for 2778; certify 6423/6806 first; TPEx delisting/change-of-identity complete interval; freeze final cohort before preregistered OOS/Shadow."
+}
