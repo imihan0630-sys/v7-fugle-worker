@@ -24,11 +24,12 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - createdAt: 2026-10-04T15:13:33+08:00
 - severity: HIGH
 - status: FIX_IN_PROGRESS
+- latest verified scope (00 audit 2026-10-09 11:39): 2017–2025 TWSE+TPEx raw annual physical 18/18 PASS; 2024 TPEx and 2025 both exchanges already accepted. Remaining 2026 segmented/PIT/continuity/aggregate qualification; 10/01–10/08 dual-market official 12/12 source-only, D1 hot presence unverified. Original run #28–#30 failures below are historical evidence, not current blockers. Preserve status FIX_IN_PROGRESS.
 - routingClass: DATA_LANE
 - assignedLane: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
 - modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
-- blockedBy: Current 2024 TPEx physical retry is blocked until the Cloudflare D1 free-tier daily row-write quota resets at 2026-10-08 08:00 Asia/Taipei. Timeout hardening is repository-ready, but run #30 never reached backfill. No paid upgrade is authorized.
+- blockedBy: 2017–2025 annual TWSE/TPEx raw-market-year data coverage was physically accepted 18/18, including 2024 TPEx run #31, 2025 TWSE #32 and 2025 TPEx #33. Remaining scope is 2026 segmented TWSE/TPEx storage, historical/PIT/continuity and aggregate replay qualification; 2026-10-08 current-session hot D1 source-to-storage completeness remains unverified. S2-CORR-20261007-003 D1 account-wide write/read quota coordination is an active separate blocker. Do not repeat old 2024 TPEx quota/date failure as current.
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
