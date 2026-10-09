@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+
+const load=p=>JSON.parse(readFileSync(new URL(p,import.meta.url),"utf8"));
+const map=load("../evidence/S2_CORR003_ORIGINAL19_ACCEPTANCE_PROVENANCE_MAP_20261009_V0_1.json");
+const queue=load("../SYSTEM2_CORRECTION_QUEUE.json");
+const original=queue.directives.find(x=>x.directiveId==="S2-CORR-20261007-003");
+const policy=load("../evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json");
+const physical=load("../evidence/S2_CORR003_INDEPENDENT_PHYSICAL_CLOSURE_GATE_20261009_V0_1.json");
+
+assert.equal(original.severity,"HIGH");
+assert.equal(original.status,"VERIFYING");
+assert.equal(map.classification,"READ_ONLY_TRACEABILITY_MAP_NOT_AN_AUDIT_ACCEPTANCE_CERTIFICATE");
+assert.equal(map.queueOwner,"AUDIT_LANE");
+assert.equal(map.originalCriteriaCount,original.acceptanceCriteria.length);
+assert.equal(map.originalCriteriaCount,19);
+assert.equal(map.criteriaMappedCount,19);
+assert.equal(map.criteria.length,19);
+for(let i=0;i<19;i++){
+  const row=map.criteria[i];
+  assert.equal(row.criterionNumber,i+1);
+  assert.equal(row.exactCanonicalCriterion,original.acceptanceCriteria[i]);
+  assert.equal(row.sourceLevelReverify,"A1_A7_INDEPENDENT_PASS_REF_PR_1017");
+  assert.equal(row.physicalClosureStatus,"NOT_ACCEPTED_BY_AUDIT_LANE");
+  assert.ok(row.trackedGates.length>=1);
+  assert.ok(row.trackedGates.every(g=>["P01","P02","P03","P04","P05"].includes(g)));
+}
+assert.equal(map.sourceOnlyCriteriaCount,15);
+assert.equal(map.realPhysicalProofPendingCriteriaCount,3);
+assert.equal(map.historicalPhysicalNegativeCriteriaCount,1);
+assert.deepEqual(map.criteria.filter(c=>c.evidenceClass==="REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE").map(x=>x.criterionNumber),[10,14,15]);
+assert.deepEqual(map.criteria.filter(c=>c.evidenceClass.startsWith("HISTORICAL_")).map(x=>x.criterionNumber),[16]);
+assert.ok(map.criteria[15].remaining.includes("NO_COLLISION_NOT_YET_OBSERVED"));
+assert.equal(map.independentPhysicalGatePassCount,0);
+assert.equal(map.independentPhysicalGateTotal,5);
+assert.equal(physical.prerequisiteGates.length,5);
+assert.ok(physical.prerequisiteGates.every(x=>x.evidenceQualified===false));
+assert.equal(policy.reserveNumberAuthorized,false);
+assert.equal(policy.authorizedReserveRows,null);
+assert.equal(policy.readReserveNumberAuthorized,false);
+assert.equal(policy.authorizedReadReserveRows,null);
+assert.equal(map.hardConstraints.system1WriteReserveAuthorized,false);
+assert.equal(map.hardConstraints.system1ReadReserveAuthorized,false);
+assert.equal(map.hardConstraints.system1WriteReserve,null);
+assert.equal(map.hardConstraints.system1ReadReserve,null);
+assert.equal(map.hardConstraints.noPhysicalD1SQLForThisMap,true);
+assert.equal(map.realSourceReceipts.historicalFailedAccountDay.accountWrites,126498);
+assert.equal(map.realSourceReceipts.historicalFailedAccountDay.accountReads,4374959);
+assert.equal(map.realSourceReceipts.historicalFailedAccountDay.businessPersistence,"FAILED_D1_QUOTA");
+assert.equal(map.extraDataLanePhysicalReadback.officialSourceKeys,11843);
+assert.equal(map.extraDataLanePhysicalReadback.hotD1ScoutRead,0);
+assert.equal(map.extraDataLanePhysicalReadback.hotD1FullCensusRead,0);
+assert.equal(map.extraDataLanePhysicalReadback.missingKeys,"UNKNOWN");
+assert.deepEqual(map.canonicalProducerIssues.map(x=>x.number),[1024,1026]);
+console.log("CORR003_ORIGINAL19_PROVENANCE_PASS exact=19 source=15 laterPhysicalMissing=3 historicalNegative=1 physicalGates=0/5");
