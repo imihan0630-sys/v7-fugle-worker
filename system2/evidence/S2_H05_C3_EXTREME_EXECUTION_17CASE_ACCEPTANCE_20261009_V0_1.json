@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "S2_H05_C3_EXTREME_DAILY_EXECUTION_ADVERSARIAL_EVIDENCE_V0_1",
+  "recordedDate": "2026-10-09",
+  "scope": "SYSTEM2_SHADOW_OFFLINE_BUILD_ONLY",
+  "gate": "H05",
+  "acceptedSubcheck": "H05-C3",
+  "baselineQuantified": {
+    "passed": 21,
+    "total": 75
+  },
+  "afterQuantified": {
+    "passed": 22,
+    "total": 75,
+    "remaining": 53,
+    "progressPercent": 29.3
+  },
+  "completeOfficialLaunchGates": 0,
+  "mergedPR": 973,
+  "mergedCommit": "0c1e5c964c9d907ecbdcb7b277120ec63dde5a75",
+  "ci": {
+    "system2ResearchRun": 37890214312,
+    "conclusion": "success",
+    "v8RegressionRun": 37890214343
+  },
+  "testFile": "system2/tests/h05_extreme_execution_adversarial_matrix_v0_1.test.mjs",
+  "documentFile": "system2/SYSTEM2_H05_EXECUTION_EXTREME_ADVERSARIAL_ACCEPTANCE_V0_1.md",
+  "actualTestOutput": {
+    "cases": 17,
+    "ambiguous": 3,
+    "blockedByLimitOrHalt": 4,
+    "gapRisk": 2,
+    "syntheticNoFillNotCertified": true,
+    "limitsAndSlippage": 4,
+    "corporateActionUnknown": true,
+    "futureDataBlocked": true,
+    "realPITProven": false,
+    "actualTrades": 0,
+    "cloudflareOperations": 0
+  },
+  "covered": [
+    "entry day single bar stop/target ambiguous",
+    "subsequent daily OHLC stop/target sequencing ambiguous",
+    "same-day entry and stop ambiguous",
+    "stop gap uses opening price, not ideal stop",
+    "target gap uses opening price but not certified return",
+    "locked limit-up BUY entry not executable",
+    "halted entry blocked",
+    "locked limit-down SELL exit blocked",
+    "suspended SELL exit blocked",
+    "missing OHLC unknown entry window",
+    "synthetic NO_FILL not independently certified",
+    "buy slippage official limit up clamp",
+    "sell slippage official limit down clamp and tax",
+    "unknown corporate action blocks simulated fill",
+    "invalid high above official upper limit rejected",
+    "invalid low below official lower limit rejected",
+    "future availableAt after simulatedAt rejected"
+  ],
+  "stillOpen": [
+    "H05-C2 official full TWSE/TPEx calendar, halt, no-event and PIT physical evidence",
+    "H05-C4 selected-to-triggered-to-profitable denominators independently audited",
+    "H05-C5 independent AUDIT_LANE verification and formal CORR-013 closure",
+    "A07 whole-account D1 quota coordination and B10/B11 actual source qualification"
+  ],
+  "authorizations": {
+    "shadowLive": false,
+    "liveSelection": false,
+    "realBrokerOrders": false,
+    "capitalImpact": false,
+    "productionWorker": false,
+    "system1FormalCore": false,
+    "cloudflareD1ReadWrite": false,
+    "paidTier": false
+  },
+  "qualification": "Synthetic deterministic CI pass only; no physical fills or official market PIT proven"
+}
