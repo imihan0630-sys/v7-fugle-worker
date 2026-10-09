@@ -1,0 +1,49 @@
+name: Research D16 Text Pipeline L3 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d16_22_taiwan_material_disclosure_corpus_20261009_v0_1.json"
+      - "research/d16_22_text_pipeline_l3_v0_1.mjs"
+      - "tests/test_d16_22_text_pipeline_l3_v0_1.mjs"
+      - ".github/workflows/research-d16-text-pipeline-l3-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run D16-22 Taiwan text pipeline falsification suite
+        run: node tests/test_d16_22_text_pipeline_l3_v0_1.mjs
+      - name: Build bounded physical corpus receipt
+        env:
+          D16_22_TEXT_OUTPUT: /tmp/d16-22-text-receipt.json
+        run: |
+          set -euo pipefail
+          node research/d16_22_text_pipeline_l3_v0_1.mjs > /tmp/d16-22-text.log
+          test -s /tmp/d16-22-text-receipt.json
+          node -e 'const fs=require("fs");const x=JSON.parse(fs.readFileSync("/tmp/d16-22-text-receipt.json","utf8"));if(x.documentCount!==8||x.symbolCount!==4)process.exit(2);if(x.corpusFirstKnownAt!=="2026-10-09T04:39:10Z")process.exit(3);if(!x.deterministicReplay||x.openWorldModelUsed||x.retrievalUsed||x.outcomeAccessed||x.sentimentAlphaClaimMade||x.formalCoreChanged)process.exit(4);if(!x.documents.every(d=>d.sourceLocalOnly&&!d.externalKnowledgeUsed&&!d.retrievalUsed&&!d.llmInvoked&&!d.currentOrFutureOutcomeAccessed))process.exit(5);console.log(JSON.stringify({receiptHash:x.receiptHash,documentCount:x.documentCount,symbolCount:x.symbolCount,modelVersion:x.modelVersion,firstKnownAt:x.corpusFirstKnownAt,lexiconHash:x.lexiconHash}))'
+      - name: Confirm research-only and no-network model boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'fetch\(|axios|wrangler|deploy|CLOUDFLARE|ADMIN_TOKEN|THREEMIN|openai|anthropic|gemini|llm' research/d16_22_text_pipeline_l3_v0_1.mjs
+          grep -F 'openWorldModelUsed:false' research/d16_22_text_pipeline_l3_v0_1.mjs
+          grep -F 'formalCoreChanged:false' research/d16_22_text_pipeline_l3_v0_1.mjs
+          echo "D16-22 source-local text pipeline isolation PASS"
+      - name: Upload physical receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: d16-22-text-pipeline-l3-${{ github.sha }}
+          path: /tmp/d16-22-text-receipt.json
+          if-no-files-found: error
+          retention-days: 30
