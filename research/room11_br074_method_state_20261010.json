@@ -1,0 +1,34 @@
+{
+  "version": "0.1",
+  "parent": "BR074",
+  "owner": "ROOM11",
+  "domains": [
+    "D16",
+    "D18"
+  ],
+  "independentUnit": "TWSE_MARKET_DATE_BREADTH_ROOT",
+  "independentDateN": 3,
+  "dates": [
+    "2026-10-02",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "weights": "EQUAL_DATE",
+  "horizons": [
+    "D5",
+    "D20",
+    "D60"
+  ],
+  "outcomes": "CLOSED",
+  "inference": "POWER_INSUFFICIENT",
+  "syntheticSignFlip": {
+    "patterns": 8,
+    "oneSidedMinimumP": 0.125,
+    "twoSidedMinimumP": 0.25,
+    "assertionsPassed": 7
+  },
+  "missing": "UNKNOWN_NOT_ZERO",
+  "formalCore": "LOCKED",
+  "maturityChange": false,
+  "next": "Append genuine independent date receipts; freeze label and episode method before outcome access."
+}
