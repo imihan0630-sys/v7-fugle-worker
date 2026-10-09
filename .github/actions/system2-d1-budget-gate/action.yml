@@ -9,9 +9,13 @@ inputs:
     required: false
     default: ""
   requested_rows_read:
-    description: Conservative rowsRead reservation
+    description: Evidence-backed conservative rowsRead reservation; blank means use registry measurement or fail closed
     required: false
-    default: "0"
+    default: ""
+  execution_outcome:
+    description: Final workflow/job outcome for result reconciliation
+    required: false
+    default: "unknown"
   mode:
     description: reserve or result
     required: false
@@ -38,6 +42,7 @@ runs:
         SYSTEM2_D1_WRITER_ID: ${{ inputs.writer_id }}
         SYSTEM2_D1_REQUESTED_ROWS_WRITTEN: ${{ inputs.requested_rows_written }}
         SYSTEM2_D1_REQUESTED_ROWS_READ: ${{ inputs.requested_rows_read }}
+        SYSTEM2_D1_EXECUTION_OUTCOME: ${{ inputs.execution_outcome }}
         SYSTEM2_D1_GATE_MODE: ${{ inputs.mode }}
         SYSTEM2_D1_RESERVATION_RECEIPT_PATH: ${{ inputs.reservation_receipt_path }}
       run: |
