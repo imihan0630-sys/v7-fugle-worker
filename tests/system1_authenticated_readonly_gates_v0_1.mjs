@@ -48,8 +48,11 @@ export function assessReadiness(endpoints,marketDate=MARKET_DATE){
  const reasons=[];
  const s=endpoints?.scan||{},m=endpoints?.market||{},
   i=endpoints?.institution||{},q=endpoints?.quality||{};
- if(s.httpStatus!==200||s.scanDate!==marketDate)
+ const formalScanDatePresent=s.httpStatus===200&&s.scanDate===marketDate;
+ if(!formalScanDatePresent)
    reasons.push("FORMAL_SCAN_DATE_NOT_CONFIRMED");
+ else if(s.pipelineComplete!==true)
+   reasons.push("FORMAL_SCAN_PIPELINE_INCOMPLETE");
  if(m.httpStatus!==200||m.marketDate!==marketDate||m.ready!==true||
    m.twseReady!==true||m.tpexReady!==true)
    reasons.push("OFFICIAL_MARKET_READBACK_INCOMPLETE");
@@ -60,8 +63,9 @@ export function assessReadiness(endpoints,marketDate=MARKET_DATE){
  if(q.httpStatus!==200||q.marketDate!==marketDate||q.indexReady!==true||
    q.tdccReady!==true||datasets.some(k=>q.datasets?.[k]!==true))
    reasons.push("OFFICIAL_QUALITY_READBACK_INCOMPLETE");
- return {allInputReadbacksReady:!reasons.some(x=>x!=="FORMAL_SCAN_DATE_NOT_CONFIRMED"),
-  formalScanPresent:!reasons.includes("FORMAL_SCAN_DATE_NOT_CONFIRMED"),
+ return {allInputReadbacksReady:!reasons.some(x=>!x.startsWith("FORMAL_SCAN_")),
+  formalScanPresent:formalScanDatePresent,
+  formalScanComplete:formalScanDatePresent&&s.pipelineComplete===true,
   operationalRecoveryPass:false, // Cannot promote retrospective scan to prospective C1/C2.
   blockers:reasons};
 }
