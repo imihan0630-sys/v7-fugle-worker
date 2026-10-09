@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-09T16:11:00+08:00",
+  "updatedAt": "2026-10-09T16:30:28+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IN_PROGRESS",
+      "status": "FIX_IMPLEMENTED",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1280,7 +1280,19 @@
         "Merged-main readback on f3b7e30c00ae7d5407d8dd277753e32c59ce72b0 confirmed writer registry coverage, official limit constants, GraphQL account usage, QUOTA_BUDGET_DEFER fail-safe states, adaptive warmup, reservation/result receipts, schema guard, no invented System1 reserve and no paid-plan authority.",
         "Durable implementation/handoff evidence: system2/evidence/S2_CORR_20261007_003_IMPLEMENTATION_EVIDENCE_20261009_V0_1.json.",
         "Protected boundaries unchanged: no System1 Formal Core/business-logic change, no System2 strategy/ranking/final-selection authority change, no live push/capital/order authority change and no Cloudflare billing/plan mutation.",
-        "Independent adversarial audit PR #983/#984 reproduced A1-A4 (write reservation underestimate, zero/unknown read reservation near hard cap, failed-run result receipt skipped, ledger duplicate idempotency unchecked). REMEDIATION_LANE reopened exact conflict units on latest main f1511388b036b64646ce61b8ced273c10cda3b51; no protected System1/billing scope authorized."
+        "Independent adversarial audit PR #983/#984 reproduced A1-A4 (write reservation underestimate, zero/unknown read reservation near hard cap, failed-run result receipt skipped, ledger duplicate idempotency unchecked). REMEDIATION_LANE reopened exact conflict units on latest main f1511388b036b64646ce61b8ced273c10cda3b51; no protected System1/billing scope authorized.",
+        "Adversarial hardening PR #985 merged as a5977af950ed7902a4ac4d965edc18dd62ca30d2 after independent PR #983/#984 reproduced A1-A4.",
+        "A1 fixed: FIXED_MEASURED write cost is a hard lower bound; annual 7358 cannot be overridden by 0/1/7357, while equal-or-higher values remain eligible only when all other evidence-qualified reservations pass.",
+        "A2 fixed: registry V0.2 requires readReservationModel for all 16 shared writers; Daily Shadow=583256 rowsRead and Recent A1=1047112 rowsRead are measured, while unknown physical writer read costs remain READ_COST_EVIDENCE_REQUIRED and fail closed.",
+        "A2 priority protection: non-P0 work preserves the measured 583256 Daily Shadow read reserve; System1 after-market read reserve remains NOT_AUTHORIZED/null and cannot be treated as zero.",
+        "GraphQL D1 analytics are treated as account-daily lower-bound observations with no invented real-time freshness guarantee; same-day reservations never release early and max prior observed ledger usage is retained.",
+        "A3 fixed: all 13 physical writer result finalizers use always() with execution_outcome job.status; success/failure/partial/unknown result states are recorded and reservations remain non-releasing until UTC reset.",
+        "A3 regression includes partial/failure non-release, retry double-reservation safety and cross-UTC-day reset scoping.",
+        "A4 fixed: ledger duplicate check_id is idempotent only after exact check_id/type/expected payload/observed payload/status/hash readback; conflicts throw D1_QUOTA_LEDGER_IDEMPOTENCY_CONFLICT and missing readback fails closed.",
+        "Independent adversarial test file was converted from non-failing reproduction to fail-on-regression acceptance; merged-main source reports reproducedFindingCount=0 while preserving original immutable PR #983/#984 evidence.",
+        "PR #985 head 0aa9311720dbe50b9e8482855cfe43c901ee8a03: System2 Research CI 37905200346 PASS; V8 Regression 37905200365 PASS; Actual Holdings readonly 37905200501 PASS (not acceptance evidence).",
+        "Latest-main drift immediately before #985 merge was zero; merged-main readback on a5977af950ed7902a4ac4d965edc18dd62ca30d2 confirms A1-A4, 16/16 read models, 13 physical writers, System1 reserves still unauthorized/null and no paid-plan authority.",
+        "Durable A1-A4 remediation evidence: system2/evidence/S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1.json."
       ],
       "verificationEvidence": [
         "Codepath audit confirms .github/workflows/system2-recent-a1-hot-history-warmup.yml allows ordinary main push on watched warmup paths to enter the credentialed physical D1 mutation step; job guard checks only github.ref==refs/heads/main. Durable evidence: system2/evidence/S2_CORR_20261007_003_WARMUP_PUSH_MUTATION_AUDIT_20261007_V0_1.json @ 164fa2c1213e4726e01d42c34187d4cb06d76631.",
@@ -1288,10 +1300,11 @@
         "Reset-window writer-trigger audit: system2/evidence/S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_20261008_V0_1.json @ c69ad63559a5655b473b4060f04016f08e098e1d. Twelve workflows share system2-isolated-d1-writer; scheduled high-write jobs begin at 16:30/18:35 Asia/Taipei after the 08:00 quota reset, but multiple workflows can still physically mutate D1 on ordinary main push, so time-of-day alone cannot protect post-reset annual-backfill headroom.",
         "00 read-only job/step/artifact metadata verification: PVE-263 run 37649543821 / job 112888965126 / artifact 11495752402 SUCCESS and PVE-264 run 37650006684 / job 112890551584 / artifact 11495133236 SUCCESS. This confirms physical evidence collectors executed; raw analytics interpretation derives from their recorded receipts. No new quota-gate implementation or physical correction closure performed.",
         "PENDING_INDEPENDENT_AUDIT",
-        "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED."
+        "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED.",
+        "PENDING_INDEPENDENT_REVERIFY_AFTER_A1_A4"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-09T16:11:00+08:00"
+      "updatedAt": "2026-10-09T16:30:28+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",

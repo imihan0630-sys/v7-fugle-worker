@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "S2_CORR_003_A1_A4_REMEDIATION_IMPLEMENTATION_20261009_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "recordedAt": "2026-10-09T16:30:28+08:00",
+  "implementationLane": "REMEDIATION_LANE",
+  "state": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_REVERIFY",
+  "triggerEvidence": {
+    "independentPr983": {
+      "merge": "ced79512f44689b01bc792c04e468128408f4042",
+      "finding": "4/4 adversarial source-level quota gaps reproduced"
+    },
+    "independentPr984": {
+      "merge": "f1511388b036b64646ce61b8ced273c10cda3b51",
+      "evidence": "system2/evidence/S2_CORR_003_INDEPENDENT_ADVERSARIAL_CI_ACCEPTANCE_20261009_V0_1.json"
+    }
+  },
+  "implementation": {
+    "pr": 985,
+    "head": "0aa9311720dbe50b9e8482855cfe43c901ee8a03",
+    "merge": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+    "system2ResearchCi": {
+      "runId": 37905200346,
+      "conclusion": "PASS"
+    },
+    "v8Regression": {
+      "runId": 37905200365,
+      "conclusion": "PASS"
+    },
+    "incidentalActualHoldingsReadonly": {
+      "runId": 37905200501,
+      "conclusion": "PASS",
+      "acceptanceRole": "NONE"
+    },
+    "latestMainDriftBeforeMerge": {
+      "ahead": 0,
+      "changedFiles": []
+    },
+    "mergedMainReadback": true
+  },
+  "correctedFindings": {
+    "A1_FIXED_MEASURED_CALLER_UNDERESTIMATE": {
+      "priority": "P0",
+      "priorFailure": "HISTORICAL_ANNUAL_BACKFILL measured write floor 7358 could be overridden by requestedRowsWritten=1.",
+      "fix": [
+        "FIXED_MEASURED rowsWritten is now a hard verified minimum.",
+        "Caller values below the verified minimum return QUOTA_BUDGET_DEFER / WRITER_WRITE_RESERVATION_BELOW_VERIFIED_MINIMUM.",
+        "Caller may only equal or increase the verified minimum.",
+        "CALLER_REQUIRED numeric input without registry evidence/minimum is not treated as proof."
+      ],
+      "tests": [
+        "0 / 1 / 7357 rowsWritten -> DEFER",
+        "7358 / 7359 / 10000 -> eligible when all other synthetic test prerequisites are evidence-authorized",
+        "Recent A1 index-amplified measured cost remains 11576 rowsWritten/date and adaptive."
+      ],
+      "status": "SOURCE_LEVEL_FIXED"
+    },
+    "A2_ZERO_READ_RESERVATION_NEAR_HARD_LIMIT": {
+      "priority": "P0",
+      "priorFailure": "A physical writer could be granted near 5,000,000 rowsRead/day with requestedRowsRead=0.",
+      "fix": [
+        "Every registered writer now declares readReservationModel.",
+        "Unknown read cost is READ_COST_EVIDENCE_REQUIRED and cannot be represented as zero.",
+        "Daily Shadow measured read floor = 583256 rowsRead from run 37609474459.",
+        "Recent A1 measured read floor = 1047112 rowsRead from run 37550201160 / job 112563652301.",
+        "Other physical writers remain read-cost evidence blocked until a writer-specific verified floor exists.",
+        "Non-P0 work also protects Daily Shadow 583256 rowsRead headroom.",
+        "System1 after-market read reserve is explicit UNKNOWN/null and must be evidence-authorized separately.",
+        "Projected rowsRead above 5000000 returns ROWS_READ_DAILY_BUDGET_EXCEEDED before physical mutation."
+      ],
+      "tests": [
+        "Annual unknown read cost + requestedRowsRead=0/1 -> DEFER.",
+        "Daily Shadow exact 5,000,000 projected read boundary -> grant under synthetic otherwise-authorized policy.",
+        "Boundary +1 -> DEFER.",
+        "Observed read/write cost over reservation -> RESULT_RESERVATION_OVERRUN_NON_RELEASING."
+      ],
+      "status": "SOURCE_LEVEL_FIXED"
+    },
+    "A3_FAILURE_SKIP_RESULT_RECEIPT": {
+      "priority": "P1",
+      "priorFailure": "13/13 physical writer result finalizers depended on success(), so failed/partial writers could skip result evidence.",
+      "fix": [
+        "All 13 physical writer result finalizers now use always() && physical_allowed.",
+        "All 13 pass execution_outcome=${{ job.status }}.",
+        "Success/failure/partial/other terminal outcomes attempt an immutable result receipt.",
+        "Unknown after-usage is USAGE_UNKNOWN_NON_RELEASING.",
+        "Same-UTC-day reservations are NEVER_RELEASE_BEFORE_UTC_RESET even when a result receipt exists.",
+        "Retries reserve independently; uncertain prior consumption is not reclaimed.",
+        "Cross-UTC-day result identity remains tied to the original reservation quotaDay."
+      ],
+      "tests": [
+        "13/13 workflow source scan: zero success-only finalizers, 13 always-finalizers, 13 outcome bindings.",
+        "Failure result does not release rowsWritten/rowsRead reservation.",
+        "Retry attempt keeps prior reservation and adds new attempt reservation.",
+        "Previous UTC-day reservations do not consume the new UTC-day ledger."
+      ],
+      "status": "SOURCE_LEVEL_FIXED"
+    },
+    "A4_LEDGER_COLLISION_IDEMPOTENCY_UNPROVEN": {
+      "priority": "P1",
+      "priorFailure": "INSERT OR IGNORE could silently accept same check_id without proving identical immutable content.",
+      "fix": [
+        "Ledger persistence reads exact check_id before and after insert.",
+        "Idempotency requires exact check_id, check_type, expected_payload_json, observed_payload_json, status and check_hash match.",
+        "Same ID with changed payload/hash/status/type throws D1_QUOTA_LEDGER_IDEMPOTENCY_CONFLICT.",
+        "Ignored/missing insert without exact readback throws D1_QUOTA_LEDGER_RECEIPT_READBACK_MISSING.",
+        "V0.2 hash commits to check ID, type, expected payload, observed payload and status."
+      ],
+      "tests": [
+        "Exact duplicate -> SKIPPED_IDENTICAL_EXISTING_RECEIPT.",
+        "Changed hash -> conflict.",
+        "Changed observed payload -> conflict.",
+        "Changed status/type -> conflict."
+      ],
+      "status": "SOURCE_LEVEL_FIXED"
+    }
+  },
+  "graphQlAnalytics": {
+    "source": "Cloudflare D1 GraphQL d1AnalyticsAdaptiveGroups",
+    "officialDocs": [
+      "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+      "https://developers.cloudflare.com/analytics/faq/graphql-api-inconsistent-results/"
+    ],
+    "checkedAt": "2026-10-09",
+    "finding": "Official material documents D1 rowsRead/rowsWritten through GraphQL and adaptive analytics variability but does not provide this project a guaranteed real-time freshness bound.",
+    "implementationPolicy": "Treat account GraphQL daily totals as lower-bound observations. Unknown usage defers. Same-day reservations are non-releasing; max prior observed result-ledger usage is retained so analytics lag cannot manufacture lower same-day headroom.",
+    "noInventedLagSeconds": true
+  },
+  "registry": {
+    "schemaVersion": "S2_D1_ACCOUNT_WRITER_REGISTRY_V0_2",
+    "sharedWriterCount": 16,
+    "physicalWriterCount": 13,
+    "allWritersDeclareReadReservationModel": true,
+    "knownMeasuredReadModels": {
+      "DAILY_SHADOW_DIAGNOSTIC": 583256,
+      "RECENT_A1_WARMUP": 1047112
+    },
+    "otherPhysicalWriterReadState": "READ_COST_EVIDENCE_REQUIRED"
+  },
+  "system1Protection": {
+    "formalCoreChanged": false,
+    "productionBehaviorChanged": false,
+    "observedWholeV7WriteMaxRows": 2825,
+    "healthyAfterMarketDateCount": 2,
+    "writeReserveNumberAuthorized": false,
+    "authorizedWriteReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "rule": "Do not promote 2825 or any unevidenced read number into the shared account reserve."
+  },
+  "physicalTestPolicy": {
+    "largeD1MutationTestPerformed": false,
+    "reason": "A1-A4 are source/accounting correctness defects and can be falsified deterministically without consuming scarce free-tier quota.",
+    "priorPositivePhysicalEvidence": "Run 37893508023 already proved real GraphQL account usage read + safe QUOTA_BUDGET_DEFER with no history write.",
+    "remainingPhysicalAcceptance": [
+      "Evidence-qualified System1 write and read reserve.",
+      "Bounded post-fix multiwriter UTC-day reservation/result reconciliation with no hard quota rejection.",
+      "Later real System1 23:35/23:55 business persistence without quota collision.",
+      "DATA_LANE 2026-10-08 D1 read-only/full-census evidence and only evidence-qualified write acceptance."
+    ]
+  },
+  "dataLaneHandoff": {
+    "room": "System 2｜歷史資料工程室",
+    "allowedNow": [
+      "Read-only D1 evidence within independently budgeted rowsRead envelope.",
+      "36-key and 11843-key Oct08 read-only census/evidence when account read headroom is proven.",
+      "Offline missing-key planning/conflict quarantine/PIT validation."
+    ],
+    "physicalWriteRule": "Physical mutation may proceed only for a registered writer whose write AND read reservation models are evidence-qualified, account usage is known, System1 write/read reserves are authorized, and the shared gate grants QUOTA_RESERVATION_GRANTED.",
+    "blockedNow": [
+      "Do not bypass READ_COST_EVIDENCE_REQUIRED.",
+      "Do not treat requestedRowsRead=0 as zero cost.",
+      "Do not use observed 2825 System1 write value as a formal reserve.",
+      "Do not force a physical write merely to create acceptance evidence."
+    ]
+  },
+  "auditHandoff": {
+    "room": "System 2｜獨立稽核顧問室",
+    "requiredReverify": [
+      "Replay A1 under-minimum write override and exact boundary.",
+      "Replay A2 near-5M read headroom and unknown read-cost writer.",
+      "Verify all 13 failure/partial result finalizers and non-release semantics.",
+      "Verify exact duplicate ledger idempotency and conflicting duplicate rejection.",
+      "Confirm GraphQL lower-bound/lag mitigation cannot create headroom by releasing same-day reservations.",
+      "Confirm System1 write/read reserve remains unauthorized/null.",
+      "Confirm no System1 Formal Core/production/billing changes."
+    ],
+    "closureAuthority": "AUDIT_LANE_ONLY",
+    "mayMarkVerifiedClosed": false
+  },
+  "protectedBoundaries": {
+    "system1FormalCoreChanged": false,
+    "formalTradingSignalsChanged": false,
+    "capitalAllocationChanged": false,
+    "productionBehaviorChanged": false,
+    "system2LiveFinalSelectionAuthorityChanged": false,
+    "cloudflarePaidTierChanged": false
+  }
+}
