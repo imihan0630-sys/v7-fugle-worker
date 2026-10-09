@@ -1178,7 +1178,7 @@
       "directiveId": "S2-CORR-20261007-003",
       "createdAt": "2026-10-07T19:16:52+08:00",
       "severity": "HIGH",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFYING",
       "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
       "affectedScope": [
         "System2 isolated D1 writer workflows",
@@ -1286,10 +1286,11 @@
         "Existing s2_infrastructure_checks storage and Fugle quota-day claim already provide compact check_id/hash/readback semantics suitable for a shared UTC-day account-level reservation/result gate; no new table is required unless implementation proves otherwise. Durable evidence: system2/evidence/S2_CORR_20261007_003_REUSE_INFRA_CHECK_QUOTA_GATE_AUDIT_20261007_V0_1.json @ 6f53549c6a8d1b675c08f2f94afa1a0c1049f8e1.",
         "Reset-window writer-trigger audit: system2/evidence/S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_20261008_V0_1.json @ c69ad63559a5655b473b4060f04016f08e098e1d. Twelve workflows share system2-isolated-d1-writer; scheduled high-write jobs begin at 16:30/18:35 Asia/Taipei after the 08:00 quota reset, but multiple workflows can still physically mutate D1 on ordinary main push, so time-of-day alone cannot protect post-reset annual-backfill headroom.",
         "00 read-only job/step/artifact metadata verification: PVE-263 run 37649543821 / job 112888965126 / artifact 11495752402 SUCCESS and PVE-264 run 37650006684 / job 112890551584 / artifact 11495133236 SUCCESS. This confirms physical evidence collectors executed; raw analytics interpretation derives from their recorded receipts. No new quota-gate implementation or physical correction closure performed.",
-        "PENDING_INDEPENDENT_AUDIT"
+        "PENDING_INDEPENDENT_AUDIT",
+        "Independent AUDIT_LANE partial verification (2026-10-09) saved at system2/evidence/S2_CORR_20261007_003_INDEPENDENT_PARTIAL_AUDIT_20261009_V0_1.json: PR980/981 implementation static and PR-head CI/V8 PASS; all 13 shared-group physical writers gated; postmerge run 37893508023 read real account usage 26919 written / 697831 read and emitted QUOTA_BUDGET_DEFER with System1 reserve not authorized, no physical writer started. Physical multi-writer grant/commit/result, evidence-qualified System1 reserve, later real 23:35/23:55 business persistence, and Oct08 D1 physical census remain NOT VERIFIED. Status VERIFYING; not VERIFIED_CLOSED."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-09T14:26:07+08:00"
+      "updatedAt": "2026-10-09T15:22:16+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-004",
