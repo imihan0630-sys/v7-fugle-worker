@@ -30,6 +30,7 @@ function omitHash(v, field) {
 async function checkOutcome(outcome) {
   object(outcome, "outcome");
   const claimed = hash(outcome.outcomeHash, "outcome.outcomeHash");
+  if (typeof outcome.updatedAt !== "string" || !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$/.test(outcome.updatedAt) || !Number.isFinite(Date.parse(outcome.updatedAt))) { throw new Error("OUTCOME_REVISION_OUTCOME_CLOCK_INVALID"); }
   if (claimed !== await sha256Hex(omitHash(outcome, "outcomeHash"))) {
     throw new Error("OUTCOME_REVISION_SNAPSHOT_HASH_MISMATCH");
   }
@@ -102,7 +103,7 @@ export async function verifyS2FrozenOutcomeRevisionV0_1(receipt) {
   object(receipt, "receipt");
   exact(receipt.schemaVersion, S2_OUTCOME_REVISION_ARCHIVE_VERSION_V0_1, "schemaVersion");
   const claimed = hash(receipt.revisionHash, "receipt.revisionHash");
-  const calculated = await sha256Hex(omitHash(receipt, "revisionHash"));
+  const calculated = await sha256Hex(omitHash(omitHash(receipt, "revisionHash"), "revisionId"));
   if (claimed !== calculated) throw new Error("OUTCOME_REVISION_RECEIPT_HASH_MISMATCH");
   const outcome = object(receipt.outcome, "receipt.outcome");
   const outcomeHash = await checkOutcome(outcome);
