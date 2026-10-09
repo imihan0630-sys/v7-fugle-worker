@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "S2_OCT09_DATA_LANE_QUOTA_SAFE_READONLY_CENSUS_HARDENING_HANDOFF_V0_1",
+  "recordedAt": "2026-10-09T18:13:15+08:00",
+  "lane": "DATA_LANE",
+  "auditRecipient": "AUDIT_LANE",
+  "sourceMainShaAtStart": "6fba6c62655425556046dfcc0242316b3321d960",
+  "correction": {
+    "id": "S2-CORR-20261007-003",
+    "severity": "HIGH",
+    "state": "FIX_IMPLEMENTED",
+    "verification": "PENDING_INDEPENDENT_REVERIFY",
+    "closureByDataLane": false
+  },
+  "physicalQuotaObservation": {
+    "runId": 37907066382,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37907066382",
+    "observedAt": "2026-10-09T08:46:58Z",
+    "quotaDay": "2026-10-09",
+    "accountRowsReadLowerBound": 782497,
+    "accountRowsWrittenLowerBound": 26919,
+    "graphQLFreshnessBound": "UNKNOWN",
+    "system1WriteReserveAuthorized": false,
+    "system1ReadReserveAuthorized": false,
+    "gateState": "QUOTA_BUDGET_DEFER",
+    "physicalAllowed": false,
+    "hotD1WarmupStep": "SKIPPED",
+    "warmupHistoricalWrites": 0,
+    "accountHeadroomProvenForNewD1Census": false
+  },
+  "oct08MarketSource": {
+    "twseOrdinarySymbolDays": 6518,
+    "tpexOrdinarySymbolDays": 5325,
+    "totalOfficialSymbolDateKeys": 11843,
+    "officialSourceDateMarketCells": 12,
+    "sourceProofRun": 37878847039,
+    "cutoff": "2026-10-08",
+    "latestCompletedTradingSessionSourceOnly": true
+  },
+  "workDone": [
+    {
+      "pr": 987,
+      "merge": "3082acf88da005fd236360d731f3193df4885738",
+      "acceptance": "ACTUAL_GITHUB_RUN_AND_QUOTA_DEFER_RECEIPT_MERGED",
+      "ci": 37912626542,
+      "regression": 37912626605
+    },
+    {
+      "pr": 988,
+      "merge": "f405820b1c7040ff3117e57c8251ae2ebffeed2e",
+      "acceptance": "CI_AND_V8_PASS_NO_PHYSICAL_D1",
+      "ci": 37915647442,
+      "regression": 37915647427,
+      "tested": [
+        "151-row D1 SELECT truncation aborts rather than marking missing",
+        "NaN rowsRead fails before query",
+        "negative rowsRead fails before query"
+      ]
+    },
+    {
+      "pr": 990,
+      "merge": "6fba6c62655425556046dfcc0242316b3321d960",
+      "acceptance": "CI_AND_V8_PASS_NO_PHYSICAL_D1",
+      "ci": 37916077789,
+      "regression": 37916077833,
+      "tested": [
+        "Full census carries twelve exact official source hashes plus aggregate digest",
+        "Offline repair planner rejects missing one receipt",
+        "Offline repair planner rejects wrong source hash",
+        "Offline repair planner rejects forged lineage digest"
+      ]
+    }
+  ],
+  "currentDataAcceptance": {
+    "octOfficialSourceKeyCompleteness": "SOURCE_ONLY_PASS_11843",
+    "historicalHotD1Sample36": "NOT_PHYSICALLY_EXECUTED",
+    "historicalHotD1Full11843": "NOT_PHYSICALLY_EXECUTED",
+    "hotD1RowsRepairedThisTurn": 0,
+    "missingKeyCandidateList": "NOT_POPULATED_WITH_PHYSICAL_ABSENCE_PROOF",
+    "pitCutoffRetroactiveEligibility": false,
+    "corporateActionNct01Continuity": false,
+    "finalSelectionOrTradesAuthorized": false
+  },
+  "executionBudget": {
+    "newCloudflareD1RowsReadByDataLane": 0,
+    "newCloudflareD1RowsWrittenByDataLane": 0,
+    "newR2Writes": 0,
+    "noCloudflarePaidTier": true
+  },
+  "auditLaneRequired": [
+    "Independently verify merge receipts and CI/V8 exact head SHA",
+    "Check fail-closed truncation and unknown read metering guards remain in main",
+    "Check census source hash/digest and planner provenance logic cannot be bypassed",
+    "Keep HIGH CORR-003 open until independent A1-A4 and physical multiwriter/System1 acceptance",
+    "Treat retrospective D1 missing keys as OBSERVED_ABSENT_AT_AUDIT only; never backdate firstKnownAt"
+  ],
+  "resumeAt": "After account-level D1 rowsRead headroom and no competing writer are evidence-qualified, dispatch 36-key read-only pilot; if justified dispatch full 11843 census and offline missing-only planner. For any write require all seven approval gates including QUOTA_RESERVATION_GRANTED."
+}
