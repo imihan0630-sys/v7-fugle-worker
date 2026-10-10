@@ -1,0 +1,89 @@
+# Destination ONLY; no create DB, no source reads, no R2, Worker, Cron, data copy or paid upgrade.
+name: System2 Destination Schema Only (OWNER APPROVED SCOPE)
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Start with VERIFY_ONLY, then APPLY_ONCE using exact PLAN hash"
+        type: choice
+        required: true
+        options:
+          - VERIFY_ONLY
+          - APPLY_ONCE
+      confirm:
+        description: "Type APPLY_EXISTING_DEST_D1_SCHEMA_ONLY_55"
+        type: string
+        required: true
+      boundary:
+        description: "Type NO_SOURCE_NO_DATA_NO_WORKER_NO_CRON_NO_PAID"
+        type: string
+        required: true
+      plan_hash:
+        description: "APPLY_ONCE only: SHA256 shown by last successful VERIFY_ONLY run"
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-new-account-schema-only-single-run
+  cancel-in-progress: false
+
+jobs:
+  owner-schema-only:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 15
+    steps:
+      - name: Checkout fixed main
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate owner intended cloud write scope
+        env:
+          ACTION: ${{ inputs.action }}
+          ACK: ${{ inputs.confirm }}
+          BOUNDARY: ${{ inputs.boundary }}
+          PLAN_HASH: ${{ inputs.plan_hash }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
+          test "$ACK" = 'APPLY_EXISTING_DEST_D1_SCHEMA_ONLY_55'
+          test "$BOUNDARY" = 'NO_SOURCE_NO_DATA_NO_WORKER_NO_CRON_NO_PAID'
+          case "$ACTION" in
+            VERIFY_ONLY) ;;
+            APPLY_ONCE) [[ "$PLAN_HASH" =~ ^[a-f0-9]{64}$ ]] ;;
+            *) exit 1 ;;
+          esac
+      - name: Mock-only dry-run protections (zero Cloudflare calls)
+        run: node system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs
+      - name: Verify target or apply schema exactly once
+        env:
+          S2_SCHEMA_ACTION: ${{ inputs.action }}
+          S2_SCHEMA_CONFIRM: ${{ inputs.confirm }}
+          S2_SCHEMA_BOUNDARY: ${{ inputs.boundary }}
+          S2_SCHEMA_PLAN_HASH: ${{ inputs.plan_hash }}
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/run_destination_schema_only_manual_v0_1.mjs
+      - name: Archive sanitized one-run receipt even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-schema-only-${{ github.run_id }}
+          path: /tmp/s2-target-schema-only/sanitized-receipt.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Protect System 1 production manifests
+        if: always()
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED"
