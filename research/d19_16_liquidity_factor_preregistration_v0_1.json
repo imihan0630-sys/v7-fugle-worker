@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "D19_LIQUIDITY_FACTOR_PREREG_V0_1",
+  "moduleId": "D19-16",
+  "status": "RESEARCH_ONLY_PREREG_NO_PIT_NO_L3",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "outcomesInspectedForParameterSelection": false,
+  "frozenComparators": [
+    {
+      "id": "AMIHUD_DAILY_BASELINE",
+      "return": "adjusted_close_to_close",
+      "aggregation": "mean_of_valid_daily_abs_return_over_trade_value"
+    },
+    {
+      "id": "AMIHUD_EX_OVERNIGHT",
+      "return": "adjusted_open_to_close",
+      "aggregation": "mean_of_valid_daily_abs_return_over_trade_value"
+    },
+    {
+      "id": "AMIHUD_RECENCY_EX_OVERNIGHT",
+      "return": "adjusted_open_to_close",
+      "weightPolicy": "preregister_before_outcomes"
+    },
+    {
+      "id": "AMIHUD_LAGGED_UP_MARKET",
+      "marketState": "previous_finalized_session_up"
+    },
+    {
+      "id": "AMIHUD_LAGGED_DOWN_MARKET",
+      "marketState": "previous_finalized_session_down"
+    }
+  ],
+  "metricPolicy": {
+    "unit": "canonical_NTD_trade_value",
+    "zeroTradeValue": "UNDEFINED_NOT_ZERO",
+    "positiveActivityMissingValidClose": "UNKNOWN_NO_FORWARD_FILL",
+    "zeroReturnPositiveTradeValue": "VALID_ZERO_RATIO_NOT_ZERO_SPREAD",
+    "validDayDenominator": "separate_expected_valid_zero_trade_suspended_unknown",
+    "priceLimit": "versioned_exchange_source",
+    "tickSize": "versioned_exchange_source",
+    "sourceClock": "availableAt_must_not_exceed_decisionAt"
+  },
+  "factorRole": "POSSIBLE_PREMIUM_NOT_EXECUTION_COST",
+  "costRole": "INDEPENDENT_COMPONENT_PROVENANCE_REQUIRED",
+  "controls": [
+    "size",
+    "value",
+    "beta",
+    "totalVolatility",
+    "turnover",
+    "spread",
+    "industryVintage",
+    "momentum",
+    "financialDistress"
+  ],
+  "multipleTesting": "FIVE_COMPARATORS_PLUS_ANY_TRIED_VARIANTS_AND_NEGATIVE_CONTROLS_ONE_REGISTERED_FAMILY",
+  "selectionBiasGuard": {
+    "formationUniverse": "PIT_TWSE_TPEX_INCLUDE_DELISTED_AND_SUSPENDED",
+    "masks": [
+      "factorKnown",
+      "outcomeKnown",
+      "costKnown",
+      "fillKnown"
+    ],
+    "counts": [
+      "eligibleN",
+      "factorKnownN",
+      "outcomeKnownN",
+      "costKnownN",
+      "unknownN",
+      "delistedN",
+      "suspendedN",
+      "sourceMissingN"
+    ],
+    "requiredStrata": [
+      "date",
+      "exchange",
+      "factorGroup",
+      "marketRegime"
+    ],
+    "unknownPolicy": "NEVER_ZERO_OR_BAD",
+    "binaryOutcomeBounds": "knownWins_over_eligibleN_to_(knownWins_plus_unknown)_over_eligibleN",
+    "continuousOutcomeBounds": "UNKNOWN_UNLESS_PRE_REGISTERED_SUPPORT",
+    "missingnessCorrection": "REQUIRES_IDENTIFICATION_OVERLAP_AND_SENSITIVITY_NO_AUTOMATIC_IMPUTATION"
+  },
+  "requiredReceipts": [
+    "universeReceipt",
+    "returnReceipt",
+    "factorInputReceipt",
+    "neutralizationReceipt",
+    "costReceipt",
+    "replayReceipt"
+  ],
+  "lineage": [
+    "sourceHash",
+    "parentHash",
+    "resultHash",
+    "firstKnownAt",
+    "availableAt",
+    "decisionAt",
+    "universeVintage",
+    "industryVintage",
+    "benchmarkVintage",
+    "factorSetVersion",
+    "corporateActionPolicy",
+    "delistingPolicy",
+    "riskFreeSource",
+    "borrowabilityIfShort",
+    "executionCostEvidence"
+  ],
+  "negativeControls": [
+    "inverse_trade_value",
+    "volume_size_turnover_neutralized_residual",
+    "zero_return_fraction",
+    "relative_tick_and_price_limit",
+    "outcome_availability_attrition_bounds"
+  ],
+  "syntheticEvidence": {
+    "stage": 24,
+    "passed": 24,
+    "total": 24,
+    "resultHash": "12c713119639fee554e038c6135bd09e313024a53d9211ea459f728e215345ab",
+    "realTaiwanPIT": "UNKNOWN",
+    "actualFills": "UNKNOWN",
+    "historicalShadow": "NOT_CREATED"
+  },
+  "dependencies": [
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D08",
+    "D09",
+    "D14",
+    "D15",
+    "D16",
+    "D18"
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "No full source-native Taiwan PIT factor replay and independent six-receipt attestation"
+  }
+}
