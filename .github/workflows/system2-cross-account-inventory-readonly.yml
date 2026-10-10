@@ -60,6 +60,33 @@ jobs:
             }
             console.log("Both account D1 READ scope checks passed");
           '
+      - name: Diagnose SOURCE and DESTINATION D1 Workers KV and R2 independently (GET only)
+        env:
+          S2_MIGRATION_READ_ONLY_ACK: ${{ inputs.confirm }}
+          S2_MIGRATION_SOURCE_ACCOUNT_ID: ${{ secrets.S2_MIGRATION_SOURCE_ACCOUNT_ID }}
+          S2_MIGRATION_SOURCE_READ_TOKEN: ${{ secrets.S2_MIGRATION_SOURCE_READ_TOKEN }}
+          S2_MIGRATION_DESTINATION_ACCOUNT_ID: ${{ secrets.S2_MIGRATION_DESTINATION_ACCOUNT_ID }}
+          S2_MIGRATION_DESTINATION_READ_TOKEN: ${{ secrets.S2_MIGRATION_DESTINATION_READ_TOKEN }}
+        run: node system2/migration/run_readonly_services_diagnostic_v0_1.mjs
+      - name: Upload sanitized per-account service receipts even on denied access
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-cross-account-service-read-${{ github.run_id }}
+          path: /tmp/system2-cross-account-inventory/service-diagnostic.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Block if any account service READ is unverified
+        run: |
+          node --input-type=module -e '
+            import {readFileSync} from "node:fs";
+            const r=JSON.parse(readFileSync("/tmp/system2-cross-account-inventory/service-diagnostic.json","utf8"));
+            if (r.status!=="SERVICES_READ_PREFLIGHT_PASS") {
+              console.error("Account service READ incomplete; refer to sanitized service receipt; do not change permissions blindly.");
+              process.exit(1);
+            }
+            console.log("Both Cloudflare account D1, Workers, KV, R2 reads passed.");
+          '
       - name: Collect both accounts metadata using dedicated scoped READ tokens
         env:
           S2_MIGRATION_READ_ONLY_ACK: ${{ inputs.confirm }}
