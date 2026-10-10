@@ -27,6 +27,7 @@ const full=()=>({
   artifactSha256:sha,exportSha256:sha,schemaSha256:sha,
   frozenSnapshotSha256:sha,observedAt:"2026-10-10T04:00:00Z",
   migrationSqlSha256:schema.migrationSqlSha256,
+  appliedMigrationFiles:files.map(f=>f.name),appliedMigrationPhysicalReadback:true,
   tables:schema.tableNames.map(name=>({name,rows:name==="s2_decisions"?3:0,sha256:sha,schemaSha256:sha})),
   frozenDecisionRowCount:3,frozenSnapshotPhysicalReadback:true,
   sourceReadBudget:{readOnlyGuardPassed:true,system1ReadReserveVerified:true,
@@ -45,13 +46,16 @@ assert.equal(doc.newD1ImportCapacityCertified,false);
 assert.equal(doc.independentAuditPassed,false);
 assert(!JSON.stringify(doc).includes(sha));
 for(const [patch,code] of [
-  [m=>m.tables.pop(),"SOURCE_TABLE_SET_DIFFERS_FROM_VERSIONED_SQL"],
+  [m=>m.tables.pop(),"SOURCE_TABLE_SET_DIFFERS_FROM_PHYSICALLY_APPLIED_MIGRATIONS"],
   [m=>m.tables[0].name=m.tables[1].name,"SOURCE_TABLE_ROWS_AND_HASHES_INVALID"],
   [m=>m.tables[0].name="v7_live","SOURCE_TABLE_ROWS_AND_HASHES_INVALID"],
   [m=>m.tables[0].sha256="invalid","SOURCE_TABLE_ROWS_AND_HASHES_INVALID"],
   [m=>m.tables[0].rows=-1,"SOURCE_TABLE_ROWS_AND_HASHES_INVALID"],
   [m=>m.frozenDecisionRowCount=99,"FROZEN_DECISION_SNAPSHOT_INVARIANT_UNVERIFIED"],
   [m=>m.frozenSnapshotPhysicalReadback=false,"FROZEN_DECISION_SNAPSHOT_INVARIANT_UNVERIFIED"],
+  [m=>m.appliedMigrationFiles=[],"SOURCE_APPLIED_MIGRATION_CHAIN_UNVERIFIED"],
+  [m=>m.appliedMigrationFiles=[files[1].name],"SOURCE_APPLIED_MIGRATION_CHAIN_UNVERIFIED"],
+  [m=>m.appliedMigrationPhysicalReadback=false,"SOURCE_APPLIED_MIGRATION_CHAIN_UNVERIFIED"],
   [m=>m.migrationSqlSha256="b".repeat(64),"SOURCE_EXPORT_SQL_MIGRATION_FINGERPRINT_MISMATCH"],
   [m=>m.physicalReadback=false,"PHYSICAL_SOURCE_IDENTITY_AND_HASH_CHAIN_UNVERIFIED"],
   [m=>m.runId=0,"PHYSICAL_SOURCE_IDENTITY_AND_HASH_CHAIN_UNVERIFIED"],
@@ -69,6 +73,25 @@ for(const [patch,code] of [
  assert(x.blockers.includes(code),JSON.stringify({code,blockers:x.blockers}));
  assert.equal(x.cloudMutationAuthorized,false);
 }
+// 11 repo SQL migrations define 56 logical tables. A physically verified prefix
+// can legitimately contain fewer; never infer the live DB schema from Git HEAD.
+assert.equal(schema.sqlMigrationFileCount,11);
+assert.equal(schema.expectedTableCount,56);
+const seven=full();
+seven.appliedMigrationFiles=files.slice(0,7).map(f=>f.name);
+const expectedSeven=new Set(schema.migrations.slice(0,7).flatMap(m=>m.tables));
+assert.equal(expectedSeven.size,46);
+seven.tables=seven.tables.filter(t=>expectedSeven.has(t.name));
+const sevenResult=attest({schema,manifest:seven});
+assert.equal(sevenResult.result,"OFFLINE_DOCUMENT_REVIEW_ONLY");
+assert.equal(sevenResult.physicallyAppliedExpectedTableCount,46);
+assert.equal(sevenResult.repositoryDefinedSchemaTableCount,56);
+assert.equal(sevenResult.appliedMigrationCount,7);
+const spoofed=full();
+spoofed.appliedMigrationFiles=seven.appliedMigrationFiles;
+const spoofResult=attest({schema,manifest:spoofed});
+assert(spoofResult.blockers.includes("SOURCE_TABLE_SET_DIFFERS_FROM_PHYSICALLY_APPLIED_MIGRATIONS"));
+
 const large=full();large.tables[0].rows=100001;
 const wide=attest({schema,manifest:large});
 assert.equal(wide.theoreticalMinimumFreeQuotaDays,2);
