@@ -2944,3 +2944,25 @@ D06-05 first bounded pair corporate-action mask stored at `research/d06_05_pair_
 2. Intersect both date memberships with the TDCC denominator/event-clean parent and explicit security-type exclusions.
 3. Freeze final pair-effective symbol set + canonical hash before opening any outcome column.
 4. D06-14 still requires tradeDate 2026-10-06 T2_FINAL append-only readback; source replication does not add maturity.
+
+
+## 2026-10-10 D06 — IC-109/110 final D06-05 support freeze + L4 preregistration
+
+- Final clean pair support artifact: `research/d06_05_ic109_pair_effective_common_equity_cohort_20260924_20261002_v0_1.json`.
+- Final 2026-09-24 -> 2026-10-02 research cohort = 1,852 symbols.
+- Cohort FNV-1a = `fnv1a64-utf8:5eb02db54ebae70f`; SHA-256 = `d99fd27572c844a49d0f363d8ee72270e7c8a43bafd77ac37186bdff08ba7bc3`.
+- Certification is transition-continuity based, not falsely labeled as a missing 9/24 dual-manifest proof.
+- Full symbol list is persisted in the IC-109 artifact.
+- Corporate-action, denominator, security identity and TDR/ETF guards remain active.
+- L4 prereg artifact: `research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json`.
+- One TDCC vintage pair = one independent time unit; symbol rows do not inflate independent N.
+- Primary promotion test locked to signed 400+ concentration delta, five-session executable-open-forward outcome and M0 PIT controls.
+- Secondary horizons/features cannot rescue failure.
+- Interim only at 8 post-freeze pairs; L4 review only at >=12 independent future pairs + >=2 regimes with locked sign/inference/incrementality/leave-one-pair-out gates.
+- D06-05 stays L3/60; outcomes remain CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. D06-05: collect each genuinely new TDCC sourceDate after 2026-10-08 under the IC-110 frozen protocol; rebuild cohort/hash before outcomes every pair.
+2. No maturity increase from IC-109/110 alone; L4 requires actual post-freeze OOS/Shadow evidence.
+3. D06-14 still owes tradeDate 2026-10-06 T2_FINAL row-level append-only confirmation when the official read channel is available.
+4. D06-11/13/15/19 remain their existing source/time/authorization blockers.
