@@ -24,10 +24,13 @@ export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource,proposedStagin
   const externalImports=[];
   const base=auditD1OnlyWorkerImportGraphV0_1({readSource:path=>{
     const source=readSource(path);
-    if(typeof source==="string")for(const line of source.split("\n")) {
-      const m=line.match(/^\s*import\s+.*?\s+from\s+["\x27]([^"\x27]+)["\x27]|^\s*import\s+["\x27]([^"\x27]+)["\x27]/);
-      const moduleName=m?.[1]||m?.[2];
-      if(moduleName && !moduleName.startsWith("."))externalImports.push({path,moduleName});
+    if(typeof source==="string"){
+      // Global scan is mandatory: two imports on one source line must count twice.
+      const staticImports=/\b(?:import|export)\s+(?:[^;'"]*?\s+from\s+)?["']([^"']+)["']/g;
+      for(const match of source.matchAll(staticImports)){
+        const moduleName=match[1];
+        if(moduleName && !moduleName.startsWith("."))externalImports.push({path,moduleName});
+      }
     }
     if(typeof source==="string" && (source.includes("import(")||source.includes("require(")||source.includes("import.meta.glob")))
       flagged.push({path,source});
