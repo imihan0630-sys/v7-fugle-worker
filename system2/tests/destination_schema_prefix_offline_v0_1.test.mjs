@@ -56,6 +56,19 @@ assert.deepEqual(result,{
  hasStagedOutcomeArchive:false,hasFrozenDecisionTable:true,hasHistoricalBars:true,
  hasResonance:true,hasHoldings:true,hasSegmentStore:true
 });
+const firstSeven=spawnSync("python3",["-c",python,...files.slice(0,7).map(f=>"system2/sql/"+f.name)],{encoding:"utf8",timeout:20000,maxBuffer:1000000});
+assert.equal(firstSeven.status,0,firstSeven.stderr||"Seven-file SQLite prefix failed");
+const phaseOne=JSON.parse(firstSeven.stdout);
+assert.equal(phaseOne.tables,46);
+assert.equal(phaseOne.indexes,49);
+assert.equal(phaseOne.triggers,0);
+assert.equal(phaseOne.version,"1.1");
+assert.equal(phaseOne.metaRows,1);
+assert.equal(phaseOne.hasResonance,true);
+assert.equal(phaseOne.hasStagedOutcomeArchive,false);
+assert.equal(phaseOne.hasHoldings,false);
+assert.equal(phaseOne.hasSegmentStore,false);
+
 function neg(mutate,code){
  const a=input();mutate(a);const j=inspect(a);
  assert.equal(j.result,"OFFLINE_SCHEMA_REVIEW_BLOCKED",JSON.stringify(j));
