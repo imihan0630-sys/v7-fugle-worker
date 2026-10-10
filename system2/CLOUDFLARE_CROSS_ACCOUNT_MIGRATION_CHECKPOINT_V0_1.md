@@ -146,3 +146,18 @@ Actual owner-manual GET-only [Run #38022384514](https://github.com/imihan0630-sy
 - Preflight state remains **BLOCKED**, reasons `DESTINATION_RESOURCE_INVENTORY_UNVERIFIED`, `IMMUTABLE_SOURCE_MANIFEST_MISSING_OR_INVALID`. Physical migration acceptance still 0/13; no data copied, no destination D1 provision, no bills or Cloudflare mutations.
 - Practical offline engineering next: add explicit `D1_ONLY_STAGING_NO_R2_NO_CRON_NO_LIVE_WRITES` proposal guarded by actual data manifests. Existing `system2/deploy/wrangler.system2.example.toml` includes R2 and active Cron and MUST NOT be reused as-is. Existing bounded resonance Worker GET/scheduled handlers rely on D1, but full daily Shadow and cold historical replay still need independent PIT/source review.
 - User standing bounded approval for GitHub-only low-risk work does NOT grant any resource creation, destination write creds, schema/app data mutation, R2 subscription, duplicate Cron, Shadow formal acceptance or cutover; all remain owner authorization decisions.
+
+
+## 2026-10-10 — Source schema attestation handoff (OFFLINE ONLY)
+
+The first real 2026-10-10 account inventory #38022384514 measured source `system2-research` D1 `file_size=316,968,960` bytes and verified both-account metadata, but still supplied **zero actual D1 table row-counts / frozen-archive content hashes**. No physical database copy authorized.
+
+New direct SQL DDL discovery on current GitHub `system2/sql/`: **11** sequential migration SQL files define **56** distinct `s2_` tables (repository definitions). Existing deployed documentation mentions **46** tables; notably the *first seven* SQL files define 46 tables. This is a plausible explanation but **NOT physical evidence** of the actual applied schema. Never infer physical migration state from file count. The SQL schema attestor demands a physically read-back applied-migration prefix and exact table-set consistency; a malformed/missing receipt fails closed.
+
+Versioned offline tooling:
+- `system2/migration/source_d1_export_attestation_v0_1.mjs`: deterministic SQL file hash/table index, applied migration evidence, table counts and hash shape checks, frozen-decision cardinality and backup retention checks, System1 read reserve/Cloudflare account usage proof requirement, rough minimum rowsWritten days.
+- `system2/migration/run_source_d1_export_attestation_v0_1.mjs`: CLI local-only, never reads API tokens or Cloudflare.
+- `system2/migration/SOURCE_D1_PHYSICAL_EXPORT_EVIDENCE_CONTRACT_V0_1.md`: exact DATA_LANE physical source receipt and AUDIT_LANE verification responsibilities. No PIT acceptance from source hashes alone.
+- `system2/tests/source_d1_export_attestation_v0_1.test.mjs`: full/partial applied SQL prefix, missing/extra table, stale fingerprint, wrong frozen hash/cardinality, quota unknown, duplicate and malformed secret-free mocks.
+
+Historical DATA_LANE / issue #1026 remains separate owner of real Hot D1 reads and historical R2 archive receipts. **Original System1 account read reserve is not currently authorized**; this migration lane must not launch full-table physical SQL scans itself. Safe next: DATA_LANE generates an independently approved bounded source D1 readback/backup manifest *after real reserve*, or durable quota DEFER if unsafe. ACTUAL SOURCE CONTENT BACKUP 0, DEST D1 0, DEST DATA 0, DEST R2 UNENTITLED. Migration full acceptance **0/13** unchanged. Owner authorization required for D1 creation, new write permissions, physical import and cutover.
