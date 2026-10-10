@@ -10,8 +10,8 @@ let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
 const h="a".repeat(64);
 
 t("D13501 ordinary common class passes",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"ORDINARY_COMMON_EQUITY",coverageCompleteForDate:true,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"CLASS_ELIGIBLE_ORDINARY_COMMON"));
-t("D13502 preferred class is ineligible by design",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"PREFERRED_EQUITY",coverageCompleteForDate:true,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"SECURITY_CLASS_UNKNOWN"));
-t("D13503 unknown class does not default common",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"SECURITY_CLASS_UNKNOWN",coverageCompleteForDate:true,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"CLASS_INELIGIBLE_BY_DESIGN"));
+t("D13502 preferred class is ineligible by design",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"PREFERRED_EQUITY",coverageCompleteForDate:true,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"CLASS_INELIGIBLE_BY_DESIGN"));
+t("D13503 unknown class does not default common",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"SECURITY_CLASS_UNKNOWN",coverageCompleteForDate:true,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"SECURITY_CLASS_UNKNOWN"));
 t("D13504 incomplete class coverage remains unknown",()=>assert.equal(classifySecurityClassEligibility({normalizedSecurityClass:"ORDINARY_COMMON_EQUITY",coverageCompleteForDate:false,firstObservableAt:"2021-01-01",predictorFreezeAt:"2021-01-02"}).status,"SECURITY_CLASS_UNKNOWN"));
 t("D13505 current class backfill prohibited",()=>assert.equal(validateNoCurrentClassBackfill({historicalClassKnown:false,currentClass:"ORDINARY_COMMON_EQUITY",historicalClass:null,inferredFromCurrent:true}).status,"CURRENT_CLASS_BACKFILL_PROHIBITED"));
 
