@@ -6988,3 +6988,16 @@ No maturity or Formal change is authorized by this routing.
 3. Route industry-vintage source/owner semantics to 07/D09, D16 common-support/self-exclusion/cluster-aware holdout constraints to 11/D16; do not duplicate upstream owner collectors or consume outcomes.
 4. If the witness remains blocked, continue next genuinely new D01 outcome-blind science at DL-147: taxonomy-bridge-version break vs price-pattern context stability, with explicit partial-coverage/UNKNOWN denominators; no automatic industry/index bridge.
 5. SDA-001/SDA-002 require independent System1/System2 engineer guards, genuine receipts, D16 and 00 closure. No L4 or Formal change without those gates and explicit owner approval.
+
+
+## Practitioner-strategy intake — 01｜莎拉型態學－金包銀（2026-10-10）
+
+- Research artifact: research/D01_SARA_WANG_JIN_BAO_YIN_STRATEGY_RESEARCH_20261010_V0_1.md
+- Owner request: learn/register the strategy for later validation; prioritize the **stock's established uptrend + pullback + reacceleration** as the hypothesized higher-quality setting. THIS IS A RESEARCH HYPOTHESIS, NOT A VALIDATED WIN RATE OR PROVEN PREREQUISITE FROM THE PRACTITIONER.
+- Author public definition: 60-minute bars; rising/turning 60MA support beneath short 5/10/20MA and overhead downsloping 120/240MA. Practitioner examples also include bottom reversal under broad-market bull regime. Never conflate market uptrend with stock uptrend or the 60-minute 60MA with daily MA60.
+- Preserved counterfactual cohorts: T=prior individual-stock uptrend pullback/reacceleration (priority), B=bottom-reversal emergence, M=broad-market-bull-only stock trend not proven, N=ambiguous/unknown.
+- Planned D16 comparison: T vs B vs M and ordinary 60m rising-MA pullback baseline, on same observable-date/common-support opportunities; freeze PIT clocks, duplicate PRICE_OHLC ancestry, source vintage, sector/market regime, overlapping episodes, full losing-signal denominator, target/RR and transaction costs BEFORE outcome access.
+- Known limitations: author articles are selected case studies, no complete app source/losing signals or verified 80%-90% win rate; proprietary 心動指標 unavailable. Status KNOWLEDGE_CAPTURED / FUTURE_VALIDATION_PENDING, NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+- No D01 module count or maturity increase: all 11 modules L3, maturity 60%; Alpha UNKNOWN; SDA-001/SDA-002 remain open; Formal Core locked. No Worker/D1/production/system signal changes.
+- Parallel intake does not replace the existing exact main-line DL-147 continuation or the frozen physical 1101/TWSE/2021-06-15 R1-R6 evidence blocker.
+- Next action for this intake: freeze causal T/B/M signal masks + synthetic no-lookahead 60m oracle once this dedicated research line is resumed, then seek genuine independent 60m data availability; do not inspect outcomes first.
