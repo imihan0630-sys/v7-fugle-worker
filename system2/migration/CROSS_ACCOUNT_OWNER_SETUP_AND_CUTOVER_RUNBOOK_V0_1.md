@@ -38,6 +38,10 @@ The owner created a separate Workers Free Cloudflare account named `System2-Stoc
 7. During observation: API, bounded pool, 19:00 pre-check, source readiness 23:45/00:15 FUTURE TARGET only, PIT Shadow and quota monitoring independently validated. If rollback required after new destination writes, first reconcile immutable delta; do not blindly switch back.
 8. Retain old source R2/D1 immutable data until a second, explicit retirement approval.
 
+## Free plan hard capacity boundary
+- Cloudflare D1 Free currently limits each individual database to **500 MB**, account aggregate 5 GB. The inventory tool performs a read-only GET of `file_size` for `system2-research`; UNKNOWN or size >= 500,000,000 bytes blocks the one-database Free plan. Measured schema/import overhead requires additional headroom, not blind exact-limit fitting. If blocked, owner must separately choose a verified data split/retention policy or cost-capped paid alternative, never delete frozen history to force migration.
+- R2 Standard has monthly free thresholds but the old/new bucket usage, class A/B operations and any billing-enablement requirements remain UNKNOWN; do not assume an unverified zero-cost physical migration.
+
 ## Required non-secret evidence before invoking provisioning
 - SOURCE database and Worker bindings; R2/KV, Cron/routes, last deployed version.
 - DESTINATION account ID match, Free/usage, empty/non-empty authorized resource inventory.
