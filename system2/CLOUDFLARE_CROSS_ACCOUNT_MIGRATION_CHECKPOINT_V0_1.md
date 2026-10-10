@@ -261,3 +261,12 @@ This supersedes only the older **NOT_YET_PHYSICALLY_DISPATCHED / TABLES_UI_ONLY*
 - **Physical new-account Schema tables: 0/55; imported historical/frozen rows: 0; new Worker/Cron: 0.** No R2 subscription, paid upgrade, live trading, push, new resource, or source System1 Formal Core edit. The original 13 physical migration and 15 Shadow acceptance gates are **not** accepted solely from this preflight.
 
 Durable machine-readable owner-run evidence: `system2/migration/evidence/S2_DEST_D1_REAL_SQL_EMPTY_POST_FIX_20261010_V0_1.json`.
+
+
+## 2026-10-10 — owner preapproves bounded low-risk merges after independent audit, PR #1088 scoped authorization
+
+Owner directly approved the **GitHub code-only merger** of Draft [PR #1088](https://github.com/imihan0630-sys/v7-fugle-worker/pull/1088) **after independent review**, and gave standing permission for similarly low-risk engineering merges without repeated per-PR consent. Canonical narrow gate: `system2/migration/DELEGATED_LOW_RISK_MERGE_POLICY_V0_1.md`, 2026-10-10 addendum. This is NOT consent to schema SQL execution, secrets/permissions, physical migration, Worker/Cron or paid services.
+
+Observed baseline at the time: main `e749d10d621684b84e7c5923dac16e8c31b0315e`, #1088 exact HEAD `602c2822437148d8f9da6618551f9c2b4067cb4b`, existing PR-head System2 CI [#38049793911](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38049793911) PASS and V8 Regression [#38049793915](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38049793915) PASS. Live Cloudflare D1 SELECT-only [#38051816632](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38051816632) previously verified raw `_cf_KV`=1 / user tables=0, not a physical schema import.
+
+**Pending independent AUDIT_LANE signoff**: GitHub PR review list was empty, and #1088 remains DRAFT/UNMERGED. Requested independent negative-scope verification [PR #1088 comment](https://github.com/imihan0630-sys/v7-fugle-worker/pull/1088). Do not self-certify audit completion. Once independent evidence is attached and exact-head CI still passes, the owner has already authorized merging this exact bounded patch without a repeated prompt. New D1 destination still 0/55 user tables, 0 historical/frozen rows copied, new Worker/Cron 0; source DATA_LANE #1068 physical backup/PIT, destination secret/effective privilege/rowsWritten headroom and owner-run `VERIFY_ONLY`/`APPLY_ONCE` remain separate.
