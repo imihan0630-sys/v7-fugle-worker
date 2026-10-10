@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "D06_05_IC112_SERIAL_DEPENDENCE_SENSITIVITY_V0_1",
+  "createdAt": "2026-10-10T18:14:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE",
+  "outcomesOpened": false,
+  "historicalShadowFabricated": false,
+  "maturityChange": "NONE",
+  "continuationOf": "research/d06_05_ic111_pair_dependence_and_oos_execution_audit_20261010_v0_1.json",
+  "baselinePrereg": "research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json",
+  "researchQuestion": "Do twelve genuinely distinct TDCC weekly vintage pairs guarantee an effective sample size of twelve when pair-level test statistics are serially dependent?",
+  "evidenceType": "DETERMINISTIC_MATHEMATICAL_SENSITIVITY_NOT_MARKET_EVIDENCE",
+  "positiveMechanism": "Using one pair-level effect rather than thousands of stock rows avoids cross-sectional pseudoreplication and preserves the IC110 frozen 12-pair observational requirement.",
+  "counterEvidence": "Adjacent TDCC pairs share a vintage, and common regime shocks may induce positive pair-statistic autocorrelation. Distinct pair IDs do not prove iid pair effects.",
+  "alternativeExplanation": "Measurement-noise differencing alone can induce negative adjacent correlation; sign and magnitude of actual serial dependence are UNKNOWN until real pair effects exist.",
+  "toyAssumptions": {
+    "numberOfPairs": 12,
+    "assumedStationaryPairEffectAutocorrelation": "AR(1) rho=0.5",
+    "meanZero": true,
+    "varianceNormalizedToOne": true,
+    "notObservedMarketData": true
+  },
+  "analyticResult": {
+    "formula": "Var(mean)/[sigma^2/n]=1+2*sum(k=1..n-1)[(1-k/n)*rho^k]",
+    "varianceInflation": 2.666748046875,
+    "standardErrorInflation": 1.633018079163547,
+    "iidEquivalentEffectiveN": 4.499862675089261,
+    "interpretation": "Under assumed rho=0.5 AR1, twelve pair observations have the variance of approximately 4.5 independent equal-variance observations. This is only a conditional counterexample, not an estimate of TDCC behavior."
+  },
+  "intervalBoundaryFixtures": [
+    {
+      "id": "OVERLAP",
+      "a": [
+        4,
+        9
+      ],
+      "b": [
+        8,
+        13
+      ],
+      "expectedOverlap": true,
+      "pass": true
+    },
+    {
+      "id": "SHARED_BOUNDARY",
+      "a": [
+        4,
+        9
+      ],
+      "b": [
+        9,
+        14
+      ],
+      "expectedOverlap": true,
+      "pass": true
+    },
+    {
+      "id": "DISJOINT",
+      "a": [
+        4,
+        9
+      ],
+      "b": [
+        10,
+        15
+      ],
+      "expectedOverlap": false,
+      "pass": true
+    },
+    {
+      "id": "REVERSE_DISJOINT",
+      "a": [
+        10,
+        15
+      ],
+      "b": [
+        4,
+        9
+      ],
+      "expectedOverlap": false,
+      "pass": true
+    },
+    {
+      "id": "CONTAINMENT",
+      "a": [
+        4,
+        14
+      ],
+      "b": [
+        6,
+        9
+      ],
+      "expectedOverlap": true,
+      "pass": true
+    },
+    {
+      "id": "IDENTICAL",
+      "a": [
+        4,
+        9
+      ],
+      "b": [
+        4,
+        9
+      ],
+      "expectedOverlap": true,
+      "pass": true
+    }
+  ],
+  "checks": {
+    "syntheticIntervalTests": 6,
+    "passed": 6,
+    "failed": 0,
+    "physicalMarketSourceTests": 0,
+    "realOosTests": 0
+  },
+  "pitAndOosGuards": [
+    "Require actual firstKnownAt, executableOpen and fifth-session-close for each admitted pair; do not infer from TDCC as-of date.",
+    "Any training label information interval touching the validation information interval is ineligible; no outcome-trained M0 coefficients may be reused as OOS predictions.",
+    "A chronology-based model must fit on prior fully matured labels only and retain immutable fit and prediction receipts.",
+    "If model fit and unique primary estimator remain ambiguous, report OOS_UNKNOWN and do not promote.",
+    "Do not count repeated consumers of one TDCC vintage pair as independent episodes."
+  ],
+  "biasAndCostReview": {
+    "selectionAndSurvivorship": "Rebuild date-effective security and event-clean cohort for every future pair, not a timeless 1852-symbol universe.",
+    "multipleTesting": "Only IC110 frozen signed 400-lot-plus concentration delta, 5-session horizon and M0 primary gate can be promotion-grade.",
+    "factorRedundancy": "Institutional, margin, SBL, passive and price-volume primitives require same-generation lineage; M1/M2 remain robustness, not rescue.",
+    "marketRegime": "At least two market regimes per IC110; actual classification and distribution not yet observed.",
+    "tradingCost": "No performance or tradability conclusion without executable-open, slippage, capacity and turnover evidence.",
+    "missingData": "UNKNOWN not zero/BAD; no real post-2026-10-08 TDCC vintage verified in this study."
+  },
+  "sources": [
+    "research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json",
+    "research/d06_05_ic111_pair_dependence_and_oos_execution_audit_20261010_v0_1.json",
+    "https://www.nber.org/papers/t0055",
+    "https://github.com/landtml/purgedcv"
+  ],
+  "requiredIndependentReview": "D16 must independently freeze outcome-blind primary estimator, prior-fitted chronological training, label interval purging and serial-dependence diagnostics before any L4 review. No unilateral IC110 promotion-gate amendment.",
+  "formalOptimizationCandidate": "NONE",
+  "status": "IC112_DETERMINISTIC_DEPENDENCE_SENSITIVITY_COMPLETE / 6_OF_6_SYNTHETIC_INTERVAL_CASES_PASS / NO_REAL_OOS / FORMAL_LOCKED",
+  "exactNext": "Restore IC111 checkpoint and synthetic assertions on a clean branch if normal authorized tooling permits; do not bypass a blocked write. Request D16 outcome-blind split/estimator audit. Wait for a genuine TDCC sourceDate strictly after 2026-10-08, otherwise continue D06 leverage/passive-flow source-vintage studies."
+}
