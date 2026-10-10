@@ -2920,3 +2920,39 @@ Exact next:
 2. if no additional common-support identity transition exists, promote the frozen 2,778-symbol hash to FINAL_CERTIFIED without changing symbols;
 3. preregister TDCC-vintage-clustered OOS/Shadow residual incrementality before opening outcome columns;
 4. preserve one-TDCC-vintage-pair-one-evidence-unit semantics and SDA-007 anti-double-count rules.
+
+
+---
+
+## IC-108 — D06-05 2026-10-02 exchange-membership filter falsifies the prior 2,772 listed/OTC-stock upper bound
+
+Research cycle: 2026-10-10 Asia/Taipei  
+Status: OCT02_TRADING_MEMBERSHIP_FILTER_PASS / PRIOR_2772_LABEL_FALSIFIED / OCT02_UPPER_BOUND_1852 / SEP24_DATE_EFFECTIVE_MEMBERSHIP_PENDING / SECURITY_TYPE_GUARD_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_ic108_oct02_trading_membership_filter_20261010_v0_1.json`.
+
+The earlier event/denominator-clean TDCC pair candidate contained 2,778 four-digit security codes and, after six known ETF/TDR exclusions, had been provisionally described as a 2,772 common-stock upper bound. That label is now falsified.
+
+System2's previously accepted source-only official A1 manifest (Run 37944021198, Artifact 11623192826) preserves all exact official four-digit trading keys for TWSE and TPEx on 2026-10-02. That date contains 1,086 TWSE and 888 TPEx four-digit trading keys, 1,974 combined.
+
+Deterministic intersection results:
+- TDCC event/denominator-clean parent = 2,778;
+- parent symbols present in the 2026-10-02 TWSE/TPEx trading membership = 1,854;
+- known four-digit TDRs 9103 and 9110 are then explicitly excluded;
+- resulting 2026-10-02 trading-membership upper bound = 1,852;
+- canonical FNV-1a row-set hash = `fnv1a64-utf8:5eb02db54ebae70f`;
+- canonical SHA-256 = `d99fd27572c844a49d0f363d8ee72270e7c8a43bafd77ac37186bdff08ba7bc3`.
+
+The four previously identified zero-prefixed ETFs (0051/0053/0057/0061) disappear structurally because the official A1 daily four-digit filter admits only first-digit 1-9 identifiers. A separate TDR guard remains necessary because 9103/9110 pass that syntactic filter.
+
+This finding is material: 924 of the original 2,778 TDCC candidate symbols are absent from the 2026-10-02 listed/OTC daily four-digit trading membership; even the previous provisional 2,772 set overstates the 10/02 date-active trading upper bound by 920 symbols. Therefore a TDCC four-digit code cannot be equated with date-effective TWSE/TPEx stock membership.
+
+Scope boundary:
+- 2026-10-02 A1 membership is date-specific exchange trading-presence evidence;
+- it is not by itself a full legal common-stock security-type certificate because four-digit non-common types such as TDRs can pass the syntactic code filter;
+- 2026-09-24 complete row-level exchange membership is still not persisted in the old smoke artifact, so 1,852 remains an upper bound rather than a final pair-effective cohort;
+- no outcomes are opened and D06-05 remains L3/60.
+
+Exact next:
+recover the complete 2026-09-24 exchange-symbol membership or prove exhaustive listing/transfer/delisting continuity through 2026-10-02. Then intersect both date memberships with the existing TDCC denominator/event-clean candidate, retain explicit security-type exclusions, and freeze the final pair-effective symbol set and hash before any OOS/Shadow outcome join.
