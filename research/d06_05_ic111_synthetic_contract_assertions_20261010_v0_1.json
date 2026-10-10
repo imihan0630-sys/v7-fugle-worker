@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "D06_05_IC111_SYNTHETIC_CONTRACT_ASSERTIONS_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "date": "2026-10-10",
+  "module": "D06-05",
+  "researchOnly": true,
+  "scope": "illustrative deterministic contract fixtures, not physical source regression, not actual OOS model validation",
+  "assertionCount": 11,
+  "passed": 11,
+  "failed": 0,
+  "assertions": [
+    {
+      "id": "T01_SHARED_VINTAGE",
+      "status": "PASS"
+    },
+    {
+      "id": "T02_DUPLICATE_PAIR",
+      "status": "PASS"
+    },
+    {
+      "id": "T03_OVERLAPPING_LABEL",
+      "status": "PASS"
+    },
+    {
+      "id": "T04_DISJOINT_LABEL",
+      "status": "PASS"
+    },
+    {
+      "id": "T05_PURGE_OVERLAPPING_TRAIN",
+      "status": "PASS"
+    },
+    {
+      "id": "T06_UNKNOWN_FIRSTKNOWN_BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "T07_IN_SAMPLE_NOT_OOS",
+      "status": "PASS"
+    },
+    {
+      "id": "T08_NO_M1_RESCUE",
+      "status": "PASS"
+    },
+    {
+      "id": "T09_PRIMITIVE_RECEIPT_DEDUP",
+      "status": "PASS"
+    },
+    {
+      "id": "T10_FROZEN_PRIMARY",
+      "status": "PASS"
+    },
+    {
+      "id": "T11_DIFFERENCE_NOISE_NULL",
+      "status": "PASS"
+    }
+  ],
+  "mathProof": {
+    "independentVintageErrors": "e_t iid Var=sigma^2",
+    "adjacentDifferences": "d_t=e_t-e_(t-1)",
+    "variance": "2*sigma^2",
+    "lagOneCovariance": "-sigma^2",
+    "lagOneCorrelation": "-1/2",
+    "actualTDCCStatisticAutocorrelation": "UNKNOWN"
+  },
+  "frozenGate": {
+    "feature": "SIGNED_TDCC_400PLUS_CONCENTRATION_DELTA",
+    "horizonSessions": 5,
+    "model": "M0",
+    "futurePairs": 12,
+    "regimes": 2
+  },
+  "disclaimers": [
+    "No actual TDCC vintage beyond 2026-10-08 verified",
+    "No real OOS labels, performance, rank-IC or fitted baseline model",
+    "Fixture assertions are contract smoke checks only; full source/PIT/OOS implementation and independent D16 review remain pending",
+    "No historical Shadow fabricated, no Formal Core change"
+  ],
+  "status": "ILLUSTRATIVE_FIXTURE_ASSERTIONS_11_OF_11_PASS / PHYSICAL_OOS_NOT_TESTED / MATURITY_UNCHANGED"
+}
