@@ -68,6 +68,7 @@ assert.equal(done.result,"TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS");
 assert.equal(done.schemaTablesAfter,55);
 assert.equal(done.schemaIndexesAfter,63);
 assert.equal(done.schemaVersion,"1.1");
+assert(ok.calls.some(x=>x.sql?.includes("type = 'index' AND name LIKE 'idx_s2_%'")));
 assert.equal(done.appliedStatements,125);
 assert.equal(progress.length,125);
 assert.equal(ok.writes,125);
