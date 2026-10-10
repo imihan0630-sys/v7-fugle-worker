@@ -24,7 +24,11 @@
     "syntheticHistoricalShadowCreated": false,
     "marketOutcomeDataOpened": false,
     "formalCoreChanged": false,
-    "ic110FrozenThresholdsChanged": false
+    "ic110FrozenThresholdsChanged": false,
+    "syntheticContractAssertions": 11,
+    "syntheticContractAssertionsPass": 11,
+    "syntheticContractAssertionsFail": 0,
+    "realMarketOosTested": false
   },
   "status": "IC111_RESEARCH_CHECKPOINT_TRACKER_DURABLE_ON_BRANCH / PR_CREATION_BLOCKED / MAIN_NOT_MERGED / NO_MATURITY_CHANGE / OUTCOMES_CLOSED / FORMAL_LOCKED",
   "blockers": [
@@ -42,13 +46,15 @@
   },
   "integration": {
     "branch": "research/d06-ic111-overlap-oos-audit-20261010",
-    "branchCommits": 3,
+    "branchCommits": 5,
     "prCreationAttempts": 2,
     "prState": "BLOCKED_BY_TOOL_SAFETY_CHECK",
     "mainMerged": false,
     "trackerSyncedOnBranch": true,
     "trackerSyncedOnMain": false,
     "latestKnownMain": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
-    "safeNext": "Do not bypass PR guard or force-update main. Retry normal PR creation on a later run after refreshing latest main and checking whether equivalent IC111 evidence already merged; otherwise retain branch and continue other D06 modules."
-  }
+    "safeNext": "Do not bypass PR guard or force-update main. Retry normal PR creation on a later run after refreshing latest main and checking whether equivalent IC111 evidence already merged; otherwise retain branch and continue other D06 modules.",
+    "latestBranchCommit": "0f17a694e04243b87ecaf9b904fbc254b6f2e0ff"
+  },
+  "syntheticAssertionReceipt": "research/d06_05_ic111_synthetic_contract_assertions_20261010_v0_1.json"
 }
