@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D20_SOCIAL_FIXED_CLOCK_SOURCE_FAILURE_V0_1",
+  "room": "13",
+  "domain": "D20",
+  "modules": [
+    "D20-03",
+    "D20-06",
+    "D20-11"
+  ],
+  "scheduledSlotAsiaTaipei": "2026-10-10T23:10:00+08:00",
+  "actualFirstAttemptAtAsiaTaipei": "2026-10-10T23:10:06+08:00",
+  "source": "https://www.ptt.cc/atom/Stock.xml",
+  "samplingContract": "research/d20_social_sampling_coverage_contract_v0_1.json",
+  "attempts": [
+    {
+      "method": "Firecrawl",
+      "requestMaxAge": 0,
+      "startedAtUtc": "2026-10-10T15:10:06.027Z",
+      "status": "INSUFFICIENT_CREDITS",
+      "sourceContentReceived": false
+    },
+    {
+      "method": "NativeWeb",
+      "status": "SOURCE_INACCESSIBLE",
+      "sourceContentReceived": false
+    },
+    {
+      "method": "StandardHTTP",
+      "status": "DNS_RESOLUTION_FAILED",
+      "sourceContentReceived": false
+    }
+  ],
+  "parentCreated": false,
+  "articleIdsCaptured": 0,
+  "observedArticleCount": "UNKNOWN",
+  "sourceCompleteness": "UNKNOWN",
+  "primaryL4CountIncrement": 0,
+  "missingness": "SOURCE_BLOCKED_NOT_ZERO",
+  "noBackfill": true,
+  "noSyntheticHistoricalShadow": true,
+  "selectionBiasGuard": "Do not replace the frozen PTT source or selectively substitute other platforms without prospective governance amendment.",
+  "privacyGuard": "No author/handle psychological profile.",
+  "researchOnly": true,
+  "outcomesOpened": false,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "maturityChange": false,
+  "next": "On next actually executed fixed :10 Room13 slot, attempt frozen source with available permitted tools. No claim of continuity for this missed slot."
+}
