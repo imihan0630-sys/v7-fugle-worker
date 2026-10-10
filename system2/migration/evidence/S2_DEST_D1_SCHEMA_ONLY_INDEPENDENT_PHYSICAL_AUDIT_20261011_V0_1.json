@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "S2_DEST_D1_SCHEMA_ONLY_INDEPENDENT_PHYSICAL_AUDIT_20261011_V0_1",
+  "auditLane": "SYSTEM2_INDEPENDENT_AUDIT_LANE",
+  "auditDateTaipei": "2026-10-11",
+  "githubMainAtAudit": "7c508b3f66f5e27588a0b466acfdf1f5dd347283",
+  "reviewedPullRequests": [
+    1100,
+    1101,
+    1102
+  ],
+  "conclusion": "BLOCKED_FOR_FULL_INDEPENDENT_SCHEMA_OBJECT_SET_CERTIFICATION",
+  "interpretation": "Real authenticated one-time schema execution confirmed 125 DDL/metadata statements, observed count 55 table/63 index/schema 1.1 and independent owner UI corroboration; however requested exact physical table/index membership and absence of unexpected objects cannot be independently affirmed from count-only SQL receipt. Not evidence that actual D1 is wrong.",
+  "checkTotals": {
+    "total": 25,
+    "pass": 20,
+    "fail": 0,
+    "blocked": 5
+  },
+  "checks": [
+    {
+      "id": "C01",
+      "criterion": "Canonical GitHub main SHA readback",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "GitHub main 7c508b3f66f5e27588a0b466acfdf1f5dd347283 at audit intake"
+    },
+    {
+      "id": "C02",
+      "criterion": "Owner explicitly approved single target-only schema install",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Runbook checkpoint records 批准正式建表; narrow target and only one permitted run"
+    },
+    {
+      "id": "C03",
+      "criterion": "Real VERIFY_ONLY workflow and job succeeded",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Run 38068559602 Job 114261103226 SUCCESS; logs PREWRITE_EMPTY_TARGET_VERIFIED_ONLY"
+    },
+    {
+      "id": "C04",
+      "criterion": "Original VERIFY_ONLY Artifact ZIP integrity",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Artifact 11676361012 independently SHA256 checked; zero DDL"
+    },
+    {
+      "id": "C05",
+      "criterion": "Real APPLY_ONCE workflow and job succeeded",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Run 38069750915 Job 114264577475 SUCCESS; exact main commit identified"
+    },
+    {
+      "id": "C06",
+      "criterion": "Original APPLY_ONCE Artifact ZIP integrity",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Artifact 11675494971 independently downloaded/unzipped/hash verified"
+    },
+    {
+      "id": "C07",
+      "criterion": "Only intended account/database identity permitted by executor",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Unchanged pinned hashes, GET account D1/list/metadata and authenticated real successful target-run; no owner account ID disclosed"
+    },
+    {
+      "id": "C08",
+      "criterion": "Approved VERIFY vs APPLY plan digest identical",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Both real receipts 99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f; executor blob unchanged between runs"
+    },
+    {
+      "id": "C09",
+      "criterion": "125 SQL statements success attested",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Runtime confirms each SQL affirmative nested result before progress; real logs VERIFIED_SQL_STATEMENTS=125, artifact appliedStatements=125"
+    },
+    {
+      "id": "C10",
+      "criterion": "Physical D1 user table COUNT = 55",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Authenticated SELECT filtered count 55; owner Cloudflare console secondary overview 55"
+    },
+    {
+      "id": "C11",
+      "criterion": "Physical D1 prefixed index COUNT = 63",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Authenticated postwrite filtered sqlite_schema SELECT returns index count 63"
+    },
+    {
+      "id": "C12",
+      "criterion": "Physical D1 schema_version = 1.1",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Authenticated SELECT s2_schema_meta schema_version readback in successful run"
+    },
+    {
+      "id": "C13",
+      "criterion": "Active SQL 0001..0010 sealed, staged 0011 excluded",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Offline plan 125=55 table+63 index+7 metadata, active 10 migrations, 0011 staged only"
+    },
+    {
+      "id": "C14",
+      "criterion": "Exact physical canonical table NAME membership (55)",
+      "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+      "proof": "Real artifact contains count not the 55 actual names; filtered query checks count only"
+    },
+    {
+      "id": "C15",
+      "criterion": "Exact physical canonical named index membership (63)",
+      "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+      "proof": "Real artifact contains count not the 63 actual names; filtered query checks count only"
+    },
+    {
+      "id": "C16",
+      "criterion": "No extra unknown table/index/view/trigger physical objects",
+      "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+      "proof": "Postwrite query only selects s2_% tables and idx_s2_% indexes; no full sqlite_schema inventory"
+    },
+    {
+      "id": "C17",
+      "criterion": "New-account D1 Free usage within limits at observed snapshot",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Owner daily UI 285/100000 writes, 537/5000000 reads, 987.14KB/5GB storage and 1/10 DB; observed only"
+    },
+    {
+      "id": "C18",
+      "criterion": "Account UTC-day vs one-DB rolling-24h costs separated",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Owner D1 detail 298 rolling 24h writes, distinct from account daily 285; no per-125 SQL cost asserted"
+    },
+    {
+      "id": "C19",
+      "criterion": "Exhaustive single APPLY_ONCE and absence of workflow rerun",
+      "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+      "proof": "Known apply Run #38069750915 has documented attempt1 and owner inventory attestation but current GitHub API cannot enumerate all workflow history independently"
+    },
+    {
+      "id": "C20",
+      "criterion": "System1 Formal Core and repository Worker/Cron unchanged",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "GitHub job output SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED; isolated destination-only diff/workflow paths"
+    },
+    {
+      "id": "C21",
+      "criterion": "Physical old Cloudflare account post-run nonmutation independently reobserved",
+      "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+      "proof": "Executor never requests source account and scoped destination authorization attested, but no separate postwrite source-account physical GET inventory was collected here"
+    },
+    {
+      "id": "C22",
+      "criterion": "No history or Frozen Snapshot data copy by schema executor",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "No source account API endpoint or data load in writer; real receipt sourceRowsCopied=0; no History/Frozen importer"
+    },
+    {
+      "id": "C23",
+      "criterion": "No Worker or Cron deployment or DB resource creation by workflow",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Workflow only target SQL and artifact; no wrangler, deploy, create database; receipt zeros"
+    },
+    {
+      "id": "C24",
+      "criterion": "No paid R2 or other paid services enabled by schema run",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "No R2 billing API calls; receipt paidUpgrade=false; owner free-tier dashboard"
+    },
+    {
+      "id": "C25",
+      "criterion": "No credential values in sanitized artifacts / reviewed logs",
+      "status": "PASS_EVIDENCE_SCOPED",
+      "proof": "Only masked token and expected credential names; no raw UUID/account IDs committed in audit evidence"
+    }
+  ],
+  "realWorkflows": {
+    "verify": {
+      "runId": 38068559602,
+      "jobId": 114261103226,
+      "headSha": "a85fffc04043a7f3af15582048219e500e255fe7",
+      "artifactId": 11676361012,
+      "zipSha256": "3364b28aca9b877d4d038e5a89fcdc7ff6301b37b64640b48df09cf60587d1d4",
+      "receipt": {
+        "mode": "VERIFY_ONLY",
+        "status": "PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",
+        "appliedStatements": 0
+      }
+    },
+    "apply": {
+      "runId": 38069750915,
+      "jobId": 114264577475,
+      "headSha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+      "artifactId": 11675494971,
+      "zipSha256": "9ab4da826f679a757a27966fda51b4a569667ce28fd409bdca4f5d3ad277117e",
+      "receipt": {
+        "mode": "APPLY_ONCE",
+        "status": "TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS",
+        "plannedStatements": 125,
+        "appliedStatements": 125,
+        "actualTables": 55,
+        "actualIndexes": 63,
+        "schemaVersion": "1.1",
+        "sourceRowsCopied": 0
+      }
+    },
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "sameExecutorBlobAtVerifyAndApply": "5ebd9922328e68024a12675f0d36708a65157cb9",
+    "zipShaRecomputedByAuditFromRawBytes": true,
+    "zipContentsRead": "sanitized-receipt.json",
+    "directCloudflareQueryByAudit": false
+  },
+  "ownerCloudflareUI": {
+    "freeDaily": {
+      "periodLabel": "October 10 - October 10",
+      "rowsWritten": 285,
+      "writeLimit": 100000,
+      "rowsRead": 537,
+      "readLimit": 5000000,
+      "storageKiBApprox": 987.14,
+      "storageLimitGB": 5,
+      "databases": 1,
+      "databaseLimit": 10,
+      "remainingWrittenSnapshot": 99715
+    },
+    "individualDatabaseLast24h": {
+      "rowsWritten": 298,
+      "rowsRead": 190,
+      "queries": 128,
+      "storageKBytesApprox": 987,
+      "tableCount": 55
+    },
+    "costBoundary": "Distinct scopes and periods, not 125 SQL exact billing",
+    "screenshotsSource": "Owner-supplied observed screenshots described in merged PR #1101 and #1102, no raw sensitive screenshot independently accessed by auditor"
+  },
+  "postwriteReadbackBoundary": {
+    "sourceFile": "system2/migration/destination_schema_only_manual_executor_v0_1.mjs",
+    "onlyFilters": [
+      "table name LIKE 's2_%'",
+      "index name LIKE 'idx_s2_%'"
+    ],
+    "positiveClaimsSupported": [
+      "55 returned prefixed table objects",
+      "63 returned prefixed index objects",
+      "s2_schema_meta version 1.1"
+    ],
+    "exactObjectNameSetAvailable": false,
+    "allTypesFullSqliteSchemaCaptured": false,
+    "extraUnprefixedObjectsAbsentVerified": false,
+    "proofGapDemonstrationTest": "system2/tests/audit_destination_schema_postwrite_countonly_counterexample_20261011.test.mjs",
+    "correctionIssue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1103"
+  },
+  "additionalAuditScope": {
+    "noNewD1DDLByAudit": true,
+    "noHistoryFrozenCopyByAudit": true,
+    "noTokenSecretReadOrChange": true,
+    "noWorkerCronDeployByAudit": true,
+    "noPaidServicesByAudit": true,
+    "system1FormalCoreUnmodifiedByAudit": true,
+    "noNewCloudflareSchemaMutationAuthorized": true,
+    "sourceCloudflareAccountPostwritePhysicalInventoryNotRecollected": true,
+    "exhaustiveWorkflowRunAndAttemptInventoryNotDirectlyEnumerated": true,
+    "physicalStageCertification": "PENDING_OBJECT_SET_READONLY_ATTESTATION",
+    "fullMigrationCertified": false,
+    "shadowCertified": false
+  },
+  "nextActions": [
+    "Cloudflare cross-account migration engineering lane to author manual, account-pinned, full sqlite_schema READ-ONLY postwrite inventory, no DDL; compare exact canonical named table/index set and forbid extras, views, triggers; persist sanitized immutable Artifact for AUDIT_LANE.",
+    "Independently retrieve exhaustive source/deployment workflow dispatch attempts without secret exposure, and optionally fresh source account GET-only isolation snapshot if required for source nonmutation acceptance.",
+    "AUDIT_LANE reverify new read-only Artifact SHA & object-set equality, then determine Schema-only PASS without changing old real receipt or reexecuting APPLY_ONCE.",
+    "DATA_LANE Issue #1068 remains separate backup/PIT/history/Frozen prerequisite, no Shadow migration promotion."
+  ]
+}
