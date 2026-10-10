@@ -2924,3 +2924,23 @@ D06-05 first bounded pair corporate-action mask stored at `research/d06_05_pair_
 2. If no additional common-support identity transition exists, promote the exact same 2,778-symbol set/hash to FINAL_CERTIFIED.
 3. Only then preregister vintage-clustered OOS/Shadow residual incrementality and open outcomes.
 4. Do not spend further effort re-fetching TPEx ex-right/dividend rows for this pair; that blocker is closed.
+
+
+## 2026-10-10 D06 — IC-108 D06-05 10/02 date-effective trading membership filter
+
+- Durable artifact: `research/d06_05_ic108_oct02_trading_membership_filter_20261010_v0_1.json`.
+- Parent event/denominator-clean TDCC candidate: 2,778 / hash `fnv1a64-utf8:11ab5a267ae9cd2a`.
+- Reused accepted official System2 source manifest Run 37944021198 / Artifact 11623192826; 2026-10-02 exact four-digit keys = TWSE 1,086 + TPEx 888 = 1,974.
+- Parent ∩ 10/02 official exchange trading membership = 1,854.
+- Explicit known TDR exclusions 9103/9110 -> 1,852.
+- 1,852 row-set hashes: FNV-1a `fnv1a64-utf8:5eb02db54ebae70f`; SHA-256 `d99fd27572c844a49d0f363d8ee72270e7c8a43bafd77ac37186bdff08ba7bc3`.
+- Prior 2,772 label is falsified as a listed/OTC common-stock upper bound: 920 of those symbols are absent from 10/02 TWSE/TPEx daily four-digit membership.
+- A1 four-digit presence is necessary market-presence evidence, not sufficient legal common-stock type evidence; TDR guard remains explicit.
+- 9/24 old smoke proves 1,085 TWSE + 890 TPEx counts but does not persist the full symbol set; pair-effective final cohort therefore remains pending.
+- D06-05 stays L3/60. Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Reconstruct/persist full 2026-09-24 TWSE+TPEx four-digit trading membership, or exhaustively certify listing/transfer/delisting transitions from 9/24 through 10/02.
+2. Intersect both date memberships with the TDCC denominator/event-clean parent and explicit security-type exclusions.
+3. Freeze final pair-effective symbol set + canonical hash before opening any outcome column.
+4. D06-14 still requires tradeDate 2026-10-06 T2_FINAL append-only readback; source replication does not add maturity.
