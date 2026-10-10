@@ -15,6 +15,8 @@ const CLASS_STATES=new Set([
 export function classifySecurityClassEligibility(r={}){
   if(!r.normalizedSecurityClass||!CLASS_STATES.has(r.normalizedSecurityClass))
     return {status:"SECURITY_CLASS_UNKNOWN"};
+  if(r.normalizedSecurityClass==="SECURITY_CLASS_UNKNOWN")
+    return {status:"SECURITY_CLASS_UNKNOWN"};
   if(r.coverageCompleteForDate!==true)return {status:"SECURITY_CLASS_UNKNOWN"};
   if(!r.firstObservableAt||!r.predictorFreezeAt)return {status:"SECURITY_CLASS_CLOCK_UNKNOWN"};
   if(r.firstObservableAt>r.predictorFreezeAt)return {status:"SECURITY_CLASS_LOOKAHEAD"};
