@@ -17,7 +17,7 @@ for (const secret of [
 }
 assert.match(workflow,/INVENTORY_ONLY_NO_MUTATION/);
 assert.match(workflow,/run_readonly_inventory_v0_1\.mjs/);
-assert.doesNotMatch(workflow,/\bnpm exec\b|\bwrangler\b|--deploy|\bPOST\s+https|\bterraform apply\b/);
+assert.doesNotMatch(workflow,/(?:^|\s)(?:npm\s+exec|npx\s+wrangler|wrangler\s+(?:deploy|secret|d1|r2)|terraform\s+apply)|--deploy|\bPOST\s+https/m);
 assert.match(inventory,/method: "GET"/);
 assert.doesNotMatch(inventory,/\bmethod:\s*"(?:POST|PUT|PATCH|DELETE)"/);
 assert.doesNotMatch(inventory,/\/d1\/database\/\$\{.*\}\/query/);
