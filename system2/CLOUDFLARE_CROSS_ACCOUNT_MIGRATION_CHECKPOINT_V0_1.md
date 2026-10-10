@@ -322,3 +322,14 @@ Owner supplied a Cloudflare mobile D1 list/usage screenshot after the authentica
 
 Machine-readable owner-UI observation: `system2/migration/evidence/S2_DEST_D1_POSTAPPLY_OWNER_UI_USAGE_20261011_V0_1.json`. Do not include the raw owner's dashboard screenshots, partial account UUID, or API credentials in GitHub.
 
+
+
+## 2026-10-11 07:23 Taipei — Owner D1 detail page independently displays exactly 55 tables
+
+After schema-only owner-approved single physical [APPLY_ONCE Run #38069750915](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915), owner supplied a screenshot from the **new Cloudflare account System2-Stock-Research**, existing D1 `system2-research` → `概觀` / Overview. Screenshot directly displays **`資料表數量 = 55`**. It independently corroborates real GitHub Artifact #11675494971's verified 55 tables / 63 named indexes / D1 schema 1.1. Cloudflare owner UI does **not** separately confirm the 63-index count or schema version; those remain evidenced by the previously authenticated SQL post-DDL readback. No new SQL commands were executed.
+
+- Same D1 detail page shows **past 24-hour** query total 128, read rows 190, written rows 298, current storage about 987 KB. These *per-database 24-hour* metrics are not directly comparable with the previous D1 **account Free daily** usage screenshot, October 10–10: 285/100,000 rows written; do not use 298 as an account daily quota consumption claim.
+- GitHub most recent manual workflow_dispatch inventory still shows exactly **one owner APPLY_ONCE** (Run #38069750915) plus one earlier VERIFY_ONLY (#38068559602); no repeat owner schema write.
+- Physical destination-only Schema preflight + install + Cloudflare overview visual crosscheck = **55/55 confirmed**. **Independent AUDIT_LANE postwrite approval still PENDING**. The entire System 2 migration and Shadow requirements are **NOT** accepted merely by this schema stage; no historical/Frozen PIT/data migrated, Worker/Cron deployed, R2 paid entitlement activated, System1 runtime changed or new write authorized. Source DATA_LANE #1068 remains separately gated.
+- Immutable sanitized UI-derived metadata: `system2/migration/evidence/S2_DEST_D1_POSTAPPLY_OWNER_UI_TABLE_COUNT_20261011_V0_1.json`. Deliberately do not commit screenshots, partial account UUIDs or tokens.
+
