@@ -55,4 +55,15 @@ assert.match(serviceCode,/R2_ACCOUNT_NOT_ENTITLED/);
 assert.match(serviceCode,/R2_READ_PERMISSION_DENIED/);
 assert.doesNotMatch(serviceCode,/JSON\.stringify\(process\.env\)/);
 
+
+assert.match(workflow,/PARTIAL_READONLY_INVENTORY_DEST_R2_NOT_ENTITLED/);
+assert.match(workflow,/r2\?\.errorCode===10042/);
+assert.match(workflow,/BLOCKED_SERVICE_READS/);
+assert.match(runner,/allowedR2Skip/);
+assert.match(runner,/SERVICE_ATTESTATION_MISSING_OR_UNSAFE/);
+assert.match(runner,/r2Mode: allowedR2Skip \? "KNOWN_NOT_ENTITLED"/);
+assert.match(inventory,/r2BucketsVerified: privateInventory.r2BucketsVerified/);
+assert.match(inventory,/complete: r2BucketsVerified/);
+assert.match(inventory,/UNKNOWN/); // size fingerprint unknown must not be treated as complete data readback
+
 console.log("System2 migration GitHub workflow / scripts static isolation PASS");
