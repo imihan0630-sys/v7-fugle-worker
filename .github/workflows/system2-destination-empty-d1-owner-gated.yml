@@ -1,0 +1,76 @@
+# DRAFT OWNER APPROVAL REQUIRED BEFORE MERGE. Not a source account workflow.
+name: System2 Destination ONE Empty D1 Create (OWNER GATE)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Exact CREATE_ONE_EMPTY_DESTINATION_D1; one EMPTY D1 only, no SQL"
+        required: true
+        type: string
+      free_tier_ack:
+        description: "Exact FREE_TIER_NO_BILLING_CHANGE_ACKNOWLEDGED; no paid enablement"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-destination-empty-d1-create-only
+  cancel-in-progress: false
+
+jobs:
+  create-empty-d1:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    environment: system2-destination-provision
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Guard explicit approval and Free-plan-only scope
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          FREE_ACK: ${{ inputs.free_tier_ack }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM" = 'CREATE_ONE_EMPTY_DESTINATION_D1'
+          test "$FREE_ACK" = 'FREE_TIER_NO_BILLING_CHANGE_ACKNOWLEDGED'
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
+
+      - name: Offline fail-closed mock test (no Cloudflare calls)
+        run: node system2/tests/create_empty_destination_d1_once_v0_1.test.mjs
+
+      - name: Create exactly one EMPTY destination D1 metadata resource
+        env:
+          S2_SOURCE_ACCOUNT_ID_DENY: ${{ secrets.S2_SOURCE_ACCOUNT_ID_DENY }}
+          S2_DESTINATION_ACCOUNT_ID: ${{ secrets.S2_DESTINATION_ACCOUNT_ID }}
+          S2_DESTINATION_D1_CREATE_TOKEN: ${{ secrets.S2_DESTINATION_D1_CREATE_TOKEN }}
+          S2_D1_CREATE_CONFIRM: ${{ inputs.confirm }}
+          S2_D1_FREE_TIER_ACK: ${{ inputs.free_tier_ack }}
+        run: node system2/migration/run_create_empty_destination_d1_once_v0_1.mjs
+
+      - name: Upload sanitized create result (even after unknown outcome)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-destination-empty-d1-${{ github.run_id }}
+          path: /tmp/system2-destination-empty-d1-create/receipt.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Root System1 production unchanged
+        if: always()
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "SOURCE_FORMAL_RUNTIME_UNMODIFIED"
