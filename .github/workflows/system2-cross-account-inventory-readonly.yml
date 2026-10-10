@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$ACK" = INVENTORY_ONLY_NO_MUTATION
-          # This workflow MUST NOT call wrangler, POST, PUT, PATCH, DELETE, D1 SQL or R2 object write.
+          # Metadata-only inventory: no Cloudflare mutations, SQL or object-byte retrieval.
           test -f system2/migration/run_readonly_inventory_v0_1.mjs
       - name: Collect both accounts metadata using dedicated scoped READ tokens
         env:
