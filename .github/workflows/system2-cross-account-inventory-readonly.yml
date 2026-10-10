@@ -81,11 +81,20 @@ jobs:
           node --input-type=module -e '
             import {readFileSync} from "node:fs";
             const r=JSON.parse(readFileSync("/tmp/system2-cross-account-inventory/service-diagnostic.json","utf8"));
-            if (r.status!=="SERVICES_READ_PREFLIGHT_PASS") {
-              console.error("Account service READ incomplete; refer to sanitized service receipt; do not change permissions blindly.");
+            const hasFour=(x,role)=>x?.role===role && Array.isArray(x.services) && x.services.length===4 &&
+              new Set(x.services.map(s=>s.service)).size===4;
+            const granted=(x,name)=>x.services.find(s=>s.service===name)?.classification==="READ_GRANTED";
+            const src=hasFour(r.source,"SOURCE") && ["D1","WORKERS","KV","R2"].every(x=>granted(r.source,x));
+            const dst=hasFour(r.destination,"DESTINATION") && ["D1","WORKERS","KV"].every(x=>granted(r.destination,x));
+            const r2=r.destination?.services?.find(s=>s.service==="R2");
+            const partial=r.status==="BLOCKED_SERVICE_READS" && src && dst &&
+              r2?.classification==="R2_ACCOUNT_NOT_ENTITLED" && r2?.httpStatus===403 && r2?.errorCode===10042;
+            const all=r.status==="SERVICES_READ_PREFLIGHT_PASS" && src && dst && granted(r.destination,"R2");
+            if (!all && !partial) {
+              console.error("READ_ONLY_SERVICE_SCOPE_BLOCKED; inspect sanitized per-service receipt.");
               process.exit(1);
             }
-            console.log("Both Cloudflare account D1, Workers, KV, R2 reads passed.");
+            console.log(partial ? "PARTIAL_READONLY_INVENTORY_DEST_R2_NOT_ENTITLED" : "FULL_METADATA_SCOPE_GRANTED");
           '
       - name: Collect both accounts metadata using dedicated scoped READ tokens
         env:
