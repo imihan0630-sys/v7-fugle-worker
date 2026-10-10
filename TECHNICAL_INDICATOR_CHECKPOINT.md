@@ -8959,3 +8959,33 @@ D03 maturity remains 56.7%. D03-10 Bollinger remains L2/40 and still needs exact
 ### Exact next continuation point after TI-1732
 
 Do not repeat archive rehydration. Await the independently accepted real 36-key Hot D1 Scout under a qualified read budget. Separately acquire causal exact eligible-session history long enough for the target indicator: first priority is 20 clean parent sessions for D03-10 Bollinger with reset/continuity lineage; D03-09 ADX remains full-replay or certified-state only. The six-date archive may support byte-integrity and input-schema diagnostics, not promotion, PIT, OOS, alpha or outcome claims. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
+
+## TI-1733~1752 — C1 official-session parent-expectation firewall (2026-10-10)
+
+### New canonical evidence consumed
+
+Main merge `1a0c5ae5125cf0089b0152d1485df00236a5dd49` adds an official-session eligibility gate before the 00:10 Taipei System1 C1 evidence collector. It evaluates the preceding Taipei calendar date with the production trading-calendar implementation, skips official non-trading sessions, permits collection only for official trading sessions, and rejects invalid, mismatched, unknown, future, or same-day-unclosed targets. Public runtime GET remains explicitly insufficient for Formal/C1 acceptance. The merged machine contract has two positive and eight negative cases, but creates no physical ordinary-session C1 receipt.
+
+### D03 inference contract
+
+D03 freezes three non-interchangeable parent-expectation states: PARENT_NOT_EXPECTED_NONTRADING, PARENT_EXPECTED_UNVERIFIED, and PARENT_VERIFIED. An official non-trading date is excluded from the parent denominator and may not be interpreted as zero-pick or data failure. An eligible trading date belongs in the expected-date denominator but does not prove the Formal scan ran, completed, persisted, selected zero names, or produced C1. Only an immutable same-generation C1 receipt with authoritative V8.20 Formal-to-C1 binding and physical business readback can become PARENT_VERIFIED.
+
+The 20-case D03 oracle `research/test_d03_c1_official_session_parent_expectation_v0_1.mjs` passes. It rejects invalid/mismatched/unknown calendar state, future/unclosed targets, holiday zero-pick and denominator contamination, eligibility-as-execution, eligibility-as-parent, public HTTP success as parent evidence, historical manual backfill as prospective evidence, later-parent backfill, missing receipt/binding/readback, and Bollinger parent admission without W0.
+
+### Bias / falsification disposition
+
+- PIT/look-ahead: future/unclosed targets fail closed; manual historical reads are not prospective receipts.
+- Selection bias: removing non-trading dates repairs denominators but creates no selected population.
+- OOS/walk-forward: calendar classification is not a sample or outcome.
+- Multiple testing/overfitting: no indicator parameter or threshold is searched.
+- Redundancy: the gate is temporal provenance, not a new price-information root.
+- Cost/fillability/limits/halts/ex-rights/date clustering/market regime remain UNKNOWN or unchanged.
+
+### Module disposition
+
+D03-10 Bollinger parent-expectation semantics improve but the module remains L2/40: genuine parent, V8.20 binding, W0 continuity and exact 20 eligible sessions remain absent. D03-09 ADX remains L2/40 and still requires full replay or replay-certified trusted state. D03-04/D03-12 future outcome denominators must exclude non-trading dates; D03-13 daily/weekly finality must use the official session calendar. No maturity promotion, outcome join, FORMAL_OPTIMIZATION_CANDIDATE or Formal change.
+
+### Exact next continuation point after TI-1752
+
+On the next ordinary Taiwan trading session require a physical official-calendar receipt followed by a genuine immutable C1 receipt and authoritative V8.20 binding. If non-trading, record PARENT_NOT_EXPECTED_NONTRADING and exclude it from the denominator. If trading but C1 is absent, retain PARENT_EXPECTED_UNVERIFIED until evidence separates upstream failure from genuine zero-pick. Only PARENT_VERIFIED may enter D03-10 reconciliation. In parallel, the Hot D1 36-key Scout and W0 continuity remain separate prerequisites. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
