@@ -51,3 +51,30 @@ Cross-account separation solves ONLY *same-account* D1 collision after verified 
 
 ## Hard STOP conditions
 Never mutate production account, never modify `wrangler.toml` or `Worker.js`, never launch physical provisioning against unspecified account, never place token/account private values in PR, never claim source resources missing from an outdated planning document. This checkpoint is a DRAFT PROPOSAL awaiting lane review.
+
+## 2026-10-10 staged engineering continuation (same Draft PR #1058)
+
+State: OFFLINE_ENGINEERING_IMPLEMENTED / PHYSICAL_MIGRATION_UNSTARTED / PERMISSION_GATE_PENDING.
+
+Implementation on dedicated PR branch (not main, not a Cloudflare deploy):
+- `system2/migration/cross_account_preflight_v0_1.mjs`: rejects same source/destination account, ambiguous D1/R2/Worker IDs, shared V7_DB/STOCKS_KV, unverified inventories, existing destination targets and absent source manifests; never authorizes mutation.
+- `system2/migration/cloudflare_inventory_readonly_v0_1.mjs`: authenticated metadata-only GET of source/dest D1, Workers, R2 buckets, KV and System2 Worker Cron/binding names, with pagination, opaque SHA fingerprints and strict artifact redaction. NOT a route inspection, D1 table census, or R2 object byte proof.
+- `system2/migration/run_readonly_inventory_v0_1.mjs`: two-account runner, requires distinct account IDs and exact read-only acknowledgment; outputs sanitized JSON only.
+- `.github/workflows/system2-cross-account-inventory-readonly.yml`: manual dispatch only, new dedicated `system2-migration` environment with **four dedicated secrets**, no production secret reuse or mutating Cloudflare call. Owner must set up environment + two READ tokens; workflow unavailable for production until reviewed/merged. No automatic invocation.
+- `system2/migration/cross_account_storage_reconciliation_v0_1.mjs`: offline physical receipt comparator for immutable D1 tables, frozen snapshot SHA, schema/export hashes and R2 key/bytes/SHA; matching returns MATCHED_REVIEW_REQUIRED not cutover permission.
+- `system2/migration/CROSS_ACCOUNT_OWNER_SETUP_AND_CUTOVER_RUNBOOK_V0_1.md`: owner one-time setup, quota-safe data export, staged destination schema/mirror/readback, no dual-cron and rollback protections.
+- Added focused tests: `cross_account_preflight_v0_1.test.mjs`, `cloudflare_inventory_readonly_v0_1.test.mjs`, `cross_account_storage_reconciliation_v0_1.test.mjs`, `cross_account_inventory_workflow_guard_v0_1.test.mjs`.
+
+Verified GitHub CI evidence on implementation head `39ef9ee5a36909e65a9ff1032c4fc03c3c1f04dd`:
+- System2 Research CI `38013583385` SUCCESS.
+- V8 Regression `38013583412` SUCCESS.
+- Later branch commits require their own final-head CI acceptance; do not extrapolate previous PASS.
+
+Quantitative acceptance (different denominators; never combine):
+- Offline implementation planned components: 6 modules/runner/workflow/verification/runbook + 4 focused test files documented; merged into main 0 until owner/Lane review.
+- Physical migration must-pass gates: **0/13 accepted**.
+- New target D1 created: **0**. Historical D1 tables copied: **0**. R2 objects copied: **0**. Cutover activated: **0**.
+- New account D1 empty/Workers Free: user UI observed only; authenticated Cloudflare API attestation pending.
+- System2 Shadow 15 formal gates: canonical accepted count **0/15** at latest verified ledger baseline; 75-subcheck progress tracked separately by BUILD/DATA/AUDIT, never inferred from infrastructure PR.
+
+Exact next continuation: re-read main and #1058; verify final-head System2 CI/V8 regression; obtain owner-approved `system2-migration` environment secrets via secure GitHub UI; invoke **only owner-approved manual read-only inventory**, collect source/destination receipt SHA and actual D1/R2 resource counts; have DATA_LANE create genuine source backup manifest and avoid D1 quota collisions; then request separate resource provisioning approval. Keep `system2-resonance-deploy.yml` and `system2-isolated-d1-provision.yml` unchanged until new-account lane review.
