@@ -8,6 +8,7 @@ const mock = async (url, options) => {
   const path = new URL(url).pathname, u = new URL(url);
   const result = (obj, info) => ({ok:true, json: async () => ({success:true,result:obj,...(info ? {result_info:info}: {})})});
   if (path.endsWith("/d1/database")) return result([{name:"system2-research",uuid:"f".repeat(32)}],{total_count:1});
+  if (path.endsWith("/d1/database/"+"f".repeat(32))) return result({name:"system2-research",file_size:1024});
   if (path.endsWith("/workers/scripts")) return result([{id:"system2-shadow-research"},{id:"fugle-test"}]);
   if (path.endsWith("/r2/buckets")) {
     if (!u.searchParams.has("cursor")) return result({buckets:[{name:"system2-historical-research"}]}, {cursor:"next"});
@@ -24,6 +25,7 @@ const mock = async (url, options) => {
 };
 const p = await collectCloudflareInventory({accountId:account,apiToken:token,fetchImpl:mock,now:()=>new Date("2026-10-10T01:30:00.000Z")});
 assert.equal(p.databases.length,1);
+assert.equal(p.databases[0].sizeBytes,1024);
 assert.equal(p.buckets.length,2);
 assert.equal(p.workers.length,2);
 assert.equal(p.crons.length,1);
@@ -39,6 +41,7 @@ assert(!json.includes("f".repeat(32)));
 assert(json.includes("system2-research"));
 assert(json.includes("SYSTEM2_DB"));
 assert.equal(pub.complete,true);
+assert.equal(pub.databases[0].sizeBytes,1024);
 await assert.rejects(collectCloudflareInventory({accountId:"INVALID",apiToken:token,fetchImpl:mock}),/ACCOUNT_IDENTITY|ACCOUNT_ID_INVALID|CLOUDFLARE_ACCOUNT_ID_INVALID/);
 await assert.rejects(collectCloudflareInventory({accountId:account,apiToken:"",fetchImpl:mock}),/READ_ONLY_API_TOKEN_MISSING/);
 await assert.rejects(collectCloudflareInventory({accountId:account,apiToken:token,fetchImpl:async()=>({ok:false,status:403})}),/API_ERROR_403/);
