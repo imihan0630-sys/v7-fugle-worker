@@ -1,0 +1,53 @@
+# Physical sqlite_schema SELECT only, reuses old destination D1 READ token.
+# No account/source token, no Cloudflare DDL/data mutation, no automatic schedule.
+name: System2 Destination D1 SQL Empty Preflight (READ ONLY)
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type DEST_SCHEMA_EMPTY_SQL_READONLY_ONLY"
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: system2-new-account-schema-only-single-run
+  cancel-in-progress: false
+jobs:
+  preflight:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-migration
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate exact manual and scoped read-only confirmation
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = "workflow_dispatch"
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$CONFIRM" = "DEST_SCHEMA_EMPTY_SQL_READONLY_ONLY"
+      - name: Test D1 SQL read-only guard with mock account and database IDs
+        run: node system2/tests/destination_schema_sql_readonly_preflight_v0_1.test.mjs
+      - name: Perform destination-only 1 SELECT sqlite_schema query
+        env:
+          S2_SQL_READ_ONLY_CONFIRM: ${{ inputs.confirm }}
+          S2_MIGRATION_DESTINATION_ACCOUNT_ID: ${{ secrets.S2_MIGRATION_DESTINATION_ACCOUNT_ID }}
+          S2_MIGRATION_DESTINATION_READ_TOKEN: ${{ secrets.S2_MIGRATION_DESTINATION_READ_TOKEN }}
+        run: node system2/migration/run_destination_schema_sql_readonly_preflight_v0_1.mjs
+      - name: Upload redacted D1 schema-only read receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-empty-schema-readonly-${{ github.run_id }}
+          path: /tmp/s2-dest-d1-sql-readonly/receipt.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Verify source Worker manifest untouched
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
