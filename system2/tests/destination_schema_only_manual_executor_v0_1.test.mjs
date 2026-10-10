@@ -13,7 +13,8 @@ const sourceProvisioner=readFileSync("system2/deploy/provision_system2_d1.mjs","
 const destinationReceipt=JSON.parse(readFileSync("system2/migration/evidence/S2_DEST_D1_POSTCREATE_REAL_GETONLY_RECONCILIATION_20261010_V0_1.json","utf8"));
 const seal=planDestinationSchemaOnlyOfflineV0_1({files,sourceProvisioner,destinationReceipt});
 assert.equal(seal.plannedStatements,125);
-function mock({notEmpty=false,wrongDb=false,extraDb=false,stopAfter=Infinity,badMeta=false}={}){
+function mock({notEmpty=false,wrongDb=false,extraDb=false,stopAfter=Infinity,badMeta=false,
+  reserved=false,duplicateReserved=false,spoofedReservedType=false}={}){
  const calls=[];let ddl=0;
  const fetchImpl=async(url,opts={})=>{
   const method=opts.method||"GET";
@@ -29,7 +30,11 @@ function mock({notEmpty=false,wrongDb=false,extraDb=false,stopAfter=Infinity,bad
     success:true,result:{name:"system2-research",uuid:DB,file_size:12288}});
   if(url.endsWith("/query")){
     if(sql?.startsWith("SELECT type, name FROM sqlite_schema")){
-      return Response.json({success:true,result:[{success:true,results:notEmpty?[{type:"table",name:"s2_partial"}]:[]}]});
+      return Response.json({success:true,result:[{success:true,results:[
+        ...(reserved?[{type:spoofedReservedType?"index":"table",name:"_cf_KV"}]:[]),
+        ...(duplicateReserved?[{type:"table",name:"_cf_KV"}]:[]),
+        ...(notEmpty?[{type:"table",name:"s2_partial"}]:[])
+      ]}]});
     }
     if(sql?.startsWith("SELECT type,name FROM sqlite_schema")){
       return Response.json({success:true,result:[{success:true,results:[
@@ -54,14 +59,24 @@ const base=(fake,overrides={})=>({
  confirm:SCHEMA_CONFIRM,boundary:SCHEMA_BOUNDARY,
  files,sourceProvisioner,destinationReceipt,expectedPlanHash:seal.planSequenceSha256,...overrides
 });
-const pre=mock();
+const pre=mock({reserved:true});
 const v=await fakeEngine(base(pre),trusted);
 assert.equal(v.result,"PREWRITE_EMPTY_TARGET_VERIFIED_ONLY");
 assert.equal(v.appliedStatements,0);
 assert.equal(v.plannedStatements,125);
 assert.equal(pre.writes,0);
 assert.deepEqual(pre.calls.map(x=>x.method),["GET","GET","POST"]);
-const ok=mock();
+// Cloudflare creates _cf_KV even when no user-defined application tables exist.
+// This exact reserved object may be ignored but spoofed/extra objects must block.
+const vendor=mock({reserved:true});
+const verifiedVendor=await fakeEngine(base(vendor),trusted);
+assert.equal(verifiedVendor.result,"PREWRITE_EMPTY_TARGET_VERIFIED_ONLY");
+assert.equal(verifiedVendor.platformReservedObjectsBefore,1);
+assert.equal(verifiedVendor.schemaObjectsBefore,0);
+assert.equal(vendor.writes,0);
+await assert.rejects(()=>fakeEngine(base(mock({reserved:true,duplicateReserved:true})),trusted),
+ e=>e.message.includes("D1_RESERVED_TABLE_DUPLICATE_STOP_NO_RETRY"));
+const ok=mock({reserved:true});
 const progress=[];
 const done=await fakeEngine(base(ok,{mode:"APPLY_ONCE",onProgress:x=>progress.push(x)}),trusted);
 assert.equal(done.result,"TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS");
@@ -88,6 +103,8 @@ await rejected({change:{accountId:A}},"DESTINATION_ACCOUNT_FINGERPRINT_MISMATCH"
 await rejected({mock:{wrongDb:true}},"DESTINATION_D1_IDENTITY_MISMATCH");
 await rejected({mock:{extraDb:true}},"DESTINATION_D1_CARDINALITY_UNVERIFIED");
 await rejected({mock:{notEmpty:true}},"DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
+await rejected({mock:{reserved:true,notEmpty:true}},"DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
+await rejected({mock:{reserved:true,spoofedReservedType:true}},"DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
 await rejected({change:{confirm:"WRONG"}},"OWNER_SCHEMA_SCOPE_CONFIRMATION_REQUIRED");
 await rejected({change:{boundary:"OTHER_SCOPE"}},"OWNER_SCHEMA_SCOPE_CONFIRMATION_REQUIRED");
 await rejected({change:{expectedPlanHash:"0".repeat(64)}},"SEALED_SQL_PAYLOAD_HASH_NOT_VERIFIED");

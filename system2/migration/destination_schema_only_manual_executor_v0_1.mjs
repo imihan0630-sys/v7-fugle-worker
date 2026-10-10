@@ -17,7 +17,7 @@ async function req(fetchImpl,url,token,method="GET",body){
  let response;
  try{response=await fetchImpl(url,{method,headers:{
   authorization:"Bearer "+token,accept:"application/json","content-type":"application/json"},
-  ...(body?{body:JSON.stringify(body)}:{})});}
+  ...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(25000)});}
  catch{safeErr(method==="POST"?"D1_SQL_OUTCOME_UNKNOWN_NO_RETRY":"CLOUDFLARE_METADATA_READ_UNAVAILABLE");}
  if(!response?.ok)safeErr(method==="POST"?"D1_SQL_OUTCOME_UNKNOWN_NO_RETRY":"CLOUDFLARE_METADATA_READ_UNAVAILABLE");
  const data=await cleanJson(response);
@@ -25,8 +25,18 @@ async function req(fetchImpl,url,token,method="GET",body){
  return data;
 }
 function sqlResults(x){
- if(!Array.isArray(x?.result)||x.result.length!==1||x.result[0]?.success===false||
-     !Array.isArray(x.result[0]?.results))safeErr("D1_SQL_RESPONSE_NOT_CONFIRMED_NO_RETRY");
+ // Both Cloudflare's envelope and the *single SQL statement result* must be
+ // affirmative. HTTP 200 or outer success=true cannot attest SQL execution.
+ // No retries: a rejected DDL response may represent an unknown physical write.
+ if(x?.success!==true||
+    (x.errors!==undefined&&(!Array.isArray(x.errors)||x.errors.length!==0))||
+    !Array.isArray(x.result)||x.result.length!==1||
+    x.result[0]===null||typeof x.result[0]!=="object"||Array.isArray(x.result[0])||
+    x.result[0].success!==true||
+    !Array.isArray(x.result[0].results)||
+    (x.result[0].errors!==undefined&&
+       (!Array.isArray(x.result[0].errors)||x.result[0].errors.length!==0)))
+   safeErr("D1_SQL_RESPONSE_NOT_CONFIRMED_NO_RETRY");
  return x.result[0].results;
 }
 async function executeSql(fetchImpl,base,token,sql){
@@ -61,7 +71,13 @@ async function executeWithTrustedIdentity({
  // Even SELECT uses D1's POST /query endpoint, but does not mutate SQL rows.
  const initial=await executeSql(fetchImpl,dbbase,token,
    "SELECT type, name FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name");
- if(initial.length!==0)safeErr("DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
+ // Cloudflare reserves exactly one built-in (table, _cf_KV) object even for
+ // otherwise blank D1 databases. Never wildcard-ignore _cf_*; every unknown
+ // table, index, view or trigger remains an unconditional prewrite STOP.
+ const cloudflareReserved=initial.filter(x=>x?.type==="table"&&x?.name==="_cf_KV");
+ if(cloudflareReserved.length>1)safeErr("D1_RESERVED_TABLE_DUPLICATE_STOP_NO_RETRY");
+ const applicationObjects=initial.filter(x=>!(x?.type==="table"&&x?.name==="_cf_KV"));
+ if(applicationObjects.length!==0)safeErr("DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
  // No data copies. GraphQL rowsWritten is a lower-bound and not a real-time reserve:
  // only a physical isolated blank D1, low-volume schema DDL, one run and protected GitHub
  // Environment can be accepted by independent owner; record this limitation explicitly.
@@ -70,6 +86,7 @@ async function executeWithTrustedIdentity({
  if(mode==="VERIFY_ONLY")
    return {result:"PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",planSequenceSha256:plan.planSequenceSha256,
      plannedStatements:125,accountMatched:true,databaseMatched:true,schemaObjectsBefore:0,
+     platformReservedObjectsBefore:cloudflareReserved.length,
      schemaObjectsAfter:null,appliedStatements:0,sourceRowsCopied:0,workerOrCronChanged:false,
      headroom,physicalSchemaInstalled:false};
  let done=0;
@@ -94,6 +111,7 @@ async function executeWithTrustedIdentity({
    if(meta.length!==1||meta[0]?.schema_value!=="1.1")safeErr("POSTWRITE_SCHEMA_VERSION_MISMATCH_MANUAL_AUDIT_REQUIRED");
    return {result:"TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS",planSequenceSha256:plan.planSequenceSha256,
      appliedStatements:done,plannedStatements:125,schemaObjectsBefore:0,
+     platformReservedObjectsBefore:cloudflareReserved.length,
      schemaTablesAfter:55,schemaIndexesAfter:63,schemaVersion:"1.1",
      sqlStatementHashes:statuses,sourceRowsCopied:0,workerOrCronChanged:false,
      sourcePhysicalBackupValidated:false,realHistoryMigrated:false,shadowEnabled:false,
