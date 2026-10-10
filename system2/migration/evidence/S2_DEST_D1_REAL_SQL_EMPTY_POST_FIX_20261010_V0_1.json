@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "S2_DEST_D1_REAL_SQL_EMPTY_POST_FIX_EVIDENCE_V0_1",
+  "observedAtUtc": "2026-10-10T12:24:24Z",
+  "observedAtTaipei": "2026-10-10 20:24:24 +08:00",
+  "status": "DESTINATION_D1_PHYSICAL_EMPTY_SQL_VERIFIED",
+  "scope": "ONE_DESTINATION_D1_SQL_SELECT_AND_TWO_METADATA_GETS_ONLY",
+  "canonicalMainAtPhysicalRun": "77fea746d280c5fc6df4d588f89d8d625933ab5e",
+  "previousFalsePositive": {
+    "runId": 38049368343,
+    "classification": "DESTINATION_D1_NONEMPTY_BLOCK_SCHEMA_IMPORT",
+    "observedSchemaObjects": 1
+  },
+  "ownerManualRun": {
+    "id": 38051816632,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38051816632",
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "jobId": 114212314312
+  },
+  "sanitizedArtifact": {
+    "id": 11669069406,
+    "file": "s2-dest-empty-schema-readonly-38051816632.zip",
+    "sha256": "6677eeb2679f3baa9242e4469ffd6b00e7238e2622ef63ba03e4a8bfd07d56fc",
+    "sha256IndependentlyRecomputed": true,
+    "receiptFile": "receipt.json"
+  },
+  "physicalReceipt": {
+    "status": "DESTINATION_D1_PHYSICAL_EMPTY_SQL_VERIFIED",
+    "accountAndDbFingerprintMatched": true,
+    "schemaObjects": 0,
+    "tables": 0,
+    "indexes": 0,
+    "cloudflareReservedTables": 1,
+    "totalRawSchemaObjects": 1,
+    "dbSizeBytes": 12288,
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "queryKind": "SELECT_SQLITE_SCHEMA_ONLY",
+    "cloudReadsPerformed": 3,
+    "cloudWritesPerformed": 0,
+    "realSqlDdlStatements": 0,
+    "sourceCloudCalls": 0,
+    "sourceRowsCopied": 0
+  },
+  "safeguards": {
+    "readOnlyCorrectionPr": 1087,
+    "readOnlyCorrectionMerged": true,
+    "schemaWriterDraftPr": 1088,
+    "schemaWriterMerged": false,
+    "physicalSchemaImportStarted": false,
+    "sourceDataOrFrozenSnapshotMigrated": false,
+    "sourceFormalCoreModified": false,
+    "billingOrPaidR2Enabled": false,
+    "destinationWorkersOrCronsDeployed": false
+  },
+  "nextSteps": [
+    "Independent AUDIT_LANE inspect DRAFT PR 1088 for reserved _cf_KV scope, negative cases and production execution boundary; no auto-merge",
+    "Owner-only new-account restricted D1 Edit credential and separate protected GitHub Environment system2-schema-only",
+    "Fresh destination account quota/headroom and protected environment reviewer approval",
+    "Owner-manual new-account VERIFY_ONLY with exact plan SHA and zero DDL; independent receipt",
+    "Only after separate write approval and all gates, owner-manual APPLY_ONCE (125 SQL statements) with 55-table/63-index/version1.1 readback",
+    "Source historical/frozen data migration blocked pending DATA_LANE Issue 1068 independent physical PIT+backup evidence"
+  ],
+  "fullMigration13GatesAccepted": false,
+  "shadowAccepted": false,
+  "notes": "Receipt proves zero user-defined schema objects as observed in one real SELECT, not that source data is backed up or that any schema/data has been imported."
+}
