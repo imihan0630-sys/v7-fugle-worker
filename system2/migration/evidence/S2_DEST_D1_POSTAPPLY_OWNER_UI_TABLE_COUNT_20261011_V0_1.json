@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "S2_DEST_D1_POSTAPPLY_OWNER_UI_TABLE_COUNT_20261011_V0_1",
+  "classification": "SECONDARY_OWNER_GUI_READONLY_SCHEMA_COUNT_CROSSCHECK",
+  "result": "OWNER_CLOUDFLARE_DATABASE_OVERVIEW_TABLE_COUNT_55_CONFIRMED",
+  "observedLocalTime": "2026-10-11T07:23:00+08:00",
+  "observationScope": {
+    "cloudflareAccount": "System2-Stock-Research",
+    "database": "system2-research",
+    "screen": "D1 database detail → 概觀/Overview",
+    "measuredField": "資料表數量",
+    "tableCountShown": 55,
+    "screenshotAttachedToGitHub": false,
+    "sensitiveAccountIdentifiersExcluded": true
+  },
+  "pageMetricsSeparate24Hours": {
+    "timeFilter": "過去 24 小時",
+    "queriesTotal": 128,
+    "readRows": 190,
+    "writtenRows": 298,
+    "currentStorageLabel": "987 kB",
+    "caveat": "This is the selected D1 database detail overview 24-hour view and cannot be directly equated with preceding ACCOUNT-level UTC-day D1 write quota 285/100000."
+  },
+  "supportingOwnerAccountDailyUI": {
+    "observedApproxLocalTime": "2026-10-11T06:57:00+08:00",
+    "dashboardLabel": "October 10 - October 10",
+    "accountWrittenRows": 285,
+    "accountWrittenRowsFreeLimit": 100000,
+    "accountStorage": "987.14 KB",
+    "evidencePath": "system2/migration/evidence/S2_DEST_D1_POSTAPPLY_OWNER_UI_USAGE_20261011_V0_1.json"
+  },
+  "correspondingAutomatedPhysicalRun": {
+    "workflowRun": 38069750915,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915",
+    "runAttempt": 1,
+    "status": "success",
+    "appliedSqlStatements": 125,
+    "actualTables": 55,
+    "actualIndexes": 63,
+    "schemaVersion": "1.1",
+    "planSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "artifactId": 11675494971,
+    "artifactZipSha256": "9ab4da826f679a757a27966fda51b4a569667ce28fd409bdca4f5d3ad277117e"
+  },
+  "gitHubActionsCrosscheck": {
+    "onlyOneApplyOnceRunSeen": true,
+    "verifyOnlyRun": 38068559602,
+    "applyOnceRun": 38069750915,
+    "noRerunObserved": true
+  },
+  "independentAudit": {
+    "status": "PENDING_AUDIT_LANE_REVIEW",
+    "independentReverifyNotConductedInThisEvidence": true,
+    "next": "AUDIT_LANE inspect exact GitHub Run/Artifact, GUI count and account quota and independently sign off schema-only physical stage."
+  },
+  "notAuthorized": [
+    "MORE_APPLY_ONCE",
+    "ANY_D1_WRITES",
+    "HISTORICAL_OR_FROZEN_MIGRATION",
+    "SOURCE_SYSTEM1_CORE",
+    "WORKER_CRON_DEPLOYMENT",
+    "PAID_R2"
+  ],
+  "fullSystem2MigrationAccepted": false
+}
