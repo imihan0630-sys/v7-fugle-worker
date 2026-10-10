@@ -18,9 +18,9 @@ const fake=(opts={})=>{
       return Response.json({success:true,result:{status:"active"}});
     if(suffix==="/d1/database?page=1&per_page=100"&&method==="GET"){
       listCount+=1;
-      const first={success:true,result:[],result_info:{total_count:0,total_pages:0}};
+      const first={success:true,result:[],result_info:{total_count:0,count:0,page:1,per_page:100}};
       const after={success:true,result:[{name:"system2-research",uuid:DB}],
-        result_info:{total_count:1,total_pages:1}};
+        result_info:{total_count:1,count:1,page:1,per_page:100}};
       const v=listCount===1?Object.assign(first,opts.before||{}):Object.assign(after,opts.after||{});
       return Response.json(v);
     }
@@ -69,10 +69,10 @@ await blocked(a=>a.sourceAccountId="INVALID","DESTINATION_ACCOUNT_IDENTITY_MISMA
 await blocked(a=>a.destinationAccountId="WRONG","DESTINATION_ACCOUNT_IDENTITY_MISMATCH_OR_SOURCE_COLLISION");
 await blocked(a=>a.apiToken="short","DESTINATION_WRITE_TOKEN_REQUIRED");
 await blocked(a=>a.fetchImpl=undefined,"FETCH_INJECTION_REQUIRED");
-const notEmpty=fake({before:{result:[{name:"system2-research",uuid:DB}],result_info:{total_count:1,total_pages:1}}});
+const notEmpty=fake({before:{result:[{name:"system2-research",uuid:DB}],result_info:{total_count:1,count:1,page:1,per_page:100}}});
 await assert.rejects(()=>create(input(notEmpty.fetchImpl)),/DESTINATION_DATABASE_SCOPE_NOT_EMPTY/);
 assert.equal(notEmpty.calls.some(c=>c.method==="POST"),false);
-const truncated=fake({before:{result_info:{total_count:0,total_pages:2}}});
+const truncated=fake({before:{result_info:{total_count:0,count:0,page:2,per_page:100}}});
 await assert.rejects(()=>create(input(truncated.fetchImpl)),/DESTINATION_DATABASE_SCOPE_NOT_EMPTY/);
 const unknownList=fake({before:{result_info:{}}});
 await assert.rejects(()=>create(input(unknownList.fetchImpl)),/DESTINATION_DATABASE_SCOPE_NOT_EMPTY/);
@@ -84,7 +84,7 @@ assert.equal(timeout.calls.filter(c=>c.method==="POST").length,1);
 const errorPost=fake({postHttpError:true});
 await assert.rejects(()=>create(input(errorPost.fetchImpl)),/D1_CREATE_OUTCOME_UNKNOWN_MANUAL_READBACK_NO_RETRY/);
 assert.equal(errorPost.calls.filter(c=>c.method==="POST").length,1);
-const badAfter=fake({after:{result:[],result_info:{total_count:0,total_pages:0}}});
+const badAfter=fake({after:{result:[],result_info:{total_count:0,count:0,page:1,per_page:100}}});
 await assert.rejects(()=>create(input(badAfter.fetchImpl)),/D1_CREATE_READBACK_UNVERIFIED_MANUAL_REVIEW_NO_RETRY/);
 assert.equal(badAfter.calls.filter(c=>c.method==="POST").length,1);
 // Extra guard: static inspection of manually triggered workflow and runner.
