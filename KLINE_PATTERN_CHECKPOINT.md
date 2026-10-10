@@ -7001,3 +7001,32 @@ No maturity or Formal change is authorized by this routing.
 - No D01 module count or maturity increase: all 11 modules L3, maturity 60%; Alpha UNKNOWN; SDA-001/SDA-002 remain open; Formal Core locked. No Worker/D1/production/system signal changes.
 - Parallel intake does not replace the existing exact main-line DL-147 continuation or the frozen physical 1101/TWSE/2021-06-15 R1-R6 evidence blocker.
 - Next action for this intake: freeze causal T/B/M signal masks + synthetic no-lookahead 60m oracle once this dedicated research line is resumed, then seek genuine independent 60m data availability; do not inspect outcomes first.
+
+
+## Sara Wang 金包銀 dedicated continuation — causal 60m oracle and falsification freeze (2026-10-10)
+
+This is the exact next action from the 2026-10-10 practitioner intake; it does NOT advance or overwrite mainline DL-147.
+
+### New durable research outputs
+- research/D01_SARA_JINBAOYIN_CAUSAL_ORACLE_AND_D16_VALIDATION_FREEZE_20261010_V0_1.md
+- research/d01_sara_jinbaoyin_causal_oracle_v0_1.mjs
+- research/test_d01_sara_jinbaoyin_causal_oracle_v0_1.mjs
+- First causal 60-minute strict **RESEARCH PROXY** implemented; no proprietary Sara indicator and no claim that arbitrary numerical choices reproduce the original author's complete program.
+- Last fully completed 60m bar before cutoff, full 245 observed-bucket MA240+slope warmup, owner source/bucket coverage, price-space adjustment vintage and incomplete/late-revision fail-closed semantics.
+- PRIOR_STOCK_TREND frozen at pullbackStart from completed daily bars, NOT from later rebound or signal-time survivor classification. T uptrend+verified pullback, B downtrend bottoming, M mixed individual trend but independently confirmed market bull; UNKNOWN preserved.
+- Immutable structural episode key prevents multiple 60m bars from being counted as independent signals; full denominator includes no-pattern and unknown.
+- Frozen future D16 matched-support and post-cost primary proposed 10-eligible-session trial, not opened for outcomes. Generic rising-60m-MA and existing PRICE_OHLC/sector alternatives must be compared; price-root anti-double-count applies.
+- Important negative hypothesis: strict downward 120/240 overhead geometry may exclude many genuine established uptrends. Do not loosen it after learning returns; distinguish signal-proxy fidelity from strategy efficacy.
+
+### Test/readback
+- 46 adversarial synthetic fixtures; isolated JavaScript V8 execution using actual branch file contents 46/46 PASS.
+- Native Node and repo CI remain UNVERIFIED: container could execute Node, but raw GitHub DNS retrieval could not fetch branch files and no alternative native source transfer was certified. Isolated V8 is not Node parity.
+- No historical 60m market candles or prospective/OOS outcomes were inspected; no fabricated results; no claimed win-rate increase.
+- D01 11/11 L3, 60.0%; SDA-001/SDA-002 REMEDIATION_IN_PROGRESS; alpha UNKNOWN, Formal Core LOCKED.
+
+### Next exact continuation for Sara track
+1. Get a source-certified native 60m observation contract / first frozen genuine sample and first-known/revision replay; record unsupported 60m bucket or adjustment regimes as BLOCKED.
+2. Run native Node/CI adversarial suite with physical job receipt before asserting runtime parity.
+3. Resolve strict-vs-broad signal taxonomy disagreements against Sara's public text/examples without price-outcome peeking.
+4. D16 to sign off primary 10-session horizon, legal executable fill, cost/stop ordering, sample denominators/multiple-testing family, then pursue true prospective/OOS cohort tests; 00 readback before any claim or Formal proposal.
+5. Keep DL-147 and 1101/2021-06-15 R1-R6 separate mainline checkpoints. No core/production/scan change.
