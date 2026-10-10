@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "D06_05_L4_PROSPECTIVE_SHADOW_PREREG_20261010_V0_1",
+  "createdAt": "2026-10-10T09:21:04+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesOpened": false,
+  "formalCoreImpact": "NONE",
+  "prerequisiteCohort": "research/d06_05_ic109_pair_effective_common_equity_cohort_20260924_20261002_v0_1.json",
+  "freeze": {
+    "freezeAt": "2026-10-10T09:21:04+08:00",
+    "outcomeBlindAtFreeze": true,
+    "primaryFeatureLocked": true,
+    "primaryHorizonLocked": true,
+    "controlsLocked": true,
+    "promotionGateLocked": true
+  },
+  "evidenceUnit": {
+    "independentUnit": "one genuine consecutive TDCC sourceDate pair",
+    "repeatedScanDatesCountAsNewEvidence": false,
+    "symbolRowsAreIndependentDates": false,
+    "rule": "All cross-sectional rows from one TDCC vintage pair form one clustered episode. Repeated consumers or rereads of the same pair never increase N."
+  },
+  "admission": {
+    "pairRequirements": [
+      "both TDCC vintages carry immutable sourceDate, firstKnownAt/observedAt, source hash and parser version",
+      "full 17-grade integrity/reconciliation PASS at both vintages",
+      "date-effective TWSE/TPEx common-equity membership is certified for both boundaries",
+      "exact grade17 denominator equality for the primary cohort",
+      "no hard share-count/identity corporate action touches the pair",
+      "security identity continuity PASS; ETF/TDR/preferred/debt/non-common instruments excluded",
+      "outcome fields remain unopened until cohort hash is frozen"
+    ],
+    "failClosed": [
+      "UNKNOWN event clock",
+      "denominator change",
+      "identity transition",
+      "unresolved security type",
+      "source revision after outcome opening",
+      "missing firstKnownAt sufficient to establish executable outcome anchor"
+    ]
+  },
+  "primaryFeature": {
+    "name": "SIGNED_TDCC_400PLUS_CONCENTRATION_DELTA",
+    "rawDefinition": "current chipConcentration minus prior chipConcentration, percentage points",
+    "transform": "within each admitted vintage pair, rank-transform admitted symbols to centered percentile in [-0.5,+0.5]; ties use average rank",
+    "directionAtFreeze": "UNSPECIFIED_TWO_SIDED",
+    "rationale": "Holder identity and motive are unknown; promotion tests incremental predictiveness without pre-asserting bullish or bearish intent."
+  },
+  "secondaryFeatures": [
+    {
+      "name": "SIGNED_TDCC_1000PLUS_CONCENTRATION_DELTA",
+      "role": "SENSITIVITY_ONLY",
+      "promotionEligible": false
+    },
+    {
+      "name": "RAW_400PLUS_DELTA_PP",
+      "role": "SCALE_SENSITIVITY_ONLY",
+      "promotionEligible": false
+    },
+    {
+      "name": "ABS_400PLUS_DELTA_PP",
+      "role": "CROWDING_MAGNITUDE_DIAGNOSTIC_ONLY",
+      "promotionEligible": false
+    }
+  ],
+  "outcomeClock": {
+    "decisionKnowledgeTime": "later TDCC vintage firstKnownAt; never chipAsOfDate",
+    "executableOpenRule": "first official market open at or after firstKnownAt when firstKnownAt is before that session's 09:00 Asia/Taipei open; otherwise next valid session open",
+    "primaryOutcome": "5-session forward total price return from executableOpenRule to the fifth subsequent valid session close",
+    "primaryAdjustment": "market/industry residual return under the locked baseline model",
+    "secondaryHorizons": [
+      "1-session",
+      "20-session"
+    ],
+    "secondaryPromotionEligible": false,
+    "suspensionRule": "if execution open or horizon close is unavailable due to suspension, classify outcome UNKNOWN for that symbol/pair; do not carry stale prices or zero-return imputation"
+  },
+  "baselineControls": {
+    "requiredFamilies": [
+      "market and industry fixed effects",
+      "size / log market capitalization",
+      "pre-decision 20-session turnover/liquidity",
+      "pre-decision 20-session volatility",
+      "pre-decision 20-session momentum / direct price-volume state",
+      "D06 institutional daily-flow state where same-generation PIT lineage is available",
+      "D06 leverage/shorting state where same-generation PIT lineage is available",
+      "passive/index-event state using shared primitive lineage",
+      "market regime state"
+    ],
+    "antiDoubleCount": [
+      "shared institutional/passive/price-volume primitives may have many consumers but one receipt identity",
+      "TDCC concentration may not be relabeled institutional ownership, passive ownership, smart money or main-force ownership",
+      "missing control lineage is not imputed from outcomes; pair enters only the model tier whose controls are PIT-complete"
+    ],
+    "modelTiers": [
+      {
+        "id": "M0",
+        "controls": [
+          "market",
+          "industry",
+          "size",
+          "liquidity",
+          "volatility",
+          "momentum"
+        ],
+        "role": "minimum primary baseline"
+      },
+      {
+        "id": "M1",
+        "controls": [
+          "M0",
+          "institutional flow",
+          "leverage/shorting"
+        ],
+        "role": "incrementality robustness"
+      },
+      {
+        "id": "M2",
+        "controls": [
+          "M1",
+          "passive/index event",
+          "market regime"
+        ],
+        "role": "full D06 redundancy robustness"
+      }
+    ]
+  },
+  "primaryTest": {
+    "method": "pair-level cross-sectional partial rank/standardized coefficient, then aggregate across independent TDCC pairs",
+    "noSymbolRowPseudoreplication": true,
+    "pairStatistic": [
+      "partial coefficient on primary feature after locked M0 controls",
+      "pair-level Spearman correlation between primary feature and M0 residual outcome"
+    ],
+    "aggregateInference": [
+      "TDCC-pair clustered uncertainty",
+      "two-sided null H0: mean incremental ownership effect = 0",
+      "paired leave-one-vintage-pair-out sign stability",
+      "report M1/M2 as robustness without replacing failed M0"
+    ],
+    "multipleTesting": "Only SIGNED_TDCC_400PLUS_CONCENTRATION_DELTA × 5-session horizon × M0 is promotion-grade. All other features/horizons/models are prespecified sensitivity/robustness and cannot rescue a failed primary test."
+  },
+  "minimumEvidence": {
+    "interimReadiness": {
+      "independentFuturePairs": 8,
+      "action": "descriptive/interim only; no L4 promotion"
+    },
+    "l4Review": {
+      "independentFuturePairs": 12,
+      "minimumRegimeStates": 2,
+      "minimumMedianCleanSymbolsPerPair": 1000,
+      "pairSignConsistency": "at least 10 of 12 independent pairs share the sign of the pooled primary estimate",
+      "inferentialGate": "two-sided 95% interval for the mean pair-level primary effect excludes zero",
+      "incrementalGate": "adding the primary TDCC feature to M0 improves mean OOS rank information coefficient versus M0 alone and does not worsen it on the median pair",
+      "robustnessGate": "leave-one-pair-out pooled sign is unchanged in at least 10 of 12 omissions",
+      "noRescueRule": "secondary horizons/features, in-sample fits, best threshold, best quintile cut or posthoc regime slicing cannot rescue a failed primary gate"
+    }
+  },
+  "futurePairPolicy": {
+    "firstPromotionEligibleLaterSourceDate": "strictly after 2026-10-08",
+    "reason": "avoid treating already-observed pre-freeze weekly vintages as new prospective promotion evidence",
+    "rebuildUniverseEveryPair": true,
+    "timelessReuseOf1852Forbidden": true,
+    "onePairOneEvidenceUnit": true
+  },
+  "reporting": {
+    "alwaysReport": [
+      "admitted and excluded symbol counts with reasons",
+      "cohort hash",
+      "sourceDate/firstKnownAt pair",
+      "regime label",
+      "M0/M1/M2 support counts",
+      "pair-level coefficient and rank IC",
+      "all prespecified horizon results including failures",
+      "UNKNOWN and suspension counts"
+    ],
+    "neverReportAsProof": [
+      "single-symbol anecdotes",
+      "best-performing threshold discovered after outcomes",
+      "pooled symbol-level p-value that ignores vintage clustering",
+      "same-vintage repeated scans as independent dates"
+    ]
+  },
+  "maturityDecision": {
+    "currentLevel": "L3",
+    "currentMaturityPct": 60,
+    "change": "NONE",
+    "l4NotYetGranted": true,
+    "rationale": "The final clean cohort and prospective validation protocol are frozen, but no post-freeze OOS/Shadow outcome evidence exists yet."
+  },
+  "status": "D06_05_L4_PREREG_FROZEN / PRIMARY_FEATURE_AND_HORIZON_LOCKED / 12_PAIR_2_REGIME_PROMOTION_GATE / OUTCOMES_STILL_CLOSED / FORMAL_LOCKED",
+  "exactNext": "For each genuinely new TDCC weekly sourceDate after 2026-10-08, build the next pair under the same event/denominator/identity/security-type gates, freeze cohort/hash before outcomes, then append Shadow outcomes exactly under this preregistration. At 8 pairs report interim only; at >=12 independent pairs and >=2 regimes run the locked L4 review."
+}
