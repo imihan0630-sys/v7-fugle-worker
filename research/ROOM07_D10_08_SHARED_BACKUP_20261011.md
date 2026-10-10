@@ -1,0 +1,3 @@
+# Room 07 D10-08 research note
+
+Synthetic counterexample: two suppliers each have 10% outage probability; without dependence evidence their simultaneous outage probability can range from 0% to 10%, not necessarily the 1% independence product. With two customers each needing 30 backup units and one shared qualified supplier offering 40 units, both are individually coverable but the simultaneous 60-unit gap leaves at least 20 units short. Shared backup capacity cannot be counted twice. No new issuer event root, stock outcomes or L4 evidence. D10-08 stays L3/60. Next: independent issuer-native shortage root.
