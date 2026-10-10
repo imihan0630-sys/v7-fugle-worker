@@ -17,7 +17,7 @@ async function safeFetch(fetchImpl,url,apiToken,method="GET",body){
  try {response=await fetchImpl(url,{
    method,headers:{authorization:"Bearer "+apiToken,accept:"application/json",
      ...(method==="POST"?{"content-type":"application/json"}:{})},
-   ...(body?{body:JSON.stringify(body)}:{})
+   ...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(25000)
  });}catch{fail("DESTINATION_D1_READ_TRANSPORT_UNKNOWN")}
  if(!response?.ok)fail("DESTINATION_D1_READ_HTTP_UNVERIFIED");
  let obj;try{obj=await response.json()}catch{fail("DESTINATION_D1_READ_RESPONSE_INVALID")}
