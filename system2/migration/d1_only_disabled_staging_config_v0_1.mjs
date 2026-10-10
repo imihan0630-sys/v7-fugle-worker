@@ -33,7 +33,10 @@ export function buildD1OnlyDisabledStagingConfigV0_1({databaseId,workerName="sys
   return text;
 }
 export function assertD1OnlyDisabledStagingConfigV0_1(text) {
-  if(typeof text!=="string" || !/^name = "system2-shadow-research-staging"$/m.test(text) ||
+  if(typeof text!=="string" ||
+     (text.match(/^\s*name\s*=/gm)||[]).length!==1 ||
+     (text.match(/^\s*database_id\s*=/gm)||[]).length!==1 ||
+     !/^name = "system2-shadow-research-staging"$/m.test(text) ||
      !/^workers_dev = false$/m.test(text) ||
      !/^preview_urls = false$/m.test(text) ||
      !/^binding = "SYSTEM2_DB"$/m.test(text) ||
