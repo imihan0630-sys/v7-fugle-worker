@@ -6804,3 +6804,73 @@ No maturity or Formal change is authorized by this routing.
 4. Keep D08/D14 event/governance ownership separate; D01 should consume a regime-boundary receipt rather than infer corporate-event meaning from price.
 5. If R1-R6 appear, validate DL-095 plus DL-108~137 before physical R7 emission.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-138~140 (2026-10-10)
+
+### DL-138 — same-security issuer/economic-regime boundary
+- Security identity continuity and issuer/economic-regime continuity are now explicitly separate.
+- D01 consumes owner-certified regime-boundary receipts from D08/D14/corporate-action owners rather than inferring corporate meaning from price.
+- Raw OHLC history remains historical fact across a same-security regime boundary.
+- Long-memory structural interpretation may be:
+  PRESERVE_STRUCTURAL_MEMORY;
+  STALE_RECONFIRM_REQUIRED;
+  BREAK_STRUCTURAL_MEMORY;
+  REGIME_MEMORY_UNKNOWN_BLOCKED.
+- D01-02 one-bar geometry remains describable with boundary context.
+- D01-03 boundary-crossing sequences remain explicitly tagged.
+- D01-07 stale/broken structural memory cannot silently reuse old confirmations.
+- D01-09 cross-boundary gaps are ISSUER_REGIME_EVENT_GAP unless an ordinary-gap residual is separately established.
+- Price-reaction magnitude is not a regime-boundary classifier.
+
+### DL-139 — structural-memory reconfirmation
+- First post-boundary print is not reconfirmation.
+- Allowed reconfirmation modes must be preregistered before outcomes.
+- Reconfirmation uses only causally available post-boundary evidence for the reconfirming condition.
+- reconfirmedAt cannot be backdated.
+- Failed/expired/data-blocked reconfirmations remain denominator-accounted.
+- Stale D01-07 episode continuation requires a derived continuation episode ID after reconfirmation.
+- BREAK_STRUCTURAL_MEMORY requires a new post-boundary episode namespace.
+- Parent and continuation remain dependency-linked; reconfirmation does not create an independent extra vote.
+
+### DL-140 — regime common support / placebo handoff
+- D16 receives regime boundary, memory disposition, reconfirmation and dependency metadata.
+- Parent/child must share the same PIT regime-boundary support.
+- Frozen placebo/control families:
+  NO_REGIME_BOUNDARY_SAME_GEOMETRY;
+  REGIME_BOUNDARY_WITHOUT_D01_STRUCTURE;
+  SAME_SECURITY_ADMINISTRATIVE_RENAME;
+  MARKET_MIGRATION_BOUNDARY;
+  CORPORATE_ACTION_MECHANICAL_RESET.
+- Administrative rename, market migration and mechanical corporate-action reset are separated from issuer/economic-regime discontinuity.
+- Event context cannot multiply D01 evidence count.
+- Regime/event labels are not pattern Alpha.
+
+### Test evidence
+- DL-132~137: 50/50 PASS.
+- DL-138~140: 26/26 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-140: 669/669 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- ISSUER_ALIAS_LINEAGE = FROZEN.
+- PIT_SECURITY_CLASS_ELIGIBILITY = FROZEN.
+- ISSUER_REGIME_BOUNDARY = FROZEN.
+- STRUCTURAL_MEMORY_RECONFIRMATION = FROZEN.
+- REGIME_COMMON_SUPPORT_PLACEBOS = FROZEN.
+- D01_INFER_EVENT_MEANING_FROM_PRICE = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-140
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze corporate-group / parent-subsidiary / affiliate identity leakage so price patterns from related issuers cannot be treated as same-security history or independent confirmations merely because they share brand, controller, event or group membership.
+4. Keep D14/D08 ownership of governance/event relations; D01 consumes relation receipts only for dependency/common-support logic.
+5. If R1-R6 appear, validate DL-095 plus DL-108~140 before physical R7 emission.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
