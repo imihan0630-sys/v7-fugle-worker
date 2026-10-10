@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "D22_04_05_06_RATING_MODEL_VINTAGE_DEPENDENCY_AUDIT_20261011_V0_1",
+  "evidenceDate": "2026-10-11",
+  "mainReadBeforeWrite": "d53772946ece1a8e11e0a41671d59db6a9c7f674",
+  "scope": [
+    "D22-04",
+    "D22-05",
+    "D22-06"
+  ],
+  "status": "RESEARCH_ONLY_OUTCOME_BLIND_SOURCE_CLOCK_AND_DEPENDENCY_AUDIT",
+  "officialSources": [
+    {
+      "url": "https://nweb.tpex.org.tw/TPEX199/regulation_1.html",
+      "role": "TPEx 2022-01-03 first-party methodology announcement",
+      "verified": "Public statement says preceding-day 16:00 MOPS bond facts and ratings plus broker reference curves drive modeled fair values; does not itself prove historical day-by-day vintage snapshots."
+    },
+    {
+      "url": "https://www.tpex.org.tw/storage/bloomberg/bndcrvpx_20221230.pdf",
+      "role": "TPEx first-party dated fair-value report",
+      "verified": "Methodology notes specify eligibility, rating precedence, subordinated one-notch adjustment, previous-day 16:00 rating source and potential issuer/MOPS update lag. One dated report is not multi-date transport."
+    },
+    {
+      "url": "https://data.gov.tw/dataset/11455",
+      "role": "TDCC daily bond master and payment source catalog",
+      "verified": "Catalog contains security identity, dates, rate type and currency; historical as-of vintages and actual CSV rows remain unverified."
+    },
+    {
+      "url": "https://data.gov.tw/dataset/11453",
+      "role": "TDCC monthly bond outstanding/holder source catalog",
+      "verified": "Monthly balance and holding categories exist as a data product; publication knownAt and historical archive are unverified."
+    }
+  ],
+  "mechanismHypotheses": [
+    {
+      "id": "H1_RATING_CURVE_ENDOGENEITY",
+      "support": "Model reference curve is selected using security/guarantor/issuer ratings; a rating change may mechanically alter model yield even without an independent traded-bond repricing.",
+      "counter": "Broker reference curves can independently move, and actual transactions may convey separate information.",
+      "alternative": "Benchmark-rate, tenor, liquidity, tax, option and technical effects.",
+      "failure": "No dated model-input rating/curve lineage or independent trade/quote receipts; do not count rating and model-yield moves as two independent votes."
+    },
+    {
+      "id": "H2_PREVIOUS_DAY_SNAPSHOT_LAG",
+      "support": "TPEx documentation describes previous-day 16:00 MOPS bond/rating input. Rating agency publication and MOPS input vintage can differ.",
+      "counter": "An earlier rating update may already be reflected in the eligible prior-day snapshot; do not assume all marks lag.",
+      "alternative": "Stale MOPS metadata, issuer reporting lag, holiday/report cutoffs, model calculation and report-publication delays.",
+      "failure": "No authenticated per-security input-vintage or report publication timestamp; do not assert the model did or did not incorporate the action."
+    },
+    {
+      "id": "H3_ELIGIBILITY_EXIT_SELECTION",
+      "support": "Fixed-rate, NTD, <=10y remaining, no put/call, rating and formula eligibility constraints censor model coverage.",
+      "counter": "Security rating or qualifying guarantee can preserve eligibility despite issuer-rating changes.",
+      "alternative": "Maturity, call, delisting, data-source interruption or identity-mapping failure.",
+      "failure": "No dated independent outstanding universe plus per-security eligibility; absence is UNKNOWN, never zero risk."
+    },
+    {
+      "id": "H4_MONTHLY_BALANCE_ASOF_LEAK",
+      "support": "Monthly outstanding data period is not equivalent to publication knownAt and cannot be treated as daily state.",
+      "counter": "Archived immutable release-time snapshots could provide legitimate delayed monthly controls.",
+      "alternative": "Delayed reporting, restated balances, corporate actions or security ID changes.",
+      "failure": "Period-end values are joined before first-publication time or treated as same-day trades."
+    }
+  ],
+  "syntheticLogicFixturesOnlyNotHistoricalShadow": [
+    {
+      "case": "F01",
+      "scenario": "Rating agency announcement at D 09:00; D fair-value model uses prior-day 16:00 MOPS vintage",
+      "expected": "DO_NOT_ASSUME_RATING_ALREADY_IN_MODEL; NEED_SOURCE_VINTAGE"
+    },
+    {
+      "case": "F02",
+      "scenario": "Rating agency announcement at D-1 15:30, MOPS record time unknown",
+      "expected": "UNKNOWN_INPUT_INCLUSION"
+    },
+    {
+      "case": "F03",
+      "scenario": "Rating announcement at D-1 16:30",
+      "expected": "PREVIOUS_DAY_1600_INPUT_CANNOT_INCLUDE_LATER_ACTION_UNLESS_SOURCE_CLOCK_RULE_DIFFERS"
+    },
+    {
+      "case": "F04",
+      "scenario": "Agency rating update at D-1 15:00, MOPS update authenticated at 15:40",
+      "expected": "TIME_ELIGIBLE_INPUT_ONLY; VERIFY_SECURITY_RATING_PRECEDENCE"
+    },
+    {
+      "case": "F05",
+      "scenario": "Same-date financial report appears with unknown clock relative to rating decision",
+      "expected": "UNKNOWN_ORDERING_BLOCKS_D22_05_BASELINE"
+    },
+    {
+      "case": "F06",
+      "scenario": "Fair-value yield rises on rating change without transaction receipt",
+      "expected": "MODEL_DEPENDENCY_NOT_INDEPENDENT_TRADE_DISCOVERY"
+    },
+    {
+      "case": "F07",
+      "scenario": "Security disappears from fair-value report but TDCC outstanding is unverified",
+      "expected": "UNKNOWN_NOT_ZERO_OR_DEFAULT"
+    },
+    {
+      "case": "F08",
+      "scenario": "Security remains outstanding but fails optionality/rating eligibility",
+      "expected": "INELIGIBLE_ONLY_IF_DATED_TERMS_AND_RATING_VERIFIED"
+    },
+    {
+      "case": "F09",
+      "scenario": "Monthly outstanding reports period-end but publication occurs after rating anchor",
+      "expected": "LATE_KNOWN_MONTHLY_VALUE_EXCLUDED_FROM_PRE_EVENT_BASELINE"
+    },
+    {
+      "case": "F10",
+      "scenario": "Security is subordinated and only issuer rating is known",
+      "expected": "MODEL_RATING_ONE_NOTCH_RULE_NEEDS_DATED_SECURITY_SCOPE_AND_VERSION"
+    },
+    {
+      "case": "F11",
+      "scenario": "Guarantee rating differs from issuer rating",
+      "expected": "DO_NOT_MAP_ISSUER_RATING_TO_SECURED_SECURITY_AUTOMATICALLY"
+    },
+    {
+      "case": "F12",
+      "scenario": "Nontrading-day prior-calendar-day rule is assumed without official archive",
+      "expected": "UNKNOWN_BUSINESS_DAY_CUTOFF_NOT_GUESSED"
+    }
+  ],
+  "validationPlan": {
+    "inputs": [
+      "issuerId",
+      "bondCode",
+      "ISIN",
+      "ratingAgencyPublicationAt",
+      "ratingActionEffectiveAt",
+      "MOPSDisclosureAt",
+      "MOPSSnapshotAt",
+      "fairValueReportDate",
+      "fairValuePublishedAt",
+      "curveVersionAt",
+      "securityRating",
+      "issuerRating",
+      "guarantorRating",
+      "seniority",
+      "callPutTerms",
+      "currency",
+      "remainingMaturity",
+      "benchmarkVintage",
+      "tradeQuoteReferenceModelProvenance"
+    ],
+    "gates": [
+      "PIT_FIRST_KNOWN",
+      "SOURCE_VERSION",
+      "ENTITY_SCOPE_ACCOUNTING_BASIS",
+      "RATING_CLOCK_AND_REPORT_CLOCK",
+      "THREE_NON_ADJACENT_REAL_DATES",
+      "TRADE_QUOTE_REFERENCE_MODEL_SEPARATION",
+      "OUTSTANDING_UNIVERSE_AND_SURVIVORSHIP",
+      "BENCHMARK_DURATION_CURRENCY",
+      "STALE_NO_TRADE",
+      "D07_D13_D11_REDUNDANCY",
+      "OOS_WALK_FORWARD_PRE_REGISTERED",
+      "MULTIPLE_TESTING_OVERFIT_COST_REGIME"
+    ],
+    "prohibited": [
+      "HISTORICAL_SHADOW_FABRICATION",
+      "FAIR_VALUE_AS_ACTUAL_TRADE",
+      "LATER_RATING_AS_PRE_EVENT",
+      "MISSING_AS_ZERO_BAD_OR_PASS",
+      "MECHANICAL_RATING_AND_MODEL_YIELD_DOUBLE_VOTE",
+      "EQUITY_OUTCOME_OPENING"
+    ]
+  },
+  "formalProgress": {
+    "D22MaturityPct": 51.7,
+    "D22_04": "L2_40",
+    "D22_05": "L3_60",
+    "D22_06": "L2_40",
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0,
+    "unknownBlockedAnchors": 22,
+    "formalCore": "LOCKED",
+    "optimizationCandidate": "NONE"
+  },
+  "exactNext": "Validate historical MOPS rating snapshot and TPEx model report clock for a specific real security/date; acquire 3 nonadjacent official report files and independent TDCC outstanding vintages. Keep all 22 baseline anchors unchanged until full exact pre-event D07/D13/industry/size/D11 support is verified."
+}
