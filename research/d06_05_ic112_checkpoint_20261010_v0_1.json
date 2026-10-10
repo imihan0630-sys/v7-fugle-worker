@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "D06_05_IC112_CHECKPOINT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "createdAt": "2026-10-10T18:15:00+08:00",
+  "latestMainAtStart": "7d41fefba2d5ab7ebdb4c3fc65e3f270de3d661e",
+  "branch": "research/d06-ic111-recovery-ic112-20261010",
+  "mainIsCanonical": true,
+  "researchEvidence": "research/d06_05_ic112_serial_dependence_sensitivity_20261010_v0_1.json",
+  "preservedPriorEvidence": "research/d06_05_ic111_pair_dependence_and_oos_execution_audit_20261010_v0_1.json",
+  "frozenPrereg": "research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json",
+  "findings": "Twelve distinct weekly pairs can have far fewer iid-equivalent observations under assumed positive serial dependence. AR1 rho=.5 illustration gives variance factor 2.666748046875 and n_eff~4.50. Six interval-overlap toy fixtures passed; no actual market outcome or new TDCC vintage was captured.",
+  "recoveryStatus": {
+    "oldBranch": "research/d06-ic111-overlap-oos-audit-20261010",
+    "oldBranchBehindLatestMainByCommits": 118,
+    "ic111ResearchPortedAndBlobVerified": true,
+    "ic111SyntheticAssertionsPorted": false,
+    "syntheticPortBlock": "GitHub connector safety check blocked copying the existing assertions file. Do not bypass; original remains on old branch.",
+    "ic111CheckpointPorted": false,
+    "trackerOnMainSynced": false,
+    "newIC112EvidenceReadback": true
+  },
+  "moduleLevel": "L3",
+  "moduleMaturityPct": 60,
+  "domainMaturityPct": 55.6,
+  "maturityChange": "NONE",
+  "protected": {
+    "formalCore": "LOCKED",
+    "outcomesOpened": false,
+    "historicalShadowFabricated": false,
+    "optimizationCandidate": "NONE"
+  },
+  "blockers": [
+    "D16 independent outcome-blind estimator/split/serial-dependence review pending.",
+    "No genuine new post-2026-10-08 TDCC sourceDate certified.",
+    "IC111 synthetic-assertion copy blocked by connector safety check; original remains durable on older branch."
+  ],
+  "exactNextContinuationPoint": "Refresh latest main and both research branch heads. Preserve IC111 old branch evidence, avoid duplicate research. If normal PR creation is permitted, submit clean research-only branch without force-pushing or touching Formal Core; do not bypass blocked file writes. D16 reviews estimator and chronological split before outcomes. D06-05 awaits genuine TDCC sourceDate strictly later than 2026-10-08; meanwhile advance D06-07/08/09 multi-date vintage and D06-11/16 passive-flow event clocks.",
+  "trackerSyncRule": "After dedicated checkpoint is durable, read latest tracker from main and update D06-only status/next on this branch without changing maturity, other domains or Formal Core."
+}
