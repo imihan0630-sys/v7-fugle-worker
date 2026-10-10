@@ -2,8 +2,8 @@
 // No Cloudflare, provider, D1, Worker, scan, score, holdings, order, or push effects.
 const freeze = (v) => Object.freeze(v);
 const text = (v) => typeof v === "string" ? v.trim() : "";
-const DATE = /^\\d{4}-\\d{2}-\\d{2}$/;
-const ISO = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/;
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
 
 export const EXPERT_STRATEGY_STATUS_V0_1 = freeze({
   SOURCE_REVIEW_REQUIRED: "SOURCE_REVIEW_REQUIRED",
