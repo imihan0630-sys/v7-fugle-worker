@@ -107,7 +107,9 @@ assert.match(wrongEnv,/environment: system2-schema-only/);
 assert.doesNotMatch(wrongEnv,/environment: system2-research/);
 assert.match(wrongEnv,/S2_SCHEMA_DEST_D1_WRITE_TOKEN/);
 assert.doesNotMatch(wrongEnv,/CLOUDFLARE_ACCOUNT_ID|SYSTEM2_CLOUDFLARE_API_TOKEN|S2_MIGRATION_SOURCE_READ_TOKEN/);
-assert.doesNotMatch(runner,/__testOnlySyntheticIdentityEngineV0_1|provision_system2_d1\.mjs/);
+// Reading the original provisioner source as text to compare its migrationFiles list is allowed.
+// Executing/importing it would silently CREATE a D1 and is forbidden here.
+assert.doesNotMatch(runner,/__testOnlySyntheticIdentityEngineV0_1|await\s+import\s*\(\s*["'][^"']*provision_system2_d1|(?:spawn|exec|fork)\s*\([^\n]*provision_system2_d1/);
 assert.match(runner,/refs\/heads\/main/);
 assert.match(runner,/GITHUB_EVENT_NAME/);
 assert(!wrongEnv.includes("wrangler deploy"));
