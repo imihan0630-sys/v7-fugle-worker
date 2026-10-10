@@ -6936,3 +6936,55 @@ No maturity or Formal change is authorized by this routing.
 4. Keep D07/industry owner authoritative; D01 consumes industry-vintage receipts only for context/common support.
 5. If R1-R6 appear, validate DL-095 plus DL-108~143 before physical R7 emission.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-144~146 (2026-10-10)
+
+### DL-144 — point-in-time industry/classification vintage
+- D01 uses D09 official industry membership/classification receipts; no new D01-owned industry collector.
+- Historical security identity, exchange, taxonomy version, classificationSchemeId, effective interval, announcement/first-known time and captured/revised vintage are separate; current classification is not valid historical backfill.
+- An industry change announced before its effective date is context only; a new sector cannot enter industry-conditioned controls before effectiveFrom.
+- Sector membership effective at historical t but not provably available by t is blocked for PIT replay.
+- Evidence from official TPEx 2026-05-19 announcement (effective 2026-06-01; 13 securities incl. 1595 and 3131 entering semiconductor) validates a concrete effective-dated change, not complete historical classification coverage.
+- Industry unknown / conflicting / partial / unbridged taxonomy cases stay explicit. These block industry-conditioned claims, not independently valid price-only geometry.
+
+### DL-145 — reclassification / price geometry / circular vote
+- Pure industry reclassification does not rewrite RAW price history, swing timestamps, structural roots, R7 price-feature hash or existing pattern episode ID.
+- Sector/industry index, relative strength or concentration can move solely through composition changes with identical price bars; that is a membership-composition discontinuity, not independent D01 breakout evidence.
+- An actual issuer/economic-regime break requires separately owner-certified D08/D14 evidence under DL-138~140. An industry notice alone proves neither presence nor absence of a business transformation.
+- D01 D03 price-derived pattern and momentum are not independent votes; industry indices incorporating the stock's own return require D09 leave-one-out comparison (SDA-009) and D16 residual analysis.
+- No sector confirmation score, no new Formal gate, no change in pattern eligibility.
+
+### DL-146 — D16 matched support / placebo
+- Parent/child common support freezes security identity, predictor cutoff, sessions/history roots, sector receipt/taxonomy/peer version, excluding-self rule, denominator, costs and horizon.
+- Future announcement, missing vintage, classification conflict, partial owner coverage, and taxonomy bridge gaps cannot be silently dropped or filled with current classification.
+- Frozen eight outcome-blind placebo/control families include fixed-price composition switch, stable-industry control, reclassification without pattern, pattern without reclassification, future announcement, inclusive-vs-LOO, taxonomy-unbridged and issuer-event coincidence.
+- Real performance and statistical significance still belong to D16; evidence cannot be promoted through synthetic tests.
+
+### Research artifacts and test evidence
+- research/D01_DL144_146_PIT_INDUSTRY_VINTAGE_AND_RECLASSIFICATION_FIREWALL_20261010_V0_1.md
+- research/test_d01_dl144_146_industry_vintage_firewall_v0_1.mjs
+- Isolated deterministic V8 evaluation: initial 29/30 PASS, exposed UNKNOWN denominator incorrectly mapped to mismatched support; corrected guard and reran 30/30 PASS.
+- Native Node execution, repository CI, real current historical coverage and OOS/prospective returns remain UNVERIFIED in this tranche. No fabricated Shadow historical evidence.
+- Prior recorded through DL-143: 692/692 V8-equivalent deterministic executions. This tranche adds 30; this does not constitute a single physically executed 722-case integrated suite.
+- SDA-001 and SDA-002 remain REMEDIATION_IN_PROGRESS; no audit closure.
+- Frozen physical 1101 / TWSE / 2021-06-15 exact 61 eligible-session R1-R6 owner bundle still NOT VERIFIED; R7 remains blocked.
+
+### Governance
+- D01 maturity remains 60.0%; 11/11 modules remain L3.
+- D01_SAME_PRICE_DIFFERENT_INDUSTRY_CONTEXT = NOT_NEW_PATTERN.
+- INDUSTRY_LABEL_PIT_BACKFILL = PROHIBITED.
+- CURRENT_SECTOR_REASSIGNMENT_AS_PRIOR_ALPHA = PROHIBITED.
+- SECTOR_SELF_CONTRIBUTION_SECOND_VOTE = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+- Class-A isolated research: no Worker/D1/cron/production/order/push change.
+
+### Exact next continuation after DL-146
+1. Re-read latest main for exact 1101/2021-06-15 R1-R6 physical owner returns. Accept only frozen-window certified evidence; if R1-R6 are ready, run DL-095 and DL-108~146 validation before physical R7.
+2. Obtain genuine Node/CI execution of the new 30-case oracle; preserve distinction between isolated V8 result and native execution.
+3. Route industry-vintage source/owner semantics to 07/D09, D16 common-support/self-exclusion/cluster-aware holdout constraints to 11/D16; do not duplicate upstream owner collectors or consume outcomes.
+4. If the witness remains blocked, continue next genuinely new D01 outcome-blind science at DL-147: taxonomy-bridge-version break vs price-pattern context stability, with explicit partial-coverage/UNKNOWN denominators; no automatic industry/index bridge.
+5. SDA-001/SDA-002 require independent System1/System2 engineer guards, genuine receipts, D16 and 00 closure. No L4 or Formal change without those gates and explicit owner approval.
