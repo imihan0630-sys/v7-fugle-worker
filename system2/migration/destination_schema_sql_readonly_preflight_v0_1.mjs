@@ -62,16 +62,23 @@ export async function probeDestinationEmptyD1SqlReadonlyV0_1({
  const schemaRows=raw.result[0].results;
  if(schemaRows.some(row=>typeof row?.type!=="string"||typeof row?.name!=="string"))
    fail("DESTINATION_SCHEMA_SQL_ROW_INVALID");
- const empty=schemaRows.length===0;
+ // Cloudflare D1 itself creates exactly one reserved storage table (_cf_KV),
+ // which Cloudflare does not count as an application table. Never wildcard-ignore
+ // _cf_* or any unexpected object: only the exact (table, _cf_KV) pair is exempt.
+ const reserved=schemaRows.filter(row=>row.type==="table"&&row.name==="_cf_KV");
+ if(reserved.length>1)fail("DESTINATION_RESERVED_D1_TABLE_DUPLICATED");
+ const userSchemaRows=schemaRows.filter(row=>!(row.type==="table"&&row.name==="_cf_KV"));
+ const empty=userSchemaRows.length===0;
  return Object.freeze({
    version:DEST_SCHEMA_SQL_READONLY_VERSION,
    result:empty?"DESTINATION_D1_PHYSICAL_EMPTY_SQL_VERIFIED":"DESTINATION_D1_NONEMPTY_BLOCK_SCHEMA_IMPORT",
    cloudApiCalls:{metadataGets:2,readOnlySqlPostQueries:1,sqlDdlStatements:0},
    authenticatedDestAccountMatched:true,authenticatedDestDbMatched:true,
    targetDatabase:D1_NAME,targetFileSizeBytes:metadata.result.file_size,
-   objectsFound:schemaRows.length,tableCount:schemaRows.filter(x=>x.type==="table").length,
-   indexCount:schemaRows.filter(x=>x.type==="index").length,
-   unexpectedSchemaObjectTypes:schemaRows.filter(x=>!["table","index"].includes(x.type)).length,
+   objectsFound:userSchemaRows.length,tableCount:userSchemaRows.filter(x=>x.type==="table").length,
+   indexCount:userSchemaRows.filter(x=>x.type==="index").length,
+   cloudflareReservedTablesFound:reserved.length,rawSchemaObjectsFound:schemaRows.length,
+   unexpectedSchemaObjectTypes:userSchemaRows.filter(x=>!["table","index"].includes(x.type)).length,
    planSequenceSha256:plan.planSequenceSha256,
    ownerSchemaWriteAuthorizationPending:!empty,
    sqlStatementExecuted:"SELECT_ONLY_SQLITE_SCHEMA",
