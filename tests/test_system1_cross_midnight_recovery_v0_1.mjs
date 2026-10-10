@@ -22,6 +22,15 @@ const inst=await readFile(new URL("./sync_institution_data.mjs",import.meta.url)
 const recovery=await readFile(new URL("./recover_after_market.mjs",import.meta.url),"utf8");
 const quality=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
+const prereqSource=await readFile(new URL("./verify_cross_midnight_recovery_prereqs.mjs",import.meta.url),"utf8");
+const guardLine=prereqSource.split(/\r?\n/).find(line=>line.includes("assert.match(marketDate,/"));
+assert.ok(guardLine,"midnight prerequisite date guard missing");n++;
+const datePattern=guardLine.split("assert.match(marketDate,/")[1]?.split("/")[0];
+assert.ok(datePattern,"midnight prerequisite regex extraction failed");n++;
+const dateRegex=new RegExp(datePattern);
+for(const value of ["2026-10-08","2026-01-01","2026-12-31"]){assert.match(value,dateRegex);n++;}
+for(const value of ["2026/10/08","2026-10-8","20261008",""]){assert.doesNotMatch(value,dateRegex);n++;}
+
 
 for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
 for(const body of [cache,inst]){
