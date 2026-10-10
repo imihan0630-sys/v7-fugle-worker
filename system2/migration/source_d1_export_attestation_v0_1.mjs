@@ -58,6 +58,7 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
      [...new Set(schema.tableNames)].length!==schema.tableNames.length)
     blockers.push("LOCAL_SQL_SCHEMA_INVENTORY_UNVERIFIED");
   const m=manifest;
+  let expectedApplied=null;
   if(!m)blockers.push("PHYSICAL_SOURCE_D1_EXPORT_MANIFEST_MISSING");
   else{
     if(m.schemaVersion!==SOURCE_EXPORT_RECEIPT_VERSION||
@@ -81,7 +82,7 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
       applied.length<=migrations.length &&
       applied.every((name,i)=>typeof name==="string" && name===migrations[i]?.name);
     if(!appliedVerified)blockers.push("SOURCE_APPLIED_MIGRATION_CHAIN_UNVERIFIED");
-    const expectedApplied=appliedVerified ?
+    expectedApplied=appliedVerified ?
       [...new Set(migrations.slice(0,applied.length).flatMap(x=>x.tables))].sort():null;
     if(!Array.isArray(m.tables)||!m.tables.length)blockers.push("SOURCE_TABLE_ROWS_AND_HASHES_MISSING");
     else{
@@ -124,7 +125,7 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
     blockers:Object.freeze([...new Set(blockers)]),
     codeMigrationFileCount:schema?.sqlMigrationFileCount??null,
     repositoryDefinedSchemaTableCount:schema?.expectedTableCount??null,
-    physicallyAppliedExpectedTableCount:typeof expectedApplied!=="undefined" && expectedApplied!==null ? expectedApplied.length:null,
+    physicallyAppliedExpectedTableCount:expectedApplied?.length??null,
     appliedMigrationCount:Array.isArray(m?.appliedMigrationFiles)?m.appliedMigrationFiles.length:null,
     physicalTableReceiptCount:tableCount,
     // Minimum theory: one D1 inserted row at least one row-written unit; secondary indices,
