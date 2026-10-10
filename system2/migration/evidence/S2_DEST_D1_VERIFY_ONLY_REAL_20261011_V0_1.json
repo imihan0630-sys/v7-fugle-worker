@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_DESTINATION_SCHEMA_ONLY_VERIFY_ONLY_REAL_20261011_V0_1",
+  "classification": "OWNER_TRIGGERED_PHYSICAL_D1_SQL_VERIFY_ONLY_SUCCESS",
+  "verifiedFrom": "GITHUB_RUN_LOG_AND_DOWNLOADED_SANITIZED_ARTIFACT",
+  "verifiedAsOfTaipei": "2026-10-11T00:41:06+08:00",
+  "workflow": {
+    "runId": 38068559602,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38068559602",
+    "event": "workflow_dispatch",
+    "headSha": "a85fffc04043a7f3af15582048219e500e255fe7",
+    "createdAtUtc": "2026-10-10T16:39:36Z",
+    "jobId": 114261103226,
+    "conclusion": "success",
+    "mode": "VERIFY_ONLY"
+  },
+  "artifact": {
+    "id": 11676361012,
+    "name": "s2-dest-schema-only-38068559602",
+    "zipSha256": "3364b28aca9b877d4d038e5a89fcdc7ff6301b37b64640b48df09cf60587d1d4",
+    "verifiedAgainstGitHubDigest": true,
+    "receiptFile": "sanitized-receipt.json"
+  },
+  "realSanitizedReceipt": {
+    "status": "PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",
+    "runId": "38068559602",
+    "headSha": "a85fffc04043a7f3af15582048219e500e255fe7",
+    "mode": "VERIFY_ONLY",
+    "plannedStatements": 125,
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "targetName": "system2-research",
+    "sourceRowsCopied": 0,
+    "sourceCloudMutations": 0,
+    "newD1ResourcesCreated": 0,
+    "newWorkersOrCronsCreated": 0,
+    "paidUpgrade": false,
+    "sourcePhysicalFrozenBackupVerified": false,
+    "fullMigrationAccepted": false,
+    "appliedStatements": 0,
+    "actualTables": null,
+    "actualIndexes": null,
+    "actualSchemaVersion": null,
+    "quotaRealtimeFreshnessIndependentlyGuaranteed": false,
+    "futureCloudSchemaWritesAuthorized": false
+  },
+  "logEvidence": {
+    "schemaStatus": "PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",
+    "reviewedPlanSha": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "mockDryRun125Pass": true,
+    "system1ProductionManifestGuardPass": true
+  },
+  "ownerUserInterfaceEvidence": {
+    "environment": "system2-schema-only",
+    "selectedDeploymentBranch": "main",
+    "cloudflareAccount": "System2-Stock-Research",
+    "newAccountD1Permission": "D1 Write",
+    "twoEnvironmentSecretNames": [
+      "S2_SCHEMA_DEST_ACCOUNT_ID",
+      "S2_SCHEMA_DEST_D1_WRITE_TOKEN"
+    ],
+    "scopeFromUserUiNotProgrammaticallyRead": true,
+    "secretValuesNeverCollected": true
+  },
+  "notVerified": [
+    "D1 daily Free account write quota/headroom at actual future APPLY time",
+    "external physical postwrite 55-table/63-index/schema v1.1 (not executed)",
+    "data migration source PIT backup",
+    "fresh Cloudflare D1 entitlement/cost budget",
+    "required reviewers configured (not enabled in UI)"
+  ],
+  "nextBoundary": "Explicit fresh owner physical APPLY_ONCE approval remains required. No credentials or IDs in evidence. Never rerun unknown partial execution; 125 SQL statements not yet applied."
+}
