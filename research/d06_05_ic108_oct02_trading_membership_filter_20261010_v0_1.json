@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "D06_05_IC108_OCT02_TRADING_MEMBERSHIP_FILTER_20261010_V0_1",
+  "createdAt": "2026-10-10T09:21:04+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "pair": {
+    "priorTDCCSourceDate": "2026-09-24",
+    "currentTDCCSourceDate": "2026-10-02"
+  },
+  "parentCandidate": {
+    "path": "research/d06_05_pair_event_clean_support_candidate_20260924_20261002_v0_3.json",
+    "candidateCount": 2778,
+    "candidateHash": "fnv1a64-utf8:11ab5a267ae9cd2a",
+    "priorLabel": "FOUR_DIGIT_TDCC_EVENT_CLEAN_EXACT_DENOMINATOR_CANDIDATE",
+    "correction": "This parent is not a listed/OTC common-stock cohort; it is a TDCC four-digit security candidate set."
+  },
+  "oct02OfficialTradingMembership": {
+    "authority": "TWSE + TPEx official historical daily source normalized by System2 A1",
+    "sourceManifestRunId": 37944021198,
+    "sourceManifestArtifactId": 11623192826,
+    "sourceManifestArtifactDigest": "sha256:7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f",
+    "manifestSourceKeyIdentitySha256": "67ea4601ab7ea6300ab1cf0a54ba4eafb7d834c03ac83413536273c7dbabe654",
+    "manifestSourceKeyValueAggregateSha256": "2f6c4d8362168cad11c4c230fd26fa06aa189fe87567314aa7a4f8798b006139",
+    "date": "2026-10-02",
+    "twseFourDigitRows": 1086,
+    "tpexFourDigitRows": 888,
+    "combinedFourDigitRows": 1974,
+    "note": "A1 ordinarySymbol filtering is syntactic four-digit first-digit 1-9 membership in official daily trading tables; it is date-specific trading-market presence, not by itself a complete legal common-stock security-type certificate."
+  },
+  "deterministicFilter": {
+    "rule": [
+      "start from the exact 2,778 symbol parent candidate",
+      "intersect with 2026-10-02 TWSE+TPEx official A1 four-digit trading-symbol keys",
+      "explicitly remove known TDR symbols 9103 and 9110",
+      "zero-prefixed ETF symbols 0051/0053/0057/0061 are already absent from A1 four-digit membership and therefore disappear structurally"
+    ],
+    "parentCandidateIntersectOct02TradingCount": 1854,
+    "explicitTdrRemoved": [
+      "9103",
+      "9110"
+    ],
+    "oct02TradingMembershipUpperBoundCount": 1852,
+    "oct02TradingMembershipUpperBoundCanonicalMaterial": "ascending symbol, one symbol per line",
+    "oct02TradingMembershipUpperBoundFnv1a64": "fnv1a64-utf8:5eb02db54ebae70f",
+    "oct02TradingMembershipUpperBoundSha256": "d99fd27572c844a49d0f363d8ee72270e7c8a43bafd77ac37186bdff08ba7bc3",
+    "parentCandidateAbsentFromOct02TradingMembership": 924,
+    "priorProvisional2772AbsentFromOct02TradingMembership": 920
+  },
+  "falsification": [
+    "The previous 2,772 figure cannot be called the listed/OTC common-stock upper bound because 920 of those symbols are absent from the 2026-10-02 TWSE/TPEx daily four-digit trading membership.",
+    "TDCC four-digit format does not establish mainboard identity; it may include securities outside the date-effective listed/OTC trading universe.",
+    "A1 four-digit daily membership is necessary date-specific market-presence evidence but is not sufficient legal common-stock type evidence because four-digit TDR-like instruments can pass the same syntactic filter.",
+    "Historical code overlap alone must not delete a symbol because code reuse and issuer/board transitions are possible.",
+    "No return, price-response, selection, ranking, MFE or MAE field is opened."
+  ],
+  "remainingGate": [
+    "Obtain or reconstruct the complete 2026-09-24 TWSE+TPEx date-effective trading-symbol membership, or equivalently certify all listing/transfer/delisting transitions between 2026-09-24 and 2026-10-02.",
+    "Preserve explicit security-type guard for TDR and any other non-common four-digit instruments.",
+    "Freeze the final pair-effective listed/OTC common-stock symbol set and canonical hash before OOS/Shadow outcomes open."
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "change": "NONE",
+    "reason": "This materially improves L4 cohort cleanliness but one pair-boundary date-effective membership side remains incomplete; source/PIT maturity does not increase from cohort cleaning."
+  },
+  "status": "IC108_OCT02_TRADING_MEMBERSHIP_FILTER_PASS / PRIOR_2772_LABEL_FALSIFIED / OCT02_UPPER_BOUND_1852 / SEP24_DATE_EFFECTIVE_MEMBERSHIP_PENDING / SECURITY_TYPE_GUARD_ACTIVE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Recover a complete 2026-09-24 exchange-symbol membership or prove exhaustive listing/transfer/delisting continuity through 2026-10-02. Intersect both date memberships with the existing denominator/event-clean TDCC candidate, retain explicit security-type exclusions, then freeze the final symbol set and hash before any OOS/Shadow outcome join."
+}
