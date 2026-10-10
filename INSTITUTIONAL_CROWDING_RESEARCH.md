@@ -2956,3 +2956,58 @@ Scope boundary:
 
 Exact next:
 recover the complete 2026-09-24 exchange-symbol membership or prove exhaustive listing/transfer/delisting continuity through 2026-10-02. Then intersect both date memberships with the existing TDCC denominator/event-clean candidate, retain explicit security-type exclusions, and freeze the final pair-effective symbol set and hash before any OOS/Shadow outcome join.
+
+
+---
+
+## IC-109 — D06-05 final pair-effective common-equity cohort certified at 1,852 symbols
+
+Research cycle: 2026-10-10 Asia/Taipei  
+Status: FINAL_PAIR_EFFECTIVE_COHORT_1852 / TRANSITION_CONTINUITY_CERTIFIED / EVENT_DENOMINATOR_SECURITY_TYPE_GUARDS_PASS / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_ic109_pair_effective_common_equity_cohort_20260924_20261002_v0_1.json`.
+
+The prior 2,778 TDCC event/denominator-clean four-digit candidate and the IC-108 2026-10-02 exchange-membership filter are now reconciled into one explicit 1,852-symbol cohort. The full symbol list is persisted rather than represented only by a count/hash.
+
+Canonical cohort:
+- count = 1,852;
+- FNV-1a = `fnv1a64-utf8:5eb02db54ebae70f`;
+- SHA-256 = `d99fd27572c844a49d0f363d8ee72270e7c8a43bafd77ac37186bdff08ba7bc3`;
+- state = `FINAL_CERTIFIED_BY_TRANSITION_CONTINUITY`.
+
+Certification logic is intentionally not described as a missing dual-manifest row proof. The old 2026-09-24 A1 smoke retained exact TWSE/TPEx four-digit counts but not the full row list. Instead, date-effective continuity is certified by the combination of: 2026-10-02 official exchange membership, common presence across both TDCC vintages, no mainboard additions inside the pair interval, no TWSE delisting inside the interval, and the one material TPEx share-exchange/delisting path 8183->6191 already excluded by common-support/denominator lineage.
+
+Security-type protection remains explicit. Zero-prefixed ETFs are structurally outside the A1 four-digit membership, and TDRs 9103/9110 are explicitly removed. The cohort must not be reused as a timeless universe; every future TDCC pair rebuilds date-effective market membership, security-type, denominator, corporate-action and identity continuity.
+
+Maturity impact: NONE. D06-05 remains L3/60. Final cohort certification closes the pre-outcome support-cleaning prerequisite but does not itself supply OOS/Shadow evidence.
+
+## IC-110 — D06-05 L4 prospective Shadow/OOS protocol frozen before outcomes
+
+Research cycle: 2026-10-10 Asia/Taipei  
+Status: L4_PREREG_FROZEN / PRIMARY_FEATURE_AND_HORIZON_LOCKED / 12_PAIR_2_REGIME_PROMOTION_GATE / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json`.
+
+The L4 outcome protocol is now frozen before any outcome column opens.
+
+Primary promotion-grade test:
+- feature = signed 400-lot-plus TDCC concentration change;
+- transform = within-pair centered rank percentile;
+- direction = two-sided / unspecified at freeze because holder identity and motive are UNKNOWN;
+- outcome = five-session forward return from the first executable open after the later-vintage firstKnownAt, evaluated as residual/incremental value against a locked PIT baseline;
+- only this feature × horizon × M0 baseline can promote the module.
+
+One TDCC vintage pair is one independent time observation. Symbol rows inside the pair are a clustered cross-section and may not be counted as independent dates. Repeated scanDates/consumers of one TDCC sourceDate pair do not increase N.
+
+Locked primary baseline M0 includes market/industry, size, liquidity/turnover, volatility and momentum/direct price-volume state. M1 adds institutional-flow and leverage/shorting controls; M2 adds passive/index event and regime controls. M1/M2 are robustness layers and cannot rescue a failed M0 primary gate.
+
+Promotion review requires at least 12 genuinely new post-freeze TDCC pairs, at least two regime states, median clean support >=1,000 symbols per pair, at least 10/12 pair-sign agreement with the pooled estimate, a two-sided 95% interval excluding zero, positive mean OOS rank-IC increment versus M0 without a negative median-pair increment, and leave-one-pair-out sign stability in at least 10/12 omissions. At eight independent pairs the project may publish interim diagnostics only; no L4 promotion is allowed.
+
+Secondary 1-session/20-session horizons, 1000-lot-plus concentration, raw magnitude and absolute-change diagnostics are prespecified sensitivity analyses only and cannot rescue the primary test. Best threshold/quintile/regime selection after seeing outcomes is prohibited.
+
+Maturity impact: NONE. D06-05 remains L3/60 until the post-freeze OOS/Shadow evidence gate is actually passed.
+
+Exact next:
+for every genuinely new TDCC sourceDate after 2026-10-08, rebuild the pair-specific clean cohort and hash before outcomes, then append outcomes exactly under the frozen IC-110 protocol. Do not reuse the 1,852-symbol cohort as a timeless universe.
