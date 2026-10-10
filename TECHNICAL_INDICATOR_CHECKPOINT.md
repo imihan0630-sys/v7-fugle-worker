@@ -8927,3 +8927,35 @@ D03-09 ADX and D03-10 Bollinger remain L2/40. ADX still requires canonical Wilde
 ### Exact next continuation point after TI-1712
 
 Await independently accepted positive System1 read reserve and same-UTC-day account headroom, then consume a real authenticated read-only 36-key Scout without promoting it to population completeness or PIT. Only after independent Scout acceptance and a separate budget grant may the 11,843-key census run. Treat any census result as storage evidence until exact sessions, causal clocks, action/halt/identity lineage and continuity hashes pass. Parent track separately waits for the next ordinary-session genuine immutable C1 with authoritative V8.20 binding. Then evaluate D03-10 first; keep D03-09 on full-replay or replay-certified trusted-state requirements. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
+
+## TI-1713~1732 — Archive rehydration replay ceiling (2026-10-10)
+
+### New canonical evidence consumed
+
+Main commit `5cb4aa8503adbf30fb9f18a37af492e562e9b030` records a real GitHub Actions rehydration of the existing 11,843-key official-source archive. Run 38004261921 / Job 114069302287 succeeded from main SHA `9bb42ec5d405dce34fe8844a479d2574d103da4a`. The original ZIP and inner JSON SHA-256 hashes matched; an independent validator reconciled 12/12 market-date receipts, 11,843 unique stock-date keys (TWSE 6,518; TPEx 5,325), zero source-key duplicates, and matching global identity/value digests. Twenty-two upstream adversarial cases passed.
+
+This strengthens immutable replay reproducibility but not source independence: the validator rechecks the same archived observation root. All 11,843 records remain retrospective; qualified original firstKnownAt/availableAt keys remain zero. Hot D1 physical Scout remains 0/36, physical census 0/11,843, and physical missing/multiversion counts remain UNKNOWN.
+
+### D03 time-series depth firewall
+
+The frozen archive contains six completed dates, which imposes a hard history ceiling. ret5 needs six exact contiguous eligible closes and SMA5 needs five; they are only arithmetically possible and remain blocked by symbol-session continuity, corporate-action lineage and causal clocks. ret20/ret60, MA10/20/60/120, KD9, RSI14, MACD12/26/9, ADX14/Wilder replay and Bollinger20 lack minimum history or warm-up ancestry. Divergence lacks confirmed pivot clocks. Multi-timeframe conflict lacks intraday lineage and certified weekly finality. Cross-sectional key count must never be substituted for time-series depth.
+
+The D03-specific 20-case executable oracle `research/test_d03_archive_rehydration_replay_ceiling_v0_1.mjs` passes. It rejects archive/hash/key corruption, independent-validator-to-independent-source promotion, original-PIT laundering, Hot-D1-presence laundering, OOS overpromotion, insufficient indicator history, arithmetic-only lineage gaps, and unavailable divergence/multi-timeframe claims.
+
+### Bias / falsification disposition
+
+- PIT/look-ahead: zero qualified historical first-known keys; no backdating.
+- OOS/walk-forward: absent; revalidating one archive is not a new economic sample.
+- Selection/date clustering: six adjacent completed dates from an already-existing archive.
+- Multiple testing/overfitting: no parameter search; fixed minimum-history requirements only.
+- Redundancy: no independent price-information root is added.
+- Cost/fillability/limit/halt/ex-rights and market-state efficacy remain UNKNOWN; lineage is an input-validity gate, not alpha evidence.
+
+### Module disposition
+
+D03 maturity remains 56.7%. D03-10 Bollinger remains L2/40 and still needs exact 20 eligible parent sessions plus causal reset/continuity lineage. D03-09 ADX remains L2/40 and still needs full replay or a separately replay-certified trusted state. Other modules retain their existing levels. Outcomes stay closed, no FORMAL_OPTIMIZATION_CANDIDATE exists, and Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-1732
+
+Do not repeat archive rehydration. Await the independently accepted real 36-key Hot D1 Scout under a qualified read budget. Separately acquire causal exact eligible-session history long enough for the target indicator: first priority is 20 clean parent sessions for D03-10 Bollinger with reset/continuity lineage; D03-09 ADX remains full-replay or certified-state only. The six-date archive may support byte-integrity and input-schema diagnostics, not promotion, PIT, OOS, alpha or outcome claims. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
