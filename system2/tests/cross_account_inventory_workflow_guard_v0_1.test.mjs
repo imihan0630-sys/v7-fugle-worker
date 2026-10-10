@@ -26,4 +26,21 @@ for (const file of ["system2/migration/cloudflare_inventory_readonly_v0_1.mjs","
 "system2/migration/cross_account_preflight_v0_1.mjs","system2/migration/cross_account_storage_reconciliation_v0_1.mjs"]) {
  execFileSync(process.execPath,["--check",file],{stdio:"pipe"});
 }
+
+assert.match(workflow,/run_readonly_auth_diagnostic_v0_1\.mjs/);
+assert.match(workflow,/if:\s+always\(\)/);
+assert.match(workflow,/auth-diagnostic\.json/);
+assert.match(workflow,/D1_READ_PREFLIGHT_PASS/);
+assert(workflow.indexOf("Diagnose each account") < workflow.indexOf("Collect both accounts metadata"));
+const auth = readFileSync("system2/migration/cloudflare_auth_diagnostic_v0_1.mjs","utf8");
+const authRunner = readFileSync("system2/migration/run_readonly_auth_diagnostic_v0_1.mjs","utf8");
+assert.match(auth,/method: "GET"/);
+assert.doesNotMatch(auth,/method:\s*"(?:POST|PUT|PATCH|DELETE)"/);
+assert.match(auth,/\/user\/tokens\/verify/);
+assert.match(auth,/\/d1\/database\?page=1/);
+assert.match(authRunner,/role:"SOURCE"/);
+assert.match(authRunner,/role:"DESTINATION"/);
+assert.doesNotMatch(authRunner,/JSON\.stringify\(process\.env\)/);
+assert.doesNotMatch(authRunner,/console\.log\([^\n]*apiToken/);
+
 console.log("System2 migration GitHub workflow / scripts static isolation PASS");
