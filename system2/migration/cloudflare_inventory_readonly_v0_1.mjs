@@ -5,11 +5,13 @@ import { createHash } from "node:crypto";
  * No D1 SQL, R2 object read/copy, mutation, secret listing, deploy or cron edits.
  * Do NOT print raw inventories before sanitization.
  */
-export async function collectCloudflareInventory({ accountId, apiToken, fetchImpl = globalThis.fetch, now = () => new Date() } = {}) {
+export async function collectCloudflareInventory({ accountId, apiToken, fetchImpl = globalThis.fetch, now = () => new Date(), r2Mode = "REQUIRED" } = {}) {
   if (!/^[0-9a-f]{32}$/i.test(accountId || "")) throw new Error("CLOUDFLARE_ACCOUNT_ID_INVALID");
   if (typeof apiToken !== "string" || !apiToken.trim()) throw new Error("READ_ONLY_API_TOKEN_MISSING");
   if (typeof fetchImpl !== "function") throw new Error("FETCH_UNAVAILABLE");
 
+  if (!["REQUIRED","KNOWN_NOT_ENTITLED"].includes(r2Mode)) throw Error("R2_MODE_UNRECOGNIZED");
+  const r2BucketsVerified = r2Mode === "REQUIRED";
   const base = "https://api.cloudflare.com/client/v4/accounts/" + accountId;
   const request = async (path) => {
     if (!path.startsWith("/") || path.startsWith("//")) throw new Error("INVALID_API_PATH");
@@ -64,7 +66,7 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
   const [databases, workerRaw, buckets, kvNamespaces] = await Promise.all([
     numbered("/d1/database", p => p.result),
     request("/workers/scripts"),
-    r2Buckets(),
+    r2BucketsVerified ? r2Buckets() : Promise.resolve([]),
     numbered("/storage/kv/namespaces", p => p.result),
   ]);
   // D1 metadata GET does not consume SQL rowsRead; Free has a 500 MB single-DB cap.
@@ -93,10 +95,12 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
   return {
     // Returned accountId is PRIVATE in-process only; do not serialize this object.
     accountId,
-    complete: true,
-    verifiedBy: "CLOUDFLARE_READ_ONLY_API",
+    complete: r2BucketsVerified,
+    verifiedBy: r2BucketsVerified ? "CLOUDFLARE_READ_ONLY_API" : "CLOUDFLARE_READ_ONLY_API_PARTIAL",
     verifiedAt: now().toISOString(),
-    inventoryScope: "D1_WORKERS_R2_BUCKETS_KV_AND_S2_CRON_METADATA_ONLY",
+    inventoryScope: r2BucketsVerified ? "D1_WORKERS_R2_BUCKETS_KV_AND_S2_CRON_METADATA_ONLY" : "D1_WORKERS_KV_AND_S2_CRON_ONLY_R2_NOT_ENTITLED",
+    r2BucketsVerified,
+    r2Status: r2BucketsVerified ? "READ_GRANTED" : "NOT_ENTITLED",
     routesVerified: false,
     d1RowsVerified: false,
     r2ObjectContentsVerified: false,
@@ -108,13 +112,20 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
 }
 
 export function publicCloudflareInventory(privateInventory) {
-  if (!privateInventory || privateInventory.complete !== true || !/^[a-f0-9]{32}$/i.test(privateInventory.accountId || "")) throw new Error("UNVERIFIED_PRIVATE_INVENTORY");
+  if (!privateInventory || !/^[a-f0-9]{32}$/i.test(privateInventory.accountId || "")) throw new Error("UNVERIFIED_PRIVATE_INVENTORY");
+  const allowedFull = privateInventory.complete === true && privateInventory.r2BucketsVerified !== false;
+  const allowedPartial = privateInventory.complete === false &&
+    privateInventory.r2BucketsVerified === false && privateInventory.r2Status === "NOT_ENTITLED" &&
+    privateInventory.verifiedBy === "CLOUDFLARE_READ_ONLY_API_PARTIAL";
+  if (!allowedFull && !allowedPartial) throw new Error("UNVERIFIED_PRIVATE_INVENTORY");
   const accountFingerprint = createHash("sha256").update(privateInventory.accountId.toLowerCase()).digest("hex");
   // Explicit whitelist; no accidental token/binding values/resource IDs leak.
   return {
     accountFingerprint,
-    complete: true,
+    complete: privateInventory.complete,
     verifiedBy: privateInventory.verifiedBy,
+    r2BucketsVerified: privateInventory.r2BucketsVerified,
+    r2Status: privateInventory.r2Status,
     verifiedAt: privateInventory.verifiedAt,
     inventoryScope: privateInventory.inventoryScope,
     routesVerified: false,
