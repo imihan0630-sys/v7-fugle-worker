@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "S2_CROSS_ACCOUNT_D1_POSTCREATE_REAL_GETONLY_RECONCILIATION_V0_1",
+  "dateTaipei": "2026-10-10",
+  "status": "DESTINATION_D1_METADATA_PHYSICALLY_VERIFIED_TABLE_COUNT_OWNER_UI_ONLY",
+  "scope": "READ_ONLY_SANITIZED_ACCOUNT_METADATA_NOT_D1_SQL",
+  "primaryEvidence": {
+    "before": {
+      "runId": 38022384514,
+      "artifactId": 11658558682,
+      "sha256": "6b1f60e674e6a759f53ef3907a755e9fcd55fb25186de7769e3e8c526a1213dc",
+      "sourceVerifiedAt": "2026-10-10T03:57:59.802Z",
+      "destinationVerifiedAt": "2026-10-10T03:58:00.019Z",
+      "destDbCount": 0
+    },
+    "after": {
+      "runId": 38027260602,
+      "jobId": 114140637914,
+      "headSha": "b62c83a83e9772f0e0e60b75ec76603fc4e53108",
+      "artifactId": 11661270384,
+      "sha256": "738b923b7ef142f15b45f623b7c99ecd73fcd7d9d29aaf650b73e26a5c24c671",
+      "sourceVerifiedAt": "2026-10-10T05:22:13.198Z",
+      "destinationVerifiedAt": "2026-10-10T05:22:13.689Z",
+      "destDbCount": 1
+    }
+  },
+  "accountFingerprints": {
+    "source": "3a6732b4f599575098949e818ef9266c324929cf38644387bddc09e05497243b",
+    "destination": "27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55"
+  },
+  "databaseFingerprints": {
+    "sourceS2Db": "9768891c958358067329099ab5cc10560633c47437713966ef02024c14c9fb80",
+    "destinationS2Db": "95f48f4d37b8eb4c16919d037259a5ebc30a8057e1933db39a6e8f759b9874b9"
+  },
+  "afterSource": {
+    "databases": [
+      "system2-research",
+      "v7-live"
+    ],
+    "workers": [
+      "fugle-test",
+      "system2-shadow-research"
+    ],
+    "kv": [
+      "fugle-stock-config"
+    ],
+    "r2Bucket": [
+      "system2-historical-research"
+    ],
+    "cron": "*/5 0-5,11 * * MON-FRI",
+    "s2DbSizeBytes": 316968960,
+    "beforeAndAfterSourceResourcesExactlyUnchanged": true
+  },
+  "afterDestination": {
+    "databases": [
+      {
+        "name": "system2-research",
+        "apiSizeBytes": 12288
+      }
+    ],
+    "workerCount": 0,
+    "kvCount": 0,
+    "cronCount": 0,
+    "r2": "NOT_ENTITLED",
+    "r2HttpStatus": 403,
+    "r2ErrorCode": 10042,
+    "inventoryComplete": false,
+    "authenticatedD1ReadPass": true,
+    "accountReadBoundToDifferentAccountThanSource": true
+  },
+  "ownerDashboardUi": {
+    "observedAtTaipei": "2026-10-10 13:11",
+    "numberOfTables": 0,
+    "rowsRead": 0,
+    "rowsWritten": 0,
+    "storageDisplay": "12.29 kB",
+    "evidentiaryLimit": "UI only; account/database identifiers not visible in owner screenshot"
+  },
+  "offlineReconciliation": {
+    "checksPassed": 20,
+    "checksTotal": 20,
+    "passed": [
+      "before_after_source_fingerprint_stable",
+      "before_after_destination_fingerprint_stable",
+      "distinct_source_and_destination_account",
+      "source_resource_inventory_unchanged",
+      "source_formal_worker_still_listed",
+      "source_s2_d1_still_listed",
+      "destination_before_zero_database",
+      "destination_after_exactly_one_d1",
+      "destination_d1_name_exact",
+      "destination_d1_hash_distinct_from_source",
+      "destination_before_after_no_worker_kv_cron",
+      "r2_partial_permission_profile_stable",
+      "source_inventory_full_and_destination_inventory_partial",
+      "after_token_d1_read_ok",
+      "after_source_services_granted",
+      "after_destination_d1_workers_kv_read_granted",
+      "after_destination_r2_http403_notentitled",
+      "fresh_verified_at",
+      "postcreate_cloudflare_d1_size_reasonable_empty_ui",
+      "no_source_data_copied_by_after_inventory"
+    ],
+    "method": "Compare actual BEFORE and AFTER GitHub Artifacts' sanitized JSON. Zip SHA256 independently recomputed and matched GitHub-published digest; no Cloudflare mutations."
+  },
+  "remainingCriticalBlockers": [
+    "AUTHENTICATED_D1_SQL_TABLE_COUNT_NOT_EXECUTED",
+    "SOURCE_D1_APPLIED_SCHEMA_TABLE_ROWS_FROZEN_HASHES_UNVERIFIED",
+    "SOURCE_IMMUTABLE_BACKUP_AND_PIT_INDEPENDENT_AUDIT_MISSING",
+    "SYSTEM1_READ_RESERVE_NOT_APPROVED",
+    "DESTINATION_SCHEMA_AND_HISTORY_NOT_COPIED",
+    "DESTINATION_WORKER_NOT_DEPLOYED",
+    "HISTORICAL_R2_NOT_ENTITLED"
+  ],
+  "automatedVerificationCloudWrites": 0,
+  "rowsMigrated": 0,
+  "fullMigrationAccepted": false,
+  "system1FormalChanged": false,
+  "statusFootnote": "ONE EMPTY DESTINATION D1 RESOURCE AUTHENTICATED VIA GET-ONLY API. The 13 migration/15 Shadow gates and CORR-003 requirements are not deemed complete."
+}
