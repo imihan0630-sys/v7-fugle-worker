@@ -36,13 +36,13 @@ function validatedEmptyPage(data){
   const info=data?.result_info;
   // A missing total_count or a truncated page is NOT evidence the target is empty.
   return Array.isArray(items)&&items.length===0&&info?.total_count===0&&
-    Number.isSafeInteger(info?.total_pages)&&info.total_pages<=1;
+    info?.count===0&&info?.page===1&&Number.isSafeInteger(info?.per_page)&&info.per_page>=10;
 }
 function oneCreatedItem(data,expectedId){
   const items=data?.result;
   const info=data?.result_info;
   if(!Array.isArray(items)||items.length!==1||info?.total_count!==1||
-     info?.total_pages!==1)return false;
+     info?.count!==1||info?.page!==1||!Number.isSafeInteger(info?.per_page)||info.per_page<10)return false;
   return items[0]?.name===S2_EMPTY_D1_TARGET_NAME&&
     (items[0]?.uuid||items[0]?.id)===expectedId;
 }
