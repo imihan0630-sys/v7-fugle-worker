@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "D06_05_IC111_CHECKPOINT_V0_1",
+  "createdAt": "2026-10-10T11:16:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "maturityChange": "NONE",
+  "sourceResearchFile": "research/d06_05_ic111_pair_dependence_and_oos_execution_audit_20261010_v0_1.json",
+  "prerequisiteFrozenProtocol": "research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json",
+  "latestKnownMainAtBranchCreation": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+  "cohortReadback": {
+    "symbols": 1852,
+    "unique": 1852,
+    "ascending": true,
+    "fnvMatch": true,
+    "fnv": "fnv1a64-utf8:5eb02db54ebae70f"
+  },
+  "newFinding": "12 distinct consecutive weekly TDCC pairs need not be 12 statistically independent episodes: adjacent pairs share one source vintage, and five-session forward label intervals may overlap depending on real firstKnownAt. The frozen IC110 protocol has not yet specified a unique promotion estimator or a validated chronological M0 training/evaluation implementation. These are pre-outcome research-audit gaps, not evidence that IC110 or its 1852-symbol cohort is wrong.",
+  "auditResults": {
+    "hypothesesReviewed": 5,
+    "negativeTestsSpecified": 9,
+    "syntheticHistoricalShadowCreated": false,
+    "marketOutcomeDataOpened": false,
+    "formalCoreChanged": false,
+    "ic110FrozenThresholdsChanged": false
+  },
+  "status": "IC111_AUDIT_EVIDENCE_DURABLE_ON_RESEARCH_BRANCH / OOS_ESTIMATOR_AND_SPLIT_UNVERIFIED / D16_REVIEW_PENDING / NO_MATURITY_CHANGE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "blockers": [
+    "No new genuine TDCC sourceDate strictly later than 2026-10-08 independently verified in this run.",
+    "D16 independent outcome-blind primary-estimator and chronological training/split execution review not yet complete.",
+    "IC110 pair-level serial-dependence robustness cannot be inferred from 12-pair count alone."
+  ],
+  "exactNextContinuationPoint": "Read latest main and determine whether IC111 PR has merged. Preserve IC110 primary feature/horizon/M0/12-pair/2-regime freeze. Obtain D16 outcome-blind estimator/split/overlap audit, then for each genuinely new TDCC sourceDate > 2026-10-08 rebuild date-effective clean cohort/hash before opening outcomes; never count duplicate pairs as new observations. Continue other D06-07/08/09 multi-date source-vintage or D06-11/16 passive clock research if new TDCC vintage is unavailable.",
+  "trackerSync": {
+    "domainMaturityPct": 55.6,
+    "moduleLevel": "L3",
+    "moduleMaturityPct": 60,
+    "change": "NONE",
+    "required": "After research evidence and checkpoint are durable, update only D06 research note/continuation in latest tracker if safe; never overwrite parallel updates."
+  }
+}
