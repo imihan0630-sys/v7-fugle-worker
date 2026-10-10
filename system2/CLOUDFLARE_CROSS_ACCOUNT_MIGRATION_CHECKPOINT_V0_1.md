@@ -107,3 +107,28 @@ Real run [#38020519397](https://github.com/imihan0630-sys/v7-fugle-worker/action
 Isolation-safe PR branch `infra/s2-cross-account-r2-entitlement-diagnostics-20261010` adds a GET-only four-service-per-account probe with allowed numeric Cloudflare error code only, a sanitized artifact even on failure, and a fail-closed gate before full inventory. This avoids blindly reissuing valid tokens for non-token R2 403 and tests all four scopes independently. Code/CI do NOT prove subscription. Required owner decision if R2 unentitled: whether to activate subscription after full fee review or design an approved D1-only Phase-1 Shadow profile preserving cold archive source read-only; no unauthorized cost.
 
 Migration acceptance still **0/13** until physical copy and evidence. Next action: CI/independent review, then owner approves merge of diagnostic PR; owner runs one manual GET-only diagnostic, assistant retrieves sanitized receipt. No new Token creation unless code explicitly identifies permission denial. 
+
+
+## 2026-10-10 11:47 Taiwan owner run — R2 not entitled confirmed
+
+Physical, owner-manually-authorized, GET-only GitHub Run [#38021761468](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38021761468) on main `f3127262b7b442045686032da72f9b086a680fb5`, FAILED ONLY at the explicit service-read guard. The failure is correct fail-closed behavior. Official immutable sanitized service artifact ID `11658562378`, artifact SHA256 `55216243d9917d065213a719dee0af08260848b8fc0af1dc2da95dc8ab714b62`, downloaded and inspected as `service-diagnostic.json`.
+
+| Resource | SOURCE | DESTINATION |
+|---|---|---|
+| D1 | HTTP200 / READ_GRANTED | HTTP200 / READ_GRANTED |
+| Workers | HTTP200 / READ_GRANTED | HTTP200 / READ_GRANTED |
+| KV | HTTP200 / READ_GRANTED | HTTP200 / READ_GRANTED |
+| R2 | HTTP200 / READ_GRANTED | HTTP403, Cloudflare numeric error 10042, R2_ACCOUNT_NOT_ENTITLED |
+
+Vendor confirms 10042 = `NotEntitled`, requires R2 subscription: https://developers.cloudflare.com/r2/api/error-codes/ and https://developers.cloudflare.com/r2/get-started/ . **No subscription may be enabled without owner consent.** R2 free allowance does not mean subscription activation cannot enable usage billing; current official Standard storage included: 10 GB-month / month, 1M Class A, 10M Class B (https://developers.cloudflare.com/r2/pricing/).
+
+Owner additionally issued standing LIMITED permission on 2026-10-10: merge low-risk isolated/offline PRs without repeatedly requesting per-PR confirmation iff architecture, formal business functionality, finances/billing, credentials, data writes, production deployment remain unaffected. Concrete restrictive conditions recorded in `system2/migration/DELEGATED_LOW_RISK_MERGE_POLICY_V0_1.md`. This does **NOT** authorize physical Cloudflare migration or R2 subscription.
+
+This PR's repair is **read-only partial inventory**, rather than lying about a complete destination:
+- SOURCE complete D1/Workers/KV/R2 metadata required.
+- DESTINATION must have D1/Workers/KV READ_GRANTED and R2 exact **HTTP403 code10042**, and an attested receipt created in the same run. Only then may the destination R2 bucket list be skipped.
+- DESTINATION has `complete=false`, `r2BucketsVerified=false`, `r2Status=NOT_ENTITLED`. No R2 count claim or full migration PASS. Full physical preflight remains blocked.
+- For all other 401/403/429/unknown errors the workflow continues to fail closed and store diagnosis.
+- No D1 SQL, no R2 object fetch, no write, no Worker deployment, no subscription enablement, no new permissions.
+
+Outcome of Run #38021761468: neither DB nor archive transferred; physical migration acceptance 0/13. Goal of partial safe-only follow-up: capture resource metadata and actual source D1 file size to decide if independent Free D1-only Shadow is practical. No System1 Formal runtime modification.
