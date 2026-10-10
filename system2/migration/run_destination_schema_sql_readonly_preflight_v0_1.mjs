@@ -29,7 +29,8 @@ try {
    files,sourceProvisioner,destinationReceipt,fetchImpl:globalThis.fetch
  });
  write({status:v.result,schemaObjects:v.objectsFound,tables:v.tableCount,
-    indexes:v.indexCount,dbSizeBytes:v.targetFileSizeBytes,
+    indexes:v.indexCount,cloudflareReservedTables:v.cloudflareReservedTablesFound,
+    totalRawSchemaObjects:v.rawSchemaObjectsFound,dbSizeBytes:v.targetFileSizeBytes,
     accountAndDbFingerprintMatched:v.authenticatedDestAccountMatched&&v.authenticatedDestDbMatched,
     planSequenceSha256:v.planSequenceSha256,queryKind:"SELECT_SQLITE_SCHEMA_ONLY",
     cloudReadsPerformed:3,cloudWritesPerformed:0});
