@@ -46,7 +46,7 @@ export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource,proposedStagin
   const compatibleProposal=!!cdate && cdate>="2026-08-04" &&
     proposedStagingConfig.includes('name = "system2-shadow-research-staging"') &&
     proposedStagingConfig.includes("workers_dev = false") &&
-    !/no_nodejs_compat|\[triggers\]|^crons\s*=|^routes?\s*=/m.test(proposedStagingConfig);
+    !/^(?:\s*\[triggers\]\s*$|\s*crons\s*=|\s*routes?\s*=)|no_nodejs_compat/m.test(proposedStagingConfig);
   const allowedBaseBlockers=base.unresolved.length===2 &&
     base.unresolved.includes("DYNAMIC_IMPORT_OR_REQUIRE_UNVERIFIED") &&
     base.unresolved.includes("EXTERNAL_MODULE_RUNTIME_UNVERIFIED");
