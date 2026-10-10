@@ -30,14 +30,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Confirm official preceding Taiwan trading session (never run C1 on holidays)
+        id: calendar
+        env:
+          C1_SCAN_DATE: ${{ inputs.scan_date }}
+          C1_READINESS_OUTPUT: artifacts/system1-c1-readiness.json
+        run: node tests/system1_c1_official_session_gate.mjs
       - name: Validate V8.19 generation inventory semantics
+        if: steps.calendar.outputs.proceed == 'true'
         run: node tests/test_system1_c1_generation_inventory_validation_v0_1.mjs
       - name: Validate V8.20 Formal-C1 binding readback semantics
+        if: steps.calendar.outputs.proceed == 'true'
         run: node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
       - name: Read and verify the immutable C1 population receipt
+        if: steps.calendar.outputs.proceed == 'true'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          C1_SCAN_DATE: ${{ inputs.scan_date }}
+          C1_SCAN_DATE: ${{ steps.calendar.outputs.scan_date }}
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
           C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
           C1_READINESS_OUTPUT: artifacts/system1-c1-readiness.json
@@ -47,6 +56,7 @@ jobs:
           C3_REGISTER: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
         run: node tests/collect_system1_c1_c2_evidence.mjs
       - name: Build offline H1-H5 opportunity-loss readiness
+        if: steps.calendar.outputs.proceed == 'true'
         env:
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
           C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
@@ -57,7 +67,7 @@ jobs:
           OPPORTUNITY_LOSS_OUTPUT: artifacts/system1-opportunity-loss-v0.3.json
         run: node tests/build_system1_h1_h5_prospective_postprocess.mjs
       - name: Build genuine prospective operational acceptance receipt
-        if: always() && github.event_name == 'schedule'
+        if: always() && github.event_name == 'schedule' && steps.calendar.outputs.proceed == 'true'
         env:
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
           C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
