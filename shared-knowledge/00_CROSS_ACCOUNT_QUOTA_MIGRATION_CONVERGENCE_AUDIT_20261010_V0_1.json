@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "S2_00_CROSS_ACCOUNT_QUOTA_MIGRATION_CONVERGENCE_AUDIT_V0_1",
+  "recordedAtUtc": "2026-10-10T14:38:26.178Z",
+  "recordedAtTaipei": "2026-10-10 22:38:26",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "auditScope": "READ_ONLY_CURRENT_MAIN_CROSS_LANE_GATE_RECONCILIATION",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "latestMainObservedBeforeWrite": "797a7d57e2124737cd4bfac29881a1df633cb562",
+  "method": "GitHub canonical files / issue / PR / independent immutable audit receipt / actual Actions jobs and artifact metadata readback; exact source blob match; no new Cloudflare reads/writes or test reruns by 00",
+  "canonicalQueue": {
+    "sourcePath": "system2/SYSTEM2_CORRECTION_QUEUE.json",
+    "updatedAt": "2026-10-09T23:52:49+08:00",
+    "total": 24,
+    "statusCounts": {
+      "FIX_IN_PROGRESS": 1,
+      "VERIFIED_CLOSED": 18,
+      "FIX_IMPLEMENTED": 1,
+      "REJECTED_WITH_EVIDENCE": 1,
+      "VERIFYING": 1,
+      "OPEN": 2
+    },
+    "corr003": "HIGH_VERIFYING_NOT_CLOSABLE",
+    "physicalCriterionSource": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json",
+    "originalCriteria": {
+      "sourceLevelPassOnly": 15,
+      "prospectivePhysicalPending": 3,
+      "historicalNegative": 1,
+      "total": 19
+    },
+    "physicalP01toP05": {
+      "accepted": 0,
+      "total": 5,
+      "documentedSupportingChecks": 15,
+      "totalSupportingChecks": 38
+    },
+    "system1WriteReserveApproved": false,
+    "system1ReadReserveApproved": false,
+    "p03AuthenticatedGrantedMultiwriterChains": 0,
+    "p05HotD1Scout": "0/36",
+    "p05HotD1Census": "0/11843",
+    "interpretation": "Implementation and CI may pass while safety case lacks physical granting and protected System1 after-market persistence; separate-account destination cannot settle this source-account correction before verified cutover."
+  },
+  "newDestinationPhysical": {
+    "migrationCheckpoint": "system2/CLOUDFLARE_CROSS_ACCOUNT_MIGRATION_CHECKPOINT_V0_1.md",
+    "receipt": "system2/migration/evidence/S2_DEST_D1_REAL_SQL_EMPTY_POST_FIX_20261010_V0_1.json",
+    "actualRun": 38051816632,
+    "actualJob": 114212314312,
+    "originalArtifactId": 11669069406,
+    "originalArtifactDigest": "sha256:6677eeb2679f3baa9242e4469ffd6b00e7238e2622ef63ba03e4a8bfd07d56fc",
+    "physicalObservationTaipei": "2026-10-10 20:24:24",
+    "scope": "THREE_READ_ONLY_REQUESTS: two destination D1 metadata GET plus single SELECT sqlite_schema",
+    "codeSafeInterpretation": "One Cloudflare platform-reserved table _cf_KV permitted but user-defined tables and indexes are zero",
+    "userTablesObserved": 0,
+    "userIndexesObserved": 0,
+    "reservedPlatformTablesObserved": 1,
+    "physicalD1SizeBytes": 12288,
+    "cloudReadsRecorded": 3,
+    "cloudWritesRecorded": 0,
+    "planSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "plannedStatements": 125,
+    "plannedTables": 55,
+    "plannedIndexes": 63,
+    "plannedMetaUpserts": 7,
+    "excludedStagedMigration": "0011_outcome_revision_archive_staged.sql",
+    "observedPhysicalSchemaInstall": "NOT_PERFORMED_AS_OF_LAST_PHYSICAL_READ",
+    "observedActualHistoryFrozenRowsCopied": 0,
+    "observedNewWorkerCron": 0,
+    "r2": "DESTINATION_NOT_ENTITLED",
+    "migration13PhysicalGatesAccepted": 0,
+    "clarification": "The last independently attested physical state is empty; 00 did not perform a new post-merge D1 query or infer present-time absence beyond that timestamp."
+  },
+  "pullRequestSecurity": {
+    "pr": 1088,
+    "status": "MERGED",
+    "issue1092": "CLOSED",
+    "mergedCandidateHead": "68259cda7993b997ac030276210631d5a396e187",
+    "githubMergeBoundary": "CODE_ONLY",
+    "fix": "Cloudflare D1 read/write SQL requires affirmative envelope success plus exactly one affirmative nested SQL group; malformed/nonboolean/null/missing result blocks before declaring state.",
+    "exactMainHeadBlobReadback": [
+      {
+        "path": "system2/migration/destination_schema_only_manual_executor_v0_1.mjs",
+        "headAndMainBlob": "5ebd9922328e68024a12675f0d36708a65157cb9",
+        "match": true
+      },
+      {
+        "path": "system2/tests/destination_schema_only_sql_result_failclosed_1092.test.mjs",
+        "headAndMainBlob": "394b462a0344b65f71e1c2d323e3ac9e2fe222d7",
+        "match": true
+      },
+      {
+        "path": "system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs",
+        "headAndMainBlob": "87d8e039b3f8d314e88743f4af40e9adf3d5ebbe",
+        "match": true
+      }
+    ],
+    "independentAcceptance": "system2/migration/evidence/S2_PR1088_ISSUE1092_INDEPENDENT_POSTFIX_ACCEPTANCE_20261010_V0_1.json",
+    "pr1095": "MERGED_AUDIT_EVIDENCE_ONLY",
+    "independentResearchAction": 38059510836,
+    "independentV8Action": 38059510760,
+    "codeResearchAction": 38055517767,
+    "codeV8Action": 38055517798,
+    "actualGithubJobs": "ALL_QUERYABLE_JOBS_SUCCESS",
+    "syntheticNegativeAssertions": {
+      "malformedSelectResponsesRejected": 10,
+      "invalidSchemaObjectsRejected": 6,
+      "unconfirmedDdlOrdinalPositionsRejected": 125,
+      "syntheticDisconnectPositionsRejected": 4
+    },
+    "positiveMock": {
+      "manualVerifyOnlyNoDdl": true,
+      "valid125StatementPlan": true
+    },
+    "limits": [
+      "The code audit did not conduct Cloudflare schema writes",
+      "Same author-linked GitHub token means no formal separate-account review; separate AUDIT_LANE evidence is recorded",
+      "Past safe CI and exact blob matching do not authorize APPLY_ONCE",
+      "No new D1 Edit secret or GitHub Environment has been verified by 00"
+    ]
+  },
+  "interlockDecisions": [
+    {
+      "gate": "SOURCE_SHARED_D1_QUOTA",
+      "state": "HIGH_VERIFYING_PHYSICAL_0_OF_5",
+      "owner": "REMEDIATION_LANE",
+      "nonSubstitution": "New empty destination DB does not reserve or expand original source account D1 quota; System1 23:35/23:55 must remain protected and evidenced during migration."
+    },
+    {
+      "gate": "DESTINATION_SCHEMA_CODE",
+      "state": "SOURCE_LEVEL_SECURITY_PASS_MERGED",
+      "owner": "CROSS_ACCOUNT_MIGRATION_ENGINEERING_AUDIT_LANE",
+      "nonSubstitution": "PR and 125-case mocks do not imply 55 schema tables installed."
+    },
+    {
+      "gate": "DESTINATION_SCHEMA_PHYSICAL",
+      "state": "LAST_OBSERVED_EMPTY_0_OF_55",
+      "owner": "OWNER_MANUAL_SCOPE",
+      "nonSubstitution": "Manual VERIFY_ONLY requires own fresh readback; APPLY_ONCE separate approval and headroom. Do not self-dispatch."
+    },
+    {
+      "gate": "SOURCE_BACKUP_AND_PIT",
+      "state": "ISSUE_1068_OPEN",
+      "owner": "DATA_LANE",
+      "nonSubstitution": "Read-only metadata/schema preflight never proves real source D1 backup, row digests or immutable PIT preservation."
+    },
+    {
+      "gate": "HISTORY_HOT_D1_P05",
+      "state": "SOURCE_11843_KEYS_ONLY_PHYSICAL_HOT_0_OF_11843",
+      "owner": "DATA_LANE_PLUS_REMEDIATION",
+      "nonSubstitution": "Official 12/12 source parity not hot D1 proof, firstKnownAt, W0 continuity or prospective selected pool."
+    },
+    {
+      "gate": "NC_T01_INDEPENDENCE",
+      "state": "PHYSICAL_T11_TO_T16_NOT_ACCEPTED",
+      "owner": "BUILD_DATA_AUDIT_00",
+      "nonSubstitution": "No composed code/security/transfer evidence may stand in for real same-cut SHORT_MOMENTUM W0/W1 receipt."
+    },
+    {
+      "gate": "CUTOVER",
+      "state": "NO_PROVEN_PHYSICAL_D1_WORKER_CRON_R2_DATA_READY",
+      "owner": "OWNER_PLUS_MIGRATION_GOVERNANCE",
+      "nonSubstitution": "Do not mark CORR-003 solved merely by creating new account; only actual separated active physical writers and safely persisted business evidence could change that risk classification."
+    }
+  ],
+  "highestValueNext": [
+    {
+      "rank": 1,
+      "owner": "REMEDIATION_LANE",
+      "exactNext": "Qualify P01/P02 physically measured System1 write/read reserves then P03 multiwriter post-fix granted-to-persist-and-ledger chain, and P04 natural trading-day successful business execution; coordinate 36-key Scout only after safe P05 read gate."
+    },
+    {
+      "rank": 2,
+      "owner": "CROSS_ACCOUNT_MIGRATION_ENGINEERING",
+      "exactNext": "Honor already accepted source-level PR1088 without repeating old failure. Destination-only privileged Environment/token setup requires owner; safe manual VERIFY_ONLY has no writes; any 125-DDL APPLY_ONCE needs separate explicit owner authorization, actual fresh quota gate, independent readback."
+    },
+    {
+      "rank": 3,
+      "owner": "DATA_LANE",
+      "exactNext": "Issue1068 genuine source schema/row/frozen physical backup+PIT and resource budget; retain source hot D1 missing/version UNKNOWN; TWTAWU bounded negative completeness/3CA for W0."
+    },
+    {
+      "rank": 4,
+      "owner": "BUILD_LANE",
+      "exactNext": "CORR-012/013 outcome chain/calendar/NO_FILL physical consumer acceptance and first true W1 SHORT_MOMENTUM not fallback; separate QA."
+    },
+    {
+      "rank": 5,
+      "owner": "00",
+      "exactNext": "Only accept physical evidence from original run/artifact/clock/head, recompute matrix; refuse to close shared quota or migration from code CI alone. Re-read latest main on each continuation."
+    }
+  ],
+  "prohibitions": {
+    "cloudPhysicalSQL": false,
+    "cloudResourcesOrSecrets": false,
+    "paidUpgrade": false,
+    "workerCron": false,
+    "system1FormalCore": false,
+    "livePushCapitalOrders": false,
+    "syntheticPITBackfill": false,
+    "independentAuditorRoleTakeover": false
+  },
+  "moduleInventory": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
