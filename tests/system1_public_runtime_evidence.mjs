@@ -3,7 +3,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 const origin="https://fugle-test.imihan0630.workers.dev";
 const endpoints=[
   {name:"runtime",path:"/api/version"},
-  {name:"storage",path:"/api/storage/status"}
+  {name:"storage",path:"/api/storage/status"},
+  {name:"scan",path:"/api/scan/status"}
 ];
 const result={
   schemaVersion:"SYSTEM1_PUBLIC_RUNTIME_READONLY_V0_1",
@@ -33,6 +34,14 @@ for(const e of endpoints) {
         record.latestScanDate=typeof body?.d1?.scanDate==="string" ? body.d1.scanDate : null;
         record.encryptedMirrorVerified=body?.github?.verified===true;
         record.mirrorScanDate=typeof body?.github?.scanDate==="string" ? body.github.scanDate : null;
+      } else if(e.name==="scan") {
+        // Public response can be unauthorized; capture only coarse safe fields.
+        // Neither HTTP 200 nor a latest snapshot is fresh Formal evidence.
+        record.scanDate=typeof body?.scanDate==="string" ? body.scanDate : null;
+        record.pipelineComplete=body?.pipeline?.complete===true;
+        record.selectedCount=Number.isSafeInteger(body?.selectedCount) && body.selectedCount>=0
+          ? body.selectedCount : null;
+        record.c1GenerationVerified=false;
       }
     } else record.errorClass="HTTP_"+resp.status;
   } catch(error) {
@@ -41,6 +50,8 @@ for(const e of endpoints) {
   result.endpoints[e.name]=record;
 }
 result.recoveryScan20261008Confirmed=result.endpoints.storage?.latestScanDate==="2026-10-08";
+result.publicScanReadbackAuthorized=result.endpoints.scan?.httpStatus===200;
+result.publicRuntimeInsufficientForFormalAcceptance=true;
 result.operationalRecoveryPass=false; // Public GET cannot prove C1/C2 or full formal scan.
 await mkdir("artifacts",{recursive:true});
 await writeFile("artifacts/system1-public-runtime-readonly.json",JSON.stringify(result,null,2)+"\n");
