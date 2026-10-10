@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "S2_PR1088_ISSUE1092_REMEDIATION_HANDOFF_20261010_V0_1",
+  "scope": "SOURCE_LEVEL_SQL_RESPONSE_FAIL_CLOSED_REPAIR_ONLY",
+  "status": "FIX_IMPLEMENTED_PENDING_INDEPENDENT_AUDIT_REVERIFY",
+  "auditDecisionBefore": "FAIL_DO_NOT_MERGE_PR1088",
+  "auditIssue": 1092,
+  "auditSourcePath": "system2/migration/evidence/S2_PR1088_INDEPENDENT_SECURITY_AUDIT_20261010_V0_1.json",
+  "auditCounterexamplePR": 1091,
+  "repairPR": 1088,
+  "originalFailedHead": "602c2822437148d8f9da6618551f9c2b4067cb4b",
+  "testedRepairHead": "7bbb7b1ffdbaeb5ef89e8c171c7fffffd29e7932",
+  "testedAtUtc": "2026-10-10T13:21:55Z",
+  "testedAtTaipei": "2026-10-10 21:21:55 +08:00",
+  "latestCanonicalMainAtRepair": "1f0030f2ac16812670cb4a107c80de341d073cc4",
+  "pathsChangedInRepair": [
+    "system2/migration/destination_schema_only_manual_executor_v0_1.mjs",
+    "system2/tests/destination_schema_only_sql_result_failclosed_1092.test.mjs"
+  ],
+  "preexistingPr1088ReservedPath": "system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs",
+  "fix": {
+    "requireOuterSuccessStrictBooleanTrue": true,
+    "requireInnerSqlSuccessStrictBooleanTrue": true,
+    "requireExactlyOneSqlResultGroup": true,
+    "requireInnerResultsArray": true,
+    "rejectOuterOrInnerErrors": true,
+    "rejectUnexpectedResponseShapes": true,
+    "boundedFetchAbortTimeoutMs": 25000,
+    "noAutoRetry": true,
+    "progressOnlyAfterConfirmedSql": true,
+    "partialUnknownStopsBeforeFurtherStatements": true
+  },
+  "syntheticRegression": {
+    "targetedTestFile": "system2/tests/destination_schema_only_sql_result_failclosed_1092.test.mjs",
+    "positiveCasesPassed": 2,
+    "negativeCasesPassed": 30,
+    "originalAuditMalformedSelectCasesRejected": 5,
+    "eachMalformedDdlOrdinalCasesPassed": 125,
+    "deniedFalseDdlSuccessCount": 125,
+    "simulatedValidDdlComplete": 125,
+    "sourceTargetFingerprintGuardPreserved": true,
+    "exactCloudflareVendorReservedAllowed": true,
+    "unknownReservedDuplicateOrUserObjectRejected": true,
+    "noCloudflareCalls": true
+  },
+  "ci": {
+    "research": {
+      "run": 38055364831,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38055364831",
+      "status": "SUCCESS",
+      "totalTestFiles": 321,
+      "actualMarker": "S2_CORR_1092_SQL_RESULT_FAILCLOSED"
+    },
+    "v8": {
+      "run": 38055364834,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38055364834",
+      "status": "SUCCESS"
+    },
+    "productionIsolationGuard": "PASS"
+  },
+  "invariantGuards": {
+    "cloudflareReservedObject": "ONLY_EXACT_TABLE__cf_KV_AT_MOST_ONE",
+    "statementCount": 125,
+    "tables": 55,
+    "indices": 63,
+    "metadataUpserts": 7,
+    "excludeStaged0011": true,
+    "sqlPlanHashFromReadOnlyWitness": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "destinationNewAccountD1Only": true,
+    "sourceAccountDeny": true,
+    "verifiedModeZeroDdl": true,
+    "applyModeManuallyDispatchedOnly": true,
+    "workflowTriggersUnchanged": true,
+    "mainSystem1ProductionModified": false
+  },
+  "auditHandoff": {
+    "auditeeOnlySelfReview": false,
+    "independentlyReverified": false,
+    "issue1092Closed": false,
+    "mergeAuthorizedByAudit": false,
+    "requiredNext": "INDEPENDENT_AUDIT_LANE rerun PR1091 original five adversarial SELECT cases and 125 unconfirmed DDL cases as explicit post-fix reject assertions, review exact current PR HEAD and CI, sign off or reopen remediation.",
+    "safeAfterIndependentPass": "PR1088 owner previously authorized GitHub code-only merge after AUDIT_LANE approval; separate Cloudflare D1 writes remain unauthorized."
+  },
+  "physicalState": {
+    "schemaInstalledTables": 0,
+    "expectedTables": 55,
+    "historicalRowsCopied": 0,
+    "frozenSnapshotRowsCopied": 0,
+    "destinationWorkerCronDeployed": false,
+    "cloudflareD1WritesThisRepair": 0,
+    "newApiTokensOrSecrets": false,
+    "paidR2Enabled": false,
+    "sourceSystem1WorkerModified": false,
+    "appliedDdl": false
+  }
+}
