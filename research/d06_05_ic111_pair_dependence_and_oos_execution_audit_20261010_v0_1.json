@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "D06_05_IC111_PAIR_DEPENDENCE_OOS_EXECUTION_AUDIT_V0_1",
+  "createdAt": "2026-10-10T11:14:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE",
+  "outcomesOpened": false,
+  "historicalShadowFabricated": false,
+  "maturityChange": "NONE",
+  "authoritativeInputs": [
+    "research/d06_05_ic109_pair_effective_common_equity_cohort_20260924_20261002_v0_1.json",
+    "research/d06_05_l4_prospective_shadow_prereg_20261010_v0_1.json",
+    "INSTITUTIONAL_CROWDING_RESEARCH.md",
+    "research/stock_market_learning_tracker_v0_1.json"
+  ],
+  "independentReadback": {
+    "cohortCount": 1852,
+    "uniqueCount": 1852,
+    "strictAscending": true,
+    "canonicalMaterial": "one symbol per line without trailing newline",
+    "computedFnv1a64": "fnv1a64-utf8:5eb02db54ebae70f",
+    "storedFnv1a64": "fnv1a64-utf8:5eb02db54ebae70f",
+    "hashMatch": true,
+    "cohortAppliesOnlyToPair": "2026-09-24->2026-10-02"
+  },
+  "newAuditQuestion": "Does a threshold of 12 distinct consecutive TDCC vintage pairs plus pair-clustered inference by itself establish temporal independence and out-of-sample validity for the frozen IC110 promotion gate?",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Distinct consecutive TDCC pairs are statistically independent by construction.",
+      "support": "A pair is a more appropriate unit than a symbol row; one pair is one episode and avoids cross-sectional pseudo-replication.",
+      "counterEvidence": "Adjacent pairs (V0,V1) and (V1,V2) share vintage V1. If independent vintage-level measurement noise e_t has variance sigma^2, adjacent differences d_t=e_t-e_(t-1) have variance 2*sigma^2 and covariance Cov(d_t,d_(t+1))=-sigma^2, hence correlation -1/2 in this illustrative null model.",
+      "alternative": "True concentration persistence, event-driven changes, overlapping symbols, market-wide common shocks and release-calendar timing can change the sign and magnitude; -1/2 is NOT an empirical estimate of actual TDCC pair statistics.",
+      "failureCondition": "Treat 12 distinct pairs as 12 observational episodes but do not claim iid independence without pair-statistic serial-dependence audit."
+    },
+    {
+      "id": "H2",
+      "claim": "Five-session forward outcome labels cannot overlap because TDCC vintages are weekly.",
+      "support": "Under a stable five-trading-session cadence with timely releases, consecutive executable entry dates can be five sessions apart.",
+      "counterEvidence": "FirstKnownAt and publication/revision clocks can shift; holidays, delayed releases or out-of-cycle versions can place executable opens fewer than five valid sessions apart.",
+      "alternative": "If actual executable-open spacing is >=5 sessions, the primary 5-session labels may not overlap; this must be checked using actual intervals rather than presumed.",
+      "failureCondition": "Compare actual [executableOpen, fifthSubsequentClose] intervals for every pair; intersecting intervals cannot cross training/validation split."
+    },
+    {
+      "id": "H3",
+      "claim": "A pair-level partial coefficient plus pooled rank-IC improvement automatically constitutes OOS evidence.",
+      "support": "Frozen M0 controls and pair-level summaries reduce simple factor redundancy.",
+      "counterEvidence": "If M0 coefficients or partial residualization use the same validation pair's outcomes, an in-sample association can masquerade as OOS incremental predictiveness. IC110 names both partial coefficient and rank-IC but does not specify a unique promotion primary estimator or exact training/update procedure.",
+      "alternative": "A genuinely prior-fitted chronological model with purged labels and frozen transforms can generate valid OOS predictions; no such producer/readback has yet been verified.",
+      "failureCondition": "Until independent D16 method review freezes exact estimator/training windows/regularization and validates chronological predictions, report OOS readiness UNKNOWN, not PASS."
+    },
+    {
+      "id": "H4",
+      "claim": "Leave-one-pair-out sign stability and ordinary 95% pair-level confidence interval fully control serial dependence.",
+      "support": "Pair aggregation and leave-one-out are stronger than pooling thousands of symbol rows.",
+      "counterEvidence": "Leave-one-out sign stability can remain high when all pairs share persistent shocks; a naive standard error based on 12 iid pair effects can be anti-conservative under positive dependence.",
+      "alternative": "Serial-dependence-robust inference (e.g., predeclared lag sensitivity or block methods) can be a robustness diagnostic, but 12 episodes may be too few for reliable long-run variance estimation.",
+      "failureCondition": "Do not replace frozen IC110 inferential gate post hoc. Flag disagreement or unidentifiable dependence as UNKNOWN and route protocol amendment to D16/00 before outcome opening or promotion."
+    },
+    {
+      "id": "H5",
+      "claim": "Adding D06 institutional, leverage and passive controls creates independent positive votes.",
+      "support": "These controls may absorb genuine alternative explanations.",
+      "counterEvidence": "D06-03 dealer splits, D06-07/08 margin, D06-09 actual shorting, D06-11 passive flows and D06-16 modeled basket exposure may share primitives, and PCF modeled exposure is not executed component stock flow.",
+      "alternative": "Use M0 primary and M1/M2 only as preregistered robustness with exact primitive lineage; controls with missing PIT timestamps remain UNKNOWN.",
+      "failureCondition": "Any duplicate primitive identity, mismatched security type, unknown firstKnownAt or inferred actual AP execution blocks independent evidence claims."
+    }
+  ],
+  "deterministicAlgebraCheck": {
+    "assumptions": "iid zero-mean vintage measurement errors e_t, each with variance sigma^2; this is a mathematical toy, NOT actual market data or historical Shadow",
+    "deltaDefinition": "d_t=e_t-e_(t-1)",
+    "variance": "Var(d_t)=2*sigma^2",
+    "adjacentCovariance": "Cov(d_t,d_(t+1))=-sigma^2",
+    "adjacentCorrelation": "-0.5",
+    "interpretation": "A distinct-pair count does not prove independent noise; no claim that actual pair-level rank-IC has -0.5 autocorrelation."
+  },
+  "frozenProtocolInvariants": {
+    "primaryFeature": "SIGNED_TDCC_400PLUS_CONCENTRATION_DELTA",
+    "primaryHorizon": "5-session forward return",
+    "primaryModel": "M0",
+    "minimumFuturePairs": 12,
+    "minimumRegimes": 2,
+    "interimPairs": 8,
+    "baselineFrozen": true,
+    "thresholdsChanged": false,
+    "futurePairLaterSourceDateStrictlyAfter": "2026-10-08",
+    "samePairMultipleConsumersCountOnce": true
+  },
+  "preOutcomeExecutionAuditMatrix": [
+    {
+      "test": "ADJACENT_PAIR_SHARED_VINTAGE",
+      "fixture": "(V0,V1),(V1,V2)",
+      "expected": "shared V1 recorded; distinct-pair count remains 2, statistical independence NOT_ASSUMED"
+    },
+    {
+      "test": "DUPLICATE_PAIR_RECEIPT",
+      "fixture": "(V0,V1) twice with distinct consumer IDs",
+      "expected": "only 1 pair count"
+    },
+    {
+      "test": "OVERLAPPING_LABEL_INTERVAL",
+      "fixture": "validation entry < training fifth-session close",
+      "expected": "PURGE_OR_BLOCK, never training on future validation label"
+    },
+    {
+      "test": "NON_OVERLAPPING_LABEL_INTERVAL",
+      "fixture": "verified chronological disjoint label intervals",
+      "expected": "eligible for leakage check, not automatic OOS PASS"
+    },
+    {
+      "test": "POST_OUTCOME_MODEL_FIT",
+      "fixture": "fit M0 with test pair outcomes",
+      "expected": "IN_SAMPLE_ONLY / OOS_UNKNOWN"
+    },
+    {
+      "test": "UNKNOWN_FIRST_KNOWN_AT",
+      "fixture": "later TDCC firstKnownAt absent",
+      "expected": "PAIR_ADMISSION_BLOCKED / UNKNOWN"
+    },
+    {
+      "test": "UNIDENTIFIED_PRIMARY_ESTIMATOR",
+      "fixture": "select better of partial coefficient and rank-IC after results",
+      "expected": "PROTOCOL_AMBIGUITY / NO_PROMOTION"
+    },
+    {
+      "test": "ROBUSTNESS_RESCUE",
+      "fixture": "M0 fails but M1 or M2 passes",
+      "expected": "NO_PROMOTION"
+    },
+    {
+      "test": "ETF_AP_DOUBLE_COUNT",
+      "fixture": "PCF modeled basket and borrow activity same primitive",
+      "expected": "single receipt lineage, actual execution UNKNOWN"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.nber.org/papers/t0055",
+      "role": "HAC covariance methodological reference; not Taiwan alpha evidence"
+    },
+    {
+      "url": "https://original-www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+      "role": "TDCC official weekly last-business-day stockholder-distribution definition; not evidence of a new post-freeze vintage"
+    }
+  ],
+  "limitations": [
+    "No new TDCC sourceDate strictly after 2026-10-08 has been independently verified this run.",
+    "No OOS training/validation predictions, returns or Shadow outcomes were opened.",
+    "The -0.5 calculation is an illustrative differenced-noise null, not an observed concentration-effect correlation.",
+    "No existing IC110 threshold, feature, horizon, model tier or primary gate is changed."
+  ],
+  "handoff": {
+    "receiving": "D16 validation lane / 00 governance only for any protocol disambiguation; D06 remains owner of source and research receipts",
+    "requiredBeforeOosClaims": "Freeze exact primary estimator and prior-fitted training/evaluation implementation; verify interval purging and pair dependence robustness without inspecting outcomes.",
+    "exactNext": "Continue genuine post-2026-10-08 TDCC sourceDate watch. For any new vintage rebuild its own dated clean cohort/hash before outcomes. In parallel ask D16 for independent outcome-blind IC110 estimator/split/serial-dependence execution audit; no unilateral change to frozen IC110 promotion gate."
+  },
+  "status": "IC111_OUTCOME_BLIND_SERIAL_DEPENDENCE_AND_OOS_IDENTIFIABILITY_AUDIT / NO_NEW_VINTAGE_CERTIFIED / IC110_UNCHANGED / D16_EXECUTION_AUDIT_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
