@@ -32,15 +32,15 @@ function sqlResults(x){
 async function executeSql(fetchImpl,base,token,sql){
  return sqlResults(await req(fetchImpl,base+"/query",token,"POST",{sql}));
 }
-export async function inspectOrApplyDestinationSchemaV0_1({
- accountId,token,fetchImpl,now=()=>new Date(),mode="VERIFY_ONLY",confirm,boundary,
+async function executeWithTrustedIdentity({
+ accountId,token,fetchImpl,mode="VERIFY_ONLY",confirm,boundary,
  files,sourceProvisioner,destinationReceipt,expectedPlanHash,onProgress=()=>{},
-}={}){
+}={},identity){
  if(!["VERIFY_ONLY","APPLY_ONCE"].includes(mode)||
    confirm!==SCHEMA_CONFIRM||boundary!==SCHEMA_BOUNDARY) safeErr("OWNER_SCHEMA_SCOPE_CONFIRMATION_REQUIRED");
  if(!/^[a-f0-9]{32}$/i.test(accountId||"")||typeof token!=="string"||token.length<20||
    typeof fetchImpl!=="function")safeErr("DESTINATION_ID_TOKEN_OR_TRANSPORT_UNVERIFIED");
- if(h(accountId)!==ACCOUNT_HASH||h(accountId)===ORIGINAL_ACCOUNT_HASH)
+ if(h(accountId)!==identity.account||h(accountId)===identity.source)
    safeErr("DESTINATION_ACCOUNT_FINGERPRINT_MISMATCH");
  const plan=planDestinationSchemaOnlyOfflineV0_1({files,sourceProvisioner,destinationReceipt});
  if(plan.state!=="SOURCE_SQL_PAYLOAD_OFFLINE_SEALED_NOT_AUTHORIZED"||plan.plannedStatements!==125||
@@ -51,7 +51,7 @@ export async function inspectOrApplyDestinationSchemaV0_1({
  if(list?.result_info?.total_count!==1||list?.result_info?.page!==1||
      !Array.isArray(list.result)||list.result.length!==1)safeErr("DESTINATION_D1_CARDINALITY_UNVERIFIED");
  const db=list.result[0],uuid=db?.uuid||db?.id;
- if(db?.name!==NAME||typeof uuid!=="string"||h(uuid)!==DATABASE_HASH)
+ if(db?.name!==NAME||typeof uuid!=="string"||h(uuid)!==identity.database)
     safeErr("DESTINATION_D1_IDENTITY_MISMATCH");
  const info=await req(fetchImpl,base+"/d1/database/"+encodeURIComponent(uuid),token);
  const size=info?.result?.file_size;
@@ -104,4 +104,18 @@ export async function inspectOrApplyDestinationSchemaV0_1({
     err.progressHashes=statuses;
     throw err;
  }
+}
+
+// Production entrypoint ALWAYS pins independently attested Cloudflare account / D1 identity.
+export function inspectOrApplyDestinationSchemaV0_1(input){
+ return executeWithTrustedIdentity(input,{account:ACCOUNT_HASH,source:ORIGINAL_ACCOUNT_HASH,database:DATABASE_HASH});
+}
+// Mock-only isolated test seam. Cannot accept real bearer tokens or a non-injected fetch.
+// Never import this helper in the GitHub deploy runner.
+export function __testOnlySyntheticIdentityEngineV0_1(input,identity){
+ if(typeof input?.token!=="string"||!input.token.startsWith("SYNTHETIC_TEST_ONLY_TOKEN_")||
+    typeof input.fetchImpl!=="function")throw Error("TEST_ONLY_SYNTHETIC_TOKEN_REQUIRED");
+ if(![identity?.account,identity?.source,identity?.database].every(x=>/^[a-f0-9]{64}$/i.test(x)))
+   throw Error("TEST_ONLY_IDENTITY_INVALID");
+ return executeWithTrustedIdentity(input,identity);
 }
