@@ -7001,3 +7001,23 @@ No maturity or Formal change is authorized by this routing.
 - No D01 module count or maturity increase: all 11 modules L3, maturity 60%; Alpha UNKNOWN; SDA-001/SDA-002 remain open; Formal Core locked. No Worker/D1/production/system signal changes.
 - Parallel intake does not replace the existing exact main-line DL-147 continuation or the frozen physical 1101/TWSE/2021-06-15 R1-R6 evidence blocker.
 - Next action for this intake: freeze causal T/B/M signal masks + synthetic no-lookahead 60m oracle once this dedicated research line is resumed, then seek genuine independent 60m data availability; do not inspect outcomes first.
+
+## Continuation update — DL-147~149 (2026-10-10)
+
+- Latest-main baseline at research start: `786c6a00006fd7ca8cb34e791a2ed928b8b59782`; authoritative prior cursor DL-146. Parallel practitioner 金包銀 intake retained; no duplicate study.
+- DL-147: as-of taxonomy bridge version must have D09 owner certification, source hash, exact first-known time, effective interval, one-to-one relation and full coverage. Future/date-only/partial/conflicting or one-to-many/many-to-one mapping blocks sector-conditioned inference, not separately certified price geometry.
+- DL-148: sector index peer/membership/version composition can change with identical price history. No D01 price-root reset, new episode or independent sector vote. Parent/child common support must match exact price history, taxonomy bridge, sector index, self-exclusion, denominator, cost, horizon, market regime and cluster policy.
+- DL-149: pre-registered bridge placebo families and explicit COMPLETE/UNKNOWN/CONFLICT/PARTIAL/FUTURE/NON_BIJECTIVE denominator. No silent missingness drop, no duplicate episode count, no price-derived multiple voting.
+- Adversarial oracle: `research/test_d01_dl147_149_taxonomy_bridge_firewall_v0_1.mjs`; isolated JavaScript V8 execution 43/43 PASS. Native Node / repository CI NOT VERIFIED.
+- Companion long-form research document write was BLOCKED by connector safety checks; do not claim it persisted.
+- Physical 1101/TWSE/2021-06-15 exact 61-session R1-R6 bundle still NOT VERIFIED; R7 blocked; no historical Shadow or outcome join.
+- D01 11/11 L3, maturity 60.0%, Pattern Alpha UNKNOWN; SDA-001/SDA-002 remain REMEDIATION_IN_PROGRESS; Formal Core LOCKED.
+- No Worker/D1/runtime/ranking/capital/monitor/push change. Class A research-only.
+
+### Exact next continuation after DL-149
+1. Re-read latest main and physical 1101/2021-06-15 R1-R6 owner evidence.
+2. Obtain native Node and CI execution for the 43-case taxonomy bridge oracle.
+3. Reconcile the blocked long-form research document safely; preserve this checkpoint and test evidence without overwriting parallel updates.
+4. Route D09 official taxonomy bridge/cardinality/peer-version owner receipts and D16 matched-support/cluster/cost/OOS handoff.
+5. If physical R1-R6 remain absent, continue only genuinely new outcome-blind D01 science: sector-index methodology/divisor vintage versus price-pattern stability, with UNKNOWN denominator.
+6. No L4/Alpha or Formal change without genuine prospective/OOS and owner approval.
