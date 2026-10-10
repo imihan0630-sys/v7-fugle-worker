@@ -56,7 +56,7 @@ export async function createOneEmptyDestinationD1V0_1(a={}){
   if(!validatedEmptyPage(before))throw Error("DESTINATION_DATABASE_SCOPE_NOT_EMPTY_OR_PAGINATION_UNVERIFIED");
   // SINGLE irreversible POST. No retry on ambiguous status and no schema/query requests.
   let postResponse;
-  try{postResponse=await a.fetchImpl(url,requestOptions(a.apiToken,"POST",{name:S2_EMPTY_D1_TARGET_NAME}));}
+  try{postResponse=await a.fetchImpl(url,requestOptions(a.apiToken,"POST",{name:S2_EMPTY_D1_TARGET_NAME,primary_location_hint:"apac"}));}
   catch {throw Error("D1_CREATE_OUTCOME_UNKNOWN_MANUAL_READBACK_NO_RETRY");}
   if(!postResponse?.ok)throw Error("D1_CREATE_OUTCOME_UNKNOWN_MANUAL_READBACK_NO_RETRY");
   let created;
