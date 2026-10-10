@@ -40,6 +40,10 @@ function patternReclassGuard(x) {
   return {state:'SAME_PRICE_PATTERN_ROOT',newEpisode:false,independentVoteAdded:false};
 }
 function commonSupport(parent,child) {
+  // Unknown coverage is not a clean mismatched cohort; preserve the uncertainty.
+  if ((parent.denominatorState!==undefined && parent.denominatorState!=='COMPLETE') ||
+      (child.denominatorState!==undefined && child.denominatorState!=='COMPLETE'))
+    return {state:'SUPPORT_UNKNOWN_BLOCKED',field:'denominatorState'};
   for (const k of ['securityIdentity','predictorCutoff','exactSessionHash',
     'sourceHistoryHash','priceRoot','sectorReceiptId','taxonomyVersion',
     'membershipMaskHash','peerUniverseHash','selfExclusionRule',
