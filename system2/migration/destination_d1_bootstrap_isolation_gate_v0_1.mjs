@@ -64,13 +64,11 @@ export function assessDestinationD1BootstrapIsolationV0_1({
    sourceProvisionWorkflow.includes("environment: "+SOURCE_ENV)&&
    sourceProvisionWorkflow.includes("node "+SOURCE_PROVISION_FILE)&&
    sourceProvisionWorkflow.includes("secrets.CLOUDFLARE_ACCOUNT_ID");
- if(currentProvisionSourceBound)flags.push("LEGACY_PROVISION_WORKFLOW_MUST_NOT_TARGET_DESTINATION");
- else flags.push("LEGACY_PROVISION_WORKFLOW_MUST_NOT_TARGET_DESTINATION"); // ALWAYS deny reusing it; mutation must be new reviewed pipeline.
+ flags.push("LEGACY_PROVISION_WORKFLOW_MUST_NOT_TARGET_DESTINATION"); // This module NEVER endorses using the legacy workflow for target creation.
  const oldScriptDoesSchema=typeof sourceProvisionScript==="string"&&
    sourceProvisionScript.includes('method: "POST"')&&
    sourceProvisionScript.includes('const migrationFiles = [');
- if(oldScriptDoesSchema)flags.push("LEGACY_PROVISION_SCRIPT_IMPORTS_SCHEMA");
- else flags.push("LEGACY_PROVISION_SCRIPT_IMPORTS_SCHEMA"); // ALWAYS deny old script for target.
+ flags.push("LEGACY_PROVISION_SCRIPT_IMPORTS_SCHEMA"); // The source script must not be reused for destination creation.
  const hasTemplate=typeof proposedStagingConfig==="string"&&
    proposedStagingConfig.includes('name = "system2-shadow-research-staging"')&&
    proposedStagingConfig.includes('workers_dev = false')&&
