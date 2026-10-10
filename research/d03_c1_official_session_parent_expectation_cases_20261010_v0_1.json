@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "D03_C1_OFFICIAL_SESSION_PARENT_EXPECTATION_CASES_V0_1",
+  "cases": [
+    {"id":"C01","input":{"validDate":true,"calendarMatch":true,"trading":false},"expected":"PARENT_NOT_EXPECTED_NONTRADING"},
+    {"id":"C02","input":{"validDate":true,"calendarMatch":true,"trading":true},"expected":"PARENT_EXPECTED_UNVERIFIED"},
+    {"id":"C03","input":{"validDate":false},"expected":"REJECT_INVALID_DATE"},
+    {"id":"C04","input":{"validDate":true,"calendarMatch":false},"expected":"REJECT_CALENDAR_UNVERIFIED"},
+    {"id":"C05","input":{"validDate":true,"calendarMatch":true,"trading":"false"},"expected":"REJECT_CALENDAR_UNVERIFIED"},
+    {"id":"C06","input":{"validDate":true,"calendarMatch":true,"trading":true,"future":true},"expected":"REJECT_FUTURE_OR_UNCLOSED"},
+    {"id":"C07","input":{"validDate":true,"calendarMatch":true,"trading":true,"sameDayUnclosed":true},"expected":"REJECT_FUTURE_OR_UNCLOSED"},
+    {"id":"C08","input":{"state":"PARENT_NOT_EXPECTED_NONTRADING","inferZeroPick":true},"expected":"REJECT_ZERO_PICK"},
+    {"id":"C09","input":{"state":"PARENT_NOT_EXPECTED_NONTRADING","includeCoverageDenominator":true},"expected":"REJECT_DENOMINATOR"},
+    {"id":"C10","input":{"state":"PARENT_EXPECTED_UNVERIFIED","inferFormalScan":true},"expected":"REJECT_ELIGIBILITY_AS_EXECUTION"},
+    {"id":"C11","input":{"state":"PARENT_EXPECTED_UNVERIFIED","inferC1":true},"expected":"REJECT_ELIGIBILITY_AS_PARENT"},
+    {"id":"C12","input":{"publicHttp200":true,"inferC1":true},"expected":"REJECT_PUBLIC_RUNTIME_AS_PARENT"},
+    {"id":"C13","input":{"historicalManualRead":true,"inferProspective":true},"expected":"REJECT_BACKFILL_AS_PROSPECTIVE"},
+    {"id":"C14","input":{"laterParent":true,"backfillEarlierParent":true},"expected":"REJECT_PARENT_BACKFILL"},
+    {"id":"C15","input":{"state":"PARENT_VERIFIED","immutableC1":true,"v820Binding":true,"physicalReadback":true},"expected":"PARENT_ADMISSIBLE"},
+    {"id":"C16","input":{"state":"PARENT_VERIFIED","immutableC1":true,"v820Binding":false,"physicalReadback":true},"expected":"REJECT_PARENT_BINDING"},
+    {"id":"C17","input":{"state":"PARENT_VERIFIED","immutableC1":false,"v820Binding":true,"physicalReadback":true},"expected":"REJECT_PARENT_RECEIPT"},
+    {"id":"C18","input":{"state":"PARENT_VERIFIED","immutableC1":true,"v820Binding":true,"physicalReadback":false},"expected":"REJECT_PHYSICAL_READBACK"},
+    {"id":"C19","input":{"state":"PARENT_ADMISSIBLE","w0":false,"indicator":"BOLLINGER20"},"expected":"REJECT_INDICATOR_INPUT"},
+    {"id":"C20","input":{"state":"PARENT_ADMISSIBLE","w0":true,"exactSessions":20,"indicator":"BOLLINGER20"},"expected":"INDICATOR_PARENT_READY_NOT_OUTCOME_EVIDENCE"}
+  ],
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED"
+}
