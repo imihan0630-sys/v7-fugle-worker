@@ -11,7 +11,7 @@ const files=collect();
 const sourceProvisioner=readFileSync("system2/deploy/provision_system2_d1.mjs","utf8");
 const destinationReceipt=JSON.parse(readFileSync("system2/migration/evidence/S2_DEST_D1_POSTCREATE_REAL_GETONLY_RECONCILIATION_20261010_V0_1.json","utf8"));
 function transport({nonempty=false,otherDb=false,wrongDb=false,errorSelect=false,wrongResult=false,
-                 badSize=false,untypedRow=false}={}){
+                 badSize=false,untypedRow=false,reserved=false,duplicateReserved=false,badReservedType=false}={}){
  const calls=[];
  const fetchImpl=async(url,options)=>{
   calls.push({url,method:options.method,sql:options.body?JSON.parse(options.body).sql:null});
@@ -24,7 +24,11 @@ function transport({nonempty=false,otherDb=false,wrongDb=false,errorSelect=false
   if(url.endsWith("/query")){
    if(errorSelect)return Response.json({success:false,errors:[{code:6000,message:"DO_NOT_LOG_VENDOR_MESSAGE"}]},{status:400});
    if(wrongResult)return Response.json({success:true,result:{success:true,results:[]}});
-   const results=nonempty?[untypedRow?{type:"table"}:{type:"table",name:"s2_unexpected"}]:[];
+   const results=[
+    ...(reserved?[{type:badReservedType?"index":"table",name:"_cf_KV"}]:[]),
+    ...(duplicateReserved?[{type:"table",name:"_cf_KV"}]:[]),
+    ...(nonempty?[untypedRow?{type:"table"}:{type:"table",name:"s2_unexpected"}]:[])
+   ];
    return Response.json({success:true,result:[{success:true,results}]});
   }
   throw Error("UNEXPECTED_URL");
@@ -50,6 +54,23 @@ assert.deepEqual(ok.calls.map(x=>x.method),["GET","GET","POST"]);
 assert.equal(ok.calls[2].sql,"SELECT type, name FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name");
 assert(ok.calls.every(x=>x.url.includes("/accounts/"+B+"/d1/database")));
 assert(!JSON.stringify(x).includes(B)&&!JSON.stringify(x).includes(TOKEN));
+// Cloudflare's built-in _cf_KV is the only accepted reserved table in an
+// otherwise empty D1. Unknown user objects MUST continue to block import.
+const vendorEmpty=transport({reserved:true});
+const verified=await probe(mk(vendorEmpty));
+assert.equal(verified.result,"DESTINATION_D1_PHYSICAL_EMPTY_SQL_VERIFIED");
+assert.equal(verified.objectsFound,0);
+assert.equal(verified.tableCount,0);
+assert.equal(verified.cloudflareReservedTablesFound,1);
+assert.equal(verified.rawSchemaObjectsFound,1);
+assert.deepEqual(vendorEmpty.calls.map(x=>x.method),["GET","GET","POST"]);
+const vendorWithUser=await probe(mk(transport({reserved:true,nonempty:true})));
+assert.equal(vendorWithUser.result,"DESTINATION_D1_NONEMPTY_BLOCK_SCHEMA_IMPORT");
+assert.equal(vendorWithUser.objectsFound,1);
+const fakeReserved=await probe(mk(transport({reserved:true,badReservedType:true})));
+assert.equal(fakeReserved.result,"DESTINATION_D1_NONEMPTY_BLOCK_SCHEMA_IMPORT");
+await assert.rejects(()=>probe(mk(transport({reserved:true,duplicateReserved:true}))),
+ e=>e.message==="DESTINATION_RESERVED_D1_TABLE_DUPLICATED");
 const present=transport({nonempty:true});
 const y=await probe(mk(present));
 assert.equal(y.result,"DESTINATION_D1_NONEMPTY_BLOCK_SCHEMA_IMPORT");
@@ -83,4 +104,4 @@ assert(!runner.includes("S2_MIGRATION_SOURCE_READ_TOKEN"));
 assert(!core.includes("DROP TABLE")&&!core.includes("CREATE TABLE")&&!core.includes("INSERT INTO"));
 assert(!runner.includes("inspectOrApplyDestinationSchemaV0_1"));
 assert(!wf.includes("APPLY_ONCE"));
-console.log("S2 target D1 SELECT-only preflight: mock empty/nonempty + ten fail-closed probes PASS, no DDL or source-token flows");
+console.log("S2 target D1 SELECT-only preflight: exact _cf_KV exemption, real user-table rejection, duplicate/spoofed reserved rejection + ten fail-closed probes PASS; no DDL or source-token flows");
