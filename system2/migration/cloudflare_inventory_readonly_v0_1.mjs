@@ -67,7 +67,7 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
     r2Buckets(),
     numbered("/storage/kv/namespaces", p => p.result),
   ]);
-  // D1 metadata GET does not consume SQL rowsRead; Free has a 500 MiB single-DB cap.
+  // D1 metadata GET does not consume SQL rowsRead; Free has a 500 MB single-DB cap.
   const s2Databases = databases.filter(d => d?.name === "system2-research");
   const s2Details = await Promise.all(s2Databases.map(d => {
     if (typeof d.uuid !== "string" || !d.uuid) throw new Error("SOURCE_S2_D1_UUID_MISSING");
