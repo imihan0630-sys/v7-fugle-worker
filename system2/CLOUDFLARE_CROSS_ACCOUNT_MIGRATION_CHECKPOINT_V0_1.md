@@ -91,3 +91,19 @@ Exact next continuation: re-read main and #1058; verify final-head System2 CI/V8
 - This is a **Draft PR change**, not live, not re-run and not authoritative until owner-reviewed merge and exact-head CI PASS.
 - Physical migration acceptance remains **0/13**. Hard stop: never switch `system2-research` secrets, never request write permissions to troubleshoot GET 401.
 - Exact next step after CI and approved merge: user reruns only the existing manual GET-only workflow; inspect SOURCE and DESTINATION sanitized token/D1 read statuses; update only the failing Environment secret with owner action if needed, not via chat.
+
+
+## 2026-10-10 11:26 Taipei — first authenticated inventory, R2 destination gate
+
+Real run [#38020519397](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38020519397), main `5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4`, read-only, FAILED. Downloaded sanitized authorization artifact #11657981745 (SHA256 `da3b7c4345ffacfcc2ec68dd07970d6c438b54de84cb1f2f56b2827baed27379`):
+- SOURCE Token verify 200 / D1 listing 200, active TRUE, `D1_READ_GRANTED`.
+- DESTINATION Token verify 200 / D1 listing 200, active TRUE, `D1_READ_GRANTED`.
+- Explicit authorization preflight `D1_READ_PREFLIGHT_PASS`.
+- Full SOURCE metadata inventory function returned successfully, but was **not persisted as a standalone artifact** because subsequent DESTINATION phase failed.
+- DESTINATION `GET /accounts/{destination}/r2/buckets?per_page=100`: **HTTP 403** at `r2Buckets` line 51, `Promise.all` index 2, runner line 16. Full inventory not serialized. No Cloudflare writes, data copy, new resource or formal cutover.
+- 403 by itself cannot discriminate `Workers R2 Storage Read` permission denial (Cloudflare R2 code 10003) versus an account lacking R2 subscription/entitlement (code 10042) or another failure. Owner screenshot previously displayed new Workers Free and *no payment method on file*. Do NOT assert R2 subscription is active, encourage a billing checkout, or suggest the destination is R2-ready without explicit owner authorization.
+- Vendor: https://developers.cloudflare.com/api/resources/r2/subresources/buckets/methods/list/ and https://developers.cloudflare.com/r2/get-started/ ; https://developers.cloudflare.com/r2/api/error-codes/ .
+
+Isolation-safe PR branch `infra/s2-cross-account-r2-entitlement-diagnostics-20261010` adds a GET-only four-service-per-account probe with allowed numeric Cloudflare error code only, a sanitized artifact even on failure, and a fail-closed gate before full inventory. This avoids blindly reissuing valid tokens for non-token R2 403 and tests all four scopes independently. Code/CI do NOT prove subscription. Required owner decision if R2 unentitled: whether to activate subscription after full fee review or design an approved D1-only Phase-1 Shadow profile preserving cold archive source read-only; no unauthorized cost.
+
+Migration acceptance still **0/13** until physical copy and evidence. Next action: CI/independent review, then owner approves merge of diagnostic PR; owner runs one manual GET-only diagnostic, assistant retrieves sanitized receipt. No new Token creation unless code explicitly identifies permission denial. 
