@@ -1763,3 +1763,23 @@ Observed latest main before write: `94ceb917e188b349aec95145f9b36871b550458a`. C
 - **00 next checkpoint:** refresh latest main, inspect changed real receipt/execution/queue proof, advance only externally independently verified gates. Do not repeat prior engineering or claim async continuation. Module inventory `MODULE_COUNT_NOT_CANONICALLY_DEFINED`.
 
 Formal Core LOCKED. No live/final selection, push, capital, orders or actual holdings authorized.
+
+## 2026-10-10 22:40 Taipei — cross-account code PASS; physical quota/Schema NC-T01 still gated
+
+Observed main pre-write: `cc34b7a4a15542c4de501214ab28273c2d74b74c`. Detailed immutable gate-by-gate machine readback: `shared-knowledge/00_CROSS_ACCOUNT_QUOTA_MIGRATION_CONVERGENCE_AUDIT_20261010_V0_1.json` (commit `dc0fc316e142448758946d9efe7c69f34e66a159`). The 00 dynamic tri-lane checkpoint also now contains explicit same-date gate order, merged `cc34b7a4a15542c4de501214ab28273c2d74b74c`. The 2026-10-09 11:46 block above remains historical and is superseded for states changed below.
+
+### Canonical current facts / strict nonpromotion
+- `S2-CORR-20261007-003` HIGH **VERIFYING**; 19 original criteria: 15 source-only PASS, 3 real positive physical PENDING, 1 historical negative. **Physical P01-P05 0/5** (source System1 P01/P02 reserves false/null, post-fix real GRANT->persist->ledger absent, P04 future natural business success not proven, P05 hot D1 0/36 Scout and 0/11843 Census). Existing source System1 production D1 quota remains exposed.
+- PR #1088 Issue #1092 SQL result fail-open was independently repaired and audited; PR #1095 security evidence MERGED, #1088 code MERGED, Issue #1092 CLOSED. Source executor+tests are exact blob-identical to approved PR head, independent CI PASS; **DO NOT count real target Schema installation from merge**.
+- Last owner-run authenticated destination D1 SQL-only read [Run #38051816632](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38051816632) at 2026-10-10 20:24 Taipei: empty user Schema 0/55 tables, 0 user indexes, only exact platform `_cf_KV`, zero writes, 125 sealed proposed statements; source unchanged. No later physical recheck by 00, no `APPLY_ONCE` permission inferred. Original 13 cross-account migration physical gates do not gain credit from this bounded empty SELECT.
+- DATA #1068 physical source backup+PIT/row/frozen verification OPEN, new account R2 entitlement NOT_ENTITLED, destination Worker/Cron/data missing. This is NOT an actual cutover. Shared-account CORR-003 must not close based on a new account or dormant code.
+- Current System2 queue {"FIX_IN_PROGRESS":1,"VERIFIED_CLOSED":18,"FIX_IMPLEMENTED":1,"REJECTED_WITH_EVIDENCE":1,"VERIFYING":1,"OPEN":2}, 24 total; the 5 unfinished include CORR-001 data, CORR-007-001 prospective A1, CORR-003 shared account, CORR-012/013 outcome/session guards. Physical NC-T01 same-cut T11..T16 still not certified, no live/final strategy/selection/notifications/orders/capital promotion.
+
+### Shortest remaining acceptance sequence
+1. REMEDIATION_LANE plus System1 physical producer P01/P02 reserves -> independent P03 GRANT/persist/ledger -> natural P04 success, all with correct shared-account cutoff; P05 36-key Scout only if separately budget-qualified, then 11843 Census with fresh grant.
+2. DATA_LANE #1068 real source D1/frozen/PIT backup and TWTAWU exact-window negative source completeness + 3 CA; no source-only-to-W0 substitution.
+3. CROSS_ACCOUNT migration owner-manual destination-only protected Env/credential / safe `VERIFY_ONLY`; physical `APPLY_ONCE` requires its **own explicit owner authorization** and current quota/audit/head/rollback. Only future independently attested live cutover could change physical quota co-tenancy.
+4. BUILD_LANE genuine W0/W1 SHORT_MOMENTUM, 00 exact T11..T16 physical review, CORR-012/013 proper source/official session/immutable performance lineages, new real capacity and guarded advisory; never fake all-1972 60-session completeness.
+5. Room 00 remains governance/audit, not implementation owner for paid plan, credentials, Cloudflare physical writes, System1 Formal Core, migration cutover, or broker trading.
+
+Room00 research module inventory: `MODULE_COUNT_NOT_CANONICALLY_DEFINED`.
