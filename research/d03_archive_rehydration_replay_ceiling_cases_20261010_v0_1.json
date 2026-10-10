@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "D03_ARCHIVE_REHYDRATION_REPLAY_CEILING_CASES_V0_1",
+  "archive": {
+    "marketDateReceipts": 12,
+    "uniqueStockDateKeys": 11843,
+    "twseKeys": 6518,
+    "tpexKeys": 5325,
+    "sourceKeyDuplicates": 0,
+    "completedDates": 6,
+    "qualifiedOriginalFirstKnownKeys": 0,
+    "hotD1Scout": "0/36",
+    "hotD1Census": "0/11843"
+  },
+  "minimumDepth": {
+    "SMA5": 5,
+    "RET5": 6,
+    "KD9": 9,
+    "RSI14": 15,
+    "BOLLINGER20": 20,
+    "MACD26": 26,
+    "ADX14_FULL_REPLAY": 28
+  },
+  "cases": [
+    {"id":"R01","kind":"archive","input":{"zipHash":true,"jsonHash":true,"identityHash":true,"valueHash":true},"expected":"REHYDRATION_REPRODUCIBLE"},
+    {"id":"R02","kind":"archive","input":{"zipHash":false},"expected":"REJECT_ARCHIVE"},
+    {"id":"R03","kind":"archive","input":{"zipHash":true,"jsonHash":false},"expected":"REJECT_ARCHIVE"},
+    {"id":"R04","kind":"archive","input":{"zipHash":true,"jsonHash":true,"duplicateKeys":1},"expected":"REJECT_ARCHIVE"},
+    {"id":"R05","kind":"archive","input":{"zipHash":true,"jsonHash":true,"allHashes":true,"independentValidator":true,"sameObservationRoot":true},"expected":"VALIDATOR_INDEPENDENT_SOURCE_NOT_INDEPENDENT"},
+    {"id":"R06","kind":"archive","input":{"allHashes":true,"inferOriginalPIT":true},"expected":"REJECT_CLOCK_LAUNDERING"},
+    {"id":"R07","kind":"archive","input":{"allHashes":true,"inferHotD1Presence":true},"expected":"REJECT_STORAGE_LAUNDERING"},
+    {"id":"R08","kind":"archive","input":{"allHashes":true,"inferOOS":true},"expected":"REJECT_SAMPLE_OVERPROMOTION"},
+    {"id":"R09","kind":"depth","indicator":"SMA5","available":6,"lineageReady":false,"expected":"ARITHMETIC_POSSIBLE_LINEAGE_BLOCKED"},
+    {"id":"R10","kind":"depth","indicator":"RET5","available":6,"lineageReady":false,"expected":"ARITHMETIC_POSSIBLE_LINEAGE_BLOCKED"},
+    {"id":"R11","kind":"depth","indicator":"KD9","available":6,"lineageReady":false,"expected":"INSUFFICIENT_HISTORY"},
+    {"id":"R12","kind":"depth","indicator":"RSI14","available":6,"lineageReady":false,"expected":"INSUFFICIENT_HISTORY"},
+    {"id":"R13","kind":"depth","indicator":"BOLLINGER20","available":6,"lineageReady":false,"expected":"INSUFFICIENT_HISTORY"},
+    {"id":"R14","kind":"depth","indicator":"MACD26","available":6,"lineageReady":false,"expected":"INSUFFICIENT_HISTORY"},
+    {"id":"R15","kind":"depth","indicator":"ADX14_FULL_REPLAY","available":6,"lineageReady":false,"expected":"INSUFFICIENT_HISTORY"},
+    {"id":"R16","kind":"depth","indicator":"RET5","available":6,"lineageReady":true,"expected":"MECHANISM_REPLAY_ONLY"},
+    {"id":"R17","kind":"depth","indicator":"BOLLINGER20","available":20,"lineageReady":false,"expected":"ARITHMETIC_POSSIBLE_LINEAGE_BLOCKED"},
+    {"id":"R18","kind":"depth","indicator":"BOLLINGER20","available":20,"lineageReady":true,"expected":"INDICATOR_INPUT_READY_NOT_OUTCOME_EVIDENCE"},
+    {"id":"R19","kind":"timeframe","dailyDates":6,"intradayLineage":false,"weeklyFinality":false,"expected":"MULTITIMEFRAME_UNAVAILABLE"},
+    {"id":"R20","kind":"divergence","dailyDates":6,"confirmedPivots":false,"clockBound":false,"expected":"DIVERGENCE_UNAVAILABLE"}
+  ],
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED"
+}
