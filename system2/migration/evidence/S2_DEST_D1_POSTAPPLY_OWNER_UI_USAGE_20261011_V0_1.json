@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "S2_DEST_D1_POSTAPPLY_OWNER_DASHBOARD_USAGE_20261011_V0_1",
+  "evidenceType": "OWNER_VISIBLE_CLOUDFLARE_D1_UI_POST_SCHEMA_APPLY",
+  "ownerObservation": {
+    "dateTaipei": "2026-10-11",
+    "approxLocalTime": "06:57 +08:00",
+    "dashboardUsageDateLabel": "October 10 - October 10",
+    "uiAccountSelectionVerifiedEarlier": "System2-Stock-Research",
+    "shownDatabaseName": "system2-research",
+    "accountUuidNotStored": true,
+    "apiTokenNotStored": true
+  },
+  "usage": {
+    "databaseCount": 1,
+    "databaseFreeLimit": 10,
+    "rowsRead": 537,
+    "rowsReadFreeLimit": 5000000,
+    "rowsWritten": 285,
+    "rowsWrittenFreeLimit": 100000,
+    "rowsWrittenUsagePercent": 0.285,
+    "rowsWrittenRemainingFromSnapshot": 99715,
+    "totalStorage": "987.14 KB",
+    "totalStorageFreeLimit": "5 GB",
+    "usageShownAsAccountWideMetric": true
+  },
+  "limits": {
+    "schemaStatementsEqualRowsWritten": false,
+    "rowsWrittenIncludesOtherAccountActivities": true,
+    "notProvenExactly285RowsWrittenBySchemaOnly": true,
+    "quotaRefreshedAtFutureActionsRequired": true,
+    "postSqlTableCountNotShownInMobileDbList": true
+  },
+  "priorPhysicalSqlEvidence": {
+    "runId": 38069750915,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915",
+    "conclusion": "success",
+    "readbackTables": 55,
+    "readbackIndexes": 63,
+    "readbackSchemaVersion": "1.1",
+    "appliedStatements": 125,
+    "planHash": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f"
+  },
+  "additionalPhysicalUiCheckPending": "Open the existing system2-research D1 detail page and photograph the tables count. Do not click SQL query/console, Create DB, Run Workflow, Re-run jobs.",
+  "physicalIndependentAudit": "PENDING_AUDIT_LANE_POST_WRITE_SIGNOFF",
+  "fullMigrationStatus": "NOT_ACCEPTED",
+  "noNewWritesOrCloudActionsFromThisEvidence": true
+}

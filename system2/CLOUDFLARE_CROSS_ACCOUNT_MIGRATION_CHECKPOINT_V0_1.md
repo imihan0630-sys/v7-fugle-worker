@@ -309,3 +309,16 @@ Supersedes only prior entries stating Schema-only DDL was not yet run; preserves
 - **NEVER click APPLY_ONCE or Re-run again** under this one-use grant; any failure/UNKNOWN would demand separate forensic review and fresh authority. Source DATA_LANE PIT/backup Issue #1068 remains pending. No history/frozen copy/Worker/Cron/R2/paid/Source System1 change authorized.
 
 Durable sanitized machine-readable evidence: `system2/migration/evidence/S2_DEST_D1_APPLY_ONCE_REAL_20261011_V0_1.json`.
+
+
+## 2026-10-11 06:57 Taipei — Owner Cloudflare D1 post-APPLY account quota screenshot
+
+Owner supplied a Cloudflare mobile D1 list/usage screenshot after the authenticated one-time [APPLY_ONCE Run #38069750915](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915); dashboard header labels daily consumption **October 10–October 10** (Cloudflare calendar label; observed on 2026-10-11 morning Taipei).
+
+- Existing database `system2-research`, database quota **1/10**, read rows **537/5,000,000**, **written rows 285/100,000 (0.285%, 99,715 left at time of screenshot)**, D1 total storage **987.14 KB/5 GB**. Not near account Free plan limits as displayed. This is aggregate UI consumption, **NOT** proof that 125 CREATE/INSERT SQL statements exactly cost 285 rows written, nor a guarantee that future actual usage stays unchanged.
+- Mobile D1 list page **does not expose table count** in this screenshot; the separately authenticated post-SQL GitHub Artifact #11675494971 already records `actualTables=55`, `actualIndexes=63`, `actualSchemaVersion=1.1`. Requested next safe owner UI view: click existing `system2-research` DB, inspect its overview table count, no more SQL execution.
+- This evidence upgrades **post-APPLY observed D1 Free-account resource headroom** only. It **does not** upgrade independent AUDIT_LANE acceptance, DATA_LANE Issue #1068 PIT/backup/historical/frozen migration, Worker/Cron go-live, production strategy changes, 13/15 migration/Shadow gates.
+- Only one `APPLY_ONCE` observed in latest GitHub workflow_dispatch list; do not click Run or Re-run again. No new account, token, secret, billing, DDL or Cloudflare calls by the assistant in this evidence write.
+
+Machine-readable owner-UI observation: `system2/migration/evidence/S2_DEST_D1_POSTAPPLY_OWNER_UI_USAGE_20261011_V0_1.json`. Do not include the raw owner's dashboard screenshots, partial account UUID, or API credentials in GitHub.
+
