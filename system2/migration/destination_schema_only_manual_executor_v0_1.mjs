@@ -17,7 +17,7 @@ async function req(fetchImpl,url,token,method="GET",body){
  let response;
  try{response=await fetchImpl(url,{method,headers:{
   authorization:"Bearer "+token,accept:"application/json","content-type":"application/json"},
-  ...(body?{body:JSON.stringify(body)}:{})});}
+  ...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(25000)});}
  catch{safeErr(method==="POST"?"D1_SQL_OUTCOME_UNKNOWN_NO_RETRY":"CLOUDFLARE_METADATA_READ_UNAVAILABLE");}
  if(!response?.ok)safeErr(method==="POST"?"D1_SQL_OUTCOME_UNKNOWN_NO_RETRY":"CLOUDFLARE_METADATA_READ_UNAVAILABLE");
  const data=await cleanJson(response);
@@ -25,8 +25,18 @@ async function req(fetchImpl,url,token,method="GET",body){
  return data;
 }
 function sqlResults(x){
- if(!Array.isArray(x?.result)||x.result.length!==1||x.result[0]?.success===false||
-     !Array.isArray(x.result[0]?.results))safeErr("D1_SQL_RESPONSE_NOT_CONFIRMED_NO_RETRY");
+ // Both Cloudflare's envelope and the *single SQL statement result* must be
+ // affirmative. HTTP 200 or outer success=true cannot attest SQL execution.
+ // No retries: a rejected DDL response may represent an unknown physical write.
+ if(x?.success!==true||
+    (x.errors!==undefined&&(!Array.isArray(x.errors)||x.errors.length!==0))||
+    !Array.isArray(x.result)||x.result.length!==1||
+    x.result[0]===null||typeof x.result[0]!=="object"||Array.isArray(x.result[0])||
+    x.result[0].success!==true||
+    !Array.isArray(x.result[0].results)||
+    (x.result[0].errors!==undefined&&
+       (!Array.isArray(x.result[0].errors)||x.result[0].errors.length!==0)))
+   safeErr("D1_SQL_RESPONSE_NOT_CONFIRMED_NO_RETRY");
  return x.result[0].results;
 }
 async function executeSql(fetchImpl,base,token,sql){
