@@ -6709,3 +6709,98 @@ No maturity or Formal change is authorized by this routing.
 4. If R1-R6 appear, validate DL-095 plus DL-108~131 before physical R7 emission.
 5. D16 receives listing-mechanic placebo, listing-age/cohort, security-identity and transition-class metadata with full denominators.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-132~137 (2026-10-10)
+
+### DL-132 — corporate-name / issuer-alias lineage
+- Security identity, issuer identity, market-symbol version, historical display name, current display name and aliases are now explicitly separate objects.
+- A proven pure corporate rename does not break a D01 pattern episode or create a second vote.
+- Name normalization/fuzzy matching is lookup assistance only and cannot prove issuer/security identity.
+- Same issuer does not imply same security.
+- Historical display name must be point-in-time when available; current name cannot be backfilled into the historical predictor.
+- Name metadata updates append alias receipts; they do not rewrite old price-pattern feature hashes.
+
+### DL-133 — same-code / different-issuer collision
+- market+symbol is not a durable long-history identity.
+- Same-market non-overlap code reuse with different securityIdentity starts a new lineage and cannot inherit old bars/episodes.
+- Overlapping same-code membership tied to different security identities is an R1-blocking data conflict.
+- Same symbol across markets is unrelated unless DL-123 same-security migration is proven.
+- Same issuer / different security remains separate price history.
+- Identity resolution precedence is canonical security identity -> membership interval -> market-symbol version -> issuer identity -> name/alias metadata.
+
+### DL-134 — R1 / R7 identity-alias binding
+- R1 now requires an unambiguous securityIdentity + membershipIntervalId + marketSymbolVersionId.
+- Alias metadata is separated from identity-critical evidence.
+- Historical name may remain ALIAS_METADATA_UNKNOWN_NONBLOCKING when canonical security identity is already proven and no transition decision depends on the name.
+- R7 durable identity binds securityIdentity, not display name.
+- The deterministic feature hash excludes cosmetic/current display-name changes but the outer R7 receipt may bind alias-receipt identity for audit/explainability.
+- A corrected security identity requires append-only migration/replay; a pure rename does not change opportunityId/episodeId/feature hash.
+- Parent and child must use the same security identity even if labels differ.
+
+### DL-135 — point-in-time security-class eligibility
+- The first-wave universe remains historically valid ordinary common equities.
+- Market membership and security-class eligibility are separate gates.
+- Current security class cannot be projected backward without complete interval evidence.
+- Explicit non-common classes are ineligible by design.
+- SECURITY_CLASS_UNKNOWN remains a fail-closed unknown state and is not defaulted to either common equity or known ineligible.
+- A same-security class change may create a D01 research-eligibility boundary without changing security identity.
+
+### DL-136 — instrument-class transition boundary
+- SAME_SECURITY_IDENTITY does not imply continuous D01 eligibility.
+- Eligible ordinary-common history cannot silently skip an ineligible class interval.
+- Re-entry into ordinary-common eligibility starts a new D01 eligible-history interval; module minimum-history rules reapply.
+- D01-09 cross-class boundary distance is not an ordinary technical gap.
+- Raw market history is preserved separately from the versioned D01 eligibility mask.
+
+### DL-137 — security-class common support / denominator
+- Frozen class denominator states:
+  CLASS_ELIGIBLE_HISTORY_READY;
+  CLASS_ELIGIBLE_HISTORY_TOO_SHORT;
+  CLASS_INELIGIBLE_BY_DESIGN;
+  CLASS_UNKNOWN_BLOCKED;
+  CLASS_TRANSITION_BOUNDARY_BLOCKED;
+  IDENTITY_BLOCKED;
+  DATA_MISSING_BLOCKED.
+- Parent/child comparisons must share the same class receipt/version and eligibility mask.
+- Current-status/current-class survivorship filtering is prohibited.
+- D16 receives class/transition/warmup metadata for common support and audit only; security class itself is not Alpha.
+- Historical class revisions replay parent and child together and do not reset consumed holdout status.
+
+### Test evidence
+- DL-132~134: 25/25 PASS.
+- DL-135~137: 25/25 PASS.
+- This tranche: 50/50 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-137: 643/643 PASS.
+- A semantic defect was caught before final evidence: SECURITY_CLASS_UNKNOWN was initially at risk of collapsing into known ineligible-by-design; final oracle preserves it as fail-closed unknown.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Physical owner readback
+- No physical 1101 / 2021-06-15 R1-R6 owner bundle was found on latest main at tranche start.
+- D01 did not duplicate System2/D05 collectors.
+- Physical R7 remains blocked.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- ISSUER_ALIAS_LINEAGE = FROZEN.
+- SAME_CODE_DIFFERENT_SECURITY_COLLISION = FROZEN.
+- R1_R7_ALIAS_BINDING = FROZEN.
+- PIT_SECURITY_CLASS_ELIGIBILITY = FROZEN.
+- CLASS_TRANSITION_BOUNDARY = FROZEN.
+- SECURITY_CLASS_COMMON_SUPPORT = FROZEN.
+- CURRENT_NAME_BACKFILL = PROHIBITED.
+- CURRENT_CLASS_BACKFILL = PROHIBITED.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-137
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze major issuer/economic-regime discontinuity handling when security identity technically survives (for example major control/business transformation), so same-security bars are not automatically treated as unchanged structural context.
+4. Keep D08/D14 event/governance ownership separate; D01 should consume a regime-boundary receipt rather than infer corporate-event meaning from price.
+5. If R1-R6 appear, validate DL-095 plus DL-108~137 before physical R7 emission.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
