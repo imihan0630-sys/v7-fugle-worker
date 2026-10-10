@@ -26,18 +26,29 @@
     "formalCoreChanged": false,
     "ic110FrozenThresholdsChanged": false
   },
-  "status": "IC111_AUDIT_EVIDENCE_DURABLE_ON_RESEARCH_BRANCH / OOS_ESTIMATOR_AND_SPLIT_UNVERIFIED / D16_REVIEW_PENDING / NO_MATURITY_CHANGE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "status": "IC111_RESEARCH_CHECKPOINT_TRACKER_DURABLE_ON_BRANCH / PR_CREATION_BLOCKED / MAIN_NOT_MERGED / NO_MATURITY_CHANGE / OUTCOMES_CLOSED / FORMAL_LOCKED",
   "blockers": [
     "No new genuine TDCC sourceDate strictly later than 2026-10-08 independently verified in this run.",
     "D16 independent outcome-blind primary-estimator and chronological training/split execution review not yet complete.",
     "IC110 pair-level serial-dependence robustness cannot be inferred from 12-pair count alone."
   ],
-  "exactNextContinuationPoint": "Read latest main and determine whether IC111 PR has merged. Preserve IC110 primary feature/horizon/M0/12-pair/2-regime freeze. Obtain D16 outcome-blind estimator/split/overlap audit, then for each genuinely new TDCC sourceDate > 2026-10-08 rebuild date-effective clean cohort/hash before opening outcomes; never count duplicate pairs as new observations. Continue other D06-07/08/09 multi-date source-vintage or D06-11/16 passive clock research if new TDCC vintage is unavailable.",
+  "exactNextContinuationPoint": "Refresh latest main and branch compare. IC111 is durable on branch with tracker D06-only sync but PR creation safety-blocked twice. Do not bypass PR review or force-update main; retry normal integration if safe. D16 independent outcome-blind estimator/chronological split/serial dependence review is pending. Continue D06-05 only on genuine new TDCC sourceDate >2026-10-08; otherwise switch to D06-07/08/09 source vintage or D06-11/16 passive-flow clock work.",
   "trackerSync": {
     "domainMaturityPct": 55.6,
     "moduleLevel": "L3",
     "moduleMaturityPct": 60,
     "change": "NONE",
     "required": "After research evidence and checkpoint are durable, update only D06 research note/continuation in latest tracker if safe; never overwrite parallel updates."
+  },
+  "integration": {
+    "branch": "research/d06-ic111-overlap-oos-audit-20261010",
+    "branchCommits": 3,
+    "prCreationAttempts": 2,
+    "prState": "BLOCKED_BY_TOOL_SAFETY_CHECK",
+    "mainMerged": false,
+    "trackerSyncedOnBranch": true,
+    "trackerSyncedOnMain": false,
+    "latestKnownMain": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+    "safeNext": "Do not bypass PR guard or force-update main. Retry normal PR creation on a later run after refreshing latest main and checking whether equivalent IC111 evidence already merged; otherwise retain branch and continue other D06 modules."
   }
 }
