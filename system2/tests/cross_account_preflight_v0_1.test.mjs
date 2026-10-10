@@ -4,7 +4,7 @@ const hex = "f".repeat(64);
 const id1 = "a".repeat(32), id2 = "b".repeat(32);
 const make = () => ({
   source: {accountId:id1, complete:true, verifiedBy:"CLOUDFLARE_READ_ONLY_API", verifiedAt:"2026-10-10T01:00:00Z",
-    databases:[{name:"system2-research"},{name:"v7-live"}],
+    databases:[{name:"system2-research",sizeBytes:1024},{name:"v7-live"}],
     workers:[{id:"system2-shadow-research",bindings:[{name:"SYSTEM2_DB"},{name:"SYSTEM2_HISTORY_BUCKET"}]},{id:"fugle-test"}],
     buckets:[{name:"system2-historical-research"}], kvNamespaces:[], crons:[]},
   destination: {accountId:id2, complete:true, verifiedBy:"CLOUDFLARE_READ_ONLY_API",verifiedAt:"2026-10-10T01:00:00Z",
@@ -22,6 +22,8 @@ function blocked(m, code){const result=assess(m);assert.equal(result.state,"BLOC
   assert(!JSON.stringify(r).includes(id1));
   assert(!JSON.stringify(r).includes(id2));
 }
+{ const m=make();m.source.databases[0].sizeBytes=null;blocked(m,"SOURCE_D1_SIZE_UNKNOWN");}
+{ const m=make();m.source.databases[0].sizeBytes=500_000_000;blocked(m,"SOURCE_D1_EXCEEDS_FREE_DATABASE_CAPACITY");}
 { const m=make();m.destination.accountId=id1;blocked(m,"SOURCE_DESTINATION_ACCOUNT_COLLISION");}
 { const m=make();m.destination.accountId=undefined;blocked(m,"ACCOUNT_IDENTITY_NOT_AUTHENTICATED");}
 { const m=make();m.destination.complete=false;blocked(m,"DESTINATION_RESOURCE_INVENTORY_UNVERIFIED");}
@@ -35,4 +37,4 @@ function blocked(m, code){const result=assess(m);assert.equal(result.state,"BLOC
 { const m=make();m.manifest.sourceAccountId=id2;blocked(m,"SOURCE_MANIFEST_ACCOUNT_MISMATCH");}
 { const m=make();m.manifest.frozenSnapshotSha256="invalid";blocked(m,"IMMUTABLE_SOURCE_MANIFEST_MISSING_OR_INVALID");}
 { const r=assess();assert.equal(r.state,"BLOCKED");assert.equal(r.authorizedToMutate,false);}
-console.log("System2 cross-account migration preflight: 14 cases PASS (offline-only)");
+console.log("System2 cross-account migration preflight: 16 cases PASS (offline-only)");
