@@ -132,3 +132,17 @@ This PR's repair is **read-only partial inventory**, rather than lying about a c
 - No D1 SQL, no R2 object fetch, no write, no Worker deployment, no subscription enablement, no new permissions.
 
 Outcome of Run #38021761468: neither DB nor archive transferred; physical migration acceptance 0/13. Goal of partial safe-only follow-up: capture resource metadata and actual source D1 file size to decide if independent Free D1-only Shadow is practical. No System1 Formal runtime modification.
+
+
+## 2026-10-10 11:58 Taipei — both-account physical metadata inventory SUCCESS
+
+Actual owner-manual GET-only [Run #38022384514](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38022384514), main `a85f041b9a05ea811b4e9dd9fc08cd1ddeed73cc`, **SUCCESS**. Downloaded and inspected sanitized GitHub Actions artifacts auth #11658558673, service #11658598468, inventory #11658558682; artifact digests and full precise resource scope recorded at `system2/migration/evidence/CROSS_ACCOUNT_REAL_READONLY_INVENTORY_20261010_V0_1.md`.
+
+**Physical source-account discovery:**
+- `system2-research` D1 database measured `file_size = 316,968,960 bytes`. Free single-DB limit 500,000,000 bytes: initial file-only fit 63.4% with 183,031,040 bytes raw slack; actual import row count, index amplification, future data and account daily rowsWritten still UNKNOWN.
+- SOURCE has D1 `system2-research` and `v7-live`, Workers `system2-shadow-research` and `fugle-test`, R2 bucket `system2-historical-research`, KV namespace `fugle-stock-config`, and a scheduled System2 Cron `*/5 0-5,11 * * MON-FRI`. The System2 Worker has `SYSTEM2_DB` and `SYSTEM2_HISTORY_BUCKET` bindings. Do NOT mistake KV for S2-only.
+- DESTINATION has **zero D1, zero Worker, zero KV, zero Cron**, but R2 is **NOT ENTITLED** (403 numeric code10042). Destination R2 count UNKNOWN, not zero.
+- TOKEN and D1 scope READ PASS for both; all source service READ PASS; DESTINATION D1/Workers/KV pass. Remote invoice, routes, D1 table hashes, frozen snapshot integrity and cold R2 bytes NOT obtained.
+- Preflight state remains **BLOCKED**, reasons `DESTINATION_RESOURCE_INVENTORY_UNVERIFIED`, `IMMUTABLE_SOURCE_MANIFEST_MISSING_OR_INVALID`. Physical migration acceptance still 0/13; no data copied, no destination D1 provision, no bills or Cloudflare mutations.
+- Practical offline engineering next: add explicit `D1_ONLY_STAGING_NO_R2_NO_CRON_NO_LIVE_WRITES` proposal guarded by actual data manifests. Existing `system2/deploy/wrangler.system2.example.toml` includes R2 and active Cron and MUST NOT be reused as-is. Existing bounded resonance Worker GET/scheduled handlers rely on D1, but full daily Shadow and cold historical replay still need independent PIT/source review.
+- User standing bounded approval for GitHub-only low-risk work does NOT grant any resource creation, destination write creds, schema/app data mutation, R2 subscription, duplicate Cron, Shadow formal acceptance or cutover; all remain owner authorization decisions.
