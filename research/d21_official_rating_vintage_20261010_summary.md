@@ -1,5 +1,38 @@
-# D21 official rating vintage source receipt
+# D21｜官方公司治理評鑑兩屆原始名單與分母衝突
 
-2026-10-10: Two TWSE issuer-level official PDF vintage files were located and checked. 2330: top 5% in both 2025 and 2026 releases; 2357: 6%-20% then top 5%; 3443: top 5% then 6%-20%. These are relative categories, not numeric improvements. 2025 official news says 1,749 assessed; 2025 official results PDF says 1,754 assessed; the difference of 5 is unresolved. Research only; no OOS, no maturity change; Formal Core locked.
+日期：2026-10-10；主責：14｜公司治理與內部人研究室；性質：RESEARCH_ONLY。正式核心 LOCKED。
 
-Exact next: reconcile official 2025 denominator and acquire immutable first-known PDF vintages before historical replay.
+## 官方原始來源
+- 113 年度（第十一屆）結果 PDF（文件署期 2025-04-30）：https://cgc.twse.com.tw/evaluationCorp/listCh
+- 114 年度（第十二屆）結果 PDF（文件署期 2026-04-30）：https://cgc.twse.com.tw/evaluationCorp/listCh
+- 2025-04-30 官方公告：https://cgc.twse.com.tw/pressReleases/promoteNewsArticleCh/4479
+- 2026-04-30 官方公告：https://cgc.twse.com.tw/pressReleases/promoteNewsArticleCh/4594
+- 兩份 PDF 現存官方版本的上市名單均在第 6–7 頁；未取得公告當日不可變 PDF 雜湊，精確 firstKnownAt 與歷史版本仍 UNKNOWN。
+
+## 三家官方名單核對（同屬上市組）
+- 2330 台積電：113 年度前 5%；114 年度前 5%。
+- 2357 華碩：113 年度 6%–20%；114 年度前 5%。
+- 3443 創意：113 年度前 5%；114 年度 6%–20%。
+這是有序級距而非連續分數，不能推論絕對治理改善、惡化或買賣方向。
+
+## 第一方分母衝突
+- 2025-04-30 官方新聞稿：上市 976、上櫃 773、合計 1,749。
+- 2025-04-30 官方結果 PDF 第 2 頁：上市 976、上櫃 778、合計 1,754。
+- 兩份官方資料相差 5 家，原因未知，標 SOURCE_CONFLICT；不得選擇其中一個總數冒充唯一權威。
+- 2026-04-30 官方新聞稿：上市 1,009、上櫃 801、合計 1,810。若以上年新聞稿計算增加 61 家；若以上年 PDF 計算增加 56 家。上市子母體 2025 年 976 家一致。
+
+## 研究假說與反證
+支持：原始名單可核對有序級距，可能包含治理資訊。
+反證：排名可能因指標、權重、同儕母體與產業結構變動，非公司絕對治理變動。
+替代解釋：規模、產業、控制型態、法規與揭露義務、財報品質、估值、流動性及市場狀態。
+失效條件：控制既有董事會、資本配置、財報與事件資訊後，獨立 OOS／Walk-forward 且扣成本無增量則否決。
+
+## 時點、樣本及升級限制
+評鑑資訊年度與結果公布年度分離；缺精確時戳時僅可考慮官方交易日曆驗證後的公告後交易日，並保留歷史 PDF 版本未知。不得從目前 PDF 直接倒填原始公開日。完整歷史母體、下市者、缺值、日期群聚、多重測試、資料探勘、存活者偏誤、過擬合、因子冗餘與交易成本都需驗證。沒有真實前瞻 Shadow 或樣本外結果。
+
+## 精確續接
+1. 查明 2025 官方新聞稿 773 與 PDF 778 的分母差異。
+2. 取得兩屆 PDF 當時版本、發布時鐘與官方交易日曆，建立保守重播。
+3. 擴大多公司、多年度、完整受評母體並預註冊 OOS／前瞻、成本與冗餘。
+4. D21-03、D21-04 原始月度異動與設質收據仍阻塞，不重複來源存在性搜尋。
+D21 56.4%、全體 47.9%（本輪開始正式值），各模組不升級，Formal Core LOCKED；無正式優化候選。
