@@ -64,6 +64,12 @@ export function assessCrossAccountMigrationPreflight({ source, destination, mani
     if (!exactOnce(d, S2_DB) || !exactOnce(w, S2_WORKER) || !exactOnce(r, S2_R2)) {
       blockers.push("SOURCE_S2_RESOURCE_IDENTITY_MISSING_OR_AMBIGUOUS");
     }
+    const dbSize = source.databases.find(x => x?.name === S2_DB)?.sizeBytes;
+    if (!Number.isSafeInteger(dbSize) || dbSize < 0) {
+      blockers.push("SOURCE_D1_SIZE_UNKNOWN");
+    } else if (dbSize >= 500_000_000) {
+      blockers.push("SOURCE_D1_EXCEEDS_FREE_DATABASE_CAPACITY");
+    }
     const bindings = source.workers.find(x => x?.id === S2_WORKER)?.bindings;
     if (!Array.isArray(bindings) ||
       !exactOnce(names(bindings), "SYSTEM2_DB") ||
