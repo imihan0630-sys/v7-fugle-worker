@@ -8,10 +8,10 @@ const ROLES = new Set(["SOURCE","DESTINATION"]);
 const HEX_ID = /^[0-9a-f]{32}$/i;
 const CF_API = "https://api.cloudflare.com/client/v4";
 const SERVICES = Object.freeze([
-  ["D1", "/d1/database?page=1&per_page=1"],
+  ["D1", "/d1/database?page=1&per_page=10"],
   ["WORKERS", "/workers/scripts"],
-  ["KV", "/storage/kv/namespaces?page=1&per_page=1"],
-  ["R2", "/r2/buckets?per_page=1"],
+  ["KV", "/storage/kv/namespaces?page=1&per_page=100"],
+  ["R2", "/r2/buckets?per_page=100"],
 ]);
 
 function classify(service, status, code, success) {
