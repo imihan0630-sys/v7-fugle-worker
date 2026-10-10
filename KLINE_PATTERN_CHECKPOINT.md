@@ -6874,3 +6874,65 @@ No maturity or Formal change is authorized by this routing.
 4. Keep D14/D08 ownership of governance/event relations; D01 consumes relation receipts only for dependency/common-support logic.
 5. If R1-R6 appear, validate DL-095 plus DL-108~140 before physical R7 emission.
 6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
+
+
+## Continuation update — DL-141~143 (2026-10-10)
+
+### DL-141 — corporate-group / related-issuer dependency
+- Related issuer/group/control relations are dependency/context classes, not security identity or Pattern signals.
+- Same group, same controller or same issuer does not permit OHLC/history stitching across different security identities.
+- Historical relation state must be PIT; current group membership cannot be projected backward.
+- D14/D08 remain relation/event owners; D01 consumes owner-certified relation receipts only.
+- Relation unknown does not default to independent.
+
+### DL-142 — group-event cross-security confirmation dedup
+- Multiple related securities reacting to one group event remain separate security-specific R7 nodes but share dependency edges.
+- Node count is not independent-evidence count.
+- Shared group event, parent/subsidiary, common-controller and cross-holding dependency edges are explicit.
+- No GROUP_CONFIRMATION_BONUS or related-issuer confluence score is created.
+- Cross-security lead/lag is a separate preregistered experiment; later lead information cannot confirm an earlier predictor.
+
+### DL-143 — related-issuer D16 common support / placebo handoff
+- D16 receives historical relation/group/event dependency metadata for cluster-aware inference and common support.
+- Parent/child must share relation state and shared-event context.
+- Frozen placebo families:
+  SAME_INDUSTRY_NON_GROUP_CONTROL;
+  SAME_GROUP_NO_SHARED_EVENT;
+  SHARED_EVENT_NO_D01_PATTERN;
+  ADMINISTRATIVE_GROUP_CHANGE;
+  UNRELATED_SIMULTANEOUS_PATTERN.
+- Unknown relation remains denominator-accounted and cannot be assumed independent.
+- Group relation/event context is not Pattern Alpha.
+
+### Test evidence
+- DL-138~140: 26/26 PASS.
+- DL-141~143: 23/23 PASS.
+- Cumulative deterministic V8-equivalent execution through DL-143: 692/692 PASS.
+- Native Node parity and OOS/prospective performance remain unclaimed.
+
+### Physical owner readback
+- Physical 1101 / 2021-06-15 R1-R6 remains pending unless a later main update supplies exact owner receipts.
+- D01 did not implement duplicate D14/D08/System2 collectors.
+- Physical R7 remains blocked.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- RELATED_ISSUER_DEPENDENCY = FROZEN.
+- GROUP_EVENT_CONFIRMATION_DEDUP = FROZEN.
+- RELATED_ISSUER_D16_COMMON_SUPPORT = FROZEN.
+- SAME_GROUP_EQUALS_SAME_SECURITY = FALSE.
+- UNKNOWN_RELATION_DEFAULTS_INDEPENDENT = FALSE.
+- PHYSICAL_R1_R7 = PENDING.
+- OUTCOME_JOIN = CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-143
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, continue only genuinely new outcome-blind D01 science.
+3. Candidate next science:
+   freeze PIT industry/sector classification-vintage changes and sector-reclassification dependency so present-day industry labels cannot be backfilled into historical pattern controls/common support.
+4. Keep D07/industry owner authoritative; D01 consumes industry-vintage receipts only for context/common support.
+5. If R1-R6 appear, validate DL-095 plus DL-108~143 before physical R7 emission.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
