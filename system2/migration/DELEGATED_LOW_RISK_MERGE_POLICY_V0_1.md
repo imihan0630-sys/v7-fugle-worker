@@ -41,3 +41,28 @@ The owner may use this standing authorization to merge this precise bounded clas
 
 ## Operational continuity
 The assistant cannot keep working after its turn ends without user reactivation. This policy reduces requests for PR approvals while preserving that product limitation. Keep dated checkpoint and exact main SHA as source of truth.
+
+
+## 2026-10-10 owner addendum — autonomy for matching *low-risk GitHub merges*, NOT cloud writes
+
+Owner expressly answered `批准，這一種低風險程度的批准活動，我授權給你自動執行` to a request for **PR #1088 to merge after independent review**, and allowed similarly low-risk approval actions to proceed without repeated per-PR owner questions. This addendum records the owner's prior consent to the **GitHub merge decision** for that narrowly defined class. It does not transform new privileges or physical mutations into low risk.
+
+### Additional narrowly eligible class (code-only, OWNER-PREAPPROVED MERGE AFTER AUDIT)
+
+In addition to the earlier automatic eligible documentation/GET-only subset, a correction to an **isolated, dormant and explicitly owner-manual Schema-only executor** can be merged without a repeat owner confirmation only when all of the following are independently attested:
+
+1. It is a *bounded safety/correctness fix*, limited to an already-approved destination D1 Schema-only manual workflow and its isolated executor/tests; it must **not** change the frozen target account/database fingerprint, add permissions, replace the sealed 125-SQL bundle/plan hash semantics, expand DDL statement classes, change the user-triggered `VERIFY_ONLY` and `APPLY_ONCE` manual checks, invoke the workflow, enable any automatic schedule, deploy any Worker or activate existing production logic.
+2. An **external AUDIT_LANE** or other genuinely independent reviewer has provided a traceable review of the exact PR and security boundary. The authoring assistant's own mock tests or self-review are not a substitute. Any required CODEOWNER/branch protection check remains mandatory. No signoff means HOLD, not an automatic override.
+3. CI at the exact current PR head reports both **System2 Research CI PASS** and **V8 Regression PASS**, relevant negative and isolation tests PASS, and GitHub current main/head/changed files are checked immediately before merge. Main drift must be reconciled. Merge with expected-head SHA and verify main readback + postmerge CI.
+4. Actual Cloudflare impact of **merging code** is zero: there are no writes, no destination SQL execution, no resource or secret change, no workflow dispatch, no R2 entitlement/billing and no System1 Formal Core/runtime/push/trading change. Future manual invocations with write access are a **separate high-risk authorization boundary**.
+5. An explicit issue/PR receipt records: owner standing grant, scoped diff, reviewer signoff, CI IDs, main/PR SHAs, evidence, new blocker/rollback, physical acceptance status and why it was Class B safe-to-merge **without cloud execution**.
+
+The **first specifically approved case** is [PR #1088](https://github.com/imihan0630-sys/v7-fugle-worker/pull/1088), the exact `_cf_KV` reserved-table prewrite check and mock-negative-test correction. Owner approval to merge was recorded separately, but **independent AUDIT_LANE approval was not present as of this addendum**, so merging it must remain on hold until that required review is genuinely recorded. The owner-approved original D1 schema work does not authorize this assistant to run `APPLY_ONCE`.
+
+### High-risk exclusions that cannot be silently inferred from the word "low risk"
+
+No standing merge grant authorizes: Cloudflare account/resource creation; D1/R2/KV/schema/data **physical** changes; `APPLY_ONCE`; source PIT/frozen backup and source quota grants; write-capable Token or GitHub Environment creation/rotation; paid tier or R2 activation; Worker/Cron/route/runtime deployment; strategy ranking, signals, real capital, orders or production changes; audit bypass; accepting ambiguous partial writes; changes to target identity, SQL bundle, permission or workflow triggers. New material Class B/Class C decisions outside this tightly bounded PR class still require explicit approval.
+
+### Operational meaning
+
+During an active task, autonomously diagnose, stage, test and merge eligible PRs without pausing for repeated approval requests. At the end of a chat turn, do **not** claim background execution or that another chat was started automatically. Continue on next owner message from latest GitHub main. This is a specific update to the permitted GitHub-only approval workflow and does not relax the formal System 1/2 production acceptance gates.
