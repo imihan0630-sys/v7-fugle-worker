@@ -21,8 +21,14 @@ function inspectKnownFallback(text) {
 export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource}={}) {
   if(typeof readSource!=="function")throw Error("READ_SOURCE_REQUIRED");
   const flagged=[];
+  const externalImports=[];
   const base=auditD1OnlyWorkerImportGraphV0_1({readSource:path=>{
     const source=readSource(path);
+    if(typeof source==="string")for(const line of source.split("\n")) {
+      const m=line.match(/^\s*import\s+.*?\s+from\s+["\x27]([^"\x27]+)["\x27]|^\s*import\s+["\x27]([^"\x27]+)["\x27]/);
+      const moduleName=m?.[1]||m?.[2];
+      if(moduleName && !moduleName.startsWith("."))externalImports.push({path,moduleName});
+    }
     if(typeof source==="string" && (source.includes("import(")||source.includes("require(")||source.includes("import.meta.glob")))
       flagged.push({path,source});
     return source;
@@ -39,6 +45,7 @@ export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource}={}) {
     sourceFilesVisited:base.sourceFilesVisited,
     explicitR2References:base.filesWithR2References.length,
     dynamicSitesTotal:flagged.length,
+    observedExternalImports:Object.freeze(externalImports),
     reviewedFallbackFile:candidate?REVIEWED_FILE:null,
     unresolvedBaseGraph:Object.freeze([...base.unresolved]),
     cloudMutations:false,realWorkerRuntimeTested:false,
