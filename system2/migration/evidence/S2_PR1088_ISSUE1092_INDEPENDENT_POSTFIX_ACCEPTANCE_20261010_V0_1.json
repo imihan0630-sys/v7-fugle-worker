@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "S2_PR1088_ISSUE1092_INDEPENDENT_POSTFIX_SECURITY_ACCEPTANCE_20261010_V0_1",
+  "auditedAsOfTaipei": "2026-10-10T22:26:36+08:00",
+  "lane": "AUDIT_LANE_INDEPENDENT_OF_MIGRATION_IMPLEMENTATION",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "correction": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1092",
+  "candidatePR": 1088,
+  "candidateHeadSha": "68259cda7993b997ac030276210631d5a396e187",
+  "previousVulnerableHead": "602c2822437148d8f9da6618551f9c2b4067cb4b",
+  "latestMainAtReview": "1f0030f2ac16812670cb4a107c80de341d073cc4",
+  "scopeDiff": [
+    "system2/migration/destination_schema_only_manual_executor_v0_1.mjs",
+    "system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs",
+    "system2/tests/destination_schema_only_sql_result_failclosed_1092.test.mjs",
+    "system2/migration/evidence/S2_PR1088_ISSUE1092_REMEDIATION_HANDOFF_20261010_V0_1.json"
+  ],
+  "historicalRealReadOnlyEvidence": {
+    "run": 38051816632,
+    "artifact": 11669069406,
+    "sha256": "6677eeb2679f3baa9242e4469ffd6b00e7238e2622ef63ba03e4a8bfd07d56fc",
+    "sha256IndependentlyRecomputedInPriorAudit": true,
+    "platformReservedTable": "_cf_KV",
+    "platformReservedCount": 1,
+    "userTables": 0,
+    "userIndexes": 0,
+    "d1Bytes": 12288,
+    "cloudWrites": 0
+  },
+  "implementationCi": {
+    "research": {
+      "run": 38055517767,
+      "status": "SUCCESS"
+    },
+    "v8": {
+      "run": 38055517798,
+      "status": "SUCCESS"
+    }
+  },
+  "independentAdversarial": {
+    "pr": 1094,
+    "head": "ba951e11d402716ebfacb555abd1c22fe7cb94f3",
+    "actualCandidateBaseHead": "68259cda7993b997ac030276210631d5a396e187",
+    "syntheticOnly": true,
+    "research": {
+      "run": 38059510836,
+      "job": 114234721116,
+      "status": "SUCCESS",
+      "testFiles": 322,
+      "marker": "AUDIT_PR1088_1092_INDEPENDENT_POSTFIX"
+    },
+    "v8": {
+      "run": 38059510760,
+      "job": 114234720776,
+      "status": "SUCCESS",
+      "tests": "12/12"
+    },
+    "malformedSqlSelectRepliesRejected": 10,
+    "badSchemaObjectsRejected": 6,
+    "allUnconfirmedDdlOrdinalsRejected": 125,
+    "simulatedNetworkDisconnectPositionsRejected": 4,
+    "validVerifyOnlyWithoutDdl": "PASS",
+    "validSynthetic125StatementApply": "PASS",
+    "sourceAccountAndWrongD1Identity": "REJECTED",
+    "statementPlan": {
+      "sqlStatements": 125,
+      "tables": 55,
+      "indexes": 63,
+      "metadata": 7,
+      "staged0011Excluded": true
+    },
+    "cloudflareCallsFromAudit": 0,
+    "noCloudSqlWrites": true
+  },
+  "correctedVulnerability": {
+    "previous": "Nested D1 success===false check accepted falsey/nonboolean responses as SQL success.",
+    "current": "Require envelope success strictly boolean true, exactly one inner SQL group success strictly true, results array, explicit no errors.",
+    "stopOnPartialUnknown": "PASS_SOURCE_LEVEL",
+    "postfixState": "INDEPENDENT_SOURCE_LEVEL_PASS"
+  },
+  "isolation": {
+    "sourceSystem1FormalCoreChanged": false,
+    "sourceWorkerChanged": false,
+    "sourceCronChanged": false,
+    "capitalSignalsChanged": false,
+    "workflowsTriggersChanged": false,
+    "sourceDestIdentityChanged": false,
+    "dbTargetChanged": false,
+    "cloudflareBillingOrTokensChanged": false
+  },
+  "governance": {
+    "delegatedGitHubOnlyMergeOwnerApproval": "PRESENT_IN_DELEGATED_LOW_RISK_MERGE_POLICY_ADDENDUM",
+    "formalGithubDifferentAccountReview": "NOT_AVAILABLE_SHARED_LINKED_AUTHOR_ACCOUNT_422_IN_PRIOR_AUDIT",
+    "laneIndependentEvidenceSignoff": "THIS_AUDIT",
+    "noCloudApplyGranted": true,
+    "mergeableOnlyAfterExactHeadCiAndMainCompatibility": true,
+    "physicalSchemaPermission": "NOT_GRANTED",
+    "physicalVerifiedTablesInstalled": 0,
+    "migrationGatesAccepted": 0
+  },
+  "disposition": "PASS_SOURCE_LEVEL_PR1088_GITHUB_ONLY_MERGE_ELIGIBLE_SUBJECT_TO_CURRENT_HEAD_MAIN_CI_BRANCH_PROTECTION",
+  "unresolvedPhysicalGates": [
+    "Manual owner VERIFY_ONLY on destination write-capable environment only after required existing permission setup",
+    "Scoped destination-only write token and protected GitHub Environment are separate explicit-owner actions",
+    "Fresh D1 Free quota/budget and audit readiness; no automated APPLY_ONCE",
+    "Owner-manual APPLY_ONCE requires separate explicit physical authorization",
+    "Real Schema 55/55+63/63 version 1.1 readback not performed; source history/PIT/frozen backups pending",
+    "Cloudflare R2 not entitled; no paid upgrade"
+  ],
+  "warning": "This document is an independent offline security assertion and limited code-only GitHub merge signoff, NOT a Cloudflare physical install or an authorized write grant."
+}
