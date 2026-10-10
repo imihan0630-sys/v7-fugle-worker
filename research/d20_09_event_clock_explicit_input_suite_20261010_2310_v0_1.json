@@ -1,0 +1,332 @@
+{
+  "schemaVersion": "D20_09_SYNTHETIC_EVENT_CLOCK_EXPLICIT_INPUTS_V0_1",
+  "room": "13",
+  "module": "D20-09",
+  "evidenceRole": "NEW_EXPLICIT_INPUT_SYNTHETIC_SUITE_NOT_RETROACTIVE_REPAIR_OF_20261010_12_CASES",
+  "passed": 12,
+  "failed": 0,
+  "cases": [
+    {
+      "id": "preopen",
+      "input": {
+        "publishedAt": "2026-10-08T08:45:00+08:00",
+        "firstObservedAt": "2026-10-08T08:55:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:15:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:15:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:15:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "opening_delayed",
+      "input": {
+        "publishedAt": "2026-10-08T09:00:00+08:00",
+        "firstObservedAt": "2026-10-08T09:02:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:30:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "exact_bar_start",
+      "input": {
+        "publishedAt": "2026-10-08T09:15:00+08:00",
+        "firstObservedAt": "2026-10-08T09:15:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:30:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "one_second_after_bar",
+      "input": {
+        "publishedAt": "2026-10-08T09:15:01+08:00",
+        "firstObservedAt": "2026-10-08T09:15:01+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:30:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:45:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:45:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:30:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:45:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "last_two_bars",
+      "input": {
+        "publishedAt": "2026-10-08T13:00:00+08:00",
+        "firstObservedAt": "2026-10-08T13:00:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T13:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:15:00+08:00",
+        "decisionNotBefore": "2026-10-08T13:15:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T13:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:15:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "last_bar_only",
+      "input": {
+        "publishedAt": "2026-10-08T13:00:00+08:00",
+        "firstObservedAt": "2026-10-08T13:15:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T13:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:30:00+08:00",
+        "decisionNotBefore": "2026-10-08T13:30:00+08:00",
+        "secondSameSessionBarAvailable": false
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T13:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:30:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "last_bar_exact",
+      "input": {
+        "publishedAt": "2026-10-08T13:15:00+08:00",
+        "firstObservedAt": "2026-10-08T13:15:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T13:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:30:00+08:00",
+        "decisionNotBefore": "2026-10-08T13:30:00+08:00",
+        "secondSameSessionBarAvailable": false
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T13:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T13:30:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "last_bar_missed",
+      "input": {
+        "publishedAt": "2026-10-08T13:15:01+08:00",
+        "firstObservedAt": "2026-10-08T13:15:01+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00",
+        "decisionNotBefore": "2026-10-12T09:15:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "holiday_event",
+      "input": {
+        "publishedAt": "2026-10-09T10:07:00+08:00",
+        "firstObservedAt": "2026-10-09T10:10:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00",
+        "decisionNotBefore": "2026-10-12T09:15:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "weekend_event",
+      "input": {
+        "publishedAt": "2026-10-10T23:10:00+08:00",
+        "firstObservedAt": "2026-10-10T23:10:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00",
+        "decisionNotBefore": "2026-10-12T09:15:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-12T09:00:00+08:00",
+        "firstCompleteBarEnd": "2026-10-12T09:15:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "late_observed",
+      "input": {
+        "publishedAt": "2026-10-08T09:07:00+08:00",
+        "firstObservedAt": "2026-10-08T09:16:00+08:00",
+        "fetchLagMinutes": 0,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:30:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:45:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:45:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:30:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:45:00+08:00"
+      },
+      "pass": true
+    },
+    {
+      "id": "fetch_lag_2m",
+      "input": {
+        "publishedAt": "2026-10-08T09:07:00+08:00",
+        "firstObservedAt": "2026-10-08T09:10:00+08:00",
+        "fetchLagMinutes": 2,
+        "sessionDatesFrozen": [
+          "2026-10-08",
+          "2026-10-12",
+          "2026-10-13"
+        ]
+      },
+      "output": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00",
+        "decisionNotBefore": "2026-10-08T09:32:00+08:00",
+        "secondSameSessionBarAvailable": true
+      },
+      "expected": {
+        "firstCompleteBarStart": "2026-10-08T09:15:00+08:00",
+        "firstCompleteBarEnd": "2026-10-08T09:30:00+08:00"
+      },
+      "pass": true
+    }
+  ],
+  "assumptions": [
+    "Synthetic 09:00-13:30 local 15-minute session grid; explicit test dates only.",
+    "2026-10-09 non-trading holiday and 2026-10-10/11 weekend; 2026-10-12 synthetic next eligible session.",
+    "Decision availability requires both completed bar and fetch availability; observedAt cannot be replaced by publishedAt.",
+    "First complete post-observed 15m interval is not necessarily first 15 minutes after event publication.",
+    "Never splice overnight bars as same-session continuous 30 minutes."
+  ],
+  "identificationGuards": {
+    "PIT": "SYNTHETIC_LOGIC_ONLY_NOT_LIVE_PROOF",
+    "OOS": "NOT_EXECUTED",
+    "walkForward": "NOT_EXECUTED",
+    "selectionBias": "SOURCE_LATENCY_MAY_BE_NONRANDOM",
+    "lookahead": "NO_OUTCOME_OPENED",
+    "survivorship": "NOT_ASSESSED_ON_SYNTHETIC_CASES",
+    "dataSnooping": "NO_OUTCOME_TUNING",
+    "multipleTesting": "TWELVE_LOGIC_CASES_NOT_INDEPENDENT_MARKET_OBSERVATIONS",
+    "overfit": "NO_PARAMETER_SEARCH",
+    "factorRedundancy": "D03_05_REVERSAL_OWNERSHIP_PRESERVED",
+    "costs": "NOT_VALIDATED",
+    "regime": "NOT_VALIDATED"
+  },
+  "structuralAlternatives": [
+    "bid-ask bounce",
+    "opening auction imbalance",
+    "temporary liquidity impact",
+    "price-limit mechanics",
+    "sector or market shock",
+    "subsequent news"
+  ],
+  "missing": "Original 2026-10-10 twelve added-case inputs remain UNKNOWN; this suite does not repair those historical inputs.",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "maturityChange": false,
+  "next": "Verify provider eventKnownAt and sourceFetchedAt from genuine prospective receipts; freeze latency-selection negative controls before outcomes."
+}
