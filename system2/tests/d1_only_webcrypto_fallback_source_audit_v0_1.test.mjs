@@ -8,6 +8,7 @@ const real=audit({readSource:disk});
 assert.equal(real.sourceFilesVisited,37);
 assert.equal(real.explicitR2References,0);
 assert.equal(real.dynamicSitesTotal,1);
+console.log("S2_WEBCRYPTO_AUDIT_DIAGNOSTIC",JSON.stringify(real));
 assert.equal(real.result,"SOURCE_WEBCRYPTO_FALLBACK_REVIEWED_NOT_RUNTIME_PROVEN");
 assert.equal(real.reviewedFallbackFile,"system2/runtime/decision_archive.mjs");
 assert.equal(real.deployedWorkerShaVerified,false);
