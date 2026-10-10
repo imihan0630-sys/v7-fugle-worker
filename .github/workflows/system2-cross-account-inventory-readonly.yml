@@ -1,0 +1,58 @@
+name: System2 Cross-Account Inventory (READ ONLY)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type INVENTORY_ONLY_NO_MUTATION (no D1 SQL; no resource changes)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-cross-account-inventory-readonly
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: system2-migration
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard manual read-only authorization
+        env:
+          ACK: $\u007b\u007b inputs.confirm }}
+        run: |
+          set -euo pipefail
+          test "$ACK" = INVENTORY_ONLY_NO_MUTATION
+          # This workflow MUST NOT call wrangler, POST, PUT, PATCH, DELETE, D1 SQL or R2 object write.
+          test -f system2/migration/run_readonly_inventory_v0_1.mjs
+      - name: Collect both accounts metadata using dedicated scoped READ tokens
+        env:
+          S2_MIGRATION_READ_ONLY_ACK: $\u007b\u007b inputs.confirm }}
+          S2_MIGRATION_SOURCE_ACCOUNT_ID: $\u007b\u007b secrets.S2_MIGRATION_SOURCE_ACCOUNT_ID }}
+          S2_MIGRATION_SOURCE_READ_TOKEN: $\u007b\u007b secrets.S2_MIGRATION_SOURCE_READ_TOKEN }}
+          S2_MIGRATION_DESTINATION_ACCOUNT_ID: $\u007b\u007b secrets.S2_MIGRATION_DESTINATION_ACCOUNT_ID }}
+          S2_MIGRATION_DESTINATION_READ_TOKEN: $\u007b\u007b secrets.S2_MIGRATION_DESTINATION_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/run_readonly_inventory_v0_1.mjs
+      - name: Upload SANITIZED inventory evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-cross-account-sanitized-inventory-$\u007b\u007b github.run_id }}
+          path: /tmp/system2-cross-account-inventory/*.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Verify no production files were changed
+        if: always()
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
