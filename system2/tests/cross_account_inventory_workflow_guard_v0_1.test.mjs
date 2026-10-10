@@ -43,4 +43,16 @@ assert.match(authRunner,/role:"DESTINATION"/);
 assert.doesNotMatch(authRunner,/JSON\.stringify\(process\.env\)/);
 assert.doesNotMatch(authRunner,/console\.log\([^\n]*apiToken/);
 
+
+assert.match(workflow,/run_readonly_services_diagnostic_v0_1\.mjs/);
+assert.match(workflow,/service-diagnostic\.json/);
+assert.match(workflow,/SERVICES_READ_PREFLIGHT_PASS/);
+assert(workflow.indexOf("Diagnose SOURCE and DESTINATION D1") < workflow.indexOf("Collect both accounts metadata"));
+const serviceCode = readFileSync("system2/migration/cloudflare_services_readonly_diagnostic_v0_1.mjs","utf8");
+assert.match(serviceCode,/method:"GET"/);
+assert.doesNotMatch(serviceCode,/method:\s*"(?:POST|PUT|PATCH|DELETE)"/);
+assert.match(serviceCode,/R2_ACCOUNT_NOT_ENTITLED/);
+assert.match(serviceCode,/R2_READ_PERMISSION_DENIED/);
+assert.doesNotMatch(serviceCode,/JSON\.stringify\(process\.env\)/);
+
 console.log("System2 migration GitHub workflow / scripts static isolation PASS");
