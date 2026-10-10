@@ -83,7 +83,9 @@ async function executeWithTrustedIdentity({
      onProgress({appliedStatements:done,statementSha256:item.sha256});
    }
    const rows=await executeSql(fetchImpl,dbbase,token,
-     "SELECT type,name FROM sqlite_schema WHERE name LIKE 's2_%' ORDER BY type,name");
+     "SELECT type,name FROM sqlite_schema WHERE "+
+     "(type = 'table' AND name LIKE 's2_%') OR "+
+     "(type = 'index' AND name LIKE 'idx_s2_%') ORDER BY type,name");
    const tab=rows.filter(x=>x.type==="table"),idx=rows.filter(x=>x.type==="index");
    if(tab.length!==55||idx.length!==63||
      rows.some(x=>!["table","index"].includes(x.type)))safeErr("POSTWRITE_SCHEMA_MISMATCH_MANUAL_AUDIT_REQUIRED");
