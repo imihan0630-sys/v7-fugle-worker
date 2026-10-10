@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "ROOM11_ASOF_BREADTH_SELECTION_ORACLE_20261010_V0_1",
+  "status": "RESEARCH_ONLY_SYNTHETIC_CLOCK_FALSIFICATION_OUTCOMES_CLOSED",
+  "ownerRoom": "11",
+  "domains": [
+    "D16",
+    "D18"
+  ],
+  "sourceFiles": [
+    "research/br039_twse_advance_decline_receipt_20261002_v0_1.json",
+    "research/br040_twse_advance_decline_second_date_20261007_v0_1.json",
+    "research/br073_twse_advance_decline_third_date_20261008_v0_1.json"
+  ],
+  "rootUnit": "TWSE_MARKET_DATE_BREADTH_ROOT",
+  "marketScope": "TWSE_STOCKS_ONLY",
+  "illustrativeDecisionClock": "18:00:00+08:00",
+  "formalDecisionClockAsserted": false,
+  "marketRoots": [
+    {
+      "marketDate": "2026-10-02",
+      "up": 483,
+      "down": 506,
+      "flat": 91,
+      "comparableN": 1080,
+      "capturedAt": "2026-10-02T15:48:00+08:00",
+      "netBreadthPctPoints": -2.1296296296296298,
+      "clockStatusAt1800": "TIMESTAMP_PROVEN"
+    },
+    {
+      "marketDate": "2026-10-07",
+      "up": 588,
+      "down": 387,
+      "flat": 99,
+      "comparableN": 1074,
+      "capturedAt": "2026-10-07T23:55:26+08:00",
+      "netBreadthPctPoints": 18.71508379888268,
+      "clockStatusAt1800": "NOT_PROVEN_ASOF"
+    },
+    {
+      "marketDate": "2026-10-08",
+      "up": 425,
+      "down": 540,
+      "flat": 109,
+      "comparableN": 1074,
+      "capturedAt": null,
+      "netBreadthPctPoints": -10.707635009310987,
+      "clockStatusAt1800": "UNKNOWN_CAPTURE"
+    }
+  ],
+  "exPostDescriptive": {
+    "dateN": 3,
+    "meanNetBreadthPctPoints": 1.9592730533140212
+  },
+  "timestampProvenAt1800": {
+    "dateN": 1,
+    "meanNetBreadthPctPoints": -2.1296296296296298
+  },
+  "timestampProvenAt2359": {
+    "dateN": 2,
+    "meanNetBreadthPctPoints": 8.292727084626526
+  },
+  "fullPitAdmissibleDateN": "UNKNOWN",
+  "futureStrategyOutcomesOpened": false,
+  "fullRawByteSourceIntegrityProven": false,
+  "sourceNotAvailableAtCutoffProven": false,
+  "tests": {
+    "localLanguage": "Python",
+    "assertions": 22,
+    "passed": 22,
+    "failed": 0,
+    "scope": "fixture arithmetic and timestamp semantics, not CI or real trading returns"
+  },
+  "interpretation": "Observed sign flip across coverage definitions is descriptive selection sensitivity; no alpha, causality, OOS, Shadow, formal policy or new threshold.",
+  "failureRules": [
+    "UNKNOWN_CAPTURE_NEVER_ZERO",
+    "LATE_CAPTURE_NEVER_PROVES_SOURCE_UNAVAILABLE",
+    "CAPTURE_TIMESTAMP_PROOF_NOT_FULL_PIT",
+    "POSTHOC_CLOCK_SELECTION_FORBIDDEN",
+    "ONE_DATE_MANY_CONSUMERS_ONE_ROOT",
+    "NO_OUTCOME_PEEK",
+    "NO_PROMOTION_FROM_SYNTHETIC_CHECKS"
+  ],
+  "exactNext": "Preserve 18:00 as illustrative only; require predeclared actual decisionAt, raw source proof and independent prospective same-clock roots before opening any strategy outcome. D18-06 accepted market-level L3 tracker reconciliation remains separate."
+}
