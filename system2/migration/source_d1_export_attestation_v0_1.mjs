@@ -13,7 +13,6 @@ const RECEIPT_AUTHORITY=Object.freeze({physicalCopyAuthorized:false,cloudMutatio
 function sha(text){return createHash("sha256").update(text).digest("hex");}
 function isoValid(s){return typeof s==="string"&&Number.isFinite(Date.parse(s))&&
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(s);}
-function cleanErr(err){return err==="SCHEMA_SQL_MIGRATIONS_UNVERIFIED"?"SCHEMA_SQL_MIGRATIONS_UNVERIFIED":"SCHEMA_SQL_MIGRATIONS_UNVERIFIED";}
 
 // Arrays of {name:"0001_x.sql", content:"..."} are from the versioned repository, never the Cloudflare API.
 // The hash proves the *repository migration files*, not physical SQLite schema parity.
@@ -43,6 +42,7 @@ export function inventoryOfflineSystem2SqlMigrationsV0_1(files){
     sqlMigrationFileCount:migrations.length,
     expectedTableCount:tableNames.length,
     migrationSqlSha256:sha(JSON.stringify(migrations)),
+    migrations:Object.freeze(migrations.map(m=>Object.freeze({name:m.name,tables:Object.freeze([...m.tables])}))),
     tableNames,
     source:"LOCAL_VERSIONED_SQL_ONLY_NOT_PHYSICAL",
   });
@@ -72,6 +72,17 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
       blockers.push("PHYSICAL_SOURCE_IDENTITY_AND_HASH_CHAIN_UNVERIFIED");
     if(m.migrationSqlSha256!==schema?.migrationSqlSha256)
       blockers.push("SOURCE_EXPORT_SQL_MIGRATION_FINGERPRINT_MISMATCH");
+    // The repo may contain unapplied migrations. Do not assume 56 current SQL tables
+    // exist physically in source D1; require a verified contiguous applied prefix.
+    const migrations=schema?.migrations;
+    const applied=m.appliedMigrationFiles;
+    const appliedVerified=m.appliedMigrationPhysicalReadback===true &&
+      Array.isArray(applied)&&applied.length>0&&Array.isArray(migrations) &&
+      applied.length<=migrations.length &&
+      applied.every((name,i)=>typeof name==="string" && name===migrations[i]?.name);
+    if(!appliedVerified)blockers.push("SOURCE_APPLIED_MIGRATION_CHAIN_UNVERIFIED");
+    const expectedApplied=appliedVerified ?
+      [...new Set(migrations.slice(0,applied.length).flatMap(x=>x.tables))].sort():null;
     if(!Array.isArray(m.tables)||!m.tables.length)blockers.push("SOURCE_TABLE_ROWS_AND_HASHES_MISSING");
     else{
       const found=new Set();
@@ -83,9 +94,9 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
         }
         found.add(t.name);
       }
-      if(Array.isArray(schema?.tableNames) &&
-         (found.size!==schema.tableNames.length||
-           schema.tableNames.some(t=>!found.has(t))))blockers.push("SOURCE_TABLE_SET_DIFFERS_FROM_VERSIONED_SQL");
+      if(expectedApplied && (found.size!==expectedApplied.length||
+          expectedApplied.some(t=>!found.has(t))))
+        blockers.push("SOURCE_TABLE_SET_DIFFERS_FROM_PHYSICALLY_APPLIED_MIGRATIONS");
       const decisions=m.tables.find(t=>t.name==="s2_decisions");
       if(!decisions||m.frozenDecisionRowCount!==decisions.rows||
          m.frozenSnapshotPhysicalReadback!==true)
@@ -112,7 +123,9 @@ export function attestOfflineSourceD1ExportV0_1({schema,manifest}={}){
     result:blockers.length?"EVIDENCE_BLOCKED":"OFFLINE_DOCUMENT_REVIEW_ONLY",
     blockers:Object.freeze([...new Set(blockers)]),
     codeMigrationFileCount:schema?.sqlMigrationFileCount??null,
-    expectedSchemaTableCount:schema?.expectedTableCount??null,
+    repositoryDefinedSchemaTableCount:schema?.expectedTableCount??null,
+    physicallyAppliedExpectedTableCount:typeof expectedApplied!=="undefined" && expectedApplied!==null ? expectedApplied.length:null,
+    appliedMigrationCount:Array.isArray(m?.appliedMigrationFiles)?m.appliedMigrationFiles.length:null,
     physicalTableReceiptCount:tableCount,
     // Minimum theory: one D1 inserted row at least one row-written unit; secondary indices,
     // retries, additional active writers and schema are excluded. No authority to spend.
