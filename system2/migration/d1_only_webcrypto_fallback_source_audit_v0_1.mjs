@@ -18,7 +18,7 @@ function inspectKnownFallback(text) {
     backup>closeGuard && part.includes('return createHash("sha256").update(bytes).digest("hex")') &&
     !text.includes("require(") && !text.includes("import.meta.glob");
 }
-export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource}={}) {
+export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource,proposedStagingConfig}={}) {
   if(typeof readSource!=="function")throw Error("READ_SOURCE_REQUIRED");
   const flagged=[];
   const externalImports=[];
@@ -35,10 +35,23 @@ export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource}={}) {
   }});
   const reviewed=flagged.length===1 && flagged[0].path===REVIEWED_FILE &&
     inspectKnownFallback(flagged[0].source);
-  const allowedBaseBlockers=base.unresolved.length===1 &&
-    base.unresolved[0]==="DYNAMIC_IMPORT_OR_REQUIRE_UNVERIFIED";
-  const candidate=reviewed && allowedBaseBlockers && base.filesWithR2References.length===0 &&
-    base.staticRelativeImports>=1;
+  // SOURCE review only. Official Workers Node.js APIs are default as of 2026-08-04;
+  // this does not prove the deployed configuration or bundled Worker works.
+  const expectedExternal=externalImports.length===1 &&
+    externalImports[0].path==="system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs" &&
+    externalImports[0].moduleName==="node:crypto" &&
+    readSource(externalImports[0].path).includes('import { createHash } from "node:crypto";');
+  const cdate=typeof proposedStagingConfig==="string" ?
+    /^compatibility_date\s*=\s*"(\d{4}-\d{2}-\d{2})"\s*$/m.exec(proposedStagingConfig)?.[1]:null;
+  const compatibleProposal=!!cdate && cdate>="2026-08-04" &&
+    proposedStagingConfig.includes('name = "system2-shadow-research-staging"') &&
+    proposedStagingConfig.includes("workers_dev = false") &&
+    !/no_nodejs_compat|\[triggers\]|^crons\s*=|^routes?\s*=/m.test(proposedStagingConfig);
+  const allowedBaseBlockers=base.unresolved.length===2 &&
+    base.unresolved.includes("DYNAMIC_IMPORT_OR_REQUIRE_UNVERIFIED") &&
+    base.unresolved.includes("EXTERNAL_MODULE_RUNTIME_UNVERIFIED");
+  const candidate=reviewed && expectedExternal && compatibleProposal && allowedBaseBlockers &&
+    base.filesWithR2References.length===0 && base.staticRelativeImports>=1;
   return Object.freeze({
     version:"S2_WORKER_WEBCRYPTO_FALLBACK_SOURCE_AUDIT_V0_1",
     result:candidate?"SOURCE_WEBCRYPTO_FALLBACK_REVIEWED_NOT_RUNTIME_PROVEN":"D1_ONLY_SOURCE_REVIEW_BLOCKED",
@@ -47,6 +60,8 @@ export function auditWebCryptoOnlyDynamicFallbackV0_1({readSource}={}) {
     dynamicSitesTotal:flagged.length,
     observedExternalImports:Object.freeze(externalImports),
     reviewedFallbackFile:candidate?REVIEWED_FILE:null,
+    reviewedExternalFile:candidate?"system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs":null,
+    proposedCompatibilityDate:compatibleProposal?cdate:null,
     unresolvedBaseGraph:Object.freeze([...base.unresolved]),
     cloudMutations:false,realWorkerRuntimeTested:false,
     deployedWorkerShaVerified:false,destinationD1Ready:false,
