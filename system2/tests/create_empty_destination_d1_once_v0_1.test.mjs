@@ -25,7 +25,7 @@ const fake=(opts={})=>{
       return Response.json(v);
     }
     if(suffix==="/d1/database"&&method==="POST") {
-      assert.deepEqual(JSON.parse(request.body),{name:"system2-research"});
+      assert.deepEqual(JSON.parse(request.body),{name:"system2-research",primary_location_hint:"apac"});
       assert.equal(request.headers.authorization,"Bearer "+TOKEN);
       if(opts.postHttpError)return new Response(JSON.stringify({success:false}),{status:500});
       return Response.json({success:true,result:{name:"system2-research",uuid:DB}});
