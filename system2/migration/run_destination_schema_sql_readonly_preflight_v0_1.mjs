@@ -9,7 +9,7 @@ mkdirSync(dir,{recursive:true});
 const fixed={version:"S2_DEST_SCHEMA_SQL_READONLY_PREWRITE_V0_1",
  runId:process.env.GITHUB_RUN_ID||null,commit:process.env.GITHUB_SHA||null,
  sourceCloudCalls:0,realSqlDdlStatements:0,sourceRowsCopied:0,
- noNewSecretsCreated:true,noPaidSubscription:false===true,
+ noNewSecretsCreated:true,paidUpgradePerformed:false,
  noDataOrWorkerChanges:true,fullMigrationAccepted:false};
 function write(obj){writeFileSync(out,JSON.stringify({...fixed,...obj},null,2)+"\n",{mode:0o600})}
 try {
