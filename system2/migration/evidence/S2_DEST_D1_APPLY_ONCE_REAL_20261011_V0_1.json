@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "S2_DEST_D1_SCHEMA_ONLY_APPLY_ONCE_REAL_20261011_V0_1",
+  "recordType": "OWNER_AUTHORIZED_ONE_TIME_PHYSICAL_SCHEMA_SQL_APPLY_EVIDENCE",
+  "disposition": "OWNER_MANUAL_APPLY_ONCE_PHYSICAL_SCHEMA_READBACK_PASS_PENDING_INDEPENDENT_AUDIT",
+  "physicalRun": {
+    "runId": 38069750915,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915",
+    "event": "workflow_dispatch",
+    "createdAtUtc": "2026-10-10T16:57:19Z",
+    "completedAtUtc": "2026-10-10T16:58:08Z",
+    "runHeadSha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+    "conclusion": "success",
+    "runAttempt": 1,
+    "jobId": 114264577475,
+    "jobConclusion": "success",
+    "jobLogsIndicators": {
+      "status": "TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS",
+      "reviewedPlanSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+      "verifiedSqlStatements": 125,
+      "system1SourceRuntimeNotChanged": true,
+      "manualOwnerScopeGuardPass": true,
+      "mockOnlyPreflightPass": true
+    }
+  },
+  "downloadedArtifact": {
+    "id": 11675494971,
+    "name": "s2-dest-schema-only-38069750915",
+    "archiveSha256": "9ab4da826f679a757a27966fda51b4a569667ce28fd409bdca4f5d3ad277117e",
+    "independentlyRecomputedAgainstGitHubArtifactDigest": true,
+    "memberFile": "sanitized-receipt.json",
+    "memberStatus": "TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS"
+  },
+  "receipt": {
+    "version": "S2_DEST_D1_SCHEMA_ONLY_MANUAL_V0_1",
+    "mode": "APPLY_ONCE",
+    "runId": "38069750915",
+    "headSha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+    "targetName": "system2-research",
+    "plannedStatements": 125,
+    "appliedStatements": 125,
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "actualTables": 55,
+    "actualIndexes": 63,
+    "actualSchemaVersion": "1.1",
+    "sourceRowsCopied": 0,
+    "sourceCloudMutations": 0,
+    "newD1ResourcesCreated": 0,
+    "newWorkersOrCronsCreated": 0,
+    "paidUpgrade": false,
+    "sourcePhysicalFrozenBackupVerified": false,
+    "fullMigrationAccepted": false,
+    "quotaRealtimeFreshnessIndependentlyGuaranteed": false,
+    "futureCloudSchemaWritesAuthorized": false
+  },
+  "priorVerification": {
+    "runId": 38068559602,
+    "mode": "VERIFY_ONLY",
+    "result": "PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",
+    "artifactId": 11676361012,
+    "planSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "verifiedPlanMatchesAppliedPlan": true
+  },
+  "userAuthorizedScope": {
+    "approvedOneOwnerManualPhysicalApplyOnce": true,
+    "targetCloudflareAccount": "System2-Stock-Research",
+    "targetD1": "system2-research",
+    "newlyAllowedScope": "ONLY_EXISTING_DESTINATION_SCHEMA_0001_THROUGH_0010",
+    "excluded": "STAGED_0011;SYSTEM1;HISTORICAL;FROZEN;WORKER;CRON;R2;BILLING;SECOND_ATTEMPT",
+    "newManualRunsAuthorized": false
+  },
+  "independentAudit": {
+    "authoringLaneValidatedGitHubJobAndArtifact": true,
+    "independentAuditorPostWriteSignoff": false,
+    "physicalSchemaStageSeparateFromFullMigration": true,
+    "followupRequested": "AUDIT_LANE review physical GitHub Run/Artifact SHA, quota costs and D1 dashboard cross-check; only then promote full acceptance for schema stage. DATA_LANE source backup/PIT pending for data copy."
+  },
+  "remainingGates": [
+    "Get independent AUDIT_LANE acceptance of physical schema stage and immutable evidence.",
+    "Verify actual new-account D1 Free rowsWritten consumption/remaining headroom after one-time APPLY.",
+    "No historical/frozen source PIT backup/copy permitted until DATA_LANE Issue #1068 separate gates.",
+    "Worker/Cron go-live, production trading and Shadow 13/15 acceptance remain unapproved.",
+    "Do not dispatch or retry APPLY_ONCE; any future schema mutation needs fresh authorization."
+  ],
+  "secretsOrAccountIdsLogged": false
+}
