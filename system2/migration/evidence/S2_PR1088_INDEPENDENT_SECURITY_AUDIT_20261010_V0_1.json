@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "S2_PR1088_INDEPENDENT_SECURITY_AUDIT_20261010_V0_1",
+  "auditLane": "SYSTEM2_INDEPENDENT_AUDIT_LANE",
+  "startedAtTaipei": "2026-10-10T20:50:56+08:00",
+  "evaluatedAtTaipei": "2026-10-10T20:58:09+08:00",
+  "repo": "imihan0630-sys/v7-fugle-worker",
+  "canonicalMainAtIntake": "f4332c87ac181c1e6156e84e58407c27e23dfe75",
+  "candidate": {
+    "pr": 1088,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1088",
+    "head": "602c2822437148d8f9da6618551f9c2b4067cb4b",
+    "baseAtPrIntake": "7d41fefba2d5ab7ebdb4c3fc65e3f270de3d661e",
+    "changedPaths": [
+      "system2/migration/destination_schema_only_manual_executor_v0_1.mjs",
+      "system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs"
+    ],
+    "noNewWorkflowOrSecretChanges": true,
+    "codeOnlyNoCloudWritesOnMerge": true,
+    "commitHeadCi": {
+      "research": 38049793911,
+      "v8": 38049793915,
+      "bothSuccess": true
+    },
+    "review": "CHANGES_REQUESTED_IN_DISCUSSION_PR_COMMENT_6097738373_GITHUB_SAME_AUTHOR_CANNOT_SUBMIT_FORMAL_REVIEW_422"
+  },
+  "verifiedRealCloudflareReadOnlyEvidence": {
+    "run": 38051816632,
+    "job": 114212314312,
+    "artifact": 11669069406,
+    "zipSha256": "6677eeb2679f3baa9242e4469ffd6b00e7238e2622ef63ba03e4a8bfd07d56fc",
+    "sha256IndependentlyRecalculatedFromDownloadedZip": true,
+    "receiptFile": "receipt.json",
+    "runHead": "77fea746d280c5fc6df4d588f89d8d625933ab5e",
+    "status": "DESTINATION_D1_PHYSICAL_EMPTY_SQL_VERIFIED",
+    "platformReservedObjects": [
+      {
+        "type": "table",
+        "name": "_cf_KV",
+        "count": 1
+      }
+    ],
+    "applicationTables": 0,
+    "applicationIndexes": 0,
+    "totalRawObjects": 1,
+    "d1SizeBytes": 12288,
+    "cloudReads": 3,
+    "cloudWrites": 0,
+    "realDdl": 0,
+    "sourceCloudCalls": 0,
+    "planSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "interpretation": "One authenticated point-in-time SELECT only, not physical installed target schema, fresh quota grant, approved token or physical write authority."
+  },
+  "mandatoryReviewCriteria": [
+    {
+      "id": 1,
+      "name": "Only exact type table/name _cf_KV allowed; no _cf_* wildcard",
+      "status": "PASS",
+      "basis": "PR patch code and original mock controls"
+    },
+    {
+      "id": 2,
+      "name": "Reject forged and duplicate reserved objects",
+      "status": "PASS",
+      "basis": "Existing negative mock tests and exact-name/type filter"
+    },
+    {
+      "id": 3,
+      "name": "Reject all unexpected table/index/view/trigger",
+      "status": "PASS_SOURCE_CODE",
+      "basis": "Any row not exact reserved pair classified applicationObjects and stops before mutation"
+    },
+    {
+      "id": 4,
+      "name": "Source/destination account and D1 UUID hard pin and prevent source write",
+      "status": "PASS",
+      "basis": "Unchanged account/DB SHA pinned identities, source account hash rejection, only destination /accounts/{accountId}/d1/database paths"
+    },
+    {
+      "id": 5,
+      "name": "Sealed statement plan 125=55 tables+63 indexes+7 metadata",
+      "status": "PASS",
+      "basis": "Unchanged offline planner and PR mock counts; plan digest bound"
+    },
+    {
+      "id": 6,
+      "name": "Staged 0011 migration excluded",
+      "status": "PASS",
+      "basis": "Prefix only first 10 SQL migration files; staged 0011 explicitly blocked"
+    },
+    {
+      "id": 7,
+      "name": "VERIFY_ONLY runs no DDL",
+      "status": "PASS_WITH_RESPONSE_VALIDATION_RISK",
+      "basis": "mode VERIFY_ONLY returns immediately after one query; zero DDL, but ambiguous SELECT reply can incorrectly be accepted as verified empty"
+    },
+    {
+      "id": 8,
+      "name": "APPLY_ONCE remains manual owner-triggered with hash and Environment",
+      "status": "PASS_CODE_ONLY",
+      "basis": "Workflow_dispatch only, main only, protected environment declaration system2-schema-only; physical environment/token readiness unverified"
+    },
+    {
+      "id": 9,
+      "name": "All malformed SQL reply/network interruption/partial/missing success must fail closed without retry",
+      "status": "FAIL",
+      "basis": "Actual PR-head independent attack: 5/5 malformed nested success accepted; 125 unconfirmed DDL result groups considered installed"
+    },
+    {
+      "id": 10,
+      "name": "No System1 Formal Core/Worker/Cron/trading/monitoring/push/capital changes",
+      "status": "PASS_DIFF_SCOPE",
+      "basis": "PR changed exactly executor and unit test, main drift only read-only metadata and docs"
+    }
+  ],
+  "reviewCounts": {
+    "total": 10,
+    "passIncludingQualifiedCodeOnly": 9,
+    "fail": 1,
+    "blocked": 0,
+    "independentReproducedUnsafeInputVariants": 5,
+    "independentReproducedUnconfirmedDdlCount": 125
+  },
+  "additionalAdversarial": {
+    "auditOnlyDraftPr": 1091,
+    "branch": "audit/s2-pr1088-exacthead-adversarial-20261010",
+    "auditCommit": "4caa0dd8367e80bdbf805b42721cc38faa2d1ca4",
+    "researchCi": {
+      "run": 38053723104,
+      "job": 114217843085,
+      "status": "SUCCESS",
+      "testsExecuted": 321,
+      "interpretation": "UNSAFE REPRODUCED, NOT SAFETY PASS"
+    },
+    "v8": {
+      "run": 38053723102,
+      "job": 114217842879,
+      "status": "SUCCESS",
+      "summary": "12/12"
+    },
+    "exactFailedCriterion": "Nested SQL result group success MUST be boolean true; checking only ===false erroneously treats missing/null/0/string-false as success. Must stop on ambiguous response before approving VERIFY_ONLY or counting DDL success.",
+    "sourceLocation": "system2/migration/destination_schema_only_manual_executor_v0_1.mjs sqlResults()",
+    "syntheticOutcome": {
+      "malformedSqlSelectResponsesAccepted": 5,
+      "outOf": 5,
+      "ddlResponsesWithMissingInnerSuccessCountedAsComplete": 125,
+      "mockedActuallyConfirmedDdl": 0,
+      "reportedSchemaInstalled": true
+    },
+    "physicalCloudflareCallsByAudit": 0
+  },
+  "remediation": {
+    "issue": 1092,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1092",
+    "implementationLane": "System2 Cloudflare cross-account migration engineering",
+    "mustFix": [
+      "Require nested x.result[0].success===true for all Cloudflare D1 SQL reads and writes; reject missing/null/nonboolean",
+      "Reject malformed and ambiguous Cloudflare HTTP200 SQL response with no physical state assumptions",
+      "Each DDL only increments progress after affirmative inner success; stop without automatic retry on unknown/timeout",
+      "Repeat independent 5 negative SQL-read and 125-result writer cases and original 125-plan and exact reserved object positives",
+      "Exact new PR-head Research and V8 CI plus genuine independent AUDIT_LANE review before merge"
+    ]
+  },
+  "evidenceSeparation": {
+    "syntheticTest": "REPRODUCED_FAIL_OPEN",
+    "codeSafetyReview": "FAIL",
+    "realCloudflareReadOnlyVerification": "PASS_AUTHENTICATED_POINT_IN_TIME",
+    "realCloudflareSchemaWriteVerification": "NOT_PERFORMED_NOT_AUTHORIZED"
+  },
+  "mergeDecision": "FAIL_DO_NOT_MERGE_PR1088",
+  "cloudPhysicalApproval": "NONE",
+  "currentPhysicalSchemaTablesInstalled": 0,
+  "remainingPhysicalStage": {
+    "fullMigrationGateStatus": "0_OF_13_PREVIOUS_VERIFIED_BASELINE_NO_PROMOTION",
+    "schemaTargetTables": "0_OF_55",
+    "physicalApplyAllowed": false
+  },
+  "isolation": {
+    "cloudflareApplyOnceExecuted": false,
+    "newD1Created": false,
+    "cloudflareD1Writes": 0,
+    "newTokenOrSecret": false,
+    "paidR2": false,
+    "workerOrCronDeploy": false,
+    "sourceHistoryOrFrozenMigrated": false,
+    "system1FormalModified": false
+  }
+}
