@@ -61,7 +61,13 @@ async function executeWithTrustedIdentity({
  // Even SELECT uses D1's POST /query endpoint, but does not mutate SQL rows.
  const initial=await executeSql(fetchImpl,dbbase,token,
    "SELECT type, name FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name");
- if(initial.length!==0)safeErr("DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
+ // Cloudflare reserves exactly one built-in (table, _cf_KV) object even for
+ // otherwise blank D1 databases. Never wildcard-ignore _cf_*; every unknown
+ // table, index, view or trigger remains an unconditional prewrite STOP.
+ const cloudflareReserved=initial.filter(x=>x?.type==="table"&&x?.name==="_cf_KV");
+ if(cloudflareReserved.length>1)safeErr("D1_RESERVED_TABLE_DUPLICATE_STOP_NO_RETRY");
+ const applicationObjects=initial.filter(x=>!(x?.type==="table"&&x?.name==="_cf_KV"));
+ if(applicationObjects.length!==0)safeErr("DESTINATION_SQL_SCHEMA_NOT_EMPTY_STOP_NO_RETRY");
  // No data copies. GraphQL rowsWritten is a lower-bound and not a real-time reserve:
  // only a physical isolated blank D1, low-volume schema DDL, one run and protected GitHub
  // Environment can be accepted by independent owner; record this limitation explicitly.
@@ -70,6 +76,7 @@ async function executeWithTrustedIdentity({
  if(mode==="VERIFY_ONLY")
    return {result:"PREWRITE_EMPTY_TARGET_VERIFIED_ONLY",planSequenceSha256:plan.planSequenceSha256,
      plannedStatements:125,accountMatched:true,databaseMatched:true,schemaObjectsBefore:0,
+     platformReservedObjectsBefore:cloudflareReserved.length,
      schemaObjectsAfter:null,appliedStatements:0,sourceRowsCopied:0,workerOrCronChanged:false,
      headroom,physicalSchemaInstalled:false};
  let done=0;
@@ -94,6 +101,7 @@ async function executeWithTrustedIdentity({
    if(meta.length!==1||meta[0]?.schema_value!=="1.1")safeErr("POSTWRITE_SCHEMA_VERSION_MISMATCH_MANUAL_AUDIT_REQUIRED");
    return {result:"TARGET_D1_SCHEMA_ONLY_55_PHYSICAL_SQL_READBACK_PASS",planSequenceSha256:plan.planSequenceSha256,
      appliedStatements:done,plannedStatements:125,schemaObjectsBefore:0,
+     platformReservedObjectsBefore:cloudflareReserved.length,
      schemaTablesAfter:55,schemaIndexesAfter:63,schemaVersion:"1.1",
      sqlStatementHashes:statuses,sourceRowsCopied:0,workerOrCronChanged:false,
      sourcePhysicalBackupValidated:false,realHistoryMigrated:false,shadowEnabled:false,
