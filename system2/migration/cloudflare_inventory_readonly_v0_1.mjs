@@ -67,6 +67,13 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
     r2Buckets(),
     numbered("/storage/kv/namespaces", p => p.result),
   ]);
+  // D1 metadata GET does not consume SQL rowsRead; Free has a 500 MiB single-DB cap.
+  const s2Databases = databases.filter(d => d?.name === "system2-research");
+  const s2Details = await Promise.all(s2Databases.map(d => {
+    if (typeof d.uuid !== "string" || !d.uuid) throw new Error("SOURCE_S2_D1_UUID_MISSING");
+    return request("/d1/database/" + encodeURIComponent(d.uuid));
+  }));
+  const s2ByteSizes = new Map(s2Databases.map((d,i) => [d.uuid, s2Details[i]?.result?.file_size]));
   if (!Array.isArray(workerRaw.result)) throw new Error("WORKER_LIST_NOT_ARRAY");
   const workers = workerRaw.result.map(w => ({ id: w.id }));
   const s2Worker = workers.find(w => w.id === "system2-shadow-research");
@@ -93,7 +100,7 @@ export async function collectCloudflareInventory({ accountId, apiToken, fetchImp
     routesVerified: false,
     d1RowsVerified: false,
     r2ObjectContentsVerified: false,
-    databases: databases.map(d => ({ name: d.name, idFingerprint: createHash("sha256").update(String(d.uuid || "UNKNOWN")).digest("hex") })),
+    databases: databases.map(d => ({ name: d.name, idFingerprint: createHash("sha256").update(String(d.uuid || "UNKNOWN")).digest("hex"), sizeBytes: Number.isSafeInteger(s2ByteSizes.get(d.uuid)) && s2ByteSizes.get(d.uuid) >= 0 ? s2ByteSizes.get(d.uuid) : null })),
     workers, buckets: buckets.map(b => ({ name: b.name })),
     kvNamespaces: kvNamespaces.map(k => ({ name: k.title })),
     crons,
@@ -113,7 +120,7 @@ export function publicCloudflareInventory(privateInventory) {
     routesVerified: false,
     d1RowsVerified: false,
     r2ObjectContentsVerified: false,
-    databases: privateInventory.databases.map(x => ({ name: x.name, idFingerprint: x.idFingerprint })),
+    databases: privateInventory.databases.map(x => ({ name: x.name, idFingerprint: x.idFingerprint, sizeBytes: x.sizeBytes })),
     workers: privateInventory.workers.map(x => ({ id: x.id, bindings: Array.isArray(x.bindings) ? x.bindings.map(b => ({ name: b.name, type: b.type })) : undefined })),
     buckets: privateInventory.buckets.map(x => ({ name: x.name })),
     kvNamespaces: privateInventory.kvNamespaces.map(x => ({ name: x.name })),
