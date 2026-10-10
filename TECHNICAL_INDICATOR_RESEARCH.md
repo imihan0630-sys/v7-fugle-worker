@@ -3954,3 +3954,35 @@ D03-10 Bollinger parent-expectation semantics improve but the module remains L2/
 ### Exact next continuation point after TI-1752
 
 On the next ordinary Taiwan trading session require a physical official-calendar receipt followed by a genuine immutable C1 receipt and authoritative V8.20 binding. If non-trading, record PARENT_NOT_EXPECTED_NONTRADING and exclude it from the denominator. If trading but C1 is absent, retain PARENT_EXPECTED_UNVERIFIED until evidence separates upstream failure from genuine zero-pick. Only PARENT_VERIFIED may enter D03-10 reconciliation. In parallel, the Hot D1 36-key Scout and W0 continuity remain separate prerequisites. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
+
+## TI-1753~1772 — Cross-account schema/data readiness firewall (2026-10-11)
+
+### New canonical evidence consumed
+
+Main commit `a5601d2032b87ec343b263697e31d0aa7924ceb7` seals owner-authorized one-time destination D1 schema Run 38069750915 / Job 114264577475. The exact preverified 125-statement plan was applied once; authenticated post-write readback found 55/55 tables, 63/63 indexes and schema 1.1. Artifact 11675494971 SHA-256 matched. The same receipt explicitly records sourceRowsCopied=0, sourceCloudMutations=0, no new Worker/Cron, source physical frozen backup false, full migration false, quota freshness unverified and independent post-write audit pending.
+
+### D03 inference contract
+
+D03 freezes five cumulative states: SCHEMA_PHYSICAL_READY_DATA_EMPTY, DATA_IMPORTED_STORAGE_UNVERIFIED, DATA_STORAGE_PARITY_VERIFIED, PIT_LINEAGE_READY and INDICATOR_INPUT_READY. The current state is the first only. Schema topology proves that the destination can store expected structures, not that OHLCV, official sessions, corporate actions, continuity, parent populations, indicator state or outcomes exist.
+
+Every future migrated row must preserve original source receipt/version identity, genuine source firstKnownAt/availableAt or UNKNOWN, migrationObservedAt, destinationPersistedAt, source/destination value hashes and migration-batch manifest. Destination insertion time may never be backdated into original availability. Byte equality can prove storage parity only; it cannot create missing original PIT evidence.
+
+The 20-case executable oracle `research/test_d03_cross_account_schema_data_readiness_v0_1.mjs` passes. It rejects schema-as-data/PIT/live overpromotion, count-only or value-only import acceptance, storage-as-PIT, clock laundering, UNKNOWN-to-zero coercion, missing value/batch identity, incomplete causal/session lineage, insufficient Bollinger history/parent binding, missing ADX state and inference of quota cost from SQL statement count.
+
+### Bias / falsification disposition
+
+- PIT/look-ahead: destinationPersistedAt is distinct from original source firstKnownAt.
+- OOS/walk-forward: schema creation is not a sample, date or outcome.
+- Selection/date bias: current destination is data-empty; later partial imports must expose excluded rows/dates.
+- Multiple testing/overfitting: no indicator parameter or threshold is tested.
+- Redundancy: no new information root.
+- Costs/fillability/limits/halts/ex-rights/market regime remain UNKNOWN; actual schema-write quota consumption remains independently unverified.
+
+### Module disposition
+
+D03-10 Bollinger remains L2/40: zero migrated rows mean no 20-session parent window, reset lineage, W0 or C1. D03-09 ADX remains L2/40: zero migrated rows mean no full replay or trusted state. All other D03 modules retain existing levels. No maturity promotion, outcome join, FORMAL_OPTIMIZATION_CANDIDATE or Formal change.
+
+### Exact next continuation point after TI-1772
+
+Do not rerun the one-time schema application. Await independent audit of Run 38069750915 and actual post-apply quota consumption. Before data copy require a frozen source manifest preserving receipt/version/clock semantics. After any copy independently reconcile source/destination identities, value hashes, missing/multiversion counts and batch manifest without rewriting UNKNOWN clocks. Only then resume the separate Hot D1 36-key Scout, W0 continuity and genuine C1 parent gates. Schema readiness alone earns no D03 promotion credit. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
