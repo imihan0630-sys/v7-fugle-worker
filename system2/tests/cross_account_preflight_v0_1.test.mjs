@@ -27,6 +27,7 @@ function blocked(m, code){const result=assess(m);assert.equal(result.state,"BLOC
 { const m=make();m.destination.accountId=id1;blocked(m,"SOURCE_DESTINATION_ACCOUNT_COLLISION");}
 { const m=make();m.destination.accountId=undefined;blocked(m,"ACCOUNT_IDENTITY_NOT_AUTHENTICATED");}
 { const m=make();m.destination.complete=false;blocked(m,"DESTINATION_RESOURCE_INVENTORY_UNVERIFIED");}
+{ const m=make();m.destination.complete=false;m.destination.r2BucketsVerified=false;m.destination.r2Status="NOT_ENTITLED";m.destination.verifiedBy="CLOUDFLARE_READ_ONLY_API_PARTIAL";blocked(m,"DESTINATION_RESOURCE_INVENTORY_UNVERIFIED");}
 { const m=make();m.source.workers[0].bindings.push({name:"V7_DB"});blocked(m,"SOURCE_S2_BINDINGS_UNVERIFIED_OR_PRODUCTION_BOUND");}
 { const m=make();m.source.buckets=[];blocked(m,"SOURCE_S2_RESOURCE_IDENTITY_MISSING_OR_AMBIGUOUS");}
 { const m=make();m.destination.databases=[{name:"system2-research"}];blocked(m,"DESTINATION_RESOURCE_PREEXISTS_REQUIRE_MANUAL_RECONCILIATION");}

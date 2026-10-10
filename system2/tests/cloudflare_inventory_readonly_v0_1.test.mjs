@@ -53,4 +53,29 @@ await assert.rejects(collectCloudflareInventory({accountId:account,apiToken:toke
   if (url.includes("/r2/buckets")) return {ok:true,json:async()=>({success:true,result:{buckets:[]},result_info:{cursor:"same"}})};
   return mock(url,opt);
 }}),/R2_CURSOR_LOOP/);
-console.log("System2 Cloudflare read-only inventory: 11 checks PASS; GET-only, sanitization, cursor/auth failure guards");
+// A verified R2 NotEntitled destination may be inventoried as PARTIAL ONLY.
+const partialSeen=[];
+const partial = await collectCloudflareInventory({
+  accountId: account, apiToken: token, r2Mode:"KNOWN_NOT_ENTITLED",
+  fetchImpl:async (url,opts)=>{
+    partialSeen.push(url);
+    if (url.includes("/r2/buckets")) throw Error("R2_SHOULD_NOT_BE_QUERIED_WHEN_ENTITLEMENT_DENIED");
+    return mock(url,opts);
+  },
+});
+assert.equal(partial.complete,false);
+assert.equal(partial.r2BucketsVerified,false);
+assert.equal(partial.r2Status,"NOT_ENTITLED");
+assert.deepEqual(partial.buckets,[]);
+assert(partialSeen.every(x=>!x.includes("/r2/buckets")));
+const partialPub=publicCloudflareInventory(partial);
+assert.equal(partialPub.complete,false);
+assert.equal(partialPub.r2BucketsVerified,false);
+assert.equal(partialPub.r2Status,"NOT_ENTITLED");
+assert.notEqual(partialPub.buckets?.length,undefined);
+assert(!JSON.stringify(partialPub).includes(account));
+assert.throws(()=>publicCloudflareInventory({...partial,complete:true}),/UNVERIFIED_PRIVATE_INVENTORY/);
+assert.throws(()=>publicCloudflareInventory({...partial,r2Status:"READ_GRANTED"}),/UNVERIFIED_PRIVATE_INVENTORY/);
+await assert.rejects(collectCloudflareInventory({accountId:account,apiToken:token,r2Mode:"FORCE_SKIP",fetchImpl:mock}),/R2_MODE_UNRECOGNIZED/);
+
+console.log("System2 Cloudflare read-only inventory: full and partial R2-not-entitled cases PASS");
