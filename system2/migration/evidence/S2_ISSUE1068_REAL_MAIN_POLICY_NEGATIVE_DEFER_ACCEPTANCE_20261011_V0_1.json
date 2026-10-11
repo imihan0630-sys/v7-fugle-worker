@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "S2_ISSUE1068_REAL_MAIN_POLICY_NEGATIVE_QUOTA_DEFER_ACCEPTANCE_20261011_V0_1",
+  "issue": 1068,
+  "ownerLane": "DATA_LANE",
+  "classification": "REAL_GITHUB_ACTION_NEGATIVE_AUTHORIZATION_RECEIPT_NO_CLOUDFLARE_SOURCE_SQL",
+  "state": "REAL_MAIN_RESERVE_FAIL_CLOSED_VERIFIED_ONLY_SOURCE_PHYSICAL_BACKUP_PIT_FROZEN_R2_MIGRATION_PENDING",
+  "canonicalImplementation": {
+    "codePr": 1118,
+    "codeMergeSha": "4fc9a141ac363aca10cb490965701048dce05e76",
+    "ciResearchRun": 38108421130,
+    "ciV8Run": 38108421153,
+    "codePrCi": "PASS",
+    "guardPath": "system2/migration/issue1068_source_pit_frozen_restore_offline_v0_1.mjs",
+    "runner": "system2/migration/run_issue1068_source_pit_frozen_restore_offline_v0_1.mjs",
+    "adversarialTests": 24
+  },
+  "canonicalOriginalMainWorkflow": {
+    "workflowPr": 1119,
+    "mergeSha": "bf04f766fdb9fd24ce1a7f5490ce19c6c9be52eb",
+    "workflowPath": ".github/workflows/system2-issue1068-main-reserve-offline-defer.yml",
+    "realRun": 38108616165,
+    "realJob": 114379309976,
+    "event": "push",
+    "conclusion": "success",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38108616165",
+    "runHeadSha": "bf04f766fdb9fd24ce1a7f5490ce19c6c9be52eb",
+    "rawJobMarkers": [
+      "ISSUE1068_SOURCE_PIT_FROZEN_RESTORE_GATE 1 no-receipt + 1 shape + 24 adversarial PASS, PHYSICAL_NOT_ACCEPTED",
+      "ISSUE1068_REAL_MAIN_RESERVE_NEGATIVE_GATE=READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+      "ISSUE1068_PHYSICAL_BACKUP_PIT_FROZEN_R2_DATA_IMPORT_AUTHORITY=NONE"
+    ],
+    "originalArtifactId": 11690790704,
+    "originalArtifactName": "s2-issue1068-real-main-reserve-defer-38108616165-1",
+    "originalArtifactZipSha256": "7d14dc07215fe01b89ec1e0cacaea6f7ce09df9853084cac319c3684eac2e70d",
+    "sanitizedReceiptJsonSha256FromOriginalJob": "f9861c3bb74dfac6de7d3df4c731a6655f8e07b1a2c2af43b39f8b70ad1a4852",
+    "artifactSizeBytes": 900
+  },
+  "currentMainReserveState": {
+    "policyPath": "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+    "system1ReadReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "system1WriteReserveNumberAuthorized": false,
+    "authorizedWriteReserveRows": null,
+    "conclusion": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "accountQuotaAuthorized": false
+  },
+  "notProven": {
+    "sourceD1ActualAppliedMigrationCount": "UNKNOWN",
+    "sourceD1ActualTableCount": "UNKNOWN",
+    "sourceD1PhysicalTotalRows": "UNKNOWN",
+    "sourceD1PhysicalPerTableContentHashes": "UNKNOWN",
+    "sourceBackupRestorePhysicalAccepted": false,
+    "pitPhysicalAccepted": false,
+    "originalFirstKnownAtAvailableAtFullyReplayed": false,
+    "frozenImmutablePhysicalAccepted": false,
+    "sourceR2OriginalObjectBytesAccepted": false,
+    "destinationRowByRowContentReadbackAccepted": false,
+    "sourceToDestinationImportedRows": 0,
+    "shadowEnabled": false
+  },
+  "scopeBoundaries": {
+    "destinationSchemaOnlyIndependentPassed": "25/25_SEPARATE_STAGE_ONLY",
+    "destinationSchemaOnlyTableCount": 55,
+    "destinationSchemaOnlyNamedIndexCount": 63,
+    "sourceD1ExistingGetOnlyFileSizeBytes": 316968960,
+    "sourceFileSizeIsNotRowCount": true,
+    "repoDefinedTableCountIsNotSourcePhysicalTableCount": true,
+    "d1ReadSqlQueriesByNewWorkflow": 0,
+    "d1WriteSqlQueriesByNewWorkflow": 0,
+    "r2ByteReadsByNewWorkflow": 0,
+    "cloudflareApiCallsByNewWorkflow": 0,
+    "sourceSystem1FormalChanged": false,
+    "billingChanged": false,
+    "paidTierAuthorized": false
+  },
+  "acceptance": "NEGATIVE_QUOTA_GUARD_REAL_ACTION_ONLY_NOT_PHYSICAL_BACKUP_OR_PIT_OR_FROZEN_ACCEPTANCE",
+  "handoff": {
+    "remediationLane": "Get real independently accepted System1 read/write reserves and bounded same-day account read/write headroom/ledger/GraphQL freshness, safe writer coordination before any source D1 physical SELECT.",
+    "auditLane": "Independently inspect original GitHub Run/Job/artifact and JSON SHA256; accept only negative quota-defer fact, not source bytes, PIT, Frozen, R2 or Shadow.",
+    "dataLane": "After quota grant, capture actual source schema/applied migrations, per-table source row hashes, immutable restore and timestamps, source R2 object byte SHA, destination post-copy matching; preserve original immutable artifact."
+  }
+}
