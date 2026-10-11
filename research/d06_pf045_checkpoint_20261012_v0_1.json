@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "D06_PF045_CHECKPOINT_V0_1",
+  "createdAt": "2026-10-12T03:09:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "sourceMainSha": "bbaaa6701ea9f020e88a250ac22c0c84934d2eae",
+  "branch": "research/d06-pf045-source-vintage-admission-20261012",
+  "sourceCheckpoint": "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md#PF-042",
+  "researchFile": "research/d06_pf045_etf_vintage_admission_and_cross_mechanism_lineage_20261012_v0_1.json",
+  "tests": 30,
+  "testsPassed": 30,
+  "testsFailed": 0,
+  "modules": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-18"
+  ],
+  "formalCore": "LOCKED",
+  "maturityChanged": false,
+  "outcomesUsed": false,
+  "exactNext": "At next genuine exchange session, append official ETF unit/PCF receipt with separately verified firstKnownAt, capturedAt, sourceDate, useDate, revision hash, corporate-action and substitution status. Audit margin/short/SBL early/late vintages on distinct source denominators. Ask D16 to freeze primary OOS estimand and event-cluster/purge protocol. Keep PF-043/044 local-only until safe normal integration; no forced old-SHA merge."
+}
