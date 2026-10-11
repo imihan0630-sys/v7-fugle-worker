@@ -1,0 +1,478 @@
+{
+  "schemaVersion": "S2_SOURCE_D1_REAL_ROWSET_CATALOG_AND_DAY80_BUDGET_PLAN_20261012_V0_1",
+  "sourceArchive": {
+    "realRun": 38150147134,
+    "job": 114501726086,
+    "artifact": 11706652537,
+    "zipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+    "originalSqlSha256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "rowReceiptOriginalVerifiedLocally": true,
+    "plaintextOrSecretsCopiedToGitHub": false
+  },
+  "destTransport": {
+    "actualRun": 38151167952,
+    "actualResult": "SECURE_SOURCE_SQL_DECRYPTED_AND_RESTORED_IN_TARGET_CREDENTIAL_ENV_DEST_D1_STILL_EMPTY_NO_IMPORT",
+    "confirmedImportedRows": 0
+  },
+  "sourceTableCount": 55,
+  "populatedTableCount": 14,
+  "sourceTotalRows": 113222,
+  "existingDestinationTableCount": 55,
+  "existingDestinationNamedIndexCount": 63,
+  "day": "2026-10-12 Asia/Taipei",
+  "quotaReset": "08:00 Asia/Taipei (00:00 UTC)",
+  "userRequestedFourFifthsOfLogicalRows": 90578,
+  "quotaDailyMaximumBilledRowsWritten": 100000,
+  "day80ConservativeBudgetTargetRowsWritten": 80000,
+  "quotaHeadroomPhysicalSameUtcDayNow": "UNKNOWN",
+  "indexedRowsWrittenActual": "UNKNOWN",
+  "planCanAuthorizeCloudMutation": false,
+  "full80PercentSourceRowsFeasibleWithinOneFreeUtcQuotaDay": false,
+  "minimumBarRowsRequiredFor80Percent": 62044,
+  "barIndexedRowsWrittenLowerBoundPerRecord": 4,
+  "barIndexedRowsWrittenExpectedWithAutoPKAndUnique": 6,
+  "minimumBilledWrites80PctIgnoringNonbarIndexedCosts": 276710,
+  "tables": [
+    {
+      "table": "s2_actual_holdings_imports",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_actual_holdings_reconciliation_events",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_actual_holdings_rows",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_actual_holdings_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_backtest_checkpoints",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_backtest_runs",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_candidate_concentration_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_candidate_lifecycle_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_candidate_reentry_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_capacity_runs",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_decision_corrections",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_decisions",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_event_theses",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_experiment_ledger",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_a1_bars",
+      "sourceRows": 84688,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 3,
+      "dataOnlyMigrationTarget": "FIRST_PRIORITY_PIT_CHECKED_COMPLETE_BATCHES_ONLY"
+    },
+    {
+      "table": "s2_historical_a1_pack_manifests",
+      "sourceRows": 16100,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 2,
+      "dataOnlyMigrationTarget": "DEFER_R2_OBJECTS_NOT_PRESENT_IN_DESTINATION"
+    },
+    {
+      "table": "s2_historical_a1_packs",
+      "sourceRows": 4,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 2,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_a1_revision_links",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_a1_segment_manifests",
+      "sourceRows": 9723,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 2,
+      "dataOnlyMigrationTarget": "DEFER_R2_OBJECTS_NOT_PRESENT_IN_DESTINATION"
+    },
+    {
+      "table": "s2_historical_base_samples",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_cold_backfill_checkpoints",
+      "sourceRows": 18,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_cold_ingest_receipts",
+      "sourceRows": 18,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_ingest_batches",
+      "sourceRows": 129,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_pack_ingest_receipts",
+      "sourceRows": 2,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_revision_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_segment_backfill_checkpoints",
+      "sourceRows": 9,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_segment_ingest_receipts",
+      "sourceRows": 9,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_historical_universe_memberships",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_universe_registry_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_historical_universe_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_industry_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_infrastructure_checks",
+      "sourceRows": 2505,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "DEFER_SOURCE_ACCOUNT_CHECKS_MUST_QUARANTINE"
+    },
+    {
+      "table": "s2_market_regime_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_outcomes",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_positions",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_rank05_displacement_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_ranking_experiment_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_episode_events",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_episodes",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_latest",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_runs",
+      "sourceRows": 5,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_resonance_session_cache",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_resonance_watch_pools",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_schema_meta",
+      "sourceRows": 1,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 0,
+      "dataOnlyMigrationTarget": "VERIFY_EXISTING_DESTINATION_SCHEMA_META_NO_REINSERT"
+    },
+    {
+      "table": "s2_shadow_run_fingerprints",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_shadow_runs",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_sim_fills",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_sim_orders",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_source_session_receipts",
+      "sourceRows": 11,
+      "sourcePopulated": true,
+      "namedIndexesFromSql0001To0010": 1,
+      "dataOnlyMigrationTarget": "AFTER_PIT_LINKAGE_AND_ACCOUNT_QUOTA"
+    },
+    {
+      "table": "s2_strategy_daily_performance",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_strategy_ordering_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_strategy_overlap_receipts",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_strategy_versions",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    },
+    {
+      "table": "s2_symbol_factor_snapshots",
+      "sourceRows": 0,
+      "sourcePopulated": false,
+      "namedIndexesFromSql0001To0010": null,
+      "dataOnlyMigrationTarget": "SCHEMA_ALREADY_PRESENT_NO_ROWS"
+    }
+  ],
+  "operationalPriority": [
+    {
+      "phase": "A1",
+      "tables": [
+        "s2_historical_ingest_batches"
+      ],
+      "qualification": "Import only complete source batches whose complete original bars are in same stage; do not write full batch counts for partial bar imports",
+      "candidateUpperRows": 129,
+      "physicalTargetRowsWritten": "REQUIRES_CALIBRATION"
+    },
+    {
+      "phase": "A2",
+      "tables": [
+        "s2_historical_a1_bars"
+      ],
+      "qualification": "Choose complete PIT-qualified batch/date cuts; reject unknown availableAt, duplicate keys, sparse bar segments; meter actual rowsWritten per bounded insert; do not use rows copied as quota",
+      "candidateUpperRows": 12000,
+      "expectedBilledWritesFor12000With5Indexes": 72000
+    },
+    {
+      "phase": "B",
+      "tables": [
+        "s2_historical_a1_pack_manifests",
+        "s2_historical_a1_segment_manifests",
+        "s2_historical_cold_backfill_checkpoints",
+        "s2_historical_cold_ingest_receipts",
+        "s2_historical_segment_backfill_checkpoints",
+        "s2_historical_segment_ingest_receipts"
+      ],
+      "qualification": "R2 target entitlement NOT_ENTITLED; preserve source R2 byte hashes and prevent dangling object refs; only import after source R2 bridge and independent audit"
+    },
+    {
+      "phase": "C",
+      "tables": [
+        "s2_infrastructure_checks"
+      ],
+      "qualification": "Legacy SOURCE-account operational receipts should not be treated as new-account quota authorization; segregate provenance before import"
+    },
+    {
+      "phase": "D",
+      "tables": [
+        "s2_schema_meta"
+      ],
+      "qualification": "Existing destination schema 1.1 metadata must be verified in place, never overwritten"
+    }
+  ],
+  "requireBeforeLiveWrite": [
+    "AUDIT_LANE_INDEPENDENT_ORIGINAL_ARCHIVE_RESTORE_ACCEPTANCE",
+    "SECURE_LONGER_TERM_INDEPENDENT_ARCHIVE_AND_KEY_RECOVERY",
+    "ORIGINAL_PIT_FIRSTKNOWNAT_AVAILABLEAT_ANCHORS_ACCEPTED_FOR_SELECTED_ROWS",
+    "DESTINATION_SAME_UTC_DAY_ACCOUNT_WIDE_ROWS_WRITTEN_HEADROOM_VERIFIED",
+    "MEASURED_PER_INSERT_BILLED_ROWS_WRITTEN_AND_NON_RELEASE_LEDGER",
+    "DESTINATION_500MB_PHYSICAL_CAPACITY_MARGIN_VERIFIED",
+    "NO_DOUBLE_WRITER_AND_BATCH_RESUMABLE_HASH_RECONCILIATION"
+  ],
+  "outcome": "OFFLINE_PROVIDER_ORIGINAL_COUNTS_PASS__DAY80_LIVE_IMPORT_NOT_AUTHORIZED__NO_PHYSICAL_TARGET_WRITES"
+}
