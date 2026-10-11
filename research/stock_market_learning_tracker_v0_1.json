@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-11T02:14:51+08:00",
+  "updatedAt": "2026-10-11T15:39:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3697,8 +3697,8 @@
       ],
       "status": "D21_01_L3 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L3 / D21_09_L3 / D21_10_L3 / D21_11_L3 / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "D21-03 僅接受 authoritative historical monthly actual-change record + safe publication bound/receipt；D21-04 僅接受 insider/controller pledge setup/release historical event receipt。2026-03-30 外資境外擔保品質權制度僅作 pledge-semantics falsification，不得替代 insider/controller evidence。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
-      "lastResearchUpdate": "2026-10-05T20:45:00+08:00",
-      "researchNote": "2026-10-05 20:45 receipt a7f81d6: D21-03 statutory monthly reporting bound reconfirmed but exact historical MOPS first-known remains blocked; legal-status/trust changes reinforce non-directional insider-change semantics. D21-04 gained a new regime falsification: 2026-03-30 TWSE institutional collateral rules permit pledge arrangements for offshore collateral/risk-management purposes, proving pledge existence alone is not controller distress/bearish evidence. D21-03 and D21-04 remain L2/40. Formal Core unchanged."
+      "lastResearchUpdate": "2026-10-11T15:39:00+08:00",
+      "researchNote": "2026-10-05 20:45 receipt a7f81d6: D21-03 statutory monthly reporting bound reconfirmed but exact historical MOPS first-known remains blocked; legal-status/trust changes reinforce non-directional insider-change semantics. D21-04 gained a new regime falsification: 2026-03-30 TWSE institutional collateral rules permit pledge arrangements for offshore collateral/risk-management purposes, proving pledge existence alone is not controller distress/bearish evidence. D21-03 and D21-04 remain L2/40. Formal Core unchanged. | 2026-10-11 official TWSE insider FAQ Q4/Q6/Q9/Q10/Q12: resignation can produce filed-but-publicly-invisible monthly changes; advance transfer is intent not execution; gift not market sale; major-notice absence is threshold-selected; form preparation is not MOPS upload. Net holdings non-identifying for gross flow. 9/9 synthetic smoke fixtures only; exact historical MOPS monthly/pledge receipts blocked; D21-03/04 remain L2/40, Formal locked. Receipt research/d21_insider_observability_identifiability_20261011_v0_1.md."
     },
     {
       "id": "D22",
