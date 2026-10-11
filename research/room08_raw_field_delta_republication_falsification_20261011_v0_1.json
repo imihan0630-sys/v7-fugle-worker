@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "0.1",
+  "owner": "08｜事件與新聞研究室",
+  "observedAtTaipei": "2026-10-11T20:39:00+08:00",
+  "evidenceClass": "RAW_FIELD_LEVEL_REPUBLICATION_FALSIFICATION",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": false,
+  "source": {
+    "archiveBundleSha256": "f45df07650124355bb2ef9e95f4251bffa325eb939631546b56a4bec3a1a402f",
+    "rawArtifactIds": [
+      11301419229,
+      11318460615
+    ],
+    "archiveFileNames": [
+      "room08_official_capture_11301419229.zip",
+      "room08_official_capture_11318460615.zip"
+    ],
+    "independentTradingDaysProven": 0
+  },
+  "moduleIds": [
+    "D11-08",
+    "D11-13",
+    "D17-02",
+    "D17-03",
+    "D17-09"
+  ],
+  "fieldLevelWitnesses": [
+    {
+      "symbol": "2072",
+      "oldRocDate": "1151003",
+      "oldRocTime": "70004",
+      "newRocDate": "1151004",
+      "newRocTime": "70003",
+      "rawFieldCount": 9,
+      "changedFields": [
+        "出表日期",
+        "發言日期",
+        "發言時間"
+      ],
+      "otherSixFieldsIdentical": true
+    },
+    {
+      "symbol": "6949",
+      "oldRocDate": "1151003",
+      "oldRocTime": "70004",
+      "newRocDate": "1151004",
+      "newRocTime": "70003",
+      "rawFieldCount": 9,
+      "changedFields": [
+        "出表日期",
+        "發言日期",
+        "發言時間"
+      ],
+      "otherSixFieldsIdentical": true
+    }
+  ],
+  "falsification": {
+    "hypothesis": "Clock-only re-publication can create new disclosure IDs without a new economic fact.",
+    "support": "For both bounded TWSE cases, exact raw field-level comparison shows 3 clock/report fields changed and 6 other fields unchanged.",
+    "counter": "A materially changed subject, description, or fact date must not be grouped as clock-only.",
+    "alternatives": [
+      "Mandated repeated disclosure with unchanged economic content",
+      "Publisher-native correction/supersession not authenticated",
+      "Audience exposure could differ even when economic content is unchanged"
+    ],
+    "failureConditions": [
+      "Substantive content field changes",
+      "Missing raw versions",
+      "Unknown native correction lineage",
+      "Unverified source denominator"
+    ],
+    "syntheticMutationGuards": 6,
+    "syntheticMutationGuardsPassed": 6
+  },
+  "biasControls": {
+    "PIT": "Only observed archive capture upper bounds; publisher first availability UNKNOWN",
+    "knownAt": "UNKNOWN",
+    "versionLineage": "UNKNOWN",
+    "dedup": "Economic root and disclosure instance are distinct",
+    "OOS": "NOT_STARTED",
+    "walkForward": "NOT_STARTED",
+    "selectionBias": "Two hand-picked examples not representative",
+    "lookAhead": "No return join",
+    "dataMining": "No outcome-selected samples",
+    "multipleTesting": "No performance tests",
+    "overfit": "No model fit",
+    "factorRedundancy": "Repeated disclosure is not independent vote",
+    "dateClustering": "Two adjacent calendar dates only",
+    "costAndRegime": "UNKNOWN",
+    "historicalShadow": "NOT_FABRICATED"
+  },
+  "maturity": {
+    "D11": 56.8,
+    "D17": 52.9,
+    "promote": false
+  },
+  "next": "Capture 3 independent trading dates and authenticated native correction links; preserve clock-only re-publication vs material content delta; no half-life return estimate before preregistration."
+}
