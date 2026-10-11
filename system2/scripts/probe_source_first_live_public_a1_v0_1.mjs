@@ -25,7 +25,10 @@ const shift=(date,days)=>{
 function code(e){
  const message=String(e?.message||e);
  if(message.includes('SOURCE_DATE_MISMATCH'))return 'SOURCE_DATE_MISMATCH';
- if(message.includes('official historical A1 source exhausted'))return 'SOURCE_TRANSPORT_UNAVAILABLE';
+ if(message.includes('official historical A1 source exhausted')){
+  const status=message.match(/HTTP\s+(401|403|404|408|429|500|502|503|504)\b/);
+  return status?'PROVIDER_HTTP_'+status[1]:'SOURCE_TRANSPORT_UNAVAILABLE';
+ }
  if(message.includes('ORIGINAL_SOURCE_BYTES'))return 'ORIGINAL_SOURCE_BYTES_UNVERIFIED';
  return 'SOURCE_READ_OR_SHAPE_UNAVAILABLE';
 }
@@ -129,6 +132,7 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
   twse:r.markets.TWSE?.state||null,tpex:r.markets.TPEX?.state||null,
   twseRows:r.markets.TWSE?.ordinarySymbolCount??null,
   tpexRows:r.markets.TPEX?.ordinarySymbolCount??null,
+  tpexErrorCode:r.markets.TPEX?.errorCode||null,
   receiptSha256:r.receiptSha256,selection:'NOT_EXECUTED',
  }));
  if(r.sourceStatus!=='BOTH_MARKETS_REAL_SOURCE_READBACK_VERIFIED')process.exitCode=2;
