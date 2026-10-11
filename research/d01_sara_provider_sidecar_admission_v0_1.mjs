@@ -1,5 +1,7 @@
 // D01 Sara 60-minute research data admission. No fetch, credentials, outcomes or Formal decision.
 const blocked=(reason,details={})=>({state:"SOURCE_BLOCKED",reason,...details});
+// Local change detector only, NOT a cryptographic provider authenticity proof.
+const rowFingerprint=rows=>{let h=2166136261;const s=JSON.stringify(rows);for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619)>>>0;return h.toString(16)};
 const stamp=s=>typeof s==="string"&&/[T ][0-9]{2}:[0-9]{2}/.test(s)&&/(Z|[+-][0-9]{2}:[0-9]{2})$/.test(s)&&Number.isFinite(Date.parse(s));
 export function admitSnapshot(raw,query,receipt){
  if(!raw||!Array.isArray(raw.data))return blocked("NO_PHYSICAL_ROWS");
@@ -23,7 +25,7 @@ export function admitSnapshot(raw,query,receipt){
    if(!Number.isFinite(row.volume)||row.volume<0)return blocked("INVALID_VOLUME");
    prev=Date.parse(row.date);
  }
- return {state:"RAW_SNAPSHOT_ACCEPTED_REPLAY_BLOCKED",rawCount:raw.data.length,
+ return {state:"RAW_SNAPSHOT_ACCEPTED_REPLAY_BLOCKED",rawCount:raw.data.length,rowFingerprint:rowFingerprint(raw.data),
   payloadSha256:receipt.payloadSha256,requestReceiptId:receipt.requestReceiptId,
   snapshotCapturedAt:receipt.capturedAt,barTimestampSemantics:"UNKNOWN",
   replaySafe:false,sourceRoot:"PRICE_OHLC",volumeUnit:raw.type==="EQUITY"?"LOTS":"UNVERIFIED"};
@@ -32,6 +34,8 @@ export function attachBucketAndVintage(snapshot,raw,certificate,decisionAt){
  if(snapshot?.state!=="RAW_SNAPSHOT_ACCEPTED_REPLAY_BLOCKED")
    return blocked("RAW_SNAPSHOT_NOT_ACCEPTED");
  if(!stamp(decisionAt))return blocked("PREDICTOR_CUTOFF_UNKNOWN");
+ if(!Array.isArray(raw?.data)||raw.data.length!==snapshot.rawCount||rowFingerprint(raw.data)!==snapshot.rowFingerprint)
+   return blocked("RAW_PAYLOAD_CHANGED_RECAPTURE_REQUIRED");
  if(!certificate?.sourceSha256||certificate.sourceSha256!==snapshot.payloadSha256)
    return blocked("SIDECAR_HASH_MISMATCH");
  if(certificate.bucketTimestampMeaning!=="OPEN"&&certificate.bucketTimestampMeaning!=="END")
