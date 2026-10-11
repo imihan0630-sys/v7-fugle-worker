@@ -22,7 +22,9 @@ function make(){
    observedAt:'2026-10-12T15:30:00Z',sourceOrdinarySymbolCount:1,
    selectionState:'NOT_EXECUTED_REQUIRED_PIT_HISTORY_AND_CONTINUITY_MISSING',
    observations:[{symbol:'2330',companyName:'臺灣積體電路製造',market:'TWSE',marketDate:DAY,
-     close:bars.at(-1).close,volumeShares:bars.at(-1).volumeShares,sourceRowHash:H}],
+     open:bars.at(-1).open,high:bars.at(-1).high,low:bars.at(-1).low,
+   close:bars.at(-1).close,volumeShares:bars.at(-1).volumeShares,
+   tradeValue:bars.at(-1).tradeValue,sourceRowHash:H}],
  };
  return {sourceLedger,evaluationAtUtc:clock,
    independentOriginalVerification:true,
@@ -90,4 +92,21 @@ test('nontradable current close must not create a BUY_ELIGIBLE result',async()=>
 test('source date/clock mismatch is rejected before family assessment',async()=>{
  const p=make();p.sourceLedger.marketDate='2026-10-09';
  const a=await evaluate(p);assert.equal(a.state,'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE');
+});
+
+test('independently reconciled alternate original official row hash may produce the same OHLCV observation',async()=>{
+ const p=make();
+ p.historyBySymbol['2330'].bars.at(-1).sourceRowHash='b'.repeat(64);
+ p.historyBySymbol['2330'].independentCurrentDailyCrossSourceEquivalenceVerified=true;
+ const a=await evaluate(p);
+ assert.equal(a.state,'EVALUATED_OFFLINE_RESEARCH_ONLY',JSON.stringify(a));
+ assert.equal(a.qualifiedNotSelectedCount,1);
+});
+test('alternate original row hash without independently attested parity cannot pass',async()=>{
+ const p=make();p.historyBySymbol['2330'].bars.at(-1).sourceRowHash='b'.repeat(64);
+ const a=await evaluate(p);assert.equal(a.incompleteCount,1);
+});
+test('a matching raw source hash cannot mask materially different OHLCV',async()=>{
+ const p=make();p.historyBySymbol['2330'].bars.at(-1).tradeValue+=999;
+ const a=await evaluate(p);assert.equal(a.incompleteCount,1);
 });
