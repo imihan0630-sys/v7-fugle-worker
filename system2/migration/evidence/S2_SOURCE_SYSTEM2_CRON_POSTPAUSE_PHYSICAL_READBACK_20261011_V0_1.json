@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "S2_SOURCE_SYSTEM2_CRON_POSTPAUSE_PHYSICAL_READBACK_20261011_V0_1",
+  "classification": "AUTHENTICATED_CLOUDFLARE_READONLY_POST_PROPAGATION_PROVIDER_RECEIPT",
+  "baselineMainSha": "7cb2c9e16f1e0ecd0b50425da16e4acdac92b17c",
+  "originalCronPause": {
+    "mainPr": 1139,
+    "evidencePr": 1140,
+    "atUtc": "2026-10-11T13:12:27.999Z",
+    "atTaipei": "2026-10-11T21:12:27.999+08:00",
+    "originalLiveMutationRunId": 38142241250,
+    "priorIndependentConfigAudit": "PASS_IN_ISSUE_1127_COMMENT_6109483966"
+  },
+  "sourceCredentials": "EXISTING_SOURCE_SYSTEM2_RESEARCH_GITHUB_ENV_READONLY_SCOPE_REUSED_NO_NEW_SECRETS",
+  "actualProviderWitness": {
+    "runId": 38143548779,
+    "jobId": 114482118128,
+    "artifactId": 11702974419,
+    "originalHeadSha": "13a707744821d2192f306ed5559b409aac3598db",
+    "event": "push",
+    "runAttempt": 1,
+    "conclusion": "success",
+    "originalRunCreatedAtUtc": "2026-10-11T13:31:57Z",
+    "providerObservedAtUtc": "2026-10-11T13:32:04.965Z",
+    "telemetryObservedAtUtc": "2026-10-11T13:32:06.288Z",
+    "taipeiObservedAt": "2026-10-11T21:32:04.965+08:00",
+    "elapsedSincePauseMinutes": 19.62,
+    "artifactZipSha256": "b3783b5966657fcb98d04fd357b48ab38991289d1d90e1e15a7e341ef4ee85cc",
+    "innerFile": "postpause-provider-receipt.json",
+    "innerSha256": "51c5648e7ed6b5c433a1f524726a7c6fbd26c199fe4595287c777bfc3bc40f6f",
+    "independentlyDownloadedAndRehashed": true
+  },
+  "source": {
+    "worker": "system2-shadow-research",
+    "cloudflareCronAfter": [],
+    "configZero": "PASS",
+    "configPersistedAfterMaximum15MinVendorPropagationWindow": "PASS",
+    "d1BindingPresent": true,
+    "sourceD1UuidFingerprint": "ff47dada34c46514dc1515890146e5f6fc7ad17a8df0bddf5acc552303a7ce3c",
+    "sourceWorkerPresent": true,
+    "r2BindingPresent": true,
+    "noWorkerOrCronWritesFromProbe": true,
+    "graphqlInvocations": {
+      "dataset": "workersInvocationsAdaptive",
+      "startUtc": "2026-10-11T13:12:27.999Z",
+      "endUtc": "2026-10-11T13:32:06.288Z",
+      "result": "READ_SUCCESS",
+      "returnedGroups": 0,
+      "summedRequests": 0,
+      "eventsTypeIdentified": false,
+      "providerFreshnessBoundMinutes": null
+    },
+    "newScheduledEvents": {
+      "verdict": "PENDING",
+      "reason": "SUNDAY_NO_MON_TO_FRI_CRON_OPPORTUNITY_AFTER_PAUSE; AGGREGATE_GRAPHQL_IS_NOT_EVENT_TYPE_SPECIFIC; PROVIDER_LAG_UNKNOWN; REQUIRE_REAL_NEXT_WEEKDAY_WINDOW_OR_ACCEPTED_DETAILED_WORKERS_LOGS"
+    },
+    "oldInFlightEvents": {
+      "verdict": "PENDING_DIRECT_EVIDENCE",
+      "cloudflareWorkerCronWallTimeLimitMin": 15,
+      "elapsedSincePauseMin": 19.62,
+      "individuallyEnumeratedInFlightEventIds": false,
+      "reason": "PLATFORM_WALL_TIME_BOUND_STRONGLY_SUGGESTS_OLD_CRON_INVOCATIONS_CANNOT_REMAIN_RUNNING_BUT_PROVIDER_EVENT_LEVEL_COMPLETION_NOT_RETRIEVED"
+    }
+  },
+  "system1": {
+    "worker": "fugle-test",
+    "workerPresent": true,
+    "crons": [
+      "0-24 5 * * MON-FRI",
+      "* 1-4 * * MON-FRI",
+      "35,55 15 * * mon-fri",
+      "* 9 * * MON-FRI"
+    ],
+    "cronExpressionsExactlyMatchPrepause": "PASS",
+    "v8D1BindingPresent": true,
+    "v8KvBindingPresent": true,
+    "v8D1UuidFingerprint": "dd15b5a2c6f09c39699788051762a8f0c21bf9ce161ebe1d4e1a6bd4642137bc",
+    "sourceV8DatabasePresent": true,
+    "workerDeploymentLatestCreatedUtc": "2026-10-08T03:40:19.014474Z",
+    "workerDeploymentFingerprint": "be3eebf6631b4222acc2cda1113931982ec5754895f4f0642d4a26a937636fc1",
+    "workerBindingsStableNameTypeFingerprint": "6a6b28fc78576e39def823e51f9954a257f8eea8c6c53dbc2caa7f7ebaacebd3",
+    "publicReadOnlyHealth": {
+      "path": "/api/version",
+      "httpStatus": 200,
+      "version": "8.20.2-idempotent-d1-snapshots",
+      "kvBindingTrue": true,
+      "d1BindingTrue": true,
+      "fugleQuoteSecretTrue": true,
+      "result": "PASS_BASIC_HTTP_LIVENESS_AND_BINDINGS",
+      "businessScanPersistenceVerified": false
+    },
+    "graphqlInvocations": {
+      "dataset": "workersInvocationsAdaptive",
+      "readSuccess": true,
+      "groups": 2,
+      "totalRequests": 5,
+      "status": "success",
+      "errors": 0,
+      "fromAfterPause": true
+    },
+    "formalBusinessBehaviorVerdict": "PARTIAL_PASS_BASIC_LIVENESS_NOT_FULL_KV_D1_C1_SESSION_MONITOR"
+  },
+  "safety": {
+    "cloudflareGETRequestsOnly": true,
+    "cloudflareGraphqlReadOnlyPOST": true,
+    "workerCronPutCount": 0,
+    "d1SQLReadsOrWrites": 0,
+    "sourceD1Export": 0,
+    "sourceR2Mutations": 0,
+    "newAccountWorkerOrCronActivation": 0,
+    "system1FormalCoreMutation": 0,
+    "newSecretPermissionsOrBilling": 0
+  },
+  "independentAuditRequired": true,
+  "scopedResult": {
+    "sourceCronConfigContinuouslyZero": "PASS",
+    "propagationWindowExceededWithZeroConfig": "PASS_CONFIG_ONLY",
+    "actualNoNewScheduledCronEvents": "PENDING",
+    "oldInFlightSettledByOriginalEventReceipts": "PENDING",
+    "v8FourCronExactlyUnchanged": "PASS",
+    "v8ReadonlyHealth": "PASS_BASIC_ONLY",
+    "v8FullFormalRuntime": "PENDING",
+    "allSourceWritersQuiescent": "BLOCKED",
+    "G6FullMigration": "BLOCKED",
+    "G3Export": "BLOCKED",
+    "G5Reserve": "BLOCKED"
+  },
+  "vendorDocumentation": {
+    "cronChangesPropagateUpTo15Min": "https://developers.cloudflare.com/workers/configuration/cron-triggers/",
+    "cronInvocationMaxWallTime15Min": "https://developers.cloudflare.com/workers/platform/limits/",
+    "graphqlInvocationAggregateNotCronSpecific": "https://developers.cloudflare.com/analytics/graphql-api/tutorials/querying-workers-metrics/",
+    "workersInvocationLogsAndTypes": "https://developers.cloudflare.com/workers/observability/logs/workers-logs/"
+  },
+  "followupForAuditLane": [
+    "INDEPENDENTLY_DOWNLOAD_AND_REHASH_ZIP_ARTIFACT_11702974419_AND_ORIGINAL_11703532490",
+    "CHECK_ORIGINAL_38143548779_LOG_AND_SANITIZED_PROVIDER_JSON",
+    "TO_PASS_NO_MORE_CRON_EVENTS_OBSERVE_REAL_NEXT_MON_FRI_SCHEDULED_SLOT_WITH_AVAILABLE_LOGS_OR_CLOUD_PROVIDER_CRON_EVENT_TYPE_EVIDENCE",
+    "TO_PASS_IN_FLIGHT_REQUIRE_EVENT_LOG_OR_APPROVE_VENDOR_15MIN_HARD_WALL_DURATION_PLUS_LAST_SCHEDULED_TIME_AS_DETERMINISTIC_PROOF",
+    "TO_PASS_V8_FORMAL_REQUIRE_EXISTING_NATURAL_CRON_OR_BUSINESS_READBACK_NOT_SYNTHETIC_HEALTH",
+    "KEEP_SOURCE_CRON_OFF_AND_DO_NOT_RELEASE_D1_EXPORT_OR_DEST_SHADOW"
+  ]
+}
