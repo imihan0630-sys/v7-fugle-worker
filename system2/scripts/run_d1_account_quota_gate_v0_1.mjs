@@ -1,5 +1,7 @@
 import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { decideSourceAccountWriterQuarantineV0_1 } from
+  "../runtime/source_account_d1_writer_quarantine_v0_1.mjs";
 import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs";
 import {
   D1_ACCOUNT_QUOTA_BUDGET_VERSION,
@@ -12,6 +14,9 @@ import {
 } from "../runtime/d1_account_quota_budget_v0_1.mjs";
 
 const REGISTRY_PATH = new URL("../config/d1_account_writer_registry_v0_1.json", import.meta.url);
+const SOURCE_ACCOUNT_QUARANTINE_PATH = new URL(
+  "../config/source_account_d1_writer_quarantine_v0_1.json", import.meta.url,
+);
 const DEFAULT_RESERVE_POLICY_PATH = new URL(
   "../evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
   import.meta.url,
@@ -388,6 +393,45 @@ function resultStateFor({ executionOutcome, variance, crossedUtcDay }) {
 async function main() {
   const mode = env("SYSTEM2_D1_GATE_MODE", "reserve");
   if (!["reserve", "result"].includes(mode)) throw new Error("SYSTEM2_D1_GATE_MODE must be reserve or result");
+
+  // During migration, reserve requests made by legacy System2 GitHub jobs
+  // cannot touch source D1 or even query source GraphQL/ledger. This happens
+  // BEFORE reading account IDs/tokens and BEFORE any Cloudflare request.
+  // A prior real grant's result reconciliation remains available separately.
+  if (mode === "reserve") {
+    const writerId = required("SYSTEM2_D1_WRITER_ID");
+    const policy = await loadJson(SOURCE_ACCOUNT_QUARANTINE_PATH);
+    const guard = decideSourceAccountWriterQuarantineV0_1({policy,mode,writerId});
+    if (guard.shouldDefer) {
+      const out = Object.freeze({
+        schemaVersion:"S2_D1_ACCOUNT_BUDGET_GATE_RECEIPT_V0_2",
+        directiveId:"S2-CORR-20261007-003",
+        writerId, eventName:env("GITHUB_EVENT_NAME","workflow_dispatch"),
+        runKey:env("GITHUB_RUN_ID","local")+":"+
+          env("GITHUB_RUN_ATTEMPT","1")+":"+writerId,
+        quotaDay:utcQuotaDay(new Date()),
+        state:guard.state,physicalAllowed:false,
+        reasonCodes:guard.reasonCodes,
+        requestedRowsWritten:null,requestedRowsRead:null,
+        rowsWrittenUsed:null,rowsReadUsed:null,
+        accountUsage:{known:false,source:"NOT_QUERIED_SOURCE_ACCOUNT_QUARANTINED"},
+        ledger:null,sourceAccountQuotaUnknown:true,
+        cloudflareCallsThisGate:0,d1SqlCallsThisGate:0,
+        system1ReserveAuthorized:false,system1ReadReserveAuthorized:false,
+        paidUpgradeAuthorized:false,system1FormalCoreChanged:false,
+      });
+      const outputPath=env("SYSTEM2_D1_GATE_OUTPUT","/tmp/system2-d1-budget-reservation.json");
+      await writeFile(outputPath,JSON.stringify(out,null,2)+"\n");
+      await setOutput("physical_allowed","false");
+      await setOutput("state",out.state);
+      await setOutput("adaptive_max_dates","0");
+      await setOutput("reservation_receipt_path",outputPath);
+      await appendSummary("D1 source-account quarantine: "+writerId+
+        " — QUOTA_BUDGET_DEFER; no Cloudflare API/D1/GraphQL called.");
+      console.log(JSON.stringify(out,null,2));
+      return;
+    }
+  }
 
   const accountId = required("CLOUDFLARE_ACCOUNT_ID");
   const token = env("CLOUDFLARE_API_TOKEN") || required("SYSTEM2_CLOUDFLARE_API_TOKEN");
