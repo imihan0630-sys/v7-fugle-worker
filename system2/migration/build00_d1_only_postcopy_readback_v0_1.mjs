@@ -47,7 +47,7 @@ function evidenceValid(value,role,blockers){
      !SHA.test(value.originalArtifactSha256||"")||
      !SHA.test(value.schemaSha256||"")||
      !SHA.test(value.frozenSnapshotSha256||"")||
-     !SHA.test(value.exportSha256||"")||
+     !(role==="SOURCE"?SHA.test(value.exportSha256||""):SHA.test(value.importSourceExportSha256||""))||
      !SHA.test(value.accountFingerprint||"")||
      !SHA.test(value.databaseFingerprint||"")||
      value.originalArtifactDownloadedAndShaVerified!==true){
@@ -82,8 +82,12 @@ export function reviewSystem2D1OnlyPostCopyV0_1({source,destination}={}){
   blockers.push("DESTINATION_READBACK_EARLIER_THAN_SOURCE_EXPORT");
  if(source?.schemaSha256!==destination?.schemaSha256)
   blockers.push("D1_PHYSICAL_SCHEMA_HASH_MISMATCH");
- if(source?.exportSha256!==destination?.exportSha256)
-  blockers.push("D1_CANONICAL_CONTENT_ROOT_HASH_MISMATCH");
+ // The SOURCE dump SHA is a transport artifact digest, not the SHA of a
+ // separately serialized destination SQL dump. The destination readback must
+ // attest which exact source export it imported, while physical table contents
+ // are checked independently below (rows + canonical table hashes).
+ if(source?.exportSha256!==destination?.importSourceExportSha256)
+  blockers.push("D1_DESTINATION_IMPORTED_SOURCE_EXPORT_IDENTITY_MISMATCH");
  if(source?.frozenSnapshotSha256!==destination?.frozenSnapshotSha256)
   blockers.push("D1_FROZEN_SNAPSHOT_ROOT_HASH_MISMATCH");
  if(source?.pit?.lineageSha256!==destination?.pit?.lineageSha256)
