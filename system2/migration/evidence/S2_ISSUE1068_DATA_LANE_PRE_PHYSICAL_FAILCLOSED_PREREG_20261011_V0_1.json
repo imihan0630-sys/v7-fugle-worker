@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "S2_ISSUE1068_DATA_LANE_PRE_PHYSICAL_FAILCLOSED_PREREG_20261011_V0_1",
+  "scope": "OFFLINE_CLASS_A_SOURCE_D1_PIT_FROZEN_RESTORE_R2_SOURCE_EVIDENCE",
+  "issue": 1068,
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "mainReadAtIntake": "54d0a4b28c9513b5e714c66d40032460e60c5f8d",
+  "evidenceState": "PR_CANDIDATE_TEST_CI_PENDING_NOT_PHYSICAL_ACCEPTANCE",
+  "verifiedExisting": {
+    "sourceGetOnlyRunId": 38022384514,
+    "sourceD1FileSizeBytes": 316968960,
+    "sourcePhysicalAppliedMigrationCount": "UNKNOWN",
+    "sourcePhysicalTableCount": "UNKNOWN",
+    "sourcePhysicalRowSum": "UNKNOWN",
+    "sourcePerTableContentSha256": "UNKNOWN",
+    "sourceD1BackupRestorability": "NOT_ACCEPTED",
+    "sourceHistoricalPIT": "NOT_ACCEPTED",
+    "sourceFrozenAppendOnlyHashChain": "NOT_ACCEPTED",
+    "sourceR2ObjectByteInventory": "UNKNOWN",
+    "destinationSchemaOnlyIndependentAudit": "PASS_25_OF_25_SEPARATE_SCOPE",
+    "destinationSchemaTables": 55,
+    "destinationSchemaNamedIndexes": 63,
+    "destinationSchemaOnlyApplyOnceRunId": 38069750915,
+    "destinationSchemaOnlyApplyOnceRerunAuthorized": false,
+    "destinationImportedHistoricalRows": 0,
+    "destinationImportedFrozenRows": 0,
+    "sourceReadReserveNumberAuthorized": false,
+    "sourceAuthorizedReadReserveRows": null,
+    "sourceWriteReserveNumberAuthorized": false,
+    "sourceAuthorizedWriteReserveRows": null,
+    "quotaState": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "migratedDataIndependentlyAccepted": false,
+    "shadowLaunchAuthorized": false
+  },
+  "safetyWork": {
+    "newOfflineGate": "system2/migration/issue1068_source_pit_frozen_restore_offline_v0_1.mjs",
+    "unitTest": "system2/tests/issue1068_source_pit_frozen_restore_offline_v0_1.test.mjs",
+    "entrypoint": "system2/migration/run_issue1068_source_pit_frozen_restore_offline_v0_1.mjs",
+    "testPlan": {
+      "noReceiptDeferred": 1,
+      "positiveSyntheticShapeReviewNeverAuthorize": 1,
+      "adversarialCases": 24,
+      "classes": [
+        "read/write reserves",
+        "same-day account quota",
+        "source applied table digests",
+        "PIT firstKnownAt/availableAt/observedAt",
+        "historical source revision identity",
+        "frozen hash chain and prior immutable prefix",
+        "D1 actual export vs frozen chain",
+        "actual restore SHA digest",
+        "source R2 per-object hashes",
+        "destination data independent readback"
+      ]
+    },
+    "physicalDataMutations": 0,
+    "newD1SqlReads": 0,
+    "newD1SqlWrites": 0,
+    "r2ObjectQueries": 0,
+    "shadowEnabled": false
+  },
+  "reviewBoundaries": {
+    "codeOrCliPassIsPhysicalAcceptance": false,
+    "sourceTableFileSizeIsRowCount": false,
+    "sourceSqlDefinitionsArePhysicalAppliedMigrations": false,
+    "destinationSchemaOnlyIsSourceData": false,
+    "archiveReceiptSelfAttestationIsIndependentRestore": false,
+    "versionTimestampWithoutOriginalPhysicalProofIsPIT": false,
+    "offlinePositiveSyntheticFixtureAuthorizesImport": false,
+    "cloudflareR2SubscriptionAuthorized": false
+  },
+  "handoff": {
+    "remediationLane": "Resolve Issue #1026 System1 P01/P02 independently approved numeric account read/write reserves, same-UTC-day lag bounded ledger/headroom and writer coordination.",
+    "dataLane": "When reserves and budget independently accepted, design separate bounded authenticated physical source applied migration/schema/row counts/hash/export and backup restore; evidence must be in original immutable Job/Artifact/SHA.",
+    "auditLane": "Separately review per-table canonical byte hashes, independent backup restore, original PIT revision timestamps, frozen append-only chain and immutable prefix, source R2 object-byte hashes and destination post-copy readback. Do not self-promote from schema-only PASS."
+  }
+}
