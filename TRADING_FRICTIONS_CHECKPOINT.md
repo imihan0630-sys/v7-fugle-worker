@@ -397,3 +397,19 @@ Boundary remains:
 D14-17 advances to L2 / 40% for mechanism + falsification semantics only.
 Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order-lifecycle evidence, preserve unexecuted opportunities, use mechanism-matched benchmarks, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
 Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## D14-EX-003 — durable L2 evidence reconciliation, 2026-10-11
+
+This is a research-only canonical checkpoint reconciliation, not a new market outcome or strategy change.
+
+- D14-16: existing `research/D14_16_VWAP_TWAP_PARTICIPATION_EXECUTION_CONTRACT_20261006_V0_1.md` and D14-EX-001 already freeze scheduling mechanisms, falsifications, PIT clocks, matched comparators, unexecuted-opportunity preservation, and L3 readiness. Evidence level: L2 / 40%.
+- D14-17: existing `research/D14_17_IMPLEMENTATION_SHORTFALL_MARKET_IMPACT_CONTRACT_20261006_V0_1.md` and D14-EX-002 already freeze implementation-shortfall decomposition, fill-only bias, market-impact causal alternatives, and L3 readiness. Evidence level: L2 / 40%.
+- D14-18: existing `research/D14_18_ALPHA_DECAY_EXECUTION_URGENCY_CONTRACT_20261008_V0_1.md` and `research/D14_18_DURABLE_CHECKPOINT_SUPPLEMENT_20261008_V0_1.md` freeze alpha-decay/urgency trade-off, look-ahead and opportunity-cost falsifications, and L3 readiness. Evidence level: L2 / 40%.
+
+Scope/ownership: D14-15 order-type choice; D14-16 parent-child schedule; D14-17 implementation shortfall and impact attribution; D14-18 signal decay/urgency. Shared receipts are not independent alpha votes.
+
+L3 remains BLOCKED pending >=3 independent prospective Taiwan sessions with immutable decision-time/market-mechanism/order-lifecycle receipts, deterministic replay, executed AND unexecuted opportunities, mechanism-matched comparators, and broker-confirmed fills for any realized execution claim. Three dates are a readiness review trigger, never automatic promotion.
+
+All synthetic tests and previous local fallback artifacts are engineering/semantic evidence only; they do not prove real brokerage fills, prospective OOS outcomes, Shadow P/L, or net performance. Missing evidence remains UNKNOWN, not BAD/0. No Formal Core change. `FORMAL_OPTIMIZATION_CANDIDATE`: NONE.
+
+Exact next: synchronize the D14-16/17/18 tracker entries only after this checkpoint is durable; then de-duplicate and persist D14-19 short-execution research candidate. Preserve D15-23/24 separate ownership and do not promote them from local-only fallback files.
