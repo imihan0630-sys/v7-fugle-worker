@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "0.1",
+  "dateTaipei": "2026-10-11",
+  "owner": "01｜K線與型態研究室",
+  "subject": "Sara 60m MA60 support semantic independent comparison",
+  "executionKind": "NATIVE_NODE_IN_CONTAINER",
+  "nodeVersion": "v22.16.0",
+  "observedTaipei": "2026-10-11T08:54:48+08:00",
+  "exactFiles": [
+    {
+      "path": "research/d01_sara_support_touch_semantics_v0_1.mjs",
+      "gitBlobSha": "968e48fded39d05071a1004496f4f8bc7e4eaeef"
+    },
+    {
+      "path": "research/test_d01_sara_support_touch_semantics_v0_1.mjs",
+      "gitBlobSha": "0d4a864832babc644526601ccc733e98eb7d9419"
+    }
+  ],
+  "observedCommand": "node test_d01_sara_support_touch_semantics_v0_1.mjs",
+  "result": {
+    "pass": 16,
+    "total": 16,
+    "failed": 0,
+    "exitCode": 0
+  },
+  "physicalStdoutLogSha256": "891262830c3b96753b6281b9dc0879920e36747292f358b95091bb3c902348f9",
+  "stdoutLineCount": 17,
+  "note": "Native execution used locally reproduced file bytes verified with git hash-object to EXACT matching GitHub file blob SHAs. No provider market bars or future returns used. No GitHub CI/Actions run claimed.",
+  "formalCoreImpact": "NONE",
+  "performanceInference": "NONE"
+}
