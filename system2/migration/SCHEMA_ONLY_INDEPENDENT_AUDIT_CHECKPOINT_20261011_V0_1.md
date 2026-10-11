@@ -27,3 +27,26 @@ Post-DDL executor queries only `type=table name LIKE 's2_%'` and `type=index nam
 - Re-present new authenticated READ-ONLY inventory Artifact to AUDIT_LANE for final **Schema-only phase** acceptance. No paid tier, Token, Secret, D1 DDL, new D1 resources, Worker, Cron, or System1 Formal Core change is authorized or performed by this audit.
 
 This checkpoint is **append-only audit adjudication** and does not rewrite original physical receipt or downgrade verified owner work.
+
+## 2026-10-11 09:11 Asia/Taipei — Issue #1103 independent real full-object D1 reverify
+
+**AUDIT_LANE Issue #1103 verdict: PASS (complete named-object inventory verified)**. This supersedes the prior blocked exact-object proof only (old matrix C14, C15, C16), not the unresolved cross-account/whole-run secondary assurance checks.
+
+Original GitHub [Run #38099562997](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38099562997), Job `114352494288`, Run attempt `1`, exact main `8c59bb9a8b53b4b8bb4cc608512ceadbb11844db` (2026-10-11 00:46 UTC) successfully ran a separately owner-dispatched **manual, destination-only, READ-ONLY** SQLite schema inventory. Independent AUDIT_LANE retrieved unmodified [Artifact #11687550030](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38099562997/artifacts/11687550030), ZIP SHA256 independently recomputed **`3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe`**, matching GitHub's original digest. Uncompressed `receipt.json` contains 32,048 bytes.
+
+Independent Python re-hash of original unzipped full receipt:
+- **118/118 exact** canonical == physical `(type,name,tbl_name)` objects; **55/55 table names**, **63/63 index names and owning tables**; no duplicates or unknown objects
+- exactly one additional reserved `(table,_cf_KV,_cf_KV)`, totaling **119** non-internal physical objects
+- no extra table/index/view/trigger, no staged 0011, actual `schema_version=1.1`
+- both physical and canonical 118-object canonical-json SHA256 independently recomputed to **`f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c`**
+- approved original 125-SQL bundle SHA **`99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f`** preserved
+
+Separate AUDIT_LANE test `system2/tests/audit_s2_issue1103_independent_canonical_physical_manifest_v0_1.test.mjs` reconstructs canonical table/index names and owner mapping from **raw first ten SQL migration files**, not from implementation lane's `canonicalObjects` array, and compares directly with the immutable compressed physical object manifest, including five adversarial negative mutations. No Cloudflare calls or D1 SQL by the auditor. Actual authenticated read-only workflow made two destination metadata GET requests plus two D1 HTTP-POST SQL SELECTs only; DDL/DML zero; original `APPLY_ONCE` was **not** rerun.
+
+**Original 25-point audit matrix now = 23 evidence-scoped PASS / 0 FAIL / 2 remaining BLOCKED**:
+- C19: cannot independently enumerate an *exhaustive* historical list of all possible Schema APPLY workflow runs/attempts with currently available GitHub connector. The known real original APPLY job and owner-observed single attempt remain supported, but not independently exhaustive.
+- C21: no separate *post-APPLY* real physical GET inventory of SOURCE account. Strict destination account fingerprint, real target-only workflow and source-manifest isolation PASS, but this stronger after-snapshot proof remains unavailable.
+
+**Conclusions must be distinguished**: Issue #1103's exact-object evidence gap is **PASS/RESOLVED**; strictly all-25-criteria Schema-only blanket acceptance remains **BLOCKED (2 independent evidence gaps)** until C19/C21 are supplied or formally resolved by authorized governance. Entire System 2 account migration, historical/Frozen/PIT, Worker/Cron and Shadow are NOT accepted. DATA_LANE Issue [#1068](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068), owner gate [#1079](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1079) remain separate.
+
+Independent immutable follow-up evidence: `system2/migration/evidence/S2_DEST_D1_ISSUE1103_INDEPENDENT_EXACT_SCHEMA_PHYSICAL_ACCEPTANCE_20261011_V0_1.json`. **No new owner permissions, APPLY_ONCE, tokens, secrets, paid R2, Worker/Cron, old System1 or Cloudflare writes were touched.**
