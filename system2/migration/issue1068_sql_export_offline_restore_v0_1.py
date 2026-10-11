@@ -39,6 +39,14 @@ def sqlite_authorizer(op, a, b, database_name, trigger_name):
     if op == sqlite3.SQLITE_PRAGMA:
         return (sqlite3.SQLITE_OK if a == "foreign_keys" and b == "OFF"
                 else sqlite3.SQLITE_DENY)
+    # SQLite internally updates sqlite_master during CREATE TABLE / CREATE INDEX;
+    # prohibit all user-table UPDATE. Top-level SQL lexical guard denies UPDATE.
+    if op == sqlite3.SQLITE_UPDATE and a == "sqlite_master" and database_name == "main":
+        return sqlite3.SQLITE_OK
+    # SQLite internally runs REINDEX while creating an index. Top-level REINDEX
+    # remains blocked by the explicit SQL statement allow-list.
+    if op == sqlite3.SQLITE_REINDEX and database_name == "main":
+        return sqlite3.SQLITE_OK
     return sqlite3.SQLITE_OK if op in CAPABILITIES else sqlite3.SQLITE_DENY
 
 
