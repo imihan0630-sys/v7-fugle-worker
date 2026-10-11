@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "0.1",
+  "dateTaipei": "2026-10-11",
+  "owner": "08｜事件與新聞研究室",
+  "baselineMain": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+  "source": "Actual raw TWSE capture artifacts from workflow runs 37197636375 and 37243049741",
+  "moduleIds": [
+    "D11-08",
+    "D11-13",
+    "D17-02",
+    "D17-03",
+    "D17-09"
+  ],
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": false,
+  "cases": [
+    {
+      "symbol": "2072",
+      "oldPublishedAtTaipei": "2026-10-03T07:00:04+08:00",
+      "newPublishedAtTaipei": "2026-10-04T07:00:03+08:00",
+      "clockShiftSeconds": 86399,
+      "factDateRoc": "1150824",
+      "unchangedFields": [
+        "公司代號",
+        "符合條款",
+        "事實發生日",
+        "主旨 ",
+        "說明"
+      ],
+      "subjectContainsAnnouncementPeriod": true,
+      "descriptionCitesThreeMonthContinuedDisclosure": true
+    },
+    {
+      "symbol": "6949",
+      "oldPublishedAtTaipei": "2026-10-03T07:00:04+08:00",
+      "newPublishedAtTaipei": "2026-10-04T07:00:03+08:00",
+      "clockShiftSeconds": 86399,
+      "factDateRoc": "1150713",
+      "unchangedFields": [
+        "公司代號",
+        "符合條款",
+        "事實發生日",
+        "主旨 ",
+        "說明"
+      ],
+      "subjectContainsAnnouncementPeriod": true,
+      "descriptionCitesThreeMonthContinuedDisclosure": false
+    }
+  ],
+  "support": "Two original official TWSE records retain fact date, clause, subject and full description across re-publication while publication clock advances by 23:59:59; both state explicit multi-month announcement periods.",
+  "counter": "Publication-clock-based ID changes do not imply new economic information. Repeated regulatory announcement can be counted as new event if publication time is mistaken for economic-root time.",
+  "alternatives": [
+    "Same normalized content is not proof of publisher-native correction/supersession identity.",
+    "A rolling source snapshot can change without cancellation or complete coverage."
+  ],
+  "failureConditions": [
+    "Publisher-native correction/version link missing",
+    "Event-root key uses only publication clock",
+    "Missing original event first-known",
+    "New material facts require independent substantive-delta classification"
+  ],
+  "guards": {
+    "PIT": "Archived capture observation bound only",
+    "firstKnownAt": "UNKNOWN for original event",
+    "eventVersions": "Native link UNKNOWN",
+    "newsDedup": "Separate disclosure instance from economic root",
+    "OOS": "NOT_STARTED",
+    "walkForward": "NOT_STARTED",
+    "selectionBias": "Two cases are illustrative, not representative",
+    "lookAhead": "NO_RETURN_JOIN",
+    "dataMining": "NO_OUTCOME_SELECTION",
+    "multipleTesting": "NONE",
+    "overfit": "NO_MODEL_FIT",
+    "factorRedundancy": "Do not add repeated event votes",
+    "dateClustering": "Two adjacent calendar days only",
+    "costAndRegime": "UNKNOWN",
+    "historicalShadow": "NOT_FABRICATED"
+  },
+  "maturity": {
+    "D11": 56.8,
+    "D17": 52.9,
+    "D17_03": "L2_40",
+    "D17_09": "L3_60",
+    "upgrade": false
+  },
+  "next": "Prospectively capture native publication/revision identity and a 3+ independent trading-date sample; keep mandatory republication separate from genuinely new economic facts; do not estimate information half-life from republication clock."
+}
