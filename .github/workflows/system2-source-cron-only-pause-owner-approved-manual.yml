@@ -1,0 +1,89 @@
+name: SOURCE System2 Cron-only Pause (OWNER APPROVED, MANUAL ONLY)
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "INSPECT or PAUSE, old SOURCE System2 Cron only"
+        required: true
+        type: choice
+        options:
+          - INSPECT
+          - PAUSE
+      confirm:
+        description: "For PAUSE type APPROVED_SOURCE_SYSTEM2_CRON_ONLY_20261011"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: owner-approved-source-system2-cron-only-pause
+  cancel-in-progress: false
+
+jobs:
+  source_cron_only:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-research # SOURCE only; NEVER point this environment to destination
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reproduce fail-closed operator regression
+        run: |
+          set -euo pipefail
+          node --test system2/tests/source_system2_cron_pause_owner_approved_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Validate exact owner authorization and source auto-deploy quarantine
+        env:
+          OPERATION: ${{ inputs.operation }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          if [ "$OPERATION" != 'INSPECT' ] && [ "$OPERATION" != 'PAUSE' ]; then
+            echo 'OPERATION_NOT_AUTHORIZED' >&2
+            exit 2
+          fi
+          if [ "$OPERATION" = 'PAUSE' ] && [ "$CONFIRM" != 'APPROVED_SOURCE_SYSTEM2_CRON_ONLY_20261011' ]; then
+            echo 'PAUSE_REQUIRES_EXACT_CONFIRMATION' >&2
+            exit 2
+          fi
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const data=JSON.parse(fs.readFileSync('system2/config/source_account_d1_writer_quarantine_v0_1.json','utf8'));
+          const yml=fs.readFileSync('.github/workflows/system2-resonance-deploy.yml','utf8');
+          if(data.active!==true||data.automaticRelease!==false||
+            !/deploy:\s*\n(?:[^\n]*\n){0,8}\s*if:\s*\$\{\{\s*false\s*\}\}/.test(yml))
+            throw Error('OLD_SOURCE_S2_DEPLOY_NOT_FAIL_CLOSED');
+          NODE
+      - name: Perform authenticated source GET-only inspection or exact Cron-only pause
+        env:
+          OPERATION: ${{ inputs.operation }}
+          CONFIRM: ${{ inputs.confirm }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ "$OPERATION" = 'PAUSE' ]; then
+            node system2/migration/source_system2_cron_pause_owner_approved_v0_1.mjs PAUSE "$CONFIRM"
+          else
+            node system2/migration/source_system2_cron_pause_owner_approved_v0_1.mjs INSPECT
+          fi
+      - name: Upload sanitized original Cron/V8 unchanged receipt for AUDIT_LANE
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-s2-cron-only-${{ github.run_id }}
+          path: /tmp/system2-source-cron-pause-review/sanitized-physical-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Explicit non-promotion
+        if: always()
+        run: |
+          echo '### SOURCE System2 cron-only owner-approved operation' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This workflow may change only the old SOURCE system2-shadow-research Cron; no D1 SQL, Worker redeploy, R2/KV, V8/fugle-test mutation or DEST cutover.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'A successful original Cron readback is configuration evidence, not independent AUDIT_LANE signoff, ongoing invocation quiescence or permission to export source D1.' >> "$GITHUB_STEP_SUMMARY"
