@@ -1,4 +1,4 @@
-name: CORR003 Source Account Live Metadata Probe ONCE (scoped GET)
+name: CORR003 Source Account Live Metadata Probe ONCE (syntax-fixed scoped GET)
 
 on:
   push:
