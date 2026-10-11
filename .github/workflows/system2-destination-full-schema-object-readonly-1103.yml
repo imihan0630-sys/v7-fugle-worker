@@ -1,0 +1,60 @@
+# Issue #1103: post-APPLY exact destination SQLite object inventory.
+# READ-ONLY SQL (D1 SELECT uses HTTP POST /query), no schema/data changes.
+# Does NOT import or invoke the Schema-only APPLY_ONCE executor.
+name: System2 Destination Full Schema Object Inventory (READ ONLY)
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type DEST_SCHEMA_FULL_OBJECT_READONLY_ONLY"
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: system2-new-account-full-schema-inventory-readonly-1103
+  cancel-in-progress: false
+jobs:
+  full-schema-inventory:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-migration
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate manual destination READ ONLY consent
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_EVENT_NAME" = "workflow_dispatch"
+          test "$CONFIRM" = "DEST_SCHEMA_FULL_OBJECT_READONLY_ONLY"
+      - name: Execute synthetic Issue 1103 adversarial tests (zero cloud calls)
+        run: node system2/tests/destination_schema_full_object_readonly_1103_v0_1.test.mjs
+      - name: Read destination D1 full SQLite schema object manifest via SELECTs only
+        env:
+          S2_FULL_SCHEMA_READONLY_CONFIRM: ${{ inputs.confirm }}
+          S2_MIGRATION_DESTINATION_ACCOUNT_ID: ${{ secrets.S2_MIGRATION_DESTINATION_ACCOUNT_ID }}
+          S2_MIGRATION_DESTINATION_READ_TOKEN: ${{ secrets.S2_MIGRATION_DESTINATION_READ_TOKEN }}
+        run: node system2/migration/run_destination_schema_full_object_readonly_1103_v0_1.mjs
+      - name: Upload exact sanitized real object inventory (even if blocked)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-full-schema-1103-${{ github.run_id }}
+          path: /tmp/s2-dest-full-schema-readonly-1103/receipt.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Verify System 1 manifests unmodified
+        if: always()
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED"
