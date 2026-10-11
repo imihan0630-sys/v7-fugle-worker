@@ -85,7 +85,14 @@ function tableMap(receipt, r) {
   return out;
 }
 export function assessSystem2D1CopyPreImportV0_1(args={}) {
-  const r=preExportReasons(args);
+  // Import uses an independently accepted immutable OFFLINE source export. It
+  // never queries the old source D1, so its live UTC-day SOURCE quota and old
+  // source-Worker quiescence must NOT block a later destination-only import.
+  // Instead require original backup/PIT/Frozen approval and TARGET account P0 budget.
+  const r=[];
+  if (!ownerOk(args?.owner)) r.push('OWNER_D1_ONLY_SCOPE_UNVERIFIED');
+  if (!accountsOk(args?.source,args?.destination)) r.push('DISTINCT_AUTHENTICATED_ACCOUNT_AND_D1_IDENTITY_UNVERIFIED');
+  if (!validTime(args?.evaluatedAtUtc)) r.push('EVALUATION_UTC_TIMESTAMP_INVALID');
   const b=args.backup, t=args.target, src=args.sourceReceipt;
   if (!(b?.physicalExportReadback===true && b?.exportJobCompleted===true &&
         b?.immutableOriginalBytesPreserved===true && b?.offlineRestoreVerified===true &&
