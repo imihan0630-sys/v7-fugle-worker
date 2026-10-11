@@ -19,10 +19,15 @@ function assertOfficialDates(v,date){
    throw Error('OFFICIAL_61_SESSION_CALENDAR_NOT_READY');
 }
 function validRow(row, market, date){
+ const prices=[row?.open,row?.high,row?.low,row?.close];
+ const eachValid=prices.every(p=>p===null||Number.isFinite(p)&&p>0);
+ const complete=prices.every(Number.isFinite);
  return row?.market===market&&row?.marketDate===date&&
    /^[1-9]\d{3}$/.test(row.symbol||'')&&row.priceSpace==='RAW'&&
-   (!Number.isFinite(row.close)||row.close>0)&&
-   (row.volumeShares===null||Number.isFinite(row.volumeShares)&&row.volumeShares>=0);
+   eachValid&&(!complete||(row.high>=Math.max(row.open,row.close)&&
+     row.low<=Math.min(row.open,row.close)))&&
+   (row.volumeShares===null||Number.isFinite(row.volumeShares)&&row.volumeShares>=0)&&
+   (row.tradeValue===null||Number.isFinite(row.tradeValue)&&row.tradeValue>=0);
 }
 /**
  * @param input
@@ -85,8 +90,8 @@ export async function captureOfficial61SessionWindowV0_1({
     result=await historicalFetch({market,marketDate:date,fetchImpl:capturedFetch,
        observedAt:()=>now().toISOString(),retryAttempts:1,retryDelayMs:0});
     if(result?.state!=='READY'||result.sourceDateEvidence!==date||
-       result.market!==market||!captured||!iso(captured.observedAt)||
-       !Array.isArray(result.rows)||result.rows.length<100||
+       result.market!==market||result.sourceUrl!==captured?.url||!captured||!iso(captured.observedAt)||
+       !Array.isArray(result.rows)||result.rows.length<(market==='TWSE'?600:450)||
        result.rows.some(row=>!validRow(row,market,date)))
       throw Error('SOURCE_DATE_PAYLOAD_COUNT_OR_BAR_INTEGRITY_INCOMPLETE');
     const symbolsSeen=new Set();
@@ -139,7 +144,7 @@ export async function captureOfficial61SessionWindowV0_1({
      priceSpace:'RAW',volumeUnit:'SHARES',
      originalProviderResponseVerified:full,
      originalResponseSha256:await sha256Hex(arranged.map(x=>x.sourceOriginalResponseSha256)),
-     observedAt:calendarObserved,
+     observedAt:receipts.at(-1)?.capturedAt||calendarObserved,
      // Source-origin metadata is preserved but NEVER self-certifies audit.
      independentCurrentDailyCrossSourceEquivalenceVerified:false,
      bars:arranged,
