@@ -388,12 +388,21 @@ export function evaluateD1AccountQuotaReservationV0_1({
     "launchAcceptanceReserveRowsRead",
   );
 
-  if (
+  // Explicit owner choice: drop the *extra* V8 headroom reservation
+  // precondition. This is NOT a certified numeric reserve or permission
+  // to bypass physical D1 hard limits, writer registry or source S2 quarantine.
+  const ownerWaivedExtraV8Reserve =
+    system1ReservePolicy?.ownerV8ExtraQuotaReserveWaived === true
+    && system1ReservePolicy?.ownerWaiverScope ===
+      "EXTRA_CROSS_SYSTEM_V8_HEADROOM_RESERVE_ONLY"
+    && system1ReservePolicy?.waiverIsNotEvidenceAuthorization === true;
+
+  if (!ownerWaivedExtraV8Reserve && (
     !system1ReservePolicy
     || system1ReservePolicy.reserveNumberAuthorized !== true
     || !Number.isInteger(Number(system1ReservePolicy.authorizedReserveRows))
     || Number(system1ReservePolicy.authorizedReserveRows) <= 0
-  ) {
+  )) {
     return Object.freeze({
       state: "QUOTA_BUDGET_DEFER",
       physicalAllowed: false,
@@ -408,11 +417,11 @@ export function evaluateD1AccountQuotaReservationV0_1({
     });
   }
 
-  if (
+  if (!ownerWaivedExtraV8Reserve && (
     system1ReservePolicy.readReserveNumberAuthorized !== true
     || !Number.isInteger(Number(system1ReservePolicy.authorizedReadReserveRows))
     || Number(system1ReservePolicy.authorizedReadReserveRows) <= 0
-  ) {
+  )) {
     return Object.freeze({
       state: "QUOTA_BUDGET_DEFER",
       physicalAllowed: false,
@@ -427,11 +436,11 @@ export function evaluateD1AccountQuotaReservationV0_1({
     });
   }
 
-  const system1Reserve = positiveInteger(
+  const system1Reserve = ownerWaivedExtraV8Reserve ? 0 : positiveInteger(
     system1ReservePolicy.authorizedReserveRows,
     "system1ReservePolicy.authorizedReserveRows",
   );
-  const system1ReadReserve = positiveInteger(
+  const system1ReadReserve = ownerWaivedExtraV8Reserve ? 0 : positiveInteger(
     system1ReservePolicy.authorizedReadReserveRows,
     "system1ReservePolicy.authorizedReadReserveRows",
   );
