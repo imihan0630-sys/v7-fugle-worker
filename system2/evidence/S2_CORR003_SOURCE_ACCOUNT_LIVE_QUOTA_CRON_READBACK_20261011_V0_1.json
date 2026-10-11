@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "S2_CORR003_SOURCE_ACCOUNT_LIVE_QUOTA_CRON_READBACK_20261011_V0_1",
+  "scope": "REMEDIATION_LANE_G5_G6_AUTHENTIC_CLOUDFLARE_API_READ_ONLY_EVIDENCE",
+  "directive": "S2-CORR-20261007-003",
+  "originAccount": "SOURCE_REDACTED",
+  "baselineMain": "043247220a4b359487ec7c1599d3c9e13b15fc75",
+  "sourceSchemaPolicy": "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+  "sourceWriterQuarantine": "system2/config/source_account_d1_writer_quarantine_v0_1.json",
+  "originalNativeProvider": {
+    "runId": 38139695092,
+    "jobId": 114470611284,
+    "headSha": "88be46bec7dd1dc2c9c48b26e3d67f517bdca5aa",
+    "artifactId": 11702835097,
+    "artifactZipSha256": "1af850950342a94e311464e6a279486e1d83e10fd07c4dbad9fe87707f6f5e90",
+    "innerName": "corr003-source-account-live-readonly.json",
+    "innerSha256": "8c447c3b3f026e9b4bcc5d43bf9af81ab23b76aa0428578134d46c5bb48a3c7d",
+    "complete": true,
+    "event": "push",
+    "workflow": "CORR003 Source Account Live Metadata Probe ONCE (syntax-fixed scoped GET)",
+    "conclusion": "success",
+    "startedAtUtc": "2026-10-11T12:33:17.052Z",
+    "completedAtUtc": "2026-10-11T12:33:19.582Z",
+    "originalZipByteReadbackAndDigestRecomputed": true,
+    "verifiedD1SQLByProbe": 0,
+    "workerOrCronMutations": 0,
+    "paidOrCredentialMutations": 0
+  },
+  "sourceAccountProviderResponse": {
+    "observedUtcQuotaDay": "2026-10-11",
+    "sourceD1List": {
+      "http": 200,
+      "count": 2,
+      "v8Detected": true,
+      "system2Detected": true
+    },
+    "sourceS2WorkerCronGet": {
+      "http": 200,
+      "cron": [
+        "*/5 0-5,11 * * MON-FRI"
+      ],
+      "configured": true,
+      "invocationObserved": false,
+      "actualDailyD1Cost": null
+    },
+    "sourceV8WorkerCronGet": {
+      "http": 200,
+      "crons": [
+        "0-24 5 * * MON-FRI",
+        "* 1-4 * * MON-FRI",
+        "35,55 15 * * mon-fri",
+        "* 9 * * MON-FRI"
+      ],
+      "configured": true,
+      "unchangedByProbe": true
+    },
+    "cloudflareGraphql": {
+      "sampleUtcTimes": [
+        "2026-10-11T12:33:17.900Z",
+        "2026-10-11T12:33:19.582Z"
+      ],
+      "samples": 2,
+      "successful": true,
+      "groupsComplete": true,
+      "providerResultAccountCount": 1,
+      "groupCount": 2,
+      "lowerBoundRowsWritten": 0,
+      "lowerBoundRowsRead": 180455,
+      "perDatabase": [
+        {
+          "role": "SYSTEM1_V8",
+          "lowerBoundRowsRead": 180454,
+          "lowerBoundRowsWritten": 0
+        },
+        {
+          "role": "SOURCE_SYSTEM2",
+          "lowerBoundRowsRead": 1,
+          "lowerBoundRowsWritten": 0
+        }
+      ],
+      "providerAnalyticsRealtimeFreshnessGuaranteed": false,
+      "providerLagUpperBoundMinutes": null,
+      "reservationLedgerFullyIndependentAuthenticated": false,
+      "knownCompetingWritersOnly": false
+    }
+  },
+  "earlierG5SameDayRealLowerBound": {
+    "runId": 38125907900,
+    "jobId": 114430103629,
+    "artifactId": 11697785620,
+    "artifactZipSha256": "a36ebe987ede5a00486db6381480d1ea770415bcc90345f454a93f8183a8b6f8",
+    "observedLowerBoundRowsRead": 78197,
+    "observedLowerBoundRowsWritten": 0,
+    "historicalAtUtc": "2026-10-11T08:45:04Z",
+    "newlyObservedReadLowerBoundIncrease": 102258,
+    "attributionOfChangeToPreciseWorkerOrQuery": "UNKNOWN",
+    "oldSourceS2GithubWriterPhysicalMutation": "QUOTA_BUDGET_DEFER"
+  },
+  "resourcePlan": {
+    "sourceAccountCeilingRowsWrittenPerUtcDay": 100000,
+    "sourceAccountCeilingRowsReadPerUtcDay": 5000000,
+    "observedMaximumTheoreticalRemainingRowsWrittenNotSpendable": 100000,
+    "observedMaximumTheoreticalRemainingRowsReadNotSpendable": 4819545,
+    "trueRemainingRowsWritten": null,
+    "trueRemainingRowsRead": null,
+    "sourceS2CronQuiesced": false,
+    "sourceResonanceAutoRedeployReactivationRisk": true,
+    "accountWideWriterQuiescence": "UNPROVEN",
+    "system1Per2335RowsWritten": null,
+    "system1Per2335RowsRead": null,
+    "conditional2355WriteReadCost": null,
+    "system1WriteReserveAuthorized": false,
+    "system1ReadReserveAuthorized": false,
+    "system1AuthorizedWriteReserveRows": null,
+    "system1AuthorizedReadReserveRows": null,
+    "dataExportSourceD1Grant": false,
+    "readOnlyD1BudgetEvidenceDeferActive": true
+  },
+  "corr003": {
+    "codeSourceA1A7": "INDEPENDENTLY_ACCEPTED_SOURCE_ONLY",
+    "progress": {
+      "P01": "3/7",
+      "P02": "3/7",
+      "P03": "3/8",
+      "P04": "2/7",
+      "P05": "4/9"
+    },
+    "supportDocumented": 15,
+    "totalSupportChecks": 38,
+    "independentlyQualifiedPhysical": 0,
+    "totalPhysical": 5,
+    "original19Mapped": true,
+    "status": "HIGH_VERIFYING",
+    "independentAuditAcceptsNewPhysicalGate": false
+  },
+  "g6RiskAndAuthorization": {
+    "oldSourceSystem2WorkerCronStillConfigured": "CONFIRMED_PROVIDER_GET",
+    "oldSourceSystem2CronActuallyFiredOrConsumedQuota": "UNKNOWN",
+    "possibleLegacyGithubWorkflowAutoRedeploysCron": true,
+    "specificOwnerApprovalForSourceCronOnlyPause": "NOT_EVIDENCED",
+    "sourceCronPausePerformed": false,
+    "sourceCronDisabled": "NO",
+    "impactOfPause": "TEMPORARY_LOSS_OF_SOURCE_S2_RESONANCE_OBSERVATIONS_POSSIBLE",
+    "crossAccountLaneIssue": 1130,
+    "sourceS2CronPauseDraftPr": 1136,
+    "doNotModifyV8WorkersOrCron": true
+  },
+  "provenanceDiscipline": {
+    "firstAttemptRun": 38139433827,
+    "firstAttemptResult": "PARTIAL_GQL_TOKEN_AUTH",
+    "secondAttemptRun": 38139528766,
+    "secondAttemptResult": "GRAPHQL_VALID_BUT_D1_GET_401_UNMAPPED_AND_CRON_ENVELOPE_UNKNOWN",
+    "thirdAttemptRun": 38139626653,
+    "thirdAttemptResult": "SOURCE_SYNTAX_ERROR_FIXED_NOT_OBSERVATION",
+    "acceptedRun": 38139695092,
+    "sourceAccountIdAndTokensPublished": false,
+    "noRealTimeRemainingQuotaInferredFromHistoricalLowerBound": true,
+    "destinationSchemaOnlyMayNotAuthorizeSourceExport": true,
+    "changedLegacyLiveCloudflareResources": 0
+  },
+  "nextSteps": [
+    {
+      "owner": "SYSTEM1_LANE",
+      "issue": 1024,
+      "requirement": "natural genuine ordinary session 2026-10-12 23:35 and conditional 23:55 per-operation D1 rowsRead/rowsWritten incl indexes/retries with original run+KV+D1/C1 generation, approved numerical protected reserve and provider freshness bound"
+    },
+    {
+      "owner": "CROSS_ACCOUNT_LANE",
+      "issue": 1130,
+      "requirement": "distinct owner-approved SOURCE S2 cron-only pause after fresh precheck, anti-source-auto-redeploy protection, audit readback schedules=0 & V8 cron unchanged plus in-flight check; no destructive action"
+    },
+    {
+      "owner": "REMEDIATION_LANE",
+      "issue": 1024,
+      "requirement": "combine genuinely fresh per-operation measured S1 reserve + same UTC account GraphQL freshness / ledger / cross-workflow quiet-window proof; only then request AUDIT physical release"
+    },
+    {
+      "owner": "DATA_LANE",
+      "issue": 1068,
+      "requirement": "after G5 and G6 independent release, one previously owner-authorized complete SOURCE D1 export to secure nonpublic archive then local restore/sha/schema/PIT/Frozen; no R2 or destination import until separate audit"
+    },
+    {
+      "owner": "AUDIT_LANE",
+      "issue": 1128,
+      "requirement": "independently download original Run38139695092 artifact11702835097; certify provenance but NOT physical P01-P05, quota grant or migration completion without required positive evidence"
+    }
+  ],
+  "noAutoRelease": true
+}
