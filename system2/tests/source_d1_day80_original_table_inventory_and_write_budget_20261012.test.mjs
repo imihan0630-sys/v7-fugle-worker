@@ -1,0 +1,35 @@
+// Offline verifier of ORIGINAL, publicly sanitized SOURCE D1 encrypted-archive
+// row receipt and planned Free-tier day-80 account WRITE budget. NO Cloudflare I/O.
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const p='system2/migration/evidence/S2_SOURCE_D1_REAL_ROWSET_CATALOG_AND_DAY80_BUDGET_PLAN_20261012_V0_1.json';
+const e=JSON.parse(readFileSync(p,'utf8'));
+assert.equal(e.schemaVersion,'S2_SOURCE_D1_REAL_ROWSET_CATALOG_AND_DAY80_BUDGET_PLAN_20261012_V0_1');
+assert.equal(e.sourceArchive.realRun,38150147134);
+assert.equal(e.sourceArchive.artifact,11706652537);
+assert.equal(e.sourceArchive.zipSha256,'6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e');
+assert.equal(e.destTransport.confirmedImportedRows,0);
+assert.equal(e.tables.length,55);
+assert.equal(new Set(e.tables.map(t=>t.table)).size,55);
+assert.equal(e.tables.reduce((s,x)=>s+x.sourceRows,0),113222);
+assert.equal(e.tables.filter(t=>t.sourcePopulated).length,14);
+assert.equal(e.tables.find(t=>t.table==='s2_decisions').sourceRows,0);
+assert.equal(e.tables.find(t=>t.table==='s2_historical_a1_bars').sourceRows,84688);
+assert.equal(e.tables.find(t=>t.table==='s2_historical_a1_pack_manifests').sourceRows,16100);
+assert.equal(e.tables.find(t=>t.table==='s2_historical_a1_segment_manifests').sourceRows,9723);
+assert.equal(e.tables.find(t=>t.table==='s2_infrastructure_checks').sourceRows,2505);
+assert.equal(e.sourceTotalRows,113222);
+assert.equal(e.userRequestedFourFifthsOfLogicalRows,90578);
+assert.equal(e.minimumBarRowsRequiredFor80Percent,62044);
+assert.equal(e.minimumBilledWrites80PctIgnoringNonbarIndexedCosts,276710);
+assert(e.minimumBilledWrites80PctIgnoringNonbarIndexedCosts>e.quotaDailyMaximumBilledRowsWritten);
+assert(e.day80ConservativeBudgetTargetRowsWritten<=80000);
+assert.equal(e.quotaHeadroomPhysicalSameUtcDayNow,'UNKNOWN');
+assert.equal(e.indexedRowsWrittenActual,'UNKNOWN');
+assert.equal(e.full80PercentSourceRowsFeasibleWithinOneFreeUtcQuotaDay,false);
+assert.equal(e.planCanAuthorizeCloudMutation,false);
+assert.match(e.outcome,/NO_PHYSICAL_TARGET_WRITES/);
+assert(e.operationalPriority.some(p=>p.phase==='B' && p.qualification.includes('NOT_ENTITLED')));
+assert(e.requireBeforeLiveWrite.includes('AUDIT_LANE_INDEPENDENT_ORIGINAL_ARCHIVE_RESTORE_ACCEPTANCE'));
+assert(e.requireBeforeLiveWrite.includes('DESTINATION_SAME_UTC_DAY_ACCOUNT_WIDE_ROWS_WRITTEN_HEADROOM_VERIFIED'));
+console.log('SOURCE_D1_55_TABLE_REAL_ARCHIVE_113222_ROWS_DAY80_BUDGET_FAIL_CLOSED_PASS');
