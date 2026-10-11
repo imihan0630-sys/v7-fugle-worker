@@ -9074,3 +9074,21 @@ Exact next: independently re-download/decrypt/restore Artifact 11706652537; phys
 Artifacts: `research/D03_SOURCE_FULL_BACKUP_TO_PIT_WINDOW_FIREWALL_20261012_V0_1.md`, `research/d03_source_full_backup_pit_window_cases_20261012_v0_1.json`, `research/test_d03_source_full_backup_pit_window_v0_1.mjs`.
 
 D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
+
+## TI-1813~1832 — migration-batch indicator-window atomicity and TI-1793 correction (2026-10-12)
+
+- Correction: TI-1793~1812 incorrectly said secure-transfer code had no physical run/receipt because commit-associated workflow lookup returned none. Canonical Run 38151167952 on exact head `a33887f44b037f3620cf5954b668d8eebcf1b2d7` did complete destination key generation, source rewrap and destination verification. Artifact 11706559841 has receipt ZIP SHA-256 `65c64f76c3bcabb5e89304af6e8d996fd134044b0be73b417e5f192a16e20eb4`; Artifact 11705783748 has wrapped-transfer ZIP SHA-256 `68c0244edb03c3239ff7e3cb7b50b5b5abf6d7c75c47839175e45fdba0936957`. The destination-protected runner decrypted and restored offline, with no destination D1 import. `DESTINATION_TRANSFER_PHYSICAL_VERIFIED` is therefore independently PASS while source independent audit remains pending.
+- Run 38174567933 / Job 114574078061 / Artifact 11715650509 physically read the destination at 2026-10-12 05:00:46 Asia/Taipei: 55 application tables + one Cloudflare-reserved table, 63 named indexes, 987,136 bytes, zero imported rows across the 13 source-populated data tables, and one `s2_schema_meta` row. Provider reads succeeded with zero cloud mutations.
+- Destination account GraphQL usage was not authorized, so spendable same-UTC-day write headroom and analytics lag remain UNKNOWN. Merge `e266ae7f7b84e63c299ff50ef09cb20bfca97970` adds a manual least-privilege reader but has no physical run at this cut; even a future success is lag-unknown lower-bound evidence, not a spendable quota grant.
+- The source has 113,222 logical rows; four-fifths rounds to 90,578. At least 62,044 bar rows are needed, and the frozen catalog estimates at least 276,710 billed writes before all non-bar indexed costs, exceeding the free daily 100,000 cap. Logical-row percentage is not billed-write percentage.
+- D03 freezes an indicator-window atomic migration unit: market + symbol + decision cutoff + indicator family + exact expected sessions + selected versions/value hashes + causal clocks + action/halt/identity lineage + continuity hash + parent binding. Arbitrary row prefixes, partial symbol histories, older-session substitution, manifest-only transfer and destination-time clock laundering fail closed.
+- Bollinger can use a clean exact 20-session atomic unit only after reset/continuity and parent gates pass. ADX still requires canonical Wilder full replay or an independently replay-certified state plus exact continuation rows.
+- The 20-case executable oracle passes. It rejects transfer-to-import, logical-to-billed-row equivalence, arbitrary 80% completion, partial-window readiness, lagged-usage-to-quota authorization, migration-to-OOS/alpha evidence and maturity promotion.
+- PIT, OOS, walk-forward, selection/date-cluster, cost, retry billing, fillability, limits/halts/ex-rights, regime and alpha remain UNKNOWN where not physically observed. No outcomes, optimization candidate, maturity or Formal Core change.
+
+Exact next: independently audit the source backup/PIT/Frozen evidence; physically run the destination account analytics reader after least-privilege authorization while preserving UNKNOWN real-time headroom unless freshness or an equivalent ledger is bounded; design one bounded idempotent canary that cannot create a partial D03 window; measure index/retry billed writes; reconcile source/destination keys, values, versions and dependencies; then build exact per-symbol eligible-session and lineage coverage before Bollinger/ADX admission.
+
+Artifacts: `research/D03_MIGRATION_BATCH_INDICATOR_WINDOW_ATOMICITY_20261012_V0_1.md`, `research/d03_migration_batch_indicator_window_atomicity_cases_20261012_v0_1.json`, `research/test_d03_migration_batch_indicator_window_atomicity_v0_1.mjs`.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes closed; Formal Core locked.
