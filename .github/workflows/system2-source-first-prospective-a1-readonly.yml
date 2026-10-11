@@ -1,0 +1,75 @@
+name: System2 Source-First Prospective A1 Ledger (READ ONLY)
+
+on:
+  schedule:
+    - cron: "45 15 * * 1-5" # 23:45 Taipei, observation only
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-source-first-prospective-a1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Resolve honest actual Taiwan market date
+        id: market
+        shell: bash
+        run: |
+          set -euo pipefail
+          MARKET_DATE="$(TZ=Asia/Taipei date +%F)"
+          echo "market_date=$MARKET_DATE" >> "$GITHUB_OUTPUT"
+      - name: Official TWSE trading-day test (no synthetic weekend picks)
+        id: calendar
+        env:
+          MARKET_DATE: ${{ steps.market.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/scripts/check_twse_trading_day_readonly.mjs --market-date "$MARKET_DATE"
+      - name: Read official current TWSE and TPEx exact-day A1 and create a provenance receipt
+        if: steps.calendar.outputs.expected_trading_day == 'true'
+        env:
+          MARKET_DATE: ${{ steps.market.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_source_first_prospective_ledger_v0_1.mjs "$MARKET_DATE"
+          test -f "/tmp/system2-source-first-ledger/$MARKET_DATE.json"
+          node --input-type=module <<'NODE'
+          import {readFileSync,appendFileSync} from 'node:fs';
+          const day=process.env.MARKET_DATE;
+          const r=JSON.parse(readFileSync('/tmp/system2-source-first-ledger/'+day+'.json','utf8'));
+          if(r.marketDate!==day||r.sourceD1Reads!==0||r.sourceD1Writes!==0||
+             r.realQualifiedStockSelectionPerformed!==false||
+             r.selectedCount!==null||r.zeroPickDay!==null||
+             r.livePush!==false||r.orders!==false)throw Error('SOURCE_FIRST_PROVENANCE_OR_SELECTION_BOUNDARY_FAILED');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            '### Source-first prospective A1 receipt (NOT stock selection)\n\n'+
+            '- Taiwan date: '+day+'\n- Official current-source state: '+r.sourceState+
+            '\n- Observed ordinary symbols: '+String(r.sourceOrdinarySymbolCount??'UNKNOWN')+
+            '\n- Strategy: '+r.strategyId+' / '+r.strategyVersion+
+            '\n- Selection: NOT EXECUTED (PIT history/continuity not yet reconciled)'+
+            '\n- SHA256: '+r.ledgerSha256+'\n');
+          NODE
+      - name: Preserve independent temporary source archive (not immutable long-term D1)
+        if: always() && steps.calendar.outputs.expected_trading_day == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-source-first-a1-${{ steps.market.outputs.market_date }}-${{ github.run_id }}
+          path: /tmp/system2-source-first-ledger/*.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Protect System1 root files
+        if: always()
+        run: git diff --exit-code -- Worker.js wrangler.toml
