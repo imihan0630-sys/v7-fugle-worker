@@ -24,6 +24,16 @@ Until independently accepted original-source read headroom, System1 read reserve
 
 B2 now includes a **per-snapshot** PIT clock crosswalk guard; checking `sourceVersion.selectionCutAt` alone is insufficient when a revision is reused by an older Frozen Snapshot.
 
+## New actual offline integrity implementation (safe to run locally)
+
+`python3 system2/migration/issue1068_sqlite_offline_integrity_v0_1.py --db /path/to/ISOLATED-RESTORED-COPY.sqlite`
+
+- **Only** an existing, isolated, self-contained, local restored SQLite copy. Never point at live Cloudflare/source storage. No D1 or R2 bindings, no secrets/network, `mode=ro`, `query_only`, a read transaction; rejects missing/symlink inputs, WAL/SHM/journal sidecars, unstable file bytes, malformed SQLite, integrity / foreign-key errors and unsupported virtual tables.
+- Computes complete local SQLite schema SHA256 including indexes/triggers, type-tagged and length-prefixed row bytes (NULL vs text/BLOB/int/IEEE-754 REAL), SHA256 of each row, sorted multiset row-hashes in bounded temporary chunks, per-table SHA256, actual local file SHA256 and count. Duplicate rows remain counted; row insertion/physical iteration order does not affect logical multiset digest. Temporary chunks contain only hashes and are deleted.
+- Result is **local logical consistency of one untrusted offline copy**, **not** source physical provenance, PIT validation, Frozen chain verification, independent restore acceptance, R2 proof or migration permission. Local source role and original Run/Job/Artifact/SHA must be separately authenticated by independent AUDIT_LANE. Report intentionally pins all authorization booleans false.
+- Test locally using `python3 system2/migration/test_issue1068_sqlite_offline_integrity_v0_1.py`; System2 CI invokes this via `system2/tests/issue1068_sqlite_offline_integrity_v0_1.test.mjs`.
+- Free-tier import-days estimate is **not emitted** from an untrusted local fixture; only separate quota-gated and independent physical row acceptance may qualify it.
+
 ## After separate real read-budget acceptance (NOT authorized by this document)
 
 1. **Freeze source evidence identity**: record exact original account/database fingerprint, run/job/attempt/commit UTC clocks, reservation and read-only grant IDs, budget max, other writers and Analytics lag. An independent gate must explicitly allow only a bounded physical source read.
