@@ -43,7 +43,8 @@ def table_fingerprint(conn, name):
     ).fetchall():
         index_cols = conn.execute("PRAGMA index_xinfo(" + quoted(index_name) + ")").fetchall()
         sql = conn.execute("SELECT sql FROM sqlite_master WHERE type='index' AND name=?", (index_name,)).fetchone()
-        # cid=-1 is ordinary rowid tail; only cid=-2 means an expression.\n        indexes.append({
+        # cid=-1 is ordinary rowid tail; only cid=-2 means an expression.
+        indexes.append({
             "unique": bool(unique), "origin": origin, "partial": bool(partial),
             "columns": [(row[1], row[2], row[3], row[4], row[5]) for row in index_cols],
             "expressionDdl": sql[0] if sql and (partial or any(row[1] == -2 for row in index_cols)) else None,
