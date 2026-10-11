@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "S2_DESTINATION_DAY80_PROVIDER_ORIGINAL_READONLY_EVIDENCE_20261012_V0_1",
+  "observedAtUtc": "2026-10-11T21:00:46.499Z",
+  "observedAtTaipei": "2026-10-12 05:00:46",
+  "originalRunId": 38174567933,
+  "originalJobId": 114574078061,
+  "originalArtifactId": 11715650509,
+  "originalArtifactZipSha256": "ed7c660359f45e8f7ad9c6f8187c2b8d48cd92057f4231b8e01d34fd5cf42ff0",
+  "originalInnerReceiptSha256": "5d21f6327ee0d1c539aaf264ffbd1ad920f3a091db0c818411a7ab9144647ef3",
+  "bothByteHashRecomputedFromOriginalProviderZip": true,
+  "headSha": "b903b7b92473b409655988f829d295818478515f",
+  "sourceOriginalFullBackupRun": 38150147134,
+  "sourceOriginalEncryptedZipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+  "crossEnvironmentOfflineRestoreRun": 38151167952,
+  "sourceArchiveLogicalRows": 113222,
+  "confirmedNewAccount": {
+    "logicalDatabaseName": "system2-research",
+    "applicationTableCount": 55,
+    "cloudflareReservedTableCount": 1,
+    "namedIndexCount": 63,
+    "currentDbBytes": 987136,
+    "sourceNonEmptyApplicationTableCount": 14,
+    "sourceNonEmptyDataTablesExcludingSchemaMeta": 13,
+    "currentHistoricalRowsImported": 0,
+    "currentS2SchemaMetaRows": 1,
+    "readbackBySourcePopulatedTable": {
+      "s2_historical_a1_bars": 0,
+      "s2_historical_a1_pack_manifests": 0,
+      "s2_historical_a1_segment_manifests": 0,
+      "s2_historical_a1_packs": 0,
+      "s2_infrastructure_checks": 0,
+      "s2_historical_ingest_batches": 0,
+      "s2_historical_cold_backfill_checkpoints": 0,
+      "s2_historical_cold_ingest_receipts": 0,
+      "s2_historical_pack_ingest_receipts": 0,
+      "s2_historical_segment_backfill_checkpoints": 0,
+      "s2_historical_segment_ingest_receipts": 0,
+      "s2_resonance_runs": 0,
+      "s2_source_session_receipts": 0,
+      "s2_schema_meta": 1
+    }
+  },
+  "quota": {
+    "quotaDayUtc": "2026-10-11",
+    "freeBilledRowsWrittenCap": 100000,
+    "ownerRequestedDay80Budget": 80000,
+    "graphqlReadResult": "DAY80_DEST_READONLY_GRAPHQL_ACCOUNT_USAGE_NOT_AUTHENTICATED",
+    "spendableAccountRemainingBilledWrites": "UNKNOWN",
+    "analyticsLagUpperBound": "UNKNOWN",
+    "canGrantQuotaBasedOnThisReadback": false
+  },
+  "cloud": {
+    "authenticatedDestinationProviderReadsSucceeded": true,
+    "providerCallsCompleted": 18,
+    "physicalDestinationD1DataWrites": 0,
+    "physicalSourceD1Queries": 0,
+    "cloudflareMutationCount": 0,
+    "newPermissionsOrSecrets": 0,
+    "paidServicesActivated": 0,
+    "workerOrCronChanges": 0,
+    "system1FormalCoreTouched": false
+  },
+  "verdict": {
+    "destinationSchemaAndRowEmptiness": "PHYSICAL_READBACK_PASS",
+    "sourceBackupIndependentAudit": "PENDING",
+    "pointInTimeAndFrozenOriginalAudit": "PENDING",
+    "destinationCurrentAccountQuotaGrant": "BLOCKED",
+    "permissionToImport": false,
+    "fullMigrationComplete": false
+  },
+  "next": "AUDIT_LANE independently verify original source archive+PIT/Frozen; qualify target account-wide verified spendable quota or correctly approved alternative; only then bounded rowsWritten-metred complete batch imports, never ignore billed index writes."
+}
