@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "D06_PF044_CHECKPOINT_V0_1",
+  "owner": "D06",
+  "status": "RESEARCH_ONLY",
+  "parentMainSha": "c249024f13e1a868d5a4d0f6b008c3ad8687df2e",
+  "module": "D06-16",
+  "conclusion": "Gross primary ETF creation/redemption lower bound is the distance from reported unit delta to a verified interval of operational adjustments. Unknown adjustment bounds mean no positive identified lower bound. Actual stock execution remains UNKNOWN.",
+  "tests": "17 synthetic deterministic assertions passed; no outcome tests",
+  "formalCore": "LOCKED",
+  "maturityChange": "NONE",
+  "next": "Capture verified operational adjustments with future PCF vintages, freeze OOS with D16, and recover local PF043 evidence."
+}
