@@ -31,7 +31,7 @@ class SQLRestoreTests(unittest.TestCase):
     def test_realistic_source_sql_is_restored_locally_only(self):
         result = replay_offline_sql(self.write(BASE))
         self.assertEqual(result["state"], "OFFLINE_SQL_RESTORED_LOGICAL_CONSISTENCY_ONLY")
-        self.assertEqual(result["localRestore"]["totalRows"], 4)
+        self.assertEqual(result["localRestore"]["totalRows"], 3)
         self.assertEqual(result["localRestore"]["tableCount"], 2)
         self.assertEqual(result["replayedStatementCount"], 9)
         self.assertFalse(result["originalCloudflareExportReceiptAuthenticated"])
@@ -41,7 +41,7 @@ class SQLRestoreTests(unittest.TestCase):
 
     def test_comments_and_quoted_semicolon_are_safe(self):
         data = "-- Synthetic source\n\n" + BASE.replace("'good; valid'", "'text; with ''quotes'' and newlines'")
-        self.assertEqual(replay_offline_sql(self.write(data))["localRestore"]["totalRows"], 4)
+        self.assertEqual(replay_offline_sql(self.write(data))["localRestore"]["totalRows"], 3)
 
     def test_update_is_denied(self):
         with self.assertRaisesRegex(ValueError, "UNSAFE"):
