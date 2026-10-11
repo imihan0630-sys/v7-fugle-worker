@@ -1,0 +1,62 @@
+name: System2 Issue1068 Main Reserve Evidence Offline Fail Closed
+# Repository-local tests only. No Cloudflare account/network access and no source D1/R2 reads.
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-issue1068-main-reserve-offline-defer.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system2-issue1068-reserve-offline-defer
+  cancel-in-progress: false
+jobs:
+  real_main_reserve_fail_closed:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate all offline adversarial PIT frozen backup guards
+        run: node system2/tests/issue1068_source_pit_frozen_restore_offline_v0_1.test.mjs
+      - name: Real current-main System1 reserve policy must defer physical source D1 scan
+        run: |
+          set -euo pipefail
+          set +e
+          node system2/migration/run_issue1068_source_pit_frozen_restore_offline_v0_1.mjs > /tmp/s2-issue1068-real-main-reserve-defer.json
+          exit_code=$?
+          set -e
+          test "${exit_code}" -eq 2
+          node - <<'NODE'
+          const {readFileSync}=require("node:fs");
+          const assert=require("node:assert/strict");
+          const x=JSON.parse(readFileSync("/tmp/s2-issue1068-real-main-reserve-defer.json","utf8"));
+          assert.equal(x.state,"READ_ONLY_D1_BUDGET_EVIDENCE_DEFER");
+          assert(x.blockers.includes("SYSTEM1_READ_WRITE_RESERVES_NOT_AUTHORIZED"));
+          assert(x.blockers.includes("SOURCE_D1_PHYSICAL_SCHEMA_ROWS_TABLE_HASHES_NOT_ATTESTED"));
+          assert(x.blockers.includes("PIT_REAL_SOURCE_VERSION_SET_MISSING"));
+          assert(x.blockers.includes("FROZEN_PHYSICAL_DECISION_ROWS_MISSING"));
+          assert(x.blockers.includes("SOURCE_D1_BACKUP_RESTORE_PHYSICAL_BYTES_UNVERIFIED"));
+          assert(x.blockers.includes("SOURCE_R2_ORIGINAL_OBJECT_CONTENT_HASHES_UNVERIFIED"));
+          assert(x.blockers.includes("DESTINATION_DATA_READBACK_NOT_ACCEPTED"));
+          for(const k of ["sourceD1BackupPhysicallyAccepted","pitPhysicallyAccepted",
+           "frozenPhysicallyAccepted","r2ContentPhysicallyAccepted","destinationReadbackAccepted",
+           "permissionToImport","shadowAuthorized"])assert.equal(x[k],false,k);
+          assert.equal(x.physicalSourceD1ReadExecutedByThisAudit,0);
+          assert.equal(x.physicalSourceD1WriteExecutedByThisAudit,0);
+          assert.equal(x.r2ObjectReadExecutedByThisAudit,0);
+          console.log("ISSUE1068_REAL_MAIN_RESERVE_NEGATIVE_GATE=READ_ONLY_D1_BUDGET_EVIDENCE_DEFER");
+          console.log("ISSUE1068_PHYSICAL_BACKUP_PIT_FROZEN_R2_DATA_IMPORT_AUTHORITY=NONE");
+          NODE
+          sha256sum /tmp/s2-issue1068-real-main-reserve-defer.json
+      - name: Archive real-current-main sanitized negative proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-issue1068-real-main-reserve-defer-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1068-real-main-reserve-defer.json
+          if-no-files-found: warn
+          retention-days: 90
