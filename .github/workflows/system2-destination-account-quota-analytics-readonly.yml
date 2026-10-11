@@ -1,0 +1,67 @@
+name: S2 Destination D1 Account Quota Analytics Readonly (owner-gated)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s2-destination-d1-account-quota-readonly
+  cancel-in-progress: false
+
+jobs:
+  quota_readonly:
+    # No Cloudflare API on PR or push; explicit operator dispatch only.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate anti-promotion and source/V8 isolation
+        run: |
+          set -euo pipefail
+          node --test system2/tests/build00_destination_account_quota_analytics_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Strict read-only credential scope present
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$S2_SCHEMA_DEST_ACCOUNT_ID" ] || [ -z "$S2_SCHEMA_DEST_D1_WRITE_TOKEN" ]; then
+            echo 'EXISTING_DEST_D1_SCOPE_NOT_CONNECTED' >&2
+            exit 2
+          fi
+          if [ -z "$S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN" ]; then
+            echo 'DEST_ACCOUNT_ANALYTICS_READ_PERMISSION_OR_SECRET_REQUIRED' >&2
+            exit 2
+          fi
+      - name: Real DEST account GraphQL two physical day samples (no D1 SQL or writes)
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/build00_destination_account_quota_analytics_readonly_v0_1.mjs
+      - name: Retain SANITIZED original provider read-only receipt for independent audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-real-account-quota-read-${{ github.run_id }}
+          path: /tmp/s2-build00-destination-graphql/sanitized-destination-quota-read.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Explicit physical safety boundary
+        if: always()
+        run: |
+          echo '### Destination account read-only quotas' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Account Analytics Read permission is required. D1 Edit alone does NOT authorize account GraphQL analytics.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Observed GraphQL totals are lag-unknown lower bounds; spendable quota UNKNOWN and permissionToImport FALSE.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No source D1 query, Cloudflare SQL write, Worker/Cron, System1 Formal, paid R2 or secret change.' >> "$GITHUB_STEP_SUMMARY"
