@@ -66,6 +66,8 @@ const cases=[
  ["cost source missing stops at conditional L4",()=>assert.equal(evaluateL3ToL5(mutate(x=>{x.cost.tradingCostSourceCertified=false})).blockedAt,"COST")],
  ["symbol unfilled cases missing stops at conditional L4",()=>assert.equal(evaluateL3ToL5(mutate(x=>{x.cost.executableFillOrNonfillIncluded=false})).blockedAt,"COST")],
  ["no independent l5 readback stops conditional L4",()=>assert.equal(evaluateL3ToL5(mutate(x=>{x.validation.robustnessAuditAccepted=false})).blockedAt,"L5_REVIEW")],
+ ["D01-01 cannot pass without actual operational prospective replay",()=>assert.equal(evaluateL3ToL5(mutate(x=>{x.moduleId="D01-01";x.validation.outcomesActuallyJoined=false})).blockedAt,"D16")],
+ ["D01-01 legitimate prospective session replay need not claim economic returns",()=>{let x=mutate(x=>{x.moduleId="D01-01";x.validation.outcomesActuallyJoined=false;x.validation.costFieldsPreserved=false;x.validation.operationalProspectiveReplayComplete=true});let r=evaluateL3ToL5(x);assert.equal(r.eligibleLevel,"L5");assert.equal(r.promotionAllowed,false)}],
  ["non-trading D01-01 requires explicit D16 cost exemption",()=>assert.equal(evaluateL3ToL5(mutate(x=>{x.moduleId="D01-01";x.cost.infrastructureNonTradingApplicabilityAcceptedByD16=false})).blockedAt,"COST")],
  ["hypothetical fully signed test contract reaches L5 candidate state only",()=>{let x=evaluateL3ToL5(src());assert.equal(x.eligibleLevel,"L5");assert.equal(x.reason,"EXTERNAL_PHYSICAL_D16_L5_RECEIPTS_REQUIRE_HUMAN_READBACK_BEFORE_TRACKER_EDIT")}],
  ["hypothetical fully signed fixture NEVER directly edits or authorizes promotion",()=>{let x=evaluateL3ToL5(src());assert.equal(x.promotionAllowed,false);assert.equal(x.reviewReady,true)}],
