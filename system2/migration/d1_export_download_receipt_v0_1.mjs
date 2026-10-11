@@ -28,13 +28,16 @@ export function assessD1ExportDownloadReceiptV0_1({request,response,download}={}
        request?.virtualTableInventoryPhysicalReadback===true&&
        request?.virtualTableCount===0))
     errors.push('PHYSICAL_SOURCE_VIRTUAL_TABLE_EXPORT_COMPATIBILITY_UNVERIFIED');
-  if(response?.success!==true||response?.type!=='export'||
-     response?.status!=='complete'||typeof response.at_bookmark!=='string'||
-     response.at_bookmark.length<2||response.error)
+  // The REST API encloses export status in response.result; typed SDKs can
+  // expose that inner object directly. Normalize without logging either form.
+  const payload=response?.result?.type==='export'?response.result:response;
+  if(response?.success!==true||payload?.type!=='export'||
+     payload?.status!=='complete'||typeof payload.at_bookmark!=='string'||
+     payload.at_bookmark.length<2||payload.error||payload?.success===false)
     errors.push('D1_EXPORT_NOT_CONFIRMED_COMPLETE');
-  const signed=response?.result?.signed_url;
-  if(typeof response?.result?.filename!=='string'||
-     !/^[a-zA-Z0-9_.-]+\.sql$/.test(response.result.filename)||
+  const signed=payload?.result?.signed_url;
+  if(typeof payload?.result?.filename!=='string'||
+     !/^[a-zA-Z0-9_.-]+\.sql$/.test(payload.result.filename)||
      typeof signed!=='string'||!/^https:\/\//i.test(signed)||
      !signed.includes('?'))
     errors.push('SIGNED_SOURCE_SQL_DOWNLOAD_METADATA_UNVERIFIED');
