@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "S1_V8_REAL_PUBLIC_GET_REPAIR_DIAGNOSIS_20261011_V0_1",
+  "subject": "OWNER_CANCEL_EXTRA_V8_D1_QUOTA_RESERVE_AND_V8_SELECTION_OUTAGE",
+  "observedAtUtc": "2026-10-11T14:40:11.913Z",
+  "observedTaipei": "2026-10-11T22:40:11.913+08:00",
+  "realRun": 38148108348,
+  "realJob": 114495625483,
+  "realArtifact": 11705029955,
+  "headSha": "05f9f663658a73bb703ed888695754f4c92c34af",
+  "zipSha256": "87cce58754f04110688100e966b1a63487290358f05ee2e77bd2fad34e972ae0",
+  "originalUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38148108348",
+  "realCloudflareHttpMethods": [
+    "GET /api/version",
+    "GET /api/storage/status",
+    "GET /api/scan/status"
+  ],
+  "credentialsUsed": false,
+  "postCalls": 0,
+  "tradeCalls": 0,
+  "sourceD1SqlQueries": 0,
+  "runtime": {
+    "httpStatus": 200,
+    "version": "8.20.2-idempotent-d1-snapshots",
+    "testMode": false,
+    "kvConfigured": true,
+    "d1Configured": true,
+    "storageMode": "D1_GITHUB_ENCRYPTED"
+  },
+  "storage": {
+    "httpStatus": 200,
+    "latestArchived": true,
+    "latestScanDate": "2026-09-29",
+    "encryptedMirrorVerified": true,
+    "mirrorScanDate": "2026-09-29"
+  },
+  "scan": {
+    "httpStatus": 401,
+    "protectedStatusReadback": false,
+    "formalFullScanStatus": "UNKNOWN"
+  },
+  "judgement": "PUBLIC_RUNTIME_RESPONDS_BUT_FRESH_FORMAL_SELECTION_NOT_VERIFIED; STALE_ARCHIVED_DATE",
+  "knownIssue": "2026-10-08 DATA_ONLY_RECOVERY_NOT_PHYSICALLY_VERIFIED; 2026-10-12 next ordinary natural scan not yet observed",
+  "ownerQuotaChange": "REMOVE_ADDITIONAL_V8_NUMERIC_READ_WRITE_HEADROOM_RESERVE_ONLY",
+  "doesNotClaimV8Restored": true,
+  "sourceSystem2CronStayPaused": true,
+  "legacySourceSystem2WriterQuarantineStayActive": true,
+  "noV8FormalCoreOrProductionCronChanges": true
+}

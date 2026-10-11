@@ -69,7 +69,15 @@ const s1=JSON.parse(await readFile(new URL("../evidence/S2_CORR_20261007_003_SYS
 assert.equal(s1.reserveNumberAuthorized,false);assert.equal(s1.authorizedReserveRows,null);
 assert.equal(s1.readReserveNumberAuthorized,false);assert.equal(s1.authorizedReadReserveRows,null);
 assert.equal(s1.observedWholeV7DailyRowsWritten.max,2825);
-assert.equal(evaluateD1AccountQuotaReservationV0_1({writer:shadow,eventName:"schedule",accountUsage:usage(1000,1000),system1ReservePolicy:s1}).physicalAllowed,false);
+// Owner explicitly canceled the extra V8 reserve precondition. This pure
+// evaluator is not the deployed source-account writer grant: legacy S2 source
+// writers remain quarantined BEFORE Cloudflare credentials/GraphQL/D1 access.
+assert.equal(s1.ownerV8ExtraQuotaReserveWaived,true);
+assert.equal(s1.reserveNumberAuthorized,false);
+assert.equal(evaluateD1AccountQuotaReservationV0_1({writer:shadow,eventName:"schedule",accountUsage:usage(1000,1000),system1ReservePolicy:s1}).physicalAllowed,true);
+const sourceQ=JSON.parse(await readFile(new URL("../config/source_account_d1_writer_quarantine_v0_1.json",import.meta.url),"utf8"));
+assert.equal(sourceQ.active,true);
+assert.equal(sourceQ.denyNewPhysicalD1Reservations,true);
 const gateSource=await readFile(new URL("../scripts/run_d1_account_quota_gate_v0_1.mjs",import.meta.url),"utf8");
 assert.ok(gateSource.includes("NOT_DOCUMENTED_BY_VENDOR"));assert.ok(gateSource.includes("NEVER_RELEASE_BEFORE_UTC_RESET"));
 assert.doesNotMatch(gateSource,/safetyPercentage|analyticsFreshnessSeconds|freshnessThresholdSeconds/i);
