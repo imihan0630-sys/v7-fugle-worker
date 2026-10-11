@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "D20_SOCIAL_SOURCE_FAILURE_V0_1",
+  "room": "13",
+  "domain": "D20",
+  "modules": [
+    "D20-03",
+    "D20-06",
+    "D20-11"
+  ],
+  "scheduledSlotAsiaTaipei": "2026-10-11T15:10:00+08:00",
+  "actualAttemptAt": "UNKNOWN_EXACT_SECOND_AFTER_15_11_TAIPEI",
+  "source": "https://www.ptt.cc/atom/Stock.xml",
+  "attempts": [
+    {
+      "channel": "Firecrawl",
+      "maxAge": 0,
+      "status": "INSUFFICIENT_CREDITS",
+      "sourceContentReceived": false
+    },
+    {
+      "channel": "NativeWeb",
+      "status": "SOURCE_INACCESSIBLE",
+      "sourceContentReceived": false
+    }
+  ],
+  "primaryL4Eligible": false,
+  "observedArticleCount": "UNKNOWN",
+  "newPrimaryParentCount": 0,
+  "adjacentContinuity": "UNKNOWN",
+  "noHistoricalBackfill": true,
+  "sourceMissingIsNotZero": true,
+  "formalCore": "LOCKED",
+  "maturityChange": false,
+  "next": "At next actually executed and rotation-eligible fixed :10 Room13 slot retry frozen source; retain missed interval UNKNOWN."
+}
