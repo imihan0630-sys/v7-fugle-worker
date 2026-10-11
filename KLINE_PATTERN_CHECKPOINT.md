@@ -7049,3 +7049,24 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 2. D05/Corporate Actions owners: independently bind final 60m session bucket/auction and raw-price continuity.
 3. Room01: get real native Node / CI log for old 46 and new 21 synthetic tests; then test historical dynamic MA60 support vs current support band without outcome joins.
 4. 11/D16: preregister actual legal entry/fill, costs, matched support and prospective/OOS; mainline DL-147 and frozen 2021 witness remain separate.
+
+
+## Sara continuation — historical dynamic MA60 contact counterfactual (2026-10-11)
+
+- Distinguish CURRENT_SUPPORT_BAND_PROXIMITY (last 5 price ranges against MA60 at current cutoff) from HISTORICAL_DYNAMIC_MA60_TOUCH (each range against its own as-of 60-minute MA60). Both are causal but NOT semantically equivalent.
+- Two synthetic opposite-direction examples prove signal-family disagreement without future prices. Shared PRICE_OHLC root: one evidence family, not two independent confirmations.
+- New immutable artifacts:
+  - research/d01_sara_support_touch_semantics_v0_1.mjs
+  - research/test_d01_sara_support_touch_semantics_v0_1.mjs
+  - research/d01_sara_ma60_support_native_test_receipt_20261011_v0_1.json
+  - research/D01_SARA_MA60_DYNAMIC_SUPPORT_SEMANTIC_FALSIFICATION_20261011_V0_1.md
+- 16/16 PASS isolated V8 plus actual native Node v22.16.0 PASS 16/16, exit 0. Native stdout SHA256 891262830c3b96753b6281b9dc0879920e36747292f358b95091bb3c902348f9. Git blob hashes source 968e48fded39d05071a1004496f4f8bc7e4eaeef and test 0d4a864832babc644526601ccc733e98eb7d9419, matching source/test files physically executed.
+- No GitHub Actions CI result claimed. Previous Sara 46-fixture and 60m source-admission 21-fixture suites remain only isolated V8 tested; no physical source rows or outcome access claimed.
+- Owner source gate (1101 / 2026-08-01..10-08, 60m) remains PHYSICAL_NOT_RETURNED. LIVE strategy win rate, partial bucket rule, historical intraday firstKnownAt and provider revision remain unknown.
+- D01 11/11 modules L3 / 60.0%, SDA-001/002 open, Alpha UNKNOWN, Formal Core LOCKED; 00/11 independent readbacks still pending. No production code, D1 or signal changes.
+
+### Exact next Sara continuation
+1. Obtain actual source-certified historical 1101 60m physical bars, bucket start/end/last session and revision/PIT coverage from authorized data owner.
+2. Obtain exact-file native Node / CI tests for prior 46 + 21 fixture oracles.
+3. Freeze no-outcome touch-disagreement denominators for T/B/M/N cohorts before D16 OOS testing.
+4. Mainline DL-147 / 1101-2021-06-15 R1-R6 physical witness remain independent and uncompleted.
