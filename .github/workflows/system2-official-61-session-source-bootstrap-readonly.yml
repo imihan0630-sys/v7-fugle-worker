@@ -1,0 +1,77 @@
+name: System2 Official 61-Session Source Bootstrap (Read-only)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "50 15 * * 1" # Monday 23:50 Asia/Taipei, bounded source-only probe
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-source-first-61-session-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source61:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Resolve current Taipei date only
+        id: date
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "market_date=$(TZ=Asia/Taipei date +%F)" >> "$GITHUB_OUTPUT"
+      - name: Official TWSE calendar trading-day gate
+        id: calendar
+        shell: bash
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/check_twse_trading_day_readonly.mjs --market-date "$MARKET_DATE"
+      - name: Test safety boundaries before external reads
+        if: steps.calendar.outputs.expected_trading_day == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test system2/tests/source_first_official_61_session_collector_v0_1.test.mjs
+          node --check system2/scripts/run_source_first_official_61_session_collector_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download source-only original JSON; establish 61-session research observations
+        id: source
+        if: steps.calendar.outputs.expected_trading_day == 'true'
+        shell: bash
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_source_first_official_61_session_collector_v0_1.mjs "$MARKET_DATE"
+      - name: Preserve ORIGINAL provider responses and normalized 61-session source receipt
+        if: always() && steps.calendar.outputs.expected_trading_day == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-original-official-61-${{ steps.date.outputs.market_date }}-${{ github.run_id }}
+          path: /tmp/system2-official-61/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Publish honest observational summary
+        if: always()
+        shell: bash
+        env:
+          DATE: ${{ steps.date.outputs.market_date }}
+          TRADING: ${{ steps.calendar.outputs.expected_trading_day }}
+        run: |
+          echo "### System2 official 61-session source bootstrap" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Taipei date: $DATE" >> "$GITHUB_STEP_SUMMARY"
+          echo "- TWSE trading day: $TRADING" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Original provider files: see unique artifact when provider run exists" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Selection: NOT EXECUTED; no picks, no zero-pick assertion" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Storage: GitHub Action artifact 90 days, NOT durable frozen decision" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Cloudflare D1 and System1 runtime operations: NONE" >> "$GITHUB_STEP_SUMMARY"
