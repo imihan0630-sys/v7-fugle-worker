@@ -4,7 +4,7 @@
 // Temporary recoverability depends on existing SOURCE_D1_TOKEN; rotate only after
 // independent migration/archive re-encryption. No new Secrets or paid Cloudflare.
 import {createHash,randomBytes,hkdfSync,createCipheriv,createDecipheriv} from "node:crypto";
-import {mkdir,writeFile,stat,readFile,rm,createReadStream,createWriteStream} from "node:fs/promises";
+import {mkdir,writeFile,stat,rm} from "node:fs/promises";
 import {createReadStream as streamRead,createWriteStream as streamWrite} from "node:fs";
 import {Readable,Transform} from "node:stream";
 import {pipeline} from "node:stream/promises";
@@ -76,7 +76,8 @@ async function main(){
  const arr=Array.isArray(sched)?sched:sched?.schedules;
  if(!Array.isArray(arr)||arr.length!==0)halt("SOURCE_CRON_NONZERO");
  const s1=await api("/workers/scripts/fugle-test/schedules",workersToken);
- if(!(Array.isArray(s1)?s1:s1?.schedules)?.length|| (Array.isArray(s1)?s1:s1.schedules).length!==4)halt("V8_CRON_DRIFT");
+ const v8list=Array.isArray(s1)?s1:s1?.schedules;
+ if(!Array.isArray(v8list)||v8list.length!==4)halt("V8_CRON_DRIFT");
  receipt.sourceCronZero=true;receipt.v8CronCount=4;
  // An API export can temporarily block **SOURCE System2 D1 only**, not V8 DB.
  receipt.cloudflareBackupExportRequested=true;
