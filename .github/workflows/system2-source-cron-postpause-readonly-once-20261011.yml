@@ -1,0 +1,48 @@
+name: SOURCE S2 Cron post-pause physical GET-only receipt ONCE 20261011
+# Branch-only read-only evidence; NEVER merge this temporary push operator to main.
+on:
+  push:
+    branches: [s2-source-cron-postpause-get-proof-20261011]
+    paths:
+      - .github/workflows/system2-source-cron-postpause-readonly-once-20261011.yml
+permissions:
+  contents: read
+concurrency:
+  group: source-s2-postpause-readonly-once-20261011
+  cancel-in-progress: false
+jobs:
+  actual_cloudflare_get:
+    if: github.event.head_commit.message == 'S2_SOURCE_CRON_POSTPAUSE_GET_ONLY_20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify target, one-time scope and old source re-deploy quarantine
+        run: |
+          set -euo pipefail
+          node --check system2/migration/source_system2_cron_postpause_telemetry_probe_20261011.mjs
+          node -e "const fs=require('node:fs');const q=require('./system2/config/source_account_d1_writer_quarantine_v0_1.json'); const w=fs.readFileSync('.github/workflows/system2-resonance-deploy.yml','utf8');if(!q.active||q.automaticRelease!==false||!w.includes('if: '+String.fromCharCode(36)+'{{ false }}')) process.exit(2)"
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Authenticated Cloudflare source ONLY GET and GraphQL read-only, no SQL
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/source_system2_cron_postpause_telemetry_probe_20261011.mjs
+      - name: Upload sanitized original source-account receipt for independent audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-source-cron-postpause-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-cron-postpause-real-proof/postpause-provider-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve strict acceptance boundary
+        if: always()
+        run: echo 'Cloudflare GET metadata and query-only GraphQL, optional GET /api/version. No Worker/D1/R2 mutation, no Cron scheduled-event type completeness or in-flight proof inferred from summary analytics.' >> "$GITHUB_STEP_SUMMARY"
