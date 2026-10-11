@@ -67,7 +67,7 @@ test('61 official sessions required, no calendar gap laundering',async()=>{
  assert(a.blockers.includes('OFFICIAL_61_SESSION_CALENDAR_UNVERIFIED'));
 });
 test('source/prior-history current close mismatch is not qualified',async()=>{
- const p=make();p.historyBySymbol['2330'].bars.at(-1).close=200;
+ const p=make();p.historyBySymbol['2330'].bars.at(-1).close=159.8;
  const a=await evaluate(p);assert.equal(a.incompleteCount,1);
  assert.equal(a.observations[0].reasonCodes[0],'CURRENT_HISTORY_VS_DAILY_SOURCE_HASH_PRICE_VOLUME_MISMATCH');
 });
