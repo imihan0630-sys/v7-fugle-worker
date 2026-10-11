@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-05 07:18 Asia/Taipei
+Updated: 2026-10-12 00:12 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -519,3 +519,21 @@ The next material maturity increase cannot be earned by adding more rating event
 
 Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE exists.
 
+
+
+## 2026-10-12 00:12 continuation｜D22-05 rating-anchor clock, cluster and withdrawal falsification
+
+Durable evidence: `research/d22_05_anchor_clock_concentration_audit_20261012_v0_1.json`.
+
+- Reused the frozen 22 episode anchors without rebuilding the manifest or joining equity outcomes. Their 22 distinct calendar dates cover only 10 issuers; 9 issuers recur. Directional counts are 11 positive / 11 negative. Years: 2020=3, 2021=5, 2022=2, 2023=6, 2024=4, 2025=0, 2026=2. These are selected agency events, not a representative issuer universe.
+- Three cross-issuer anchor pairs are within 7 calendar days: A02/A13 (2020-04-14/16), A03/A14 (2021-04-29/23), A07/A22 (2023-08-24/22). Distinct episode dates do not prove issuer/date/macro independence. Require issuer-cluster and date/regime sensitivity before OOS conclusions.
+- The canonical 22-anchor manifest contains zero explicit intraday publication timestamps. Taiwan Ratings historical 'Rating Date' is a rating-change date, not proof of first public intraday availability. Same-day Taiwan market eligibility remains UNKNOWN until release clock is attested; no same-day return label was opened.
+- Taiwan Ratings Wiwynn issuer history displays 2026-08-25 NR with a press-release title specifying withdrawal at issuer request, while older 2021/2023 rating episodes remain in history. NR/withdrawal is NOT a default/downgrade and today's header cannot backfill historical eligibility. Official sources: https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5333 and https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491. TWSE disclosure timestamps are a possible independent corroboration route, not yet proven for these 22 events.
+- All PIT first-known/knownAt, finance release, thin bond trading, quote/trade/reference split, selection/survivorship, revisions, corporate actions, OOS/walk-forward, multiple testing, overfit, factor redundancy, costs and regime guards remain active. Missing evidence = UNKNOWN, never BAD/0. Formal Core LOCKED; no historical Shadow or Formal candidate.
+- Gate unchanged: 22 challenger episodes; baseline-frozen anchors 0; mature paired anchors 0; outcomes CLOSED; D22-05 L3/60%; D22 overall 51.7%.
+
+Exact next continuation:
+1. Add original rating press-release publication clock to existing anchor IDs, without changing episode clustering. If clock cannot be verified, block same-day decisions; do not invent timestamps.
+2. Fill the same-population 22-anchor D07 pre-event fundamentals, D13 macro/rates, industry, size/liquidity, D11 event clocks, and prior rating B0/B1; freeze only genuinely attested rows.
+3. Validate issuer and temporal cluster sensitivity and coverage of withdrawn/delisted/unrated issuers before interpreting directional balance; no outcome opening until >=20 truly mature paired anchors.
+4. Parallel D22-04/06 TPEx multi-date reference transport may continue, with model fair value separated from actual trades/quotes.
