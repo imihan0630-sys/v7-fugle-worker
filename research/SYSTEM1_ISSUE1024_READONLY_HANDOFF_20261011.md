@@ -3,6 +3,13 @@
 Observed: 2026-10-11 Asia/Taipei. Baseline main: `ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e`.
 Class A documentation and offline evidence intake. This is producer reconciliation, not independent physical acceptance.
 
+## Append-only time conversion correction (2026-10-11, original source preserved)
+
+Independent AUDIT_LANE found **12/12 invalid** `originalNativeMetadata[*].createdAtTaipei` display fields in `SYSTEM1_ISSUE1024_NATIVE_RECHECK_20261011_V0_1.json`: the UTC wall-clock was incorrectly relabeled as `+08:00` without shifting the instant. **Do not consume those twelve legacy derived display fields as trusted Taipei time.** The raw GitHub Run `created_at` strings and corresponding original-source SHA256 remain immutable. 
+
+Corrected per-run display timestamps and original-vs-corrected audit trail are in **`research/SYSTEM1_ISSUE1024_12_TIMESTAMP_CORRECTIONS_20261011_V0_1.json`**. The `system2/tests/system1_issue1024_12_timestamp_corrections_v0_1.test.mjs` test validates each `Date.parse(correctedTaipei) === Date.parse(sourceUtc)`, source Run ID/head SHA, and original raw Run JSON SHA256; the correction does not reclassify any P01/P02/P04 physical evidence. Example: `2026-10-07T16:03:36Z` is `2026-10-08T00:03:36+08:00`, **not** `2026-10-07T16:03:36+08:00`. This correction applies to **Run creation**, not job start, artifact timestamp, Cloudflare cron invocation or market date. 
+Original Work evidence remains unchanged; **no physical acceptance, reserve approval, merge or deployment is implied**.
+
 ## What was independently retrieved
 
 Receipt: `research/SYSTEM1_ISSUE1024_NATIVE_RECHECK_20261011_V0_1.json`.
