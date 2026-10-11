@@ -29,9 +29,10 @@ export async function buildSourceFirstProspectiveLedgerV0_1({marketDate,source,f
       const row=batch.bySymbol?.[symbol];
       if(typeof symbol!=='string'||!/^[1-9]\d{3}$/.test(symbol)||seen.has(symbol)||
          !['TWSE','TPEX'].includes(row?.market)||row?.marketDate!==marketDate ||
-         !/^[0-9a-f]{64}$/i.test(row?.sourceRowHash||'')||
-         !Number.isFinite(row?.close)||row.close<=0 ||
-         !Number.isFinite(row?.volumeShares)||row.volumeShares<0){
+         !/^[0-9a-f]{64}$/i.test(row?.sourceRowHash||'') ||
+         (row?.close!==null && row?.close!==undefined && (!Number.isFinite(row.close)||row.close<=0)) ||
+         (row?.volumeShares!==null && row?.volumeShares!==undefined &&
+          (!Number.isFinite(row.volumeShares)||row.volumeShares<0))){
         blockers.push('SOURCE_SYMBOL_ROW_INTEGRITY_INCOMPLETE');continue;
       }
       if(!utc(row?.provenance?.observedAt)||
@@ -44,7 +45,8 @@ export async function buildSourceFirstProspectiveLedgerV0_1({marketDate,source,f
       rows.push({
         symbol,companyName:row.companyName||null,market:row.market,
         marketDate,open:row.open,high:row.high,low:row.low,close:row.close,
-        volumeShares:row.volumeShares,tradeValue:row.tradeValue,
+        volumeShares:row.volumeShares??null,tradeValue:row.tradeValue??null,
+        priceState:row.priceState||null,
         sourceRowHash:row.sourceRowHash,
         observedAt:row.provenance?.observedAt||source.observedAt,
         availableAt:row.provenance?.availableAt||null,
@@ -64,6 +66,7 @@ export async function buildSourceFirstProspectiveLedgerV0_1({marketDate,source,f
     sourceBatchHash:sourceReady?batch.batchHash:null,
     sourceTransports:source?.transports||null,
     sourceOrdinarySymbolCount:sourceReady?rows.length:null,
+    noUsablePriceSymbolCount:sourceReady?rows.filter(x=>!Number.isFinite(x.close)||x.close<=0).length:null,
     observations:sourceReady?rows:[],
     strategyId:'SHORT_MOMENTUM',
     strategyVersion:'V0.1-CONTRACT',
