@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "S2_DEST_D1_ISSUE1103_INDEPENDENT_EXACT_SCHEMA_PHYSICAL_ACCEPTANCE_20261011_V0_1",
+  "auditLane": "SYSTEM2_INDEPENDENT_AUDIT_LANE",
+  "startedApproxTaipei": "2026-10-11T09:08:00+08:00",
+  "auditedAtTaipei": "2026-10-11T09:11:45+08:00",
+  "mainAtReadback": "84af8c09078e932ffc95fcbc6bb37bb73af4bbc2",
+  "issue1103": {
+    "verdict": "PASS",
+    "verifiedScope": "AUTHENTICATED_DESTINATION_SQLITE_SCHEMA_FULL_NAMED_OBJECT_INVENTORY",
+    "technicalCorrectionResolved": true
+  },
+  "priorEvidenceFile": "system2/migration/evidence/S2_DEST_D1_SCHEMA_ONLY_INDEPENDENT_PHYSICAL_AUDIT_20261011_V0_1.json",
+  "physicalInstallation": {
+    "appliedEarlier": true,
+    "applyOnceRunId": 38069750915,
+    "applyOnceJobId": 114264577475,
+    "applyOnceArtifactId": 11675494971,
+    "appliedStatements": 125,
+    "tableCount": 55,
+    "indexCount": 63,
+    "schemaVersion": "1.1",
+    "planSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "applyOnceRerunPerformedByThisAudit": false
+  },
+  "newOriginalReadOnlyProof": {
+    "runId": 38099562997,
+    "jobId": 114352494288,
+    "artifactId": 11687550030,
+    "originalRunHead": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+    "runAttempt": 1,
+    "workflowDispatch": true,
+    "jobConclusion": "success",
+    "githubArtifactSha256Metadata": "3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe",
+    "originalZipSha256IndependentlyRecomputed": "3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe",
+    "originalZipUncompressedReceiptBytes": 32048,
+    "rawReceiptIndependentlyUnzippedAndParsed": true,
+    "receiptStatus": "DESTINATION_SCHEMA_EXACT_FULL_OBJECT_SET_READONLY_PASS",
+    "realAppObjectCount": 118,
+    "sourceOfCanonicalIndependentlyReplayed": "SQL_0001_THROUGH_0010_DIRECT_DDL_NAME_AND_PARENT_TABLE_REGEX",
+    "physicalExactTableNames": 55,
+    "physicalExactIndexNamesAndOwners": 63,
+    "rawNonSqliteInternalObjects": 119,
+    "reservedVendorObject": {
+      "type": "table",
+      "name": "_cf_KV",
+      "tbl_name": "_cf_KV"
+    },
+    "unexpectedTableIndexViewTriggerObjects": 0,
+    "staged0011Present": false,
+    "verifiedSchemaVersion": "1.1",
+    "rawCanonicalAndPhysicalArrayEqual": true,
+    "independentlyRecomputedPhysicalDigest": "f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+    "independentlyRecomputedCanonicalDigest": "f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "cloudDestinationMetadataGets": 2,
+    "cloudDestinationSelectOnlyPostQueries": 2,
+    "cloudDdlStatements": 0,
+    "cloudDmlStatements": 0,
+    "cloudWritesPerformed": 0,
+    "sourceAccountRequests": 0,
+    "additionalCloudflareApiCallsByAuditor": 0,
+    "jobLogMarkers": [
+      "S2_SCHEMA_FULL_OBJECT_READONLY_RESULT=DESTINATION_SCHEMA_EXACT_FULL_OBJECT_SET_READONLY_PASS",
+      "S2_SCHEMA_CANONICAL_DIGEST_SHA256=f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+      "S2_SCHEMA_PHYSICAL_DIGEST_SHA256=f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+      "SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED"
+    ],
+    "evidencePr1106": {
+      "number": 1106,
+      "merged": true,
+      "mergeCommit": "974500b5aa392d0bc12b60a14b552c7f80f9fc21",
+      "codeChanged": false
+    },
+    "candidateTestPath": "system2/tests/audit_s2_issue1103_independent_canonical_physical_manifest_v0_1.test.mjs"
+  },
+  "strictOriginal25PointReconciliation": {
+    "originalTotal": 25,
+    "previousEvidenceScopedPass": 20,
+    "previousBlocked": 5,
+    "newlyIndependentlyAcceptedIds": [
+      "C14",
+      "C15",
+      "C16"
+    ],
+    "newEvidenceScopedPass": 23,
+    "remainingBlocked": 2,
+    "fail": 0,
+    "checks": [
+      {
+        "id": "C01",
+        "criterion": "Canonical GitHub main SHA readback",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "GitHub main 7c508b3f66f5e27588a0b466acfdf1f5dd347283 at audit intake"
+      },
+      {
+        "id": "C02",
+        "criterion": "Owner explicitly approved single target-only schema install",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Runbook checkpoint records 批准正式建表; narrow target and only one permitted run"
+      },
+      {
+        "id": "C03",
+        "criterion": "Real VERIFY_ONLY workflow and job succeeded",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Run 38068559602 Job 114261103226 SUCCESS; logs PREWRITE_EMPTY_TARGET_VERIFIED_ONLY"
+      },
+      {
+        "id": "C04",
+        "criterion": "Original VERIFY_ONLY Artifact ZIP integrity",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Artifact 11676361012 independently SHA256 checked; zero DDL"
+      },
+      {
+        "id": "C05",
+        "criterion": "Real APPLY_ONCE workflow and job succeeded",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Run 38069750915 Job 114264577475 SUCCESS; exact main commit identified"
+      },
+      {
+        "id": "C06",
+        "criterion": "Original APPLY_ONCE Artifact ZIP integrity",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Artifact 11675494971 independently downloaded/unzipped/hash verified"
+      },
+      {
+        "id": "C07",
+        "criterion": "Only intended account/database identity permitted by executor",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Unchanged pinned hashes, GET account D1/list/metadata and authenticated real successful target-run; no owner account ID disclosed"
+      },
+      {
+        "id": "C08",
+        "criterion": "Approved VERIFY vs APPLY plan digest identical",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Both real receipts 99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f; executor blob unchanged between runs"
+      },
+      {
+        "id": "C09",
+        "criterion": "125 SQL statements success attested",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Runtime confirms each SQL affirmative nested result before progress; real logs VERIFIED_SQL_STATEMENTS=125, artifact appliedStatements=125"
+      },
+      {
+        "id": "C10",
+        "criterion": "Physical D1 user table COUNT = 55",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Authenticated SELECT filtered count 55; owner Cloudflare console secondary overview 55"
+      },
+      {
+        "id": "C11",
+        "criterion": "Physical D1 prefixed index COUNT = 63",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Authenticated postwrite filtered sqlite_schema SELECT returns index count 63"
+      },
+      {
+        "id": "C12",
+        "criterion": "Physical D1 schema_version = 1.1",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Authenticated SELECT s2_schema_meta schema_version readback in successful run"
+      },
+      {
+        "id": "C13",
+        "criterion": "Active SQL 0001..0010 sealed, staged 0011 excluded",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Offline plan 125=55 table+63 index+7 metadata, active 10 migrations, 0011 staged only"
+      },
+      {
+        "id": "C14",
+        "criterion": "Exact physical canonical table NAME membership (55)",
+        "status": "PASS_INDEPENDENT_RAW_ARTIFACT_AND_CANONICAL_SQL_REPLAY",
+        "proof": "Run 38099562997, Job 114352494288, Artifact 11687550030 original ZIP independently SHA256 verified 3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe. Raw receipt 118 physical/canonical type,name,tbl_name objects exactly matched; independent canonical SQL 0001..0010 offline replay; 1 reserved _cf_KV, no extras; full digest f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c.",
+        "supersedesPrevious": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF"
+      },
+      {
+        "id": "C15",
+        "criterion": "Exact physical canonical named index membership (63)",
+        "status": "PASS_INDEPENDENT_RAW_ARTIFACT_AND_CANONICAL_SQL_REPLAY",
+        "proof": "Run 38099562997, Job 114352494288, Artifact 11687550030 original ZIP independently SHA256 verified 3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe. Raw receipt 118 physical/canonical type,name,tbl_name objects exactly matched; independent canonical SQL 0001..0010 offline replay; 1 reserved _cf_KV, no extras; full digest f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c.",
+        "supersedesPrevious": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF"
+      },
+      {
+        "id": "C16",
+        "criterion": "No extra unknown table/index/view/trigger physical objects",
+        "status": "PASS_INDEPENDENT_RAW_ARTIFACT_AND_CANONICAL_SQL_REPLAY",
+        "proof": "Run 38099562997, Job 114352494288, Artifact 11687550030 original ZIP independently SHA256 verified 3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe. Raw receipt 118 physical/canonical type,name,tbl_name objects exactly matched; independent canonical SQL 0001..0010 offline replay; 1 reserved _cf_KV, no extras; full digest f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c.",
+        "supersedesPrevious": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF"
+      },
+      {
+        "id": "C17",
+        "criterion": "New-account D1 Free usage within limits at observed snapshot",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Owner daily UI 285/100000 writes, 537/5000000 reads, 987.14KB/5GB storage and 1/10 DB; observed only"
+      },
+      {
+        "id": "C18",
+        "criterion": "Account UTC-day vs one-DB rolling-24h costs separated",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Owner D1 detail 298 rolling 24h writes, distinct from account daily 285; no per-125 SQL cost asserted"
+      },
+      {
+        "id": "C19",
+        "criterion": "Exhaustive single APPLY_ONCE and absence of workflow rerun",
+        "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+        "proof": "Known apply Run #38069750915 has documented attempt1 and owner inventory attestation but current GitHub API cannot enumerate all workflow history independently"
+      },
+      {
+        "id": "C20",
+        "criterion": "System1 Formal Core and repository Worker/Cron unchanged",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "GitHub job output SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED; isolated destination-only diff/workflow paths"
+      },
+      {
+        "id": "C21",
+        "criterion": "Physical old Cloudflare account post-run nonmutation independently reobserved",
+        "status": "BLOCKED_INDEPENDENT_PHYSICAL_PROOF",
+        "proof": "Executor never requests source account and scoped destination authorization attested, but no separate postwrite source-account physical GET inventory was collected here"
+      },
+      {
+        "id": "C22",
+        "criterion": "No history or Frozen Snapshot data copy by schema executor",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "No source account API endpoint or data load in writer; real receipt sourceRowsCopied=0; no History/Frozen importer"
+      },
+      {
+        "id": "C23",
+        "criterion": "No Worker or Cron deployment or DB resource creation by workflow",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Workflow only target SQL and artifact; no wrangler, deploy, create database; receipt zeros"
+      },
+      {
+        "id": "C24",
+        "criterion": "No paid R2 or other paid services enabled by schema run",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "No R2 billing API calls; receipt paidUpgrade=false; owner free-tier dashboard"
+      },
+      {
+        "id": "C25",
+        "criterion": "No credential values in sanitized artifacts / reviewed logs",
+        "status": "PASS_EVIDENCE_SCOPED",
+        "proof": "Only masked token and expected credential names; no raw UUID/account IDs committed in audit evidence"
+      }
+    ],
+    "remainingBlockers": [
+      {
+        "id": "C19",
+        "state": "BLOCKED_PROOF_COMPLETENESS_ONLY",
+        "description": "Existing GitHub connector cannot exhaustively enumerate all original APPLY_ONCE workflow runs/attempts. Known authenticated APPLY run attempt 1 and owner inventory show one run; not exhaustive new independent enumeration."
+      },
+      {
+        "id": "C21",
+        "state": "BLOCKED_PROOF_COMPLETENESS_ONLY",
+        "description": "No separate post-APPLY real Cloudflare GET-only physical snapshot of old SOURCE account; strict destination-only account pin, only new destination calls and System1 repository manifest unchanged strongly support isolation; no contrary evidence."
+      }
+    ]
+  },
+  "formalDisposition": {
+    "issue1103": "PASS_PHYSICAL_FULL_OBJECT_INVENTORY_INDEPENDENTLY_VERIFIED",
+    "exact55Table63IndexPhase": "PASS_AUTHENTICATED_READBACK",
+    "fullSchemaOnly25CriterionStage": "BLOCKED_TWO_PREEXISTING_SECONDARY_ASSURANCE_PROOFS",
+    "fullSystem2Migration": "NOT_ACCEPTED",
+    "dataMigrationFrozenPIT": "NOT_ACCEPTED",
+    "workerCronShadow": "NOT_AUTHORIZED",
+    "couldCertifyBroaderSchemaOnlyPassNow": false,
+    "nextSafestSteps": [
+      "Obtain independent read-only GitHub Actions run/attempt inventory for original schema-only workflow; no rerun.",
+      "Obtain independent GET-only post-APPLY source-account metadata comparison under existing read-only approved means; no new permissions or source D1 read/write without authorization.",
+      "AUDIT_LANE re-check C19 and C21, then consider formally closing broader Schema-only 25/25. No APPLY_ONCE."
+    ]
+  },
+  "costIsolation": {
+    "ownerObservedDailyWrites": 285,
+    "accountDailyWriteLimit": 100000,
+    "ownerObservedDailyReads": 537,
+    "accountDailyReadLimit": 5000000,
+    "ownerObservedStorageKbApprox": 987.14,
+    "ownerObservedD1Count": 1,
+    "oneDbRolling24hWrites": 298,
+    "costNumbersDifferentScopes": true,
+    "notExact125SqlCost": true,
+    "newCloudSchemaWrites": 0,
+    "newD1Resources": 0,
+    "sourceFormalCoreChanged": false,
+    "workerCronDeployed": false,
+    "secretsOrTokensExposed": false,
+    "paidR2Activated": false,
+    "originalApplyOnceMustNeverBeRerun": true
+  }
+}
