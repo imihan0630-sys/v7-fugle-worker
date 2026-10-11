@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "D03_MIGRATION_BATCH_INDICATOR_WINDOW_ATOMICITY_CASES_20261012_V0_1",
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED",
+  "gates": {
+    "sourceBackupEngineerVerified": true,
+    "sourceBackupIndependentAuditAccepted": false,
+    "destinationTransferPhysicalVerified": true,
+    "destinationImportParityVerified": false,
+    "indicatorWindowPitReady": false
+  },
+  "facts": {
+    "sourceLogicalRows": 113222,
+    "fourFifthsLogicalRows": 90578,
+    "minimumBarRowsForFourFifths": 62044,
+    "minimumBilledWrites": 276710,
+    "dailyFreeBilledWriteCap": 100000,
+    "destinationHistoricalRowsImported": 0
+  },
+  "cases": [
+    {"id":"T01","claim":"physical secure transfer is verified","accept":true},
+    {"id":"T02","claim":"physical transfer implies destination import","accept":false},
+    {"id":"T03","claim":"independent source audit is accepted","accept":false},
+    {"id":"T04","claim":"destination is physically data-empty","accept":true},
+    {"id":"T05","claim":"90578 logical rows fit under 100000 billed writes","accept":false},
+    {"id":"T06","claim":"logical row percentage equals billed-write percentage","accept":false},
+    {"id":"T07","claim":"arbitrary first-N rows are an 80 percent safe migration","accept":false},
+    {"id":"T08","claim":"partial symbol history is an indicator-ready unit","accept":false},
+    {"id":"T09","claim":"exact expected-versus-observed sessions are required","accept":true},
+    {"id":"T10","claim":"older unexpected sessions can replace missing recent sessions","accept":false},
+    {"id":"T11","claim":"destination persistence time can supply historical availableAt","accept":false},
+    {"id":"T12","claim":"UNKNOWN source clocks can promote PIT","accept":false},
+    {"id":"T13","claim":"manifests without referenced payload closure are ready","accept":false},
+    {"id":"T14","claim":"bars without action halt identity continuity closure are ready","accept":false},
+    {"id":"T15","claim":"Bollinger may use exact clean 20 sessions after all parent gates","accept":true},
+    {"id":"T16","claim":"ADX can use any 20-row suffix","accept":false},
+    {"id":"T17","claim":"actual indexed writes and retries must be measured","accept":true},
+    {"id":"T18","claim":"lag-unknown GraphQL usage grants spendable quota","accept":false},
+    {"id":"T19","claim":"migration evidence is OOS alpha evidence","accept":false},
+    {"id":"T20","claim":"maturity can promote now","accept":false}
+  ]
+}
