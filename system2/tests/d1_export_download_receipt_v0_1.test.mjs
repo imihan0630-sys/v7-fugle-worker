@@ -75,3 +75,18 @@ test('64-bit numeric precision risk checked',()=>{
 test('offline restore required',()=>{
  rejects(x=>x.download.independentOfflineRestoreSchemaAndRowsVerified=false,'OFFLINE_RESTORE_SCHEMA_ROWS_NOT_VERIFIED');
 });
+
+test('genuine REST API outer result wrapper can be reviewed without exposing signed URL',()=>{
+ const x=make(),p=x.response;
+ x.response={success:true,errors:[],messages:[],result:{...p,success:true}};
+ const a=audit(x);
+ assert.equal(a.state,'OFFLINE_DOWNLOAD_REVIEW_ONLY',JSON.stringify(a));
+ assert.equal(a.permissionToExport,false);
+ assert(!JSON.stringify(a).includes('signature'));
+});
+test('nested API export status error cannot hide under outer success',()=>{
+ const x=make(),p=x.response;
+ x.response={success:true,result:{...p,status:'error',error:'failed'}};
+ const a=audit(x);
+ assert.equal(a.state,'EVIDENCE_BLOCKED');assert(a.blockers.includes('D1_EXPORT_NOT_CONFIRMED_COMPLETE'));
+});
