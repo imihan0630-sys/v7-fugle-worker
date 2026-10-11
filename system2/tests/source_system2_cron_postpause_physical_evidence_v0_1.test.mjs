@@ -1,0 +1,26 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const e=JSON.parse(readFileSync(new URL("../migration/evidence/S2_SOURCE_SYSTEM2_CRON_POSTPAUSE_PHYSICAL_READBACK_20261011_V0_1.json",import.meta.url),"utf8"));
+test("post-pause Cloudflare provider receipt is real and nonmutating",()=>{
+ assert.equal(e.actualProviderWitness.runId,38143548779);
+ assert.equal(e.actualProviderWitness.artifactId,11702974419);
+ assert.match(e.actualProviderWitness.artifactZipSha256,/^[a-f0-9]{64}$/);
+ assert.equal(e.actualProviderWitness.elapsedSincePauseMinutes>15,true);
+ assert.deepEqual(e.source.cloudflareCronAfter,[]);
+ assert.equal(e.scopedResult.sourceCronConfigContinuouslyZero,"PASS");
+ assert.equal(e.source.graphqlInvocations.eventsTypeIdentified,false);
+ assert.equal(e.scopedResult.actualNoNewScheduledCronEvents,"PENDING");
+ assert.equal(e.scopedResult.oldInFlightSettledByOriginalEventReceipts,"PENDING");
+ assert.equal(e.system1.crons.length,4);
+ assert.equal(e.system1.cronExpressionsExactlyMatchPrepause,"PASS");
+ assert.equal(e.system1.publicReadOnlyHealth.httpStatus,200);
+ assert.equal(e.system1.publicReadOnlyHealth.businessScanPersistenceVerified,false);
+ assert.equal(e.scopedResult.v8FullFormalRuntime,"PENDING");
+ assert.equal(e.scopedResult.G6FullMigration,"BLOCKED");
+ assert.equal(e.scopedResult.G3Export,"BLOCKED");
+ assert.equal(e.safety.workerCronPutCount,0);
+ assert.equal(e.safety.d1SQLReadsOrWrites,0);
+ assert.equal(e.safety.sourceD1Export,0);
+ assert.equal(e.safety.system1FormalCoreMutation,0);
+});
