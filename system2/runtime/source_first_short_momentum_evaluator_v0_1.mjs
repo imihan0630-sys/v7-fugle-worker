@@ -72,10 +72,15 @@ export async function evaluateSourceFirstShortMomentumV0_1({
        price(bar.open)&&price(bar.high)&&price(bar.low)&&
        bar.high>=Math.max(bar.open,bar.close)&&bar.low<=Math.min(bar.open,bar.close)));
    if(!histOkay){observations.push(detail);continue;}
-   // Current day source in independent history and official daily A1 must agree.
+   // Same trading-day official endpoints may serialize raw fields differently,
+   // causing different row hashes. Always reconcile the actual OHLCV semantics;
+   // mismatching hashes also require separately attested cross-source equivalence.
    const current=hist.at(-1);
-   if(!(row.sourceRowHash===current.sourceRowHash&&
-        row.close===current.close&&row.volumeShares===current.volumeShares)){
+   const exactPriceVolume=[row.open,row.high,row.low,row.close,row.volumeShares,row.tradeValue]
+     .every((value,i)=>value===[current.open,current.high,current.low,current.close,
+                                 current.volumeShares,current.tradeValue][i]);
+   const sameRawHash=row.sourceRowHash===current.sourceRowHash;
+   if(!exactPriceVolume||(!sameRawHash&&h.independentCurrentDailyCrossSourceEquivalenceVerified!==true)){
      detail.reasonCodes=['CURRENT_HISTORY_VS_DAILY_SOURCE_HASH_PRICE_VOLUME_MISMATCH'];
      observations.push(detail);continue;
    }
