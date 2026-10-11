@@ -12,6 +12,7 @@ const physical=e=>e?.origin==="PHYSICAL_PROSPECTIVE_OR_OOS"&&
   validId(e?.ownerSignedReceiptId)&&e?.syntheticFixture!==true;
 export function evaluateL3ToL5(e={}){
  const completed={pit:false,l4:false,l5:false};
+ const infrastructure=e.moduleId==="D01-01";
  if(!MODULES.includes(e.moduleId))return BLOCK("MODULE","NOT_D01_CANONICAL_MODULE",completed);
  if(!physical(e))return BLOCK("PHYSICAL","SOURCE_RECEIPTS_NOT_PHYSICALLY_CERTIFIED",completed);
  if(!e?.manifest||!validId(e.manifest.frozenManifestHash)||
@@ -46,8 +47,8 @@ export function evaluateL3ToL5(e={}){
     e.validation.independentReviewerDomain!=="D16"||
     e.validation.accepted===false||
     e.validation.accepted!==true||
-    e.validation.outcomesActuallyJoined!==true||
-    e.validation.costFieldsPreserved!==true||
+    (infrastructure?e.validation.operationalProspectiveReplayComplete!==true:e.validation.outcomesActuallyJoined!==true)||
+    (!infrastructure&&e.validation.costFieldsPreserved!==true)||
     e.validation.noOutcomeTunedParameters!==true)
    return BLOCK("D16","INDEPENDENT_ACTUAL_OUTCOME_REVIEW_MISSING",completed);
  if(e.validation.mode==="OOS"){
@@ -64,7 +65,6 @@ export function evaluateL3ToL5(e={}){
       return BLOCK("PROSPECTIVE","MINIMUM_PROSPECTIVE_INDEPENDENCE_OR_REGIME_NOT_MET",completed);
  }else return BLOCK("VALIDATION_MODE","NO_TRUE_OOS_OR_PROSPECTIVE_ENDPOINT",completed);
  completed.l4=true;
- const infrastructure=e.moduleId==="D01-01";
  if(!e?.robustness||e.robustness.independentDateClustersVerified!==true||
     e.robustness.multipleRegimesCertified!==true||
     e.robustness.effectStabilityOrRobustNullTested!==true||
