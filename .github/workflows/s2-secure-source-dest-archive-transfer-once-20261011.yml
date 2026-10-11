@@ -1,0 +1,110 @@
+name: S2 Secure SOURCE→DEST AES/RSA Real Archive Transfer ONCE 20261011
+# TEMPORARY MAIN-ONLY scoped secure data-in-transit verification, NO new Cloudflare resource writes.
+# First old source full SQL AES artifact is already original Run38150147134; encrypted only.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/s2-secure-source-dest-archive-transfer-once-20261011.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: system2-source-destination-encrypted-transfer-once-20261011
+  cancel-in-progress: false
+jobs:
+  dest_keygen:
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Validate only cryptographic key generation (no Cloudflare D1 API)
+        run: |
+          set -euo pipefail
+          node --check system2/migration/secure_cross_environment_sql_transfer_20261011.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Generate ephemeral RSA-OAEP key; seal private key under existing DESTINATION token
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/secure_cross_environment_sql_transfer_20261011.mjs DEST_KEYGEN
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-protected-rsa-public-sealed-private-${{ github.run_id }}
+          path: |
+            /tmp/s2-secure-d1-bridge/destination-public.pem
+            /tmp/s2-secure-d1-bridge/destination-private-key-sealed.json
+            /tmp/s2-secure-d1-bridge/destination-key-receipt.json
+          if-no-files-found: error
+          retention-days: 7
+  source_rewrap:
+    needs: dest_keygen
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Download destination RSA public key and token-sealed private key (current run)
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-dest-protected-rsa-public-sealed-private-${{ github.run_id }}
+          path: /tmp/s2-bridge-input/destkey
+      - name: Download ORIGINAL actual SOURCE native SQL AES archive (different run)
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-source-private-encrypted-backup-38150147134
+          run-id: 38150147134
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-bridge-input/backup
+      - name: Authenticated SOURCE old-token AES rewrap to destination RSA, no SQL plaintext on disk
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: node system2/migration/secure_cross_environment_sql_transfer_20261011.mjs SOURCE_REWRAP
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s2-source-sql-rsa-wrapped-gcm-transfer-${{ github.run_id }}
+          path: |
+            /tmp/s2-secure-d1-bridge/source-sql-rewrapped-for-destination.gz.gcm
+            /tmp/s2-secure-d1-bridge/rsa-wrapped-transfer-meta.json
+            /tmp/s2-secure-d1-bridge/source-transfer-receipt.json
+          if-no-files-found: error
+          retention-days: 7
+  dest_verify:
+    needs: source_rewrap
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - uses: actions/download-artifact@v4
+        with:
+          name: s2-dest-protected-rsa-public-sealed-private-${{ github.run_id }}
+          path: /tmp/s2-bridge-input/destkey
+      - uses: actions/download-artifact@v4
+        with:
+          name: s2-source-sql-rsa-wrapped-gcm-transfer-${{ github.run_id }}
+          path: /tmp/s2-bridge-input/transfer
+      - name: Decrypt only in destination protected runner; offline SQLite restore + native destination GET
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/secure_cross_environment_sql_transfer_20261011.mjs DEST_VERIFY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s2-real-secure-cross-account-transfer-receipts-${{ github.run_id }}
+          path: /tmp/s2-secure-d1-bridge/destination-verification-receipt.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Negative scope
+        if: always()
+        run: echo 'Encrypted full source SQL transported to isolated destination credential environment and offline restored ONLY. No D1 target rows imported, no source D1 SQL, no S1, R2, Worker, Cron or paid changes.' >> "$GITHUB_STEP_SUMMARY"
