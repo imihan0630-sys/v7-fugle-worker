@@ -1,0 +1,3895 @@
+{
+  "schemaVersion": "S1_ISSUE1024_READONLY_NATIVE_METADATA_RECHECK_V0_1",
+  "baselineMainSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+  "observedAtTaipei": "2026-10-11T11:56:07.7370753+08:00",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "classification": "CLASS_A_DOCUMENTATION_ONLY_PRODUCER_INTAKE_NOT_AUDIT_ACCEPTANCE",
+  "originalNativeMetadata": [
+    {
+      "runId": 37649041814,
+      "name": "D02 PVE-251 Live Remediation Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:03:36Z",
+      "createdAtTaipei": "2026-10-07T16:03:36+08:00",
+      "headSha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814",
+      "jobs": [
+        {
+          "id": 112887225789,
+          "name": "audit",
+          "head_sha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:03:40Z",
+          "completed_at": "2026-10-07T16:04:00Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:03:41Z",
+              "completed_at": "2026-10-07T16:03:41Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:03:41Z",
+              "completed_at": "2026-10-07T16:03:43Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:03:43Z",
+              "completed_at": "2026-10-07T16:03:44Z"
+            },
+            {
+              "name": "Read Production remediation evidence without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:03:44Z",
+              "completed_at": "2026-10-07T16:03:57Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-251 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:03:57Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11494952595,
+          "name": "d02-pve251-live-remediation-readonly-37649041814",
+          "digest": "sha256:8bde99fd35e86ac1fedb03b6dcccf5ca5ddccab199d8e472d3ffdca173b85b8d",
+          "size_in_bytes": 1455,
+          "expired": false,
+          "created_at": "2026-10-07T16:03:58Z",
+          "workflow_run": {
+            "id": 37649041814,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "15d6591d37c8cda7304d4fb9a19246370257c6e8"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649041814-run.json",
+          "sha256": "8fb4a8b2a0b3b054e418785aa296e4f7bb0e19e90da012614584329694357082"
+        },
+        {
+          "file": "37649041814-jobs.json",
+          "sha256": "19af09c8026d118dca2c28f57a2890c2edf5b1b39ddc7a20c4f3663d762867c6"
+        },
+        {
+          "file": "37649041814-artifacts.json",
+          "sha256": "d56f687b43d93baf377c34a6cef0979ac7ad0f1dba49ee876d1c8b8f42dea2c8"
+        }
+      ]
+    },
+    {
+      "runId": 37649249573,
+      "name": "D02 PVE262 Cron Window Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:05:08Z",
+      "createdAtTaipei": "2026-10-07T16:05:08+08:00",
+      "headSha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573",
+      "jobs": [
+        {
+          "id": 112887945915,
+          "name": "audit",
+          "head_sha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:05:11Z",
+          "completed_at": "2026-10-07T16:05:34Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:05:12Z",
+              "completed_at": "2026-10-07T16:05:14Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:05:14Z",
+              "completed_at": "2026-10-07T16:05:16Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:05:16Z",
+              "completed_at": "2026-10-07T16:05:20Z"
+            },
+            {
+              "name": "Read raw Production cron window without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:05:20Z",
+              "completed_at": "2026-10-07T16:05:31Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-262 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:05:31Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": false,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649249573-run.json",
+          "sha256": "aeca9880a3d57492297de6b0893d74e274f4bdd3c440f3c8d0acca213f628bf6"
+        },
+        {
+          "file": "37649249573-jobs.json",
+          "sha256": "b32e484e185fe7d691708e0addae880f8994fe2049092298b3ff2fb64f539d45"
+        }
+      ]
+    },
+    {
+      "runId": 37649543821,
+      "name": "D02 PVE263 After Market Side Effect Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:07:18Z",
+      "createdAtTaipei": "2026-10-07T16:07:18+08:00",
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
+      "jobs": [
+        {
+          "id": 112888965126,
+          "name": "audit",
+          "head_sha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:07:22Z",
+          "completed_at": "2026-10-07T16:07:41Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:07:23Z",
+              "completed_at": "2026-10-07T16:07:24Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:07:24Z",
+              "completed_at": "2026-10-07T16:07:26Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:07:26Z",
+              "completed_at": "2026-10-07T16:07:27Z"
+            },
+            {
+              "name": "Read Production after-market side effects without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:07:27Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-263 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11495752402,
+          "name": "d02-pve263-after-market-side-effect-readonly-37649543821",
+          "digest": "sha256:ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+          "size_in_bytes": 1353,
+          "expired": false,
+          "created_at": "2026-10-07T16:07:39Z",
+          "workflow_run": {
+            "id": 37649543821,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "0055dbe2d94757f63f509c5c0045875b34b1de65"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649543821-run.json",
+          "sha256": "2abf2c2c61cfe732a17d47c28f1d0439fd54880b22792a167ad9a5dd2b8c7eae"
+        },
+        {
+          "file": "37649543821-jobs.json",
+          "sha256": "1c4d5dfc33fa6ac28e5ba57ac29835f3a5ac82c107714ef30972b478929b1db5"
+        },
+        {
+          "file": "37649543821-artifacts.json",
+          "sha256": "0c9dd9a2cc8ab4f0004a47dad3d2f4b0b2770a111cd608ccf948fc2faa9b93f9"
+        }
+      ]
+    },
+    {
+      "runId": 37650006684,
+      "name": "D02 PVE264 D1 Daily Usage Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:10:44Z",
+      "createdAtTaipei": "2026-10-07T16:10:44+08:00",
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
+      "jobs": [
+        {
+          "id": 112890551584,
+          "name": "audit",
+          "head_sha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:10:47Z",
+          "completed_at": "2026-10-07T16:10:56Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:10:48Z",
+              "completed_at": "2026-10-07T16:10:49Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:10:49Z",
+              "completed_at": "2026-10-07T16:10:50Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:10:50Z",
+              "completed_at": "2026-10-07T16:10:51Z"
+            },
+            {
+              "name": "Read account D1 daily usage without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:10:51Z",
+              "completed_at": "2026-10-07T16:10:52Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-264 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:10:52Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11495133236,
+          "name": "d02-pve264-d1-daily-usage-readonly-37650006684",
+          "digest": "sha256:188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+          "size_in_bytes": 682,
+          "expired": false,
+          "created_at": "2026-10-07T16:10:53Z",
+          "workflow_run": {
+            "id": 37650006684,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "152dc18d687e30410a20a64c3065984fc86ba6a5"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37650006684-run.json",
+          "sha256": "51920afac775807d0ba26264370a802e9916fb282c8494ddd0406f762517fd38"
+        },
+        {
+          "file": "37650006684-jobs.json",
+          "sha256": "4e9a8e84303ff632a0ce1d2e8f796e20ba12d7784aba019ee3343907f04f7111"
+        },
+        {
+          "file": "37650006684-artifacts.json",
+          "sha256": "6320f23bb22bea8bee3bd7fe7aeb7a631708b0c739f32cb7a1867e4f1742d702"
+        }
+      ]
+    },
+    {
+      "runId": 37694052477,
+      "name": "D02 PVE271 System1 After-Market Reserve Evidence",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T22:06:58Z",
+      "createdAtTaipei": "2026-10-07T22:06:58+08:00",
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
+      "jobs": [
+        {
+          "id": 113041122665,
+          "name": "audit",
+          "head_sha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+          "conclusion": "success",
+          "started_at": "2026-10-07T22:07:01Z",
+          "completed_at": "2026-10-07T22:07:23Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T22:07:02Z",
+              "completed_at": "2026-10-07T22:07:03Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T22:07:03Z",
+              "completed_at": "2026-10-07T22:07:05Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T22:07:05Z",
+              "completed_at": "2026-10-07T22:07:05Z"
+            },
+            {
+              "name": "Read historical System1 after-market quota evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T22:07:05Z",
+              "completed_at": "2026-10-07T22:07:20Z"
+            },
+            {
+              "name": "Preserve PVE-271 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T22:07:20Z",
+              "completed_at": "2026-10-07T22:07:21Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T22:07:21Z",
+              "completed_at": "2026-10-07T22:07:21Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T22:07:21Z",
+              "completed_at": "2026-10-07T22:07:22Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T22:07:22Z",
+              "completed_at": "2026-10-07T22:07:22Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11514945619,
+          "name": "d02-pve271-system1-after-market-reserve-evidence-37694052477",
+          "digest": "sha256:7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+          "size_in_bytes": 1271,
+          "expired": false,
+          "created_at": "2026-10-07T22:07:21Z",
+          "workflow_run": {
+            "id": 37694052477,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37694052477-run.json",
+          "sha256": "0cc208503ff4b5872a9015fa79550a2131a8688121605ee36be14e8c94318c11"
+        },
+        {
+          "file": "37694052477-jobs.json",
+          "sha256": "86c9ed39d34aac882a7c372c5d60a97f832acce664fb0b53c4691ab7f3d264e7"
+        },
+        {
+          "file": "37694052477-artifacts.json",
+          "sha256": "533b51a1c74fa765dd2559c0f4038f564b2594f1b0ebc5c83fd698d9fddea0d4"
+        }
+      ]
+    },
+    {
+      "runId": 37694255555,
+      "name": "D02 PVE272 System1 Full-History After-Market Envelope",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T22:08:47Z",
+      "createdAtTaipei": "2026-10-07T22:08:47+08:00",
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
+      "jobs": [
+        {
+          "id": 113041830751,
+          "name": "audit",
+          "head_sha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+          "conclusion": "success",
+          "started_at": "2026-10-07T22:08:50Z",
+          "completed_at": "2026-10-07T22:09:25Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T22:08:51Z",
+              "completed_at": "2026-10-07T22:08:52Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T22:08:52Z",
+              "completed_at": "2026-10-07T22:08:53Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T22:08:53Z",
+              "completed_at": "2026-10-07T22:08:54Z"
+            },
+            {
+              "name": "Read all healthy System1 after-market days",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T22:08:54Z",
+              "completed_at": "2026-10-07T22:09:23Z"
+            },
+            {
+              "name": "Preserve PVE-272 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T22:09:23Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11514766351,
+          "name": "d02-pve272-system1-after-market-full-history-envelope-37694255555",
+          "digest": "sha256:cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+          "size_in_bytes": 1051,
+          "expired": false,
+          "created_at": "2026-10-07T22:09:24Z",
+          "workflow_run": {
+            "id": 37694255555,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37694255555-run.json",
+          "sha256": "a932c490bd79377b94a580037cf1aea50cf3ef7601a820cce64b2a01b138fb06"
+        },
+        {
+          "file": "37694255555-jobs.json",
+          "sha256": "1df229cfda92bbcf52fa342669026a79cb562bb280fcbfce9e7a9af1b238456c"
+        },
+        {
+          "file": "37694255555-artifacts.json",
+          "sha256": "7b4d2e65ec4ec7fb44a24663c65c755fba905d319532aa085457bd61099ae0db"
+        }
+      ]
+    },
+    {
+      "runId": 37808995747,
+      "name": "System 1 C1 Prospective Evidence",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-08T16:28:00Z",
+      "createdAtTaipei": "2026-10-08T16:28:00+08:00",
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "conclusion": "failure",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+      "jobs": [
+        {
+          "id": 113420649062,
+          "name": "collect",
+          "head_sha": "53b15e0731be0948f89f8bc08c90661703276905",
+          "conclusion": "failure",
+          "started_at": "2026-10-08T16:28:03Z",
+          "completed_at": "2026-10-08T16:28:28Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T16:28:04Z",
+              "completed_at": "2026-10-08T16:28:05Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T16:28:05Z",
+              "completed_at": "2026-10-08T16:28:07Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T16:28:07Z",
+              "completed_at": "2026-10-08T16:28:07Z"
+            },
+            {
+              "name": "Validate V8.19 generation inventory semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T16:28:07Z",
+              "completed_at": "2026-10-08T16:28:08Z"
+            },
+            {
+              "name": "Validate V8.20 Formal-C1 binding readback semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T16:28:08Z",
+              "completed_at": "2026-10-08T16:28:08Z"
+            },
+            {
+              "name": "Read and verify the immutable C1 population receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 6,
+              "started_at": "2026-10-08T16:28:08Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Build offline H1-H5 opportunity-loss readiness",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Build genuine prospective operational acceptance receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 8,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Preserve approved research evidence or explicit readiness blocker",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:26Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 17,
+              "started_at": "2026-10-08T16:28:26Z",
+              "completed_at": "2026-10-08T16:28:26Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-10-08T16:28:26Z",
+              "completed_at": "2026-10-08T16:28:27Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-08T16:28:27Z",
+              "completed_at": "2026-10-08T16:28:27Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11565090033,
+          "name": "system1-c1-evidence-37808995747",
+          "digest": "sha256:a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+          "size_in_bytes": 1612,
+          "expired": false,
+          "created_at": "2026-10-08T16:28:26Z",
+          "workflow_run": {
+            "id": 37808995747,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "53b15e0731be0948f89f8bc08c90661703276905"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37808995747-run.json",
+          "sha256": "b3cf703380fb14edfe319d3528f5902839167b225407224b680d2822d43ee0db"
+        },
+        {
+          "file": "37808995747-jobs.json",
+          "sha256": "5cdc294dc46958e074e9b1aff67b08fdc63298e3aed670b56e7ad7f8f6b76391"
+        },
+        {
+          "file": "37808995747-artifacts.json",
+          "sha256": "06a9b421498d4a309562441a7b3a21c3f88f52fd8102436b771f61ef29785a32"
+        }
+      ]
+    },
+    {
+      "runId": 37956058324,
+      "name": "V7 Official Market Data Sync",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:01:26Z",
+      "createdAtTaipei": "2026-10-09T16:01:26+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324",
+      "jobs": [
+        {
+          "id": 113906737784,
+          "name": "sync",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:01:30Z",
+          "completed_at": "2026-10-09T16:01:40Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:01:31Z",
+              "completed_at": "2026-10-09T16:01:32Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:01:32Z",
+              "completed_at": "2026-10-09T16:01:36Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:01:36Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Validate manual recovery scope (never alters trading plans)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 4,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Skip official exchange holidays safely",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync today's official market data (no target changes or orders)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync official institutions and missing recent trading days (no plan changes)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Verify prior-session market + institution prerequisites after midnight",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync official index, quarterly financials, valuation and TDCC (no plan changes)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Recover missing same-day analysis after complete data (skip prior success)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 10,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Historical official quality recovery",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 11,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Historical after-market recovery",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 12,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:38Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-10-09T16:01:38Z",
+              "completed_at": "2026-10-09T16:01:38Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956058324-run.json",
+          "sha256": "62bb402ea6376af8ce4949362715019dcf497da3e7d703dbe84173a689f6fbfe"
+        },
+        {
+          "file": "37956058324-jobs.json",
+          "sha256": "5c80c690660a6da4b40d1b2e2ae957d81db65506916471731812c1ca088f8383"
+        },
+        {
+          "file": "37956058324-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37956199815,
+      "name": "V8 Encrypted Plan Mirror",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:02:34Z",
+      "createdAtTaipei": "2026-10-09T16:02:34+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815",
+      "jobs": [
+        {
+          "id": 113907219078,
+          "name": "mirror",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:02:38Z",
+          "completed_at": "2026-10-09T16:02:57Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:02:39Z",
+              "completed_at": "2026-10-09T16:02:40Z"
+            },
+            {
+              "name": "Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:02:40Z",
+              "completed_at": "2026-10-09T16:02:45Z"
+            },
+            {
+              "name": "Set up Node",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:02:45Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Offline encryption self-test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Wait for V8.4 production runtime",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 5,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Prepare encrypted mirror",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Commit encrypted mirror only",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Resolve mirror commit",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Verify external raw readback and accept",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Already verified",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Post Set up Node",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Post Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:55Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-09T16:02:55Z",
+              "completed_at": "2026-10-09T16:02:55Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956199815-run.json",
+          "sha256": "d4abd9b7f3204a526bef03e822dd92ef3c83807175b5067d06d3af057e399261"
+        },
+        {
+          "file": "37956199815-jobs.json",
+          "sha256": "836013d5577149d608aa7cfad98b85eff5cd3cbdb26851e324843874f1aa352c"
+        },
+        {
+          "file": "37956199815-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37956358193,
+      "name": "V7 Scheduled Health Verification",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:03:52Z",
+      "createdAtTaipei": "2026-10-09T16:03:52+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193",
+      "jobs": [
+        {
+          "id": 113907758481,
+          "name": "verify",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:03:55Z",
+          "completed_at": "2026-10-09T16:04:02Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:03:55Z",
+              "completed_at": "2026-10-09T16:03:56Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:03:56Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Verify actual intraday snapshots only (no pushes or trades)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 4,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Verify actual completed full plan and active external mirror (no new import)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-09T16:04:00Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-09T16:04:00Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956358193-run.json",
+          "sha256": "2ddcee7faa499a7aef54da9e91c05830fb09293853bfe640dbc4ce7546a41833"
+        },
+        {
+          "file": "37956358193-jobs.json",
+          "sha256": "d6daef277a01ecc7c14b5f7cb0e87275fa8a6f2a22e35060f9df2acd773f1ab3"
+        },
+        {
+          "file": "37956358193-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37958877283,
+      "name": "System 1 C1 Prospective Evidence",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:24:22Z",
+      "createdAtTaipei": "2026-10-09T16:24:22+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "failure",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283",
+      "jobs": [
+        {
+          "id": 113916309205,
+          "name": "collect",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "failure",
+          "started_at": "2026-10-09T16:24:26Z",
+          "completed_at": "2026-10-09T16:24:42Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:24:26Z",
+              "completed_at": "2026-10-09T16:24:27Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:24:27Z",
+              "completed_at": "2026-10-09T16:24:29Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:24:29Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Validate V8.19 generation inventory semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Validate V8.20 Formal-C1 binding readback semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Read and verify the immutable C1 population receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 6,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Build offline H1-H5 opportunity-loss readiness",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Build genuine prospective operational acceptance receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 8,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Preserve approved research evidence or explicit readiness blocker",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 17,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11631116248,
+          "name": "system1-c1-evidence-37958877283",
+          "digest": "sha256:4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+          "size_in_bytes": 1632,
+          "expired": false,
+          "created_at": "2026-10-09T16:24:40Z",
+          "workflow_run": {
+            "id": 37958877283,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37958877283-run.json",
+          "sha256": "34cd06d2683c89df5e9d2428f2c96b10cfded2744ccb3a89d6f3b4e1d7410ef1"
+        },
+        {
+          "file": "37958877283-jobs.json",
+          "sha256": "b01626678ea43dd35245514dc3cd6bb2b4c6d413e795ebc9173cb5208f31aee9"
+        },
+        {
+          "file": "37958877283-artifacts.json",
+          "sha256": "098ab9001e311fb68df83b45ab1591ac21254ae25651bc00d286d4685a4da289"
+        }
+      ]
+    },
+    {
+      "runId": 38032440861,
+      "name": "System1 Public Runtime Readonly Evidence",
+      "event": "pull_request",
+      "createdAtUtc": "2026-10-10T06:52:28Z",
+      "createdAtTaipei": "2026-10-10T06:52:28+08:00",
+      "headSha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38032440861",
+      "jobs": [
+        {
+          "id": 114156019956,
+          "name": "inspect",
+          "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+          "conclusion": "success",
+          "started_at": "2026-10-10T06:52:32Z",
+          "completed_at": "2026-10-10T06:52:50Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-10T06:52:33Z",
+              "completed_at": "2026-10-10T06:52:34Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-10T06:52:34Z",
+              "completed_at": "2026-10-10T06:52:35Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-10T06:52:35Z",
+              "completed_at": "2026-10-10T06:52:39Z"
+            },
+            {
+              "name": "Validate read-only probe source",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-10T06:52:39Z",
+              "completed_at": "2026-10-10T06:52:39Z"
+            },
+            {
+              "name": "Read public runtime version and storage metadata only",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-10T06:52:39Z",
+              "completed_at": "2026-10-10T06:52:46Z"
+            },
+            {
+              "name": "Save sanitized public-readonly receipt",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-10T06:52:46Z",
+              "completed_at": "2026-10-10T06:52:47Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-10T06:52:47Z",
+              "completed_at": "2026-10-10T06:52:47Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-10T06:52:47Z",
+              "completed_at": "2026-10-10T06:52:48Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-10T06:52:48Z",
+              "completed_at": "2026-10-10T06:52:48Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11662631499,
+          "name": "system1-public-runtime-readonly-38032440861",
+          "digest": "sha256:33a23712e19cfbf0ba6b1ad737bb6d3fb500e4f484782db05b762c91ae2e7b01",
+          "size_in_bytes": 680,
+          "expired": false,
+          "created_at": "2026-10-10T06:52:47Z",
+          "workflow_run": {
+            "id": 38032440861,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "repair/system1-c1-official-session-gate-20261010",
+            "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "38032440861-run.json",
+          "sha256": "9ef846b2558fb3e04b6199cd146564f56a007f965ea832e281c12ae0f73ff5d4"
+        },
+        {
+          "file": "38032440861-jobs.json",
+          "sha256": "50355d921ae829965269143a2f67d4f949f39438da67559baefb06028b6755e6"
+        },
+        {
+          "file": "38032440861-artifacts.json",
+          "sha256": "7b70918499dfae093e58d4400dcdb10206e676c474a7c6e28d240b23d4c2dfbf"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "runSnapshots": 12,
+    "jobSnapshots": 12,
+    "artifactListSnapshots": 11,
+    "artifactDigests": 8,
+    "recentRunListPages": 3,
+    "recentRunListEntries": 266,
+    "recentRunIdsUnique": 266,
+    "recentRunFilter": "created=2026-10-10..2026-10-11; per_page=100; pages 1-3",
+    "recentRunListingIsNotCloudflareCronInventory": true
+  },
+  "newerScheduledMetadata": [
+    {
+      "id": 38099715538,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "created_at": "2026-10-11T00:49:14Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38038910258,
+      "name": "System2 Recent A1 Hot History Warmup",
+      "created_at": "2026-10-10T08:44:08Z",
+      "head_sha": "786c6a00006fd7ca8cb34e791a2ed928b8b59782",
+      "conclusion": "success"
+    },
+    {
+      "id": 38010753671,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "created_at": "2026-10-10T00:50:21Z",
+      "head_sha": "5cb4aa8503adbf30fb9f18a37af492e562e9b030",
+      "conclusion": "success"
+    }
+  ],
+  "inheritedHistoricalBusinessObservations": [
+    {
+      "utcDay": "2026-09-21",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "writeQueries": 2331,
+        "readQueries": 23994
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-09-22",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "writeQueries": 1199,
+        "readQueries": 9938
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-10-07",
+      "classification": "SYSTEM1_AFTER_MARKET_INVOCATION_FAILED_D1_QUOTA",
+      "V7_DB": {
+        "rowsWritten": 1869,
+        "rowsRead": 431323,
+        "writeQueries": 1663,
+        "readQueries": 31749
+      },
+      "SYSTEM2_DB": {
+        "rowsWritten": 124629,
+        "rowsRead": 3943636,
+        "writeQueries": 20897,
+        "readQueries": 3795
+      },
+      "accountTotals": {
+        "rowsWritten": 126498,
+        "rowsRead": 4374959,
+        "writeQueries": 22560,
+        "readQueries": 35544
+      },
+      "primaryFailureTaipei": "2026-10-07 23:36:10",
+      "recoveryLeaseUtc": "2026-10-07T15:55:03.803Z",
+      "recoverySuccessfulBusinessPersisted": false,
+      "quotaCollisionWitnessed": true,
+      "source": [
+        "PVE263",
+        "PVE264"
+      ]
+    },
+    {
+      "utcDay": "2026-10-09",
+      "classification": "SHARED_ACCOUNT_METADATA_LOWER_BOUNDS_NOT_LIVE_REMAINING_QUOTA",
+      "observations": [
+        {
+          "runId": 37907066382,
+          "rowsWrittenLowerBound": 26919,
+          "rowsReadLowerBound": 782497,
+          "physicalWrite": false,
+          "state": "QUOTA_BUDGET_DEFER"
+        },
+        {
+          "runId": 37918290130,
+          "rowsWrittenLowerBound": 27056,
+          "rowsReadLowerBound": 880643,
+          "physicalWrite": false,
+          "state": "OBSERVED_ACCOUNT_USAGE_ONLY_READ_HEADROOM_NOT_CERTIFIED"
+        }
+      ],
+      "rowsReadSpendableHeadroomCertified": false
+    }
+  ],
+  "inheritedCronObservations": [
+    {
+      "cronRowId": 1893,
+      "utcScheduledAt": "2026-09-21T15:35:35Z",
+      "taipei": "2026-09-21 23:35:35",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    },
+    {
+      "cronRowId": 2173,
+      "utcScheduledAt": "2026-09-22T15:35:31Z",
+      "taipei": "2026-09-22 23:35:31",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    }
+  ],
+  "historicalMetricVerificationLevel": "CANONICAL_MAIN_INHERITED_CONTENT_WITH_NATIVE_RUN_JOB_DIGEST_RECHECK; NOT_RAW_ZIP_OR_LOG_REPLAY",
+  "unknown": [
+    "2026-09-21 and 09-22 whole-account all-database totals",
+    "2026-10-08 whole-account and V7_DB daily usage",
+    "23:35 primary per-operation rowsWritten/rowsRead",
+    "23:55 recovery per-operation rowsWritten/rowsRead and actual successful business state",
+    "failed/retry/index/query amplification",
+    "fresh account headroom and reporting lag",
+    "current source/destination account ledger and competing writers",
+    "same-generation KV config/plan/report + D1 cron/lease + original Formal C1",
+    "later healthy natural business persistence and deduplication"
+  ],
+  "limits": [
+    "Unauthenticated artifact ZIP GET returned HTTP 401",
+    "Browser artifact download timed out; no bytes/hash acceptance",
+    "PVE271 original job UI expanded but rendered Error; no raw output acceptance",
+    "Unauthenticated GitHub API reached HTTP 403 rate limit during supplemental source retrieval; PVE262 artifact and subsequent individual supplemental endpoints not independently retrieved"
+  ],
+  "reserve": {
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "conservativeWriteCandidate": null,
+    "conservativeReadCandidate": null
+  },
+  "progress": {
+    "P01Support": 3,
+    "P01Total": 7,
+    "P02Support": 3,
+    "P02Total": 7,
+    "P04Support": 2,
+    "P04Total": 7,
+    "support": 8,
+    "supportTotal": 21,
+    "physicalAccepted": 0,
+    "physicalTotal": 3,
+    "corr003PhysicalAccepted": 0,
+    "corr003PhysicalTotal": 5,
+    "status": "HIGH/VERIFYING",
+    "acceptanceOwner": "AUDIT_LANE"
+  },
+  "safety": {
+    "cloudflareApiCalls": 0,
+    "D1SqlReads": 0,
+    "D1SqlWrites": 0,
+    "R2Reads": 0,
+    "workflowDispatches": 0,
+    "productionScans": 0,
+    "deployments": 0,
+    "runtimeChanges": 0,
+    "billingChanges": 0,
+    "credentialsExtracted": 0
+  },
+  "next": "After actual natural 2026-10-12 23:35 Taipei and only-if-invoked 23:55, collect original authenticated operation costs and same-generation six-role readback under independently qualified headroom; prove full same-UTC-day account no-collision; REMEDIATION integrates and AUDIT alone accepts. No dispatch authorized.",
+  "recentRunIndex": [
+    {
+      "id": 38108806533,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T03:34:09Z",
+      "head_sha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108722364,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:32:38Z",
+      "head_sha": "6291aab1ad48bffdae1e3961f4561c7246f4b7cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108722412,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:32:38Z",
+      "head_sha": "6291aab1ad48bffdae1e3961f4561c7246f4b7cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108616165,
+      "name": "System2 Issue1068 Main Reserve Evidence Offline Fail Closed",
+      "event": "push",
+      "created_at": "2026-10-11T03:30:42Z",
+      "head_sha": "bf04f766fdb9fd24ce1a7f5490ce19c6c9be52eb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108616196,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-11T03:30:42Z",
+      "head_sha": "bf04f766fdb9fd24ce1a7f5490ce19c6c9be52eb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108544550,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:29:29Z",
+      "head_sha": "69b72d325904cfd369c14e817edb09f99f95caba",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108495359,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T03:28:33Z",
+      "head_sha": "4fc9a141ac363aca10cb490965701048dce05e76",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108421130,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:27:09Z",
+      "head_sha": "5b4752392d2972fa67615e8e63e1cc1cde4e5cdb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38108421153,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:27:09Z",
+      "head_sha": "5b4752392d2972fa67615e8e63e1cc1cde4e5cdb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107876006,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T03:16:59Z",
+      "head_sha": "54d0a4b28c9513b5e714c66d40032460e60c5f8d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107781571,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:15:13Z",
+      "head_sha": "ab6c259c6ba09048115efd4b2416dd0a82fd491a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107781628,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:15:13Z",
+      "head_sha": "ab6c259c6ba09048115efd4b2416dd0a82fd491a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107704635,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T03:13:46Z",
+      "head_sha": "f8811697ecf257cec863da2940a9c292fad6e080",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107620557,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:12:06Z",
+      "head_sha": "8b4f0a5e624b9da2156aad2652440abf4e5f0fcc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38107620603,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T03:12:06Z",
+      "head_sha": "8b4f0a5e624b9da2156aad2652440abf4e5f0fcc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38105177481,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-11T02:26:49Z",
+      "head_sha": "7233089e8da883cade3b2c2b2c4b5a5bf3ff79c6",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102812652,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:43:59Z",
+      "head_sha": "57f58ebc9973c7cb5fe9b6a310f96fa09b622b34",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102812619,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:43:59Z",
+      "head_sha": "57f58ebc9973c7cb5fe9b6a310f96fa09b622b34",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102285176,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T01:34:25Z",
+      "head_sha": "4b4b7f3e73117ff1584e0ae270694f672855ec80",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102213910,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:33:07Z",
+      "head_sha": "cfc914f0e6e348a2e7087aaa47560e2f68a4f89b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102213904,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:33:07Z",
+      "head_sha": "cfc914f0e6e348a2e7087aaa47560e2f68a4f89b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102163607,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:32:13Z",
+      "head_sha": "4786aeaab4fa8c1b615d62eb3d004209f0372720",
+      "conclusion": "success"
+    },
+    {
+      "id": 38102163601,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:32:13Z",
+      "head_sha": "4786aeaab4fa8c1b615d62eb3d004209f0372720",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101424461,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:19:04Z",
+      "head_sha": "d476b5bf5afdea8993e1639d46f262a3b0afd1d3",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101424419,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:19:04Z",
+      "head_sha": "d476b5bf5afdea8993e1639d46f262a3b0afd1d3",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101231845,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:15:36Z",
+      "head_sha": "84ead16ec94e38d2c8913ca24e27105206319712",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101231861,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:15:36Z",
+      "head_sha": "84ead16ec94e38d2c8913ca24e27105206319712",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101178439,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T01:14:44Z",
+      "head_sha": "39359e5f8074fb3f527a8642674d4e1ac72a21d5",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101090140,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:13:11Z",
+      "head_sha": "385dfbc42973a3ee2499f84cd51dc22fdd8a82d7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38101090118,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T01:13:11Z",
+      "head_sha": "385dfbc42973a3ee2499f84cd51dc22fdd8a82d7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38100095596,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:55:55Z",
+      "head_sha": "420084062f477ae9d71764378371289a5f2d58f2",
+      "conclusion": "success"
+    },
+    {
+      "id": 38100095586,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:55:55Z",
+      "head_sha": "420084062f477ae9d71764378371289a5f2d58f2",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099928736,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:52:59Z",
+      "head_sha": "4e3c07119385fe937abf501e14945a983d2b132a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099928548,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T00:52:59Z",
+      "head_sha": "974500b5aa392d0bc12b60a14b552c7f80f9fc21",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099928754,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:52:59Z",
+      "head_sha": "4e3c07119385fe937abf501e14945a983d2b132a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099843905,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:51:28Z",
+      "head_sha": "701a1fb852fbba950262f4b4dce4124577ecbd03",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099843918,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:51:28Z",
+      "head_sha": "701a1fb852fbba950262f4b4dce4124577ecbd03",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099715538,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "event": "schedule",
+      "created_at": "2026-10-11T00:49:14Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38099562997,
+      "name": "System2 Destination Full Schema Object Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-11T00:46:26Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38098133664,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-11T00:21:12Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38098133681,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-11T00:21:12Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38098008853,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:19:01Z",
+      "head_sha": "11ca2a682674c82e0e876e7228b19f00c346e0f9",
+      "conclusion": "success"
+    },
+    {
+      "id": 38098008852,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-11T00:19:01Z",
+      "head_sha": "11ca2a682674c82e0e876e7228b19f00c346e0f9",
+      "conclusion": "success"
+    },
+    {
+      "id": 38096395670,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T23:50:23Z",
+      "head_sha": "9656a745f14593f7727f7fc10e0b3275bbeef8cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38096315341,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T23:48:56Z",
+      "head_sha": "0858b2a372c8366acaa8283ab024ab2694b7ee7b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38096315325,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T23:48:56Z",
+      "head_sha": "0858b2a372c8366acaa8283ab024ab2694b7ee7b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38095085848,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T23:27:26Z",
+      "head_sha": "7c508b3f66f5e27588a0b466acfdf1f5dd347283",
+      "conclusion": "success"
+    },
+    {
+      "id": 38095004946,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T23:25:59Z",
+      "head_sha": "50e5e6e55f5ae85161cf442d89664218077638cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38095005183,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T23:25:59Z",
+      "head_sha": "50e5e6e55f5ae85161cf442d89664218077638cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38093476317,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T23:00:12Z",
+      "head_sha": "e4c144af9aac8043613202cad591499bd5e083e9",
+      "conclusion": "success"
+    },
+    {
+      "id": 38093396510,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T22:58:49Z",
+      "head_sha": "1bf990fe2e0f33b7bb6e2b77209bcf94e24af958",
+      "conclusion": "success"
+    },
+    {
+      "id": 38093396474,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T22:58:49Z",
+      "head_sha": "1bf990fe2e0f33b7bb6e2b77209bcf94e24af958",
+      "conclusion": "success"
+    },
+    {
+      "id": 38070071144,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T17:01:57Z",
+      "head_sha": "a5601d2032b87ec343b263697e31d0aa7924ceb7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38069956297,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T17:00:24Z",
+      "head_sha": "085ba658a281e9ba5cb294c6604a360fc128a8ab",
+      "conclusion": "success"
+    },
+    {
+      "id": 38069956447,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T17:00:24Z",
+      "head_sha": "085ba658a281e9ba5cb294c6604a360fc128a8ab",
+      "conclusion": "success"
+    },
+    {
+      "id": 38069750915,
+      "name": "System2 Destination Schema Only (OWNER APPROVED SCOPE)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T16:57:19Z",
+      "head_sha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+      "conclusion": "success"
+    },
+    {
+      "id": 38068828634,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T16:43:40Z",
+      "head_sha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+      "conclusion": "success"
+    },
+    {
+      "id": 38068732925,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T16:42:11Z",
+      "head_sha": "1e54c27f13835c983b4d1acc974e55cca83c74a4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38068732961,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T16:42:11Z",
+      "head_sha": "1e54c27f13835c983b4d1acc974e55cca83c74a4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38068559602,
+      "name": "System2 Destination Schema Only (OWNER APPROVED SCOPE)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T16:39:36Z",
+      "head_sha": "a85fffc04043a7f3af15582048219e500e255fe7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060585204,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:41:03Z",
+      "head_sha": "671c8c2be804ce331fba41ad882bb436a776486b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060585087,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:41:03Z",
+      "head_sha": "671c8c2be804ce331fba41ad882bb436a776486b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060562381,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T14:40:42Z",
+      "head_sha": "2e4a7d95089d1df39a680fa9ed293db977dfba56",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060397003,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:38:12Z",
+      "head_sha": "ce35bc11c4bce92d16cf80ec4e01b828b97ee0cb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060396987,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:38:12Z",
+      "head_sha": "ce35bc11c4bce92d16cf80ec4e01b828b97ee0cb",
+      "conclusion": "success"
+    },
+    {
+      "id": 38060035155,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T14:32:50Z",
+      "head_sha": "797a7d57e2124737cd4bfac29881a1df633cb562",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059937535,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:31:24Z",
+      "head_sha": "46cf4ae2b83e63fe99bac149dafd7159fa30515d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059937483,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:31:24Z",
+      "head_sha": "46cf4ae2b83e63fe99bac149dafd7159fa30515d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059849780,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T14:30:11Z",
+      "head_sha": "ac66c1fc1e49e7a410cd0d8770a6d25c8c9c9095",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059775024,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T14:29:04Z",
+      "head_sha": "39a40c6a8c44c0ce5847f00635e8378213cb6042",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059684386,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:27:37Z",
+      "head_sha": "5e41f069deee44ebd5094dbcc7f08dc9af48db3b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059684391,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:27:37Z",
+      "head_sha": "5e41f069deee44ebd5094dbcc7f08dc9af48db3b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059510836,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:25:00Z",
+      "head_sha": "ba951e11d402716ebfacb555abd1c22fe7cb94f3",
+      "conclusion": "success"
+    },
+    {
+      "id": 38059510760,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T14:25:00Z",
+      "head_sha": "ba951e11d402716ebfacb555abd1c22fe7cb94f3",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055517798,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:23:17Z",
+      "head_sha": "68259cda7993b997ac030276210631d5a396e187",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055517767,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:23:17Z",
+      "head_sha": "68259cda7993b997ac030276210631d5a396e187",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055364831,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:20:50Z",
+      "head_sha": "7bbb7b1ffdbaeb5ef89e8c171c7fffffd29e7932",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055364834,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:20:50Z",
+      "head_sha": "7bbb7b1ffdbaeb5ef89e8c171c7fffffd29e7932",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055285491,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:19:37Z",
+      "head_sha": "7bcc266d94d0de6b7d07ab9438bd8d09cfa7af32",
+      "conclusion": "success"
+    },
+    {
+      "id": 38055285496,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T13:19:37Z",
+      "head_sha": "7bcc266d94d0de6b7d07ab9438bd8d09cfa7af32",
+      "conclusion": "success"
+    },
+    {
+      "id": 38054107501,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T13:01:03Z",
+      "head_sha": "1f0030f2ac16812670cb4a107c80de341d073cc4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38054007064,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:59:39Z",
+      "head_sha": "7b5966f2caefb2171386227ee8d8ee27a00da71f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38054007034,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:59:39Z",
+      "head_sha": "7b5966f2caefb2171386227ee8d8ee27a00da71f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38053723102,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:55:02Z",
+      "head_sha": "4caa0dd8367e80bdbf805b42721cc38faa2d1ca4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38053723104,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:55:02Z",
+      "head_sha": "4caa0dd8367e80bdbf805b42721cc38faa2d1ca4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38053046538,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T12:44:05Z",
+      "head_sha": "f4332c87ac181c1e6156e84e58407c27e23dfe75",
+      "conclusion": "success"
+    },
+    {
+      "id": 38052955524,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:42:37Z",
+      "head_sha": "25aa459ddfa9dd8fad906ed290dd9beb34307f2c",
+      "conclusion": "success"
+    },
+    {
+      "id": 38052955507,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:42:37Z",
+      "head_sha": "25aa459ddfa9dd8fad906ed290dd9beb34307f2c",
+      "conclusion": "success"
+    },
+    {
+      "id": 38052235987,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T12:30:54Z",
+      "head_sha": "e749d10d621684b84e7c5923dac16e8c31b0315e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38052136678,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:29:23Z",
+      "head_sha": "bda01752b7a2488522a0d713f01f6b65e1eab652",
+      "conclusion": "success"
+    },
+    {
+      "id": 38052136679,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T12:29:23Z",
+      "head_sha": "bda01752b7a2488522a0d713f01f6b65e1eab652",
+      "conclusion": "success"
+    },
+    {
+      "id": 38051816632,
+      "name": "System2 Destination D1 SQL Empty Preflight (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T12:24:09Z",
+      "head_sha": "77fea746d280c5fc6df4d588f89d8d625933ab5e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38051603121,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T12:20:35Z",
+      "head_sha": "77fea746d280c5fc6df4d588f89d8d625933ab5e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38049793911,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T11:49:59Z",
+      "head_sha": "602c2822437148d8f9da6618551f9c2b4067cb4b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38049793915,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T11:49:59Z",
+      "head_sha": "602c2822437148d8f9da6618551f9c2b4067cb4b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38049728760,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T11:48:50Z",
+      "head_sha": "7a59b6f2065347693537ff309d46c281c834a3a7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38049728753,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T11:48:50Z",
+      "head_sha": "7a59b6f2065347693537ff309d46c281c834a3a7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38049368343,
+      "name": "System2 Destination D1 SQL Empty Preflight (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T11:42:38Z",
+      "head_sha": "7d41fefba2d5ab7ebdb4c3fc65e3f270de3d661e",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38038910258,
+      "name": "System2 Recent A1 Hot History Warmup",
+      "event": "schedule",
+      "created_at": "2026-10-10T08:44:08Z",
+      "head_sha": "786c6a00006fd7ca8cb34e791a2ed928b8b59782",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033893125,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T07:17:02Z",
+      "head_sha": "786c6a00006fd7ca8cb34e791a2ed928b8b59782",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033802064,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T07:15:28Z",
+      "head_sha": "bdc93b186eb0d479846ac5b8e22b06b224360752",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033802058,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T07:15:28Z",
+      "head_sha": "bdc93b186eb0d479846ac5b8e22b06b224360752",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033691300,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T07:13:39Z",
+      "head_sha": "84973e3ae562290bdf0b426a88921778c076d860",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033691301,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T07:13:39Z",
+      "head_sha": "84973e3ae562290bdf0b426a88921778c076d860",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033596052,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T07:12:01Z",
+      "head_sha": "a93d09bddeab6d71a1ec6f1cdd41b2d3f0288f0b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38033596034,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T07:12:01Z",
+      "head_sha": "a93d09bddeab6d71a1ec6f1cdd41b2d3f0288f0b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032547969,
+      "name": "System 1 C1 Prospective Evidence",
+      "event": "push",
+      "created_at": "2026-10-10T06:54:21Z",
+      "head_sha": "1a0c5ae5125cf0089b0152d1485df00236a5dd49",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032547966,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T06:54:21Z",
+      "head_sha": "1a0c5ae5125cf0089b0152d1485df00236a5dd49",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032547972,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T06:54:21Z",
+      "head_sha": "1a0c5ae5125cf0089b0152d1485df00236a5dd49",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032520929,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T06:53:51Z",
+      "head_sha": "2e0942ebaadf75583a5c4c9b4df05179bf159432",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38032440795,
+      "name": "System1 H1-H5 Prospective Readiness Review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440835,
+      "name": "System1 Operational Acceptance Review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440831,
+      "name": "System1 C1 C2 isolated offline repair review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440812,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440864,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440861,
+      "name": "System1 Public Runtime Readonly Evidence",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032440794,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:28Z",
+      "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032416281,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:04Z",
+      "head_sha": "fe28e9b8e9665c7cff11c9dd6ae847ae45e78443",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032416530,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:52:04Z",
+      "head_sha": "fe28e9b8e9665c7cff11c9dd6ae847ae45e78443",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398735,
+      "name": "System1 Operational Acceptance Review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398761,
+      "name": "System1 H1-H5 Prospective Readiness Review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398731,
+      "name": "System1 C1 C2 isolated offline repair review",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398764,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398785,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032398799,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:51:43Z",
+      "head_sha": "21755ca9d186d94340cb7637624c8d70e926c30b",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38032234668,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T06:48:55Z",
+      "head_sha": "ba4d8eed8ba8843240880792b2a9e8813d5e4023",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032234606,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T06:48:55Z",
+      "head_sha": "ba4d8eed8ba8843240880792b2a9e8813d5e4023",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032127415,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:46:59Z",
+      "head_sha": "2425fe00d41e7f7cf71649a1a6f5b0e9badba146",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032127395,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:46:59Z",
+      "head_sha": "2425fe00d41e7f7cf71649a1a6f5b0e9badba146",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032106903,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:46:39Z",
+      "head_sha": "1197bd8f12660421da6430ab52236c0732cee2ad",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38032106896,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:46:39Z",
+      "head_sha": "1197bd8f12660421da6430ab52236c0732cee2ad",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032026313,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:45:15Z",
+      "head_sha": "787b0ff1fbfc6bf8f332495dfd5cefb315296516",
+      "conclusion": "success"
+    },
+    {
+      "id": 38032026292,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:45:15Z",
+      "head_sha": "787b0ff1fbfc6bf8f332495dfd5cefb315296516",
+      "conclusion": "success"
+    },
+    {
+      "id": 38031940489,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:43:46Z",
+      "head_sha": "0cb906cd7919c2eb425e72df8e1c22c0c16267a2",
+      "conclusion": "success"
+    },
+    {
+      "id": 38031940494,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:43:46Z",
+      "head_sha": "0cb906cd7919c2eb425e72df8e1c22c0c16267a2",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38031553659,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T06:36:59Z",
+      "head_sha": "0cb549dd0d760dbaf03ab55de4c3b4ebcf53887c",
+      "conclusion": "success"
+    },
+    {
+      "id": 38031371779,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:33:49Z",
+      "head_sha": "e482159d895b5215bb516868820b92a453c8ff3a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38031371674,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:33:49Z",
+      "head_sha": "e482159d895b5215bb516868820b92a453c8ff3a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38030709054,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:22:31Z",
+      "head_sha": "a93690a65dec5abc11de041c8aa7e28e6a20834f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38030709082,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:22:31Z",
+      "head_sha": "a93690a65dec5abc11de041c8aa7e28e6a20834f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38030496227,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T06:18:51Z",
+      "head_sha": "afd53e680035097fd1042728c651a4d4fffea487",
+      "conclusion": "success"
+    },
+    {
+      "id": 38030399327,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:17:07Z",
+      "head_sha": "1cfce96785051831ab825b95ba34c00e4e86a10a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38030399331,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T06:17:07Z",
+      "head_sha": "1cfce96785051831ab825b95ba34c00e4e86a10a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38027628147,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T05:28:36Z",
+      "head_sha": "0e4e6129db499019af930c4b8e7a20b8d281c109",
+      "conclusion": "success"
+    },
+    {
+      "id": 38027539642,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T05:27:01Z",
+      "head_sha": "5d5646bd88e695ddf120ed3d919a5f872c98aaaa",
+      "conclusion": "success"
+    },
+    {
+      "id": 38027539651,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T05:27:01Z",
+      "head_sha": "5d5646bd88e695ddf120ed3d919a5f872c98aaaa",
+      "conclusion": "success"
+    },
+    {
+      "id": 38027260602,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T05:22:00Z",
+      "head_sha": "b62c83a83e9772f0e0e60b75ec76603fc4e53108",
+      "conclusion": "success"
+    },
+    {
+      "id": 38026999442,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T05:17:20Z",
+      "head_sha": "b62c83a83e9772f0e0e60b75ec76603fc4e53108",
+      "conclusion": "success"
+    },
+    {
+      "id": 38026908631,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T05:15:47Z",
+      "head_sha": "fd88dc91ba7d9d9b0ea0b2de888ff17663e8998c",
+      "conclusion": "success"
+    },
+    {
+      "id": 38026908613,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T05:15:47Z",
+      "head_sha": "fd88dc91ba7d9d9b0ea0b2de888ff17663e8998c",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025857068,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:34Z",
+      "head_sha": "41c1e324d90684696bd64c69ff350d04ea6700b4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025857037,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:34Z",
+      "head_sha": "41c1e324d90684696bd64c69ff350d04ea6700b4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025846882,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:23Z",
+      "head_sha": "e4c023971946e99101c2ae2c71767fca2c565e5e",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38025846899,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:23Z",
+      "head_sha": "e4c023971946e99101c2ae2c71767fca2c565e5e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025834683,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:10Z",
+      "head_sha": "28d7e20189dd80255d1c2fbfdc3b26f34fd22cfe",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38025834630,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:57:10Z",
+      "head_sha": "28d7e20189dd80255d1c2fbfdc3b26f34fd22cfe",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025705786,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:54:56Z",
+      "head_sha": "228e1e018b818a2cf16121dfe11c61cab49bb833",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025705818,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:54:56Z",
+      "head_sha": "228e1e018b818a2cf16121dfe11c61cab49bb833",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025675882,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:54:24Z",
+      "head_sha": "a53ae8b7a4848295e125cab3e2514001e6f996ad",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38025675871,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:54:24Z",
+      "head_sha": "a53ae8b7a4848295e125cab3e2514001e6f996ad",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025631077,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:53:36Z",
+      "head_sha": "4e94d0dc4d3ab4b8ba2815682ad1eb81ac59b379",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38025631107,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:53:36Z",
+      "head_sha": "4e94d0dc4d3ab4b8ba2815682ad1eb81ac59b379",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025402006,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:49:32Z",
+      "head_sha": "49eeef7a188252d14d274d0a106f1fdc350cc50f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025325123,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:48:09Z",
+      "head_sha": "5a2a0c4177bdac802d0fd8f0d6e333ea8c975359",
+      "conclusion": "success"
+    },
+    {
+      "id": 38025325161,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:48:09Z",
+      "head_sha": "5a2a0c4177bdac802d0fd8f0d6e333ea8c975359",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024835622,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:39:39Z",
+      "head_sha": "4d739c6d3ab35d4d0efbc7d4a2e09583d2a5d00b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024759462,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:38:14Z",
+      "head_sha": "4902610fba7d9678a7b736eb00a5418839bfe5df",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024759546,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:38:14Z",
+      "head_sha": "4902610fba7d9678a7b736eb00a5418839bfe5df",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024705702,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:37:17Z",
+      "head_sha": "8ce231df2007a2c9406430118031d66f65d92979",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024705727,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:37:17Z",
+      "head_sha": "8ce231df2007a2c9406430118031d66f65d92979",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024644213,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:36:13Z",
+      "head_sha": "acead3848a3907f9fe45544ec56d59794360c766",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024644209,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:36:13Z",
+      "head_sha": "acead3848a3907f9fe45544ec56d59794360c766",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024626346,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:35:55Z",
+      "head_sha": "eefd1d572cb9988d17deeb25e6cd5af1fcc0f65a",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024626344,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:35:55Z",
+      "head_sha": "eefd1d572cb9988d17deeb25e6cd5af1fcc0f65a",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024608378,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:35:36Z",
+      "head_sha": "95247e17603a7d7a21d10501e60a689d00bdbc23",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024608366,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:35:36Z",
+      "head_sha": "95247e17603a7d7a21d10501e60a689d00bdbc23",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024535455,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:34:21Z",
+      "head_sha": "f9f384dded8f976c7686196f403c2bf857437cfe",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024535468,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:34:21Z",
+      "head_sha": "f9f384dded8f976c7686196f403c2bf857437cfe",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024490848,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:33:33Z",
+      "head_sha": "e1e670be3a8db1183c43265a13bde5de24d933d4",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024490850,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:33:33Z",
+      "head_sha": "e1e670be3a8db1183c43265a13bde5de24d933d4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024442109,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:32:45Z",
+      "head_sha": "cce515f8373a01331163f2b2ced48e4d22020a0f",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38024442185,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:32:45Z",
+      "head_sha": "cce515f8373a01331163f2b2ced48e4d22020a0f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024365717,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:31:25Z",
+      "head_sha": "21d30afb1697505fe4e508154325bf0c9d726bf6",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024267862,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:29:54Z",
+      "head_sha": "de3bc5d8d9ec751d232dc391dd3da18d7c7e8c4b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024267997,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:29:54Z",
+      "head_sha": "de3bc5d8d9ec751d232dc391dd3da18d7c7e8c4b",
+      "conclusion": "success"
+    },
+    {
+      "id": 38024083245,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:26:41Z",
+      "head_sha": "d0667422ae934b99e753424c1057320928820b25",
+      "conclusion": "success"
+    },
+    {
+      "id": 38023998296,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:25:14Z",
+      "head_sha": "765bb12506eba532c603785e40905368eaf67d83",
+      "conclusion": "success"
+    },
+    {
+      "id": 38023998224,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:25:14Z",
+      "head_sha": "765bb12506eba532c603785e40905368eaf67d83",
+      "conclusion": "success"
+    },
+    {
+      "id": 38023811799,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:22:05Z",
+      "head_sha": "3cfd96872306261a0c42f71910593555a5291990",
+      "conclusion": "success"
+    },
+    {
+      "id": 38023724157,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:20:34Z",
+      "head_sha": "8664d6099ae56aa3f67f68e5580bf8adfd24ac95",
+      "conclusion": "success"
+    },
+    {
+      "id": 38023724155,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:20:34Z",
+      "head_sha": "8664d6099ae56aa3f67f68e5580bf8adfd24ac95",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022902063,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T04:06:32Z",
+      "head_sha": "85ca841d7e99489609f29a437370f3e5ae637dc0",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022807550,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:04:57Z",
+      "head_sha": "b6f065c4920da6dcd03d1ebac392f4e53a7e3669",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022807557,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:04:57Z",
+      "head_sha": "b6f065c4920da6dcd03d1ebac392f4e53a7e3669",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022629404,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:01:54Z",
+      "head_sha": "f8314aa94d7e0cd6a416a8c5fc588a87e3e153a2",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022629442,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T04:01:54Z",
+      "head_sha": "f8314aa94d7e0cd6a416a8c5fc588a87e3e153a2",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022384514,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T03:57:45Z",
+      "head_sha": "a85f041b9a05ea811b4e9dd9fc08cd1ddeed73cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022154591,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T03:53:39Z",
+      "head_sha": "a85f041b9a05ea811b4e9dd9fc08cd1ddeed73cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022154607,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T03:53:39Z",
+      "head_sha": "a85f041b9a05ea811b4e9dd9fc08cd1ddeed73cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022073554,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:52:15Z",
+      "head_sha": "4a89644c13c10f89664bba54fe24250bbf6b0aba",
+      "conclusion": "success"
+    },
+    {
+      "id": 38022073599,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:52:15Z",
+      "head_sha": "4a89644c13c10f89664bba54fe24250bbf6b0aba",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021788102,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:47:17Z",
+      "head_sha": "71c29a9ebbd886ccc5cb79a1d3436afd0fbc67cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021788143,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:47:17Z",
+      "head_sha": "71c29a9ebbd886ccc5cb79a1d3436afd0fbc67cc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021761468,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T03:46:50Z",
+      "head_sha": "f3127262b7b442045686032da72f9b086a680fb5",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38021630791,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T03:44:38Z",
+      "head_sha": "f3127262b7b442045686032da72f9b086a680fb5",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021630842,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T03:44:38Z",
+      "head_sha": "f3127262b7b442045686032da72f9b086a680fb5",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021551693,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:43:15Z",
+      "head_sha": "9cffb74eaccc7894ff10753e6e96ec1c635177e8",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021551689,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:43:15Z",
+      "head_sha": "9cffb74eaccc7894ff10753e6e96ec1c635177e8",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021312942,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:39:08Z",
+      "head_sha": "981c4a13976d35ed3282862c7969acc097267636",
+      "conclusion": "success"
+    },
+    {
+      "id": 38021312981,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:39:08Z",
+      "head_sha": "981c4a13976d35ed3282862c7969acc097267636",
+      "conclusion": "success"
+    },
+    {
+      "id": 38020853924,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:31:21Z",
+      "head_sha": "451f0b4d1a8a7fee5ad3d970dd8dd0854df68669",
+      "conclusion": "success"
+    },
+    {
+      "id": 38020853923,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:31:21Z",
+      "head_sha": "451f0b4d1a8a7fee5ad3d970dd8dd0854df68669",
+      "conclusion": "success"
+    },
+    {
+      "id": 38020826323,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:30:54Z",
+      "head_sha": "5b45e1d5294e6bd9aea69703db12f6e7f2f84ecd",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38020826344,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T03:30:54Z",
+      "head_sha": "5b45e1d5294e6bd9aea69703db12f6e7f2f84ecd",
+      "conclusion": "success"
+    },
+    {
+      "id": 38020519397,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T03:25:47Z",
+      "head_sha": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38019028195,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T03:00:32Z",
+      "head_sha": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38018789750,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T02:56:30Z",
+      "head_sha": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38018789769,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T02:56:30Z",
+      "head_sha": "5360d7e92e333eb3c5d8776853fd1dbe4d49c7a4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38018514542,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T02:51:52Z",
+      "head_sha": "e1bd9a9ddc85eb368e8105552bdded2444cef33f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38018514497,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T02:51:52Z",
+      "head_sha": "e1bd9a9ddc85eb368e8105552bdded2444cef33f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38018220653,
+      "name": "System2 Cross-Account Inventory (READ ONLY)",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-10T02:47:02Z",
+      "head_sha": "9f54c122849e615e0aa42bdab0564e0d70703e57",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38017901315,
+      "name": "System2 Research CI",
+      "event": "push",
+      "created_at": "2026-10-10T02:41:48Z",
+      "head_sha": "9f54c122849e615e0aa42bdab0564e0d70703e57",
+      "conclusion": "success"
+    },
+    {
+      "id": 38017901243,
+      "name": "V8 Regression Tests",
+      "event": "push",
+      "created_at": "2026-10-10T02:41:48Z",
+      "head_sha": "9f54c122849e615e0aa42bdab0564e0d70703e57",
+      "conclusion": "success"
+    },
+    {
+      "id": 38014025682,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:38Z",
+      "head_sha": "c0040340acb26c315def495cafdfe25d446cd4f4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38014025668,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:38Z",
+      "head_sha": "c0040340acb26c315def495cafdfe25d446cd4f4",
+      "conclusion": "success"
+    },
+    {
+      "id": 38014021578,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:33Z",
+      "head_sha": "c436a64760f44fa4c1336f0b7a31cd6dd1baaaf8",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38014021512,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:33Z",
+      "head_sha": "c436a64760f44fa4c1336f0b7a31cd6dd1baaaf8",
+      "conclusion": "success"
+    },
+    {
+      "id": 38014003025,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:16Z",
+      "head_sha": "0e0032d0851db13a57f334e4ad6feb6a9c3d3afa",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38014003080,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:39:16Z",
+      "head_sha": "0e0032d0851db13a57f334e4ad6feb6a9c3d3afa",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013979037,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:38:54Z",
+      "head_sha": "823dbb1fb8c833467c263803adc62161e7392ac7",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013979059,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:38:54Z",
+      "head_sha": "823dbb1fb8c833467c263803adc62161e7392ac7",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013966713,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:38:41Z",
+      "head_sha": "ae4a93f5ac798ac5500e932a64d04ecce41abb87",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013966697,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:38:41Z",
+      "head_sha": "ae4a93f5ac798ac5500e932a64d04ecce41abb87",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013869109,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:37:07Z",
+      "head_sha": "ed09cbc0a95f27c2c1cba5dddb6b525114e10ed1",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013869119,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:37:07Z",
+      "head_sha": "ed09cbc0a95f27c2c1cba5dddb6b525114e10ed1",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013812303,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:36:14Z",
+      "head_sha": "2ccace463ae6a6101cb07c720b2179ecc38722fc",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013812320,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:36:14Z",
+      "head_sha": "2ccace463ae6a6101cb07c720b2179ecc38722fc",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013780181,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:44Z",
+      "head_sha": "42ba64b399d29a22fd8f55b00f989ccb86def05e",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013780220,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:44Z",
+      "head_sha": "42ba64b399d29a22fd8f55b00f989ccb86def05e",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013755524,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:21Z",
+      "head_sha": "aff259606c3060c3ce62161f4a55b0b895c1f370",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013755537,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:21Z",
+      "head_sha": "aff259606c3060c3ce62161f4a55b0b895c1f370",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013736673,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:05Z",
+      "head_sha": "1e3f288e094f2877612d03f0a6f8344746362d01",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013736722,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:35:05Z",
+      "head_sha": "1e3f288e094f2877612d03f0a6f8344746362d01",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013695980,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:34:26Z",
+      "head_sha": "54a44afc6629f3125681218aa10f459a71f6455f",
+      "conclusion": "failure"
+    },
+    {
+      "id": 38013695981,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:34:26Z",
+      "head_sha": "54a44afc6629f3125681218aa10f459a71f6455f",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013583412,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:41Z",
+      "head_sha": "39ef9ee5a36909e65a9ff1032c4fc03c3c1f04dd",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013583385,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:41Z",
+      "head_sha": "39ef9ee5a36909e65a9ff1032c4fc03c3c1f04dd",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013570049,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:28Z",
+      "head_sha": "98d73816b0b26a8c4a2914277902b09248c2ae85",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013570060,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:28Z",
+      "head_sha": "98d73816b0b26a8c4a2914277902b09248c2ae85",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013543794,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:05Z",
+      "head_sha": "c21994d3e356eb9a4b3d22c52e0cc8d952d59491",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013543850,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:32:05Z",
+      "head_sha": "c21994d3e356eb9a4b3d22c52e0cc8d952d59491",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013532786,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:54Z",
+      "head_sha": "433913ff968480902ab383bfa94de94e36beda5d",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013532756,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:54Z",
+      "head_sha": "433913ff968480902ab383bfa94de94e36beda5d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013519141,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:41Z",
+      "head_sha": "c057f102671972406d54807c8d35efb060cdfa31",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013519125,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:41Z",
+      "head_sha": "c057f102671972406d54807c8d35efb060cdfa31",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013499762,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:24Z",
+      "head_sha": "c436912431f22517d208627426146f163e184be3",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013499801,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:24Z",
+      "head_sha": "c436912431f22517d208627426146f163e184be3",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013479763,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:06Z",
+      "head_sha": "d9fae9ac585f815757850c9f1b0c6c0dbdacb0e8",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013479757,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:31:06Z",
+      "head_sha": "d9fae9ac585f815757850c9f1b0c6c0dbdacb0e8",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013211882,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:26:56Z",
+      "head_sha": "c22c41cfdf5cddc68c01940879d353a823ab5165",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013211908,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:26:56Z",
+      "head_sha": "c22c41cfdf5cddc68c01940879d353a823ab5165",
+      "conclusion": "success"
+    },
+    {
+      "id": 38013208117,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:26:52Z",
+      "head_sha": "5587eceebfd2151779c4f26dd3c61473ff5b12ed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 38013208216,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:26:52Z",
+      "head_sha": "5587eceebfd2151779c4f26dd3c61473ff5b12ed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38012804715,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:20:32Z",
+      "head_sha": "0f51666ab895bf17e0e523be79016ae820c6a26d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38012804712,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "created_at": "2026-10-10T01:20:32Z",
+      "head_sha": "0f51666ab895bf17e0e523be79016ae820c6a26d",
+      "conclusion": "success"
+    },
+    {
+      "id": 38010753671,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "event": "schedule",
+      "created_at": "2026-10-10T00:50:21Z",
+      "head_sha": "5cb4aa8503adbf30fb9f18a37af492e562e9b030",
+      "conclusion": "success"
+    }
+  ],
+  "recentPageResponseHashes": [
+    {
+      "name": "latest-runs.json",
+      "sha256": "d00c5e7b8c785c453285686fbe02344d314c3ef2550a327fed038ed4091500e8"
+    },
+    {
+      "name": "latest-runs-page2.json",
+      "sha256": "09a282c260fb4a9dacbe8fc686461d139aa2dce84eb8f08264b48c92e3da94de"
+    },
+    {
+      "name": "latest-runs-page3.json",
+      "sha256": "49182ede0bbab02ac7e86aa3a187043cf780f36d7d9f61f64f75537f7b02298a"
+    }
+  ]
+}
