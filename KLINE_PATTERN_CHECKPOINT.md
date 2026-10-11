@@ -7030,3 +7030,22 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 3. Resolve strict-vs-broad signal taxonomy disagreements against Sara's public text/examples without price-outcome peeking.
 4. D16 to sign off primary 10-session horizon, legal executable fill, cost/stop ordering, sample denominators/multiple-testing family, then pursue true prospective/OOS cohort tests; 00 readback before any claim or Formal proposal.
 5. Keep DL-147 and 1101/2021-06-15 R1-R6 separate mainline checkpoints. No core/production/scan change.
+
+
+## Sara continuation — 60-minute official source contract and physical-data blocker (2026-10-11)
+
+**This does not advance mainline DL-147 or 1101 / 2021-06-15 R1-R6.**
+
+- New official Fugle documentation readback: historical timeframe60 since 2023-05-23; queries <1 year; minute volume for listed common stock = LOTS (vs daily SHARES); adjusted only valid for daily/weekly/monthly, not intraday minute bars.
+- Documentation states bar date ISO8601 timezone but not timestamp start-vs-end nor shortened last-session bucket/closing auction; firstKnownAt per minute-bar cannot be assumed from retrospective history or daily 16:30 update statement.
+- The connected Fugle-Stock FCNT000154 attempt for 1101, 2026-08-01 through 2026-10-08, timeframe60 returned contentId only with structuredContent=null. Actual price rows, exact 245 valid 60m buckets and source revision remain PHYSICAL_NOT_RETURNED, not zero observations.
+- Artifacts: research/D01_SARA_60M_OFFICIAL_SOURCE_ADMISSION_READINESS_20261011_V0_1.md, research/d01_sara_60m_source_admission_v0_1.mjs, research/test_d01_sara_60m_source_admission_v0_1.mjs.
+- 21 synthetic fail-closed source/PIT adversarial fixtures: isolated V8 using exact branch contents 21/21 PASS. Native Node and CI remain UNVERIFIED, as does previous 46-fixture Sara suite in native Node. No outcomes or actual market data analyzed.
+- New falsifier: earlier last-five-bar support proximity measured against current MA60 is NOT equivalent to each earlier bar's own contemporaneous MA60 touch. Separate HISTORICAL_DYNAMIC_MA60_TOUCH vs CURRENT_SUPPORT_BAND_PROXIMITY must be preregistered and tested before any outcomes.
+- No change to Formal Core, Worker, capital, Top6, D1, push or 15-minute confirmation. SDA-001/SDA-002 OPEN. D01 remains 11/11 L3 and 60.0%. Alpha UNKNOWN.
+
+### Exact next continuation for Sara track
+1. Data owner: return physical source-certified 1101/2026-08-01..10-08 historical 60m rows, source revision, first-known, query digest and 60m timestamp bucket semantics using existing authorized credentials.
+2. D05/Corporate Actions owners: independently bind final 60m session bucket/auction and raw-price continuity.
+3. Room01: get real native Node / CI log for old 46 and new 21 synthetic tests; then test historical dynamic MA60 support vs current support band without outcome joins.
+4. 11/D16: preregister actual legal entry/fill, costs, matched support and prospective/OOS; mainline DL-147 and frozen 2021 witness remain separate.
