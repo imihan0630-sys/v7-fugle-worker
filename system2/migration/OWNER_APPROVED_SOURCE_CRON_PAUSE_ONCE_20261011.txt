@@ -1,0 +1,10 @@
+OWNER-APPROVED OPERATION
+Date=2026-10-11 Asia/Taipei
+Prerequisite original authenticated source GET: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38142183179
+Original Source Inspector Job=114478131558 Artifact=11702964293
+Original SHA256=d85908d217f6cbe4746c1f994efe7f0ca9fd4d82a6a61f38336ee8a759dd3c46
+Target only old SOURCE system2-shadow-research cron schedule set
+Expected before: */5 0-5,11 * * MON-FRI
+Expected after: zero cron entries
+Hard excludes System1 fugle-test, V8, source D1/R2, destination accounts, billing, Secrets.
+Owner exact approval in this conversation 2026-10-11. Existing source environment only.
