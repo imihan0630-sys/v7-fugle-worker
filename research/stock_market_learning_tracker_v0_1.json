@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-11T02:14:51+08:00",
+  "updatedAt": "2026-10-11T13:39:31+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.9
+    "maturityWeightedPct": 48.3
   },
   "domains": [
     {
@@ -2264,7 +2264,7 @@
         "TRADING_FRICTIONS_CHECKPOINT.md",
         "EXECUTION_ALPHA_RESEARCH.md"
       ],
-      "maturityPct": 35.6,
+      "maturityPct": 42.2,
       "modules": [
         {
           "id": "D14-01",
@@ -2389,32 +2389,32 @@
         {
           "id": "D14-16",
           "name": "VWAP／TWAP／Participation Execution成交量加權時間加權與參與率執行",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「VWAP／TWAP／Participation Execution成交量加權時間加權與參與率執行」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / NOT_STOCK_SELECTION_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / NOT_STOCK_SELECTION_GATE",
-          "next": "由 10｜投組風控與交易執行研究室保留 VWAP／TWAP／Participation 為執行方法族，與 D05 市場微結構、D14-17 執行落差、D14-18 訊號衰減交叉驗證；不形成選股 Gate。"
+          "status": "L2_MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "既有機制／反證契約已持久化。收集至少三個獨立前瞻台股交易日之母單、子單、撮合機制、未成交機會及券商確認成交收據；先做決策時點重播與樣本外檢查，三日僅觸發 L3 準備度審查，不自動升級。"
         },
         {
           "id": "D14-17",
           "name": "Implementation Shortfall／Market-impact Cost執行落差與市場衝擊成本",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Implementation Shortfall／Market-impact Cost執行落差與市場衝擊成本」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D14-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "L2_IMPLEMENTATION_SHORTFALL_FALSIFICATION_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "既有執行落差／市場衝擊契約已持久化。收集至少三個獨立前瞻台股交易日之決策基準、母子單生命週期、未成交機會、撮合機制及可核對券商成交；避免已成交樣本偏誤與市場共因誤歸因，三日不自動升級。"
         },
         {
           "id": "D14-18",
           "name": "Alpha Decay／Execution Urgency訊號衰減與執行急迫性",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Alpha Decay／Execution Urgency訊號衰減與執行急迫性」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D14-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "L2_ALPHA_DECAY_URGENCY_FALSIFICATION_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "依已持久化 D14-18 研究契約與補充檢查點接續；至少三個獨立前瞻台股交易日保存訊號首次可知、決策時點、撮合機制、母子單、未成交機會與券商確認成交收據；樣本外反證與成本／衰減比較後再審 L3，三日不自動升級。"
         },
         {
           "id": "D14-19",
