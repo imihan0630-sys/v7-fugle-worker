@@ -4,7 +4,7 @@
 import {writeFile,appendFile} from "node:fs/promises";
 const emitPath="/tmp/corr003-source-account-live-readonly.json";
 const account=process.env.CLOUDFLARE_ACCOUNT_ID||"";
-const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
+const token=process.env.CLOUDFLARE_API_TOKEN||process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||"";
 const startedAtUtc=new Date().toISOString();
 const day=startedAtUtc.slice(0,10);
 const report={schemaVersion:"CORR003_SOURCE_ACCOUNT_LIVE_METADATA_READONLY_V0_1",
