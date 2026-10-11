@@ -26,7 +26,8 @@ def make_db(path, order=(1, 2), add_index=False, foreign_key=False):
         if add_index:
             db.execute("CREATE INDEX idx_decision_id ON s2_decisions(decision_id)")
         if foreign_key:
-            db.execute("CREATE TABLE s2_fk_child (parent_id INTEGER REFERENCES s2_decisions(decision_id))")
+            db.execute("CREATE TABLE s2_fk_parent (id INTEGER PRIMARY KEY)")
+            db.execute("CREATE TABLE s2_fk_child (parent_id INTEGER REFERENCES s2_fk_parent(id))")
             db.execute("INSERT INTO s2_fk_child VALUES (999)")
 
 
