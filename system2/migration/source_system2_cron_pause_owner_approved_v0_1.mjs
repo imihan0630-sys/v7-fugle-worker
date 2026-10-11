@@ -77,7 +77,10 @@ export async function sourceCronPauseV0_1({
    await api('GET','/workers/scripts/'+SYSTEM1_WORKER+'/schedules'),'V8_SCHEDULE');
  const sourceBefore=onlyValidScheduleList(
    await api('GET','/workers/scripts/'+SOURCE_SYSTEM2_WORKER+'/schedules'),'SOURCE_S2_SCHEDULE');
- if(!same(sourceBefore,[APPROVED_CRON]))
+ // Zero is a valid read-only observed state after a prior or concurrent
+ // pause. Never issue a second PUT to an already-empty Cron schedule.
+ // This observation does not prove WHO paused it or independent G6 audit.
+ if(sourceBefore.length!==0&&!same(sourceBefore,[APPROVED_CRON]))
    throw errorCode('SOURCE_S2_SCHEDULE_NOT_EXACTLY_EXPECTED');
  const observedAtUtc=clock();
  const beforeHash=sha({v8,sourceBefore,sourceWorker:SOURCE_SYSTEM2_WORKER,
@@ -93,6 +96,11 @@ export async function sourceCronPauseV0_1({
   originalSourceCronRestorable:true,
   originalCloudflareTokenExposed:false,
  };
+ if(sourceBefore.length===0)return Object.freeze({...baseReceipt,
+  state:'SOURCE_S2_CRON_ALREADY_EMPTY_READONLY_NOT_ORIGINAL_PAUSE_PROOF',
+  pausedConfirmed:true,cloudMutationsRequested:0,sourceCronAfter:[],
+  v8CronUnchanged:null,independentAuditCompleted:false,
+ });
  if(mode==='INSPECT')return Object.freeze({...baseReceipt,
   state:'FRESH_SOURCE_READONLY_INSPECTED_NOT_PAUSED',pausedConfirmed:false});
  if(await readDeployGuard()!==true)throw errorCode('LEGACY_SOURCE_DEPLOY_QUARANTINE_NOT_EFFECTIVE');
