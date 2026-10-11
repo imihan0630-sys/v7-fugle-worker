@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "D06_PF045_V0_1",
+  "createdAt": "2026-10-12T03:09:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "formalCore": "LOCKED",
+  "researchOnly": true,
+  "baseMainSha": "bbaaa6701ea9f020e88a250ac22c0c84934d2eae",
+  "modules": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-18"
+  ],
+  "previousDurable": "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md#PF-042",
+  "priorLocal": "D06_PF044_20261011_local_research.json",
+  "focus": "PF-045 source-vintage admission and causal-lineage replay; not another partial-identification lower-bound derivation",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Same-decision PCF/units can be joined only after both exact first-known and capture clocks pass the decision cutoff.",
+      "support": "Both source receipts can describe one bounded modeled basket context.",
+      "falsification": "Later T-day retransmission or later capture can revise PCF without being known at earlier decision.",
+      "alternative": "A stale prior-vintage PCF may look stable while wrong use-date.",
+      "failure": "Missing/after-decision timestamp, wrong use-date, missing hash, incomplete support."
+    },
+    {
+      "id": "H2",
+      "claim": "ETF units plus PCF imply modeled delivery exposure, never actual same-day constituent market execution.",
+      "support": "In-kind basket specifies possible delivery obligations.",
+      "falsification": "AP inventory, pooled creation, cash substitution, borrowing and next-day fulfillment permit identical units/PCF without same-day buying.",
+      "alternative": "Secondary-market ETF turnover, benchmark rebalance or valuation move.",
+      "failure": "Cash-only, all cash substitution, unresolved corporate action, no AP trade receipts."
+    },
+    {
+      "id": "H3",
+      "claim": "Borrowing/shorting, ETF basket and crowding can share a causal event; source-specific primitives must not be counted as independent alpha.",
+      "support": "Distinct official receipts can measure distinct aspects of liquidity demand.",
+      "falsification": "Borrow-to-deliver can accompany creation without directional short, and multiple consumer labels can reuse one source primitive.",
+      "alternative": "Hedge, arbitrage, financing, unrelated simultaneous trades.",
+      "failure": "No event identity / exact parent lineage / comparable population."
+    },
+    {
+      "id": "H4",
+      "claim": "Source replay and clock controls are necessary but not sufficient for OOS incremental value.",
+      "support": "Versioned receipts allow later forward-only tests.",
+      "falsification": "Independent receipt count is not independent market dates; selection on liquidity and outcome leakage can inflate apparent effect.",
+      "alternative": "Price-volume, institutional flows, index changes, volatility and market regime.",
+      "failure": "No pre-registered common support, purge, date clustering, costs and regime stratification."
+    }
+  ],
+  "rules": {
+    "admission": "Fail-closed when firstKnownAt/capturedAt later than decision, sourceDate future, PCF useDate mismatch, missing provenance, unresolved corporate action, incomplete support, cash-only or all-cash substitution.",
+    "allowed": "MODELED_ONLY context, no directionality, no actual execution claim.",
+    "unknown": "UNKNOWN never zero or BAD; no true lendable-inventory denominator => true utilization UNKNOWN.",
+    "eventLineage": "Same primitive receipt many consumers counts once; distinct receipts with common cause cannot automatically be independent votes.",
+    "antiLeak": "No retroactive PCF overwrite; same decision generation version updates do not increase independent date N.",
+    "validation": "Future OOS / walk-forward, purge overlapping outcomes, date clustering, preregistered M0/M1, multiplicity, turnover/impact/fees, liquidity, regime and redundancy; outcomes unopened."
+  },
+  "testRun": {
+    "kind": "DETERMINISTIC_SYNTHETIC_CONTRACT_ONLY",
+    "cases": 30,
+    "passed": 30,
+    "failed": 0,
+    "scenarioTests": [
+      {
+        "name": "valid_model_only",
+        "expected": "MODELED_ONLY",
+        "observed": "MODELED_ONLY",
+        "reason": [],
+        "pass": true
+      },
+      {
+        "name": "future_units_first_known",
+        "expected": "FUTURE_LEAK",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_LEAK"
+        ],
+        "pass": true
+      },
+      {
+        "name": "future_pcf_first_known",
+        "expected": "FUTURE_LEAK",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_LEAK"
+        ],
+        "pass": true
+      },
+      {
+        "name": "future_units_capture",
+        "expected": "FUTURE_LEAK",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_LEAK"
+        ],
+        "pass": true
+      },
+      {
+        "name": "future_pcf_capture",
+        "expected": "FUTURE_LEAK",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_LEAK"
+        ],
+        "pass": true
+      },
+      {
+        "name": "wrong_pcf_use_date",
+        "expected": "WRONG_USE_DATE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "WRONG_USE_DATE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "future_units_source_date",
+        "expected": "FUTURE_SOURCE_DATE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_SOURCE_DATE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "missing_units_first_known",
+        "expected": "UNKNOWN_TIME",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_TIME"
+        ],
+        "pass": true
+      },
+      {
+        "name": "missing_pcf_first_known",
+        "expected": "UNKNOWN_TIME",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_TIME"
+        ],
+        "pass": true
+      },
+      {
+        "name": "missing_units_hash",
+        "expected": "UNKNOWN_PROVENANCE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_PROVENANCE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "missing_pcf_hash",
+        "expected": "UNKNOWN_PROVENANCE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_PROVENANCE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "incomplete_units",
+        "expected": "UNKNOWN_COVERAGE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_COVERAGE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "incomplete_pcf",
+        "expected": "UNKNOWN_COVERAGE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_COVERAGE"
+        ],
+        "pass": true
+      },
+      {
+        "name": "corporate_action_unresolved",
+        "expected": "UNKNOWN_CORPORATE_ACTION",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_CORPORATE_ACTION"
+        ],
+        "pass": true
+      },
+      {
+        "name": "cash_creation",
+        "expected": "NOT_IN_KIND",
+        "observed": "UNKNOWN",
+        "reason": [
+          "NOT_IN_KIND"
+        ],
+        "pass": true
+      },
+      {
+        "name": "all_cash_substitution",
+        "expected": "UNKNOWN_COMPONENT_DELIVERY",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_COMPONENT_DELIVERY"
+        ],
+        "pass": true
+      },
+      {
+        "name": "missing_identity",
+        "expected": "UNKNOWN_IDENTITY",
+        "observed": "UNKNOWN",
+        "reason": [
+          "UNKNOWN_IDENTITY"
+        ],
+        "pass": true
+      },
+      {
+        "name": "separate_prior_units_date_valid",
+        "expected": "MODELED_ONLY",
+        "observed": "MODELED_ONLY",
+        "reason": [],
+        "pass": true
+      },
+      {
+        "name": "same_day_first_known_valid",
+        "expected": "MODELED_ONLY",
+        "observed": "MODELED_ONLY",
+        "reason": [],
+        "pass": true
+      },
+      {
+        "name": "first_known_at_decision_boundary",
+        "expected": "MODELED_ONLY",
+        "observed": "MODELED_ONLY",
+        "reason": [],
+        "pass": true
+      },
+      {
+        "name": "future_first_known_with_old_capture",
+        "expected": "FUTURE_LEAK",
+        "observed": "UNKNOWN",
+        "reason": [
+          "FUTURE_LEAK"
+        ],
+        "pass": true
+      },
+      {
+        "name": "multiple_fail_closed",
+        "expected": "WRONG_USE_DATE",
+        "observed": "UNKNOWN",
+        "reason": [
+          "WRONG_USE_DATE",
+          "UNKNOWN_PROVENANCE"
+        ],
+        "pass": true
+      }
+    ],
+    "lineageTests": [
+      {
+        "name": "same_generation_identical_hash_is_not_new_observation",
+        "pass": true
+      },
+      {
+        "name": "same_generation_revised_pcf_is_new_version_not_new_date",
+        "pass": true
+      },
+      {
+        "name": "new_generation_distinct_but_not_outcome_independence",
+        "pass": true
+      },
+      {
+        "name": "one_shared_primitive_three_consumers_counts_once",
+        "pass": true
+      },
+      {
+        "name": "different_receipts_same_index_event_not_independent_causes",
+        "pass": true
+      },
+      {
+        "name": "borrow_quote_not_executed_short",
+        "pass": true
+      },
+      {
+        "name": "modeled_basket_not_actual_execution",
+        "pass": true
+      },
+      {
+        "name": "no_true_utilization_without_inventory_denominator",
+        "pass": true
+      }
+    ]
+  },
+  "realMarketRowsUsed": 0,
+  "newProspectiveDates": 0,
+  "outcomesUsed": false,
+  "shadowHistoryFabricated": false,
+  "maturityChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "At next genuine exchange session, append official ETF unit/PCF receipt with separately verified firstKnownAt, capturedAt, sourceDate, useDate, revision hash, corporate-action and substitution status. Audit margin/short/SBL early/late vintages on distinct source denominators. Ask D16 to freeze primary OOS estimand and event-cluster/purge protocol. Keep PF-043/044 local-only until safe normal integration; no forced old-SHA merge."
+}
