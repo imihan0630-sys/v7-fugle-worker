@@ -1,0 +1,258 @@
+{
+  "schemaVersion": "S2_CORR003_REAL_NINE_ACTIONS_ARTIFACT_ZIP_BYTE_REPLAY_20261011_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "owner": "REMEDIATION_LANE",
+  "sourceRepo": "imihan0630-sys/v7-fugle-worker",
+  "originalMain": "c82bdc43504c17f5a15129e625fefbaa41b79160",
+  "producerIssue": 1024,
+  "producerPr": 1121,
+  "producerHeadAtCheck": "51457b2d2af9a5015f608c99e3f2b4bd49c581d7",
+  "producerUnmerged": true,
+  "classification": "GITHUB_NATIVE_ORIGINAL_ARTIFACT_ZIP_BYTES_REPLAYED_NO_CLOUDFLARE_OR_QUOTA_AUTHORITY",
+  "archiveMethod": "GitHub connector Actions authenticated artifact download ZIP, Python SHA256 over bytes, zipfile integrity test and SHA256 of extracted JSON members; raw ZIPs never committed.",
+  "counts": {
+    "originalProducerArtifacts": 8,
+    "supplementalPVE262": 1,
+    "downloadedZip": 9,
+    "matchedNativeSha256": 9,
+    "archiveIntegrityPass": 9,
+    "extractedJSON": 11,
+    "runJobArtifactAssociationsDirectlyChecked": 9
+  },
+  "artifacts": [
+    {
+      "artifactId": 11494952595,
+      "runId": 37649041814,
+      "jobId": 112887225789,
+      "headSha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+      "zipBytes": 1455,
+      "zipSha256": "sha256:8bde99fd35e86ac1fedb03b6dcccf5ca5ddccab199d8e472d3ffdca173b85b8d",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve251-live-remediation-readonly.json",
+          "sha256": "sha256:9cda1463d469e2608410993cea0fbc1aebb1b4d54bcf29fa0b0385b4ce614b3b"
+        }
+      ]
+    },
+    {
+      "artifactId": 11495881660,
+      "runId": 37649249573,
+      "jobId": 112887945915,
+      "headSha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+      "zipBytes": 2025,
+      "zipSha256": "sha256:d4251f93ba2945ade04c46442589b2e7dad067ea83ebc88a517bd5fba609a5d4",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve262-cron-window-readonly.json",
+          "sha256": "sha256:6e7635f3f43ca2d4bcf3a3b664e97a9548588eb82f01e8ed50dd8fca3d27dd14"
+        }
+      ]
+    },
+    {
+      "artifactId": 11495752402,
+      "runId": 37649543821,
+      "jobId": 112888965126,
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "zipBytes": 1353,
+      "zipSha256": "sha256:ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve263-after-market-side-effect-readonly.json",
+          "sha256": "sha256:68eb3e195aa06f25c0d966be679470fb44a220cb546a6d5b5e2209007c3aa90f"
+        }
+      ]
+    },
+    {
+      "artifactId": 11495133236,
+      "runId": 37650006684,
+      "jobId": 112890551584,
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "zipBytes": 682,
+      "zipSha256": "sha256:188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve264-d1-daily-usage-readonly.json",
+          "sha256": "sha256:0e0cb6a39379a099f0e4c658552a41728c43b04152a847eab65ace5511af925f"
+        }
+      ]
+    },
+    {
+      "artifactId": 11514945619,
+      "runId": 37694052477,
+      "jobId": 113041122665,
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "zipBytes": 1271,
+      "zipSha256": "sha256:7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve271-system1-after-market-reserve-evidence.json",
+          "sha256": "sha256:49287bf026f76034bd7cd0fa2fa0575abf4afa282a47b03a2bc6af100b2dc466"
+        }
+      ]
+    },
+    {
+      "artifactId": 11514766351,
+      "runId": 37694255555,
+      "jobId": 113041830751,
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "zipBytes": 1051,
+      "zipSha256": "sha256:cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "d02-pve272-system1-after-market-full-history-envelope.json",
+          "sha256": "sha256:be230ea6d40478ad1c21c58d5b8cf6d774155db09d4f8a68dad8bd4d26a7cb72"
+        }
+      ]
+    },
+    {
+      "artifactId": 11565090033,
+      "runId": 37808995747,
+      "jobId": 113420649062,
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "zipBytes": 1612,
+      "zipSha256": "sha256:a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "system1-c1-readiness.json",
+          "sha256": "sha256:129d53eac499451e096b04c6b6afe98cc91a87c663b4f31c4373c7abe89d0879"
+        },
+        {
+          "file": "system1-operational-acceptance.json",
+          "sha256": "sha256:cdf17dee065b81c08c27fc1a0a8e03fce808a6287f7b4feb692bf6d342012c69"
+        }
+      ]
+    },
+    {
+      "artifactId": 11631116248,
+      "runId": 37958877283,
+      "jobId": 113916309205,
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "zipBytes": 1632,
+      "zipSha256": "sha256:4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "system1-c1-readiness.json",
+          "sha256": "sha256:c689f699e7b409e9ebebbf0fad09daa773fca4a950a80e3c6b061cd0fd809356"
+        },
+        {
+          "file": "system1-operational-acceptance.json",
+          "sha256": "sha256:04b36faf0c5ac8b6c0a833c05a2d71b0caadcde387a404dd82deebf74d394d2b"
+        }
+      ]
+    },
+    {
+      "artifactId": 11662631499,
+      "runId": 38032440861,
+      "jobId": 114156019956,
+      "headSha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "zipBytes": 680,
+      "zipSha256": "sha256:33a23712e19cfbf0ba6b1ad737bb6d3fb500e4f484782db05b762c91ae2e7b01",
+      "nativeMetadataMatched": true,
+      "originalZipDownloaded": true,
+      "zipIntegrity": "PASS",
+      "extractedJson": [
+        {
+          "file": "system1-public-runtime-readonly.json",
+          "sha256": "sha256:d39925c60dc24f534787d6661097096a4d4d037ca81262de6173642b6cee4c4e"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "PVE262RawCronAuditRows": 0,
+    "PVE263ObservedScanStatus": "FAILED_D1_WRITE_QUOTA",
+    "PVE263RecoveryLeaseNotBusinessSuccess": true,
+    "PVE264UtcAccountRowsWritten": 126498,
+    "PVE264UtcAccountRowsRead": 4374959,
+    "oldCronSuccessDays": [
+      "2026-09-21",
+      "2026-09-22"
+    ],
+    "wholeDayOnlyRowsWritten": [
+      2825,
+      1635
+    ],
+    "wholeDayOnlyRowsRead": [
+      133037,
+      19533
+    ],
+    "PVE271OldSuccessNotSameGenerationPersistence": true,
+    "C1Oct08Blocked": true,
+    "C1Oct09HolidayBlocked": true,
+    "Oct10PublicRuntimeNotP04Success": true,
+    "perRunPrimary2335RowsWritten": null,
+    "perRunPrimary2335RowsRead": null,
+    "conditional2355Costs": null,
+    "actualNaturalSubsequentBusinessPersisted": false,
+    "noAuthorizedAccountQuotaGrant": true,
+    "sourceDataPITFrozenRestoreCertified": false,
+    "hotD1ScoutKeysAccepted": 0,
+    "hotD1CensusKeysAccepted": 0
+  },
+  "limitations": {
+    "physicalClosureProofGainedFromReplayedZips": false,
+    "otherPrivateBusinessLogsAllIndependentlyVerified": false,
+    "allNewNormalSessionEvidenceAvailable": false,
+    "threeUnarchivedRecentMetadataPagesReplayed": false,
+    "zipOriginalBytesSavedInRepository": false
+  },
+  "status": {
+    "P01": "3/7",
+    "P02": "3/7",
+    "P03": "3/8",
+    "P04": "2/7",
+    "P05": "4/9",
+    "supportCompleted": 15,
+    "supportTotal": 38,
+    "independentPhysicalAccepted": 0,
+    "totalPhysical": 5,
+    "sourceA1A7": "INDEPENDENT_SOURCE_LEVEL_PASS",
+    "corr003": "HIGH_VERIFYING"
+  },
+  "reserve": {
+    "writeAuthorized": false,
+    "authorizedRowsWritten": null,
+    "readAuthorized": false,
+    "authorizedRowsRead": null
+  },
+  "auditOnlyClosure": true,
+  "handoff": {
+    "audit": "Independently redownload nine exact artifact IDs and rehash ZIP plus JSON; verify Run/Job/Artifact joins, do not promote P01-P05.",
+    "system1": "Use corrected UTC→Taipei PR1121 append-only receipt; next natural 10/12 per-run cost and same-generation readback.",
+    "data": "Maintain fail-closed P03/P05; backup/PIT/Frozen/Hot D1 remain blocked by reserves."
+  },
+  "safety": {
+    "D1SQL": 0,
+    "R2IO": 0,
+    "CloudflareAPI": 0,
+    "workflowDispatch": 0,
+    "workerCronChanges": 0,
+    "quotaCoreChanges": 0,
+    "shadowStart": 0,
+    "billingChanges": 0
+  }
+}
