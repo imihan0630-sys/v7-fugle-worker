@@ -23,7 +23,7 @@ function fixture({
      schedules=wrongAfter?[APPROVED_CRON]:[];
      result={schedules:[]};
     }else throw Error('OUT_OF_SCOPE_PUT');
-   }else if(p.endsWith('/workers/scripts?per_page=100')){
+   }else if(p.endsWith('/workers/scripts')&&u.searchParams.get('per_page')==='100'){
     result=workerIds.map(id=>({id}));
    }else if(p.endsWith('/d1/database')){
     result=dbNames.map(name=>({name,uuid:name==='system2-research'?db:'3'.repeat(32)}));
