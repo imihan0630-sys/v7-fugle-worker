@@ -12,7 +12,7 @@ const DB='system2-research';
 const CAP_READ=5_000_000,CAP_WRITE=100_000,DAY80=80_000;
 const nonneg=n=>Number.isSafeInteger(n)&&n>=0;
 const error=k=>new Error('S2_DEST_ACCOUNT_QUOTA_'+k);
-function graphqlRows(j,day,expectedDb){
+export function validateDestinationQuotaGroupV0_1(j,day,expectedDb){
  if(!Array.isArray(j?.data?.viewer?.accounts)||j.data.viewer.accounts.length!==1)
   throw error('GRAPHQL_DESTINATION_ACCOUNT_COVERAGE_MISSING');
  const a=j.data.viewer.accounts[0];
@@ -70,7 +70,7 @@ export async function readDestinationD1AccountQuotaV0_1({
   const json=await fetchJson(base+'/graphql',analyticsToken,{
    query,variables:{accountTag:accountId,start:day,end:day}
   });
-  reads.push({...graphqlRows(json,day,id),observedAtUtc:now()});
+  reads.push({...validateDestinationQuotaGroupV0_1(json,day,id),observedAtUtc:now()});
  }
  if(reads[1].rowsWrittenLowerBound<reads[0].rowsWrittenLowerBound||
     reads[1].rowsReadLowerBound<reads[0].rowsReadLowerBound||
