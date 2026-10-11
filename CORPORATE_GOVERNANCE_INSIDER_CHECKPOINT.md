@@ -408,3 +408,13 @@ No maturity or Formal change is authorized by this routing.
 3. All L3 modules remain below L4 without OOS/prospective evidence.
 
 Formal Core impact: NONE.
+
+
+## 2026-10-11 15:37 D21-03/D21-04 official disclosure-observability continuation (research branch)
+- Official TWSE insider FAQ: https://www.twse.com.tw/zh/products/education/insider/qa.html Q6 confirms a mid-month resigned insider may file by next-month fifth yet have no visible MOPS change row. Thus missing public rows cannot be treated as zero trades; missingness is linked to governance role transitions and must enter selection-bias/coverage tests.
+- Q12 separates internal form delivery/fax from confirmed MOPS upload; prepared/received time cannot stand in for first-public known-at. Q4 permits sequential pre-transfer notices when earlier declared shares are sold, so announced totals are not executed gross flows.
+- Q9 distinguishes gift from market sale even during buyback; Q10 major-notice threshold cannot make absent notice evidence of no short-swing event. The FAQ is currently observed, not an immutable historical rule-vintage receipt.
+- Net monthly holding change is non-identifying for gross buys/sells and motives: B=S=0 and B=S=100 both give zero net, even before gift/trust/passive adjustments. Pledge setup/release is not a market trade or a known margin-call price.
+- 9/9 isolated synthetic classification smoke fixtures passed; these are not historical replay, OOS, Shadow, pipeline acceptance or alpha evidence.
+- Research receipt: research/d21_insider_observability_identifiability_20261011_v0_1.md. Exact MOPS historical monthly actual-change and controller pledge first-public receipts remain blocked; D21-03/D21-04 L2/40%, D21 56.4%, Formal Core LOCKED; no candidate.
+- Exact next: recover original MOPS historical monthly actual-change/role-coverage receipts and controller pledge setup/release first-known; stratify visibility by resignation and issuer attributes; then preregister independent OOS and cross-factor residual tests. Previously unmerged governance-rating branch evidence remains separate and cannot be counted as main progress.
