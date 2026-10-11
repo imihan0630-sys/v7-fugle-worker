@@ -27,7 +27,7 @@ const cases=[
  ["offset +14:01 rejected",()=>assert.equal(parsePITInstant("2021-06-15T23:59:59+14:01"),null)],
  ["legal edge timezone -14 admitted",()=>assert.ok(parsePITInstant("2021-06-15T23:59:59-14:00")!==null)],
  ["invalid timezone minute 60 rejected",()=>assert.equal(parsePITInstant("2021-06-15T23:59:59+08:60"),null)],
- ["nine digit fraction admitted",()=>assert.ok(parsePITInstant("2021-06-15T15:59:59.999999999Z")!==null)],
+ ["sub-millisecond timestamps blocked rather than silently truncated",()=>assert.equal(parsePITInstant("2021-06-15T15:59:59.999999999Z"),null)],
  ["unparseable null observation blocked",()=>{assert.equal(dl95(null),"EVIDENCE_CLOCK_UNKNOWN");assert.equal(dl91(null),"RECEIPT_CLOCK_UNKNOWN")}],
  ["replaySafe=false never upgrades clock",()=>assert.equal(dl91("2021-06-15T15:59:59Z",cutoff,false),"RECEIPT_CLOCK_UNKNOWN")],
  ["invalid cutoff blocks",()=>assert.equal(dl95("2021-06-15T15:59:59Z","bad"),"EVIDENCE_CLOCK_UNKNOWN")],
