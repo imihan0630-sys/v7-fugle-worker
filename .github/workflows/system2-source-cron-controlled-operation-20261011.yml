@@ -1,0 +1,66 @@
+name: SOURCE System2 Cron-only owner-authorized PHYSICAL one-time operation 20261011
+# TRANSIENT BRANCH-ONLY operator; user explicitly authorized physical pause.
+# Never merge this push-triggered operator into main. Only named commits invoke.
+on:
+  push:
+    branches:
+      - s2-source-cron-owner-approved-physical-operation-20261011
+    paths:
+      - .github/workflows/system2-source-cron-controlled-operation-20261011.yml
+      - system2/migration/OWNER_APPROVED_SOURCE_CRON_PAUSE_ONCE_20261011.txt
+permissions:
+  contents: read
+concurrency:
+  group: source-system2-cron-owner-approved-physical-20261011
+  cancel-in-progress: false
+jobs:
+  source-only:
+    if: >-
+      github.ref == 'refs/heads/s2-source-cron-owner-approved-physical-operation-20261011' &&
+      (github.event.head_commit.message == 'S2_CRON_INSPECT_AUTHORIZED_20261011' ||
+       github.event.head_commit.message == 'S2_CRON_PAUSE_AUTHORIZED_20261011')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Source deployment quarantine, strict regression and immutable System1 protection
+        run: |
+          set -euo pipefail
+          node --test system2/tests/source_system2_cron_pause_owner_approved_v0_1.test.mjs
+          grep -F 'if: ${{ false }}' .github/workflows/system2-resonance-deploy.yml
+          node -e "const q=require('./system2/config/source_account_d1_writer_quarantine_v0_1.json');if(!q.active||q.automaticRelease!==false)process.exit(3)"
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fresh source identity and bounded owner-approved Cron-only action
+        env:
+          CLOUDFlARE_UNUSED_AUDIT_ONLY: "false"
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          EVENT_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_COMMIT_MESSAGE" in
+            S2_CRON_INSPECT_AUTHORIZED_20261011)
+              node system2/migration/source_system2_cron_pause_owner_approved_v0_1.mjs INSPECT
+              ;;
+            S2_CRON_PAUSE_AUTHORIZED_20261011)
+              node system2/migration/source_system2_cron_pause_owner_approved_v0_1.mjs PAUSE APPROVED_SOURCE_SYSTEM2_CRON_ONLY_20261011
+              ;;
+            *)
+              echo 'UNAUTHORIZED_SOURCE_CRON_OPERATION' >&2; exit 3;;
+          esac
+      - name: Preserve original sanitized Cloudflare physical receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-system2-cron-ownerapproved-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-source-cron-pause-review/sanitized-physical-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Operation is scoped and does not authorize D1 export
+        if: always()
+        run: echo 'Only the old source system2-shadow-research Cron may be paused. No D1 SQL/export, Worker deploy, V8 changes, paid plans or destination cutover. Physical audit pending.' >> "$GITHUB_STEP_SUMMARY"
