@@ -29,7 +29,7 @@ function make(){
  return {sourceLedger,evaluationAtUtc:clock,
    independentOriginalVerification:true,
    calendarReceipt:{state:'READY',verifiedOfficialReadback:true,marketDate:DAY,
-     observedAt:'2026-10-12T15:32:00Z',originalCalendarHash:H,tradingDates:ds},
+     observedAt:'2026-10-12T15:32:00Z',originalCalendarHash:H,tradingDates:[...ds]},
    historyBySymbol:{'2330':{symbol:'2330',market:'TWSE',marketDate:DAY,providerMarketDate:DAY,
      priceSpace:'RAW',volumeUnit:'SHARES',originalProviderResponseVerified:true,
      originalResponseSha256:H,observedAt:'2026-10-12T15:31:00Z',
