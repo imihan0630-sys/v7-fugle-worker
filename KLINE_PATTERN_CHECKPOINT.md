@@ -7087,3 +7087,20 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 2. Obtain genuine exact-file native Node / existing research-safe CI logs for old 46, prior 21 and new 22 tests. Do not use isolated V8 equivalence as a native execution receipt.
 3. Freeze and validate cohort T/B/M/N and current-vs-dynamic MA60 touch disagreement denominators on source-admitted bars BEFORE outcome join; independent D16 approval to open prospective OOS.
 4. Preserve separate mainline DL-147 and exact 2021-06-15 1101 R1-R6 owner witness, without duplicating owner pipelines.
+
+
+## Mainline continuation — DL-147 taxonomy bridge-version break (2026-10-11)
+
+- New document: research/D01_DL147_TAXONOMY_BRIDGE_VERSION_BREAK_FALSIFICATION_20261011_V0_1.md.
+- New Class-A outcome-blind oracle files: research/d01_dl147_taxonomy_bridge_firewall_v0_1.mjs and research/test_d01_dl147_taxonomy_bridge_firewall_v0_1.mjs.
+- D09 industry/taxonomy owner authority retained; 2026-06-01 TPEx classification effective-date changes provide a real current-year context witness but NOT an accepted full historical membership universe.
+- Three separately admitted states: SAME_TAXONOMY_CONTEXT, DISPLAY_ONLY_BRIDGE_NO_SECTOR_METRIC, RECOMPUTED_SECTOR_CONTEXT_CERTIFIED (needs D09 peer membership/hash, complete denominators, as-of recomputation). Unknown/late/partial bridge blocks sector-conditioned claims.
+- Price-only D01 pattern structure remains invariant: identical price-root hash, same security identity and existing episode ID across classification changes. Taxonomy relabeling is no price pattern, no independent sector bonus; D08/D14 economic-regime break is a separate owner guard.
+- Isolated JavaScript V8 execution of 25 synthetic adversarial cases: 25/25 PASS. No native Node, GitHub CI, physical fully covered peer-universe or OOS/prospective outcomes claimed.
+- No Formal core, source collectors, runtime, scoring, ranking, capital, 15m confirmation, D1, Worker or push modifications. SDA-001/002 open. D01 all 11 modules L3, 60.0%; Alpha UNKNOWN.
+
+### Exact next MAINLINE after DL-147
+1. Re-read main for exact 1101 / 2021-06-15 R1-R6 physical source / 61 eligible-session window; R7 remains BLOCKED if incomplete.
+2. Obtain genuine native Node / CI evidence for DL-147 25 and prior DL-144~146 30 tests, retaining isolated V8 vs native execution distinction.
+3. If R1-R6 not physically ready, proceed with new outcome-blind DL-148 cross-market industry scheme intersection, independent TWSE/TPEx owner membership and partial-peer-denominator conservation; no inferred pan-market sector metric.
+4. Preserve Sara dedicated lane physical 60m source/bucket/revision/native test gates independently; never merge research studies or promote Formals.
