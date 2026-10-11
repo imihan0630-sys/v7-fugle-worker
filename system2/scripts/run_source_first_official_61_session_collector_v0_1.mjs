@@ -13,9 +13,14 @@ const taipeiDay=()=>new Intl.DateTimeFormat('en-CA',{
 }).format(new Date());
 export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
  marketDate,outputDir=OUT,fetchImpl,calendarResolver,historicalFetch,
- now,pauseMs=350,
+ now,pauseMs=350,retrospectiveDiagnosticOnly=false,
 }={}){
- if(marketDate!==taipeiDay())throw Error('PROSPECTIVE_ONLY_TAIPEI_TODAY');
+ const currentTaipeiDate=taipeiDay();
+ if(marketDate!==currentTaipeiDate &&
+    !(retrospectiveDiagnosticOnly===true&&marketDate<currentTaipeiDate))
+   throw Error('PROSPECTIVE_ONLY_TAIPEI_TODAY_UNLESS_EXPLICIT_RETROSPECTIVE_DIAGNOSTIC');
+ if(retrospectiveDiagnosticOnly===true&&marketDate>=currentTaipeiDate)
+   throw Error('RETROSPECTIVE_DIAGNOSTIC_MUST_PRECEDE_TODAY');
  await mkdir(resolve(outputDir,'original-json'),{recursive:true});
  const originals=[];
  const out=await captureOfficial61SessionWindowV0_1({
@@ -35,7 +40,10 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
     return {stored:true,sha256,byteLength:bytes.byteLength};
   },
  });
- const evidence={...out,originalCount:originals.length,originals};
+ const evidence={...out,originalCount:originals.length,originals,
+   retrospectiveDiagnosticOnly,
+   retrospectiveSelectionClaimDisabled:true,
+   genuineProspectiveDecisionCapture:!retrospectiveDiagnosticOnly&&false};
  const path=resolve(outputDir,'official-61-'+marketDate+'.json');
  await writeFile(path,JSON.stringify(evidence)+'\n',{flag:'wx',mode:0o600});
  console.log(JSON.stringify({
@@ -52,6 +60,11 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
 if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta.url))){
  const marketDate=process.argv[2];
  if(!/^\d{4}-\d\d-\d\d$/.test(marketDate||''))throw Error('MARKET_DATE_ARGUMENT_REQUIRED');
- const result=await collectOfficial61SessionWindowToLocalEvidenceV0_1({marketDate});
+ const diagnosticFlag=process.argv[3];
+ if(diagnosticFlag&&diagnosticFlag!=='--retrospective-diagnostic')
+   throw Error('UNKNOWN_SOURCE_COLLECTION_MODE');
+ const result=await collectOfficial61SessionWindowToLocalEvidenceV0_1({
+   marketDate,retrospectiveDiagnosticOnly:diagnosticFlag==='--retrospective-diagnostic',
+ });
  if(result.state!=='SOURCE_OBSERVED_UNAUDITED')process.exitCode=2;
 }
