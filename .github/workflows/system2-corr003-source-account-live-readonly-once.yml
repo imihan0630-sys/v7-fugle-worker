@@ -1,4 +1,4 @@
-name: CORR003 Source Account Live Metadata Probe ONCE
+name: CORR003 Source Account Live Metadata Probe ONCE (token-compat)
 
 on:
   push:
