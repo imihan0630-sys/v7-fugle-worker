@@ -32,7 +32,7 @@ async function readSourceQuarantine({
   /jobs:\s*\n\s*deploy:\s*\n(?:[^\n]*\n){0,8}\s*if:\s*\$\{\{\s*false\s*\}\}/.test(flow);
 }
 export async function sourceCronPauseV0_1({
- accountId,token,fetchImpl=globalThis.fetch,mode='INSPECT',
+ accountId,token,workersToken=token,fetchImpl=globalThis.fetch,mode='INSPECT',
  readDeployGuard=readSourceQuarantine,
  clock=()=>new Date().toISOString(),
 }={}){
@@ -40,10 +40,12 @@ export async function sourceCronPauseV0_1({
     typeof fetchImpl!=='function'||!['INSPECT','PAUSE'].includes(mode))
    throw errorCode('CREDENTIAL_OR_MODE_INVALID');
  const base='https://api.cloudflare.com/client/v4/accounts/'+accountId;
- const headers={Authorization:'Bearer '+token,'Content-Type':'application/json'};
+ if(typeof workersToken!=='string'||!workersToken)throw errorCode('WORKERS_TOKEN_INVALID');
  let calls=0;
  async function api(method,path,body){
   if(++calls>14)throw errorCode('MAX_API_CALLS');
+  const credential=path.startsWith('/workers/')?workersToken:token;
+  const headers={Authorization:'Bearer '+credential,'Content-Type':'application/json'};
   const res=await fetchImpl(base+path,{method,headers,
    ...(body===undefined?{}:{body:JSON.stringify(body)})});
   if(!res?.ok)throw errorCode('CLOUDFLARE_'+method+'_FAILED');
@@ -134,6 +136,7 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
    mode,
    accountId:process.env.CLOUDFLARE_ACCOUNT_ID,
    token:process.env.SYSTEM2_CLOUDFLARE_API_TOKEN,
+   workersToken:process.env.CLOUDFLARE_API_TOKEN || process.env.SYSTEM2_CLOUDFLARE_API_TOKEN,
   });
   const out=resolve('/tmp/system2-source-cron-pause-review');
   await mkdir(out,{recursive:true});
