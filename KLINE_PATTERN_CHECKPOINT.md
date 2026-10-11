@@ -7070,3 +7070,20 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 2. Obtain exact-file native Node / CI tests for prior 46 + 21 fixture oracles.
 3. Freeze no-outcome touch-disagreement denominators for T/B/M/N cohorts before D16 OOS testing.
 4. Mainline DL-147 / 1101-2021-06-15 R1-R6 physical witness remain independent and uncompleted.
+
+
+## Sara dedicated continuation — raw provider snapshot versus archived PIT sidecar (2026-10-11)
+
+- Source contract formally separated into raw physical HTTP payload admission and later independently archived point-in-time source/bucket/vintage replay certificate.
+- Fugle primary historical 60m response does NOT naturally contain firstKnownAt/revision/completedAt; do not invent them or use a later source fetch as though observable at historical intraday cutoff.
+- Official Technical SMA 60m endpoint only returns last 30 days of minute data regardless of requested from/to. A multi-year 60m MA240 historical trial needs the original captured 60m candles and independent source revision.
+- New artifacts: research/D01_SARA_PROVIDER_VINTAGE_SIDECAR_AND_INTRADAY_REPLAY_FALSIFICATION_20261011_V0_1.md; research/d01_sara_provider_sidecar_admission_v0_1.mjs; research/test_d01_sara_provider_sidecar_admission_v0_1.mjs.
+- New isolated adversarial suite: initial 21/21 V8 PASS. Independent reinspection found unsafe old receipt reuse if source raw rows changed. Added local row-count and noncryptographic fingerprint guard; updated suite 22/22 V8 PASS. No native Node or CI result is claimed for this suite or earlier 46/21.
+- Hard safety: fingerprint is NOT original HTTP authenticity. Owner-calculated cryptographic digest with actual raw response bytes is mandatory for physical source proof. The current 1101/2026-08-01..10-08 timeframe60 market-bar snapshot remains PHYSICAL_NOT_RETURNED / PIT_REPLAY_BLOCKED.
+- No intraday or 10-session returns opened; no 80-90 percent success assertion or Formal optimization. SDA-001/002 OPEN. All D01 11/11 modules L3 / 60.0%, Formal Core LOCKED.
+
+### Exact next Sara continuation
+1. Obtain a nonproduction *authorized* physical 60m HTTP response for the already frozen 1101 window, with data-owner-calculated SHA256 of raw bytes; independently establish bucket edges, source first-known archives, revision and corporate-action price-space. If first-known not archived, keep historical intraday replay blocked while allowing clearly labeled descriptive charts.
+2. Obtain genuine exact-file native Node / existing research-safe CI logs for old 46, prior 21 and new 22 tests. Do not use isolated V8 equivalence as a native execution receipt.
+3. Freeze and validate cohort T/B/M/N and current-vs-dynamic MA60 touch disagreement denominators on source-admitted bars BEFORE outcome join; independent D16 approval to open prospective OOS.
+4. Preserve separate mainline DL-147 and exact 2021-06-15 1101 R1-R6 owner witness, without duplicating owner pipelines.
