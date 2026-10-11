@@ -4021,3 +4021,21 @@ D03-10 Bollinger remains L2/40: no accepted source physical data, migrated rows,
 
 Do not repeat ZIP replay or destination schema APPLY_ONCE. Await independent numeric System1 read/write reserve acceptance and current same-UTC-day account headroom. Only under a separately qualified bounded budget, capture physical source applied schema, exact table rows/value hashes, original PIT clocks, Frozen prefix and independently restorable backup. Then run the real read-only 36-key Hot D1 Scout before any separately budgeted 11,843-key Census. After an owner-authorized copy, require independent source/destination identity and value parity without rewriting UNKNOWN clocks. W0, genuine C1, exact sessions and indicator-specific history remain separate final gates. D03 stays 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
 
+
+
+## TI-1793~1812 — source full backup to PIT-window firewall (2026-10-12)
+
+- Canonical evidence now includes a genuine provider full export: Run 38150147134 / Job 114501726086 / Artifact 11706652537. The 316,938,975-byte plaintext SQL has SHA-256 `56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12`; the encrypted artifact restores offline with SQLite quick_check OK, 55 tables, 63 indexes, 113,222 rows and 14 non-empty tables.
+- Restored material includes 84,688 `s2_historical_a1_bars` rows, but exact symbol/date distribution, eligible-session gaps, revisions, RAW/adjusted ancestry, action/halt/identity lineage, original `firstKnownAt`/`availableAt`, per-symbol warm-up depth, parent population and C1 binding remain unproven. Total rows therefore cannot be divided by a guessed symbol count or promoted into an indicator window.
+- Frozen decisions are 0; independent PIT-clock validation is false; independent prior-decision anchor is false. Source/destination schema parity is 55 tables + 63 indexes, while destination imported rows remain 0.
+- Secure transfer code is merged at `a33887f44b037f3620cf5954b668d8eebcf1b2d7`, but no physical transfer run/receipt is verified at this observation cut. Code existence is not transfer execution.
+- The cumulative state machine is: `SOURCE_FULL_BACKUP_ENGINEER_VERIFIED` -> `SOURCE_BACKUP_INDEPENDENT_AUDIT_ACCEPTED` -> `DESTINATION_TRANSFER_PHYSICAL_VERIFIED` -> `DESTINATION_IMPORT_PARITY_VERIFIED` -> `INDICATOR_WINDOW_PIT_READY`. Current evidence reaches only the first state.
+- The 20-case executable oracle in `research/test_d03_source_full_backup_pit_window_v0_1.mjs` passes and rejects backup-to-audit, row-count-to-window, code-to-transfer, schema-to-data, migration-time-to-PIT and history-only promotion laundering.
+- D03-10 remains L2/40: exact 20 eligible parent sessions, W0, reset lineage and genuine C1 are absent. D03-09 remains L2/40: canonical Wilder full replay or replay-certified trusted state is absent.
+- PIT, OOS, walk-forward, selection/date-cluster, multiple-testing, redundancy, destination indexed-write cost, fillability, limit/halt/ex-rights and regime evidence remain UNKNOWN where not observed. No outcomes, alpha, maturity promotion, optimization candidate or Formal Core change.
+
+Exact next: independently re-download/decrypt/restore Artifact 11706652537; physically execute the cross-environment transfer with immutable receipt; produce a source manifest keyed by market/symbol/session/source-version/value-hash with original causal clocks or explicit UNKNOWN; perform bounded destination import plus independent all-table identity/value reconciliation; then establish per-symbol exact eligible-session coverage and continuity/action/halt/identity ancestry before Bollinger exact-20 or ADX full-replay evaluation.
+
+Artifacts: `research/D03_SOURCE_FULL_BACKUP_TO_PIT_WINDOW_FIREWALL_20261012_V0_1.md`, `research/d03_source_full_backup_pit_window_cases_20261012_v0_1.json`, `research/test_d03_source_full_backup_pit_window_v0_1.mjs`.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
