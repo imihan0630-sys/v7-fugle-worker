@@ -4,7 +4,9 @@
 import {writeFile,appendFile} from "node:fs/promises";
 const emitPath="/tmp/corr003-source-account-live-readonly.json";
 const account=process.env.CLOUDFLARE_ACCOUNT_ID||"";
-const token=process.env.CLOUDFLARE_API_TOKEN||process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||"";\nconst d1ReadToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||token;\nconst normalizeDbId=x=>String(x||"").toLowerCase().replace(/-/g,"");
+const token=process.env.CLOUDFLARE_API_TOKEN||process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||"";
+const d1ReadToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||token;
+const normalizeDbId=x=>String(x||"").toLowerCase().replace(/-/g,"");
 const startedAtUtc=new Date().toISOString();
 const day=startedAtUtc.slice(0,10);
 const report={schemaVersion:"CORR003_SOURCE_ACCOUNT_LIVE_METADATA_READONLY_V0_1",
@@ -58,7 +60,8 @@ if(!/^[a-f0-9]{32}$/i.test(account)||!token){
  for(const [label,name] of [["SOURCE_SYSTEM2","system2-shadow-research"],["SYSTEM1_V8","fugle-test"]]){
   try{
    const d=await request("https://api.cloudflare.com/client/v4/accounts/"+account+"/workers/scripts/"+name+"/schedules");
-   const arr=Array.isArray(d.data)?d.data:(Array.isArray(d.data?.schedules)?d.data.schedules:(Array.isArray(d.data?.crons)?d.data.crons:null));\n   const crons=arr?arr.map(x=>x?.cron||x?.expression).filter(x=>typeof x==="string"):null;
+   const arr=Array.isArray(d.data)?d.data:(Array.isArray(d.data?.schedules)?d.data.schedules:(Array.isArray(d.data?.crons)?d.data.crons:null));
+   const crons=arr?arr.map(x=>x?.cron||x?.expression).filter(x=>typeof x==="string"):null;
    report.sourceWorkers.push({role:label,http:d.http,success:d.ok,configuredCrons:crons});
   }catch(e){report.sourceWorkers.push({role:label,http:null,success:false,configuredCrons:null});error(label+"_CRON_GET",e?.name||"ERROR")}
  }
