@@ -1,0 +1,89 @@
+{
+  "evidenceVersion": "S2_DEST_D1_FULL_SCHEMA_EXACT_OBJECT_INVENTORY_PHYSICAL_20261011_V0_1",
+  "workItem": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1103",
+  "status": "ENGINEERING_LANE_PHYSICAL_READONLY_EXACT_OBJECTS_MATCH_PENDING_INDEPENDENT_AUDIT",
+  "ownerTriggeredRealGitHubRun": {
+    "runId": 38099562997,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38099562997",
+    "jobId": 114352494288,
+    "runAttempt": 1,
+    "headSha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+    "event": "workflow_dispatch",
+    "createdUtc": "2026-10-11T00:46:26Z",
+    "completedStatus": "success",
+    "workflow": ".github/workflows/system2-destination-full-schema-object-readonly-1103.yml",
+    "destinationEnvironment": "system2-migration",
+    "confirm": "DEST_SCHEMA_FULL_OBJECT_READONLY_ONLY"
+  },
+  "artifact": {
+    "id": 11687550030,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38099562997/artifacts/11687550030",
+    "file": "receipt.json",
+    "zipSizeBytes": 2526,
+    "receiptUncompressedBytes": 32048,
+    "zipSha256": "3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe",
+    "locallyRecomputedZipSha256EqualsGitHub": true,
+    "receiptSchemaVersion": "S2_DEST_D1_FULL_OBJECT_READONLY_1103_V0_1",
+    "receiptStatus": "DESTINATION_SCHEMA_EXACT_FULL_OBJECT_SET_READONLY_PASS"
+  },
+  "postInstallPhysicalReadback": {
+    "database": "system2-research",
+    "exactApplicationTables": 55,
+    "exactNamedIndexes": 63,
+    "canonicalAndPhysicalNamesAndParentTablesExactMatch": true,
+    "completeInventoryObjectsExcludingSQLiteInternal": 119,
+    "applicationObjectsCompared": 118,
+    "platformReservedOnly": [
+      {
+        "type": "table",
+        "name": "_cf_KV",
+        "tbl_name": "_cf_KV"
+      }
+    ],
+    "unauthorizedViewsTriggersExtraTablesOrIndexesFound": 0,
+    "staged0011Detected": false,
+    "schemaVersion": "1.1",
+    "planSequenceSha256": "99a74747cbd3220afb84608c1ed8a9cf72e8eff71f2f23859227dbf7c56afe4f",
+    "canonicalObjectDigestSha256": "f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+    "physicalObjectDigestSha256": "f9bb690e481b78183ec225f450673a90aec5d3ee637f55da0fa4154584c58c3c",
+    "independentlyRehashed118ArrayExactMatch": true
+  },
+  "durableFullObjectInventory": {
+    "format": "JSON Array[{type,name,tbl_name}] sorted canonical (118 entries)",
+    "encoding": "base64(zlib.compress(utf8(JSON.stringify(physicalObjects)),level=9))",
+    "independentReplayInstructions": "Python: json.loads(zlib.decompress(base64.b64decode(encoded)).decode('utf-8')); verify sha256(json.dumps(objects,ensure_ascii=False,separators=(',',':')).encode('utf-8')) == postInstallPhysicalReadback.physicalObjectDigestSha256",
+    "encoded": "eNq9mt2S4yYQhd/F13uRTVVu8iqpLRWWsE0ZCQWQZ1SpvHsa9GebFjRoJlezO2rOAdRA82n++udkx56f/jyJruGfpx+njrX+v81nZX6vWG0HJqubko3orqYSba+0hR/syiHYnmU1N9gNNqd/f5S5aF5z8eDN9xmBg+oq07He3JRN+vjwWkjBrIB2/MG7A65je1byf/NUH4ZsCbH5DssswoNaDZ2trGjTObK0OmJIy8YMpzOr75YbW9U3Xt97JWA0eugCCyQuRx0koVtWM8uvY6VZh4ziJTitXbOuEQ0IVi5rIFX0lDbuV4H2XrBfd73NspPiwuuxlrzivTCqibltsSVOmruejnvJHAbmmPSsFnZ0k703ZVsEQbDhtTBuSo11PUIll5g8uTlpvk7Rz+ZhvYuQslK64TpQMaL1jwkqN+HWFCzc5wU4chaKukilRQ0L3ce75eL7kLUiN7+WdZCc8L8pg9Al+eTJflaQD/e1WZnXPPepAR4ymxcBbRZhv/RbDnnheB/fuax5y1JeRnBmtr7FxH30gSHkvQ6qtOaPaaXd+VixBxOSnWVqktZGUnT5Ti3Td24pAznms7wZot97O6qf4dcWdvSnpR1zWaIP7AiLBDmnlwa5K3RpN08IZVhl+b20nlO8VZ29fdOYhg5Kd23cMdxLNkKHLdcPJmN2a5uWt2f4x0302XZrVYgeZZhZRmH4ZjXN4veObHsTyY3Px+hs3V7Y6gMC1cc3iMfqioPqZ2Z8SQU/okvGxxnW9pIXGMRLra+zoc1TscmyX6R2sTnO5xrFAn47GFdloz1fn2asMdFdNINGA9zfNJ+2bYNfJtHQtIOvT9eqFi1UfQhVCuYskSbr0zWevnH3ygj7XPQH6ksEQQze//23P6pGGNiUa74eb4EmFkjvs2vtRsk/exjudOREJwhpkOHGr9BkKT9Q/fnZHJmRjZob1TG4HcPVD/Jrp/drkOHGlzY+OEd9vjU7agEnRcRhDjQl4hM8So3hNTrHRzK73J0i+lNUjm6vYGtMzsyH27N8bFanPYVJdJl2239KgyXBYDO5dkhpgIQW6kfOjSITc2NQCXgCcnGHge61SC5fvFGeG9WBoqoG/bQYccHXGPpus+3lUNFJ1qd2/Dkqw2B6peehayR3lePfA6I/BV1gVSid9X4jCUMQtfOtNQ3jC6B9Whyn4YcZOsHYMfFccJ6W3ea4CF+HBiiSzuXWEVm/AMmQOhRKMucjkDpmh0DnUkIdswmgcxmfxiyeyTOZS4dCK/KtlQbrqXDcQ74vQSRZQ8PHoYBflZWFWwcPNV4exmW2ClLy5oqA6DAiKojcUvMusinJN6hbSoApNiYXaKZE38BhKWVM2YQQ6gC0ipq9XLALLuJR8f1PFEe/a6Rt34HhgW8AUbM3gFCEGqIGKN4/8Dkgahay6lKwHbWJwuovgNwk84w5JVDoqCWKQw/gU5qZu/2b6OFMa5VtvF/lkXl0aISwtTz8hkliPC2buoXCe/ilANOE4mqwtWqRvWZ9EG2+0TMSVwsFoqislKvhNnuIrBCnISZ7FKgEFxHkTSbpiknOXCkHPMXk0Dp7HwnFpF6pYAE9jIrvrqYE/4mJPrO0bOIWChsYT8tg97YshA5Pz+IiO5CpAEbFxA2VPSEi65+4kP74BReYPz3QvkogEjtcq4B/IeIboxNyrGBzuSjdulzYB2BhKM0i/FRS9lUlZvHO5oooXsTAHejo0RJGxAV3wBwZ4P36D8Sz6PU=",
+    "reason": "Preserves actual 118-object full name/parent manifest after 30-day GitHub Actions artifact retention expires. The original, unaltered physical ZIP and receipt remain the primary run artifact, not overwritten."
+  },
+  "strictBoundaries": {
+    "cloudflareSql": "2 SQL SELECT via Cloudflare D1 API POST /query; zero DDL/DML",
+    "cloudflareMetadataGets": 2,
+    "cloudflareSqlSelectPosts": 2,
+    "sourceAccountRequests": 0,
+    "sourceRowsCopied": 0,
+    "cloudWritesPerformed": 0,
+    "paidUpgrade": false,
+    "workerCronChanged": false,
+    "system1ProductionManifestGuard": "SYSTEM1_SOURCE_RUNTIME_NOT_CHANGED",
+    "repeatApplyOnce": false,
+    "fullMigrationAccepted": false
+  },
+  "mockEvidence": {
+    "positiveCasesPass": 2,
+    "adversarialNegativeCasesPass": 48,
+    "runJobStep": "Execute synthetic Issue 1103 adversarial tests (zero cloud calls)",
+    "result": "PASS"
+  },
+  "independentAudit": {
+    "finalVerdict": "PENDING_AUDIT_LANE",
+    "reason": "Engineering lane analysis is not an independent auditor attestation. Audit must independently review exact original Run/Artifact/SHA, physical names, source isolation and write limits."
+  },
+  "outstandingScope": [
+    "SOURCE DATA_LANE source frozen backup/PIT Issue #1068",
+    "Frozen snapshots and historical records not migrated",
+    "Worker/Cron not deployed to new account",
+    "System2 Shadow/production migration not accepted",
+    "NEVER rerun already-successful APPLY_ONCE"
+  ],
+  "sensitiveIdentifiersOrSecretsLogged": false
+}
