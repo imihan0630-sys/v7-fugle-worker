@@ -288,3 +288,30 @@ Read-back main base: `793bf6fa5f4474a4879fbcb6e04ec686b0a946bb`. **REMEDIATION_L
 **Current authoritative counts remain unchanged:** A1–A7 source-only independent PASS; 15/38 supporting observations, **0/5 physical gates accepted**; original 19/19 mapped, HIGH/VERIFYING; P05 0/36 + 0/11,843 Hot D1, missing UNKNOWN. No D1 SQL, R2, System1 Formal/runtime, bills, schedules or pushes touched by remediation.
 
 **Next receiving lanes:** System1 #1024 for genuine 10/12 normal 23:35/conditional 23:55 per-run read/write attribution and later business D1 readback; DATA #1026 for real authenticated ledger / P03 multiwriter / P05 cautious samples only after independent qualified reserves and budget; AUDIT_LANE solely accepts final physical gates. Do not self-close or dispatch physical work.
+
+
+## 2026-10-11 migration-safe CORR-003 immutable evidence intake
+
+REMEDIATION_LANE / Class A offline integration. Read baseline main ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e; PR #1121 remains OPEN and unmerged at b8fa41920c1fc16ca735dc0959314fc835448a8a. Do not merge PR1121 or any cross-account migration change under this intake. Queue and independent audit conclusions are unchanged.
+
+Sealed evidence: system2/evidence/S2_CORR003_MIGRATION_SAFE_IMMUTABLE_RECONCILIATION_20261011_V0_1.json plus its SHA256 companion; pinned original response bytes remain in PR1121 fixed head. Offline guard: system2/tests/corr003_migration_safe_immutable_reconciliation_v0_1.test.mjs.
+
+All 12 original Run/Job joins, 11 saved Artifact lists and 35 committed response hashes were recomputed; 12 live original Run pages/Job links, 11 full commit links and nine native Artifact ID/digest pairs (including newly available PVE262 UI) were rechecked. PR-run 38032440861 exact SHA is inherited from hashed responses because live summary exposes a PR link. Artifact ZIP bytes and raw business logs replayed this turn: 0. Three claimed recent-page response hashes have no committed raw page files; the pinned 266-entry unique index was checked, not a fresh full Actions/Cron census.
+
+**Producer clock defect:** all 12 createdAtTaipei values in PR1121 relabel UTC wall time with +08:00, eight hours earlier than the actual instant. Reconciliation preserves originals and supplies correct UTC-to-Taipei clocks; does not rewrite the producer receipt. Request append-only correction/tests from SYSTEM1 producer, with review before PR1121 merge. GitHub observation clock is distinct from historical market date and business/UTC-quota clocks.
+
+| Gate | Support completed/total | Remaining | Physical acceptance | Execution / owner |
+|---|---:|---:|---|---|
+| P01 | 3/7 | 4 | PENDING | SYSTEM1: real operation write cost + independent reserve |
+| P02 | 3/7 | 4 | PENDING | SYSTEM1: real operation read cost + independent reserve |
+| P03 | 3/8 | 5 | PENDING | BLOCKED reserves/headroom; DATA_LANE genuine grant/result ledger |
+| P04 | 2/7 | 5 | PENDING | SYSTEM1 natural ordinary-session six-role KV/D1/Formal C1 lineage |
+| P05 | 4/9 | 5 | PENDING | BLOCKED read/migration authority; DATA_LANE Scout/Census/PIT/backup/Frozen |
+
+Totals: 15/38 supporting checks (39.47%), 23 remaining; physical independently accepted 0/5. Original19: inherited 15 source-level PASS, #10/#14/#15 PENDING physical positives, #16 historical negative reconciled but forward no-collision BLOCKED. A1-A7 prior source-level PASS is retained, no reimplementation. HIGH/VERIFYING remains; AUDIT_LANE alone accepts/closes. Both System1 read/write authorizations false and authorized/candidate rows null. Whole-V7 UTC-day totals never become isolated 23:35/23:55 costs; Cron SUCCESS/lease never becomes matched persistence.
+
+P03 five real negative writer receipts remain DEFER/read-only, no authenticated post-fix multiwriter grant/result. P05 accepted source-only12/12 and11843 keys is distinct from Hot D1 Scout0/36/Census0/11843; missing/PIT UNKNOWN. Prior original archive rehydration is inherited, not newly replayed. Issue1068 real main Run38108616165/Job114379309976/Artifact11690790704 confirms negative DEFER only. Source actual D1 rows/backup restore/PIT/Frozen/R2 bytes and destination import/readback remain PENDING. Latest separate destination Schema-only independent stage25/25 PASS (PR1116) is preserved, never downgraded to old20/25 or promoted to full migration/CORR003. Destination R2 remains403/10042 partial/non-entitled.
+
+Next SYSTEM1: after natural2026-10-12 23:35 Taipei and23:55 only if actually invoked, original operation read/write/failure/retry/index/query metadata plus KV config/plan/report, D1 Cron/lease and Formal C1 exact lineage, one successful scan and full same-UTC-account no-collision; physical reads require qualified headroom. DATA_LANE: retain fail-closed until separately approved account-specific reserves/lag/ledger/competing-writer budget; 36 Scout first, full11843 Census separately after independent Scout acceptance; source backup/PIT/Frozen/R2 and destination transfer require migration-specific authority. REMEDIATION: integrate original receipts and request producer append-only clock fix. AUDIT_LANE: independently inspect sealed packet and original19; no self-closure.
+
+This intake made zero Cloudflare/D1/R2 requests, dispatches, scans, deployments, billing, secrets or production changes. No account/environment/workflow switching; never rerun APPLY_ONCE. GitHub CI verifies offline/source consistency only. PR/CI submission and real final SHA are recorded in the subsequent GitHub handoff, not guessed here.
