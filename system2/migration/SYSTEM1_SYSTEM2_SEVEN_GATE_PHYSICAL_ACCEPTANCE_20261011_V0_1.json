@@ -1,0 +1,335 @@
+{
+  "schemaVersion": "S2_CROSS_ACCOUNT_7_PHYSICAL_ACCEPTANCE_V0_1",
+  "recordedAtTaipei": "2026-10-11",
+  "sourceOfTruth": "GITHUB_MAIN_ONLY_WITH_IMMUTABLE_RUN_ARTIFACTS",
+  "baselineMainSha": "5a17a0c643e0a9d58ae9f2e81614333e6c7e6e60",
+  "controllerIssue": 1128,
+  "scope": "SEVEN_AGGREGATED_ACCEPTANCE_PACKAGES_NOT_SUPERSEDING_13_ORDERED_GATES",
+  "statusVocabulary": [
+    "PASS",
+    "PENDING",
+    "BLOCKED",
+    "FAIL"
+  ],
+  "summary": {
+    "sevenPackages": {
+      "PASS": 2,
+      "PENDING": 0,
+      "BLOCKED": 5,
+      "FAIL": 0,
+      "total": 7
+    },
+    "entireTwoAccountIndependentOperations": {
+      "accepted": 0,
+      "required": 1
+    },
+    "sourceHistoricRowsCopied": 0,
+    "destinationWorkersActivated": 0,
+    "destinationCronsActivated": 0,
+    "sourceDataPhysicalAcceptance": {
+      "accepted": 0,
+      "total": 4
+    },
+    "corr003PhysicalAcceptance": {
+      "accepted": 0,
+      "total": 5
+    },
+    "corr003EvidenceSupport": {
+      "met": 15,
+      "total": 38
+    },
+    "system2ShadowFormalAccepted": 0,
+    "system2ShadowFormalTotal": 15
+  },
+  "physicalSourceReferences": [
+    {
+      "kind": "Cloudflare original GitHub Action",
+      "runId": 38027260602,
+      "scope": "pre-schema source account metadata GET"
+    },
+    {
+      "kind": "Cloudflare original GitHub Action",
+      "runId": 38105177481,
+      "scope": "post-schema source/target metadata GET"
+    },
+    {
+      "kind": "Cloudflare original GitHub Action",
+      "runId": 38069750915,
+      "scope": "owner-authorized single destination D1 schema APPLY_ONCE"
+    },
+    {
+      "kind": "Cloudflare original GitHub Action",
+      "runId": 38099562997,
+      "scope": "target D1 full sqlite_schema physical READ-only exact-object audit"
+    },
+    {
+      "kind": "Independent audit",
+      "path": "system2/migration/evidence/S2_C19_C21_SCHEMA_ONLY_INDEPENDENT_FINAL_ACCEPTANCE_20261011_V0_1.json",
+      "scope": "destination Schema-only stage 25/25 accepted"
+    },
+    {
+      "kind": "DATA source guard",
+      "runId": 38108616165,
+      "scope": "source account true reserve false/null => DEFER"
+    },
+    {
+      "kind": "Governance source",
+      "path": "system2/CLOUDFLARE_CROSS_ACCOUNT_MIGRATION_CHECKPOINT_V0_1.md"
+    },
+    {
+      "kind": "Governance source",
+      "path": "system2/migration/ISSUE1068_DATA_LANE_CHECKPOINT_V0_1.md"
+    },
+    {
+      "kind": "Governance source",
+      "path": "system2/remediation/CORR003_MIGRATION_QUOTA_FIREWALL_CHECKPOINT_20261011.md"
+    }
+  ],
+  "gates": [
+    {
+      "id": "G1",
+      "title": "Two-account pre-migration resource topology & identities",
+      "lead": "CROSS_ACCOUNT_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "PASS",
+      "acceptanceScope": "PRE_MIGRATION_ACCOUNT_INVENTORY_ONLY",
+      "actualEvidence": [
+        "source-vs-destination account identity fingerprint independently verified from authentic before/after GET artifacts",
+        "source System1 and System2 Workers/D1/bindings/Cron/KV/R2 normalized metadata invariant across target Schema-only change",
+        "destination D1 metadata separate, destination Worker/KV/Cron count 0 and R2 403/10042 separately scoped"
+      ],
+      "quantification": {
+        "authenticatedSnapshotsCompared": 2,
+        "requiredSnapshots": 2
+      },
+      "remainingLimitations": [
+        "source system2 Worker still belongs to the original Cloudflare account",
+        "destination R2 storage is not entitled; not a complete archive target",
+        "route-level and active business-writer exclusivity belong to G6; this gate is not live account isolation"
+      ],
+      "receipts": [
+        38027260602,
+        38105177481
+      ]
+    },
+    {
+      "id": "G2",
+      "title": "Destination D1 schema-only physical installation",
+      "lead": "CROSS_ACCOUNT_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "PASS",
+      "acceptanceScope": "SCHEMA_ONLY_NEVER_HISTORY_MIGRATION",
+      "quantification": {
+        "independentCriteriaMet": 25,
+        "independentCriteriaTotal": 25,
+        "tablesMatched": 55,
+        "tablesExpected": 55,
+        "indexesMatched": 63,
+        "indexesExpected": 63,
+        "canonicalObjectsMatched": 118,
+        "canonicalObjectsExpected": 118,
+        "schemaVersion": "1.1",
+        "sourceHistoryCopied": 0
+      },
+      "receipts": [
+        38069750915,
+        38099562997
+      ],
+      "remainingLimitations": [
+        "source D1 actual schema and source data row digest not verified",
+        "no permission to rerun original one-time Schema APPLY",
+        "no destination source historical/frozen rows, R2, Worker or Cron"
+      ]
+    },
+    {
+      "id": "G3",
+      "title": "Source immutable backup, restore, table hashes, PIT, frozen lineage and R2 source",
+      "lead": "DATA_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "BLOCKED",
+      "acceptanceScope": "REQUIRES_GENUINE_SOURCE_PHYSICAL_EVIDENCE",
+      "dependencies": [
+        "G5 authorized source-account read headroom, System1 read reserve and original physical source provenance"
+      ],
+      "quantification": {
+        "sourceD1FileSizeBytesFromMetadata": 316968960,
+        "sourcePhysicalEvidenceFamiliesAccepted": 0,
+        "sourcePhysicalEvidenceFamiliesTotal": 4,
+        "realPerTableRowCounts": null,
+        "realPerTableHashes": null,
+        "realRestoreVerified": false
+      },
+      "blockingFacts": [
+        "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+        "source account System1 read reserve authorization false and numeric null",
+        "metadata file size is not row counts/PIT/frozen proof"
+      ],
+      "issueRefs": [
+        1068,
+        1026
+      ]
+    },
+    {
+      "id": "G4",
+      "title": "Destination history import, independent source/target row and archive byte readback",
+      "lead": "DATA_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "BLOCKED",
+      "acceptanceScope": "REQUIRES_SEPARATE_DATA_WRITE_PERMISSION",
+      "dependencies": [
+        "G3 physical source backup/PIT/frozen accepted",
+        "owner-approved D1/R2 writes and verified quota",
+        "R2 entitlement or separately audited no-R2 archival design"
+      ],
+      "quantification": {
+        "sourceHistoryRowsCopied": 0,
+        "sourceFrozenRowsCopied": 0,
+        "destinationR2ObjectsCopied": 0,
+        "sourceTableRowsTotal": null,
+        "sourceR2ObjectBytes": null
+      },
+      "blockingFacts": [
+        "source manifest unavailable",
+        "source frozen snapshots/restore not accepted",
+        "destination R2 403/10042 NOT_ENTITLED; no paid upgrade authorization"
+      ],
+      "issueRefs": [
+        1068
+      ]
+    },
+    {
+      "id": "G5",
+      "title": "System1 source-account quota reserves and genuine same-generation after-market persistence",
+      "lead": "SYSTEM1_LANE",
+      "secondaryLead": "REMEDIATION_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "BLOCKED",
+      "acceptanceScope": "ALL_CORR003_PHYSICAL_GATES_WITH_NATURAL_BUSINESS_RECEIPTS",
+      "quantification": {
+        "physicalCriteriaAccepted": 0,
+        "physicalCriteriaTotal": 5,
+        "support": {
+          "P01": {
+            "met": 3,
+            "total": 7
+          },
+          "P02": {
+            "met": 3,
+            "total": 7
+          },
+          "P03": {
+            "met": 3,
+            "total": 8
+          },
+          "P04": {
+            "met": 2,
+            "total": 7
+          },
+          "P05": {
+            "met": 4,
+            "total": 9
+          }
+        },
+        "supportMet": 15,
+        "supportTotal": 38,
+        "hotD1ScoutRows": 0,
+        "hotD1ScoutTarget": 36,
+        "hotD1CensusRows": 0,
+        "hotD1CensusTarget": 11843,
+        "authorizedWriteReserveRows": null,
+        "authorizedReadReserveRows": null
+      },
+      "blockingFacts": [
+        "genuine per-operation 23:35 and conditional 23:55 D1 read/write rows and retry/index cost unknown",
+        "natural KV/D1/C1 same-generation/one-business-success physical chain not yet accepted",
+        "account GraphQL lag, full writer reservations, read/write reserves false/null",
+        "P03 actual granted ledger multiwriter receipts missing"
+      ],
+      "issueRefs": [
+        1024,
+        1026
+      ],
+      "nextNaturalCandidateTaipei": "2026-10-12T23:35:00+08:00",
+      "conditionalRecoveryTaipei": "2026-10-12T23:55:00+08:00"
+    },
+    {
+      "id": "G6",
+      "title": "Destination disabled Worker staging, real bindings, single-active-Cron switch and optional authenticated shared data",
+      "lead": "CROSS_ACCOUNT_LANE",
+      "secondaryLead": "BUILD_LANE",
+      "auditor": "AUDIT_LANE",
+      "verdict": "BLOCKED",
+      "acceptanceScope": "CROSS_ACCOUNT_PHYSICAL_RUNTIME_AND_EXCLUSIVE_BUSINESS_WRITER",
+      "dependencies": [
+        "G3",
+        "G4",
+        "G5",
+        "explicit owner cutover permission"
+      ],
+      "quantification": {
+        "destinationWorkersObserved": 0,
+        "destinationCronsObserved": 0,
+        "sourceSystem2CronRemaining": true,
+        "verifiedSingleActiveWriterAfterCutover": false,
+        "verifiedSystem1FormalUnaffectedAfterCutover": false
+      },
+      "blockingFacts": [
+        "new destination currently no Worker/Cron in last authenticated inventory",
+        "current source System2 Worker/Cron remain on former account",
+        "no owner-authorized staging deploy/cron switch and no complete data proof"
+      ],
+      "issueRefs": [
+        1068,
+        1128
+      ]
+    },
+    {
+      "id": "G7",
+      "title": "Independent physical seven-gate final certification, rollback and per-account live quota observation",
+      "lead": "AUDIT_LANE",
+      "coordinator": "BUILD_00",
+      "ownerDecision": "OWNER_REQUIRED_FOR_CUTOVER_RETIREMENT_OR_BILLING",
+      "verdict": "BLOCKED",
+      "acceptanceScope": "POST_CUTOVER_FULL_TWO_ACCOUNT_OPERATION",
+      "dependencies": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "post-cutover independent real per-account quota evidence",
+        "rollback preservation source retention and independent audit"
+      ],
+      "quantification": {
+        "finalIndependentAccountOperationAccepted": 0,
+        "totalRequired": 1,
+        "independentSchemaOnlyCriteriaAccepted": 25,
+        "independentSchemaOnlyCriteriaTotal": 25,
+        "independentlyAcceptedSourceDataFamilies": 0
+      },
+      "blockingFacts": [
+        "not a substitute for original 13-gate exact sequential signoff",
+        "no complete physical source-to-target audit",
+        "no authenticated post-cutover live two-account Worker/Cron and quota proof"
+      ],
+      "issueRefs": [
+        1128,
+        1068,
+        1024,
+        1026
+      ]
+    }
+  ],
+  "neverAutomaticallyAuthorized": [
+    "Cloudflare billing/R2 subscription/paid plan",
+    "Cloudflare API token creation/rotation or secrets disclosure",
+    "source D1 SQL census without independent fresh budget",
+    "destination data DML or backup import",
+    "System2 Worker/Cron/routes activation or old source retirement",
+    "System1 Formal Core/Worker/push/monitor/production changes",
+    "rerun of 125-statement destination APPLY_ONCE",
+    "migration PASS from mock / unit test / schema-only"
+  ],
+  "note": "Evidence links are anchors and may be superseded by newer reviewed physical receipts; no snapshot here implies an ongoing cloud task or commands dispatched to other chatrooms."
+}
