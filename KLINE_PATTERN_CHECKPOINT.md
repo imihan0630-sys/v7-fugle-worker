@@ -7104,3 +7104,23 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 2. Obtain genuine native Node / CI evidence for DL-147 25 and prior DL-144~146 30 tests, retaining isolated V8 vs native execution distinction.
 3. If R1-R6 not physically ready, proceed with new outcome-blind DL-148 cross-market industry scheme intersection, independent TWSE/TPEx owner membership and partial-peer-denominator conservation; no inferred pan-market sector metric.
 4. Preserve Sara dedicated lane physical 60m source/bucket/revision/native test gates independently; never merge research studies or promote Formals.
+
+
+## User-requested D01 all-module L3 -> L5 acceleration / verified readiness (2026-10-11)
+
+**Research-only evidence target, no earned L4 or L5.** Current official D01 tracker at review start: 11 canonical modules L3 / 60.0% each; maturity of domain 60.0%, accepted L4=0 and L5=0. No score/selection/runtime/production change.
+
+- Official level criteria: L4 needs genuine frozen prospective Shadow or OOS evidence; L5 needs independent multi-regime, cost/slippage/executability, parent-versus-Pattern redundancy and robustness with D16/00 signoff. Detector code/tests do not meet them alone.
+- New documents: research/D01_L3_TO_L5_EVIDENCE_ACCELERATION_AND_11_MODULE_GATE_20261011_V0_1.md, research/d01_l3_l5_evidence_gap_matrix_20261011_v0_1.json.
+- New research-only automatic non-promoting evidence guard: research/d01_l3_l5_promotion_evidence_oracle_v0_1.mjs and research/test_d01_l3_l5_promotion_evidence_oracle_v0_1.mjs.
+- 40/40 synthetic adversarial fixture PASS in isolated JavaScript V8 using actual GitHub branch-file source. No native Node or CI run claimed for this tranche. The L5 mock receipt success path is NOT actual L5 physical proof: oracle always returns promotionAllowed=false, requires manual independent D16/00 verified readback.
+- First wave follows preexisting D01 DL-087 preregistration: D01-02/03/07/09. D01-01 remains shared session-source infrastructure and requires operational replay rather than fabricated trade returns. Second wave D01-04/05/06/08/10/11 preserved, all eleven have named owners/common parents/evidence gaps.
+- Existing frozen TWSE 2018 warmup; 2019-2021 train -> 2022 test; 2019-2022 train -> 2023 test; untouched 2024 holdout, >=20 eligible session embargo, 1/5/20 outcomes. D16 owns actual inference. Source owners retain R1-R6; D01 only emits R7 after exact 1101/2021-06-15 61-eligible-session bundle physically passes. Physical R1-R6 remain NOT VERIFIED. No current OOS or prospective physical model success admitted.
+- No direct L4/L5 tracker edit; no claimed Alpha benefit, no System1/2 build/deploy, no D1, Cron, Worker or formal scan edit; SDA-001/002 remain OPEN.
+
+### Exact next main work for L3-to-L5 acceleration
+1. System2 DATA_LANE/universe plus Corporate Actions and D05 market-microstructure owners provide actual SHA-bound exact frozen 1101/2021-06-15 R1-R6 positive-control source receipts. D01 assembles and verifies the full exact 61-session chain, no future outcomes inspected.
+2. D01 and Room11/D16 admit first wave D01-02/03/07/09 on the frozen chronological TWSE manifest after the receipt chain and all denominator coverage gates pass; no post-hoc holdout changes or wins-only data.
+3. Secure genuine native Node/CI run results for 40-fixture acceleration oracle and exact source hash, distinguishing isolated V8 from physical execution.
+4. D16+D10 undertake actual economic/robustness multi-regime assessment, and 00 performs independent review before any particular module becomes L4/L5.
+5. Parallel science mainline remains DL-148, Sara 金包銀 source/PIT track remains separately data-blocked; neither overwritten by this acceleration request.
