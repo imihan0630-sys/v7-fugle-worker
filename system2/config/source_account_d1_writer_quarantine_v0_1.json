@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "S2_SOURCE_ACCOUNT_D1_WRITER_QUARANTINE_V0_1",
+  "directive": "S2-CORR-20261007-003",
+  "active": true,
+  "scope": "LEGACY_SYSTEM2_RESEARCH_GITHUB_WRITER_ENVIRONMENT",
+  "ownerIntent": "PROTECT_SOURCE_CLOUDFLARE_ACCOUNT_V8_SYSTEM1_DURING_SYSTEM2_MIGRATION",
+  "reason": "System2 destination has only schema; source physical PIT/frozen backup and full migration not yet independently accepted. S1 P01/P02 read/write reserves remain false/null. No S2 source writer grant.",
+  "denyNewPhysicalD1Reservations": true,
+  "allowNonmutatingOfflineChecks": true,
+  "allowPriorReservationResultReconciliation": true,
+  "releasePolicy": "OWNER_APPROVAL_AND_INDEPENDENT_DATA_LANE_AUDIT_EVIDENCE_REQUIRED_THROUGH_REVIEWED_PR_NO_ENV_OVERRIDE",
+  "automaticRelease": false,
+  "requestedAccountIds": null,
+  "sourceAccountId": "REDACTED_NEVER_COMMIT",
+  "writesThisConfiguration": 0,
+  "changesSystem1Runtime": false,
+  "changesSystem2WorkerCron": false
+}
