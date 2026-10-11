@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_CORR003_MIGRATION_QUOTA_ADMISSION_FIREWALL_20261011_V0_1",
+  "ticket": "S2-CORR-20261007-003",
+  "lane": "REMEDIATION_LANE",
+  "originalMain": "2ce1b6a49a48b04db6a4f58ee34ec3a3a5a29eeb",
+  "class": "CLASS_A_OFFLINE_NONAUTHORIZING_MIGRATION_BOUNDARY",
+  "sourcePaths": [
+    "system2/evidence/S2_CORR003_INDEPENDENT_PHYSICAL_AND_ORIGINAL19_REVERIFY_20261011_V0_1.json",
+    "system2/migration/evidence/S2_C19_C21_SCHEMA_ONLY_INDEPENDENT_FINAL_ACCEPTANCE_20261011_V0_1.json",
+    "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+    "system2/SYSTEM2_CORRECTION_QUEUE.json"
+  ],
+  "verificationClass": "READ_CANONICAL_MAIN_BLOB_AND_NEGATIVE_REGRESSION_NOT_CLOUDFLARE_IO",
+  "immutableProducerPRs": {
+    "system1": {
+      "pr": 1121,
+      "head": "b8fa41920c1fc16ca735dc0959314fc835448a8a",
+      "merged": false
+    },
+    "remediation": {
+      "pr": 1122,
+      "head": "7f6664a27209d93af3e8fea7c247f5f74f9cade0",
+      "merged": false
+    }
+  },
+  "codeCovers": "Migration-approved schema must not authorize old/new account read/write reserve, history/PIT/Frozen, Shadow, R2; original UTC instant relabel must not bypass safety",
+  "testing": {
+    "baselinePass": 1,
+    "adversarialMutations": 30
+  },
+  "verdict": {
+    "state": "MIGRATION_QUOTA_ADMISSION_FAIL_CLOSED",
+    "schemaOnly": "INDEPENDENT_PASS_25_OF_25",
+    "system2DataMigrationAccepted": false,
+    "corr003AcceptedPhysical": 0,
+    "corr003TotalPhysical": 5,
+    "corr003SupportChecks": "15/38",
+    "originalCriteria": "15_SOURCE_ONLY_3_PHYSICAL_PENDING_1_HISTORICAL_NEGATIVE",
+    "system1WriteReserveAuthorized": false,
+    "system1ReadReserveAuthorized": false,
+    "system1AuthorizedWriteRows": null,
+    "system1AuthorizedReadRows": null,
+    "realTimeAccountHeadroomAttested": false,
+    "sourceD1PITFrozenRestoreAccepted": false,
+    "hotD1ScoutAccepted": false,
+    "hotD1CensusAccepted": false,
+    "producerPr1121CanAutoMerge": false,
+    "remediationPr1122CanAutoMerge": false,
+    "sourceClockCorrectionRequired": 12,
+    "quotaGrantEligible": false,
+    "d1SqlReadAuthorized": false,
+    "d1SqlWriteAuthorized": false,
+    "r2TransferAuthorized": false,
+    "shadowStartAuthorized": false,
+    "requiresIndependentAuditor": true,
+    "nextProducerIssues": [
+      1024,
+      1026,
+      1068
+    ]
+  },
+  "unchangedBoundaries": {
+    "quotaGateCode": true,
+    "sourceFormalCore": true,
+    "destinationSchema": true,
+    "cloudflareAccounts": true,
+    "sourceD1": true,
+    "destinationD1": true,
+    "r2": true,
+    "workerAndCron": true,
+    "billing": true,
+    "secrets": true,
+    "shadow": true,
+    "correctionQueue": true
+  },
+  "finalAudit": "AUDIT_LANE_ONLY"
+}
