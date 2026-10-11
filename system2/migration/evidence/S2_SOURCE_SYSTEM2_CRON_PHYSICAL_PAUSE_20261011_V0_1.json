@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "S2_SOURCE_SYSTEM2_CRON_PHYSICAL_PAUSE_20261011_V0_1",
+  "classification": "ACTUAL_AUTHENTICATED_CLOUDFLARE_GET_PUT_GET_AND_SECOND_POST_GET",
+  "status": "SOURCE_SYSTEM2_CRON_PHYSICALLY_ZERO_IN_PROVIDER_CONFIG__AUDIT_PENDING",
+  "ownerApproval": "OWNER_EXPLICIT_2026-10-11_ASIA_TAIPEI_SOURCE_SYSTEM2_CRON_ONLY",
+  "integratedProtection": {
+    "pr": 1139,
+    "mergeCommit": "24bc86c5ccfed355bb7e2bfb30712770e0e38837",
+    "legacySourceResonanceDeployJobDisabled": true,
+    "mainHasManualOnlyOperator": true,
+    "system2ResearchCiRun": 38141312525,
+    "system2ResearchCiConclusion": "success",
+    "v8RegressionRun": 38141312494,
+    "v8RegressionConclusion": "success"
+  },
+  "scope": {
+    "oldSourceAccount": "REDACTED",
+    "oldSourceWorker": "system2-shadow-research",
+    "oldSourceD1": "system2-research",
+    "protectedSystem1Worker": "fugle-test",
+    "protectedSystem1D1": "v7-live",
+    "sourceHistoryR2": "system2-historical-research",
+    "destinationWorkerActivated": false,
+    "destinationCronActivated": false,
+    "workerDeleted": false,
+    "d1SqlOperations": 0,
+    "d1ExportOperations": 0,
+    "sourceR2Mutations": 0,
+    "sourceV8WorkerModifications": 0,
+    "cloudflareSecretOrPrivilegeOrBillingChanges": 0
+  },
+  "operator": {
+    "executionMode": "OWNER_AUTHORIZED_SINGLE_USE_BRANCH_PUSH_SOURCE_ENVIRONMENT_EXISTING_TOKENS_ONLY",
+    "branch": "s2-source-cron-owner-approved-physical-operation-20261011",
+    "workflowFile": "TEMP_BRANCH_ONLY_REMOVED_POST_EXECUTION",
+    "originalTempWorkflowNeverMergedIntoMain": true,
+    "tokenPolicy": "REUSED_EXISTING_SOURCE_D1_AND_WORKERS_TOKENS_SEPARATELY_NO_CONTENT_LOGGED",
+    "authorizedCloudflarePutCount": 1,
+    "endpoint": "PUT /accounts/{REDACTED_SOURCE_ACCOUNT_ID}/workers/scripts/system2-shadow-research/schedules",
+    "body": "[]",
+    "originalSchedule": [
+      "*/5 0-5,11 * * MON-FRI"
+    ],
+    "otherCloudflareMutations": 0
+  },
+  "receipts": [
+    {
+      "phase": "PREPAUSE_SOURCE_INSPECT",
+      "runId": 38142183179,
+      "jobId": 114478131558,
+      "artifactId": 11702964293,
+      "headSha": "b336b48278f382ca049fffa2fdf6060374e2a369",
+      "observedAtUtc": "2026-10-11T13:11:36.096Z",
+      "observedAtTaipei": "2026-10-11 21:11:36.096 +08:00",
+      "zipSha256": "d85908d217f6cbe4746c1f994efe7f0ca9fd4d82a6a61f38336ee8a759dd3c46",
+      "innerSha256": "349453ff20e75fa3acfafcfb5c204ebb421d8fba837a6fae8cef4b7858731453",
+      "cloudflareMutations": 0,
+      "sourceS2Crons": [
+        "*/5 0-5,11 * * MON-FRI"
+      ],
+      "v8CronCount": 4,
+      "sourceD1BindingFingerprint": "d7745e711bc9c09e056b54beceb35efc3d8b1a4e5e74300e5ac8e7d62b5860f7"
+    },
+    {
+      "phase": "EXACT_SOURCE_SYSTEM2_CRON_ONLY_PUT_AND_IMMEDIATE_POST_GET",
+      "runId": 38142241250,
+      "jobId": 114478304703,
+      "artifactId": 11703532490,
+      "headSha": "7cba2995df99fb1d51c3370823814362b4ce8d85",
+      "observedAtUtc": "2026-10-11T13:12:27.548Z",
+      "completedAtUtc": "2026-10-11T13:12:27.999Z",
+      "completedAtTaipei": "2026-10-11 21:12:27.999 +08:00",
+      "zipSha256": "6ccb78e7403393f1596d45e3adccdd4f0c7fce3dd3e6be093c31c5bd315766c5",
+      "innerSha256": "fc35eca32cd4b7396071a43d75d1c14ea4c9a0fe78513d5c0292ecf1229430a2",
+      "cloudflareMutationsRequested": 1,
+      "sourceS2CronsBefore": [
+        "*/5 0-5,11 * * MON-FRI"
+      ],
+      "sourceS2CronsAfter": [],
+      "v8ScheduleBeforeAfterUnchanged": true,
+      "v8CronCount": 4,
+      "pausedConfirmed": true
+    },
+    {
+      "phase": "INDEPENDENT_SEPARATE_LATER_POSTPAUSE_GET_ONLY",
+      "runId": 38142321436,
+      "jobId": 114478538377,
+      "artifactId": 11703342568,
+      "headSha": "daf40de801a5ca3a6519dd0ea160275e90fed827",
+      "observedAtUtc": "2026-10-11T13:13:42.290Z",
+      "observedAtTaipei": "2026-10-11 21:13:42.290 +08:00",
+      "zipSha256": "75e4d268bdbd8765113f39c3d2ad604d8cd9f3702c0fd7f9cae122cecf57f8c6",
+      "innerSha256": "a75efa975147c255e9936b916f56847a5adaf397c27cbe6f513799f049c19baa",
+      "cloudflareMutations": 0,
+      "sourceS2Crons": [],
+      "v8CronCount": 4,
+      "sourceD1BindingFingerprint": "d7745e711bc9c09e056b54beceb35efc3d8b1a4e5e74300e5ac8e7d62b5860f7",
+      "pausedConfirmed": true
+    }
+  ],
+  "independentZipBytesDownloadedAndSha256Recomputed": true,
+  "safeFailedAttempts": [
+    {
+      "runId": 38142042531,
+      "reason": "YAML_EXPRESSION_GREPPING_PRECHECK_FAIL_BEFORE_CLOUD_IO"
+    },
+    {
+      "runId": 38142103134,
+      "reason": "SINGLE_D1_TOKEN_WORKER_IDENTITY_UNVERIFIED_BEFORE_CLOUD_MUTATION"
+    }
+  ],
+  "residualUnknowns": [
+    "CLOUDFLARE_CRON_PROPAGATION_UP_TO_15_MIN_NOT_SEPARATELY_OBSERVED_BEYOND_IMMEDIATE_READBACK",
+    "IN_FLIGHT_CRON_EVENTS_NOT_PHYSICALLY_MEASURED",
+    "ALL_SOURCE_ACCOUNT_WRITERS_QUIESCENT_NOT_PROVEN",
+    "V8_FULL_RUNTIME_KV_D1_C1_BEHAVIORAL_PARITY_NOT_AUDITED",
+    "V8_SCRIPT_VERSION_ROUTES_BINDINGS_INDEPENDENT_POST_PROOF_PENDING",
+    "ACCOUNT_WIDE_D1_ROWS_READ_WRITTEN_REALTIME_HEADROOM_UNKNOWN",
+    "SOURCE_D1_FULL_BACKUP_RESTORE_PIT_FROZEN_NOT_COMPLETED",
+    "DESTINATION_LIVE_WORKER_CRON_NOT_ACTIVATED",
+    "CROSS_ACCOUNT_G6_FULL_CUTOVER_NOT_ACCEPTED"
+  ],
+  "stateBoundary": {
+    "sourceCronPhysicalConfigPausingAcceptedForEngineerEvidence": true,
+    "independentAuditLaneAdjudication": "PENDING",
+    "g6FullMigrationGate": "BLOCKED",
+    "g3SourceBackup": "BLOCKED",
+    "g4HistoricalImport": "BLOCKED",
+    "g5System1Reserves": "BLOCKED",
+    "g7CutoverAcceptance": "BLOCKED",
+    "sourceD1ExportAuthorizedByPause": false,
+    "originalCronRestoration": "SEPARATE_SINGLE_WRITER_OWNER_AUTH_REQUIRED_NO_AUTO_REENABLE"
+  },
+  "githubEvidenceIssue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1130#issuecomment-6109410942",
+  "privateIdsTokensOrUrlsDisclosed": false
+}
