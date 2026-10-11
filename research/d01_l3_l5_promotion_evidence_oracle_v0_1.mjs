@@ -91,7 +91,7 @@ export function evaluateL3ToL5(e={}){
     e.validation.robustnessAuditAccepted!==true)
    return {eligibleLevel:"L4",promotionAllowed:false,blockedAt:"L5_REVIEW",reason:"INDEPENDENT_L5_REVIEW_NOT_ACCEPTED",completed};
  completed.l5=true;
- return {eligibleLevel:"L5",promotionAllowed:true,blockedAt:null,
+ return {eligibleLevel:"L5",promotionAllowed:false,reviewReady:true,blockedAt:null,
    reason:"EXTERNAL_PHYSICAL_D16_L5_RECEIPTS_REQUIRE_HUMAN_READBACK_BEFORE_TRACKER_EDIT",
    completed,economicEdge:e.statistics.resultDisposition};
 }
