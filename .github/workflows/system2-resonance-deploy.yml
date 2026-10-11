@@ -26,6 +26,10 @@ concurrency:
 
 jobs:
   deploy:
+    # OWNER-approved TEMPORARY SOURCE System2 Cron pause quarantine, 2026-10-11.
+    # This job's existing source-bound deployment would reinstall active Cron.
+    # Never re-enable without independent single-writer/cutover review.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     environment: system2-research
