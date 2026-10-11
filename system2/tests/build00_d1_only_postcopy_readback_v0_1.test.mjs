@@ -22,6 +22,7 @@ function fixture(){
    observedAtUtc:"2026-10-11T08:00:00Z"},
   destination:{...common,verifiedFrom:"DESTINATION_D1_PHYSICAL_READBACK",
    accountFingerprint:"3".repeat(64),databaseFingerprint:"4".repeat(64),
+   importSourceExportSha256:hash.e,
    observedAtUtc:"2026-10-11T09:00:00Z",
    tables:tables.map(x=>({...x})),pit:{...common.pit}},
  };
@@ -101,4 +102,11 @@ test("receipt emitted cannot mutate supplied manifests or show account identifie
  assert(!JSON.stringify(r).includes(p.source.accountFingerprint));
  assert(!JSON.stringify(r).includes(p.destination.databaseFingerprint));
  assert.equal(r.sourceDBModified,false);assert.equal(r.destinationDBModified,false);
+});
+
+test("source D1 export SHA identifies import origin but cannot be substituted with a new target SQL dump SHA",()=>{
+ const p=fixture();p.destination.importSourceExportSha256="0".repeat(64);
+ const result=review(p);
+ assert(result.blockers.includes("D1_DESTINATION_IMPORTED_SOURCE_EXPORT_IDENTITY_MISMATCH"));
+ assert.equal(result.permissionToCutover,false);
 });
