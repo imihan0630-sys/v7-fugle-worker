@@ -100,3 +100,21 @@ test('invalid or missing source Cloudflare identity/token never reaches API',asy
  await assert.rejects(()=>sourceCronPauseV0_1({...args,accountId:'not-old-account',mode:'PAUSE'}),/CREDENTIAL_OR_MODE_INVALID/);
  assert.equal(args.log.length,0);
 });
+
+test('already empty source S2 Cron gives safe GET-only post-pause observation (no second PUT)',async()=>{
+ const args=fixture({cron:[]});
+ const r=await sourceCronPauseV0_1({...args,mode:'INSPECT'});
+ assert.equal(r.state,'SOURCE_S2_CRON_ALREADY_EMPTY_READONLY_NOT_ORIGINAL_PAUSE_PROOF');
+ assert.equal(r.pausedConfirmed,true);
+ assert.equal(r.v8CronUnchanged,null);
+ assert.equal(r.cloudMutationsRequested,0);
+ assert.equal(r.independentAuditCompleted,false);
+ assert.equal(args.log.filter(x=>x.method==='PUT').length,0);
+});
+test('repeated approved PAUSE on already zero Cron remains read-only, never reinstalls/retries',async()=>{
+ const args=fixture({cron:[]});
+ const r=await sourceCronPauseV0_1({...args,mode:'PAUSE'});
+ assert.equal(r.state,'SOURCE_S2_CRON_ALREADY_EMPTY_READONLY_NOT_ORIGINAL_PAUSE_PROOF');
+ assert.equal(r.cloudMutationsRequested,0);
+ assert.equal(args.log.filter(x=>x.method==='PUT').length,0);
+});
