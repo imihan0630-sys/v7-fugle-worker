@@ -3,8 +3,8 @@
   "directive": "S2-CORR-20261007-003",
   "active": true,
   "scope": "LEGACY_SYSTEM2_RESEARCH_GITHUB_WRITER_ENVIRONMENT",
-  "ownerIntent": "PROTECT_SOURCE_CLOUDFLARE_ACCOUNT_V8_SYSTEM1_DURING_SYSTEM2_MIGRATION",
-  "reason": "System2 destination has only schema; source physical PIT/frozen backup and full migration not yet independently accepted. S1 P01/P02 read/write reserves remain false/null. No S2 source writer grant.",
+  "ownerIntent": "PROTECT_SOURCE_SYSTEM2_FROZEN_MIGRATION_NO_DOUBLE_WRITER_NOT_V8_EXTRA_QUOTA_RESERVE",
+  "reason": "Old System2 data has not yet been copied/independently attested on new account; keep legacy SOURCE System2 writers quiet during original source D1 backup and destination migration. This is a migration single-writer/consistency guard, not an extra V8 rowsRead/rowsWritten quota reservation.",
   "denyNewPhysicalD1Reservations": true,
   "allowNonmutatingOfflineChecks": true,
   "allowPriorReservationResultReconciliation": true,
@@ -14,5 +14,8 @@
   "sourceAccountId": "REDACTED_NEVER_COMMIT",
   "writesThisConfiguration": 0,
   "changesSystem1Runtime": false,
-  "changesSystem2WorkerCron": false
+  "changesSystem2WorkerCron": false,
+  "v8ExtraQuotaReserveCanceledByOwner": true,
+  "ownerDirectionDateTaipei": "2026-10-11",
+  "canceledProtectionDistinction": "Only V8 extra numeric D1 reserve canceled; old S2 writer quarantine remains due to no-double-writer/source data consistency, independent of V8."
 }
