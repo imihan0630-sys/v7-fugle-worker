@@ -66,3 +66,5 @@ test('create only a factual observed receipt from injected current-date source, 
 test('cannot manufacture historical daily observation by rerunning an earlier market date',async()=>{
  await assert.rejects(()=>runner({marketDate:'1999-01-01',fetchSnapshot:async()=>source()}),/PROSPECTIVE_SAME_TAIPEI_DATE_ONLY/);
 });
+
+test('official no-trade stock remains in source denominator with UNKNOWN trading eligibility',async()=>{const x=source();x.snapshotBatch.bySymbol['2330'].close=null;x.snapshotBatch.bySymbol['2330'].volumeShares=null;x.snapshotBatch.bySymbol['2330'].priceState='NO_USABLE_PRICE';const r=await run(x);assert.equal(r.sourceState,'READY');assert.equal(r.sourceOrdinarySymbolCount,1);assert.equal(r.noUsablePriceSymbolCount,1);assert.equal(r.observations[0].close,null);assert.equal(r.zeroPickDay,null);assert.equal(r.realQualifiedStockSelectionPerformed,false);});
