@@ -21,5 +21,8 @@
   "formalCore": "LOCKED",
   "maturityChanged": false,
   "outcomesUsed": false,
-  "exactNext": "At next genuine exchange session, append official ETF unit/PCF receipt with separately verified firstKnownAt, capturedAt, sourceDate, useDate, revision hash, corporate-action and substitution status. Audit margin/short/SBL early/late vintages on distinct source denominators. Ask D16 to freeze primary OOS estimand and event-cluster/purge protocol. Keep PF-043/044 local-only until safe normal integration; no forced old-SHA merge."
+  "exactNext": "At next run reread latest main and this checkpoint. Reconcile safe tracker update/PR without overwriting concurrent updates. Capture genuine new ETF unit/PCF generation with PIT/version evidence; separately accrue TPEx margin/short/SBL early-late pairs. Preserve PF-043/044 local-only state and D16 OOS preregistration. Formal Core locked.",
+  "trackerSync": "BLOCKED_BY_CONNECTOR_SAFETY_CHECK",
+  "trackerUnchanged": "D06 55.6%; aggregate 47.9%; levels unchanged",
+  "writeSequence": "checkpoint then research evidence durable; tracker sync attempted after fresh main/branch SHA check and blocked"
 }
