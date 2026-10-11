@@ -318,7 +318,8 @@
         1068,
         1024,
         1026
-      ]
+      ],
+      "auditor": "AUDIT_LANE_INDEPENDENT_NOT_BUILDER"
     }
   ],
   "neverAutomaticallyAuthorized": [
