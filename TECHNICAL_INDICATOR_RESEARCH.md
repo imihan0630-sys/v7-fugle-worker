@@ -3986,3 +3986,38 @@ D03-10 Bollinger remains L2/40: zero migrated rows mean no 20-session parent win
 ### Exact next continuation point after TI-1772
 
 Do not rerun the one-time schema application. Await independent audit of Run 38069750915 and actual post-apply quota consumption. Before data copy require a frozen source manifest preserving receipt/version/clock semantics. After any copy independently reconcile source/destination identities, value hashes, missing/multiversion counts and batch manifest without rewriting UNKNOWN clocks. Only then resume the separate Hot D1 36-key Scout, W0 continuity and genuine C1 parent gates. Schema readiness alone earns no D03 promotion credit. D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
+## TI-1773~1792 — Artifact-provenance-to-indicator-input firewall (2026-10-11)
+
+### New canonical evidence consumed
+
+Main merge `5a17a0c643e0a9d58ae9f2e81614333e6c7e6e60` replays nine original GitHub Actions artifact ZIP byte streams. Native ZIP SHA-256 matches 9/9, ZIP integrity passes 9/9, eleven inner JSON files are hashed, and nine Run/Job/Artifact associations are checked. This closes an artifact-provenance access gap only. CORR-003 remains HIGH/VERIFYING with 15/38 supporting checks and 0/5 independently accepted physical gates.
+
+Main `2ce1b6a49a48b04db6a4f58ee34ec3a3a5a29eeb` retains P01=3/7, P02=3/7, P03=3/8, P04=2/7 and P05=4/9. Main `c82bdc43504c17f5a15129e625fefbaa41b79160` freezes migration/quota admission fail-closed: destination schema-only is independently accepted 25/25, but System1 source read/write reserves are false/null, current account headroom is unattested, source PIT/Frozen/restore is unaccepted, migration data is unaccepted, Hot D1 Scout is 0/36 and Census is 0/11,843.
+
+Issue #1068 real Run 38108616165 / Job 114379309976 succeeds by proving the negative state `READ_ONLY_D1_BUDGET_EVIDENCE_DEFER`. It performs zero source D1 SQL, zero R2 byte reads and zero data copy. Workflow success is therefore refusal verification, not source-data, backup, PIT, Frozen, migration or indicator-input acceptance.
+
+### D03 inference contract
+
+D03 freezes five cumulative states: `ARTIFACT_PROVENANCE_VERIFIED`, `SOURCE_ACCESS_BUDGET_AUTHORIZED`, `SOURCE_PHYSICAL_DATA_ATTESTED`, `DESTINATION_STORAGE_PARITY_VERIFIED` and `INDICATOR_INPUT_READY`. Current evidence reaches the first state only. Byte-replayable archives establish provenance of archived receipts; they do not authenticate every business assertion inside them, authorize current source reads, prove source physical tables/rows, recreate historical firstKnownAt/availableAt, or provide exact indicator history.
+
+The 20-case executable oracle `research/test_d03_artifact_provenance_indicator_input_v0_1.mjs` passes. It rejects archive/hash corruption, 15/38 support as physical closure, one-sided or headroom-free reserve claims, source attestation before budget authorization, destination parity before source physical evidence, imported row count before independent parity, PIT before source/Frozen/restore, Census before Scout, Scout-to-PIT promotion, W0 before causal lineage, parent/history/state-only indicator admission, OOS before valid inputs and per-operation-cost claims as indicator readiness.
+
+### Bias / falsification disposition
+
+- PIT/look-ahead: later ZIP replay cannot create original source firstKnownAt/availableAt.
+- OOS/walk-forward: archive replay and negative quota refusal are not new economic samples.
+- Selection/date clustering: two old successful days and six October source dates are nonrandom operational evidence.
+- Multiple testing/overfitting: no indicator parameters or thresholds are searched.
+- Redundancy: no independent price-information root is added.
+- Whole-day D1 totals cannot identify 23:35/conditional-23:55 per-operation cost. Cost remains UNKNOWN.
+- Fillability, limits, halts, ex-rights and market-state efficacy remain UNKNOWN.
+
+### Module disposition
+
+D03-10 Bollinger remains L2/40: no accepted source physical data, migrated rows, W0, genuine C1 or exact 20 eligible parent sessions. D03-09 ADX remains L2/40: no full Wilder replay or replay-certified trusted state. Other D03 modules retain current levels. No maturity promotion, outcome join, `FORMAL_OPTIMIZATION_CANDIDATE` or Formal Core change.
+
+### Exact next continuation point after TI-1792
+
+Do not repeat ZIP replay or destination schema APPLY_ONCE. Await independent numeric System1 read/write reserve acceptance and current same-UTC-day account headroom. Only under a separately qualified bounded budget, capture physical source applied schema, exact table rows/value hashes, original PIT clocks, Frozen prefix and independently restorable backup. Then run the real read-only 36-key Hot D1 Scout before any separately budgeted 11,843-key Census. After an owner-authorized copy, require independent source/destination identity and value parity without rewriting UNKNOWN clocks. W0, genuine C1, exact sessions and indicator-specific history remain separate final gates. D03 stays 56.7%; 12 active modules = 10 L3 + 2 L2; outcomes closed; Formal Core locked.
+
