@@ -40,7 +40,7 @@ const cases=[
  ['audit closure forged',x=>x.audit.final='VERIFIED_CLOSED'],
  ['queue audit closure forged',x=>x.queue.directives.find(d=>d.directiveId==='S2-CORR-20261007-003').status='VERIFIED_CLOSED'],
  ['remove account budget prerequisite',x=>x.schema.requiredSubsequentGates=x.schema.requiredSubsequentGates.filter(z=>!/source account D1 budget/i.test(z))],
- ['drop frozen proof prerequisite',x=>x.schema.requiredSubsequentGates=x.schema.requiredSubsequentGates.filter(z=>!/Frozen Snapshot/i.test(z))],
+ ['drop frozen proof prerequisite',x=>x.schema.requiredSubsequentGates=x.schema.requiredSubsequentGates.filter(z=>!/frozen snapshot/i.test(z))],
  ['reroute next stage from 1068',x=>x.schema.nextStageIssue=1079],
 ];
 for(const [name,fn] of cases){
