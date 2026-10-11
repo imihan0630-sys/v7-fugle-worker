@@ -34,9 +34,11 @@ test('wrong DB prevents source-account quota contamination',()=>{
  assert.throws(()=>validate(snapshot({id:'3'.repeat(32)}),day,db),/WRONG_DATABASE_OR_UTC_DAY/);
 });
 test('fractional, negative, NaN, null and unknown counted values fail closed',()=>{
- for(const w of [-1,NaN,1.1,null,undefined,'0',Number.MAX_SAFE_INTEGER+10]){
+ for(const w of [-1,NaN,1.1,null,'0',Number.MAX_SAFE_INTEGER+10]){
   assert.throws(()=>validate(snapshot({w}),day,db),/USAGE_VALUES_INVALID/);
  }
+ const m=snapshot();delete m.data.viewer.accounts[0].d1AnalyticsAdaptiveGroups[0].sum.rowsWritten;
+ assert.throws(()=>validate(m,day,db),/USAGE_VALUES_INVALID/);
 });
 test('account grouping cannot be missing to invent a current usable headroom',()=>{
  const x=snapshot();delete x.data.viewer.accounts[0].d1AnalyticsAdaptiveGroups;
