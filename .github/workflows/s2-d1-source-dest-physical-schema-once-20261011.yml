@@ -1,0 +1,67 @@
+name: System2 Cross Account D1 Source Dest Physical Schema GET ONLY 20261011
+# Temporary branch-only, no data export, D1 rows, writes, new credentials, Workers or paid storage.
+on:
+  push:
+    branches: [s2-migration-fast-source-dest-physical-preflight-20261011]
+    paths: [.github/workflows/s2-d1-source-dest-physical-schema-once-20261011.yml]
+permissions:
+  contents: read
+concurrency:
+  group: s2-source-dest-schema-physical-once-20261011
+  cancel-in-progress: false
+jobs:
+  source:
+    if: github.event.head_commit.message == 'S2_OWNER_MIGRATION_SOURCE_DEST_SCHEMA_INSPECT_20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Bound static read-only source contract
+        run: |
+          set -euo pipefail
+          node --check system2/migration/cross_account_source_dest_schema_metadata_probe_20261011.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real old-account source schema SQL metadata only
+        env:
+          S2_PREFLIGHT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          S2_PREFLIGHT_D1_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          S2_PREFLIGHT_WORKERS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node system2/migration/cross_account_source_dest_schema_metadata_probe_20261011.mjs SOURCE
+      - name: Preserve sanitized physical source artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-s2-source-metadata-${{ github.run_id }}
+          path: /tmp/s2-migration-physical-source/sanitized-source.json
+          retention-days: 60
+          if-no-files-found: warn
+  target:
+    if: github.event.head_commit.message == 'S2_OWNER_MIGRATION_SOURCE_DEST_SCHEMA_INSPECT_20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Bound static destination contract
+        run: |
+          set -euo pipefail
+          node --check system2/migration/cross_account_source_dest_schema_metadata_probe_20261011.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real new-account destination D1 schema SQL metadata only
+        env:
+          S2_PREFLIGHT_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_PREFLIGHT_D1_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/cross_account_source_dest_schema_metadata_probe_20261011.mjs DEST
+      - name: Preserve sanitized physical target artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-s2-dest-metadata-${{ github.run_id }}
+          path: /tmp/s2-migration-physical-dest/sanitized-dest.json
+          retention-days: 60
+          if-no-files-found: warn
