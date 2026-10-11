@@ -8,8 +8,7 @@ import argparse
 import hashlib
 import heapq
 import json
-import os
-from contextlib import ExitStack
+from contextlib import ExitStack, closing
 from pathlib import Path
 import sqlite3
 import stat
@@ -124,11 +123,14 @@ def verify_isolated_sqlite(path):
     db = safe_local_file(path)
     # mode=ro ensures this program never modifies the original restored copy.
     # No immutable=1: it can ignore WAL content and falsely certify a snapshot.
+    initial_fingerprint = digest_file(db)
+    initial_stat = db.stat()
     uri = "file:" + quote(str(db), safe="/") + "?mode=ro"
-    with sqlite3.connect(uri, uri=True, timeout=0) as conn:
+    with closing(sqlite3.connect(uri, uri=True, timeout=0)) as conn:
         conn.execute("PRAGMA query_only=ON")
         conn.execute("PRAGMA trusted_schema=OFF")
         conn.execute("PRAGMA busy_timeout=0")
+        conn.execute("BEGIN")  # repeatable local restored-file read snapshot
         check = conn.execute("PRAGMA integrity_check").fetchall()
         if check != [("ok",)]:
             raise ValueError("SQLITE_INTEGRITY_CHECK_FAILED")
@@ -185,12 +187,22 @@ def verify_isolated_sqlite(path):
         for table in results:
             h.update(frame([table["name"], table["rows"], table["sha256"],
                             table["schemaSha256"]]))
+        # Reject any local writer/sidecar interference during the attestation.
+        for suffix in ("-wal", "-shm", "-journal"):
+            if Path(str(db) + suffix).exists():
+                raise ValueError("SQLITE_SIDECAR_APPEARED_DURING_ATTESTATION")
+        after_stat = db.stat()
+        final_fingerprint = digest_file(db)
+        if (initial_fingerprint != final_fingerprint or
+                (initial_stat.st_size, initial_stat.st_mtime_ns) !=
+                (after_stat.st_size, after_stat.st_mtime_ns)):
+            raise ValueError("OFFLINE_RESTORED_FILE_CHANGED_DURING_ATTESTATION")
         return {
             "schemaVersion": VERSION,
             "scope": "LOCAL_ISOLATED_SQLITE_RESTORED_COPY_ONLY",
             "status": "OFFLINE_LOGICAL_INTEGRITY_REVIEW_ONLY",
             "offlineRestoredFileSizeBytes": db.stat().st_size,
-            "offlineRestoredFileSha256": digest_file(db),
+            "offlineRestoredFileSha256": final_fingerprint,
             "schemaSha256": all_schema_sha,
             "allTableContentSha256": h.hexdigest(),
             "tableCount": len(results),
