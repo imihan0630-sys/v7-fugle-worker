@@ -1,6 +1,6 @@
 // D01 Class-A research. Fail-closed UTC instant comparison across ISO-8601 timezones.
 // This is a mechanical clock oracle, not a source first-known authenticity certificate.
-const STRICT_ISO=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,9}))?(Z|([+-])(\d{2}):(\d{2}))$/;
+const STRICT_ISO=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|([+-])(\d{2}):(\d{2}))$/;
 export function parsePITInstant(value){
   if(typeof value!=="string")return null;
   const m=STRICT_ISO.exec(value);
