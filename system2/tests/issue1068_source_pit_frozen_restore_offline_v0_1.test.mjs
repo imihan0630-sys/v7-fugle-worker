@@ -83,6 +83,24 @@ const cases=[
   "PIT_LOOKAHEAD_SOURCE_REVISION_AFTER_DECISION"],
  ["future observedAt",v=>v.pitEvidence.sourceVersions[0].observedAt="2026-10-10T05:01:00Z",
   "PIT_LOOKAHEAD_SOURCE_REVISION_AFTER_DECISION"],
+ ["PIT first-known valid at later cut but lookahead for frozen",v=>{
+  v.pitEvidence.sourceVersions[0].firstKnownAt="2026-10-10T05:10:00Z";
+  v.pitEvidence.sourceVersions[0].selectionCutAt="2026-10-10T05:20:00Z";
+ }, "PIT_FROZEN_SOURCE_NOT_AVAILABLE_AT_DECISION"],
+ ["PIT availability valid at later cut but lookahead for frozen",v=>{
+  v.pitEvidence.sourceVersions[0].availableAt="2026-10-10T05:10:00Z";
+  v.pitEvidence.sourceVersions[0].selectionCutAt="2026-10-10T05:20:00Z";
+ }, "PIT_FROZEN_SOURCE_NOT_AVAILABLE_AT_DECISION"],
+ ["PIT observation valid at later cut but lookahead for frozen",v=>{
+  v.pitEvidence.sourceVersions[0].observedAt="2026-10-10T05:10:00Z";
+  v.pitEvidence.sourceVersions[0].selectionCutAt="2026-10-10T05:20:00Z";
+ }, "PIT_FROZEN_SOURCE_NOT_AVAILABLE_AT_DECISION"],
+ ["PIT selection receipt after actual frozen cut",v=>{
+  v.pitEvidence.sourceVersions[0].selectionCutAt="2026-10-10T05:20:00Z";
+ }, "PIT_FROZEN_SOURCE_NOT_AVAILABLE_AT_DECISION"],
+ ["duplicate source reference within frozen snapshot",v=>{
+  v.frozenEvidence.frozenSnapshots[0].sourceRefs.push("ABC-REV");
+ }, "FROZEN_DECISION_ROW_IDENTITY_INCOMPLETE"],
  ["missing source version hash",v=>v.pitEvidence.sourceVersions[0].sourceValueSha256=null,
   "PIT_SOURCE_VERSION_HASH_AND_PHYSICAL_LINEAGE_UNVERIFIED"],
  ["retrospective observation",v=>v.pitEvidence.sourceVersions[0].originalObservationCertified=false,
@@ -122,4 +140,4 @@ for(const [name,mutate,blocked] of cases){
  assert.equal(z.shadowAuthorized,false,name);
  assert.equal(z.sourceD1BackupPhysicallyAccepted,false,name);
 }
-console.log("ISSUE1068_SOURCE_PIT_FROZEN_RESTORE_GATE 1 no-receipt + 1 shape + 24 adversarial PASS, PHYSICAL_NOT_ACCEPTED");
+console.log("ISSUE1068_SOURCE_PIT_FROZEN_RESTORE_GATE 1 no-receipt + 1 shape + 29 adversarial PASS, PHYSICAL_NOT_ACCEPTED");
