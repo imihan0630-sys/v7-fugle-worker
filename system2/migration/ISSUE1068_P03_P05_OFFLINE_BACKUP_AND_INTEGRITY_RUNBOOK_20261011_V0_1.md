@@ -34,6 +34,21 @@ B2 now includes a **per-snapshot** PIT clock crosswalk guard; checking `sourceVe
 - Test locally using `python3 system2/migration/test_issue1068_sqlite_offline_integrity_v0_1.py`; System2 CI invokes this via `system2/tests/issue1068_sqlite_offline_integrity_v0_1.test.mjs`.
 - Free-tier import-days estimate is **not emitted** from an untrusted local fixture; only separate quota-gated and independent physical row acceptance may qualify it.
 
+## Offline Cloudflare D1 SQL export -> isolated SQLite restore (2026-10-11)
+
+Once a genuine original SOURCE D1 SQL export has been obtained **through separately qualified gated access**, verify it **offline** without contacting Cloudflare:
+
+```bash
+python3 system2/migration/issue1068_sql_export_offline_restore_v0_1.py --sql /secure/local/source-d1-full-export.sql
+```
+
+- Restores into a **temporary isolated local SQLite** database; output is a sanitized `OFFLINE_SQL_RESTORED_LOGICAL_CONSISTENCY_ONLY` receipt with exact original SQL file size/SHA256, replay statement count, schema and all-table logical byte hashes, table counts and rows.
+- **No** raw SQL, signed URLs, credentials or restored database contents are logged or uploaded. Never put original export SQL or sensitive frozen decisions in this repository or its public Actions artifacts. Retain original source export in separately access-controlled immutable storage under approved retention.
+- SQLite replay uses a deny-by-default statement filter and `set_authorizer`: local CREATE TABLE/INDEX, INSERT, BEGIN/COMMIT, PRAGMA foreign_keys=OFF only; refuses ATTACH, VACUUM, DROP, UPDATE, trigger, virtual table, unknown SQL, incomplete statements and symlink inputs. The source SQL file is checked by SHA256 **before and after** restoration; a changing source dump cannot pass.
+- Restore fails closed if original export contains unsupported constructs; do not "repair" missing rows or normalize original archived bytes automatically.
+- Local fixture tests: `python3 system2/migration/test_issue1068_sql_export_offline_restore_v0_1.py`, wired into `system2/tests/issue1068_sql_export_offline_restore_v0_1.test.mjs`.
+- This is **not** physical source D1 authentication: original Run/Job/Artifact and account identity, quota/availability receipts, PIT/Frozen historical crosswalk, independent restore audit, and R2 object bytes remain separately required. Local successful restore does **not** grant destination data-only import or Shadow.
+
 ## After separate real read-budget acceptance (NOT authorized by this document)
 
 1. **Freeze source evidence identity**: record exact original account/database fingerprint, run/job/attempt/commit UTC clocks, reservation and read-only grant IDs, budget max, other writers and Analytics lag. An independent gate must explicitly allow only a bounded physical source read.
