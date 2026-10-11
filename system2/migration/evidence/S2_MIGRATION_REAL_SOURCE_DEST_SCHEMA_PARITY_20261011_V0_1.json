@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "S2_MIGRATION_REAL_SOURCE_DEST_SCHEMA_PARITY_20261011_V0_1",
+  "performedAtTaipei": "2026-10-11 22:57–23:02 +08:00",
+  "ownerDirection": "CANCEL_EXTRA_V8_READ_WRITE_QUOTA_RESERVE__COMPLETE_S2_MIGRATION_ASAP",
+  "originalMainBeforeProbes": "abf5fbecc5d065c58e0e454686ca30aaf9a49d47",
+  "collectedWithExistingSecrets": true,
+  "createdSecretsOrPermissions": 0,
+  "paidServicesCreated": 0,
+  "source": {
+    "runId": 38149288055,
+    "jobId": 114499131051,
+    "artifactId": 11706346717,
+    "sourceAccountFingerprint": "3a6732b4f599575098949e818ef9266c324929cf38644387bddc09e05497243b",
+    "sourceD1Fingerprint": "9768891c958358067329099ab5cc10560633c47437713966ef02024c14c9fb80",
+    "observedAtUtc": "2026-10-11T14:57:44.159Z",
+    "artifactZipSha256": "ca43d2ce6ba940974808a2e5bfc914779a11bb3fa1312dec96b710d22c647e76",
+    "originalJsonSha256": "266f710862d9b56c41df15053453c3570cc5ffed683232b06510c73ad0d16797",
+    "tableCount": 55,
+    "indexCount": 63,
+    "sizeBytes": 316968960,
+    "sourceSystem2CronCount": 0,
+    "sourceSystem1CronCount": 4,
+    "sourceD1SchemaHash": "f31676b47e9aaeda80d81beef23ae0fcaea8027fb14ec5d12a854077236326a5",
+    "actualCloudflareSqlStatements": [
+      "SELECT sqlite_schema SOURCE ONLY"
+    ],
+    "d1RowScanPerformed": false,
+    "sourceBackupDone": false,
+    "sourceFullExportDone": false
+  },
+  "destination": {
+    "runId": 38149580179,
+    "jobId": 114500040706,
+    "artifactId": 11705577193,
+    "destinationAccountFingerprint": "27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55",
+    "destD1Fingerprint": "95f48f4d37b8eb4c16919d037259a5ebc30a8057e1933db39a6e8f759b9874b9",
+    "observedAtUtc": "2026-10-11T15:02:00.087Z",
+    "artifactZipSha256": "1f20468060ebfd8fa55f7bdf181f30a21590423d3bcaa1310f5974ff2f178ffa",
+    "originalJsonSha256": "02da53b068d20a470292ec18aa026ade03694f1a0177b1fbb6e3dce7dde87b05",
+    "tableCount": 55,
+    "indexCount": 63,
+    "sizeBytes": 987136,
+    "schemaVersion": "1.1",
+    "destD1SchemaHash": "f31676b47e9aaeda80d81beef23ae0fcaea8027fb14ec5d12a854077236326a5",
+    "exactTableNamesMatchSource": true,
+    "exactIndexNamesMatchSource": true,
+    "exactEachObjectSqlShaMatchSource": true,
+    "sourceRowsImported": 0,
+    "targetR2": "NOT_ENTITLED_403_10042_FROM_LAST_AUTHENTICATED_INVENTORY"
+  },
+  "materializedArtifactsActuallyDownloadedAndSHA256Recomputed": true,
+  "originalProviderSchemaCountsAndHashesAcrossAccountsMatch": true,
+  "explicitlyNotClaimingSourceHistoricalRowParity": true,
+  "initialMultiJobRun": {
+    "runId": 38149288055,
+    "targetJobBeforeStepsFailed": true,
+    "targetResumedViaMainOnlyProtectedEnvironmentRun": 38149580179
+  },
+  "security": {
+    "publicRepository": true,
+    "privateSQLBytesPublished": false,
+    "noSourceD1Mutations": true,
+    "noDestinationD1Mutations": true,
+    "noSourceD1FullSQLExport": true,
+    "noV8WorkerOrFormalChange": true,
+    "noCronReactivation": true,
+    "sourceDataPreserved": true
+  },
+  "capacity": {
+    "sourceD1Bytes": 316968960,
+    "destBeforeImportBytes": 987136,
+    "freePlanSingleDbMaxBytes": 500000000,
+    "theoreticalRemainingBytesBeforeImport": 499012864,
+    "sourceSizeBelowSingleDbCap": true,
+    "indexAndImportAmplificationUnknown": true,
+    "writeRowsCountUnknown": true,
+    "sourceR2CompletenessUnverified": true
+  },
+  "scopedVerdicts": {
+    "sourceDBSchemaPhysical": "PASS",
+    "destinationDBSchemaPhysical": "PASS",
+    "schemaParityObjects": "PASS_118_OF_118",
+    "sourceD1Backup": "BLOCKED_NOT_EXECUTED",
+    "destinationDataImport": "BLOCKED_NOT_EXECUTED",
+    "sourceR2DestinationStorage": "BLOCKED_DESTINATION_R2_NOT_ENTITLED",
+    "newSystem2WorkerAndCron": "BLOCKED_NOT_DEPLOYED",
+    "sourceCronPaused": "PASS",
+    "v8CronPreserved": "PASS",
+    "crossAccountMigrationComplete": "BLOCKED"
+  },
+  "whyNoFullImmediateImport": [
+    "SOURCE_DB_FULL_PRIVATE_SQL_BACKUP_NOT_YET_IMMUTABLY_SECURED",
+    "PUBLIC_GITHUB_ARTIFACTS_CANNOT_HOLD_UNENCRYPTED_PRIVATE_DATA",
+    "DESTINATION_WRITE_TOKEN_AND_SOURCE_READ_TOKEN_ARE_IN_DISTINCT_PROTECTED_GITHUB_ENVIRONMENTS",
+    "DESTINATION_DATA_ROWS_AND_INDEX_WRITE_AMPLIFICATION_PER_UTC_DAY_NOT_MEASURED",
+    "DESTINATION_R2_NOT_ENTITLED_IF_REQUIRED_FOR_FULL_HISTORICAL_ARCHIVE",
+    "UNVERIFIED_ALL_SOURCE_SYSTEM2_HTTP_MANUAL_INFLIGHT_WRITER_QUIET"
+  ],
+  "nextOwnerActionsIfNeeded": [
+    "SECURE_ENCRYPTED_TEMP_BACKUP_STORAGE_OR_EXISTING_PRIVATE_ARCHIVE_DESTINATION",
+    "APPROVED_CROSS_ACCOUNT_TOKEN_TRANSFER_METHOD_OR_SCOPED_EXISTING_SECRET_IN_ISOLATED_MIGRATION_JOB",
+    "IF_FULL_R2_REQUIRED_AUTHORIZE_ONLY_ACCOUNT_ENTITLEMENT_OR_APPROVE_D1_ONLY_DATA_SCOPE_AS_SEPARATE_PARTIAL_MIGRATION"
+  ]
+}
