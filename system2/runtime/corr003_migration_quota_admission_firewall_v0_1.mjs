@@ -76,7 +76,7 @@ export function assessCorr003MigrationQuotaAdmissionV0_1({audit,schema,policy,qu
  }
  const stage=[...schema?.requiredSubsequentGates||[]];
  assert.ok(stage.some(x=>/source account D1 budget/i.test(x)));
- assert.ok(stage.some(x=>/Frozen Snapshot/i.test(x)));
+ assert.ok(stage.some(x=>/frozen snapshot/i.test(x)));
  assert.ok(stage.some(x=>/destination quota-safe/i.test(x)));
  return Object.freeze({
   state:"MIGRATION_QUOTA_ADMISSION_FAIL_CLOSED",
