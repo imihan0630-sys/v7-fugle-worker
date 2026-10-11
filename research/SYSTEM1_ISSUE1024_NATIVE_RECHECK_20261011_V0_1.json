@@ -1,0 +1,1751 @@
+{
+  "schemaVersion": "S1_ISSUE1024_READONLY_NATIVE_METADATA_RECHECK_V0_1",
+  "baselineMainSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+  "observedAtTaipei": "2026-10-11T11:56:07.7370753+08:00",
+  "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024",
+  "classification": "CLASS_A_DOCUMENTATION_ONLY_PRODUCER_INTAKE_NOT_AUDIT_ACCEPTANCE",
+  "originalNativeMetadata": [
+    {
+      "runId": 37649041814,
+      "name": "D02 PVE-251 Live Remediation Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:03:36Z",
+      "createdAtTaipei": "2026-10-07T16:03:36.0000000+08:00",
+      "headSha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814",
+      "jobs": [
+        {
+          "id": 112887225789,
+          "name": "audit",
+          "head_sha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:03:40Z",
+          "completed_at": "2026-10-07T16:04:00Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:03:41Z",
+              "completed_at": "2026-10-07T16:03:41Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:03:41Z",
+              "completed_at": "2026-10-07T16:03:43Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:03:43Z",
+              "completed_at": "2026-10-07T16:03:44Z"
+            },
+            {
+              "name": "Read Production remediation evidence without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:03:44Z",
+              "completed_at": "2026-10-07T16:03:57Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-251 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:03:57Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:03:58Z",
+              "completed_at": "2026-10-07T16:03:58Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11494952595,
+          "name": "d02-pve251-live-remediation-readonly-37649041814",
+          "digest": "sha256:8bde99fd35e86ac1fedb03b6dcccf5ca5ddccab199d8e472d3ffdca173b85b8d",
+          "size_in_bytes": 1455,
+          "expired": false,
+          "created_at": "2026-10-07T16:03:58Z",
+          "workflow_run": {
+            "id": 37649041814,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "15d6591d37c8cda7304d4fb9a19246370257c6e8"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649041814-run.json",
+          "sha256": "8fb4a8b2a0b3b054e418785aa296e4f7bb0e19e90da012614584329694357082"
+        },
+        {
+          "file": "37649041814-jobs.json",
+          "sha256": "19af09c8026d118dca2c28f57a2890c2edf5b1b39ddc7a20c4f3663d762867c6"
+        },
+        {
+          "file": "37649041814-artifacts.json",
+          "sha256": "d56f687b43d93baf377c34a6cef0979ac7ad0f1dba49ee876d1c8b8f42dea2c8"
+        }
+      ]
+    },
+    {
+      "runId": 37649249573,
+      "name": "D02 PVE262 Cron Window Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:05:08Z",
+      "createdAtTaipei": "2026-10-07T16:05:08.0000000+08:00",
+      "headSha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573",
+      "jobs": [
+        {
+          "id": 112887945915,
+          "name": "audit",
+          "head_sha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:05:11Z",
+          "completed_at": "2026-10-07T16:05:34Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:05:12Z",
+              "completed_at": "2026-10-07T16:05:14Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:05:14Z",
+              "completed_at": "2026-10-07T16:05:16Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:05:16Z",
+              "completed_at": "2026-10-07T16:05:20Z"
+            },
+            {
+              "name": "Read raw Production cron window without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:05:20Z",
+              "completed_at": "2026-10-07T16:05:31Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-262 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:05:31Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:05:32Z",
+              "completed_at": "2026-10-07T16:05:32Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": false,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649249573-run.json",
+          "sha256": "aeca9880a3d57492297de6b0893d74e274f4bdd3c440f3c8d0acca213f628bf6"
+        },
+        {
+          "file": "37649249573-jobs.json",
+          "sha256": "b32e484e185fe7d691708e0addae880f8994fe2049092298b3ff2fb64f539d45"
+        }
+      ]
+    },
+    {
+      "runId": 37649543821,
+      "name": "D02 PVE263 After Market Side Effect Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:07:18Z",
+      "createdAtTaipei": "2026-10-07T16:07:18.0000000+08:00",
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
+      "jobs": [
+        {
+          "id": 112888965126,
+          "name": "audit",
+          "head_sha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:07:22Z",
+          "completed_at": "2026-10-07T16:07:41Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:07:23Z",
+              "completed_at": "2026-10-07T16:07:24Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:07:24Z",
+              "completed_at": "2026-10-07T16:07:26Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:07:26Z",
+              "completed_at": "2026-10-07T16:07:27Z"
+            },
+            {
+              "name": "Read Production after-market side effects without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:07:27Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-263 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:07:39Z",
+              "completed_at": "2026-10-07T16:07:39Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11495752402,
+          "name": "d02-pve263-after-market-side-effect-readonly-37649543821",
+          "digest": "sha256:ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+          "size_in_bytes": 1353,
+          "expired": false,
+          "created_at": "2026-10-07T16:07:39Z",
+          "workflow_run": {
+            "id": 37649543821,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "0055dbe2d94757f63f509c5c0045875b34b1de65"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37649543821-run.json",
+          "sha256": "2abf2c2c61cfe732a17d47c28f1d0439fd54880b22792a167ad9a5dd2b8c7eae"
+        },
+        {
+          "file": "37649543821-jobs.json",
+          "sha256": "1c4d5dfc33fa6ac28e5ba57ac29835f3a5ac82c107714ef30972b478929b1db5"
+        },
+        {
+          "file": "37649543821-artifacts.json",
+          "sha256": "0c9dd9a2cc8ab4f0004a47dad3d2f4b0b2770a111cd608ccf948fc2faa9b93f9"
+        }
+      ]
+    },
+    {
+      "runId": 37650006684,
+      "name": "D02 PVE264 D1 Daily Usage Readonly",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T16:10:44Z",
+      "createdAtTaipei": "2026-10-07T16:10:44.0000000+08:00",
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
+      "jobs": [
+        {
+          "id": 112890551584,
+          "name": "audit",
+          "head_sha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+          "conclusion": "success",
+          "started_at": "2026-10-07T16:10:47Z",
+          "completed_at": "2026-10-07T16:10:56Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T16:10:48Z",
+              "completed_at": "2026-10-07T16:10:49Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T16:10:49Z",
+              "completed_at": "2026-10-07T16:10:50Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T16:10:50Z",
+              "completed_at": "2026-10-07T16:10:51Z"
+            },
+            {
+              "name": "Read account D1 daily usage without mutation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T16:10:51Z",
+              "completed_at": "2026-10-07T16:10:52Z"
+            },
+            {
+              "name": "Preserve sanitized PVE-264 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T16:10:52Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T16:10:53Z",
+              "completed_at": "2026-10-07T16:10:53Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11495133236,
+          "name": "d02-pve264-d1-daily-usage-readonly-37650006684",
+          "digest": "sha256:188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+          "size_in_bytes": 682,
+          "expired": false,
+          "created_at": "2026-10-07T16:10:53Z",
+          "workflow_run": {
+            "id": 37650006684,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "152dc18d687e30410a20a64c3065984fc86ba6a5"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37650006684-run.json",
+          "sha256": "51920afac775807d0ba26264370a802e9916fb282c8494ddd0406f762517fd38"
+        },
+        {
+          "file": "37650006684-jobs.json",
+          "sha256": "4e9a8e84303ff632a0ce1d2e8f796e20ba12d7784aba019ee3343907f04f7111"
+        },
+        {
+          "file": "37650006684-artifacts.json",
+          "sha256": "6320f23bb22bea8bee3bd7fe7aeb7a631708b0c739f32cb7a1867e4f1742d702"
+        }
+      ]
+    },
+    {
+      "runId": 37694052477,
+      "name": "D02 PVE271 System1 After-Market Reserve Evidence",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T22:06:58Z",
+      "createdAtTaipei": "2026-10-07T22:06:58.0000000+08:00",
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
+      "jobs": [
+        {
+          "id": 113041122665,
+          "name": "audit",
+          "head_sha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+          "conclusion": "success",
+          "started_at": "2026-10-07T22:07:01Z",
+          "completed_at": "2026-10-07T22:07:23Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T22:07:02Z",
+              "completed_at": "2026-10-07T22:07:03Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T22:07:03Z",
+              "completed_at": "2026-10-07T22:07:05Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T22:07:05Z",
+              "completed_at": "2026-10-07T22:07:05Z"
+            },
+            {
+              "name": "Read historical System1 after-market quota evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T22:07:05Z",
+              "completed_at": "2026-10-07T22:07:20Z"
+            },
+            {
+              "name": "Preserve PVE-271 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T22:07:20Z",
+              "completed_at": "2026-10-07T22:07:21Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T22:07:21Z",
+              "completed_at": "2026-10-07T22:07:21Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T22:07:21Z",
+              "completed_at": "2026-10-07T22:07:22Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T22:07:22Z",
+              "completed_at": "2026-10-07T22:07:22Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11514945619,
+          "name": "d02-pve271-system1-after-market-reserve-evidence-37694052477",
+          "digest": "sha256:7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+          "size_in_bytes": 1271,
+          "expired": false,
+          "created_at": "2026-10-07T22:07:21Z",
+          "workflow_run": {
+            "id": 37694052477,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37694052477-run.json",
+          "sha256": "0cc208503ff4b5872a9015fa79550a2131a8688121605ee36be14e8c94318c11"
+        },
+        {
+          "file": "37694052477-jobs.json",
+          "sha256": "86c9ed39d34aac882a7c372c5d60a97f832acce664fb0b53c4691ab7f3d264e7"
+        },
+        {
+          "file": "37694052477-artifacts.json",
+          "sha256": "533b51a1c74fa765dd2559c0f4038f564b2594f1b0ebc5c83fd698d9fddea0d4"
+        }
+      ]
+    },
+    {
+      "runId": 37694255555,
+      "name": "D02 PVE272 System1 Full-History After-Market Envelope",
+      "event": "push",
+      "createdAtUtc": "2026-10-07T22:08:47Z",
+      "createdAtTaipei": "2026-10-07T22:08:47.0000000+08:00",
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
+      "jobs": [
+        {
+          "id": 113041830751,
+          "name": "audit",
+          "head_sha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+          "conclusion": "success",
+          "started_at": "2026-10-07T22:08:50Z",
+          "completed_at": "2026-10-07T22:09:25Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-07T22:08:51Z",
+              "completed_at": "2026-10-07T22:08:52Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-07T22:08:52Z",
+              "completed_at": "2026-10-07T22:08:53Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-07T22:08:53Z",
+              "completed_at": "2026-10-07T22:08:54Z"
+            },
+            {
+              "name": "Read all healthy System1 after-market days",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-07T22:08:54Z",
+              "completed_at": "2026-10-07T22:09:23Z"
+            },
+            {
+              "name": "Preserve PVE-272 evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-07T22:09:23Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-07T22:09:24Z",
+              "completed_at": "2026-10-07T22:09:24Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11514766351,
+          "name": "d02-pve272-system1-after-market-full-history-envelope-37694255555",
+          "digest": "sha256:cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+          "size_in_bytes": 1051,
+          "expired": false,
+          "created_at": "2026-10-07T22:09:24Z",
+          "workflow_run": {
+            "id": 37694255555,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37694255555-run.json",
+          "sha256": "a932c490bd79377b94a580037cf1aea50cf3ef7601a820cce64b2a01b138fb06"
+        },
+        {
+          "file": "37694255555-jobs.json",
+          "sha256": "1df229cfda92bbcf52fa342669026a79cb562bb280fcbfce9e7a9af1b238456c"
+        },
+        {
+          "file": "37694255555-artifacts.json",
+          "sha256": "7b4d2e65ec4ec7fb44a24663c65c755fba905d319532aa085457bd61099ae0db"
+        }
+      ]
+    },
+    {
+      "runId": 37808995747,
+      "name": "System 1 C1 Prospective Evidence",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-08T16:28:00Z",
+      "createdAtTaipei": "2026-10-08T16:28:00.0000000+08:00",
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "conclusion": "failure",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+      "jobs": [
+        {
+          "id": 113420649062,
+          "name": "collect",
+          "head_sha": "53b15e0731be0948f89f8bc08c90661703276905",
+          "conclusion": "failure",
+          "started_at": "2026-10-08T16:28:03Z",
+          "completed_at": "2026-10-08T16:28:28Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T16:28:04Z",
+              "completed_at": "2026-10-08T16:28:05Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T16:28:05Z",
+              "completed_at": "2026-10-08T16:28:07Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T16:28:07Z",
+              "completed_at": "2026-10-08T16:28:07Z"
+            },
+            {
+              "name": "Validate V8.19 generation inventory semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T16:28:07Z",
+              "completed_at": "2026-10-08T16:28:08Z"
+            },
+            {
+              "name": "Validate V8.20 Formal-C1 binding readback semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T16:28:08Z",
+              "completed_at": "2026-10-08T16:28:08Z"
+            },
+            {
+              "name": "Read and verify the immutable C1 population receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 6,
+              "started_at": "2026-10-08T16:28:08Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Build offline H1-H5 opportunity-loss readiness",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Build genuine prospective operational acceptance receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 8,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:25Z"
+            },
+            {
+              "name": "Preserve approved research evidence or explicit readiness blocker",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T16:28:25Z",
+              "completed_at": "2026-10-08T16:28:26Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 17,
+              "started_at": "2026-10-08T16:28:26Z",
+              "completed_at": "2026-10-08T16:28:26Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-10-08T16:28:26Z",
+              "completed_at": "2026-10-08T16:28:27Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-08T16:28:27Z",
+              "completed_at": "2026-10-08T16:28:27Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11565090033,
+          "name": "system1-c1-evidence-37808995747",
+          "digest": "sha256:a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+          "size_in_bytes": 1612,
+          "expired": false,
+          "created_at": "2026-10-08T16:28:26Z",
+          "workflow_run": {
+            "id": 37808995747,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "53b15e0731be0948f89f8bc08c90661703276905"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37808995747-run.json",
+          "sha256": "b3cf703380fb14edfe319d3528f5902839167b225407224b680d2822d43ee0db"
+        },
+        {
+          "file": "37808995747-jobs.json",
+          "sha256": "5cdc294dc46958e074e9b1aff67b08fdc63298e3aed670b56e7ad7f8f6b76391"
+        },
+        {
+          "file": "37808995747-artifacts.json",
+          "sha256": "06a9b421498d4a309562441a7b3a21c3f88f52fd8102436b771f61ef29785a32"
+        }
+      ]
+    },
+    {
+      "runId": 37956058324,
+      "name": "V7 Official Market Data Sync",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:01:26Z",
+      "createdAtTaipei": "2026-10-09T16:01:26.0000000+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324",
+      "jobs": [
+        {
+          "id": 113906737784,
+          "name": "sync",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:01:30Z",
+          "completed_at": "2026-10-09T16:01:40Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:01:31Z",
+              "completed_at": "2026-10-09T16:01:32Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:01:32Z",
+              "completed_at": "2026-10-09T16:01:36Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:01:36Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Validate manual recovery scope (never alters trading plans)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 4,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Skip official exchange holidays safely",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync today's official market data (no target changes or orders)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync official institutions and missing recent trading days (no plan changes)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Verify prior-session market + institution prerequisites after midnight",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Sync official index, quarterly financials, valuation and TDCC (no plan changes)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Recover missing same-day analysis after complete data (skip prior success)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 10,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Historical official quality recovery",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 11,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Historical after-market recovery",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 12,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:37Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-10-09T16:01:37Z",
+              "completed_at": "2026-10-09T16:01:38Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-10-09T16:01:38Z",
+              "completed_at": "2026-10-09T16:01:38Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956058324-run.json",
+          "sha256": "62bb402ea6376af8ce4949362715019dcf497da3e7d703dbe84173a689f6fbfe"
+        },
+        {
+          "file": "37956058324-jobs.json",
+          "sha256": "5c80c690660a6da4b40d1b2e2ae957d81db65506916471731812c1ca088f8383"
+        },
+        {
+          "file": "37956058324-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37956199815,
+      "name": "V8 Encrypted Plan Mirror",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:02:34Z",
+      "createdAtTaipei": "2026-10-09T16:02:34.0000000+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815",
+      "jobs": [
+        {
+          "id": 113907219078,
+          "name": "mirror",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:02:38Z",
+          "completed_at": "2026-10-09T16:02:57Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:02:39Z",
+              "completed_at": "2026-10-09T16:02:40Z"
+            },
+            {
+              "name": "Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:02:40Z",
+              "completed_at": "2026-10-09T16:02:45Z"
+            },
+            {
+              "name": "Set up Node",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:02:45Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Offline encryption self-test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Wait for V8.4 production runtime",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 5,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:46Z"
+            },
+            {
+              "name": "Prepare encrypted mirror",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-09T16:02:46Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Commit encrypted mirror only",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Resolve mirror commit",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Verify external raw readback and accept",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Already verified",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Post Set up Node",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:54Z"
+            },
+            {
+              "name": "Post Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-10-09T16:02:54Z",
+              "completed_at": "2026-10-09T16:02:55Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-09T16:02:55Z",
+              "completed_at": "2026-10-09T16:02:55Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956199815-run.json",
+          "sha256": "d4abd9b7f3204a526bef03e822dd92ef3c83807175b5067d06d3af057e399261"
+        },
+        {
+          "file": "37956199815-jobs.json",
+          "sha256": "836013d5577149d608aa7cfad98b85eff5cd3cbdb26851e324843874f1aa352c"
+        },
+        {
+          "file": "37956199815-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37956358193,
+      "name": "V7 Scheduled Health Verification",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:03:52Z",
+      "createdAtTaipei": "2026-10-09T16:03:52.0000000+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193",
+      "jobs": [
+        {
+          "id": 113907758481,
+          "name": "verify",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "success",
+          "started_at": "2026-10-09T16:03:55Z",
+          "completed_at": "2026-10-09T16:04:02Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:03:55Z",
+              "completed_at": "2026-10-09T16:03:56Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:03:56Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Verify actual intraday snapshots only (no pushes or trades)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 4,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Verify actual completed full plan and active external mirror (no new import)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:03:59Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-09T16:03:59Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-09T16:04:00Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-09T16:04:00Z",
+              "completed_at": "2026-10-09T16:04:00Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37956358193-run.json",
+          "sha256": "2ddcee7faa499a7aef54da9e91c05830fb09293853bfe640dbc4ce7546a41833"
+        },
+        {
+          "file": "37956358193-jobs.json",
+          "sha256": "d6daef277a01ecc7c14b5f7cb0e87275fa8a6f2a22e35060f9df2acd773f1ab3"
+        },
+        {
+          "file": "37956358193-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    {
+      "runId": 37958877283,
+      "name": "System 1 C1 Prospective Evidence",
+      "event": "schedule",
+      "createdAtUtc": "2026-10-09T16:24:22Z",
+      "createdAtTaipei": "2026-10-09T16:24:22.0000000+08:00",
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "conclusion": "failure",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283",
+      "jobs": [
+        {
+          "id": 113916309205,
+          "name": "collect",
+          "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+          "conclusion": "failure",
+          "started_at": "2026-10-09T16:24:26Z",
+          "completed_at": "2026-10-09T16:24:42Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-09T16:24:26Z",
+              "completed_at": "2026-10-09T16:24:27Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-09T16:24:27Z",
+              "completed_at": "2026-10-09T16:24:29Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-09T16:24:29Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Validate V8.19 generation inventory semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Validate V8.20 Formal-C1 binding readback semantics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:30Z"
+            },
+            {
+              "name": "Read and verify the immutable C1 population receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 6,
+              "started_at": "2026-10-09T16:24:30Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Build offline H1-H5 opportunity-loss readiness",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Build genuine prospective operational acceptance receipt",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 8,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:40Z"
+            },
+            {
+              "name": "Preserve approved research evidence or explicit readiness blocker",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-09T16:24:40Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 17,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-09T16:24:41Z",
+              "completed_at": "2026-10-09T16:24:41Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11631116248,
+          "name": "system1-c1-evidence-37958877283",
+          "digest": "sha256:4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+          "size_in_bytes": 1632,
+          "expired": false,
+          "created_at": "2026-10-09T16:24:40Z",
+          "workflow_run": {
+            "id": 37958877283,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "main",
+            "head_sha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "37958877283-run.json",
+          "sha256": "34cd06d2683c89df5e9d2428f2c96b10cfded2744ccb3a89d6f3b4e1d7410ef1"
+        },
+        {
+          "file": "37958877283-jobs.json",
+          "sha256": "b01626678ea43dd35245514dc3cd6bb2b4c6d413e795ebc9173cb5208f31aee9"
+        },
+        {
+          "file": "37958877283-artifacts.json",
+          "sha256": "098ab9001e311fb68df83b45ab1591ac21254ae25651bc00d286d4685a4da289"
+        }
+      ]
+    },
+    {
+      "runId": 38032440861,
+      "name": "System1 Public Runtime Readonly Evidence",
+      "event": "pull_request",
+      "createdAtUtc": "2026-10-10T06:52:28Z",
+      "createdAtTaipei": "2026-10-10T06:52:28.0000000+08:00",
+      "headSha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "conclusion": "success",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38032440861",
+      "jobs": [
+        {
+          "id": 114156019956,
+          "name": "inspect",
+          "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+          "conclusion": "success",
+          "started_at": "2026-10-10T06:52:32Z",
+          "completed_at": "2026-10-10T06:52:50Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-10T06:52:33Z",
+              "completed_at": "2026-10-10T06:52:34Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-10T06:52:34Z",
+              "completed_at": "2026-10-10T06:52:35Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-10T06:52:35Z",
+              "completed_at": "2026-10-10T06:52:39Z"
+            },
+            {
+              "name": "Validate read-only probe source",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-10T06:52:39Z",
+              "completed_at": "2026-10-10T06:52:39Z"
+            },
+            {
+              "name": "Read public runtime version and storage metadata only",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-10T06:52:39Z",
+              "completed_at": "2026-10-10T06:52:46Z"
+            },
+            {
+              "name": "Save sanitized public-readonly receipt",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-10T06:52:46Z",
+              "completed_at": "2026-10-10T06:52:47Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-10T06:52:47Z",
+              "completed_at": "2026-10-10T06:52:47Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-10T06:52:47Z",
+              "completed_at": "2026-10-10T06:52:48Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-10T06:52:48Z",
+              "completed_at": "2026-10-10T06:52:48Z"
+            }
+          ]
+        }
+      ],
+      "artifactsMetadataRetrieved": true,
+      "artifacts": [
+        {
+          "id": 11662631499,
+          "name": "system1-public-runtime-readonly-38032440861",
+          "digest": "sha256:33a23712e19cfbf0ba6b1ad737bb6d3fb500e4f484782db05b762c91ae2e7b01",
+          "size_in_bytes": 680,
+          "expired": false,
+          "created_at": "2026-10-10T06:52:47Z",
+          "workflow_run": {
+            "id": 38032440861,
+            "repository_id": 1367719929,
+            "head_repository_id": 1367719929,
+            "head_branch": "repair/system1-c1-official-session-gate-20261010",
+            "head_sha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267"
+          }
+        }
+      ],
+      "zipBytesIndependentlyDownloaded": false,
+      "rawBusinessLogIndependentlyRetrieved": false,
+      "snapshotHashes": [
+        {
+          "file": "38032440861-run.json",
+          "sha256": "9ef846b2558fb3e04b6199cd146564f56a007f965ea832e281c12ae0f73ff5d4"
+        },
+        {
+          "file": "38032440861-jobs.json",
+          "sha256": "50355d921ae829965269143a2f67d4f949f39438da67559baefb06028b6755e6"
+        },
+        {
+          "file": "38032440861-artifacts.json",
+          "sha256": "7b70918499dfae093e58d4400dcdb10206e676c474a7c6e28d240b23d4c2dfbf"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "runSnapshots": 12,
+    "jobSnapshots": 12,
+    "artifactListSnapshots": 11,
+    "artifactDigests": 8,
+    "recentRunListPages": 3,
+    "recentRunListEntries": 266,
+    "recentRunIdsUnique": 266,
+    "recentRunFilter": "created=2026-10-10..2026-10-11; per_page=100; pages 1-3",
+    "recentRunListingIsNotCloudflareCronInventory": true
+  },
+  "newerScheduledMetadata": [
+    {
+      "id": 38099715538,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "created_at": "2026-10-11T00:49:14Z",
+      "head_sha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "conclusion": "success"
+    },
+    {
+      "id": 38038910258,
+      "name": "System2 Recent A1 Hot History Warmup",
+      "created_at": "2026-10-10T08:44:08Z",
+      "head_sha": "786c6a00006fd7ca8cb34e791a2ed928b8b59782",
+      "conclusion": "success"
+    },
+    {
+      "id": 38010753671,
+      "name": "System2 Decision Clock Readiness Read-only",
+      "created_at": "2026-10-10T00:50:21Z",
+      "head_sha": "5cb4aa8503adbf30fb9f18a37af492e562e9b030",
+      "conclusion": "success"
+    }
+  ],
+  "inheritedHistoricalBusinessObservations": [
+    {
+      "utcDay": "2026-09-21",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 2825,
+        "rowsRead": 133037,
+        "writeQueries": 2331,
+        "readQueries": 23994
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-09-22",
+      "classification": "HEALTHY_CRON_DAY_WHOLE_V7_DB_ACCOUNT_USAGE",
+      "V7_DB": {
+        "rowsWritten": 1635,
+        "rowsRead": 19533,
+        "writeQueries": 1199,
+        "readQueries": 9938
+      },
+      "per2355CostKnown": false,
+      "per2335CostKnown": false,
+      "physicalBusinessReadbackSameGeneration": false,
+      "source": [
+        "PVE271",
+        "PVE272"
+      ]
+    },
+    {
+      "utcDay": "2026-10-07",
+      "classification": "SYSTEM1_AFTER_MARKET_INVOCATION_FAILED_D1_QUOTA",
+      "V7_DB": {
+        "rowsWritten": 1869,
+        "rowsRead": 431323,
+        "writeQueries": 1663,
+        "readQueries": 31749
+      },
+      "SYSTEM2_DB": {
+        "rowsWritten": 124629,
+        "rowsRead": 3943636,
+        "writeQueries": 20897,
+        "readQueries": 3795
+      },
+      "accountTotals": {
+        "rowsWritten": 126498,
+        "rowsRead": 4374959,
+        "writeQueries": 22560,
+        "readQueries": 35544
+      },
+      "primaryFailureTaipei": "2026-10-07 23:36:10",
+      "recoveryLeaseUtc": "2026-10-07T15:55:03.803Z",
+      "recoverySuccessfulBusinessPersisted": false,
+      "quotaCollisionWitnessed": true,
+      "source": [
+        "PVE263",
+        "PVE264"
+      ]
+    },
+    {
+      "utcDay": "2026-10-09",
+      "classification": "SHARED_ACCOUNT_METADATA_LOWER_BOUNDS_NOT_LIVE_REMAINING_QUOTA",
+      "observations": [
+        {
+          "runId": 37907066382,
+          "rowsWrittenLowerBound": 26919,
+          "rowsReadLowerBound": 782497,
+          "physicalWrite": false,
+          "state": "QUOTA_BUDGET_DEFER"
+        },
+        {
+          "runId": 37918290130,
+          "rowsWrittenLowerBound": 27056,
+          "rowsReadLowerBound": 880643,
+          "physicalWrite": false,
+          "state": "OBSERVED_ACCOUNT_USAGE_ONLY_READ_HEADROOM_NOT_CERTIFIED"
+        }
+      ],
+      "rowsReadSpendableHeadroomCertified": false
+    }
+  ],
+  "inheritedCronObservations": [
+    {
+      "cronRowId": 1893,
+      "utcScheduledAt": "2026-09-21T15:35:35Z",
+      "taipei": "2026-09-21 23:35:35",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    },
+    {
+      "cronRowId": 2173,
+      "utcScheduledAt": "2026-09-22T15:35:31Z",
+      "taipei": "2026-09-22 23:35:31",
+      "cron": "35 15 * * mon-fri",
+      "jobType": "AFTER_MARKET_SCAN",
+      "status": "SUCCESS",
+      "skipped": 0,
+      "fugleCalls": 0,
+      "source": "PVE271+PVE272",
+      "exactBusinessPersistenceReadbackVerified": false
+    }
+  ],
+  "historicalMetricVerificationLevel": "CANONICAL_MAIN_INHERITED_CONTENT_WITH_NATIVE_RUN_JOB_DIGEST_RECHECK; NOT_RAW_ZIP_OR_LOG_REPLAY",
+  "unknown": [
+    "2026-09-21 and 09-22 whole-account all-database totals",
+    "2026-10-08 whole-account and V7_DB daily usage",
+    "23:35 primary per-operation rowsWritten/rowsRead",
+    "23:55 recovery per-operation rowsWritten/rowsRead and actual successful business state",
+    "failed/retry/index/query amplification",
+    "fresh account headroom and reporting lag",
+    "current source/destination account ledger and competing writers",
+    "same-generation KV config/plan/report + D1 cron/lease + original Formal C1",
+    "later healthy natural business persistence and deduplication"
+  ],
+  "limits": [
+    "Unauthenticated artifact ZIP GET returned HTTP 401",
+    "Browser artifact download timed out; no bytes/hash acceptance",
+    "PVE271 original job UI expanded but rendered Error; no raw output acceptance",
+    "Unauthenticated GitHub API reached HTTP 403 rate limit during supplemental source retrieval; PVE262 artifact and subsequent individual supplemental endpoints not independently retrieved"
+  ],
+  "reserve": {
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "conservativeWriteCandidate": null,
+    "conservativeReadCandidate": null
+  },
+  "progress": {
+    "P01Support": 3,
+    "P01Total": 7,
+    "P02Support": 3,
+    "P02Total": 7,
+    "P04Support": 2,
+    "P04Total": 7,
+    "support": 8,
+    "supportTotal": 21,
+    "physicalAccepted": 0,
+    "physicalTotal": 3,
+    "corr003PhysicalAccepted": 0,
+    "corr003PhysicalTotal": 5,
+    "status": "HIGH/VERIFYING",
+    "acceptanceOwner": "AUDIT_LANE"
+  },
+  "safety": {
+    "cloudflareApiCalls": 0,
+    "D1SqlReads": 0,
+    "D1SqlWrites": 0,
+    "R2Reads": 0,
+    "workflowDispatches": 0,
+    "productionScans": 0,
+    "deployments": 0,
+    "runtimeChanges": 0,
+    "billingChanges": 0,
+    "credentialsExtracted": 0
+  },
+  "next": "After actual natural 2026-10-12 23:35 Taipei and only-if-invoked 23:55, collect original authenticated operation costs and same-generation six-role readback under independently qualified headroom; prove full same-UTC-day account no-collision; REMEDIATION integrates and AUDIT alone accepts. No dispatch authorized."
+}
