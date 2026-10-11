@@ -36,15 +36,22 @@ function quotaOk(q, evaluatedAtUtc, stage) {
       q.quotaDayUtc !== isoDay(evaluatedAtUtc)) return false;
   if (q?.providerAccountWideUsageVerified !== true || q?.analyticsLagBounded !== true ||
       q?.noCompetingWriterVerified !== true || q?.quotaLedgerIntact !== true ||
-      q?.system1ReadReserveAuthorized !== true || q?.system1WriteReserveAuthorized !== true ||
-      !pos(q.system1ReadReserveRows) || !pos(q.system1WriteReserveRows) ||
       !nni(q.accountRowsRead) || !nni(q.accountRowsWritten) ||
       !nni(q.operationMaxRowsRead) || !nni(q.operationMaxRowsWritten) ||
       !pos(q.accountReadLimit) || !pos(q.accountWriteLimit) ||
       q.reservationVerdict !== 'QUOTA_RESERVATION_GRANTED') return false;
+  // Independent accounts MUST NOT share reserve scope: SOURCE protects System1;
+  // DESTINATION protects its own P0 System2 operations (no System1 reserve there).
+  const source = stage === 'PRE_EXPORT';
+  if (source ? !(q.system1ReadReserveAuthorized === true && q.system1WriteReserveAuthorized === true &&
+      pos(q.system1ReadReserveRows) && pos(q.system1WriteReserveRows)) :
+      !(q.destinationAccountIsolated === true && q.system2P0ReserveVerified === true &&
+      pos(q.system2P0ReadReserveRows) && pos(q.system2P0WriteReserveRows))) return false;
+  const readReserve = source ? q.system1ReadReserveRows : q.system2P0ReadReserveRows;
+  const writeReserve = source ? q.system1WriteReserveRows : q.system2P0WriteReserveRows;
   // BigInt avoids rounding when quotas/usage are near JS safe-int limit.
-  const readNeeded = BigInt(q.accountRowsRead) + BigInt(q.system1ReadReserveRows) + BigInt(q.operationMaxRowsRead);
-  const writeNeeded = BigInt(q.accountRowsWritten) + BigInt(q.system1WriteReserveRows) + BigInt(q.operationMaxRowsWritten);
+  const readNeeded = BigInt(q.accountRowsRead) + BigInt(readReserve) + BigInt(q.operationMaxRowsRead);
+  const writeNeeded = BigInt(q.accountRowsWritten) + BigInt(writeReserve) + BigInt(q.operationMaxRowsWritten);
   if (readNeeded > BigInt(q.accountReadLimit) || writeNeeded > BigInt(q.accountWriteLimit)) return false;
   if (stage === 'PRE_EXPORT' && q.operationMaxRowsWritten !== 0) return false;
   if (stage === 'PRE_IMPORT' && q.operationMaxRowsWritten === 0) return false;
