@@ -1,6 +1,8 @@
 name: SOURCE System2 Cron-only owner-authorized PHYSICAL one-time operation 20261011
 # TRANSIENT BRANCH-ONLY operator; user explicitly authorized physical pause.
 # Never merge this push-triggered operator into main. Only named commits invoke.
+# Existing old-source CLOUDFLARE_API_TOKEN is used for Worker script GET/PUT;
+# old-source SYSTEM2_CLOUDFLARE_API_TOKEN is used for D1 metadata GET.
 on:
   push:
     branches:
