@@ -1,0 +1,53 @@
+name: S1 G5 SOURCE Cloudflare D1 quota GET GraphQL ONCE 20261011
+on:
+  push:
+    branches:
+      - audit/system1-g5-source-quota-20261011
+    paths:
+      - .github/workflows/system1-g5-source-cloudflare-quota-once-20261011.yml
+permissions:
+  contents: read
+concurrency:
+  group: source-s1-g5-quota-real-readonly-once-20261011
+  cancel-in-progress: false
+jobs:
+  source_read_only:
+    if: github.ref == 'refs/heads/audit/system1-g5-source-quota-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate no Cloudflare write path and System1 runtime isolation
+        run: |
+          set -euo pipefail
+          node --check research/system1_g5_source_quota_cloudflare_readonly_20261011.mjs
+          node system2/tests/system1_g5_source_quota_cloudflare_readonly_20261011.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real ORIGINAL source account Cloudflare metadata GET and daily quota GraphQL QUERY only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          G5_OUTPUT_PATH: /tmp/s1-g5-source-quota/receipt.json
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node research/system1_g5_source_quota_cloudflare_readonly_20261011.mjs
+      - name: Preserve sanitized ORIGINAL Cloudflare source quota receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s1-g5-source-quota-20261011-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s1-g5-source-quota/receipt.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: State G5 non-authorization boundary
+        if: always()
+        run: |
+          echo "Only source Cloudflare metadata GET and account-day GraphQL QUERY. No D1 SQL, no Worker/Cron mutation." >> "$GITHUB_STEP_SUMMARY"
+          echo "GraphQL may be delayed. Read/write reserve false/null. Never issue physical D1 backup, SQL export, source cutover or formal V8 scan based on this Run alone." >> "$GITHUB_STEP_SUMMARY"
