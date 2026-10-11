@@ -97,6 +97,10 @@ export function assessSystem2D1CopyPreImportV0_1(args={}) {
   if (!(b?.physicalExportReadback===true && b?.exportJobCompleted===true &&
         b?.immutableOriginalBytesPreserved===true && b?.offlineRestoreVerified===true &&
         b?.sourcePITVerified===true && b?.sourceFrozenChainVerified===true &&
+        b?.cloudflareFullExportReceiptReviewed===true &&
+        b?.signedUrlPrivateDownloadedWithinOneHour===true &&
+        b?.sourceVirtualTableExportCompatibilityVerified===true &&
+        b?.exactInt64ValuePreservationVerified===true &&
         b?.independentSourceAuditAccepted===true &&
         pos(b.runId) && pos(b.jobId) && pos(b.artifactId) &&
         SHA.test(b.artifactSha256||'') && SHA.test(b.originalExportSha256||'') &&
