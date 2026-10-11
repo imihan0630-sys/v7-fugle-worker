@@ -15,6 +15,10 @@ export async function buildSourceFirstProspectiveLedgerV0_1({marketDate,source,f
     batch?.decisionTimestamp===source?.decisionTimestamp;
   const blockers=[];
   if(!ready)blockers.push('TWSE_TPEX_A1_SOURCE_OR_DECISION_CLOCK_NOT_READY');
+  if(ready&&(!/^[0-9a-f]{64}$/i.test(batch.batchHash||'')||
+     !['TWSE','TPEX'].every(m=>source.transports?.[m]?.ok===true &&
+       /^[0-9a-f]{64}$/i.test(source.transports[m].payloadHash||''))))
+    blockers.push('BOTH_OFFICIAL_MARKET_SOURCE_HASHES_MISSING');
   const symbols=ready&&Array.isArray(batch?.symbols)?[...batch.symbols]:[];
   const rows=[];
   const seen=new Set();
@@ -29,6 +33,12 @@ export async function buildSourceFirstProspectiveLedgerV0_1({marketDate,source,f
          !Number.isFinite(row?.close)||row.close<=0 ||
          !Number.isFinite(row?.volumeShares)||row.volumeShares<0){
         blockers.push('SOURCE_SYMBOL_ROW_INTEGRITY_INCOMPLETE');continue;
+      }
+      if(!utc(row?.provenance?.observedAt)||
+         Date.parse(row.provenance.observedAt)>Date.parse(freezeAtUtc)||
+         !utc(row?.provenance?.availableAt)||
+         Date.parse(row.provenance.availableAt)>Date.parse(row.provenance.observedAt)){
+        blockers.push('PER_SYMBOL_SOURCE_PIT_CLOCK_UNVERIFIED');continue;
       }
       seen.add(symbol);
       rows.push({
