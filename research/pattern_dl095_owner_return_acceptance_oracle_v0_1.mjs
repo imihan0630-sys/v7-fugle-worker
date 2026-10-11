@@ -1,3 +1,4 @@
+import {comparePITInstants} from "./d01_pit_instant_clock_v0_1.mjs";
 // D01 DL-095 exact-witness owner-return acceptance oracle v0.1
 const HEX64=/^[a-f0-9]{64}$/;
 
@@ -9,8 +10,9 @@ export function validateOwnerIdentity(r={}){
 }
 
 export function validateEvidenceClock({firstObservableAt,interfaceCutoffAt}={}){
-  if(!firstObservableAt||!interfaceCutoffAt)return {status:"EVIDENCE_CLOCK_UNKNOWN"};
-  return {status:firstObservableAt<=interfaceCutoffAt?"EVIDENCE_CLOCK_VALID":"LATE_EVIDENCE_NOT_PIT_ELIGIBLE"};
+  const cmp=comparePITInstants(firstObservableAt,interfaceCutoffAt);
+  if(cmp.state==="CLOCK_UNKNOWN")return {status:"EVIDENCE_CLOCK_UNKNOWN"};
+  return {status:cmp.state==="KNOWN_BY_CUTOFF"?"EVIDENCE_CLOCK_VALID":"LATE_EVIDENCE_NOT_PIT_ELIGIBLE"};
 }
 
 export function validateExactWindow(r={}){
