@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "S2_SOURCE_D1_REAL_FULL_ENCRYPTED_BACKUP_AND_OFFLINE_RESTORE_20261011_V0_1",
+  "evidenceMaturity": "REAL_PROVIDER_ORIGINAL_FULL_DATA_BACKUP__OFFLINE_LOCAL_RESTORE_VERIFIED__AUDIT_PENDING",
+  "direction": "USER_CANCELED_EXTRA_V8_D1_RESERVE_MIGRATE_SYSTEM2_ASAP",
+  "baselineSourceSchemaParityPR": 1145,
+  "realCloudflareRun": {
+    "runId": 38150147134,
+    "jobId": 114501726086,
+    "artifactId": 11706652537,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38150147134",
+    "sourceHeadSha": "7630773adcef2617b424fd81321eb7675fe7c61b",
+    "startedUtc": "2026-10-11T15:10:15.071Z",
+    "completedUtc": "2026-10-11T15:10:42.508Z",
+    "startedTaipei": "2026-10-11 23:10:15",
+    "completedTaipei": "2026-10-11 23:10:42",
+    "zipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+    "zippedBytes": 23420920,
+    "manifestSHA256": "c203f89614f3a783785b58e5becebaa15ad8014f98ad4ced4acaa50ee2f5a4f3"
+  },
+  "sourceIdentity": {
+    "accountFingerprint": "3a6732b4f599575098949e818ef9266c324929cf38644387bddc09e05497243b",
+    "d1Fingerprint": "9768891c958358067329099ab5cc10560633c47437713966ef02024c14c9fb80",
+    "logicalDatabaseName": "system2-research",
+    "originalD1FileSizeBytes": 316968960,
+    "sourceCronCountAtExport": 0,
+    "system1V8CronCountAtExport": 4,
+    "sourceOriginalDataUnmodified": true
+  },
+  "nativeExport": {
+    "exportPollCount": 4,
+    "cloudflareNativeFullDataExport": true,
+    "originalPlainSqlBytes": 316938975,
+    "originalPlainSqlSha256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "actualCloudflareTableWrites": 0,
+    "confidentialSignedDownloadUrlInLogsOrArtifacts": false
+  },
+  "encryptedArchive": {
+    "filename": "source-system2-private.sql.gz.aes256gcm",
+    "cipher": "AES-256-GCM",
+    "kdf": "HKDF-SHA256_FROM_EXISTING_SOURCE_D1_API_TOKEN_WITH_ARCHIVE_SALT",
+    "ciphertextBytes": 23411800,
+    "retentionDays": 14,
+    "publicRepositoryPlaintextSqlUploaded": false,
+    "cryptographicArchiveConfidential": true,
+    "decryptionDependsOnExistingSourceD1Token": true,
+    "limitation": "NOT_A_PERMANENT_INDEPENDENT_KEY_ESCROW_OR_LONG_TERM_IMMUTABLE_BACKUP",
+    "keyMaterialNeverPrinted": true
+  },
+  "offlineRestoration": {
+    "actualPlaintextDecryptedInEphemeralRunner": true,
+    "originalPlaintextSHAAfterDecryptionMatches": true,
+    "isolatedSqliteQuickCheck": "ok",
+    "restoredTableCount": 55,
+    "restoredIndexCount": 63,
+    "restoredTotalRows": 113222,
+    "restoredFrozenDecisions": 0,
+    "nonEmptyTableCount": 14,
+    "perTableCountVerifiedFromOfflineRestoredOriginal": true,
+    "onlyIsolatedSqliteRestoredNotDestinationCloudflare": true,
+    "immutablePriorDecisionAnchorIndependent": false,
+    "pitAvailableAtIndependentlyVerified": false,
+    "frozenHistoricalDecisionsExistInSource": false
+  },
+  "physicalMaterialConcentration": [
+    {
+      "table": "s2_historical_a1_bars",
+      "rows": 84688
+    },
+    {
+      "table": "s2_historical_a1_pack_manifests",
+      "rows": 16100
+    },
+    {
+      "table": "s2_historical_a1_segment_manifests",
+      "rows": 9723
+    },
+    {
+      "table": "s2_infrastructure_checks",
+      "rows": 2505
+    }
+  ],
+  "destinationImportPlan": {
+    "remainingRows": 113222,
+    "minimumUnindexedDestinationFreeQuotaDays": 2,
+    "actualIndexedWriteMultiplier": "UNKNOWN",
+    "realFreeLimitRowsWrittenPerUtcDay": 100000,
+    "safeBatchAndCurrentDayRemainingHeadroom": "NOT_YET_ESTABLISHED",
+    "destinationCurrentHistoricalRowsImported": 0,
+    "sourceDataCopyToDestinationPerformed": false,
+    "destD1SchemaObjectsAlreadyMatched118Of118": true,
+    "destinationR2EntitlementStatus": "NOT_ENTITLED_CURRENT_LAST_AUTHENTICATED",
+    "fullMigrationAccepted": false
+  },
+  "hardBounds": {
+    "noSecretPermissionChange": true,
+    "noPaidPlan": true,
+    "noSystem1FormalOrWorkerChanges": true,
+    "sourceS2CronNotRestored": true,
+    "noSourceD1DataMutation": true,
+    "doNotDeleteOldSource": true,
+    "mustReconcileFinalAppendOnlyRowsAndActualHistoricalPIT": true
+  },
+  "acceptance": {
+    "sourceFullD1ExportPhysical": "PASS_ENGINEER_PROOF",
+    "encryptedTemporaryBackup": "PASS_ENGINEER_PROOF",
+    "offlineRestoreSchemaAndCount": "PASS_ENGINEER_PROOF",
+    "G3IndependentAuditor": "PENDING",
+    "frozenAndPITIndependentLineage": "PENDING",
+    "durableIndependentLongTermBackup": "PENDING",
+    "destinationDataRowImport": "BLOCKED_NOT_DONE",
+    "destinationR2Archive": "BLOCKED_NOT_ENTITLED",
+    "destinationWorkerCron": "BLOCKED_NOT_ACTIVATED",
+    "completeSystem2Migration": "BLOCKED"
+  },
+  "next": "Independently audit 23.4MB encrypted GitHub Artifact, preserve its key dependency and retention date; establish secure cross-environment decrypt/import route using existing approved scopes, chunk by actual destination daily row+index costs, verify every table and immutable PIT/frozen. No synthetic PASS."
+}
