@@ -29,3 +29,6 @@ test('destination independent audit absent => blocked import',()=>blocked(preImp
 test('destination quota does NOT borrow System1 reserve from the old account',()=>{const x=make();x.destinationQuota.system1ReadReserveAuthorized=false;x.destinationQuota.system1WriteReserveAuthorized=false;x.destinationQuota.system1ReadReserveRows=null;x.destinationQuota.system1WriteReserveRows=null;const r=preImport(x);assert.equal(r.state,'OFFLINE_REVIEW_ONLY',JSON.stringify(r));});
 test('destination account P0 reserve is mandatory',()=>blocked(preImport,x=>x.destinationQuota.system2P0ReserveVerified=false,'DESTINATION_ACCOUNT_WRITE_READ_BUDGET_UNVERIFIED'));
 test('destination account isolation is mandatory',()=>blocked(preImport,x=>x.destinationQuota.destinationAccountIsolated=false,'DESTINATION_ACCOUNT_WRITE_READ_BUDGET_UNVERIFIED'));
+
+test('destination-only import may run after accepted backup without SOURCE live-day budget',()=>{const x=make();x.sourceQuota=null;const r=preImport(x);assert.equal(r.state,'OFFLINE_REVIEW_ONLY',JSON.stringify(r));assert.equal(preExport(x).state,'BLOCKED');});
+test('post-export destination copy does not require old SOURCE writer to remain quiesced',()=>{const x=make();x.sourceOperations=null;const r=preImport(x);assert.equal(r.state,'OFFLINE_REVIEW_ONLY',JSON.stringify(r));assert.equal(preExport(x).state,'BLOCKED');});
