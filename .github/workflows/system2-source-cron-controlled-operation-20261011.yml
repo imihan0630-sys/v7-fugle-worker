@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           node --test system2/tests/source_system2_cron_pause_owner_approved_v0_1.test.mjs
-          grep -F 'if: ${{ false }}' .github/workflows/system2-resonance-deploy.yml
+          node -e "const fs=require('node:fs'); const s=fs.readFileSync('.github/workflows/system2-resonance-deploy.yml','utf8'); if(!s.includes('if: '+String.fromCharCode(36)+'{{ false }}')) process.exit(4)"
           node -e "const q=require('./system2/config/source_account_d1_writer_quarantine_v0_1.json');if(!q.active||q.automaticRelease!==false)process.exit(3)"
           git diff --exit-code -- Worker.js wrangler.toml
       - name: Fresh source identity and bounded owner-approved Cron-only action
