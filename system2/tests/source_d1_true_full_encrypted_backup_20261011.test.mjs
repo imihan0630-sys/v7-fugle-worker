@@ -1,0 +1,28 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const e=JSON.parse(readFileSync(new URL("../migration/evidence/S2_SOURCE_D1_REAL_FULL_ENCRYPTED_BACKUP_AND_RESTORE_20261011_V0_1.json",import.meta.url),"utf8"));
+const code=readFileSync(new URL("../migration/source_native_d1_temporary_encrypted_export_20261011.mjs",import.meta.url),"utf8");
+test("physical source export cryptographic original + offline restore do not promote migration",()=>{
+ assert.equal(e.realCloudflareRun.runId,38150147134);
+ assert.equal(e.realCloudflareRun.artifactId,11706652537);
+ assert.equal(e.realCloudflareRun.zipSha256,"6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e");
+ assert.equal(e.nativeExport.originalPlainSqlBytes,316938975);
+ assert.match(e.nativeExport.originalPlainSqlSha256,/^[0-9a-f]{64}$/);
+ assert.equal(e.offlineRestoration.isolatedSqliteQuickCheck,"ok");
+ assert.equal(e.offlineRestoration.restoredTableCount,55);
+ assert.equal(e.offlineRestoration.restoredIndexCount,63);
+ assert.equal(e.offlineRestoration.restoredTotalRows,113222);
+ assert.equal(e.offlineRestoration.restoredFrozenDecisions,0);
+ assert.equal(e.acceptance.completeSystem2Migration,"BLOCKED");
+ assert.equal(e.acceptance.G3IndependentAuditor,"PENDING");
+ assert.equal(e.destinationImportPlan.destinationCurrentHistoricalRowsImported,0);
+ assert.equal(e.encryptedArchive.publicRepositoryPlaintextSqlUploaded,false);
+ assert.equal(e.hardBounds.sourceS2CronNotRestored,true);
+ assert.ok(code.includes("createCipheriv"));
+ assert.ok(code.includes("AES-256-GCM_GZIP_HKDF_EXISTING_SOURCE_D1_TOKEN"));
+ assert.ok(code.includes("maxCompressed=65000000"));
+ assert.ok(code.includes("createDecipheriv"));
+ assert.ok(code.includes("runPythonRestore"));
+ assert.ok(code.includes("sourceSQLLoggedOrUploadedPlaintext:false"));
+});
