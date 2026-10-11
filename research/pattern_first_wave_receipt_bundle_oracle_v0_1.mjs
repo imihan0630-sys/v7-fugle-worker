@@ -1,8 +1,11 @@
+import {comparePITInstants} from "./d01_pit_instant_clock_v0_1.mjs";
 // D01 DL-091 source/context receipt bundle oracle v0.1
 const PREDICTOR_FAMILIES=["R1","R2","R3","R4","R5","R6","R7"];
 export function validateTemporalReceipt({firstObservableAt,predictorFreezeAt,replaySafe}={}){
-  if(replaySafe!==true||!firstObservableAt||!predictorFreezeAt)return {status:"RECEIPT_CLOCK_UNKNOWN"};
-  return {status:firstObservableAt<=predictorFreezeAt?"RECEIPT_PIT_VALID":"RECEIPT_LOOKAHEAD"};
+  if(replaySafe!==true)return {status:"RECEIPT_CLOCK_UNKNOWN"};
+  const cmp=comparePITInstants(firstObservableAt,predictorFreezeAt);
+  if(cmp.state==="CLOCK_UNKNOWN")return {status:"RECEIPT_CLOCK_UNKNOWN"};
+  return {status:cmp.state==="KNOWN_BY_CUTOFF"?"RECEIPT_PIT_VALID":"RECEIPT_LOOKAHEAD"};
 }
 export function validateMembership(r={}){
   if(r.replayEligible!==true||r.futureDelistingHidden!==true)return {status:"MEMBERSHIP_BLOCKED"};

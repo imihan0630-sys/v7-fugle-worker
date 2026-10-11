@@ -7124,3 +7124,19 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 3. Secure genuine native Node/CI run results for 40-fixture acceleration oracle and exact source hash, distinguishing isolated V8 from physical execution.
 4. D16+D10 undertake actual economic/robustness multi-regime assessment, and 00 performs independent review before any particular module becomes L4/L5.
 5. Parallel science mainline remains DL-148, Sara 金包銀 source/PIT track remains separately data-blocked; neither overwritten by this acceleration request.
+
+
+## L3→L5 continuation — real PIT timezone string-comparison lookahead repaired (2026-10-11)
+
+- User's all-eleven-module L3-to-L5 acceleration remains active under Issue #1114. This tranche repaired a **reproduced causal defect** in the EXISTING DL-091/DL-095 research-only R1–R7 owner-source evidence gates, not merely a new speculative design.
+- Original validateEvidenceClock and validateTemporalReceipt used lexicographic timestamp ordering. Example firstObservableAt 2021-06-15T16:00:00Z was incorrectly ACCEPTED against predictor cutoff 2021-06-15T23:59:59+08:00, even though physically **one second too late**. Reverse direction with next local date and offset could incorrectly reject valid evidence.
+- New shared Class A UTC-instant helper (research/d01_pit_instant_clock_v0_1.mjs) and patched two old research-only oracles require explicit timezone, valid calendar/time/offset, reject lost sub-millisecond precision and compare actual UTC time, not string order.
+- Durable evidence: research/D01_L3_L5_PIT_TIMEZONE_OFFSET_LOOKAHEAD_REMEDIATION_20261011_V0_1.md. Newly written 25-clock adversarial fixtures PASS 25/25; the original DL-095 18/18 and DL-091 15/15 regression suites also PASS after patch, all using exact branch sources in isolated V8 (**58/58**). Native Node/CI is NOT claimed.
+- **No real R1–R6 exact physical owner receipt was admitted**, no R7, true OOS, net-cost, prospective Shadow, or alpha evidence. D01 11/11 L3 60.0%, L4 0, L5 0; SDA-001/002 remain open. Formal Core, Worker, production D1, actual scans, notifications and ranking untouched.
+- Source availability still: 2021 annual R1/R2 owner infrastructure exists, but 1101/2021-06-15 exact 61 eligible sessions not bound; R3 lifecycle, R4 corporate-action completeness, R5 provenance clock and R6 source-complete disposition interval remain incomplete.
+
+### Exact next L3→L5 evidence action
+1. DATA_LANE/universe and respective owners deliver physically SHA-bound R1–R6 for frozen 1101 2021-06-15 (60 previous eligible + target) with UTC-safe first-observable clocks, and cross-receipt identity. D01 uses these corrected validators and then computes R7; no future price outcome peeking.
+2. Room11/D16 certifies first four modules D01-02/03/07/09 true chronological OOS, common parent and all failed/blocked denominator under frozen TWSE 2018-2024 manifest. Until physical source chain pass, no L4.
+3. Capture native Node or GitHub CI execution receipt for 58 now-passing isolated cases; don't equate V8 evidence with runtime parity.
+4. Continue separate mainline DL-148 and dedicated Sara 60-minute data/source lane without overriding this physical evidence priority.
