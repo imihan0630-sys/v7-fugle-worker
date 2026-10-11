@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "SYSTEM1_G5_20261011_SOURCE_ACCOUNT_POST_PAUSE_QUOTA_EVIDENCE_V0_1",
+  "canonicalRepository": "imihan0630-sys/v7-fugle-worker",
+  "producerLane": "SYSTEM1_LANE",
+  "correction": "S2-CORR-20261007-003",
+  "linkedIssues": [
+    1024,
+    1128,
+    1068,
+    1026
+  ],
+  "type": "REAL_CLOUDFLARE_ORIGINAL_PROVIDER_GET_GRAPHQL_PLUS_NATIVE_GITHUB_RUN_ARTIFACT",
+  "recordedAtTaipei": "2026-10-11T22:08:00+08:00",
+  "rawSource": {
+    "oldS2CronPause": {
+      "runId": 38142241250,
+      "jobId": 114478304703,
+      "artifactId": 11703532490,
+      "headSha": "7cba2995df99fb1d51c3370823814362b4ce8d85",
+      "zipSha256": "6ccb78e7403393f1596d45e3adccdd4f0c7fce3dd3e6be093c31c5bd315766c5",
+      "originalReceiptSha256": "fc35eca32cd4b7396071a43d75d1c14ea4c9a0fe78513d5c0292ecf1229430a2",
+      "observedAtUtc": "2026-10-11T13:12:27.548Z",
+      "completedAtUtc": "2026-10-11T13:12:27.999Z",
+      "completedTaipei": "2026-10-11T21:12:27.999+08:00",
+      "s2CronBefore": [
+        "*/5 0-5,11 * * MON-FRI"
+      ],
+      "s2CronAfter": [],
+      "v8CronUnchanged": true,
+      "originalUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38142241250"
+    },
+    "postPropagation": {
+      "runId": 38143548779,
+      "jobId": 114482118128,
+      "artifactId": 11702974419,
+      "headSha": "13a707744821d2192f306ed5559b409aac3598db",
+      "zipSha256": "b3783b5966657fcb98d04fd357b48ab38991289d1d90e1e15a7e341ef4ee85cc",
+      "originalReceiptSha256": "51c5648e7ed6b5c433a1f524726a7c6fbd26c199fe4595287c777bfc3bc40f6f",
+      "observedAtUtc": "2026-10-11T13:32:04.965Z",
+      "observedTaipei": "2026-10-11T21:32:04.965+08:00",
+      "elapsedMinutesAfterPause": 19.62,
+      "sourceCron": [],
+      "v8CronCount": 4,
+      "sourceS2AggregatedInvocationRequests": 0,
+      "sourceS2InvocationLagBoundSeconds": null,
+      "sourceS2InvocationEventType": "NOT_DISTINGUISHABLE",
+      "inFlightPerIdVerified": false,
+      "independentAuditScopedCronPass": true,
+      "originalUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38143548779"
+    },
+    "freshQuotaProbe": {
+      "runId": 38145862796,
+      "jobId": 114488945075,
+      "artifactId": 11704911236,
+      "headSha": "09651e7aaf8f0e6c6c316667565f53e2449b1503",
+      "zipSha256": "8ed0fa6cc9a119803538753d477dad5e29c92b5ce8fd8a1139ef2f428c77a883",
+      "originalReceiptSha256": "7e072fb17760f909bbaa94693cd66f66a217e1af445af9e60db4a30fd4bfe2e0",
+      "origin": "SOURCE_ACCOUNT_EXISTING_SYSTEM2_RESEARCH_GITHUB_ENVIRONMENT",
+      "event": "push",
+      "jobConclusion": "SUCCESS",
+      "observedAtUtc": "2026-10-11T14:06:58.202Z",
+      "observedTaipei": "2026-10-11T22:06:58.202+08:00",
+      "quotaDayUtc": "2026-10-11",
+      "methodScope": {
+        "CloudflareMetadataGET": 4,
+        "CloudflareAccountGraphQLQueryPOST": 2,
+        "d1Sql": 0,
+        "cloudflareResourceMutation": 0,
+        "formalScanDispatch": 0
+      },
+      "sourceSystem2CronCount": 0,
+      "v8CronCount": 4,
+      "sourceD1DatabaseGroups": 2,
+      "originalUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38145862796",
+      "originalArtifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38145862796/artifacts/11704911236",
+      "samples": [
+        {
+          "startedUtc": "2026-10-11T14:06:57.421Z",
+          "observedUtc": "2026-10-11T14:06:57.942Z",
+          "perDatabase": {
+            "v7-live": {
+              "rowsRead": 206521,
+              "rowsWritten": 0,
+              "readQueries": 16416,
+              "writeQueries": 0
+            },
+            "system2-research": {
+              "rowsRead": 1,
+              "rowsWritten": 0,
+              "readQueries": 1,
+              "writeQueries": 0
+            }
+          },
+          "account": {
+            "rowsRead": 206522,
+            "rowsWritten": 0,
+            "readQueries": 16417,
+            "writeQueries": 0
+          }
+        },
+        {
+          "startedUtc": "2026-10-11T14:06:57.942Z",
+          "observedUtc": "2026-10-11T14:06:58.202Z",
+          "perDatabase": {
+            "v7-live": {
+              "rowsRead": 206521,
+              "rowsWritten": 0,
+              "readQueries": 16416,
+              "writeQueries": 0
+            },
+            "system2-research": {
+              "rowsRead": 1,
+              "rowsWritten": 0,
+              "readQueries": 1,
+              "writeQueries": 0
+            }
+          },
+          "account": {
+            "rowsRead": 206522,
+            "rowsWritten": 0,
+            "readQueries": 16417,
+            "writeQueries": 0
+          }
+        }
+      ]
+    },
+    "priorQuotaBaseline": {
+      "runId": 38139695092,
+      "jobId": 114470815198,
+      "artifactId": 11702835097,
+      "zipSha256": "1af850950342a94e311464e6a279486e1d83e10fd07c4dbad9fe87707f6f5e90",
+      "observedUtcDay": "2026-10-11",
+      "atTaipeiApprox": "2026-10-11 20:33",
+      "v8RowsReadLowerBound": 180454,
+      "oldS2RowsReadLowerBound": 1,
+      "accountRowsReadLowerBound": 180455,
+      "accountRowsWrittenLowerBound": 0,
+      "unassignedAggregateRiseFromPriorLowerBound": 26067,
+      "notAnAttributedSingleRunCost": true
+    }
+  },
+  "attribution": {
+    "providerQuotaSemantics": "LOWER_BOUND_AS_OF_QUERY_NOT_AUTHORITATIVE_REALTIME_USAGE",
+    "sourceD1Count": 2,
+    "verifiedSourceS2CronConfiguredZero": true,
+    "oldSystem2CronFutureWeekdayTriggerAfterPauseObserved": false,
+    "sourceS2AggregatedWorkersRequestsPostPauseLowerBound": 0,
+    "oldInFlightZeroIndependentlyVerified": false,
+    "oldS2HttpOrManualWritePathsIndependentlyQuiescent": false,
+    "preexistingGithubCommonWriterGateQuarantine": "ACTIVE_SOURCE_GITHUB_RESERVATION_DEFER",
+    "preexistingSystem2ResonanceAutoDeploy": "JOB_IF_FALSE_QUARANTINED",
+    "completeSourceWriterInventoryPhysicallyVerified": false,
+    "providerGraphQLLagBoundSeconds": null,
+    "providerGraphQLFreshness": "NOT_DOCUMENTED_BY_VENDOR",
+    "accountRemainingRowsReadSafelySpendable": null,
+    "accountRemainingRowsWrittenSafelySpendable": null,
+    "system1SinglePrimaryRowsRead": null,
+    "system1SinglePrimaryRowsWritten": null,
+    "system1ConditionalRecoveryRowsRead": null,
+    "system1ConditionalRecoveryRowsWritten": null,
+    "indexedWriteAmplification": "UNKNOWN",
+    "failedRetriesAdditionalCost": "UNKNOWN",
+    "protectedV8WriteReserveAuthorized": false,
+    "protectedV8WriteReserveRows": null,
+    "protectedV8ReadReserveAuthorized": false,
+    "protectedV8ReadReserveRows": null,
+    "quotaResetUtcHour": 0,
+    "quotaResetTaipeiHour": 8,
+    "safeFullSourceExportGrant": false,
+    "budgetGate": "READ_ONLY_D1_BUDGET_EVIDENCE_DEFER",
+    "system1NaturalBusinessPersistenceNextSession": "2026-10-12_23:35_TAIPEI_NOT_YET_OBSERVED",
+    "system1RegressionPassedOnPreviousCIGates": true,
+    "status": "OBSERVED_QUOTA_AND_CRON_PASS_BUT_G5_PHYSICAL_HEADROOM_AND_EXPORT_SAFETY_PENDING_INDEPENDENT_AUDIT",
+    "corr003PhysicalAccepted": 0,
+    "corr003PhysicalTotal": 5
+  },
+  "safetyWindow": {
+    "type": "CONDITIONAL_CANDIDATE_ONLY_NOT_OPERATIONAL_AUTHORIZATION",
+    "candidateStartTaipei": "2026-10-11T22:15:00+08:00",
+    "hardEndTaipei": "2026-10-12T07:00:00+08:00",
+    "afterOldS2CronPausePropagation": true,
+    "beforeMonV8FirstScheduledWorkerCron": true,
+    "beforeNextUtcQuotaResetTaipei": "2026-10-12T08:00:00+08:00",
+    "mustStopBeforeDayRollover": true,
+    "scope": "SOURCE system2-research D1 only, never v7-live",
+    "caveat": "Cloudflare D1 full export makes that database unavailable to serve queries while exporting and requires repeated polling; strict V8 non-impact and source S2 quiescence must be independently proven.",
+    "prerequisites": [
+      "AUDIT_LANE verifies no remaining source S2 HTTP/manual/in-flight physical D1 writer or unaccounted writer path",
+      "Authenticated fresh account-wide D1 quota + reserve ledger and externally validated bounded Analytics delay; lower-bound GraphQL alone not spendable headroom",
+      "P01/P02 exact V8 primary/conditional recovery read/write costs including index/retry plus independently approved V8 reserves",
+      "Source export estimated worst-case rowsRead/rowsWritten/size and bounded polling/upload storage with hard stop, independently approved versus V8 protected quota",
+      "Source V8 unaffected and source S2 D1 idle; assert exact target DB identity before API export; independent audit releases gate"
+    ],
+    "currentlyAllPrerequisitesSatisfied": false,
+    "expectedFullSourcePhysicalExport": "NOT_ATTEMPTED",
+    "allowedPhysicalExportNow": false
+  },
+  "safety": {
+    "workerJsModified": false,
+    "wranglerModified": false,
+    "v8FormalCoreModified": false,
+    "cronSchedulesModifiedByThisEvidence": false,
+    "sourceD1SqlReadsInNewRun": 0,
+    "sourceD1SqlWritesInNewRun": 0,
+    "cloudflareResourceWritesInNewRun": 0,
+    "billingChanged": false,
+    "paidPlanEnabled": false
+  }
+}
