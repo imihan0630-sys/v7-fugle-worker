@@ -25,5 +25,11 @@
   "readEvidenceState": "SYSTEM1_AFTER_MARKET_D1_READ_COST_NOT_EVIDENCE_QUALIFIED",
   "readRule": "Do not assume System1 23:35/23:55 D1 rowsRead cost is zero. Until independent evidence authorizes a conservative read reserve, System2 physical mutation must defer.",
   "analyticsFreshnessState": "GRAPHQL_REALTIME_FRESHNESS_NOT_DOCUMENTED",
-  "analyticsLagMitigation": "Treat GraphQL daily totals as lower-bound observations; keep same-UTC-day reservations non-releasing and preserve max observed ledger usage."
+  "analyticsLagMitigation": "Treat GraphQL daily totals as lower-bound observations; keep same-UTC-day reservations non-releasing and preserve max observed ledger usage.",
+  "ownerV8ExtraQuotaReserveWaived": true,
+  "ownerWaiverEffectiveDateTaipei": "2026-10-11",
+  "ownerWaiverReason": "OWNER_EXPLICITLY_CANCELLED_V8_EXTRA_QUOTA_PROTECTION_TO_PRIORITIZE_REPAIR",
+  "ownerWaiverScope": "EXTRA_CROSS_SYSTEM_V8_HEADROOM_RESERVE_ONLY",
+  "ownerWaiverLimitations": "Does not certify reserves, observed daily quotas, source System2 write quiet, Cloudflare hard limits, S2 migration export, Formal V8 production health, or permission to unpause legacy SOURCE System2 Cron.",
+  "waiverIsNotEvidenceAuthorization": true
 }
