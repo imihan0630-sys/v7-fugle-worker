@@ -43,10 +43,10 @@ def table_fingerprint(conn, name):
     ).fetchall():
         index_cols = conn.execute("PRAGMA index_xinfo(" + quoted(index_name) + ")").fetchall()
         sql = conn.execute("SELECT sql FROM sqlite_master WHERE type='index' AND name=?", (index_name,)).fetchone()
-        indexes.append({
+        # cid=-1 is ordinary rowid tail; only cid=-2 means an expression.\n        indexes.append({
             "unique": bool(unique), "origin": origin, "partial": bool(partial),
             "columns": [(row[1], row[2], row[3], row[4], row[5]) for row in index_cols],
-            "expressionDdl": sql[0] if sql and (partial or any(row[1] < 0 for row in index_cols)) else None,
+            "expressionDdl": sql[0] if sql and (partial or any(row[1] == -2 for row in index_cols)) else None,
         })
     indexes.sort(key=lambda x: json.dumps(x, sort_keys=True))
     fks = conn.execute("PRAGMA foreign_key_list(" + quoted(name) + ")").fetchall()
