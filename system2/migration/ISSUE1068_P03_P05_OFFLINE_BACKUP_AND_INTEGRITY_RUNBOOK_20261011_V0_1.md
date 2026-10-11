@@ -49,6 +49,22 @@ python3 system2/migration/issue1068_sql_export_offline_restore_v0_1.py --sql /se
 - Local fixture tests: `python3 system2/migration/test_issue1068_sql_export_offline_restore_v0_1.py`, wired into `system2/tests/issue1068_sql_export_offline_restore_v0_1.test.mjs`.
 - This is **not** physical source D1 authentication: original Run/Job/Artifact and account identity, quota/availability receipts, PIT/Frozen historical crosswalk, independent restore audit, and R2 object bytes remain separately required. Local successful restore does **not** grant destination data-only import or Shadow.
 
+## G4 offline source / destination D1 schema compatibility matrix
+
+After a secure original SQL backup has been restored into an isolated LOCAL SQLite file and the new-account *approved target schema* has separately been represented as another **isolated LOCAL schema-only** SQLite file:
+
+```bash
+python3 system2/migration/issue1068_offline_schema_parity_v0_1.py \
+  --source-db /secure/local/source-restored.sqlite \
+  --target-db /secure/local/destination-schema-replica.sqlite
+```
+
+- Compares ALL source `s2_` application tables against target by `table_xinfo` (column ordinal, declared type, NOT NULL, default, primary key, hidden/generated status), index uniqueness/columns/expression/partial rules, declared FKs and `WITHOUT ROWID` / `STRICT`; names of simple secondary indexes can differ without changing semantics.
+- Explicitly reports `sourceTablesAbsentInDestination`, `destinationExtraTablesNotInSource`, `incompatibleSourceTableNames` and source non-System2 tables. Source-side application tables outside `s2_` are hard failures; source extra `s2_` tables not present in target block blind import. Target-only extras may exist but no data is fabricated for them.
+- Reports **schema shape only**, never target physical Cloudflare acceptance, data-row equality, actual R2 or historic Frozen immutability, current account quota, migration start/cutover or permission to import. Both local files are read only. Every result has `permissionToImport=false` and `shadowAuthorized=false`.
+- Run `python3 system2/migration/test_issue1068_offline_schema_parity_v0_1.py` for 12 synthetic scenarios. The CI adapter is `system2/tests/issue1068_offline_schema_parity_v0_1.test.mjs`.
+- A local destination schema replica is a **research fixture**; target's real already-accepted 55/63 schema is evidenced by its separate authenticated audited Cloudflare receipt. Never re-run the target `APPLY_ONCE`.
+
 ## After separate real read-budget acceptance (NOT authorized by this document)
 
 1. **Freeze source evidence identity**: record exact original account/database fingerprint, run/job/attempt/commit UTC clocks, reservation and read-only grant IDs, budget max, other writers and Analytics lag. An independent gate must explicitly allow only a bounded physical source read.
