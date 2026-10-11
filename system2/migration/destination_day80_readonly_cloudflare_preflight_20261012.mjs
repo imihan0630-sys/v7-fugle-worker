@@ -53,15 +53,23 @@ export async function destinationDay80ReadOnly({accountId,token,request=globalTh
  const g=groups[0];if(g.dimensions?.date!==quotaDay||h(g.dimensions?.databaseId)!==dbSha||
   ![g.sum?.rowsRead,g.sum?.rowsWritten,g.sum?.readQueries,g.sum?.writeQueries].every(x=>Number.isSafeInteger(x)&&x>=0))stop("GRAPHQL_COVERAGE_OR_VALUE_INVALID");
  return {observedAtUtc:now(),rowsReadLowerBound:g.sum.rowsRead,rowsWrittenLowerBound:g.sum.rowsWritten,readQueriesLowerBound:g.sum.readQueries,writeQueriesLowerBound:g.sum.writeQueries}}
- const first=await sample(),last=await sample();
- if(first.rowsWrittenLowerBound>last.rowsWrittenLowerBound||first.rowsReadLowerBound>last.rowsReadLowerBound)stop("GRAPHQL_NONMONOTONE");
+ let first=null,last=null,graphqlBlocker=null;
+ try {
+   first=await sample();last=await sample();
+   if(first.rowsWrittenLowerBound>last.rowsWrittenLowerBound||first.rowsReadLowerBound>last.rowsReadLowerBound)stop("GRAPHQL_NONMONOTONE");
+ } catch (err) {
+   const code=String(err?.message||"UNKNOWN");
+   graphqlBlocker=/^DAY80_DEST_READONLY_[A-Z0-9_]+$/.test(code)?code:"DAY80_DEST_READONLY_GRAPHQL_UNQUALIFIED";
+   // Authenticated D1 table readback remains valuable independently even when the
+   // existing target token cannot read organization-level analytics.
+ }
  return Object.freeze({schemaVersion:"S2_DESTINATION_DAY80_REAL_CLOUDFLARE_READONLY_PREFLIGHT_20261012_V0_1",
   originalSourceRows:113222,requestedLogicalRows80Pct:90578,targetBilledRowsWrittenCap:80000,
   originalFullBackupRun:38150147134,transferVerifiedRun:38151167952,
   quotaUtcDay:quotaDay,observedAtUtc:now(),destinationDatabaseName:"system2-research",
   databaseBytes:size,freeSingleDatabaseBytes:500000000,physicalObjectCounts:objects,original14TablesDestinationCounts:rowCounts,
-  destinationAlreadyImportedRowsIn14OriginalTables:existingDataRows,usageObservations:[first,last],
-  accountRowsWrittenLowerBound:last.rowsWrittenLowerBound,accountRowsWrittenSpendableHeadroom:null,
+  destinationAlreadyImportedRowsIn14OriginalTables:existingDataRows,usageObservations:last?[first,last]:[],graphqlBlocker,
+  accountRowsWrittenLowerBound:last?.rowsWrittenLowerBound??null,accountRowsWrittenSpendableHeadroom:null,
   providerAnalyticsLagUpperBoundSeconds:null,providerGuaranteedFreshUsage:false,
   quotaReleaseState:"BLOCKED_UNBOUNDED_GRAPHQL_LAG_AND_INDEPENDENT_AUDIT",
   callsCompleted:calls,...noMutate});
