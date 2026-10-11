@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "D22_05_ANCHOR_CLOCK_CONCENTRATION_AUDIT_20261012_V0_1",
+  "evidenceDateTaipei": "2026-10-12",
+  "status": "RESEARCH_ONLY / OUTCOME_BLIND / TIMESTAMP_NOT_ATTESTED / COMMON_SUPPORT_BLOCKED / FORMAL_CORE_LOCKED",
+  "baseMainHeadReadBeforeWrite": "a33887f44b037f3620cf5954b668d8eebcf1b2d7",
+  "canonicalSource": {
+    "path": "research/d22_05_stage_a_pairing_manifest_v0_1.json",
+    "blobSha": "5873ba376562e6d4d98422d83a1aa09aae9ce6d6"
+  },
+  "frozenRulesUnchanged": true,
+  "computedInventory": {
+    "independentDirectionalEpisodes": 22,
+    "distinctIssuers": 10,
+    "distinctAnchorCalendarDates": 22,
+    "directionCounts": {
+      "NEGATIVE": 11,
+      "POSITIVE": 11
+    },
+    "yearCounts": {
+      "2020": 3,
+      "2021": 5,
+      "2022": 2,
+      "2023": 6,
+      "2024": 4,
+      "2026": 2
+    },
+    "issuerEpisodeCounts": {
+      "Formosa Chemicals & Fibre": 1,
+      "Wan Hai Lines": 2,
+      "TCC Group Holdings": 2,
+      "Walsin Lihwa": 2,
+      "Sinyi Realty": 3,
+      "TECO Electric & Machinery": 2,
+      "China Steel": 3,
+      "Asia Cement": 3,
+      "Pegatron": 2,
+      "Wiwynn": 2
+    },
+    "distinctIssuersWithMultipleEpisodes": 9,
+    "withinSevenCalendarDayCrossIssuerPairs": [
+      {
+        "anchorIds": [
+          "D22-05-A02",
+          "D22-05-A13"
+        ],
+        "dates": [
+          "2020-04-14",
+          "2020-04-16"
+        ],
+        "calendarDaysApart": 2
+      },
+      {
+        "anchorIds": [
+          "D22-05-A07",
+          "D22-05-A22"
+        ],
+        "dates": [
+          "2023-08-24",
+          "2023-08-22"
+        ],
+        "calendarDaysApart": 2
+      },
+      {
+        "anchorIds": [
+          "D22-05-A03",
+          "D22-05-A14"
+        ],
+        "dates": [
+          "2021-04-29",
+          "2021-04-23"
+        ],
+        "calendarDaysApart": 6
+      }
+    ],
+    "manifestAnchorsWithExplicitIntradayPublicationTimestamp": 0,
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0
+  },
+  "officialSourceCrossCheck": {
+    "taiwanRatingsWiwynn": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5333",
+    "taiwanRatingsWanHai": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491",
+    "twseAnnouncementSearch": "https://ezsearch.twse.com.tw/",
+    "verifiedObservations": [
+      "Taiwan Ratings issuer histories show rating dates, not intraday publication timestamps; the pages separately label research-analysis publication dates.",
+      "Wiwynn historical table shows 2026-08-25 NR and a same-day release titled rating withdrawn at issuer request; this is not proof of default or a negative rating action.",
+      "Wiwynn current-rating header and historical NR row can appear together; the present page header is not a historical PIT state.",
+      "TWSE disclosure search exposes announcement publication date and time for company disclosures; this is a potential independent clock source, not proof that any of these 22 rating events were posted there."
+    ]
+  },
+  "hypotheses": [
+    {
+      "id": "CLOCK_01",
+      "claim": "Rating-date alone is sufficient to treat same-day Taiwan equity open/close as informed.",
+      "support": "Official agency history gives dated directional rating events.",
+      "counterevidence": "The 22-anchor manifest has zero explicit intraday release timestamps; rating date and first publicly observable time are distinct.",
+      "alternative": "The actual press release could have appeared before, during or after trading hours.",
+      "failureCondition": "Without independent publication timestamp, same-day decision eligibility cannot be attested.",
+      "decision": "HOLD_SAME_DAY / DO_NOT_ASSUME_EQUITY_OUTCOME_ELIGIBILITY"
+    },
+    {
+      "id": "CLUSTER_02",
+      "claim": "22 episode anchors are 22 statistically independent credit shocks.",
+      "support": "The frozen rule separates 22 directional episodes on 22 distinct dates.",
+      "counterevidence": "Only 10 issuers contribute; three cross-issuer pairs fall within seven calendar days; issuer and macro shocks can be correlated.",
+      "alternative": "Sector/macro news and issuer-specific repeated rating cycles create dependence.",
+      "failureCondition": "Independence unsupported without issuer clustering, date/regime controls and holdout.",
+      "decision": "22_DESCRIPTIVE_EPISODES_NOT_22_INDEPENDENT_ISSUERS"
+    },
+    {
+      "id": "SURVIVAL_03",
+      "claim": "Current agency rating page can be used as historical eligibility and default label.",
+      "support": "Issuer history preserves some past rating states.",
+      "counterevidence": "Wiwynn 2026-08-25 NR/withdrawal at issuer request proves current rating coverage may change; NR is not default.",
+      "alternative": "Issuer requested withdrawal; no credit deterioration established.",
+      "failureCondition": "Current-header state or withdrawn status backfilled to 2021/2023 episodes.",
+      "decision": "USE_EVENT_VINTAGE_ONLY / WITHDRAWAL_DISTINCT_FROM_DEFAULT"
+    },
+    {
+      "id": "BALANCE_04",
+      "claim": "11 positive and 11 negative episodes imply unbiased direction balance.",
+      "support": "Frozen manifest has equal directional episode counts.",
+      "counterevidence": "Sample was collected from selected rated nonfinancial issuers; no complete rated-issuer/withdrawn-issuer denominator.",
+      "alternative": "Availability of historical rating pages, event publication and issuer survival determine inclusion.",
+      "failureCondition": "Interpreting 11/11 as representative probability or predictive effect.",
+      "decision": "SELECTION_BIAS_UNRESOLVED"
+    }
+  ],
+  "requiredControls": [
+    "PIT first-known/knownAt with exchange-session cutoff",
+    "rating agency publication time and financial-statement release time",
+    "bond thin trading and quote-versus-trade-versus-model/reference separation",
+    "issuer survival, delisting, rating withdrawal and source selection",
+    "accounting restatement and corporate actions",
+    "exact 22-anchor B0/B1 D07/D13/size-liquidity/D11 common support",
+    "OOS, purged walk-forward, date/issuer clustering",
+    "data mining, multiple tests and overfit",
+    "factor lineage/redundancy versus D07 and D13",
+    "costs and market-regime dependency"
+  ],
+  "baselineEvidencePolicy": "MISSING=UNKNOWN_NOT_ZERO_OR_BAD",
+  "equityOutcomes": "CLOSED",
+  "historicalShadowFabricated": false,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "next": [
+    "Preserve frozen 22-anchor ledger; add source-published-at and independently captured-at evidence to existing anchor IDs only.",
+    "For date-only events, do not claim same-day eligible decision; verify official release timestamp and first eligible Taiwan exchange session.",
+    "Fill D07/D13/industry/size-liquidity/D11 B0/B1 on exact anchor population; keep frozen baseline count zero until verified.",
+    "Use issuer/date-cluster sensitivity, historical delisted/withdrawn coverage and predeclared OOS/walk-forward only after common-support gate.",
+    "In parallel continue D22-04/06 multi-date TPEx reference-price transport; do not label model fair values as trades."
+  ]
+}
