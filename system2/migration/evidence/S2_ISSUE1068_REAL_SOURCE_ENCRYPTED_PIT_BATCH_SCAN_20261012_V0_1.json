@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "S2_ISSUE1068_REAL_ORIGINAL_ENCRYPTED_ARCHIVE_PIT_BATCH_SCAN_20261012_V0_1",
+  "evidenceMaturity": "PROVIDER_ORIGINAL_ENCRYPTED_SQL_RESTORED_AND_SOURCE_BATCH_METADATA_SCANNED__PIT_INDEPENDENT_AUDIT_PENDING",
+  "originalSourceBackup": {
+    "runId": 38150147134,
+    "originalArtifactId": 11706652537,
+    "originalZipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+    "originalSqlSha256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12"
+  },
+  "sourceToDestinationEncryptedTransit": {
+    "runId": 38151167952,
+    "privateKeySealedArtifactId": 11706418024,
+    "transferCiphertextArtifactId": 11705783748,
+    "noPlaintextPublished": true
+  },
+  "physicalScan": {
+    "runId": 38204352833,
+    "jobId": 114664419883,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38204352833",
+    "artifactId": 11726712322,
+    "zipSha256": "b9fd2d2fa099ccb3c70c321c31b8c5ef45d0e3c78a422d6d9be5a3facbcb11c6",
+    "innerReceiptSha256": "1ab455e3859f9e12272ade7ef236c57f98b7283115b72602ad813de1126f1e29",
+    "sanitizedBatchManifestSha256": "4d732737099fb99c8b797883f584e91b86e7a1200d875443f82bdfd2e6883664",
+    "startedUtc": "2026-10-12T04:34:53.129Z",
+    "completedUtc": "2026-10-12T04:36:28.117Z",
+    "actualSourceRestoredRows": 113222,
+    "actualSourceA1Bars": 84688,
+    "sourceFrozenDecisionCount": 0,
+    "actualDestinationBarsAtRun": 0,
+    "sourceArchiveSHAValidated": true
+  },
+  "actualSourceBatchScan": {
+    "ingestBatchManifestRows": 129,
+    "nonemptyMarketBarBatches": 124,
+    "manifestRowsWithoutBars": 5,
+    "barRowsWithSelfReportedPitEligible": 84688,
+    "barRowsMissingAvailableAt": 0,
+    "barRowsWithAvailableAfterObservedAt": 0,
+    "barRowsMissingCanonicalSourceHashes": 0,
+    "batchesWithMismatchBetweenArchivedManifestAndPhysicallyRestoredBarRows": 0,
+    "completeBatchMetadataCandidates": 124,
+    "provisionalSelectedWholeBatches": 49,
+    "provisionalSelectedHistoricalBarRows": 11976,
+    "assumedBilledWritePerBarIncludingIndexes": 6,
+    "provisionalEstimatedBilledWrites": 71856,
+    "allowedPerUtcDayWriteBudget": 80000,
+    "actualBilledWrittenCostObservedForAnyCopy": null
+  },
+  "independentLimitations": {
+    "sourceFirstKnownAtOriginalPublicClockIndependentlyVerified": false,
+    "sourceRetrospectivePitFromSelfReportedFlagOnly": true,
+    "sourceFrozenHistoricalDecisionAnchorsIndependent": false,
+    "originalSourceArchiveLongTermIndependentKeyEscrow": false,
+    "independentAuditG3Accepted": false,
+    "destinationGraphQLSpendableQuotaVerified": false,
+    "sourceR2ObjectBytesVerified": false,
+    "destinationR2Entitled": false,
+    "actualDestinationSqlInsertedRows": 0,
+    "sourceAccountDataChanged": false,
+    "v8FormalProductionChanged": false,
+    "workerOrCronChanged": false,
+    "paidServicesChanged": false,
+    "permissionToImport": false,
+    "completeMigrationAccepted": false
+  },
+  "status": "ORIGINAL_REAL_ENCRYPTED_BACKUP_PIT_BATCH_METADATA_WITNESS_PASS_FOR_ENGINEERING__G3_AND_G4_IMPORT_BLOCKED"
+}
