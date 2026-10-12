@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "D03_FIRST_PHYSICAL_IMPORT_STORAGE_REPLAY_CASES_20261012_V0_1",
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED",
+  "facts": {
+    "sourceA1Bars": 84688,
+    "copiedA1Bars": 11785,
+    "remainingA1Bars": 72903,
+    "sourceBatchRows": 129,
+    "copiedBatchRows": 129,
+    "copiedLogicalRows": 11914,
+    "sourceAllRows": 113222,
+    "meteredBilledWrites": 71226,
+    "dailyOperationalCeiling": 80000,
+    "barWriteMultiplier": 6,
+    "batchWriteMultiplier": 4,
+    "pitCertifiedBars": 0
+  },
+  "cases": [
+    {"id":"T01","claim":"first physical raw A1 destination copy exists","accept":true},
+    {"id":"T02","claim":"independent final count readback matches writer","accept":true},
+    {"id":"T03","claim":"copied bars equal all source bars","accept":false},
+    {"id":"T04","claim":"129 of 129 batch metadata means all payloads complete","accept":false},
+    {"id":"T05","claim":"actual billed-write arithmetic reconciles","accept":true},
+    {"id":"T06","claim":"six writes per bar is universal forever","accept":false},
+    {"id":"T07","claim":"aggregate count equality proves exact content parity","accept":false},
+    {"id":"T08","claim":"per-key value version hash parity is still required","accept":true},
+    {"id":"T09","claim":"destination persistence time supplies historical availableAt","accept":false},
+    {"id":"T10","claim":"raw copied rows are PIT-certified","accept":false},
+    {"id":"T11","claim":"firstKnownAt exists in source A1","accept":false},
+    {"id":"T12","claim":"R2 referenced objects are complete at destination","accept":false},
+    {"id":"T13","claim":"Bollinger exact 20-session window is proven","accept":false},
+    {"id":"T14","claim":"ADX trusted recursive state is proven","accept":false},
+    {"id":"T15","claim":"partial storage proves user selection resumed","accept":false},
+    {"id":"T16","claim":"storage content parity and causal replay are separate axes","accept":true},
+    {"id":"T17","claim":"remaining A1 optimistic write lower bound is 437418","accept":true},
+    {"id":"T18","claim":"six future quota days are guaranteed completion","accept":false},
+    {"id":"T19","claim":"migration storage is OOS alpha evidence","accept":false},
+    {"id":"T20","claim":"D03 maturity can promote now","accept":false}
+  ]
+}
