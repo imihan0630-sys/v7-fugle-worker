@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "S2_AUDIT_FIRST_REAL_DEST_A1_D1_COPY_PHYSICAL_READBACK_20261012_V0_1",
+  "verifiedAtTaipei": "2026-10-12 16:25:29",
+  "sourceScope": "SOURCE_ORIGINAL_D1_55TABLE_113222ROWS_ENCRYPTED_ARCHIVE_INTACT",
+  "destinationScope": "DEST_ONLY_CLOUDFLARE_D1_QUERY_READ_ONLY",
+  "ownerExplicitG3G4PrecopyOverride": true,
+  "originalWriter": {
+    "runId": 38220900855,
+    "headSha": "25fcee02e9530652bc01ffd05a97fb2f600d677a",
+    "statusAtObservation": "IN_PROGRESS",
+    "interimCostsUnknown": true,
+    "finalReceiptPending": true
+  },
+  "independentProbe": {
+    "runId": 38223454042,
+    "workflow": "S2 DEST A1 Current Physical Readback ONE SHOT",
+    "jobId": 114725073660,
+    "artifactId": 11735661850,
+    "originalArtifactZipSha256": "097eaa40d89d6c09c2032e6f5510591d6ad2d13d43c1a87f37a5bdae0491312e",
+    "originalInnerReceiptSha256": "00afbaa5407314f3f7434fb4235fcdd34bb3ee450cdf428012b3055d9b35cd0c",
+    "auditorDownloadedRawZipAndIndependentlyRecomputedSHA256": true,
+    "githubWorkflowConclusion": "success",
+    "nativeProviderAuthenticated": true,
+    "destinationAccountFingerprintMatched": true,
+    "destinationD1FingerprintMatched": true,
+    "observedAtUtc": "2026-10-12T08:25:29.156Z",
+    "destinationFileSizeBytes": 7811072,
+    "destinationA1Rows": 7572,
+    "destinationIngestBatchRows": 129,
+    "destinationFrozenDecisionRows": 0,
+    "sourceA1RowsExpected": 84688,
+    "sourceIngestBatchRowsExpected": 129,
+    "sourceHistoricalD1RowsExpected": 113222,
+    "snapshotCopiedA1Share": 0.08941172303041872,
+    "probeReadOnlyD1MetaRowsRead": 7701,
+    "probeReadOnlyD1MetaRowsWritten": 0,
+    "probeDestinationCloudflareWritesRequested": 0
+  },
+  "auditDisposition": "REAL_DESTINATION_HISTORY_COPY_STARTED_AND_INDEPENDENTLY_READ_BACK__SCOPED_PASS",
+  "fullG4AndFullMigrationStatus": "NOT_COMPLETE",
+  "pitStatus": "RAW_ARCHIVE_ONLY_PIT_UNVERIFIED",
+  "futureRequirements": [
+    "Obtain original writer complete run/job/sanitized artifact and actual D1 meta.rows_written, stop below user 80000 billed rowsWritten account UTC-day.",
+    "Independent final destination D1 readback of actual bar counts, source batch lineage and content hash parity, not counts alone.",
+    "Copy remaining A1 batches on subsequent UTC days using resumable writer with no concurrent importer.",
+    "Other source D1 28534 logical rows, R2 object availability, target Worker/Cron and stock selection must be tracked separately.",
+    "Do not interpret read-only probe rowsWritten=0 as source COPY billed cost=0.",
+    "Do not re-enable original old System2 Cron, change System1 Formal Core or delete source."
+  ],
+  "refs": [
+    "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38223454042",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38220900855",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1164",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1128"
+  ]
+}
