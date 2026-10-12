@@ -92,8 +92,9 @@ if(process.argv[1]?.endsWith("/probe_system2_dest_daily_shadow_readonly_20261012
    ownerDay80ProjectedWrites:receipt.ownerDay80ProjectedWrites,
    canGrantPhysicalDailyShadowWriter:false,
    originalReceiptSha256:receipt.hashSha256}));
- }catch(e){
-  console.error("S2_P0_READONLY_PREFLIGHT_FAIL_CLOSED_"+String(e?.message||"UNKNOWN").replace(/[^A-Z0-9_]/gi,"_").slice(0,90));
+ }catch{
+  // Provider error bodies can contain sensitive material: do not echo them.
+  console.error("S2_P0_DESTINATION_READONLY_PROVIDER_OR_IDENTITY_UNVERIFIED");
   process.exitCode=2;
  }
 }
