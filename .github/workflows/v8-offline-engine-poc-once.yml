@@ -38,3 +38,4 @@ jobs:
 # Recheck exact PIT same-date EPS eligibility and deployed Worker config-name parity.
 # Exact V8 selection with official MOPS-verified EPS in-memory extension; no V8 D1 writes.
 # Reverify output after injecting original production STOCK_CONFIG plain variable in memory only.
+# One-shot repeat; source KV account API 500/404 resolved only by signed namespace binding readback.
