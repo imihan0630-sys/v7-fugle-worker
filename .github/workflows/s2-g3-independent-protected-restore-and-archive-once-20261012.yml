@@ -1,4 +1,5 @@
 name: S2 G3 Independently Decrypt Restore and Extend Encrypted Bridge Once 20261012
+# Corrected original transfer raw ciphertext SHA256 f6bfdff7... (distinct from GitHub ZIP SHA256 68c0244...).
 # One-time main-only G3. Only reads EXISTING AES/RSA encrypted SOURCE archive.
 # No extra tokens/permission grants, no Cloudflare API, D1 INSERT, Worker/Cron, paid tier.
 on:
