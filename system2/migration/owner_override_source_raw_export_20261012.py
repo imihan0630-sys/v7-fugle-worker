@@ -30,7 +30,8 @@ def main():
   cols[table]=[r[1] for r in c.execute('PRAGMA table_info("'+table+'")')]
  if c.execute("SELECT count(*) FROM s2_historical_ingest_batches").fetchone()[0]!=129 or c.execute("SELECT count(*) FROM s2_historical_a1_bars").fetchone()[0]!=84688: die("SOURCE_A1")
  for table,file in (("s2_historical_ingest_batches","batches.jsonl"),("s2_historical_a1_bars","bars.jsonl")):
-  order="batch_id" if table.endswith("ingest_batches") else "market_date,market,symbol,bar_id"
+  # Group bars by source batch to avoid per-row flushes for overlapping market dates.
+  order="batch_id" if table.endswith("ingest_batches") else "batch_id,market_date,market,symbol,bar_id"
   p=os.path.join(out,file)
   fd=os.open(p,os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600)
   with os.fdopen(fd,"w",encoding="utf8") as dest:
