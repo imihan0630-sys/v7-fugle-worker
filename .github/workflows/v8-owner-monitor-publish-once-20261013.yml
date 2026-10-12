@@ -1,0 +1,37 @@
+name: V8 Owner Authorized Verified Selection Into Monitor ONCE 20261013
+on:
+  push:
+    branches:
+      - ops/v8-owner-monitor-write-verified-one-shot-20261013
+    paths:
+      - .github/workflows/v8-owner-monitor-publish-once-20261013.yml
+permissions:
+  contents: read
+jobs:
+  verify_and_send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      V8_OWNER_MONITOR_SEND_ONCE: USER_EXPLICIT_20261013
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute original V8 selection + verified MOPS and guarded one-time /api/config write
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check ops/v8_owner_monitor_delivery_one_shot_20261013.mjs
+          node ops/v8_owner_monitor_delivery_one_shot_20261013.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v8-owner-monitor-verified-delivery-${{ github.run_id }}
+          path: artifacts/v8-node-exact-engine-offline-proof.json
+          if-no-files-found: error
+          retention-days: 60
