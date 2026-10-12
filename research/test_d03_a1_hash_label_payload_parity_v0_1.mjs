@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import cases from "./d03_a1_hash_label_payload_parity_cases_20261013_v0_1.json" with {type:"json"};
+function decide(x){
+  if(x.storedIdentityMatch===false)return "FAIL_IDENTITY_DRIFT";
+  if(x.physicalReceipt===false)return "CODE_PATH_MERGED_PHYSICAL_RUN_PENDING";
+  if(x.payloadRecomputed===true&&x.payloadMatch===false)return "FAIL_PAYLOAD_DRIFT";
+  if(x.payloadRecomputed===true&&x.payloadMatch===true&&Object.keys(x).length===3)return "PAYLOAD_PARITY_PASS";
+  if(x.storedIdentityMatch===true&&x.physicalReceipt===true&&x.payloadRecomputed===false)return "HASH_LABEL_PARITY_ONLY";
+  if(x.batchMetadataRows===129&&x.completePayloadBatches===null)return "COMPLETE_BATCH_COUNT_UNKNOWN";
+  if(x.batchMetadataRows===129&&Number.isInteger(x.completePayloadBatches))return "ONLY_"+x.completePayloadBatches+"_BATCHES_COMPLETE";
+  if(x.destinationRows===11785&&x.sourceRows===84688)return "PARTIAL_STORAGE";
+  if(x.destinationRows===84688&&x.sourceRows===84688&&x.payloadMatch===false)return "COUNT_PARITY_NOT_CONTENT_PARITY";
+  if(x.originalFirstKnownAt===null)return "PIT_UNKNOWN";
+  if(x.causalClock===false)return "RAW_ARCHIVE_ONLY";
+  if(x.causalClock===true&&x.exactSessions===false)return "PIT_WINDOW_BLOCKED";
+  if(x.oosDates===0)return "NO_OOS_CREDIT";
+  if(x.walkForwardDates===0)return "NO_WALK_FORWARD_CREDIT";
+  if(x.costEvidence===false)return "COST_UNKNOWN";
+  if(x.fillabilityEvidence===false)return "FILLABILITY_UNKNOWN";
+  if(x.corporateActionLineage===false)return "CONTINUITY_BLOCKED";
+  if(x.exact20ParentSessions===false)return "BOLLINGER_BLOCKED";
+  if(x.wilderFullReplay===false)return "ADX_BLOCKED";
+  if(x.alphaEvidence===false)return "NO_OPTIMIZATION_CANDIDATE";
+  throw Error("UNCLASSIFIED");
+}
+assert.equal(cases.cases.length,20);
+for(const c of cases.cases)assert.equal(decide(c.input),c.expected,c.id);
+assert.equal(cases.maturityPct,56.7);
+assert.equal(cases.formalCoreImpact,"NONE_LOCKED");
+console.log(JSON.stringify({status:"PASS",cases:cases.cases.length,maturityPct:cases.maturityPct,formalCoreImpact:cases.formalCoreImpact}));
