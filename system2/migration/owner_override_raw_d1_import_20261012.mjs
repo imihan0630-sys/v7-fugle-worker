@@ -15,7 +15,7 @@ const acctHash="27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55
 const dbHash="95f48f4d37b8eb4c16919d037259a5ebc30a8057e1933db39a6e8f759b9874b9";
 const sourceSqlSha="56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12";
 const cipherSha="f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1";
-const limit=80000, stopAt=75000, maxStatementRows=10;
+const limit=80000, stopAt=75000, maxStatementRows=40; // one JSON bind per insert, D1 hard max 100
 const sha=x=>createHash("sha256").update(x).digest("hex");
 const day=()=>new Date().toISOString().slice(0,10);
 const fail=x=>{throw Error("S2_OWNER_RAW_COPY_"+x)};
@@ -100,6 +100,10 @@ async function checkDestination(){
   const s=await query("SELECT type,name FROM sqlite_schema WHERE name LIKE 's2_%' OR name LIKE 'idx_s2_%'");
   const names=s.results||[],tbl=names.filter(x=>x.type==="table").length,idx=names.filter(x=>x.type==="index").length;
   if(tbl!==55||idx!==63)fail("DEST_SCHEMA_MISMATCH");
+  const jsonProbe=await query("SELECT json_extract(value,'$[0]') AS v FROM json_each(?)",
+    [JSON.stringify([[7],[11]])]);
+  if(jsonProbe.results?.length!==2||jsonProbe.results[0].v!==7||jsonProbe.results[1].v!==11)
+    fail("DEST_JSON1_EXTENSION_UNVERIFIED");
   const check=await query("SELECT (SELECT count(*) FROM s2_historical_ingest_batches) as batches, (SELECT count(*) FROM s2_historical_a1_bars) as bars, (SELECT count(*) FROM s2_decisions) as decisions");
   const found=check.results?.[0];
   if(!found||found.batches>129||found.bars>84688||found.decisions!==0)fail("DEST_UNEXPECTED_ROWS");
@@ -116,9 +120,13 @@ async function insertRows(table,columns,values){
   if(report.chargedRowsWrittenThisRun+4000>=stopAt) return false;
   if(day()!==report.dayStartedUtc)fail("UTC_DAY_CHANGED");
   const names=columns.map(c=>'"'+c.replace(/"/g,'""')+'"').join(",");
-  const groups=values.map(x=>"("+x.map(()=>"?").join(",")+")").join(",");
-  const sql='INSERT OR IGNORE INTO "'+table+'" ('+names+') VALUES '+groups;
-  const res=await query(sql,values.flat());
+  // D1 has an official hard limit of 100 bound parameters / statement.
+  // JSON1 is supported by Cloudflare D1: expand rows from just ONE JSON parameter.
+  const selectors=columns.map((_,i)=>"json_extract(value,'$["+i+"]')").join(",");
+  const sql='INSERT OR IGNORE INTO "'+table+'" ('+names+') SELECT '+selectors+' FROM json_each(?)';
+  const payload=JSON.stringify(values);
+  if(Buffer.byteLength(payload)>1000000)fail("BOUND_JSON_PAYLOAD_TOO_LARGE");
+  const res=await query(sql,[payload]);
   report.chunksAttempted++;
   const used=res.meta?.rows_written;
   if(!Number.isSafeInteger(used)||used<0)fail("BILLED_WRITE_METADATA_MISSING_AFTER_WRITE_STOP");
