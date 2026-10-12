@@ -8,6 +8,8 @@ on:
     branches: [main]
     paths:
       - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/runtime/daily_shadow_destination_account_route_v0_1.mjs"
+      - "system2/scripts/run_d1_account_quota_gate_v0_1.mjs"
       - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
       - "system2/runtime/a1_symbol_snapshot_adapter.mjs"
       - "system2/runtime/current_listing_metadata_v0_1.mjs"
@@ -29,10 +31,10 @@ concurrency:
 
 jobs:
   diagnostic:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'push' # no unscheduled D1 writer during ongoing source->dest migration
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    environment: system2-research
+    environment: system2-schema-only # Verified new destination account only; source environment quarantined
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
@@ -47,6 +49,7 @@ jobs:
           node system2/tests/daily_shadow_diagnostic_workflow_guard.test.mjs
           node system2/tests/persistence_executor.test.mjs
           node system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs
+          node system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
       - name: Reserve shared account D1 budget
         id: quota
@@ -54,19 +57,24 @@ jobs:
         with:
           writer_id: DAILY_SHADOW_DIAGNOSTIC
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
       - name: Persist and read back isolated daily diagnostics
         if: steps.quota.outputs.physical_allowed == 'true'
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
           SYSTEM2_CONFIRM: WRITE_SYSTEM2_DAILY_DIAGNOSTIC_ONLY
         run: |
           set -euo pipefail
-          test -n "$CLOUDFLARE_ACCOUNT_ID"
-          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          test -n "$S2_SCHEMA_DEST_ACCOUNT_ID"
+          test -n "$S2_SCHEMA_DEST_D1_WRITE_TOKEN"
           node system2/scripts/run_daily_shadow_diagnostic.mjs | tee /tmp/system2-daily-diagnostic.json
           node --input-type=module <<'NODE'
           import fs from "node:fs";
@@ -78,26 +86,49 @@ jobs:
           if(!["IMMUTABLE_D1_READBACK_VERIFIED","SKIPPED_IDENTICAL_COMPLETED_RUN"].includes(r.persistenceState))throw new Error("missing readback");
           fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`Daily diagnostic: ${r.state}\n\nDate: ${r.marketDate}; symbols observed: ${r.symbolCount}; UNKNOWN factors: ${r.unknownFactorCount}. No capacity/zero-pick/SELECTED claim.\n`);
           NODE
-      - name: Read public diagnostic and authority state
+      - name: Destination D1 actual fresh readback — NOT source Worker URL
         if: steps.quota.outputs.physical_allowed == 'true'
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
         run: |
+          set -euo pipefail
           node --input-type=module <<'NODE'
           import fs from "node:fs";
-          const d=JSON.parse(fs.readFileSync("/tmp/system2-daily-diagnostic.json","utf8"));
-          const base="https://system2-shadow-research.imihan0630.workers.dev";
-          const {default:assert}=await import("node:assert/strict");
-          const reads=[];
-          for(const path of [`/api/system2/shadow/diagnostic?marketDate=${d.receipt.marketDate}`,"/health","/api/system2/resonance/operations"]){
-            const response=await fetch(base+path,{signal:AbortSignal.timeout(30000)});
-            if(!response.ok)throw new Error("public diagnostic read failed");
-            reads.push({path,status:response.status,payload:await response.json()});
-          }
-          const saved=reads[0].payload.receipt;
-          if(saved.runId!==d.receipt.runId||saved.revision!==d.receipt.revision)throw new Error("public receipt mismatch");
-          assert.deepEqual(saved.prospectiveHistory,d.receipt.prospectiveHistory);
-          if(saved.capacityRunId!==null||saved.zeroPickDay!==null||saved.finalSelectionEnabled!==false)throw new Error("authority mismatch");
-          console.log(JSON.stringify({result:"PASS",reads},null,2));
-          fs.writeFileSync("/tmp/system2-daily-diagnostic-readback.json",JSON.stringify({result:"PASS",reads},null,2));
+          import assert from "node:assert/strict";
+          import {createRemoteD1RestAdapter} from "./system2/deploy/remote_d1_rest_adapter.mjs";
+          import {sha256Hex} from "./system2/runtime/decision_archive.mjs";
+          import {assertDailyShadowDestinationDatabaseIdentityV0_1} from "./system2/runtime/daily_shadow_destination_account_route_v0_1.mjs";
+          const original=JSON.parse(fs.readFileSync("/tmp/system2-daily-diagnostic.json","utf8"));
+          const receipt=original.receipt;
+          const db=await createRemoteD1RestAdapter({
+            accountId:process.env.S2_SCHEMA_DEST_ACCOUNT_ID,
+            apiToken:process.env.S2_SCHEMA_DEST_D1_WRITE_TOKEN,
+            databaseName:"system2-research",
+          });
+          assertDailyShadowDestinationDatabaseIdentityV0_1(db);
+          const row=await db.prepare(
+            "SELECT observed_payload_json,check_hash FROM s2_infrastructure_checks WHERE check_id = ? LIMIT 1"
+          ).bind("S2-DAILY-DIAGNOSTIC:"+receipt.marketDate+":"+receipt.runId).first();
+          assert(row,"DEST_D1_PHYSICAL_DIAGNOSTIC_ROW_MISSING");
+          const saved=JSON.parse(row.observed_payload_json);
+          assert.equal(await sha256Hex(saved),row.check_hash);
+          assert.equal(saved.runId,receipt.runId);
+          assert.equal(saved.revision,receipt.revision);
+          assert.deepEqual(saved.prospectiveHistory,receipt.prospectiveHistory);
+          assert.equal(saved.zeroPickDay,null);
+          assert.equal(saved.finalSelectionEnabled,false);
+          const out={
+            result:"DESTINATION_D1_ORIGINAL_ROW_READBACK_PASS",
+            marketDate:receipt.marketDate,runId:receipt.runId,
+            originalHash:row.check_hash,db:"system2-research",
+            accountRole:"DESTINATION",
+            selectedCount:null,zeroPickDay:null,
+            finalSelectionEnabled:false,
+            d1RowsReadForReadback:db.metrics.rowsRead,
+          };
+          console.log(JSON.stringify(out));
+          fs.writeFileSync("/tmp/system2-daily-diagnostic-readback.json",JSON.stringify(out,null,2));
           NODE
       - name: Reconcile shared account D1 budget result
         if: always() && steps.quota.outputs.physical_allowed == 'true'
@@ -108,9 +139,11 @@ jobs:
           reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
           execution_outcome: ${{ job.status }}
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
       - name: Preserve execution receipt
         if: always()
         uses: actions/upload-artifact@v4

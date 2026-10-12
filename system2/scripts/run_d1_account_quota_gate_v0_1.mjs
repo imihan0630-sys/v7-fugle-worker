@@ -1,3 +1,5 @@
+import { evaluateDestinationDay80SharedWritersV0_1 } from "../runtime/daily_shadow_destination_day80_writer_sharing_v0_1.mjs";
+import { resolveDailyShadowAccountRouteV0_1, assertDailyShadowDestinationDatabaseIdentityV0_1 } from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
 import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { decideSourceAccountWriterQuarantineV0_1 } from
@@ -394,11 +396,27 @@ async function main() {
   const mode = env("SYSTEM2_D1_GATE_MODE", "reserve");
   if (!["reserve", "result"].includes(mode)) throw new Error("SYSTEM2_D1_GATE_MODE must be reserve or result");
 
+  // Independent DESTINATION role only for the owner-authorized daily Shadow.
+  // All legacy SOURCE writers remain quarantined and cannot receive grants.
+  const destinationRole=env("SYSTEM2_D1_ACCOUNT_ROLE")==="DESTINATION";
+  let verifiedDestination=null;
+  if (destinationRole) {
+    verifiedDestination=resolveDailyShadowAccountRouteV0_1({
+      writerId:required("SYSTEM2_D1_WRITER_ID"),role:"DESTINATION",
+      githubEnvironment:env("SYSTEM2_GITHUB_ENVIRONMENT"),
+      accountId:env("S2_SCHEMA_DEST_ACCOUNT_ID"),
+      dbToken:env("S2_SCHEMA_DEST_D1_WRITE_TOKEN"),
+      analyticsToken:env("S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN"),
+      legacyAccountId:env("CLOUDFLARE_ACCOUNT_ID"),
+      legacyDbToken:env("SYSTEM2_CLOUDFLARE_API_TOKEN"),
+      legacyAnalyticsToken:env("CLOUDFLARE_API_TOKEN"),
+    });
+  }
   // During migration, reserve requests made by legacy System2 GitHub jobs
   // cannot touch source D1 or even query source GraphQL/ledger. This happens
   // BEFORE reading account IDs/tokens and BEFORE any Cloudflare request.
   // A prior real grant's result reconciliation remains available separately.
-  if (mode === "reserve") {
+  if (mode === "reserve" && !verifiedDestination) {
     const writerId = required("SYSTEM2_D1_WRITER_ID");
     const policy = await loadJson(SOURCE_ACCOUNT_QUARANTINE_PATH);
     const guard = decideSourceAccountWriterQuarantineV0_1({policy,mode,writerId});
@@ -433,8 +451,10 @@ async function main() {
     }
   }
 
-  const accountId = required("CLOUDFLARE_ACCOUNT_ID");
-  const token = env("CLOUDFLARE_API_TOKEN") || required("SYSTEM2_CLOUDFLARE_API_TOKEN");
+  const accountId = verifiedDestination?.accountId ?? required("CLOUDFLARE_ACCOUNT_ID");
+  const token = verifiedDestination?.analyticsToken ??
+    (env("CLOUDFLARE_API_TOKEN") || required("SYSTEM2_CLOUDFLARE_API_TOKEN"));
+  const dbToken = verifiedDestination?.dbToken ?? (env("SYSTEM2_CLOUDFLARE_API_TOKEN") || token);
   const writerId = required("SYSTEM2_D1_WRITER_ID");
   const eventName = env("GITHUB_EVENT_NAME", "workflow_dispatch");
   const runKey = env(
@@ -447,6 +467,10 @@ async function main() {
   if (!writer) throw new Error(`UNREGISTERED_D1_WRITER:${writerId}`);
 
   const reservePolicyPath = env("SYSTEM2_SYSTEM1_RESERVE_EVIDENCE_PATH");
+  // Existing owner waiver only removes extra V8 headroom requirements.
+  // For new DEST account V8 is physically isolated; keep all D1 Free
+  // hard limits, quota ledger, outstanding reservations and writer registry.
+  // Never reinterpret source writer quarantine as a destination policy.
   const system1ReservePolicy = await loadJson(
     reservePolicyPath
       ? new URL(`../../${reservePolicyPath.replace(/^\.\//, "")}`, import.meta.url)
@@ -501,9 +525,11 @@ async function main() {
 
   const db = await createRemoteD1RestAdapter({
     accountId,
-    apiToken: env("SYSTEM2_CLOUDFLARE_API_TOKEN") || token,
+    apiToken: dbToken,
     databaseName: "system2-research",
   });
+  if(verifiedDestination)assertDailyShadowDestinationDatabaseIdentityV0_1(db);
+
 
   if (mode === "result") {
     const reservationPath = required("SYSTEM2_D1_RESERVATION_RECEIPT_PATH");
@@ -603,10 +629,19 @@ async function main() {
     })
     : usage;
 
-  const decision = evaluateD1AccountQuotaReservationV0_1({
+  const importedAudit=verifiedDestination?await loadJson(
+    new URL("../migration/evidence/S2_AUDIT_DEST_A1_FIRST_IMPORT_FINAL_PHYSICAL_ACCEPTANCE_20261012_V0_1.json",import.meta.url)):null;
+  const day80=verifiedDestination?evaluateDestinationDay80SharedWritersV0_1({
+    quotaDay:currentQuotaDay,
+    accountRowsWrittenLowerBound:accountUsage.known?accountUsage.rowsWritten:null,
+    shadowReservedBilledWrites:writer.reservationModel.rowsWritten,
+    nowFloorProof:importedAudit
+  }):null;
+  const initialDecision = evaluateD1AccountQuotaReservationV0_1({
     writer,
     eventName,
-    accountUsage,
+    accountUsage:day80&&accountUsage.known?
+      {...accountUsage,rowsWritten:Math.max(accountUsage.rowsWritten,day80.accountRowsWrittenFloor)}:accountUsage,
     system1ReservePolicy,
     ledgerIntegrityState: ledger.integrityState,
     outstandingReservedRowsWritten: ledger.outstandingReservedRowsWritten,
@@ -618,6 +653,9 @@ async function main() {
     requestedRowsWritten: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_WRITTEN", null),
     requestedRowsRead: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_READ", null),
   });
+  const decision=day80&&!day80.nextWriterPermittedByOperationalCap?
+    Object.freeze({...initialDecision, state:"QUOTA_BUDGET_DEFER",
+      physicalAllowed:false,reasonCodes:Object.freeze([day80.reason])}):initialDecision;
 
   const at = new Date().toISOString();
   let ledgerCheckHash = null;
@@ -687,7 +725,11 @@ async function main() {
     runKey,
     quotaDay: currentQuotaDay,
     ...decision,
+    accountRole:verifiedDestination?"DESTINATION":"LEGACY_SOURCE",
+    accountFingerprint:verifiedDestination?.accountFingerprint??null,
+    v8ReserveApplicable:verifiedDestination?false:null,
     accountUsage,
+    destinationDay80PhysicalImportFloor:day80,
     ledger,
     system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
     system1ReserveAuthorized: system1ReservePolicy.reserveNumberAuthorized === true,
