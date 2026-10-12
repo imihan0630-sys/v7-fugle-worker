@@ -18,7 +18,7 @@ async function jsonCall(path,token,method="GET",data=null,deadline=25000){
  return v.result;
 }
 const memory=new Map();
-let diagName=null,diagUrl=null,diagToken=null;
+let diagName=null,diagUrl=null,diagToken=null,qualityOverlay=null;
 result.ephemeralDiagnostic={created:false,subdomainDisabled:false,scriptDeleted:false,
  scope:"ONLY_TEMPORARY_READONLY_KV_WORKER_NO_ORIGINAL_CODE_OR_CRON_CHANGES"};
 try{
@@ -101,6 +101,18 @@ try{
    const data=await jsonCall("/d1/database/"+dbId+"/query",dt,"POST",{sql,params},50000);
    if(!Array.isArray(data)||data.length!==1||data[0].success!==true)throw Error("D1_SOURCE_SELECT_UNVERIFIED");
    const r=data[0];
+   // A strictly local Q2 EPS overlay; source Cloudflare D1 result is never updated.
+   if(qualityOverlay && params[0]==="QUARTER_EPS" && r.results?.[0]?.snapshot_json){
+     const old=JSON.parse(r.results[0].snapshot_json);
+     if(old.year!==qualityOverlay.year||old.quarter!==qualityOverlay.quarter)
+       throw Error("MOPS_EPS_PERIOD_DRIFT");
+     const prior=Object.keys(old.stocks||{}).length;
+     old.stocks={...(old.stocks||{}),...qualityOverlay.verifiedStocks};
+     old.count=Object.keys(old.stocks).length;
+     r.results[0].snapshot_json=JSON.stringify(old);
+     result.preflight.epsSourceExtension={inMemoryOnly:true,originalCount:prior,
+       extendedCount:old.count,symbols:Object.keys(qualityOverlay.verifiedStocks),officialSourceSha:qualityOverlay.receipts};
+   }
    result.d1SelectRowsRead+=Number(r.meta?.rows_read??r.results?.length??0);
    if(result.d1SelectRowsRead>100000)throw Error("D1_ROWS_READ_BUDGET_EXCEEDED");
    return {results:r.results||[],meta:r.meta||{}};
@@ -120,13 +132,16 @@ try{
  const v7Db={prepare,withSession(){return v7Db;}};
  // Original source module, only adding a read-only testing export; no algorithm alterations.
  const workerText=await readFile("Worker.js","utf8");
- const module=await import("data:text/javascript;base64,"+Buffer.from(workerText+"\nexport {runAfterMarketScan};").toString("base64"));
+ const module=await import("data:text/javascript;base64,"+Buffer.from(workerText+"\nexport {runAfterMarketScan,validateOfficialQualityData};").toString("base64"));
  const capitalVar=(settings.bindings||[]).find(x=>x.name==="V7_TOTAL_CAPITAL"&&x.type==="plain_text")?.text;
  const env={V7_DB:v7Db,STOCKS_KV:kv,V7_TOTAL_CAPITAL:capitalVar||"200000"};
  const enrichUrl=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_API_URL"&&x.type==="plain_text")?.text;
  if(enrichUrl)env.V7_ENRICHMENT_API_URL=enrichUrl;
  const enrichJson=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_JSON"&&x.type==="plain_text")?.text;
  if(enrichJson)env.V7_ENRICHMENT_JSON=enrichJson;
+ const {verifiedOfficialQuarterEpsOverlay}=await import("./v8_offline_quality_eps_overlay_readonly_v0_1.mjs");
+ qualityOverlay=await verifiedOfficialQuarterEpsOverlay({parseAndValidate:module,marketDate:target,
+   year:2026,quarter:2,symbols:["6226","2617"]});
  const time=Date.parse(target+"T15:35:00Z");
  const scan=await module.runAfterMarketScan(env,time,{dryRun:true});
  if(!scan||scan.dryRun!==true||scan.scanDate!==target||!scan.pipeline?.selectionCompleted)
