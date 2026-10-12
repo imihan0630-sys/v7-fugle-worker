@@ -1,4 +1,4 @@
-import {resolveDailyShadowAccountRouteV0_1} from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
+import {resolveDailyShadowAccountRouteV0_1,assertDailyShadowDestinationDatabaseIdentityV0_1} from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs";
@@ -6,6 +6,7 @@ import { runDailyShadowDiagnosticV0_1 } from "../runtime/daily_shadow_diagnostic
 
 export async function runDailyShadowDiagnostic({ accountId, apiToken, runId, revision } = {}) {
   const db = await createRemoteD1RestAdapter({ accountId, apiToken, databaseName: "system2-research" });
+  assertDailyShadowDestinationDatabaseIdentityV0_1(db);
   const receipt = await runDailyShadowDiagnosticV0_1({ db, runId, revision });
   return { result: "PASS", mode: "IMMUTABLE_DIAGNOSTIC_ONLY", databaseName: db.database.name,
     receipt, d1Metrics: { requestCount: db.metrics.requestCount, rowsRead: db.metrics.rowsRead, rowsWritten: db.metrics.rowsWritten } };
