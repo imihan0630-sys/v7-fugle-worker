@@ -28,6 +28,20 @@ export function validateDestinationQuotaGroupV0_1(j,day,expectedDb){
  return {rowsReadLowerBound:sum.rowsRead,rowsWrittenLowerBound:sum.rowsWritten,
   readQueriesLowerBound:sum.readQueries,writeQueriesLowerBound:sum.writeQueries};
 }
+export function inspectDestinationQuotaGroupV0_2(j,day,expectedDb){
+ if(!Array.isArray(j?.data?.viewer?.accounts)||j.data.viewer.accounts.length!==1)
+  throw error('GRAPHQL_DESTINATION_ACCOUNT_COVERAGE_MISSING');
+ const groups=j.data.viewer.accounts[0]?.d1AnalyticsAdaptiveGroups;
+ if(!Array.isArray(groups))
+  throw error('GRAPHQL_GROUP_LIST_MISSING');
+ // Cloudflare GraphQL aggregates can have *no entry yet* for a new UTC day.
+ // Missing is not numeric 0, and cannot qualify 100k free writes.
+ if(groups.length===0)return {groupState:'EMPTY_UNOBSERVED',groupCount:0};
+ if(groups.length!==1)return {groupState:'MULTIPLE_GROUPS_UNVERIFIED',
+  groupCount:groups.length};
+ return {groupState:'SINGLE_VERIFIED_SOURCE_GROUP',groupCount:1,
+  ...validateDestinationQuotaGroupV0_1(j,day,expectedDb)};
+}
 function safeFetchError(response,body){
  if(response?.status===401||response?.status===403||
     body?.errors?.some(x=>/authorization|permission|access denied|not authorized|forbidden/i.test(x?.message||'')))
@@ -70,32 +84,53 @@ export async function readDestinationD1AccountQuotaV0_1({
   const json=await fetchJson(base+'/graphql',analyticsToken,{
    query,variables:{accountTag:accountId,start:day,end:day}
   });
-  reads.push({...validateDestinationQuotaGroupV0_1(json,day,id),observedAtUtc:now()});
+  reads.push({...inspectDestinationQuotaGroupV0_2(json,day,id),observedAtUtc:now()});
  }
- if(reads[1].rowsWrittenLowerBound<reads[0].rowsWrittenLowerBound||
-    reads[1].rowsReadLowerBound<reads[0].rowsReadLowerBound||
-    reads[1].readQueriesLowerBound<reads[0].readQueriesLowerBound||
-    reads[1].writeQueriesLowerBound<reads[0].writeQueriesLowerBound)
-  throw error('GRAPHQL_NONMONOTONIC_USAGE');
  if(reads.some(x=>x.observedAtUtc.slice(0,10)!==day))
   throw error('UTC_QUOTA_DAY_ROLLOVER_DURING_READ');
- const last=reads[1];
- // This is an arithmetic *upper bound* on possible remaining quota, because
- // provider GraphQL may lag physical D1 consumption.
- const maxPossibleRemainingWrites=Math.max(0,CAP_WRITE-last.rowsWrittenLowerBound);
- const maxPossibleRemainingReads=Math.max(0,CAP_READ-last.rowsReadLowerBound);
+ const complete=reads.every(x=>x.groupState==='SINGLE_VERIFIED_SOURCE_GROUP');
+ if(complete&&(reads[1].rowsWrittenLowerBound<reads[0].rowsWrittenLowerBound||
+    reads[1].rowsReadLowerBound<reads[0].rowsReadLowerBound||
+    reads[1].readQueriesLowerBound<reads[0].readQueriesLowerBound||
+    reads[1].writeQueriesLowerBound<reads[0].writeQueriesLowerBound))
+  throw error('GRAPHQL_NONMONOTONIC_USAGE');
+ // An empty group is not proof of 0 writes, but it should not discard the
+ // authenticated provider result or confuse a real user with 'permission denied'.
+ // One additional previous-day read can show historical counter availability,
+ // but it never qualifies current-day spendable quota.
+ let priorDayDiagnostic=null;
+ if(!complete){
+  const yesterday=new Date(day+'T00:00:00Z');
+  yesterday.setUTCDate(yesterday.getUTCDate()-1);
+  const priorDay=yesterday.toISOString().slice(0,10);
+  const past=await fetchJson(base+'/graphql',analyticsToken,{
+   query,variables:{accountTag:accountId,start:priorDay,end:priorDay}
+  });
+  priorDayDiagnostic={quotaDayUtc:priorDay,
+   ...inspectDestinationQuotaGroupV0_2(past,priorDay,id)};
+ }
+ const last=complete?reads[1]:null;
+ const maxPossibleRemainingWrites=last?
+   Math.max(0,CAP_WRITE-last.rowsWrittenLowerBound):null;
+ const maxPossibleRemainingReads=last?
+   Math.max(0,CAP_READ-last.rowsReadLowerBound):null;
+ const quotaReadState=complete?
+   'PHYSICAL_GRAPHQL_ACCOUNT_USAGE_OBSERVED_NOT_SPENDABLE_QUOTA_GRANT':
+   'PHYSICAL_GRAPHQL_CURRENT_UTC_DAY_GROUPS_INCOMPLETE_NO_QUOTA_GRANT';
  return Object.freeze({
   schemaVersion:'S2_BUILD00_DEST_ACCOUNT_GRAPHQL_QUOTA_REAL_READ_V0_1',
   destinationAccountFingerprint:ACCOUNT_SHA,databaseFingerprint:DB_SHA,
   databaseName:DB,observedAtUtc:now(),quotaDayUtc:day,
   actualCloudflareProviderRead:true,authenticatedAccountAnalytics:true,
-  originalUsageSamples:reads,accountReadLimit:CAP_READ,accountWriteLimit:CAP_WRITE,
-  readObservedLowerBound:last.rowsReadLowerBound,
-  writeObservedLowerBound:last.rowsWrittenLowerBound,
+  originalUsageSamples:reads,previousUtcDayDiagnostic:priorDayDiagnostic,
+  accountReadLimit:CAP_READ,accountWriteLimit:CAP_WRITE,
+  readObservedLowerBound:last?.rowsReadLowerBound??null,
+  writeObservedLowerBound:last?.rowsWrittenLowerBound??null,
   optimisticUnverifiedRemainingReadUpperBound:maxPossibleRemainingReads,
   optimisticUnverifiedRemainingWriteUpperBound:maxPossibleRemainingWrites,
   requestedDailyMigrationWriteCeiling:DAY80,
-  theoreticalDay80RemainingUpperBound:Math.min(DAY80,maxPossibleRemainingWrites),
+  theoreticalDay80RemainingUpperBound:maxPossibleRemainingWrites===null?null:
+   Math.min(DAY80,maxPossibleRemainingWrites),
   // Hard safety: successful GraphQL does not certify real-time analytics,
   // appends, outstanding writer reservations or other Cloudflare worker costs.
   providerAnalyticsFreshnessUpperBoundSeconds:null,
@@ -107,13 +142,13 @@ export async function readDestinationD1AccountQuotaV0_1({
   D1CopyAuthorizedByThisReceipt:false,allowPaidUpgrade:false,
   CloudflareWrites:0, CloudflareD1SqlQueries:0,sourceAccountTouched:false,
   system1FormalCoreTouched:false,destinationWorkerOrCronActivated:false,
-  state:'PHYSICAL_GRAPHQL_ACCOUNT_USAGE_OBSERVED_NOT_SPENDABLE_QUOTA_GRANT',
+  state:quotaReadState,
   missingForImport:[
    'BOUND_ANALYTICS_FRESHNESS_OR_EQUIVALENT_ACCOUNT_WRITE_LEDGER',
    'INDEPENDENT_SOURCE_BACKUP_PIT_FROZEN_G3_ACCEPTANCE',
    'INDEXED_BATCH_MEASURED_BILLED_WRITES_AND_ONE_WRITER_SAFETY'
   ],
-  requestsMade:requests
+  requestsMade:requests, currentDayGroupEvidenceComplete:complete,
  });
 }
 if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta.url))){

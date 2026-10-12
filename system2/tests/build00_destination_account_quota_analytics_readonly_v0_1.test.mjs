@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readDestinationD1AccountQuotaV0_1 as read,validateDestinationQuotaGroupV0_1 as validate}
+import {readDestinationD1AccountQuotaV0_1 as read,validateDestinationQuotaGroupV0_1 as validate,inspectDestinationQuotaGroupV0_2 as inspect}
  from '../migration/build00_destination_account_quota_analytics_readonly_v0_1.mjs';
 const db='1'.repeat(32),day='2026-10-11';
 function snapshot({date=day,id=db,r=2200,w=105,q=11,z=1}={}){
@@ -76,4 +76,44 @@ test('Cloudflare request surface excludes D1 query/execute, import, Worker deplo
   'UPDATE s2_','DROP TABLE ','/workers/scripts/','/export']) {
   assert(!text.includes(forbidden));
  }
+});
+
+test('new UTC-day GraphQL zero rows returns EMPTY_UNOBSERVED, NEVER reported 0 spend',()=>{
+ const x=snapshot();x.data.viewer.accounts[0].d1AnalyticsAdaptiveGroups=[];
+ const r=inspect(x,day,db);
+ assert.deepEqual(r,{groupState:'EMPTY_UNOBSERVED',groupCount:0});
+ assert.equal(r.rowsWrittenLowerBound,undefined);
+ assert.equal(r.rowsReadLowerBound,undefined);
+});
+test('today GraphQL complete group continues to preserve real original lower bounds',()=>{
+ const result=inspect(snapshot(),day,db);
+ assert.equal(result.groupState,'SINGLE_VERIFIED_SOURCE_GROUP');
+ assert.equal(result.groupCount,1);
+ assert.equal(result.rowsWrittenLowerBound,105);
+});
+test('duplicate/extra Cloudflare account-DB groups only produce BLOCKED diagnostic',()=>{
+ const x=snapshot();
+ x.data.viewer.accounts[0].d1AnalyticsAdaptiveGroups.push({
+  dimensions:{date:day,databaseId:'3'.repeat(32)},
+  sum:{rowsRead:0,rowsWritten:0,readQueries:0,writeQueries:0},
+ });
+ const r=inspect(x,day,db);
+ assert.deepEqual(r,{groupState:'MULTIPLE_GROUPS_UNVERIFIED',groupCount:2});
+ assert.equal(r.rowsWrittenLowerBound,undefined);
+});
+test('missing dataset or account still fails closed, not treated as empty day',()=>{
+ assert.throws(()=>inspect({data:{viewer:{accounts:[]}}},day,db),/ACCOUNT_COVERAGE_MISSING/);
+ const x=snapshot();delete x.data.viewer.accounts[0].d1AnalyticsAdaptiveGroups;
+ assert.throws(()=>inspect(x,day,db),/GRAPHQL_GROUP_LIST_MISSING/);
+});
+test('empty-day diagnostic contract retains unknown headroom and no copy authority',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const source=readFileSync('system2/migration/build00_destination_account_quota_analytics_readonly_v0_1.mjs','utf8');
+ assert.match(source,/const last=complete\?reads\[1\]:null/);
+ assert.match(source,/maxPossibleRemainingWrites===null\?null/);
+ assert.match(source,/state:quotaReadState/);
+ assert.match(source,/D1CopyAuthorizedByThisReceipt:false/);
+ assert.match(source,/realTimeSpendableAccountRowsWritten:null/);
+ assert.match(source,/previousUtcDayDiagnostic:priorDayDiagnostic/);
+ assert.match(source,/if\(!complete\)/);
 });
