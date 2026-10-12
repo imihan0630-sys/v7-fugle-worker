@@ -35,3 +35,4 @@ jobs:
           path: artifacts/v8-node-exact-engine-offline-proof.json
           if-no-files-found: error
           retention-days: 60
+# Repeat only after no-monitor-write MOPS 502; 4 bounded official source retries, current config SHA exact-gated.
