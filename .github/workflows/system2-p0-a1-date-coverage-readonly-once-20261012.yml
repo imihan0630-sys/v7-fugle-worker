@@ -1,0 +1,54 @@
+name: System2 P0 Actual Target A1 Date Coverage READONLY ONCE 20261012
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-p0-a1-date-coverage-readonly-once-20261012.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s2-p0-target-a1-date-coverage-readonly-once-20261012
+  cancel-in-progress: false
+
+jobs:
+  actual_d1_a1_coverage_readback:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify physical-read-only and no-fake-zero-pick tests
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/check_actual_destination_a1_date_coverage_v0_1.mjs
+          node --test system2/tests/check_actual_destination_a1_date_coverage_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Actual Cloudflare DEST system2-research historical date-group SELECT only
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_COVERAGE_MARKET_DATE: "2026-10-12"
+        run: |
+          set -euo pipefail
+          node system2/scripts/check_actual_destination_a1_date_coverage_v0_1.mjs
+      - name: Retain original Cloudflare source-date coverage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-build00-actual-a1-date-coverage-${{ github.run_id }}
+          path: /tmp/s2-dest-a1-coverage/original-real-readback.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: No-Promotion declaration
+        if: always()
+        run: |
+          echo "Native System2 DEST D1 SELECT-only source-date coverage census." >> "$GITHUB_STEP_SUMMARY"
+          echo "Historical rows and PIT metadata flags are NOT independently accepted same-day strategy decisions." >> "$GITHUB_STEP_SUMMARY"
+          echo "No SQL writes, Cloudflare Worker/Cron, V8 Formal, zero-pick or frozen selection from this workflow." >> "$GITHUB_STEP_SUMMARY"
