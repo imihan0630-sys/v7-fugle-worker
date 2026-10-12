@@ -9,6 +9,7 @@ import {pipeline} from "node:stream/promises";
 import {Transform} from "node:stream";
 import {createGunzip} from "node:zlib";
 import {spawn} from "node:child_process";
+import {auditOriginalA1ImportedParity,auditOriginalBatchMetadataParity} from "./owner_override_existing_a1_parity_v0_1.mjs";
 
 const out="/tmp/s2-owner-override-raw-copy",archive="/tmp/s2-owner-override-input";
 const acctHash="27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55";
@@ -139,6 +140,19 @@ async function insertRows(table,columns,values){
 async function copy(){
  const m=JSON.parse(await readFile(out+"/meta.json","utf8"));
  const batchCols=m.columns.s2_historical_ingest_batches,barCols=m.columns.s2_historical_a1_bars;
+ // S2 #1068: QUARANTINE this run BEFORE ANY INSERT if one prior row is
+ // not byte-identity backed by the original SHA-verified SOURCE archive.
+ // This read-only query checks every already-copied bar, not only aggregate counts.
+ report.phase="PRECOPY_REAL_DEST_ORIGINAL_SOURCE_EXACT_PARITY";
+ report.existingA1SourceHashParity=await auditOriginalA1ImportedParity({
+   sourceRows:lines(out+"/bars.jsonl"),sourceColumns:barCols,
+   query,expectedTargetRows:report.before.barRows
+ });
+ report.existingIngestManifestParity=await auditOriginalBatchMetadataParity({
+   sourceRows:lines(out+"/batches.jsonl"),sourceColumns:batchCols,
+   query,expectedTargetRows:report.before.batchRows
+ });
+ report.phase="DEST_RAW_A1_COPY";
  let pack=[];
  for await(const row of lines(out+"/batches.jsonl")){
    pack.push(row);
@@ -174,6 +188,18 @@ async function copy(){
  const n=after.results?.[0];
  if(!n||n.batches!==129||n.bars<report.before.barRows||n.bars>84688)fail("FINAL_COUNT_INCONSISTENT");
  report.after={barRows:n.bars,batchRows:n.batches};
+ // Post-insert physical row integrity. Count agreement alone can conceal
+ // INSERT OR IGNORE skipping a source-divergent conflict.
+ report.phase="POSTCOPY_REAL_DEST_ORIGINAL_SOURCE_EXACT_PARITY";
+ report.afterA1SourceHashParity=await auditOriginalA1ImportedParity({
+   sourceRows:lines(out+"/bars.jsonl"),sourceColumns:barCols,
+   query,expectedTargetRows:n.bars
+ });
+ report.afterIngestManifestParity=await auditOriginalBatchMetadataParity({
+   sourceRows:lines(out+"/batches.jsonl"),sourceColumns:batchCols,
+   query,expectedTargetRows:n.batches
+ });
+ report.phase="DEST_RAW_A1_COPY_VERIFIED";
  report.completed=n.bars===84688;
  report.status=report.completed?"A1_RAW_HISTORY_COPY_COMPLETE_PIT_UNVERIFIED":
    "A1_RAW_HISTORY_PARTIAL__RESUME_NEXT_UTC_DAY";
