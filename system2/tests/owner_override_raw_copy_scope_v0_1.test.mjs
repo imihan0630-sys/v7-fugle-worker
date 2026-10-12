@@ -4,7 +4,12 @@ const a=readFileSync("system2/migration/owner_override_raw_d1_import_20261012.mj
 const b=readFileSync("system2/migration/owner_override_source_raw_export_20261012.py","utf8");
 const w=readFileSync(".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml","utf8");
 assert.match(a,/RAW_ARCHIVE_ONLY_PIT_UNVERIFIED_NO_QUALIFIED_ASOF_REPLAY/);
-assert.match(a,/const limit=80000, stopAt=75000/);
+assert.match(a,/const limit=80000, stopAt=75000, maxStatementRows=40/);
+assert.match(a,/FROM json_each\(\?\)/);
+assert.match(a,/json_extract\(value/);
+assert.match(a,/DEST_JSON1_EXTENSION_UNVERIFIED/);
+assert.match(a,/const res=await query\(sql,\[payload\]\)/);
+assert.doesNotMatch(a,/query\(sql,values\.flat\(\)\)/);
 assert.match(a,/report\.chargedRowsWrittenThisRun\+=used/);
 assert.match(a,/res\.meta\?\.rows_written/);
 assert.match(a,/if\(day\(\)!==report\.dayStartedUtc\)/);
