@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "D20_SOCIAL_PRIMARY_SLOT_SOURCE_FAILURE_V0_1",
+  "room": "13",
+  "domain": "D20",
+  "modules": [
+    "D20-03",
+    "D20-06",
+    "D20-11"
+  ],
+  "slotAsiaTaipei": "2026-10-12T23:10:00+08:00",
+  "attemptedAtAsiaTaipei": "2026-10-12T23:10:04+08:00",
+  "sourceUrl": "https://www.ptt.cc/atom/Stock.xml",
+  "attempts": [
+    {
+      "channel": "Firecrawl",
+      "maxAge": 0,
+      "status": "INSUFFICIENT_CREDITS",
+      "sourceContentReceived": false
+    },
+    {
+      "channel": "NativeWeb",
+      "status": "SOURCE_INACCESSIBLE",
+      "sourceContentReceived": false
+    }
+  ],
+  "sourceContentReceived": false,
+  "sourceContentHash": null,
+  "observedArticleCount": "UNKNOWN",
+  "adjacentPrimaryContinuity": "UNKNOWN",
+  "primaryParentCountAdded": 0,
+  "missingIntervalState": "SOURCE_BLOCKED_NOT_ZERO",
+  "sourceAuthority": "PUBLIC_FORUM_UNVERIFIED_AT_SLOT",
+  "eligibility": "NO_QUALIFIED_PRIMARY_PARENT",
+  "l4Promotion": false,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "falsification": "Failure to retrieve a finite feed is not evidence of zero discussion or falling attention; no imputed articles, no historical Shadow.",
+  "next": "At next actually executed fixed :10 slot attempt prospective source capture. Preserve source failure and finite-window continuity as UNKNOWN."
+}
