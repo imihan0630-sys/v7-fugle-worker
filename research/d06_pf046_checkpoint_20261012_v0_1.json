@@ -10,9 +10,12 @@
   "realMarketRowsUsed": 0,
   "researchFile": "research/d06_pf046_nav_clock_arbitrage_falsification_20261012_v0_1.json",
   "syntheticTests": {
-    "passed": 22,
-    "failed": 0
+    "passed": 38,
+    "failed": 0,
+    "navClock": 22,
+    "crowdingLineage": 16
   },
   "newIndependentDates": 0,
-  "outcomesUsed": false
+  "outcomesUsed": false,
+  "additionalResearchFile": "research/d06_pf046_crowding_provenance_graph_guard_20261012_v0_1.json"
 }
