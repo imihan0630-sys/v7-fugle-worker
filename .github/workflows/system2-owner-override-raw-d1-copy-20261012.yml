@@ -1,0 +1,58 @@
+name: S2 OWNER OVERRIDE Raw D1 History Copy (DEST ONLY)
+# Explicit owner instruction 2026-10-12: release G3/G4 pre-copy requirements
+# for RAW_ARCHIVE_ONLY transport. No Shadow/PIT/cutover/production authority.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-owner-override-raw-d1-copy-20261012.yml
+  schedule:
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-dest-owner-override-original-raw-copy-only
+  cancel-in-progress: false
+jobs:
+  destination_copy:
+    # Main-triggered first run must be an explicit owner-waiver labelled integration.
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'S2_OWNER_OVERRIDE_RAW_COPY_20261012') }}
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify isolated copy implementation syntax
+        run: |
+          set -euo pipefail
+          node --check system2/migration/owner_override_raw_d1_import_20261012.mjs
+          python3 -m py_compile system2/migration/owner_override_source_raw_export_20261012.py
+      - name: Fetch SAME ORIGINAL encrypted 90-day archive to protected runner
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-existing-rsa-source-transfer-encrypted-extended-38214521809
+          run-id: 38214521809
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-owner-override-input
+      - name: Do owner-authorized target-only RAW_A1 transport under 80k billed row limit
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/owner_override_raw_d1_import_20261012.mjs
+      - name: Archive only sanitized physical provider write/readback receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-owner-waiver-original-d1-raw-copy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-owner-override-raw-copy/sanitized-copy-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Explain limited migration state
+        if: always()
+        run: |
+          echo 'RAW A1 source history COPY ONLY. PIT/Frozen/replay certification remains unverified. Source D1 and System1 unchanged, source Cron stays 0, target Worker/Cron NOT enabled. Cloudflare user-billed-write limit 80k/UTC-day. Check original receipt before claiming any rows moved.' >> "$GITHUB_STEP_SUMMARY"
