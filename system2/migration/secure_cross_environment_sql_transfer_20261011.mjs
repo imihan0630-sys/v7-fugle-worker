@@ -159,10 +159,10 @@ async function run(){
     if(audit.sourceRows!==113222||audit.sourceBars!==84688||
        audit.permissionToImport!==false||audit.independentAuditAccepted!==false)
       bad("PIT_BATCH_AUDIT_INVALID_OR_OVERPROMOTED");
-    await writeFile(dir+"/sanitized-source-pit-batch-plan.json",JSON.stringify(audit,null,2)+"\\n",
+    await writeFile(dir+"/sanitized-source-pit-batch-plan.json",JSON.stringify(audit,null,2)+"\n",
       {flag:"wx",mode:0o600});
     out.sourceActualPitBatchSummary=audit.batchSummary;
-    out.sanitizedPitPlanSHA256=sha(JSON.stringify(audit,null,2)+"\\n");
+    out.sanitizedPitPlanSHA256=sha(JSON.stringify(audit,null,2)+"\n");
     out.permissionToImport=false;
     out.result="REAL_ORIGINAL_SOURCE_PIT_AND_COMPLETE_BATCH_METADATA_SCANNED_OFFLINE_NO_D1_IMPORT";
   }
