@@ -33,3 +33,4 @@ jobs:
           path: artifacts/v8-node-exact-engine-offline-proof.json
           if-no-files-found: warn
           retention-days: 60
+# Second provider KV readback attempt uses only existing authorized tokens; no secret changes.
