@@ -12,7 +12,7 @@ export async function verifiedOfficialQuarterEpsOverlay({parseAndValidate,market
    const body=new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',
       co_id:symbol,year:String(year-1911),season:String(q).padStart(2,'0')});
    const res=await fetchBufferedOfficialSource(url,{method:'POST',transport:'node-https',timeoutMs:65000,
-     headers:{'content-type':'application/x-www-form-urlencoded'},body},{maxAttempts:2});
+     headers:{'content-type':'application/x-www-form-urlencoded'},body},{maxAttempts:4});
    const html=await res.text();
    if(html.length<150)throw Error("MOPS_PAYLOAD_INCOMPLETE_"+symbol);
    return {html,sha256:createHash('sha256').update(html).digest('hex')};
