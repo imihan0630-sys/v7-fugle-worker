@@ -5,7 +5,14 @@
   "formalCore": "LOCKED",
   "status": "RESEARCH_ONLY / PREMIUM_CLOCK_REFERENCE_GUARD / OUTCOMES_CLOSED",
   "summary": "Previous-close NAV vs current price is not same-clock intraday premium; aligned indicative NAV gap still cannot identify executable AP arbitrage or stock execution.",
-  "next": "Freeze clock and cost semantics, obtain genuine future paired quote/indicative-NAV/units/PCF vintage; keep UNKNOWN for AP fills and true SBL utilization. Reconcile prior PF045 branch without old-SHA overwrite.",
+  "next": "Reconcile unmerged PF045/044 and local-only PF043 without old-SHA overwrite; capture future real price/indicative NAV + units/PCF with firstKnown clocks; accumulate margin/SBL vintage; preregister D16 OOS residual test; Formal Core LOCKED.",
   "maturityChange": "NONE",
-  "realMarketRowsUsed": 0
+  "realMarketRowsUsed": 0,
+  "researchFile": "research/d06_pf046_nav_clock_arbitrage_falsification_20261012_v0_1.json",
+  "syntheticTests": {
+    "passed": 22,
+    "failed": 0
+  },
+  "newIndependentDates": 0,
+  "outcomesUsed": false
 }
