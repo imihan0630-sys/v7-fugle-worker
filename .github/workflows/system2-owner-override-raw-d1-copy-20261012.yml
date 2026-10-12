@@ -56,3 +56,5 @@ jobs:
         if: always()
         run: |
           echo 'RAW A1 source history COPY ONLY. PIT/Frozen/replay certification remains unverified. Source D1 and System1 unchanged, source Cron stays 0, target Worker/Cron NOT enabled. Cloudflare user-billed-write limit 80k/UTC-day. Check original receipt before claiming any rows moved.' >> "$GITHUB_STEP_SUMMARY"
+
+# 2026-10-12 owner override re-entry after identity typo guard correctly blocked with 0 rows written.
