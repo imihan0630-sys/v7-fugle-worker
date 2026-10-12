@@ -397,3 +397,12 @@ Boundary remains:
 D14-17 advances to L2 / 40% for mechanism + falsification semantics only.
 Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order-lifecycle evidence, preserve unexecuted opportunities, use mechanism-matched benchmarks, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
 Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+
+## Room 10 evidence reconciliation — 2026-10-12 (research-only)
+
+The current main already contains independent frozen mechanism/falsification contracts for D14-16, D14-17 and D14-18. D14-16 and D14-17 are documented in this checkpoint; D14-18 is documented in research/D14_18_ALPHA_DECAY_EXECUTION_URGENCY_CONTRACT_20261008_V0_1.md and research/D14_18_DURABLE_CHECKPOINT_SUPPLEMENT_20261008_V0_1.md.
+
+Research verdict: these three modules have L2/40 mechanism-and-falsification evidence only. The canonical central tracker still records L0/0 and must not be updated until the checkpoint is durably reviewed and the current tracker is re-read. No prospective broker-confirmed fill evidence or OOS economic benefit is established.
+
+Exact next action: reconcile central tracker with the three frozen source contracts after checking latest main and concurrent edits. Subsequent L3 evidence requires independent prospective Taiwan sessions, immutable first-known clocks, unfilled opportunities, matching mechanism, and verified broker sources. Do not treat signals, previews, or modeled fills as actual execution. Formal Core remains locked.
