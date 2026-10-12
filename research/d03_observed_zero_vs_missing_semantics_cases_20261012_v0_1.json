@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D03_OBSERVED_ZERO_VS_MISSING_SEMANTICS_CASES_20261012_V0_1",
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED",
+  "inputStates": [
+    "OBSERVED_VALUE",
+    "OBSERVED_ZERO",
+    "OBSERVED_FLAT",
+    "NOT_APPLICABLE_NONSESSION",
+    "NOT_YET_PUBLISHED",
+    "MISSING_EXPECTED_SESSION",
+    "MULTIPLE_VERSION_UNRESOLVED",
+    "SOURCE_CONFLICT",
+    "POLICY_EXCLUDED"
+  ],
+  "cases": [
+    {"id":"T01","claim":"empty telemetry group is numeric zero","accept":false},
+    {"id":"T02","claim":"observed exact zero is valid numeric data","accept":true},
+    {"id":"T03","claim":"authoritative non-session is excluded from expected sessions","accept":true},
+    {"id":"T04","claim":"missing ret endpoint produces zero return","accept":false},
+    {"id":"T05","claim":"two observed equal closes produce valid zero return","accept":true},
+    {"id":"T06","claim":"moving average denominator may shrink around missing close","accept":false},
+    {"id":"T07","claim":"missing persistence day counts as nonpositive day","accept":false},
+    {"id":"T08","claim":"observed KD zero range may use frozen convention","accept":true},
+    {"id":"T09","claim":"missing KD high or low invokes zero-range convention","accept":false},
+    {"id":"T10","claim":"observed flat RSI delta contributes zero gain and loss","accept":true},
+    {"id":"T11","claim":"missing RSI loss implies RSI 100","accept":false},
+    {"id":"T12","claim":"MACD silently carries EMA across missing eligible session","accept":false},
+    {"id":"T13","claim":"observed unchanged OHLC may yield zero ADX TR and DM","accept":true},
+    {"id":"T14","claim":"missing OHLC may yield zero ADX TR and DM","accept":false},
+    {"id":"T15","claim":"twenty observed equal closes may yield zero Bollinger width","accept":true},
+    {"id":"T16","claim":"nineteen closes plus one missing may be padded for Bollinger","accept":false},
+    {"id":"T17","claim":"missing divergence inputs mean no divergence","accept":false},
+    {"id":"T18","claim":"missing timeframe means no timeframe conflict","accept":false},
+    {"id":"T19","claim":"equal numeric output with different state-mask hash is same evidence","accept":false},
+    {"id":"T20","claim":"later backfill can rewrite earlier PIT availability","accept":false}
+  ]
+}
