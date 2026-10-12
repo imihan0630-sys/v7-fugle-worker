@@ -4074,3 +4074,22 @@ Exact next: inspect actual indicator implementation paths for silent skip/denomi
 Artifacts: `research/D03_OBSERVED_ZERO_VS_MISSING_TELEMETRY_SEMANTICS_20261012_V0_1.md`, `research/d03_observed_zero_vs_missing_semantics_cases_20261012_v0_1.json`, `research/test_d03_observed_zero_vs_missing_semantics_v0_1.mjs`.
 
 D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes closed; Formal Core locked.
+
+
+## TI-1853~1872 — first physical import: storage versus replay eligibility (2026-10-12)
+
+- Independent audit commit `62db94a99df83d76bc599ddef936c0a96aadb160` accepts the first actual source-to-destination raw A1 copy in a scoped storage sense. Writer Run 38220900855 / Job 114716648346 / Artifact 11734734141 inserted 11,785 A1 bars and 129 ingest-batch rows, 11,914 logical rows total, with 71,226 provider-metered billed writes below the 80,000 UTC-day operational ceiling.
+- Final independent readback Run 38224405077 / Job 114728251732 / Artifact 11734969638 observed exactly 11,785 bars, 129 batch rows, zero Frozen decisions and an 11,350,016-byte destination database; the readback itself wrote zero rows. Source/System1 were unchanged and destination Worker/Cron remained inactive.
+- Actual cost reconciles exactly as 11,785 bars * 6 + 129 batch rows * 4 = 71,226. This physically calibrates the current schema/importer path, but it is not a universal constant across schema changes, retries, conflicts or other tables. Remaining 72,903 A1 bars imply an optimistic 437,418 billed-write lower-bound at the same six-write multiplier and at least six additional 80,000-ceiling UTC days; this is planning arithmetic, not authorization or a guaranteed completion date.
+- D03 freezes three orthogonal axes: storage presence, exact content/dependency parity and causal replay eligibility. Current A1 storage coverage is 13.9158%; batch metadata is 129/129; all logical-row coverage is about 10.5228%. Aggregate counts match the writer receipt, but per-bar/per-batch source-to-destination key/value/version/content-hash parity is not certified.
+- All 129 batch metadata rows coexist with only 11,785/84,688 bars. Therefore batch-row presence cannot certify payload completeness. Each batch needs expected/observed unique key-set equality, value/version/hash parity, duplicate/conflict exclusion, referenced object closure, clock status and immutable run/readback identity.
+- Independent source restore is scoped PASS 1/4, but source A1 lacks `firstKnownAt`; independently PIT-certified bars remain 0/84,688. The 81,086 prospective upper bound and 3,602 conservative-finality rows are not independent provider publication clocks. Destination persistence time cannot become historical availability. Copied bars remain `RAW_ARCHIVE_ONLY`.
+- D03-10 receives no exact clean 20-session parent window. D03-09 receives no canonical full replay or replay-certified state. Other D03 modules receive storage availability only, not PIT factor evidence. A single ready boolean is rejected; storage, parity and causal status must remain separate.
+- The 20-case executable oracle passes. It rejects copied-to-PIT, metadata-to-payload completeness, aggregate-count-to-content parity, destination-time clock laundering, partial-row-to-Bollinger/ADX readiness, migration-to-selection/OOS/alpha and maturity promotion.
+- Symbol/date composition, date clustering, selection bias, OOS, walk-forward, trade cost, fillability, limits/halts/ex-rights, regime and alpha remain UNKNOWN. No outcomes, optimization candidate, maturity or Formal Core change.
+
+Exact next: preserve the same-day single-writer stop; continue resumable raw copy on future quota days without accepted-row rewrites; independently reconcile per-batch/per-bar source and destination keys, values, versions and hashes; derive true complete-batch count rather than metadata count; keep every transported row PIT-quarantined until causal clocks are accepted; then establish exact symbol-session coverage before Bollinger/ADX admission.
+
+Artifacts: `research/D03_FIRST_PHYSICAL_IMPORT_STORAGE_VS_REPLAY_ELIGIBILITY_20261012_V0_1.md`, `research/d03_first_physical_import_storage_replay_cases_20261012_v0_1.json`, `research/test_d03_first_physical_import_storage_replay_v0_1.mjs`.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes closed; Formal Core locked.
