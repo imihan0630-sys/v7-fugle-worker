@@ -4,7 +4,7 @@ const a=readFileSync("system2/migration/owner_override_raw_d1_import_20261012.mj
 const b=readFileSync("system2/migration/owner_override_source_raw_export_20261012.py","utf8");
 const w=readFileSync(".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml","utf8");
 assert.match(a,/RAW_ARCHIVE_ONLY_PIT_UNVERIFIED_NO_QUALIFIED_ASOF_REPLAY/);
-assert.match(a,/const limit=80000, stopAt=75000, maxStatementRows=40/);
+assert.match(a,/const limit=80000, stopAt=75000, maxStatementRows=80/);
 assert.match(a,/FROM json_each\(\?\)/);
 assert.match(a,/json_extract\(value/);
 assert.match(a,/DEST_JSON1_EXTENSION_UNVERIFIED/);
@@ -28,6 +28,7 @@ assert.doesNotMatch(a,/api\.cloudflare\.com\/client\/v4\/accounts\/.*workers\/sc
 assert.doesNotMatch(a,/\b(DELETE FROM|DROP TABLE|UPDATE s2_|REPLACE INTO|TRUNCATE)\b/i);
 assert.match(b,/SQL_SHA="56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12"/);
 assert.match(b,/PIT is NOT certified/);
+assert.match(b,/batch_id,market_date,market,symbol,bar_id/);
 assert.match(w,/environment: system2-schema-only/);
 assert.match(w,/run-id: 38214521809/);
 assert.match(w,/retention-days: 90/);
