@@ -1,0 +1,99 @@
+name: V8 OWNER 20261012 True Full-Selection Dry-Run ONCE
+on:
+  push:
+    branches:
+      - ops/v8-selection-preview-check-20261012
+    paths:
+      - .github/workflows/v8-owner-full-selection-dry-run-once-20261012.yml
+permissions:
+  contents: read
+jobs:
+  live_full_selection_dry_run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - name: Verify official daily sources then run existing no-plan-write selection preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$V7_ADMIN_TOKEN"
+          mkdir -p artifacts
+          node --input-type=module <<'NODE'
+          import {writeFile} from 'node:fs/promises';
+          const url="https://fugle-test.imihan0630.workers.dev";
+          const date="2026-10-12",token=process.env.V7_ADMIN_TOKEN;
+          const h={"x-admin-token":token,"accept":"application/json"};
+          const output={schemaVersion:"V8_FULL_SELECTION_PREVIEW_LIVE_ONCE_20261012_V0_1",observedAt:new Date().toISOString(),targetDate:date,noFormalPlanWritten:true,noTrade:true,noPush:true,no3MinWrite:true,officialReadbacks:{},preview:{}};
+          async function get(name,path){
+            const r=await fetch(url+path,{method:"GET",headers:h,signal:AbortSignal.timeout(24000)});
+            const x=await r.json();
+            output.officialReadbacks[name]={httpStatus:r.status,marketDate:x?.marketDate??null,ready:x?.ready??null,
+               ...(name==="market"?{twseReady:x?.markets?.TWSE?.ready===true,tpexReady:x?.markets?.TPEx?.ready===true}:{}),
+               ...(name==="quality"?{indexReady:x?.index?.ready===true,tdccReady:x?.tdcc?.ready===true,
+                 datasets:Object.fromEntries(["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"].map(k=>[k,x?.datasets?.[k]?.ready===true]))}:{}),
+               ...(name==="scan"?{scanDate:x?.scanDate??null,selectedCount:x?.selectedCount??null,pipelineComplete:x?.pipeline?.complete===true}:{}),
+               ...(name==="institution"?{validDates:x?.validDates??null}: {})};
+            return {r,x};
+          }
+          try{
+            const [market,institution,quality,scan]=await Promise.all([
+              get("market","/api/market-data/status?marketDate="+date),
+              get("institution","/api/institution-status?marketDate="+date),
+              get("quality","/api/quality-status?marketDate="+date),
+              get("scan","/api/scan/status")
+            ]);
+            const ready=market.r.ok&&market.x.marketDate===date&&market.x.ready&&market.x.markets?.TWSE?.ready&&market.x.markets?.TPEx?.ready
+              &&institution.r.ok&&institution.x.marketDate===date&&institution.x.ready
+              &&quality.r.ok&&quality.x.marketDate===date&&quality.x.index?.ready&&quality.x.tdcc?.ready
+              &&["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"].every(k=>quality.x.datasets?.[k]?.ready);
+            output.allPrerequisitesReady=Boolean(ready);
+            if(!ready){output.preview={state:"BLOCKED_SOURCE_PREREQUISITES"};process.exitCode=2;}
+            else{
+              const res=await fetch(url+"/api/scan-preview",{
+                method:"POST",headers:{...h,"content-type":"application/json"},body:JSON.stringify({marketDate:date}),
+                signal:AbortSignal.timeout(235000)
+              });
+              output.preview.httpStatus=res.status;
+              output.preview.contentType=String(res.headers.get("content-type")||"").slice(0,80);
+              const t=await res.text();
+              const p=(()=>{try{return JSON.parse(t)}catch{return null}})();
+              if(p){
+                output.preview.dryRun=p?.dryRun===true;
+                output.preview.scanDate=p?.scanDate??null;
+                output.preview.selectedCount=Number.isInteger(p?.selectedCount)?p.selectedCount:null;
+                output.preview.selectionCompleted=p?.pipeline?.selectionCompleted===true;
+                output.preview.pipelineComplete=p?.pipeline?.complete===true;
+                output.preview.quarterEpsReviewReady=p?.diagnostics?.quarterEpsReview?.ready===true;
+                output.preview.quarterEpsMissing=p?.diagnostics?.quarterEpsReview?.missingSymbols||[];
+                output.preview.history60DayCount=p?.diagnostics?.history60DayCount??null;
+                output.preview.historyCoverageComplete=p?.diagnostics?.historyCoverageComplete??null;
+                output.preview.historyInsufficientCount=p?.diagnostics?.historyInsufficientCount??null;
+                output.preview.marketSources=p?.diagnostics?.marketSources||null;
+                output.preview.selections=Array.isArray(p?.stocks)?p.stocks.slice(0,6).map(s=>({symbol:s?.symbol??null,name:s?.name??null,signalLevel:s?.signalLevel??null,channel:s?.channel??null})):null;
+                output.preview.error=p?.error?String(p.error).slice(0,600):null;
+                output.preview.state=res.ok&&p?.dryRun===true&&p?.pipeline?.selectionCompleted===true&&p?.scanDate===date?"PREVIEW_SELECTION_EXECUTED":"NOT_VERIFIED";
+              }else{
+                output.preview.state="HTTP_NON_JSON_OR_PROVIDER_WORKER_ERROR";
+                output.preview.responseCategory=t.slice(0,250).replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,180);
+              }
+              if(output.preview.state!=="PREVIEW_SELECTION_EXECUTED")process.exitCode=2;
+            }
+          }catch(err){
+            output.preview.state="EXCEPTION";
+            output.preview.error=err?.name==="TimeoutError"?"TIMEOUT":String(err.message||err).slice(0,350);
+            process.exitCode=2;
+          }finally{
+            await writeFile("artifacts/v8-owner-full-selection-preview-20261012.json",JSON.stringify(output,null,2)+"\n");
+            console.log("V8_OWNER_REAL_FULL_SELECTION_PREVIEW="+JSON.stringify(output));
+          }
+          NODE
+      - name: Preserve actual provider response for audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-full-selection-preview-20261012-${{ github.run_id }}
+          path: artifacts/v8-owner-full-selection-preview-20261012.json
+          retention-days: 60
+          if-no-files-found: error
