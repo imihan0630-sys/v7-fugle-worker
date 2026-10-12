@@ -42,8 +42,15 @@ try{
   const response=await fetch(api+"/storage/kv/namespaces/"+kvId+"/values/"+encodeURIComponent(key),{
      headers:{authorization:"Bearer "+wt},signal:AbortSignal.timeout(35000)});
   if(response.status===404)return null;
-  if(!response.ok)throw Error("PROVIDER_KV_READ_HTTP_"+response.status+"_KEY_GROUP_"+String(key).split(":")[0]);
-  const t=await response.text();
+  let effective=response;
+  if(response.status===401 && dt!==wt){
+    // A second existing repository token may hold an already-authorized KV READ scope.
+    // Fail closed if both tokens reject; never change credentials or Cloudflare bindings.
+    effective=await fetch(api+"/storage/kv/namespaces/"+kvId+"/values/"+encodeURIComponent(key),{
+      headers:{authorization:"Bearer "+dt},signal:AbortSignal.timeout(35000)});
+  }
+  if(!effective.ok)throw Error("PROVIDER_KV_READ_HTTP_"+effective.status+"_KEY_GROUP_"+String(key).split(":")[0]);
+  const t=await effective.text();
   if(t.length>25000000)throw Error("KV_PAYLOAD_TOO_LARGE");
   return type==="json"?JSON.parse(t):t;
  }
