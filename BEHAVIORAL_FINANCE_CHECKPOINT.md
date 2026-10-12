@@ -342,3 +342,11 @@ Exact next continuation:
 4. If neither future-data condition is available, continue only newly routed D20 governance/research deltas rather than fabricating prospective evidence.
 
 D20 maturity remains 58.5%. No Formal Core change.
+
+## 2026-10-12 23:10 台北時間｜固定時鐘來源與部分識別續接
+- 實際於固定23:10時槽嘗試取得公開社群來源；外部擷取額度不足，原生來源不可讀。真實文章數、內容、相鄰快照連續性均 UNKNOWN，新增合格主要親本0；來源失敗不是零篇文章。
+- 本輪來源失敗證據：`research/d20_social_primary_slot_failure_20261012_2310_v0_1.json`。另將2026-10-11 15:10既有來源失敗研究檔從舊獨立分支安全複製至本輪新分支，並未改寫歷史內容。
+- 研究反證：有限來源窗口若有未知遺漏文章，觀測看多比例不能識別完整期間立場；若已觀測n篇其中b篇看多，且另有u篇未知，母體比例僅能界定於 b/(n+u) 與 (b+u)/(n+u) 之間。沒有遺漏上界則界限退化為0至1。5組合成案例在修正初始測試資料錯誤後均通過；不是市場樣本。
+- 尚未合併的2026-10-11跨時區研究分支仍保留；研究主檔複製遭安全檢查阻擋，不能宣稱已併入。
+- 正式成熟度與追蹤器維持原值；D20-13仍為L2，D20-03/06/11仍為L3，無第四級升級；Formal Core維持LOCKED。
+- 精確下一步：確認本輪分支及正式主分支差異，將合格來源失敗證據安全送交審核；下一次真正執行的固定:10時槽只收集前瞻資料，確認原始來源、時間、內容指紋、相鄰連續性後才考慮主要親本；下一有效交易日借券時槽依既定契約驗證，禁止補造缺漏。
