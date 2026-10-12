@@ -1,3 +1,4 @@
+import { evaluateDestinationDay80SharedWritersV0_1 } from "../runtime/daily_shadow_destination_day80_writer_sharing_v0_1.mjs";
 import { resolveDailyShadowAccountRouteV0_1, assertDailyShadowDestinationDatabaseIdentityV0_1 } from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
 import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
@@ -628,10 +629,19 @@ async function main() {
     })
     : usage;
 
-  const decision = evaluateD1AccountQuotaReservationV0_1({
+  const importedAudit=verifiedDestination?await loadJson(
+    new URL("../migration/evidence/S2_AUDIT_DEST_A1_FIRST_IMPORT_FINAL_PHYSICAL_ACCEPTANCE_20261012_V0_1.json",import.meta.url)):null;
+  const day80=verifiedDestination?evaluateDestinationDay80SharedWritersV0_1({
+    quotaDay:currentQuotaDay,
+    accountRowsWrittenLowerBound:accountUsage.known?accountUsage.rowsWritten:null,
+    shadowReservedBilledWrites:writer.reservationModel.rowsWritten,
+    nowFloorProof:importedAudit
+  }):null;
+  const initialDecision = evaluateD1AccountQuotaReservationV0_1({
     writer,
     eventName,
-    accountUsage,
+    accountUsage:day80&&accountUsage.known?
+      {...accountUsage,rowsWritten:Math.max(accountUsage.rowsWritten,day80.accountRowsWrittenFloor)}:accountUsage,
     system1ReservePolicy,
     ledgerIntegrityState: ledger.integrityState,
     outstandingReservedRowsWritten: ledger.outstandingReservedRowsWritten,
@@ -643,6 +653,9 @@ async function main() {
     requestedRowsWritten: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_WRITTEN", null),
     requestedRowsRead: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_READ", null),
   });
+  const decision=day80&&!day80.nextWriterPermittedByOperationalCap?
+    Object.freeze({...initialDecision, state:"QUOTA_BUDGET_DEFER",
+      physicalAllowed:false,reasonCodes:Object.freeze([day80.reason])}):initialDecision;
 
   const at = new Date().toISOString();
   let ledgerCheckHash = null;
@@ -716,6 +729,7 @@ async function main() {
     accountFingerprint:verifiedDestination?.accountFingerprint??null,
     v8ReserveApplicable:verifiedDestination?false:null,
     accountUsage,
+    destinationDay80PhysicalImportFloor:day80,
     ledger,
     system1ReserveEvidenceState: system1ReservePolicy.evidenceState,
     system1ReserveAuthorized: system1ReservePolicy.reserveNumberAuthorized === true,
