@@ -1,0 +1,55 @@
+name: System2 P0 Destination Daily Shadow Native READONLY Preflight ONCE 20261012
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-p0-dest-daily-readonly-once-20261012.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-p0-dest-daily-native-readonly-once-20261012
+  cancel-in-progress: false
+
+jobs:
+  actual_provider_readonly:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: system2-schema-only
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax/check read-only safety with no Cloudflare mutations
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_system2_dest_daily_shadow_readonly_20261012.mjs
+          node --test system2/tests/daily_shadow_destination_day80_writer_sharing_v0_1.test.mjs
+          node system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real Cloudflare DEST account and D1 native metadata+GraphQL+SELECT only
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_system2_dest_daily_shadow_readonly_20261012.mjs
+      - name: Preserve physical provider result for separate independent audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-p0-native-dest-quota-a1-readonly-${{ github.run_id }}
+          path: /tmp/s2-p0-daily-dest-readonly/native-cloudflare-preflight.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Explicit no-promotion contract
+        if: always()
+        run: |
+          echo 'Only destination Cloudflare API metadata, GraphQL and D1 SELECT.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No D1 writes, no historical import, no source account, no V8 changes, no Worker/Cron. No qualified strategy selection/Frozen outcome.' >> "$GITHUB_STEP_SUMMARY"
+          echo '18:35 Daily Shadow high-write diagnostic and DATA_LANE migration must share owner DAY80 limit.' >> "$GITHUB_STEP_SUMMARY"
