@@ -1,0 +1,46 @@
+name: V8 Daily Free GitHub Selection Candidate Fallback
+on:
+  schedule:
+    - cron: '15 16 * * 1-5' # Mon-Fri UTC -> following Taipei 00:15: after 23:35/23:55 formal attempts
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: 'Prior official Taiwan session YYYY-MM-DD (blank means yesterday Taipei)'
+        required: false
+        type: string
+  push:
+    branches:
+      - ops/v8-daily-free-github-selection-fallback-20261013
+    paths:
+      - .github/workflows/v8-daily-free-github-candidate-fallback.yml
+permissions:
+  contents: read
+concurrency:
+  group: v8-github-nightly-readonly-selection-fallback
+  cancel-in-progress: false
+jobs:
+  dry_run_fallback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      FALLBACK_MARKET_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.market_date || '' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact previously published V8 selection algorithm; no production plan/push write
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check ops/v8_daily_github_candidate_fallback_v0_1.mjs
+          node ops/v8_daily_github_candidate_fallback_v0_1.mjs
+      - name: Preserve daily candidate receipt even on failures; failed not zero picks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-readonly-candidates-${{ github.run_id }}
+          path: artifacts/v8-nightly-candidates-*.json
+          if-no-files-found: warn
+          retention-days: 60
