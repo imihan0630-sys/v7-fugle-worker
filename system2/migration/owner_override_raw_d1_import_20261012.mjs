@@ -15,7 +15,7 @@ const acctHash="27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55
 const dbHash="95f48f4d37b8eb4c16919d037259a5ebc30a8057e1933db39a6e8f759b9874b9";
 const sourceSqlSha="56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12";
 const cipherSha="f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1";
-const limit=80000, stopAt=75000, maxStatementRows=40; // one JSON bind per insert, D1 hard max 100
+const limit=80000, stopAt=75000, maxStatementRows=80; // one JSON bind per insert, D1 hard max 100
 const sha=x=>createHash("sha256").update(x).digest("hex");
 const day=()=>new Date().toISOString().slice(0,10);
 const fail=x=>{throw Error("S2_OWNER_RAW_COPY_"+x)};
