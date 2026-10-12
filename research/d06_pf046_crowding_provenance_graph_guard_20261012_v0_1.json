@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "D06_CROWDING_PF046_LINEAGE_V0_1",
+  "owner": "05｜法人與籌碼研究室",
+  "mainAtStart": "6a8d39b591ebb9e42b5a79418ed407ae23f726fd",
+  "modules": [
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-11",
+    "D06-16",
+    "D06-18"
+  ],
+  "formalCore": "LOCKED",
+  "scope": "Research-only shared-source and shared-event dedup of ETF, SBL, margin, institutional and price-volume context.",
+  "claim": "Counting source rows or module labels overstates independent evidence when same primitive or economic event is shared.",
+  "support": "Multiple consumer features can legitimately describe different dimensions of one event.",
+  "falsification": "Three consumers of one primitive => one provenance component; distinct ETF and SBL receipts under one rebalance event => one event component.",
+  "alternative": "Independent hedging or unrelated trades could produce contemporaneous similar signals; event identity itself must be evidenced.",
+  "failure": "Missing parent receipt, event identity or comparable market/date => UNKNOWN, not independent.",
+  "method": "Synthetic union-find over shared verified parent IDs or verified event IDs. Component count is provenance groups ONLY, never predictive independence or alpha votes.",
+  "biasGuards": [
+    "PIT firstKnown and same-vintage",
+    "No historical Shadow",
+    "No factor-family double vote",
+    "No data-mined event grouping after outcome",
+    "OOS date clusters and purge",
+    "Market-regime stratification",
+    "Costs, borrow fees, liquidity and spread",
+    "Separate 918 margin and 931 SBL populations; never cross-denominator"
+  ],
+  "tests": {
+    "kind": "SYNTHETIC_ONLY",
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "cases": [
+      {
+        "id": "same_primitive_three_consumers",
+        "pass": true
+      },
+      {
+        "id": "distinct_receipts_same_event",
+        "pass": true
+      },
+      {
+        "id": "distinct_verified_events",
+        "pass": true
+      },
+      {
+        "id": "transitive_overlap",
+        "pass": true
+      },
+      {
+        "id": "three_disjoint",
+        "pass": true
+      },
+      {
+        "id": "multi_parent_bridge",
+        "pass": true
+      },
+      {
+        "id": "duplicate_consumer",
+        "pass": true
+      },
+      {
+        "id": "etf_sbl_shared_event",
+        "pass": true
+      },
+      {
+        "id": "price_volume_shared_parent",
+        "pass": true
+      },
+      {
+        "id": "missing_parent",
+        "pass": true
+      },
+      {
+        "id": "missing_event",
+        "pass": true
+      },
+      {
+        "id": "mixed_unknown",
+        "pass": true
+      },
+      {
+        "id": "empty_observation",
+        "pass": true
+      },
+      {
+        "id": "two_events_three_signals",
+        "pass": true
+      },
+      {
+        "id": "same_event_different_brokers",
+        "pass": true
+      },
+      {
+        "id": "four_disjoint",
+        "pass": true
+      }
+    ]
+  },
+  "realMarketRowsUsed": 0,
+  "newDates": 0,
+  "outcomesUsed": false,
+  "maturityChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "status": "PROVENANCE_GRAPH_CONTRACT_TESTED / ENGINEERING_ENFORCEMENT_PENDING / OOS_UNKNOWN",
+  "sdaTicket": "SDA-007",
+  "next": "Engineering owners independently implement exact parent/event lineage in System1/System2 research diagnostics; D16 validate common-support residual OOS; 00 independently close SDA-007 only with genuine receipts. No Formal behavior change."
+}
