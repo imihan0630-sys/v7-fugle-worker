@@ -1,1 +1,29 @@
-{}
+{
+  "schemaVersion": "D19_STAGE28_SYNTHETIC_GATE_RESULT_V0_1",
+  "status": "SYNTHETIC_SPEC_CHECKS_ONLY",
+  "executedOn": "2026-10-12",
+  "testsTotal": 42,
+  "testsPassed": 42,
+  "testsFailed": 0,
+  "categoryCounts": {
+    "identityAndSafety": 4,
+    "comparatorFamily": 7,
+    "frozenWindows": 3,
+    "missingnessAndChain": 4,
+    "clocks": 4,
+    "denominators": 4,
+    "receiptCompleteness": 5,
+    "preexistingSpecs": 5,
+    "trackerConsistency": 6
+  },
+  "receiptBlobSha": "1d894dce317792a8d1f4bec768c76e71bc1beb97",
+  "trackerBlobSha": "f979496cf6544a2d48880fc1e4017259d442eb06",
+  "source": "GitHub main and isolated research branch; deterministic JS assertions",
+  "physicalTaiwanReplay": false,
+  "physicalSixReceiptChain": false,
+  "oosEvidence": false,
+  "prospectiveShadowEvidence": false,
+  "maturityChanged": false,
+  "formalCore": "LOCKED",
+  "next": "Obtain and independently attest source-native six physical receipts; do not count schema checks as PIT data"
+}
