@@ -36,3 +36,4 @@ jobs:
 # Second provider KV readback attempt uses only existing authorized tokens; no secret changes.
 # One-shot probe: signed isolated KV binding reader; auto-cleanup required.
 # Recheck exact PIT same-date EPS eligibility and deployed Worker config-name parity.
+# Exact V8 selection with official MOPS-verified EPS in-memory extension; no V8 D1 writes.
