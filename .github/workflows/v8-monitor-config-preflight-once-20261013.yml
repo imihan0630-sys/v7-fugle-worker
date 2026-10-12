@@ -62,3 +62,4 @@ jobs:
           path: artifacts/v8-monitor-config-preflight-20261013.json
           if-no-files-found: error
           retention-days: 60
+# Independent post-write monitoring readback; no endpoint mutation.
