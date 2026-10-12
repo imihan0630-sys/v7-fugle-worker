@@ -78,7 +78,11 @@ async function api(path,method="GET",body=null){
     method,headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
     ...(body===null?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(45000)});
   const d=await response.json().catch(()=>null);
-  if(!response.ok||d?.success!==true)fail("PROVIDER_REQUEST_FAILED");
+  if(!response.ok||d?.success!==true){
+    report.providerError={operation:path.includes("/query")?"DEST_D1_SQL":"DEST_D1_LIST",
+      httpStatus:response.status,codes:Array.isArray(d?.errors)?d.errors.slice(0,4).map(x=>x.code??"NO_CODE"):[]};
+    fail("PROVIDER_REQUEST_FAILED");
+  }
   return d.result;
 }
 async function query(sql,params=[]){
@@ -168,10 +172,14 @@ async function copy(){
 }
 async function main(){
  await mkdir(out,{recursive:true,mode:0o700});
+ report.phase="DEST_PROVIDER_PREFLIGHT";
+ await checkDestination();
+ report.phase="SOURCE_ARCHIVE_DECRYPT";
  const sql=await originalSQL();
+ report.phase="SOURCE_OFFLINE_RESTORE";
  await extract(sql);
  await rm(sql,{force:true});
- await checkDestination();
+ report.phase="DEST_RAW_A1_COPY";
  await copy();
 }
 try{

@@ -9,6 +9,8 @@ assert.match(a,/report\.chargedRowsWrittenThisRun\+=used/);
 assert.match(a,/res\.meta\?\.rows_written/);
 assert.match(a,/if\(day\(\)!==report\.dayStartedUtc\)/);
 assert.match(a,/DEST_SCHEMA_MISMATCH/);
+assert.ok(a.indexOf("await checkDestination()")<a.indexOf("await originalSQL()"),"Cloudflare destination must be preflighted before expensive source restore");
+assert.match(a,/report\.providerError/);
 assert.match(a,/SOURCE_ARCHIVE_IDENTITY/);
 const canonical=readFileSync("system2/migration/secure_cross_environment_sql_transfer_20261011.mjs","utf8");
 const expected=canonical.match(/const targetDbSha="([a-f0-9]{64})"/)?.[1];
