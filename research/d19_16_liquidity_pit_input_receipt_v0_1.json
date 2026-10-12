@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D19_LIQUIDITY_PIT_INPUT_V0_1",
+  "moduleId": "D19-16",
+  "stage": 28,
+  "status": "SPEC_ONLY_NO_PHYSICAL_TAIWAN_REPLAY",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "clockRule": "source.firstKnownAt <= decisionAt; T close finality; execution no earlier than T+1; unknown time is UNKNOWN",
+  "variantFamily": [
+    "AMIHUD_BASELINE",
+    "EX_OVERNIGHT",
+    "RECENCY_WEIGHTED",
+    "UP_MARKET",
+    "DOWN_MARKET"
+  ],
+  "windows": {
+    "primaryValidSessions": 20,
+    "sensitivityValidSessions": 60,
+    "optimization": "PROHIBITED_BEFORE_OOS"
+  },
+  "denominator": "positive NTD traded value, never 0 or missing",
+  "missingness": "UNKNOWN_NOT_ZERO_NOT_BAD",
+  "controlDependencies": [
+    "D03",
+    "D09",
+    "D14",
+    "D16",
+    "D19-01",
+    "D19-10",
+    "D19-15"
+  ],
+  "mandatoryFields": [
+    "universeVintage",
+    "market",
+    "listingDelistingVintage",
+    "corporateActionPolicy",
+    "sourceHash",
+    "resultHash",
+    "firstKnownAt",
+    "decisionAt",
+    "factorSetVersion",
+    "industryVintage",
+    "adjustedReturnPolicy",
+    "costProvenance",
+    "borrowability"
+  ],
+  "requiredChain": [
+    "universeReceipt",
+    "returnReceipt",
+    "factorInputReceipt",
+    "neutralizationReceipt",
+    "costReceipt",
+    "replayReceipt"
+  ],
+  "receiptReadiness": "UNKNOWN",
+  "maturity": {
+    "level": "L2",
+    "pct": 40,
+    "reason": "no six physical Taiwan receipts"
+  },
+  "counterEvidence": [
+    "liquidity premium may be untradeable after impact",
+    "small-cap/distress/industry confounding",
+    "future-state regime leakage",
+    "date-cluster pseudo-replication",
+    "multiple-comparator selection"
+  ],
+  "next": "independent readback; physical TWSE/TPEx vintage+corporate-action receipts; D03/D09 neutralization; D14 cost; benchmark vintage; six-receipt deterministic replay"
+}
