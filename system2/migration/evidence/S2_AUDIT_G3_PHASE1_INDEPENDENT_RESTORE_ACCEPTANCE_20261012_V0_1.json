@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "S2_G3_AUDIT_PHASE1_INDEPENDENT_ACCEPTANCE_20261012_V0_1",
+  "auditLane": "SYSTEM2_INDEPENDENT_AUDIT",
+  "baselineMain": "04c675d640a40c8d5283b2be6faa437ab36f38a9",
+  "issue": 1068,
+  "auditIssue": 1127,
+  "migrationIssue": 1128,
+  "formalVerdict": "G3_PHASE1_SOURCE_SQL_BACKUP_RESTORE_SCOPED_PASS__FULL_G3_NOT_ACCEPTED",
+  "originalEvents": {
+    "nativeSourceExport": {
+      "runId": 38150147134,
+      "artifactId": 11706652537,
+      "originalSQLBytes": 316938975,
+      "originalPlainSQLSHA256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12"
+    },
+    "independentProtectedRestore": {
+      "runId": 38214521809,
+      "jobId": 114696031275,
+      "headSha": "23a3b975657d7e84312cededcc7b1c29dbb39850",
+      "conclusion": "success",
+      "originalSanitizedArtifactId": 11732075339,
+      "zipSha256": "f7d878a2eed566b0a55246effccc5d69a9fe5a9a10ba6e6e7598906d624657a6",
+      "receiptSHA256": "e37619b75758a98753e45321e566efdd60e4339539f4ff9768f30dc55afe5e06",
+      "contentWitnessSHA256": "f4ad674c4ad7758af6c2e38987038854899362c619c7c1af9899cc698f24fc00",
+      "wholeDatabaseContentRootSHA256": "95546b04c5c93f583dc5fe5b8efbaf4fe3fd8c3b4ab7daa6e3fe7d515c659e14"
+    },
+    "extendedEncryptedArchive": {
+      "artifactId": 11732395154,
+      "zipSha256": "b77efb60924eef76f78af5a6e29b3488646744e3bf81d142827e8fb298d60d64",
+      "expiresAtUtc": "2027-01-10T06:50:26Z",
+      "underlyingCiphertextSHA256": "f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1",
+      "longTermEscrow": false,
+      "dependsOnExistingDestinationToken": true
+    }
+  },
+  "independentActions": {
+    "actualOriginalArtifactZIPDownloaded": 2,
+    "originalZIPAndInnerArtifactChecksPassed": 5,
+    "realSQLPlaintextReadOutsideProtectedWorkflow": false,
+    "originalJobLogFetched": true,
+    "sourceSQLOriginalSHAFromProtectedWorkflowVerified": true,
+    "protectedIndependentSQLiteRestoreWitnessVerified": true,
+    "contentRootRecomputedFromOriginalReceipt": true,
+    "sourceTableRowsIndependentlySummed": true,
+    "perTableContentWitnessCountMatched": true,
+    "temporaryArchiveCiphertextPreservedIdentical": true,
+    "sourceOrDestinationCloudflareCalls": 0,
+    "destinationSQLInserts": 0,
+    "newSecretsOrBilling": 0,
+    "system1Changes": 0
+  },
+  "recomputedWitness": {
+    "sourceTables": 55,
+    "indexes": 63,
+    "sourceTotalRows": 113222,
+    "sourceA1Bars": 84688,
+    "sourceDecisions": 0,
+    "sourceResonanceRuns": 5,
+    "populatedTables": 14,
+    "sqliteQuickCheck": "ok",
+    "sqliteIntegrityCheck": "ok",
+    "sourceContentRootMatchesRecomputedManifest": true,
+    "allTableRowCountsMatchOriginalWitness": true,
+    "barAvailableBasisProspectiveUpperBound": 81086,
+    "barAvailableBasisConservativeFinality": 3602,
+    "PITCertifiedRows": 0,
+    "firstBatchProvisionalRows": 11976,
+    "firstBatchPITCertifiedRows": 0,
+    "firstBatchQuarantinedRows": 11976,
+    "firstKnownAtColumnInA1": false,
+    "externalProviderClockWitnesed": false,
+    "remotePriorFrozenAnchorsVerified": false,
+    "originalR2ObjectBytesVerified": false
+  },
+  "formalG3Families": [
+    {
+      "family": "SOURCE_BACKUP_RESTORE_INDEPENDENT_CONTENT",
+      "verdict": "PASS_SCOPED",
+      "evidence": "Real original protected AES/RSA decrypt + fresh SQLite quick_check/full integrity_check on original SQL SHA, 55 tables, 63 indexes, 113222 rows and per-table content root; auditor independently rehashed original ZIP and all original manifest bytes, reconstructed content root."
+    },
+    {
+      "family": "PIT_FIRST_KNOWN_AND_PUBLICATION_CLOCK",
+      "verdict": "BLOCKED",
+      "evidence": "0/84688 independent PIT qualified; source A1 lacks firstKnownAt, 81086 upper-bound prospective and 3602 conservative session-finality are not independent provider publication timestamps. All 11976 provisional first-batch bars quarantined."
+    },
+    {
+      "family": "FROZEN_DECISION_PRIOR_ANCHOR_AND_REMOTE_INVENTORY",
+      "verdict": "PENDING",
+      "evidence": "D1 original s2_decisions and snapshot/correction tables zero; five resonance runs exist. Cannot assert no older GitHub/R2 Frozen chains until remote objects/original receipts enumerated."
+    },
+    {
+      "family": "DURABLE_KEY_INDEPENDENT_RECOVERABILITY_AND_ARCHIVAL",
+      "verdict": "PENDING",
+      "evidence": "Authenticated 90-day encrypted ZIP physically present until 2027-01-10; ciphertext equals original, but sealed private key still derives from existing destination D1 token, no independent permanent escrow/owner-approved backup alternative."
+    }
+  ],
+  "formalG3": {
+    "accepted": 1,
+    "total": 4,
+    "wholeGate": "BLOCKED"
+  },
+  "g4": {
+    "importedRows": 0,
+    "sourceRawPITCertifiedForHistoricalReplay": 0,
+    "authorizedBilledWriteBudget": 0,
+    "spendableQuotaVerified": false,
+    "decision": "BLOCKED"
+  },
+  "nextWork": [
+    "DATA_LANE use existing sources to obtain true firstKnownAt/provider publication clock or classify historical time as retrospective/non-trading and keep replay PIT quarantine; independent AUDIT_LANE to verify.",
+    "DATA_LANE independently enumerate old GitHub/R2 Frozen anchors, raw R2 historical object existence, matching content hashes and retention; do not treat 0 D1 decisions as complete global absence.",
+    "DATA_LANE/BUILD00 establish token-independent durable archive restore (new secrets/payments require owner's explicit approval) before expiring 90-day archive; do not rotate existing destination token.",
+    "DATA_LANE and CROSS_ACCOUNT independently prove destination UTC-day spendable D1 write headroom/ledger and actual per-batch indexed write amplification; avoid R2-dependent tables until R2 object bytes available."
+  ],
+  "noRelease": [
+    "DEST_D1_IMPORT",
+    "DEST_WORKER_OR_CRON",
+    "SHADOW_PRODUCTION",
+    "SYSTEM1_FORMAL_MODIFICATION",
+    "SOURCE_DELETION"
+  ],
+  "evidenceSources": [
+    "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38214521809",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1157",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068"
+  ]
+}
