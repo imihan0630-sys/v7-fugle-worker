@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const t=readFileSync("system2/migration/destination_raw_a1_live_readback_once_20261012.mjs","utf8");
+const w=readFileSync(".github/workflows/system2-dest-a1-live-readback-once-20261012.yml","utf8");
+assert.match(t,/READ_ONLY_DEST/);
+assert.match(t,/destinationWritesRequested:0/);
+assert.match(t,/COUNT\(\*\) FROM s2_historical_a1_bars/);
+assert.match(t,/COUNT\(\*\) FROM s2_historical_ingest_batches/);
+assert.match(t,/sha\(id\)!==db/);
+assert.doesNotMatch(t,/(?:INSERT INTO|UPDATE s2_|DELETE FROM|DROP TABLE|ALTER TABLE|REPLACE INTO)/i);
+assert.match(w,/environment: system2-schema-only/);
+assert.match(w,/destination_raw_a1_live_readback_once_20261012.mjs/);
+assert.doesNotMatch(w,/schedule:|workflow_dispatch:|system2-owner-override-raw-d1-copy-20261012.yml/);
+console.log("DEST_A1_LIVE_READBACK_ONE_SHOT_NO_DML_PASS");
