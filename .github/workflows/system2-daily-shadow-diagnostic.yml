@@ -65,6 +65,9 @@ jobs:
       - name: Persist and read back isolated daily diagnostics
         if: steps.quota.outputs.physical_allowed == 'true'
         env:
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
           S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
           S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
           SYSTEM2_CONFIRM: WRITE_SYSTEM2_DAILY_DIAGNOSTIC_ONLY
