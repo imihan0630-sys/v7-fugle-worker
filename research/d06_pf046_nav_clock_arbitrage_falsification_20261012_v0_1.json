@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "D06_PF046_V0_1",
+  "owner": "05｜法人與籌碼研究室",
+  "baseMain": "6a8d39b591ebb9e42b5a79418ed407ae23f726fd",
+  "formalCore": "LOCKED",
+  "modules": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-18"
+  ],
+  "focus": "ETF previous-close NAV versus intraday indicative NAV and actual executable arbitrage distinction",
+  "hypotheses": [
+    {
+      "claim": "Stale daily NAV can manufacture apparent premium.",
+      "support": "TWSE publishes separate daily NAV and intraday indicative NAV channels.",
+      "falsify": "Price 102 vs old NAV 100 gives +2%; aligned indicative NAV 102 gives 0%.",
+      "alternative": "Real premium, underlying move, quote lag.",
+      "failure": "Missing clock/type/first-known."
+    },
+    {
+      "claim": "Aligned indicative gap may describe market conditions, not guaranteed AP arbitrage.",
+      "support": "Primary creation/redemption and market making facilitate convergence.",
+      "falsify": "Spread, fees, inventory, borrow cost, substitutions, settlement and market closure can block execution.",
+      "alternative": "Stale underlying, FX, index event, dealer inventory.",
+      "failure": "No executable bid/ask and AP receipts."
+    },
+    {
+      "claim": "ETF premium, unit changes and SBL can share economic roots.",
+      "support": "Delivery demand may interact with borrowing.",
+      "falsify": "Borrowing not necessarily short selling; secondary turnover not creation.",
+      "alternative": "Independent hedges or investor flows.",
+      "failure": "Missing primitive/parent lineage."
+    },
+    {
+      "claim": "Clock-valid research is not predictive evidence.",
+      "support": "Prospective captures allow future OOS tests.",
+      "falsify": "Price-volume, institutional flow, liquidity, index and regime may explain results.",
+      "alternative": "Pricing delay without constituent alpha.",
+      "failure": "No preregistered common-support, walk-forward, purge, multiple-test and cost controls."
+    }
+  ],
+  "rules": {
+    "clock": "Require sourceAsOf, observedAt, firstKnownAt, decisionAt and matched reference type; synthetic strict same-clock policy is not official latency standard.",
+    "output": "PREVIOUS_NAV => descriptive only; aligned INAV => reference gap only; no actual AP execution inference.",
+    "unknown": "Missing evidence UNKNOWN not zero/BAD.",
+    "dedup": "One primitive many consumers counts once; distinct sources sharing economic event not independent votes.",
+    "borrow": "True utilization UNKNOWN without lendable inventory denominator.",
+    "validation": "Preregister OOS walk-forward with purge/date clustering, multiplicity, liquidity, impact/fees, regime and redundancy."
+  },
+  "sources": [
+    "https://www.twse.com.tw/zh/allinone/2-6-4.html",
+    "https://www.twse.com.tw/zh/ETFortune/advisorDoc/8a8216d69e2f5671019e42ec0a0a004d",
+    "https://www.twse.com.tw/zh/ETFortune/invest/8a8216d69d2e8217019db9cfa1800276"
+  ],
+  "tests": {
+    "kind": "SYNTHETIC_ONLY",
+    "total": 22,
+    "passed": 22,
+    "failed": 0,
+    "caseIds": [
+      "aligned",
+      "positive",
+      "negative",
+      "stale",
+      "missing_price",
+      "missing_nav",
+      "zero_nav",
+      "negative_price",
+      "future_price",
+      "future_nav",
+      "future_asof",
+      "mismatch",
+      "foreign",
+      "closed",
+      "action",
+      "quote",
+      "unknown_type",
+      "boundary"
+    ],
+    "invariantIds": [
+      "false_premium",
+      "sign_flip",
+      "zero_net_nonzero_gross",
+      "same_date_versions_not_new_dates"
+    ]
+  },
+  "realMarketRows": 0,
+  "newDates": 0,
+  "outcomes": false,
+  "maturityChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "next": "Reconcile unmerged PF045/044 and local PF043, then capture real future same-clock price/indicative-NAV and units/PCF vintages; obtain D16 OOS protocol, and continue margin/SBL paired versions."
+}
