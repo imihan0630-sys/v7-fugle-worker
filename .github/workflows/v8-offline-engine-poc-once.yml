@@ -34,3 +34,4 @@ jobs:
           if-no-files-found: warn
           retention-days: 60
 # Second provider KV readback attempt uses only existing authorized tokens; no secret changes.
+# One-shot probe: signed isolated KV binding reader; auto-cleanup required.
