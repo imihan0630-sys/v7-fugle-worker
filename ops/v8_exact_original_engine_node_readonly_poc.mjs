@@ -1,7 +1,7 @@
 // Read-only full V8 business-engine computation on free GitHub Runner, not Cloudflare Worker.
 // No production KV/D1/Worker mutations. Temporary migration proof, NOT a formal trading plan.
 import {readFile,mkdir,writeFile} from "node:fs/promises";
-import {createHash} from "node:crypto";
+import {createHash,randomBytes} from "node:crypto";
 const id=process.env.CLOUDFLARE_ACCOUNT_ID||"";
 const wt=process.env.CLOUDFLARE_API_TOKEN||"";
 const dt=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||wt;
@@ -18,6 +18,9 @@ async function jsonCall(path,token,method="GET",data=null,deadline=25000){
  return v.result;
 }
 const memory=new Map();
+let diagName=null,diagUrl=null,diagToken=null;
+result.ephemeralDiagnostic={created:false,subdomainDisabled:false,scriptDeleted:false,
+ scope:"ONLY_TEMPORARY_READONLY_KV_WORKER_NO_ORIGINAL_CODE_OR_CRON_CHANGES"};
 try{
  if(!/^[0-9a-f]{32}$/i.test(id)||!wt||!dt)throw Error("SOURCE_PROVIDER_CREDENTIALS_MISSING");
  const [settings,dbs]=await Promise.all([jsonCall("/workers/scripts/fugle-test/settings",wt),jsonCall("/d1/database?per_page=100",dt)]);
@@ -29,6 +32,31 @@ try{
  const actualDbBinding=d1binding?.id||d1binding?.database_id;
  const kvId=kvbinding?.namespace_id||kvbinding?.id;
  if(dbId!==actualDbBinding||!kvId)throw Error("SOURCE_BINDINGS_MISMATCH");
+ diagName="v8-ro-kv-"+String(process.env.GITHUB_RUN_ID||"").replace(/[^0-9]/g,"");
+ diagToken=randomBytes(32).toString("hex");
+ const diagSource=`export default{async fetch(req,env){
+   if(req.headers.get("authorization")!=="Bearer "+env.DIAG_TOKEN)return new Response("not found",{status:404});
+   const key=new URL(req.url).searchParams.get("key")||"";
+   if(!/^(V7_MARKET_STATE|STOCK_CONFIG_V7|STOCK_CONFIG_V6|V7_TRADING_CALENDAR:2026|V7_OFFICIAL_CLOSING:(TWSE|TPEx):2026-10-12|V7_EXTERNAL_VALIDATION:2026-10-12)$/.test(key))return new Response("forbidden",{status:403});
+   const val=await env.STOCKS_KV.get(key);
+   return val===null?new Response("missing",{status:404}):new Response(val,{headers:{"cache-control":"no-store","content-type":"application/json"}});
+ }};`;
+ const metadata={main_module:"worker.js",bindings:[
+   {type:"kv_namespace",name:"STOCKS_KV",namespace_id:kvId},
+   {type:"plain_text",name:"DIAG_TOKEN",text:diagToken}
+ ]};
+ const form=new FormData();
+ form.append("metadata",new Blob([JSON.stringify(metadata)],{type:"application/json"}),"metadata.json");
+ form.append("worker.js",new Blob([diagSource],{type:"application/javascript+module"}),"worker.js");
+ const deployed=await fetch(api+"/workers/scripts/"+diagName,{
+   method:"PUT",headers:{authorization:"Bearer "+wt},body:form,signal:AbortSignal.timeout(30000)});
+ const response=await deployed.json().catch(()=>null);
+ if(!deployed.ok||response?.success===false)throw Error("TEMP_READONLY_WORKER_DEPLOY_DENIED_"+deployed.status);
+ result.ephemeralDiagnostic.created=true;
+ await jsonCall("/workers/scripts/"+diagName+"/subdomain",wt,"POST",{enabled:true});
+ const sub=await jsonCall("/workers/subdomain",wt);
+ if(!sub?.subdomain)throw Error("TEMP_READONLY_SUBDOMAIN_UNAVAILABLE");
+ diagUrl="https://"+diagName+"."+sub.subdomain+".workers.dev/";
  result.preflight.sourceWorkerMatchesOriginalD1=true;
  result.preflight.originalKVPresent=true;
  const names=await jsonCall("/d1/database/"+dbId+"/query",dt,"POST",{sql:"SELECT name FROM sqlite_schema WHERE type='table' AND name LIKE 'v7_%' LIMIT 25"});
@@ -49,6 +77,11 @@ try{
     effective=await fetch(api+"/storage/kv/namespaces/"+kvId+"/values/"+encodeURIComponent(key),{
       headers:{authorization:"Bearer "+dt},signal:AbortSignal.timeout(35000)});
   }
+  if(!effective.ok&&diagUrl&&[401,403,404].includes(effective.status)){
+    effective=await fetch(diagUrl+"?key="+encodeURIComponent(key),{
+      headers:{authorization:"Bearer "+diagToken},signal:AbortSignal.timeout(30000)});
+  }
+  if(effective.status===404)return null;
   if(!effective.ok)throw Error("PROVIDER_KV_READ_HTTP_"+effective.status+"_KEY_GROUP_"+String(key).split(":")[0]);
   const t=await effective.text();
   if(t.length>25000000)throw Error("KV_PAYLOAD_TOO_LARGE");
@@ -100,6 +133,18 @@ try{
    cpuOffloaded:true,cloudflareWorkerResourceUsageForCompute:0};
 }catch(error){result.status="OFFLINE_PROOF_FAILED_NO_CLAIM";result.error=String(error.message||error).slice(0,500);process.exitCode=2;}
 finally{
+ if(diagName&&result.ephemeralDiagnostic.created){
+   try{await jsonCall("/workers/scripts/"+diagName+"/subdomain",wt,"POST",{enabled:false});
+       result.ephemeralDiagnostic.subdomainDisabled=true;}catch(error){result.ephemeralDiagnostic.disableError=String(error.message||error).slice(0,100);}
+   try{const d=await fetch(api+"/workers/scripts/"+diagName,{
+       method:"DELETE",headers:{authorization:"Bearer "+wt},signal:AbortSignal.timeout(25000)});
+       const x=await d.json().catch(()=>null);
+       result.ephemeralDiagnostic.scriptDeleted=d.ok&&x?.success!==false;
+   }catch(error){result.ephemeralDiagnostic.deleteError=String(error.message||error).slice(0,100);}
+   if(!result.ephemeralDiagnostic.subdomainDisabled||!result.ephemeralDiagnostic.scriptDeleted){
+      result.status="TEMPORARY_DIAGNOSTIC_WORKER_CLEANUP_UNVERIFIED";process.exitCode=2;
+   }
+ }
  await mkdir("artifacts",{recursive:true});
  const core={targetDate:target,status:result.status,selection:result.selection,error:result.error};
  result.fingerprint=createHash("sha256").update(JSON.stringify(core)).digest("hex");
