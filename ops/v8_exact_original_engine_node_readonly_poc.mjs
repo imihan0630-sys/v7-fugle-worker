@@ -71,7 +71,7 @@ try{
   if(result.kvReadCount>50)throw Error("KV_READ_BUDGET_EXCEEDED");
   const response=await fetch(api+"/storage/kv/namespaces/"+kvId+"/values/"+encodeURIComponent(key),{
      headers:{authorization:"Bearer "+wt},signal:AbortSignal.timeout(35000)});
-  if(response.status===404)return null;
+  // 404 from account KV API is verified once through the original namespace binding before treating it as absent.
   let effective=response;
   if(response.status===401 && dt!==wt){
     // A second existing repository token may hold an already-authorized KV READ scope.
@@ -79,7 +79,7 @@ try{
     effective=await fetch(api+"/storage/kv/namespaces/"+kvId+"/values/"+encodeURIComponent(key),{
       headers:{authorization:"Bearer "+dt},signal:AbortSignal.timeout(35000)});
   }
-  if(!effective.ok&&diagUrl&&[401,403,404].includes(effective.status)){
+  if(!effective.ok&&diagUrl&&[401,403,404,429,500,502,503,504].includes(effective.status)){
     effective=await fetch(diagUrl+"?key="+encodeURIComponent(key),{
       headers:{authorization:"Bearer "+diagToken},signal:AbortSignal.timeout(30000)});
   }
