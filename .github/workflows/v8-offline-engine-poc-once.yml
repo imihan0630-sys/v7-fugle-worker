@@ -37,3 +37,4 @@ jobs:
 # One-shot probe: signed isolated KV binding reader; auto-cleanup required.
 # Recheck exact PIT same-date EPS eligibility and deployed Worker config-name parity.
 # Exact V8 selection with official MOPS-verified EPS in-memory extension; no V8 D1 writes.
+# Reverify output after injecting original production STOCK_CONFIG plain variable in memory only.
