@@ -1,0 +1,39 @@
+name: S2 DEST A1 Current Physical Readback ONE SHOT
+# This is independent DESTINATION-only GET + one read-only D1 SQL SELECT; no writes.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-dest-a1-live-readback-once-20261012.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-audit-dest-a1-readonly-once-20261012
+  cancel-in-progress: false
+jobs:
+  readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Syntax guard
+        run: |
+          set -euo pipefail
+          node --check system2/migration/destination_raw_a1_live_readback_once_20261012.mjs
+          node system2/tests/destination_raw_a1_live_readback_scope_20261012.test.mjs
+      - name: Read actual destination rows; raw data not exported
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/destination_raw_a1_live_readback_once_20261012.mjs
+      - name: Preserve sanitized original-provider receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-dest-a1-live-readback-once-${{ github.run_id }}
+          path: /tmp/s2-copy-live-readback/sanitized-original-provider-readback.json
+          if-no-files-found: warn
+          retention-days: 30
