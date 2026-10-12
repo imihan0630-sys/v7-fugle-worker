@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "D06_PF046_CHECKPOINT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "sourceMainSha": "6a8d39b591ebb9e42b5a79418ed407ae23f726fd",
+  "formalCore": "LOCKED",
+  "status": "RESEARCH_ONLY / PREMIUM_CLOCK_REFERENCE_GUARD / OUTCOMES_CLOSED",
+  "summary": "Previous-close NAV vs current price is not same-clock intraday premium; aligned indicative NAV gap still cannot identify executable AP arbitrage or stock execution.",
+  "next": "Freeze clock and cost semantics, obtain genuine future paired quote/indicative-NAV/units/PCF vintage; keep UNKNOWN for AP fills and true SBL utilization. Reconcile prior PF045 branch without old-SHA overwrite.",
+  "maturityChange": "NONE",
+  "realMarketRowsUsed": 0
+}
