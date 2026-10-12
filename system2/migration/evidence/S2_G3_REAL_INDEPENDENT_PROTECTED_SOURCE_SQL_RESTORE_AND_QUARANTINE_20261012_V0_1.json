@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "S2_G3_REAL_INDEPENDENT_ORIGINAL_SQL_RESTORE_AND_PIT_FROZEN_20261012_V0_1",
+  "baselinePR": {
+    "priorAuditPR": 1154,
+    "priorAuditMain": "cdf62d967b03066ba8ebf82b3e03de060c268743",
+    "independentVerificationImplementationPR": 1155,
+    "physicalSHAFixPR": 1156
+  },
+  "originalSource": {
+    "runId": 38150147134,
+    "jobId": 114501726086,
+    "originalEncryptedBackupArtifactId": 11706652537,
+    "originalEncryptedZipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+    "originalSqlSHA256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "originalSqlBytes": 316938975,
+    "noSourceExportRepeated": true
+  },
+  "existingEncryptedTransport": {
+    "originalRunId": 38151167952,
+    "originalRsaSealedKeyArtifactId": 11706418024,
+    "originalCiphertextArtifactId": 11705783748,
+    "sourceEncryptedArtifactZIPSha256": "68c0244edb03c3239ff7e3cb7b50b5b5abf6d7c75c47839175e45fdba0936957",
+    "actualInnerCiphertextSha256": "f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1",
+    "innerCiphertextBytes": 23411800
+  },
+  "independentPhysical": {
+    "githubRun": 38214521809,
+    "jobId": 114696031275,
+    "runLink": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38214521809",
+    "sanitizedArtifactId": 11732075339,
+    "sanitizedArtifactZIPSha256": "f7d878a2eed566b0a55246effccc5d69a9fe5a9a10ba6e6e7598906d624657a6",
+    "receiptInnerSHA256": "e37619b75758a98753e45321e566efdd60e4339539f4ff9768f30dc55afe5e06",
+    "perTableContentRootInnerSHA256": "f4ad674c4ad7758af6c2e38987038854899362c619c7c1af9899cc698f24fc00",
+    "wholeDatabaseSourceContentRootSHA256": "95546b04c5c93f583dc5fe5b8efbaf4fe3fd8c3b4ab7daa6e3fe7d515c659e14",
+    "separateFromPriorProducerCode": true,
+    "SQLCiphertextAesGcmAuthenticationConfirmed": true,
+    "originalPlainSQLSHA256Confirmed": true,
+    "sourceSqliteQuickCheck": "ok",
+    "sourceSqliteFullIntegrityCheck": "ok",
+    "sourceTables": 55,
+    "sourceIndexes": 63,
+    "sourcePopulatedTables": 14,
+    "sourceTotalRows": 113222,
+    "sourceA1Bars": 84688,
+    "perTableRowCountsAndContentSHA256InOriginalArtifact": true,
+    "sourceFrozenDecisionRows": 0,
+    "cloudflareD1ActualWrites": 0,
+    "sourceD1QueriedInThisRun": false
+  },
+  "PIT": {
+    "totalA1Bars": 84688,
+    "firstKnownAtColumnPresentInA1": false,
+    "strictTimeParseErrorRows": 0,
+    "missingAvailableAtRows": 0,
+    "availableAtAfterObservedAtRows": 0,
+    "sourceHashMissingRows": 0,
+    "ingestBatchManifestRows": 129,
+    "nonemptyA1BarBatches": 124,
+    "manifestMatchedA1BarBatches": 124,
+    "fieldSelfReportPassedBatchCount": 124,
+    "sourceAvailabilityBasisCount": {
+      "PROSPECTIVE_OBSERVATION": 81086,
+      "SESSION_CLOSE_FINALITY": 3602
+    },
+    "selfReportedPITClassCount": {
+      "OBSERVED_AVAILABLE_UPPER_BOUND": 81086,
+      "CONSERVATIVE_SESSION_FINALITY": 3602
+    },
+    "firstBatchProvisionalBatches": 49,
+    "firstBatchProvisionalRows": 11976,
+    "firstBatchExternallyVerifiedProviderClockRows": 0,
+    "firstBatchPITCertifiedRows": 0,
+    "firstBatchQuarantinedPendingIndependentPITRows": 11976,
+    "unverifiedAsOfReplaysMustRemainBlocked": true,
+    "publicProviderPublicationClockExternallyWitnessed": false
+  },
+  "frozen": {
+    "sourceS2DecisionsExactlyZero": true,
+    "sourceS2ShadowRunsExactlyZero": true,
+    "sourceS2DecisionCorrectionsExactlyZero": true,
+    "sourceS2MarketRegimeSnapshotsExactlyZero": true,
+    "sourceS2IndustrySnapshotsExactlyZero": true,
+    "sourceS2SymbolFactorSnapshotsExactlyZero": true,
+    "sourceS2ResonanceSnapshotsExactlyZero": true,
+    "sourceS2ResonanceRuns": 5,
+    "sourceS2HistoricalRevisionReceipts": 0,
+    "olderGitHubActionsFrozenChainInventoryComplete": false,
+    "originalSourceR2FrozenArtifactsIndependentlyInventoried": false,
+    "immutablePriorFrozenRootAbsenceProved": false,
+    "qualification": "IN_DB_DECISION_TABLE_ZERO_PASS__PRIOR_REMOTE_FROZEN_ANCHORS_STILL_UNKNOWN"
+  },
+  "extendedCiphertextRetention": {
+    "githubRun": 38214521809,
+    "artifactId": 11732395154,
+    "artifactZipSha256": "b77efb60924eef76f78af5a6e29b3488646744e3bf81d142827e8fb298d60d64",
+    "expiresAtUtc": "2027-01-10T06:50:26Z",
+    "expiresTaipei": "2027-01-10 14:50:26",
+    "containsOnlyExistingCiphertextAndDestinationTokenSealedPrivateKey": true,
+    "originalSourceBackupExpiresUtc": "2026-10-25T15:10:42Z",
+    "existingSecretsPermissionsBillingChanged": false,
+    "independentRecoveryKeyEscrow": false,
+    "permanentPrivateArchive": false,
+    "requiresPreservingExistingDestinationD1Token": true
+  },
+  "g3Families": [
+    {
+      "family": "ORIGINAL_SQL_DECRYPT_AND_SQLITE_FULL_CONTENT_INDEPENDENT_RESTORE",
+      "engineering": "PASS",
+      "auditorAcceptance": "PENDING_AUDIT_LANE_REVERIFY"
+    },
+    {
+      "family": "PIT_FIRSTKNOWN_AT_AND_OFFICIAL_SOURCE_CLOCK_FOR_FIRST_11976",
+      "engineering": "BLOCKED_INDEPENDENT_PROVIDER_PUBLICATION_CLOCK_MISSING",
+      "qualifiedRows": 0
+    },
+    {
+      "family": "FROZEN_PRIOR_CHAIN_AND_EXTERNAL_ARCHIVE_INVENTORY",
+      "engineering": "PENDING_EXTERNAL_FROZEN_ROOT_AND_R2_INVENTORY"
+    },
+    {
+      "family": "DURABLE_INDEPENDENT_LONG_TERM_ARCHIVE",
+      "engineering": "PARTIAL_90_DAY_ENCRYPTED_ARCHIVE__BLOCKED_KEY_INDEPENDENT_ESCROW"
+    }
+  ],
+  "formalG3PromotionApproved": false,
+  "g4NewAccountRowsImported": 0,
+  "shadowActivated": false,
+  "sourceSQLPlaintextOrSecretsPublished": false,
+  "nextRequired": [
+    "AUDIT_LANE_REPRODUCE_OR_ACCEPT_INDEPENDENT_RESTORE_CONTENT_ROOT_AND_ARTIFACT_HASHES",
+    "OBTAIN_INDEPENDENT_OFFICIAL_SOURCE_PUBLISH_FIRSTKNOWN_CLOCK_OR_KEEP_ALL_PROVISIONAL_BARS_QUARANTINED",
+    "RECONCILE_SOURCE_R2_GITHUB_ARTIFACTS_AND_OLDER_FROZEN_DECISION_ANCHOR_CHAIN",
+    "OWNER_APPROVED_TOKEN_INDEPENDENT_DURABLE_BACKUP_OR_ESCROW_WITHOUT_NEW_PERMISSION_BYPASS"
+  ],
+  "scope": {
+    "targetD1Insert": false,
+    "R2Enablement": false,
+    "newSecret": false,
+    "newPermission": false,
+    "paidServices": false,
+    "system1FormalCore": false,
+    "workerCron": false
+  }
+}
