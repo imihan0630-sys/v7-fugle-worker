@@ -59,6 +59,8 @@ try{
  diagUrl="https://"+diagName+"."+sub.subdomain+".workers.dev/";
  result.preflight.sourceWorkerMatchesOriginalD1=true;
  result.preflight.originalKVPresent=true;
+ result.preflight.productionConfigBindingNames=(settings.bindings||[]).filter(x=>/^V7_|^FUGLE_|^THREEMIN_|^STOCK_CONFIG$/.test(String(x.name||""))).map(x=>({name:x.name,type:x.type}));
+ result.preflight.productionCustomEnrichmentTokenPresent=!!(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_API_TOKEN");
  const names=await jsonCall("/d1/database/"+dbId+"/query",dt,"POST",{sql:"SELECT name FROM sqlite_schema WHERE type='table' AND name LIKE 'v7_%' LIMIT 25"});
  const tables=new Set((names[0]?.results||[]).map(x=>x.name));
  for(const name of ["v7_history_cache","v7_institution_snapshots","v7_quality_snapshots","v7_history_seed_state"])
@@ -119,7 +121,12 @@ try{
  // Original source module, only adding a read-only testing export; no algorithm alterations.
  const workerText=await readFile("Worker.js","utf8");
  const module=await import("data:text/javascript;base64,"+Buffer.from(workerText+"\nexport {runAfterMarketScan};").toString("base64"));
- const env={V7_DB:v7Db,STOCKS_KV:kv,V7_TOTAL_CAPITAL:"200000"};
+ const capitalVar=(settings.bindings||[]).find(x=>x.name==="V7_TOTAL_CAPITAL"&&x.type==="plain_text")?.text;
+ const env={V7_DB:v7Db,STOCKS_KV:kv,V7_TOTAL_CAPITAL:capitalVar||"200000"};
+ const enrichUrl=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_API_URL"&&x.type==="plain_text")?.text;
+ if(enrichUrl)env.V7_ENRICHMENT_API_URL=enrichUrl;
+ const enrichJson=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_JSON"&&x.type==="plain_text")?.text;
+ if(enrichJson)env.V7_ENRICHMENT_JSON=enrichJson;
  const time=Date.parse(target+"T15:35:00Z");
  const scan=await module.runAfterMarketScan(env,time,{dryRun:true});
  if(!scan||scan.dryRun!==true||scan.scanDate!==target||!scan.pipeline?.selectionCompleted)
@@ -128,6 +135,9 @@ try{
  result.selection={scanDate:scan.scanDate,selectedCount:scan.selectedCount,
    selectedStocks:Array.isArray(scan.stocks)?scan.stocks.map(s=>({symbol:s.symbol,name:s.name,signalLevel:s.signalLevel,channel:s.channel})):null,
    EPSReviewReady:scan.diagnostics?.quarterEpsReview?.ready===true,
+   EPSReviewMissing:scan.diagnostics?.quarterEpsReview?.missingSymbols??null,
+   EPSReviewPeriod:{year:scan.diagnostics?.quarterEpsReview?.year??null,quarter:scan.diagnostics?.quarterEpsReview?.quarter??null},
+   EPSReviewedCount:scan.diagnostics?.quarterEpsReview?.reviewedCount??null,
    history60DayCount:scan.diagnostics?.history60DayCount??null,
    historyCoverageComplete:scan.diagnostics?.historyCoverageComplete??null,
    cpuOffloaded:true,cloudflareWorkerResourceUsageForCompute:0};
