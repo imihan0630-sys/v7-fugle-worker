@@ -31,7 +31,7 @@ concurrency:
 
 jobs:
   diagnostic:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'push' # no unscheduled D1 writer during ongoing source->dest migration
     runs-on: ubuntu-latest
     timeout-minutes: 25
     environment: system2-schema-only # Verified new destination account only; source environment quarantined
