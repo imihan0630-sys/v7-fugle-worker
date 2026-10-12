@@ -16,7 +16,7 @@
     "preexistingSpecs": 5,
     "trackerConsistency": 6
   },
-  "receiptBlobSha": "1d894dce317792a8d1f4bec768c76e71bc1beb97",
+  "receiptBlobSha": "fab99278f7807c80951c10551a7ff09630b1f5ef",
   "trackerBlobSha": "f979496cf6544a2d48880fc1e4017259d442eb06",
   "source": "GitHub main and isolated research branch; deterministic JS assertions",
   "physicalTaiwanReplay": false,
