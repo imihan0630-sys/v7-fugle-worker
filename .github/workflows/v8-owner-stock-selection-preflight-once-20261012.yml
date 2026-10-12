@@ -1,0 +1,67 @@
+name: V8 Owner Authorized Readonly Stock Selection Preflight ONCE 20261012
+on:
+  push:
+    branches:
+      - ops/v8-owner-manual-preflight-20261012
+    paths:
+      - .github/workflows/v8-owner-stock-selection-preflight-once-20261012.yml
+permissions:
+  contents: read
+jobs:
+  live_preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - name: Fetch real authenticated V8 daily prerequisite status GET ONLY
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node --input-type=module <<'NODE'
+          import {writeFile} from "node:fs/promises";
+          const token=process.env.V7_ADMIN_TOKEN||"";
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const date="2026-10-12";
+          const receipt={schemaVersion:"V8_OWNER_MANUAL_SELECTION_READONLY_PREFLIGHT_V0_1",date,observedAt:new Date().toISOString(),noPost:true,noCloudflareMutation:true,noScan:true,noPush:true,noTrade:true,tokenAvailable:!!token,results:{}};
+          const specs=[
+            ["version","/api/version",false],
+            ["storage","/api/storage/status",false],
+            ["market","/api/market-data/status?marketDate="+date,true],
+            ["institution","/api/institution-status?marketDate="+date,true],
+            ["quality","/api/quality-status?marketDate="+date,true],
+            ["scan","/api/scan/status",true],
+          ];
+          for(const [label,path,auth] of specs){
+            const out={httpStatus:null,requestCompleted:false,errorClass:null};
+            try{
+              const response=await fetch(origin+path,{method:"GET",headers:{accept:"application/json",...(auth&&token?{"x-admin-token":token}:{})},signal:AbortSignal.timeout(18000)});
+              out.httpStatus=response.status;
+              out.requestCompleted=true;
+              let body=await response.json().catch(()=>null);
+              if(label==="version"){out.version=body?.version||null;out.testMode=body?.testMode??null;out.d1=body?.bindings?.d1===true;}
+              if(label==="storage"){out.scanDate=body?.d1?.scanDate||null;out.mirrorScanDate=body?.github?.scanDate||null;}
+              if(label==="market"){out.marketDate=body?.marketDate||null;out.ready=body?.ready===true;out.twseReady=body?.markets?.TWSE?.ready===true;out.tpexReady=body?.markets?.TPEx?.ready===true;out.twseCount=body?.markets?.TWSE?.count??null;out.tpexCount=body?.markets?.TPEx?.count??null;}
+              if(label==="institution"){out.marketDate=body?.marketDate||null;out.ready=body?.ready===true;out.validDates=Array.isArray(body?.validDates)?body.validDates.map(x=>typeof x==="string"?x:x?.date||null):null;out.physicalSnapshotsVerified=body?.physicalSnapshotsVerified===true;}
+              if(label==="quality"){out.marketDate=body?.marketDate||null;out.indexReady=body?.index?.ready===true;out.tdccReady=body?.tdcc?.ready===true;out.datasetReady=Object.fromEntries(["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"].map(x=>[x,body?.datasets?.[x]?.ready===true]));}
+              if(label==="scan"){out.scanDate=body?.scanDate||null;out.pipelineComplete=body?.pipeline?.complete===true;out.selectedCount=Number.isSafeInteger(body?.selectedCount)?body.selectedCount:null;out.reason=body?.reason||null;}
+              if(!response.ok)out.errorClass="HTTP_"+response.status;
+            }catch(error){out.errorClass=error?.name==="TimeoutError"?"TIMEOUT":"NETWORK_OR_JSON_ERROR";}
+            receipt.results[label]=out;
+          }
+          const x=receipt.results;
+          receipt.allPrerequisitesReady=receipt.tokenAvailable&&x.market?.ready===true&&x.market?.twseReady&&x.market?.tpexReady&&x.institution?.ready&&x.quality?.indexReady&&x.quality?.tdccReady&&Object.values(x.quality?.datasetReady||{}).every(Boolean)&&x.quality?.marketDate===date&&x.institution?.marketDate===date&&x.market?.marketDate===date;
+          receipt.alreadyScannedToday=x.scan?.scanDate===date;
+          receipt.formalScanLaunched=false;
+          await writeFile("artifacts/v8-owner-stock-selection-preflight-20261012.json",JSON.stringify(receipt,null,2)+"\n");
+          console.log("V8_OWNER_SELECTION_PREFLIGHT="+JSON.stringify(receipt));
+          NODE
+      - name: Save actual Cloudflare GET receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-stock-selection-preflight-once-20261012-${{ github.run_id }}
+          path: artifacts/v8-owner-stock-selection-preflight-20261012.json
+          if-no-files-found: error
+          retention-days: 60
