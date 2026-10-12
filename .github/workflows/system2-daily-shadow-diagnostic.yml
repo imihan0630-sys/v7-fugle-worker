@@ -98,6 +98,7 @@ jobs:
           import assert from "node:assert/strict";
           import {createRemoteD1RestAdapter} from "./system2/deploy/remote_d1_rest_adapter.mjs";
           import {sha256Hex} from "./system2/runtime/decision_archive.mjs";
+          import {assertDailyShadowDestinationDatabaseIdentityV0_1} from "./system2/runtime/daily_shadow_destination_account_route_v0_1.mjs";
           const original=JSON.parse(fs.readFileSync("/tmp/system2-daily-diagnostic.json","utf8"));
           const receipt=original.receipt;
           const db=await createRemoteD1RestAdapter({
@@ -105,6 +106,7 @@ jobs:
             apiToken:process.env.S2_SCHEMA_DEST_D1_WRITE_TOKEN,
             databaseName:"system2-research",
           });
+          assertDailyShadowDestinationDatabaseIdentityV0_1(db);
           const row=await db.prepare(
             "SELECT observed_payload_json,check_hash FROM s2_infrastructure_checks WHERE check_id = ? LIMIT 1"
           ).bind("S2-DAILY-DIAGNOSTIC:"+receipt.marketDate+":"+receipt.runId).first();
