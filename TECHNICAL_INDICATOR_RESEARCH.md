@@ -4057,3 +4057,20 @@ Exact next: independently audit the source backup/PIT/Frozen evidence; physicall
 Artifacts: `research/D03_MIGRATION_BATCH_INDICATOR_WINDOW_ATOMICITY_20261012_V0_1.md`, `research/d03_migration_batch_indicator_window_atomicity_cases_20261012_v0_1.json`, `research/test_d03_migration_batch_indicator_window_atomicity_v0_1.mjs`.
 
 D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes closed; Formal Core locked.
+
+
+## TI-1833~1852 — observed-zero versus missing-telemetry semantics (2026-10-12)
+
+- Merge `10c1a7c9f165c6ed2a7d2d0434813f538a4d7525` corrects destination quota telemetry: an empty current-UTC-day GraphQL group is `EMPTY_UNOBSERVED`, not zero usage. System2 CI 38192097094 passes 17/17 and V8 CI 38192096876 passes. This is code/CI evidence only; it creates no physical quota read or import grant.
+- D03 generalizes the causal rule to every technical input. Numeric zero requires positive observation evidence. The frozen input states are `OBSERVED_VALUE`, `OBSERVED_ZERO`, `OBSERVED_FLAT`, `NOT_APPLICABLE_NONSESSION`, `NOT_YET_PUBLISHED`, `MISSING_EXPECTED_SESSION`, `MULTIPLE_VERSION_UNRESOLVED`, `SOURCE_CONFLICT`, and `POLICY_EXCLUDED`. Only the first three supply numeric values; an authoritative non-session is removed from the expected set; all other states block or preserve UNKNOWN.
+- Ret/ROC: missing endpoint is UNKNOWN, while two observed equal closes yield valid zero. MA/persistence: no denominator shrink, forward-fill or missing-day-as-nonpositive. KD: observed zero range may use the frozen convention, missing high/low may not. RSI: observed flat delta gives zero gain/loss; missing loss cannot force RSI 100. MACD: no silent EMA carry across a missing eligible session. ADX: observed unchanged OHLC may yield zero TR/DM; missing OHLC may not. Bollinger: twenty observed equal closes may yield zero width; nineteen plus one missing may not be padded. Divergence/timeframe: missing evidence is unobservable/incomplete, not “none/no conflict.”
+- Every indicator artifact must bind exact expected and observed session IDs, selected source versions, field-state mask, cutoff/clocks, gap/conflict/exclusion reasons, parameters and warm-up/replay identity. The completeness/state-mask hash is part of factor identity; equal numeric outputs with different missingness ancestry are not equivalent evidence.
+- Later backfill or destination persistence cannot rewrite historical availability. Complete-case filtering must report excluded symbol/date denominators and missingness by date/regime/source. Fill methods are preregistered sensitivity analyses only and cannot be selected by outcomes.
+- The 20-case executable oracle passes. It rejects missing-to-zero return, denominator shrink, missing-to-RSI100, silent EMA carry, missing-to-zero ADX, incomplete-to-zero-width Bollinger, missing-to-no-divergence/no-conflict, ancestry collapse and backfill clock laundering.
+- Current real D03 typed state census is absent; stored bars may lack all original clocks/version conflicts; production-library silent fill behavior remains UNKNOWN pending exact implementation inspection. No PIT, OOS, walk-forward, cost, fillability, regime, alpha, outcome, optimization, maturity or Formal Core promotion.
+
+Exact next: inspect actual indicator implementation paths for silent skip/denominator shrink/forward-fill/recursive carry behavior; after destination import and parity build a per-symbol/session field-state census; persist completeness/state-mask hashes with Bollinger and ADX replay artifacts; only after PIT-ready data run preregistered missingness sensitivity by source/date/regime.
+
+Artifacts: `research/D03_OBSERVED_ZERO_VS_MISSING_TELEMETRY_SEMANTICS_20261012_V0_1.md`, `research/d03_observed_zero_vs_missing_semantics_cases_20261012_v0_1.json`, `research/test_d03_observed_zero_vs_missing_semantics_v0_1.mjs`.
+
+D03 remains 56.7%; 12 active modules = 10 L3 + 2 L2; D03-09 and D03-10 remain L2/40; outcomes closed; Formal Core locked.
