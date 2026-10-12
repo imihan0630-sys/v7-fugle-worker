@@ -1,0 +1,30 @@
+name: V8 Source Q2 EPS Missing Official MOPS Validation ONCE 20261013
+on:
+  push:
+    branches:
+      - ops/v8-node-offline-exact-engine-poc-20261013
+    paths:
+      - .github/workflows/v8-mops-missing-eps-source-once-20261013.yml
+permissions:
+  contents: read
+jobs:
+  read_original_sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Official MOPS Q1/Q2 exact company receipt, no production state
+        run: |
+          set -euo pipefail
+          node --check ops/v8_mops_missing_eps_readonly_20261013.mjs
+          node ops/v8_mops_missing_eps_readonly_20261013.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v8-mops-source-missing-eps-${{ github.run_id }}
+          path: artifacts/v8-verified-mops-q2eps-missing-20261012.json
+          if-no-files-found: error
+          retention-days: 60
