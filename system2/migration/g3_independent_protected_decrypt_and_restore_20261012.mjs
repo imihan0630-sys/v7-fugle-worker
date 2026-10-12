@@ -15,7 +15,8 @@ const dir="/tmp/g3-independent-audit",inputs="/tmp/g3-independent-input";
 const sha=b=>createHash("sha256").update(b).digest("hex");
 const acctHash="27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55";
 const originalSqlSha="56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12";
-const expectedEncryptedSha="68c0244edb03c3239ff7e3cb7b50b5b5abf6d7c75c47839175e45fdba0936957";
+// Raw AES-GCM GZIP ciphertext SHA256 (inside original Artifact ZIP), NOT artifact ZIP digest.
+const expectedEncryptedSha="f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1";
 const fail=x=>{throw Error("G3_INDEPENDENT_"+x)};
 async function witness(){
   if(!process.env.S2_SCHEMA_DEST_ACCOUNT_ID||!process.env.S2_SCHEMA_DEST_D1_WRITE_TOKEN||

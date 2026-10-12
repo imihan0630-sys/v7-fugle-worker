@@ -12,7 +12,7 @@ const p=spawnSync("python3",["-m","py_compile",python],{encoding:"utf8",timeout:
 assert.equal(p.status,0,p.stderr);
 const n=spawnSync("node",["--check",decrypt],{encoding:"utf8",timeout:15000});
 assert.equal(n.status,0,n.stderr);
-assert(js.includes('expectedEncryptedSha="68c0244edb03c3239ff7e3cb7b50b5b5abf6d7c75c47839175e45fdba0936957"'));
+assert(js.includes('expectedEncryptedSha="f6bfdff72080008e593b479409117d8260afdbb70b73da7c197d67b8faa6dad1"'));
 assert(js.includes('sourceOriginalRun:38150147134'));
 assert(js.includes('sqliteRestoredFreshIndependentCode:true'));
 assert(js.includes('originalSqlBytes:bytes'));
