@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "S2_G3_AUDIT_LANE_INDEPENDENT_ORIGINAL_BYTES_REVIEW_20261012_V0_1",
+  "phase": "G3_SOURCE_BACKUP_PIT_FROZEN_INDEPENDENT_ADJUDICATION",
+  "basedOnMain": "6e56e48d4cd9e7e003bdcacdc4606501c207beb8",
+  "auditDateTaipei": "2026-10-12",
+  "decision": "G3_BLOCKED__ORIGINAL_ENCRYPTED_ARCHIVE_BYTES_AND_PRODUCER_MANIFEST_CONSISTENT__INDEPENDENT_RESTORE_PIT_FROZEN_RETENTION_NOT_ACCEPTED",
+  "originalArtifacts": [
+    {
+      "role": "SOURCE_D1_ENCRYPTED_BACKUP",
+      "runId": 38150147134,
+      "jobId": 114501726086,
+      "artifactId": 11706652537,
+      "zipSha256": "6b6f4ebf9762e9cff7c6200a8cf4b6f10b1300c709fb426fe82e10ced9a6da8e",
+      "innerName": "sanitized-backup-receipt.json",
+      "innerSha256": "c203f89614f3a783785b58e5becebaa15ad8014f98ad4ced4acaa50ee2f5a4f3",
+      "zipAndInnerShaIndependentlyRecomputed": true,
+      "encryptedArchiveBytes": 23411800,
+      "sourceSqlPlaintextSeenByAudit": false
+    },
+    {
+      "role": "SOURCE_PROTECTED_RESTORED_BATCH_PIT_SCAN",
+      "runId": 38204352833,
+      "jobId": 114664419883,
+      "artifactId": 11726712322,
+      "zipSha256": "b9fd2d2fa099ccb3c70c321c31b8c5ef45d0e3c78a422d6d9be5a3facbcb11c6",
+      "innerName": "destination-pit-plan-receipt.json",
+      "innerSha256": "1ab455e3859f9e12272ade7ef236c57f98b7283115b72602ad813de1126f1e29",
+      "planName": "sanitized-source-pit-batch-plan.json",
+      "planSha256": "4d732737099fb99c8b797883f584e91b86e7a1200d875443f82bdfd2e6883664",
+      "zipAndBothInnerShaIndependentlyRecomputed": true
+    },
+    {
+      "role": "DESTINATION_ACCOUNT_QUOTA_SUPPORT_ONLY",
+      "runId": 38192555810,
+      "runAttempt": 4,
+      "jobId": 114664958528,
+      "artifactId": 11726254216,
+      "zipSha256": "56a7cdb316e30065f15703e9abf61136e041228d5a7b0acabd69410208b641dc",
+      "innerName": "sanitized-destination-quota-read.json",
+      "innerSha256": "9865288fc701f8dc6aa3206ee43360bc654fa342ead0de9a2483004917db6a26",
+      "zipAndInnerShaIndependentlyRecomputed": true
+    }
+  ],
+  "independentReconciliation": {
+    "sourceRestoredRowsFromProducerManifest": 113222,
+    "independentlyRecomputedSumOfProducerTableRows": 113222,
+    "producerReportedSqlSHA256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "sourceTablesCountFromProducerManifest": 55,
+    "producerReportedIndexesCount": 63,
+    "sourceNonemptyTables": 14,
+    "sourceA1BarRows": 84688,
+    "sourceFrozenDecisionsRows": 0,
+    "batchMetadataRows": 124,
+    "uniqueBatchFingerprints": 124,
+    "sumAllBatchRows": 84688,
+    "sumSelfReportedPitEligibleBars": 84688,
+    "sourceTotalIngestBatchRows": 129,
+    "emptyBarBatchRecords": 5,
+    "mismatchedBatchDeclaredRows": 0,
+    "rowsMissingAvailableAtInProducerScan": 0,
+    "rowsWithAvailableAfterObservedAtInProducerScan": 0,
+    "rowsMissingCanonicalHashInProducerScan": 0,
+    "provisionalFirstCopyCompleteBatches": 49,
+    "provisionalFirstCopyBarRows": 11976,
+    "uncalibratedProvisionalIndexedBilledWrites": 71856,
+    "ownerBilledWriteCeilingPerUtcDay": 80000,
+    "destinationActualImportedHistoryRows": 0,
+    "quotaObservedRowsWrittenLowerBound": 0,
+    "quotaObservedRowsReadLowerBound": 343,
+    "quotaFreshnessBoundKnown": false,
+    "spendableDailyD1WriteBudgetVerified": false
+  },
+  "independentGateFindings": [
+    {
+      "name": "ORIGINAL_GITHUB_ZIP_AND_RECEIPT_INTEGRITY",
+      "status": "PASS_SCOPED",
+      "note": "Original raw ZIP downloads and inner JSON digests recomputed in separate audit container; encrypted SQL is not plaintext-verifiable without private decryption material."
+    },
+    {
+      "name": "SOURCE_SQL_SCHEMA_ROWS_RESTORE",
+      "status": "PENDING_INDEPENDENT_RESTORE",
+      "note": "Original operator's protected runner reported decrypted SQL and isolated SQLite restore: 55 tables, 63 indexes, 113222 rows and quick_check ok; audited producer log/manifest consistency but independent auditor has no decrypt key or independent SQL/SQLite restore."
+    },
+    {
+      "name": "PIT_AVAILABLE_AT_AND_FIRST_KNOWN_CLOCK",
+      "status": "BLOCKED_INDEPENDENT_PIT",
+      "note": "84688/84688 self-reported PIT flags and local availableAt<=observedAt checks are internally consistent but no independent provider publication/firstKnownAt wall clock and as-of lineage. Self-reported tags cannot authorize a PIT-safe import or historical replay."
+    },
+    {
+      "name": "FROZEN_APPEND_ONLY_DECISION_HISTORY",
+      "status": "PENDING_PRIOR_ANCHOR_PROOF",
+      "note": "Source s2_decisions=0 is grounded in producer-restored count; must reconcile whether earlier Frozen snapshots are stored elsewhere and prove immutable historical chains/nonexistence, not silently certify complete frozen history from zero rows."
+    },
+    {
+      "name": "RECOVERABILITY_AND_DURABLE_RETENTION",
+      "status": "BLOCKED_LONG_TERM_ESCROW",
+      "note": "Original SQL archive is AES-256-GCM encrypted with key derived from existing SOURCE D1 token; GitHub Artifact retention is only 14 days. Another independent restore/key escrow or approved secret-independent key rewrap and durable backup integrity receipt required before losing original bytes/token."
+    },
+    {
+      "name": "SOURCE_R2_OBJECTS_AND_HASHES",
+      "status": "BLOCKED_R2_PHYSICAL",
+      "note": "16100 cold pack manifests plus 9723 segment manifests cannot prove R2 objects are present; original R2 bytes, object-key count, individual hashes and future target entitlement/readback unverified."
+    },
+    {
+      "name": "G4_DEST_QUOTA_AND_DATA_COPY",
+      "status": "BLOCKED_SEPARATE_GATE",
+      "note": "Destination Analytics observed 0 rowsWritten lower bound, but freshness unknown and competing writers/index billed writes unverified; 0 imported rows; no grant for 80000/day import."
+    }
+  ],
+  "quantitative": {
+    "sourceManifestSubchecks": [
+      {
+        "name": "ZIP_INNER_INTEGRITY",
+        "accepted": 3,
+        "total": 3
+      },
+      {
+        "name": "SOURCE_ROWS_SUM",
+        "accepted": 1,
+        "total": 1
+      },
+      {
+        "name": "BATCH_METADATA_INVARIANTS",
+        "accepted": 6,
+        "total": 6
+      }
+    ],
+    "formalG3SourceAcceptanceFamilies": {
+      "accepted": 0,
+      "total": 4
+    },
+    "status": "G3_BLOCKED_NO_UNAUTHORIZED_SQL_OR_IMPORT"
+  },
+  "prohibitedInference": [
+    "CANNOT_CLAIM_RESTORED_SQL_INDEPENDENTLY_DECRYPTED",
+    "CANNOT_CLAIM_PIT_84K_ELIGIBLE_PROVEN",
+    "CANNOT_CLAIM_ZERO_FROZEN_MEANS_HISTORY_CLOSED",
+    "CANNOT_CLAIM_DEST_ACCOUNT_ROWS_WRITTEN_ZERO_SPENDABLE",
+    "CANNOT_CLAIM_SOURCE_R2_OBJECT_BYTES_MIGRATED"
+  ],
+  "requiredNextEvidence": [
+    "DATA_LANE protected independently witnessed decrypt/restore of same sha256 original SQL, with sanitized independent schema/row counts and SQLite integrity receipt, no secret disclosed.",
+    "DATA_LANE true PIT/provider firstKnownAt and publication time proof or quarantine retrospective-only rows until provenance verified.",
+    "DATA_LANE historical Frozen storage inventory and immutable root/NO_DECISION confirmation for s2_decisions=0; reconcile other freeze stores.",
+    "DATA_LANE 14-day archive-independent long term encrypted backup + token-independent recovery/escrow (owner approval if new secret/service needed).",
+    "CROSS_ACCOUNT/DATA SOURCE R2 exact objects/bytes/hashes, keep manifests quarantined until storage available.",
+    "BUILD/DATA G4 independently measured account-write ledger and real per-batch indexed billed writes before import."
+  ],
+  "actionsExecutedThisAudit": {
+    "originalCloudflareCalls": 0,
+    "sourceD1SQL": 0,
+    "destinationD1Writes": 0,
+    "workerOrCronMutations": 0,
+    "system1FormalMutations": 0,
+    "newSecretsOrBilling": 0
+  },
+  "sourceRefs": [
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1127",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1146",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1153"
+  ]
+}
