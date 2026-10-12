@@ -1,0 +1,37 @@
+name: V8 Owner Data Only TODAY Institution Gap Repair ONCE 20261012
+on:
+  push:
+    branches:
+      - ops/v8-owner-manual-preflight-20261012
+    paths:
+      - .github/workflows/v8-owner-institution-data-only-once-20261012.yml
+permissions:
+  contents: read
+jobs:
+  restore_institution_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OFFICIAL_MARKET_DATE: "2026-10-12"
+      V7_DATA_ONLY_RECOVERY: "true"
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Use original bounded current-date institution gap repair; never scan/push
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          test -n "$V7_ADMIN_TOKEN"
+          node tests/sync_institution_data.mjs 2>&1 | tee artifacts/v8-owner-institution-gap-repair-20261012.log
+      - name: Save original data-only institution receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-owner-institution-gap-data-only-20261012-${{ github.run_id }}
+          path: artifacts/v8-owner-*
+          if-no-files-found: warn
+          retention-days: 60
