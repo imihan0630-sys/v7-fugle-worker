@@ -1,0 +1,35 @@
+name: V8 Original Full Engine External Runner Proof ONCE 20261013
+on:
+  push:
+    branches:
+      - ops/v8-node-offline-exact-engine-poc-20261013
+    paths:
+      - .github/workflows/v8-offline-engine-poc-once.yml
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Execute exact original Worker.js dry-run using GET/SELECT-only Cloudflare adapters
+        run: |
+          set -euo pipefail
+          node --check ops/v8_exact_original_engine_node_readonly_poc.mjs
+          node ops/v8_exact_original_engine_node_readonly_poc.mjs
+      - name: Preserve offline adapter receipt even if blocked
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-original-node-offline-readonly-${{ github.run_id }}
+          path: artifacts/v8-node-exact-engine-offline-proof.json
+          if-no-files-found: warn
+          retention-days: 60
