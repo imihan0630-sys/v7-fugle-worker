@@ -1,0 +1,64 @@
+name: V8 Oct13 Monitor Configuration Authenticated GET Only ONCE
+on:
+  push:
+    branches:
+      - ops/v8-monitor-actual-config-preflight-20261013
+    paths:
+      - .github/workflows/v8-monitor-config-preflight-once-20261013.yml
+permissions:
+  contents: read
+jobs:
+  read_monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - name: Read live monitor settings, protected positions, plan status (no write)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node --input-type=module <<'NODE'
+          import {writeFile} from "node:fs/promises";
+          import {createHash} from "node:crypto";
+          const api="https://fugle-test.imihan0630.workers.dev";
+          const h={"x-admin-token":process.env.V7_ADMIN_TOKEN,accept:"application/json"};
+          const out={schemaVersion:"V8_MONITOR_CURRENT_CONFIG_PREFLIGHT_20261013",observedAt:new Date().toISOString(),readOnly:true,config:null,scan:null,live:null,version:null,errors:[]};
+          if(!process.env.V7_ADMIN_TOKEN)throw Error("MISSING_AUTHORIZED_ADMIN_SECRET");
+          async function read(label,path){
+            try{
+              const r=await fetch(api+path,{method:"GET",headers:h,signal:AbortSignal.timeout(24000)});
+              const d=await r.json().catch(()=>null);
+              if(!r.ok){out.errors.push(label+"_HTTP_"+r.status);return null;}
+              return d;
+            }catch(e){out.errors.push(label+"_READ_UNAVAILABLE");return null;}
+          }
+          const [config,scan,live,version]=await Promise.all([
+            read("config","/api/config"),read("scan","/api/scan/status"),
+            read("live","/api/live"),read("version","/api/version")
+          ]);
+          const stocks=Array.isArray(config?.stocks)?config.stocks:[];
+          out.config={available:Boolean(config&&Array.isArray(config.stocks)),source:config?.source??null,
+             updatedAt:config?.updatedAt??null,capital:config?.totalCapital??null,
+             count:stocks.length,
+             protectedSymbols:stocks.filter(x=>x.positionStage&&x.positionStage!=="NONE").map(x=>({symbol:x.symbol,name:x.name,positionStage:x.positionStage})),
+             symbols:stocks.map(x=>({symbol:x.symbol,name:x.name,positionStage:x.positionStage??"UNKNOWN",
+              planDate:x.planDate??null,channel:x.channel??null,signalLevel:x.signalLevel??null,
+              firstEntryConfirmedAt:x.firstEntryConfirmedAt??null})),
+             configSha256:createHash("sha256").update(JSON.stringify(config??null)).digest("hex")};
+          out.scan={scanDate:scan?.scanDate??null,selectedCount:scan?.selectedCount??null,pipelineComplete:scan?.pipeline?.complete===true};
+          out.live={status:typeof live?.status==="string"?live.status.slice(0,100):null,generatedAt:live?.generatedAt??null,
+            activeCount:Array.isArray(live?.stocks)?live.stocks.length:null};
+          out.version={version:version?.version??null,testMode:version?.testMode??null};
+          console.log("V8_MONITOR_CONFIG_PREFLIGHT="+JSON.stringify(out));
+          await writeFile("artifacts/v8-monitor-config-preflight-20261013.json",JSON.stringify(out,null,2)+"\n");
+          if(out.errors.length||!out.config?.available)process.exitCode=2;
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v8-monitor-config-readonly-${{ github.run_id }}
+          path: artifacts/v8-monitor-config-preflight-20261013.json
+          if-no-files-found: error
+          retention-days: 60
