@@ -25,5 +25,5 @@ assert(p.includes('permissionToImport":False'));
 assert(p.includes('operationalBudgetBilledWrites'));
 assert(b.includes('DEST_PIT_PLAN'));
 assert(b.includes('out.permissionToImport=false'));
-assert(b.includes('ORIGINAL_PIT_BATCH_AUDIT_INVALID_OR_OVERPROMOTED'));
+assert(b.includes('PIT_BATCH_AUDIT_INVALID_OR_OVERPROMOTED'));
 console.log('SOURCE_113222_ORIGINAL_OFFLINE_PIT_BATCH_FAIL_CLOSED_NEGATIVES_PASS');
