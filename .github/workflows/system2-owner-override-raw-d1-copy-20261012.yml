@@ -60,3 +60,5 @@ jobs:
 # 2026-10-12 owner override re-entry after identity typo guard correctly blocked with 0 rows written.
 
 # 2026-10-12 safe owner re-entry: provider diagnostic fix after second zero-write fail-closed receipt.
+
+# 2026-10-12 Cloudflare official D1 100 bound parameter limit: JSON1 single-parameter bulk fix owner re-entry.
