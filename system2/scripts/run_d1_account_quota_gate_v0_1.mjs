@@ -1,4 +1,4 @@
-import { resolveDailyShadowAccountRouteV0_1 } from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
+import { resolveDailyShadowAccountRouteV0_1, assertDailyShadowDestinationDatabaseIdentityV0_1 } from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
 import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { decideSourceAccountWriterQuarantineV0_1 } from
@@ -527,6 +527,8 @@ async function main() {
     apiToken: dbToken,
     databaseName: "system2-research",
   });
+  if(verifiedDestination)assertDailyShadowDestinationDatabaseIdentityV0_1(db);
+
 
   if (mode === "result") {
     const reservationPath = required("SYSTEM2_D1_RESERVATION_RECEIPT_PATH");
