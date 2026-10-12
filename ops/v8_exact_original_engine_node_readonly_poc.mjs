@@ -135,6 +135,9 @@ try{
  const module=await import("data:text/javascript;base64,"+Buffer.from(workerText+"\nexport {runAfterMarketScan,validateOfficialQualityData};").toString("base64"));
  const capitalVar=(settings.bindings||[]).find(x=>x.name==="V7_TOTAL_CAPITAL"&&x.type==="plain_text")?.text;
  const env={V7_DB:v7Db,STOCKS_KV:kv,V7_TOTAL_CAPITAL:capitalVar||"200000"};
+ const existingPlainStockConfig=(settings.bindings||[]).find(x=>x.name==="STOCK_CONFIG"&&x.type==="plain_text")?.text;
+ if(existingPlainStockConfig)env.STOCK_CONFIG=existingPlainStockConfig;
+ result.preflight.originalPlainStockConfigInjected=Boolean(existingPlainStockConfig);
  const enrichUrl=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_API_URL"&&x.type==="plain_text")?.text;
  if(enrichUrl)env.V7_ENRICHMENT_API_URL=enrichUrl;
  const enrichJson=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_JSON"&&x.type==="plain_text")?.text;
