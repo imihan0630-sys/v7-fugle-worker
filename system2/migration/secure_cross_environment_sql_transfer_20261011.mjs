@@ -25,7 +25,7 @@ const out={schemaVersion:"S2_CROSS_ENV_RSA_OAEP_AES_GCM_D1_TRANSFER_V0_1",stage:
 async function persist(){
  await mkdir(dir,{recursive:true,mode:0o700});
  out.completedAtUtc=new Date().toISOString();
- const name={DEST_KEYGEN:"destination-key-receipt.json",SOURCE_REWRAP:"source-transfer-receipt.json",DEST_VERIFY:"destination-verification-receipt.json"}[role]||"bad-role-receipt.json";
+ const name={DEST_KEYGEN:"destination-key-receipt.json",SOURCE_REWRAP:"source-transfer-receipt.json",DEST_VERIFY:"destination-verification-receipt.json",DEST_PIT_PLAN:"destination-pit-plan-receipt.json"}[role]||"bad-role-receipt.json";
  await writeFile(dir+"/"+name,JSON.stringify(out,null,2)+"\n",{flag:"wx",mode:0o600});
  console.log(JSON.stringify({stage:role,result:out.result,sourceSqlHashConfirmed:out.sourceSqlHashConfirmed??false,
   destinationD1Confirmed:out.destinationD1Confirmed??false,rows:out.restoredRowCount??null,
@@ -60,7 +60,7 @@ async function api(account,token,path,method="GET",body=null){
  return data.result;
 }
 async function run(){
- if(!["DEST_KEYGEN","SOURCE_REWRAP","DEST_VERIFY"].includes(role))bad("INVALID_ROLE");
+ if(!["DEST_KEYGEN","SOURCE_REWRAP","DEST_VERIFY","DEST_PIT_PLAN"].includes(role))bad("INVALID_ROLE");
  await mkdir(dir,{recursive:true,mode:0o700});
  if(role==="DEST_KEYGEN"){
   const token=process.env.S2_SCHEMA_DEST_D1_WRITE_TOKEN,account=process.env.S2_SCHEMA_DEST_ACCOUNT_ID;
@@ -144,6 +144,28 @@ async function run(){
   out.destinationD1Confirmed=true;out.sourceSqlHashConfirmed=true;
   out.restoredRowCount=integrity.rows;out.frozenDecisions=integrity.decisions;
   out.result="SECURE_SOURCE_SQL_DECRYPTED_AND_RESTORED_IN_TARGET_CREDENTIAL_ENV_DEST_D1_STILL_EMPTY_NO_IMPORT";
+  if(role==="DEST_PIT_PLAN"){
+    const audit=await new Promise((resolve,reject)=>{
+      const p=spawn("python3",["system2/migration/issue1068_real_archive_pit_batch_plan_offline_v0_1.py",
+        "/tmp/s2-bridge-verified-local.db"],{stdio:["ignore","pipe","pipe"]});
+      let payload="",err="";
+      p.stdout.on("data",c=>{payload+=c.toString();if(payload.length>150000) p.kill()});
+      p.stderr.on("data",c=>{err+=c.toString()});
+      p.on("close",code=>{
+        if(code!==0)return reject(Error("ORIGINAL_PIT_BATCH_PLAN_SCAN_FAILED"));
+        try{resolve(JSON.parse(payload))}catch{reject(Error("ORIGINAL_PIT_BATCH_PLAN_PAYLOAD_BAD"))}
+      });
+    });
+    if(audit.sourceRows!==113222||audit.sourceBars!==84688||
+       audit.permissionToImport!==false||audit.independentAuditAccepted!==false)
+      bad("PIT_BATCH_AUDIT_INVALID_OR_OVERPROMOTED");
+    await writeFile(dir+"/sanitized-source-pit-batch-plan.json",JSON.stringify(audit,null,2)+"\n",
+      {flag:"wx",mode:0o600});
+    out.sourceActualPitBatchSummary=audit.batchSummary;
+    out.sanitizedPitPlanSHA256=sha(JSON.stringify(audit,null,2)+"\n");
+    out.permissionToImport=false;
+    out.result="REAL_ORIGINAL_SOURCE_PIT_AND_COMPLETE_BATCH_METADATA_SCANNED_OFFLINE_NO_D1_IMPORT";
+  }
   await rm(sqlFile,{force:true});await rm("/tmp/s2-bridge-verified-local.db",{force:true});
  }
 }
