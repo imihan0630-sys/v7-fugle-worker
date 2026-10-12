@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "D03_A1_HASH_LABEL_PAYLOAD_PARITY_CASES_20261013_V0_1",
+  "formalCoreImpact": "NONE_LOCKED",
+  "maturityPct": 56.7,
+  "cases": [
+    {
+      "id": "HP-01",
+      "input": {
+        "storedIdentityMatch": true,
+        "physicalReceipt": false
+      },
+      "expected": "CODE_PATH_MERGED_PHYSICAL_RUN_PENDING"
+    },
+    {
+      "id": "HP-02",
+      "input": {
+        "storedIdentityMatch": true,
+        "physicalReceipt": true,
+        "payloadRecomputed": false
+      },
+      "expected": "HASH_LABEL_PARITY_ONLY"
+    },
+    {
+      "id": "HP-03",
+      "input": {
+        "storedIdentityMatch": false,
+        "physicalReceipt": true
+      },
+      "expected": "FAIL_IDENTITY_DRIFT"
+    },
+    {
+      "id": "HP-04",
+      "input": {
+        "storedIdentityMatch": true,
+        "payloadRecomputed": true,
+        "payloadMatch": true
+      },
+      "expected": "PAYLOAD_PARITY_PASS"
+    },
+    {
+      "id": "HP-05",
+      "input": {
+        "storedIdentityMatch": true,
+        "payloadRecomputed": true,
+        "payloadMatch": false
+      },
+      "expected": "FAIL_PAYLOAD_DRIFT"
+    },
+    {
+      "id": "HP-06",
+      "input": {
+        "payloadMatch": true,
+        "causalClock": false
+      },
+      "expected": "RAW_ARCHIVE_ONLY"
+    },
+    {
+      "id": "HP-07",
+      "input": {
+        "payloadMatch": true,
+        "causalClock": true,
+        "exactSessions": false
+      },
+      "expected": "PIT_WINDOW_BLOCKED"
+    },
+    {
+      "id": "HP-08",
+      "input": {
+        "batchMetadataRows": 129,
+        "completePayloadBatches": null
+      },
+      "expected": "COMPLETE_BATCH_COUNT_UNKNOWN"
+    },
+    {
+      "id": "HP-09",
+      "input": {
+        "batchMetadataRows": 129,
+        "completePayloadBatches": 20
+      },
+      "expected": "ONLY_20_BATCHES_COMPLETE"
+    },
+    {
+      "id": "HP-10",
+      "input": {
+        "destinationRows": 11785,
+        "sourceRows": 84688
+      },
+      "expected": "PARTIAL_STORAGE"
+    },
+    {
+      "id": "HP-11",
+      "input": {
+        "destinationRows": 84688,
+        "sourceRows": 84688,
+        "payloadMatch": false
+      },
+      "expected": "COUNT_PARITY_NOT_CONTENT_PARITY"
+    },
+    {
+      "id": "HP-12",
+      "input": {
+        "payloadMatch": true,
+        "originalFirstKnownAt": null
+      },
+      "expected": "PIT_UNKNOWN"
+    },
+    {
+      "id": "HP-13",
+      "input": {
+        "payloadMatch": true,
+        "oosDates": 0
+      },
+      "expected": "NO_OOS_CREDIT"
+    },
+    {
+      "id": "HP-14",
+      "input": {
+        "payloadMatch": true,
+        "walkForwardDates": 0
+      },
+      "expected": "NO_WALK_FORWARD_CREDIT"
+    },
+    {
+      "id": "HP-15",
+      "input": {
+        "payloadMatch": true,
+        "costEvidence": false
+      },
+      "expected": "COST_UNKNOWN"
+    },
+    {
+      "id": "HP-16",
+      "input": {
+        "payloadMatch": true,
+        "fillabilityEvidence": false
+      },
+      "expected": "FILLABILITY_UNKNOWN"
+    },
+    {
+      "id": "HP-17",
+      "input": {
+        "payloadMatch": true,
+        "corporateActionLineage": false
+      },
+      "expected": "CONTINUITY_BLOCKED"
+    },
+    {
+      "id": "HP-18",
+      "input": {
+        "payloadMatch": true,
+        "exact20ParentSessions": false
+      },
+      "expected": "BOLLINGER_BLOCKED"
+    },
+    {
+      "id": "HP-19",
+      "input": {
+        "payloadMatch": true,
+        "wilderFullReplay": false
+      },
+      "expected": "ADX_BLOCKED"
+    },
+    {
+      "id": "HP-20",
+      "input": {
+        "payloadMatch": true,
+        "alphaEvidence": false
+      },
+      "expected": "NO_OPTIMIZATION_CANDIDATE"
+    }
+  ]
+}
