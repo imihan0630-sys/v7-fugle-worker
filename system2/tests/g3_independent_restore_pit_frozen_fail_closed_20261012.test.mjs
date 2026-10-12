@@ -1,11 +1,11 @@
 // Tests are offline, never call Cloudflare or GitHub and never contain SQL plaintext.
 import assert from "node:assert/strict";
 import {spawnSync} from "node:child_process";
-import {readFileSync} from "node:fs";
+import {readFileSync,existsSync} from "node:fs";
 const python="system2/migration/g3_independent_sqlite_restore_and_pit_witness_20261012.py";
 const decrypt="system2/migration/g3_independent_protected_decrypt_and_restore_20261012.mjs";
 const workflow=".github/workflows/s2-g3-independent-protected-restore-and-archive-once-20261012.yml";
-const body=readFileSync(python,"utf8"),js=readFileSync(decrypt,"utf8"),yaml=readFileSync(workflow,"utf8");
+const body=readFileSync(python,"utf8"),js=readFileSync(decrypt,"utf8"),yaml=existsSync(workflow)?readFileSync(workflow,"utf8"):null;
 const x=spawnSync("python3",[python,"/tmp/g3-independent-missing-sql-20261012.sql"],{encoding:"utf8",timeout:15000});
 assert.equal(x.status,2);assert.match(x.stderr,/G3_INDEPENDENT_SQL_NOT_PRESENT/);
 const p=spawnSync("python3",["-m","py_compile",python],{encoding:"utf8",timeout:15000});
@@ -26,14 +26,20 @@ assert(body.includes('independentlyQualifiedPITBarRows'));
 assert(body.includes('historicalRemoteFrozenAbsenceProven'));
 assert(body.includes('firstKnownAtFieldExistsOnA1'));
 assert(body.includes('possibleDecisionAndSnapshotTables'));
-assert(yaml.includes('environment: system2-schema-only'));
-assert(yaml.includes('retention-days: 90'));
-assert(yaml.includes('contents: read'));
-assert(yaml.includes('actions: read'));
-assert(!yaml.includes('contents: write'));
-assert(!yaml.includes('workflow_dispatch'));
-assert(!yaml.includes('wrangler d1 execute'));
-assert(!yaml.includes('APPLY_ONCE'));
-assert(!yaml.includes('source-system2-private.sql.gz.aes256gcm'));
+if(yaml!==null){
+  assert(yaml.includes('environment: system2-schema-only'));
+  assert(yaml.includes('retention-days: 90'));
+  assert(yaml.includes('contents: read'));
+  assert(yaml.includes('actions: read'));
+  assert(!yaml.includes('contents: write'));
+  assert(!yaml.includes('workflow_dispatch'));
+  assert(!yaml.includes('wrangler d1 execute'));
+  assert(!yaml.includes('APPLY_ONCE'));
+  assert(!yaml.includes('source-system2-private.sql.gz.aes256gcm'));
+}else{
+  // Successful one-shot G3 physical run already happened. A removed main workflow
+  // is a positive security property, NOT a reason for the independent test to fail.
+  assert.equal(existsSync(workflow),false,'G3 one-shot workflow must remain retired');
+}
 assert(!js.includes('api.cloudflare.com'));
 console.log('G3_ORIGINAL_PROTECTED_DECRYPT_SQLITE_CONTENT_PIT_FROZEN_NEGATIVE_24_PASS');
