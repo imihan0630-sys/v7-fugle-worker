@@ -65,5 +65,11 @@
     "date-cluster pseudo-replication",
     "multiple-comparator selection"
   ],
-  "next": "independent readback; physical TWSE/TPEx vintage+corporate-action receipts; D03/D09 neutralization; D14 cost; benchmark vintage; six-receipt deterministic replay"
+  "next": "independent readback; physical TWSE/TPEx vintage+corporate-action receipts; D03/D09 neutralization; D14 cost; benchmark vintage; six-receipt deterministic replay",
+  "syntheticChecks": {
+    "passed": 42,
+    "total": 42,
+    "kind": "SPEC_ONLY",
+    "physicalTaiwanReplay": false
+  }
 }
