@@ -26,11 +26,13 @@
       "TPEX"
     ],
     "officialCalendarSessions": 61,
-    "sourceOrdinaryUniverse": 1974,
     "validRawHistoryObservationSymbols": 1714,
     "withheldInsufficientHistorySymbols": 253,
     "quarantinedRawCloseDiscontinuitySymbols": 7,
-    "reconcilesUniverse": true
+    "reconcilesUniverse": true,
+    "sourceFourDigitInstrumentUniverse": 1974,
+    "sourceFourDigitUniverseIncludesDepositaryReceipts": true,
+    "officialOrdinaryShareOnlyUniverseCertified": false
   },
   "preliminary": {
     "observationCutoffUtc": "2026-10-13T22:07:37.563Z",
@@ -47,7 +49,15 @@
     "companyActionStatus": "UNKNOWN_NOT_CLEARED",
     "marketRegimeStatus": "UNCERTIFIED",
     "namesAndSymbols": "In original private-context derived seven-day GitHub Action Artifact; not serialized again into public repository evidence",
-    "dataScope": "CURRENT_REAL_OBSERVATION_ONLY_NOT_HISTORIC_PIT_REPLAY"
+    "dataScope": "CURRENT_REAL_OBSERVATION_ONLY_NOT_HISTORIC_PIT_REPLAY",
+    "firstObservedVersionHasNonOrdinaryTdrInstrument": true,
+    "nonOrdinaryExample": {
+      "symbol": "9103",
+      "name": "美德醫療-DR",
+      "twseOfficialClass": "TAIWAN_DEPOSITARY_RECEIPT",
+      "fiveSessionReturnPct": 43.55828
+    },
+    "initial582MustNotBeClaimedAsFilteredOrdinaryStocks": true
   },
   "blocked": {
     "strictStage1Reason": "SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW",
@@ -85,6 +95,7 @@
     "newSecrets": false
   },
   "nextActions": [
+    "Version preliminary research watch to exclude official -DR named Taiwan depositary receipts before claiming common-share-only candidate list",
     "Separate source-time preliminary technical observations from formal Shadow every trading day",
     "Capture market regime, CA/PIT per-symbol necessary official evidence before formal Shadow",
     "Independently certify final rank/capacity and immutable D1 Frozen before true selected",
