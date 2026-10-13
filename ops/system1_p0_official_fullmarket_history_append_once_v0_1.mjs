@@ -71,6 +71,32 @@ for(let d=Date.parse(SOURCE_START+"T00:00:00Z");d<=Date.parse(TARGET+"T00:00:00Z
 }
 if(dates.length<15||dates.length>24||dates.at(-1)!==TARGET)
  throw Error("PINNED_OFFICIAL_CALENDAR_SESSION_RANGE_INVALID");
+const live=await fetch("https://fugle-test.imihan0630.workers.dev/api/live/sources",{
+ headers:{"x-admin-token":admin,accept:"application/json"},signal:AbortSignal.timeout(25000)});
+if(!live.ok)throw Error("APPROVED_LIVE_MONITOR_READ_FAILED_"+live.status);
+const source=await live.json();
+if(source.schema!=="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2")throw Error("FORMAL_AIDEEN_MONITOR_SOURCE_UNVERIFIED");
+const priority=[...new Set(["2617",...(source.configSymbols||[]),...(source.aideenSymbols||[])].map(String))];
+const eligible=(await query("SELECT symbol,updated_at,CASE WHEN json_valid(history_json) THEN json_extract(history_json,'$[#-1].date') ELSE NULL END AS lastDay, CASE WHEN json_valid(history_json) THEN json_array_length(history_json) ELSE 0 END AS bars FROM v7_history_cache WHERE symbol BETWEEN '1000' AND '9999' ORDER BY lastDay ASC,symbol ASC LIMIT 1908")).results;
+const index=new Map(eligible.map(x=>[String(x.symbol),x]));
+const stale=x=>x&&(Number(x.bars)<65||String(x.lastDay||"")<TARGET);
+const work=[...new Set([...priority.filter(symbol=>stale(index.get(symbol))),
+  ...eligible.filter(stale).map(x=>String(x.symbol))])].slice(0,SYMBOL_CAP);
+journal.workSymbols=work;
+if(work.length===0) {
+ journal.status="NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE";
+ journal.unrepairedUniverse=false;
+ journal.completedCount=0;
+ journal.boundedSymbolCap=SYMBOL_CAP;
+ journal.d1QueryCount=queries;
+ await mkdir("artifacts",{recursive:true});
+ await writeFile("artifacts/system1-p0-official-wholemarket-firstbatch.json",JSON.stringify(journal,null,2)+"\n");
+ console.log("SYSTEM1_P0_OFFICIAL_MARKET_HISTORY_RECEIPT="+JSON.stringify({
+  state:journal.status,sourceRequests:0,d1RowsWritten:0,
+  noFormalScan:true,noPush:true,staleCacheSymbols:0
+ }));
+ process.exit(0);
+}
 const rawBySymbol=new Map();
 const receipts=[];
 for(const tradingDate of dates){
@@ -103,19 +129,6 @@ for(const tradingDate of dates){
 journal.dateCount=dates.length;
 journal.rawRowCount=receipts.reduce((s,x)=>s+x.rows,0);
 journal.officialSourceHashes=receipts;
-const live=await fetch("https://fugle-test.imihan0630.workers.dev/api/live/sources",{
- headers:{"x-admin-token":admin,accept:"application/json"},signal:AbortSignal.timeout(25000)});
-if(!live.ok)throw Error("APPROVED_LIVE_MONITOR_READ_FAILED_"+live.status);
-const source=await live.json();
-if(source.schema!=="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2")throw Error("FORMAL_AIDEEN_MONITOR_SOURCE_UNVERIFIED");
-const priority=[...new Set(["2617",...(source.configSymbols||[]),...(source.aideenSymbols||[])].map(String))];
-const eligible=(await query("SELECT symbol,updated_at,CASE WHEN json_valid(history_json) THEN json_extract(history_json,'$[#-1].date') ELSE NULL END AS lastDay, CASE WHEN json_valid(history_json) THEN json_array_length(history_json) ELSE 0 END AS bars FROM v7_history_cache WHERE symbol BETWEEN '1000' AND '9999' ORDER BY lastDay ASC,symbol ASC LIMIT 1908")).results;
-const index=new Map(eligible.map(x=>[String(x.symbol),x]));
-const stale=x=>x&&(Number(x.bars)<65||String(x.lastDay||"")<TARGET);
-const work=[...new Set([...priority.filter(symbol=>stale(index.get(symbol))),
-  ...eligible.filter(stale).map(x=>String(x.symbol))])].slice(0,SYMBOL_CAP);
-journal.workSymbols=work;
-if(work.length===0)throw Error("NO_SOURCE_HISTORY_GAPS_FOUND_VERIFY_CENSUS");
 for(const symbol of work){
  try{
   const old=(await query("SELECT symbol,history_json,updated_at FROM v7_history_cache WHERE symbol=?1",[symbol])).results[0];
