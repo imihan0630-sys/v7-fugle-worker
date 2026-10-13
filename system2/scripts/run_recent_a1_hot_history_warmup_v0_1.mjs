@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs";
+import { resolveDailyShadowAccountRouteV0_1,
+  assertDailyShadowDestinationDatabaseIdentityV0_1 }
+  from "../runtime/daily_shadow_destination_account_route_v0_1.mjs";
 import {
   officialTwseCalendarUrl,
   parseTwseTradingCalendar,
@@ -17,16 +20,26 @@ import { buildHistoricalStoreIngestBatch } from "../runtime/historical_store_v0_
 import { executeHistoricalIngestBatchBulkV0_1 } from "../runtime/historical_bulk_persistence_v0_1.mjs";
 
 const CONFIRM = "WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY";
-const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-const apiToken = process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+const destination = resolveDailyShadowAccountRouteV0_1({
+  writerId: "RECENT_A1_WARMUP", role: process.env.SYSTEM2_D1_ACCOUNT_ROLE,
+  githubEnvironment: process.env.SYSTEM2_GITHUB_ENVIRONMENT,
+  accountId: process.env.S2_SCHEMA_DEST_ACCOUNT_ID,
+  dbToken: process.env.S2_SCHEMA_DEST_D1_WRITE_TOKEN,
+  analyticsToken: process.env.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN,
+  legacyAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+  legacyDbToken: process.env.SYSTEM2_CLOUDFLARE_API_TOKEN,
+  legacyAnalyticsToken: process.env.CLOUDFLARE_API_TOKEN,
+});
+const accountId = destination.accountId;
+const apiToken = destination.dbToken;
 const confirm = process.env.SYSTEM2_CONFIRM;
 const maxDatesPerRun = Number(process.env.SYSTEM2_HOT_HISTORY_MAX_DATES || 5);
 const requiredSessions = Number(process.env.SYSTEM2_HOT_HISTORY_REQUIRED_SESSIONS || 60);
 const runId = String(process.env.GITHUB_RUN_ID || "LOCAL");
 const runAttempt = String(process.env.GITHUB_RUN_ATTEMPT || "1");
 
-assert.ok(accountId, "CLOUDFLARE_ACCOUNT_ID is required");
-assert.ok(apiToken, "SYSTEM2_CLOUDFLARE_API_TOKEN is required");
+assert.ok(accountId, "S2_SCHEMA_DEST_ACCOUNT_ID is required");
+assert.ok(apiToken, "S2_SCHEMA_DEST_D1_WRITE_TOKEN is required");
 assert.equal(confirm, CONFIRM, "explicit System2 hot-history confirmation is required");
 assert.ok(Number.isInteger(maxDatesPerRun) && maxDatesPerRun >= 1 && maxDatesPerRun <= 5,
   "SYSTEM2_HOT_HISTORY_MAX_DATES must be 1..5");
@@ -81,6 +94,7 @@ const db = await createRemoteD1RestAdapter({
   apiToken,
   databaseName: "system2-research",
 });
+assertDailyShadowDestinationDatabaseIdentityV0_1(db);
 
 const schema = await db.rawQuery(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1",
