@@ -6,6 +6,7 @@ import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
 import {buildDailySelectionReadinessReceiptV0_1} from '../runtime/daily_selection_readiness_v0_1.mjs';
+import {diagnoseSourceFirstHistoryBlockersV0_1} from '../runtime/a1_history_barrier_diagnostic_v0_1.mjs';
 import {official61SessionSourceReceiptHashBaseV0_1}
  from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 import {buildSourceFirstProspectiveLedgerV0_1}
@@ -269,6 +270,19 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    JSON.stringify(out,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile('/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json',
    JSON.stringify(readiness,null,2)+'\n',{flag:'wx',mode:0o600});
+  if(result.state==='STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'){
+   const diagnostic=await diagnoseSourceFirstHistoryBlockersV0_1({
+    bridge:result,sourceReceipt:receipt
+   });
+   await writeFile('/tmp/s2-a1-stage1-readonly/history-barrier.json',
+    JSON.stringify(diagnostic,null,2)+'\n',{flag:'wx',mode:0o600});
+   console.log(JSON.stringify({historyDiagnosticHash:diagnostic.diagnosticHash,
+    stage1HistoryBlockerCount:diagnostic.remainingHistoryAndOtherIncompleteCount,
+    certifiedCaPitMissing:diagnostic.corporateActionPitUnverifiedCount,
+    exactHistoryBreakdown:diagnostic.reasonBreakdown.map(x=>({
+     reason:x.reason,count:x.count})),
+    selectedCount:null,frozenWritten:false}));
+  }
   console.log(JSON.stringify(out));
   console.log(JSON.stringify({
    dailyReadinessState:readiness.state,marketDate:readiness.marketDate,
