@@ -112,11 +112,15 @@ export async function planSharedOfficialA1ArchiveDryRunV0_1({
   capSingleCompressedBytes:MAX_GZIP,capWindowCompressedBytes:MAX_WINDOW,
   capWeekCompressedBytes:MAX_WEEK,capWeekAssets:MAX_WEEK_ASSETS,
   releaseGrouping:'ISO_WEEK__NEW_REVISION_NEW_RELEASE_TAG',
-  proposedStorage:'GITHUB_IMMUTABLE_RELEASES_NOT_AUTHORIZED',
+  proposedStorage:'PRIVATE_GITHUB_IMMUTABLE_RELEASES_OR_PRIVATE_R2_PENDING_OWNER_PERMISSION_AND_SOURCE_RIGHTS',
   targetReleaseGroups:groups,
   plannedSourceAssets:assets,
   remainingDedupAgainstExistingDurableAssets:'UNVERIFIED__REQUIRES_RELEASE_INDEPENDENT_READBACK',
   immutableReleaseSettingsVerified:false,
+  sourcePublicationOrAutomationRightsVerified:false,
+  currentRepositoryKnownPublic:true,
+  publishRawSourceToCurrentPublicRepoPermitted:false,
+  approvedPrivateDestinationAvailable:false,
   githubContentsWriteApproved:false,archivalAssetsPublished:0,
   accountD1Writes:0,system1FormalOrCronTouched:false,
   independentPITCertified:false,selectedCount:null,frozenWritten:false,
@@ -140,6 +144,7 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
    sourceFiles:plan.verifiedOriginalFiles,compressedBytes:plan.originalCompressedBytes,
    annualEstimateBytes:plan.estimatedNewOriginalCompressedBytesPerYear,
    releaseBatches:plan.targetReleaseGroups.length,
+   publicRepoRawReleaseAllowed:false,
    githubContentsWrites:0,cloudflareD1Writes:0,planSha256:plan.planSha256}));
  }catch{
   console.error('SHARED_OFFICIAL_A1_ARCHIVE_DRYRUN_FAIL_CLOSED');
