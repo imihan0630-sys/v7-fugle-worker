@@ -57,6 +57,7 @@ test('real original gzip bytes, original SHA, date and PIT are not auto-promoted
   assert.equal(result.archivalAssetsPublished,0);
   assert.equal(result.accountD1Writes,0);
   assert.equal(result.independentPITCertified,false);
+  assert.equal(result.publishRawSourceToCurrentPublicRepoPermitted,false);
   assert.equal(result.selectedCount,null);
   assert.equal(result.frozenWritten,false);
   assert.match(result.plannedSourceAssets[0].candidateReleaseAsset,/TWSE-2026-07-16--[a-f0-9]{64}\.json\.gz/);
@@ -101,7 +102,11 @@ test('independently valid manifest cannot silently be used as formal decision',a
   const r=await planSharedOfficialA1ArchiveDryRunV0_1({
    originalDirectory:dir,sourceManifest:manifest
   });
-  assert.equal(r.proposedStorage,'GITHUB_IMMUTABLE_RELEASES_NOT_AUTHORIZED');
+  assert.equal(r.proposedStorage,'PRIVATE_GITHUB_IMMUTABLE_RELEASES_OR_PRIVATE_R2_PENDING_OWNER_PERMISSION_AND_SOURCE_RIGHTS');
+  assert.equal(r.currentRepositoryKnownPublic,true);
+  assert.equal(r.publishRawSourceToCurrentPublicRepoPermitted,false);
+  assert.equal(r.sourcePublicationOrAutomationRightsVerified,false);
+  assert.equal(r.approvedPrivateDestinationAvailable,false);
   assert.equal(r.projectedFiveYearOriginalCompressedBytes,
    r.estimatedNewOriginalCompressedBytesPerYear*5);
  });
