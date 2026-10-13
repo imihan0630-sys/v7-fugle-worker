@@ -1,0 +1,56 @@
+name: D08 TWSE Percentile Snapshot Materialization V0.1
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-percentile-snapshot-materialize-v0-1.yml"
+      - "research/d08_historical_valuation_percentile_snapshot_contract_v0_2.json"
+      - "system2/scripts/d08_twse_percentile_snapshot_materialize_v0_1.mjs"
+      - "system2/tests/d08_percentile_snapshot_materialization_guard_v0_1.test.mjs"
+      - "system2/runtime/d08_historical_valuation_percentile_engine_v0_1.mjs"
+      - "system2/runtime/d08_historical_valuation_percentile_snapshot_v0_1.mjs"
+      - "research/d08_twse_daily_valuation_archive_manifest_20261007_v0_1.json"
+      - "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json"
+      - "research/d08_twse_raw_valuation_r2_capture_receipt_20261007_v0_3.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d08-twse-percentile-snapshot-v01-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard D08 outcome-blind percentile layer
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_percentile_engine.test.mjs
+          node system2/tests/d08_historical_valuation_percentile_snapshot.test.mjs
+          node system2/tests/d08_percentile_snapshot_materialization_guard_v0_1.test.mjs
+          node --check system2/scripts/d08_twse_percentile_snapshot_materialize_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Materialize 44 immutable percentile snapshots
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          node --max-old-space-size=6144 system2/scripts/d08_twse_percentile_snapshot_materialize_v0_1.mjs | tee /tmp/d08-percentile-materialization.jsonl
+          grep '^D08_PERCENTILE_MATERIALIZATION_RECEIPT=' /tmp/d08-percentile-materialization.jsonl
+      - name: Production isolation guard
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "D08 percentile materialization isolation PASS"
