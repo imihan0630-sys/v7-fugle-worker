@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_P0_A1_61_SESSION_SIX_LANE_OFFICIAL_CA_SOURCE_PHYSICAL_20261013_V0_1",
+  "capturedDateTaipei": "2026-10-13",
+  "classification": "SIX_LANE_OFFICIAL_CORPORATE_ACTION_FINAL_RESULT_PHYSICAL_SOURCE_OBSERVATION_ONLY",
+  "sourceRepository": "imihan0630-sys/v7-fugle-worker",
+  "sourceRunId": 38390694817,
+  "independentSourceAuditRunId": 38390900569,
+  "officialCaWorkflowRun": 38413831461,
+  "officialCaWorkflowJob": 115352847920,
+  "workflowUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38413831461",
+  "physicalOutcome": "success",
+  "exactMainImplementationPR": 1198,
+  "artifactLocationFixPR": 1199,
+  "finalResultLaneCount": 6,
+  "requiredLaneCount": 6,
+  "completeRevisionHistoryLaneCount": 0,
+  "marketDate": "2026-10-13",
+  "marketDatePairs": 122,
+  "tradingSessions": 61,
+  "aggregateEventRowCountAcrossSixLanes": 688,
+  "crossLaneEventRowsAreNotDistinctSymbols": true,
+  "sourceInventoryHash": "9960b55697b55274bc9208ef20875c3a92c88a1cc7d7b9928cf6524c05cb2fa2",
+  "artifactId": 11823133699,
+  "artifactDigest": "sha256:7d8da86a2a30124ccb16ca9591ae9dbcc3799213afa51006f91e8f24181f563b",
+  "originalRawCaPayloadPublishedToPublicGitHub": false,
+  "lanes": [
+    {
+      "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+      "eventRows": 10,
+      "distinctWithinLaneSymbols": 10
+    },
+    {
+      "sourceId": "TPEX_EX_RIGHT_DIVIDEND_ACTUAL",
+      "eventRows": 288,
+      "distinctWithinLaneSymbols": 283
+    },
+    {
+      "sourceId": "TPEX_PAR_VALUE_CHANGE_REFERENCE",
+      "eventRows": 2,
+      "distinctWithinLaneSymbols": 2
+    },
+    {
+      "sourceId": "TWSE_CAPITAL_REDUCTION_REFERENCE",
+      "eventRows": 10,
+      "distinctWithinLaneSymbols": 10
+    },
+    {
+      "sourceId": "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
+      "eventRows": 377,
+      "distinctWithinLaneSymbols": 371
+    },
+    {
+      "sourceId": "TWSE_PAR_VALUE_CHANGE_REFERENCE",
+      "eventRows": 1,
+      "distinctWithinLaneSymbols": 1
+    }
+  ],
+  "crossLaneDistinctAffectedSymbols": null,
+  "historicalVersionArchiveComplete": false,
+  "correctionHistoryComplete": false,
+  "cancellationHistoryComplete": false,
+  "firstKnownAtCertified": false,
+  "availableAtCertified": false,
+  "evidenceBoundNoActionClaimAuthorized": false,
+  "perSymbolPITContinuityCertifiedCount": 0,
+  "selectionAuthorized": false,
+  "stage1AssessedCount": 0,
+  "selectedCount": null,
+  "zeroPickDay": null,
+  "frozenDecisionWritten": false,
+  "shadowS0ToS5Accepted": 0,
+  "followUp": "Use source-specific official issuer/exchange/regulator original/correction/cancellation chains with captured-first-seen timestamp, immutable version hashes, six-lane bounded dates, and no-event controls. Do not reinterpret final actual results as past PIT certainty.",
+  "system1FormalModified": false,
+  "cloudflareD1Writes": 0,
+  "cloudflareR2Writes": 0,
+  "newSecretOrPaidService": false
+}

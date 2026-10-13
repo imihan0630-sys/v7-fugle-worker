@@ -65,8 +65,12 @@ test('success-shaped empty final result never equals no-event or continuity',asy
 test('no secrets, public raw publisher, Cloudflare or formal mutation',async()=>{
  const {readFile}=await import('node:fs/promises');
  const code=await readFile('system2/scripts/inventory_official_a1_ca_six_lane_v0_1.mjs','utf8');
- const workflow=await readFile('.github/workflows/system2-a1-ca-six-lane-inventory-once.yml','utf8');
- assert.match(workflow,/contents: read/);assert.match(workflow,/actions: read/);
- assert.doesNotMatch(workflow,/contents: write|S2_SCHEMA_DEST_D1_WRITE_TOKEN|S2_A1_ARCHIVE_DEPLOY_KEY/);
+ // Once-only physical source workflow is intentionally removed after PASS.
+ // The durable pure research module must remain nonprivileged independently.
+ await assert.rejects(
+   ()=>readFile('.github/workflows/system2-a1-ca-six-lane-inventory-once.yml','utf8'),
+   {code:'ENOENT'}
+ );
  assert.doesNotMatch(code,/git push|INSERT INTO|api\.cloudflare\.com/);
+ assert.doesNotMatch(code,/S2_SCHEMA_DEST_D1_WRITE_TOKEN|S2_A1_ARCHIVE_DEPLOY_KEY/);
 });
