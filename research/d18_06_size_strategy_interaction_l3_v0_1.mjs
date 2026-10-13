@@ -39,8 +39,16 @@ function pickHorizonState(r,horizon){
   const returns=r.returnsPct?.[horizon];
   must(state && returns,"SIZE_HORIZON_NOT_AVAILABLE");
   for(const leg of ["large","mid","small"]) must(Number.isFinite(returns[leg]),"SIZE_HORIZON_RETURN_INVALID");
-  if(state.includes("LARGE_LEAD")) return "LARGE_LED";
-  if(state.includes("SMALL") || state.includes("MID")) return "SMALL_MID_LED";
+  // Fail closed when the producer's categorical leadership claim contradicts its numeric TRI returns.
+  // This is a research-only provenance/consistency guard, not a trading threshold.
+  if(state.includes("LARGE_LEAD")){
+    must(returns.large>returns.mid && returns.large>returns.small,"SIZE_STATE_RETURN_CONFLICT");
+    return "LARGE_LED";
+  }
+  if(state.includes("SMALL") || state.includes("MID")){
+    must(Math.max(returns.small,returns.mid)>returns.large,"SIZE_STATE_RETURN_CONFLICT");
+    return "SMALL_MID_LED";
+  }
   return "MIXED_OR_OTHER";
 }
 
