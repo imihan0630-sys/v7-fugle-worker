@@ -3,6 +3,7 @@
 // Original stock rules unchanged. No production D1/KV/config writes and no phone push or orders.
 import {readFile,mkdir,writeFile} from "node:fs/promises";
 import {createHash,randomBytes} from "node:crypto";
+import {checkV8SelectionVintage} from "./v8_market_session_vintage_firewall_v0_1.mjs";
 const id=process.env.CLOUDFLARE_ACCOUNT_ID||"";
 const wt=process.env.CLOUDFLARE_API_TOKEN||"";
 const dt=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||wt;
@@ -150,6 +151,12 @@ try{
  const enrichJson=(settings.bindings||[]).find(x=>x.name==="V7_ENRICHMENT_JSON"&&x.type==="plain_text")?.text;
  if(enrichJson)env.V7_ENRICHMENT_JSON=enrichJson;
  const {verifiedOfficialQuarterEpsOverlay}=await import("./v8_offline_quality_eps_overlay_readonly_v0_1.mjs");
+ // Existing live MARKET_STATE may be newer than the requested replay date.
+ // Refuse any replay with future-state leakage before doing full-market computation.
+ const readMarketState=await kvGet("V7_MARKET_STATE","json");
+ result.preflight.sourceVintageCheck=checkV8SelectionVintage({
+   targetDate:target,sourceMarketLastDate:readMarketState?.lastDate??null
+ });
  // First independently confirm the deployed source session is complete. Incomplete is NOT zero picks.
  const h={"x-admin-token":process.env.V7_ADMIN_TOKEN||"",accept:"application/json"};
  if(!process.env.V7_ADMIN_TOKEN)throw Error("V8_PRODUCTION_ADMIN_STATUS_AUTH_REQUIRED");
@@ -171,6 +178,10 @@ try{
    sourceStatus[name]={sourceMarketDate:data.marketDate,ready:true};
  }
  result.preflight.officialSourceStatuses=sourceStatus;
+ result.preflight.sourceVintageCheck=checkV8SelectionVintage({
+   targetDate:target,sourceMarketLastDate:readMarketState?.lastDate??null,
+   knownOfficialDates:Object.values(sourceStatus).map(x=>x.sourceMarketDate)
+ });
  const time=Date.parse(target+"T15:35:00Z");
  // Compute original selector once using same-date cached snapshots and original unmodified rules.
  let scan=await module.runAfterMarketScan(env,time,{dryRun:true});
@@ -189,6 +200,8 @@ try{
  if(scan.diagnostics?.quarterEpsReview?.ready!==true||
     scan.diagnostics?.quarterEpsReview?.missingSymbols?.length!==0)
    throw Error("FINAL_QUARTER_EPS_NOT_VERIFIED");
+ if(scan.selectedCount===0 && scan?.diagnostics?.historyCoverageComplete!==true)
+   throw Error("PARTIAL_HISTORY_CANNOT_CLAIM_ZERO_STOCK_SELECTION");
  if(!Array.isArray(scan.stocks)||scan.stocks.length>6||scan.selectedCount!==scan.stocks.length||
     new Set(scan.stocks.map(x=>x.symbol)).size!==scan.stocks.length||
     scan.stocks.some(x=>!["A","B"].includes(x.signalLevel)||
