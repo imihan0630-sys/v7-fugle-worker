@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "S2_SHARED_A1_PRIVATE_ARCHIVE_PHYSICAL_PUBLISH_AND_INDEPENDENT_READBACK_20261013_V0_1",
+  "recordedDateTaipei": "2026-10-13",
+  "classification": "FIRST_PRIVATE_ORIGINAL_SOURCE_ARCHIVE_PHYSICAL_PUBLISH_READBACK",
+  "state": "PRODUCER_PHYSICAL_WRITE_AND_SEPARATE_READBACK_PASS__AUDIT_LANE_FINAL_FORMAL_ACCEPTANCE_PENDING",
+  "sourceRepository": "imihan0630-sys/v7-fugle-worker",
+  "privateTarget": "imihan0630-sys/v7-system2-official-a1-archive",
+  "publicSourceRepositoryPublishedRaw": false,
+  "scope": "INTERNAL_RESEARCH_RAW_SOURCE_ARCHIVE_ONLY__NOT_STRATEGY_SELECTION",
+  "rootCauseFix": {
+    "pr": 1180,
+    "mainCommit": "65024f11cd9326eb54cbdf3012b8692a1d8d4c42",
+    "sourceReceiptHashDomainUnified": true
+  },
+  "firstRealPublication": {
+    "workflowRunId": 38363227262,
+    "jobId": 115182137256,
+    "conclusion": "success",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38363227262",
+    "sourceRunId": 38351651871,
+    "sourceArtifactId": 11791440725,
+    "newlyPreparedAssetPaths": 124,
+    "gitCommittedFileCount": 125,
+    "privateTargetCommitShort": "e9c65c1",
+    "providerGitPushObserved": true,
+    "sourceMarketDatePairs": 121,
+    "sourceMarketDatePairsRequiredForSelection": 122,
+    "originalCompressedBytes": 25039760,
+    "archiveReceiptSha256": "0a0396bd8c81f4bcfdba238b38e97278b9e171eceda328fe6512c986dc1eee9f",
+    "sanitizedArtifactId": 11795906571,
+    "sanitizedArtifactSha256": "28f87227db22181a5fc51c3831c4f8704d8846704c5af811c8f8e57e09baf6c8"
+  },
+  "independentPrivateReadback": {
+    "workflowRunId": 38363599184,
+    "jobId": 115183343859,
+    "conclusion": "success",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38363599184",
+    "readbackRunMainCommit": "e451279e9a78ab061fa097e291de33400bee5ced",
+    "sourceBlobGzipCount": 121,
+    "sourceBlobGzipDecompressedSha256Rechecked": 121,
+    "identicalExistingContentFiles": 124,
+    "readbackPreparedNewFiles": 0,
+    "sourceManifestAndReceiptsCompared": true,
+    "freshSecondCloneFromPrivateMain": true,
+    "independentProviderVisibilityWitness": "ANONYMOUS_GITHUB_REST_404_PLUS_AUTHENTICATED_SSH_CLONE_PASS",
+    "archiveReceiptSha256": "0a0396bd8c81f4bcfdba238b38e97278b9e171eceda328fe6512c986dc1eee9f",
+    "sanitizedArtifactId": 11796196376,
+    "sanitizedArtifactSha256": "17c95ae16cd6d17f8be0e94e9db2f967cd63835ac235d3dfb8e2ecf0ad557441"
+  },
+  "unresolved": {
+    "missingSourceMarketDatePairs": 1,
+    "source61SessionComplete": false,
+    "selectionPitCertified": false,
+    "corporateActionContinuityAccepted": false,
+    "stage1SelectionPerformed": false,
+    "frozenDecisionPhysicallyWritten": false,
+    "shadowAcceptedS0ThroughS5": "0/6",
+    "providerLevelImmutability": false,
+    "formalAuditLaneAcceptancePending": true
+  },
+  "safety": {
+    "system1FormalRuntimeChanged": false,
+    "cloudflareD1OrR2Touched": false,
+    "paidResourcesActivated": false,
+    "tradingPushOrdersEnabled": false,
+    "publicRawPublication": false,
+    "independentReadbackHasGitPush": false
+  },
+  "canonicalIssues": [
+    1132,
+    1128,
+    1068
+  ],
+  "cleanup": "Temporary readback-only workflow will be removed from public source repository after receipt acceptance; permanent private A1 archive workflow remains unchanged."
+}
