@@ -21,6 +21,13 @@ age_func='''function snapshotAgeSeconds(snapshot) {
   return Number.isFinite(ms) ? Math.max(0, Math.floor((Date.now() - ms) / 1000)) : null;
 }'''
 display_func='''
+// Admin diagnostic SELECT-only D1 read, avoids ensureD1Schema DDL on GET.
+async function auditPrimarySnapshotReadOnly(env) {
+  if (!env?.V7_DB) return null;
+  const row = await env.V7_DB.withSession("first-primary")
+    .prepare("SELECT snapshot FROM v7_live_state WHERE id = 1").first();
+  return row?.snapshot ? JSON.parse(row.snapshot) : null;
+}
 // Read model ONLY. Background signal/capital/plan paths still use original D1.
 async function readDisplayLiveState(env, stocks) {
   const primary = await readLiveSnapshot(env);
@@ -59,7 +66,7 @@ audit_route='''    if (url.pathname === "/api/live/sources") {
       if (!isAuthorized(request, env)) return json({ error: "ADMIN_TOKEN 錯誤" }, 401, true);
       const config = await loadStockConfig(env);
       const [d1, kv] = await Promise.all([
-        readLiveSnapshot(env),
+        auditPrimarySnapshotReadOnly(env),
         env.STOCKS_KV ? env.STOCKS_KV.get(LAST_MONITOR_KEY, "json") : Promise.resolve(null)
       ]);
       const nowMs = Date.now(), tradeDate = taiwanDate(nowMs);
