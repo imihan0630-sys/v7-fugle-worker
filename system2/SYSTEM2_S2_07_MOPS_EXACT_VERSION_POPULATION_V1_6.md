@@ -173,3 +173,18 @@ Next exact BUILD_LANE continuation:
 5. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 6. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity binding.
 
+
+
+## 2026-10-08 BUILD_LANE fourth prospective capture trigger
+
+Purpose: trigger exactly one new genuine read-only MOPS exact-version prospective capture from the current canonical implementation for V1.7 repeated-capture stabilization.
+
+Constraints:
+- prior three accepted captures remain immutable prior evidence and are not reclassified as new evidence;
+- earliest observed-at provenance may not be overwritten;
+- absent-from-latest union members may not be deleted;
+- sourceReportedAt is not promoted to exact availableAt;
+- one new capture cannot by itself freeze `expectedMopsKeysetComplete` unless the separate bounded-stabilization/source-semantics gates pass;
+- no scheduler, strategy, selection, push, capital, order, System1 runtime or Formal Core authority is added.
+
+Requested output: one new V1.6 physical artifact suitable as capture #4 input to the accepted V1.7 append-only union.
