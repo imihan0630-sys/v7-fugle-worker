@@ -50,6 +50,9 @@ jobs:
           name: ${{ steps.seed.outputs.seed_artifact_name }}
           path: /tmp/s2-shared-a1-seed
           github-token: ${{ github.token }}
+      # 19:00 Taipei is PRELIMINARY_SOURCE_REVIEW_ONLY under owner policy;
+      # final 23:45 freeze/capacity is NOT implemented in this source collector.
+      # A 200 response without exact report date and full 122 originals fails closed.
       - name: Collect only missing market/date pairs and verify raw SHA/source date
         env:
           S2_SHARED_A1_SEED_ORIGINAL_DIR: /tmp/s2-shared-a1-seed/original-json
