@@ -4,13 +4,34 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/system1-p0-official-history-sequential-remainder-once.yml"
+  pull_request:
+    paths:
+      - "ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs"
+      - ".github/workflows/system1-p0-official-history-sequential-remainder-once.yml"
 permissions:
   contents: read
 concurrency:
   group: system1-history-cache-dataonly-safe-write
   cancel-in-progress: false
 jobs:
+  offline_syntax_and_source_guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert official data-only script syntax and original source parser
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+          grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          grep -F -q 'NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
   sequential_400_bounded:
+    if: github.event_name == 'push'
+    needs: offline_syntax_and_source_guard
     runs-on: ubuntu-latest
     timeout-minutes: 100
     env:
@@ -43,6 +64,11 @@ jobs:
               exit 2
             fi
             cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/serial-source-history/batch-${n}.json"
+            if node -e 'const d=require("./artifacts/system1-p0-official-wholemarket-firstbatch.json"); process.exit(d.status==="NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE"?0:1)'; then
+              echo "S1_SOURCE_HISTORY_ALL_EXISTING_ROWS_CURRENT_TO_PINNED_DATE"
+              echo "::endgroup::"
+              break
+            fi
             echo "::endgroup::"
             if [ "$n" != 4 ]; then sleep 20; fi
           done
