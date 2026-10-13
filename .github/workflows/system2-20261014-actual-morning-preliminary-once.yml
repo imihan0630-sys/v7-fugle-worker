@@ -42,9 +42,9 @@ jobs:
         run: |
           set -euo pipefail
           mapfile -t FILES < <(find /tmp/s2-audit-signed -type f -name audit-receipt.json -print)
-          test "\${#FILES[@]}" -eq 1
-          test -s "\${FILES[0]}"
-          echo "S2_A1_AUDIT_RECEIPT_FILE=\${FILES[0]}" >> "$GITHUB_ENV"
+          test "${#FILES[@]}" -eq 1
+          test -s "${FILES[0]}"
+          echo "S2_A1_AUDIT_RECEIPT_FILE=${FILES[0]}" >> "$GITHUB_ENV"
       - name: Build ONLY as-of-actual-Run-at-morning preliminary list from real 122 originals
         env:
           S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
