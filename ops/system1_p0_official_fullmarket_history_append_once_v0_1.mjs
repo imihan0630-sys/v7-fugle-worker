@@ -9,7 +9,7 @@ const SOURCE_START="2026-09-11";
 const SYMBOL_CAP=24;
 const account=process.env.CLOUDFLARE_ACCOUNT_ID||"";
 const sourceToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
-const writeToken=process.env.CLOUDFLARE_API_TOKEN||"";
+const writeToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
 const admin=process.env.V7_ADMIN_TOKEN||"";
 if(!/^[0-9a-f]{32}$/i.test(account)||!sourceToken||!writeToken||!admin)
  throw Error("EXISTING_CLOUDFLARE_SOURCE_AND_ADMIN_AUTH_REQUIRED_NO_WRITE");
@@ -33,6 +33,20 @@ const dbs=await cf("/d1/database?per_page=100");
 const chosen=dbs.filter(x=>x.name==="v7-live");
 if(chosen.length!==1)throw Error("EXACT_SOURCE_V7_LIVE_DB_NOT_FOUND");
 const id=chosen[0].uuid||chosen[0].id;
+// Zero-row SQL permission probe: no stored history data is changed.
+// Fail BEFORE downloading full-market official history when existing D1 write
+// permission is absent. Only a fixed impossible ordinary-stock ticker is used.
+const permissionProbe=await cf("/d1/database/"+id+"/query","POST",{
+ sql:"UPDATE v7_history_cache SET updated_at=updated_at WHERE symbol='0000'",
+ params:[]
+},writeToken);
+if(!Array.isArray(permissionProbe)||permissionProbe.length!==1||
+   permissionProbe[0].success!==true||
+   Number(permissionProbe[0].meta?.changes||0)!==0||
+   Number(permissionProbe[0].meta?.rows_written||0)!==0)
+ throw Error("EXISTING_SOURCE_TOKEN_D1_ZERO_ROW_WRITE_SCOPE_NOT_VERIFIED");
+journal.d1ZeroRowWriteScopeVerified=true;
+
 async function query(sql,params=[]){
  const isRead=/^\s*SELECT\s/i.test(sql);
  const isAppend=/^\s*UPDATE v7_history_cache SET history_json=/i.test(sql);
