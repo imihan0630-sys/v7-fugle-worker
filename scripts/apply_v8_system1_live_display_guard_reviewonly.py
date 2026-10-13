@@ -70,6 +70,16 @@ home_new='''    const [display, cronStatus] = await Promise.all([
     const liveState = display.snapshot || null;
     const usingD1 = display.source === "D1_PRIMARY";'''
 once(home_old,home_new,"homepage_read")
+once('''    const currentPlanBySymbol = new Map(stocks.map(stock => [String(stock.symbol), stock]));''',
+'''    // Wrong monitored population is NOT a valid trade display, even when
+    // the quote timestamp is recent. Original data remains read-only /api/live.
+    if (!display.populationMatches) {
+      const message = "監控資料與正式設定股票名單不一致，暫停展示行情與操作訊號；請查驗 Cron / D1 / KV。";
+      return html(errorPage(message), 200, true);
+    }
+    const currentPlanBySymbol = new Map(stocks.map(stock => [String(stock.symbol), stock]));''',
+"reject_mismatched_live_cards")
+
 once('liveStore: live ? "D1 primary" : (fallback ? "KV fallback" : "none"),',
      'liveStore: display.source,',"json_display_source")
 once('waitingLivePage(loaded, liveState, Boolean(env.V7_DB), cronStatus)',
