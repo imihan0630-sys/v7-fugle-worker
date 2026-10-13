@@ -6,7 +6,7 @@ const DATE=/^\d{4}-\d\d-\d\d$/;
 const ISO=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
 const digest=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export function buildSharedOfficialA1MarketManifestV0_1({
- sourceReceipt,storageClass='GITHUB_ACTIONS_EPHEMERAL_90D',
+ sourceReceipt,storageClass='GITHUB_ACTIONS_EPHEMERAL_7D',
  issuedAtUtc,runId=null,commitSha=null,
 }={}){
  if(!ISO.test(issuedAtUtc||'')||!Number.isFinite(Date.parse(issuedAtUtc)))
@@ -18,7 +18,8 @@ export function buildSharedOfficialA1MarketManifestV0_1({
     !Array.isArray(sourceReceipt.calendar?.tradingDates)||
     sourceReceipt.calendar.tradingDates.length!==61)
   throw Error('SHARED_OFFICIAL_MANIFEST_SOURCE_SCHEMA_NOT_VERIFIED');
- if(storageClass!=='GITHUB_ACTIONS_EPHEMERAL_90D'&&
+ if(storageClass!=='GITHUB_ACTIONS_EPHEMERAL_7D'&&
+    storageClass!=='GITHUB_ACTIONS_EPHEMERAL_90D'&&
     storageClass!=='GITHUB_VERSIONED_IMMUTABLE_BY_CONTENT_HASH_VERIFIED')
   throw Error('SHARED_OFFICIAL_MANIFEST_STORAGE_CLASS_INVALID');
  if(storageClass==='GITHUB_VERSIONED_IMMUTABLE_BY_CONTENT_HASH_VERIFIED')
@@ -61,7 +62,8 @@ export function buildSharedOfficialA1MarketManifestV0_1({
   effectiveTradingDay:sourceReceipt.marketDate,
   tradingDates:sourceReceipt.calendar.tradingDates,
   issuedAtUtc,sourceRunId:runId,sourceCommitSha:commitSha,
-  storageClass,immutableStorageIndependentAudited:false,
+  storageClass,shortTermCacheMaxRetentionDays:storageClass==='GITHUB_ACTIONS_EPHEMERAL_7D'?7:90,
+  immutableStorageIndependentAudited:false,
   originalOfficialProvenanceHash:sourceReceipt.receiptHash,
   sourceUrlAndOriginalBodyHashPinned:true,
   sourceMarketDatePairsExpected:expected,
