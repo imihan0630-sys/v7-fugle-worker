@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "S2_P0_V02_DAILY_PRELIMINARY_TDR_PHYSICAL_20261014_V0_1",
+  "type": "PHYSICAL_REAL_OFFICIAL_A1_SOURCE_PRELIMINARY_V02_TDR_EXCLUSION",
+  "issue": 1132,
+  "marketDate": "2026-10-13",
+  "realObservedAtUtc": "2026-10-13T22:21:06.029Z",
+  "realObservedAtTaipei": "2026-10-14T06:21:06+08:00",
+  "sourceRunId": 38468816687,
+  "independentSourceAuditRunId": 38469057567,
+  "physicalRunId": 38477169340,
+  "physicalJobId": 115570597368,
+  "physicalRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38477169340",
+  "physicalRunConclusion": "success",
+  "stage1State": "BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER",
+  "strategyPitCertified": false,
+  "finalSelectionAuthorized": false,
+  "sourceMarketDatePairs": 122,
+  "officialSessions": 61,
+  "rawFourDigitSourceCount": 1974,
+  "preliminaryVersion": "PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2",
+  "ordinaryEquityOnlyUniverseCertified": false,
+  "technicalPriceVolumeUsableCount": 1711,
+  "excludedMissingPITHistoryOrNonTradeCount": 252,
+  "suspiciousRawCloseDiscontinuityQuarantinedCount": 7,
+  "knownLabelDepositaryReceiptQuarantinedCount": 4,
+  "denominator1974Reconciled": true,
+  "rawFiveSessionDescriptiveMatchCount": 580,
+  "displayedResearchRows": 30,
+  "previewContainsDR": false,
+  "previewRequiresFormalStrategyRank": false,
+  "positiveInstrumentMembershipIndependentlyVerified": false,
+  "companyActionPITStatus": "UNKNOWN_NOT_CLEARED",
+  "historicalBacktestPerformanceCertified": false,
+  "formalSelectedCount": null,
+  "certifiedZeroPickDay": null,
+  "frozenDecisionWritten": false,
+  "ordersEnabled": false,
+  "pushEnabled": false,
+  "receiptSha256": "1bdc75a148160b4267ad6173ac0d6607c47ac9304df02f28bc376f026e9a4d88",
+  "artifact": {
+    "id": 11854376827,
+    "name": "s2-v02-tdr-filtered-observation-38477169340",
+    "digest": "sha256:7d805eceb769a4c8f21de68f697f193a1a41a014c11c08f05fa61f79295b1432",
+    "sizeBytes": 3477,
+    "retentionDays": 7,
+    "containsOnlyDerivedPreviewNoOfficialRawPayload": true
+  },
+  "priorVersion": {
+    "watchVersion": "PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_1",
+    "physicalRunId": 38475579042,
+    "matches": 582,
+    "knownTDRinPreview": {
+      "symbol": "9103",
+      "companyName": "美德醫療-DR",
+      "fiveSessionReturnPct": 43.55828
+    },
+    "oldReceiptHash": "1737aff8c69b22dc1f177907a6cba9df97d944f2c347b68e19685df73bcf8b61",
+    "historyRetainedUnmodified": true,
+    "differenceMatches": -2
+  },
+  "provenance": {
+    "policy": "system2/SYSTEM2_LAYERED_DAILY_PRELIMINARY_PIT_BACKTEST_V0_1.md",
+    "fixPR": 1220,
+    "physicalPR": 1221,
+    "twseOfficialTDRReference": "https://wwwc.twse.com.tw/zh/listed/listed/apply-tdr.html"
+  },
+  "safety": {
+    "newRecurringCron": false,
+    "paidService": false,
+    "newSecret": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1V8FormalChanged": false,
+    "realMoneyImpact": false
+  },
+  "remainingGates": [
+    "Official positive security-type classification for full source",
+    "Per-symbol corporate-action PIT and event-version continuity for formal Shadow",
+    "Regime and strategy-local rank/capacity certification",
+    "Authorised append-only Frozen D1 writing and independent readback",
+    "OOS/transaction-cost backtest certification"
+  ]
+}
