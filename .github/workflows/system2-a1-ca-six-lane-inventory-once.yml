@@ -35,10 +35,16 @@ jobs:
           name: system2-shared-official-a1-independent-audit-38390900569
           path: /tmp/ca-a1-audit
           github-token: ${{ github.token }}
+      - name: Resolve one downloaded independent audit receipt, reject ambiguity
+        run: |
+          set -euo pipefail
+          mapfile -t FILES < <(find /tmp/ca-a1-audit -type f -name audit-receipt.json -print)
+          test "${#FILES[@]}" -eq 1
+          test -s "${FILES[0]}"
+          echo "S2_A1_INDEPENDENT_AUDIT=${FILES[0]}" >> "$GITHUB_ENV"
       - name: Query six source-only official corporate-action ranges
         env:
           S2_A1_MANIFEST: /tmp/ca-a1-original/shared-official-a1-manifest.json
-          S2_A1_INDEPENDENT_AUDIT: /tmp/ca-a1-audit/audit-receipt.json
         run: |
           set -euo pipefail
           node system2/scripts/inventory_official_a1_ca_six_lane_v0_1.mjs
