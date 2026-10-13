@@ -844,3 +844,24 @@ Current physical data is still 121/122 and therefore rejected. A later 122/122
 capture remains `PIT_UNAUDITED` until separate readback and continuity evidence
 arrive. See `system2/SYSTEM2_SHARED_A1_STAGE1_ADMISSION_V0_1.md` and
 `system2/evidence/S2_SHARED_A1_STAGE1_ADMISSION_BUILD_HANDOFF_20261013_V0_1.json`.
+
+## 2026-10-13 owner-approved private Shared Official A1 archive boundary
+
+PR #1178 was explicitly approved and merged as
+`a416728d4a3d20bac95ff0aee68cfe0a6a4e0e10`. The Owner also explicitly approved
+a free dedicated private GitHub archive and the minimum writer capability.
+
+The private `imihan0630-sys/v7-system2-official-a1-archive` repository now exists.
+A write deploy key is scoped only to that target repository and its private key is
+stored as source Actions secret `S2_A1_ARCHIVE_DEPLOY_KEY`; source workflow
+permissions remain `contents: read` / `actions: read`. The create-only publisher
+uses content-addressed raw paths, independently rechecks original gzip/parser/hash
+lineage, verifies identical existing bytes and fails closed on conflicts. Official
+TWSE/TPEx open-data attribution is preserved in the private archive.
+
+Focused private-archive + dry-run + incremental + admission tests are **26/26 PASS**. This is
+repository implementation only: physical private-archive publication/readback is
+still **0/1** and no archive raw file has yet been uploaded by the new workflow.
+Latest source evidence remains 121/122 across 61 dates; Shadow S0-S5 remains 0/6.
+See `system2/SYSTEM2_SHARED_A1_PRIVATE_ARCHIVE_V0_1.md` and
+`system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_BUILD_HANDOFF_20261013_V0_1.json`.
