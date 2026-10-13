@@ -110,6 +110,9 @@ test('shared manifest is research-only for both independent systems, never Forma
  });
  assert.equal(m.sourceMarketDatePairsValidated,1);
  assert.equal(m.sourceCoverage,'INCOMPLETE_SOURCE_CAPTURE');
+ assert.equal(m.storageClass,'GITHUB_ACTIONS_EPHEMERAL_7D');
+ assert.equal(m.shortTermCacheMaxRetentionDays,7);
+ assert.equal(m.immutableStorageIndependentAudited,false);
  assert.equal(m.sourceRowsEligibleAsSystem1FormalInputs,false);
  assert.equal(m.sourceRowsEligibleAsSystem2FrozenSelection,false);
  assert.equal(m.sourceBlobs[0].firstCapturedAtUtc,observed);
@@ -139,3 +142,16 @@ test('current run cannot seed from itself, expired artifact is not accepted',()=
  assert.equal(q.runId,60);
 });
 console.log('Shared Official 61-Day A1 research-only reuse, clock and provenance guard: PASS');
+
+test('manifest cache duration always matches scheduled workflow and forbids 90-day false labeling',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const w=readFileSync('.github/workflows/system2-shared-official-a1-incremental-readonly.yml','utf8');
+ assert.match(w,/retention-days:\s*7\b/);
+ assert.doesNotMatch(w,/contents:\s*write/);
+ const p=fixture();
+ const m=buildSharedOfficialA1MarketManifestV0_1({
+  sourceReceipt:p.receipt,issuedAtUtc:'2026-10-13T13:15:00Z'
+ });
+ assert.equal(m.shortTermCacheMaxRetentionDays,7);
+ assert.equal(m.storageClass,'GITHUB_ACTIONS_EPHEMERAL_7D');
+});
