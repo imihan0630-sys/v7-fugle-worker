@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "00_20261013_P0_REAL_CLOCK_SOURCE_AND_SYSTEM1_THIRD_DEPLOY_AUDIT_V0_1",
+  "observedMain": "7bc97dfd8e9ab5b41186a84e762f2d06535f4e78",
+  "recordedAtUtc": "2026-10-13T15:00:12.991Z",
+  "recordedAtTaipei": "2026-10-13 23:00:12",
+  "lane": "00_RESEARCH_AUDIT_CONTROL",
+  "classification": "INDEPENDENT_GITHUB_ACTIONS_METADATA_ORIGINAL_JOB_LOG_AND_SOURCE_CODE_SCOPE_AUDIT",
+  "independentlyRead": [
+    "Provider GitHub Actions Run/job/step conclusion and selected original logs, not source guesses",
+    "Original SHA/digest as GitHub Artifact metadata; 00 did NOT byte-download the 40MB A1 ZIP",
+    "Historical exact source and independent Stage1 separate original real runs",
+    "Current official CA source six-lane source-only evidence",
+    "System1 three original owner-approved production Worker upload/rollback job traces, new physical positive readback",
+    "Current 00 Registry/checkpoint and System2 canonical queue"
+  ],
+  "a1": {
+    "actualMarketDate": "2026-10-13",
+    "producer": {
+      "run": 38390694817,
+      "originalArtifactId": 11808802261,
+      "zipSha256": "ad1ef77f71906ebe8a9ed5cc3ece14dabb37be704bda366261e9487b7bf80329",
+      "createdAtUtc": "2026-10-13T11:30:30Z",
+      "pairs": 122,
+      "requiredPairs": 122,
+      "completePerSymbolHistoryWindows": 1938
+    },
+    "independentProducer": {
+      "run": 38390900569,
+      "job": 115274143379,
+      "artifactId": 11807798178,
+      "artifactDigest": "sha256:08e7b1a4c95f17d91c11cdf090c1b4464e8aa4e4139bd189d57dbaef54a75afc",
+      "startedAtUtc": "2026-10-13T11:32:15Z",
+      "freezeAtUtc": "2026-10-13T11:32:38.014Z",
+      "sourceLedgerHash": "06e0b6f96cca387c38603caf658e1209d25c2f7d6a84c6d9291b2ca3d48f1166",
+      "ordinarySourceSymbolIdentities": 1974,
+      "strategyEvaluated": 0,
+      "strategyIncomplete": 1974,
+      "selectedCount": null,
+      "zeroPickDay": null,
+      "frozenDecisionWritten": false
+    },
+    "sourceOnlyPass": true,
+    "strategyPITContinuityNotProven": true,
+    "note": "Original 2026-10-12 121/122 was a different retrospective cut. Both real 10/13 sources physically observed 122/122, not retrofilled missing TPEx 07/15."
+  },
+  "sixLaneCA": {
+    "originalRun": 38413831461,
+    "originalJob": 115352847920,
+    "artifactId": 11823133699,
+    "artifactDigest": "sha256:7d8da86a2a30124ccb16ca9591ae9dbcc3799213afa51006f91e8f24181f563b",
+    "runCreatedAtUtc": "2026-10-13T14:29:41Z",
+    "runCreatedAfterBridgeFreezeMs": 10622986,
+    "sourceFinalResultLanes": 6,
+    "requiredLanes": 6,
+    "eventRowsAcrossLanes": 688,
+    "officialVersionHistoryCompleteLanes": 0,
+    "perSymbolPITContinuityCertified": 0,
+    "noEventAuthorized": false,
+    "causalFinding": "CA run created 2h57m+ after 19:32:38 Stage1 observation and cannot be treated as known at that earlier decision; this run creation is only a latest-known capture clock, not proof of prior official announcement publish clock.",
+    "emptyEventSetIsUnknownUnlessBoundedCoverage": true,
+    "freeOfficialCandidateSources": [
+      {
+        "authority": "TWSE",
+        "page": "https://openapi.twse.com.tw/",
+        "resource": "/exchangeReport/TWT48U_ALL",
+        "kind": "preview-not-final-historic-version"
+      },
+      {
+        "authority": "TPEx",
+        "page": "https://www.tpex.org.tw/zh-tw/announce/market/ex/announce.html",
+        "kind": "preview; authoritative issuer distributions require MOPS"
+      },
+      {
+        "authority": "MOPS",
+        "page": "https://mops.twse.com.tw/",
+        "kind": "issuer-original-announcements-and-corrections; exact publication clock independently needed"
+      }
+    ],
+    "nextTrueAcceptance": "Versioned issuer/exchange 6-lane original+correction+cancellation chain, official reported/published timestamp OR explicit UNKNOWN, firstObservedAt capture, bounded pagination/no-action proof, immutable digest and per-symbol same-cut continuity."
+  },
+  "newDailyReadiness": {
+    "implementationMain": "a97743dcd0b4b618a01181bd51d7f03ffecb6462",
+    "implementationPaths": [
+      "system2/runtime/daily_selection_readiness_v0_1.mjs",
+      "system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs",
+      ".github/workflows/system2-shared-official-a1-independent-audit.yml"
+    ],
+    "firstMainPushDiagnosticRun": 38417540042,
+    "job": 115365870358,
+    "artifactId": 11824083886,
+    "digest": "sha256:bc69001c36ff69d517398399459d641a82f241e7d46eaf103e32b2065fffd8d7",
+    "pushWorkflowChosenFixtureRun": 38351651871,
+    "oldDate": "2026-10-12",
+    "oldPairs": 121,
+    "expectedNegativeVerdict": "BLOCKED_SOURCE_NOT_SELECTION",
+    "interpretation": "Synthetically/historically configured push diagnostic expected denial, NOT retraction of genuine 10/13 122/122 source.",
+    "firstTrue121To122DailyReadinessPhysicalRunWithNewCode": "NOT_YET_OBSERVED_AS_OF_AUDIT",
+    "safeNext": "Existing workflow_dispatch read-only source_run_id=38390694817 or future successful source-workflow_run; independently accept full daily readiness without D1, selection or frozen promotion."
+  },
+  "system1": {
+    "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1202",
+    "attempts": [
+      {
+        "run": 38413542208,
+        "job": 115351834879,
+        "workerPutConfirmedHttp": 200,
+        "postDeploy": "FAILED_NODE_COMMONJS_TOPLEVEL_AWAIT",
+        "rollbackCommand": "SUCCESS",
+        "postRollbackRoute": "404",
+        "independentVersionSha": "UNKNOWN_AT_TIME"
+      },
+      {
+        "run": 38415674560,
+        "job": 115359321164,
+        "workerPutConfirmedHttp": 200,
+        "postDeploy": "FAILED_AIDEEN_SEPARATE_POOL_PROVENANCE_MISSING",
+        "wranglerRollbackToVersionId": "cd05a00c-defa-4a75-a581-83c0ae481ae8",
+        "wranglerRollbackPercent": 100,
+        "postRollbackRouteOnlyAssertion": "FAILED",
+        "actualRollbackVersionLaterVerifiedInNextPredeploy": true
+      },
+      {
+        "run": 38416922196,
+        "job": 115363707276,
+        "approvedHead": "4d771cc65e0ed8e1c69afae11950d3ba04495840",
+        "state": "PRODUCTION_CODE_UPLOAD_AND_LIVE_V0_2_SOURCE_READBACK_SCOPED_PASS",
+        "sourceBackupArtifactId": 11824302686,
+        "sourceBackupZipDigest": "sha256:2b49756207668ab532c975146df891fb974c49c66d53afec9eaef30600ea26a5",
+        "predeployProviderActiveVersionId": "cd05a00c-defa-4a75-a581-83c0ae481ae8",
+        "workerPutHttp": 200,
+        "postDeployReadbackSucceeded": true,
+        "rollbackStep": "SKIPPED"
+      }
+    ],
+    "physicalLatestReadback": {
+      "verifiedAtApproxUtc": "2026-10-13T14:51:39Z",
+      "sourceSchema": "SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2",
+      "runtimeVersion": "8.20.2-idempotent-d1-snapshots",
+      "formalSymbolCount": 5,
+      "aideenSymbolCount": 4,
+      "monitorIdentityTotal": 9,
+      "d1Count": 9,
+      "kvCount": 9,
+      "d1PopulationMatches": true,
+      "kvPopulationMatches": true,
+      "displayPopulationMatches": true,
+      "displaySource": "D1_PRIMARY",
+      "originalCronUnchangedCount": 4,
+      "d1AgeSeconds": 34027,
+      "kvAgeSeconds": 34027,
+      "afterCloseIntradayVerified": false,
+      "afterCloseBusinessSelectionVerified": false,
+      "livePushOrTradesVerified": false
+    },
+    "remainingAcceptance": "Physical owner-authorized code rollout PASS is not next trading-day live quote freshness, natural 23:35/conditional 23:55 business scan, durable D1/KV same-generation or real push success.",
+    "independentProviderActiveVersionShaAfterThirdDeployment": "NOT_SEPARATELY_CAPTURED_AS_EXACT_SHA_IN_THE_READBACK_SUMMARY",
+    "oneShotRetryPermission": false,
+    "formalCoreChangedBy00": false
+  },
+  "otherGates": {
+    "destinationSchemaOnly": "25_OF_25_INDEPENDENT_ACCEPTED",
+    "g3SourceBackupRestore": "1_OF_4_SCOPED_PASS",
+    "g4HistoricalRowsImported": 0,
+    "system2ShadowS0ToS5": "0_OF_6",
+    "corr003": {
+      "status": "HIGH_VERIFYING",
+      "physicalP01toP05": "0_OF_5"
+    },
+    "correctionQueue": {
+      "total": 24,
+      "byStatus": {
+        "FIX_IN_PROGRESS": 1,
+        "VERIFIED_CLOSED": 18,
+        "FIX_IMPLEMENTED": 1,
+        "REJECTED_WITH_EVIDENCE": 1,
+        "VERIFYING": 1,
+        "OPEN": 2
+      }
+    }
+  },
+  "independentCounterexampleDecisions": [
+    {
+      "case": "CA_SOURCE_CREATED_AFTER_ASOF_DECISION",
+      "result": "BLOCK_PREDECISION_PROMOTION"
+    },
+    {
+      "case": "OFFICIAL_FINAL_CA_6_OF_6_BUT_HISTORY_0_OF_6",
+      "result": "BLOCK_NO_ACTION_AND_ADJUSTED_CONTINUITY"
+    },
+    {
+      "case": "DAILY_READINESS_MAIN_PUSH_DIAGNOSTIC_121_OF_122",
+      "result": "EXPECTED_SOURCE_DENIAL_NOT_NEW_122_FAILURE"
+    },
+    {
+      "case": "SYSTEM1_V0_1_ROUTE_EXISTS_AFTER_ROLLBACK",
+      "result": "ROUTE_404_IS_NOT_VALID_VERSION_SHA_ACCEPTANCE"
+    },
+    {
+      "case": "SYSTEM1_D1_KV_9_IDENTITIES_MATCH_AFTER_HOURS",
+      "result": "ACCEPT_POPULATION_ONLY_NOT_FRESH_INTRADAY"
+    },
+    {
+      "case": "1947_OR_1974_SOURCE_SYMBOLS_WITH_UNKNOWN_CONTINUITY",
+      "result": "INCOMPLETE_NOT_CERTIFIED_ZERO_PICK"
+    }
+  ],
+  "scopeBoundaries": {
+    "noNewCloudflareWorkerUploadBy00": true,
+    "noRealD1SQLBy00": true,
+    "noR2By00": true,
+    "noLiveOrderCapitalPushBy00": true,
+    "noPaidApiOrSecretBy00": true
+  },
+  "moduleInventory": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
