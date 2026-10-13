@@ -50,6 +50,13 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=n
  const sameDate=active.length>0&&active.every(x=>normDate(x?.planDate)===day);
  const duplicate=new Set(symbols).size!==symbols.length;
  const knownSource=Boolean(config?.source&&config?.source!=="None");
+ const actualLiveSymbols=Array.isArray(live?.results)?live.results.map(x=>String(x?.symbol||"")):[];
+ const configuredSet=new Set(symbols),actualSet=new Set(actualLiveSymbols);
+ const missingSymbols=symbols.filter(x=>!actualSet.has(x));
+ const unexpectedSymbols=actualLiveSymbols.filter(x=>!configuredSet.has(x));
+ const monitorPopulationMatches=actualLiveSymbols.length===symbols.length&&
+   actualSet.size===actualLiveSymbols.length&&missingSymbols.length===0&&unexpectedSymbols.length===0&&
+   Number(live?.monitoredCount)===actualLiveSymbols.length;
  const monitors=Array.isArray(cron?.recent)?cron.recent:[];
  const cronToday=monitors.filter(x=>x?.job_type==="INTRADAY_MONITOR"&&isTaipeiDate(x?.scheduled_at,day));
  const cronSuccess=cronToday.some(x=>x?.status==="SUCCESS"&&x?.skipped!==true);
@@ -71,12 +78,13 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=n
  const notAssessed=!intradayWindow;
  // Do not claim a live PASS solely from a same-day date, a completed cron, or HTTP 200.
  // Require all three actual clocks advancing within five minutes.
- const ok=!notAssessed&&sameDate&&!duplicate&&knownSource&&cronRecent&&liveFresh&&signalFresh;
+ const ok=!notAssessed&&sameDate&&!duplicate&&knownSource&&monitorPopulationMatches&&cronRecent&&liveFresh&&signalFresh;
  const state=notAssessed?"OUTSIDE_TAIPEI_INTRADAY_WINDOW_NOT_ASSESSED":
      !active.length?"NO_MONITOR_STOCKS":
      !sameDate?"WRONG_OR_STALE_PLAN_DATE":
      duplicate?"DUPLICATE_MONITOR_SYMBOL":
      !knownSource?"UNKNOWN_MONITOR_CONFIG_SOURCE":
+     !monitorPopulationMatches?"MONITOR_TARGETS_MISMATCH":
      !cronRecent?"RECENT_INTRADAY_CRON_NOT_VERIFIED":
      !liveFresh?"LIVE_SNAPSHOT_STALE_OR_MISSING":
      !signalFresh?"SIGNAL_SNAPSHOT_STALE_OR_MISSING":
@@ -84,6 +92,8 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=n
  return {state,ok,notAssessed,day,observedAt:observed.toISOString(),
    isTaipeiIntradayWindow:intradayWindow,maxFreshAgeSeconds:MAX_FRESH_AGE_SECONDS,
    monitorCount:active.length,symbols,planDateCurrent:sameDate,
+   actualLiveSymbols,monitorPopulationMatches,missingSymbols,unexpectedSymbols,
+   liveReportedMonitoredCount:live?.monitoredCount??null,
    monitorConfigSource:String(config?.source||""),
    configUpdatedAt:config?.updatedAt??null,
    configuredCapital:config?.totalCapital??null,
