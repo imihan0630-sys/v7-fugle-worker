@@ -1,0 +1,88 @@
+name: System1 P0 Remaining 60-day K History Sequential Repair (FOUR BATCHES)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-official-history-sequential-remainder-once.yml"
+  pull_request:
+    paths:
+      - "ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs"
+      - ".github/workflows/system1-p0-official-history-sequential-remainder-once.yml"
+permissions:
+  contents: read
+concurrency:
+  group: system1-history-cache-dataonly-safe-write
+  cancel-in-progress: false
+jobs:
+  offline_syntax_and_source_guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert official data-only script syntax and original source parser
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+          grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          grep -F -q 'NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+  sequential_400_bounded:
+    if: github.event_name == 'push'
+    needs: offline_syntax_and_source_guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preserve unchanged business core and source-parser tests
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+          grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          grep -F -q "WHERE symbol='0000'" ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          grep -F -q 'WHERE symbol=?3 AND updated_at=?4' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+      - name: Serial strictly bounded source-approved updates (never more than 400 per iteration)
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/serial-source-history
+          for n in 1 2 3 4; do
+            echo "::group::OFFICIAL_S1_HISTORY_400_BATCH_${n}"
+            if ! node ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs; then
+              cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/serial-source-history/batch-${n}.json" || true
+              echo "::error::Batch ${n} failed or returned zero verified rows. Stop, inspect the exact physical receipt. All prior D1 CAS writes stay individually certified."
+              exit 2
+            fi
+            cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/serial-source-history/batch-${n}.json"
+            if node -e 'const d=require("./artifacts/system1-p0-official-wholemarket-firstbatch.json"); process.exit(d.status==="NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE"?0:1)'; then
+              echo "S1_SOURCE_HISTORY_ALL_EXISTING_ROWS_CURRENT_TO_PINNED_DATE"
+              echo "::endgroup::"
+              break
+            fi
+            echo "::endgroup::"
+            if [ "$n" != 4 ]; then sleep 20; fi
+          done
+      - name: Read physically persisted 1908-stock D1 coverage and age distributions
+        if: always()
+        run: |
+          node --check ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+          node ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-official-history-verified-sequential-${{ github.run_id }}
+          path: |
+            artifacts/serial-source-history/*.json
+            artifacts/system1-history60-source-census.json
+          if-no-files-found: warn
+          retention-days: 30
