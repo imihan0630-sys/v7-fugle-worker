@@ -11,9 +11,6 @@ on:
       - "tests/test_system1_p0_official_daily_history_calendar_v0_1.mjs"
 permissions:
   contents: read
-concurrency:
-  group: system1-history-cache-dataonly-safe-write
-  cancel-in-progress: false
 jobs:
   offline_guard_tests:
     runs-on: ubuntu-latest
@@ -35,6 +32,9 @@ jobs:
   official_history_incremental:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs: offline_guard_tests
+    concurrency:
+      group: system1-history-cache-dataonly-safe-write
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 100
     env:
