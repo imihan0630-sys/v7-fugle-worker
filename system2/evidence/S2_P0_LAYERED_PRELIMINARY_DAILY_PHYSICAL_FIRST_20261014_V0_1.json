@@ -57,5 +57,21 @@
     "noPaidServicesOrSecrets": true,
     "scoreWeightsOrExistingFormalStrategiesModified": false
   },
-  "followingPriority": "Preserve true daily source-only candidate lineage prospectively, query individual current-time corporate-action risk for initial watchlist, certify only individually eligible Shadow decisions and separately PIT-qualified historical backtest slices"
+  "followingPriority": "Preserve true daily source-only candidate lineage prospectively, query individual current-time corporate-action risk for initial watchlist, certify only individually eligible Shadow decisions and separately PIT-qualified historical backtest slices",
+  "securityTypePostVerification": {
+    "verifiedAtDateTaipei": "2026-10-14",
+    "sourceFourDigitCodeUniverseIsNotCertifiedOrdinaryOnly": true,
+    "originalV01MatchCountIncludesKnownTdr": true,
+    "knownTdrInTop30": {
+      "symbol": "9103",
+      "companyName": "美德醫療-DR",
+      "market": "TWSE",
+      "instrumentType": "TAIWAN_DEPOSITARY_RECEIPT"
+    },
+    "twseOfficialTdrReference": "https://wwwc.twse.com.tw/zh/listed/listed/apply-tdr.html",
+    "sourceV01ReceiptRemainsUnchanged": true,
+    "correctivePreliminaryWatchVersion": "PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2",
+    "newV02ActualCountObserved": false,
+    "safety": "Do not call V01's 582 four-digit securities 582 certified ordinary common shares"
+  }
 }

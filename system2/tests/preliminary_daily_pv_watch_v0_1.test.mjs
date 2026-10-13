@@ -76,6 +76,33 @@ test('present-only rising price above SMA produces CA-UNKNOWN preliminary watch'
  assert.equal(r.selectedCount,null);assert.equal(r.frozenWritten,false);
  assert.match(r.receiptHash,/^[0-9a-f]{64}$/);
 });
+test('TWSE official four-digit TDR -DR company name cannot enter ordinary-equity preview',async()=>{
+ const fixture=await sample();
+ fixture.bridge.sourceLedger.observations[0].companyName='美德醫療-DR';
+ const r=await watch(fixture);
+ assert.equal(r.watchVersion,'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2');
+ assert.equal(r.schemaVersion,'S2_PRELIMINARY_PV_WATCH_V0_2');
+ assert.equal(r.officialUniverseCount,1);
+ assert.equal(r.depositaryReceiptQuarantinedCount,1);
+ assert.equal(r.historyContinuityUsableCount,0);
+ assert.equal(r.preliminaryMatchedCount,0);
+ assert.equal(r.ordinaryEquityOnlyUniverseCertified,false);
+ assert.equal(r.selectedCount,null);
+ assert.equal(r.historicalBacktestCertified,false);
+});
+test('full-width hyphen -DR quote name is also quarantined, and absence of suffix is not proof of ordinary share',async()=>{
+ const fixture=await sample();
+ fixture.bridge.sourceLedger.observations[0].companyName='美德醫療－DR';
+ const r=await watch(fixture);
+ assert.equal(r.depositaryReceiptQuarantinedCount,1);
+ const ordinary=await sample();
+ ordinary.bridge.sourceLedger.observations[0].companyName='台積電';
+ const ordinaryR=await watch(ordinary);
+ assert.equal(ordinaryR.depositaryReceiptQuarantinedCount,0);
+ assert.equal(ordinaryR.preliminaryMatchedCount,1);
+ assert.equal(ordinaryR.watchlist[0].instrumentClassPITStatus,
+  'ORDINARY_EQUITY_CLASS_NOT_INDEPENDENTLY_ATTESTED');
+});
 test('falling trend does not force a watchlist selection',async()=>{
  const r=await watch(await sample({negative:true}));
  assert.equal(r.preliminaryMatchedCount,0);
