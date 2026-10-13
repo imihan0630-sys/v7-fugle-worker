@@ -3562,6 +3562,7 @@ BUILD next: deliver/accept the already active CORR-012/013 and data-readiness pr
 - Focused local matrix: **26/26 PASS**. Physical publisher run/readback remains **0/1** because the workflow is not yet merged to main; raw files uploaded by this new lane remain **0**. Latest source state remains **121/122**, 61 dates, and must remain incomplete after archival.
 - Git append-only semantics are application-enforced; ordinary GitHub commits are not provider-level immutable. No false immutability claim is made.
 - No System1 Formal/runtime, `Worker.js`, `wrangler.toml`, Cloudflare D1/R2, paid plan, selection, Frozen, push, capital or orders changed. Contract: `system2/SYSTEM2_SHARED_A1_PRIVATE_ARCHIVE_V0_1.md`; evidence: `system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_BUILD_HANDOFF_20261013_V0_1.json`.
+- PR #1179 head `002069d15976439ad1683921a40ea2b6aa7d953e` verification PASS: System2 Research CI `38359883987`, V8 Regression `38359883972`, Actual Holdings isolation `38359884151`. Merge remains owner-approval-gated.
 
 Exact next BUILD gate:
 1. merge the archive workflow only after PR CI passes;

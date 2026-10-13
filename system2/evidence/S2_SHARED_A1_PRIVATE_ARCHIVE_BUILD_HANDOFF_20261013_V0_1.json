@@ -42,6 +42,9 @@
     }
   ],
   "implementation": {
+    "pullRequest": 1179,
+    "pullRequestUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1179",
+    "verifiedHead": "002069d15976439ad1683921a40ea2b6aa7d953e",
     "authorization": "system2/config/shared_official_a1_private_archive_authorization_v0_1.json",
     "publisher": "system2/scripts/publish_shared_official_a1_private_archive_v0_1.mjs",
     "workflow": ".github/workflows/system2-shared-official-a1-private-archive.yml",
@@ -59,7 +62,21 @@
       "shared_official_a1_private_archive_v0_1",
       "shared_official_a1_archive_dryrun_v0_1",
       "shared_official_a1_incremental_v0_1"
-    ]
+    ],
+    "pullRequestChecks": {
+      "system2Research": {
+        "runId": 38359883987,
+        "conclusion": "SUCCESS"
+      },
+      "v8Regression": {
+        "runId": 38359883972,
+        "conclusion": "SUCCESS"
+      },
+      "actualHoldingsIsolation": {
+        "runId": 38359884151,
+        "conclusion": "SUCCESS"
+      }
+    }
   },
   "physicalState": {
     "latestSourceRunId": 38351651871,
