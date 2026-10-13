@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "SHARED_OFFICIAL_A1_PRIVATE_ARCHIVE_AUTHORIZATION_V0_1",
+  "approvedBy": "OWNER_EXPLICIT_2026_10_13",
+  "approvedAtTaipeiDate": "2026-10-13",
+  "sourceRepository": "imihan0630-sys/v7-fugle-worker",
+  "targetRepository": "imihan0630-sys/v7-system2-official-a1-archive",
+  "targetVisibilityVerified": "PRIVATE",
+  "storageMode": "PRIVATE_GIT_CONTENT_ADDRESSED_APPEND_ONLY",
+  "writerCredential": "DEDICATED_TARGET_REPO_DEPLOY_KEY",
+  "writerSecretName": "S2_A1_ARCHIVE_DEPLOY_KEY",
+  "writerScopeReadOnly": false,
+  "writerScopeOnlyTargetRepository": true,
+  "paidPlanAuthorized": false,
+  "publicRawPublicationAllowed": false,
+  "sourceDataLicenses": [
+    {
+      "market": "TWSE",
+      "dataset": "盤後資訊 > 個股日成交資訊",
+      "datasetUrl": "https://data.gov.tw/dataset/11549",
+      "license": "政府資料開放授權條款-第1版",
+      "licenseUrl": "https://data.gov.tw/license"
+    },
+    {
+      "market": "TPEX",
+      "dataset": "上櫃股票行情",
+      "datasetUrl": "https://data.gov.tw/dataset/11370",
+      "license": "政府資料開放授權條款-第1版",
+      "licenseUrl": "https://data.gov.tw/license"
+    }
+  ],
+  "licenseScopeAssessment": "DATA_CONTENT_MATCHED_TO_OGDL_DATASETS__ENDPOINT_ACCESS_REMAINS_BOUNDED",
+  "attributionRequired": true,
+  "archivePurpose": "INTERNAL_RESEARCH_SOURCE_EVIDENCE_ONLY",
+  "system1FormalUseAuthorized": false,
+  "system2SelectionUseAuthorized": false,
+  "cloudflareWriteAuthorized": false
+}

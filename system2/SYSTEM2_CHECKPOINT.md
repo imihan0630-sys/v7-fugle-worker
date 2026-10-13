@@ -3552,3 +3552,20 @@ BUILD next: deliver/accept the already active CORR-012/013 and data-readiness pr
 - Latest physical shared source remains **121/122**, 61 dates, 1,068 complete symbol windows and `INCOMPLETE_SOURCE_CAPTURE_PIT_UNAUDITED`; it is not admitted. After the next scheduled current-window capture, 122/122 still requires independent audit and full-universe corporate-action continuity.
 - Shadow S0–S5 remains **0/6**; canonical launch acceptance remains **22/75 (29.3%), 53 incomplete, 0/15 fully accepted**. No final rank, selected count, zero-pick certification, frozen persistence/readback, outcome or performance claim is produced.
 - No System1 Formal Core, production Worker/Cron, D1/R2 I/O, new secret/permission, paid plan, push, capital or order change. Evidence: `system2/evidence/S2_SHARED_A1_STAGE1_ADMISSION_BUILD_HANDOFF_20261013_V0_1.json` and contract `system2/SYSTEM2_SHARED_A1_STAGE1_ADMISSION_V0_1.md`.
+
+## 2026-10-13 BUILD_LANE — owner-approved private Shared A1 archive implemented, live publication pending
+
+- Owner explicitly approved merging PR #1178; it is now main commit `a416728d4a3d20bac95ff0aee68cfe0a6a4e0e10`.
+- Owner explicitly approved a free dedicated private GitHub archive and its minimum writer. Private repository `imihan0630-sys/v7-system2-official-a1-archive` was created; deploy key id `166273500` is write-enabled only for that repository and source secret `S2_A1_ARCHIVE_DEPLOY_KEY` was read back successfully. Temporary local private-key material was removed.
+- New private publisher/workflow is create-only and content-addressed. It revalidates gzip bytes, provider market/date parsing, manifest/source-receipt lineage and exact existing bytes; different bytes at an occupied path fail closed. The stable receipt hash is replay-idempotent.
+- Exact official dataset attribution is frozen for TWSE data.gov dataset 11549 and TPEx dataset 11370 under Government Open Data License v1. Public raw publication remains forbidden.
+- Focused local matrix: **26/26 PASS**. Physical publisher run/readback remains **0/1** because the workflow is not yet merged to main; raw files uploaded by this new lane remain **0**. Latest source state remains **121/122**, 61 dates, and must remain incomplete after archival.
+- Git append-only semantics are application-enforced; ordinary GitHub commits are not provider-level immutable. No false immutability claim is made.
+- No System1 Formal/runtime, `Worker.js`, `wrangler.toml`, Cloudflare D1/R2, paid plan, selection, Frozen, push, capital or orders changed. Contract: `system2/SYSTEM2_SHARED_A1_PRIVATE_ARCHIVE_V0_1.md`; evidence: `system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_BUILD_HANDOFF_20261013_V0_1.json`.
+- PR #1179 head `002069d15976439ad1683921a40ea2b6aa7d953e` verification PASS: System2 Research CI `38359883987`, V8 Regression `38359883972`, Actual Holdings isolation `38359884151`. Merge remains owner-approval-gated.
+
+Exact next BUILD gate:
+1. merge the archive workflow only after PR CI passes;
+2. dispatch exact source Run `38351651871` (or a newer valid successful source run);
+3. independently read back private raw bytes, hashes, manifest and archive receipt;
+4. do not promote 121/122 archival success into 122/122 source admission or Shadow S0-S5 acceptance.

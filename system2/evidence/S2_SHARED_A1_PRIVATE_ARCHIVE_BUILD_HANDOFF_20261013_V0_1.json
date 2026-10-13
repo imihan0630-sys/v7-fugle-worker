@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "S2_SHARED_A1_PRIVATE_ARCHIVE_BUILD_HANDOFF_20261013_V0_1",
+  "status": "IMPLEMENTED_NOT_PHYSICALLY_PUBLISHED",
+  "observedMain": "a416728d4a3d20bac95ff0aee68cfe0a6a4e0e10",
+  "mergedOwnerApprovedPr": {
+    "number": 1178,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1178",
+    "mergeCommit": "a416728d4a3d20bac95ff0aee68cfe0a6a4e0e10"
+  },
+  "ownerAuthorization": {
+    "dateTaipei": "2026-10-13",
+    "dedicatedPrivateGitHubRepository": true,
+    "minimumScopedWriter": true,
+    "paidPlan": false,
+    "publicRawPublication": false
+  },
+  "destination": {
+    "repository": "imihan0630-sys/v7-system2-official-a1-archive",
+    "url": "https://github.com/imihan0630-sys/v7-system2-official-a1-archive",
+    "visibilityVerified": "PRIVATE",
+    "defaultBranch": "main",
+    "deployKeyId": 166273500,
+    "deployKeyWriteEnabled": true,
+    "deployKeyScope": "TARGET_REPOSITORY_ONLY",
+    "sourceSecretName": "S2_A1_ARCHIVE_DEPLOY_KEY",
+    "privateKeyMaterialRetainedLocally": false
+  },
+  "dataLicenseEvidence": [
+    {
+      "market": "TWSE",
+      "datasetUrl": "https://data.gov.tw/dataset/11549",
+      "license": "政府資料開放授權條款-第1版"
+    },
+    {
+      "market": "TPEX",
+      "datasetUrl": "https://data.gov.tw/dataset/11370",
+      "license": "政府資料開放授權條款-第1版"
+    },
+    {
+      "licenseUrl": "https://data.gov.tw/license",
+      "attributionRequired": true
+    }
+  ],
+  "implementation": {
+    "pullRequest": 1179,
+    "pullRequestUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1179",
+    "verifiedHead": "002069d15976439ad1683921a40ea2b6aa7d953e",
+    "authorization": "system2/config/shared_official_a1_private_archive_authorization_v0_1.json",
+    "publisher": "system2/scripts/publish_shared_official_a1_private_archive_v0_1.mjs",
+    "workflow": ".github/workflows/system2-shared-official-a1-private-archive.yml",
+    "tests": "system2/tests/shared_official_a1_private_archive_v0_1.test.mjs",
+    "contract": "system2/SYSTEM2_SHARED_A1_PRIVATE_ARCHIVE_V0_1.md",
+    "contentAddressed": true,
+    "createOnly": true,
+    "exactExistingBytesCompared": true,
+    "providerLevelImmutability": false
+  },
+  "verification": {
+    "focusedTestsPassed": 26,
+    "focusedTestsFailed": 0,
+    "suites": [
+      "shared_official_a1_private_archive_v0_1",
+      "shared_official_a1_archive_dryrun_v0_1",
+      "shared_official_a1_incremental_v0_1"
+    ],
+    "pullRequestChecks": {
+      "system2Research": {
+        "runId": 38359883987,
+        "conclusion": "SUCCESS"
+      },
+      "v8Regression": {
+        "runId": 38359883972,
+        "conclusion": "SUCCESS"
+      },
+      "actualHoldingsIsolation": {
+        "runId": 38359884151,
+        "conclusion": "SUCCESS"
+      }
+    }
+  },
+  "physicalState": {
+    "latestSourceRunId": 38351651871,
+    "latestSourcePairs": 121,
+    "requiredSourcePairs": 122,
+    "marketDates": 61,
+    "archivalAssetsPublishedByNewWorkflow": 0,
+    "physicalArchivePublicationReadbackAccepted": false,
+    "system2ShadowAcceptedGates": 0,
+    "system2ShadowRequiredGates": 6
+  },
+  "protectedBoundaries": {
+    "system1FormalCoreTouched": false,
+    "system1RuntimeTouched": false,
+    "workerOrWranglerTouched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "selectionPerformed": false,
+    "frozenDecisionWritten": false,
+    "paidResourceUsed": false
+  },
+  "nextExactGate": "MERGE_ARCHIVE_WORKFLOW_THEN_DISPATCH_EXACT_SOURCE_RUN_AND_INDEPENDENTLY_READ_BACK_PRIVATE_ARCHIVE_BYTES"
+}
