@@ -6,12 +6,16 @@ const config={source:"KV",updatedAt:"2026-10-12T22:51:05Z",totalCapital:200000,
   stocks:[{symbol:"6226",planDate:day,positionStage:"NONE"},{symbol:"2609",planDate:day,positionStage:"NONE"}]};
 const cron={recent:[{job_type:"INTRADAY_MONITOR",scheduled_at:"2026-10-13T01:02:00.000Z",
   status:"SUCCESS",skipped:false}]};
-const live={generatedAt:"2026/10/13 09:04:00"};
+const live={generatedAt:"2026/10/13 09:04:00",monitoredCount:2,results:[{symbol:"6226"},{symbol:"2609"}]};
 const signals={generatedAt:"2026/10/13 09:04:05"};
 const now="2026-10-13T01:05:00.000Z"; // 09:05 Asia/Taipei
-const verify=(change={})=>evaluateMonitorReadback({
-  config,cron,live,signals,scan:{scanDate:"2026-09-29"},day,now,...change
-});
+const verify=(change={})=>{
+  const {live:overrideLive,...rest}=change;
+  return evaluateMonitorReadback({
+    config,cron,live:overrideLive===undefined?live:{...live,...overrideLive},
+    signals,scan:{scanDate:"2026-09-29"},day,now,...rest
+  });
+};
 let checked=0;
 const check=(condition,message)=>{assert.ok(condition,message);checked++;};
 const ready=verify();
@@ -34,7 +38,7 @@ check(verify({now:"2026-10-13T04:46:51Z",
   live:{generatedAt:"2026/10/13 12:45:00"},
   signals:{generatedAt:"2026/10/13 12:45:00"}}).state==="RECENT_INTRADAY_CRON_NOT_VERIFIED","old cron with fresh GET rejects");
 check(verify({signals:{generatedAt:"2026/10/13 09:00:00"}}).state==="SIGNAL_SNAPSHOT_STALE_OR_MISSING","stale signal with fresh live rejects");
-check(verify({live:{checkedAt:"2026/10/13 09:05:00",marketDate:day}}).state==="LIVE_SNAPSHOT_STALE_OR_MISSING","checkedAt or date cannot fabricate a fresh snapshot");
+check(verify({live:{generatedAt:null,checkedAt:"2026/10/13 09:05:00",marketDate:day}}).state==="LIVE_SNAPSHOT_STALE_OR_MISSING","checkedAt or date cannot fabricate a fresh snapshot");
 check(verify({live:{generatedAt:"2026-10-13T01:04:00.000Z"}}).ok===true,"UTC timestamp of genuine snapshot PASS");
 check(verify({live:{generatedAt:"2026-10-13T13:04:00+08:00"}}).state==="LIVE_SNAPSHOT_STALE_OR_MISSING","future timestamp cannot PASS");
 check(verify({now:"2026-10-13T06:01:00Z"}).notAssessed===true
@@ -44,6 +48,16 @@ check(verify({now:"2026-10-17T01:05:00Z",day:"2026-10-17"}).notAssessed===true,"
 check(verify({cron:{recent:[...cron.recent,{job_type:"INTRADAY_MONITOR",scheduled_at:"2026-10-12T23:59:00Z",status:"SUCCESS"}]}}).cronTodayCount===2,"UTC date boundary counted in Taipei day");
 check(verify({live:{generatedAt:"2026/10/13 09:06:00"}}).ok===true,"one-minute clock skew tolerated");
 check(verify({live:{generatedAt:"2026/10/13 09:07:30"}}).ok===false,"excess future clock skew rejected");
+check(verify({live:{results:[{symbol:"6226"},{symbol:"2454"}]}}).state==="MONITOR_TARGETS_MISMATCH",
+  "fresh snapshot for unexpected symbol must not PASS");
+check(verify({live:{monitoredCount:3}}).state==="MONITOR_TARGETS_MISMATCH",
+  "inconsistent reported monitor count rejects");
+check(verify({live:{results:[{symbol:"6226"},{symbol:"6226"}]}}).state==="MONITOR_TARGETS_MISMATCH",
+  "duplicate actual monitored symbols reject");
+check(verify({now:"2026-10-13T05:24:53.000Z",
+  cron:{recent:[{job_type:"INTRADAY_MONITOR",scheduled_at:"2026-10-13T05:24:13Z",status:"SUCCESS",skipped:0}]},
+  live:{generatedAt:"2026/10/13 13:24:21"},
+  signals:{generatedAt:"2026/10/13 13:24:21"}}).ok===true,"13:24 actual fresh evidence can PASS when membership agrees");
 
 console.log(JSON.stringify({ok:true,testCases:checked,
   detection:"cron+live+signal age bounded to 5min, Taipei session-aware",
