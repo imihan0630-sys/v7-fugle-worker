@@ -1,0 +1,187 @@
+name: System1 V8 P0 LIVE OWNER-APPROVED Controlled Deploy (ONE SHOT)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-v8-live-p0-controlled-deploy-once.yml"
+permissions:
+  contents: read
+concurrency:
+  group: v7-cloudflare-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: contains(github.event.head_commit.message, '[S1-P0-LIVE-DEPLOY-APPROVED]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SCRIPT_NAME: fugle-test
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Lock to the explicit owner-approved guarded patch scope and non-trading window
+        run: |
+          set -euo pipefail
+          test -f scripts/apply_v8_system1_live_display_guard_reviewonly.py
+          test -f system1/runtime/live_snapshot_read_model_v0_1.mjs
+          node system1/tests/live_snapshot_read_model_v0_1.test.mjs
+          node - <<'NODE'
+          const tp=new Date().toLocaleString("sv-SE",{timeZone:"Asia/Taipei"});
+          const [,time]=tp.split(" ");
+          // Never deploy over a live quote session or 23:35/23:55 after-market jobs.
+          if(time>="08:45:00"&&time<="13:40:00"||time>="23:25:00"||time<="00:10:00") {
+            throw Error("S1_P0_DEPLOY_WINDOW_UNSAFE_TAIPEI_"+time);
+          }
+          console.log("OWNER_APPROVED_P0_NONTRADING_DEPLOY_PREFLIGHT",tp);
+          NODE
+      - name: Rebuild canonical guarded V8 production source, then apply audited P0 patch
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,re
+          s=Path(".github/workflows/v7-regression.yml").read_text()
+          block=s.split("- name: Build production Worker from guarded patches",1)[1].split("- name: Syntax and offline behavior regression",1)[0]
+          commands=re.findall(r"(?m)^\s+python3 (scripts/[A-Za-z0-9_./-]+\.py)\s*$",block)
+          if len(commands)!=75:raise SystemExit("V8_CANONICAL_BUILD_STEPS_CHANGED_UNEXPECTEDLY")
+          for cmd in commands:subprocess.run(["python3",cmd],check=True,stdout=subprocess.DEVNULL)
+          print("V8_CANONICAL_BUILD_STEPS_PASS",len(commands))
+          PY
+          python3 scripts/apply_v8_system1_live_display_guard_reviewonly.py
+          node --check Worker.js
+          grep -F -q 'LIVE_D1_PERSISTENCE_NOT_VERIFIED' Worker.js
+          grep -F -q '/api/live/sources' Worker.js
+          grep -F -q 'MONITOR_TARGETS' Worker.js || grep -F -q 'display.populationMatches' Worker.js
+          node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
+          node tests/test_v8_1_2_position_reconciliation.mjs
+          node tests/test_v8_8_2_zero_selection_push.mjs
+          node tests/test_three_min_current_recovery.mjs
+          sha256sum Worker.js | tee /tmp/system1-p0-generated.sha256
+      - name: Capture real current config and verify available credentials
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$CF_ACCOUNT_ID"
+          test -n "$CF_API_TOKEN"
+          test -n "$V7_ADMIN_TOKEN"
+          curl --fail --silent --show-error --max-time 20 "https://fugle-test.imihan0630.workers.dev/?format=json" > /tmp/v7-predeploy.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync("/tmp/v7-predeploy.json","utf8"));
+          if(!Array.isArray(x.plannedStocks)||x.plannedStocks.length<1||!x.configUpdatedAt)throw Error("BASELINE_CONFIG_INCOMPLETE");
+          console.log("PLANNED_COUNT_PREDEPLOY",x.plannedStocks.length);
+          NODE
+          node tests/capture_worker_backup.mjs
+          node - <<'NODE'
+          const fs=require("fs"),assert=require("assert/strict");
+          const b=JSON.parse(fs.readFileSync("/tmp/v7-predeploy-backup/metadata.json","utf8"));
+          assert.equal(b.latestContentMatchesRuntime,true,"ACTIVE_WORKER_BACKUP_SOURCE_VERSION_UNVERIFIED");
+          assert.equal(b.activeVersionPercentage,100,"ACTIVE_DEPLOYMENT_IS_TRAFFIC_SPLIT");
+          assert.equal(b.runtimeVersion,"8.20.2-idempotent-d1-snapshots","RUNTIME_VERSION_DRIFT_REQUIRES_FRESH_REVIEW");
+          const c=Array.isArray(b.schedules)?b.schedules:b.schedules?.schedules||[];
+          assert.equal(c.length,4,"PRODUCTION_CRON_EXPECTED_FOUR_TRIGGERS");
+          console.log("P0_PREDEPLOY_BACKUP_VERIFIED",JSON.stringify({runtime:b.runtimeVersion,activeVersionId:b.activeVersionId,cronCount:c.length,scriptSha256:b.latestContentSha256}));
+          NODE
+      - name: Retain original Cloudflare Worker backup and schedule evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-v8-p0-predeploy-${{ github.run_id }}
+          path: |
+            /tmp/v7-predeploy-backup/
+            /tmp/system1-p0-generated.sha256
+          if-no-files-found: error
+          retention-days: 30
+      - id: deploy
+        name: ONE code-only upload - no Cloudflare Cron, D1, KV or secrets mutation
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -s /tmp/v7-predeploy-backup/metadata.json
+          RESPONSE_FILE="$(mktemp)"
+          HTTP_CODE=$(curl --silent --show-error --max-time 90 --output "$RESPONSE_FILE" --write-out "%{http_code}" -X PUT             "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/${SCRIPT_NAME}/content"             -H "Authorization: Bearer ${CF_API_TOKEN}"             -F 'metadata={"main_module":"Worker.js"};type=application/json'             -F 'Worker.js=@Worker.js;type=application/javascript+module')
+          echo "S1_LIVE_P0_UPLOAD_HTTP=$HTTP_CODE"
+          python3 - "$RESPONSE_FILE" "$HTTP_CODE" <<'PY'
+          import json,sys
+          x=json.load(open(sys.argv[1]))
+          if not 200<=int(sys.argv[2])<300 or x.get("success") is not True:
+            raise SystemExit("CLOUDFLARE_UPLOAD_NOT_CONFIRMED_NO_PASS")
+          print("S1_LIVE_P0_SINGLE_CODE_ONLY_UPLOAD_CONFIRMED")
+          PY
+      - id: verify
+        name: Independently read back runtime patch, original plans, D1/KV and unchanged Cron
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const fs=require("fs"),assert=require("assert/strict");
+          const host="https://fugle-test.imihan0630.workers.dev";
+          const hdr={"x-admin-token":process.env.V7_ADMIN_TOKEN,accept:"application/json","cache-control":"no-cache"};
+          const baseline=JSON.parse(fs.readFileSync("/tmp/v7-predeploy.json","utf8"));
+          const backup=JSON.parse(fs.readFileSync("/tmp/v7-predeploy-backup/metadata.json","utf8"));
+          const wait=t=>new Promise(r=>setTimeout(r,t));
+          const get=async (path,headers=hdr)=>{
+            const r=await fetch(host+path+"?p0Verify="+Date.now(),{headers,signal:AbortSignal.timeout(20000)});
+            if(!r.ok)throw Error("READBACK_"+path+"_"+r.status);
+            return r.json();
+          };
+          let live,sources;
+          for(let i=0;i<20;i++){
+            try{
+              [live,sources]=await Promise.all([get("/api/live"),get("/api/live/sources")]);
+              if(sources?.schema==="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1"&&typeof live.displayPopulationMatches==="boolean")break;
+            }catch(e){if(i===19)throw e;}
+            if(i===19)throw Error("NEW_V8_RUNTIME_PATCH_NEVER_OBSERVED");
+            await wait(3000);
+          }
+          assert.equal(sources?.schema,"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1");
+          assert.equal(sources.noWrite,true);assert.equal(sources.noPlanChanges,true);assert.equal(sources.noPush,true);assert.equal(sources.noTrade,true);
+          const after=await get("/api/config");
+          const old=await get("/api/version",{"cache-control":"no-cache",accept:"application/json"});
+          assert.equal(old.bindings.d1,true);assert.equal(old.bindings.kv,true);
+          assert.equal(after.updatedAt,baseline.configUpdatedAt);
+          assert.deepEqual(after.stocks.map(x=>String(x.symbol)).sort(),baseline.plannedStocks.map(x=>String(x.symbol)).sort());
+          assert.deepEqual(sources.configSymbols.map(String).sort(),after.stocks.map(x=>String(x.symbol)).sort());
+          const api="https://api.cloudflare.com/client/v4/accounts/"+process.env.CF_ACCOUNT_ID+"/workers/scripts/fugle-test/schedules";
+          const r=await fetch(api,{headers:{authorization:"Bearer "+process.env.CF_API_TOKEN},signal:AbortSignal.timeout(20000)});
+          const c=await r.json();assert.equal(r.ok&&c.success===true,true);
+          const schedule=x=>(Array.isArray(x)?x:(x?.schedules||[])).map(s=>s.cron||s).sort();
+          assert.deepEqual(schedule(c.result),schedule(backup.schedules),"PRODUCTION_CRON_CHANGED_UNAUTHORIZED");
+          console.log("S1_P0_DEPLOY_READBACK_PASS",JSON.stringify({
+            runtimeVersion:old.version,configuredSymbols:after.stocks.map(x=>x.symbol),
+            d1:{"ageSec":sources.d1AgeSeconds,"count":sources.d1?.monitoredCount,matched:sources.d1PopulationMatches},
+            kv:{"ageSec":sources.kvAgeSeconds,"count":sources.kv?.monitoredCount,matched:sources.kvPopulationMatches},
+            selectedSource:live.displaySource,displayPopulationMatches:live.displayPopulationMatches,
+            cronUnchanged:true,noWrite:true,noTrade:true,afterCloseIntradayNotVerified:true
+          }));
+          NODE
+      - name: Automatic rollback to prior Worker version on ANY post-upload verification failure
+        if: ${{ failure() && steps.deploy.outcome == 'success' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+          npm exec --yes wrangler@4 -- rollback --name "fugle-test" --message "S1 P0 safe rollback after failed approved live-data code-only deployment"
+          node - <<'NODE'
+          const assert=require("assert/strict");
+          (async ()=>{
+            const host="https://fugle-test.imihan0630.workers.dev/api/live/sources?rollback="+Date.now();
+            for(let i=0;i<20;i++){
+              const r=await fetch(host,{headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(10000)});
+              if(r.status===404){console.log("S1_P0_ROLLBACK_ROUTE_REMOVED");return;}
+              if(r.status===401||r.status===403)throw Error("ROLLBACK_READBACK_UNAUTHORIZED");
+              await new Promise(resolve=>setTimeout(resolve,3000));
+            }
+            assert.fail("ROLLBACK_NOT_PHYSICALLY_VERIFIED");
+          })();
+          NODE

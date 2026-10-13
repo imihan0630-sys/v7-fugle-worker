@@ -1,0 +1,45 @@
+name: System1 V8 D1-KV Display Guard Review-only CI
+on:
+  push:
+    paths:
+      - "system1/runtime/live_snapshot_read_model_v0_1.mjs"
+      - "system1/tests/live_snapshot_read_model_v0_1.test.mjs"
+      - "scripts/apply_v8_system1_live_display_guard_reviewonly.py"
+      - ".github/workflows/system1-v8-d1-kv-display-guard-unit.yml"
+  pull_request:
+    paths:
+      - "system1/runtime/live_snapshot_read_model_v0_1.mjs"
+      - "system1/tests/live_snapshot_read_model_v0_1.test.mjs"
+      - "scripts/apply_v8_system1_live_display_guard_reviewonly.py"
+      - ".github/workflows/system1-v8-d1-kv-display-guard-unit.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test pure display read model (no credentials)
+        run: node system1/tests/live_snapshot_read_model_v0_1.test.mjs
+      - name: Rebuild guarded V8 in offline scratch and apply review-only overlay
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,subprocess
+          workflow=Path(".github/workflows/v7-regression.yml").read_text()
+          section=workflow.split("- name: Build production Worker from guarded patches",1)[1].split("- name: Syntax and offline behavior regression",1)[0]
+          commands=re.findall(r"(?m)^\s+python3 (scripts/[A-Za-z0-9_./-]+\.py)\s*$",section)
+          if len(commands)<65:raise RuntimeError("UNEXPECTED_GUARDED_V8_BUILD_CHAIN")
+          for cmd in commands:subprocess.run(["python3",cmd],check=True,stdout=subprocess.DEVNULL)
+          print("GUARDED_V8_BUILD_STEPS",len(commands))
+          PY
+          python3 scripts/apply_v8_system1_live_display_guard_reviewonly.py
+          node --check Worker.js
+          grep -F "LIVE_D1_PERSISTENCE_NOT_VERIFIED" Worker.js
+          grep -F "reconcileDisplaySnapshotsV0_1" Worker.js
+          git status --short
