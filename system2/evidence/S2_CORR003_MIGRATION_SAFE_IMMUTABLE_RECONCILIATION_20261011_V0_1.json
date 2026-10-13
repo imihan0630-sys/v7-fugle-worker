@@ -1,0 +1,1583 @@
+{
+  "schemaVersion": "S2_CORR003_MIGRATION_SAFE_IMMUTABLE_RECONCILIATION_20261011_V0_1",
+  "directiveId": "S2-CORR-20261007-003",
+  "ownerLane": "REMEDIATION_LANE",
+  "recordedAtTaipei": "2026-10-11T12:30:23.641+08:00",
+  "classification": "CLASS_A_OFFLINE_EVIDENCE_INTAKE_NO_AUDIT_OR_CLOUD_AUTHORITY",
+  "mainSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+  "producerPr": {
+    "number": 1121,
+    "headSha": "b8fa41920c1fc16ca735dc0959314fc835448a8a",
+    "baseSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+    "state": "OPEN_UNMERGED",
+    "mustNotMerge": true,
+    "receiptPath": "research/SYSTEM1_ISSUE1024_NATIVE_RECHECK_20261011_V0_1.json",
+    "receiptSha256": "ffc198b96bd7dc97e7da35ef994825ca94ef29add0fe10dc5a62bd32e4b6c39e",
+    "handoffComment": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1024#issuecomment-6105228575",
+    "originalBytesPreserved": true
+  },
+  "canonicalSourcePins": [
+    {
+      "path": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json",
+      "sha256": "29ff481a40e3a6081369a1cc220a643a6e34318fc3745901c8674e72812f49ff",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_CORR003_ORIGINAL19_ACCEPTANCE_PROVENANCE_MAP_20261009_V0_1.json",
+      "sha256": "fd3917cf3e8634c677b87ebca3b6acc3ee93befa8fba6fd4204519d840fac354",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_CORR003_ORIGINAL19_ACCEPTANCE_PROVENANCE_MAP_20261009_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json",
+      "sha256": "03168f2c2e129acf949fa6a06674a81de84da291fc3042a89efb69108879026d",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_CORR_20261007_003_SYSTEM1_AFTER_MARKET_RESERVE_POLICY_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_ISSUE1026_P03_REAL_MULTIWRITER_QUOTA_DEFER_MATRIX_20261009_V0_1.json",
+      "sha256": "2120b3e40c8f94293f09ff288c7cc2a59810269ce6a87c25a790a0b858c27e11",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_ISSUE1026_P03_REAL_MULTIWRITER_QUOTA_DEFER_MATRIX_20261009_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_ISSUE1026_P05_EXISTING_ARCHIVE_REHYDRATION_REAL_ACCEPTANCE_20261010_V0_1.json",
+      "sha256": "dccdfa399303719dba3957d385df66770c80eadc791e57df5961ee163d717bc8",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_ISSUE1026_P05_EXISTING_ARCHIVE_REHYDRATION_REAL_ACCEPTANCE_20261010_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_ISSUE1026_P05_FULL_11843_OFFICIAL_SOURCE_KEYS_REAL_ACCEPTANCE_20261009_V0_1.json",
+      "sha256": "67e0b304f934e5fdafdad3897731337a37f0587ee7407caa7994e5b99ab6f49b",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_ISSUE1026_P05_FULL_11843_OFFICIAL_SOURCE_KEYS_REAL_ACCEPTANCE_20261009_V0_1.json"
+    },
+    {
+      "path": "system2/evidence/S2_ISSUE1026_P03_P05_ACTUAL_OPERATIONAL_CLI_FAILCLOSED_ACCEPTANCE_20261009_V0_1.json",
+      "sha256": "b8e83388fca55ffcc79890d01241fdb88b192731ac8379797685c1556358cde3",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/evidence/S2_ISSUE1026_P03_P05_ACTUAL_OPERATIONAL_CLI_FAILCLOSED_ACCEPTANCE_20261009_V0_1.json"
+    },
+    {
+      "path": "system2/migration/evidence/S2_ISSUE1068_REAL_MAIN_POLICY_NEGATIVE_DEFER_ACCEPTANCE_20261011_V0_1.json",
+      "sha256": "304fa0c695b75bb5055741eba4a24f61ab2cb44e25d5691ae58f3bfccada3c52",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/migration/evidence/S2_ISSUE1068_REAL_MAIN_POLICY_NEGATIVE_DEFER_ACCEPTANCE_20261011_V0_1.json"
+    },
+    {
+      "path": "system2/migration/evidence/S2_C19_C21_SCHEMA_ONLY_INDEPENDENT_FINAL_ACCEPTANCE_20261011_V0_1.json",
+      "sha256": "4c310110e6c2b3d775ec428e67602adbff9a3a65ab9c88746fbc9768afbaf058",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/migration/evidence/S2_C19_C21_SCHEMA_ONLY_INDEPENDENT_FINAL_ACCEPTANCE_20261011_V0_1.json"
+    },
+    {
+      "path": "system2/migration/evidence/S2_DEST_D1_ISSUE1103_INDEPENDENT_EXACT_SCHEMA_PHYSICAL_ACCEPTANCE_20261011_V0_1.json",
+      "sha256": "9bb34959a96967de21bac649ef6bd827608fe84c2a02f20e3ef5aef88f037e8b",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/migration/evidence/S2_DEST_D1_ISSUE1103_INDEPENDENT_EXACT_SCHEMA_PHYSICAL_ACCEPTANCE_20261011_V0_1.json"
+    },
+    {
+      "path": "system2/CLOUDFLARE_CROSS_ACCOUNT_MIGRATION_CHECKPOINT_V0_1.md",
+      "sha256": "9933390342241e1519646292325ccde3e55feb6b8cb47beb28edacd55537bbb8",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/CLOUDFLARE_CROSS_ACCOUNT_MIGRATION_CHECKPOINT_V0_1.md"
+    },
+    {
+      "path": "system2/migration/ISSUE1068_DATA_LANE_CHECKPOINT_V0_1.md",
+      "sha256": "fa70ef9a3082599426de3a8b0966edf6f1cc9a9dc91535edd4c6c0615e4feb38",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/migration/ISSUE1068_DATA_LANE_CHECKPOINT_V0_1.md"
+    },
+    {
+      "path": "system2/SYSTEM2_REMEDIATION_CHECKPOINT.md",
+      "sha256": "b64b4b7e314e646eee1e0bcfc2adba51e71bc7b4593010746f5a4a7434f701a7",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/SYSTEM2_REMEDIATION_CHECKPOINT.md"
+    },
+    {
+      "path": "system2/SYSTEM2_CORRECTION_QUEUE.json",
+      "sha256": "239e409b9852e3a796fb9f9b58d8a92ec40f6222c0aad4a493499f7cbd6e67fc",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/SYSTEM2_CORRECTION_QUEUE.json"
+    },
+    {
+      "path": "system2/SYSTEM2_CORRECTION_QUEUE.md",
+      "sha256": "d34c09905eec8bf6912d8c1c340a52644b9232bd1f307467934e6e6b0eb02007",
+      "commitSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e/system2/SYSTEM2_CORRECTION_QUEUE.md"
+    }
+  ],
+  "system1NativeReconciliation": [
+    {
+      "runId": 37649041814,
+      "jobIds": [
+        112887225789
+      ],
+      "headSha": "15d6591d37c8cda7304d4fb9a19246370257c6e8",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T16:03:36Z",
+      "producerCreatedAtTaipei": "2026-10-07T16:03:36+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T00:03:36.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814/job/112887225789"
+      ],
+      "artifacts": [
+        {
+          "id": 11494952595,
+          "name": "d02-pve251-live-remediation-readonly-37649041814",
+          "zipDigest": "sha256:8bde99fd35e86ac1fedb03b6dcccf5ca5ddccab199d8e472d3ffdca173b85b8d",
+          "sizeInBytes": 1455,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649041814/artifacts/11494952595",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649041814-run.json",
+          "sha256": "8fb4a8b2a0b3b054e418785aa296e4f7bb0e19e90da012614584329694357082",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649041814-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649041814-jobs.json",
+          "sha256": "19af09c8026d118dca2c28f57a2890c2edf5b1b39ddc7a20c4f3663d762867c6",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649041814-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649041814-artifacts.json",
+          "sha256": "d56f687b43d93baf377c34a6cef0979ac7ad0f1dba49ee876d1c8b8f42dea2c8",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649041814-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37649249573,
+      "jobIds": [
+        112887945915
+      ],
+      "headSha": "59d68be8f1b13ab0b37ac76121a5dcde7d6c50d3",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T16:05:08Z",
+      "producerCreatedAtTaipei": "2026-10-07T16:05:08+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T00:05:08.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573/job/112887945915"
+      ],
+      "artifacts": [],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649249573-run.json",
+          "sha256": "aeca9880a3d57492297de6b0893d74e274f4bdd3c440f3c8d0acca213f628bf6",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649249573-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649249573-jobs.json",
+          "sha256": "b32e484e185fe7d691708e0addae880f8994fe2049092298b3ff2fb64f539d45",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649249573-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PENDING_PINNED_LIST_ABSENT_LIVE_UI_ARTIFACT_FOUND",
+      "liveUiSupplementalArtifact": {
+        "id": 11495881660,
+        "zipDigest": "sha256:d4251f93ba2945ade04c46442589b2e7dad067ea83ebc88a517bd5fba609a5d4",
+        "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649249573/artifacts/11495881660",
+        "zipBytesReplayedThisTurn": false,
+        "downloadAttempt": "BLOCKED_BROWSER_DOWNLOAD_TIMEOUT_10000MS"
+      }
+    },
+    {
+      "runId": 37649543821,
+      "jobIds": [
+        112888965126
+      ],
+      "headSha": "0055dbe2d94757f63f509c5c0045875b34b1de65",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T16:07:18Z",
+      "producerCreatedAtTaipei": "2026-10-07T16:07:18+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T00:07:18.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821/job/112888965126"
+      ],
+      "artifacts": [
+        {
+          "id": 11495752402,
+          "name": "d02-pve263-after-market-side-effect-readonly-37649543821",
+          "zipDigest": "sha256:ec2f182ea840d5d1abf811f2e487050f8f42dcab24b14a0bbe99d316f96a5074",
+          "sizeInBytes": 1353,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37649543821/artifacts/11495752402",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649543821-run.json",
+          "sha256": "2abf2c2c61cfe732a17d47c28f1d0439fd54880b22792a167ad9a5dd2b8c7eae",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649543821-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649543821-jobs.json",
+          "sha256": "1c4d5dfc33fa6ac28e5ba57ac29835f3a5ac82c107714ef30972b478929b1db5",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649543821-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37649543821-artifacts.json",
+          "sha256": "0c9dd9a2cc8ab4f0004a47dad3d2f4b0b2770a111cd608ccf948fc2faa9b93f9",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37649543821-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37650006684,
+      "jobIds": [
+        112890551584
+      ],
+      "headSha": "152dc18d687e30410a20a64c3065984fc86ba6a5",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T16:10:44Z",
+      "producerCreatedAtTaipei": "2026-10-07T16:10:44+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T00:10:44.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684/job/112890551584"
+      ],
+      "artifacts": [
+        {
+          "id": 11495133236,
+          "name": "d02-pve264-d1-daily-usage-readonly-37650006684",
+          "zipDigest": "sha256:188a33e0b199d18455da56740cc28f26d6c73d745c413bbf7f604f400e089ddd",
+          "sizeInBytes": 682,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37650006684/artifacts/11495133236",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37650006684-run.json",
+          "sha256": "51920afac775807d0ba26264370a802e9916fb282c8494ddd0406f762517fd38",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37650006684-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37650006684-jobs.json",
+          "sha256": "4e9a8e84303ff632a0ce1d2e8f796e20ba12d7784aba019ee3343907f04f7111",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37650006684-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37650006684-artifacts.json",
+          "sha256": "6320f23bb22bea8bee3bd7fe7aeb7a631708b0c739f32cb7a1867e4f1742d702",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37650006684-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37694052477,
+      "jobIds": [
+        113041122665
+      ],
+      "headSha": "6b56ed6421e21c77c6d7d83e3751c97f8d0f3667",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T22:06:58Z",
+      "producerCreatedAtTaipei": "2026-10-07T22:06:58+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T06:06:58.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477/job/113041122665"
+      ],
+      "artifacts": [
+        {
+          "id": 11514945619,
+          "name": "d02-pve271-system1-after-market-reserve-evidence-37694052477",
+          "zipDigest": "sha256:7dd50ffd181f48f07b63941a81ad749f967ebdd5de1206340ce63b4835ced822",
+          "sizeInBytes": 1271,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694052477/artifacts/11514945619",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694052477-run.json",
+          "sha256": "0cc208503ff4b5872a9015fa79550a2131a8688121605ee36be14e8c94318c11",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694052477-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694052477-jobs.json",
+          "sha256": "86c9ed39d34aac882a7c372c5d60a97f832acce664fb0b53c4691ab7f3d264e7",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694052477-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694052477-artifacts.json",
+          "sha256": "533b51a1c74fa765dd2559c0f4038f564b2594f1b0ebc5c83fd698d9fddea0d4",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694052477-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37694255555,
+      "jobIds": [
+        113041830751
+      ],
+      "headSha": "6bb6485fd0b37c9aee7260ce8b22d71fcc519567",
+      "event": "push",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-07T22:08:47Z",
+      "producerCreatedAtTaipei": "2026-10-07T22:08:47+08:00",
+      "correctCreatedAtTaipei": "2026-10-08T06:08:47.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555/job/113041830751"
+      ],
+      "artifacts": [
+        {
+          "id": 11514766351,
+          "name": "d02-pve272-system1-after-market-full-history-envelope-37694255555",
+          "zipDigest": "sha256:cdcc197a4ac514f9e70d9082bc1303a6fb3805d8395b4b0a2091fc00e4f218af",
+          "sizeInBytes": 1051,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37694255555/artifacts/11514766351",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694255555-run.json",
+          "sha256": "a932c490bd79377b94a580037cf1aea50cf3ef7601a820cce64b2a01b138fb06",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694255555-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694255555-jobs.json",
+          "sha256": "1df229cfda92bbcf52fa342669026a79cb562bb280fcbfce9e7a9af1b238456c",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694255555-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37694255555-artifacts.json",
+          "sha256": "7b4d2e65ec4ec7fb44a24663c65c755fba905d319532aa085457bd61099ae0db",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37694255555-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37808995747,
+      "jobIds": [
+        113420649062
+      ],
+      "headSha": "53b15e0731be0948f89f8bc08c90661703276905",
+      "event": "schedule",
+      "runConclusion": "failure",
+      "createdAtUtc": "2026-10-08T16:28:00Z",
+      "producerCreatedAtTaipei": "2026-10-08T16:28:00+08:00",
+      "correctCreatedAtTaipei": "2026-10-09T00:28:00.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747/job/113420649062"
+      ],
+      "artifacts": [
+        {
+          "id": 11565090033,
+          "name": "system1-c1-evidence-37808995747",
+          "zipDigest": "sha256:a651899840d42fd017a9d01980716c0b74b5c7cc91273462a00f6867d4033d30",
+          "sizeInBytes": 1612,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37808995747/artifacts/11565090033",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37808995747-run.json",
+          "sha256": "b3cf703380fb14edfe319d3528f5902839167b225407224b680d2822d43ee0db",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37808995747-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37808995747-jobs.json",
+          "sha256": "5cdc294dc46958e074e9b1aff67b08fdc63298e3aed670b56e7ad7f8f6b76391",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37808995747-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37808995747-artifacts.json",
+          "sha256": "06a9b421498d4a309562441a7b3a21c3f88f52fd8102436b771f61ef29785a32",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37808995747-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37956058324,
+      "jobIds": [
+        113906737784
+      ],
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-09T16:01:26Z",
+      "producerCreatedAtTaipei": "2026-10-09T16:01:26+08:00",
+      "correctCreatedAtTaipei": "2026-10-10T00:01:26.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956058324/job/113906737784"
+      ],
+      "artifacts": [],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956058324-run.json",
+          "sha256": "62bb402ea6376af8ce4949362715019dcf497da3e7d703dbe84173a689f6fbfe",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956058324-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956058324-jobs.json",
+          "sha256": "5c80c690660a6da4b40d1b2e2ae957d81db65506916471731812c1ca088f8383",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956058324-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956058324-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956058324-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37956199815,
+      "jobIds": [
+        113907219078
+      ],
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-09T16:02:34Z",
+      "producerCreatedAtTaipei": "2026-10-09T16:02:34+08:00",
+      "correctCreatedAtTaipei": "2026-10-10T00:02:34.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956199815/job/113907219078"
+      ],
+      "artifacts": [],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956199815-run.json",
+          "sha256": "d4abd9b7f3204a526bef03e822dd92ef3c83807175b5067d06d3af057e399261",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956199815-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956199815-jobs.json",
+          "sha256": "836013d5577149d608aa7cfad98b85eff5cd3cbdb26851e324843874f1aa352c",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956199815-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956199815-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956199815-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37956358193,
+      "jobIds": [
+        113907758481
+      ],
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-09T16:03:52Z",
+      "producerCreatedAtTaipei": "2026-10-09T16:03:52+08:00",
+      "correctCreatedAtTaipei": "2026-10-10T00:03:52.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37956358193/job/113907758481"
+      ],
+      "artifacts": [],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956358193-run.json",
+          "sha256": "2ddcee7faa499a7aef54da9e91c05830fb09293853bfe640dbc4ce7546a41833",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956358193-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956358193-jobs.json",
+          "sha256": "d6daef277a01ecc7c14b5f7cb0e87275fa8a6f2a22e35060f9df2acd773f1ab3",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956358193-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37956358193-artifacts.json",
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37956358193-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 37958877283,
+      "jobIds": [
+        113916309205
+      ],
+      "headSha": "db2645817cc5c68d74a0f68d4823438c8a4fb13f",
+      "event": "schedule",
+      "runConclusion": "failure",
+      "createdAtUtc": "2026-10-09T16:24:22Z",
+      "producerCreatedAtTaipei": "2026-10-09T16:24:22+08:00",
+      "correctCreatedAtTaipei": "2026-10-10T00:24:22.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283/job/113916309205"
+      ],
+      "artifacts": [
+        {
+          "id": 11631116248,
+          "name": "system1-c1-evidence-37958877283",
+          "zipDigest": "sha256:4c07e85b5bfbdc12b8395088eec7b24f29e95f98e8fa2dda75fce9170de191ad",
+          "sizeInBytes": 1632,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37958877283/artifacts/11631116248",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/37958877283-run.json",
+          "sha256": "34cd06d2683c89df5e9d2428f2c96b10cfded2744ccb3a89d6f3b4e1d7410ef1",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37958877283-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37958877283-jobs.json",
+          "sha256": "b01626678ea43dd35245514dc3cd6bb2b4c6d413e795ebc9173cb5208f31aee9",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37958877283-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/37958877283-artifacts.json",
+          "sha256": "098ab9001e311fb68df83b45ab1591ac21254ae25651bc00d286d4685a4da289",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/37958877283-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PASS_EXACT_COMMIT_LINK",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    },
+    {
+      "runId": 38032440861,
+      "jobIds": [
+        114156019956
+      ],
+      "headSha": "2eb3355b55f19adc1ae2eafedf6107fafe9d1267",
+      "event": "pull_request",
+      "runConclusion": "success",
+      "createdAtUtc": "2026-10-10T06:52:28Z",
+      "producerCreatedAtTaipei": "2026-10-10T06:52:28+08:00",
+      "correctCreatedAtTaipei": "2026-10-10T14:52:28.000+08:00",
+      "producerClockStatus": "BLOCKED_OFFSET_RELABELLED_8_HOURS",
+      "clockErrorMilliseconds": -28800000,
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38032440861",
+      "jobUrls": [
+        "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38032440861/job/114156019956"
+      ],
+      "artifacts": [
+        {
+          "id": 11662631499,
+          "name": "system1-public-runtime-readonly-38032440861",
+          "zipDigest": "sha256:33a23712e19cfbf0ba6b1ad737bb6d3fb500e4f484782db05b762c91ae2e7b01",
+          "sizeInBytes": 680,
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38032440861/artifacts/11662631499",
+          "metadataJoin": "PASS_PINNED_NATIVE_RESPONSE_AND_LIVE_UI",
+          "zipBytesReplayedThisTurn": false,
+          "innerContentVerifiedThisTurn": false
+        }
+      ],
+      "savedResponses": [
+        {
+          "path": "research/issue1024-native-recheck-20261011/38032440861-run.json",
+          "sha256": "9ef846b2558fb3e04b6199cd146564f56a007f965ea832e281c12ae0f73ff5d4",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/38032440861-run.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/38032440861-jobs.json",
+          "sha256": "50355d921ae829965269143a2f67d4f949f39438da67559baefb06028b6755e6",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/38032440861-jobs.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        },
+        {
+          "path": "research/issue1024-native-recheck-20261011/38032440861-artifacts.json",
+          "sha256": "7b70918499dfae093e58d4400dcdb10206e676c474a7c6e28d240b23d4c2dfbf",
+          "url": "https://github.com/imihan0630-sys/v7-fugle-worker/blob/b8fa41920c1fc16ca735dc0959314fc835448a8a/research/issue1024-native-recheck-20261011/38032440861-artifacts.json",
+          "status": "PASS_BYTE_HASH_AND_IDENTITY_JOIN"
+        }
+      ],
+      "liveUiRunJobArtifactStatus": "PASS_METADATA_ONLY",
+      "liveUiHeadShaStatus": "PENDING_FULL_SHA_NOT_EXPOSED_ON_PR_RUN_SUMMARY",
+      "rawBusinessLogsReplayedThisTurn": false,
+      "artifactListStatus": "PASS_PINNED_LIST_AND_LIVE_UI"
+    }
+  ],
+  "producerResponseHashPassCount": 35,
+  "clockDefect": {
+    "status": "BLOCKED_PRODUCER_DERIVED_TAIPEI_FIELDS",
+    "affectedRunCount": 12,
+    "deltaMilliseconds": -28800000,
+    "method": "Parse original UTC instants, convert to +08:00 without relabelling wall-clock; preserve original values and GitHub run-created clock distinct from market/business/UTC quota dates.",
+    "requestToProducer": "Append a correction and tests on the PR1121 producer branch; do not overwrite original immutable receipt or merge PR1121 without owner authority."
+  },
+  "recentRunIndex": {
+    "count": 266,
+    "uniqueCount": 266,
+    "canonicalEntriesSha256": "666c910451be0e44496c10a87fea48c3dcc6fb5b7a1ab849072266895825bab1",
+    "entriesPinnedTo": "research/SYSTEM1_ISSUE1024_NATIVE_RECHECK_20261011_V0_1.json@b8fa41920c1fc16ca735dc0959314fc835448a8a",
+    "status": "PASS_PINNED_266_ENTRY_INDEX_ONLY_NOT_FRESH_CLOUDFLARE_CRON_CENSUS",
+    "claimedOriginalPageHashes": [
+      {
+        "name": "latest-runs.json",
+        "sha256": "d00c5e7b8c785c453285686fbe02344d314c3ef2550a327fed038ed4091500e8"
+      },
+      {
+        "name": "latest-runs-page2.json",
+        "sha256": "09a282c260fb4a9dacbe8fc686461d139aa2dce84eb8f08264b48c92e3da94de"
+      },
+      {
+        "name": "latest-runs-page3.json",
+        "sha256": "49182ede0bbab02ac7e86aa3a187043cf780f36d7d9f61f64f75537f7b02298a"
+      }
+    ],
+    "originalPageBytesCommitted": false,
+    "originalPageHashReplayStatus": "PENDING_RAW_THREE_PAGE_RESPONSES_ABSENT_FROM_PR_ARCHIVE",
+    "completenessLimit": "Time-bounded GitHub-retained runs only; no sentinel page committed, no deleted/hidden run or Cloudflare cron completeness claim."
+  },
+  "dataP03Reconciliation": [
+    {
+      "runId": 37904464537,
+      "jobId": 113734470048,
+      "runHeadSha": "595725a8e205fe8dbc861aac5f6b8b9ca03855c9",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:21:34Z",
+      "writerId": "HISTORICAL_REAL_SOURCE_SMOKE",
+      "priority": "P3",
+      "writerClass": "HISTORICAL_REAL_SOURCE_SMOKE",
+      "gateState": "PUSH_READ_ONLY_ONLY",
+      "gateReason": "PUSH_NON_MUTATING_POLICY",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Migrate isolated System2 D1 to schema 1.1",
+          "result": "skipped"
+        },
+        {
+          "name": "Fetch one bounded real month, pack, persist and read back",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": null,
+      "artifactDigest": null,
+      "correctStartedAtTaipei": "2026-10-09T16:21:34.000+08:00",
+      "liveUiMetadataStatus": "PASS_RUN_JOB_SHA_ARTIFACT_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 37905379641,
+      "jobId": 113737464210,
+      "runHeadSha": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:30:32Z",
+      "writerId": "DAILY_SHADOW_DIAGNOSTIC",
+      "priority": "P0",
+      "writerClass": "DAILY_SHADOW_DIAGNOSTIC",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist and read back isolated daily diagnostics",
+          "result": "skipped"
+        },
+        {
+          "name": "Read public diagnostic and authority state",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604132056,
+      "artifactDigest": "sha256:a7397b577f80c470be2c55289040653170ed48c4a049397b293b0887f98bbbb8",
+      "correctStartedAtTaipei": "2026-10-09T16:30:32.000+08:00",
+      "liveUiMetadataStatus": "PASS_RUN_JOB_SHA_ARTIFACT_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 37905379742,
+      "jobId": 113737623181,
+      "runHeadSha": "a5977af950ed7902a4ac4d965edc18dd62ca30d2",
+      "trigger": "push",
+      "startedAt": "2026-10-09T08:30:32Z",
+      "writerId": "HOT_HISTORY_BOOTSTRAP",
+      "priority": "P2",
+      "writerClass": "HOT_HISTORY_BOOTSTRAP",
+      "gateState": "PUSH_READ_ONLY_ONLY",
+      "gateReason": "PUSH_NON_MUTATING_POLICY",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist bounded recent PIT history",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604048897,
+      "artifactDigest": "sha256:25009502feab41b11c468b9f8a2230f88cd52d617b231758f204d74c9b22c74d",
+      "correctStartedAtTaipei": "2026-10-09T16:30:32.000+08:00",
+      "liveUiMetadataStatus": "PASS_RUN_JOB_SHA_ARTIFACT_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 37907066382,
+      "jobId": 113742974317,
+      "runHeadSha": "765fb2b969030a174539dcac80c7bf06aa3eb8be",
+      "trigger": "schedule",
+      "startedAt": "2026-10-09T08:46:45Z",
+      "writerId": "RECENT_A1_WARMUP",
+      "priority": "P2",
+      "writerClass": "RECENT_A1_WARMUP",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Warm recent official A1 history into isolated D1",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11604589121,
+      "artifactDigest": null,
+      "correctStartedAtTaipei": "2026-10-09T16:46:45.000+08:00",
+      "liveUiMetadataStatus": "PASS_RUN_JOB_SHA_ARTIFACT_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false,
+      "liveUiSupplementalDigest": "sha256:020afdd9c4c27a1f67cca890363671780da2cb56cb1e20cde41fee2154784d18"
+    },
+    {
+      "runId": 37919630100,
+      "jobId": 113784161116,
+      "runHeadSha": "81ba6e812bfab3988b861b9e377907dd639e188b",
+      "trigger": "schedule",
+      "startedAt": "2026-10-09T10:46:16Z",
+      "writerId": "DAILY_SHADOW_DIAGNOSTIC",
+      "priority": "P0",
+      "writerClass": "DAILY_SHADOW_DIAGNOSTIC",
+      "gateState": "QUOTA_BUDGET_DEFER",
+      "gateReason": "SYSTEM1_AFTER_MARKET_RESERVE_NOT_AUTHORIZED",
+      "jobConclusion": "success",
+      "physicalBusinessSteps": [
+        {
+          "name": "Persist and read back isolated daily diagnostics",
+          "result": "skipped"
+        },
+        {
+          "name": "Read public diagnostic and authority state",
+          "result": "skipped"
+        },
+        {
+          "name": "Reconcile shared account D1 budget result",
+          "result": "skipped"
+        }
+      ],
+      "artifactId": 11611279609,
+      "artifactDigest": "sha256:dee7cba45b5bab95ce98634544f2025f7b95ada775fd8368770d9299c7f21c51",
+      "correctStartedAtTaipei": "2026-10-09T18:46:16.000+08:00",
+      "liveUiMetadataStatus": "PASS_RUN_JOB_SHA_ARTIFACT_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    }
+  ],
+  "additionalLiveNativeReceipts": [
+    {
+      "runId": 37944021198,
+      "jobId": 113865467788,
+      "headSha": "eea2a110e9df6f34dffe3e58362bea58ce32a172",
+      "artifactId": 11623192826,
+      "zipDigest": "sha256:7fe94b715cf265880163fb986d46ab95ff4b6620a9ed23d8363a4bc3e873934f",
+      "meaning": "P05_SOURCE_ONLY_11843_KEYS_NOT_HOT_D1",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37944021198",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 38004261921,
+      "jobId": 114069302287,
+      "headSha": "9bb42ec5d405dce34fe8844a479d2574d103da4a",
+      "artifactId": 11650860727,
+      "zipDigest": "sha256:077f9070dbccfb8698bf365f98f2b17f59c0da1201297c5497cfec3bd35b4cf1",
+      "meaning": "P05_PRIOR_ARCHIVE_REHYDRATION_NOT_THIS_TURN_BYTE_REPLAY",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38004261921",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 37945180573,
+      "jobId": 113869498497,
+      "headSha": "c3a6eabef08cef6318f05a8c5ca6dcf58acf5903",
+      "artifactId": 11621929400,
+      "zipDigest": "sha256:64fcec3eb282ea43d79aaba20ad30d00a3384891d96eb4813c88aee92f3e193d",
+      "meaning": "P05_EXPECTED_NEGATIVE_PREFLIGHT_DEFER",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37945180573",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 38108616165,
+      "jobId": 114379309976,
+      "headSha": "bf04f766fdb9fd24ce1a7f5490ce19c6c9be52eb",
+      "artifactId": 11690790704,
+      "zipDigest": "sha256:7d14dc07215fe01b89ec1e0cacaea6f7ce09df9853084cac319c3684eac2e70d",
+      "meaning": "ISSUE1068_NEGATIVE_MAIN_POLICY_DEFER_NO_SOURCE_SQL",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38108616165",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 38069750915,
+      "jobId": 114264577475,
+      "headSha": "791d965e4f88f83d7cb6caac8f34e1e25e34ba21",
+      "artifactId": 11675494971,
+      "zipDigest": "sha256:9ab4da826f679a757a27966fda51b4a569667ce28fd409bdca4f5d3ad277117e",
+      "meaning": "DESTINATION_SCHEMA_ONLY_PREVIOUS_SINGLE_OWNER_APPLY_NO_RERUN",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38069750915",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    },
+    {
+      "runId": 38099562997,
+      "jobId": 114352494288,
+      "headSha": "8c59bb9a8b53b4b8bb4cc608512ceadbb11844db",
+      "artifactId": 11687550030,
+      "zipDigest": "sha256:3f98f7256775c450e2ab19e68b513514052dd639112fbaa49178d76672686afe",
+      "meaning": "DESTINATION_EXACT_SCHEMA_NAMES_ONLY_NOT_IMPORTED_DATA",
+      "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38099562997",
+      "status": "PASS_LIVE_UI_METADATA_ONLY",
+      "zipBytesReplayedThisTurn": false,
+      "rawBusinessLogsReplayedThisTurn": false
+    }
+  ],
+  "verificationLimits": {
+    "sourceArchiveIsNotActionsArtifact": true,
+    "originalZipReplayPassCountThisTurn": 0,
+    "rawBusinessLogReplayPassCountThisTurn": 0,
+    "nativeArtifactDigestIsNotContentVerification": true,
+    "apiReadAttempt": "BLOCKED_UNAUTHENTICATED_GITHUB_REST_RATE_LIMIT",
+    "pve262ArtifactDownload": "BLOCKED_BROWSER_TIMEOUT",
+    "priorSourceContent": "Inherited pinned main and prior independent acceptance, no new physical cost measurements",
+    "pr380324FullShaLive": "PENDING_SUMMARY_EXPOSES_PR_LINK_INSTEAD_OF_EXACT_SHA"
+  },
+  "progress": {
+    "supportCompleted": 15,
+    "supportTotal": 38,
+    "supportRemaining": 23,
+    "supportPercent": 39.473684210526315,
+    "independentPhysicalAccepted": 0,
+    "independentPhysicalTotal": 5,
+    "originalCriteriaTotal": 19,
+    "sourceLevelPass": 15,
+    "prospectivePhysicalPending": 3,
+    "historicalNegativeReconciledForwardBlocked": 1,
+    "a1A7": "PRIOR_INDEPENDENT_SOURCE_LEVEL_PASS_NO_REIMPLEMENTATION",
+    "correctionSeverity": "HIGH",
+    "correctionStatus": "VERIFYING"
+  },
+  "fivePhysicalGates": [
+    {
+      "id": "P01_SYSTEM1_WRITE_RESERVE",
+      "owner": "REMEDIATION_LANE_COORDINATION_SYSTEM1_PRODUCER",
+      "documentedSupportChecks": 3,
+      "totalSupportChecks": 7,
+      "missingSupportChecks": 4,
+      "independentlyPhysicalQualified": false,
+      "decision": "PENDING",
+      "exactMissing": [
+        "at least one additional genuine healthy ordinary-session day, with complete cron/lease/business persistence provenance",
+        "same-UTC-day V7_DB write cost with explicit before/after and classification of non-after-market work",
+        "recovery/no-recovery outcomes including retries and indexed amplification",
+        "independent reserve-policy signed/traceable approval; owner risk decision if required"
+      ],
+      "acceptanceStatus": "PENDING",
+      "executionStatus": "PENDING_NATURAL_ORDINARY_SESSION_RECEIPTS",
+      "independentAuditStatus": "NOT_ACCEPTED",
+      "requiredOriginalEvidence": [
+        "at least one additional genuine healthy ordinary-session day, with complete cron/lease/business persistence provenance",
+        "same-UTC-day V7_DB write cost with explicit before/after and classification of non-after-market work",
+        "recovery/no-recovery outcomes including retries and indexed amplification",
+        "independent reserve-policy signed/traceable approval; owner risk decision if required"
+      ],
+      "nextAction": "SYSTEM1: collect original receipts only after natural 2026-10-12 ordinary-session 23:35 primary and actual-if-invoked 23:55 recovery; qualified headroom before physical reads; operation cost incl failures/retries/index/query amplification plus six-role lineage and account no-collision. AUDIT_LANE independently approves."
+    },
+    {
+      "id": "P02_SYSTEM1_READ_RESERVE",
+      "owner": "REMEDIATION_LANE_COORDINATION_SYSTEM1_PRODUCER",
+      "documentedSupportChecks": 3,
+      "totalSupportChecks": 7,
+      "missingSupportChecks": 4,
+      "independentlyPhysicalQualified": false,
+      "decision": "PENDING",
+      "exactMissing": [
+        "System1 23:35 primary and, if invoked, 23:55 recovery reads by run/UTC day",
+        "per-query D1 rows_read metadata, index amplification and retry/concurrency evidence",
+        "full-day and business-window distinctions and conservative headroom model",
+        "independent read reserve approval; no zero/default substitute"
+      ],
+      "acceptanceStatus": "PENDING",
+      "executionStatus": "PENDING_NATURAL_ORDINARY_SESSION_RECEIPTS",
+      "independentAuditStatus": "NOT_ACCEPTED",
+      "requiredOriginalEvidence": [
+        "System1 23:35 primary and, if invoked, 23:55 recovery reads by run/UTC day",
+        "per-query D1 rows_read metadata, index amplification and retry/concurrency evidence",
+        "full-day and business-window distinctions and conservative headroom model",
+        "independent read reserve approval; no zero/default substitute"
+      ],
+      "nextAction": "SYSTEM1: collect original receipts only after natural 2026-10-12 ordinary-session 23:35 primary and actual-if-invoked 23:55 recovery; qualified headroom before physical reads; operation cost incl failures/retries/index/query amplification plus six-role lineage and account no-collision. AUDIT_LANE independently approves."
+    },
+    {
+      "id": "P03_MULTIWRITER_UTC_DAY",
+      "owner": "REMEDIATION_LANE_PLUS_DATA_LANE_PHYSICAL_PRODUCERS_AUDIT_LANE_ACCEPTANCE",
+      "documentedSupportChecks": 3,
+      "totalSupportChecks": 8,
+      "missingSupportChecks": 5,
+      "independentlyPhysicalQualified": false,
+      "decision": "PENDING",
+      "exactMissing": [
+        "first qualify P01/P02; verify account headroom and same-day ledger integrity",
+        "prefer existing real receipts; if not enough, registered writer + bounded user-authorized execution only after real gate GRANTED",
+        "same UTC-day reservation/check ID/hash/result and no collision evidence across writer classes"
+      ],
+      "acceptanceStatus": "PENDING",
+      "executionStatus": "BLOCKED_RESERVE_QUOTA_MIGRATION_AUTHORITY",
+      "independentAuditStatus": "NOT_ACCEPTED",
+      "requiredOriginalEvidence": [
+        "first qualify P01/P02; verify account headroom and same-day ledger integrity",
+        "prefer existing real receipts; if not enough, registered writer + bounded user-authorized execution only after real gate GRANTED",
+        "same UTC-day reservation/check ID/hash/result and no collision evidence across writer classes"
+      ],
+      "nextAction": "DATA_LANE: retain real DEFER; after independently approved reserves/account-specific headroom, supply genuine same-UTC-day grant/checkId/full identity hash/result/failed-retry-rollover receipts, never dispatch for artificial proof."
+    },
+    {
+      "id": "P04_LATER_TRADING_DAY_SYSTEM1_PERSISTENCE",
+      "owner": "SYSTEM1_PRODUCTION_EVIDENCE_OWNER_THEN_AUDIT_LANE",
+      "documentedSupportChecks": 2,
+      "totalSupportChecks": 7,
+      "missingSupportChecks": 5,
+      "independentlyPhysicalQualified": false,
+      "decision": "PENDING",
+      "exactMissing": [
+        "future actual TWSE/TPEX cash-trading session, naturally scheduled 23:35 and conditional 23:55",
+        "production business status + D1 persisted generation/plan/daily report/checkpoint and immutable hashes",
+        "account-wide same-day before/after usage and absence of quota collision",
+        "lease/cron deduplication; do not fabricate a recovery run"
+      ],
+      "acceptanceStatus": "PENDING",
+      "executionStatus": "PENDING_NATURAL_ORDINARY_SESSION_RECEIPTS",
+      "independentAuditStatus": "NOT_ACCEPTED",
+      "requiredOriginalEvidence": [
+        "future actual TWSE/TPEX cash-trading session, naturally scheduled 23:35 and conditional 23:55",
+        "production business status + D1 persisted generation/plan/daily report/checkpoint and immutable hashes",
+        "account-wide same-day before/after usage and absence of quota collision",
+        "lease/cron deduplication; do not fabricate a recovery run"
+      ],
+      "nextAction": "SYSTEM1: collect original receipts only after natural 2026-10-12 ordinary-session 23:35 primary and actual-if-invoked 23:55 recovery; qualified headroom before physical reads; operation cost incl failures/retries/index/query amplification plus six-role lineage and account no-collision. AUDIT_LANE independently approves."
+    },
+    {
+      "id": "P05_ORIGINAL_PHYSICAL_CRITERIA",
+      "owner": "REMEDIATION_EVIDENCE_COORDINATION_DATA_LANE_AUDIT_LANE_CLOSE",
+      "documentedSupportChecks": 4,
+      "totalSupportChecks": 9,
+      "missingSupportChecks": 5,
+      "independentlyPhysicalQualified": false,
+      "decision": "PENDING",
+      "exactMissing": [
+        "DATA_LANE evidence-qualified read headroom + System1 read reserve + signed review, then 36-key scout",
+        "full 11843-key only if independently budgeted read-only gate qualifies",
+        "PIT/source-key/missing/conflict/immutability actual Hot D1 readback",
+        "AUDIT_LANE independently map all 19 original acceptance criteria to physical/code evidence"
+      ],
+      "acceptanceStatus": "PENDING",
+      "executionStatus": "BLOCKED_RESERVE_QUOTA_MIGRATION_AUTHORITY",
+      "independentAuditStatus": "NOT_ACCEPTED",
+      "requiredOriginalEvidence": [
+        "DATA_LANE evidence-qualified read headroom + System1 read reserve + signed review, then 36-key scout",
+        "full 11843-key only if independently budgeted read-only gate qualifies",
+        "PIT/source-key/missing/conflict/immutability actual Hot D1 readback",
+        "AUDIT_LANE independently map all 19 original acceptance criteria to physical/code evidence"
+      ],
+      "nextAction": "DATA_LANE: Issue1068 source physical backup/restore/PIT/Frozen/R2 receipts; after independent authorization, 36 Scout then separately approved 11843 Census; destination data import/readback needs separate owner scope."
+    }
+  ],
+  "original19Criteria": [
+    {
+      "criterionNumber": 1,
+      "exactCanonicalCriterion": "Ordinary push of any Recent A1 warmup implementation/source/workflow file cannot physically mutate D1 history; push-path regression proves test/read-only behavior.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_REGRESSION_PUSH_READ_ONLY",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 2,
+      "exactCanonicalCriterion": "Schedule/manual physical warmup is guarded by the same account-level UTC-day budget/reservation contract used by other high-write System2 writers.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_SHARED_GATE_CONTRACT_REAL_GRANT_PENDING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 3,
+      "exactCanonicalCriterion": "The contract is anchored to official Free ceilings: 100,000 rowsWritten/day and 5,000,000 rowsRead/day, reset 00:00 UTC, with vendor-version/source provenance.",
+      "trackedGates": [
+        "P01",
+        "P02",
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_FREE_LIMIT_100K_5M_RESET_UTC",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 4,
+      "exactCanonicalCriterion": "Budget/reservation uses measured rowsWritten; regression includes the observed ~6x logical-row amplification case and index-amplified estimates.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_MEASURED_INDEX_AMPLIFICATION",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 5,
+      "exactCanonicalCriterion": "A later bulk/warmup workflow can explicitly QUOTA_BUDGET_DEFER before predictable free-tier exhaustion; deferral cannot be mislabeled data/source failure.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_DEFER_AND_REAL_DEFER_RECEIPTS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 6,
+      "exactCanonicalCriterion": "Protected Daily Shadow/launch-critical evidence has explicit priority/reservation over discretionary history warming, without changing trading/data semantics.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_PRIORITY_REQUIRES_REAL_MULTIWRITER_PROOF",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 7,
+      "exactCanonicalCriterion": "Warmup max physical dates can shrink below five when quota headroom is insufficient.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_ADAPTIVE_WARMUP",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 8,
+      "exactCanonicalCriterion": "Unknown account-wide usage fails conservatively; no exact remaining quota is invented.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_UNKNOWN_FAIL_CLOSED_AND_REAL_DEFER",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 9,
+      "exactCanonicalCriterion": "No paid-plan upgrade, billing mutation, System1 change, strategy/ranking/final-selection/push/capital/order authority change.",
+      "trackedGates": [
+        "P05"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_NO_CORE_BILLING_MUTATION",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 10,
+      "exactCanonicalCriterion": "Independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without a quota-collision failure.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_MULTIWRITER_SAME_UTC_DAY_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING",
+      "status": "PENDING",
+      "statusScope": "PROSPECTIVE_PHYSICAL_REQUIRED",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 11,
+      "exactCanonicalCriterion": "A registry test enumerates all workflows using the isolated D1 writer authority and fails if a physical writer lacks an explicit writerClass/priority/quota-gate contract.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_REGISTRY_16_WRITERS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 12,
+      "exactCanonicalCriterion": "Daily Shadow scheduled P0 work is protected; a later push/manual physical run cannot consume D1 without a granted reservation and can emit an explicit quota deferral/read-only state.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_P0_PRIORITY_REAL_MULTIWRITER_PROOF_PENDING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 13,
+      "exactCanonicalCriterion": "P2/P3 ordinary push paths cannot silently perform discretionary/maintenance physical D1 mutation; regression covers Recent A1 warmup, hot-history bootstrap, real-source smoke, and at least one maintenance/deploy path.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "SOURCE_P2_P3_PUSH_GUARDS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 14,
+      "exactCanonicalCriterion": "Observed same-day sequence equivalent to 13,130 scheduled Daily Shadow + another push acceptance + bulk/warmup writers is budgeted deterministically so lower-priority work defers before Cloudflare hard rejection.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_13130_PLUS_WRITERS_SAME_DAY_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING",
+      "status": "PENDING",
+      "statusScope": "PROSPECTIVE_PHYSICAL_REQUIRED",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 15,
+      "exactCanonicalCriterion": "Account-wide D1 quota reservation must explicitly protect System1 23:35/23:55 after-market Production business execution/persistence in V7_DB as well as System2 P0 Daily Shadow; independently measured after-market reserve required, not an invented fixed number. A real later trading-day primary/recovery business-execution receipt must prove normal persistence; avoid duplicate business scans.",
+      "trackedGates": [
+        "P01",
+        "P02",
+        "P04"
+      ],
+      "evidenceClass": "REAL_PHYSICAL_PROOF_REQUIRED_NOT_AVAILABLE",
+      "evidenceKey": "PHYSICAL_SYSTEM1_WRITE_READ_RESERVE_AND_LATER_BUSINESS_PERSIST_MISSING",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "REAL_SAME_DAY_GRANT_RESULT_OR_SYSTEM1_PERSISTENCE_AND_RESERVE_MISSING",
+      "status": "PENDING",
+      "statusScope": "PROSPECTIVE_PHYSICAL_REQUIRED",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "SYSTEM1_PRODUCER_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 16,
+      "exactCanonicalCriterion": "Quota budget and closure evidence must account for System2 and System1 D1 writes under the SAME Cloudflare Free account; do not infer isolation from separate D1 database IDs. Reconcile 2026-10-07 physical analytics: SYSTEM2_DB 124629, V7_DB 1869, account total 126498, and System1 after-market INVOKED_EXECUTION_FAILED_D1_QUOTA.",
+      "trackedGates": [
+        "P03",
+        "P04"
+      ],
+      "evidenceClass": "HISTORICAL_PHYSICAL_FAILURE_EVIDENCED_NO_FORWARD_CLOSURE",
+      "evidenceKey": "PHYSICAL_HISTORICAL_2026_10_07_COLLISION_RECONCILED_FAILURE_NOT_FUTURE_SUCCESS",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": "2026_10_07_ACCOUNT_COLLISION_NEGATIVE_EVIDENCE_REAL; POST_FIX_NO_COLLISION_NOT_YET_OBSERVED",
+      "status": "BLOCKED",
+      "statusScope": "PASS_HISTORICAL_NEGATIVE_RECONCILIATION_BLOCKED_FORWARD_NO_COLLISION",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 17,
+      "exactCanonicalCriterion": "Independent negative test: GraphQL adaptive usage group with missing/null/partial rowsRead or rowsWritten cannot yield known usage or QUOTA_RESERVATION_GRANTED.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A5_GRAPHQL_PARTIAL_UNKNOWN",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 18,
+      "exactCanonicalCriterion": "Independent negative test: malformed or unverifiable same-UTC-day reservation ledger row cannot disappear from outstanding budget; must cause explicit quota ledger integrity defer/block.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A6_LEDGER_INVALID",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    },
+    {
+      "criterionNumber": 19,
+      "exactCanonicalCriterion": "A7 independent replay: Current V0.2 reservation/result receipt hashed with legacy payload-only hash and modified status/expected_payload_json MUST return ledger integrity INVALID / QUOTA_BUDGET_DEFER; authentic V0.2 full-identity receipt must pass. A bounded, evidence-qualified legacy receipt positive path, if supported, must not grant current-model spoof.",
+      "trackedGates": [
+        "P03"
+      ],
+      "evidenceClass": "SOURCE_LEVEL_INDEPENDENT_ACCEPTANCE_ONLY",
+      "evidenceKey": "INDEPENDENT_A7_CURRENT_HASH_LEGACY_TAMPER_BLOCK",
+      "sourceLevelReverify": "A1_A7_INDEPENDENT_PASS_REF_PR_1017",
+      "physicalClosureStatus": "NOT_ACCEPTED_BY_AUDIT_LANE",
+      "remaining": null,
+      "status": "PASS",
+      "statusScope": "INHERITED_INDEPENDENT_SOURCE_LEVEL_ONLY",
+      "independentPhysicalAcceptance": false,
+      "reviewAuthority": "AUDIT_LANE",
+      "nextOwner": "DATA_LANE_REMEDIATION_COORDINATION",
+      "sourceEvidence": "system2/evidence/S2_CORR003_AUDIT_5_PHYSICAL_19_ORIGINAL_FINAL_DISPOSITION_20261009_V0_1.json"
+    }
+  ],
+  "reserve": {
+    "reserveNumberAuthorized": false,
+    "authorizedReserveRows": null,
+    "readReserveNumberAuthorized": false,
+    "authorizedReadReserveRows": null,
+    "numericalWriteCandidate": null,
+    "numericalReadCandidate": null,
+    "policySha256": "03168f2c2e129acf949fa6a06674a81de84da291fc3042a89efb69108879026d"
+  },
+  "costScope": {
+    "inheritedWholeV7DbDays": [
+      {
+        "utcDay": "2026-09-21",
+        "rowsWritten": 2825,
+        "rowsRead": 133037
+      },
+      {
+        "utcDay": "2026-09-22",
+        "rowsWritten": 1635,
+        "rowsRead": 19533
+      },
+      {
+        "utcDay": "2026-10-07",
+        "rowsWritten": 1869,
+        "rowsRead": 431323
+      }
+    ],
+    "historicalAccountCollision": {
+      "utcDay": "2026-10-07",
+      "system2RowsWritten": 124629,
+      "system2RowsRead": 3943636,
+      "combinedRowsWritten": 126498,
+      "combinedRowsRead": 4374959,
+      "status": "HISTORICAL_NEGATIVE_NOT_POSTFIX_SUCCESS"
+    },
+    "primary2335OperationRowsWritten": null,
+    "primary2335OperationRowsRead": null,
+    "recovery2355OperationRowsWritten": null,
+    "recovery2355OperationRowsRead": null,
+    "retryIndexQueryAmplification": "UNKNOWN",
+    "wholeDayCannotBecomePerOperation": true,
+    "cronSuccessCannotBecomeSameGenerationPersistence": true,
+    "leaseCannotBecomeRecoverySuccess": true,
+    "kvConfigPlanReportD1CronLeaseFormalC1Required": true
+  },
+  "dataAndMigration": {
+    "sourceOnlyKeys": 11843,
+    "sourceOnlyMarketDates": 12,
+    "hotD1ScoutAccepted": 0,
+    "hotD1ScoutTarget": 36,
+    "hotD1CensusAccepted": 0,
+    "hotD1CensusTarget": 11843,
+    "physicalMissingKeys": "UNKNOWN",
+    "historicalFirstKnownAtAvailableAt": "PENDING_NOT_RECONSTRUCTED_FROM_RETROSPECTIVE_SOURCE",
+    "sourcePhysicalBackupRestore": "PENDING",
+    "sourcePhysicalFrozenImmutability": "PENDING",
+    "sourceD1TableRowsAndHashes": "PENDING",
+    "sourceR2ObjectBytes": "PENDING",
+    "sourceD1FileSizeBytes": 316968960,
+    "fileSizeIsNotRowCount": true,
+    "destinationSchemaIndependent": "INHERITED_PASS_25_OF_25_SCHEMA_ONLY_PR1116",
+    "destinationTables": 55,
+    "destinationNamedIndexes": 63,
+    "destinationSourceRowsImported": 0,
+    "destinationDataReadback": "PENDING_NO_IMPORTED_HISTORY_FROZEN",
+    "destinationR2": "PARTIAL_NOT_ENTITLED_403_10042_NO_PAID_AUTHORITY",
+    "fullMigrationAccepted": false,
+    "shadowLaunchAccepted": false,
+    "accountSeparationNotProvenByDbNames": true,
+    "noAccountSwitchOrCutover": true,
+    "noSourceOrDestinationD1R2Io": true,
+    "noSchemaApplyOrRerun": true,
+    "noMigrationPrMerge": true,
+    "noWorkflowsOrSecretsChanged": true
+  },
+  "auditSubmission": {
+    "receivingLane": "AUDIT_LANE_System_2_獨立稽核顧問室",
+    "status": "READY_FOR_INDEPENDENT_REVIEW_NOT_ACCEPTED",
+    "requiredReview": [
+      "Pinned main original19 exact canonical text, no audit conclusion overwritten",
+      "PR1121 raw response hashes/Run/Job/Artifact/SHA and 12 UTC conversion corrections",
+      "Original ZIP/inner bytes and raw logs still unverified; raw 266-run page replay still pending",
+      "Source/PIT/Frozen/backup/R2/import scope remains blocked; schema-only 25/25 does not pass CORR003",
+      "Reserve false/null, support15/38, physical0/5 and original19 scoped dispositions"
+    ],
+    "queueMutationAllowed": false,
+    "closureAuthority": false
+  },
+  "safety": {
+    "cloudflareCalls": 0,
+    "d1SqlReads": 0,
+    "d1SqlWrites": 0,
+    "r2ByteReads": 0,
+    "workflowDispatches": 0,
+    "artificialBusinessScans": 0,
+    "deployments": 0,
+    "productionOrFormalChanges": 0,
+    "billingChanges": 0,
+    "secretOrPermissionChanges": 0
+  }
+}
