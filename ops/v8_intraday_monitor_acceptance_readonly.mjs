@@ -53,7 +53,7 @@ async function main(){
  const now=new Date(),day=tpDate(now),time=utcClock();
  const record={schemaVersion:"V8_INTRADAY_MONITOR_PHYSICAL_ACCEPTANCE_V0_1",observedAt:time,day,
    method:"EXISTING_PRODUCTION_ADMIN_GET_ONLY",noWorkerWrite:true,noD1Write:true,noKVWrite:true,
-   noStockSelection:false,noPlanChanges:true,no3MinWrite:true,noPush:true,noTrade:true,
+   noStockSelection:true,noPlanChanges:true,no3MinWrite:true,noPush:true,noTrade:true,
    endpoints:{},result:null,errors:[]};
  const urls=[["config","/api/config"],["cron","/api/cron/status"],["live","/api/live"],
              ["signals","/api/signals"],["scan","/api/scan/status"]];
