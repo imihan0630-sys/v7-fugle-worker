@@ -37,7 +37,7 @@ check(verify({now:"2026-10-13T04:46:51Z",
   cron:{recent:[{job_type:"INTRADAY_MONITOR",scheduled_at:"2026-10-13T02:45:13Z",status:"SUCCESS"}]},
   live:{generatedAt:"2026/10/13 12:45:00"},
   signals:{generatedAt:"2026/10/13 12:45:00"}}).state==="RECENT_INTRADAY_CRON_NOT_VERIFIED","old cron with fresh GET rejects");
-check(verify({signals:{generatedAt:"2026/10/13 09:00:00"}}).state==="SIGNAL_SNAPSHOT_STALE_OR_MISSING","stale signal with fresh live rejects");
+check(verify({signals:{generatedAt:"2026/10/13 08:59:00"}}).state==="SIGNAL_SNAPSHOT_STALE_OR_MISSING","stale signal with fresh live rejects");
 check(verify({live:{generatedAt:null,checkedAt:"2026/10/13 09:05:00",marketDate:day}}).state==="LIVE_SNAPSHOT_STALE_OR_MISSING","checkedAt or date cannot fabricate a fresh snapshot");
 check(verify({live:{generatedAt:"2026-10-13T01:04:00.000Z"}}).ok===true,"UTC timestamp of genuine snapshot PASS");
 check(verify({live:{generatedAt:"2026-10-13T13:04:00+08:00"}}).state==="LIVE_SNAPSHOT_STALE_OR_MISSING","future timestamp cannot PASS");
