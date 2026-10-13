@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.1",
+  "owner": "08｜事件與新聞研究室",
+  "dateTaipei": "2026-10-11",
+  "moduleId": "D11-16",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": false,
+  "primarySource": {
+    "issuer": "6921 嘉雨思科技",
+    "publisher": "Taiwan Stock Exchange",
+    "publicationDate": "2025-12-22",
+    "listingDate": "2025-12-23",
+    "url": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69a3d6cf9019b45b1a4080595.pdf",
+    "reportedListedCommonShares": 30067941,
+    "reportedCertificatesOfPaymentForShares": 1769000
+  },
+  "evidenceInterpretation": {
+    "supported": "TWSE official listing announcement distinguishes listed common shares and certificates of payment for shares.",
+    "notSupported": [
+      "Original insider custody deposit quantity",
+      "TWSE-approved actual release quantity/date",
+      "TDCC actual withdrawal",
+      "Post-eligibility insider transfer",
+      "Actual free-float increase or sale"
+    ],
+    "counter": "Do not substitute total listed shares or certificates of payment for shares for original locked insider custody quantity.",
+    "alternative": "Listed security totals include security-type categories and do not identify beneficial owner or restriction state.",
+    "failureCondition": "Treating issuer-wide listed securities as restricted insider share denominator or realized market supply."
+  },
+  "requiredChain": [
+    "issuer qualification and applicable transition rule",
+    "original custody deposit quantity by obligated holder",
+    "TWSE-approved release amount and date or authenticated TDCC withdrawal",
+    "post-eligibility transfer declaration",
+    "subsequent holdings/untransferred quantity"
+  ],
+  "absenceState": "UNKNOWN",
+  "outcomeJoin": "CLOSED",
+  "historicalShadow": "NOT_FABRICATED",
+  "PIT": "Official 2025-12-22 listing document; later retrieval does not backdate API availability",
+  "OOS": "NOT_STARTED",
+  "walkForward": "NOT_STARTED",
+  "selectionBias": "One issuer case only",
+  "dataMining": "NO_OUTCOME_SELECTION",
+  "multipleTesting": "NO_RETURN_TESTS",
+  "factorRedundancy": "D11-16 supply-realization is distinct from D11-15 listing",
+  "dateClustering": "ONE_ISSUER",
+  "costAndRegime": "UNKNOWN",
+  "maturity": {
+    "level": "L2",
+    "pct": 40,
+    "promote": false
+  },
+  "next": "Obtain actual 6921 original insider custody deposit and approved release/withdrawal; do not infer sale or no sale from source absence."
+}

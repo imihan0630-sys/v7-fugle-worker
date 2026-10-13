@@ -241,3 +241,12 @@ Evidence:
 `research/d17_preopen_rolling_window_receipt_20261005_v0_1.json`
 
 Formal Core unchanged. Outcome joins remain closed.
+
+
+## Room 08 2026-10-12 evening — bounded snapshot clock-order falsification (research only)
+
+Evidence: original GitHub Actions official TWSE/TPEx artifacts `11301419229` and `11318460615` (archive SHA-256 independently verified; prior rescue receipt `research/room08_verified_archive_rescue_20261011_v0_1.json`). Earlier TWSE capture 2026-10-04 19:07:17 Taipei contained 5 rows; later 2026-10-05 07:14:52 contained 3. All three later TWSE publication instances (2072, 6949, 2891) have source publication timestamps *earlier* than the prior snapshot, yet those exact publication instances were absent from it. 2072 and 6949 are repeat-publication versions of roots already present earlier; 2891 is a newly observed root. TPEx four-row raw snapshot stayed identical (bounded negative control).
+
+This falsifies the conjunction of a guaranteed publisher-availability-at-published-time assumption and complete monotonic snapshot coverage. It does NOT prove API latency, API first availability, missing prior real-world event, or native correction lineage. A missing row is not a lower bound on source availability. Preserve publisher first-available as UNKNOWN and use only positive capture as conservative availability upper bound; keep root/instance clocks separate. Candidate explanations include rolling-window/query selection, cache/update delay, and publication-vs-interface clock differences. Original evidence is only two adjacent calendar days, not three independent trading sessions.
+
+D11-08/D11-13 and D17-02 remain L2/40. No return inspection, OOS, walk-forward, historical Shadow, factor weights or Formal Core changes; `FORMAL_OPTIMIZATION_CANDIDATE=NO`. Next: collect >=3 independent trading-session source captures with per-source request/response timestamps, pagination/scope, native version links, after-hours controls, and preserve complete positive/negative capture receipts. Reconcile with D17 research file and dedicated tracker without maturity promotion.

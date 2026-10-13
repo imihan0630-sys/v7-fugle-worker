@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "0.1",
+  "owner": "08｜事件與新聞研究室",
+  "researchDateTaipei": "2026-10-11",
+  "baselineMainSha": "ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e",
+  "evidenceType": "VERIFIED_EXISTING_RAW_ARCHIVE_REPLAY_AND_RETENTION_RESCUE",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": false,
+  "modules": [
+    "D11-08",
+    "D11-13",
+    "D17-01",
+    "D17-02",
+    "D17-03",
+    "D17-09"
+  ],
+  "sources": [
+    {
+      "runId": 37183990727,
+      "artifactId": 11295807935,
+      "archiveSha256": "50752056aba376e0db976ff3ef035ef1dab7c09214c338e7503ad8a2cb6abdd8",
+      "expiresAtUtc": "2026-10-11T06:51:52Z",
+      "zipBytes": 17105,
+      "downloadedAndReplayed": true
+    },
+    {
+      "runId": 37197636375,
+      "artifactId": 11301419229,
+      "archiveSha256": "e764be0144c049edd2af0aacb324cb0f024aae8bc95fdfe44cebe346f52d664d",
+      "expiresAtUtc": "2026-10-11T11:08:29Z",
+      "zipBytes": 17394,
+      "downloadedAndReplayed": true
+    },
+    {
+      "runId": 37243049741,
+      "artifactId": 11318460615,
+      "archiveSha256": "2dad51374c342154142df74f4c15274e6e21f50b886dac5223fc8ca98cd43d2e",
+      "expiresAtUtc": "2026-10-11T23:15:59Z",
+      "zipBytes": 10673,
+      "downloadedAndReplayed": true
+    }
+  ],
+  "replayVerification": {
+    "archiveSha256Matches": 3,
+    "rawResponseSha256Matches": 12,
+    "rowCountMatches": 12,
+    "withinRunPayloadStable": 6,
+    "actualDerivedIdCollisionObserved": 0,
+    "calendarDates": [
+      "2026-10-04",
+      "2026-10-05"
+    ],
+    "independentTradingSessionsProven": 0
+  },
+  "crossDayObservation": {
+    "TWSE": {
+      "oldRows": 5,
+      "newRows": 3,
+      "derivedIdsRemoved": 5,
+      "derivedIdsAdded": 3,
+      "unchangedEconomicContentWithChangedPublicationClock": [
+        "2072",
+        "6949"
+      ],
+      "oldOnlyRows": 3,
+      "newOnlyRows": 1
+    },
+    "TPEX": {
+      "oldRows": 4,
+      "newRows": 4,
+      "rawHashUnchanged": true
+    },
+    "nativeCorrectionLinkage": "UNKNOWN",
+    "publisherFirstAvailableAt": "UNKNOWN",
+    "wholeMarketCoverage": "UNKNOWN"
+  },
+  "hypothesis": {
+    "support": "Native raw archive digests and replay support positive existence and bounded economic-root republication.",
+    "counter": "Two calendar dates, no independent multi-trading-day cohort; publisher availability, pagination denominator, and native correction chain remain UNKNOWN.",
+    "alternatives": [
+      "Rolling current-window source may explain missing rows.",
+      "Changed publication clock may be republication rather than native correction."
+    ],
+    "failureConditions": [
+      "Missing per-source timestamps",
+      "Missing native correction/supersession identifiers",
+      "Incomplete source denominator",
+      "Archive expiry without durable raw retention"
+    ]
+  },
+  "biasGates": {
+    "PIT": "CAPTURE_BOUND_ONLY",
+    "firstKnownAt": "UNKNOWN",
+    "OOS": "NOT_STARTED",
+    "walkForward": "NOT_STARTED",
+    "selectionBias": "Do not select only nonempty snapshots",
+    "lookAhead": "NO_OUTCOME_JOIN",
+    "dataMining": "NONE",
+    "multipleTesting": "NONE",
+    "overfit": "NO_MODEL_FIT",
+    "factorRedundancy": "One economic root not multiple votes",
+    "dateEventClustering": "INSUFFICIENT",
+    "costMarketRegime": "UNKNOWN",
+    "historicalShadow": "NOT_FABRICATED"
+  },
+  "maturityDecision": {
+    "D11": 56.8,
+    "D17": 52.9,
+    "D11_08": "L2_40",
+    "D11_13": "L2_40",
+    "D17_01": "L2_40",
+    "D17_02": "L2_40",
+    "D17_03": "L2_40",
+    "D17_09": "L3_60",
+    "promote": false
+  },
+  "next": "Archive original ZIP bytes durably with permitted rights before artifact expiry, verify 3 independent trading-date official captures with per-source request/response timestamps and native version/correction chain. Do not infer absence from missing rows."
+}
