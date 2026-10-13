@@ -52,6 +52,7 @@ jobs:
           python3 scripts/apply_v8_system1_live_display_guard_reviewonly.py
           node --check Worker.js
           node --check ops/system1_v8_live_p0_verify_deployment_once.mjs
+          node --check ops/system1_v8_live_p0_verify_rollback_once.mjs
           grep -F -q 'LIVE_D1_PERSISTENCE_NOT_VERIFIED' Worker.js
           grep -F -q '/api/live/sources' Worker.js
           grep -F -q 'const expectedMonitoring=' Worker.js
@@ -132,16 +133,4 @@ jobs:
         run: |
           set -euo pipefail
           npm exec --yes wrangler@4 -- rollback --name "fugle-test" --message "S1 P0 safe rollback after failed approved live-data code-only deployment"
-          node - <<'NODE'
-          const assert=require("assert/strict");
-          (async ()=>{
-            const host="https://fugle-test.imihan0630.workers.dev/api/live/sources?rollback="+Date.now();
-            for(let i=0;i<20;i++){
-              const r=await fetch(host,{headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(10000)});
-              if(r.status===404){console.log("S1_P0_ROLLBACK_ROUTE_REMOVED");return;}
-              if(r.status===401||r.status===403)throw Error("ROLLBACK_READBACK_UNAUTHORIZED");
-              await new Promise(resolve=>setTimeout(resolve,3000));
-            }
-            assert.fail("ROLLBACK_NOT_PHYSICALLY_VERIFIED");
-          })();
-          NODE
+          node ops/system1_v8_live_p0_verify_rollback_once.mjs
