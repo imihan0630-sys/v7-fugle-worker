@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import data from "./d03_intraday_technical_freshness_cases_20261013_v0_1.json" with {type:"json"};
+function decide(x){
+ if(x.planDayMatch===false)return "STALE_PLAN";
+ if(x.cronSuccess===false)return "CRON_UNVERIFIED";
+ if(x.perSymbolCoverage===false)return "PARTIAL_SYMBOL_COVERAGE";
+ if(Number.isFinite(x.quoteAgeSec)&&Number.isFinite(x.maxQuoteAgeSec)&&x.quoteAgeSec>x.maxQuoteAgeSec)return "STALE_QUOTE";
+ if(x.barComplete===false)return "INCOMPLETE_BAR";
+ if(x.barEndAfterDecision===true)return "LOOK_AHEAD_BAR";
+ if(x.fieldsComplete===false)return "FIELD_MISSING_UNKNOWN";
+ if(x.warmupComplete===false)return "WARMUP_BLOCKED";
+ if(x.continuityReady===false)return "CONTINUITY_BLOCKED";
+ if(x.corporateActionResolved===false)return "CORPORATE_ACTION_BLOCKED";
+ if(x.marketSessionValid===false)return "NONSESSION_BLOCKED";
+ if(x.calendarDayMatch===true&&x.quoteAgeSec===null)return "AGE_UNKNOWN";
+ if(x.symbolSetExact===false)return "SYMBOL_SET_MISMATCH";
+ if(x.duplicateSymbols===true)return "DUPLICATE_SYMBOL";
+ if(x.futureTimestamp===true)return "FUTURE_CLOCK_REJECT";
+ if(x.oosDates===0)return "NO_OOS_CREDIT";
+ if(x.walkForwardDates===0)return "NO_WALK_FORWARD_CREDIT";
+ if(x.costEvidence===false)return "COST_UNKNOWN";
+ if(x.alphaEvidence===false)return "NO_ALPHA_CLAIM";
+ if(x.formalApproval===false)return "RESEARCH_ONLY";
+ throw Error("UNCLASSIFIED");
+}
+assert.equal(data.cases.length,20);
+for(const c of data.cases)assert.equal(decide(c.input),c.expected,c.id);
+assert.equal(data.maturityPct,56.7);
+assert.equal(data.formalCoreImpact,"NONE_LOCKED");
+console.log(JSON.stringify({status:"PASS",cases:data.cases.length,maturityPct:data.maturityPct,formalCoreImpact:data.formalCoreImpact}));
