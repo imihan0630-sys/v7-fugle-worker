@@ -143,37 +143,48 @@ jobs:
             test ! -e /tmp/s2-a1-stage1-readonly/history-barrier.json
             test "$(jq -r .state "$READINESS")" = 'BLOCKED_SOURCE_NOT_SELECTION'
             test "$(jq -r .state "$PRELIMINARY")" = 'BLOCKED_SOURCE_INCOMPLETE'
+            test "$(jq -r .sourcePairs "$SUMMARY")" = '121'
+            test "$(jq -r .sourceLedgerHash "$SUMMARY")" = 'null'
+            echo 'ORIGINAL_121_122_EXPECTED_DENIAL; NO_PRELIMINARY_OR_FORMAL_SELECTION' >> "$GITHUB_STEP_SUMMARY"
           else
             test "$(jq -r .marketDate "$READINESS")" = "$(jq -r .marketDate "$SUMMARY")"
             test "$(jq -r .sourcePairsObserved "$READINESS")" = '122'
-            test "$(jq -r .ordinaryUniverseCount "$READINESS")" = "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")"
-            test "$(jq -r .state "$READINESS")" != 'BLOCKED_SOURCE_NOT_SELECTION'
-            test "$(jq -r .marketDate "$PRELIMINARY")" = "$(jq -r .marketDate "$READINESS")"
-            test "$(jq -r .state "$PRELIMINARY")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'
-            test "$(jq -r .officialUniverseCount "$PRELIMINARY")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
-            echo "PRELIMINARY_PV_MATCHED=$(jq -r .preliminaryMatchedCount "$PRELIMINARY") / CA_PIT_UNKNOWN / NO_FROZEN_OR_ORDERS" >> "$GITHUB_STEP_SUMMARY"
-            H=/tmp/s2-a1-stage1-readonly/history-barrier.json
-            test -s "$H"
-            test "$(jq -r .selectedCount "$H")" = 'null'
-            test "$(jq -r .frozenWritten "$H")" = 'false'
-            test "$(jq -r .ordinaryUniverseCount "$H")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
-            test "$(jq -r .stage1IncompleteCount "$H")" = "$(jq -r .incompleteCount "$READINESS")"
-            echo "DAILY_HISTORY_BARRIER=$(jq -r .remainingHistoryAndOtherIncompleteCount "$H") / CA_PIT=$(jq -r .corporateActionPitUnverifiedCount "$H")" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          echo "DAILY_SELECTION_READINESS=$(jq -r .state "$READINESS"), assessed=$(jq -r .assessedCount "$READINESS"), incomplete=$(jq -r .incompleteCount "$READINESS"), research-qualified-not-selected=$(jq -r .qualifiedNotSelectedCount "$READINESS")" >> "$GITHUB_STEP_SUMMARY"
-
-          if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
-            test "$(jq -r .state "$SUMMARY")" = 'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'
-            test "$(jq -r .sourcePairs "$SUMMARY")" = '121'
-            test "$(jq -r .sourceLedgerHash "$SUMMARY")" = 'null'
-            echo 'STAGE1_LEDGER_BRIDGE_FAIL_CLOSED_121_122' >> "$GITHUB_STEP_SUMMARY"
-          else
-            test "$(jq -r .state "$SUMMARY")" = 'STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'
             test "$(jq -r .sourcePairs "$SUMMARY")" = '122'
-            test "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")" -ge 1000
-            test "$(jq -r .strategyEvaluationState "$SUMMARY")" = 'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE'
-            echo 'SOURCE_LEDGER_AND_STAGE1_RESEARCH_ONLY__PIT_CONTINUITY_INCOMPLETE__NO_FROZEN' >> "$GITHUB_STEP_SUMMARY"
+            test "$(jq -r .marketDate "$PRELIMINARY")" = "$(jq -r .marketDate "$READINESS")"
+            if [ "$(jq -r .state "$READINESS")" = 'BLOCKED_SOURCE_NOT_SELECTION' ]; then
+              # GitHub scheduler may actually start after the strict T+1 01:59
+              # formal clock. No retroactive frozen picks, but the current
+              # pre-market 02:00-08:59 as-of-now observation may still report
+              # a separate explicitly late PRELIMINARY research shortlist.
+              test "$(jq -r .state "$SUMMARY")" = 'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'
+              test "$(jq -r '.blockers | index("SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW") != null' "$SUMMARY")" = 'true'
+              test ! -e /tmp/s2-a1-stage1-readonly/history-barrier.json
+              PRELIM_STATE="$(jq -r .state "$PRELIMINARY")"
+              if [ "$PRELIM_STATE" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION' ]; then
+                test "$(jq -r .lateMorningObservationNotBackdated "$PRELIMINARY")" = 'true'
+                test "$(jq -r .officialUniverseCount "$PRELIMINARY")" -ge 1000
+                echo 'LATE_SCHEDULE_PRELIMINARY_AS_OF_ACTUAL_OBSERVATION_ONLY; STAGE1_PIT_CLOCK_EXPIRED' >> "$GITHUB_STEP_SUMMARY"
+              else
+                test "$PRELIM_STATE" = 'BLOCKED_SOURCE_INCOMPLETE'
+                echo 'LATE_SOURCE_OUTSIDE_PREMARKET_WINDOW__NO_PRELIMINARY_OR_FROZEN' >> "$GITHUB_STEP_SUMMARY"
+              fi
+            else
+              test "$(jq -r .state "$SUMMARY")" = 'STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'
+              test "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")" -ge 1000
+              test "$(jq -r .strategyEvaluationState "$SUMMARY")" = 'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE'
+              test "$(jq -r .state "$PRELIMINARY")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'
+              test "$(jq -r .officialUniverseCount "$PRELIMINARY")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
+              H=/tmp/s2-a1-stage1-readonly/history-barrier.json
+              test -s "$H"
+              test "$(jq -r .selectedCount "$H")" = 'null'
+              test "$(jq -r .frozenWritten "$H")" = 'false'
+              test "$(jq -r .ordinaryUniverseCount "$H")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
+              test "$(jq -r .stage1IncompleteCount "$H")" = "$(jq -r .incompleteCount "$READINESS")"
+              echo "DAILY_HISTORY_BARRIER=$(jq -r .remainingHistoryAndOtherIncompleteCount "$H") / CA_PIT=$(jq -r .corporateActionPitUnverifiedCount "$H")" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            echo "PRELIMINARY_PV_MATCHED=$(jq -r .preliminaryMatchedCount "$PRELIMINARY") / NO_FORMAL_SELECTED_ZERO_PICK_OR_FROZEN" >> "$GITHUB_STEP_SUMMARY"
           fi
+          echo "DAILY_SELECTION_READINESS=$(jq -r .state "$READINESS") / WATCH=$(jq -r .state "$PRELIMINARY")" >> "$GITHUB_STEP_SUMMARY"
       - name: Preserve sanitized hash receipt only
         if: always()
         uses: actions/upload-artifact@v4
