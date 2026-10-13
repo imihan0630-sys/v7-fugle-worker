@@ -6,6 +6,9 @@ import {fileURLToPath} from 'node:url';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {captureOfficial61SessionWindowV0_1} from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
+import {buildOfficialTradingDatesV0_1} from '../runtime/official_historical_backfill_source_v0_1.mjs';
+import {loadTrustedOfficialA1OriginalsV0_1,createSourceCacheFetchV0_1}
+ from '../runtime/shared_official_a1_verified_seed_v0_1.mjs';
 const OUT='/tmp/system2-official-61';
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const taipeiDay=()=>new Intl.DateTimeFormat('en-CA',{
@@ -14,6 +17,7 @@ const taipeiDay=()=>new Intl.DateTimeFormat('en-CA',{
 export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
  marketDate,outputDir=OUT,fetchImpl,calendarResolver,historicalFetch,
  now,pauseMs=350,retrospectiveDiagnosticOnly=false,
+ seedEvidenceFile=null,seedOriginalDir=null,
 }={}){
  const currentTaipeiDate=taipeiDay();
  if(marketDate!==currentTaipeiDate &&
@@ -22,9 +26,29 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
  if(retrospectiveDiagnosticOnly===true&&marketDate>=currentTaipeiDate)
    throw Error('RETROSPECTIVE_DIAGNOSTIC_MUST_PRECEDE_TODAY');
  await mkdir(resolve(outputDir,'original-json'),{recursive:true});
+ // Date shift may change the 61-session window. Load and independently
+ // verify only the current window's previous original public bytes.
+ let seed=null,calendarResolver,transport=fetchImpl||globalThis.fetch;
+ if(Boolean(seedEvidenceFile)!==Boolean(seedOriginalDir))
+  throw Error('SEED_ORIGINAL_EVIDENCE_AND_DIRECTORY_MUST_BOTH_BE_PROVIDED');
+ if(seedEvidenceFile){
+  const d=new Date(marketDate+'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate()-145);
+  const fromDate=d.toISOString().slice(0,10);
+  const calendar=await buildOfficialTradingDatesV0_1({
+    fromDate,toDate:marketDate,fetchImpl:transport
+  });
+  seed=await loadTrustedOfficialA1OriginalsV0_1({
+    evidenceFile:seedEvidenceFile,originalDir:seedOriginalDir,
+    neededTradingDates:calendar.tradingDates.slice(-61),now:now||(()=>new Date())
+  });
+  transport=createSourceCacheFetchV0_1(seed,transport);
+  calendarResolver=async()=>calendar;
+ }
  const originals=[];
  const out=await captureOfficial61SessionWindowV0_1({
-  marketDate,fetchImpl,calendarResolver,historicalFetch,now,pauseMs,
+  marketDate,fetchImpl:transport,calendarResolver,historicalFetch,now,pauseMs,
+  cachedOriginalsByUrl:seed?.storedOriginals||null,
   persistOriginal:async({market,date,raw,sha256,observedAt})=>{
     if(!['TWSE','TPEX'].includes(market)||!/^\d{4}-\d\d-\d\d$/.test(date))
        throw Error('UNSAFE_ORIGINAL_PROVIDER_FILENAME');
@@ -41,6 +65,13 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
   },
  });
  const evidence={...out,originalCount:originals.length,originals,
+   sharedOriginalSourceReuse:{
+    seedReceiptHash:seed?.seedSourceReceiptHash||null,
+    trustedReusedMarketDatePairs:seed?.trustedReusedOriginalCount||0,
+    initialMissingMarketDatePairs:seed?.missingPairs||[],
+    revalidationIsNotHistoricalPITCertification:true,
+    independentLongTermDurableArchiveReady:false,
+   },
    retrospectiveDiagnosticOnly,
    retrospectiveSelectionClaimDisabled:true,
    genuineProspectiveDecisionCapture:!retrospectiveDiagnosticOnly&&false};
@@ -50,6 +81,8 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
    mode:'OFFICIAL_READ_ONLY_61_SESSION_SOURCE_BOOTSTRAP',
    marketDate,state:evidence.state,calendarState:evidence.calendar.state,
    originalProviderFiles:originals.length,plannedRequests:evidence.plannedMarketDateRequests,
+   reusedVerifiedMarketDatePairs:seed?.trustedReusedOriginalCount||0,
+   missingPairsBeforeBackfill:seed?.missingPairs||[],
    completedRequests:evidence.receivedMarketDateCount,
    completeSymbolWindows:evidence.sourceRowSymbolWindowsCompleteCount,
    rootHash:evidence.receiptHash,selectedCount:null,selectionPerformed:false,
@@ -65,6 +98,9 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
    throw Error('UNKNOWN_SOURCE_COLLECTION_MODE');
  const result=await collectOfficial61SessionWindowToLocalEvidenceV0_1({
    marketDate,retrospectiveDiagnosticOnly:diagnosticFlag==='--retrospective-diagnostic',
+   seedEvidenceFile:process.env.S2_SHARED_A1_SEED_EVIDENCE_FILE||null,
+   seedOriginalDir:process.env.S2_SHARED_A1_SEED_ORIGINAL_DIR||null,
+   outputDir:process.env.S2_SHARED_A1_OUTPUT_DIR||OUT,
  });
  if(result.state!=='SOURCE_OBSERVED_UNAUDITED')process.exitCode=2;
 }
