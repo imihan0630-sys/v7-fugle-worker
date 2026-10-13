@@ -85,7 +85,7 @@ audit_route='''    if (url.pathname === "/api/live/sources") {
         liveStoreRecorded:x.liveStoreResult?.stored??null
       }:null;
       return json({
-        schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1",
+        schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2",
         observedAt:new Date(nowMs).toISOString(),tradeDate,
         configSymbols:config.stocks.map(x=>String(x.symbol)),
         aideenSymbols:(aideen.stocks||[]).map(x=>String(x.symbol)),
