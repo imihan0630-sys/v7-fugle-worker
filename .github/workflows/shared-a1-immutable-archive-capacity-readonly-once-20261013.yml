@@ -1,0 +1,57 @@
+name: Shared A1 Immutable Archive Capacity Preflight READONLY ONCE 20261013
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/shared-a1-immutable-archive-capacity-readonly-once-20261013.yml"
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: shared-a1-archive-dryrun-readonly-once-20261013
+  cancel-in-progress: false
+jobs:
+  actual_archive_dryrun:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test no publication permissions, bounded cost and malicious originals
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/plan_shared_official_a1_archive_dryrun_v0_1.mjs
+          node --test system2/tests/shared_official_a1_archive_dryrun_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Rehydrate physically captured recent 121 original market/day gz bodies
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38351651871
+          name: s2-shared-official-a1-38351651871
+          path: /tmp/shared-a1-existing-original-provider
+          github-token: ${{ github.token }}
+      - name: Independently check exact source hash and build cost-bounded release plan ONLY
+        env:
+          SHARED_A1_MANIFEST_PATH: /tmp/shared-a1-existing-original-provider/shared-official-a1-manifest.json
+          SHARED_A1_ORIGINAL_DIR: /tmp/shared-a1-existing-original-provider/original-json
+        run: |
+          set -euo pipefail
+          node system2/scripts/plan_shared_official_a1_archive_dryrun_v0_1.mjs
+      - name: Preserve signed run provenance and independently verifiable dry-run receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-a1-real-original-archive-dryrun-${{ github.run_id }}
+          path: /tmp/shared-official-a1-archive-preflight/physical-dryrun-plan.json
+          retention-days: 7
+          if-no-files-found: warn
+      - name: No permissions escalation / no release publish acceptance
+        if: always()
+        run: |
+          echo 'REAL 121 original market/date bodies: read-only source-integrity and cost preflight.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Never creates GitHub Release, Git repo blob, storage R2 or D1 write.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Immutable Release settings, owner contents:write approval and scope check are NOT yet provided.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No System1 Formal, System2 strategy, Frozen, monitoring, Worker/Cron or paid changes.' >> "$GITHUB_STEP_SUMMARY"
