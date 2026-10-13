@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "S2_P0_SHARED_OFFICIAL_A1_INDEPENDENT_SOURCE_AUDIT_NEGATIVE_PHYSICAL_20261013_V0_1",
+  "sourceRepository": "imihan0630-sys/v7-fugle-worker",
+  "baselineMainCommit": "836ffd8a2af19cea28b542ca1fce626b4d537cd7",
+  "dateTaipei": "2026-10-13",
+  "auditClassification": "REAL_SOURCE_INTEGRITY_FAIL_CLOSED_NEGATIVE_ACCEPTANCE",
+  "firstAutomaticAudit": {
+    "workflowRunId": 38376505940,
+    "workflowName": "System2 Shared Official A1 Independent Source Audit (READ ONLY)",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38376505940",
+    "jobId": 115226116073,
+    "providerConclusion": "success",
+    "expectedDiagnosticVerdict": "BLOCKED_SOURCE_INCOMPLETE",
+    "sourceRunId": 38351651871,
+    "sourceArtifactId": 11791440725,
+    "originalFilesRehashedAndReparsed": 121,
+    "originalTradingDatesVerified": 61,
+    "sourceMarketDatePairsExpected": 122,
+    "sourceMarketDatePairsValidated": 121,
+    "missingSourcePairs": [
+      {
+        "market": "TPEX",
+        "marketDate": "2026-07-15"
+      }
+    ],
+    "auditableReceiptHash": "542a6b9095f6633d688da3e0ce752372690affdbd2f179643da4541c51eadf06",
+    "artifactId": 11801672063,
+    "artifactDigest": "sha256:afaa7fe7f6d2c127ed171c45b23bf8a01751c2031e16d9aca6d7ec60aab23fe4"
+  },
+  "positiveAutomatedAuditorProvenanceTest": {
+    "pr": 1187,
+    "researchCiRun": 38376288720,
+    "researchCiConclusion": "success",
+    "v8RegressionRun": 38376288719,
+    "v8RegressionConclusion": "success",
+    "mainResearchCiRun": 38376505964,
+    "mainResearchCiConclusion": "success",
+    "mainV8RegressionRun": 38376505923,
+    "mainV8RegressionConclusion": "success"
+  },
+  "hardBoundaries": {
+    "actual122Of122SourceAuditRunAccepted": false,
+    "sourceOnlyIntegrityPassFor122": false,
+    "independentStrategyPITQualified": false,
+    "corporateActionContinuityCertified": false,
+    "realShortMomentumSelectionPerformed": false,
+    "dailyFrozenDecisionsCommitted": false,
+    "system2ShadowS0ToS5Passed": 0,
+    "selectionAuthorized": false,
+    "zeroPickDayCertified": false,
+    "oldAccountSourceD1Touched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1FormalRuntimeChanged": false,
+    "paidServiceActivated": false
+  },
+  "nextPhysicalGate": "AFTER_TWSE_AND_TPEX_2026_10_13_REAL_CLOSE_61_SESSION_CAPTURE_122_122_START_AUTO_SOURCE_AUDIT_THEN_SEPARATE_PIT_CONTINUITY_STAGE1_FROZEN",
+  "publicRawDataPublished": false
+}
