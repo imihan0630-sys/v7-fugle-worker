@@ -116,6 +116,57 @@ export function evaluateMonitorReadback({config,aideen,cron,live,signals,scan,da
    formalComplete:scan?.pipeline?.complete===true,
    threeMinDeliveryVerified:false,phonePushVerified:false,tradeExecuted:false};
 }
+// Separate genuine D1-primary/KV producer readbacks from the display's fallback.
+// A fresh HTTP checkedAt, newest KV, or successful cron does NOT certify D1 writes.
+export function evaluateStorageReadback({sources,config,aideen,live,day,now=new Date()}={}) {
+ const observed=new Date(now),nowMs=observed.getTime();
+ const expected=[...(config?.stocks||[]),...(aideen?.stocks||[])].map(monitorKey);
+ const sourceKeys=sources?.expectedMonitorKeys;
+ const sameKeys=Array.isArray(sourceKeys)&&
+   sourceKeys.length===expected.length&&new Set(sourceKeys).size===sourceKeys.length&&
+   expected.every(key=>sourceKeys.includes(key));
+ const formalSymbols=(config?.stocks||[]).map(x=>String(x.symbol));
+ const aideenSymbols=(aideen?.stocks||[]).map(x=>String(x.symbol));
+ const poolsMatch=Array.isArray(sources?.configSymbols)&&Array.isArray(sources?.aideenSymbols)&&
+   sources.configSymbols.length===formalSymbols.length&&
+   sources.aideenSymbols.length===aideenSymbols.length&&
+   formalSymbols.every(v=>sources.configSymbols.includes(v))&&
+   aideenSymbols.every(v=>sources.aideenSymbols.includes(v));
+ const sourceV2=sources?.schema==="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2";
+ const d1=sources?.d1,kv=sources?.kv;
+ const producerAgeD1=ageSeconds(d1?.generatedAtIso,nowMs);
+ const producerAgeKv=ageSeconds(kv?.generatedAtIso,nowMs);
+ const sourceTradingDate=sources?.tradeDate===day &&
+   d1?.tradeDate===day && kv?.tradeDate===day;
+ const sourceCount=expected.length;
+ const countsMatch=Number(d1?.monitoredCount)===sourceCount&&Number(kv?.monitoredCount)===sourceCount;
+ const populationMatches=sources?.d1PopulationMatches===true&&sources?.kvPopulationMatches===true;
+ const d1Fresh=isFresh(producerAgeD1)&&isTaipeiDate(d1?.generatedAtIso,day);
+ const kvFresh=isFresh(producerAgeKv)&&isTaipeiDate(kv?.generatedAtIso,day);
+ const d1Primary=sources?.preferredSource==="D1_PRIMARY"&&live?.displaySource==="D1_PRIMARY"&&
+   live?.displayDegraded!==true && live?.d1PersistenceUnverified!==true;
+ const declaredReadOnly=sources?.noWrite===true&&sources?.noPlanChanges===true&&
+   sources?.noPush===true&&sources?.noTrade===true;
+ const ok=Boolean(sourceV2&&declaredReadOnly&&sameKeys&&poolsMatch&&sourceTradingDate&&
+   countsMatch&&populationMatches&&d1Fresh&&kvFresh&&d1Primary);
+ const reason=!sourceV2?"SOURCE_AUDIT_V0_2_MISSING":
+   !declaredReadOnly?"SOURCE_AUDIT_READ_ONLY_UNVERIFIED":
+   !sameKeys||!poolsMatch?"SOURCE_EXPECTED_FORMAL_AIDEEN_KEYS_MISMATCH":
+   !sourceTradingDate?"SOURCE_WRONG_TRADING_DATE":
+   !countsMatch||!populationMatches?"SOURCE_D1_KV_POPULATION_MISMATCH":
+   !d1Fresh?"D1_PRIMARY_STALE_OR_MISSING":
+   !kvFresh?"KV_MIRROR_STALE_OR_MISSING":
+   !d1Primary?"D1_PRIMARY_NOT_AUTHORITATIVE_OR_DEGRADED":"PASS_D1_KV_SOURCE_PERSISTENCE_FRESH";
+ return {ok,state:reason,expectedMonitorCount:sourceCount,
+   sourceV2,expectedKeysVerified:sameKeys,poolsMatch,sourceTradingDate,
+   d1Primary,d1Fresh,kvFresh,d1AgeSeconds:producerAgeD1,
+   kvAgeSeconds:producerAgeKv,countsMatch,populationMatches,
+   selectedSource:sources?.preferredSource||null,
+   d1ReportedStored:d1?.liveStoreRecorded??null,
+   kvReportedStored:kv?.liveStoreRecorded??null,
+   noWorkerWrite:true,noD1Write:true,noKvWrite:true};
+}
+
 async function main(){
  const token=process.env.V7_ADMIN_TOKEN||"";
  if(!token)throw Error("V7_ADMIN_TOKEN_REQUIRED");
@@ -125,7 +176,7 @@ async function main(){
    noStockSelection:true,noPlanChanges:true,no3MinWrite:true,noPush:true,noTrade:true,
    endpoints:{},result:null,errors:[]};
  const urls=[["config","/api/config"],["cron","/api/cron/status"],["live","/api/live"],
-             ["signals","/api/signals"],["scan","/api/scan/status"],["aideen","/api/aideen-pool"]];
+             ["signals","/api/signals"],["scan","/api/scan/status"],["aideen","/api/aideen-pool"],["sources","/api/live/sources"]];
  const data={};
  const headers={"x-admin-token":token,accept:"application/json"};
  for(const [name,path] of urls){
@@ -137,6 +188,15 @@ async function main(){
   }catch(error){record.errors.push(name+":"+String(error.message||error).slice(0,120));data[name]=null;}
  }
  record.result=evaluateMonitorReadback({...data,day,now});
+ record.result.storage=evaluateStorageReadback({sources:data.sources,config:data.config,
+   aideen:data.aideen,live:data.live,day,now});
+ // Both market and primary-persistence gates are required for a genuine PASS.
+ // Market closure/weekend/holiday stays NOT_ASSESSED and is never falsified as PASS.
+ if(!record.result.notAssessed&&record.result.ok&&!record.result.storage.ok) {
+   record.result.ok=false;
+   record.result.state=record.result.storage.state;
+ }
+ record.result.sourceAuditHttp=record.endpoints.sources||null;
  record.result.deployedMonitorAccess=record.endpoints.config===200&&record.endpoints.live===200;
  record.digest=createHash("sha256").update(JSON.stringify(record.result)).digest("hex");
  await mkdir("artifacts",{recursive:true});
