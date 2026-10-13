@@ -8,7 +8,16 @@ const tpDate=(d=new Date())=>new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tai
 const utcClock=()=>new Date().toISOString();
 const normDate=x=>String(x||"").slice(0,10).replaceAll("/","-");
 const hasTodayClock=(value,day)=>String(value||"").replaceAll("/","-").includes(day);
-export function evaluateMonitorReadback({config,cron,live,signals,scan,day}){
+const parseClock=value=>{
+ const raw=String(value||"").trim();
+ if(!raw)return NaN;
+ if(/^\d{4}[/-]\d{2}[/-]\d{2}[ T]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.test(raw)){
+  return Date.parse(raw.replaceAll("/","-").replace(" ","T")+"+08:00");
+ }
+ return Date.parse(raw);
+};
+const latestClock=(payload,fields)=>fields.map(x=>parseClock(payload?.[x])).filter(Number.isFinite).sort((a,b)=>b-a)[0]??NaN;
+export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=Date.now(),maxAgeMs=180000}){
  const active=Array.isArray(config?.stocks)?config.stocks:[];
  const symbols=active.map(x=>String(x?.symbol||""));
  const sameDate=active.length>0&&active.every(x=>normDate(x?.planDate)===day);
@@ -16,32 +25,44 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day}){
  const knownSource=Boolean(config?.source&&config?.source!=="None");
  const monitors=Array.isArray(cron?.recent)?cron.recent:[];
  const cronToday=monitors.filter(x=>x?.job_type==="INTRADAY_MONITOR"&&hasTodayClock(x?.scheduled_at,day));
- const cronSuccess=cronToday.some(x=>x?.status==="SUCCESS"&&x?.skipped!==true);
+ const successfulCron=cronToday.filter(x=>x?.status==="SUCCESS"&&x?.skipped!==true);
+ const latestCronAt=successfulCron.map(x=>parseClock(x?.finished_at||x?.scheduled_at)).filter(Number.isFinite).sort((a,b)=>b-a)[0]??NaN;
+ const cronSuccess=successfulCron.length>0;
+ const cronFresh=Number.isFinite(latestCronAt)&&latestCronAt<=now+5000&&now-latestCronAt<=maxAgeMs;
  const cronFailure=cronToday.some(x=>x?.status==="FAILED");
  const liveToday=hasTodayClock(live?.generatedAt,day)||hasTodayClock(live?.checkedAt,day)||
       hasTodayClock(live?.observedAt,day)||hasTodayClock(live?.marketDate,day);
  const signalToday=hasTodayClock(signals?.generatedAt,day)||hasTodayClock(signals?.checkedAt,day)||
       hasTodayClock(signals?.observedAt,day)||hasTodayClock(signals?.marketDate,day);
+ const latestLiveAt=latestClock(live,["generatedAtIso","generatedAt","checkedAt","observedAt"]);
+ const latestSignalsAt=latestClock(signals,["generatedAtIso","generatedAt","checkedAt","observedAt"]);
+ const liveFresh=liveToday&&Number.isFinite(latestLiveAt)&&latestLiveAt<=now+5000&&now-latestLiveAt<=maxAgeMs;
+ const signalFresh=signalToday&&Number.isFinite(latestSignalsAt)&&latestSignalsAt<=now+5000&&now-latestSignalsAt<=maxAgeMs;
  const sourceCount=signals?.stockCount??signals?.count??null;
  const formalDate=normDate(scan?.scanDate);
  // A fresh success audit in D1 plus new live/signal actual state is required;
  // there is no "PASS" just because a GH job or Worker /api/version HTTP is green.
- const ok=sameDate&&!duplicate&&knownSource&&cronSuccess&&(liveToday||signalToday);
+ const ok=sameDate&&!duplicate&&knownSource&&cronFresh&&(liveFresh||signalFresh);
  return {state:ok?"PASS_INTRADAY_MONITOR_ACCEPTED":
      !active.length?"NO_MONITOR_STOCKS":
      !sameDate?"WRONG_OR_STALE_PLAN_DATE":
      duplicate?"DUPLICATE_MONITOR_SYMBOL":
      !cronSuccess?"CRON_SUCCESS_NOT_VERIFIED":
-     "CURRENT_SESSION_LIVE_STATE_NOT_VERIFIED",
+     !cronFresh?"CRON_SUCCESS_STALE":
+     "CURRENT_SESSION_LIVE_STATE_STALE_OR_NOT_VERIFIED",
    ok,day,monitorCount:active.length,symbols,planDateCurrent:sameDate,
    monitorConfigSource:String(config?.source||""),
    configUpdatedAt:config?.updatedAt??null,
    configuredCapital:config?.totalCapital??null,
    recordedProtectedPositions:active.filter(x=>x?.positionStage&&x.positionStage!=="NONE").map(x=>String(x.symbol)),
    brokeragePositionsReconciled:false,
-   cronTodayCount:cronToday.length,cronSuccess,cronFailure,
+   cronTodayCount:cronToday.length,cronSuccess,cronFresh,cronFailure,
+   latestCronAt:Number.isFinite(latestCronAt)?new Date(latestCronAt).toISOString():null,
    cronObserved:cronToday.slice(0,8).map(x=>({scheduledAt:x?.scheduled_at||null,jobType:x?.job_type||null,status:x?.status||null,skipped:x?.skipped??null})),
-   liveToday,signalToday,lastLiveAt:live?.generatedAt||live?.checkedAt||null,
+   liveToday,signalToday,liveFresh,signalFresh,
+   liveAgeSeconds:Number.isFinite(latestLiveAt)?Math.max(0,Math.round((now-latestLiveAt)/1000)):null,
+   signalAgeSeconds:Number.isFinite(latestSignalsAt)?Math.max(0,Math.round((now-latestSignalsAt)/1000)):null,
+   lastLiveAt:live?.generatedAtIso||live?.generatedAt||live?.checkedAt||null,
    lastSignalsAt:signals?.generatedAt||signals?.checkedAt||null,
    signalStockCount:sourceCount,formalScanDate:formalDate,
    formalComplete:scan?.pipeline?.complete===true,

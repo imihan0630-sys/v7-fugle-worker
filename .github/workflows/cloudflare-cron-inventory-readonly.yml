@@ -78,8 +78,24 @@ jobs:
           },null,2));
           NODE
 
+      - name: Read-only System1 Worker invocation telemetry
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_WORKER_NAME: fugle-test
+        run: node ops/cloudflare_worker_invocations_readonly.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-worker-invocations-${{ github.run_id }}
+          path: artifacts/system1-worker-invocations-*.json
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Confirm inventory workflow is read-only
         run: |
           set -euo pipefail
           ! grep -Eiq 'method:"(POST|PUT|PATCH|DELETE)"|wrangler[[:space:]]+(deploy|delete)|secret[[:space:]]+put|schedules.*(POST|PUT|DELETE)' .github/workflows/cloudflare-cron-inventory-readonly.yml
+          ! grep -Eiq 'method:"(PUT|PATCH|DELETE)"|wrangler[[:space:]]+(deploy|delete)|secret[[:space:]]+put|/schedules' ops/cloudflare_worker_invocations_readonly.mjs
           echo "Cloudflare Cron inventory mutation guard PASS"
