@@ -5335,3 +5335,5 @@ D16-17, D16-20, D16-25.
 - Formal D16 65.6%, D18 54.7%, aggregate 47.9% unchanged. D18-06 index-context L3 acceptance vs constituent S1 L2 requirement remains a scope conflict; do not silently patch tracker.
 - No Formal Core/runtime/production/policy change. No strategy-value or Alpha claim.
 - Exact next: full D18-06 canonical regression on isolated branch; reconcile index-level vs constituent-level L3 scope with governance; only then tracker read-before-write; otherwise continue D16-20 genuine same-cut treatment/untreated risk-set or D18-04 real continuity receipts.
+
+- 2026-10-13 19:22+08 continuation: actual fetched isolated-branch D18-06 source and 17 test cases executed in an isolated JavaScript harness with deterministic hash shim: 17/17 logic tests PASS; canonical Node crypto/CI NOT VERIFIED. Draft PR creation failed tool safety twice. Research source, tests, note, machine receipt and this checkpoint are durable on the isolated branch, not merged to main. Exact next: canonical CI/PR-safe alternative, then governance scope reconciliation; no tracker promotion.
