@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "D19_STAGE33_SYNTHETIC_GATE_RESULT_V0_1",
+  "stage": 33,
+  "checkedAt": "2026-10-14",
+  "baselineMain": "8007400c096009101da3b9a33f80d44091c6bd24",
+  "module": "D19",
+  "assertionsPassed": 50,
+  "assertionsTotal": 50,
+  "kind": "LOCAL_SYNTHETIC_ONLY",
+  "actualTaiwanMarketReplay": false,
+  "independentOfficialSourceAnchors": false,
+  "nativeRepositoryIntegrationTest": false,
+  "l3Promotion": false,
+  "formalCore": "LOCKED",
+  "maturityPct": 41.3,
+  "overallMaturityPct": 47.9,
+  "next": "native adapter CI and immutable source-native six-receipt verification"
+}
