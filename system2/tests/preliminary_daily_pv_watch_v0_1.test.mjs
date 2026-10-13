@@ -113,6 +113,18 @@ test('121/122 source is explicit blocked, not a research zero pick',async()=>{
  assert.equal(r.preliminaryMatchedCount,null);
  assert.equal(r.selectedCount,null);
 });
+test('T+1 05:15 research-only source can create late preliminary but not Shadow',async()=>{
+ const s=await sample();
+ s.bridge.state='SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY';
+ s.bridge.freezeAtUtc='2026-10-13T21:15:00Z';
+ s.bridge.blockers=['STAGE1_CLOCK_EXPIRED_PRELIMINARY_ONLY'];
+ const r=await watch(s);
+ assert.equal(r.state,'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION');
+ assert.equal(r.lateMorningObservationNotBackdated,true);
+ assert.equal(r.preliminaryMatchedCount,1);
+ assert.equal(r.finalSelectionAuthorized,false);
+ assert.equal(r.selectedCount,null);
+});
 test('never creates authority for backtest, Frozen, orders, System1',async()=>{
  const r=await watch(await sample());
  assert.equal(r.historicalBacktestCertified,false);

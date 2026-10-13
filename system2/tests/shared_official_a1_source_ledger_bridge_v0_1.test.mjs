@@ -165,6 +165,33 @@ test('same market date before 19:00 remains preliminary source, not Stage1',asyn
  assert.equal(x.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
  assert.equal(x.sourceLedger,null);
 });
+test('GitHub delayed T+1 05:15 may form only as-of-now PRELIMINARY watch, never formal Stage1',async()=>{
+ const f=await fixture();
+ f.freezeAtUtc='2026-10-13T21:15:00Z'; // Taipei T+1 05:15
+ const formal=await bridge(f);
+ assert.equal(formal.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+ const observed=await bridge({...f,preliminaryOnlyDelayedMorning:true});
+ assert.equal(observed.state,'SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY');
+ assert.deepEqual(observed.blockers,['STAGE1_CLOCK_EXPIRED_PRELIMINARY_ONLY']);
+ assert.equal(observed.selectedCount,null);
+ assert.equal(observed.frozenDecisionWritten,false);
+ assert.equal(observed.strategyPitCertified,false);
+});
+test('late T+1 09:00 and T+1 19:19 cannot be retroactively prelim-observed',async()=>{
+ for(const freezeAtUtc of ['2026-10-14T01:00:00Z','2026-10-14T11:19:00Z']){
+  const f=await fixture();
+  const got=await bridge({...f,freezeAtUtc,preliminaryOnlyDelayedMorning:true});
+  assert.equal(got.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+  assert.equal(got.sourceLedger,null);
+ }
+});
+test('121/122 does not bypass original hashes even in delayed preliminary mode',async()=>{
+ const f=await fixture({partial:true});
+ const got=await bridge({...f,freezeAtUtc:'2026-10-13T21:15:00Z',
+   preliminaryOnlyDelayedMorning:true});
+ assert.equal(got.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+ assert.deepEqual(got.blockers,['INDEPENDENT_SOURCE_AUDIT_NOT_122_OF_122']);
+});
 test('source evidence cannot be silently marked as a frozen ranked decision',async()=>{
  const {readFile}=await import('node:fs/promises');
  const s=await readFile('system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs','utf8');

@@ -24,6 +24,8 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
   schemaVersion:'S2_PRELIMINARY_PV_WATCH_V0_1',
   watchVersion:'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_1',
   strategyId:null,marketDate:bridge.marketDate,observedAtUtc:bridge.freezeAtUtc,
+  lateMorningObservationNotBackdated:
+    bridge.state==='SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY',
   originalSourceReceiptHash:bridge.sourceReceiptHash,
   independentSourceAuditHash:bridge.auditReceiptHash,
   sourceLedgerHash:bridge.sourceLedger?.ledgerSha256??null,
@@ -48,7 +50,8 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
   return {...blocked,receiptHash:await sha256Hex(blocked)};
  }
  if(!['SOURCE_LEDGER_READY_STRATEGY_PIT_NOT_CERTIFIED',
-       'STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'].includes(bridge.state)||
+       'STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED',
+       'SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY'].includes(bridge.state)||
     bridge.auditedSourceOnly!==true||bridge.actualSourcePairs!==122||
     bridge.requiredSourcePairs!==122||
     !SHA.test(bridge.auditReceiptHash||'')||
