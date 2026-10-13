@@ -1,0 +1,39 @@
+name: System2 Two Official Company Profiles ONE SHOT (READ ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-official-company-profiles-once.yml'
+permissions:
+  contents: read
+jobs:
+  inspect_current:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate source parser and strict no-trade semantics
+        run: |
+          set -euo pipefail
+          node --test system2/tests/official_company_masters_probe_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Bounded two real official company profile GET requests
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_official_company_masters_readonly_v0_1.mjs
+      - name: Persist sanitized provider status, raw SHA and schema only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-official-current-company-profile-probe-${{ github.run_id }}
+          path: /tmp/s2-official-company-master-probe/receipt.json
+          retention-days: 7
+          if-no-files-found: warn
+      - name: No securities-type final or historical PIT promotion
+        if: always()
+        run: |
+          echo 'Official company profiles are as-of-NOW company master observations only; neither security instrument type nor historic PIT is automatically certified.' >> "$GITHUB_STEP_SUMMARY"
