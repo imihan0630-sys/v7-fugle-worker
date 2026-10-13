@@ -7140,3 +7140,17 @@ This is the exact next action from the 2026-10-10 practitioner intake; it does N
 2. Room11/D16 certifies first four modules D01-02/03/07/09 true chronological OOS, common parent and all failed/blocked denominator under frozen TWSE 2018-2024 manifest. Until physical source chain pass, no L4.
 3. Capture native Node or GitHub CI execution receipt for 58 now-passing isolated cases; don't equate V8 evidence with runtime parity.
 4. Continue separate mainline DL-148 and dedicated Sara 60-minute data/source lane without overriding this physical evidence priority.
+
+
+## DL-148 第十版修訂鏈反證：2026-10-14 原生複驗及隔離分支持久化（尚未合併）
+- 本次已重新讀取最新 main（f360522c03552ec9e87f470ed1b75700d1d3417b）、router、tracker、共享主圖、治理及本專屬 checkpoint。主線最後已合併 DL-147，DL-148 仍待整合。
+- 研究文件已提交至隔離分支 `research/d01-dl148-v10-persist-20261014-0607`：`research/D01_DL148_V10_REVISION_CHAIN_REVALIDATION_20261014_V0_1.md`。原本第十版完整程式／測試目前只在前輪本地壓縮備份，**尚未提交**；此紀錄不可視為完整 DL-148 已完成。
+- 本輪在本地 Node.js 22.16.0 原生重新執行備份內 11 組第148階段合成反證程式，603/603 通過、程序失敗 0；不是正式 CI，也不是實體市場樣本。
+- 研究新知：公告及來源時間正確，若缺少從公告至決策時點的完整修訂鏈，仍無法排除有效產業成分遭事後更正；需保留上市／上櫃 × 新／舊四槽來源完整分母與修訂鏈。證據不足維持 UNKNOWN，不加獨立票。
+- 正式來源缺口：D09 四槽歷史成分、修訂鏈及來源首次可知原始收據仍 SOURCE_BLOCKED；1101／2021-06-15 與前60個合格交易時段的 R1–R6 未正式驗收，R7 不產生。OOS、前瞻影子、成本後、流動性、不同市場狀態與獨立驗證仍 UNKNOWN。
+- D01 正式 11 模組皆 L3、60.0%，L4/L5 無變化；Formal Core LOCKED；不更動選股、排名、資金、交易、通知、Worker、D1。
+### Exact next DL-148 continuation after this branch
+1. 重新讀最新 main、tracker、D01 checkpoint；確認本分支是否合併及是否有並行研究，禁止舊 SHA 覆蓋。
+2. 在研究隔離分支安全提交第148階段第一至第十版原始程式與測試，取得真實 GitHub CI 原生執行證據；目前只有研究報告和本 checkpoint 記錄。
+3. 向 D09 取得四槽完整歷史產業成分、公告後修訂鏈及首次可知原始來源認證；若阻塞，記 SOURCE_BLOCKED 並改做 D01 其他可執行價格結構反證。
+4. 獨立取得 1101／2021-06-15 的 R1–R6 實體收據後才建立 R7；未取得不開啟結果、不製造歷史 Shadow、不升級成熟度。
