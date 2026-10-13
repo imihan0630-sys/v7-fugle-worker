@@ -1,0 +1,48 @@
+name: V8 External GitHub Daily Exact-Engine Candidates (READ ONLY)
+on:
+  schedule:
+    - cron: '20 16 * * 1-5' # UTC Mon-Fri 16:20 = following Taipei session morning 00:20
+  workflow_dispatch:
+    inputs:
+      market_date:
+        type: string
+        required: false
+        description: "Exact previous official session, default yesterday Taipei (YYYY-MM-DD)"
+  push:
+    branches:
+      - ops/v8-node-offline-exact-engine-poc-20261013
+    paths:
+      - .github/workflows/v8-daily-external-candidates-readonly.yml
+permissions:
+  contents: read
+concurrency:
+  group: v8-external-official-candidate-readonly
+  cancel-in-progress: false
+jobs:
+  candidate_certificate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      V8_TARGET_MARKET_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.market_date || (github.event_name == 'push' && '2026-10-12' || '') }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Node static syntax checks
+        run: |
+          node --check ops/v8_daily_external_candidates_readonly_v0_1.mjs
+          node --check ops/v8_offline_quality_eps_overlay_readonly_v0_1.mjs
+      - name: Read authentic same-date official sources; compute unchanged V8 full-market selector in Node; source-only MOPS EPS checks
+        run: node ops/v8_daily_external_candidates_readonly_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v8-daily-original-engine-candidates-${{ github.run_id }}
+          path: artifacts/v8-daily-external-candidates-*.json
+          if-no-files-found: warn
+          retention-days: 60
