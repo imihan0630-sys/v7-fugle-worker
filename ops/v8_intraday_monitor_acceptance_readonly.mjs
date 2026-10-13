@@ -41,7 +41,8 @@ const isTaipeiDate=(value,day)=>{
  const ms=parseTimeMs(value);
  return ms!==null&&tpDate(new Date(ms))===day;
 };
-export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=new Date()}){
+const monitorKey=x=>String(x?.strategyPool||x?.plan?.strategyPool||"FORMAL").trim()+":"+String(x?.symbol||x?.plan?.symbol||"").trim();
+export function evaluateMonitorReadback({config,aideen,cron,live,signals,scan,day,now=new Date()}){
  const observed=new Date(now),nowMs=observed.getTime();
  if(!Number.isFinite(nowMs))throw Error("INVALID_OBSERVATION_CLOCK");
  const intradayWindow=isTaipeiIntradayWindow(observed)&&day===tpDate(observed);
@@ -50,13 +51,19 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=n
  const sameDate=active.length>0&&active.every(x=>normDate(x?.planDate)===day);
  const duplicate=new Set(symbols).size!==symbols.length;
  const knownSource=Boolean(config?.source&&config?.source!=="None");
- const actualLiveSymbols=Array.isArray(live?.results)?live.results.map(x=>String(x?.symbol||"")):[];
- const configuredSet=new Set(symbols),actualSet=new Set(actualLiveSymbols);
- const missingSymbols=symbols.filter(x=>!actualSet.has(x));
- const unexpectedSymbols=actualLiveSymbols.filter(x=>!configuredSet.has(x));
- const monitorPopulationMatches=actualLiveSymbols.length===symbols.length&&
-   actualSet.size===actualLiveSymbols.length&&missingSymbols.length===0&&unexpectedSymbols.length===0&&
-   Number(live?.monitoredCount)===actualLiveSymbols.length;
+ const aideenStocks=Array.isArray(aideen?.stocks)?aideen.stocks:[];
+ const expectedStocks=[...active,...aideenStocks];
+ const expectedKeys=expectedStocks.map(monitorKey);
+ const actualStocks=Array.isArray(live?.results)?live.results:[];
+ const actualLiveSymbols=actualStocks.map(x=>String(x?.symbol||""));
+ const actualKeys=actualStocks.map(monitorKey);
+ const expectedSet=new Set(expectedKeys),actualSet=new Set(actualKeys);
+ const missingSymbols=expectedKeys.filter(x=>!actualSet.has(x));
+ const unexpectedSymbols=actualKeys.filter(x=>!expectedSet.has(x));
+ const monitorPopulationMatches=actualKeys.length===expectedKeys.length&&
+   expectedSet.size===expectedKeys.length&&actualSet.size===actualKeys.length&&
+   missingSymbols.length===0&&unexpectedSymbols.length===0&&
+   Number(live?.monitoredCount)===actualKeys.length;
  const monitors=Array.isArray(cron?.recent)?cron.recent:[];
  const cronToday=monitors.filter(x=>x?.job_type==="INTRADAY_MONITOR"&&isTaipeiDate(x?.scheduled_at,day));
  const cronSuccess=cronToday.some(x=>x?.status==="SUCCESS"&&x?.skipped!==true);
@@ -91,7 +98,8 @@ export function evaluateMonitorReadback({config,cron,live,signals,scan,day,now=n
      "PASS_INTRADAY_MONITOR_FRESHNESS";
  return {state,ok,notAssessed,day,observedAt:observed.toISOString(),
    isTaipeiIntradayWindow:intradayWindow,maxFreshAgeSeconds:MAX_FRESH_AGE_SECONDS,
-   monitorCount:active.length,symbols,planDateCurrent:sameDate,
+   monitorCount:active.length,symbols,aideenMonitorCount:aideenStocks.length,
+   expectedMonitorKeys:expectedKeys,actualMonitorKeys:actualKeys,planDateCurrent:sameDate,
    actualLiveSymbols,monitorPopulationMatches,missingSymbols,unexpectedSymbols,
    liveReportedMonitoredCount:live?.monitoredCount??null,
    monitorConfigSource:String(config?.source||""),
@@ -112,12 +120,12 @@ async function main(){
  const token=process.env.V7_ADMIN_TOKEN||"";
  if(!token)throw Error("V7_ADMIN_TOKEN_REQUIRED");
  const now=new Date(),day=tpDate(now),time=utcClock();
- const record={schemaVersion:"V8_INTRADAY_MONITOR_PHYSICAL_ACCEPTANCE_V0_2",observedAt:time,day,
+ const record={schemaVersion:"V8_INTRADAY_MONITOR_PHYSICAL_ACCEPTANCE_V0_3",observedAt:time,day,
    method:"EXISTING_PRODUCTION_ADMIN_GET_ONLY",noWorkerWrite:true,noD1Write:true,noKVWrite:true,
    noStockSelection:true,noPlanChanges:true,no3MinWrite:true,noPush:true,noTrade:true,
    endpoints:{},result:null,errors:[]};
  const urls=[["config","/api/config"],["cron","/api/cron/status"],["live","/api/live"],
-             ["signals","/api/signals"],["scan","/api/scan/status"]];
+             ["signals","/api/signals"],["scan","/api/scan/status"],["aideen","/api/aideen-pool"]];
  const data={};
  const headers={"x-admin-token":token,accept:"application/json"};
  for(const [name,path] of urls){
