@@ -1,0 +1,51 @@
+name: System2 Real V02 Current Issuer Names Once Readonly
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/system2-real-v02-issuer-once.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  witness:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify immutable source and no-trade unit tests
+        run: |
+          set -euo pipefail
+          node --test system2/tests/reconcile_real_v02_current_company_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download true 2026-10-13 V02 physical 30-row preview artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38477169340
+          name: s2-v02-tdr-filtered-observation-38477169340
+          path: /tmp/s2-v02-source-artifact
+          github-token: ${{ github.token }}
+      - name: Demand exactly one authentic original V02 receipt
+        run: |
+          set -euo pipefail
+          COUNT="$(find /tmp/s2-v02-source-artifact -type f -name preliminary-pv-watch.json | wc -l)"
+          test "$COUNT" = '1'
+          FILE="$(find /tmp/s2-v02-source-artifact -type f -name preliminary-pv-watch.json -print -quit)"
+          test -s "$FILE"
+          test "$(jq -r .receiptHash "$FILE")" = '1bdc75a148160b4267ad6173ac0d6607c47ac9304df02f28bc376f026e9a4d88'
+          echo "S2_V02_ORIGINAL_RECEIPT=$FILE" >> "$GITHUB_ENV"
+      - name: Compare 30 actual current company codes and names from official TWSE/TPEx
+        run: |
+          set -euo pipefail
+          node system2/scripts/reconcile_real_v02_current_company_once_v0_1.mjs
+      - name: Publish sanitized proof only, never official master originals
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-v02-current-official-issuer-${{ github.run_id }}
+          path: /tmp/s2-real-company-match/receipt.json
+          if-no-files-found: warn
+          retention-days: 7
