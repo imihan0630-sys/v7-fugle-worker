@@ -77,6 +77,16 @@ jobs:
           console.log("PLANNED_COUNT_PREDEPLOY",x.plannedStocks.length);
           NODE
           node tests/capture_worker_backup.mjs
+          node - <<'NODE'
+          const fs=require("fs"),assert=require("assert/strict");
+          const b=JSON.parse(fs.readFileSync("/tmp/v7-predeploy-backup/metadata.json","utf8"));
+          assert.equal(b.latestContentMatchesRuntime,true,"ACTIVE_WORKER_BACKUP_SOURCE_VERSION_UNVERIFIED");
+          assert.equal(b.activeVersionPercentage,100,"ACTIVE_DEPLOYMENT_IS_TRAFFIC_SPLIT");
+          assert.equal(b.runtimeVersion,"8.20.2-idempotent-d1-snapshots","RUNTIME_VERSION_DRIFT_REQUIRES_FRESH_REVIEW");
+          const c=Array.isArray(b.schedules)?b.schedules:b.schedules?.schedules||[];
+          assert.equal(c.length,4,"PRODUCTION_CRON_EXPECTED_FOUR_TRIGGERS");
+          console.log("P0_PREDEPLOY_BACKUP_VERIFIED",JSON.stringify({runtime:b.runtimeVersion,activeVersionId:b.activeVersionId,cronCount:c.length,scriptSha256:b.latestContentSha256}));
+          NODE
       - name: Retain original Cloudflare Worker backup and schedule evidence
         uses: actions/upload-artifact@v4
         with:
