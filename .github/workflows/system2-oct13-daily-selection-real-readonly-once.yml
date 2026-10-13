@@ -1,0 +1,78 @@
+name: System2 Oct13 Daily Selection Readiness REAL ONCE READONLY
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/system2-oct13-daily-selection-real-readonly-once.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  physical_readiness:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify daily readiness and no-authority regression
+        run: |
+          set -euo pipefail
+          node --test system2/tests/daily_selection_readiness_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download exact 2026-10-13 official 122-of-122 raw originals
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38390694817
+          name: s2-shared-official-a1-38390694817
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Download independent original source audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38390900569
+          name: system2-shared-official-a1-independent-audit-38390900569
+          path: /tmp/s2-source-original-audit
+          github-token: ${{ github.token }}
+      - name: Resolve exactly one verified audit receipt without path assumptions
+        run: |
+          set -euo pipefail
+          test "$(find /tmp/s2-source-original-audit -type f -name audit-receipt.json | wc -l)" -eq 1
+          FILE="$(find /tmp/s2-source-original-audit -type f -name audit-receipt.json -print -quit)"
+          test -s "$FILE"
+          echo "S2_A1_AUDIT_RECEIPT_FILE=$FILE" >> "$GITHUB_ENV"
+      - name: Run real Oct13 daily Stage1 and calculate per-stock PIT blocker counts
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
+      - name: Enforce real date and hard non-selection boundary
+        run: |
+          set -euo pipefail
+          S=/tmp/s2-a1-stage1-readonly/summary.json
+          R=/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+          test -s "$S"
+          test -s "$R"
+          test "$(jq -r .marketDate "$R")" = '2026-10-13'
+          test "$(jq -r .sourcePairsObserved "$R")" = '122'
+          test "$(jq -r .sourcePairsRequired "$R")" = '122'
+          test "$(jq -r .ordinaryUniverseCount "$R")" -gt 1000
+          test "$(jq -r .ordinaryUniverseCount "$R")" = "$(jq -r .verifiedSourceUniverseCount "$S")"
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .finalSelectionEligible "$R")" = 'false'
+          test "$(jq -r .frozenDecisionWritten "$R")" = 'false'
+          test "$(jq -r .strategyEvaluationState "$S")" = 'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE'
+          echo "Date $(jq -r .marketDate "$R"), official 122/122, universe $(jq -r .ordinaryUniverseCount "$R"), assessed $(jq -r .assessedCount "$R"), PIT incomplete $(jq -r .incompleteCount "$R"), research-qualified not selected $(jq -r .qualifiedNotSelectedCount "$R"). NO final picks or Frozen." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve hash and sanitized daily readiness only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-oct13-real-daily-readiness-${{ github.run_id }}
+          path: |
+            /tmp/s2-a1-stage1-readonly/summary.json
+            /tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+          retention-days: 7
+          if-no-files-found: warn
