@@ -1,0 +1,3 @@
+# Room06 continuation checkpoint delta
+
+D07-30: FX translation synthetic test PASS; separate transaction P/L from foreign-operation OCI. D08-18: bank tangible-book identity and insurance margin timing tests PASS, NOT issuer valuations. Both still L0 in official tracker; L2 review only. Main checkpoint append was blocked by safety checks; this delta does not supersede the canonical checkpoint. Prior seven evidence files remain LOCAL_ONLY. Exact next: verify exact local hashes, restore full evidence safely, merge latest main without overwrite, append canonical D07/D08 research and checkpoint, then sync tracker only if review gate passes. No outcome joins or Formal changes.
