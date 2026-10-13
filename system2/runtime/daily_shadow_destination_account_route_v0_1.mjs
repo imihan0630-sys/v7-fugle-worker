@@ -1,5 +1,5 @@
-// Explicitly route only the authorized destination System2 daily Shadow writer.
-// Does not release the old source-account System2 writer quarantine.
+// Explicitly route only owner-authorized destination System2 daily Shadow and recent A1 warmup writers.
+// Does not release the old source-account System2 writer quarantine; both writer IDs\n// must pass the existing destination account and database fingerprints.
 // Identity verification happens BEFORE any Cloudflare metadata, SQL or Analytics call.
 import {createHash} from 'node:crypto';
 const DEST_ACCOUNT_SHA='27d2ebbc8cef6d3b2102bb57735ed0e014f6c667e5f2c12a5d6f5ba65014db55';
@@ -11,7 +11,8 @@ export function resolveDailyShadowAccountRouteV0_1({
  writerId,role,githubEnvironment,accountId,dbToken,analyticsToken,
  legacyAccountId,legacyDbToken,legacyAnalyticsToken,
 }={}){
- if(writerId!=='DAILY_SHADOW_DIAGNOSTIC')throw Error('S2_DEST_ROUTE_WRITER_NOT_REGISTERED');
+ if(!['DAILY_SHADOW_DIAGNOSTIC','RECENT_A1_WARMUP'].includes(writerId))
+  throw Error('S2_DEST_ROUTE_WRITER_NOT_REGISTERED');
  if(role!=='DESTINATION')throw Error('S2_DEST_ROUTE_EXPLICIT_DESTINATION_REQUIRED');
  if(githubEnvironment!==DESTINATION_DAILY_SHADOW_ENVIRONMENT)
   throw Error('S2_DEST_ROUTE_ENVIRONMENT_MISMATCH');
