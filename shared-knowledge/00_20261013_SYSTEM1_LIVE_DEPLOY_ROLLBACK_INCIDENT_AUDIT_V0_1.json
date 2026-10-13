@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "00_SYSTEM1_V8_LIVE_DEPLOY_ROLLBACK_INCIDENT_AUDIT_V0_1",
+  "observedMain": "0974134ea1d7a387c9e394a1168037a968a68be3",
+  "recordedAtUtc": "2026-10-13T14:33:24.171Z",
+  "recordedAtTaipei": "2026-10-13 22:33:24",
+  "lane": "00_RESEARCH_AUDIT_CONTROL",
+  "kind": "INDEPENDENT_GITHUB_JOB_AND_ORIGINAL_LOG_READBACK",
+  "run": {
+    "id": 38413542208,
+    "jobId": 115351834879,
+    "triggerCommit": "3bc6193d2a7ea91bc2482ecb6b2c0c82ae1bcf65",
+    "conclusion": "failure",
+    "predeployArtifactId": 11822373350,
+    "predeployArtifactDigest": "sha256:194890a5c7fee8ca2a5ae6d8d3a818a09882bc360c232768699dc1c90c8a9e7f"
+  },
+  "stepResults": {
+    "nonTradingOwnerGate": "success",
+    "offlineBuildAndTests": "success",
+    "predeployConfigBackup": "success",
+    "predeployArtifact": "success",
+    "workerCodeUpload": "success",
+    "postDeployReadback": "failure",
+    "automaticRollback": "success"
+  },
+  "observedOriginalLog": {
+    "predeployRuntime": "8.20.2-idempotent-d1-snapshots",
+    "originalCronCount": 4,
+    "workerPutHttp": 200,
+    "workerPutConfirmed": true,
+    "readbackFailure": "ReferenceError: Cannot determine intended module format because both require() and top-level await are present",
+    "cause": "Inline node stdin verification mixes CommonJS require() and top-level await, preventing ANY expected post-upload D1/KV/plan/Cron assertions",
+    "rollback": "wrangler@4 rollback targeted prior stable Worker version",
+    "postRollbackProbe": "S1_P0_ROLLBACK_ROUTE_REMOVED (404 for newly added /api/live/sources)"
+  },
+  "disposition": "ACTUAL_WORKER_UPLOAD_SUCCEEDED_THEN_VALIDATOR_SYNTAX_FAILED_ROLLBACK_STEP_SUCCEEDED",
+  "unresolved": [
+    "Provider-attested post-rollback active Worker version and content SHA exact match not independently read by Room00",
+    "Actual production traffic between upload and rollback unknown",
+    "Live D1/KV/monitoring business success not established by rollback readback"
+  ],
+  "nextSystem1OwnerActions": [
+    "Patch verification inline script to legal Node module semantics (CommonJS async IIFE or ES module import) and run exact embedded verifier offline against strict positive/negative mocks",
+    "Independent read-only original deployed Worker active SHA/version, config, 4 Cron and D1/KV source status",
+    "Do not automatically rerun one-shot deploy workflow; separate fresh owner permission for any second actual cloud PUT, require exact-head full test and independent scoped review",
+    "Retain predeploy original artifact, rollback proof and true failure scope; no false stock-selection or system downtime claim"
+  ],
+  "safety": {
+    "noCloudflareMutationByRoom00": true,
+    "noWorkflowRerunByRoom00": true,
+    "noSystem1FormalCoreEditByRoom00": true,
+    "noBillingOrSecrets": true
+  },
+  "evidenceLimit": "GitHub job/steps/logs and artifact metadata rechecked; no fresh privileged Cloudflare active-deployment GET by 00"
+}
