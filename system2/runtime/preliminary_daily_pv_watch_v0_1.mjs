@@ -9,6 +9,11 @@ const ISO=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
 const SHA=/^[a-f0-9]{64}$/i;
 const isTime=v=>typeof v==='string'&&ISO.test(v)&&Number.isFinite(Date.parse(v));
 const positive=v=>Number.isFinite(v)&&v>0;
+// A four-digit market quote is not necessarily a common share (e.g. TWSE
+// 9103 美德醫療-DR = Taiwan Depositary Receipt). Isolate known -DR labels
+// conservatively, but never assert every remaining stock is class-certified.
+const officialNameSignalsDepositaryReceipt=v=>typeof v==='string'&&
+ /[-\u2010\u2011\u2012\u2013\u2014]\s*DR$/i.test(v.normalize('NFKC').trim());
 function deny(code){throw Error('S2_PRELIMINARY_DAILY_'+code);}
 export async function buildSystem2PreliminaryDailyWatchV0_1({
  bridge,sourceReceipt,displayLimit=30,
@@ -21,8 +26,8 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
     bridge.selectionAuthorized!==false||bridge.frozenDecisionWritten!==false)
   deny('SOURCE_OR_AUTHORITY_MISMATCH');
  const base={
-  schemaVersion:'S2_PRELIMINARY_PV_WATCH_V0_1',
-  watchVersion:'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_1',
+  schemaVersion:'S2_PRELIMINARY_PV_WATCH_V0_2',
+  watchVersion:'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2',
   strategyId:null,marketDate:bridge.marketDate,observedAtUtc:bridge.freezeAtUtc,
   lateMorningObservationNotBackdated:
     bridge.state==='SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY',
@@ -46,6 +51,7 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
    blockers:[...(bridge.blockers||[])],officialUniverseCount:null,
    historyContinuityUsableCount:null,preliminaryMatchedCount:null,
    withheldHistoryCount:null,anomalyQuarantinedCount:null,
+   depositaryReceiptQuarantinedCount:null,
    watchlist:[]};
   return {...blocked,receiptHash:await sha256Hex(blocked)};
  }
@@ -77,13 +83,18 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
  // Hash-verified original market data must be available by this REAL observation.
  // 61-session history is used for PRESENT descriptive ratios, never retrospective
  // stock picks or invented historic first-known timestamps.
- const found=[],symbols=new Set();let withheld=0,quarantined=0,usable=0;
+ const found=[],symbols=new Set();let withheld=0,quarantined=0,usable=0,depositaryQuarantined=0;
  for(const row of ledger.observations){
   const symbol=row.symbol;
   if(!/^[1-9]\d{3}$/.test(symbol||'')||symbols.has(symbol)||
     !['TWSE','TPEX'].includes(row.market)||row.marketDate!==bridge.marketDate)
    deny('SYMBOL_UNIVERSE_IDENTITY_INVALID');
   symbols.add(symbol);
+  // This SOURCE universe is four-digit securities, not an independently
+  // certified ordinary-equity membership list. Do not recommend TDRs here.
+  if(officialNameSignalsDepositaryReceipt(row.companyName)){
+    depositaryQuarantined++;continue;
+  }
   const h=sourceReceipt.bySymbol?.[row.market+'|'+symbol],bars=h?.bars;
   if(!Array.isArray(bars)||bars.length!==61||
      h.symbol!==symbol||h.market!==row.market||
@@ -131,6 +142,7 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
       aboveSma20:true,positiveFiveSessionReturn:true,
       fiveSessionReturnPct:Number((fiveSessionReturn*100).toFixed(5)),
       sourceRowHash:row.sourceRowHash,
+      instrumentClassPITStatus:'ORDINARY_EQUITY_CLASS_NOT_INDEPENDENTLY_ATTESTED',
       companyActionPitStatus:'UNKNOWN_NOT_CLEARED',
       companyActionWarning:'OFFICIAL_CA_VERSION_AND_RAW_ADJUSTMENT_NOT_CERTIFIED',
       marketRegimeWarning:'MARKET_REGIME_NOT_YET_CERTIFIED',
@@ -141,7 +153,7 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
   }
  }
  if(symbols.size!==ledger.observations.length||
-    usable+withheld+quarantined!==symbols.size)
+    usable+withheld+quarantined+depositaryQuarantined!==symbols.size)
   deny('OFFICIAL_UNIVERSE_DENOMINATOR_INVALID');
  // Display order is a transparent recent-return DESC, NOT formal strategy rank.
  found.sort((a,b)=>b.fiveSessionReturnPct-a.fiveSessionReturnPct||
@@ -152,6 +164,10 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
     'REGIME_AND_STRATEGY_FINAL_RANK_NOT_CERTIFIED',
     'FROZEN_AND_BACKTEST_PROMOTION_NOT_AUTHORIZED'],
   officialUniverseCount:symbols.size,
+  originalFourDigitSecurityUniverse:true,
+  ordinaryEquityOnlyUniverseCertified:false,
+  officialNameDepositReceiptScreenVersion:'DR_SUFFIX_NFKC_V0_2',
+  depositaryReceiptQuarantinedCount:depositaryQuarantined,
   historyContinuityUsableCount:usable,
   withheldHistoryCount:withheld,
   anomalyQuarantinedCount:quarantined,
