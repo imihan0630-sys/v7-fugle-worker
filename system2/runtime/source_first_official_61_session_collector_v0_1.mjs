@@ -42,6 +42,7 @@ function validRow(row, market, date){
 export async function captureOfficial61SessionWindowV0_1({
  marketDate,fetchImpl=globalThis.fetch,calendarResolver=buildOfficialTradingDatesV0_1,
  historicalFetch=fetchOfficialHistoricalA1DateV0_1,persistOriginal,
+ cachedOriginalsByUrl=null,
  now=()=>new Date(),pauseMs=0,maxRequestCount=122,
 }={}){
  if(!DAY.test(marketDate||''))throw Error('MARKET_DATE_REQUIRED');
@@ -75,12 +76,19 @@ export async function captureOfficial61SessionWindowV0_1({
       if(response.ok){
        const raw=Buffer.from(await response.clone().arrayBuffer());
        const digest=shaBytes(raw);
+       const cached=cachedOriginalsByUrl?.get?.(String(url))||null;
+       if(cached&&(cached.sha256!==digest||cached.market!==market||
+          cached.date!==date||!iso(cached.observedAt)||
+          Date.parse(cached.observedAt)>now().getTime()))
+         throw Error('REUSED_ORIGINAL_PROVENANCE_MISMATCH');
+       const observedAt=cached?.observedAt||now().toISOString();
        const stored=await persistOriginal({market,date,sourceUrl:url,raw,
-          sha256:digest,observedAt:now().toISOString()});
+          sha256:digest,observedAt,reusedOriginalEvidence:!!cached});
        if(stored?.stored!==true||stored.sha256!==digest||
           stored.byteLength!==raw.byteLength)
           throw Error('ORIGINAL_PROVIDER_RESPONSE_NOT_DURABLY_PRESERVED');
-       captured={sha256:digest,bytes:raw.byteLength,observedAt:now().toISOString(),url};
+       captured={sha256:digest,bytes:raw.byteLength,observedAt,url,
+          reusedOriginalEvidence:!!cached};
       }
       return response;
    };
@@ -118,7 +126,8 @@ export async function captureOfficial61SessionWindowV0_1({
       originalRawResponseSha256:captured.sha256,originalRawResponseBytes:captured.bytes,
       capturedAt:captured.observedAt,rowCount:result.rows.length,
       sourceDateEvidenceBasis:result.sourceDateEvidenceBasis,
-      rawProviderBytesPreserved:true});
+      rawProviderBytesPreserved:true,
+      reusedOriginalEvidence:captured.reusedOriginalEvidence});
    }catch(error){
       // Provider errors can contain URLs; never persist URLs/exceptions in failure evidence.
       captureError=String(error?.message||'ERROR').slice(0,130);
