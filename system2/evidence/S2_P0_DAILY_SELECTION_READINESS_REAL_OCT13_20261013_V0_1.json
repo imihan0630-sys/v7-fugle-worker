@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "S2_P0_DAILY_SELECTION_READINESS_REAL_OCT13_20261013_V0_1",
+  "dateTaipei": "2026-10-13",
+  "issue": 1132,
+  "classification": "REAL_MARKET_SESSION_DAILY_STRATEGY_RESEARCH_READINESS_ONLY_NO_FINAL_SELECTION",
+  "repo": "imihan0630-sys/v7-fugle-worker",
+  "sourceMainPR": 1205,
+  "physicalOneShotPR": 1206,
+  "source122RunId": 38390694817,
+  "independentSourceAuditRunId": 38390900569,
+  "negative": {
+    "runId": 38417540042,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38417540042",
+    "physicallyPass": true,
+    "sourceMarketDate": "2026-10-12",
+    "actualSourcePairs": 121,
+    "verdict": "BLOCKED_SOURCE_NOT_SELECTION",
+    "dailyReceiptHash": "290dd2cb7e2723beb142e59ea59da4414c2216d39ae0aca9d8fb6b9adaad75fd",
+    "artifactId": 11824083886,
+    "artifactDigest": "sha256:bc69001c36ff69d517398399459d641a82f241e7d46eaf103e32b2065fffd8d7"
+  },
+  "realOct13": {
+    "runId": 38418163769,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38418163769",
+    "physicallyPass": true,
+    "sourceMarketDate": "2026-10-13",
+    "sourceMarketDatePairs": 122,
+    "expectedMarketDatePairs": 122,
+    "sourceLedgerHash": "5269a96bf8846c94ca7190816b134cdad41f518c0eb0c180f670d4272be940c4",
+    "sourceOrdinarySymbolCount": 1974,
+    "stage1ActuallyEvaluatedCount": 0,
+    "sourceLocalIncompleteCount": 253,
+    "sourceLocalBlocker": "NO_CERTIFIED_PIT_61_SESSION_HISTORY",
+    "companyActionPitUnverifiedCount": 1721,
+    "companyActionBlocker": "PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED",
+    "stage1UnqualifiedTotal": 1974,
+    "qualifiedResearchNotSelected": 0,
+    "classifiedState": "DAILY_STRATEGY_INPUT_INCOMPLETE",
+    "readyReceiptHash": "5266aeb8b0ec81ed7798a76973c3b7fc3c42b39568cd83f09a3528e817e1dda3",
+    "stage1SummaryHash": "35d432656a63b859dee7dad790dbe5e9c95c14bd54ab84c67648b7d3cbe9322b",
+    "artifactId": 11825625518,
+    "artifactDigest": "sha256:54c1ecd6edd3d2625a2aa5ee90384a41b24243a468c7c6dd27b5b2db8f859dac"
+  },
+  "dailyAutomation": {
+    "collectorWorkflow": ".github/workflows/system2-shared-official-a1-incremental-readonly.yml",
+    "sourceSchedule": "UTC 16:15 Monday-Friday = Taipei 00:15 Tuesday-Saturday",
+    "downstreamWorkflow": ".github/workflows/system2-shared-official-a1-independent-audit.yml",
+    "dailyReadinessModule": "system2/runtime/daily_selection_readiness_v0_1.mjs",
+    "retentionDays": 7,
+    "fullUniversePermanentFrozenStoreActivated": false,
+    "githubActionsScheduleCanDelay": true,
+    "newRecurringCronCreated": false
+  },
+  "missing": {
+    "officialSixFinalResultCorporateActionSources": 6,
+    "originalCorrectionCancellationPITCompleteLanes": 0,
+    "actualDailyQualifiedSelectedPicks": false,
+    "authorizedRegimeAndCapacityFinalRanking": false,
+    "durableCreateOnlyFrozenD1WriteReadback": false,
+    "livePushOrOrders": false,
+    "shadowS0ThroughS5Passed": 0
+  },
+  "guard": {
+    "zeroPickDay": null,
+    "selectedCount": null,
+    "noUnknownContinuityAutoPromotion": true,
+    "system1FormalRuntimeTouched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "newPaidPlanOrPermission": false
+  }
+}
