@@ -316,6 +316,7 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    usable61SessionBars:preliminary.historyContinuityUsableCount,
    preliminaryMatched:preliminary.preliminaryMatchedCount,
    anomalyQuarantined:preliminary.anomalyQuarantinedCount,
+   depositaryReceiptQuarantined:preliminary.depositaryReceiptQuarantinedCount,
    withheldHistory:preliminary.withheldHistoryCount,
    displayedPreliminary:preliminary.watchlist.length,
    preliminaryReceiptHash:preliminary.receiptHash,
