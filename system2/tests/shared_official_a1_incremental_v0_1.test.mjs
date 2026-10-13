@@ -51,6 +51,22 @@ test('61 dates must come from official sorted calendar; weekday cannot certify t
   nowUtc:'2026-10-11T09:00:00Z',officialTradingDates:official});
  assert.equal(holiday.state,'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY');
 });
+test('19:00 Taipei is PRELIMINARY_SOURCE_REVIEW only, never final selection',()=>{
+ const dates=['2026-10-12','2026-10-13'];
+ const before=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-13T10:59:00Z',officialTradingDates:dates});
+ assert.equal(before.marketDate,'2026-10-12');
+ const after=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-13T11:01:00Z',officialTradingDates:dates});
+ assert.equal(after.marketDate,'2026-10-13');
+ assert.equal(after.sourceReviewClass,'PRELIMINARY_SOURCE_REVIEW_ONLY');
+ assert.equal(after.todayProviderFinalityNotAsserted,true);
+ assert.equal(after.retrospectiveOnly,false);
+ const late=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-13T15:45:00Z',officialTradingDates:dates});
+ assert.equal(late.marketDate,'2026-10-13');
+ assert.equal(late.sourceReviewClass,'READONLY_SOURCE_CAPTURE_NOT_FINAL_FREEZE');
+});
 test('original gzip replay independently checks exact bytes, market/date, known source and time',async()=>{
  const f=fixture();
  const saved=JSON.stringify(f.receipt);

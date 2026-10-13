@@ -25,7 +25,10 @@ export function resolveLatestClosedTaiwanSessionV0_1({
  if(!Array.isArray(officialTradingDates)||officialTradingDates.length===0||
     officialTradingDates.some((x,i)=>!DATE.test(x)||(i>0&&x<=officialTradingDates[i-1])))
   throw Error('SHARED_A1_OFFICIAL_CALENDAR_UNVERIFIED');
- const upper=(z.hour>=20)?z.today:subtractDay(z.today);
+ // Owner-approved 19:00 PRELIMINARY_SOURCE_REVIEW permits only read-only
+ // discovery, not a final pool/decision/Frozen. Both provider source dates and
+ // native raw hashes still must prove exact same-date readiness.
+ const upper=(z.hour>=19)?z.today:subtractDay(z.today);
  const prior=officialTradingDates.filter(x=>x<=upper).at(-1);
  if(!prior)return Object.freeze({state:'BLOCKED_CALENDAR_NO_ELIGIBLE_SESSION',marketDate:null});
  const isNewClose=(prior===upper);
@@ -41,6 +44,8 @@ export function resolveLatestClosedTaiwanSessionV0_1({
   retrospectiveOnly:prior!==z.today,
   eligibleToRunSourceReadOnly:true,
   todayProviderFinalityNotAsserted:true,
+  sourceReviewClass:prior===z.today&&z.hour<23?
+    'PRELIMINARY_SOURCE_REVIEW_ONLY':'READONLY_SOURCE_CAPTURE_NOT_FINAL_FREEZE',
   publicSessionCloseTimeNotPublicationTime:true
  });
 }
