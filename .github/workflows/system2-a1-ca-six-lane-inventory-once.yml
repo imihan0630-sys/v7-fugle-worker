@@ -1,0 +1,64 @@
+name: System2 Official 61 Session Six Lane CA Inventory ONCE READONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-a1-ca-six-lane-inventory-once.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inventory:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test read-only final-results-not-PIT source inventory
+        run: |
+          node --test system2/tests/a1_ca_six_lane_inventory_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Retrieve exact 10/13 A1 source originals and manifest
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38390694817
+          name: s2-shared-official-a1-38390694817
+          path: /tmp/ca-a1-original
+          github-token: ${{ github.token }}
+      - name: Retrieve independent verified 122 source audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38390900569
+          name: system2-shared-official-a1-independent-audit-38390900569
+          path: /tmp/ca-a1-audit
+          github-token: ${{ github.token }}
+      - name: Query six source-only official corporate-action ranges
+        env:
+          S2_A1_MANIFEST: /tmp/ca-a1-original/shared-official-a1-manifest.json
+          S2_A1_INDEPENDENT_AUDIT: /tmp/ca-a1-audit/audit-receipt.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/inventory_official_a1_ca_six_lane_v0_1.mjs
+      - name: Fail closed on any false permission
+        run: |
+          set -euo pipefail
+          F=/tmp/s2-ca-sixlane-inventory/receipt.json
+          test -s "$F"
+          test "$(jq -r .laneCount "$F")" = '6'
+          test "$(jq -r .revisionHistoryReadyCount "$F")" = '0'
+          test "$(jq -r .noEventMayBeClaimed "$F")" = 'false'
+          test "$(jq -r .selectionAuthorized "$F")" = 'false'
+          test "$(jq -r .selectedCount "$F")" = 'null'
+          test "$(jq -r .frozenDecisionWritten "$F")" = 'false'
+          echo "Official final-result evidence $(jq -r .finalResultReadyCount "$F")/6 lanes; revision PIT 0/6; selection NOT authorized" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve sanitized SHA/count-only receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-a1-ca-sixlane-${{ github.run_id }}
+          path: /tmp/s2-ca-sixlane-inventory/receipt.json
+          retention-days: 7
+          if-no-files-found: warn
