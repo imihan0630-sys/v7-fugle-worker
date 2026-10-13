@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {evaluateMonitorReadback} from "../ops/v8_intraday_monitor_acceptance_readonly.mjs";
+import {evaluateMonitorReadback,evaluateStorageReadback} from "../ops/v8_intraday_monitor_acceptance_readonly.mjs";
 
 const day="2026-10-13";
 const config={source:"KV",updatedAt:"2026-10-12T22:51:05Z",totalCapital:200000,
@@ -72,6 +72,53 @@ check(verify({aideen:validAideen,live:{monitoredCount:2,results:live.results}}).
 const overlapAideen={stocks:[{symbol:"6226",strategyPool:"AIDEEN_APP"}]};
 check(verify({aideen:overlapAideen,live:{monitoredCount:3,results:[...live.results,{symbol:"6226",plan:{strategyPool:"AIDEEN_APP"}}]}}).ok===true,
   "same ticker independently monitored in Formal and Aideen is permitted");
+
+const storageNow="2026-10-13T01:05:00Z";
+const srcTemplate={
+ schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2",tradeDate:day,
+ configSymbols:["6226","2609"],aideenSymbols:[],
+ expectedMonitorKeys:["FORMAL:6226","FORMAL:2609"],
+ d1:{generatedAtIso:"2026-10-13T01:04:20Z",tradeDate:day,monitoredCount:2},
+ kv:{generatedAtIso:"2026-10-13T01:04:20Z",tradeDate:day,monitoredCount:2,liveStoreRecorded:true},
+ d1PopulationMatches:true,kvPopulationMatches:true,preferredSource:"D1_PRIMARY",
+ noWrite:true,noPlanChanges:true,noPush:true,noTrade:true
+};
+const storage=(s=srcTemplate,more={})=>evaluateStorageReadback({
+ sources:s,config,aideen:{stocks:[]},day,now:storageNow,
+ live:{...live,displaySource:"D1_PRIMARY",displayDegraded:false,d1PersistenceUnverified:false},
+ ...more
+});
+check(storage().ok&&storage().state==="PASS_D1_KV_SOURCE_PERSISTENCE_FRESH","fresh D1 and KV source producers are necessary for full success");
+check(!storage({...srcTemplate,d1:{...srcTemplate.d1,generatedAtIso:"2026-10-13T00:46:00Z"}}).ok,
+ "fresh KV may NOT hide stale D1 primary");
+check(storage({...srcTemplate,d1:{...srcTemplate.d1,generatedAtIso:"2026-10-13T00:46:00Z"}}).state==="D1_PRIMARY_STALE_OR_MISSING",
+ "D1 failure must be explicitly diagnosed");
+check(storage({...srcTemplate,kv:{...srcTemplate.kv,generatedAtIso:"2026-10-13T00:46:00Z"}}).state==="KV_MIRROR_STALE_OR_MISSING",
+ "stale KV must not count as full mirror success");
+check(storage({...srcTemplate,schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1"}).state==="SOURCE_AUDIT_V0_2_MISSING",
+ "old runtime cannot pretend to have verified post-fix schema");
+check(storage({...srcTemplate,expectedMonitorKeys:["FORMAL:6226","FORMAL:2454"]}).state==="SOURCE_EXPECTED_FORMAL_AIDEEN_KEYS_MISMATCH",
+ "unrecognized source monitoring identity must fail");
+check(storage({...srcTemplate,kv:{...srcTemplate.kv,tradeDate:"2026-10-12"}}).state==="SOURCE_WRONG_TRADING_DATE",
+ "yesterday KV must not be fresh today");
+check(storage({...srcTemplate,d1PopulationMatches:false}).state==="SOURCE_D1_KV_POPULATION_MISMATCH",
+ "D1 source population mismatch must fail");
+check(storage({...srcTemplate,preferredSource:"KV_DEGRADED"}).state==="D1_PRIMARY_NOT_AUTHORITATIVE_OR_DEGRADED",
+ "KV degraded display is NOT primary persisted storage PASS");
+check(storage(srcTemplate,{live:{displaySource:"KV_DEGRADED",displayDegraded:true,d1PersistenceUnverified:true}}).ok===false,
+ "display freshness alone cannot certify primary persistence");
+check(storage({...srcTemplate,noWrite:false}).state==="SOURCE_AUDIT_READ_ONLY_UNVERIFIED",
+ "source witness must remain read-only");
+check(storage({...srcTemplate,d1:{...srcTemplate.d1,generatedAtIso:"2026-10-13T01:06:30Z"}}).ok===false,
+ "D1 future timestamp must not manufacture fresh state");
+const storageAideen={...srcTemplate,
+ aideenSymbols:["6213"],expectedMonitorKeys:["FORMAL:6226","FORMAL:2609","AIDEEN_APP:6213"],
+ d1:{...srcTemplate.d1,monitoredCount:3},kv:{...srcTemplate.kv,monitoredCount:3}
+};
+check(evaluateStorageReadback({sources:storageAideen,config,
+ aideen:{stocks:[{symbol:"6213",strategyPool:"AIDEEN_APP"}]},day,now:storageNow,
+ live:{displaySource:"D1_PRIMARY",displayDegraded:false}}).ok===true,
+ "Formal+Aideen readback accepts real pool identities");
 console.log(JSON.stringify({ok:true,testCases:checked,
   detection:"cron+live+signal age bounded to 5min, Taipei session-aware",
   noProductionMutation:true,formalNeverInferred:true,noBrokerageAssumption:true}));
