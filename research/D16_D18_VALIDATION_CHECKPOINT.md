@@ -5324,3 +5324,14 @@ D16-17, D16-20, D16-25.
    - no outcome access.
 2. D16-17 remains blocked on durable row-level historical membership authority.
 3. D16-25 remains blocked on a genuine canonical stock-return CalibrationReceipt and decision-population ledger; diagnostic trade-value calibration is not admissible.
+
+
+## 2026-10-13 Room11 D18-06 size-state integrity and scope audit (isolated branch)
+
+- Audit: `research/ROOM11_D16_D18_SIZE_STATE_CONSISTENCY_AUDIT_20261013.md`.
+- Genuine producer: `research/br037_size_leadership_receipt_20261001_v0_1.json`; original accepted 14/14 suite and independent regression belong to market-index L3 scope only.
+- New counterexample: the existing label-based D18-06 builder could emit LARGE_LED when numeric small-cap return was larger. This is a synthetic source-integrity counterexample, not a finding against the official receipt.
+- Research-only branch patches the builder to reject contradictory leadership with `SIZE_STATE_RETURN_CONFLICT` and adds SZ-T15..T17. Narrow extracted-function 5/5 checks passed; canonical full suite pending.
+- Formal D16 65.6%, D18 54.7%, aggregate 47.9% unchanged. D18-06 index-context L3 acceptance vs constituent S1 L2 requirement remains a scope conflict; do not silently patch tracker.
+- No Formal Core/runtime/production/policy change. No strategy-value or Alpha claim.
+- Exact next: full D18-06 canonical regression on isolated branch; reconcile index-level vs constituent-level L3 scope with governance; only then tracker read-before-write; otherwise continue D16-20 genuine same-cut treatment/untreated risk-set or D18-04 real continuity receipts.
