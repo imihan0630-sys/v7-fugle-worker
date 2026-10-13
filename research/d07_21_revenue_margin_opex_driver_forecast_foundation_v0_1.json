@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "D07_21_REVENUE_MARGIN_OPEX_DRIVER_FORECAST_FOUNDATION_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "module": "D07-21",
+  "frozenAtAsiaTaipei": "2026-10-08T00:24:00+08:00",
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED",
+  "formalCoreImpact": "NONE",
+  "outcomeDataUsed": false,
+  "objective": "Define business-model-aware, PIT-safe revenue, margin and operating-expense driver forecasting for stock-selection research without duplicating integrated statement, working-capital/FCF, scenario or valuation modules.",
+  "corePrinciple": "Forecast economically observable drivers first, then transform them into accounting outcomes. A single extrapolated growth rate or margin trend is not a sufficient mechanism and must never become a standalone alpha vote.",
+  "accountingFrame": {
+    "revenueRecognition": "IFRS 15 revenue reflects transfer of promised goods/services and transaction price allocated to performance obligations. Orders, shipments, billings, cash receipts and accounting revenue are related but not interchangeable.",
+    "operatingExpensePresentation": "IFRS 18 permits operating expenses to be presented by nature, function, or a mixed presentation when that is most useful. Historical OPEX comparison therefore requires a presentation/mapping vintage rather than assuming line-item labels are economically stable.",
+    "taiwanDisclosure": "Taiwan MOPS provides issuer operating-revenue announcements with publication timestamps and financial-report releases; research must preserve the original disclosed vintage and publication time rather than use later restated/current values."
+  },
+  "businessModelAdapters": {
+    "manufacturing": {
+      "canonicalDrivers": [
+        "unitVolume",
+        "averageSellingPrice",
+        "productMix",
+        "capacity",
+        "utilization",
+        "yield",
+        "inventory/channelState"
+      ],
+      "guard": "Capacity, utilization and yield constrain volume. Revenue growth that exceeds plausible physical capacity without outsourcing/new capacity evidence fails closed."
+    },
+    "commodityOrCyclical": {
+      "canonicalDrivers": [
+        "referencePrice",
+        "realizedPrice",
+        "volume",
+        "gradeOrMix",
+        "hedgeState",
+        "FX"
+      ],
+      "guard": "Separate commodity price beta from company-specific volume/mix; do not call a spot-price uplift structural margin expansion."
+    },
+    "retailOrStore": {
+      "canonicalDrivers": [
+        "storeCount",
+        "sameStoreSales",
+        "traffic",
+        "conversion",
+        "basketSize",
+        "channelMix"
+      ],
+      "guard": "New-store growth and comparable-store growth are distinct; calendar effects and store openings/closures must not be mixed."
+    },
+    "subscriptionOrPlatform": {
+      "canonicalDrivers": [
+        "customersOrMAU",
+        "paidConversion",
+        "ARPU",
+        "churn",
+        "cohortMix",
+        "usageOrTakeRate"
+      ],
+      "guard": "Bookings/users are not revenue without a validated recognition bridge; customer growth with collapsing monetization/churn is not equivalent to revenue quality."
+    },
+    "projectOrBacklog": {
+      "canonicalDrivers": [
+        "backlog",
+        "newOrders",
+        "cancellations",
+        "bookToBill",
+        "conversionSchedule",
+        "milestoneProgress"
+      ],
+      "guard": "Backlog is not revenue. Conversion probability/timing and contract modifications/variable consideration remain explicit."
+    },
+    "financeOrInsurance": {
+      "canonicalDrivers": [
+        "businessSpecificBalanceDrivers",
+        "spreadOrMargin",
+        "feeDrivers",
+        "creditOrClaimContext"
+      ],
+      "guard": "Do not force industrial-company gross-margin or sales-to-capital formulas onto financial institutions; use a separate business-model adapter or UNKNOWN."
+    }
+  },
+  "revenueBridge": {
+    "requiredDecomposition": [
+      "price versus volume versus mix where economically meaningful",
+      "organic versus acquisition/disposal/consolidation changes",
+      "reported versus constant-currency/FX translation effects where material",
+      "existing capacity versus new capacity/outsourcing",
+      "new customers/products/geographies versus existing-base retention",
+      "one-time catch-up, contract modification or accounting-recognition effects"
+    ],
+    "topDownBottomUpReconciliation": "Where data exist, reconcile total-addressable-market/share logic with bottom-up unit/capacity/customer/backlog drivers. Material contradiction lowers confidence rather than selecting the more bullish path.",
+    "seasonality": "Seasonality, holiday timing, lunar-calendar shifts, billing cadence and working-day effects require an explicit seasonal model or UNKNOWN. One-month annualization is prohibited.",
+    "monthlyRevenueUse": "Taiwan monthly operating-revenue disclosures are PIT inputs for revenue state only. They do not reveal quarterly margin/OPEX by themselves and may not be used to backfill earlier decision dates."
+  },
+  "marginBridge": {
+    "grossOrContributionDrivers": [
+      "price realization and mix",
+      "input/material/energy/freight/labor costs",
+      "FX transaction/translation effects",
+      "utilization and fixed-cost absorption",
+      "yield/scrap/warranty/quality costs",
+      "outsourcing versus internal production",
+      "competitive discounting and customer incentives"
+    ],
+    "operatingMarginDrivers": [
+      "gross/contribution margin",
+      "R&D intensity",
+      "sales/marketing intensity",
+      "G&A scale",
+      "employee/stock-compensation economics",
+      "depreciation/amortization classification",
+      "one-time/restructuring or litigation items"
+    ],
+    "targetMarginRule": "A target margin must have an economic anchor such as peer-normalized mature economics, unit-cost path, utilization/scale logic or contractual pricing. Pure mean reversion without mechanism is not sufficient.",
+    "accountingGuard": "Presentation reclassification, capitalization policy changes, stock-compensation placement and IFRS 18 transition can move reported line items without changing economics; preserve mapped comparable states or UNKNOWN."
+  },
+  "opexBridge": {
+    "costBehavior": [
+      "fixed",
+      "variable",
+      "semi-variable",
+      "step-fixed",
+      "growth-investment/discretionary"
+    ],
+    "driverExamples": {
+      "RD": [
+        "headcount",
+        "compensation",
+        "projectPipeline",
+        "capitalizationPolicy"
+      ],
+      "SGA": [
+        "revenueScale",
+        "salesforce",
+        "storesOrLocations",
+        "customerAcquisition",
+        "headcount"
+      ],
+      "platform": [
+        "computeOrHostingUsage",
+        "supportHeadcount",
+        "paymentFees",
+        "customerAcquisition"
+      ],
+      "depreciation": [
+        "assetBase",
+        "capexCommissioning",
+        "usefulLife",
+        "classification"
+      ]
+    },
+    "guard": "Do not force OPEX to a constant percent of revenue when cost behavior or investment phase contradicts that assumption."
+  },
+  "pitContract": {
+    "asOfRule": "Every driver and forecast input requires knownAt/availableAt <= forecastDecisionAt.",
+    "provenanceLanes": [
+      "issuerReportedActual",
+      "managementGuidance",
+      "contractOrBacklogDisclosure",
+      "industryOrCommodityExternalInput",
+      "analystConsensus",
+      "modelBuiltAssumption"
+    ],
+    "laneRule": "Lanes remain separately tagged. Management guidance and analyst consensus cannot be silently relabeled as model facts or issuer actuals.",
+    "cadenceRule": "Different input frequencies remain different. Monthly revenue may update before quarterly margins/OPEX; never interpolate later quarter margins backward into earlier monthly decisions.",
+    "revisionRule": "Corrections, restatements, guidance changes, contract modifications and realized outcomes append as later vintages and never rewrite the ex-ante forecast.",
+    "unknownRule": "Unavailable price/volume/mix, capacity, margin bridge or OPEX driver stays UNKNOWN; later realized values cannot reconstruct it."
+  },
+  "ownershipBoundary": {
+    "D07_20": "Consumes D07-21 drivers and owns integrated three-statement reconciliation/funding/circularity. D07-21 does not duplicate the statement-balancing vote.",
+    "D07_22": "Owns working-capital, CAPEX and FCF forecast detail. D07-21 may identify operational drivers but does not create a second reinvestment/FCF score.",
+    "D07_23": "Owns scenario and sensitivity design. D07-21 supplies frozen driver states/uncertainties rather than outcome-tuned scenarios.",
+    "D07_19": "Owns project economics/NPV/real options. Capacity projects can supply driver constraints but are not independently re-scored here.",
+    "D08": "Consumes revenue/margin/OPEX forecasts for valuation. Forecast optimism is not an independent valuation confirmation.",
+    "D10_D09": "Industry/supply-chain and sector context may supply external demand/price/capacity evidence but retain their own ownership."
+  },
+  "falsification": [
+    "Reject universal straight-line revenue extrapolation when the business has observable capacity/customer/backlog constraints.",
+    "Reject price-times-volume decomposition when revenue recognition timing or variable consideration breaks the mapping.",
+    "Reject top-down market-share forecasts that require implausible market share, capacity or customer acquisition.",
+    "Reject margin expansion caused only by classification/presentation changes or unsupported peer convergence.",
+    "Reject OPEX leverage that requires implausible fixed-cost behavior or ignores deliberate growth investment.",
+    "Reject monthly-revenue information leakage from disclosures published after the historical decision timestamp.",
+    "Reject later quarterly margin/OPEX actuals backfilled into earlier monthly forecasts.",
+    "Reject a driver family if incremental value disappears after simpler current revenue growth, margin, FCF, leverage, consensus and valuation controls.",
+    "Reject promotion if evidence is concentrated in one issuer, one industry, one accounting regime or one high-growth cycle.",
+    "Preserve negative and null evidence; do not select driver definitions/windows after seeing returns."
+  ],
+  "researchHypotheses": [
+    "H1: Driver-consistent forecasts should reduce false-positive revenue acceleration signals when capacity, utilization, price/mix or customer economics contradict headline growth.",
+    "H2: Margin-bridge consistency may be more useful as downside-risk/quality validation than as standalone short-horizon alpha.",
+    "H3: Taiwan monthly operating-revenue vintages may improve revenue nowcasting, but should not be assumed to reveal margin or earnings without separate cost/expense states.",
+    "H4: Business-model-specific adapters should outperform a universal sales-growth/margin template in forecast calibration and failure detection.",
+    "H5: Incremental value, if any, must survive controls for current growth, valuation, trend/RS, industry/regime and information already embedded in consensus."
+  ],
+  "taiwanPITReplayPlan": [
+    "Freeze original MOPS monthly operating-revenue releases with displayed publication timestamps and correction lineage.",
+    "Join only financial-report/guidance information available by each forecastDecisionAt.",
+    "Replay at least four Taiwan-listed issuers across at least three materially different industries/business models.",
+    "Include at least one capacity-constrained manufacturer, one price/mix-sensitive cyclical or hardware issuer, and one service/retail/recurring-revenue style issuer where source data permit.",
+    "Preserve monthly-versus-quarterly cadence mismatch rather than filling quarterly margins into prior months.",
+    "Include at least one restatement/reclassification/IFRS-presentation case and at least one negative forecast case."
+  ],
+  "decisionRole": {
+    "primary": "CONTEXT_AND_VALIDATION",
+    "secondary": [
+      "FORECAST_INPUT",
+      "DATA_QUALITY",
+      "DOWNSIDE_FALSIFICATION"
+    ],
+    "standaloneBuySignal": false
+  },
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "maturityPct": 40,
+    "rationale": "Business-model adapters, revenue/margin/OPEX bridges, accounting-recognition/presentation guards, PIT provenance, ownership boundaries and falsification are explicit. Taiwan issuer historical replay is not yet physically validated, so L3 remains closed."
+  },
+  "l3Gate": [
+    "At least four Taiwan-listed issuers across at least three materially different industries/business models.",
+    "Replayable original monthly-revenue and financial-report vintages with publication/availability timestamps.",
+    "Management guidance, analyst consensus and model assumptions separately tagged.",
+    "At least one revenue-recognition/cadence mismatch case and one margin/OPEX presentation or reclassification case.",
+    "Append-only correction/restatement handling with no outcome leakage.",
+    "Demonstrated driver-to-reported-revenue/margin bridge with explicit UNKNOWN where mapping is unavailable."
+  ],
+  "l4Gate": [
+    "Preregistered OOS/prospective Shadow evaluation.",
+    "Common-support comparison against simple revenue-growth, margin, FCF, leverage and consensus baselines.",
+    "Industry/date/regime/accounting-presentation clustering controls.",
+    "Coverage/missingness and forecast-error distributions, including negative/null results.",
+    "No post-outcome driver/window/threshold tuning."
+  ],
+  "sourceReferences": [
+    {
+      "title": "IFRS Foundation — IFRS 15 Revenue from Contracts with Customers",
+      "url": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/",
+      "use": "Revenue recognition, performance obligations and transaction-price semantics."
+    },
+    {
+      "title": "IFRS Foundation — IFRS 18 Presentation and Disclosure in Financial Statements",
+      "url": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-18-presentation-and-disclosure-in-financial-statements/",
+      "use": "Operating-expense presentation by nature/function/mixed and presentation-transition guard."
+    },
+    {
+      "title": "Taiwan MOPS",
+      "url": "https://mops.twse.com.tw/",
+      "use": "Issuer monthly operating-revenue and financial-report publication/vintage source feasibility."
+    },
+    {
+      "title": "Taiwan FSC — Regulations Governing the Preparation of Financial Reports by Securities Issuers",
+      "url": "https://law.fsc.gov.tw/EngLawContent.aspx?id=2854&lan=E",
+      "use": "Taiwan issuer accounting/reporting framework."
+    },
+    {
+      "title": "Aswath Damodaran — The Fundamental Determinants of Growth",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/growth.htm",
+      "use": "Revenue growth, target margin and growth-economics mechanism."
+    },
+    {
+      "title": "Aswath Damodaran — Equity valuation materials",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqUGemail.html",
+      "use": "Operating margin × sales-to-capital relation and economic consistency of growth/margin/reinvestment."
+    }
+  ],
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
