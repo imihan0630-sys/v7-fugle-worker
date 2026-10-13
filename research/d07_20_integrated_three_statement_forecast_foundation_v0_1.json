@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "D07_20_INTEGRATED_THREE_STATEMENT_FORECAST_FOUNDATION_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "module": "D07-20",
+  "frozenAtAsiaTaipei": "2026-10-08T00:05:00+08:00",
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED",
+  "formalCoreImpact": "NONE",
+  "outcomeDataUsed": false,
+  "objective": "Define a PIT-safe integrated three-statement forecast architecture for stock-selection research without duplicating driver, free-cash-flow, scenario, project-economics or valuation modules.",
+  "corePrinciple": "A three-statement model is a reconciliation and dependency engine, not an alpha vote by itself. It must transform PIT-valid operating and financing assumptions into mutually consistent income statement, balance sheet, equity roll-forward and cash-flow states while preserving explicit UNKNOWNs.",
+  "sourceAccountingFrame": {
+    "taiwanIssuerFrame": "FSC issuer financial-report regulations require a complete set including balance sheet, statement of comprehensive income, statement of changes in equity, statement of cash flows and notes, with FSC-endorsed IFRS/IAS as the accounting basis.",
+    "ifrs18Transition": "IFRS 18 applies for annual reporting periods beginning on or after 2027-01-01, permits earlier application, and is retrospective under IAS 8. Historical replay must version presentation/reclassification semantics rather than treating new subtotals as unchanged economic series.",
+    "economicDriverFrame": "Revenue growth, operating margin and reinvestment/capital efficiency are linked economic drivers; growth is not free and reinvestment must be economically consistent with the forecast growth path."
+  },
+  "ownershipBoundary": {
+    "D07_20": [
+      "integrated income-statement / balance-sheet / cash-flow reconciliation",
+      "retained-earnings and equity roll-forward consistency",
+      "cash/debt funding bridge and financing-plug disclosure",
+      "tax/depreciation/capex/working-capital linkage consistency",
+      "forecast-vintage lineage and statement-presentation normalization",
+      "mechanical balance and circularity diagnostics"
+    ],
+    "D07_21": "Owns revenue, gross/operating margin and OPEX driver formation; D07-20 consumes these assumptions and checks statement coherence.",
+    "D07_22": "Owns detailed working-capital, CAPEX and FCF forecast design; D07-20 integrates those outputs into statement reconciliation.",
+    "D07_23": "Owns scenario/sensitivity generation; D07-20 must replay each frozen scenario consistently but does not create a second scenario vote.",
+    "D07_18": "Supplies cost-of-capital primitives when valuation/financing comparisons require them; D07-20 does not recreate WACC as independent evidence.",
+    "D07_19": "Owns project economics and real options; project forecasts may feed D07-20 but must not be double-counted.",
+    "D08": "Consumes forecast outputs for valuation. Mechanical forecast closure must never create an independent valuation confirmation."
+  },
+  "statementArchitecture": {
+    "incomeStatement": [
+      "Revenue and operating cost/expense assumptions produce operating profit under a versioned presentation mapping.",
+      "Interest/financing and tax assumptions bridge operating result to net income without hiding financing as operating economics."
+    ],
+    "balanceSheet": [
+      "Operating working-capital accounts, PPE/intangibles, debt, cash, tax balances and equity roll forward from prior-period stocks and current-period flows.",
+      "Retained earnings reconcile beginning equity plus comprehensive/net-income and distribution/issuance effects under explicit accounting policy."
+    ],
+    "cashFlow": [
+      "Operating, investing and financing cash flows reconcile beginning cash to ending cash.",
+      "Working-capital movements, depreciation/amortization, CAPEX/acquisitions, debt/equity financing and distributions cannot be silently omitted."
+    ],
+    "circularityPolicy": [
+      "Interest-cash-debt circularity must be solved by a declared method or remain UNKNOWN; never hide it inside an unexplained plug.",
+      "A balancing plug may be diagnostic only and must identify economic funding source/constraint before use in research."
+    ]
+  },
+  "pitContract": {
+    "asOfRule": "Every historical forecast assumption must have knownAt/availableAt <= forecastDecisionAt. Management guidance, analyst consensus and model assumptions remain separately labeled.",
+    "vintages": [
+      "financialStatementVersion",
+      "accountingPresentationVersion",
+      "managementGuidanceKnownAt",
+      "consensusSnapshotKnownAt",
+      "modelAssumptionKnownAt",
+      "forecastDecisionAt",
+      "laterRevisionKnownAt",
+      "actualOutcomeKnownAt"
+    ],
+    "revisionRule": "Later filings, guidance revisions, restatements and realized results append as later vintages; they never rewrite the ex-ante forecast used at the historical decision date.",
+    "ifrs18Rule": "IFRS 18 adoption/early adoption/reclassification is a presentation vintage. Historical economic comparisons require mapped comparable lines or explicit UNKNOWN, not naive line-item continuity.",
+    "unknownRule": "Missing driver, financing, tax or statement mapping remains UNKNOWN. Mathematical balancing cannot manufacture missing economics."
+  },
+  "consistencyChecks": [
+    "Assets = liabilities + equity within declared rounding tolerance.",
+    "Beginning cash + operating + investing + financing cash flow = ending cash.",
+    "Retained-earnings/equity roll-forward agrees with earnings, distributions, issuance/buybacks and OCI where modeled.",
+    "Revenue growth requiring capital must reconcile with working-capital/capacity/reinvestment assumptions rather than assuming free growth.",
+    "Operating-margin path must be explainable by price/mix/cost/scale inputs owned by D07-21.",
+    "Debt and interest paths must be mutually consistent with cash deficit/surplus and financing policy.",
+    "Depreciation/amortization and CAPEX/PPE roll-forward must not create impossible stock-flow paths."
+  ],
+  "falsification": [
+    "Reject a model-quality claim when statements balance only because of an unexplained cash/debt/equity plug.",
+    "Reject forecast improvement created by later actual results, revised filings or restated classifications leaking into an earlier decision vintage.",
+    "Reject growth paths whose reinvestment/capacity requirements are economically inconsistent with revenue growth.",
+    "Reject margin expansion when it is only a presentation/reclassification effect or lacks identifiable driver support.",
+    "Reject apparent forecast alpha if it disappears after controlling for directly available earnings/consensus/current-fundamental/valuation information.",
+    "Reject promotion when success is concentrated in one industry, one reporting regime or one accounting presentation transition.",
+    "Treat exact three-statement closure as data-quality evidence, not proof that the forecast is accurate or that the stock is mispriced."
+  ],
+  "researchHypotheses": [
+    "H1: Integrated reconciliation may reduce false-positive growth stories by exposing funding, reinvestment and working-capital inconsistencies.",
+    "H2: Forecast-consistency diagnostics may add more value as validation/downside-risk controls than as standalone directional alpha.",
+    "H3: The incremental value should be tested beyond simpler revenue-growth, margin, FCF, leverage and consensus-surprise primitives.",
+    "H4: Accounting-presentation transitions such as IFRS 18 can create false time-series breaks unless presentation vintages are normalized or explicitly marked.",
+    "H5: A forecast that balances mechanically but depends on a large unexplained financing plug should have lower research confidence, not a positive score."
+  ],
+  "taiwanPITReplayPlan": [
+    "Use MOPS/TWSE/FSC-authoritative statement vintages and publication/authorization timestamps where available.",
+    "Replay at least several Taiwan issuers from materially different industries, including capital-intensive and asset-light cases.",
+    "Preserve original statements and later corrections/restatements append-only.",
+    "Record management guidance, external consensus and model-built assumptions as separate provenance lanes.",
+    "Include at least one case crossing a presentation/accounting-policy transition or reclassification boundary."
+  ],
+  "decisionRole": {
+    "primary": "CONTEXT_AND_VALIDATION",
+    "secondary": [
+      "DATA_QUALITY",
+      "FORECAST_COHERENCE"
+    ],
+    "standaloneBuySignal": false
+  },
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "maturityPct": 40,
+    "rationale": "Mechanism, cross-module ownership, PIT/revision semantics, accounting-presentation transition guard, reconciliation invariants and falsification are now explicit. Taiwan issuer historical PIT replay is not yet physically demonstrated, so L3 remains closed."
+  },
+  "l3Gate": [
+    "PIT replay for at least three Taiwan-listed issuers across at least two materially different industries.",
+    "Original financial-statement vintages and knownAt/availableAt evidence.",
+    "Management guidance, consensus and model assumptions separately tagged.",
+    "Append-only later revisions/restatements/actuals with no ex-post rewrite.",
+    "At least one financing/cash circularity or funding-constraint case and one accounting-presentation/reclassification case.",
+    "Demonstrated reconciliation without unexplained balancing plugs."
+  ],
+  "l4Gate": [
+    "Preregistered OOS/prospective shadow forecast evaluation.",
+    "Common-support comparison versus simple revenue/margin/FCF/leverage/consensus baselines.",
+    "Industry/date/reporting-regime clustering controls.",
+    "Forecast-error and missingness accounting with negative results preserved.",
+    "No threshold/window tuning after outcomes."
+  ],
+  "sourceReferences": [
+    {
+      "title": "Taiwan FSC Regulations Governing the Preparation of Financial Reports by Securities Issuers",
+      "url": "https://law.fsc.gov.tw/EngLawContent.aspx?id=1350&lan=E",
+      "use": "Taiwan issuer financial-report scope and FSC-endorsed IFRS/IAS frame."
+    },
+    {
+      "title": "IFRS Foundation — IFRS 18 Presentation and Disclosure in Financial Statements",
+      "url": "https://www.ifrs.org/issued-standards/list-of-standards/ifrs-18-presentation-and-disclosure-in-financial-statements/",
+      "use": "2027 effective date, presentation/subtotal changes and transition risk."
+    },
+    {
+      "title": "Aswath Damodaran — Growth companies: Value drivers",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/littlebook/growthvaluedrivers.htm",
+      "use": "Growth-reinvestment linkage and sales-to-capital framework."
+    },
+    {
+      "title": "Aswath Damodaran — Equity valuation class notes / emails",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/eqUGemail.html",
+      "use": "Revenue growth, operating margins, reinvestment and sales-to-capital as linked forecast/value drivers."
+    }
+  ],
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}

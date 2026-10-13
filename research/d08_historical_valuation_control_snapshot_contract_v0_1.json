@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "D08_HISTORICAL_VALUATION_CONTROL_SNAPSHOT_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "frozenAtAsiaTaipei": "2026-10-08T00:18:00+08:00",
+  "status": "OUTCOME_BLIND_CONTROL_SNAPSHOT_CONTRACT / SOURCE_READINESS_PARTIAL",
+  "objective": "Freeze point-in-time control families, missingness semantics and source dependencies before any historical valuation outcome join.",
+  "prerequisites": [
+    "research/d08_twse_historical_valuation_percentile_materialization_receipt_20261008_v0_1.json PASS",
+    "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json",
+    "research/d08_twse_raw_valuation_r2_capture_receipt_20261007_v0_3.json",
+    "system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json"
+  ],
+  "frozenScanClock": {
+    "count": 44,
+    "startMonth": "2023-01",
+    "endMonth": "2026-08",
+    "scanDateListHash": "e4475abd9fe2ab867bf20e5a8ee2f1a000bdb78365afe6083e6433c2b5abc490"
+  },
+  "rowIdentity": [
+    "scanDate",
+    "market",
+    "symbol",
+    "semanticMembershipHash",
+    "semanticRegistryHash"
+  ],
+  "alwaysRequiredKnownOrExplicitUnknown": [
+    "raw PE/PB state and value",
+    "PE/PB 252/756/1260/expanding percentile state and value",
+    "valuation coverage/missingness signature",
+    "fiscal denominator transition context",
+    "listing date / listing age",
+    "corporate-action / continuity context state",
+    "industry/peer state",
+    "size state",
+    "liquidity state",
+    "price trend / relative-strength state",
+    "market-regime state",
+    "PIT fundamental-state coverage"
+  ],
+  "controlFamilies": {
+    "valuation": {
+      "state": "SOURCE_READY",
+      "source": "D08 percentile + raw V0.3 snapshots",
+      "fields": [
+        "pe",
+        "pb",
+        "pe252Percentile",
+        "pe756Percentile",
+        "pe1260Percentile",
+        "peExpandingPercentile",
+        "pb252Percentile",
+        "pb756Percentile",
+        "pb1260Percentile",
+        "pbExpandingPercentile",
+        "valuationObserved",
+        "peState",
+        "pbState",
+        "fiscalTransitionState"
+      ]
+    },
+    "listingAge": {
+      "state": "SOURCE_READY",
+      "source": "D08 universe V0.2 semantic membership",
+      "rule": "listingAgeSessions/days must use the active membership episode; no current-listing backfill across reused/relisted identities."
+    },
+    "liquidity": {
+      "state": "PARTIAL_SOURCE_READY",
+      "source": "System2 canonical historical A1 packs",
+      "candidateMetrics": [
+        "past-only median tradeValue over frozen lookback",
+        "past-only median volumeShares over frozen lookback",
+        "past-only zero/missing-session coverage"
+      ],
+      "rule": "Only exact PIT-eligible canonical A1 rows may enter; missing symbol-sessions remain explicit UNKNOWN.",
+      "blocker": "Canonical TWSE annual A1 coverage matrix is physically accepted through 2024 but 2025/2026 rows are still PENDING at contract freeze."
+    },
+    "trendAndRelativeStrength": {
+      "state": "DEPENDENCY_BLOCKED",
+      "source": "System2 historical A1 price history plus a continuity-safe price-return layer",
+      "rule": "Do not compute return/trend/RS from RAW prices across unverified corporate-action continuity. Require adjusted/continuity-proven return lineage or mark UNKNOWN.",
+      "blocker": "Historical A1 matrix reports continuityReadiness PARTIAL_UNVERIFIED; raw close series cannot be silently treated as total-return/adjusted history."
+    },
+    "size": {
+      "state": "DEPENDENCY_BLOCKED",
+      "rule": "Historical market capitalization requires PIT shares-in-issue/capitalization or an equivalent licensed official historical source.",
+      "blocker": "Do not multiply current shares outstanding by historical price. Public canonical A1 price-volume rows do not contain historical shares in issue. TWSE index-constituent files with shares/market cap are subscription data and are not assumed licensed."
+    },
+    "industryPeer": {
+      "state": "DEPENDENCY_BLOCKED_OR_UNKNOWN",
+      "owner": "D09 point-in-time industry/peer classification",
+      "rule": "Current industry classification cannot backfill historical peer membership. If no PIT classification vintage exists for scanDate, state=UNKNOWN."
+    },
+    "marketRegime": {
+      "state": "DEPENDENCY_REQUIRED",
+      "owner": "D04/D09 market-regime and breadth/relative-strength lanes",
+      "rule": "Use only a frozen PIT market-regime receipt valid at scanDate. Do not rebuild regime after observing valuation outcomes."
+    },
+    "fundamentalState": {
+      "state": "DEPENDENCY_BLOCKED_OR_UNKNOWN",
+      "owner": "D07 PIT financial/fundamental lanes",
+      "candidateFields": [
+        "revenue growth state",
+        "EPS/earnings state",
+        "profitability/ROE/ROIC state",
+        "leverage/quality state"
+      ],
+      "rule": "Only financial information known by scanDate is eligible. Later filings/actuals/revisions cannot backfill."
+    },
+    "corporateActionContext": {
+      "state": "PARTIAL_DEPENDENCY",
+      "owner": "D03 lifecycle/corporate-action normalization plus System2 historical continuity evidence",
+      "rule": "Corporate-action state is a control/context tag. Unknown lifecycle evidence remains UNKNOWN and cannot be treated as no action."
+    }
+  },
+  "historicalA1ReadinessAtFreeze": {
+    "matrixPath": "system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json",
+    "matrixUpdatedAt": "2026-10-07T11:55:29+08:00",
+    "twse": {
+      "2022": "PASS_DATA_PARTIAL_REPLAY",
+      "2023": "PASS_DATA_PARTIAL_REPLAY",
+      "2024": "PASS_DATA_PARTIAL_REPLAY",
+      "2025": "PENDING",
+      "2026": "PENDING"
+    },
+    "interpretation": "2022-2024 supplies a verified raw price-volume basis for early scan dates, but 2025-2026 control materialization must not bypass the DATA_LANE canonical backfill. Continuity-dependent return controls remain blocked even where raw data coverage passes."
+  },
+  "missingnessPolicy": {
+    "unknownIsNotZero": true,
+    "noSilentRowDrop": true,
+    "memberAccounting": "Every valuation cohort member remains exactly one control row per scanDate.",
+    "dependencyFailure": "Emit explicit UNKNOWN state + reason code + source/readiness receipt reference.",
+    "commonSupport": "Every later outcome estimand must freeze and report its required-control common-support denominator before reading returns."
+  },
+  "admissibleControlSnapshotStates": [
+    "KNOWN",
+    "UNKNOWN_SOURCE_PENDING",
+    "UNKNOWN_PIT_VINTAGE",
+    "UNKNOWN_CONTINUITY",
+    "UNKNOWN_LICENSING",
+    "UNKNOWN_NOT_APPLICABLE"
+  ],
+  "preOutcomeGates": [
+    "44 scan dates have one control row for every frozen valuation cohort member",
+    "control coverage/missingness receipt is frozen and immutable",
+    "source/version hashes are pinned",
+    "2025/2026 canonical historical price-volume dependency is resolved or affected controls remain explicitly UNKNOWN",
+    "return-based trend/RS controls have continuity-safe lineage or remain explicitly UNKNOWN",
+    "historical size is never synthesized from current share count",
+    "PIT industry/fundamental/regime dependencies are either frozen or explicitly UNKNOWN",
+    "common-support rules for confirmatory tests are frozen before outcomes"
+  ],
+  "outcomeGate": "CLOSED",
+  "exactNextContinuationPoint": "Wait for canonical 2025/2026 TWSE historical A1 completion from DATA_LANE, then implement a 44-date control materializer that consumes canonical packs and explicit upstream dependency receipts; do not duplicate DATA_LANE backfill.",
+  "formalCoreChanged": false,
+  "selectionAuthority": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
