@@ -23,7 +23,7 @@ jobs:
           node-version: '22'
       - name: Adversarial acceptance conditions (must not infer Formal or brokerage position from config)
         run: node tests/test_v8_intraday_monitor_acceptance_readonly.mjs
-      - name: Original V8 five authenticated GET readbacks only; no plan, trade, 3Min, push
+      - name: Seven authenticated GET readbacks including D1 and KV source evidence; no plan, trade, 3Min, push
         run: node ops/v8_intraday_monitor_acceptance_readonly.mjs
       - uses: actions/upload-artifact@v4
         if: always()
