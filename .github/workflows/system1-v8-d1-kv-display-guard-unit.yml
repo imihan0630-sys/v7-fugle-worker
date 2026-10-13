@@ -1,0 +1,29 @@
+name: System1 V8 D1-KV Display Guard Unit
+on:
+  push:
+    paths:
+      - "Worker.js"
+      - "system1/runtime/live_snapshot_read_model_v0_1.mjs"
+      - "system1/tests/live_snapshot_read_model_v0_1.test.mjs"
+      - ".github/workflows/system1-v8-d1-kv-display-guard-unit.yml"
+  pull_request:
+    paths:
+      - "Worker.js"
+      - "system1/runtime/live_snapshot_read_model_v0_1.mjs"
+      - "system1/tests/live_snapshot_read_model_v0_1.test.mjs"
+      - ".github/workflows/system1-v8-d1-kv-display-guard-unit.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run pure read-model safeguards (no credentials)
+        run: node system1/tests/live_snapshot_read_model_v0_1.test.mjs
+      - name: Check guarded Worker ESM syntax
+        run: node --check Worker.js
