@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "S2_A1_20261013_DUAL_MARKET_REAL_CLOSE_PRELIMINARY_V0_1",
+  "tradingDate": "2026-10-13",
+  "checkedDateTaipei": "2026-10-13",
+  "result": "INCOMPLETE_OFFICIAL_DAILY_SOURCE__TWSE_AVAILABLE_TPEX_UNVERIFIED",
+  "classification": "READ_ONLY_SOURCE_OBSERVATION_ONLY_NOT_61_SESSION_SOURCE_ADMISSION",
+  "sourceRun": {
+    "githubRunId": 38374912180,
+    "githubJobId": 115220757837,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38374912180",
+    "state": "failure",
+    "reason": "TPEX_NOT_READY_OR_PARSE_FAILED",
+    "originalEvidenceArtifactId": 11799899926,
+    "originalEvidenceArtifactSha256": "1160fa360f84a38d59c6058a2796f9ac82cf38eab4dac6d63185ba689aacde2f",
+    "artifactRetentionDays": 7
+  },
+  "twse": {
+    "market": "TWSE",
+    "endpoint": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20261013&type=ALLBUT0999",
+    "requestedDate": "2026-10-13",
+    "providerReportedDate": "2026-10-13",
+    "httpStatus": 200,
+    "ordinarySymbolCount": 1087,
+    "firstObservedRawAtUtc": "2026-10-13T09:14:50.932Z",
+    "originalJsonBytes": 249246,
+    "originalGzipBytes": 71084,
+    "originalResponseSha256": "700a1a5927999976569bccad6c2119058a32668a52c6d41ab6a547ff5f8b06a3",
+    "state": "OFFICIAL_EXACT_DATE_A1_CLOSE_OBSERVED_PIT_UNAUDITED"
+  },
+  "tpex": {
+    "market": "TPEX",
+    "endpoint": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2026%2F10%2F13",
+    "requestedDate": "2026-10-13",
+    "state": "NOT_READY",
+    "reasonCode": "OFFICIAL_SOURCE_NOT_READY_OR_PARSE_FAILED",
+    "httpStatus": null,
+    "rawSha256": null,
+    "ordinarySymbolCount": null,
+    "provenance": "The actual capped GitHub runner read did not complete a verified response. May be transport timeout or unavailable/invalid provider response; do not infer no trading/no publication."
+  },
+  "noPromotion": {
+    "official61MarketDatePairsAccepted": null,
+    "requiredOfficialMarketDatePairs": 122,
+    "complete61SessionHistory": false,
+    "independentPITCertified": false,
+    "corporateActionContinuityCertified": false,
+    "selectionPerformed": false,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "durableFrozenDecisionsWritten": 0,
+    "system1FormalRuntimeTouched": false,
+    "cloudflareD1Operations": 0,
+    "paidResourceUsed": false,
+    "reason": "Missing one official market means a same-date complete-market Shadow claim is forbidden."
+  },
+  "next": "Existing shared official incremental collector runs 00:15 Taipei 2026-10-14 against exact latest closed session with validated provider date. Reuse source hashes, retry only missing market-date pairs, then independent 122/122 readback, PIT/continuity, assessment and Frozen. GitHub cron may be delayed."
+}
