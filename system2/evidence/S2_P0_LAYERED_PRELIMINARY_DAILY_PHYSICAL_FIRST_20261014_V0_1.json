@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "S2_P0_LAYERED_PRELIMINARY_DAILY_PHYSICAL_FIRST_20261014_V0_1",
+  "classification": "REAL_OFFICIAL_A1_122_SOURCE_PRELIMINARY_RESEARCH_WATCH_NOT_FORMAL_SELECTED",
+  "architectureAuthorization": "OWNER_APPROVED_2026_10_14_LAYERED_PRELIMINARY_SHADOW_BACKTEST",
+  "mainPRs": [
+    1211,
+    1212,
+    1213
+  ],
+  "codePolicies": {
+    "researchLane": "PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_1",
+    "studyPitGate": "S2_BACKTEST_PIT_SCOPE_GATE_V0_1",
+    "existingFormalAssessorUnchanged": "SHORT_MOMENTUM_V0_1_CONTRACT"
+  },
+  "primaryPhysicalRun": {
+    "id": 38475579042,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38475579042",
+    "jobId": 115565312821,
+    "conclusion": "success",
+    "originalDailyMarketDate": "2026-10-13",
+    "trueObservationAtUtc": "2026-10-13T22:07:37.563Z",
+    "trueObservationAtTaipei": "2026-10-14T06:07:37+08:00",
+    "sourceMarketDatePairsVerified": 122,
+    "sourceRun": 38468816687,
+    "signedAuditProviderRun": 38469057567,
+    "observedOfficialUniverse": 1974,
+    "full61BarResearchUsable": 1714,
+    "withheldInsufficientHistory": 253,
+    "suspiciousRawDiscontinuityQuarantined": 7,
+    "researchPreliminaryMatched": 582,
+    "displayCap": 30,
+    "displayedCount": 30,
+    "preliminaryReceiptHash": "1737aff8c69b22dc1f177907a6cba9df97d944f2c347b68e19685df73bcf8b61",
+    "sourceOnlyStrictStage1State": "BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER",
+    "strictBlocker": "SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW",
+    "formalDecisionSnapshotWritten": false,
+    "formalSelectedCount": null,
+    "certifiedZeroPickDay": null,
+    "backtestPerformanceCertificationAuthorized": false,
+    "auditArtifact": {
+      "id": 11853043938,
+      "digest": "sha256:156e6bbc0f1dd041f6bc4e2104f985a7dac9af14084b02757ecd7af3d9ae78b2",
+      "contains": "derived_watchlist_30_and_hash_only",
+      "publicOriginalMarketData": false,
+      "retentionDays": 7
+    }
+  },
+  "strategyRiskBoundary": {
+    "everyDisplayedSymbolCompanyActionPIT": "UNKNOWN_NOT_CLEARED",
+    "falseNoActionPromotion": false,
+    "marketRegimeNotCertified": true,
+    "noFormalEntryStopTargetOrRank": true,
+    "noHistoricalBacktestPerformanceCertified": true,
+    "noSystem1FormalCoreChange": true,
+    "noCloudflareD1R2Writers": true,
+    "noBrokerOrdersOrPush": true,
+    "noPaidServicesOrSecrets": true,
+    "scoreWeightsOrExistingFormalStrategiesModified": false
+  },
+  "followingPriority": "Preserve true daily source-only candidate lineage prospectively, query individual current-time corporate-action risk for initial watchlist, certify only individually eligible Shadow decisions and separately PIT-qualified historical backtest slices"
+}
