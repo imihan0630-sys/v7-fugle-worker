@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "S2_P0_FIRST_REAL_LAYERED_DAILY_PRELIMINARY_WATCH_20261014_V0_1",
+  "evidenceClass": "PHYSICAL_REAL_SOURCE_AS_OF_NOW_PRELIMINARY_WATCH_ONLY",
+  "ownerIssue": 1132,
+  "repo": "imihan0630-sys/v7-fugle-worker",
+  "marketDate": "2026-10-13",
+  "observationDateTaipei": "2026-10-14",
+  "proofWorkflowRunId": 38475579042,
+  "proofJobId": 115565312821,
+  "proofUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38475579042",
+  "physicalConclusions": {
+    "run": "success",
+    "independentOriginalAudit": "ACCEPTED_SOURCE_INTEGRITY_ONLY",
+    "preliminary": "PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION",
+    "strictStage1": "BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER",
+    "dailyReadiness": "BLOCKED_SOURCE_NOT_SELECTION"
+  },
+  "marketData": {
+    "sourceRunId": 38468816687,
+    "sourceDate": "2026-10-13",
+    "originalOfficialPairs": 122,
+    "requiredOfficialPairs": 122,
+    "sourceReusePairs": 122,
+    "market": [
+      "TWSE",
+      "TPEX"
+    ],
+    "officialCalendarSessions": 61,
+    "sourceOrdinaryUniverse": 1974,
+    "validRawHistoryObservationSymbols": 1714,
+    "withheldInsufficientHistorySymbols": 253,
+    "quarantinedRawCloseDiscontinuitySymbols": 7,
+    "reconcilesUniverse": true
+  },
+  "preliminary": {
+    "observationCutoffUtc": "2026-10-13T22:07:37.563Z",
+    "observationLocalTime": "2026-10-14 06:07:37 Asia/Taipei",
+    "realSourcePreliminaryMatches": 582,
+    "maxDisplayed": 30,
+    "receiptSha256": "1737aff8c69b22dc1f177907a6cba9df97d944f2c347b68e19685df73bcf8b61",
+    "strategy": null,
+    "formalStrategyVersion": null,
+    "displaySort": "RECENT_5_SESSION_RAW_RETURN_DESC_ONLY_NOT_FORMAL_SCORE",
+    "rawCloseGreaterThanSma20": true,
+    "rawFiveSessionReturnPositive": true,
+    "requiresPositiveTradeVolumeAndValue": true,
+    "companyActionStatus": "UNKNOWN_NOT_CLEARED",
+    "marketRegimeStatus": "UNCERTIFIED",
+    "namesAndSymbols": "In original private-context derived seven-day GitHub Action Artifact; not serialized again into public repository evidence",
+    "dataScope": "CURRENT_REAL_OBSERVATION_ONLY_NOT_HISTORIC_PIT_REPLAY"
+  },
+  "blocked": {
+    "strictStage1Reason": "SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW",
+    "strictStage1SummaryHash": "690dd28eab131ce818df63521fc702a9865695843c16c9bd405c7cf2fafe4612",
+    "strictDailyReadinessHash": "df8dda91d60ebd164ae68684ca7ab734f3218d45cc597cef5edbab458604ceba",
+    "officialShadowSelectedCount": null,
+    "zeroPickDay": null,
+    "frozenWritten": false,
+    "tradeEnabled": false,
+    "pushEnabled": false,
+    "historicalBacktestPerformanceCertified": false,
+    "originalCorrectionCancellationPITCertified": false,
+    "formalStrategyRankAssigned": false
+  },
+  "artifact": {
+    "id": 11853043938,
+    "name": "system2-actual-morning-preliminary-38475579042",
+    "digest": "sha256:156e6bbc0f1dd041f6bc4e2104f985a7dac9af14084b02757ecd7af3d9ae78b2",
+    "sizeBytes": 3357,
+    "retentionDays": 7,
+    "rawOriginalOfficialDataPublished": false
+  },
+  "governance": {
+    "authorizedClass": "SYSTEM2_RESEARCH_ONLY_LAYERED_OWNER_APPROVED",
+    "policyFile": "system2/SYSTEM2_LAYERED_DAILY_PRELIMINARY_PIT_BACKTEST_V0_1.md",
+    "implementationPR": 1211,
+    "lateSchedulePR": 1212,
+    "physicalWitnessPR": 1213,
+    "positiveActualSource": true,
+    "noRetroactiveFrozen": true,
+    "system1V8FormalTouched": false,
+    "cloudflareD1R2Writes": 0,
+    "newRecurringCron": false,
+    "newBillablePlans": false,
+    "newSecrets": false
+  },
+  "nextActions": [
+    "Separate source-time preliminary technical observations from formal Shadow every trading day",
+    "Capture market regime, CA/PIT per-symbol necessary official evidence before formal Shadow",
+    "Independently certify final rank/capacity and immutable D1 Frozen before true selected",
+    "Keep backtest diagnostic-only where historical versions incomplete",
+    "Retire one-shot after sealing evidence; leave 00:15 scheduled reader intact"
+  ]
+}
