@@ -1,0 +1,103 @@
+name: System2 20261014 Official Preliminary V02 TDR Quarantine ONE SHOT
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/system2-20261014-tdr-v02-physical-once.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify_tdr_screen:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reverify ordinary-universe anti-promotion and V02 tests
+        run: |
+          set -euo pipefail
+          node --test system2/tests/preliminary_daily_pv_watch_v0_1.test.mjs
+          node --test system2/tests/backtest_pit_scope_gate_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Reuse exact actual Oct13 official 122-pair market source evidence
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38468816687
+          name: s2-shared-official-a1-38468816687
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Reuse independently source-accepted audit from prior physical run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38469057567
+          name: system2-shared-official-a1-independent-audit-38469057567
+          path: /tmp/s2-original-source-audit
+          github-token: ${{ github.token }}
+      - name: Resolve one genuine independent SHA audit receipt
+        run: |
+          set -euo pipefail
+          test "$(find /tmp/s2-original-source-audit -type f -name audit-receipt.json | wc -l)" -eq 1
+          FILE="$(find /tmp/s2-original-source-audit -type f -name audit-receipt.json -print -quit)"
+          test -s "$FILE"
+          echo "S2_A1_AUDIT_RECEIPT_FILE=$FILE" >> "$GITHUB_ENV"
+      - name: Recompute actual observation through versioned preliminary V02
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
+      - name: Enforce market source, clock, stock-type quarantine and no promotion
+        run: |
+          set -euo pipefail
+          P=/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
+          S=/tmp/s2-a1-stage1-readonly/summary.json
+          test -s "$P"; test -s "$S"
+          test "$(jq -r .marketDate "$P")" = '2026-10-13'
+          test "$(jq -r .lateMorningObservationNotBackdated "$P")" = 'true'
+          test "$(jq -r .state "$P")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'
+          test "$(jq -r .watchVersion "$P")" = 'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2'
+          test "$(jq -r .schemaVersion "$P")" = 'S2_PRELIMINARY_PV_WATCH_V0_2'
+          test "$(jq -r .officialUniverseCount "$P")" = '1974'
+          test "$(jq -r .ordinaryEquityOnlyUniverseCertified "$P")" = 'false'
+          test "$(jq -r .depositaryReceiptQuarantinedCount "$P")" -ge 1
+          test "$(jq -r .preliminaryMatchedCount "$P")" -gt 0
+          test "$(jq -r .displayedCount "$P")" -le 30
+          test "$(jq -r .selectedCount "$P")" = 'null'
+          test "$(jq -r .zeroPickDay "$P")" = 'null'
+          test "$(jq -r .historicalBacktestCertified "$P")" = 'false'
+          test "$(jq -r .finalSelectionAuthorized "$P")" = 'false'
+          test "$(jq -r .frozenWritten "$P")" = 'false'
+          test "$(jq -r .state "$S")" = 'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'
+          test "$(jq -r .frozenDecisionWritten "$S")" = 'false'
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const x=JSON.parse(fs.readFileSync('/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json','utf8'));
+          const tally=x.depositaryReceiptQuarantinedCount+x.historyContinuityUsableCount+
+            x.withheldHistoryCount+x.anomalyQuarantinedCount;
+          if(tally!==1974)throw Error('FOUR_DIGIT_SOURCE_DENOMINATOR_NOT_RECONCILED');
+          for(const r of x.watchlist){
+            if(/[-\u2010\u2011\u2012\u2013\u2014]\s*DR$/i.test(String(r.companyName||'').normalize('NFKC')))
+              throw Error('NONORDINARY_TDR_IN_RESEARCH_LIST');
+            if(r.instrumentClassPITStatus!=='ORDINARY_EQUITY_CLASS_NOT_INDEPENDENTLY_ATTESTED'||
+               r.strategyRank!==null||r.triggerPrice!==null||r.stop!==null)
+              throw Error('FORMAL_STRATEGY_OR_CLASS_PROMOTION_LEAK');
+          }
+          console.log(JSON.stringify({state:x.state,marketDate:x.marketDate,
+            ordinaryOnlyCertified:false,fourDigitSourceCount:x.officialUniverseCount,
+            tdrQuarantined:x.depositaryReceiptQuarantinedCount,
+            usable:x.historyContinuityUsableCount,withheld:x.withheldHistoryCount,
+            anomalous:x.anomalyQuarantinedCount,matched:x.preliminaryMatchedCount,
+            displayed:x.displayedCount,receiptHash:x.receiptHash,
+            frozen:false,selectedCount:null}));
+          NODE
+      - name: Preserve only V02 derived preliminary status, never raw original
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-v02-tdr-filtered-observation-${{ github.run_id }}
+          path: /tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
+          retention-days: 7
+          if-no-files-found: warn
