@@ -25,6 +25,16 @@ jobs:
           node-version: '22'
       - name: Test pure display read model (no credentials)
         run: node system1/tests/live_snapshot_read_model_v0_1.test.mjs
+      - name: Verify immutable P0 source audit schema and safe rollback verifier syntax
+        run: |
+          set -euo pipefail
+          grep -F -q 'SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2' scripts/apply_v8_system1_live_display_guard_reviewonly.py
+          grep -F -q 'SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2' ops/system1_v8_live_p0_verify_deployment_once.mjs
+          grep -F -q 'S1_P0_ROLLBACK_PROVIDER_VERSION_VERIFIED' ops/system1_v8_live_p0_verify_rollback_once.mjs
+          grep -F -q 'node ops/system1_v8_live_p0_verify_rollback_once.mjs' .github/workflows/system1-v8-live-p0-controlled-deploy-once.yml
+          node --check ops/system1_v8_live_p0_verify_deployment_once.mjs
+          node --check ops/system1_v8_live_p0_verify_rollback_once.mjs
+
       - name: Rebuild guarded V8 in offline scratch and apply review-only overlay
         run: |
           set -euo pipefail
