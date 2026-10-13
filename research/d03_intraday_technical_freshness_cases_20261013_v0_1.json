@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "D03_INTRADAY_TECHNICAL_FRESHNESS_CASES_20261013_V0_1",
+  "maturityPct": 56.7,
+  "formalCoreImpact": "NONE_LOCKED",
+  "cases": [
+    {"id":"IF-01","input":{"planDayMatch":false},"expected":"STALE_PLAN"},
+    {"id":"IF-02","input":{"planDayMatch":true,"cronSuccess":false},"expected":"CRON_UNVERIFIED"},
+    {"id":"IF-03","input":{"planDayMatch":true,"cronSuccess":true,"calendarDayMatch":true,"perSymbolCoverage":false},"expected":"PARTIAL_SYMBOL_COVERAGE"},
+    {"id":"IF-04","input":{"planDayMatch":true,"cronSuccess":true,"calendarDayMatch":true,"perSymbolCoverage":true,"quoteAgeSec":301,"maxQuoteAgeSec":90},"expected":"STALE_QUOTE"},
+    {"id":"IF-05","input":{"perSymbolCoverage":true,"quoteAgeSec":30,"maxQuoteAgeSec":90,"barComplete":false},"expected":"INCOMPLETE_BAR"},
+    {"id":"IF-06","input":{"barComplete":true,"barEndAfterDecision":true},"expected":"LOOK_AHEAD_BAR"},
+    {"id":"IF-07","input":{"barComplete":true,"barEndAfterDecision":false,"fieldsComplete":false},"expected":"FIELD_MISSING_UNKNOWN"},
+    {"id":"IF-08","input":{"fieldsComplete":true,"warmupComplete":false},"expected":"WARMUP_BLOCKED"},
+    {"id":"IF-09","input":{"warmupComplete":true,"continuityReady":false},"expected":"CONTINUITY_BLOCKED"},
+    {"id":"IF-10","input":{"continuityReady":true,"corporateActionResolved":false},"expected":"CORPORATE_ACTION_BLOCKED"},
+    {"id":"IF-11","input":{"corporateActionResolved":true,"marketSessionValid":false},"expected":"NONSESSION_BLOCKED"},
+    {"id":"IF-12","input":{"calendarDayMatch":true,"quoteAgeSec":null},"expected":"AGE_UNKNOWN"},
+    {"id":"IF-13","input":{"symbolSetExact":false},"expected":"SYMBOL_SET_MISMATCH"},
+    {"id":"IF-14","input":{"duplicateSymbols":true},"expected":"DUPLICATE_SYMBOL"},
+    {"id":"IF-15","input":{"futureTimestamp":true},"expected":"FUTURE_CLOCK_REJECT"},
+    {"id":"IF-16","input":{"allInputGates":true,"oosDates":0},"expected":"NO_OOS_CREDIT"},
+    {"id":"IF-17","input":{"allInputGates":true,"walkForwardDates":0},"expected":"NO_WALK_FORWARD_CREDIT"},
+    {"id":"IF-18","input":{"allInputGates":true,"costEvidence":false},"expected":"COST_UNKNOWN"},
+    {"id":"IF-19","input":{"allInputGates":true,"alphaEvidence":false},"expected":"NO_ALPHA_CLAIM"},
+    {"id":"IF-20","input":{"allInputGates":true,"formalApproval":false},"expected":"RESEARCH_ONLY"}
+  ]
+}
