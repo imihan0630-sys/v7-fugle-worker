@@ -28,7 +28,7 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
  await mkdir(resolve(outputDir,'original-json'),{recursive:true});
  // Date shift may change the 61-session window. Load and independently
  // verify only the current window's previous original public bytes.
- let seed=null,calendarResolver,transport=fetchImpl||globalThis.fetch;
+ let seed=null,activeCalendarResolver=calendarResolver,transport=fetchImpl||globalThis.fetch;
  if(Boolean(seedEvidenceFile)!==Boolean(seedOriginalDir))
   throw Error('SEED_ORIGINAL_EVIDENCE_AND_DIRECTORY_MUST_BOTH_BE_PROVIDED');
  if(seedEvidenceFile){
@@ -43,11 +43,11 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
     neededTradingDates:calendar.tradingDates.slice(-61),now:now||(()=>new Date())
   });
   transport=createSourceCacheFetchV0_1(seed,transport);
-  calendarResolver=async()=>calendar;
+  activeCalendarResolver=async()=>calendar;
  }
  const originals=[];
  const out=await captureOfficial61SessionWindowV0_1({
-  marketDate,fetchImpl:transport,calendarResolver,historicalFetch,now,pauseMs,
+  marketDate,fetchImpl:transport,calendarResolver:activeCalendarResolver,historicalFetch,now,pauseMs,
   cachedOriginalsByUrl:seed?.storedOriginals||null,
   persistOriginal:async({market,date,raw,sha256,observedAt})=>{
     if(!['TWSE','TPEX'].includes(market)||!/^\d{4}-\d\d-\d\d$/.test(date))
