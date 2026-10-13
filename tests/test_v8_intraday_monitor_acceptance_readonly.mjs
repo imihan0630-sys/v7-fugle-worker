@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {evaluateMonitorReadback,evaluateStorageReadback} from "../ops/v8_intraday_monitor_acceptance_readonly.mjs";
+import {evaluateMonitorReadback,evaluateStorageReadback,evaluateQuoteProducerReadback} from "../ops/v8_intraday_monitor_acceptance_readonly.mjs";
 
 const day="2026-10-13";
 const config={source:"KV",updatedAt:"2026-10-12T22:51:05Z",totalCapital:200000,
@@ -119,6 +119,39 @@ check(evaluateStorageReadback({sources:storageAideen,config,
  aideen:{stocks:[{symbol:"6213",strategyPool:"AIDEEN_APP"}]},day,now:storageNow,
  live:{displaySource:"D1_PRIMARY",displayDegraded:false}}).ok===true,
  "Formal+Aideen readback accepts real pool identities");
+
+const producerNow="2026-10-13T01:05:00Z";
+const quoteRow=(symbol="6226",at="2026-10-13T01:04:20Z",pool="FORMAL")=>({
+ ok:true,symbol,plan:{strategyPool:pool},quote:{lastUpdated:Date.parse(at)*1000,isTrial:false},
+ executionData:{quoteFresh:true}
+});
+const quoteAudit=(rows,clock=producerNow)=>evaluateQuoteProducerReadback({
+ live:{results:rows},day,now:clock
+});
+check(quoteAudit([quoteRow(),quoteRow("6213","2026-10-13T01:04:10Z","AIDEEN_APP")]).ok,
+ "two distinct fresh Formal and Aideen microsecond producer clocks PASS");
+check(quoteAudit([quoteRow("6226","2026-10-13T00:45:00Z")]).state==="QUOTE_PROVIDER_FRESHNESS_INCOMPLETE",
+ "new snapshot with old vendor producer timestamp must FAIL");
+check(!quoteAudit([{...quoteRow(),executionData:{quoteFresh:false}}]).ok,
+ "vendor microsecond now cannot override production false quoteFresh gate");
+check(!quoteAudit([{...quoteRow(),quote:{lastUpdated:Date.parse("2026-10-13T01:04:20Z"),isTrial:false}}]).ok,
+ "vendor milliseconds must not masquerade as microseconds");
+check(!quoteAudit([quoteRow("6226","2026-10-12T01:04:20Z")]).ok,
+ "previous trading day quote fails");
+check(!quoteAudit([quoteRow("6226","2026-10-13T01:07:00Z")]).ok,
+ "future quote timestamp beyond clock skew fails");
+check(!quoteAudit([{...quoteRow(),quote:{...quoteRow().quote,isTrial:true}}]).ok,
+ "trial quote must not qualify as genuine producer freshness");
+check(!quoteAudit([{...quoteRow(),ok:false}]).ok,
+ "a failed stock analysis must not qualify as a good quote");
+check(!quoteAudit([]).ok&&quoteAudit([]).state==="QUOTE_ROWS_MISSING",
+ "empty monitor result cannot be quote healthy");
+const partial=quoteAudit([quoteRow(),quoteRow("6213","2026-10-13T00:45:00Z","AIDEEN_APP")]);
+check(partial.quoteFreshCount===1&&partial.quoteStaleCount===1&&
+ partial.affectedStocks.includes("AIDEEN_APP:6213"),
+ "partial multi-pool provider outage identified by affected ticker without false full PASS");
+check(quoteAudit([quoteRow()]).inspected[0].quoteAgeSeconds===40,
+ "record true quote age from exchange producer timestamp");
 console.log(JSON.stringify({ok:true,testCases:checked,
   detection:"cron+live+signal age bounded to 5min, Taipei session-aware",
   noProductionMutation:true,formalNeverInferred:true,noBrokerageAssumption:true}));
