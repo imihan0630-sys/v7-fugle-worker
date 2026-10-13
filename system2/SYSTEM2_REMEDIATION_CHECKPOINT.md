@@ -288,3 +288,14 @@ Read-back main base: `793bf6fa5f4474a4879fbcb6e04ec686b0a946bb`. **REMEDIATION_L
 **Current authoritative counts remain unchanged:** A1–A7 source-only independent PASS; 15/38 supporting observations, **0/5 physical gates accepted**; original 19/19 mapped, HIGH/VERIFYING; P05 0/36 + 0/11,843 Hot D1, missing UNKNOWN. No D1 SQL, R2, System1 Formal/runtime, bills, schedules or pushes touched by remediation.
 
 **Next receiving lanes:** System1 #1024 for genuine 10/12 normal 23:35/conditional 23:55 per-run read/write attribution and later business D1 readback; DATA #1026 for real authenticated ledger / P03 multiwriter / P05 cautious samples only after independent qualified reserves and budget; AUDIT_LANE solely accepts final physical gates. Do not self-close or dispatch physical work.
+
+## 2026-10-11 Taipei — Issue #1024 migration-safe native receipt recheck
+
+Baseline main `ce39441dd2db1adb552dd76d2f0ea4b8220f1d4e`; Class A documentation only.
+Durable producer handoff: `research/SYSTEM1_ISSUE1024_READONLY_HANDOFF_20261011.md`;
+machine receipt: `research/SYSTEM1_ISSUE1024_NATIVE_RECHECK_20261011_V0_1.json`;
+original GitHub REST metadata snapshots: `research/issue1024-native-recheck-20261011/`.
+
+12 Run / 12 Job / 11 Artifact-list responses, 8 original artifact digest records; recent Actions listing 266 distinct runs across 3 pages. ZIP/raw business log replay incomplete (API 401, browser download timeout/Job rendering error, supplemental API 403 rate limit). Historical costs are pinned-main inherited contents plus rechecked native provenance, not newly measured costs. Account whole day vs V7_DB whole day vs 23:35/23:55 per-operation costs remain separate; 09/21 and 09/22 account totals and 10/08 daily usage UNKNOWN in this intake. KV config/plan/report and D1 cron/lease require original same-generation Formal C1 lineage; an old plan or lease is insufficient.
+
+P01 support 3/7, P02 3/7, P04 2/7 (8/21); physical 0/3, CORR-003 0/5, HIGH/VERIFYING. Both reserve authorizations false, numeric candidates/authorized rows null. No independent acceptance or correction closure is claimed. Next: after natural 2026-10-12 23:35 Taipei and conditional 23:55 if invoked, original authenticated per-operation costs, six-role matching readback and fresh account-wide UTC-day ledger/no-collision; D1 SQL requires qualified read headroom. REMEDIATION receives; AUDIT alone accepts. Zero Cloudflare/D1/R2/scan/dispatch/deploy operations by this review.
