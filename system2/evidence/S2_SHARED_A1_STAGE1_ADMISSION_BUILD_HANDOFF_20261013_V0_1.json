@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "S2_SHARED_A1_STAGE1_ADMISSION_BUILD_HANDOFF_V0_1",
+  "recordedDateTaipei": "2026-10-13",
+  "lane": "BUILD_LANE",
+  "classification": "OFFLINE_RESEARCH_INPUT_ADMISSION_ONLY",
+  "baseMainCommit": "faa40eefc276079960532122e928e44cf2161cfb",
+  "authoritativeIssues": [
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1128",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1132"
+  ],
+  "authoritativeMergedInputs": [
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1175",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1176",
+    "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1177"
+  ],
+  "implemented": [
+    "hash and denominator verification for the 122-pair shared manifest and source receipt",
+    "exact source blob to per-symbol 61-session lineage reconciliation",
+    "separate source-integrity-only audit receipt contract that cannot claim strategy PIT or selection authority",
+    "hash/date verification for the current prospective A1 ledger",
+    "adapter into the existing frozen SHORT_MOMENTUM Stage1 evaluator",
+    "hard null selection and zero-pick outputs with zero D1/R2 operations"
+  ],
+  "focusedVerification": {
+    "newAdmissionCasesPassed": 8,
+    "relatedExistingCasesPassed": 29,
+    "totalPassed": 37,
+    "failed": 0,
+    "crossPlatformExistingTestRepair": "path comparison only; no source or strategy semantic change"
+  },
+  "latestPhysicalSourceState": {
+    "artifactPairsVerified": 121,
+    "artifactPairsExpected": 122,
+    "distinctTradingDates": 61,
+    "completeSymbolWindows": 1068,
+    "compressedBytes": 25039760,
+    "rawBytes": 112864418,
+    "missingPair": "TPEX|2026-07-15",
+    "state": "INCOMPLETE_SOURCE_CAPTURE_PIT_UNAUDITED",
+    "selectionPerformed": false
+  },
+  "notCompleted": [
+    "a real 122/122 current-window artifact and independent audit receipt",
+    "full-universe corporate-action continuity receipts",
+    "final ranking and capacity",
+    "create-only durable frozen decision persistence and readback",
+    "outcome and performance acceptance",
+    "private long-term original-data archive destination and scoped writer approval",
+    "D1 migration completion or Worker/Cron cutover"
+  ],
+  "acceptanceImpact": {
+    "shadowS0ThroughS5Accepted": "0/6",
+    "canonical15GateAccepted": "22/75",
+    "fullyAcceptedGates": "0/15",
+    "physicalAcceptanceAdvanced": false
+  },
+  "safety": {
+    "system1FormalCoreTouched": false,
+    "productionRuntimeTouched": false,
+    "cloudflareD1Reads": 0,
+    "cloudflareD1Writes": 0,
+    "r2Operations": 0,
+    "paidPlanAdded": false,
+    "newSecretsOrPermissionsAdded": false,
+    "ordersOrPushEnabled": false
+  }
+}

@@ -829,3 +829,18 @@ Next exact BUILD_LANE continuation:
 3. do not freeze a complete expected MOPS keyset until both provenance stability and source semantics pass;
 4. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 5. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity promotion.
+
+## 2026-10-13 shared official A1 Stage1 research admission boundary
+
+System2 now has a pure offline admission bridge from the shared official 61-session
+TWSE/TPEx A1 artifact into the frozen SHORT_MOMENTUM Stage1 evaluator. The bridge
+requires an exact 122/122 hash-valid source receipt and manifest, an independently
+produced source-integrity audit, a same-date hash-valid prospective ledger and
+per-symbol corporate-action continuity. It cannot create audit authority, rank or
+select stocks, certify a zero-pick day, persist frozen decisions, access D1/R2, or
+alter System1 Formal/runtime behavior.
+
+Current physical data is still 121/122 and therefore rejected. A later 122/122
+capture remains `PIT_UNAUDITED` until separate readback and continuity evidence
+arrive. See `system2/SYSTEM2_SHARED_A1_STAGE1_ADMISSION_V0_1.md` and
+`system2/evidence/S2_SHARED_A1_STAGE1_ADMISSION_BUILD_HANDOFF_20261013_V0_1.json`.

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
+import {normalize,resolve} from 'node:path';
 import {loadTrustedOfficialA1OriginalsV0_1,createSourceCacheFetchV0_1}
  from '../runtime/shared_official_a1_verified_seed_v0_1.mjs';
 import {resolveLatestClosedTaiwanSessionV0_1,chooseVerifiedSeedArtifactV0_1}
@@ -55,8 +56,8 @@ test('original gzip replay independently checks exact bytes, market/date, known 
  const saved=JSON.stringify(f.receipt);
  const prefix='/tmp/verify-originals';
  const read=async(path,encoding)=>{
-  if(String(path)==='/tmp/seed-receipt.json')return saved;
-  if(String(path)===prefix+'/'+market+'-'+date+'.json.gz')return gzipSync(f.body);
+  if(normalize(String(path))===normalize('/tmp/seed-receipt.json'))return saved;
+  if(normalize(String(path))===normalize(resolve(prefix,market+'-'+date+'.json.gz')))return gzipSync(f.body);
   throw Error('UNEXPECTED_SOURCE_FILE');
  };
  const result=await loadTrustedOfficialA1OriginalsV0_1({
