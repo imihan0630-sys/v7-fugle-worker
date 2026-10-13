@@ -1,0 +1,42 @@
+name: System2 20261013 Official TPEx Native Close ONE SHOT READONLY
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-20261013-tpex-native-close-probe-once.yml'
+permissions:
+  contents: read
+jobs:
+  probe_native:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate original TPEx parser, strict exact-date capture and zero privilege
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_20261013_tpex_exact_close_readonly_v0_1.mjs
+          node --test system2/tests/p0_20261013_tpex_native_close_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Exact native official TPEx 2026-10-13 GET, bounded twice
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_20261013_tpex_exact_close_readonly_v0_1.mjs
+      - name: Preserve source status and hash ONLY, no raw JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-p0-tpex-oct13-native-status-ONE-SHOT-${{ github.run_id }}
+          path: /tmp/s2-p0-tpex-oct13-source/probe.json
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Safety boundary
+        if: always()
+        run: |
+          echo 'One-day official TPEx exact-date source observation only. No full 61-session, PIT, selection or Frozen.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No D1/R2/GitHub raw/public release/cloud writes/System1 production changes.' >> "$GITHUB_STEP_SUMMARY"
