@@ -1,0 +1,29 @@
+name: System1 C1 Generation Finalization
+
+on:
+  schedule:
+    - cron: '5 16 * * 1-5' # 00:05 Asia/Taipei Tue-Sat, before 00:10 prospective collector
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system1-c1-generation-finalization
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify offline T48 oracle
+        run: node tests/test_system1_generation_set_finalization_v0_1.mjs
+      - name: Finalize previous Taiwan session generation set
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/finalize_system1_c1_generation_set.mjs

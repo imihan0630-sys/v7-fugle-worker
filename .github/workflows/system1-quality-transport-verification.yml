@@ -101,6 +101,7 @@ jobs:
           python3 scripts/apply_v8_20_0.py
           python3 scripts/apply_v8_20_1.py
           python3 scripts/apply_v8_20_2.py
+          python3 scripts/apply_v8_21_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Verify transport-retry contract offline
         env:
@@ -110,6 +111,7 @@ jobs:
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v8_20_1.mjs
           node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
+          node tests/test_system1_c1_generation_finalization_v8_21_0.mjs
       - name: Recover official quality only for 2026-10-06
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
