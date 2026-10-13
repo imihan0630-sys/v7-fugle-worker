@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "00_20261013_P0_FOUR_WORKER_UPLOADS_AND_A1_CA_CLOCK_SUPERSESSION_V0_2",
+  "authority": "GitHub main",
+  "observedMain": "195eee00759ada8fe6ec5eb8d984ad7a75e40d30",
+  "recordedAtUtc": "2026-10-13T15:04:22.052Z",
+  "recordedAtTaipei": "2026-10-13 23:04:22",
+  "scope": "Independent read-only GitHub original Run Job Step Log metadata with typed acceptance; no extra Cloudflare privileges",
+  "supersedesMisnumberedAudit": "shared-knowledge/00_20261013_P0_REAL_CLOCK_SOURCE_AND_SYSTEM1_THIRD_DEPLOY_AUDIT_V0_1.json",
+  "system1": {
+    "runCountPhysicallyObserved": 4,
+    "runSource": "Original GitHub Actions 2026-10-13 specific production workflow, not exhaustive all possible Cloudflare direct/manual PUT",
+    "runs": [
+      {
+        "runId": 38413542208,
+        "jobId": 115351834879,
+        "expectedHead": "3bc6193d2a7ea91bc2482ecb6b2c0c82ae1bcf65",
+        "conclusion": "failure",
+        "cloudflareCodePut": "HTTP_200",
+        "postVerifier": "FAIL_MIXED_COMMONJS_REQUIRE_AND_TOPLEVEL_AWAIT",
+        "wranglerRollback": "SUCCESS",
+        "postRollbackRoute": "404_ONLY"
+      },
+      {
+        "runId": 38414191546,
+        "jobId": 115354107994,
+        "expectedHead": "0974134ea1d7a387c9e394a1168037a968a68be3",
+        "conclusion": "success",
+        "cloudflareCodePut": "HTTP_200",
+        "postVerifier": "CODE_READBACK_PASS_BUT_MONITOR_POPULATION_MISMATCH",
+        "configuredFormalCount": 5,
+        "d1MonitoredCount": 9,
+        "kvMonitoredCount": 9,
+        "d1PopulationMatches": false,
+        "kvPopulationMatches": false,
+        "displayPopulationMatches": false,
+        "rollback": "SKIPPED",
+        "warning": "A successful deploy job did not certify a healthy 9-stock Formal+Aideen monitor identity because old code compared Formal 5 only."
+      },
+      {
+        "runId": 38415674560,
+        "jobId": 115359321164,
+        "expectedHead": "9d959625597c8c4c12e770c6d9b86bf53e25abff",
+        "conclusion": "failure",
+        "cloudflareCodePut": "HTTP_200",
+        "postVerifier": "FAIL_AIDEEN_SEPARATE_POOL_PROVENANCE_MISSING",
+        "wranglerRollback": "SUCCESS_TO_100_PERCENT_OF_PRIOR_VERSION",
+        "postRollbackRouteOnlyCheck": "FAILED_ROLLBACK_NOT_PHYSICALLY_VERIFIED",
+        "retrospectiveLaterPredeployWitness": "Next successful Run 38416922196 explicitly attested previous active version cd05a00c-defa-4a75-a581-83c0ae481ae8 100% before new upload"
+      },
+      {
+        "runId": 38416922196,
+        "jobId": 115363707276,
+        "expectedHead": "4d771cc65e0ed8e1c69afae11950d3ba04495840",
+        "conclusion": "success",
+        "cloudflareCodePut": "HTTP_200",
+        "postVerifier": "LIVE_V0_2_SCHEMA_AND_MONITOR_POPULATION_SCOPED_PASS",
+        "predeployVersionId": "cd05a00c-defa-4a75-a581-83c0ae481ae8",
+        "formalConfiguredStocks": [
+          "6226",
+          "8046",
+          "3037",
+          "6191",
+          "2609"
+        ],
+        "aideenStocks": [
+          "6213",
+          "3189",
+          "6672",
+          "2404"
+        ],
+        "observedD1MonitorCount": 9,
+        "observedKVMonitorCount": 9,
+        "d1PopulationMatches": true,
+        "kvPopulationMatches": true,
+        "displayPopulationMatches": true,
+        "cronExactUnchangedCount": 4,
+        "sourceDisplay": "D1_PRIMARY",
+        "d1SnapshotAgeSeconds": 34027,
+        "kvSnapshotAgeSeconds": 34027,
+        "afterCloseIntradayNotVerified": true,
+        "rollback": "SKIPPED"
+      }
+    ],
+    "predeployArtifactForLatest": {
+      "id": 11824302686,
+      "zipDigest": "sha256:2b49756207668ab532c975146df891fb974c49c66d53afec9eaef30600ea26a5"
+    },
+    "auditDisposition": "SCOPE_PASS_LAST_CODE_DEPLOY_AND_FORMAL_PLUS_AIDEEN_DISPLAY_POPULATION; NATURAL_TRADING_SESSION_FRESHNESS_AND_AFTERMARKET_SELECTION_NOT_VERIFIED",
+    "lastActiveWorkerVersionShaExactSeparateCloudflareGET": "NOT_INDEPENDENTLY_READ_BY_00_POSTLATEST_DEPLOY",
+    "newWorkerUploadAuthority": "NOT_GRANTED_BY_00",
+    "formalCoreChangedBy00": false,
+    "requiredLaterPhysicalEvidence": [
+      "Genuine next ordinary trading session 9/9 same-generation live quote/D1/KV fresh producer and Aideen/formal separate identities",
+      "Next natural 23:35/conditional 23:55 formal scan success, KV/D1 persisted and accepted push evidence",
+      "Independent auditor adjudicate actual latest four typed states; no false confidence from run success only"
+    ],
+    "issue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1202"
+  },
+  "system2": {
+    "current122Source": {
+      "marketDate": "2026-10-13",
+      "originalRun": 38390694817,
+      "independentRun": 38390900569,
+      "sourcePairs": 122,
+      "required": 122,
+      "sourceLedgerSymbols": 1974,
+      "evaluated": 0,
+      "incomplete": 1974,
+      "selectedCount": null,
+      "frozenReadback": false
+    },
+    "sixOfficialCAFinalSource": {
+      "run": 38413831461,
+      "officialLanes": 6,
+      "required": 6,
+      "revisionPITLanes": 0,
+      "perSymbolPITQualified": 0
+    },
+    "caClockGate": {
+      "bridgeFreezeAtUtc": "2026-10-13T11:32:38.014Z",
+      "caRunFirstCreatedAtUtc": "2026-10-13T14:29:41Z",
+      "caCaptureAfterEarlierDecision": true,
+      "prohibited": "No causal backfill to 19:32; later 22:29 latest snapshot still lacks issuer revision and original publication clock"
+    },
+    "dailyResearchReadinessCode": "a97743dcd0b4b618a01181bd51d7f03ffecb6462",
+    "dailyDiagnostic": {
+      "originalRun": 38417540042,
+      "oldSourceFixtureRun": 38351651871,
+      "retrospectiveMarketDate": "2026-10-12",
+      "oldPairs": 121,
+      "state": "BLOCKED_SOURCE_NOT_SELECTION",
+      "expectedNegative": true
+    },
+    "positiveCurrentDateReadinessReceiptWithNewCode": "NOT_SEPARATELY_PHYSICALLY_OBSERVED_AT_THIS_AUDIT",
+    "nextBuild": "Use existing audited full 122/122 source original_run_id=38390694817 to generate first authentic new per-session daily readiness receipt, separate downstream 0 qualified claims from missing continuity. No D1 write.",
+    "nextData": "Official issuer/correction/cancellation versioned PIT firstObservedAt and publication clock, bounded no-action evidence per symbol; use free official TWSE/TPEx and MOPS sources without billing approval."
+  },
+  "crossAccount": "G2 SCHEMA_ONLY 25/25 independently PASS; G3 one scoped independent source restore of four families; G4 imported 0; CORR003 HIGH VERIFYING 0/5 physical",
+  "canonicalQueueStatus": {
+    "FIX_IN_PROGRESS": 1,
+    "VERIFIED_CLOSED": 18,
+    "FIX_IMPLEMENTED": 1,
+    "REJECTED_WITH_EVIDENCE": 1,
+    "VERIFYING": 1,
+    "OPEN": 2
+  },
+  "noAuthorityFor": [
+    "Worker PUT/re-run",
+    "D1 SQL mutation",
+    "R2 enablement",
+    "new secret/paid tier",
+    "trading/real capital/orders/push",
+    "fake selection/frozen",
+    "manual GitHub Action dispatch"
+  ],
+  "moduleInventory": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
