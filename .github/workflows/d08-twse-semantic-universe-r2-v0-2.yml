@@ -1,0 +1,45 @@
+name: D08 TWSE Semantic Universe R2 V0.2
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-semantic-universe-r2-v0-2.yml"
+      - "system2/scripts/d08_twse_semantic_universe_r2_archive_v0_2.mjs"
+      - "system2/runtime/d08_twse_historical_universe_source_v0_2.mjs"
+      - "system2/tests/d08_semantic_universe_r2_v0_2_guard.test.mjs"
+      - "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard semantic universe archive
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_source_core.test.mjs
+          node system2/tests/d08_universe_provenance_version_split_v0_2.test.mjs
+          node system2/tests/d08_semantic_universe_r2_v0_2_guard.test.mjs
+          node --check system2/scripts/d08_twse_semantic_universe_r2_archive_v0_2.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Archive semantic universe V0.2 to isolated R2
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_semantic_universe_r2_archive_v0_2.mjs | tee /tmp/d08-universe-r2-v02.jsonl
+          grep '^D08_SEMANTIC_UNIVERSE_R2_RECEIPT=' /tmp/d08-universe-r2-v02.jsonl
+      - name: Production isolation guard
+        run: git diff --exit-code -- Worker.js wrangler.toml
