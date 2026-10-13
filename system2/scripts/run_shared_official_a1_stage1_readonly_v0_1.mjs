@@ -23,14 +23,23 @@ function assertClock(x,cutoff,code){
  if(!iso(x)||Date.parse(x)>Date.parse(cutoff))throw Error(code);
 }
 function sourceClockWindow(marketDate,freezeAtUtc){
- const taipei=new Intl.DateTimeFormat('en-CA',{
+ const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{
   timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',
- }).format(new Date(freezeAtUtc));
- // The T+1 condition permits the approved after-midnight source recovery.
- // It is not a grant to retroactively declare a T 19:00/23:45 freeze.
+  hour:'2-digit',minute:'2-digit',hourCycle:'h23',
+ }).formatToParts(new Date(freezeAtUtc))
+   .filter(part=>part.type!=='literal').map(part=>[part.type,part.value]));
+ const taipei=parts.year+'-'+parts.month+'-'+parts.day;
+ const hour=Number(parts.hour),minute=Number(parts.minute);
+ if(!Number.isInteger(hour)||!Number.isInteger(minute))return false;
+ // Owner-approved clock: 19:00 preliminary source examination; 23:45
+ // preferred conditional freeze; T+1 00:15 retry. This is SOURCE-ONLY
+ // research eligibility, never proof of a historical earlier decision clock.
+ if(taipei===marketDate)return hour>=19;
  const next=new Date(marketDate+'T00:00:00Z');
  next.setUTCDate(next.getUTCDate()+1);
- return taipei===marketDate||taipei===next.toISOString().slice(0,10);
+ // Delayed Actions may finish after 00:15. Admit only through 01:59 Taipei,
+ // never an arbitrary late T+1 (e.g. Oct13 19:19 for Oct12 source).
+ return taipei===next.toISOString().slice(0,10)&&hour<2;
 }
 function outBlocked(manifest,sourceReceipt,auditReceipt,blocker,freezeAtUtc){
  return Object.freeze({

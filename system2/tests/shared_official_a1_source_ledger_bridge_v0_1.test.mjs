@@ -135,6 +135,36 @@ test('origin and TWSE/TPEx row-count discrepancy blocks, no silent missing symbo
  };
  await assert.rejects(()=>bridge(f),/CURRENT_NATIVE_DATE_OR_COUNT_MISMATCH/);
 });
+test('historical 122/122 observed at next-day 19:19 is NOT prospective Stage1',async()=>{
+ const f=await fixture();f.freezeAtUtc='2026-10-14T11:19:00Z';
+ const x=await bridge(f);
+ assert.equal(x.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+ assert.deepEqual(x.blockers,['SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW']);
+ assert.equal(x.sourceLedger,null);assert.equal(x.selectedCount,null);
+});
+test('owner-approved next-day 00:15 bounded recovery remains research-only',async()=>{
+ const f=await fixture();f.freezeAtUtc='2026-10-13T16:15:00Z';
+ const x=await bridge(f);
+ assert.equal(x.state,'SOURCE_LEDGER_READY_STRATEGY_PIT_NOT_CERTIFIED');
+ assert.equal(x.sourceLedger.selectedCount,null);
+ assert.equal(x.strategyPitCertified,false);
+});
+test('next-day 02:00 or later cannot silently backdate a source clock',async()=>{
+ const f=await fixture();f.freezeAtUtc='2026-10-13T18:00:00Z';
+ const x=await bridge(f);
+ assert.equal(x.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+ assert.equal(x.selectedCount,null);
+});
+test('same market date before 19:00 remains preliminary source, not Stage1',async()=>{
+ const f=await fixture();f.freezeAtUtc='2026-10-13T10:59:00Z';
+ // Audit receipt must also predate the requested evaluation clock.
+ const {auditHash,...prior}=f.auditReceipt;
+ const fresh={...prior,auditedAtUtc:'2026-10-13T10:30:00Z'};
+ f.auditReceipt={...fresh,auditHash:await sha256Hex(fresh)};
+ const x=await bridge(f);
+ assert.equal(x.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
+ assert.equal(x.sourceLedger,null);
+});
 test('source evidence cannot be silently marked as a frozen ranked decision',async()=>{
  const {readFile}=await import('node:fs/promises');
  const s=await readFile('system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs','utf8');
