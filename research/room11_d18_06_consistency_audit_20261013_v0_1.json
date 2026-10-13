@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "ROOM11_D18_06_CONSISTENCY_AUDIT_V0_1",
+  "date": "2026-10-13",
+  "finding": "SIZE_STATE_RETURN_CONFLICT",
+  "adversarialTests": [
+    "SZ-T15",
+    "SZ-T16",
+    "SZ-T17"
+  ],
+  "narrowChecksPassed": 5,
+  "fullCi": "PENDING",
+  "maturityChanged": false,
+  "exactNext": "Run full tests, reconcile D18-06 L3 market-index vs constituent S1 scope before tracker update."
+}
