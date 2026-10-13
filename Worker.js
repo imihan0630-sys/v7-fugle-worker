@@ -1,3 +1,4 @@
+import {reconcileDisplaySnapshotsV0_1} from "./system1/runtime/live_snapshot_read_model_v0_1.mjs";
 /**
  * 台股半自動交易決策監控 V7｜Phase 4
  * 基準：V6 Worker + 韓哥確認的29項V7定稿需求 + 收盤價低於10元剔除。
@@ -760,11 +761,17 @@ const stocks =
     // ==================================================
     if (url.pathname === "/api/live") {
       if (!isAuthorized(request, env)) return json({ error: "ADMIN_TOKEN 錯誤" }, 401, true);
-      const snapshot = await readLiveSnapshot(env);
-      const fallback = !snapshot && env.STOCKS_KV
-        ? await env.STOCKS_KV.get(LAST_MONITOR_KEY, "json")
-        : null;
-      return json(snapshot || fallback || { status: "尚未產生盤中即時狀態" }, 200, true);
+      const current = await loadStockConfig(env);
+      const display = await readDisplayLiveState(env, current.stocks);
+      return json({
+        ...(display.snapshot || { status: "尚未產生盤中即時狀態" }),
+        displaySource: display.source,
+        displayDegraded: display.degraded,
+        displayPopulationMatches: display.populationMatches,
+        displaySnapshotFresh: display.liveFresh,
+        displayAgeSeconds: display.selectedAgeSeconds,
+        d1PersistenceUnverified: display.d1PersistenceUnverified
+      }, 200, true);
     }
 
     // ==================================================
@@ -830,14 +837,12 @@ const stocks =
     // Phase 4.2：首頁只讀 Live State，不直接呼叫 Fugle
     // D1 primary 優先；尚未綁定時暫以 KV 最近監控結果 fallback。
     // ==================================================
-    const [live, cronStatus] = await Promise.all([
-      readLiveSnapshot(env),
+    const [display, cronStatus] = await Promise.all([
+      readDisplayLiveState(env, stocks),
       readLatestCronRun(env)
     ]);
-    const fallback = !live && env.STOCKS_KV
-      ? await env.STOCKS_KV.get(LAST_MONITOR_KEY, "json")
-      : null;
-    const liveState = live || fallback || null;
+    const liveState = display.snapshot || null;
+    const usingD1 = display.source === "D1_PRIMARY";
     const currentPlanBySymbol = new Map(stocks.map(stock => [String(stock.symbol), stock]));
     const results = Array.isArray(liveState?.results)
       ? liveState.results
@@ -852,7 +857,7 @@ const stocks =
         version: VERSION,
         testMode: isTestMode(env),
         source: loaded.source,
-        liveStore: live ? "D1 primary" : (fallback ? "KV fallback" : "none"),
+        liveStore: display.source,
         configUpdatedAt: loaded.updatedAt,
         apiPolicy: "網頁不呼叫Fugle；背景每分鐘Quote；10/15分K只在收棒分鐘更新",
         cron: cronStatus || null,
@@ -862,10 +867,10 @@ const stocks =
     }
 
     if (!results.length) {
-      return html(waitingLivePage(loaded, liveState, Boolean(env.V7_DB), cronStatus), 200, true);
+      return html(waitingLivePage(loaded, liveState, usingD1, cronStatus), 200, true);
     }
 
-    return html(renderPage(results, loaded, isTestMode(env), liveState, Boolean(live), cronStatus), 200, true);
+    return html(renderPage(results, loaded, isTestMode(env), liveState, usingD1, cronStatus), 200, true);
   },
 
   async scheduled(controller, env, ctx) {
@@ -1544,6 +1549,23 @@ async function runScheduledWithAudit(controller, env) {
 function snapshotAgeSeconds(snapshot) {
   const ms = Date.parse(snapshot?.generatedAtIso || "");
   return Number.isFinite(ms) ? Math.max(0, Math.floor((Date.now() - ms) / 1000)) : null;
+}
+
+// Display-only read reconciliation; never used in signal or trade decisions.
+async function readDisplayLiveState(env, stocks) {
+  const primary = await readLiveSnapshot(env);
+  const nowMs = Date.now(), tradeDate = taiwanDate(nowMs);
+  const intraday = isTradingDate(tradeDate) && isIntradayMonitorWindow(nowMs);
+  const expired = intraday && (snapshotAgeSeconds(primary) === null ||
+    snapshotAgeSeconds(primary) > LIVE_STALE_SECONDS);
+  const probeKv = !primary || primary.tradeDate !== tradeDate || expired;
+  const kv = probeKv && env.STOCKS_KV
+    ? await env.STOCKS_KV.get(LAST_MONITOR_KEY, "json")
+    : null;
+  return reconcileDisplaySnapshotsV0_1({
+    d1: primary, kv, planned: stocks, tradeDate, intraday,
+    nowMs, staleSeconds: LIVE_STALE_SECONDS
+  });
 }
 
 // ======================================================
@@ -3096,6 +3118,10 @@ async function runBackgroundMonitor(env, scheduledTime = Date.now(), allowOutsid
     { expirationTtl: 2 * 24 * 60 * 60 }
   );
 
+  // KV mirroring alone must never imply successful D1-primary persistence.
+  if (env.V7_DB && liveStore.stored !== true) {
+    throw new Error("LIVE_D1_PERSISTENCE_NOT_VERIFIED");
+  }
   return kvSummary;
 }
 
@@ -6119,9 +6145,11 @@ ${cronStatus
 }
 </div>
 
-${snapshotAgeSeconds(liveState) !== null && snapshotAgeSeconds(liveState) > LIVE_STALE_SECONDS
-  ? `<div class="warning">⚠ 即時資料已超過 ${snapshotAgeSeconds(liveState)} 秒未更新；請檢查 Cron / Fugle / D1。</div>`
-  : ""
+${isTradingDate(taiwanDate()) && isIntradayMonitorWindow(Date.now())
+  ? (snapshotAgeSeconds(liveState) !== null && snapshotAgeSeconds(liveState) > LIVE_STALE_SECONDS
+    ? `<div class="warning">⚠ 盤中即時資料已超過 ${snapshotAgeSeconds(liveState)} 秒未更新；請檢查 Cron / Fugle / D1，勿依據過期訊號交易。</div>`
+    : "")
+  : `<div class="cronbox">目前非台股盤中監控時段；畫面顯示最後一次監控紀錄，非即時報價。</div>`
 }
 
 ${!usingD1
