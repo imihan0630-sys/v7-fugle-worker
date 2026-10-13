@@ -1,0 +1,34 @@
+name: System1 V8 Intraday Live Physical Acceptance (GET Only)
+on:
+  schedule:
+    - cron: '20 1 * * 1-5' # 09:20 Taipei, after original V8 09:00 intraday Cron
+    - cron: '45 1 * * 1-5' # 09:45 Taipei independent second receipt
+    - cron: '20 4 * * 1-5' # 12:20 Taipei repeat near close
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-v8-intraday-readonly-acceptance
+  cancel-in-progress: false
+jobs:
+  actual_live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Adversarial acceptance conditions (must not infer Formal or brokerage position from config)
+        run: node tests/test_v8_intraday_monitor_acceptance_readonly.mjs
+      - name: Original V8 five authenticated GET readbacks only; no plan, trade, 3Min, push
+        run: node ops/v8_intraday_monitor_acceptance_readonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v8-intraday-real-physical-${{ github.run_id }}
+          path: artifacts/v8-intraday-monitor-readback-*.json
+          if-no-files-found: warn
+          retention-days: 60
