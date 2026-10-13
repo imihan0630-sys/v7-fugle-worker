@@ -1,0 +1,49 @@
+name: System2 Commander Issues-Only Auto Dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: start or status
+        required: true
+        type: choice
+        options: [start, status]
+        default: start
+  issue_comment:
+    types: [created]
+  schedule:
+    - cron: '20 2,10 * * 1-5'
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: system2-commander-issues
+  cancel-in-progress: false
+jobs:
+  dispatch:
+    if: >-
+      github.repository == 'imihan0630-sys/v7-fugle-worker' &&
+      (github.event_name != 'issue_comment' ||
+       (github.event.issue.number == 1229 &&
+        github.event.comment.user.login == 'imihan0630-sys' &&
+        (github.event.comment.body == '開始執行' ||
+         github.event.comment.body == '/s2 start' ||
+         github.event.comment.body == '/s2 status')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Task DAG and authorization negative tests
+        run: node --test system2/commander/commander.test.mjs
+      - name: GitHub Issues-only dispatch; no cloud resource permissions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          S2_COMMAND: ${{ (github.event_name == 'workflow_dispatch' && inputs.command == 'status') || (github.event_name == 'issue_comment' && github.event.comment.body == '/s2 status') && 'status' || 'start' }}
+        run: node system2/commander/commander.mjs
+      - name: Strict resource boundary
+        if: always()
+        run: echo 'Only GitHub Issues/receipts. No Cloudflare D1/R2/Worker/Cron, no System1, no automatic ChatGPT/Codex task execution.' >> "$GITHUB_STEP_SUMMARY"
