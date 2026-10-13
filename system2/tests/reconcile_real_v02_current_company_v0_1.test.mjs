@@ -32,6 +32,7 @@ test('changed original preview without a new hash rejects',async()=>{
  await assert.rejects(()=>run({watch:x,fetchImpl}),/TAMPERED_PRELIMINARY_HASH/);
 });
 test('historical clock backdating rejects',async()=>{
- await assert.rejects(()=>run({watch:await fixture(),fetchImpl,
+ const original=await fixture();
+ await assert.rejects(()=>run({watch:original,fetchImpl,
   clock:()=>new Date('2026-10-13T20:00:00Z')}),/CURRENT_ISSUER_CLOCK_BACKDATED/);
 });
