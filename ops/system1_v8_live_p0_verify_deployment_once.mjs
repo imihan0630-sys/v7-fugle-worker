@@ -16,12 +16,12 @@ let live,sources;
 for(let i=0;i<20;i++){
   try{
     [live,sources]=await Promise.all([get("/api/live"),get("/api/live/sources")]);
-    if(sources?.schema==="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1"&&typeof live.displayPopulationMatches==="boolean")break;
+    if(sources?.schema==="SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2"&&Array.isArray(sources.aideenSymbols)&&Array.isArray(sources.expectedMonitorKeys)&&typeof live.displayPopulationMatches==="boolean")break;
   }catch(e){if(i===19)throw e;}
   if(i===19)throw Error("NEW_V8_RUNTIME_PATCH_NEVER_OBSERVED");
   await wait(3000);
 }
-assert.equal(sources?.schema,"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1");
+assert.equal(sources?.schema,"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_2");
 assert.equal(sources.noWrite,true);assert.equal(sources.noPlanChanges,true);assert.equal(sources.noPush,true);assert.equal(sources.noTrade,true);
 const after=await get("/api/config");
 const old=await get("/api/version",{"cache-control":"no-cache",accept:"application/json"});
