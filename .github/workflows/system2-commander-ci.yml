@@ -1,0 +1,31 @@
+name: System2 Commander Safety CI
+on:
+  pull_request:
+    paths:
+      - 'system2/commander/**'
+      - '.github/workflows/system2-commander-*.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/commander/**'
+      - '.github/workflows/system2-commander-*.yml'
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run commander security and DAG tests
+        run: node --test system2/commander/commander.test.mjs
+      - name: Block Cloudflare or cross-project escalation
+        run: |
+          node - <<'JS'
+          const fs=require('node:fs');
+          const s=fs.readFileSync('.github/workflows/system2-commander-dispatch.yml','utf8');
+          if(!s.includes('issues: write')||s.includes('actions: write')||s.includes('id-token: write')||s.includes('pull-requests: write')||s.includes('secrets.CLOUDFLARE')||s.includes('wrangler deploy'))process.exit(2);
+          JS

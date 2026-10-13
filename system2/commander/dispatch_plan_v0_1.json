@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "S2_COMMANDER_PLAN_V0_1",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "commandIssue": 1229,
+  "sourceOfTruth": "latest main + independent physical audit",
+  "maxNewIssuesPerRun": 8,
+  "maxUnverifiedPerLane": 2,
+  "lanes": {
+    "DATA": "System 2｜歷史資料工程室",
+    "CLOUD": "System 2｜Cloudflare 跨帳戶驗證室",
+    "BUILD": "System 2｜建置總控室",
+    "REMEDIATION": "System 2｜補強修復室",
+    "AUDIT": "System 2｜獨立稽核顧問室"
+  },
+  "independentExistingIssues": [
+    1068,
+    1128,
+    1132
+  ],
+  "tasks": [
+    {
+      "id": "M01",
+      "priority": 0,
+      "lane": "CLOUD",
+      "title": "新帳戶停用版 Worker 真實部署與隔離",
+      "phase": "STAGE_ONLY",
+      "acceptance": "真實 Worker GET；無 Cron、routes、正式訊號，V8 不變",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M02",
+      "priority": 1,
+      "lane": "CLOUD",
+      "title": "SYSTEM2_DB 指向目的帳戶 D1，/health 讀回",
+      "phase": "STAGE_ONLY",
+      "acceptance": "新帳戶 D1 Binding ID、Schema、HTTP 實體讀回",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M03",
+      "priority": 2,
+      "lane": "CLOUD",
+      "title": "Fugle Secret 與 Worker 變數盤點",
+      "phase": "INVENTORY_ONLY",
+      "acceptance": "新帳戶現有 Secret、授權範圍和缺項；未經核准不新增",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M04",
+      "priority": 3,
+      "lane": "CLOUD",
+      "title": "Terminal、Resonance、股池、診斷 API 接手",
+      "phase": "READONLY_TEST_FIRST",
+      "acceptance": "既有 HTTP 路由、來源 D1 隔離與實體只讀測試",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M05",
+      "priority": 20,
+      "lane": "CLOUD",
+      "title": "單一目的帳戶共振 Cron 授權切換",
+      "phase": "OWNER_GATED_CUTOVER",
+      "acceptance": "舊 Cron=0、新 Cron 唯一、實際有限股池與 V8 不受影響",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M09",
+        "M10",
+        "M12"
+      ],
+      "needsLiveApproval": true
+    },
+    {
+      "id": "M06",
+      "priority": 0,
+      "lane": "DATA",
+      "title": "原營運資料／共振／來源／基礎檢查歷史對帳",
+      "phase": "READONLY_INVENTORY",
+      "acceptance": "含 s2_resonance_runs 5、s2_source_session_receipts 11、s2_infrastructure_checks 2505 之來源／目的端讀回",
+      "refs": [
+        1068,
+        1128
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M07",
+      "priority": 1,
+      "lane": "DATA",
+      "title": "來源 R2 物件 SHA／目的端權限與免費替代方案",
+      "phase": "READONLY_INVENTORY",
+      "acceptance": "物件數／bytes／hash、R2 entitlement 真實讀回；不新增付費",
+      "refs": [
+        1068,
+        1128
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M08",
+      "priority": 0,
+      "lane": "REMEDIATION",
+      "title": "全 GitHub Actions 舊新帳戶與 Writer/Secret 路由清查",
+      "phase": "CODE_AND_OFFLINE_TEST",
+      "acceptance": "來源部署防復活、目的端 Writer 身分與環境負面測試",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M09",
+      "priority": 0,
+      "lane": "BUILD",
+      "title": "正式每日選股和建立後不可覆寫 Frozen D1",
+      "phase": "PIT_SOURCE_FIRST",
+      "acceptance": "真實 SHORT_MOMENTUM PIT、選股分母、Frozen D1 寫入及獨立讀回",
+      "refs": [
+        1132,
+        1128
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M10",
+      "priority": 1,
+      "lane": "BUILD",
+      "title": "EMA16/EMA64/Impulse MACD 有限股池共振試運轉",
+      "phase": "OFFLINE_AND_DISABLED_TEST",
+      "acceptance": "股池限定與行情/去重/訊號保存可重現；正式啟用需另核准",
+      "refs": [
+        1132,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M11",
+      "priority": 2,
+      "lane": "BUILD",
+      "title": "System2 專屬 Webhook／推播／訂閱清冊",
+      "phase": "INVENTORY_ONLY",
+      "acceptance": "不借用 V8 推播設定；只列出實際存在資源",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M12",
+      "priority": 1,
+      "lane": "REMEDIATION",
+      "title": "目的端每日 80000 rows_written／Writer 原子互斥",
+      "phase": "OFFLINE_THEN_APPROVED_PROBE",
+      "acceptance": "歷史 D1 Writer 與 Frozen/診斷不可衝撞當日額度",
+      "refs": [
+        1068,
+        1128,
+        1132
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M13",
+      "priority": 3,
+      "lane": "CLOUD",
+      "title": "目的端 Cloudflare Logs／健康／監測與異常回復",
+      "phase": "READONLY_FIRST",
+      "acceptance": "實體 Run/Job/Artifact、部署版本、HTTP 健康與隔離",
+      "refs": [
+        1128,
+        1130
+      ],
+      "requiresVerified": [],
+      "needsLiveApproval": false
+    },
+    {
+      "id": "M14",
+      "priority": 30,
+      "lane": "AUDIT",
+      "title": "G6/G7 完整切換獨立驗收與資料復原",
+      "phase": "INDEPENDENT_SIGNOFF",
+      "acceptance": "獨立稽核全平台、唯一 Writer、V8 4 Cron、恢復與保留原資源",
+      "refs": [
+        1127,
+        1128,
+        1130
+      ],
+      "requiresVerified": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07",
+        "M08",
+        "M09",
+        "M10",
+        "M11",
+        "M12",
+        "M13"
+      ],
+      "needsLiveApproval": false
+    }
+  ]
+}
