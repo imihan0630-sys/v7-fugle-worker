@@ -72,10 +72,17 @@ jobs:
             echo "::endgroup::"
             if [ "$n" != 4 ]; then sleep 20; fi
           done
+      - name: Read physically persisted 1908-stock D1 coverage and age distributions
+        if: always()
+        run: |
+          node --check ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+          node ops/system1_p0_history60_census_readonly_once_v0_1.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: system1-official-history-verified-sequential-${{ github.run_id }}
-          path: artifacts/serial-source-history/*.json
+          path: |
+            artifacts/serial-source-history/*.json
+            artifacts/system1-history60-source-census.json
           if-no-files-found: warn
           retention-days: 30
