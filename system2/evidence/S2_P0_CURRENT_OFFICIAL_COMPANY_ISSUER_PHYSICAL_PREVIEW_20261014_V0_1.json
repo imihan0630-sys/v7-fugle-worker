@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_P0_CURRENT_OFFICIAL_COMPANY_ISSUER_PHYSICAL_PREVIEW_20261014_V0_1",
+  "type": "EXACT_REAL_V02_PRELIMINARY_PREVIEW_CURRENT_OFFICIAL_ISSUER_MATCH",
+  "marketDate": "2026-10-13",
+  "observedDateTaipei": "2026-10-14",
+  "formalIssueNumber": 1132,
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "preliminary": {
+    "existingVersion": "PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2",
+    "originalRunId": 38477169340,
+    "source61TradingDaysPairCount": 122,
+    "sourceFourDigitSecurities": 1974,
+    "preliminaryMatchedResearchOnly": 580,
+    "exactPreviewRows": 30,
+    "sourcePreliminaryReceiptSha256": "1bdc75a148160b4267ad6173ac0d6607c47ac9304df02f28bc376f026e9a4d88",
+    "originalProviderRawDataNotRewritten": true
+  },
+  "currentOfficialProfiles": {
+    "codePR": 1226,
+    "mainCommit": "fd6a92cac30c8b488a8fb8dc959f7ff8722cfed4",
+    "workflowRunId": 38478963273,
+    "jobId": 115576552472,
+    "conclusion": "success",
+    "twse": {
+      "endpoint": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+      "originalRows": 1095,
+      "fourDigitCompanyIds": 1089,
+      "responseSha256": "e13ad5d1be3d68ea8ba2ae73203bbeccca3a1a8473b71694dd8d0727db7c9aa5"
+    },
+    "tpex": {
+      "endpoint": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O",
+      "originalRows": 893,
+      "fourDigitCompanyIds": 893,
+      "responseSha256": "a1fc8d73bcb5fee5fb16cca811641887dbdcb07630e5e1bfba374a8ae705f17f"
+    },
+    "providerProbeReceiptSha256": "2f1aaeba7c6ac744c4b730777b485a737131385a9ea4ac1bc58ed9762b92480a",
+    "sanitizedArtifactId": 11856486561,
+    "artifactDigest": "sha256:7f2b6784ad1ef67cc4e0d79b021eab1a414ac0dc8da203153e5bb2028f27fc20"
+  },
+  "exactPhysicalMatch": {
+    "codePR": 1227,
+    "mainCommit": "729822ff67bd48860301c916211a08e5688af041",
+    "workflowRunId": 38479784672,
+    "jobId": 115579268845,
+    "conclusion": "success",
+    "inspectedPreviewRows": 30,
+    "exactOfficialCompanyCodeAndShortNameMatches": 30,
+    "officialCodeOnlyNameMismatch": 0,
+    "notInCurrentOfficialCompanyMaster": 0,
+    "separateAsOfNowReceiptSha256": "3de22e57b3bdda8aeaf38c8ac098eee68f5c4586f5f928c5f4619d3697f1c631",
+    "sanitizedArtifactId": 11857281710,
+    "artifactDigest": "sha256:7108adfed38c06a7d0683bd9f1689718c79d275dc2f3107f56ce5b0d54cb2484"
+  },
+  "nonPromotion": {
+    "issuerIdentityAsOfCurrentObservationOnly": true,
+    "ordinaryCommonShareSecurityTypeIndependentlyCertified": false,
+    "historicCompanyActionPITCorrectedAndCancelledCertified": false,
+    "sourceDateBackdatingAllowed": false,
+    "preliminary30ConvertedToFormalCandidates": false,
+    "finalShadowRankAuthorized": false,
+    "selectedCount": null,
+    "certifiedZeroPickDay": null,
+    "immutableFrozenD1Written": false,
+    "system1FormalRuntimeTouched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "newPaidService": false,
+    "newSecret": false
+  },
+  "followingWork": "Source current exchange trading instrument class by official symbols/security-type registry with positive and counterexample coverage; integrate into newly versioned daily preliminary watch without overwriting V0.2 or treating company profile as positive ordinary-share type; independent corporate-action PIT, regime and Frozen still remain formal Shadow gates."
+}
