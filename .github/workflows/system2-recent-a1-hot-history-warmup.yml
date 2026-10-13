@@ -27,7 +27,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    environment: system2-research
+    environment: system2-schema-only # Destination account only; old source quarantine remains
     env:
       SYSTEM2_HOT_HISTORY_MAX_DATES: "5"
       SYSTEM2_HOT_HISTORY_REQUIRED_SESSIONS: "60"
@@ -42,6 +42,7 @@ jobs:
           set -euo pipefail
           node system2/tests/recent_a1_hot_history_warmup_v0_1.test.mjs
           node system2/tests/recent_a1_hot_history_workflow_guard.test.mjs
+          node system2/tests/recent_a1_warmup_destination_route_p0_20261013.test.mjs
           node system2/tests/official_historical_a1_source_v0_1.test.mjs
           node system2/tests/historical_bulk_persistence_v0_1.test.mjs
           node --check system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs
@@ -53,21 +54,26 @@ jobs:
         with:
           writer_id: RECENT_A1_WARMUP
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
 
       - name: Warm recent official A1 history into isolated D1
         if: steps.quota.outputs.physical_allowed == 'true'
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
           SYSTEM2_CONFIRM: WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY
           SYSTEM2_HOT_HISTORY_MAX_DATES: ${{ steps.quota.outputs.adaptive_max_dates }}
         run: |
           set -euo pipefail
-          test -n "$CLOUDFLARE_ACCOUNT_ID"
-          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          test -n "$S2_SCHEMA_DEST_ACCOUNT_ID"
+          test -n "$S2_SCHEMA_DEST_D1_WRITE_TOKEN"
           node system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs | tee /tmp/system2-recent-a1-hot-history.json
           node --input-type=module <<'NODE'
           import fs from "node:fs";
@@ -94,9 +100,11 @@ jobs:
           reservation_receipt_path: ${{ steps.quota.outputs.reservation_receipt_path }}
           execution_outcome: ${{ job.status }}
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION
+          SYSTEM2_GITHUB_ENVIRONMENT: system2-schema-only
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+          S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN: ${{ secrets.S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN }}
 
       - name: Preserve warmup receipt
         if: always()
