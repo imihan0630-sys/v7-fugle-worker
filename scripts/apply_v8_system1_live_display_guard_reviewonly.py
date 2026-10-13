@@ -54,6 +54,44 @@ api_new='''      const current = await loadStockConfig(env);
         d1PersistenceUnverified:display.d1PersistenceUnverified
       },200,true);'''
 once(api_old,api_new,"readonly_live_api")
+# Protected source audit: reads original D1/KV snapshots separately with no mutations.
+audit_route='''    if (url.pathname === "/api/live/sources") {
+      if (!isAuthorized(request, env)) return json({ error: "ADMIN_TOKEN 錯誤" }, 401, true);
+      const config = await loadStockConfig(env);
+      const [d1, kv] = await Promise.all([
+        readLiveSnapshot(env),
+        env.STOCKS_KV ? env.STOCKS_KV.get(LAST_MONITOR_KEY, "json") : Promise.resolve(null)
+      ]);
+      const nowMs = Date.now(), tradeDate = taiwanDate(nowMs);
+      const audited = reconcileDisplaySnapshotsV0_1({
+        d1, kv, planned:config.stocks, tradeDate,
+        intraday:isTradingDate(tradeDate) && isIntradayMonitorWindow(nowMs),
+        nowMs, staleSeconds:LIVE_STALE_SECONDS
+      });
+      const projection = x => x ? {
+        generatedAtIso:x.generatedAtIso||null, tradeDate:x.tradeDate||null,
+        monitoredCount:x.monitoredCount??null,
+        symbols:Array.isArray(x.results)?x.results.map(y=>String(y.symbol||"")):[],
+        liveStoreRecorded:x.liveStoreResult?.stored??null
+      }:null;
+      return json({
+        schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1",
+        observedAt:new Date(nowMs).toISOString(),tradeDate,
+        configSymbols:config.stocks.map(x=>String(x.symbol)),
+        d1:projection(d1),kv:projection(kv),
+        d1AgeSeconds:audited.d1AgeSeconds,kvAgeSeconds:audited.kvAgeSeconds,
+        d1PopulationMatches:audited.d1PopulationMatches,
+        kvPopulationMatches:audited.kvPopulationMatches,
+        preferredSource:audited.source,
+        noWrite:true,noPlanChanges:true,noPush:true,noTrade:true
+      },200,true);
+    }
+
+'''
+once('    if (url.pathname === "/api/live") {',
+     audit_route + '    if (url.pathname === "/api/live") {',
+     "protected_live_source_audit")
+
 
 home_old='''    const [live, cronStatus] = await Promise.all([
       readLiveSnapshot(env),
