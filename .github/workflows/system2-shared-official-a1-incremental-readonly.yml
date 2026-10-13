@@ -59,6 +59,27 @@ jobs:
           test -n "$SEED"
           export S2_SHARED_A1_SEED_EVIDENCE_FILE="$SEED"
           node system2/scripts/run_shared_official_a1_incremental_v0_1.mjs
+      - name: Summarize exact official source count without granting selection authority
+        if: always()
+        run: |
+          set -euo pipefail
+          FILE='/tmp/s2-shared-a1-official-incremental/shared-official-a1-run.json'
+          if [ ! -s "$FILE" ]; then
+            echo 'Shared A1 source receipt absent: NO_SOURCE_PROMOTION' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          MARKET_DATE="$(jq -r '.marketDate // "UNKNOWN"' "$FILE")"
+          PAIRS="$(jq -r '.validatedPairs // 0' "$FILE")"
+          EXPECTED="$(jq -r '.plannedPairs // 122' "$FILE")"
+          SOURCE_STATE="$(jq -r '.state // "UNKNOWN"' "$FILE")"
+          test "$EXPECTED" = '122'
+          if [ "$SOURCE_STATE" = 'SOURCE_OBSERVED_UNAUDITED' ]; then
+            test "$PAIRS" = '122'
+            echo "Original TWSE/TPEx market-date evidence $MARKET_DATE: 122/122 source observed, independent PIT and Stage1 still required." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Original TWSE/TPEx market-date evidence $MARKET_DATE: $PAIRS/122, source incomplete; not an accepted Shadow/zero-pick/Frozen day." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo 'Source collection is read-only and cannot authorize ranking, frozen selections or V8 Formal.' >> "$GITHUB_STEP_SUMMARY"
       - name: Retain SHA manifest and original data as short-term cache
         if: always()
         uses: actions/upload-artifact@v4
