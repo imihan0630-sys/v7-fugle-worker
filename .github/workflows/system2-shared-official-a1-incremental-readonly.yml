@@ -1,0 +1,76 @@
+name: System2 Shared Official TWSE TPEx A1 Incremental (READ ONLY)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-shared-official-a1-incremental-readonly.yml"
+  schedule:
+    # 00:15 Taipei Tue-Sat, after the preceding market session.
+    # Date still resolved against official calendar + source confirmation.
+    - cron: "15 16 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: shared-official-a1-readonly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  current_source:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test original SHA, strict source cache and S1/S2 read-only boundary
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/run_shared_official_a1_incremental_v0_1.mjs
+          node --check system2/scripts/discover_shared_official_a1_seed_v0_1.mjs
+          node --test system2/tests/shared_official_a1_incremental_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Find previous read-only exact original data artifact
+        id: seed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/discover_shared_official_a1_seed_v0_1.mjs
+      - name: Reuse previously validated official TWSE TPEx data
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.seed.outputs.seed_run_id }}
+          name: ${{ steps.seed.outputs.seed_artifact_name }}
+          path: /tmp/s2-shared-a1-seed
+          github-token: ${{ github.token }}
+      - name: Collect only missing market/date pairs and verify raw SHA/source date
+        env:
+          S2_SHARED_A1_SEED_ORIGINAL_DIR: /tmp/s2-shared-a1-seed/original-json
+        run: |
+          set -euo pipefail
+          SEED="$(find /tmp/s2-shared-a1-seed -maxdepth 1 -name 'official-61-*.json' -type f -print -quit)"
+          test -n "$SEED"
+          export S2_SHARED_A1_SEED_EVIDENCE_FILE="$SEED"
+          node system2/scripts/run_shared_official_a1_incremental_v0_1.mjs
+      - name: Retain SHA manifest and original data as short-term cache
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-shared-official-a1-${{ github.run_id }}
+          path: /tmp/s2-shared-a1-official-incremental/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: No-privilege-promotion declaration
+        if: always()
+        run: |
+          echo 'Public original data with SHA256; System1/System2 read-only research only.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No D1, V8, Cloudflare Writer, Worker/Cron, push, Frozen or orders.' >> "$GITHUB_STEP_SUMMARY"
+          echo '7-day GitHub Actions Artifact is CACHE, not an immutable long-term archive.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Durable archival publication and individual D1 imports require separate verified writer approval.' >> "$GITHUB_STEP_SUMMARY"
