@@ -1,0 +1,25 @@
+name: V8 Daily Exact-Date Safety Tests ONE SHOT 20261013
+on:
+  push:
+    branches:
+      - ops/v8-node-offline-exact-engine-poc-20261013
+    paths:
+      - .github/workflows/v8-daily-date-safety-tests-once-20261013.yml
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact-date source vintage, bounded cleanup identity, no mutation
+        run: |
+          set -euo pipefail
+          node --check ops/v8_daily_external_candidates_readonly_v0_1.mjs
+          node --check ops/v8_exact_run_temp_kv_cleanup_v0_1.mjs
+          node tests/test_v8_market_session_vintage_firewall_v0_1.mjs
+          node tests/test_v8_exact_run_temp_kv_cleanup_v0_1.mjs
