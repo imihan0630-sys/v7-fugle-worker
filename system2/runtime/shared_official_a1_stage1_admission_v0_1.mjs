@@ -4,6 +4,8 @@
 import {assertSharedOfficialA1ConsumerBoundaryV0_1}
  from '../../shared-knowledge/market-data/shared_official_a1_manifest_v0_1.mjs';
 import {sha256Hex} from './decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from './source_first_official_61_session_collector_v0_1.mjs';
 import {evaluateSourceFirstShortMomentumV0_1}
  from './source_first_short_momentum_evaluator_v0_1.mjs';
 
@@ -30,7 +32,8 @@ async function assertReceipt(sourceReceipt,evaluationAtUtc){
     sourceReceipt.frozenDecisionsDurablyReadBack!==false||
     !Array.isArray(sourceReceipt.errors)||sourceReceipt.errors.length!==0)
    throw Error('SHARED_A1_ADMISSION_SOURCE_RECEIPT_NOT_COMPLETE');
- if(await sha256Hex(strip(sourceReceipt,'receiptHash'))!==sourceReceipt.receiptHash)
+ if(await sha256Hex(official61SessionSourceReceiptHashBaseV0_1(sourceReceipt))!==
+    sourceReceipt.receiptHash)
    throw Error('SHARED_A1_ADMISSION_SOURCE_RECEIPT_HASH_MISMATCH');
  const dates=sourceReceipt.calendar?.tradingDates;
  assertDates(dates,sourceReceipt.marketDate);

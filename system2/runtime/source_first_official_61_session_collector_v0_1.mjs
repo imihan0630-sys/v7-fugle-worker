@@ -10,6 +10,25 @@ import {sha256Hex} from './decision_archive.mjs';
 const DAY=/^\d{4}-\d{2}-\d{2}$/;
 const UTC=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
 const shaBytes=bytes=>createHash('sha256').update(bytes).digest('hex');
+const RECEIPT_HASH_FIELDS=Object.freeze([
+ 'schemaVersion','marketDate','calendar','state','requestCount','plannedMarketDateRequests',
+ 'receivedMarketDateCount','sourceWindowFirstDate','sourceWindowLastDate',
+ 'sourceRowSymbolWindowsCompleteCount','markets','receipts','errors','bySymbol',
+ 'sourceQuotaD1Reads','sourceQuotaD1Writes','assessorExecuted','qualifiedCandidates',
+ 'selectedCount','frozenDecisionsDurablyReadBack','independentProviderAudited',
+ 'noSystem1RuntimeMutations',
+]);
+export function official61SessionSourceReceiptHashBaseV0_1(receipt){
+ if(!receipt||typeof receipt!=='object'||Array.isArray(receipt))
+  throw Error('OFFICIAL_61_SOURCE_RECEIPT_HASH_BASE_INVALID');
+ const base={};
+ for(const field of RECEIPT_HASH_FIELDS){
+  if(!Object.prototype.hasOwnProperty.call(receipt,field))
+   throw Error('OFFICIAL_61_SOURCE_RECEIPT_HASH_FIELD_MISSING_'+field);
+  base[field]=receipt[field];
+ }
+ return base;
+}
 const iso=x=>typeof x==='string'&&UTC.test(x)&&Number.isFinite(Date.parse(x));
 const dayOf=x=>{const d=new Date(x+'T00:00:00Z');if(!Number.isFinite(+d))throw Error('INVALID_DATE');return d};
 function shift(x,n){const d=dayOf(x);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
@@ -181,5 +200,6 @@ export async function captureOfficial61SessionWindowV0_1({
   frozenDecisionsDurablyReadBack:false,independentProviderAudited:false,
   noSystem1RuntimeMutations:true,
  };
- return Object.freeze({...base,receiptHash:await sha256Hex(base)});
+ return Object.freeze({...base,
+  receiptHash:await sha256Hex(official61SessionSourceReceiptHashBaseV0_1(base))});
 }

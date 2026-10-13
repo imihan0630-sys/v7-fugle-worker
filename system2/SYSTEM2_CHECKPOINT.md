@@ -3569,3 +3569,12 @@ Exact next BUILD gate:
 2. dispatch exact source Run `38351651871` (or a newer valid successful source run);
 3. independently read back private raw bytes, hashes, manifest and archive receipt;
 4. do not promote 121/122 archival success into 122/122 source admission or Shadow S0-S5 acceptance.
+
+## 2026-10-13 BUILD_LANE — first private archive run fail-closed; receipt hash-domain fix implemented locally
+
+- Owner-approved PR #1179 merged as `fed05bfb3a87487c05568564db3030222103881e`.
+- First exact-source dispatch Run `38361508001` / Job `115176552823` downloaded Artifact `11791440725`, passed tests, target-only key setup and private clone, then stopped before commit/push with `PRIVATE_ARCHIVE_SOURCE_RECEIPT_INTEGRITY_INVALID`. No private raw commit, D1/R2 operation or public publication occurred.
+- Root cause: the collector froze `receiptHash` over its exact core receipt, after which the create-only storage wrapper appended `originals` and reuse/diagnostic metadata. Publisher and Stage1 admission had incorrectly rehashed the entire persisted wrapper. Actual claimed/core hash both equal `42cd57766dc8408dc14ee88e8414a9a934839698c0513721c029b88a913f33e0`; hashing the later wrapper yields the irrelevant `58e979567548e90e50d9a36f084996d1d6ee8638c4bbf5d7377d4f752778dd60`.
+- A single canonical `official61SessionSourceReceiptHashBaseV0_1` projection now defines the frozen collector hash domain for collector, archive publisher and Stage1 admission. Core mutation still fails; post-capture storage metadata cannot rewrite the collector identity.
+- Focused matrix **32/32 PASS**. The exact real Artifact locally rehydrated 121 raw gzip files / 25,039,760 compressed bytes and produced stable archive receipt `0a0396bd8c81f4bcfdba238b38e97278b9e171eceda328fe6512c986dc1eee9f`; replay independently verified 124 existing content files.
+- GitHub private publication remains **0/1 pending fix PR merge and provider rerun**. Source remains 121/122 and Shadow S0-S5 remains 0/6. Evidence: `system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_HASH_DOMAIN_REMEDIATION_20261013_V0_1.json`.
