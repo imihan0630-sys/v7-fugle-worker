@@ -33,8 +33,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Node static syntax checks
+      - name: Node static syntax checks and janitor safety tests
         run: |
+          node --check ops/v8_exact_run_temp_kv_cleanup_v0_1.mjs
+          node tests/test_v8_exact_run_temp_kv_cleanup_v0_1.mjs
           node --check ops/v8_daily_external_candidates_readonly_v0_1.mjs
           node --check ops/v8_offline_quality_eps_overlay_readonly_v0_1.mjs
       - name: Read authentic same-date official sources; compute unchanged V8 full-market selector in Node; source-only MOPS EPS checks
@@ -45,4 +47,29 @@ jobs:
           name: v8-daily-original-engine-candidates-${{ github.run_id }}
           path: artifacts/v8-daily-external-candidates-*.json
           if-no-files-found: warn
+          retention-days: 60
+
+  cleanup_temp_kv:
+    # A separate runner executes cleanup even if original candidate step fails or times out.
+    if: ${{ always() }}
+    needs: candidate_certificate
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Independent exact-run temporary KV reader cleanup (no production mutations)
+        run: node ops/v8_exact_run_temp_kv_cleanup_v0_1.mjs
+      - name: Preserve provider deletion/absent physical receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-exact-run-temporary-worker-cleanup-${{ github.run_id }}
+          path: artifacts/v8-temp-cleanup-*.json
+          if-no-files-found: error
           retention-days: 60
