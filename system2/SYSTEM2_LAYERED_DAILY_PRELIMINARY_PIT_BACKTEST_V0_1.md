@@ -21,3 +21,11 @@ C — HISTORICAL RESEARCH / PERFORMANCE:
 - Forward decisions accumulate genuine decision-time receipts prospectively, never backdate frozen decisions.
 
 This policy is distinct from first system V8 and cannot silently update its Formal Core, funds, signals or Cloudflare runtime. Any change to System2 selected-rank criteria must version and pass proper evaluation.
+
+## V0.2 additive stock-instrument restriction (2026-10-14)
+
+The first genuine 2026-10-14 06:07 Taipei `PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_1` produced 582 research observations from a **four-digit-code security universe**, which is **not** certified common-share-only. One displayed entry was `9103 美德醫療-DR` (TWSE explicitly identifies it as a Taiwan depositary receipt: https://wwwc.twse.com.tw/zh/listed/listed/apply-tdr.html ). Calling all 582 ordinary shares or buy candidates would be incorrect.
+
+`PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2` conservatively quarantines original official source names ending in `-DR` (including Unicode dash variants). This is **only a known-instrument-exclusion screen**, not an independent proof that every remaining four-digit instrument is an ordinary share. New receipt has `depositaryReceiptQuarantinedCount`, `ordinaryEquityOnlyUniverseCertified=false`, `instrumentClassPITStatus=ORDINARY_EQUITY_CLASS_NOT_INDEPENDENTLY_ATTESTED`, and all-denominator checks include the quarantined set. Version V0.1 receipts and their original hashes are historical facts and must never be overwritten to pretend they had V0.2 membership.
+
+This version changes PRELIMINARY output membership only, NOT the registered SHORT_MOMENTUM formal strategy, real-money eligibility, buy/sell decision, PIT-certified historical backtest, D1 Frozen or V8 Formal Core. A future separately authorized instrument taxonomy must use actual official security classifications, not infer positive ordinary-equity membership from code shape or name alone.
