@@ -42,7 +42,7 @@ jobs:
       - name: GitHub Issues-only dispatch; no cloud resource permissions
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          S2_COMMAND: ${{ (github.event_name == 'workflow_dispatch' && inputs.command == 'status') || (github.event_name == 'issue_comment' && github.event.comment.body == '/s2 status') && 'status' || 'start' }}
+          S2_COMMAND: ${{ (github.event_name == 'workflow_dispatch' && inputs.command == 'status' && 'status') || (github.event_name == 'issue_comment' && github.event.comment.body == '/s2 status' && 'status') || 'start' }}
         run: node system2/commander/commander.mjs
       - name: Strict resource boundary
         if: always()
