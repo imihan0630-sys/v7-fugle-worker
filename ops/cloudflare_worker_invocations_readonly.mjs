@@ -13,10 +13,14 @@ export function summarizeInvocationRows(rows,{startUtc,endUtc,scriptName}){
   if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z$/.test(minute))continue;
   const status=String(row?.dimensions?.status||"UNKNOWN");
   const key=minute+"|"+status;
-  const previous=groups.get(key)||{minuteUtc:minute,status,requests:0,errors:0,subrequests:0};
+  const previous=groups.get(key)||{minuteUtc:minute,status,requests:0,errors:0,subrequests:0,
+   cpuTimeP50:0,cpuTimeP99:0,memoryUsageBytesP50:0,memoryUsageBytesP99:0};
   previous.requests+=Number(row?.sum?.requests)||0;
   previous.errors+=Number(row?.sum?.errors)||0;
   previous.subrequests+=Number(row?.sum?.subrequests)||0;
+  for(const field of ["cpuTimeP50","cpuTimeP99","memoryUsageBytesP50","memoryUsageBytesP99"]){
+   previous[field]=Math.max(previous[field],Number(row?.quantiles?.[field])||0);
+  }
   groups.set(key,previous);
  }
  const minutes=[...groups.values()].sort((a,b)=>a.minuteUtc.localeCompare(b.minuteUtc)||a.status.localeCompare(b.status));
@@ -29,7 +33,8 @@ export function summarizeInvocationRows(rows,{startUtc,endUtc,scriptName}){
   attributionLimit:"DATASET_COMBINES_HTTP_AND_SCHEDULED_INVOCATIONS",sampleCount:minutes.length,totalRequests,totalErrors,
   lastInvocationMinuteUtc:activeMinutes.at(-1)||null,lastErrorMinuteUtc:errorMinutes.at(-1)||null,
   statusTotals:Object.values(Object.groupBy(minutes,x=>x.status)).map(items=>({status:items[0].status,
-   requests:items.reduce((sum,x)=>sum+x.requests,0),errors:items.reduce((sum,x)=>sum+x.errors,0)})),
+   requests:items.reduce((sum,x)=>sum+x.requests,0),errors:items.reduce((sum,x)=>sum+x.errors,0),
+   maxCpuTimeP99:Math.max(...items.map(x=>x.cpuTimeP99)),maxMemoryUsageBytesP99:Math.max(...items.map(x=>x.memoryUsageBytesP99))})),
   minutes};
 }
 
@@ -42,7 +47,7 @@ async function main(){
  const start=new Date(end.getTime()-8*60*60*1000);
  const startUtc=process.env.DIAGNOSTIC_START_UTC||start.toISOString();
  const endUtc=process.env.DIAGNOSTIC_END_UTC||end.toISOString();
- const query='query Invocations($accountTag:String!,$script:String!,$start:Time!,$end:Time!){viewer{accounts(filter:{accountTag:$accountTag}){workersInvocationsAdaptive(limit:10000,filter:{scriptName:$script,datetime_geq:$start,datetime_leq:$end},orderBy:[datetime_ASC]){sum{requests errors subrequests} dimensions{datetime scriptName status}}}}}';
+ const query='query Invocations($accountTag:String!,$script:String!,$start:Time!,$end:Time!){viewer{accounts(filter:{accountTag:$accountTag}){workersInvocationsAdaptive(limit:10000,filter:{scriptName:$script,datetime_geq:$start,datetime_leq:$end},orderBy:[datetime_ASC]){sum{requests errors subrequests} quantiles{cpuTimeP50 cpuTimeP99 memoryUsageBytesP50 memoryUsageBytesP99} dimensions{datetime scriptName status}}}}}';
  const response=await fetch(endpoint,{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},
   signal:AbortSignal.timeout(30000),body:JSON.stringify({query,variables:{accountTag,script:scriptName,start:startUtc,end:endUtc}})});
  const raw=await response.json().catch(()=>null);
