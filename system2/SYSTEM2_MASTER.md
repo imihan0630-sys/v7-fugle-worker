@@ -865,3 +865,12 @@ still **0/1** and no archive raw file has yet been uploaded by the new workflow.
 Latest source evidence remains 121/122 across 61 dates; Shadow S0-S5 remains 0/6.
 See `system2/SYSTEM2_SHARED_A1_PRIVATE_ARCHIVE_V0_1.md` and
 `system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_BUILD_HANDOFF_20261013_V0_1.json`.
+
+First provider dispatch `38361508001` correctly failed before push because the
+publisher initially rehashed persistence metadata appended after the source
+collector had frozen its core receipt identity. The canonical collector hash
+domain is now shared by collector, publisher and Stage1 admission. Focused tests
+are 32/32 PASS and exact Artifact `11791440725` locally rehydrated 121 raw files
+with a stable receipt. Provider publication/readback remains 0/1 until the fix is
+merged and rerun; evidence is
+`system2/evidence/S2_SHARED_A1_PRIVATE_ARCHIVE_HASH_DOMAIN_REMEDIATION_20261013_V0_1.json`.

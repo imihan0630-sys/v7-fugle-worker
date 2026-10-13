@@ -8,10 +8,11 @@ import {fileURLToPath} from 'node:url';
 import {planSharedOfficialA1ArchiveDryRunV0_1}
  from './plan_shared_official_a1_archive_dryrun_v0_1.mjs';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 
 const SHA=/^[a-f0-9]{64}$/i;
 const TARGET='imihan0630-sys/v7-system2-official-a1-archive';
-const strip=(x,k)=>Object.fromEntries(Object.entries(x||{}).filter(([key])=>key!==k));
 function inside(root,path){
  const rel=relative(root,path);
  return rel!==''&&rel!=='..'&&!rel.startsWith('..'+sep)&&!rel.startsWith(sep);
@@ -57,7 +58,8 @@ function assertAuthorization(a){
 async function assertSourceReceipt(sourceReceipt,manifest){
  if(sourceReceipt?.schemaVersion!=='S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1'||
     !SHA.test(sourceReceipt.receiptHash||'')||
-    await sha256Hex(strip(sourceReceipt,'receiptHash'))!==sourceReceipt.receiptHash||
+    await sha256Hex(official61SessionSourceReceiptHashBaseV0_1(sourceReceipt))!==
+      sourceReceipt.receiptHash||
     manifest.originalOfficialProvenanceHash!==sourceReceipt.receiptHash||
     !Array.isArray(sourceReceipt.receipts)||
     sourceReceipt.receipts.length!==manifest.sourceMarketDatePairsValidated)
@@ -156,7 +158,8 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
    originalDirectory:process.env.SHARED_A1_ORIGINAL_DIR,
    archiveDirectory:process.env.SHARED_A1_ARCHIVE_DIR,
   });
-  const out='/tmp/shared-a1-private-archive-publish';
+  const out=process.env.SHARED_A1_ARCHIVE_RECEIPT_DIR||
+   '/tmp/shared-a1-private-archive-publish';
   await mkdir(out,{recursive:true,mode:0o700});
   await writeFile(resolve(out,'archive-publish-receipt.json'),JSON.stringify(result,null,2)+'\n',
    {flag:'wx',mode:0o600});

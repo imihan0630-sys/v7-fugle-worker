@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 import {buildSharedOfficialA1MarketManifestV0_1}
  from '../../shared-knowledge/market-data/shared_official_a1_manifest_v0_1.mjs';
 import {admitSharedOfficialA1ToShortMomentumStage1V0_1 as admit}
@@ -45,7 +47,13 @@ async function fixture(){
    sourceQuotaD1Reads:0,sourceQuotaD1Writes:0,assessorExecuted:false,
    qualifiedCandidates:null,selectedCount:null,frozenDecisionsDurablyReadBack:false,
    independentProviderAudited:false,noSystem1RuntimeMutations:true};
- const sourceReceipt={...sourceBase,receiptHash:await sha256Hex(sourceBase)};
+ const sourceReceipt={...sourceBase,receiptHash:await sha256Hex(sourceBase),
+   originalCount:122,originals:receipts.map(x=>({market:x.market,date:x.marketDate,
+     sourceSha256:x.originalRawResponseSha256,originalBytes:x.originalRawResponseBytes,
+     gzipBytes:500,observedAt:x.capturedAt})),
+   sharedOriginalSourceReuse:{trustedReusedMarketDatePairs:0},
+   retrospectiveDiagnosticOnly:false,retrospectiveSelectionClaimDisabled:true,
+   genuineProspectiveDecisionCapture:false};
  const manifest=buildSharedOfficialA1MarketManifestV0_1({sourceReceipt,
    issuedAtUtc:'2026-10-13T13:10:00Z',runId:'TEST',commitSha:H});
  const ledgerBase={schemaVersion:'S2_SOURCE_FIRST_PROSPECTIVE_LEDGER_V0_1',
@@ -93,6 +101,11 @@ test('independent 122/122 audit admits source into existing Stage1 research eval
  assert.equal(out.cloudflareD1Reads,0);assert.equal(out.cloudflareD1Writes,0);
  assert.equal(out.system1FormalCoreTouched,false);
 });
+test('collector hash stays valid after create-only persistence metadata is appended',async()=>{
+ const p=await fixture();p.sourceReceipt.originalCount=999;
+ const out=await admit(p);
+ assert.equal(out.evaluationState,'EVALUATED_OFFLINE_RESEARCH_ONLY');
+});
 test('121/122 source capture cannot enter the evaluator',async()=>{
  const p=await fixture();p.sourceReceipt.receipts.pop();
  await assert.rejects(()=>admit(p),/SOURCE_RECEIPT_HASH_MISMATCH|SOURCE_PAIR_DENOMINATOR/);
@@ -121,7 +134,8 @@ test('duplicate cross-market symbol history fails closed',async()=>{
  const p=await fixture();const h=p.sourceReceipt.bySymbol['TWSE|2330'];
  p.sourceReceipt.bySymbol['TPEX|2330']={...h,market:'TPEX',bars:h.bars.map(x=>({...x,market:'TPEX'}))};
  p.sourceReceipt.sourceRowSymbolWindowsCompleteCount=2;
- const {receiptHash,...base}=p.sourceReceipt;p.sourceReceipt={...base,receiptHash:await sha256Hex(base)};
+ const base=official61SessionSourceReceiptHashBaseV0_1(p.sourceReceipt);
+ p.sourceReceipt={...p.sourceReceipt,receiptHash:await sha256Hex(base)};
  await assert.rejects(()=>admit(p),/HISTORY_IDENTITY_INVALID/);
 });
 test('future-dated independent audit is rejected',async()=>{

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "S2_SHARED_A1_PRIVATE_ARCHIVE_HASH_DOMAIN_REMEDIATION_20261013_V0_1",
+  "status": "FIX_IMPLEMENTED_LOCAL_PHYSICAL_REHYDRATION_PASS__GITHUB_RERUN_PENDING",
+  "observedMain": "fed05bfb3a87487c05568564db3030222103881e",
+  "trigger": {
+    "workflowRunId": 38361508001,
+    "jobId": 115176552823,
+    "sourceRunId": 38351651871,
+    "sourceArtifactId": 11791440725,
+    "sourceArtifactDigest": "sha256:83680efe41cf2e27e419732d4fa966485d2a12d14df8d90afce637f85df2b33e",
+    "verdict": "FAIL_CLOSED_BEFORE_PUSH",
+    "failureCode": "PRIVATE_ARCHIVE_SOURCE_RECEIPT_INTEGRITY_INVALID",
+    "privateArchivePushPerformed": false
+  },
+  "rootCause": {
+    "collectorReceiptHash": "42cd57766dc8408dc14ee88e8414a9a934839698c0513721c029b88a913f33e0",
+    "collectorCoreHashRecomputed": "42cd57766dc8408dc14ee88e8414a9a934839698c0513721c029b88a913f33e0",
+    "incorrectWholePersistedObjectHash": "58e979567548e90e50d9a36f084996d1d6ee8638c4bbf5d7377d4f752778dd60",
+    "cause": "CREATE_ONLY_PERSISTENCE_METADATA_WAS_APPENDED_AFTER_THE_COLLECTOR_CORE_HASH_WAS_FROZEN",
+    "affectedConsumers": [
+      "private archive publisher",
+      "future 122/122 Stage1 admission verifier"
+    ]
+  },
+  "fix": {
+    "canonicalHashDomainFunction": "official61SessionSourceReceiptHashBaseV0_1",
+    "collectorUsesSameProjection": true,
+    "publisherUsesSameProjection": true,
+    "stage1AdmissionUsesSameProjection": true,
+    "hashedCoreFieldMutationStillRejected": true,
+    "postCaptureStorageMetadataExcludedFromCollectorIdentity": true
+  },
+  "verification": {
+    "focusedTestsPassed": 32,
+    "focusedTestsFailed": 0,
+    "actualArtifactLocalRehydration": {
+      "sourcePairs": 121,
+      "rawFiles": 121,
+      "rawCompressedBytes": 25039760,
+      "allArchiveFiles": 125,
+      "verifiedExistingContentFilesOnReplay": 124,
+      "archiveReceiptHash": "0a0396bd8c81f4bcfdba238b38e97278b9e171eceda328fe6512c986dc1eee9f",
+      "publicRawPublication": false,
+      "cloudflareD1Writes": 0,
+      "selectionPerformed": false
+    }
+  },
+  "physicalAcceptance": {
+    "privateGitHubArchivePublicationAccepted": false,
+    "reason": "FIX_NOT_MERGED_AND_PROVIDER_WORKFLOW_NOT_RERUN",
+    "sourceCompleteness": "121/122_INCOMPLETE",
+    "shadowAcceptedGates": 0,
+    "shadowRequiredGates": 6
+  },
+  "protectedBoundaries": {
+    "system1FormalCoreTouched": false,
+    "system1RuntimeTouched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "paidResourceUsed": false,
+    "frozenDecisionWritten": false
+  }
+}

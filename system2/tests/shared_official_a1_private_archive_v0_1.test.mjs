@@ -13,6 +13,8 @@ import {buildOfficialHistoricalA1UrlV0_1}
  from '../runtime/official_historical_a1_source_v0_1.mjs';
 import {publishSharedOfficialA1PrivateArchiveV0_1 as publish}
  from '../scripts/publish_shared_official_a1_private_archive_v0_1.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const observedAt='2026-10-13T06:00:00Z',marketDate='2026-10-13',date='2026-07-16';
 function raw(){
@@ -32,11 +34,22 @@ async function fixture(){
  const receiptBase={schemaVersion:'S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1',
   marketDate,calendar:{tradingDates:dates},state:'INCOMPLETE',requestCount:1,
   plannedMarketDateRequests:122,receivedMarketDateCount:1,
+  sourceWindowFirstDate:dates[0],sourceWindowLastDate:dates.at(-1),
+  sourceRowSymbolWindowsCompleteCount:0,markets:['TWSE','TPEX'],
   receipts:[{market:'TWSE',marketDate:date,sourceId:'A1_TWSE_MI_INDEX_HISTORICAL_DAILY',
    sourceUrl:buildOfficialHistoricalA1UrlV0_1('TWSE',date),providerReportedDate:date,
    originalRawResponseSha256:sha(body),originalRawResponseBytes:body.length,
-   capturedAt:observedAt,rowCount:1,rawProviderBytesPreserved:true}],errors:[],bySymbol:{}};
- const sourceReceipt={...receiptBase,receiptHash:await sha256Hex(receiptBase)};
+   capturedAt:observedAt,rowCount:1,rawProviderBytesPreserved:true}],errors:[],bySymbol:{},
+  sourceQuotaD1Reads:0,sourceQuotaD1Writes:0,assessorExecuted:false,
+  qualifiedCandidates:null,selectedCount:null,frozenDecisionsDurablyReadBack:false,
+  independentProviderAudited:false,noSystem1RuntimeMutations:true};
+ const sourceReceipt={...receiptBase,receiptHash:await sha256Hex(
+   official61SessionSourceReceiptHashBaseV0_1(receiptBase)),
+  originalCount:1,originals:[{market:'TWSE',date,sourceSha256:sha(body),
+   originalBytes:body.length,gzipBytes:packed.length,observedAt}],
+  sharedOriginalSourceReuse:{trustedReusedMarketDatePairs:0},
+  retrospectiveDiagnosticOnly:true,retrospectiveSelectionClaimDisabled:true,
+  genuineProspectiveDecisionCapture:false};
  const sourceManifest=buildSharedOfficialA1MarketManifestV0_1({
   sourceReceipt,issuedAtUtc:'2026-10-13T06:10:00Z',runId:'TEST'
  });
@@ -90,6 +103,13 @@ test('source receipt hash and manifest lineage are independently required',async
   f.sourceReceipt={...f.sourceReceipt,receiptHash:'f'.repeat(64)};
   await assert.rejects(()=>publish({...f,originalDirectory:f.source,archiveDirectory:f.archive}),
    /SOURCE_RECEIPT_INTEGRITY_INVALID/);
+ }finally{await f.cleanup();}
+});
+test('post-capture persistence metadata is outside the frozen collector hash domain',async()=>{
+ const f=await fixture();try{
+  f.sourceReceipt.originalCount=999;
+  const out=await publish({...f,originalDirectory:f.source,archiveDirectory:f.archive});
+  assert.equal(out.sourceReceiptHash,f.sourceReceipt.receiptHash);
  }finally{await f.cleanup();}
 });
 test('public or alternate target authorization is rejected',async()=>{
