@@ -1,0 +1,83 @@
+name: System2 Oct13 Real 122 A1 Delayed Morning PRELIMINARY ONCE READONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-20261014-actual-morning-preliminary-once.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  witnessed:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-first input gates and layered present-only preliminary rules
+        run: |
+          set -euo pipefail
+          node --test system2/tests/shared_official_a1_source_ledger_bridge_v0_1.test.mjs
+          node --test system2/tests/preliminary_daily_pv_watch_v0_1.test.mjs
+          node --test system2/tests/backtest_pit_scope_gate_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Retrieve exact verified official 2026-10-13 122 original market bodies
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38468816687
+          name: s2-shared-official-a1-38468816687
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Retrieve separately hash-attested physical official source audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38469057567
+          name: system2-shared-official-a1-independent-audit-38469057567
+          path: /tmp/s2-audit-signed
+          github-token: ${{ github.token }}
+      - name: Locate exactly one signed original audit receipt with nonzero bytes
+        run: |
+          set -euo pipefail
+          mapfile -t FILES < <(find /tmp/s2-audit-signed -type f -name audit-receipt.json -print)
+          test "${#FILES[@]}" -eq 1
+          test -s "${FILES[0]}"
+          echo "S2_A1_AUDIT_RECEIPT_FILE=${FILES[0]}" >> "$GITHUB_ENV"
+      - name: Build ONLY as-of-actual-Run-at-morning preliminary list from real 122 originals
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
+      - name: Prevent falsely backdated selected or historical performance
+        run: |
+          set -euo pipefail
+          P=/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
+          S=/tmp/s2-a1-stage1-readonly/summary.json
+          R=/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+          test -s "$P"
+          test -s "$S"
+          test -s "$R"
+          test "$(jq -r .marketDate "$P")" = '2026-10-13'
+          test "$(jq -r .state "$P")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'
+          test "$(jq -r .lateMorningObservationNotBackdated "$P")" = 'true'
+          test "$(jq -r .officialUniverseCount "$P")" -ge 1000
+          test "$(jq -r .historicalBacktestCertified "$P")" = 'false'
+          test "$(jq -r .finalSelectionAuthorized "$P")" = 'false'
+          test "$(jq -r .selectedCount "$P")" = 'null'
+          test "$(jq -r .zeroPickDay "$P")" = 'null'
+          test "$(jq -r .frozenWritten "$P")" = 'false'
+          test "$(jq -r .state "$R")" = 'BLOCKED_SOURCE_NOT_SELECTION'
+          test "$(jq -r .state "$S")" = 'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'
+          test "$(jq -r '.watchlist | all(.[]; .companyActionPitStatus == "UNKNOWN_NOT_CLEARED" and .strategyRank == null and .triggerPrice == null and .stop == null)' "$P")" = 'true'
+          echo "REAL_2026_10_13_OFFICIAL_122_SOURCE_MORNING_AS_OF_NOW_WATCH $(jq -r .preliminaryMatchedCount "$P") matched / $(jq -r .displayedCount "$P") displayed / $(jq -r .officialUniverseCount "$P") original universe. NO_FORMAL_SELECTION/PIT_BACKTEST/FROZEN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve bounded derived preliminary candidate list and hash only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-actual-morning-preliminary-${{ github.run_id }}
+          path: /tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
+          if-no-files-found: warn
+          retention-days: 7
