@@ -123,8 +123,9 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
     found.push({
       symbol,companyName:row.companyName||null,market:row.market,
       marketDate:bridge.marketDate,
-      close:last.close,volumeShares:last.volumeShares,
-      sma20:Number(sma20.toFixed(5)),
+      // Public CI artifact includes only a bounded derived observation,
+      // NEVER verbatim official OHLCV/provider raw rows.
+      aboveSma20:true,positiveFiveSessionReturn:true,
       fiveSessionReturnPct:Number((fiveSessionReturn*100).toFixed(5)),
       sourceRowHash:row.sourceRowHash,
       companyActionPitStatus:'UNKNOWN_NOT_CLEARED',
