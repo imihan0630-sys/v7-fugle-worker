@@ -1,0 +1,38 @@
+name: System1 P0 Physical 60-Day History Census (ONE SHOT READ ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-history60-census-physical-once.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-source-history-census
+  cancel-in-progress: false
+jobs:
+  source_history_census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static fail-closed SELECT-only D1 source census
+        run: |
+          node --check ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+          test -f ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+      - name: Read only actual V7 D1 history and warmup evidence, bounded
+        run: node ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-history60-real-census-${{ github.run_id }}
+          path: artifacts/system1-history60-source-census.json
+          if-no-files-found: warn
+          retention-days: 30
