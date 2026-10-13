@@ -1,13 +1,9 @@
 name: System2 Official 61-Session Source Bootstrap (Read-only)
 
 on:
-  pull_request:
-    paths:
-      - "system2/scripts/run_source_first_official_61_session_collector_v0_1.mjs"
-      - ".github/workflows/system2-official-61-session-source-bootstrap-readonly.yml"
+  # Legacy full 122-GET bootstrap is manual only.
+  # One daily source collector owns automatic incremental retrieval.
   workflow_dispatch:
-  schedule:
-    - cron: "50 15 * * 1" # Monday 23:50 Asia/Taipei, bounded source-only probe
 
 permissions:
   contents: read
@@ -80,59 +76,3 @@ jobs:
           echo "- Storage: GitHub Action artifact 90 days, NOT durable frozen decision" >> "$GITHUB_STEP_SUMMARY"
           echo "- Cloudflare D1 and System1 runtime operations: NONE" >> "$GITHUB_STEP_SUMMARY"
 
-  first_real_61_session_pr_probe:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Resolve latest official CLOSED TWSE trading day without guessing holiday
-        id: date
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import {buildOfficialTradingDatesV0_1} from './system2/runtime/official_historical_backfill_source_v0_1.mjs';
-          const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',
-            year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-          const shift=(days)=>{
-            const d=new Date(today+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+days);
-            return d.toISOString().slice(0,10);
-          };
-          const end=shift(-1);
-          const result=await buildOfficialTradingDatesV0_1({fromDate:shift(-20),toDate:end});
-          const dates=result.tradingDates;
-          if(!Array.isArray(dates)||!dates.length||dates.at(-1)>end)
-            throw Error('OFFICIAL_CLOSED_TRADING_DAY_NOT_FOUND');
-          fs.appendFileSync(process.env.GITHUB_OUTPUT,'market_date='+dates.at(-1)+'\n');
-          console.log(JSON.stringify({latestOfficialClosedTradingDay:dates.at(-1),
-            calendarSource:result.source,purpose:'RETROSPECTIVE_SOURCE_ONLY_NO_FROZEN_DECISIONS'}));
-          NODE
-      - name: Physical official TWO-MARKET 61-session A1 source trial, max 122 date-markets
-        shell: bash
-        env:
-          MARKET_DATE: ${{ steps.date.outputs.market_date }}
-        run: |
-          set -euo pipefail
-          node --test system2/tests/source_first_official_61_session_collector_v0_1.test.mjs
-          node system2/scripts/run_source_first_official_61_session_collector_v0_1.mjs "$MARKET_DATE" --retrospective-diagnostic
-      - name: Preserve all original public source JSON files even if incomplete
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: system2-real-61-session-retro-${{ github.run_id }}
-          path: /tmp/system2-official-61/
-          if-no-files-found: warn
-          retention-days: 30
-      - name: Protection record
-        if: always()
-        run: |
-          echo "This is a historical *source acquisition* diagnostic only." >> "$GITHUB_STEP_SUMMARY"
-          echo "No System2 daily Frozen selection, zero-pick claim, push, orders, or Cloudflare writes." >> "$GITHUB_STEP_SUMMARY"
-          git diff --exit-code -- Worker.js wrangler.toml
