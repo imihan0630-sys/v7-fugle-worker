@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "S2_00_20261013_STAGE1_G3_QUOTA_PHYSICAL_ACCEPTANCE_DELTA_V0_1",
+  "recordedAtUtc": "2026-10-13T14:28:34.422Z",
+  "recordedAtTaipei": "2026-10-13 22:28:34",
+  "room": "00_RESEARCH_AUDIT_CONTROL",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "authoritativeMainAtReadback": "3bc6193d2a7ea91bc2482ecb6b2c0c82ae1bcf65",
+  "type": "READ_ONLY_CROSS_LANE_INDEPENDENT_RECONCILIATION",
+  "methods": [
+    "Fetch live GitHub main, canonical bootstrap+registry+room checkpoints, owner issues and independent formal receipts",
+    "Re-read immutable producer JSON file blobs from current main, verify actual original GitHub Actions Run Job Artifact IDs/conclusions/Provider digests using live Actions metadata; verify no collision between accepted and blocked evidence scopes",
+    "Review current workflow cron and corrected preliminary session-clock code; do not dispatch workflow or claim current provider source has published",
+    "00 DID NOT independently decrypt encrypted D1 backup, download/recompute raw Artifact ZIP payload SHA256, or run Cloudflare D1/R2 actions; underlying AUDIT_LANE acceptance remains separately authoritative"
+  ],
+  "delta": {
+    "destinationSchema": {
+      "state": "FORMAL_SCHEMA_ONLY_STAGE_PASS_25_OF_25",
+      "physicalRunApplyOnce": 38069750915,
+      "physicalRunSchemaSetReadback": 38099562997,
+      "formalIndependentPr": 1116,
+      "formalScopeIssue": 1079,
+      "tables": 55,
+      "indexes": 63,
+      "version": "1.1",
+      "authorizedExecution": "ONE_SHOT_OWNER_APPLY_ONCE_PREVIOUSLY_COMPLETED_DO_NOT_REPEAT",
+      "doesNotCertify": [
+        "G3 original source backup/PIT/frozen",
+        "G4 old data migration",
+        "destination Worker/Cron",
+        "R2 entitlement",
+        "System2 live Shadow",
+        "actual independent two-account operation"
+      ]
+    },
+    "g3": {
+      "state": "FULL_G3_BLOCKED_WITH_PHASE1_RESTORE_SCOPED_PASS",
+      "formalSource": "system2/migration/evidence/S2_AUDIT_G3_PHASE1_INDEPENDENT_RESTORE_ACCEPTANCE_20261012_V0_1.json",
+      "originalSourceExportRun": 38150147134,
+      "independentPhysicalProtectedSqliteRestoreRun": 38214521809,
+      "independentRestoreJob": 114696031275,
+      "independentSanitizedArtifactId": 11732075339,
+      "independentSanitizedArtifactZipSha256": "f7d878a2eed566b0a55246effccc5d69a9fe5a9a10ba6e6e7598906d624657a6",
+      "independentArchiveArtifactId": 11732395154,
+      "independentArchiveZipSha256": "b77efb60924eef76f78af5a6e29b3488646744e3bf81d142827e8fb298d60d64",
+      "accepted": 1,
+      "total": 4,
+      "acceptedFamily": "SOURCE_BACKUP_RESTORE_INDEPENDENT_CONTENT_SCOPED",
+      "sourceTables": 55,
+      "sourceIndexes": 63,
+      "totalRows": 113222,
+      "sourceA1Bars": 84688,
+      "sourceFrozenDecisionRowsInD1": 0,
+      "sqliteQuickCheck": "ok",
+      "sqliteFullIntegrityCheck": "ok",
+      "blockingFamilies": [
+        "PIT_FIRST_KNOWN_AND_PUBLICATION_CLOCK: independent source-level original provider publication times missing (0/84688 certified), provisional initial 11976 quarantined",
+        "FROZEN_PRIOR_DECISION_REMOTE_ANCHORS: zero current D1 decision table rows does not prove absence of earlier external Frozen",
+        "DURABLE_KEY_INDEPENDENT_RECOVERABILITY: 90-day encrypted archive exists but depends on credential-derived key, no independently recoverable escrow"
+      ],
+      "sourceR2Bytes": "NOT_INDEPENDENTLY_VERIFIED",
+      "g4DestinationImportedRows": 0,
+      "wholeG3": "BLOCKED",
+      "neverPromote": "Restored row-count and self-reported availableAt do not qualify historical PIT or source-to-destination transfer."
+    },
+    "sharedOfficial61": {
+      "actualRetrospectiveCut": "2026-10-12",
+      "sourceMarketDatePairsAccepted": 121,
+      "sourcePairsRequired": 122,
+      "missingMarket": "TPEX",
+      "missingDate": "2026-07-15",
+      "sourceRun": 38351651871,
+      "independentSourceStage1AuditRun": 38380969013,
+      "independentJob": 115240986795,
+      "independentEvidenceArtifactId": 11803178157,
+      "independentEvidenceArtifactDigest": "sha256:fd2e1b2b450b0a895677458393854b866a50748f7443083b74498cccd5d1d5",
+      "independentVerdict": "BLOCKED_SOURCE_INCOMPLETE_AND_NO_ELIGIBLE_SOURCE_LEDGER",
+      "sourceLedgerHash": null,
+      "selectedCount": null,
+      "legitimateZeroPick": null,
+      "frozenDecisionWritten": false,
+      "tradingDate20261013": {
+        "separatePreliminaryRun": 38374912180,
+        "twse": "OFFICIAL_EXACT_DATE_1087_ORDINARY_SYMBOLS_PIT_UNAUDITED",
+        "tpex": "OFFICIAL_SOURCE_NOT_READY_OR_PARSE_FAILED_AT_17_15_TAIPEI",
+        "notSameAs20261012Retrospective": true
+      },
+      "nextSourceClock": {
+        "collectorScheduledUTC": "15 16 * * 1-5",
+        "collectorScheduleLocal": "00:15 Asia/Taipei Tue-Sat",
+        "anticipatedNextInvocationLocal": "2026-10-14 00:15 Asia/Taipei (GitHub delayed runs possible)",
+        "clockCodeAllows19Preliminary": true,
+        "automated19CronConfigured": false,
+        "final2345FrozenCronAuthorizedOrDeployed": false
+      },
+      "stage1S0toS5": {
+        "accepted": 0,
+        "total": 6
+      },
+      "gates": [
+        "Acquire exact 2026-10-13 valid TWSE & TPEX original close for shifted 61-session window and 122/122",
+        "Independent source raw gzip byte/SHA/date/stock identity readback; source-only is not PIT or continuity",
+        "Prove per-symbol corporate-action/PIT/continuity required inputs then actual SHORT_MOMENTUM W0/W1",
+        "Only after legitimate strategy evaluation and separate D1 quota/persistence approval, immutable Frozen create-only write/readback and independent audit"
+      ],
+      "nonPromotion": "Source audit job SUCCESS was a successful NEGATIVE enforcement, not source-complete or a legal zero-pick/frozen admission."
+    },
+    "corr003": {
+      "status": "HIGH_VERIFYING",
+      "source": "system2/SYSTEM2_CORRECTION_QUEUE.json",
+      "physicalP01toP05": {
+        "accepted": 0,
+        "total": 5
+      },
+      "system1WriteReadReserves": "NOT_PHYSICALLY_APPROVED",
+      "sourceD1SharedAccountRisk": "STILL_BLOCKED_NOT_REMEDIED_BY_DESTINATION_SCHEMA_ONLY",
+      "priority": "Protect actual System1 runtime and source quota; original source Cron STOP PASS is separate subgate. No fabricated spendable D1 quota or G3 release."
+    },
+    "correctionInventory": {
+      "total": 24,
+      "statusCounts": {
+        "FIX_IN_PROGRESS": 1,
+        "VERIFIED_CLOSED": 18,
+        "FIX_IMPLEMENTED": 1,
+        "REJECTED_WITH_EVIDENCE": 1,
+        "VERIFYING": 1,
+        "OPEN": 2
+      },
+      "notCompleted": [
+        {
+          "id": "S2-CORR-20261004-001",
+          "status": "FIX_IN_PROGRESS"
+        },
+        {
+          "id": "S2-CORR-20261007-001",
+          "status": "FIX_IMPLEMENTED"
+        },
+        {
+          "id": "S2-CORR-20261007-003",
+          "status": "VERIFYING"
+        },
+        {
+          "id": "S2-CORR-20261008-012",
+          "status": "OPEN"
+        },
+        {
+          "id": "S2-CORR-20261008-013",
+          "status": "OPEN"
+        }
+      ]
+    }
+  },
+  "dynamicPriority": [
+    {
+      "order": 1,
+      "owner": "SYSTEM2_BUILD_DATA_AUDIT",
+      "target": "First truthful 2026-10-13 122/122 Shared Official A1 source and signed physical parent receipt; then W0/W1, Stage1 Shadow S0–S5. Cannot infer 10/13 readiness from prior 10/12 missing July15 window."
+    },
+    {
+      "order": 2,
+      "owner": "SYSTEM2_DATA_G3_AND_AUDIT",
+      "target": "Advance G3 remaining PIT publication clock, prior Frozen anchors, token-independent backup recoverability, and source R2 byte coverage. One accepted restore family may not launch G4."
+    },
+    {
+      "order": 3,
+      "owner": "SYSTEM2_REMEDIATION_SYSTEM1_G5",
+      "target": "Real same-day protected D1 quota witness and System1 business persistence; own P01–P05 all remain unaccepted. No self-issued reserve."
+    },
+    {
+      "order": 4,
+      "owner": "CROSS_ACCOUNT_AND_OWNER",
+      "target": "Preserve completed Schema-only 25/25; do not rerun APPLY_ONCE. G4 physical data/Worker/Cron live cutover still separately blocked."
+    },
+    {
+      "order": 5,
+      "owner": "RESEARCH_01_TO_15",
+      "target": "Only consume authentic PIT/common-support/economic signed evidence; no synthetic Alpha/OOS or progress percent promotion."
+    }
+  ],
+  "prohibitions": {
+    "newD1Writes": false,
+    "newR2ServiceEnablement": false,
+    "cloudflareWorkerCronCutover": false,
+    "system1FormalCore": false,
+    "liveStockSelectionPromotion": false,
+    "pushOrdersCapital": false,
+    "artificialZeroPick": false,
+    "secretDisclosure": false
+  },
+  "moduleInventory": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
