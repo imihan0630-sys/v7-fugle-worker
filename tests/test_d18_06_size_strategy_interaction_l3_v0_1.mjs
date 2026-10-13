@@ -93,5 +93,22 @@ test("SZ-T14 exact replay is insensitive to JSON key order",()=>{
   assert.equal(a.frameHash,b.frameHash);
 });
 
+
+throws("SZ-T15 contradictory D1 source label vs numeric leader rejected",()=>{
+  const bad=structuredClone(realReceipt);
+  bad.descriptiveState.D1="SMALL_THEN_MID_LEAD_VS_LARGE";
+  buildSizeStrategyInteractionFrame({strategyDay,sizeReceipt:bad,horizon:"D1"});
+},/SIZE_STATE_RETURN_CONFLICT/);
+throws("SZ-T16 contradictory D1 numeric returns vs source label rejected",()=>{
+  const bad=structuredClone(realReceipt);
+  bad.returnsPct.D1.small=99;
+  buildSizeStrategyInteractionFrame({strategyDay,sizeReceipt:bad,horizon:"D1"});
+},/SIZE_STATE_RETURN_CONFLICT/);
+throws("SZ-T17 numerical leadership tie cannot certify strict LARGE_LEAD",()=>{
+  const bad=structuredClone(realReceipt);
+  bad.returnsPct.D1.small=bad.returnsPct.D1.large;
+  buildSizeStrategyInteractionFrame({strategyDay,sizeReceipt:bad,horizon:"D1"});
+},/SIZE_STATE_RETURN_CONFLICT/);
+
 if(process.exitCode) process.exit(process.exitCode);
 console.log(`D18-06 size-strategy L3 suite PASS: ${passed} tests`);
