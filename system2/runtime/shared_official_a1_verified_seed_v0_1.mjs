@@ -9,6 +9,8 @@ import {buildOfficialHistoricalA1UrlV0_1,parseOfficialHistoricalA1PayloadV0_1}
  from './official_historical_a1_source_v0_1.mjs';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const DAY=/^\d{4}-\d{2}-\d{2}$/;
+const validDay=x=>DAY.test(x||'')&&Number.isFinite(Date.parse(x+'T00:00:00Z'))&&
+  new Date(x+'T00:00:00Z').toISOString().slice(0,10)===x;
 const ISO=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
 const ID=/^[a-f0-9]{64}$/i;
 function text(v){return typeof v==='string'&&v.length>0;}
@@ -19,7 +21,7 @@ export async function loadTrustedOfficialA1OriginalsV0_1({
  if(!text(evidenceFile)||!text(originalDir)||
    !Array.isArray(neededTradingDates)||neededTradingDates.length!==61||
    new Set(neededTradingDates).size!==61||
-   neededTradingDates.some((x,i)=>!DAY.test(x)||i>0&&x<=neededTradingDates[i-1]))
+   neededTradingDates.some((x,i)=>!validDay(x)||i>0&&x<=neededTradingDates[i-1]))
   throw Error('SEED_SOURCE_OR_TARGET_DATES_INVALID');
  const saved=JSON.parse(await read(evidenceFile,'utf8'));
  if(saved?.schemaVersion!=='S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1'||
@@ -27,7 +29,7 @@ export async function loadTrustedOfficialA1OriginalsV0_1({
    throw Error('SEED_ORIGINAL_RECEIPT_SCHEMA_UNVERIFIED');
  const used=new Set(),found=new Map(),needed=new Set(neededTradingDates);
  for(const r of saved.receipts){
-  if(!['TWSE','TPEX'].includes(r?.market)||!DAY.test(r.marketDate||'')||
+  if(!['TWSE','TPEX'].includes(r?.market)||!validDay(r.marketDate)||
      !ID.test(r.originalRawResponseSha256||'')||
      !ISO.test(r.capturedAt||'')||!Number.isFinite(Date.parse(r.capturedAt))||
      Date.parse(r.capturedAt)>now().getTime())
