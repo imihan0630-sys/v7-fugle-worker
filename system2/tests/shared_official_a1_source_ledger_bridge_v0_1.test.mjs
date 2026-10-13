@@ -157,6 +157,10 @@ test('next-day 02:00 or later cannot silently backdate a source clock',async()=>
 });
 test('same market date before 19:00 remains preliminary source, not Stage1',async()=>{
  const f=await fixture();f.freezeAtUtc='2026-10-13T10:59:00Z';
+ // Audit receipt must also predate the requested evaluation clock.
+ const {auditHash,...prior}=f.auditReceipt;
+ const fresh={...prior,auditedAtUtc:'2026-10-13T10:30:00Z'};
+ f.auditReceipt={...fresh,auditHash:await sha256Hex(fresh)};
  const x=await bridge(f);
  assert.equal(x.state,'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER');
  assert.equal(x.sourceLedger,null);
