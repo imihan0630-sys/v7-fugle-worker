@@ -44,6 +44,21 @@ function sourceClockWindow(marketDate,freezeAtUtc){
  // never an arbitrary late T+1 (e.g. Oct13 19:19 for Oct12 source).
  return taipei===next.toISOString().slice(0,10)&&hour<2;
 }
+// Delayed GitHub Actions may finish at 05:00 Taipei after the 00:15 target.
+// Allow research-only *actual morning observation* until market opens at 09:00,
+// NEVER a backdated 00:15 official freeze or Stage1 selected stock.
+function latePreliminaryMorningWindow(marketDate,observedAtUtc){
+ const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{
+  timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',
+  hour:'2-digit',hourCycle:'h23',
+ }).formatToParts(new Date(observedAtUtc))
+   .filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+ const localDay=parts.year+'-'+parts.month+'-'+parts.day;
+ const next=new Date(marketDate+'T00:00:00Z');
+ next.setUTCDate(next.getUTCDate()+1);
+ return localDay===next.toISOString().slice(0,10)&&
+   Number(parts.hour)>=2&&Number(parts.hour)<9;
+}
 function outBlocked(manifest,sourceReceipt,auditReceipt,blocker,freezeAtUtc){
  return Object.freeze({
   schemaVersion:'S2_SHARED_A1_SOURCE_LEDGER_BRIDGE_V0_1',
@@ -65,6 +80,7 @@ function outBlocked(manifest,sourceReceipt,auditReceipt,blocker,freezeAtUtc){
 export async function sourceFirstLedgerFromAuditedOriginalsV0_1({
  manifest,sourceReceipt,auditReceipt,originalDirectory,
  freezeAtUtc=new Date().toISOString(),run={},
+ preliminaryOnlyDelayedMorning=false,
  readOriginal=readFile,parseNative=parseOfficialHistoricalA1PayloadV0_1,
 }={}){
  if(!iso(freezeAtUtc))throw Error('A1_BRIDGE_FREEZE_CLOCK_INVALID');
@@ -99,7 +115,10 @@ export async function sourceFirstLedgerFromAuditedOriginalsV0_1({
     manifest.sourceCoverage!=='COMPLETE_SOURCE_CAPTURE_PIT_UNAUDITED')
   return outBlocked(manifest,sourceReceipt,auditReceipt,
     'INDEPENDENT_SOURCE_AUDIT_NOT_122_OF_122',freezeAtUtc);
- if(!sourceClockWindow(sourceReceipt.marketDate,freezeAtUtc))
+ const formalWindow=sourceClockWindow(sourceReceipt.marketDate,freezeAtUtc);
+ const morningPreviewOnly=preliminaryOnlyDelayedMorning===true&&
+   !formalWindow&&latePreliminaryMorningWindow(sourceReceipt.marketDate,freezeAtUtc);
+ if(!formalWindow&&!morningPreviewOnly)
   return outBlocked(manifest,sourceReceipt,auditReceipt,
     'SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW',freezeAtUtc);
  if(!originalDirectory||!Array.isArray(manifest.sourceBlobs)||
@@ -198,8 +217,10 @@ export async function sourceFirstLedgerFromAuditedOriginalsV0_1({
   throw Error('A1_BRIDGE_PROSPECTIVE_LEDGER_NOT_SOURCE_ONLY');
  return Object.freeze({
   schemaVersion:'S2_SHARED_A1_SOURCE_LEDGER_BRIDGE_V0_1',
-  state:'SOURCE_LEDGER_READY_STRATEGY_PIT_NOT_CERTIFIED',
-  marketDate:sourceReceipt.marketDate,freezeAtUtc,blockers:[],
+  state:morningPreviewOnly?'SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY':
+   'SOURCE_LEDGER_READY_STRATEGY_PIT_NOT_CERTIFIED',
+  marketDate:sourceReceipt.marketDate,freezeAtUtc,
+  blockers:morningPreviewOnly?['STAGE1_CLOCK_EXPIRED_PRELIMINARY_ONLY']:[],
   actualSourcePairs:122,requiredSourcePairs:122,
   sourceReceiptHash:sourceReceipt.receiptHash,
   auditReceiptHash:auditReceipt.auditHash,
@@ -240,14 +261,24 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
   const receipt=JSON.parse(await readFile(resolve(root,
     'official-61-'+manifest.effectiveTradingDay+'.json'),'utf8'));
   const auditReceipt=JSON.parse(await readFile(auditFile,'utf8'));
-  const result=await stage1ResearchFromAuditedSourceV0_1({
+  const observedAtUtc=new Date().toISOString();
+  const common={
    manifest,sourceReceipt:receipt,auditReceipt,
-   originalDirectory:resolve(root,'original-json'),
-   freezeAtUtc:new Date().toISOString(),
+   originalDirectory:resolve(root,'original-json'),freezeAtUtc:observedAtUtc,
    run:{repository:process.env.GITHUB_REPOSITORY||null,
     runId:process.env.GITHUB_RUN_ID||null,attempt:process.env.GITHUB_RUN_ATTEMPT||null,
     codeSha:process.env.GITHUB_SHA||null}
-  });
+  };
+  const result=await stage1ResearchFromAuditedSourceV0_1(common);
+  // Strict Stage1 was correctly blocked on an expired 00:15 freeze. Rebuild
+  // only an as-of-NOW observation ledger for before-09:00 preliminary display.
+  // It never enters the formal Stage1 assessor nor the official Frozen lane.
+  const lateObservation=result.state==='BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'&&
+    result.blockers.includes('SOURCE_OBSERVATION_OUTSIDE_T_OR_T_PLUS_ONE_WINDOW')
+    ?await sourceFirstLedgerFromAuditedOriginalsV0_1({
+       ...common,preliminaryOnlyDelayedMorning:true,
+     })
+    :null;
   const base={schemaVersion:result.schemaVersion,
    state:result.state,marketDate:result.marketDate,
    freezeAtUtc:result.freezeAtUtc,
@@ -267,7 +298,9 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    bridge:result,runId:process.env.GITHUB_RUN_ID||null,
   });
   const preliminary=await buildSystem2PreliminaryDailyWatchV0_1({
-   bridge:result,sourceReceipt:receipt,displayLimit:30
+   bridge:lateObservation?.state==='SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY'?
+     lateObservation:result,
+   sourceReceipt:receipt,displayLimit:30
   });
   await mkdir('/tmp/s2-a1-stage1-readonly',{recursive:true,mode:0o700});
   await writeFile('/tmp/s2-a1-stage1-readonly/summary.json',
