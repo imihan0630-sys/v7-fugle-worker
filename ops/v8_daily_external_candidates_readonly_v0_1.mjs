@@ -9,7 +9,7 @@ const dt=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||wt;
 const localDay=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
 const dayBefore=new Date(Date.parse(localDay+"T00:00:00Z")-86400000).toISOString().slice(0,10);
 const target=String(process.env.V8_TARGET_MARKET_DATE||dayBefore).trim();
-if(!/^20\\d{2}-\\d{2}-\\d{2}$/.test(target)||target>localDay||
+if(!/^20\d{2}-\d{2}-\d{2}$/.test(target)||target>localDay||
    Date.parse(localDay+"T00:00:00Z")-Date.parse(target+"T00:00:00Z")>7*86400000)
   throw Error("V8_MARKET_DATE_NOT_IN_GUARDED_WINDOW");
 const result={schema:"V8_DAILY_EXTERNAL_EXACT_SELECTOR_READONLY_V0_1",timestamp:new Date().toISOString(),
@@ -163,7 +163,7 @@ try{
    const response=await fetch("https://fugle-test.imihan0630.workers.dev"+path,{method:"GET",headers:h,signal:AbortSignal.timeout(23000)});
    if(!response.ok)throw Error("V8_OFFICIAL_"+name+"_STATUS_HTTP_"+response.status);
    const data=await response.json();
-   if(data.marketDate!==target||data.ready!==true||
+   if(data.marketDate!==target||(name!=="quality"&&data.ready!==true)||
       (name==="market"&&(!data.markets?.TWSE?.ready||!data.markets?.TPEx?.ready))||
       (name==="quality"&&(!data.index?.ready||!data.tdcc?.ready||
         !["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"].every(k=>data.datasets?.[k]?.ready===true))))
@@ -180,7 +180,7 @@ try{
    EPSReviewReady:review.ready===true,missingSymbols:missing,year:review.year,quarter:review.quarter};
  if(missing.length){
    if(missing.length>12||!Number.isInteger(review.year)||!Number.isInteger(review.quarter)||
-      review.quarter<2||review.quarter>3||missing.some(x=>!/^\\d{4}$/.test(x)))
+      review.quarter<2||review.quarter>3||missing.some(x=>!/^\d{4}$/.test(x)))
      throw Error("DYNAMIC_MOPS_EPS_VERIFICATION_UNSUPPORTED_OR_UNBOUNDED");
    qualityOverlay=await verifiedOfficialQuarterEpsOverlay({parseAndValidate:module,marketDate:target,
       year:review.year,quarter:review.quarter,symbols:missing});
