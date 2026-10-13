@@ -1,0 +1,27 @@
+name: System1 V8 Intraday Freshness Unit Tests
+on:
+  push:
+    paths:
+      - "ops/v8_intraday_monitor_acceptance_readonly.mjs"
+      - "tests/test_v8_intraday_monitor_acceptance_readonly.mjs"
+      - ".github/workflows/system1-v8-freshness-unit-tests.yml"
+  pull_request:
+    paths:
+      - "ops/v8_intraday_monitor_acceptance_readonly.mjs"
+      - "tests/test_v8_intraday_monitor_acceptance_readonly.mjs"
+      - ".github/workflows/system1-v8-freshness-unit-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  freshness-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reproduce stale snapshot, wrong monitor set, time-zone and after-close behavior
+        run: node tests/test_v8_intraday_monitor_acceptance_readonly.mjs
