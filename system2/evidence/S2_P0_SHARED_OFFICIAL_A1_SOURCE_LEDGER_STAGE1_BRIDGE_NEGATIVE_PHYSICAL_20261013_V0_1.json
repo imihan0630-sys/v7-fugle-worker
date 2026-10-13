@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "S2_P0_SHARED_OFFICIAL_A1_SOURCE_LEDGER_STAGE1_BRIDGE_NEGATIVE_PHYSICAL_20261013_V0_1",
+  "observedDateTaipei": "2026-10-13",
+  "classification": "PHYSICAL_OFFICIAL_ORIGINAL_TO_SOURCE_LEDGER_AND_STAGE1_NEGATIVE_ACCEPTANCE",
+  "ownerIssue": 1132,
+  "codePR": 1189,
+  "codeMainCommit": "62c41b5c3370dddbc93a6cb9dd3ef850daf50492",
+  "sourceWorkflow": {
+    "name": "System2 Shared Official A1 Independent Source Audit (READ ONLY)",
+    "runId": 38380969013,
+    "jobId": 115240986795,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38380969013",
+    "conclusion": "success",
+    "sourceArtifactOriginRunId": 38351651871
+  },
+  "physical": {
+    "actualMarketDate": "2026-10-12",
+    "actualSourcePairs": 121,
+    "requiredSourcePairs": 122,
+    "exactMissingPair": {
+      "market": "TPEX",
+      "marketDate": "2026-07-15"
+    },
+    "auditState": "BLOCKED_SOURCE_INCOMPLETE",
+    "bridgeState": "BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER",
+    "bridgeBlocker": "INDEPENDENT_SOURCE_AUDIT_NOT_122_OF_122",
+    "auditHash": "75e0061f135c61958887b4cf9eed594f6b6b03957eed65f4366f47d7ec149f1d",
+    "bridgeSummarySha256": "91087b8e46e3b8101543a911cd89d29f38598ce2d550072ba9a05ca76bb8f488",
+    "sanitizedArtifactId": 11803178157,
+    "sanitizedArtifactDigest": "sha256:fd2e1b2b450b0a895677458393854b866a50748f7443083b74498cccd5f5d1d5",
+    "sourceLedgerHash": null,
+    "validSameDateUniverseCount": null,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "PIT": false,
+    "independentCorporateActionContinuityAccepted": false,
+    "frozenDecisionWritten": false
+  },
+  "focusedPositiveAndNegative": {
+    "testCount": 8,
+    "fullUniverseSimulationSize": 1200,
+    "testCases": [
+      "all-universe read-only ledger with 122 fake audited originals",
+      "121-of-122 source denial",
+      "independent audit hash tampering",
+      "stale source observation clock",
+      "altered raw gzip",
+      "cross-market stock identity collision",
+      "provider row-count denominator mismatch",
+      "forbidden formal/freezing/push writes"
+    ],
+    "syntheticPositiveIsNotPhysicalSourceAcceptance": true,
+    "ciResearchRun": 38380804918,
+    "ciResearchConclusion": "success",
+    "ciV8Run": 38380804900,
+    "ciV8Conclusion": "success"
+  },
+  "remaining": {
+    "source122Of122ObservedForOct13": false,
+    "TPExOct13PhysicalReceiptAccepted": false,
+    "productionWholeMarketPIT": false,
+    "admittedPerSymbolContinuity": false,
+    "realAssessorQualifiedCandidateSelection": false,
+    "frozenCreateOnlyD1Readback": false,
+    "S0ToS5": "0/6"
+  },
+  "safety": {
+    "publicGitHubOriginalBodiesWritten": false,
+    "sourceOriginalFilesCopiedToPublicArtifact": false,
+    "system1FormalRuntimeModified": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "paidSubscriptionEnabled": false,
+    "extraDeploySecretCreated": false
+  }
+}
