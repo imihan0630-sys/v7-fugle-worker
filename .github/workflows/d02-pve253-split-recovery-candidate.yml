@@ -1,0 +1,40 @@
+name: D02 PVE-253 Split Recovery Candidate CI
+
+on:
+  push:
+    paths:
+      - "scripts/apply_v8_20_1_pve253_split_recovery_candidate.py"
+      - "tests/update_cloudflare_after_market_split_recovery_candidate.mjs"
+      - "tests/test_v8_20_1_pve253_split_recovery_candidate.mjs"
+      - ".github/workflows/d02-pve253-split-recovery-candidate.yml"
+  pull_request:
+    paths:
+      - "scripts/apply_v8_20_1_pve253_split_recovery_candidate.py"
+      - "tests/update_cloudflare_after_market_split_recovery_candidate.mjs"
+      - "tests/test_v8_20_1_pve253_split_recovery_candidate.mjs"
+      - ".github/workflows/d02-pve253-split-recovery-candidate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate candidate syntax
+        run: |
+          python3 -m py_compile scripts/apply_v8_20_1_pve253_split_recovery_candidate.py
+          node --check tests/update_cloudflare_after_market_split_recovery_candidate.mjs
+          node --check tests/test_v8_20_1_pve253_split_recovery_candidate.mjs
+      - name: Run split recovery candidate tests
+        run: node tests/test_v8_20_1_pve253_split_recovery_candidate.mjs
+      - name: Guard scope
+        run: |
+          set -euo pipefail
+          ! grep -Eq 'MAX_STOCKS_PER_POOL|THOUSAND_STOCK_PRICE|BUY|ADD|REDUCE|SELL|STOP' scripts/apply_v8_20_1_pve253_split_recovery_candidate.py
+          grep -F 'NOT authorized for Production merge/deploy' scripts/apply_v8_20_1_pve253_split_recovery_candidate.py
