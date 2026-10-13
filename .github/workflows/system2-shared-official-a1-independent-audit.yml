@@ -1,0 +1,116 @@
+name: System2 Shared Official A1 Independent Source Audit (READ ONLY)
+
+on:
+  # Audit every genuinely completed successful main source capture independently.
+  workflow_run:
+    workflows: ["System2 Shared Official TWSE TPEx A1 Incremental (READ ONLY)"]
+    types: [completed]
+  # Initial self-path push performs a strictly negative 121/122 historical diagnostic.
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-shared-official-a1-independent-audit.yml"
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        required: true
+        description: Exact shared source workflow run ID for independent readback
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: shared-a1-independent-readonly-audit
+  cancel-in-progress: false
+
+jobs:
+  audit_original:
+    if: >-
+      github.repository == 'imihan0630-sys/v7-fugle-worker' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify source auditor cannot select, freeze, write Cloudflare or issue trades
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_shared_official_a1_source_v0_1.mjs
+          node --test system2/tests/shared_official_a1_independent_audit_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Resolve exact source run and explicit diagnostic boundary
+        id: source
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SOURCE_RUN: ${{ github.event.workflow_run.id }}
+          MANUAL_RUN: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "push" ]; then
+            SOURCE_ID=38351651871
+            echo 'diagnostic_only=true' >> "$GITHUB_OUTPUT"
+          elif [ "$EVENT_NAME" = "workflow_run" ]; then
+            SOURCE_ID="$SOURCE_RUN"
+            echo 'diagnostic_only=false' >> "$GITHUB_OUTPUT"
+          else
+            SOURCE_ID="$MANUAL_RUN"
+            echo 'diagnostic_only=false' >> "$GITHUB_OUTPUT"
+          fi
+          test -n "$SOURCE_ID"
+          case "$SOURCE_ID" in (*[!0-9]*) exit 2;; esac
+          echo "run_id=$SOURCE_ID" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=s2-shared-official-a1-$SOURCE_ID" >> "$GITHUB_OUTPUT"
+      - name: Download original exact-run source evidence
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.source.outputs.run_id }}
+          name: ${{ steps.source.outputs.artifact_name }}
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Re-read all original bytes, official report dates, row counts and calendar
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+          S2_A1_EXPECT_INCOMPLETE_DIAGNOSTIC: ${{ steps.source.outputs.diagnostic_only }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_shared_official_a1_source_v0_1.mjs
+      - name: Enforce source-only verdict and prevent partial admission
+        env:
+          DIAGNOSTIC_ONLY: ${{ steps.source.outputs.diagnostic_only }}
+        run: |
+          set -euo pipefail
+          RECEIPT='/tmp/s2-shared-a1-independent-audit/audit-receipt.json'
+          test -s "$RECEIPT"
+          test "$(jq -r .sourceMarketDatePairsVerified "$RECEIPT")" -le 122
+          test "$(jq -r .selectionAuthorized "$RECEIPT")" = 'false'
+          test "$(jq -r .strategyPitCertified "$RECEIPT")" = 'false'
+          test "$(jq -r .frozenWritten "$RECEIPT")" = 'false'
+          if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
+            test "$(jq -r .verdict "$RECEIPT")" = 'BLOCKED_SOURCE_INCOMPLETE'
+            test "$(jq -r .sourceMarketDatePairsVerified "$RECEIPT")" = '121'
+            echo 'EXPECTED_PARTIAL_121_OF_122_FAIL_CLOSED_NOT_ADMITTED' >> "$GITHUB_STEP_SUMMARY"
+          else
+            test "$(jq -r .verdict "$RECEIPT")" = 'ACCEPTED_SOURCE_INTEGRITY_ONLY'
+            test "$(jq -r .sourceMarketDatePairsVerified "$RECEIPT")" = '122'
+            echo 'INDEPENDENT_SOURCE_INTEGRITY_122_OF_122_PASS__STRATEGY_PIT_NOT_AUTHORIZED' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Preserve sanitized hash receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-shared-official-a1-independent-audit-${{ github.run_id }}
+          path: /tmp/s2-shared-a1-independent-audit/audit-receipt.json
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Safety declaration
+        if: always()
+        run: |
+          echo 'This independent source audit cannot certify PIT or continuity and cannot select or freeze stocks.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Original raw files never written into the public GitHub source repo. Zero D1/R2, V8 Formal, order or push effects.' >> "$GITHUB_STEP_SUMMARY"
