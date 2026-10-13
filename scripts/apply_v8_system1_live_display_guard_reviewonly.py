@@ -95,5 +95,15 @@ write_new='''  const liveStore = await writeLiveSnapshot(env, snapshot);
   if (env.V7_DB && liveStore.stored !== true)
     throw new Error("LIVE_D1_PERSISTENCE_NOT_VERIFIED");'''
 once(write_old,write_new,"d1_ack_required")
+# The display's 90-second stale warning is an intraday-only condition.
+# Outside market hours keep the final timestamp visible without asking the
+# quote to keep updating after close. Never suppress intraday stale warnings.
+age_offhours='''function snapshotAgeSeconds(snapshot) {
+  if (!isTradingDate(taiwanDate()) || !isIntradayMonitorWindow(Date.now()))
+    return null;
+  const ms = Date.parse(snapshot?.generatedAtIso || "");
+  return Number.isFinite(ms) ? Math.max(0, Math.floor((Date.now() - ms) / 1000)) : null;
+}'''
+once(age_func,age_offhours,"afterclose_intraday_warning_only")
 worker.write_text(text,encoding="utf-8")
 print("SYSTEM1_V8_LIVE_RUNTIME_REVIEW_PATCH_APPLIED")
