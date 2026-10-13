@@ -101,12 +101,47 @@ jobs:
             test "$(jq -r .sourceMarketDatePairsVerified "$RECEIPT")" = '122'
             echo 'INDEPENDENT_SOURCE_INTEGRITY_122_OF_122_PASS__STRATEGY_PIT_NOT_AUTHORIZED' >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Build source-only full-universe ledger and attempt existing Stage1 with UNKNOWN continuity
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+          S2_A1_AUDIT_RECEIPT_FILE: /tmp/s2-shared-a1-independent-audit/audit-receipt.json
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
+          node --test system2/tests/shared_official_a1_source_ledger_bridge_v0_1.test.mjs
+          node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
+      - name: Audit source-ledger and strategy-only semantics, never Frozen
+        env:
+          DIAGNOSTIC_ONLY: ${{ steps.source.outputs.diagnostic_only }}
+        run: |
+          set -euo pipefail
+          SUMMARY='/tmp/s2-a1-stage1-readonly/summary.json'
+          test -s "$SUMMARY"
+          test "$(jq -r .selectedCount "$SUMMARY")" = 'null'
+          test "$(jq -r .zeroPickDay "$SUMMARY")" = 'null'
+          test "$(jq -r .selectionAuthorized "$SUMMARY")" = 'false'
+          test "$(jq -r .strategyPitCertified "$SUMMARY")" = 'false'
+          test "$(jq -r .frozenDecisionWritten "$SUMMARY")" = 'false'
+          if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
+            test "$(jq -r .state "$SUMMARY")" = 'BLOCKED_NO_ELIGIBLE_SOURCE_LEDGER'
+            test "$(jq -r .sourcePairs "$SUMMARY")" = '121'
+            test "$(jq -r .sourceLedgerHash "$SUMMARY")" = 'null'
+            echo 'STAGE1_LEDGER_BRIDGE_FAIL_CLOSED_121_122' >> "$GITHUB_STEP_SUMMARY"
+          else
+            test "$(jq -r .state "$SUMMARY")" = 'STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'
+            test "$(jq -r .sourcePairs "$SUMMARY")" = '122'
+            test "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")" -ge 1000
+            test "$(jq -r .strategyEvaluationState "$SUMMARY")" = 'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE'
+            echo 'SOURCE_LEDGER_AND_STAGE1_RESEARCH_ONLY__PIT_CONTINUITY_INCOMPLETE__NO_FROZEN' >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Preserve sanitized hash receipt only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system2-shared-official-a1-independent-audit-${{ github.run_id }}
-          path: /tmp/s2-shared-a1-independent-audit/audit-receipt.json
+          path: |
+            /tmp/s2-shared-a1-independent-audit/audit-receipt.json
+            /tmp/s2-a1-stage1-readonly/summary.json
           retention-days: 7
           if-no-files-found: warn
       - name: Safety declaration
