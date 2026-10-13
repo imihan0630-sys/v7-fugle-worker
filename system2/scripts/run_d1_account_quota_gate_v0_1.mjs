@@ -634,7 +634,9 @@ async function main() {
   const day80=verifiedDestination?evaluateDestinationDay80SharedWritersV0_1({
     quotaDay:currentQuotaDay,
     accountRowsWrittenLowerBound:accountUsage.known?accountUsage.rowsWritten:null,
-    shadowReservedBilledWrites:writer.reservationModel.rowsWritten,
+    // Reserve the *measured Daily Shadow P0* cost even for a P2 warmup,
+    // whose writer reservation is per-date and has no rowsWritten scalar.
+    shadowReservedBilledWrites:13130,
     nowFloorProof:importedAudit
   }):null;
   const initialDecision = evaluateD1AccountQuotaReservationV0_1({
@@ -653,9 +655,17 @@ async function main() {
     requestedRowsWritten: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_WRITTEN", null),
     requestedRowsRead: integerEnv("SYSTEM2_D1_REQUESTED_ROWS_READ", null),
   });
-  const decision=day80&&!day80.nextWriterPermittedByOperationalCap?
-    Object.freeze({...initialDecision, state:"QUOTA_BUDGET_DEFER",
-      physicalAllowed:false,reasonCodes:Object.freeze([day80.reason])}):initialDecision;
+  // Apply the owner's 80k cap to the entire projected reservation, not just
+  // the pre-reservation floor. Otherwise five P2 warmup dates could pass the
+  // Cloudflare 100k hard gate while exceeding the owner operating ceiling.
+  const exceedsOwnerDay80=day80&&initialDecision.physicalAllowed===true&&
+    (!Number.isSafeInteger(initialDecision.projectedWritten)||
+     initialDecision.projectedWritten>day80.ownerDailyOperationalMax);
+  const decision=day80&&(!day80.nextWriterPermittedByOperationalCap||exceedsOwnerDay80)?
+    Object.freeze({...initialDecision,state:"QUOTA_BUDGET_DEFER",
+      physicalAllowed:false,adaptiveMaxDates:0,
+      reasonCodes:Object.freeze([exceedsOwnerDay80?
+        "DEST_DAY80_FULL_RESERVATION_WOULD_EXCEED_OWNER_CAP":day80.reason])}):initialDecision;
 
   const at = new Date().toISOString();
   let ledgerCheckHash = null;

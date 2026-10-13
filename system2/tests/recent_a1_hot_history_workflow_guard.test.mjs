@@ -16,7 +16,12 @@ const runtime = await readFile(
 
 assert.match(workflow, /group: system2-isolated-d1-writer/);
 assert.match(workflow, /cancel-in-progress: false/);
-assert.match(workflow, /environment: system2-research/);
+assert.match(workflow, /environment: system2-schema-only/);
+assert.match(workflow, /SYSTEM2_D1_ACCOUNT_ROLE: DESTINATION/);
+assert.match(workflow, /S2_SCHEMA_DEST_ACCOUNT_ID/);
+assert.match(workflow, /S2_SCHEMA_DEST_D1_WRITE_TOKEN/);
+assert.match(workflow, /S2_DEST_ACCOUNT_ANALYTICS_READ_TOKEN/);
+assert.doesNotMatch(workflow, /secrets\\.CLOUDFLARE_ACCOUNT_ID|secrets\\.SYSTEM2_CLOUDFLARE_API_TOKEN|secrets\\.CLOUDFLARE_API_TOKEN/);
 assert.match(workflow, /WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY/);
 assert.match(workflow, /SYSTEM2_HOT_HISTORY_MAX_DATES: "5"/);
 assert.match(workflow, /SYSTEM2_HOT_HISTORY_REQUIRED_SESSIONS: "60"/);
