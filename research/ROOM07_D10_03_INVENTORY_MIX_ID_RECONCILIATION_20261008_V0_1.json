@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "ROOM07_D10_03_INVENTORY_MIX_RECONCILIATION_V0_1",
+  "owner": "07｜產業與供應鏈研究室",
+  "moduleId": "D10-03",
+  "evidenceClass": "DETERMINISTIC_SYNTHETIC_COUNTEREXAMPLE",
+  "status": "RESEARCH_ONLY / HISTORICAL_BRANCH_RECOVERY / ID_COLLISION_RESOLVED / KEEP_L3 / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "originalBranch": "research/room07-sc089-inventory-mix-falsification-20261008-0805",
+  "originalArtifact": "research/sc089_d10_03_inventory_mix_counterexample_v0_1.json",
+  "canonicalIdCollision": "SC-089 is already assigned on main to GlobalWafers Novara supply-gap D10-08; original branch reused SC-089 for unrelated D10-03 inventory mix. Do not merge that duplicate ticket label.",
+  "canonicalSc089Path": "research/SC089_GLOBALWAFERS_NOVARA_REALIZED_SUPPLY_GAP_SUBSTITUTION_20261008_V0_1.md",
+  "parent": "research/SC082_D10_03_PROSPECTIVE_INVENTORY_CYCLE_COHORT_PREREG_20261008_V0_1.md",
+  "period0": {
+    "A": {
+      "cost": 90,
+      "inventory": 9,
+      "burden": 0.1
+    },
+    "B": {
+      "cost": 10,
+      "inventory": 10,
+      "burden": 1
+    },
+    "aggregateBurden": 0.19
+  },
+  "period1": {
+    "A": {
+      "cost": 10,
+      "inventory": 0.8,
+      "burden": 0.08
+    },
+    "B": {
+      "cost": 90,
+      "inventory": 81,
+      "burden": 0.9
+    },
+    "aggregateBurden": 0.818
+  },
+  "withinProductEffect": -0.028,
+  "compositionEffect": 0.656,
+  "aggregateChange": 0.628,
+  "identityCheck": "PASS",
+  "inference": "Both product-level inventory burdens fall while aggregate rises due to changing cost weights. The sign of aggregate change cannot identify within-product inventory deterioration.",
+  "limits": [
+    "Synthetic only; not MOEA official inventory ratio",
+    "Not prospective; cannot promote L3 to L4",
+    "Demand denominator, product mix, valuation, revisions, inventory unit and period scope remain separate",
+    "If product-level cost weights missing, causal decomposition UNKNOWN",
+    "SC-083 first genuine prospective same-scope monthly inventory row remains next"
+  ],
+  "formalCore": "LOCKED",
+  "maturityPct": 60
+}
