@@ -77,22 +77,23 @@ once('waitingLivePage(loaded, liveState, Boolean(env.V7_DB), cronStatus)',
 once('renderPage(results, loaded, isTestMode(env), liveState, Boolean(live), cronStatus)',
      'renderPage(results, loaded, isTestMode(env), liveState, usingD1, cronStatus)',"page_display_source")
 
-write_old='''  await env.STOCKS_KV.put(
+write_old='''  const liveStore = await writeLiveSnapshot(env, snapshot);
+  const kvSummary = { ...snapshot, liveStoreResult: liveStore };
+  await env.STOCKS_KV.put(
+    LAST_MONITOR_KEY,
+    JSON.stringify(kvSummary),
+    { expirationTtl: 2 * 24 * 60 * 60 }
+  );'''
+write_new='''  const liveStore = await writeLiveSnapshot(env, snapshot);
+  const kvSummary = { ...snapshot, liveStoreResult: liveStore };
+  await env.STOCKS_KV.put(
     LAST_MONITOR_KEY,
     JSON.stringify(kvSummary),
     { expirationTtl: 2 * 24 * 60 * 60 }
   );
-
-  return kvSummary;'''
-write_new='''  await env.STOCKS_KV.put(
-    LAST_MONITOR_KEY,
-    JSON.stringify(kvSummary),
-    { expirationTtl: 2 * 24 * 60 * 60 }
-  );
-  // A KV mirror alone cannot certify D1-primary persistence or Cron SUCCESS.
+  // KV mirroring is not evidence that D1 primary persistence succeeded.
   if (env.V7_DB && liveStore.stored !== true)
-    throw new Error("LIVE_D1_PERSISTENCE_NOT_VERIFIED");
-  return kvSummary;'''
+    throw new Error("LIVE_D1_PERSISTENCE_NOT_VERIFIED");'''
 once(write_old,write_new,"d1_ack_required")
 worker.write_text(text,encoding="utf-8")
 print("SYSTEM1_V8_LIVE_RUNTIME_REVIEW_PATCH_APPLIED")
