@@ -59,6 +59,19 @@ check(verify({now:"2026-10-13T05:24:53.000Z",
   live:{generatedAt:"2026/10/13 13:24:21"},
   signals:{generatedAt:"2026/10/13 13:24:21"}}).ok===true,"13:24 actual fresh evidence can PASS when membership agrees");
 
+
+const validAideen={stocks:[{symbol:"6213",strategyPool:"AIDEEN_APP"},{symbol:"3189",strategyPool:"AIDEEN_APP"}]};
+const combinedResults=[...live.results,{symbol:"6213",plan:{strategyPool:"AIDEEN_APP"}},{symbol:"3189",plan:{strategyPool:"AIDEEN_APP"}}];
+const poolProof=verify({aideen:validAideen,live:{monitoredCount:4,results:combinedResults}});
+check(poolProof.ok===true&&poolProof.aideenMonitorCount===2&&poolProof.expectedMonitorKeys.length===4,
+  "legitimate Formal+Aideen multi-pool union must pass");
+check(verify({aideen:validAideen,live:{monitoredCount:4,results:[...live.results,{symbol:"6213",plan:{strategyPool:"AIDEEN_APP"}},{symbol:"9999",plan:{strategyPool:"AIDEEN_APP"}}]}}).state==="MONITOR_TARGETS_MISMATCH",
+  "unknown Aideen symbol must fail");
+check(verify({aideen:validAideen,live:{monitoredCount:2,results:live.results}}).state==="MONITOR_TARGETS_MISMATCH",
+  "missing expected independent Aideen pool must fail");
+const overlapAideen={stocks:[{symbol:"6226",strategyPool:"AIDEEN_APP"}]};
+check(verify({aideen:overlapAideen,live:{monitoredCount:3,results:[...live.results,{symbol:"6226",plan:{strategyPool:"AIDEEN_APP"}}]}}).ok===true,
+  "same ticker independently monitored in Formal and Aideen is permitted");
 console.log(JSON.stringify({ok:true,testCases:checked,
   detection:"cron+live+signal age bounded to 5min, Taipei session-aware",
   noProductionMutation:true,formalNeverInferred:true,noBrokerageAssumption:true}));
