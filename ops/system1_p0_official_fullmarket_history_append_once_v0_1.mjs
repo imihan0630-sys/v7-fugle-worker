@@ -1,12 +1,12 @@
 // S1 P0 approved factual daily K-line repair. Reuse certified official TWSE/TPEx research parser.
-// FIRST BATCH capped at 24 existing D1 cache rows. Zero trade/strategy/push/seed-state mutation.
+// BOUNDED BULK RUN capped at 400 verified existing D1 history cache rows. Zero trade/strategy/push/seed-state mutation.
 import {writeFile,mkdir} from "node:fs/promises";
 import {createHash} from "node:crypto";
 import {fetchOfficialHistoricalA1DateV0_1} from "../system2/runtime/official_historical_a1_source_v0_1.mjs";
 
 const TARGET="2026-10-13";
 const SOURCE_START="2026-09-11";
-const SYMBOL_CAP=24;
+const SYMBOL_CAP=400;
 const account=process.env.CLOUDFLARE_ACCOUNT_ID||"";
 const sourceToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
 const writeToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
@@ -52,7 +52,7 @@ async function query(sql,params=[]){
  const isAppend=/^\s*UPDATE v7_history_cache SET history_json=/i.test(sql);
  if(!isRead&&!isAppend)throw Error("D1_NOT_HISTORY_CACHE_ONLY");
  if(!isRead&&++writeQueries>SYMBOL_CAP)throw Error("D1_HISTORY_WRITE_CEILING");
- if(++queries>75)throw Error("D1_QUERY_CEILING");
+ if(++queries>SYMBOL_CAP*3+12)throw Error("D1_QUERY_CEILING");
  const reply=await cf("/d1/database/"+id+"/query","POST",{sql,params},isRead?sourceToken:writeToken);
  if(!Array.isArray(reply)||reply.length!==1||reply[0].success!==true)
    throw Error("OFFICIAL_HISTORY_D1_QUERY_NOT_VERIFIED");
@@ -162,6 +162,8 @@ for(const symbol of work){
 journal.status=journal.status==="WRITE_OR_QUOTA_BLOCKED"?journal.status:
  journal.completed.length?"PHYSICAL_D1_OFFICIAL_BARS_PERSISTED_PARTIAL_UNIVERSE":"NO_PHYSICAL_SOURCE_ROWS_UPDATED";
 journal.completedCount=journal.completed.length;
+journal.boundedSymbolCap=SYMBOL_CAP;
+journal.d1QueryCount=queries;
 await mkdir("artifacts",{recursive:true});
 await writeFile("artifacts/system1-p0-official-wholemarket-firstbatch.json",JSON.stringify(journal,null,2)+"\n");
 console.log("SYSTEM1_P0_OFFICIAL_MARKET_HISTORY_RECEIPT="+JSON.stringify({
