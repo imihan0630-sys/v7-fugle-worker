@@ -1,0 +1,11 @@
+{
+  "source": "BR-037",
+  "archivedSource": true,
+  "independentDatesAdded": 0,
+  "horizonCount": 4,
+  "indexLegCount": 3,
+  "arithmeticComparisons": 12,
+  "withinFiveDecimalBasisPoints": true,
+  "maxAbsDeviationPercentagePoints": 0.0000484434941,
+  "alphaClaim": false
+}
