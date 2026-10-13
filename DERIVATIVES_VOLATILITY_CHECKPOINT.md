@@ -651,3 +651,24 @@ COV-07 remains PARTIAL until that format repair is committed.
 
 ### Exact next continuation after DR-111
 Preserve both endpoint states as one divergence pair, then materialize common contract support and model-input clocks before Delta residual attribution. Do not count endpoint lag as model error.
+
+
+## 2026-10-13 Room09 DR-112..DR-122 — inherited unmerged work + current 06:45 version QA
+
+Source boundary: previous 2026-10-12 21:22 and 2026-10-13 03:14 handoff files were local only; their official-page observations are later-retrieved QA, NOT historical decision-time raw receipts. The following DR-112..118 are explicitly reconciled as unmerged handoff findings, not new independent dates.
+
+- DR-112..115 (inherited): 2026-10-12 morning vs afternoon TAIFEX Delta endpoints showed different publication/effective-date/expiry semantics. A same strike across different expiries is NOT a matched contract or model error; cash-session final price cannot be synchronized to 06:45 theoretical Delta. Japan holiday derivatives and U.S. macro release clocks remain separate from Taiwan 18:10.
+- DR-116..118 (inherited): On 2026-10-12 06:45:20, 49100 strike call-minus-put Delta for TXO 202610F2/202610W2/202610F3 was 1.0000/0.9998/0.9997; model identity QA only, not executable parity. The 16:29:58 displayed afternoon publication and 16:30:06 generated file differ by 8 seconds; without two immutable raw bodies, this does not prove content divergence.
+- DR-119 (new, observed 2026-10-13 ~08:14 Taipei): official interactive page and Excel-style endpoint now both display 2026-10-13 06:45:17 AM, while the official download list displays 2026-10-13 06:45:23 generation. The six-second generation lag does not establish a separate information version. An earlier same-turn web retrieval of the Excel endpoint showed 2026-10-12 06:45:20 before a fresh re-open returned 2026-10-13; treat retrieval/cache race as observed presentation-state ambiguity, NOT proof that the official source remained stale.
+- DR-120: same TXO contract 202610W2, expiry 20261014, strike 49100: official 2026-10-13 06:45:17 call Delta 0.5116, put Delta -0.4883, call-minus-put 0.9999. The 2026-10-12 06:45:20 same-contract same-strike call/put were 0.5231/-0.4767 (difference 0.9998). Call changed -0.0115 across two DIFFERENT effective trading dates; this is not own-vs-exchange model error or independent alpha.
+- DR-121: on 2026-10-13 06:45:17 same W2 series, strikes 49050/49100/49150 have call Deltas 0.5266/0.5116/0.4969 and put Deltas -0.4733/-0.4883/-0.5031. Strike-monotonicity and same-contract call-put differences 0.9999/0.9999/1.0000 pass a small outcome-blind transcription sanity check; these are 3 contract rows on ONE publication date, not 3 independent dates.
+- DR-122: Strict historical 2026-10-12 18:10 PIT still UNKNOWN for any 10/12 afternoon-vs-10/13 morning matched pair because no native raw 10/12 afternoon contract-level archive/hash and no synchronized model inputs/quotes. For 2026-10-13 18:10, the observed 08:14 current-day page is a conservative pre-decision observation of its displayed version, but this web-tool observation is not a source-native immutable raw archive or proof of live feed authorization. Do not treat this as L3 or trading signal.
+
+Primary official pages: https://www.taifex.com.tw/cht/3/optDailyDelta and https://www.taifex.com.tw/cht/3/optDailyDeltaExcel.
+Evidence scope: source presentation and arithmetic QA; no OOS, walk-forward, prospective Shadow, fill, executable bid/ask, or market outcome. Firecrawl was unavailable due to exhausted credits; native web retrieval used as read-only fallback. UNKNOWN != 0/BAD.
+Maturity firewall: D12-13 L2/40%; D12 40.0%; outcomes CLOSED; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Exact next continuation after DR-122
+1. Obtain permission-compliant immutable raw 2026-10-12 afternoon and 2026-10-13 morning TAIFEX Delta files, their byte hashes, exact publication/observation clocks, effective trading dates, and complete common contract support; do not infer version identity from page generation timestamps.
+2. Compare matching effective-date/contract rows outcome-blind, isolate next-day new-series coverage and model input/quote clock; preserve any unavailable historical first-known as UNKNOWN.
+3. Continue independent prospective 2026-10-13+ source-attested option surface dates, expiry/night futures/PCR/VIX/FX/oil cross-clock QA, and avoid duplicate votes from D12-07 skew/D12-16 curvature.
