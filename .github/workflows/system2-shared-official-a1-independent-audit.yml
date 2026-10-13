@@ -110,6 +110,7 @@ jobs:
           node --check system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
           node --test system2/tests/shared_official_a1_source_ledger_bridge_v0_1.test.mjs
           node --test system2/tests/daily_selection_readiness_v0_1.test.mjs
+          node --test system2/tests/preliminary_daily_pv_watch_v0_1.test.mjs
           node --test system2/tests/a1_history_barrier_diagnostic_v0_1.test.mjs
           node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
       - name: Audit source-ledger and strategy-only semantics, never Frozen
@@ -124,6 +125,13 @@ jobs:
           test "$(jq -r .selectionAuthorized "$SUMMARY")" = 'false'
           test "$(jq -r .strategyPitCertified "$SUMMARY")" = 'false'
           test "$(jq -r .frozenDecisionWritten "$SUMMARY")" = 'false'
+          PRELIMINARY='/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json'
+          test -s "$PRELIMINARY"
+          test "$(jq -r .selectedCount "$PRELIMINARY")" = 'null'
+          test "$(jq -r .zeroPickDay "$PRELIMINARY")" = 'null'
+          test "$(jq -r .finalSelectionAuthorized "$PRELIMINARY")" = 'false'
+          test "$(jq -r .historicalBacktestCertified "$PRELIMINARY")" = 'false'
+          test "$(jq -r .frozenWritten "$PRELIMINARY")" = 'false'
           READINESS='/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json'
           test -s "$READINESS"
           test "$(jq -r .selectedCount "$READINESS")" = 'null'
@@ -134,11 +142,16 @@ jobs:
           if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
             test ! -e /tmp/s2-a1-stage1-readonly/history-barrier.json
             test "$(jq -r .state "$READINESS")" = 'BLOCKED_SOURCE_NOT_SELECTION'
+            test "$(jq -r .state "$PRELIMINARY")" = 'BLOCKED_SOURCE_INCOMPLETE'
           else
             test "$(jq -r .marketDate "$READINESS")" = "$(jq -r .marketDate "$SUMMARY")"
             test "$(jq -r .sourcePairsObserved "$READINESS")" = '122'
             test "$(jq -r .ordinaryUniverseCount "$READINESS")" = "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")"
             test "$(jq -r .state "$READINESS")" != 'BLOCKED_SOURCE_NOT_SELECTION'
+            test "$(jq -r .marketDate "$PRELIMINARY")" = "$(jq -r .marketDate "$READINESS")"
+            test "$(jq -r .state "$PRELIMINARY")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'
+            test "$(jq -r .officialUniverseCount "$PRELIMINARY")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
+            echo "PRELIMINARY_PV_MATCHED=$(jq -r .preliminaryMatchedCount "$PRELIMINARY") / CA_PIT_UNKNOWN / NO_FROZEN_OR_ORDERS" >> "$GITHUB_STEP_SUMMARY"
             H=/tmp/s2-a1-stage1-readonly/history-barrier.json
             test -s "$H"
             test "$(jq -r .selectedCount "$H")" = 'null'
@@ -170,6 +183,7 @@ jobs:
             /tmp/s2-shared-a1-independent-audit/audit-receipt.json
             /tmp/s2-a1-stage1-readonly/summary.json
             /tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+            /tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
             /tmp/s2-a1-stage1-readonly/history-barrier.json
           retention-days: 7
           if-no-files-found: warn
