@@ -5,6 +5,7 @@ import {resolve} from 'node:path';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {buildDailySelectionReadinessReceiptV0_1} from '../runtime/daily_selection_readiness_v0_1.mjs';
 import {official61SessionSourceReceiptHashBaseV0_1}
  from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 import {buildSourceFirstProspectiveLedgerV0_1}
@@ -258,10 +259,26 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    selectedCount:null,zeroPickDay:null,
    strategyPitCertified:false,selectionAuthorized:false,frozenDecisionWritten:false};
   const out={...base,summarySha256:await sha256Hex(base)};
+  // Every completed source audit gets a deterministic, independently hash-bound
+  // per-strategy DAILY READINESS receipt, not a selected list or zero-pick.
+  const readiness=await buildDailySelectionReadinessReceiptV0_1({
+   bridge:result,runId:process.env.GITHUB_RUN_ID||null,
+  });
   await mkdir('/tmp/s2-a1-stage1-readonly',{recursive:true,mode:0o700});
   await writeFile('/tmp/s2-a1-stage1-readonly/summary.json',
    JSON.stringify(out,null,2)+'\n',{flag:'wx',mode:0o600});
+  await writeFile('/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json',
+   JSON.stringify(readiness,null,2)+'\n',{flag:'wx',mode:0o600});
   console.log(JSON.stringify(out));
+  console.log(JSON.stringify({
+   dailyReadinessState:readiness.state,marketDate:readiness.marketDate,
+   universe:readiness.ordinaryUniverseCount,
+   assessed:readiness.assessedCount,incomplete:readiness.incompleteCount,
+   qualifiedResearchNotSelected:readiness.qualifiedNotSelectedCount,
+   topMissingReasons:readiness.unresolvedReasonCounts?.slice(0,8)||[],
+   readinessReceiptHash:readiness.receiptHash,
+   selectedCount:null,zeroPickDay:null,finalSelectionEligible:false,
+  }));
   if(result.state==='STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'&&
      result.evaluation?.evaluation?.qualifiedNotSelectedCount>0){
    console.log('A1_STAGE1_QUALIFIED_NOT_SELECTED_RESEARCH_ONLY_NOT_FROZEN');
