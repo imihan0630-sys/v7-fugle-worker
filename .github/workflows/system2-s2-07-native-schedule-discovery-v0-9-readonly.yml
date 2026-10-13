@@ -1,0 +1,24 @@
+name: System2 S2-07 Native Schedule Discovery V0.9 Readonly
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/scripts/probe_s2_07_native_schedule_discovery_readonly_v0_9.mjs"
+      - ".github/workflows/system2-s2-07-native-schedule-discovery-v0-9-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node system2/scripts/probe_s2_07_native_schedule_discovery_readonly_v0_9.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_s2_07_native_schedule_discovery_readonly_v0_9.mjs
+          echo "S2-07 V0.9 discovery read-only boundary PASS"
