@@ -9,7 +9,7 @@ import {buildSharedOfficialA1MarketManifestV0_1} from '../../shared-knowledge/ma
 import {buildOfficialHistoricalA1UrlV0_1} from '../runtime/official_historical_a1_source_v0_1.mjs';
 import {planSharedOfficialA1ArchiveDryRunV0_1} from '../scripts/plan_shared_official_a1_archive_dryrun_v0_1.mjs';
 const sha=x=>createHash('sha256').update(x).digest('hex');
-const observation='2026-10-13T07:00:00Z';
+const observation='2026-10-12T07:00:00Z'; // previously observed; no future-data fixture
 function sampleRaw(date){
  return Buffer.from(JSON.stringify({date:date.replaceAll('-',''),stat:'OK',
   tables:[{fields:['證券代號','證券名稱','成交股數','開盤價','最高價','最低價','收盤價'],
