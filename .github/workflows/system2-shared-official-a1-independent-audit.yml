@@ -132,6 +132,13 @@ jobs:
           test "$(jq -r .finalSelectionAuthorized "$PRELIMINARY")" = 'false'
           test "$(jq -r .historicalBacktestCertified "$PRELIMINARY")" = 'false'
           test "$(jq -r .frozenWritten "$PRELIMINARY")" = 'false'
+          test "$(jq -r .watchVersion "$PRELIMINARY")" = 'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2'
+          if [ "$(jq -r .state "$PRELIMINARY")" = 'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION' ]; then
+            test "$(jq -r .ordinaryEquityOnlyUniverseCertified "$PRELIMINARY")" = 'false'
+            test "$(jq -r .depositaryReceiptQuarantinedCount "$PRELIMINARY")" -ge 0
+            test "$(jq -r '.watchlist | all(.[]; .instrumentClassPITStatus == "ORDINARY_EQUITY_CLASS_NOT_INDEPENDENTLY_ATTESTED")' "$PRELIMINARY")" = 'true'
+            echo "PRELIMINARY_EXCLUDED_TDR=$(jq -r .depositaryReceiptQuarantinedCount "$PRELIMINARY") / securities-universe-NOT-certified-ordinary" >> "$GITHUB_STEP_SUMMARY"
+          fi
           READINESS='/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json'
           test -s "$READINESS"
           test "$(jq -r .selectedCount "$READINESS")" = 'null'
