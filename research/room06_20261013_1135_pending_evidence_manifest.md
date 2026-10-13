@@ -1,0 +1,7 @@
+# Room06 local evidence awaiting exact-byte sync
+
+2026-10-09: room06_d07_d08_research_20261009.json sha256 919286890047fb3811c251bbc45b119c74302b7981e681a6ff84ceca3eb704a3
+2026-10-10: room06_20261010_lease_tax_valuation_falsification.json sha256 e330cd2220d93c004d45a3a484c0119e15eae9499f515a14ad4c67a7929de5c0
+2026-10-11: room06_d07_d08_20261011_evidence.json sha256 78a46a8bbf80e6536d2aeb12b62b05989fe8887fb51b1d043b4d0b711159ecab
+2026-10-12: room06_d07_d08_20261012_research_evidence.json sha256 7e7b776d57439e642e5154b29606c85167a7cbd99f0a2e7d5b0495432f270698
+All are LOCAL_ONLY, not committed here. Do not double-count maturity.
