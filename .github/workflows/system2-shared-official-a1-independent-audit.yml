@@ -110,6 +110,7 @@ jobs:
           node --check system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
           node --test system2/tests/shared_official_a1_source_ledger_bridge_v0_1.test.mjs
           node --test system2/tests/daily_selection_readiness_v0_1.test.mjs
+          node --test system2/tests/a1_history_barrier_diagnostic_v0_1.test.mjs
           node system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs
       - name: Audit source-ledger and strategy-only semantics, never Frozen
         env:
@@ -131,12 +132,20 @@ jobs:
           test "$(jq -r .frozenDecisionWritten "$READINESS")" = 'false'
           test "$(jq -r .sourcePairsRequired "$READINESS")" = '122'
           if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
+            test ! -e /tmp/s2-a1-stage1-readonly/history-barrier.json
             test "$(jq -r .state "$READINESS")" = 'BLOCKED_SOURCE_NOT_SELECTION'
           else
             test "$(jq -r .marketDate "$READINESS")" = "$(jq -r .marketDate "$SUMMARY")"
             test "$(jq -r .sourcePairsObserved "$READINESS")" = '122'
             test "$(jq -r .ordinaryUniverseCount "$READINESS")" = "$(jq -r .verifiedSourceUniverseCount "$SUMMARY")"
             test "$(jq -r .state "$READINESS")" != 'BLOCKED_SOURCE_NOT_SELECTION'
+            H=/tmp/s2-a1-stage1-readonly/history-barrier.json
+            test -s "$H"
+            test "$(jq -r .selectedCount "$H")" = 'null'
+            test "$(jq -r .frozenWritten "$H")" = 'false'
+            test "$(jq -r .ordinaryUniverseCount "$H")" = "$(jq -r .ordinaryUniverseCount "$READINESS")"
+            test "$(jq -r .stage1IncompleteCount "$H")" = "$(jq -r .incompleteCount "$READINESS")"
+            echo "DAILY_HISTORY_BARRIER=$(jq -r .remainingHistoryAndOtherIncompleteCount "$H") / CA_PIT=$(jq -r .corporateActionPitUnverifiedCount "$H")" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "DAILY_SELECTION_READINESS=$(jq -r .state "$READINESS"), assessed=$(jq -r .assessedCount "$READINESS"), incomplete=$(jq -r .incompleteCount "$READINESS"), research-qualified-not-selected=$(jq -r .qualifiedNotSelectedCount "$READINESS")" >> "$GITHUB_STEP_SUMMARY"
 
@@ -161,6 +170,7 @@ jobs:
             /tmp/s2-shared-a1-independent-audit/audit-receipt.json
             /tmp/s2-a1-stage1-readonly/summary.json
             /tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+            /tmp/s2-a1-stage1-readonly/history-barrier.json
           retention-days: 7
           if-no-files-found: warn
       - name: Safety declaration
