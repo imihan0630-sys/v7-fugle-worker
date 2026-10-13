@@ -111,7 +111,7 @@ once(home_old,home_new,"homepage_read")
 once('''    const currentPlanBySymbol = new Map(stocks.map(stock => [String(stock.symbol), stock]));''',
 '''    // Wrong monitored population is NOT a valid trade display, even when
     // the quote timestamp is recent. Original data remains read-only /api/live.
-    if (!display.populationMatches) {
+    if (!display.populationMatches && url.searchParams.get("format") !== "json") {
       const message = "監控資料與正式設定股票名單不一致，暫停展示行情與操作訊號；請查驗 Cron / D1 / KV。";
       return html(errorPage(message), 200, true);
     }
