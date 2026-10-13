@@ -29,6 +29,17 @@ jobs:
           node system2/tests/official_historical_a1_source_v0_1.test.mjs
           grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
           grep -F -q 'WHERE symbol=?3 AND updated_at=?4' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+  physical_official_calendar_probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prove actual TWSE 2026 trading calendar using only public GET
+        run: node ops/system1_p0_official_calendar_transport_probe_readonly_v0_1.mjs
   official_history_incremental:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs: offline_guard_tests
