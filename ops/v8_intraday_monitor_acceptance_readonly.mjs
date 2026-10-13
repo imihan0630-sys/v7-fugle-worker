@@ -167,6 +167,39 @@ export function evaluateStorageReadback({sources,config,aideen,live,day,now=new 
    noWorkerWrite:true,noD1Write:true,noKvWrite:true};
 }
 
+// Read the underlying Fugle quote producer time on each monitored symbol.
+// A brand-new snapshot/checkedAt with a frozen stock price cannot prove live feed.
+export function evaluateQuoteProducerReadback({live,day,now=new Date()}={}) {
+ const nowMs=new Date(now).getTime();
+ const rows=Array.isArray(live?.results)?live.results:[];
+ const examined=rows.map(row=>{
+  const symbol=String(row?.symbol||"");
+  const pool=String(row?.plan?.strategyPool||"FORMAL");
+  const micros=Number(row?.quote?.lastUpdated??null);
+  // Production executionDataStatus expects Fugle Unix microseconds.
+  const timeMs=Number.isFinite(micros)&&micros>=1e14&&micros<1e17?Math.floor(micros/1000):null;
+  const age=timeMs===null?null:Math.round((nowMs-timeMs)/1000);
+  const sameDay=timeMs!==null&&tpDate(new Date(timeMs))===day;
+  const producerFresh=sameDay&&isFresh(age);
+  const flaggedFresh=row?.executionData?.quoteFresh===true;
+  const valid=Boolean(row?.ok===true&&symbol&&
+   flaggedFresh&&producerFresh&&row?.quote?.isTrial!==true);
+  return {key:pool+":"+symbol,valid,reportedQuoteFresh:flaggedFresh,
+   producerFresh,quoteAgeSeconds:age,stockOk:row?.ok===true};
+ });
+ const missing=rows.length===0;
+ const stale=examined.filter(x=>!x.valid);
+ const allFresh=!missing&&stale.length===0;
+ return {ok:allFresh,
+   state:missing?"QUOTE_ROWS_MISSING":allFresh?"PASS_ACTUAL_FUGLE_QUOTE_TIMESTAMPS":
+      "QUOTE_PROVIDER_FRESHNESS_INCOMPLETE",
+   stockCount:rows.length,quoteFreshCount:examined.length-stale.length,
+   quoteStaleCount:stale.length,
+   affectedStocks:stale.map(x=>x.key),
+   inspected:examined,
+   noFugleCall:true,noWrite:true,noPush:true,noTrade:true};
+}
+
 async function main(){
  const token=process.env.V7_ADMIN_TOKEN||"";
  if(!token)throw Error("V7_ADMIN_TOKEN_REQUIRED");
@@ -197,6 +230,13 @@ async function main(){
    record.result.state=record.result.storage.state;
  }
  record.result.sourceAuditHttp=record.endpoints.sources||null;
+ record.result.quote=evaluateQuoteProducerReadback({live:data.live,day,now});
+ // Independently validate real quote microsecond timestamps. Background jobs
+ // that move only a snapshot timestamp cannot launder stale vendor quotes.
+ if(!record.result.notAssessed&&record.result.ok&&!record.result.quote.ok) {
+   record.result.ok=false;
+   record.result.state=record.result.quote.state;
+ }
  record.result.deployedMonitorAccess=record.endpoints.config===200&&record.endpoints.live===200;
  record.digest=createHash("sha256").update(JSON.stringify(record.result)).digest("hex");
  await mkdir("artifacts",{recursive:true});
