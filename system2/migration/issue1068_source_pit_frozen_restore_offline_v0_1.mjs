@@ -13,7 +13,7 @@ function pitAudit(evidence,blockers){
  if(!Array.isArray(rows)||!rows.length){
   blockers.push("PIT_REAL_SOURCE_VERSION_SET_MISSING");return {records:0,matched:0};
  }
- const seen=new Set();let valid=0;
+ const seen=new Set(),verifiedByRef=new Map();let valid=0;
  for(const x of rows){
   const id=x?.sourceRef;
   if(!validRef(id)||seen.has(id)){
@@ -36,11 +36,13 @@ function pitAudit(evidence,blockers){
   if(x.pointInTimeEligible!==true||x.originalObservationCertified!==true){
    blockers.push("PIT_PROSPECTIVE_OBSERVATION_PROVENANCE_UNVERIFIED");continue;
   }
+  verifiedByRef.set(id,{firstKnownAt:x.firstKnownAt,availableAt:x.availableAt,
+   observedAt:x.observedAt,selectionCutAt:x.selectionCutAt});
   valid++;
  }
  if(evidence?.fullSourceVersionInventoryPhysicallyReconciled!==true)
   blockers.push("PIT_FULL_REVISION_KEYSET_INCOMPLETE");
- return {records:rows.length,matched:valid,sourceRefs:seen};
+ return {records:rows.length,matched:valid,sourceRefs:new Set(verifiedByRef.keys()),verifiedByRef};
 }
 function frozenAudit(evidence,pit,blockers){
  const rows=evidence?.frozenSnapshots;
@@ -60,14 +62,26 @@ function frozenAudit(evidence,pit,blockers){
       !validRef(s?.snapshotId)||ids.has(s.snapshotId)||
       !utc(s.frozenAt)||!utc(s.decisionCutAt)||
       !sha.test(s.payloadSha256||"")||!sha.test(s.rawInputSha256||"")||
-      !Array.isArray(s.sourceRefs)||!s.sourceRefs.length){
+      !Array.isArray(s.sourceRefs)||!s.sourceRefs.length||
+      new Set(s.sourceRefs).size!==s.sourceRefs.length){
    blockers.push("FROZEN_DECISION_ROW_IDENTITY_INCOMPLETE");break;
   }
   ids.add(s.snapshotId);
   if(Date.parse(s.decisionCutAt)>Date.parse(s.frozenAt))
    blockers.push("FROZEN_DECISION_CUT_AFTER_FREEZE");
-  if(s.sourceRefs.some(ref=>!pit.sourceRefs?.has(ref)))
-   blockers.push("FROZEN_SOURCE_REVISION_NOT_PIT_VERIFIED");
+  for(const ref of s.sourceRefs){
+   const source=pit.verifiedByRef?.get(ref);
+   if(!source){
+    blockers.push("FROZEN_SOURCE_REVISION_NOT_PIT_VERIFIED");continue;
+   }
+   // A revision may be valid for its own later selectionCutAt and still
+   // be look-ahead when reused by an earlier frozen decision. Cross-check
+   // the ORIGINAL source knowledge clocks for EACH referencing snapshot.
+   const snapshotCut=Date.parse(s.decisionCutAt);
+   if([source.firstKnownAt,source.availableAt,source.observedAt,
+       source.selectionCutAt].some(clock=>Date.parse(clock)>snapshotCut))
+    blockers.push("PIT_FROZEN_SOURCE_NOT_AVAILABLE_AT_DECISION");
+  }
   const expected=hash(["S2_ISSUE1068_FROZEN_CHAIN_V0_1",s.sequence,
    s.snapshotId,last,s.frozenAt,s.decisionCutAt,
    s.payloadSha256,s.rawInputSha256,s.sourceRefs]);
