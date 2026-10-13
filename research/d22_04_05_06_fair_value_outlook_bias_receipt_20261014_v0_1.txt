@@ -1,0 +1,1 @@
+D22 research-only: TPEx model fair value excludes floating-rate, callable, non-TWD, unrated/below twBBB, and bonds over 10 years remaining. Model uses prior-day 16:00 ratings, so a rating-derived value is not an independent market trade. First-public rating clocks unknown.
