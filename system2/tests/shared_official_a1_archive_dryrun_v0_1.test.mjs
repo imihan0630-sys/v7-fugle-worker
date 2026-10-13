@@ -82,7 +82,7 @@ test('a parsed incorrect source-reported date is refused even with newly matchin
   const fresh={...updated,manifestSha256:sha(Buffer.from(JSON.stringify(updated)))};
   await assert.rejects(()=>planSharedOfficialA1ArchiveDryRunV0_1({
    originalDirectory:dir,sourceManifest:fresh
-  }),/ORIGINAL_OFFICIAL_BAR_SEMANTICS_INVALID/);
+  }),/OFFICIAL_SOURCE_BAR_SEMANTICS_INVALID/);
  });
 });
 test('manifest tampering, path escape, file symlink and unexpected billing code fail closed',async()=>{
