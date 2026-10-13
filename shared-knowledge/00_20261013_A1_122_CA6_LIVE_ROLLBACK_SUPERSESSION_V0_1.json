@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "00_20261013_A1_122_CA6_LIVE_ROLLBACK_SUPERSESSION_V0_1",
+  "recordedAtUtc": "2026-10-13T14:38:26.163Z",
+  "recordedAtTaipei": "2026-10-13 22:38:26",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "e0ebf388a0ef4025defaf3ffa1ba45b04df87034",
+  "scope": "ORIGINAL_ACTION_RUN_JOB_LOG_AND_REPOSITORY_SOURCE_EVIDENCE_RECONCILIATION",
+  "supersedesForCurrentMarketDate": "shared-knowledge/00_20261013_STAGE1_G3_QUOTA_PHYSICAL_ACCEPTANCE_DELTA_V0_1.json prior 121/122 was an older 2026-10-12 retrospective cut and MUST NOT stand in for the 2026-10-13 genuine 19:32 source capture; preserve older immutable snapshot for audit history",
+  "source": {
+    "marketDate": "2026-10-13",
+    "originalCollectorRun": 38390694817,
+    "collectorJob": 115273466056,
+    "collectorArtifactId": 11808802261,
+    "collectorArtifactZipDigest": "sha256:ad1ef77f71906ebe8a9ed5cc3ece14dabb37be704bda366261e9487b7bf80329",
+    "collectorStatus": "SOURCE_OBSERVED_UNAUDITED",
+    "plannedMarketSessionPairs": 122,
+    "actuallyObservedMarketSessionPairs": 122,
+    "sourceOriginalProviderFiles": 122,
+    "verifiedSourceReusedFromPrior": 120,
+    "newProviderMarketDatePairs": [
+      "TWSE|2026-10-13",
+      "TPEX|2026-10-13"
+    ],
+    "completeSymbolWindowsAtCollector": 1938,
+    "independentOriginalAuditRun": 38390900569,
+    "independentJob": 115274143379,
+    "independentReceiptArtifactId": 11807798178,
+    "independentArtifactZipDigest": "sha256:08e7b1a4c95f17d91c11cdf090c1b4464e8aa4e4139bd189d57dbaef54a75afc",
+    "independentJobConclusion": "success",
+    "physicalSourceLedger": {
+      "state": "STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED",
+      "sourceLedgerHash": "06e0b6f96cca387c38603caf658e1209d25c2f7d6a84c6d9291b2ca3d48f1166",
+      "verifiedSourceUniverseCount": 1974,
+      "strategyEvaluatedCount": 0,
+      "strategyIncompleteCount": 1974,
+      "selectionAuthorized": false,
+      "selectedCount": null,
+      "zeroPickDay": null,
+      "frozenDecisionWritten": false,
+      "summarySha256": "eaa0cdb8021dc5dfa6fabbf09d746c4c878c0f1d554b109b5bb910b82806bc26"
+    },
+    "sourceOnlyPassNotStrategyPass": true
+  },
+  "corporateAction": {
+    "evidence": "system2/evidence/S2_P0_A1_61_SESSION_SIX_LANE_OFFICIAL_CA_SOURCE_PHYSICAL_20261013_V0_1.json",
+    "runId": 38413831461,
+    "jobId": 115352847920,
+    "artifactId": 11823133699,
+    "digest": "sha256:7d8da86a2a30124ccb16ca9591ae9dbcc3799213afa51006f91e8f24181f563b",
+    "sourceFinalResultLanes": 6,
+    "requiredFinalResultLanes": 6,
+    "aggregatedEventRows": 688,
+    "revisionHistoryCertifiedLanes": 0,
+    "independentPerSymbolPITContinuityCertifiedCount": 0,
+    "noEventAuthorized": false,
+    "missing": [
+      "original as-of firstKnownAt/publication availableAt",
+      "correction/cancellation complete version chain",
+      "frozen source-specific symbol continuity receipts"
+    ],
+    "noSelectionAuthority": true
+  },
+  "crossAccount": {
+    "schemaOnly": "INDEPENDENT_FORMAL_PASS_25_OF_25",
+    "g3ScopedBackupRestore": {
+      "accepted": 1,
+      "total": 4,
+      "sourceTotalRows": 113222,
+      "pitCertifiedRows": 0
+    },
+    "g4ImportedRows": 0,
+    "physicalTwoAccountIndependentOperation": "NOT_ACCEPTED",
+    "correction003": "HIGH_VERIFYING_P01_P05_PHYSICAL_0_OF_5"
+  },
+  "system1": {
+    "urgentIssue": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1202",
+    "evidence": "shared-knowledge/00_20261013_SYSTEM1_LIVE_DEPLOY_ROLLBACK_INCIDENT_AUDIT_V0_1.json",
+    "run": 38413542208,
+    "workerCodePutObserved": true,
+    "postUploadVerifier": "FAILED_REQUIRE_PLUS_TOPLEVEL_AWAIT",
+    "rollbackStep": "SUCCESS_ROUTE_REMOVED",
+    "postRollbackDeployedVersionIntegrity": "UNKNOWN_NEEDS_AUTHENTICATED_GET",
+    "autoRerunAuthorized": false,
+    "system1FormalTradingChangesBy00": false
+  },
+  "nextExact": [
+    {
+      "owner": "SYSTEM2_BUILD_DATA",
+      "action": "Run Stage1 continuation exclusively from real exact-head 2026-10-13 source ledger; produce independently PIT/corporate-action versioned per-symbol continuity, at least one genuine W1; do not count source 122 as selection."
+    },
+    {
+      "owner": "DATA_LANE_AND_AUDIT",
+      "action": "Convert six official CA final-result sources into observed firstKnownAt/availableAt, revision/cancellation history and no-event completeness; keep 0/1974 per-symbol PIT eligible until justified."
+    },
+    {
+      "owner": "SYSTEM1_BUILD_AND_AUDIT",
+      "action": "Repair Issue1202 inline Node postupload verifier, independently verify rollback actual deployed SHA/version before any new owner-approved code-only deployment."
+    },
+    {
+      "owner": "G3_DATA_AND_AUDIT",
+      "action": "Retain G3 scoped 1/4. Resolve PIT provider publication, previous external Frozen, independently recoverable backup/key; no G4 data import permission."
+    },
+    {
+      "owner": "REMEDIATION_G5",
+      "action": "CORR003 physically certify P01–P05 with actual protected original source quota and System1 business, not a new-account schema shortcut."
+    },
+    {
+      "owner": "00",
+      "action": "Independently recompute S22-T11..T16 only after same-cut W0/W1 and physical real immutable strategy output; verify latest original receipts and owner gate."
+    }
+  ],
+  "acceptance": {
+    "stage1S0toS5FullyAccepted": 0,
+    "stage1S0toS5Total": 6,
+    "selectedCountCertified": false,
+    "zeroPickCertified": false,
+    "frozenActualPersisted": false,
+    "liveTradeAuthorized": false
+  },
+  "methodLimits": [
+    "Original GitHub Actions metadata + selected original job logs rechecked, but 00 did not re-download original 40MB source ZIP or original CA payloads",
+    "Do not claim firstKnownAt from retrospective cache, source-only hash or official final action event results",
+    "No Cloudflare live API or D1 SQL executed by 00, no code changes in System1 or System2 runtime"
+  ],
+  "moduleInventory": "MODULE_COUNT_NOT_CANONICALLY_DEFINED"
+}
