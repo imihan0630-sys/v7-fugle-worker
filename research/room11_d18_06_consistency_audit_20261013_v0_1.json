@@ -10,5 +10,12 @@
   "narrowChecksPassed": 5,
   "fullCi": "PENDING",
   "maturityChanged": false,
-  "exactNext": "Run full tests, reconcile D18-06 L3 market-index vs constituent S1 scope before tracker update."
+  "exactNext": "Run canonical Node 17-test suite and regression; reconcile market-index vs constituent S1 L3 scope; no tracker promotion until scope accepted.",
+  "isolatedActualSourceLogicTests": {
+    "passed": 17,
+    "failed": 0,
+    "hashBackend": "DETERMINISTIC_SHIM_NOT_NODE_CRYPTO",
+    "canonicalCi": "NOT_VERIFIED",
+    "prCreation": "TOOL_SAFETY_BLOCKED"
+  }
 }
