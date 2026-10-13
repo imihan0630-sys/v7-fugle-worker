@@ -4,7 +4,7 @@ const today="2026-10-13",nowMs=Date.parse("2026-10-13T02:46:45Z");
 const planned=[{symbol:"6226"},{symbol:"8046"}];
 const snapshot=(time,results=planned,more={})=>({
   generatedAtIso:time,tradeDate:today,monitoredCount:results.length,
-  results:results.map(x=>({symbol:x.symbol})),...more
+  results:results.map(x=>({...x,symbol:x.symbol})),...more
 });
 const d1=snapshot("2026-10-13T02:40:00Z");
 const kv=snapshot("2026-10-13T02:46:21Z",planned,{liveStoreResult:{stored:false}});
@@ -70,5 +70,36 @@ test("afterclose shows final valid session without fake live PASS",()=>{
 test("KV checkedAt cannot launder old generatedAtIso",()=>{
  const s=pick({...opts,kv:{...snapshot("2026-10-13T02:40:00Z"),checkedAt:"2026-10-13T02:46:43Z"}});
  assert.equal(s.source,"D1_PRIMARY");
+});
+
+const formal=[{symbol:"6226",strategyPool:"FORMAL_GENERAL"},{symbol:"8046",strategyPool:"FORMAL_THOUSAND"}];
+const aideen=[{symbol:"6213",strategyPool:"AIDEEN_APP"},{symbol:"3189",strategyPool:"AIDEEN_APP"},{symbol:"6672",strategyPool:"AIDEEN_APP"},{symbol:"2404",strategyPool:"AIDEEN_APP"}];
+const expected=[...formal,...aideen];
+test("intended V8.10 Formal+Aideen union is valid monitor population",()=>{
+ const row=snapshot("2026-10-13T02:46:21Z",expected.map(x=>({symbol:x.symbol,plan:{strategyPool:x.strategyPool}})));
+ const selected=pick({...opts,planned:expected,d1:row,kv:null});
+ assert.equal(selected.populationMatches,true);
+ assert.equal(selected.source,"D1_PRIMARY");
+ assert.equal(selected.liveFresh,true);
+});
+test("disallow 9 against Formal-only expected list",()=>{
+ const row=snapshot("2026-10-13T02:46:21Z",expected.map(x=>({symbol:x.symbol,plan:{strategyPool:x.strategyPool}})));
+ const selected=pick({...opts,planned:formal,d1:row,kv:null});
+ assert.equal(selected.populationMatches,false);
+});
+test("Formal and Aideen may monitor same ticker with distinct independent pool IDs",()=>{
+ const same=[{symbol:"6226",strategyPool:"FORMAL_GENERAL"},{symbol:"6226",strategyPool:"AIDEEN_APP"}];
+ const row=snapshot("2026-10-13T02:46:21Z",same.map(x=>({symbol:x.symbol,plan:{strategyPool:x.strategyPool}})));
+ const selected=pick({...opts,planned:same,d1:row,kv:null});
+ assert.equal(selected.populationMatches,true);
+});
+test("unknown tenth symbol must fail even with valid Formal+Aideen scopes",()=>{
+ const extra=[...expected,{symbol:"9999",strategyPool:"AIDEEN_APP"}];
+ const row=snapshot("2026-10-13T02:46:21Z",extra.map(x=>({symbol:x.symbol,plan:{strategyPool:x.strategyPool}})));
+ assert.equal(pick({...opts,planned:expected,d1:row,kv:null}).populationMatches,false);
+});
+test("missing an authorized Aideen target must fail",()=>{
+ const row=snapshot("2026-10-13T02:46:21Z",expected.slice(0,-1).map(x=>({symbol:x.symbol,plan:{strategyPool:x.strategyPool}})));
+ assert.equal(pick({...opts,planned:expected,d1:row,kv:null}).populationMatches,false);
 });
 console.log(JSON.stringify({ok:true,testCases:count,safeReadOnly:true,noTradeOrPushChanges:true}));

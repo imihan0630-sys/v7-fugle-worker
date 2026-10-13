@@ -1,4 +1,4 @@
-name: System1 V8 P0 LIVE OWNER-APPROVED Controlled Deploy (ONE SHOT)
+name: System1 V8 P0 LIVE OWNER-APPROVED Controlled Deploy (Aideen Union Reconciliation)
 on:
   push:
     branches: [main]
@@ -54,6 +54,7 @@ jobs:
           node --check ops/system1_v8_live_p0_verify_deployment_once.mjs
           grep -F -q 'LIVE_D1_PERSISTENCE_NOT_VERIFIED' Worker.js
           grep -F -q '/api/live/sources' Worker.js
+          grep -F -q 'const expectedMonitoring=' Worker.js
           grep -F -q 'MONITOR_TARGETS' Worker.js || grep -F -q 'display.populationMatches' Worker.js
           node tests/test_system1_idempotent_d1_snapshots_v8_20_2.mjs
           node tests/test_v8_1_2_position_reconciliation.mjs

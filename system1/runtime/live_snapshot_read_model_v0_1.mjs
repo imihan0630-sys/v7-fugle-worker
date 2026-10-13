@@ -6,9 +6,15 @@ const validMs=x=>{
 };
 const symbolSet=list=>{
   if(!Array.isArray(list))return null;
-  const symbols=list.map(x=>String(x?.symbol||""));
-  const set=new Set(symbols);
-  return set.size===symbols.length&&symbols.every(Boolean)?set:null;
+  // Mirror protected V8.10 aideenMonitorIdentity: same ticker in separate
+  // independent pools is not a duplicate monitoring identity.
+  const identities=list.map(x=>{
+    const symbol=String(x?.symbol||x?.plan?.symbol||x?.code||"").trim();
+    const pool=String(x?.strategyPool||x?.plan?.strategyPool||"FORMAL").trim();
+    return symbol&&pool?pool+":"+symbol:"";
+  });
+  const set=new Set(identities);
+  return set.size===identities.length&&identities.every(Boolean)?set:null;
 };
 const samePopulation=(snapshot,planned)=>{
   const expected=symbolSet(planned);

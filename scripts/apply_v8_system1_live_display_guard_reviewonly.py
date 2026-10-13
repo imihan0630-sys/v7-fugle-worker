@@ -37,8 +37,10 @@ async function readDisplayLiveState(env, stocks) {
     snapshotAgeSeconds(primary) > LIVE_STALE_SECONDS);
   const probe = !primary || primary.tradeDate !== tradeDate || old;
   const kv = probe && env.STOCKS_KV ? await env.STOCKS_KV.get(LAST_MONITOR_KEY,"json") : null;
+  const aideen = await loadAideenPool(env);
+  const expectedMonitoring=[...(stocks||[]),...(aideen.stocks||[])];
   return reconcileDisplaySnapshotsV0_1({
-    d1:primary, kv, planned:stocks, tradeDate, intraday, nowMs,
+    d1:primary, kv, planned:expectedMonitoring, tradeDate, intraday, nowMs,
     staleSeconds:LIVE_STALE_SECONDS
   });
 }
@@ -65,13 +67,14 @@ once(api_old,api_new,"readonly_live_api")
 audit_route='''    if (url.pathname === "/api/live/sources") {
       if (!isAuthorized(request, env)) return json({ error: "ADMIN_TOKEN 錯誤" }, 401, true);
       const config = await loadStockConfig(env);
+      const aideen = await loadAideenPool(env);
       const [d1, kv] = await Promise.all([
         auditPrimarySnapshotReadOnly(env),
         env.STOCKS_KV ? env.STOCKS_KV.get(LAST_MONITOR_KEY, "json") : Promise.resolve(null)
       ]);
       const nowMs = Date.now(), tradeDate = taiwanDate(nowMs);
       const audited = reconcileDisplaySnapshotsV0_1({
-        d1, kv, planned:config.stocks, tradeDate,
+        d1, kv, planned:[...(config.stocks||[]),...(aideen.stocks||[])], tradeDate,
         intraday:isTradingDate(tradeDate) && isIntradayMonitorWindow(nowMs),
         nowMs, staleSeconds:LIVE_STALE_SECONDS
       });
@@ -85,6 +88,8 @@ audit_route='''    if (url.pathname === "/api/live/sources") {
         schema:"SYSTEM1_V8_LIVE_SOURCES_READONLY_V0_1",
         observedAt:new Date(nowMs).toISOString(),tradeDate,
         configSymbols:config.stocks.map(x=>String(x.symbol)),
+        aideenSymbols:(aideen.stocks||[]).map(x=>String(x.symbol)),
+        expectedMonitorKeys:[...(config.stocks||[]),...(aideen.stocks||[])].map(x=>aideenMonitorIdentity(x)),
         d1:projection(d1),kv:projection(kv),
         d1AgeSeconds:audited.d1AgeSeconds,kvAgeSeconds:audited.kvAgeSeconds,
         d1PopulationMatches:audited.d1PopulationMatches,

@@ -29,13 +29,22 @@ assert.equal(old.bindings.d1,true);assert.equal(old.bindings.kv,true);
 assert.equal(after.updatedAt,baseline.configUpdatedAt);
 assert.deepEqual(after.stocks.map(x=>String(x.symbol)).sort(),baseline.plannedStocks.map(x=>String(x.symbol)).sort());
 assert.deepEqual(sources.configSymbols.map(String).sort(),after.stocks.map(x=>String(x.symbol)).sort());
+assert.ok(Array.isArray(sources.aideenSymbols),"AIDEEN_SEPARATE_POOL_PROVENANCE_MISSING");
+assert.ok(Array.isArray(sources.expectedMonitorKeys),"FULL_MONITOR_POPULATION_PROVENANCE_MISSING");
+assert.equal(sources.expectedMonitorKeys.length,after.stocks.length+sources.aideenSymbols.length);
+assert.equal(new Set(sources.expectedMonitorKeys).size,sources.expectedMonitorKeys.length,
+  "MONITOR_IDENTITY_COLLISION");
+if(sources.d1?.monitoredCount===sources.expectedMonitorKeys.length) {
+  assert.equal(sources.d1PopulationMatches,true,"D1_FORMAL_AIDEEN_POOL_IDENTITY_NOT_RECONCILED");
+}
+
 const api="https://api.cloudflare.com/client/v4/accounts/"+process.env.CF_ACCOUNT_ID+"/workers/scripts/fugle-test/schedules";
 const r=await fetch(api,{headers:{authorization:"Bearer "+process.env.CF_API_TOKEN},signal:AbortSignal.timeout(20000)});
 const c=await r.json();assert.equal(r.ok&&c.success===true,true);
 const schedule=x=>(Array.isArray(x)?x:(x?.schedules||[])).map(s=>s.cron||s).sort();
 assert.deepEqual(schedule(c.result),schedule(backup.schedules),"PRODUCTION_CRON_CHANGED_UNAUTHORIZED");
 console.log("S1_P0_DEPLOY_READBACK_PASS",JSON.stringify({
-  runtimeVersion:old.version,configuredSymbols:after.stocks.map(x=>x.symbol),
+  runtimeVersion:old.version,configuredSymbols:after.stocks.map(x=>x.symbol),aideenSymbols:sources.aideenSymbols,
   d1:{"ageSec":sources.d1AgeSeconds,"count":sources.d1?.monitoredCount,matched:sources.d1PopulationMatches},
   kv:{"ageSec":sources.kvAgeSeconds,"count":sources.kv?.monitoredCount,matched:sources.kvPopulationMatches},
   selectedSource:live.displaySource,displayPopulationMatches:live.displayPopulationMatches,
