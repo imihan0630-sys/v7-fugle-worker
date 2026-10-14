@@ -13,6 +13,7 @@ test('native aggregate 1.一般股票 / 2.台灣存託憑證 cannot certify even
    ['1.一般股票','100000'],['2.台灣存託憑證','30000']]) ]});
  assert.equal(receipt.sourceDateExact,true);
  assert.equal(receipt.explicitOrdinaryFourDigitRows,0);
+ assert.equal(receipt.aggregateStockAndDepositaryCategoryObserved,true);
  assert.equal(receipt.state,'AGGREGATE_OR_TYPE_UNVERIFIED');
  assert.equal(receipt.ordinaryEquityAdmissionEnabled,false);
  assert.equal(receipt.perSymbolPITSourceRowsCertified,false);
