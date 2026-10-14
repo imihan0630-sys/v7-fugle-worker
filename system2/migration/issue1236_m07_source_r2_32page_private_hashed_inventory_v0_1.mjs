@@ -13,18 +13,12 @@ const PAGE_MAX=32,KEYS_PER_PAGE=1000, MAX_OBJECT_ENTRIES=32000;
 const OUT="/tmp/s2-m07-source-full-inventory-bounded";
 const sha=b=>createHash("sha256").update(b).digest("hex");
 const fail=s=>{throw Error("M07_INVENTORY_"+s)};
-export async function censusSourceR2({accountId,accessKeyId,secretAccessKey,bucketName,
- fetchImpl=fetch,sink}={}){
- if(bucketName!==BUCKET||typeof accountId!=="string"||
-   sha(accountId.toLowerCase())!==SOURCE_ACCOUNT_SHA)fail("ORIGINAL_ACCOUNT_OR_BUCKET_IDENTITY");
- if(typeof sink!=="function")fail("NO_PRIVATE_RECEIPT_SINK");
+export async function collectListedR2Pages({loadPage,sink}={}){
+ if(typeof sink!=="function"||typeof loadPage!=="function")fail("NO_PRIVATE_RECEIPT_SINK_OR_PAGE_LOADER");
  let continuation=null,count=0,bytes=0,complete=false;
  const ids=new Set(),tokens=new Set(),pages=[],digest=createHash("sha256");
  for(let pg=1;pg<=PAGE_MAX;pg++){
-  const req=signedR2Page({accountId,accessKeyId,secretAccessKey,continuationToken:continuation});
-  const res=await fetchImpl(req.url,{method:"GET",headers:req.headers,signal:AbortSignal.timeout(30000)});
-  if(!res||!res.ok)fail("SOURCE_R2_LIST_HTTP_"+String(res?.status||0).replace(/\D/g,""));
-  const parsed=parseR2Page(await res.text());
+  const parsed=parseR2Page(await loadPage(continuation));
   let pageBytes=0;const pageHash=createHash("sha256");
   for(const object of parsed.entries){
    const id=sha(Buffer.from(object.key,"utf8"));
@@ -75,6 +69,17 @@ export async function censusSourceR2({accountId,accessKeyId,secretAccessKey,buck
   pageReceipts:pages,
   independentlyAudited:false,formalM07Accepted:false
  });
+}
+export async function censusSourceR2({accountId,accessKeyId,secretAccessKey,bucketName,
+ fetchImpl=fetch,sink}={}){
+ if(bucketName!==BUCKET||typeof accountId!=="string"||
+   sha(accountId.toLowerCase())!==SOURCE_ACCOUNT_SHA)fail("ORIGINAL_ACCOUNT_OR_BUCKET_IDENTITY");
+ return collectListedR2Pages({sink,loadPage:async continuation=>{
+  const req=signedR2Page({accountId,accessKeyId,secretAccessKey,continuationToken:continuation});
+  const res=await fetchImpl(req.url,{method:"GET",headers:req.headers,signal:AbortSignal.timeout(30000)});
+  if(!res||!res.ok)fail("SOURCE_R2_LIST_HTTP_"+String(res?.status||0).replace(/\D/g,""));
+  return res.text();
+ }});
 }
 async function main(){
  await mkdir(OUT,{recursive:true,mode:0o700});
