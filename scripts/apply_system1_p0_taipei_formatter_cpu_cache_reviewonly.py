@@ -33,11 +33,19 @@ def patch(source: str) -> str:
         "const LIVE_STALE_SECONDS = 90;",
         "const need10 = minutesSinceOpen >= 11 && (minutesSinceOpen - 1) % 10 === 0;",
         "const need15 = minutesSinceOpen >= 16 && (minutesSinceOpen - 1) % 15 === 0;",
-        'const key=SIGNAL_STATE_PREFIX+result.symbol;',
         'if (!allowOutsideWindow && !isIntradayMonitorWindow(scheduledTime))',
     ):
         if unchanged not in source:
             raise ValueError("P0_PROTECTED_ORIGINAL_RUNTIME_GUARD_MISSING: "+unchanged)
+    # Original Worker regression builder may add whitespace to this protected
+    # state key. Require equivalent exact identifier/concat syntax AND both
+    # authoritative D1 lease acquisition + release in the original runtime.
+    import re
+    if not re.search(r"const\s+key\s*=\s*SIGNAL_STATE_PREFIX\s*\+\s*result\.symbol\s*;",source):
+        raise ValueError("P0_PROTECTED_SIGNAL_D1_STATE_KEY_MISSING")
+    for guard in ('await acquireSignalStateLease(env,key)', "UPDATE v7_signal_delivery_state SET lease_token=NULL"):
+        if guard not in source:
+            raise ValueError("P0_PROTECTED_SIGNAL_LEASE_GUARD_MISSING: "+guard)
     modified = source.replace(CLOCK_OLD, CLOCK_NEW, 1).replace(DATE_OLD, DATE_NEW, 1)
     if (modified.count("S1_P0_TAIPEI_CLOCK_FORMATTER") != 2 or
             modified.count("S1_P0_TAIPEI_DATE_FORMATTER") != 2):
