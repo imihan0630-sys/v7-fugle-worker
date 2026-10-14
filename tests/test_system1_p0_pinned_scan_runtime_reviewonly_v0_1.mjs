@@ -50,6 +50,62 @@ await assert.rejects(decide({}, {marketDate:"2026-02-30"},same),/PINNED_SCAN_DAT
 holiday=true;
 await assert.rejects(decide({}, {marketDate:"2026-10-13",onlyIfMissing:true},same),/PINNED_SCAN_DATE_NOT_OFFICIAL_TRADING_SESSION/);
 assert.equal(await decide({}, {},next),next,"No-body legacy interface intentionally untouched");
+
+assert.match(generated,/status:"FORMAL_COMMIT_STARTED"/);
+assert.match(generated,/AMBIGUOUS_FORMAL_COMMIT_REPLAY_FORBIDDEN/);
+assert.match(generated,/await options\.onBeforeFormalMutation\(marketDate\)/);
+assert.ok(generated.indexOf('await options.onBeforeFormalMutation(marketDate)') <
+          generated.indexOf('await env.STOCKS_KV.put(MARKET_STATE_KEY'));
+assert.ok(!original.includes('status:"FORMAL_COMMIT_STARTED"'));
+// Execute extracted ACTUAL proposed lease wrapper: a stored pre-write marker
+// must reject another business attempt, while a fully pre-commit failed
+// attempt can be retried without overriding a saved Formal plan.
+const afterMarketSource=generated.slice(
+  generated.indexOf("async function runAfterMarketScan(env,"),
+  generated.indexOf("async function runAfterMarketScanCore(")
+);
+assert.ok(afterMarketSource.startsWith("async function runAfterMarketScan("));
+let coreCalls=0,markWrites=[],leaseReleases=0,staged={status:"FORMAL_COMMIT_STARTED",commitAt:"2026-10-14T10:10:00Z"};
+const leaseCtx={
+ Date,JSON,Number,String,Error,
+ taiwanDate(){return "2026-10-14";},
+ async acquireSignalStateLease(){return {token:"fixture-lease",snapshot:staged};},
+ async loadTradingCalendar(){},
+ isTradingDate(){return true;},
+ mostRecentWeekday(){return "2026-10-14";},
+ isTestMode(){return false;},
+ async persistSignalStateLease(_e,_k,_t,x){markWrites.push(x);},
+ async releaseSignalLease(){leaseReleases++;},
+ async runAfterMarketScanCore(_e,_t,o){
+   coreCalls++;
+   assert.equal(typeof o.onBeforeFormalMutation,"function");
+   await o.onBeforeFormalMutation("2026-10-14");
+   return {scanDate:"2026-10-14",selectedCount:0,generatedAt:"2026-10-14T23:45:00+08:00"};
+ },
+ async sendPush(){throw Error("NO_PUSH_EXPECTED")}
+};
+vm.runInNewContext(afterMarketSource+"\nthis.tryFormal=runAfterMarketScan;",leaseCtx);
+const env={
+ V7_DB:{},STOCKS_KV:{
+   async get(key){return key==="V7_LAST_SCAN_ATTEMPT"?null:null;},
+   async put(){return true;}
+ }
+};
+const stop=await leaseCtx.tryFormal(env,Date.parse("2026-10-14T15:45:00Z"),{onlyIfMissing:true});
+assert.equal(stop.skipped,true);
+assert.equal(stop.reason,"AMBIGUOUS_FORMAL_COMMIT_REPLAY_FORBIDDEN");
+assert.equal(coreCalls,0);
+assert.equal(markWrites.length,0);
+assert.equal(leaseReleases,1);
+staged={status:"PRECHECK_FAILED",scanDate:"2026-10-14"};
+const recovered=await leaseCtx.tryFormal(env,Date.parse("2026-10-14T15:45:00Z"),{onlyIfMissing:true});
+assert.equal(recovered.scanDate,"2026-10-14");
+assert.equal(coreCalls,1);
+assert.equal(markWrites[0].status,"FORMAL_COMMIT_STARTED");
+assert.equal(markWrites[0].scanDate,"2026-10-14");
+assert.equal(markWrites[1].status,"SUCCESS");
+assert.equal(leaseReleases,2);
+
 assert.ok(generated.includes("const LIVE_STALE_SECONDS = 90;"));
 assert.match(original,/runAfterMarketScan\(env, Date\.now\(\),\{onlyIfMissing:body\.onlyIfMissing===true\}\)/);
 console.log(JSON.stringify({ok:true,positiveCases:2,failClosedNegativeCases:7,
