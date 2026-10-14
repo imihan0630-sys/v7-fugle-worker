@@ -2,8 +2,8 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
-const urls={TWSE:'https://isin.twse.com.tw/isin/C_public.jsp?strMode=2',
- TPEX:'https://isin.twse.com.tw/isin/C_public.jsp?strMode=4'};
+const urls={TWSE:'https://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2',
+ TPEX:'https://isin.twse.com.tw/isin/e_C_public.jsp?strMode=4'};
 const digest=b=>createHash('sha256').update(b).digest('hex');
 const norm=s=>String(s||'').normalize('NFKC').replace(/[\u3000\s]+/g,'').trim();
 const cell=s=>String(s||'').replace(/<[^>]+>/g,' ').replace(/&nbsp;|&#160;/gi,' ')
@@ -33,7 +33,7 @@ export function parseCurrentIsinCfiV0_1({html,market}={}){
 async function readOfficial(fetchImpl,url){
  const res=await fetchImpl(url,{method:'GET',redirect:'follow',
   headers:{accept:'text/html','user-agent':'Mozilla/5.0 System2-Current-ISIN-Research/0.1'},
-  signal:AbortSignal.timeout(45000)});
+  signal:AbortSignal.timeout(18000)});
  if(!res?.ok||res.status!==200)throw Error('REGISTRY_HTTP_NOT_200');
  if(Number(res.headers?.get?.('content-length')||0)>40000000)throw Error('REGISTRY_BODY_OVERSIZE');
  const b=Buffer.from(await res.arrayBuffer());
@@ -73,6 +73,8 @@ export async function observeCurrentIsinCfiV0_1({watch,fetchImpl=globalThis.fetc
     sourceUrl:urls[market],observedAtUtc,
     blocker:/HTTP/.test(m)?'HTTP_NOT_200':/OVERSIZE|BODY/.test(m)?'BODY_INVALID':
      /COVERAGE/.test(m)?'CFI_DENOMINATOR_INSUFFICIENT':'SOURCE_UNVERIFIED',
+    transportTimedOut:/timeout|abort/i.test(String(e?.message||''))||
+      ['TimeoutError','AbortError'].includes(e?.name),
     rawSha256:null,fourDigitCfiRows:null});
   }
  }
@@ -86,13 +88,15 @@ export async function observeCurrentIsinCfiV0_1({watch,fetchImpl=globalThis.fetc
   const match=maps[item.market].get(item.symbol);
   preview.push({symbol:item.symbol,market:item.market,companyName:item.companyName,
    currentIsin:match?.isin||null,currentCfi:match?.cfi||null,
-   currentNameMatch:!!match&&norm(match.name)===norm(item.companyName),
+   // Current English registry company names cannot prove Chinese-name equivalence.
+   currentNameMatch:null,currentRegistryEnglishName:match?.name||null,
+   crossLanguageNameEquivalenceCertified:false,
    historicalOrdinaryEquityPITCertified:false,rank:null,selectedCount:null});
  }
  const base={schemaVersion:'S2_NATIVE_CFI_PREVIEW_OBSERVATION_V0_1',
   observedAtUtc,originalMarketDate:watch.marketDate,sourceWatchHash:receiptHash,
   lanes,previewCount:preview.length,cfiMatchedCount:preview.filter(x=>x.currentCfi).length,
-  exactNameMatchedCount:preview.filter(x=>x.currentNameMatch).length,preview,
+  exactNameMatchedCount:null,currentRegistryEnglishNameNotChineseComparable:true,preview,
   cfiToOrdinaryShareMappingCertified:false,
   historicalSecurityClassPITCertified:false,companyActionPITCertified:false,
   selectedCount:null,zeroPickDay:null,frozenWritten:false,formalRankAuthorized:false,
