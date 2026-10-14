@@ -28,3 +28,21 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/scheduled_health.mjs --after-market
+
+      # GitHub scheduled 23:55 Taipei may execute after midnight. The existing
+      # health step skips in that case and marks its job green without checking
+      # yesterday's Formal scan. This independent GET-only check freezes the
+      # actual intended session and raises a failing job on missing Formal/outbox.
+      - name: Verify previous session Formal scan and monitor delivery (GET ONLY)
+        if: always() && github.event.schedule == '55 15 * * 1-5'
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/system1_overnight_formal_delivery_getonly.mjs
+      - name: Publish independent overnight failure receipt
+        if: always() && github.event.schedule == '55 15 * * 1-5'
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-overnight-formal-delivery-${{ github.run_id }}
+          path: artifacts/system1-overnight-formal-delivery-getonly.json
+          if-no-files-found: warn
+          retention-days: 30
