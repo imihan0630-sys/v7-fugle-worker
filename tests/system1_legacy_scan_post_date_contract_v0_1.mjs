@@ -38,5 +38,7 @@ export function verifiedPinnedPriorDayCapability(capability){
     capability?.legacyDateBodyIgnored===false&&
     capability?.priorDayFallbackRequiresOnlyIfMissing===true&&
     capability?.priorDayTaipeiCutoff==="07:00"&&
-    capability?.maxHistoricalRewindDays===1;
+    capability?.maxHistoricalRewindDays===1&&
+    capability?.priorDayFallbackEnabled===true&&
+    capability?.priorDayReplayIsNotAuthorizedByCapabilityAlone===true;
 }
