@@ -11,16 +11,30 @@ import {loadTrustedOfficialA1OriginalsV0_1,createSourceCacheFetchV0_1}
  from '../runtime/shared_official_a1_verified_seed_v0_1.mjs';
 const OUT='/tmp/system2-official-61';
 const sha=x=>createHash('sha256').update(x).digest('hex');
-const taipeiDay=()=>new Intl.DateTimeFormat('en-CA',{
+const taipeiParts=when=>Object.fromEntries(new Intl.DateTimeFormat('en-US',{
  timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',
-}).format(new Date());
+ hour:'2-digit',hourCycle:'h23'
+}).formatToParts(when).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+const dayAfter=value=>{
+ const d=new Date(value+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);
+ return d.toISOString().slice(0,10);
+};
 export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
  marketDate,outputDir=OUT,fetchImpl,calendarResolver,historicalFetch,
- now,pauseMs=350,retrospectiveDiagnosticOnly=false,
+ now=()=>new Date(),pauseMs=350,retrospectiveDiagnosticOnly=false,
+ conditionalNextDayRecovery=false,
  seedEvidenceFile=null,seedOriginalDir=null,
 }={}){
- const currentTaipeiDate=taipeiDay();
+ const observationClock=now();
+ const z=taipeiParts(observationClock);
+ const currentTaipeiDate=z.year+'-'+z.month+'-'+z.day;
+ const sourceRecoveryClockValid=conditionalNextDayRecovery===true&&
+   retrospectiveDiagnosticOnly!==true&&
+   currentTaipeiDate===dayAfter(marketDate)&&Number(z.hour)<2;
+ if(conditionalNextDayRecovery===true&&!sourceRecoveryClockValid)
+   throw Error('CONDITIONAL_T_PLUS_ONE_RECOVERY_CLOCK_INVALID');
  if(marketDate!==currentTaipeiDate &&
+    !sourceRecoveryClockValid&&
     !(retrospectiveDiagnosticOnly===true&&marketDate<currentTaipeiDate))
    throw Error('PROSPECTIVE_ONLY_TAIPEI_TODAY_UNLESS_EXPLICIT_RETROSPECTIVE_DIAGNOSTIC');
  if(retrospectiveDiagnosticOnly===true&&marketDate>=currentTaipeiDate)
@@ -73,8 +87,11 @@ export async function collectOfficial61SessionWindowToLocalEvidenceV0_1({
     independentLongTermDurableArchiveReady:false,
    },
    retrospectiveDiagnosticOnly,
+   // Even within T+1 00:00-01:59, source capture by itself is NOT
+   // a strategy freeze. The independent audit must use its actual UTC clock.
+   conditionalTPlusOneSourceRecoveryOnly:sourceRecoveryClockValid,
    retrospectiveSelectionClaimDisabled:true,
-   genuineProspectiveDecisionCapture:!retrospectiveDiagnosticOnly&&false};
+   genuineProspectiveDecisionCapture:false};
  const path=resolve(outputDir,'official-61-'+marketDate+'.json');
  await writeFile(path,JSON.stringify(evidence)+'\n',{flag:'wx',mode:0o600});
  console.log(JSON.stringify({
