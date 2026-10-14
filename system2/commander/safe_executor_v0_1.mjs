@@ -44,7 +44,9 @@ export function assessSourceRoute({source,daily,raw,quarantine,sourceQuarantine}
  return {assertions,findings:Object.entries(assertions).filter(([,ok])=>!ok).map(([name])=>name),
   sourceOnlyOfflineScope:true,observedCloudflareWorkerConfig:false,accountCredentialMatchPhysicallyObserved:false};
 }
-export function assessQuotaInterlock({daily,raw,registry,importer}){
+export function assessQuotaInterlock({daily,raw,registry,importer,rawImporter}){
+ const importSource=importer??rawImporter;
+ if(typeof importSource!=="string")throw Error("RAW_IMPORTER_NOT_LOADED");
  const old=(daily.match(/^\s*group:\s*(\S+)/m)||[])[1]||null;
  const history=(raw.match(/^\s*group:\s*(\S+)/m)||[])[1]||null;
  const writers=registry.writers||[];
@@ -56,7 +58,7 @@ export function assessQuotaInterlock({daily,raw,registry,importer}){
  const assertions={
   diagnosticWriterInSourceRegistry:!!diag,
   diagnosticReservation13130:fixed===13130,
-  rawCopyBilledWriteBudgetBounded:/const limit=80000, stopAt=75000, maxStatementRows=80/.test(importer),
+  rawCopyBilledWriteBudgetBounded:/const limit=80000, stopAt=75000, maxStatementRows=80/.test(importSource),
   rawCopyUsesOwnConcurrencyGroup:history!==null,
   diagnosticUsesOwnConcurrencyGroup:old!==null,
   sameGroupSerializesWriters:!!old&&old===history,
