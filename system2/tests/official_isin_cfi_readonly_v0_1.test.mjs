@@ -19,6 +19,14 @@ test('duplicate ISIN securities cannot be counted as independent issuer',()=>{
  const tr='<tr><td>2330 台積電</td><td>TW0002330008</td><td>x</td><td>TWSE</td><td>x</td><td>ESVUFR</td></tr>';
  assert.throws(()=>parse({market:'TWSE',html:'ISIN Code'+tr+tr}),/DUPLICATE_SECURITY_CODE/);
 });
+test('official English ISIN fallback never backdates Chinese identity or PIT',async()=>{
+ const {readFile}=await import('node:fs/promises');
+ const s=await readFile('system2/scripts/probe_current_isin_cfi_readonly_v0_1.mjs','utf8');
+ assert.match(s,/e_C_public\.jsp\?strMode=2/);
+ assert.match(s,/e_C_public\.jsp\?strMode=4/);
+ assert.match(s,/currentRegistryEnglishNameNotChineseComparable:true/);
+ assert.match(s,/signal:AbortSignal\.timeout\(18000\)/);
+});
 test('no regulated order, D1 write or automatic PIT certification',async()=>{
  const {readFile}=await import('node:fs/promises');
  const s=await readFile('system2/scripts/probe_current_isin_cfi_readonly_v0_1.mjs','utf8');
