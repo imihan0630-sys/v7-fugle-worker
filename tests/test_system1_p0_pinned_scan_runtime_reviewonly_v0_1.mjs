@@ -29,7 +29,16 @@ const same=Date.parse("2026-10-13T15:45:00Z");
 const next=Date.parse("2026-10-13T20:49:34Z");
 assert.equal(await decide({}, {marketDate:"2026-10-13",onlyIfMissing:true},same),same);
 await assert.rejects(decide({}, {marketDate:"2026-10-13",onlyIfMissing:false},same),/PINNED_SCAN_DATE_NOT_AUTHORIZED_FOR_CLOCK/);
-assert.equal(await decide({}, {marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),same);
+await assert.rejects(decide({}, {marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),/PRIOR_DAY_REPLAY_OWNER_GATE_NOT_ENABLED/);
+const approvedFixture={S1_PINNED_PRIOR_DAY_RECOVERY_ENABLED:"true",
+ STOCKS_KV:{async get(){return null;}}};
+assert.equal(await decide(approvedFixture, {marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),same);
+const ambiguousFixture={S1_PINNED_PRIOR_DAY_RECOVERY_ENABLED:"true",
+ STOCKS_KV:{async get(){return {status:"FAILED",requestedDate:"2026-10-14"};}}};
+await assert.rejects(decide(ambiguousFixture,{marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),/AMBIGUOUS_PRIOR_BUSINESS_POST_NO_REPLAY/);
+const originalSameDateFailure={S1_PINNED_PRIOR_DAY_RECOVERY_ENABLED:"true",
+ STOCKS_KV:{async get(){return {status:"FAILED",requestedDate:"2026-10-13"};}}};
+await assert.rejects(decide(originalSameDateFailure,{marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),/AMBIGUOUS_PRIOR_BUSINESS_POST_NO_REPLAY/);
 assert.equal(yearSeen,2026);
 assert.equal(calendarCalls,2);
 await assert.rejects(decide({}, {marketDate:"2026-10-13",onlyIfMissing:true},next),/PINNED_SCAN_DATE_NOT_AUTHORIZED_FOR_CLOCK/);
