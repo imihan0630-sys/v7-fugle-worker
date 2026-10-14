@@ -41,8 +41,18 @@ def patch(source: str) -> str:
     # state key. Require equivalent exact identifier/concat syntax AND both
     # authoritative D1 lease acquisition + release in the original runtime.
     import re
-    if not re.search(r"const\s+key\s*=\s*SIGNAL_STATE_PREFIX\s*\+\s*result\.symbol\s*;",source):
+    formal_legacy=bool(re.search(r"const\s+key\s*=\s*SIGNAL_STATE_PREFIX\s*\+\s*result\.symbol\s*;",source))
+    role_isolated=bool(re.search(r"const\s+key\s*=\s*aideenSignalStateKey\(result\)\s*;",source))
+    if not (formal_legacy or role_isolated):
         raise ValueError("P0_PROTECTED_SIGNAL_D1_STATE_KEY_MISSING")
+    if role_isolated:
+        for guard in (
+            "function aideenSignalStateKey(result)",
+            "result?.plan?.strategyPool===AIDEEN_POOL_ID",
+            "return SIGNAL_STATE_PREFIX +",
+        ):
+            if guard not in source:
+                raise ValueError("P0_CANONICAL_AIDEEN_INDEPENDENT_SIGNAL_KEY_GUARD_MISSING")
     for guard in ('await acquireSignalStateLease(env,key)', "UPDATE v7_signal_delivery_state SET lease_token=NULL"):
         if guard not in source:
             raise ValueError("P0_PROTECTED_SIGNAL_LEASE_GUARD_MISSING: "+guard)
@@ -77,6 +87,7 @@ def main() -> None:
         "live_stale_seconds_kept":90,"trading_strategy_changed":False,
         "signal_lease_changed":False,"push_changed":False,"cron_changed":False,
         "billing_changed":False,"deployment_performed":False,
+        "aideen_pool_key_isolated_in_canonical": "const key=aideenSignalStateKey(result);" in original,
         "candidate_path":str(output.relative_to(root))
     },ensure_ascii=False))
 if __name__ == "__main__":
