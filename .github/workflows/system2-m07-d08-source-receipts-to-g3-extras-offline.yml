@@ -1,0 +1,46 @@
+name: S2 M07 Source D08 Writer Receipts to Original G3 498 Extras OFFLINE
+# No Cloudflare network. One ORIGINAL private GitHub Artifact and pinned receipts.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-d08-source-receipts-to-g3-extras-offline.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-offline-original-g3-extra-d08-github-source-writer-receipts
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Negative tests and original immutable GitHub source receipt blob checks
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_original_d08_writer_receipt_g3_498_offline_join_v0_1.mjs
+          node system2/tests/issue1236_m07_original_d08_receipt_g3_extra_offline_v0_1.test.mjs
+      - name: Retrieve original protected G3 source 498 private keyhash identities
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-private-498-extra-keyhashes-38527825185-1
+          run-id: 38527825185
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-original-private-498
+      - name: Offline original source GitHub receipts to source R2 498 identity and LIST-size crosswalk
+        run: node system2/migration/issue1236_m07_original_d08_writer_receipt_g3_498_offline_join_v0_1.mjs
+      - name: Retain sanitized aggregate G3-to-D08 receipt proof only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-original-g3-498-d08-writer-receipts-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-g3-d08-receipt-crosswalk/sanitized-d08-original-writer-receipt-crosswalk.json
+          if-no-files-found: warn
+          retention-days: 90
