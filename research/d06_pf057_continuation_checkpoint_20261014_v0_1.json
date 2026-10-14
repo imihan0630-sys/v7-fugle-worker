@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "D06_PF057_CONTINUATION_V0_1",
+  "owner": "05｜法人與籌碼研究室",
+  "phase": "PF057",
+  "baseMainSha": "15884e6b9b6aa199e9de1212ebb6a6d24cbe3265",
+  "scope": "D06-16, D06-11, D06-06, D06-07/08/09, D06-18",
+  "evidence": "Official 0050/0056 issuer PCF pages for 2026-10-15 use date contain 2026-10-14 unit/basket clocks and rounded two-decimal per-unit NAV. Exact NAV minus units×displayed NAV is TWD 70,595,603 (0050) and 14,385,675 (0056), both within half-cent-per-unit rounding tolerance.",
+  "tests": "30/30 deterministic synthetic and arithmetic, not OOS",
+  "newIndependentDates": 0,
+  "newOOS": 0,
+  "missing": "immutable raw issuer PCF, first-known, full basket, actual AP execution, true borrow utilization",
+  "status": "RESEARCH_ONLY_OUTCOMES_CLOSED",
+  "formalCore": "LOCKED",
+  "maturityChange": false,
+  "exactNext": "Safely preserve PF053–PF057, obtain raw PCF and clock proof, independent D16/00 prereg review; continue genuine new TDCC/margin/SBL dates without backfill."
+}
