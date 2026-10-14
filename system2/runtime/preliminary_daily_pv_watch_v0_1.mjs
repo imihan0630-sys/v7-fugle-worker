@@ -72,7 +72,13 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
  if(ledger?.sourceState!=='READY'||ledger.marketDate!==bridge.marketDate||
     !Array.isArray(ledger.observations)||
     ledger.observations.length!==ledger.sourceOrdinarySymbolCount||
-    !SHA.test(ledger.ledgerSha256||''))
+    !SHA.test(ledger.ledgerSha256||'')||
+    // Verify the actual source observation rows again at this final public
+    // preview boundary. An authentic-looking 64-char digest is insufficient:
+    // a mutated upstream ledger must not silently change the watchlist.
+    await sha256Hex(Object.fromEntries(
+      Object.entries(ledger).filter(([key])=>key!=='ledgerSha256')
+    ))!==ledger.ledgerSha256)
   deny('PROSPECTIVE_SOURCE_LEDGER_INVALID');
  const clock=Date.parse(bridge.freezeAtUtc);
  const dates=sourceReceipt.calendar?.tradingDates;
