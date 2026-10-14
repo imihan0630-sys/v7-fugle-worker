@@ -47,3 +47,24 @@ export function resolveScheduledMarketContext({now=new Date(),triggerSchedule=""
     overnightSourceSyncSkip:shouldSkipOvernightDelayedSourceSync({now:instant,triggerSchedule:schedule})
   };
 }
+
+/**
+ * Fail-closed source-only trading-day gate; dependency injection makes real
+ * calendar I/O bypass behavior executable in CI (not merely text-matched).
+ * This never invokes business scan, D1, KV, Cloudflare deployment or push.
+ */
+export async function resolveScheduledTradingGate({context,marketDate,loadTradingCalendar,isTradingDate}={}){
+  if(!context||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(String(marketDate||""))) {
+    throw new Error("S1_TRADING_GATE_CONTEXT_INVALID");
+  }
+  if(context.overnightSourceSyncSkip===true){
+    return {tradingDay:null,proceed:false,calendarChecked:false};
+  }
+  if(typeof loadTradingCalendar!=="function"||typeof isTradingDate!=="function"){
+    throw new Error("S1_TRADING_CALENDAR_DEPENDENCIES_REQUIRED");
+  }
+  await loadTradingCalendar({},Number(marketDate.slice(0,4)));
+  const tradingDay=isTradingDate(marketDate);
+  if(typeof tradingDay!=="boolean") throw new Error("S1_TRADING_DAY_VERDICT_NOT_BOOLEAN");
+  return {tradingDay,proceed:tradingDay,calendarChecked:true};
+}
