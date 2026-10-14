@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "S2_M09_REAL_SIX_CA_NEGATIVE_EXPOSURE_20261015_V0_1",
+  "classification": "PHYSICALLY_INDEPENDENTLY_REHASHED_NEGATIVE_KNOWN_ACTION_EVIDENCE_NO_PIT_PROMOTION",
+  "recordedAtUtc": "2026-10-14T23:42:09.062Z",
+  "sourceMarketDate": "2026-10-14",
+  "originalA1Window": {
+    "firstOfficialTradingDate": "2026-07-17",
+    "lastOfficialTradingDate": "2026-10-14",
+    "sessions": 61,
+    "originalMarketDatePairs": 122,
+    "originalCaptureRunId": 38629859058,
+    "originalCaptureArtifactId": 11926027472,
+    "originalCaptureZipSha256": "c3d8d50f2b9e30f5b167ed1b9203c354096e96e38ef8503d8580c139f77b27cd",
+    "sourceReceiptSha256": "d55fadd02407d6f0939621abb9b0e415c99cdd077abc5a983d26c544c6319f23",
+    "independentAuditRunId": 38630106632,
+    "independentAuditArtifactId": 11925242859,
+    "independentAuditZipSha256": "556f0dcb4e599bd8dcb322db4b87afe9f18397a9669fc4295f0dea7c3021b3d9",
+    "independentAuditSha256": "d93e00a2a2f0d83e0eccd40679d257a445132c8f5892dc8d689924a9abb8ee48",
+    "preliminaryWatchObservedAtUtc": "2026-10-14T20:12:55.369Z",
+    "preliminaryWatchReceiptSha256": "5a63fdf9a698086f2aacb7cd2260cb9f1f620f00de1e5c2449dac3e5ac673927"
+  },
+  "sixCaNativeOriginals": {
+    "implementationPr": 1328,
+    "implementationMainSha": "2e5e04ec238be9cf00cbdd088ce2f9a67a5b6c5c",
+    "physicalRunId": 38654564377,
+    "physicalRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38654564377",
+    "jobId": 116161144057,
+    "artifactId": 11935698540,
+    "artifactSha256": "c4b81e37a193dd67b52e46f50b84322f503fa32d58a0cd48e90208302382c6d7",
+    "receiptHash": "c37bf72067f8e421124c735f8962bb6f19f43cc2e9e4a270eac6a9bc3f00690f",
+    "requestedStartDate": "2026-06-16",
+    "requestedEndDate": "2026-10-14",
+    "physicalFirstObservedAtUtc": "2026-10-14T23:31:16.013Z",
+    "nativeRangeSchemaCandidateCount": 6,
+    "rawResponseSha256ReadbackMatchedCount": 6,
+    "lanes": [
+      {
+        "sourceId": "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
+        "totalOriginalRows": 940,
+        "in61ActualTradingDayRows": 349,
+        "originalBytes": 185027,
+        "originalSha256": "6f4a042e85be5611b97f82e1a8252e00a9863f3feca8d27443f875e2b0e943a1",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      },
+      {
+        "sourceId": "TWSE_CAPITAL_REDUCTION_REFERENCE",
+        "totalOriginalRows": 11,
+        "in61ActualTradingDayRows": 10,
+        "originalBytes": 2414,
+        "originalSha256": "29de86613105bb399949eb99477fc5ba2e5f3299aa88830effb992d2185cd2a4",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      },
+      {
+        "sourceId": "TWSE_PAR_VALUE_CHANGE_REFERENCE",
+        "totalOriginalRows": 1,
+        "in61ActualTradingDayRows": 1,
+        "originalBytes": 586,
+        "originalSha256": "1e70f477788f19b159215badd28972a298df9bed43d0828d3cc8cb6c37466479",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      },
+      {
+        "sourceId": "TPEX_EX_RIGHT_DIVIDEND_ACTUAL",
+        "totalOriginalRows": 735,
+        "in61ActualTradingDayRows": 269,
+        "originalBytes": 149280,
+        "originalSha256": "648126a229c20f3b173116985d55460f31b6be0a44f58f06d81cb8bb4bbf1356",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      },
+      {
+        "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+        "totalOriginalRows": 11,
+        "in61ActualTradingDayRows": 10,
+        "originalBytes": 8245,
+        "originalSha256": "11d941131ba516cc5deba9581f9cb4cdd53658da548c669fe88664bcf5637aec",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      },
+      {
+        "sourceId": "TPEX_PAR_VALUE_CHANGE_REFERENCE",
+        "totalOriginalRows": 2,
+        "in61ActualTradingDayRows": 2,
+        "originalBytes": 1397,
+        "originalSha256": "4f6527e9516e3faf504a49d71a21693a2645ced17a3fc9500e9caac18ab1a2a5",
+        "originalShaRehashMatched": true,
+        "nativeDateRangeVerified": true
+      }
+    ]
+  },
+  "independentNegativeReplay": {
+    "implementationPr": 1331,
+    "implementedMainSha": "06267b341c8bc919aa71816b2985cfc7b66f945d",
+    "physicalRunId": 38655538159,
+    "physicalRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38655538159",
+    "jobId": 116164280875,
+    "artifactId": 11936094530,
+    "independentArtifactZipSha256": "ec68eb6d97d915954b0361a0053ca3f48fb9b7341631c72ef2fc0e6cdb4b8bb1",
+    "independentReceiptSha256": "f5e60543de46e3a54936886f25502e35c528a01efac939c5e752a57b3cbf9479",
+    "originalCaSha256Rehashed": 6,
+    "fullTradingSessionsVerified": 61,
+    "eventRowsInWindow": 641,
+    "uniqueMarketSymbolWithKnownEvent": 630,
+    "preliminaryPreviewDenominator": 30,
+    "preliminaryWithKnownEvent": 11,
+    "otherPreliminaryNotProvenEventFree": 19,
+    "flaggedPreview": [
+      {
+        "market": "TPEX",
+        "symbol": "3287",
+        "eventDate": "2026-08-26",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TPEX",
+        "symbol": "4430",
+        "eventDate": "2026-08-21",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TPEX",
+        "symbol": "4760",
+        "eventDate": "2026-09-01",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TPEX",
+        "symbol": "4903",
+        "eventDate": "2026-10-14",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TPEX",
+        "symbol": "6234",
+        "eventDate": "2026-09-03",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TPEX",
+        "symbol": "8042",
+        "eventDate": "2026-09-22",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TWSE",
+        "symbol": "1615",
+        "eventDate": "2026-07-21",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TWSE",
+        "symbol": "6225",
+        "eventDate": "2026-08-18",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TWSE",
+        "symbol": "6834",
+        "eventDate": "2026-10-02",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TWSE",
+        "symbol": "8213",
+        "eventDate": "2026-07-20",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      },
+      {
+        "market": "TWSE",
+        "symbol": "8467",
+        "eventDate": "2026-07-31",
+        "sourceFamily": "EX_RIGHT_DIVIDEND_ACTUAL",
+        "historicalReplayPITCertified": false
+      }
+    ]
+  },
+  "nonPromotion": {
+    "eventEvidenceFoundDoesNotProveFullCoverage": true,
+    "issuerOrdinaryEquityPITCertified": false,
+    "historicalCaRevisionCancellationAndNoEventCompletenessCertified": false,
+    "knownEventObservedOnlyAfter20261014ResearchWatch": true,
+    "canRetroactivelyChange20261014Selection": false,
+    "formalShortMomentumRankOrSelectedCount": null,
+    "zeroPickDay": null,
+    "frozenD1Written": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1V8FormalCoreChanged": false,
+    "m09PhysicalS0ToS5Accepted": 0
+  },
+  "nextActions": [
+    "Convert real native CA histories into per-symbol event/effective-date canonical rows, preserving original observedAt and any correction/cancellation lineage; require an independent vintage proof before certifying no-event.",
+    "Produce a separately independently evidenced official native per-security ISIN/CFI ordinary-share class map; quoted four-digit/issuer name alone remains insufficient.",
+    "Do not run owner-protected create-only Frozen D1 writes before actually qualified PIT assessor and separate Cloudflare authorizations."
+  ]
+}
