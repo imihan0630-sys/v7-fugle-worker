@@ -54,6 +54,16 @@ const monitors=classifyMonitoringSafety({marketDate:later,
     "AIDEEN_APP:6672":{isTrial:true,quoteFresh:false}},
   freshPlanDate:day});
 assert.equal(monitors.formalPlanCurrent,false);
+assert.equal(monitors.brokerPositionsVerified,false,"Uncorroborated broker rows must remain UNVERIFIED");
+assert.equal(monitors.state,"BROKER_PORTFOLIO_NOT_RECONCILED");
+const brokerVerifiedFixture=classifyMonitoringSafety({marketDate:later,
+ monitorKeys:["FORMAL:3037"],brokerPositions:[],brokerSourceVerified:true,
+ brokerReconciledAsOfDate:later,closedSymbols:["3037"],freshPlanDate:day});
+assert.equal(brokerVerifiedFixture.brokerPositionsVerified,true);
+assert.deepEqual(brokerVerifiedFixture.monitoringNotPosition,["FORMAL:3037"]);
+assert.equal(classifyMonitoringSafety({marketDate:later,brokerPositions:[],
+  brokerSourceVerified:true,brokerReconciledAsOfDate:day}).brokerPositionsVerified,false);
+
 assert.deepEqual(monitors.monitoringNotPosition,["FORMAL:3037"]);
 assert.deepEqual(monitors.trialQuotes,["AIDEEN_APP:6213","AIDEEN_APP:6672"]);
 assert.equal(monitors.mayUseTrialQuoteForTrade,false);
@@ -65,8 +75,16 @@ const cpu=classifyCpuReadiness({providerExceededResources:true,candidateOnly:tru
 assert.equal(cpu.actualPass,false);
 assert.equal(cpu.offlineCandidateIsNotDeployment,true);
 assert.equal(cpu.originalQuoteFreshSeconds,90);
-assert.equal(classifyCpuReadiness({providerExceededResources:false,candidateOnly:false,workerDeployed:true,observedQuoteAgeSeconds:35,sourceIsTrial:true,underlyingBusinessState:"PASS_INTRADAY_MONITOR_FRESHNESS"}).actualPass,false);
-assert.equal(classifyCpuReadiness({providerExceededResources:false,candidateOnly:false,workerDeployed:true,observedQuoteAgeSeconds:35,sourceIsTrial:false,underlyingBusinessState:"PASS_INTRADAY_MONITOR_FRESHNESS"}).actualPass,true);
+const verifiedProvider={providerExceededResources:false,candidateOnly:false,workerDeployed:true,
+ observedQuoteAgeSeconds:35,underlyingBusinessState:"PASS_INTRADAY_MONITOR_FRESHNESS",
+ receiptSource:"AUTHENTICATED_PRODUCTION_GET_ONLY",originalFourCronVerified:true,
+ d1PrimaryFresh:true,kvMirrorFresh:true,allMonitorKeysVerified:true,
+ observedDuringIntraday:true,formalPlanCurrent:true};
+assert.equal(classifyCpuReadiness({...verifiedProvider,sourceIsTrial:true}).actualPass,false);
+assert.equal(classifyCpuReadiness({...verifiedProvider,sourceIsTrial:false}).actualPass,true);
+assert.equal(classifyCpuReadiness({...verifiedProvider,d1PrimaryFresh:false,sourceIsTrial:false}).actualPass,false);
+assert.equal(classifyCpuReadiness({...verifiedProvider,observedDuringIntraday:false,sourceIsTrial:false}).actualPass,false);
+assert.equal(classifyCpuReadiness({...verifiedProvider,receiptSource:"GITHUB_CI_SUCCESS",sourceIsTrial:false}).actualPass,false);
 assert.throws(()=>classifyCpuReadiness({originalLimitMs:50}),/P0_ORIGINAL_FREE_CPU_LIMIT_CHANGED/);
 assert.throws(()=>classifyAmbiguousRecovery({marketDate:"future"}),/TARGET_MARKET_DATE_REQUIRED/);
 console.log(JSON.stringify({ok:true,fixtureOnly:true,actual20261013HistoryTotal:1908,
