@@ -29,9 +29,14 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
  // GH run data from provider is tagged by originating workflow at the read-only boundary.
  // Legacy test rows lacking originWriterId are accepted only when ONE competitor is named,
  // otherwise conservatively counted as potential, never silently ignored.
- const potential=r=>isMainRun(r)&&!((r.originWriterId==="DAILY_DIAGNOSTIC"||
-      (!r.originWriterId&&otherIds.length===1&&otherIds[0]==="DAILY_DIAGNOSTIC"))&&
-      r.event==="push"&&r.status==="completed"&&r.conclusion==="skipped");
+ // These two jobs explicitly deny PUSH in their workflow-level job guards.
+ // Only a native completed/skipped PUSH receipt is thus a provably inert run.
+ const potential=r=>{
+  const sourceId=r.originWriterId??(otherIds.length===1?otherIds[0]:null);
+  const inertPush=["DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"].includes(sourceId)&&
+    r.event==="push"&&r.status==="completed"&&r.conclusion==="skipped";
+  return isMainRun(r)&&!inertPush;
+ };
  const ignoredInert=currentRuns.filter(r=>isMainRun(r)&&r.created_at.startsWith(utcDay+"T")&&!potential(r));
  const today=currentRuns.filter(r=>potential(r)&&r.created_at.startsWith(utcDay+"T"));
  // Prior-day late runs may continue into this UTC day, including delayed queues.
