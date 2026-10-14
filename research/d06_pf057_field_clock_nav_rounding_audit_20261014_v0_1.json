@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "D06_PF057_FIELD_CLOCK_AUDIT_V0_1",
+  "phase": "PF057",
+  "domain": "D06",
+  "basedOnMain": "15884e6b9b6aa199e9de1212ebb6a6d24cbe3265",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "researchOnly": true,
+  "sources": [
+    "https://www.yuantaetfs.com/tradeInfo/pcf/0050",
+    "https://www.yuantaetfs.com/tradeInfo/pcf/0056"
+  ],
+  "observation": {
+    "useDate": "2026-10-15",
+    "sourceObserved": "2026-10-14 evening",
+    "posting": {
+      "0050": "2026-10-14 16:05:21",
+      "0056": "2026-10-14 16:30:25"
+    },
+    "unitDate": "2026-10-14",
+    "basketTradeDate": "2026-10-14",
+    "beneficiaryDate": "2026-09-30",
+    "previewIncomplete": true,
+    "rawBytes": "UNKNOWN",
+    "firstKnownAt": "UNKNOWN"
+  },
+  "arithmetic": {
+    "0050": {
+      "fundNAV": 2521429955603,
+      "units": 22448000000,
+      "displayNAV": 112.32,
+      "impliedNAV": 112.32314485045438,
+      "roundingResidualTwd": 70595603,
+      "deltaUnits": 39000000,
+      "unitEquivalents": 78
+    },
+    "0056": {
+      "fundNAV": 852752825955,
+      "units": 14351034000,
+      "displayNAV": 59.42,
+      "impliedNAV": 59.42100241383304,
+      "roundingResidualTwd": 14385675,
+      "deltaUnits": 3500000,
+      "unitEquivalents": 7
+    }
+  },
+  "conclusions": [
+    {
+      "id": "F1",
+      "support": "both fund total NAV and rounded NAV/share are shown",
+      "counter": "multiplication differs by TWD 70.6m/14.4m",
+      "alternative": "per-unit rounding under TWD 0.005",
+      "failure": "difference beyond rounding tolerance",
+      "result": "ROUNDING_COMPATIBLE_NOT_MISSING_ASSETS"
+    },
+    {
+      "id": "F2",
+      "support": "PCF use date is 2026-10-15",
+      "counter": "unit/basket and beneficiary fields have other dates",
+      "alternative": "different operational/reporting clocks",
+      "failure": "field-level first-known missing",
+      "result": "PER_FIELD_CLOCK_REQUIRED"
+    },
+    {
+      "id": "F3",
+      "support": "posting precedes next trading session",
+      "counter": "rendered page is not immutable raw complete basket",
+      "alternative": "cache or selector variation",
+      "failure": "raw bytes, hash and first-known missing",
+      "result": "NO_RETROACTIVE_PIT"
+    },
+    {
+      "id": "F4",
+      "support": "positive net units and in-kind mechanism",
+      "counter": "AP inventory, borrow, cash substitute and administrative adjustments",
+      "alternative": "hedge/arbitrage",
+      "failure": "no AP execution",
+      "result": "MODELED_ONLY_ACTUAL_EXECUTION_UNKNOWN"
+    },
+    {
+      "id": "F5",
+      "support": "two funds observed",
+      "counter": "same use-date and overlapping constituents",
+      "alternative": "common market event",
+      "failure": "date-cluster independence not proven",
+      "result": "ZERO_NEW_INDEPENDENT_DATES"
+    },
+    {
+      "id": "F6",
+      "support": "borrow/margin/crowding can co-occur with ETF flows",
+      "counter": "same event may generate all legs",
+      "alternative": "market making and financing",
+      "failure": "no common-parent lineage",
+      "result": "NO_MULTIPLE_INDEPENDENT_VOTES"
+    }
+  ],
+  "testReceipt": {
+    "kind": "deterministic arithmetic plus synthetic admission contract",
+    "tests": 30,
+    "passed": 30,
+    "failed": 0,
+    "realOOS": 0,
+    "realNewDates": 0
+  },
+  "gates": {
+    "PIT": "immutable full PCF, field-level date and predecision capture",
+    "OOS": "D16/00 prereg approval pending",
+    "walkForward": "purge overlapping five-session labels",
+    "bias": "missingness and coverage by fund/date",
+    "multipleTesting": "one prespecified feature/horizon",
+    "redundancy": "shared root for index, institution, borrow, crowding",
+    "cost": "30/60/100bp hypothetical",
+    "liquidity": "lagged completed 20 sessions and tradability",
+    "regime": "two real states",
+    "unknown": "never zero"
+  },
+  "blockers": [
+    "PF056 draft PR creation safety-blocked",
+    "raw issuer PCF and independent first-known unavailable",
+    "no new TDCC pair after 2026-10-08",
+    "today 15:20 SBL slot cannot be backfilled"
+  ],
+  "maturityChanged": false,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Independent D16/00 prereg review, complete raw PCF provenance, append future decision-date vintages and genuinely new TDCC/margin/SBL observations; no historical Shadow or outcome opening."
+}
