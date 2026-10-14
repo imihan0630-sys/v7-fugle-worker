@@ -51,6 +51,16 @@ test("warmup can neither consume A1 writes after raw copy nor after daily diagno
   assert.equal(result.sameDayOtherRunCount,1);
  }
 });
+test("completed+skipped push from push-disabled warmup is inert, never queued or scheduled",()=>{
+ const r=makeRun(310,"2026-10-14T03:58:00.000Z",{originWriterId:"RECENT_A1_WARMUP",event:"push",status:"completed",conclusion:"skipped"});
+ const safe=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[r],previousRuns:[]});
+ assert.equal(safe.allowed,true);
+ assert.equal(safe.ignoredProvenInertDiagnosticPushRunCount,1);
+ for(const changes of [{status:"in_progress",conclusion:null},{event:"schedule"},{conclusion:"failure"},{originWriterId:"RAW_COPY"}]){
+  const result=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[{...r,...changes}],previousRuns:[]});
+  assert.equal(result.allowed,false,JSON.stringify(changes));
+ }
+});
 test("malformed run with no event/status is not valid upstream attestation",()=>{
  assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{id:1,created_at:utcDay+"T00:00:00Z",head_branch:"main"}]}),/INCOMPLETE/);
 });
@@ -105,5 +115,7 @@ test("both real workflow jobs serialize identically BEFORE any D1/query/write st
   assert.match(w,/s2-dest-d1-writer-day-interlock\/receipt\.json/);
  }
  assert.match(diag,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
+ assert.match(warmup,/if: github\.ref == 'refs\/heads\/main' && github\.event_name != 'push'/);
+ assert.match(warmup,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
  assert.match(raw,/name: Do owner-authorized target-only RAW_A1 transport under 80k billed row limit\n        if: steps\.day_interlock\.outputs\.allowed == 'true'/);
 });
