@@ -4936,3 +4936,14 @@ Consume the first changed immutable producer receipt only. Re-read latest main, 
 D16 -> PVE-284; D14 D02-11 -> PVE-285 contract; System1 operational artifact -> PVE-286/PVE-288; PVE-261 physical remediation -> PVE-270/PVE-288; S2-CORR-20261007-003 physical closure -> PVE-268/PVE-270/PVE-288; numerical target source -> PVE-287 + target-freeze precondition guard.
 If no state changed, preserve WAITING_EXTERNAL_RECEIPTS without new PVE design work.
 Current ceiling remains D02 60.0%, all modules L3, clean prospective dates 0, Gate 7 CLOSED, Formal Core LOCKED.
+
+
+## PVE-289 — 2026-10-14 original 60-session provenance receipt (no convergence state change)
+
+New immutable source-only System1 D1 readback: run `38487815289`, physical job `115605647456` SUCCESS, artifact `11861275185`, provider artifact digest `sha256:b79f4fecd0597e3a4426c8e626205b8d3b8405fae45124e7ac3a7bfb7eea77a3`. D02 did not independently rehash ZIP contents. Source evidence and classification: `research/D02_PVE289_SOURCE_60SESSION_PROVENANCE_RECEIPT_20261014_V0_1.md`; System1 issue #1016 2026-10-14 16:35 Taipei physical intake.
+
+Original 1,908-symbol 60-session census: 1,676 aligned; 204 unresolved provenance gaps (63 single-session / 141 multi-session groups, 1,007 missing symbol-sessions); 21 stale; 7 below 60. These categories are source history quality, **not** H001 same-slot 15m baseline proof. Earlier >=60 daily-bar count must not be substituted for exact eligible-session continuity. Missing volume != zero volume. System1 16:10 Oct14 daily incremental scheduled job was not yet observed in the 16:35 receipt; no conclusion about later eventual execution.
+
+PVE-289 six-lane acceptance remains unchanged: D16 0/12, D14 D02-11 absent, System1 Formal C1 operational physical acceptance absent, PVE-261 deployed baseline physical PASS absent, S2-CORR-20261007-003 independent physical closure absent, legal numerical target sources 0/14. D02 60.0%; 12/12 L3; clean dates 0; Gate7 CLOSED; Formal Core LOCKED. No new PVE number, no outcome/Shadow fabrication.
+
+Exact next continuation: read latest main; compare six immutable producer receipts. When the actual 16:10 incremental appears, verify run/job/artifact and same-date official market + per-symbol D1 readback; distinguish 204 gap causes by documented exchange calendar/halt/listing provenance without retrospective H001 admission. Keep all other lanes waiting on their own frozen validators. No Formal/Production change.
