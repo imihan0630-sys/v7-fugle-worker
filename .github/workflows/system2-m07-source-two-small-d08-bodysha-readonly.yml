@@ -1,0 +1,52 @@
+name: S2 M07 SOURCE D08 Two Small Original Object Body SHA READONLY
+# One-shot after merge. Source original 27 ListObjects requests <=32; 2 HEAD/GET
+# max <=262144B per original object, <=524288B total, retry disabled.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-source-two-small-d08-bodysha-readonly.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-original-source-small-d08-body-sha-one-shot
+  cancel-in-progress: false
+jobs:
+  source_small_body:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify original body caps, offline 2-object SHA and falsification controls
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_source_d08_small_body_sha_readonly_v0_1.mjs
+          node system2/tests/issue1236_m07_source_small_d08_body_sha_v0_1.test.mjs
+      - name: Download ORIGINAL protected 498 unmatched source R2 keyhashes
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-private-498-extra-keyhashes-38527825185-1
+          run-id: 38527825185
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-original-private-498
+      - name: SOURCE R2 actual original two small object HEAD and byte SHA read-only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_source_d08_small_body_sha_readonly_v0_1.mjs
+      - name: Preserve sanitized original D08 source byte SHA witness only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-source-d08-two-small-original-body-sha-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-source-original-small-d08-bodysha/sanitized-source-d08-small-body-sha.json
+          if-no-files-found: warn
+          retention-days: 90
