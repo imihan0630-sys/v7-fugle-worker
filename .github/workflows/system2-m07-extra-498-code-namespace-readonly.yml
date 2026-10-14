@@ -1,0 +1,53 @@
+name: S2 M07 Source Extra 498 Code Namespace Classification Readonly
+# Compare 498 authenticated G3 private hashes to SAME source full ListObjects scan.
+# 32 LIST max; 0 HEAD, object body GET, PUT, DELETE or D1 provider calls.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-extra-498-code-namespace-readonly.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-original-source-498-code-namespace-once
+  cancel-in-progress: false
+jobs:
+  source_namespaces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Source account original 498 extra classification negative and quota tests
+        run: |
+          set -euo pipefail
+          test -f system2/tests/issue1236_m07_extra498_code_namespace_v0_2.test.mjs
+          node --check system2/migration/issue1236_m07_extra498_code_namespace_classify_v0_2.mjs
+          node system2/tests/issue1236_m07_extra498_code_namespace_v0_2.test.mjs
+      - name: Fetch original protected G3 archived 498 HASH identities only
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-private-498-extra-keyhashes-38527825185-1
+          run-id: 38527825185
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-original-private-498
+      - name: Source R2 up to 32 LIST GETs and aggregate private extra namespaces
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_extra498_code_namespace_classify_v0_2.mjs
+      - name: Preserve aggregated no-raw-key namespace receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-source-r2-extra-498-code-namespace-summary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-original-extra-code-namespace-classification/sanitized-source-code-namespace-classification.json
+          if-no-files-found: warn
+          retention-days: 30
