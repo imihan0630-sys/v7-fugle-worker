@@ -1,0 +1,58 @@
+name: System2 M09 Six Corporate Action Native Originals Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/official_continuity_source_capability_v0_1.mjs"
+      - "system2/scripts/probe_m09_six_ca_native_originals_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_six_ca_native_originals_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-six-ca-native-originals-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/official_continuity_source_capability_v0_1.mjs"
+      - "system2/scripts/probe_m09_six_ca_native_originals_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_six_ca_native_originals_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-six-ca-native-originals-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-m09-ca-raw-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original_ca_witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test six official historical ranges and strict PIT no-event firewall
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_six_ca_native_originals_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_six_ca_native_originals_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Physically read six public corporate-action originals on main only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_six_ca_native_originals_readonly_v0_1.mjs
+      - name: Store original response bytes and aggregate receipt for independent review
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-six-ca-native-originals-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-ca-originals/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Zero selection authority declaration
+        if: always()
+        run: |
+          echo 'Source capture ONLY; no historical CA correction/retraction completeness, no NO_EVENT claim.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No ordinary-equity ISIN/CFI PIT, qualified assessor or Frozen D1; Cloudflare writes=0.' >> "$GITHUB_STEP_SUMMARY"
