@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "S2_M07_D08_SEMANTIC_UNIVERSE_REAL_GZIP_CONTENT_RECONCILIATION_PIT_GAP_20261015_V0_1",
+  "status": "DATA_LANE_REAL_SOURCE_SEMANTIC_BODY_AND_RESEARCH_FINGERPRINT_RECONCILED__PIT_BLOCKED",
+  "observedDateTaipei": "2026-10-15",
+  "implementationPR": 1329,
+  "implementationCommit": "50009e867a2ed6aa2c108df50c8e31614b737fe7",
+  "exactPRHeadSystem2ResearchCI": {
+    "runId": 38654383879,
+    "conclusion": "SUCCESS"
+  },
+  "exactPRHeadV8Regression": {
+    "runId": 38654383880,
+    "conclusion": "SUCCESS"
+  },
+  "exactPRHeadD1CredentialCensus": {
+    "runId": 38654383876,
+    "conclusion": "SUCCESS"
+  },
+  "originalSourcePhysical": {
+    "runId": 38654562224,
+    "jobId": 116161137597,
+    "conclusion": "SUCCESS",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38654562224",
+    "originalGitHubArtifactId": 11935644591,
+    "originalZipByteSize": 1314,
+    "originalGitHubNativeZipSha256": "6752a10eb67f6285eabea6e61f5237ae86b27ccdfc9f68f51267077231cbfe87",
+    "originalZipIndependentlyDownloadedAndRehashed": true,
+    "independentZipSHA256": "6752a10eb67f6285eabea6e61f5237ae86b27ccdfc9f68f51267077231cbfe87",
+    "originalSanitizedFile": "sanitized-original-semantic-body-structure.json",
+    "originalInnerJSONBytes": 2678,
+    "originalInnerJSONIndependentlyRehashedSHA256": "36cf86d95791e2b1fa2db4eb5cd3df8da7c263ef4bee3a473d9d42589116fdd0",
+    "sourceOriginalG3OriginalExtraKeyRecordsMatched": 498,
+    "archivedOriginalD08WriterReceiptsRevalidated": 154,
+    "originalSourceR2SingleListPages": 27,
+    "originalSourceObjectBodyDownloadCount": 1,
+    "originalSourceObjectBodyDownloadedBytes": 10556,
+    "originalCompressedBodySha256": "b1758c1deb3097a6b16356ee61708f2b002a8ed23a9797cb43a54e5828bf537e",
+    "independentOriginalR2HeadGetAndByteDigestMatch": true,
+    "compressedGzipInflatedJSONBytes": 446946,
+    "parsedGzipJSON": true
+  },
+  "officialD08OriginalResearchReceipt": {
+    "path": "research/d08_twse_official_universe_source_receipt_20261007_v0_2.json",
+    "pinnedGitBlobSHA1": "63191e7e1d07116c20edb31894e05e593d9fe310",
+    "expectedMemberships": 1101,
+    "observedOriginalBlobMemberships": 1101,
+    "sourceMembershipCountsEqual": true,
+    "originalBlobSemanticRegistryHashExplicitAndEqualReceipt": true,
+    "structuralFieldsPresent": [
+      "schemaVersion",
+      "registryId",
+      "datasetStartDate",
+      "memberships",
+      "semanticRegistryHash"
+    ],
+    "onlySourceStudyReceiptNotIndependentWriterProof": true,
+    "originalBlobStructuredSourceUrlOrSourceIdOrSourceHashDetected": false
+  },
+  "pitPublicationEvidence": {
+    "originalBlobFirstKnownAtPresent": false,
+    "originalBlobAvailableAtPresent": false,
+    "originalBlobPublishedAtPresent": false,
+    "originalBlobObservedAtPresent": false,
+    "originalBlobGeneratedAtPresent": false,
+    "originalBlobCapturedAtPresent": false,
+    "independentRealOfficialPublicationTimeConfirmed": false,
+    "historicalAsOfBacktestAdmission": "DENIED_PENDING_ORIGINAL_WRITER_AND_PIT",
+    "frozenExternalHistoricalSnapshotAcceptance": false,
+    "valuationResearchOrSelectionPromotionGranted": false
+  },
+  "acceptanceLimitations": {
+    "sourceObjectByteShaMatchesOwnR2MetadataButNotArchivedG3D1Manifest": true,
+    "eightOtherOriginalSourceBodiesSHAtoArchivedG3D1PreviouslyMatched": 8,
+    "sourceSemanticOriginalObjectKnownOriginalWriterIdentity": false,
+    "originalSourceR2FullPhysicalKeyListSingleNonAtomicScan": 26321,
+    "newDestinationR2PhysicalEntitlementLastVerified": "NOT_ENTITLED",
+    "originalG3EncryptedArchiveRetainsExpiry": true,
+    "independentAuditLaneSignedOff": false,
+    "authorizedToDeleteOrOmitAnySourceR2Object": false,
+    "allSourceR2ObjectBodiesSHAIndependentlyVerified": false
+  },
+  "changeSafety": {
+    "originalSourceR2ListCalls": 27,
+    "originalSourceR2HEADCalls": 1,
+    "originalSourceR2BodyGETCalls": 1,
+    "originalSourceR2BodyBytes": 10556,
+    "sourceR2Writes": 0,
+    "sourceD1Queries": 0,
+    "destinationD1Writes": 0,
+    "destinationR2Calls": 0,
+    "billedPlanOrNewPermissionEnabled": false,
+    "system1V8FormalCoreRuntimeWorkerCronChanged": false,
+    "originalRawStockMembersOrObjectKeysCommitted": false
+  },
+  "nextActions": [
+    "Independently audit SHA of original Artifact and source D08 study receipt, match semanticRegistryHash and exactly 1101 members.",
+    "Recover genuine original semantic object writer lineage and as-of/publication availability time; content structural hash parity alone MUST NOT upgrade PIT.",
+    "For 18 historical valuation and 13 yearly valuation objects, source body content and original immutable writer receipts remain outstanding, enforce size/byte quota safety.",
+    "For 44 percentile snapshots, SHA vs own SOURCE R2 metadata of one original 151440-byte object is only self-integrity, not PIT or archived D1 byte join.",
+    "Keep System1 V8 Formal and target R2 billing unchanged, keep #1236/#1068 open until full independent M07 acceptance."
+  ]
+}
