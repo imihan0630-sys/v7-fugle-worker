@@ -37,6 +37,10 @@ function make(){
    continuityBySymbol:{'2330':{symbol:'2330',marketDate:DAY,
      state:'CLEAR_NO_ACTION',originalCorporateActionEvidenceVerified:true,
      evidenceSha256:H,startSession:ds[0],endSession:DAY,availableAt:'2026-10-12T15:30:00Z'}},
+   instrumentClassBySymbol:{'2330':{symbol:'2330',market:'TWSE',
+     marketDate:DAY,instrumentClass:'ORDINARY_COMMON_SHARE',
+     sourceReceiptHash:H,independentAuditHash:H,
+     availableAtUtc:'2026-10-12T15:30:00Z',nativeSourceRowSha256:H}},
  };
 }
 test('with fabricated complete inputs: actual pre-existing Stage1 evaluator computes qualified shadow observation, NOT a final pick',async()=>{
@@ -52,6 +56,31 @@ test('with fabricated complete inputs: actual pre-existing Stage1 evaluator comp
  assert.equal(a.finalSelectionEnabled,false);assert.equal(a.durableFrozenDecisionReadbackVerified,false);
  assert.equal(a.independentProviderAuditCompletedByThisModule,false);
 });
+
+test('four-digit source quote without ordinary-share PIT class is INCOMPLETE, never BUY',async()=>{
+ const p=make();p.instrumentClassBySymbol={};
+ const o=await evaluate(p);
+ assert.equal(o.incompleteCount,1);
+ assert.equal(o.qualifiedNotSelectedCount,0);
+ assert.deepEqual(o.observations[0].reasonCodes,
+  ['PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED']);
+ assert.equal(o.selectedCount,null);assert.equal(o.zeroPickDay,null);
+});
+test('synthetic depositary-receipt class cannot borrow an ordinary-share clearance',async()=>{
+ const p=make();p.instrumentClassBySymbol['2330'].instrumentClass='DEPOSITARY_RECEIPT';
+ const o=await evaluate(p);
+ assert.equal(o.incompleteCount,1);assert.equal(o.qualifiedCandidateCount,null);
+ assert.equal(o.observations[0].entryReadiness,'BLOCKED');
+});
+test('instrument-class evidence first published after assessment is not PIT',async()=>{
+ const p=make();
+ p.instrumentClassBySymbol['2330'].availableAtUtc='2026-10-12T16:00:00Z';
+ const o=await evaluate(p);
+ assert.equal(o.incompleteCount,1);
+ assert.equal(o.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+
 test('stable deterministic hash for replay of exactly the same evidence',async()=>{
  const a=await evaluate(make()),b=await evaluate(make());
  assert.equal(a.evaluationHash,b.evaluationHash);
