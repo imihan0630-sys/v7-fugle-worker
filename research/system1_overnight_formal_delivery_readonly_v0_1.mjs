@@ -34,10 +34,13 @@ export function classifyPostcloseBusinessChain({targetDate,scanStatus=null,insti
   const pipelineComplete=scanStatus?.pipeline?.complete===true;
   const simulationRejected=scanStatus?.dryRun!==true && scanStatus?.testMode!==true;
   const matchesSelected=selected!==null&&selected>=0&&Array.isArray(scanStatus?.stocks)&&selected===scanStatus.stocks.length;
-  const hasBridge=scanStatus?.pipeline?.externalPlanVerified===true||
-    scanStatus?.planBridge?.github?.verified===true||
+  // A broad pipeline flag alone is not an actual external-plan receipt.
+  // Require BOTH Formal's own external-readback acknowledgement and a
+  // provider-specific verified record. Never infer delivery from GitHub CI.
+  const hasProviderProof=scanStatus?.planBridge?.github?.verified===true||
     scanStatus?.planBridge?.firebase?.verified===true||
     scanStatus?.threeMin?.verified===true;
+  const hasBridge=scanStatus?.pipeline?.externalPlanVerified===true && hasProviderProof;
   const pushed=scanStatus?.dailyReport?.sent===true&&scanStatus?.dailyReport?.simulated!==true;
   const expectedSignalId=`DAILY_SELECTION:${targetDate}`;
   const outboxAccepted=Array.isArray(outbox?.recent) &&
