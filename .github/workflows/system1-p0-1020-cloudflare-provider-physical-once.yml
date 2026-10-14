@@ -1,0 +1,49 @@
+name: System1 P0 10-20 Cloudflare Provider Runtime and Cron Root-Cause Audit (READ ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-1020-cloudflare-provider-physical-once.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-1020-cloudflare-provider-physical-once.yml"
+      - "ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs"
+permissions:
+  contents: read
+jobs:
+  offline_safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static only: provider Cloudflare GET and query-only GraphQL, no D1 SQL or mutations
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs
+          grep -F -q 'noD1Sql:true' ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs
+          grep -F -q 'noWorkerDeployment:true' ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs
+  cloudflare_root_cause_physical:
+    if: github.event_name == 'push'
+    needs: offline_safety
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect actual Cloudflare 4 Cron schedules, deployment, Worker invocations and D1 analytic lower bounds
+        run: node ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-1020-worker-provider-readonly-${{ github.run_id }}
+          path: artifacts/system1-p0-1020-cloudflare-provider-readonly.json
+          if-no-files-found: warn
+          retention-days: 30
