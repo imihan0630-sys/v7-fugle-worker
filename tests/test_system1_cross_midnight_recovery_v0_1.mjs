@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {classifyLegacyScanPostDate} from "./system1_legacy_scan_post_date_contract_v0_1.mjs";
+import {classifyLegacyScanPostDate,mayProbePinnedPriorDayCapability,verifiedPinnedPriorDayCapability} from "./system1_legacy_scan_post_date_contract_v0_1.mjs";
 import {readFile} from "node:fs/promises";
 import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES} from "./resolve_scheduled_market_date.mjs";
 
@@ -76,10 +76,30 @@ eq(classifyLegacyScanPostDate({
 }).mayPost,false); // full day later
 assert.throws(()=>classifyLegacyScanPostDate({now:"x",targetDate:"2026-10-13"}),/INVALID_RECOVERY_CLOCK/);n++;
 assert.throws(()=>classifyLegacyScanPostDate({now:"2026-10-13T16:00:00Z",targetDate:"2026-02-30"}),/INVALID_RECOVERY_TARGET_DATE/);n++;
-assert.match(recovery,/import \{classifyLegacyScanPostDate\}/);n++;
+assert.match(recovery,/import \{classifyLegacyScanPostDate,/);n++;
 assert.match(recovery,/if\(!postGate\.mayPost\)/);n++;
 assert.match(recovery,/LEGACY_SCAN_ROUTE_WRONG_SESSION_POST_FORBIDDEN/);n++;
 
+// Future Worker support cannot be inferred from a request body. It must be
+// proved by an authenticated read-only capability response from the deployment.
+eq(mayProbePinnedPriorDayCapability({targetDate:"2026-10-13",
+ now:"2026-10-13T20:49:34Z",scheduledFallback:true}),true);
+eq(mayProbePinnedPriorDayCapability({targetDate:"2026-10-13",
+ now:"2026-10-13T20:49:34Z",scheduledFallback:false}),false);
+eq(mayProbePinnedPriorDayCapability({targetDate:"2026-10-12",
+ now:"2026-10-13T20:49:34Z",scheduledFallback:true}),false);
+eq(mayProbePinnedPriorDayCapability({targetDate:"2026-10-13",
+ now:"2026-10-13T23:01:00Z",scheduledFallback:true}),false);
+const officialCapability={ok:true,pinnedMarketDateSupported:true,
+ legacyDateBodyIgnored:false,priorDayFallbackRequiresOnlyIfMissing:true,
+ priorDayTaipeiCutoff:"07:00",maxHistoricalRewindDays:1};
+eq(verifiedPinnedPriorDayCapability(officialCapability),true);
+eq(verifiedPinnedPriorDayCapability({...officialCapability,pinnedMarketDateSupported:false}),false);
+eq(verifiedPinnedPriorDayCapability({...officialCapability,maxHistoricalRewindDays:14}),false);
+eq(verifiedPinnedPriorDayCapability(null),false);
+assert.match(recovery,/admin\('\/api\/scan\/session-date-capability'\)/);n++;
+assert.match(recovery,/verifiedPinnedPriorDayCapability\(capability\)/);n++;
+assert.match(recovery,/marketDate:date,scheduledFallback/);n++;
 console.log(JSON.stringify({ok:true,assertions:n,crossMidnightPinned:true,scheduledFallbackOnly:true,
   crossMidnightMarketRewriteDisabled:true,readOnlyPrereqReuseRequired:true,
   epsPreviewBoundedRetry:true,businessPostRetryChanged:false,
