@@ -1,0 +1,38 @@
+name: System1 P0 Live CPU Taipei Formatter Cache REVIEW-ONLY (No Deploy)
+on:
+  pull_request:
+    paths:
+      - "scripts/apply_system1_p0_taipei_formatter_cpu_cache_reviewonly.py"
+      - "tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs"
+      - ".github/workflows/system1-p0-taipei-formatter-cpu-reviewonly-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-taipei-formatter-cpu-reviewonly-ci.yml"
+permissions:
+  contents: read
+jobs:
+  regenerate_protected_worker_candidate_offline_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate two-formatter V8 candidate in isolated artifact path only
+        run: |
+          set -euo pipefail
+          sha256sum Worker.js > /tmp/system1-original-worker.sha
+          python3 scripts/apply_system1_p0_taipei_formatter_cpu_cache_reviewonly.py --source Worker.js --output artifacts/reviewonly/Worker.cpu-cache.js
+          sha256sum --check /tmp/system1-original-worker.sha
+          node --check artifacts/reviewonly/Worker.cpu-cache.js
+          node --check tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs
+          node tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-cpu-formatter-reviewonly-${{ github.run_id }}
+          path: artifacts/reviewonly/Worker.cpu-cache.js
+          if-no-files-found: warn
+          retention-days: 14
