@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "ROOM06_D07_34_D08_03_SOURCE_GATE_RECEIPT_20261014_V0_1",
+  "room": "06｜基本面與估值研究室",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "noOutcomeJoin": true,
+  "sourceAuditAt": "2026-10-14T17:33:00+08:00",
+  "observedMain": "7618fe596d8d4984a82ff7e307b11b43c8849aab",
+  "D07_34": {
+    "level": "L2",
+    "maturityPct": 40,
+    "status": "OFFICIAL_ISSUER_SOURCE_CANDIDATES_IDENTIFIED / ORIGINAL_FILING_VINTAGES_NOT_VERIFIED",
+    "hypothesis": "A dividend event cannot be evaluated against a financial denominator revised after the decision timestamp; proposal/final/correction and payout-source clocks must be versioned independently.",
+    "candidates": [
+      {
+        "symbol": "3056",
+        "sourceUrl": "https://wwwc.twse.com.tw/pdf/ch/3056_ch.pdf",
+        "sourceType": "TWSE_ISSUER_PDF_LATER_COMPILED",
+        "dividendAnnouncementDisplayTime": "2026-03-10 18:16:07",
+        "fiscalDividendYearROC": 114,
+        "cashDividendPerShareDisplay": 0.61,
+        "sourceDocumentGenerationTime": "UNKNOWN",
+        "originalMopsFilingBytes": "UNKNOWN",
+        "originalFirstPublicAt": "UNKNOWN",
+        "note": "2026-03-11 correction shown in source concerns shareholder meeting notice, NOT proven dividend correction."
+      },
+      {
+        "symbol": "2033",
+        "sourceUrl": "https://wwwc.twse.com.tw/pdf/ch/2033_ch.pdf",
+        "sourceType": "TWSE_ISSUER_PDF_LATER_COMPILED",
+        "dividendAnnouncementDisplayTime": "2026-03-10 16:28:12",
+        "announcement": "BOARD_DECIDED_NO_DIVIDEND",
+        "fiscalDividendYearROC": 114,
+        "cashDividendPerShareDisplay": 0,
+        "sourceDocumentGenerationTime": "2026-05-10",
+        "originalMopsFilingBytes": "UNKNOWN",
+        "originalFirstPublicAt": "UNKNOWN",
+        "note": "Explicit zero dividend is a reported event; missing financial denominator remains UNKNOWN."
+      },
+      {
+        "symbol": "8374",
+        "sourceUrl": "https://wwwc.twse.com.tw/pdf/ch/8374_ch.pdf",
+        "sourceType": "TWSE_ISSUER_PDF_LATER_COMPILED",
+        "dividendAnnouncementDisplayTime": "2026-03-03 05:38:07",
+        "accountingRestatementDisplayTime": "2026-03-03 05:36:24",
+        "restatementScope": "2024-09 through 2025-12 consolidated revenue; 2024Q3 through 2025Q3 statements",
+        "fiscalDividendYearROC": 114,
+        "cashDividendPerShareDisplay": 0.2,
+        "originalMopsFilingBytes": "UNKNOWN",
+        "originalFirstPublicAt": "UNKNOWN",
+        "note": "Chronology creates an adversarial candidate; not evidence that a pre-event researcher could obtain the later compiled PDF or that dividend change occurred."
+      }
+    ],
+    "positiveMechanism": "Separating event clock and earnings-vintage clock prevents post-correction denominator leakage.",
+    "counterevidence": "Source PDFs are later compilations; displayed announcement times are not independently verified immutable filing times; dividend policy may legitimately be changed after first proposal.",
+    "alternativeExplanations": [
+      "earnings-funded ordinary payout",
+      "retained earnings",
+      "capital reserve payout",
+      "financial-sector regulatory constraints",
+      "no payout decision"
+    ],
+    "failureConditions": [
+      "historical original filing unavailable",
+      "decision-finality authority unverified",
+      "revised statements overwritten",
+      "dividend source or shares denominator unknown"
+    ],
+    "next": "Retrieve original MOPS dividend decision and financial filing bytes for 3056/2033/8374, hash each version and independently prove publication timestamps; find one TRUE dividend correction chain, not unrelated corrections; run event-time replay before L3."
+  },
+  "D08_03": {
+    "level": "L3",
+    "maturityPct": 60,
+    "status": "2026_YEAR_JOB_FAILED / 2005_TO_2025_JOBS_PASS / FAILURE_DATE_UNKNOWN",
+    "workflowRun": 37224491439,
+    "failedJob": 112767539862,
+    "observedAt": "2026-10-07T11:27:11Z",
+    "failedError": "A6 source stat not OK",
+    "errorOrigin": "system2/runtime/official_historical_a6_valuation_v0_1.mjs:39",
+    "fetchCallsite": "system2/runtime/official_historical_a6_valuation_v0_1.mjs:124",
+    "successYears": [
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "failedYears": [
+      2026
+    ],
+    "currentMainTransportUrls": [
+      "https://www.twse.com.tw/exchangeReport/BWIBBU_d",
+      "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d"
+    ],
+    "sourceBehavior": "Current fetcher fails fast on payload.stat != OK, without logging requested marketDate/stat/response hash; it does not try alternate route for this semantic status. No conclusion about actual source completeness can be drawn.",
+    "positiveMechanism": "Date-specific source-status receipt can isolate transport/semantic/source-data errors without rebuilding already successful yearly packs.",
+    "counterevidence": "The old failed job ran a PR merge commit; its source may differ from latest main. A 2026 failure does not prove an exchange data gap; neither source status nor failed date was logged.",
+    "alternativeExplanations": [
+      "endpoint response status changed",
+      "official no-data or temporary outage",
+      "calendar/source inconsistency",
+      "old PR source behavior differs from latest main"
+    ],
+    "failureConditions": [
+      "no failing marketDate",
+      "no raw payload hash",
+      "retries may alter source response",
+      "success pack overwritten"
+    ],
+    "next": "Use bounded READ-ONLY 2026 source-only diagnostic with per-date official stat, source URL, payload hash and redacted response metadata. Never invoke R2 writer, return join or Formal Core; preserve 2005-2025 successful year packs."
+  },
+  "biasAudit": {
+    "PIT": "NOT_VERIFIED_REAL",
+    "OOS": "NOT_RUN",
+    "walkForward": "NOT_RUN",
+    "selectionBias": "SAMPLE_CANDIDATES_ONLY",
+    "lookAhead": "PREVENTED_BY_FAIL_CLOSED_GATE",
+    "dataSnooping": "NO_RETURNS_OPENED",
+    "multipleTesting": "NO_OUTCOME_TEST",
+    "overfitting": "NO_FITTED_PARAMETERS",
+    "factorRedundancy": "DIVIDEND_EARNINGS_CFO_VALUATION_SHARED_LINEAGE",
+    "sampleSize": "THREE_SOURCE_CANDIDATES_NOT_PIT_REPLAY",
+    "eventClustering": "NOT_ASSESSED",
+    "accountingRevisions": "CANDIDATE_FOUND_NO_ORIGINAL_VERSION",
+    "corporateActions": "PAYOUT_SOURCE_AND_SHARE_DENOMINATOR_PENDING",
+    "transactionCosts": "UNKNOWN",
+    "liquidity": "UNKNOWN",
+    "marketRegime": "UNKNOWN"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "nextContinuationPoint": "First complete D07-34 original MOPS filing/vintage and real correction chain; parallel D08-03 bounded source-only 2026 failed-date/status/hash probe; append dedicated checkpoint, tracker only after formal evidence review."
+}
