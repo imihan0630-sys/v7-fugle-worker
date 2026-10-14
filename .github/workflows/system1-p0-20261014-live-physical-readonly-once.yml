@@ -1,0 +1,46 @@
+name: System1 P0 2026-10-14 One-time Midmorning Live D1 KV Quotes (GET ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-20261014-live-physical-readonly-once.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-20261014-live-physical-readonly-once.yml"
+permissions:
+  contents: read
+jobs:
+  isolated_offline_acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Strict seven-GET true D1/KV + quote source freshness and chronology tests
+        run: |
+          set -euo pipefail
+          node --check ops/v8_intraday_monitor_acceptance_readonly.mjs
+          node tests/test_v8_intraday_monitor_acceptance_readonly.mjs
+  real_physical_get_only:
+    if: github.event_name == 'push'
+    needs: isolated_offline_acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Seven actual authorized GETs - protected Formal and Aideen, Cron, D1, KV, Fugle microsecond source clock
+        run: node ops/v8_intraday_monitor_acceptance_readonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-20261014-midmorning-physical-readonly-${{ github.run_id }}
+          path: artifacts/v8-intraday-monitor-readback-*.json
+          if-no-files-found: warn
+          retention-days: 30
