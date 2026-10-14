@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "S2_M07_D08_FOUR_TECHNICAL_FAMILIES_EVIDENCE_ADMISSION_MATRIX_20261015_V0_1",
+  "state": "CLASS_A_PROVENANCE_GAP_MATRIX_NOT_INDEPENDENT_AUDIT_ACCEPTANCE",
+  "sourceMainAtResearch": "1bed6bdee0e45e67abf004e13bbcd7757e277298",
+  "originalR2TechnicalFamilyRun": 38546098333,
+  "originalD08BodySHARealRun": 38642255670,
+  "originalBodySHAArtifact": 11931461361,
+  "sourceR2SingleNonAtomicListedObjects": 26321,
+  "sourceOriginalG3ManifestPresenceAndListedSizeMatches": 25823,
+  "actualOriginalContentByteShaCrossMatchedToG3D1": 8,
+  "additionalD08BodiesCheckedAgainstOwnR2Metadata": 2,
+  "unreceiptedTechnicalFamilyObjects": 76,
+  "totalListedBytes": 166323049,
+  "baseGuardrails": {
+    "rawR2ObjectKeysNeverPublished": true,
+    "codeSimilarityDoesNotProveWriterIdentity": true,
+    "providerListedSizeDoesNotProveContentSHA": true,
+    "R2BodyToOwnMetadataSHAIsNotPIT": true,
+    "noHistoryPromotionWithoutWriterFirstKnownAtPITAndIndependentAudit": true,
+    "targetR2LastAuthenticated": "NOT_ENTITLED",
+    "independentAuditAccepted": false,
+    "system1V8FormalChanged": false
+  },
+  "families": [
+    {
+      "family": "TWSE_VALUATION_HISTORY_V0_1",
+      "count": 18,
+      "listedBytes": 123720095,
+      "existingResearchContext": [
+        "system2/runtime/d08_historical_valuation_percentile_snapshot_v0_1.mjs",
+        "research/d08_twse_historical_valuation_cohort_prereg_v0_1.json"
+      ],
+      "sourceWriterAttribution": "UNKNOWN",
+      "directImmutableR2WriterReceipt": "NOT_ESTABLISHED",
+      "bodySHAAgainstOriginalR2MetadataMatched": 0,
+      "originalG3D1ManifestSHAJoin": "NOT_ESTABLISHED",
+      "pointInTimeFirstKnownAt": "UNKNOWN",
+      "historicalResearchAdmission": "DENIED_PENDING_PROVENANCE"
+    },
+    {
+      "family": "TWSE_DAILY_VALUATION_YEAR_V0_1",
+      "count": 13,
+      "listedBytes": 35599291,
+      "existingResearchContext": [
+        "system2/runtime/d08_twse_daily_valuation_year_pack_v0_1.mjs",
+        "research/d08_twse_daily_valuation_archive_manifest_20261007_v0_1.json"
+      ],
+      "sourceWriterAttribution": "UNKNOWN_FOR_THESE_13",
+      "directImmutableR2WriterReceipt": "NOT_ESTABLISHED_FOR_THESE_13",
+      "bodySHAAgainstOriginalR2MetadataMatched": 0,
+      "originalG3D1ManifestSHAJoin": "NOT_ESTABLISHED",
+      "pointInTimeFirstKnownAt": "UNKNOWN",
+      "historicalResearchAdmission": "DENIED_PENDING_PROVENANCE"
+    },
+    {
+      "family": "TWSE_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_V0_1",
+      "count": 44,
+      "listedBytes": 6993107,
+      "existingResearchContext": [
+        "system2/runtime/d08_historical_valuation_percentile_snapshot_v0_1.mjs",
+        "research/d08_historical_valuation_percentile_snapshot_contract_v0_1.json"
+      ],
+      "sourceWriterAttribution": "UNKNOWN",
+      "directImmutableR2WriterReceipt": "NOT_ESTABLISHED",
+      "bodySHAAgainstOriginalR2MetadataMatched": 1,
+      "bodySHAObservedBytes": 151440,
+      "bodySHA256": "2fbe33059075fbf4b5110c7013d429f424a50d441130e4057f2953ad09e7b53d",
+      "originalG3D1ManifestSHAJoin": "NOT_ESTABLISHED",
+      "pointInTimeFirstKnownAt": "UNKNOWN",
+      "historicalResearchAdmission": "DENIED_PENDING_PROVENANCE"
+    },
+    {
+      "family": "TWSE_SEMANTIC_UNIVERSE_V0_2",
+      "count": 1,
+      "listedBytes": 10556,
+      "existingResearchContext": [
+        "system2/scripts/d08_twse_universe_provenance_v0_2.mjs",
+        "system2/runtime/d08_twse_historical_universe_source_v0_1.mjs"
+      ],
+      "sourceWriterAttribution": "UNKNOWN",
+      "directImmutableR2WriterReceipt": "NOT_ESTABLISHED",
+      "bodySHAAgainstOriginalR2MetadataMatched": 1,
+      "bodySHAObservedBytes": 10556,
+      "bodySHA256": "b1758c1deb3097a6b16356ee61708f2b002a8ed23a9797cb43a54e5828bf537e",
+      "originalG3D1ManifestSHAJoin": "NOT_ESTABLISHED",
+      "pointInTimeFirstKnownAt": "UNKNOWN",
+      "historicalResearchAdmission": "DENIED_PENDING_PROVENANCE"
+    }
+  ],
+  "negativeControls": {
+    "unreceiptedLegacyRawV01Shaped": 264,
+    "legacyRawV01IdempotencyStatus": "INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE",
+    "smokePreserved": 4,
+    "extraR2ObjectsMustNotBeDeletedOrSkipped": true
+  },
+  "nextActions": [
+    "Recover exact SOURCE writer receipts and immutable object content provenance for 18 valuation history and 13 annual valuation-year objects, without assuming nearby research module is same writer",
+    "Verify 44 percentile snapshots against real bytes SHA within explicit free-tier-safe body size budget, then recover actual publication/PIT lineage",
+    "Verify single semantic object firstKnownAt plus original writer identity; own byte SHA match alone insufficient",
+    "Independent AUDIT_LANE original provider/Artifact byte rehash and source contract qualification before promotion",
+    "Do not enable paid target R2 or modify System1 Formal"
+  ]
+}
