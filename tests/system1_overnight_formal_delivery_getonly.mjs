@@ -1,11 +1,12 @@
 // Existing 23:55 Taipei GitHub health Cron may start after midnight.
 // This check NEVER calls Worker POST endpoints and NEVER creates a plan/push.
 import {mkdir,writeFile} from "node:fs/promises";
-import {resolveScheduledPostcloseTarget,classifyPostcloseBusinessChain} from "../research/system1_overnight_formal_delivery_readonly_v0_1.mjs";
-const when=resolveScheduledPostcloseTarget(new Date());
+import {resolveScheduledPostcloseTarget,resolveSourceReadyHandoffTarget,classifyPostcloseBusinessChain} from "../research/system1_overnight_formal_delivery_readonly_v0_1.mjs";
+const sourceReadyHandoff=process.argv.includes("--source-ready-handoff");
+const when=sourceReadyHandoff?resolveSourceReadyHandoffTarget(new Date()):resolveScheduledPostcloseTarget(new Date());
 const base=String(process.env.V7_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
 const token=String(process.env.V7_ADMIN_TOKEN||"");
-const output=String(process.env.S1_POSTCLOSE_READONLY_OUTPUT||"artifacts/system1-overnight-formal-delivery-getonly.json");
+const output=String(process.env.S1_POSTCLOSE_READONLY_OUTPUT||(sourceReadyHandoff?"artifacts/system1-source-ready-formal-handoff-getonly.json":"artifacts/system1-overnight-formal-delivery-getonly.json"));
 let verdict={schema:"S1_P0_OVERNIGHT_FORMAL_DELIVERY_GET_ONLY_V0_1",
   ...when,ok:false,readOnly:true,noBusinessPOST:true,noD1Write:true,
   noKVWrite:true,noPlanChanges:true,no3MinWrite:true,noPush:true,noTrade:true};
@@ -45,6 +46,6 @@ if(!when.targetDate){
   verdict={...verdict,...classifyPostcloseBusinessChain({targetDate:when.targetDate,
     scanStatus:values.scanStatus,institution:values.institution,
     quality:values.quality,outbox:values.outbox,readErrors}),
-    clockState:when.status,localClock:when.localTime};
+    clockState:when.status,localClock:when.localTime,sourceReadyHandoff};
   await safeWrite();
 }
