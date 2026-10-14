@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "S2_DATA_M06_M07_ORIGINAL_GITHUB_ARTIFACT_ZIP_REHASH_20261014_V0_1",
+  "evidenceClass": "DATA_LANE_ORIGINAL_ARTIFACT_REHASH__AWAIT_INDEPENDENT_AUDIT",
+  "observedAtTaipei": "2026-10-14 12:30:35",
+  "recordedFromMain": "fcecf8815c660a17cbb2cef29bbe7577eba724b3",
+  "verificationMethod": {
+    "source": "ORIGINAL_GITHUB_ACTIONS_ARTIFACT_ZIPS_DOWNLOADED_AGAIN",
+    "independentRuntime": "isolated Python hashlib.sha256 + zipfile.ZipFile + json.loads",
+    "comparedGitHubReportedZipSha256": true,
+    "recomputedActualOriginalDownloadedZipSha256": true,
+    "checkedEachZipContainsExactlyOneSafeNamedJSON": true,
+    "parsedEachOriginalInnerSanitizedJSON": true,
+    "didNotDownloadRawPrivateR2ObjectBytesToThisRehashEnvironment": true,
+    "cloudflareCallsMadeByThisEvidenceAudit": 0,
+    "additionalD1Writes": 0,
+    "originalContentNotPublished": true
+  },
+  "receipts": [
+    {
+      "scope": "M06_DESTINATION_OPERATIONAL_COUNTS",
+      "runId": 38509243451,
+      "jobId": 115673691753,
+      "artifactId": 11868929258,
+      "zipBytes": 1163,
+      "zipSha256": "7fec045674b02a44dd8d357b2f145c0d71c2680bdb4613559e70baa6f3e4e5e1",
+      "recomputedZipSha256MatchesGithub": true,
+      "innerName": "sanitized-readback.json",
+      "innerBytes": 2113,
+      "originalInnerSha256": "a7d10912c5d1d4e523ea6e705e19ec99b1eb8c4fbc377d8aeee0d54e95326f76",
+      "physicalReceiptStatus": "REAL_DESTINATION_COUNT_READBACK_ONLY__INDEPENDENT_AUDIT_PENDING",
+      "originalOldAccountOperationalCounts": {
+        "s2_infrastructure_checks": 2505,
+        "s2_source_session_receipts": 11,
+        "s2_resonance_runs": 5
+      },
+      "targetPhysicalReadbackCounts": {
+        "s2_infrastructure_checks": 0,
+        "s2_source_session_receipts": 0,
+        "s2_resonance_runs": 0
+      },
+      "providerMetaRowsWritten": 0
+    },
+    {
+      "scope": "M07_SOURCE_R2_FIRST_PAGE_METADATA",
+      "runId": 38509804326,
+      "jobId": 115675456062,
+      "artifactId": 11869511393,
+      "zipBytes": 713,
+      "zipSha256": "9859823a256e3d847085c0b30b8a7d4448ce3111691a596d7c31625f0a25f50a",
+      "recomputedZipSha256MatchesGithub": true,
+      "innerName": "sanitized-list.json",
+      "innerBytes": 1080,
+      "originalInnerSha256": "2e757b6530096381e0fcb5e8e4d45b7d3495b8952cc0a03e5d28015d05b6398c",
+      "sourceR2ListedObjects": 200,
+      "sourceR2ListedBytes": 2907002,
+      "sourceR2ListTruncated": true,
+      "sourceR2ObjectByteShaCertified": 0
+    },
+    {
+      "scope": "M07_SOURCE_R2_FOUR_PAGES_METADATA",
+      "runId": 38511152869,
+      "jobId": 115679724132,
+      "artifactId": 11870180315,
+      "zipBytes": 1024,
+      "zipSha256": "0b042bf18b80e41c4bd44ab2d045534ebd845c3889684d7a4ff11680324bdf37",
+      "recomputedZipSha256MatchesGithub": true,
+      "innerName": "sanitized-result.json",
+      "innerBytes": 1999,
+      "originalInnerSha256": "babda78a7fcf1bb961d743c4a9dc8e83059a586f3413dca3c3e7930968e99251",
+      "sourceR2ListCalls": 4,
+      "sourceR2ListedObjects": 4000,
+      "sourceR2ListedBytes": 57376652,
+      "sourceR2ListTruncated": true,
+      "sourceR2ObjectByteShaCertified": 0
+    },
+    {
+      "scope": "M07_SOURCE_R2_ONE_ORIGINAL_OBJECT_BYTE_METADATA_MATCH",
+      "runId": 38511567530,
+      "jobId": 115681031637,
+      "artifactId": 11869878655,
+      "zipBytes": 747,
+      "zipSha256": "2902e3d1c59e968621c0769c5cdc2ce39f8ccb51b9caf07e45c94cd5d6530159",
+      "recomputedZipSha256MatchesGithub": true,
+      "innerName": "sample-sanitized.json",
+      "innerBytes": 1193,
+      "originalInnerSha256": "d9c0a7ac091083511dfdd1d028ef191fd6f2f27f41377b139c461566e1aeaa82",
+      "sourceOriginalByteShaMatchedInProtectedJob": true,
+      "sourceOriginalObjectBytes": 14274,
+      "protectedJobOriginalObjectByteSha256": "356b6504a1b916c5b4975b29add4fe08f12d3eb94b93a13f33f6af12e9448c7a",
+      "protectedJobSourceObjectMetadataSha256": "356b6504a1b916c5b4975b29add4fe08f12d3eb94b93a13f33f6af12e9448c7a",
+      "sourceD1ManifestCrosswalkCertified": false,
+      "protectedJobBodyShaIndependentlyRecomputedByAuditor": false
+    }
+  ],
+  "claims": {
+    "originalGithubZipAndSanitizedJSONPhysicalIntegrityRecomputedCount": 4,
+    "originalGithubZipAndSanitizedJSONPhysicalIntegrityRecomputedTotal": 4,
+    "sourceR2FullObjectInventoryCertified": false,
+    "sourceR2SampledOriginalObjectBytesSelfMatchedToMetadata": 1,
+    "sourceR2ObjectHashMatchesSourceD1Manifest": false,
+    "targetR2EntitlementGranted": false,
+    "originalHistoryPITFirstKnownAtCertified": false,
+    "frozenHistoryCertified": false,
+    "originalSourceD1FullyCopied": false,
+    "currentSystem2SelectionUnlocked": false,
+    "independentAuditLaneFormalPass": false,
+    "userBillingChange": false,
+    "system1FormalCoreChanged": false
+  },
+  "nextRequired": [
+    "AUDIT_LANE independently download original ZIPs and reproduce inner hashes; DATA evidence alone is not audit PASS.",
+    "DATA independently crosswalk sample source R2 private key hash and byte SHA with original source D1 cold manifest offline under protected original source evidence.",
+    "Continue bounded source object inventory and byte proof using real source R2 free budget, never infer total from 25,823 D1 manifest rows.",
+    "Keep destination R2 NOT_ENTITLED unprovisioned until explicit separate owner approval."
+  ]
+}
