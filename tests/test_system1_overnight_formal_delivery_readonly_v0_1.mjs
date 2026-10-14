@@ -26,7 +26,11 @@ assert.equal(classifyPostcloseBusinessChain({...read,institution:{...inst,ready:
 const baseScan={scanDate:day,dryRun:false,testMode:false,selectedCount:5,stocks:Array.from({length:5},(_,i)=>({symbol:String(1000+i)})),
  pipeline:{complete:true}};
 assert.equal(classifyPostcloseBusinessChain({...read,scanStatus:baseScan}).category,"EXTERNAL_MONITOR_PLAN_NOT_VERIFIED");
-const saved={...baseScan,pipeline:{...baseScan.pipeline,externalPlanVerified:true}};
+const genericOnly={...baseScan,pipeline:{...baseScan.pipeline,externalPlanVerified:true}};
+assert.equal(classifyPostcloseBusinessChain({...read,scanStatus:genericOnly}).category,"EXTERNAL_MONITOR_PLAN_NOT_VERIFIED");
+const providerOnly={...baseScan,planBridge:{github:{verified:true}}};
+assert.equal(classifyPostcloseBusinessChain({...read,scanStatus:providerOnly}).category,"EXTERNAL_MONITOR_PLAN_NOT_VERIFIED");
+const saved={...genericOnly,planBridge:{provider:"D1_GITHUB_ENCRYPTED",github:{verified:true}}};
 assert.equal(classifyPostcloseBusinessChain({...read,scanStatus:saved}).category,"DAILY_SELECTION_REPORT_NOT_SENT");
 const reported={...saved,dailyReport:{sent:true,simulated:false,signalId:"DAILY_SELECTION:"+day}};
 assert.equal(classifyPostcloseBusinessChain({...read,scanStatus:reported}).category,"DAILY_SELECTION_OUTBOX_NOT_ACCEPTED");
