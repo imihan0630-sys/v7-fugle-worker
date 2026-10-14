@@ -1,0 +1,43 @@
+name: S2 M07 SOURCE R2 GET-only Object List Preflight
+# READONLY 200-key maximum: ListObjectsV2 metadata is NOT object-content SHA.
+# No R2 writes, no D1, no destination entitlement change.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-source-r2-list-readonly.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-m07-source-r2-single-get-readonly
+  cancel-in-progress: false
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify S3 one GET and metadata-only limitations
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_source_r2_listing_readonly_v0_1.mjs
+          node system2/tests/issue1236_m07_source_r2_listing_readonly_v0_1.test.mjs
+      - name: Real source R2 ListObjectsV2 bounded read-only GET
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_source_r2_listing_readonly_v0_1.mjs
+      - name: Archive source R2 sanitized list metadata (no keys)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-source-r2-get-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-r2-list-once/sanitized-list.json
+          if-no-files-found: warn
+          retention-days: 30
