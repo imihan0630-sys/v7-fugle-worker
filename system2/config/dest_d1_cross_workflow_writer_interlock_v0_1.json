@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "S2_DEST_D1_CROSS_WORKFLOW_WRITE_INTERLOCK_V0_1",
+  "accountRole": "DESTINATION",
+  "logicalDatabase": "system2-research",
+  "gitHubRepository": "imihan0630-sys/v7-fugle-worker",
+  "ownerOperationalDailyBilledRowsWrittenCeiling": 80000,
+  "cloudflareFreeDailyHardLimitRowsWritten": 100000,
+  "sharedJobConcurrencyGroup": "s2-dest-d1-historical-and-diagnostic-writer",
+  "writers": [
+    {
+      "id": "RAW_COPY",
+      "workflow": ".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
+      "job": "destination_copy",
+      "historicalMigrationOnly": true,
+      "providerReadPermission": "actions:read"
+    },
+    {
+      "id": "DAILY_DIAGNOSTIC",
+      "workflow": ".github/workflows/system2-daily-shadow-diagnostic.yml",
+      "job": "diagnostic",
+      "historicalMigrationOnly": false,
+      "providerReadPermission": "actions:read"
+    }
+  ],
+  "guards": [
+    "IDENTICAL_GITHUB_JOB_CONCURRENCY",
+    "GITHUB_NATIVE_OTHER_WORKFLOW_UTC_DAY_EXCLUSION",
+    "CONSERVATIVE_PREVIOUS_DAY_22Z_BOUNDARY_EXCLUSION"
+  ],
+  "sourceQuarantineUnchanged": true,
+  "sourceWriterRegistryUnchanged": true,
+  "atomicD1LeaseOrReservationAccepted": false,
+  "githubMetadataFreshnessAbsoluteProof": false,
+  "d1AnalyticsFreshnessAbsoluteProof": false,
+  "readOnlyGitHubPreflight": true,
+  "authorizesConcurrentWrites": false,
+  "note": "Interlock prevents known RAW_COPY vs DAILY_DIAGNOSTIC same day within GH schedules. Does not prove account-wide atomic Cloudflare free quota reservation or cover unknown destination writers. Release requires M12 independent audit."
+}
