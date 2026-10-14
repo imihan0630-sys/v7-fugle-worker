@@ -1,0 +1,55 @@
+name: System1 P0 Exact Last-60 Trading Session D1 Audit (READ ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-source-exact-history60-audit-once.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-source-exact-history60-audit-once.yml"
+      - "ops/system1_p0_history60_exact_session_audit_readonly_v0_1.mjs"
+      - "ops/system1_p0_history60_exact_session_audit_lib_v0_1.mjs"
+      - "tests/test_system1_p0_history60_exact_session_audit_v0_1.mjs"
+permissions:
+  contents: read
+jobs:
+  pure_history_day_guard_tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact 60 session calendar/contiguity vs permitted halt semantics
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_history60_exact_session_audit_readonly_v0_1.mjs
+          node tests/test_system1_p0_history60_exact_session_audit_v0_1.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+  physical_verified_readonly:
+    if: github.event_name == 'push'
+    needs: pure_history_day_guard_tests
+    concurrency:
+      group: system1-history-cache-dataonly-safe-write
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Physically read all existing System1 D1 historical bars, check official last 60 sessions, never write
+        run: node ops/system1_p0_history60_exact_session_audit_readonly_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-source-60-session-quality-${{ github.run_id }}
+          path: artifacts/system1-p0-60-session-exact-source-audit.json
+          if-no-files-found: warn
+          retention-days: 30

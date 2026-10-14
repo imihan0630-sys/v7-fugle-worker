@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import {auditHistoricalBars} from "../ops/system1_p0_history60_exact_session_audit_lib_v0_1.mjs";
+const dates=[];let stamp=Date.parse("2026-10-13T00:00:00Z");
+while(dates.length<60){const d=new Date(stamp);if(d.getUTCDay()!==0&&d.getUTCDay()!==6)dates.push(d.toISOString().slice(0,10));stamp-=86400000;}
+dates.reverse();
+const bars=dates.map(date=>({date,close:100,high:110,low:90}));
+const audit=x=>auditHistoricalBars({symbol:"2330",bars:x,requiredTradingDates:dates,targetDate:dates.at(-1)});
+const good=audit(bars);assert.equal(good.strictCalendarAligned,true);assert.equal(good.barCount,60);assert.equal(good.requiredMarketSessionMissingCount,0);
+const missing=audit([...bars.slice(0,25),...bars.slice(26),{date:dates.at(-1),close:100,high:110,low:90}].slice(0,-1)); 
+assert.equal(missing.has60Bars,false);
+const extraOld={date:"2026-06-01",close:100,high:110,low:90};
+const gap=audit([extraOld,...bars.filter(x=>x.date!==dates[19])]);
+assert.equal(gap.has60Bars,true);assert.equal(gap.hasLatestCompletedSession,true);
+assert.equal(gap.state,"CALENDAR_GAP_NEEDS_LISTING_OR_HALT_PROVENANCE");
+assert.equal(gap.requiredMarketSessionMissingCount,1);
+assert.equal(audit(bars.slice(-30)).state,"FEWER_THAN_60_COMPLETED_BARS");
+assert.equal(audit(bars.slice(0,-1)).state,"FEWER_THAN_60_COMPLETED_BARS");
+assert.equal(audit([...bars,{...bars.at(-1)}]).state,"INVALID_RAW_BAR_ORDER_OR_PRICES");
+assert.equal(audit([{...bars[0],close:115},...bars.slice(1)]).state,"INVALID_RAW_BAR_ORDER_OR_PRICES");
+assert.equal(audit(null).state,"INVALID_HISTORY_JSON");
+assert.throws(()=>auditHistoricalBars({symbol:"0000",bars,requiredTradingDates:dates,targetDate:dates.at(-1)}),/AUDIT_60_SESSION_INPUT_INVALID/);
+console.log("SYSTEM1_P0_HISTORY60_EXACT_SESSION_AUDIT_TESTS_PASS");
