@@ -7,7 +7,19 @@ import {SHORT_MOMENTUM_CONTRACT_V0_1} from './strategy_contracts_v0_1.mjs';
 import {buildStrategyStateAssessment} from './strategy_evaluator.mjs';
 import {sha256Hex} from './decision_archive.mjs';
 const SHA=/^[a-f0-9]{64}$/i,DAY=/^\d{4}-\d{2}-\d{2}$/;
-const validUtc=x=>typeof x==='string'&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(x)&&Number.isFinite(Date.parse(x));
+// Lexical yyyy-mm-dd alone is NOT a verified calendar date: JS Date.parse
+// normalizes impossible values such as Feb 30 into March. Never admit one
+// into 61-session PIT denominator or source/observation trading dates.
+const validMarketDate=x=>{
+ if(typeof x!=='string'||!DAY.test(x))return false;
+ const millis=Date.parse(x+'T00:00:00.000Z');
+ return Number.isFinite(millis)&&new Date(millis).toISOString().slice(0,10)===x;
+};
+const validUtc=x=>{
+ if(typeof x!=='string'||!/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(x))return false;
+ const millis=Date.parse(x);
+ return Number.isFinite(millis)&&new Date(millis).toISOString().slice(0,19)===x.slice(0,19);
+};
 const nonneg=x=>Number.isFinite(x)&&x>=0;
 const price=x=>Number.isFinite(x)&&x>0;
 const sourceState='SOURCE_FIRST_A1_OFFLINE_RESEARCH_ONLY';
@@ -22,7 +34,7 @@ export async function evaluateSourceFirstShortMomentumV0_1({
  const blockers=[];
  if(!validUtc(evaluationAtUtc))throw Error('EVALUATION_CLOCK_UTC_INVALID');
  if(!(sourceLedger?.schemaVersion==='S2_SOURCE_FIRST_PROSPECTIVE_LEDGER_V0_1'&&
-      sourceLedger.sourceState==='READY'&&DAY.test(sourceLedger.marketDate||'')&&
+      sourceLedger.sourceState==='READY'&&validMarketDate(sourceLedger.marketDate)&&
       SHA.test(sourceLedger.ledgerSha256||'')&&SHA.test(sourceLedger.sourceBatchHash||'')&&
       validUtc(sourceLedger.observedAt)&&Date.parse(sourceLedger.observedAt)<=Date.parse(evaluationAtUtc)&&
       Array.isArray(sourceLedger.observations)&&sourceLedger.observations.length>0&&
@@ -39,7 +51,7 @@ export async function evaluateSourceFirstShortMomentumV0_1({
       Date.parse(calendarReceipt.observedAt)<=Date.parse(evaluationAtUtc)&&
       SHA.test(calendarReceipt?.originalCalendarHash||'')&&
       Array.isArray(days)&&days.length===61&&new Set(days).size===61&&
-      days.every((d,i)=>DAY.test(d)&&(i===0||d>days[i-1]))&&days.at(-1)===date))
+      days.every((d,i)=>validMarketDate(d)&&(i===0||d>days[i-1]))&&days.at(-1)===date))
    blockers.push('OFFICIAL_61_SESSION_CALENDAR_UNVERIFIED');
  if(independentOriginalVerification!==true)blockers.push('INDEPENDENT_ORIGINAL_SOURCE_BYTES_UNVERIFIED');
  const observations=[];
@@ -54,6 +66,12 @@ export async function evaluateSourceFirstShortMomentumV0_1({
    let detail=invalid(symbol,'NO_CERTIFIED_PIT_61_SESSION_HISTORY');
    detail.companyName=row.companyName||null;detail.market=row.market||null;
    detail.sourceRowHash=row.sourceRowHash||null;
+   // A batch that claims T must never launder a constituent daily row from T-1
+   // or another venue into T's 61-session history/strategy denominator.
+   if(row.marketDate!==date||!['TWSE','TPEX'].includes(row.market)){
+     detail.reasonCodes=['DAILY_SOURCE_OBSERVATION_DATE_MARKET_MISMATCH'];
+     observations.push(detail);continue;
+   }
    detail.evaluatedClose=price(row.close)?row.close:null;
    if(!aggregateOk){detail.reasonCodes=[...blockers];observations.push(detail);continue;}
    const h=historyBySymbol?.[symbol], c=continuityBySymbol?.[symbol];
