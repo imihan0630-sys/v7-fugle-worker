@@ -219,6 +219,11 @@ test('official names explicitly -DR quarantine even re-signed matching positive 
  const o=p.sourceLedger.observations[0];o.companyName='美德醫療-DR';
  const {ledgerSha256,...base}=p.sourceLedger;
  p.sourceLedger.ledgerSha256=await sha256Hex(base);
+ p.companyActionIndependentAuditReceipt.sourceLedgerHash=p.sourceLedger.ledgerSha256;
+ const {auditHash:oldCaAuditHash,...caAuditBase}=p.companyActionIndependentAuditReceipt;
+ p.companyActionIndependentAuditReceipt.auditHash=await sha256Hex(caAuditBase);
+ p.continuityBySymbol['2330'].independentAuditHash=
+  p.companyActionIndependentAuditReceipt.auditHash;
  p.instrumentSourceReceipt.sourceLedgerHash=p.sourceLedger.ledgerSha256;
  const {receiptHash,...b}=p.instrumentSourceReceipt;
  p.instrumentSourceReceipt.receiptHash=await sha256Hex(b);
