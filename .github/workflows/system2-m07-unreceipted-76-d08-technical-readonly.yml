@@ -1,0 +1,52 @@
+name: S2 M07 G3 76 Other D08 SOURCE R2 Key Family READONLY
+# One-time max 32 LIST pages. Match original 498 G3 keyhashes and 154 original
+# D08 GitHub writer receipts. Retain aggregates only, no raw keys or object bytes.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-unreceipted-76-d08-technical-readonly.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-original-g3-76-d08-r2-technical-family-once
+  cancel-in-progress: false
+jobs:
+  source_family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Reject untrusted scope, source drift and version/size conflicts in fixtures
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_g3_76_other_d08_technical_families_v0_1.mjs
+          node system2/tests/issue1236_m07_unreceipted_76_technical_v0_1.test.mjs
+      - name: Original protected G3 498 source R2 unmatched manifest keys
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-private-498-extra-keyhashes-38527825185-1
+          run-id: 38527825185
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-original-private-498
+      - name: Bounded original SOURCE 27 page list recheck and aggregate D08 340 key families
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_g3_76_other_d08_technical_families_v0_1.mjs
+      - name: Preserve aggregate-only D08 family and preexisting receipt status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-original-g3-unreceipted-76-d08-technical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-original-76-technical-family/sanitized-76-d08-original-technical-families.json
+          if-no-files-found: warn
+          retention-days: 30
