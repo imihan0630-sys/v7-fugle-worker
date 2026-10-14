@@ -1,0 +1,45 @@
+name: S2 M07 Semantic Original Provider Artifact SHA Replay (NO CLOUDFLARE)
+# One-shot independent offline replay of original semantic SOURCE R2 10,556B receipt.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-semantic-original-artifact-replay.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-semantic-provider-independent-artifact-replay
+  cancel-in-progress: false
+jobs:
+  independent_artifact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Tamper, PIT and original receipt scope regression
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_semantic_original_artifact_replay_v0_1.mjs
+          node system2/tests/issue1236_m07_semantic_original_artifact_replay_v0_1.test.mjs
+      - name: Download exact original provider semantic structure receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-source-original-semantic-gzip-pit-38654562224-1
+          run-id: 38654562224
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-original-semantic-replay
+      - name: Independent original SHA and clock-absent PIT replay
+        run: node system2/migration/issue1236_m07_semantic_original_artifact_replay_v0_1.mjs
+      - name: Private, sanitized independent replay receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-semantic-independent-source-artifact-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-original-semantic-replay-proof/sanitized-independent-semantic-replay.json
+          if-no-files-found: warn
+          retention-days: 90
