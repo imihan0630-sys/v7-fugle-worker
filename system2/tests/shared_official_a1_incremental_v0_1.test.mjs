@@ -172,3 +172,38 @@ test('manifest cache duration always matches scheduled workflow and forbids 90-d
  assert.equal(m.shortTermCacheMaxRetentionDays,7);
  assert.equal(m.storageClass,'GITHUB_ACTIONS_EPHEMERAL_7D');
 });
+
+
+test('23:45 Taipei source-only first attempt plus 00:15 same-T recovery are isolated from all frozen authority',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const w=readFileSync('.github/workflows/system2-shared-official-a1-incremental-readonly.yml','utf8');
+ const crons=[...w.matchAll(/-\s+cron:\s*"([^"]+)"/g)].map(m=>m[1]);
+ assert.deepEqual(crons,['45 15 * * 1-5','15 16 * * 1-5']);
+ assert.match(w,/contents:\s*read/);
+ assert.match(w,/actions:\s*read/);
+ assert.doesNotMatch(w,/contents:\s*write|schedule:[\s\S]*secret:|secrets\./);
+ assert.match(w,/NO.*final|FINAL_FROZEN|FINAL_FROZEN capacity/i);
+ const tradingDates=['2026-10-13','2026-10-14'];
+ const earlier=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T15:45:00Z',officialTradingDates:tradingDates
+ });
+ assert.equal(earlier.marketDate,'2026-10-14');
+ assert.equal(earlier.retrospectiveOnly,false);
+ assert.equal(earlier.sourceReviewClass,'READONLY_SOURCE_CAPTURE_NOT_FINAL_FREEZE');
+ assert.equal(earlier.sourceWasPublishedByThisResolver,undefined);
+ const fallback=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T16:15:00Z',officialTradingDates:tradingDates
+ });
+ assert.equal(fallback.marketDate,'2026-10-14');
+ assert.equal(fallback.taipeiDate,'2026-10-15');
+ assert.equal(fallback.retrospectiveOnly,true);
+ assert.equal(fallback.todayProviderFinalityNotAsserted,true);
+ const unchangedAtNineteen=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T11:00:00Z',officialTradingDates:tradingDates
+ });
+ assert.equal(unchangedAtNineteen.sourceReviewClass,'PRELIMINARY_SOURCE_REVIEW_ONLY');
+ const holiday=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-16T15:45:00Z',officialTradingDates:tradingDates
+ });
+ assert.equal(holiday.state,'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY');
+});
