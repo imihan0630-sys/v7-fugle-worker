@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "S2_M07_G3_ORIGINAL_498_EXTRA_PRIVATE_KEY_NAMESPACE_PHYSICAL_CLASSIFICATION_20261014_V0_1",
+  "status": "DATA_LANE_ORIGINAL_SOURCE_R2_498_NAMESPACE_CLASSIFIED_ONLY__INDEPENDENT_AUDIT_PENDING",
+  "observedTaipeiDate": "2026-10-14",
+  "originalExistingArchiveAndManifest": {
+    "originalSourceG3SQLRunId": 38214521809,
+    "originalSourceSQLSha256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "originalSourceFullR2MetadataListRun": 38519598039,
+    "originalSourceFullR2MetadataListArtifact": 11872724271,
+    "originalSourceMetadataListSHA256": "3f0972357db3060004e65d6f3f5d829c3e4c19eeef7f59a46d2a264e9b5cca6d",
+    "originalR2ListObjectCount": 26321,
+    "originalR2ListByteSize": 504007793,
+    "originalD1AnnualPackRows": 16100,
+    "originalD1SegmentRows": 9723,
+    "originalD1AllManifestReferencesPresentWithListedSize": 25823,
+    "originalD1ManifestNotFoundInR2": 0,
+    "originalD1ManifestR2ListedSizeMismatch": 0,
+    "historicOriginalR2ByteBodyShaToG3ManifestCrosswalkVerified": 8,
+    "thisRunDidNotDownloadObjectBodies": true
+  },
+  "originalProtectedG3ExtraHashEvidence": {
+    "initialPR": 1291,
+    "workflowCorrectionPRs": [
+      1292,
+      1293,
+      1294
+    ],
+    "mergedG3RunnerSHA": "2dcbc3ae82b17b5cb575a426a69acf74d1dc3923",
+    "knownPriorFailedJobs": [
+      {
+        "run": 38526634640,
+        "status": "FAIL_CLOSED_BEFORE_SOURCE_SQL_DOWNLOAD",
+        "reason": "WORKFLOW_TEST_PATH_WRONG"
+      },
+      {
+        "run": 38526968711,
+        "status": "FAIL_CLOSED_AFTER_SOURCE_SQL_RESTORE",
+        "reason": "SANITIZED_STDOUT_SCOPE_MISSING_REQUIRED_FIELDS"
+      }
+    ],
+    "originalProtectedSuccessfulRun": 38527825185,
+    "originalProtectedSuccessfulJob": 115732271821,
+    "originalProtectedOriginalArtifactId": 11876901312,
+    "originalGitHubArtifactZipSha256": "5a0c02ca28a4d413398681b8ac92e5ea01a10ee14d30a8d722e463df307881ec",
+    "independentlyRecomputedOriginalArtifactZipSha256": "5a0c02ca28a4d413398681b8ac92e5ea01a10ee14d30a8d722e463df307881ec",
+    "originalPrivateKeyHashListJsonlBytes": 37772,
+    "independentlyRecomputedOriginalPrivateKeyHashListSHA256": "f5648ea5ffeb078d1d8b24b52743a9d712f879a304861f6f277283bdc3342a72",
+    "originalSanitizedMetadataJsonBytes": 1863,
+    "independentlyRecomputedOriginalMetadataJsonSHA256": "d365eaf8199ad1f6c0c2199243d3d0f420374320ca5a7f23062714da24f84532",
+    "originalD1ManifestsMatchedPriorToExtraExtraction": 25823,
+    "privateExtraUnmanifestedR2KeyHashesUniqueCount": 498,
+    "privateExtraListedSizeSumBytes": 255515971,
+    "originalSQLAndPrivateHashKeysNotReleasedPublicly": true,
+    "originalProtectedWorkflowCloudflareAPICalls": 0,
+    "originalProtectedWorkflowCloudflareD1Writes": 0
+  },
+  "originalSourceR2PhysicalNamespaceReverify": {
+    "implementationPR": 1295,
+    "mergedSourceSHA": "0f7a0cad9c35f61627097deb2a73eed00878dd65",
+    "sourcePhysicalOriginalRunId": 38528661663,
+    "sourcePhysicalOriginalJobId": 115734982411,
+    "sourcePhysicalOriginalArtifactId": 11876708117,
+    "originalUploadedZipSha256": "dc06636793d8dc201d92d46655f7ee79f898bef4f76e2c6701a77c59efd97867",
+    "independentlyRecomputedOriginalZipSha256": "dc06636793d8dc201d92d46655f7ee79f898bef4f76e2c6701a77c59efd97867",
+    "originalInnerSanitizedJsonBytes": 1642,
+    "independentlyRecomputedOriginalInnerJsonSHA256": "d0bc725f14881f38389316e1821e0d2b1296285eb191e60a203cccd86b7ab693",
+    "sourceR2ReadOnlyListGetCalls": 27,
+    "providerOriginalSourceR2ListedObjectCount": 26321,
+    "providerOriginalSourceR2ListedBytes": 504007793,
+    "comparedOriginalRawListMetadataSHA256": "3f0972357db3060004e65d6f3f5d829c3e4c19eeef7f59a46d2a264e9b5cca6d",
+    "rawListedObjectIdentitiesAndOrderAndEtagMatchedOriginalScan": true,
+    "sourceR2PhysicalExtraKeysSHA256IdentityMatched": 498,
+    "countsAndBytesByRecognizedNamespace": {
+      "HISTORICAL_A1_CANONICAL": {
+        "count": 0,
+        "listedBytes": 0
+      },
+      "HISTORICAL_A1_NONCANONICAL": {
+        "count": 0,
+        "listedBytes": 0
+      },
+      "SMOKE_NAMED": {
+        "count": 4,
+        "listedBytes": 1417
+      },
+      "OTHER_UNDETERMINED": {
+        "count": 494,
+        "listedBytes": 255514554
+      }
+    },
+    "extraAllCategoryCount": 498,
+    "extraAllCategoryListedBytes": 255515971,
+    "historicalA1ManifestOrphanedByThese498Proven": false,
+    "originalSourceR2BucketAtomicSnapshotProven": false,
+    "actualR2ObjectBodySha256NewVerified": 0,
+    "realSourceR2Writes": 0,
+    "realDestinationR2Calls": 0,
+    "realCloudflareD1ReadsOrWrites": 0,
+    "rawPrivateKeyNamesLoggedOrSaved": false
+  },
+  "strictAcceptanceLimitations": {
+    "categoryClassificationIsBasedOnKeyNamespaceNotProvedBusinessOwnership": true,
+    "smokeNamespaceObjectsNotApprovedForDeletion": true,
+    "unknown494MayBelongToOtherResearchOrDataPipelines": true,
+    "noActualR2ObjectsDeleted": true,
+    "noSourceR2ObjectBytesMutated": true,
+    "noCrossAccountR2CopyCompleted": true,
+    "targetR2EntitlementLastKnown": "NOT_ENTITLED",
+    "noPaidResourceProvisioned": true,
+    "noNewSecretOrPermission": true,
+    "noSystem1V8FormalOrRuntimeOrCronChange": true,
+    "historicalPITFirstKnownAtNotQualified": true,
+    "frozenSnapshotsNotAccepted": true,
+    "shadowOrOfficialSystem2SelectionsNotUnblockedByThisEvidence": true,
+    "independentAuditLaneNotAccepted": true,
+    "originalSourceR2FullContentSha256NotVerified": true
+  },
+  "nextActions": [
+    "Audit lane independently download and rehash original original-source G3 extra list ZIP and physical source namespace ZIP, verify 498 identities and counts from original run.",
+    "Investigate the other 494 private source R2 keys with bounded original source research namespace/schema provenance, without exposing raw private names or deleting files.",
+    "Continue cost-bounded sampled actual source R2 object BODY SHA and original D1 manifest SHA crosswalk, selecting annual+segment and dates not represented by first eight samples.",
+    "Do not upgrade/purchase destination R2 entitlement without owner explicit approval; historical migration remains blocked even though source metadata has complete presence/size parity."
+  ]
+}
