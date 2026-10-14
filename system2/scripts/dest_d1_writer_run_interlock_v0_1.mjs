@@ -20,12 +20,18 @@ function isMainRun(r){
 export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previousRuns}){
  if(!WORKFLOWS[writerId]||!validDate(utcDay)||!Array.isArray(currentRuns)||!Array.isArray(previousRuns))throw Error("BAD_DEST_DAY_INTERLOCK_INPUT");
  const prior=otherDay(utcDay);
- // Treat ANY competing workflow run as a potential writer, even skipped/cancelled, to
- // avoid overclaiming an available write budget from unverified execution metadata.
- const today=currentRuns.filter(r=>isMainRun(r)&&r.created_at.startsWith(utcDay+"T"));
+ // Only completed-and-SKIPPED diagnostic PUSH runs are demonstrably inert.
+ // The DIAGNOSTIC job on GitHub main explicitly disallows all PUSH events.
+ // We still block pending/queued PUSH (result not yet final) and every
+ // schedule/manual other run, even skipped, because it may have performed writes.
+ const competingId=writerId==="RAW_COPY"?"DAILY_DIAGNOSTIC":"RAW_COPY";
+ const potential=r=>isMainRun(r)&&!(competingId==="DAILY_DIAGNOSTIC"&&
+      r.event==="push"&&r.status==="completed"&&r.conclusion==="skipped");
+ const ignoredInert=currentRuns.filter(r=>isMainRun(r)&&r.created_at.startsWith(utcDay+"T")&&!potential(r));
+ const today=currentRuns.filter(r=>potential(r)&&r.created_at.startsWith(utcDay+"T"));
  // Prior-day late runs may continue into this UTC day, including delayed queues.
- // Conservatively block all competing runs created on previous UTC day after 22:00 UTC.
- const boundary=previousRuns.filter(r=>isMainRun(r)&&r.created_at.startsWith(prior+"T")&&
+ // Conservatively block all potentially writing runs from prior day after 22Z.
+ const boundary=previousRuns.filter(r=>potential(r)&&r.created_at.startsWith(prior+"T")&&
      r.created_at.slice(11,16)>="22:00");
  const reasons=[];
  if(today.length)reasons.push("COMPETING_WORKFLOW_OCCURRED_THIS_UTC_DAY");
@@ -34,6 +40,7 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
    contract:"S2_DEST_D1_CROSS_WORKFLOW_UTC_DAY_FAIL_CLOSED_V0_1",writerId,utcDay,
    competingWorkflow:WORKFLOWS[writerId==="RAW_COPY"?"DAILY_DIAGNOSTIC":"RAW_COPY"],
    sameDayOtherRunCount:today.length,priorBoundaryOtherRunCount:boundary.length,
+   ignoredProvenInertDiagnosticPushRunCount:ignoredInert.length,
    sampledOtherRunIds:[...today,...boundary].map(x=>x.id).filter(x=>Number.isSafeInteger(x)).slice(0,15),
    allowed:reasons.length===0,reasons,
    nonCloudflareBudgetAssertion:true,atomicCloudflareLedgerProven:false,
@@ -43,7 +50,7 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
 export function validateProviderRunList(v){
  if(!v||!Array.isArray(v.workflow_runs)||!Number.isInteger(v.total_count)||v.total_count<0)throw Error("GITHUB_RUN_LIST_MALFORMED");
  if(v.total_count>100||v.workflow_runs.length!==v.total_count)throw Error("GITHUB_RUN_LIST_PAGINATION_INCOMPLETE");
- if(v.workflow_runs.some(r=>!Number.isSafeInteger(r.id)||!r.created_at||typeof r.created_at!=="string"||typeof r.head_branch!=="string"))throw Error("GITHUB_RUN_DATA_INCOMPLETE");
+ if(v.workflow_runs.some(r=>!Number.isSafeInteger(r.id)||!r.created_at||typeof r.created_at!=="string"||typeof r.head_branch!=="string"||typeof r.event!=="string"||typeof r.status!=="string"))throw Error("GITHUB_RUN_DATA_INCOMPLETE");
  return v.workflow_runs;
 }
 async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){

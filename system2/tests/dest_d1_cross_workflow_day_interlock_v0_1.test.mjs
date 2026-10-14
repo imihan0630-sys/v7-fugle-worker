@@ -3,7 +3,7 @@ import test from "node:test";
 import {readFile} from "node:fs/promises";
 import {decideDestinationD1DayGuard,validateProviderRunList,inspectRealGuard,WORKFLOWS,DEST_WRITER_LOCK} from "../scripts/dest_d1_writer_run_interlock_v0_1.mjs";
 const utcDay="2026-10-14",prevDay="2026-10-13",repo="imihan0630-sys/v7-fugle-worker";
-const makeRun=(id,time,extra={})=>({id,created_at:time,head_branch:"main",status:"completed",conclusion:"success",...extra});
+const makeRun=(id,time,extra={})=>({id,created_at:time,head_branch:"main",event:"schedule",status:"completed",conclusion:"success",...extra});
 function okResult(day,otherRuns=[],total=otherRuns.length){
  return{ok:true,status:200,async json(){return{total_count:total,workflow_runs:otherRuns}}};
 }
@@ -29,6 +29,20 @@ test("competitor same-UTC-day ANY original run blocks even skipped/queued, fail 
   assert.deepEqual(d.reasons,["COMPETING_WORKFLOW_OCCURRED_THIS_UTC_DAY"]);
  }
  }
+});
+test("proven inert diagnostic PUSH does not starve authorized historical importer",()=>{
+ const r=makeRun(38503703641,"2026-10-14T02:59:00.000Z",{event:"push",status:"completed",conclusion:"skipped"});
+ const safe=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[r],previousRuns:[]});
+ assert.equal(safe.allowed,true);assert.equal(safe.ignoredProvenInertDiagnosticPushRunCount,1);
+ const pending=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[{...r,status:"in_progress",conclusion:null}],previousRuns:[]});
+ assert.equal(pending.allowed,false);
+ const scheduled=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[{...r,event:"schedule"}],previousRuns:[]});
+ assert.equal(scheduled.allowed,false);
+ const fromRaw=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[r],previousRuns:[]});
+ assert.equal(fromRaw.allowed,false,"never infer unknown RAW copy is inert from diagnostic guard");
+});
+test("malformed run with no event/status is not valid upstream attestation",()=>{
+ assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{id:1,created_at:utcDay+"T00:00:00Z",head_branch:"main"}]}),/INCOMPLETE/);
 });
 test("previous UTC day 22Z potential cross-midnight is blocked, older benign run is ignored",()=>{
  const b=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[],previousRuns:[makeRun(11,prevDay+"T23:49:00.000Z")]});
