@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {assessG6WeekdayCronReceiptV0_1 as assess,executeG6WeekdayCronReadonlyV0_1 as execute} from "../migration/source_system2_weekday_cron_getonly_v0_1.mjs";
+import {assessG6WeekdayCronReceiptV0_1 as assess,executeG6WeekdayCronReadonlyV0_1 as execute,safeG6FailureCodeV0_1 as safeCode} from "../migration/source_system2_weekday_cron_getonly_v0_1.mjs";
 
 const at="2026-10-14T08:20:00.000Z";
 const original=()=>({
@@ -87,4 +87,13 @@ test("new workflow locks owner exact comment, protected SOURCE environment, no d
  assert.doesNotMatch(yaml,/wrangler (deploy|publish)|\b(PUT|PATCH|DELETE)\b/);
  assert.match(yaml,/node system2\/migration\/source_system2_weekday_cron_getonly_v0_1\.mjs/);
  assert.match(yaml,/retention-days: 30/);
+});
+
+test("G6 failure classification exposes only fixed local codes, never tokens or provider payloads",()=>{
+ const staticCode="SOURCE_S2_CRON_PAUSE_FAIL_CLOSED_CLOUDFLARE_GET_FAILED";
+ assert.equal(safeCode(new Error(staticCode)),staticCode);
+ assert.equal(safeCode(new Error("SOURCE_G6_WEEKDAY_READONLY_SOURCE_REDEPLOY_QUARANTINE_NOT_VERIFIED")),"SOURCE_G6_WEEKDAY_READONLY_SOURCE_REDEPLOY_QUARANTINE_NOT_VERIFIED");
+ for(const unsafe of ["401 secret=LEAK","Source "+ "a".repeat(32),"SOURCE_S2_CRON_PAUSE_FAIL_CLOSED_X;TOKEN","provider JSON {error:'unauthorized'}",""]) {
+  assert.equal(safeCode(new Error(unsafe)),"SOURCE_G6_WEEKDAY_READONLY_UNCLASSIFIED_FAIL_CLOSED");
+ }
 });
