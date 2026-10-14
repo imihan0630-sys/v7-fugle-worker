@@ -11,7 +11,7 @@ import {classifyCorporateActionSymbolWindowV0_1}
 const SHA=/^[a-f0-9]{64}$/i;
 const ISO=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
 const validUtc=x=>typeof x==='string'&&ISO.test(x)&&Number.isFinite(Date.parse(x))&&
- new Date(x).toISOString()===x.replace(/\.000Z$/, 'Z');
+ new Date(x).toISOString().replace(/\.000Z$/, 'Z')===x.replace(/\.000Z$/, 'Z');
 const FAMILIES=['EX_RIGHT_DIVIDEND','CAPITAL_REDUCTION','PAR_VALUE_CHANGE'];
 const CONTRACTS=new Set(['TWSE','TPEX'].flatMap(exchange=>
  FAMILIES.map(family=>exchange+'|'+family+'|HISTORICAL_ACTUAL_RESULT_RANGE')));
