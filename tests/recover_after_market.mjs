@@ -1,5 +1,6 @@
 // Future scheduled recovery only. Never part of deployment acceptance.
 import assert from 'node:assert/strict';
+import {classifySourceReadyFormalHandoff} from './system1_p0_source_ready_handoff_gate_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('After-market recovery stopped: '+String(error.message).slice(0,700));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
@@ -8,10 +9,13 @@ const now=new Date(),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipe
 const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
 const requestedDate=String(process.env.RECOVERY_MARKET_DATE || '').trim();
 const scheduledFallback=String(process.env.RECOVERY_SCHEDULED_FALLBACK || '').trim().toLowerCase()==='true';
+const sourceReadyHandoff=String(process.env.RECOVERY_SOURCE_READY_HANDOFF||'').trim().toLowerCase()==='true';
+if(sourceReadyHandoff && (scheduledFallback||!requestedDate)) throw new Error('SOURCE_READY_HANDOFF_REQUIRES_SAME_DAY_FROZEN_MARKET_DATE');
 if(scheduledFallback && !requestedDate) throw new Error('Scheduled fallback requires frozen RECOVERY_MARKET_DATE');
 const historicalRecovery=requestedDate.length>0 && !scheduledFallback;
 const date=requestedDate || today;
-if(!historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
+if(sourceReadyHandoff && (date!==today||time<'18:10'||time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'SOURCE_READY_TARGET_NOT_SAME_DAY_EVENING',date,today,time,noBusinessPost:true}));process.exit(0);}
+if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
 if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('RECOVERY_MARKET_DATE must be YYYY-MM-DD');
 if(date>today) throw new Error('RECOVERY_MARKET_DATE cannot be in the future');
 const ageMs=Date.parse(today+'T00:00:00Z')-Date.parse(date+'T00:00:00Z');
@@ -40,6 +44,19 @@ const institution=await admin('/api/institution-status?marketDate='+encodeURICom
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
 assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);assert.equal(quality.tdcc.ready,true);
 for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) assert.equal(quality.datasets[kind]?.ready,true,kind+' missing');
+// Source-ready late-sync path must be pre-commit failure PROVEN, not merely
+// infer safety from missing plan or expired clock. Use GET-only proof before
+// the original single /api/scan POST. Unknown CPU/503 implies NO POST.
+if(sourceReadyHandoff){
+  const [recommendations,cron]=await Promise.all([admin('/api/recommendations'),admin('/api/cron/status')]);
+  const handoff=classifySourceReadyFormalHandoff({now:new Date(),targetDate:date,
+    scan:prior,institution,quality,recommendations,cron});
+  console.log(JSON.stringify({sourceReadyFormalHandoff:handoff,noBusinessPost:!handoff.mayPost}));
+  if(!handoff.mayPost){
+    console.log(JSON.stringify({skipped:true,reason:handoff.reason,date,sourceReadyHandoff:true,noBusinessPost:true,noPush:true}));
+    process.exit(0);
+  }
+}
 // Only one POST. A timeout is ambiguous: never retry a business write blindly.
 try {
   const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date})});
