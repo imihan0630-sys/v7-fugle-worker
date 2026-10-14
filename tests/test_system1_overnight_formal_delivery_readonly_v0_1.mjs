@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {resolveScheduledPostcloseTarget,classifyPostcloseBusinessChain} from "../research/system1_overnight_formal_delivery_readonly_v0_1.mjs";
+import {resolveScheduledPostcloseTarget,resolveSourceReadyHandoffTarget,classifyPostcloseBusinessChain} from "../research/system1_overnight_formal_delivery_readonly_v0_1.mjs";
 const day="2026-10-14";
 const localBefore=resolveScheduledPostcloseTarget("2026-10-14T15:56:00Z");
 assert.deepEqual([localBefore.status,localBefore.targetDate],["EXACT_SAME_EVENING",day]);
@@ -9,6 +9,12 @@ assert.equal(resolveScheduledPostcloseTarget("2026-10-14T22:59:59Z").targetDate,
 assert.equal(resolveScheduledPostcloseTarget("2026-10-14T23:00:00Z").targetDate,null); // 07:00
 assert.equal(resolveScheduledPostcloseTarget("2026-10-14T12:15:00Z").status,"POSTCLOSE_DATE_UNRESOLVED_FAIL_CLOSED");
 assert.throws(()=>resolveScheduledPostcloseTarget("not-a-date"),/INVALID_TAIPEI_TIME/);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T14:43:00Z").targetDate,day);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T19:43:40Z").targetDate,day);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T22:59:59Z").targetDate,day);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T23:00:00Z").targetDate,null);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T10:09:00Z").targetDate,null);
+assert.equal(resolveSourceReadyHandoffTarget("2026-10-14T10:10:00Z").targetDate,day);
 const q={marketDate:day,index:{ready:true},tdcc:{ready:true},datasets:{
  FINANCIAL:{ready:true,count:1881},VALUATION:{ready:true,count:1969},
  ANNOUNCEMENTS:{ready:true,count:108},QUARTER_EPS:{ready:true,count:11}}};
