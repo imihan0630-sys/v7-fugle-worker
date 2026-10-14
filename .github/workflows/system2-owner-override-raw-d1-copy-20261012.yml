@@ -26,9 +26,18 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with: {node-version: "22"}
+      - name: Fail closed if ANY owner copy already started in current UTC day
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_d1_single_utc_day_run_guard_v0_1.mjs
       - name: Verify isolated copy implementation syntax
         run: |
           set -euo pipefail
+          node --check system2/migration/issue1068_d1_single_utc_day_run_guard_v0_1.mjs
           node --check system2/migration/owner_override_raw_d1_import_20261012.mjs
           python3 -m py_compile system2/migration/owner_override_source_raw_export_20261012.py
       - name: Fetch SAME ORIGINAL encrypted 90-day archive to protected runner
@@ -62,3 +71,5 @@ jobs:
 # 2026-10-12 safe owner re-entry: provider diagnostic fix after second zero-write fail-closed receipt.
 
 # 2026-10-12 Cloudflare official D1 100 bound parameter limit: JSON1 single-parameter bulk fix owner re-entry.
+
+# 2026-10-14 owner explicit NOW trigger: push marker in merge title after same-day no-duplicate check.
