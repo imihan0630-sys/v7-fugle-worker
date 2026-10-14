@@ -6,7 +6,13 @@ on:
     paths:
       - ".github/workflows/system2-shared-official-a1-incremental-readonly.yml"
   schedule:
-    # 00:15 Taipei Tue-Sat, after the preceding market session.
+    # 23:45 Taipei Mon-Fri: owner-approved EARLY SOURCE-ONLY observation.
+    # This does NOT run the final frozen capacity clock. Exact official
+    # provider marketDate and raw SHA must independently prove readiness.
+    # A late/delayed run cannot backdate a decision or source observation.
+    - cron: "45 15 * * 1-5"
+    # 00:15 Taipei Tue-Sat: conditional read-only source recovery for the
+    # SAME official trading date T, not a new or previously frozen pick.
     # Date still resolved against official calendar + source confirmation.
     - cron: "15 16 * * 1-5"
   workflow_dispatch:
@@ -50,8 +56,11 @@ jobs:
           name: ${{ steps.seed.outputs.seed_artifact_name }}
           path: /tmp/s2-shared-a1-seed
           github-token: ${{ github.token }}
-      # 19:00 Taipei is PRELIMINARY_SOURCE_REVIEW_ONLY under owner policy;
-      # final 23:45 freeze/capacity is NOT implemented in this source collector.
+      # 19:00 Taipei is PRELIMINARY_SOURCE_REVIEW_ONLY under owner policy.
+      # 23:45 here is ONLY earlier original-source capture, never an
+      # independently eligible FINAL_FROZEN capacity/selection.
+      # 00:15 can reuse exact original hashes for the same date T; provider
+      # freshness and physical arrival time never inherit scheduled time.
       # A 200 response without exact report date and full 122 originals fails closed.
       - name: Collect only missing market/date pairs and verify raw SHA/source date
         env:
