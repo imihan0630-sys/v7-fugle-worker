@@ -1,4 +1,5 @@
 // Class A, read-only. Never interprets a failed scan as zero picks.
+import {classifyQuarterEpsSnapshot} from "./system1_p0_incident_gate_v0_1.mjs";
 export const C1_REQUIRED_QUALITY = Object.freeze(["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"]);
 
 export function previousTaipeiDate(now=new Date()) {
@@ -24,6 +25,9 @@ export function classifyC1Readiness({scanDate,receiptError,receiptHttpStatus=200
       institutionReady:institutionStatus?.ready===true,
       qualityDate:qualityStatus?.marketDate||null,
       qualityReady:null,missingQuality:[],
+      // Actual D1 QUARTER_EPS quality status is scoped to preliminary candidates,
+      // not the full equity universe; an empty receipt is not a zero-pick proof.
+      quarterEpsReceipt:classifyQuarterEpsSnapshot({marketDate:scanDate,status:qualityStatus}),
       readErrors:Object.fromEntries(Object.entries(readErrors).map(([name,val])=>[name,String(val).slice(0,80)]))}};
   if([401,403].includes(receiptHttpStatus)||Object.values(readErrors).some(x=>x==="AUTH_REJECTED")){
     output.category="AUTHORIZATION_BLOCKED";return output;
