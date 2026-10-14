@@ -143,3 +143,20 @@ Do not promote from more source replication alone. Preserve future generations a
 2. Seek independent D16/00 review of the frozen PF-052–PF-057 preregistration before opening any OOS/Shadow outcome.
 3. Continue only genuinely new TDCC pairs after 2026-10-08, multi-date TPEx early/late margin and SBL, and the frozen five-symbol 15:20 +/-5min live lending slot; missed slots remain UNKNOWN.
 4. Preserve single economic-root dedup across index event, ETF modeled flow, institution, borrowing and crowding. No tracker/Formal changes without gate evidence.
+
+## PF-058 — Source-date admission versus PIT-eligible decision-date audit (2026-10-15)
+
+Durable research-only receipt: `research/d06_pf058_provenance_and_test_replay_audit_20261015_v0_1.json`.
+
+- PF-056 identified one distinct 2026-10-15 issuer PCF use-date generation, not one provenance-complete independent OOS decision date. The contemporaneous source raw bytes/hash, verified firstKnownAt and full basket are explicitly UNKNOWN. Preserve the observed use-date without counting it as PIT-admissible or OOS-ready.
+- PF-057's 30/30 receipt stores thirty label/value entries but no executable assertions, input/expected/actual fixture or runner log. This does not prove prior tests failed; it means the receipt alone is not independently replayable. PF-058 independently checked 22 repository-field assertions (22/22), all metadata consistency, NOT market performance.
+- The attempted PF-054 checkpoint transplant was blocked by connector safety checks. Do not bypass. PF-053 byte-identical preservation succeeded on the PF-058 research branch. The PF-054–PF-056 files remain in their separate existing branch; no false full-integration claim.
+- Borrowed-stock utilization remains UNKNOWN; in-slot lending receipt is bounded source feasibility, not marketwide denominator. Margin/SBL revision behavior remains one-pair evidence. TDCC clean cohort is date-pair specific and cannot be recycled.
+- OOS outcomes remain CLOSED, D16/00 prereg approval PENDING, no maturity promotion, Formal Core LOCKED.
+
+### Exact next after PF-058
+1. Preserve PF-058 research-only evidence and the full 22-assertion audit; obtain independent D16/00 prereg review before any outcome join.
+2. Reconcile PF-054–PF-056 only through an approved safe path, preserving exact file blobs and concurrent main updates; do not bypass connector safety blocks or force-merge.
+3. For a genuinely new ETF decision use-date, acquire full immutable raw PCF, first-known/capture times, field clocks and version hashes before admitting PIT/OOS rows. Distinct use-date alone is insufficient.
+4. Continue genuinely new TDCC weekly pairs, TPEx margin/SBL early/late same-date vintages and the frozen 15:20±5-minute lending pilot. Missed slots are UNKNOWN; no historical Shadow backfill.
+5. Keep D06-16 L3/60, D06-11 L2/40, D06 overall 55.6 and global 47.9 from canonical tracker until accepted evidence changes them.
