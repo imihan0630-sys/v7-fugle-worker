@@ -9,7 +9,8 @@ const REPO="imihan0630-sys/v7-fugle-worker";
 export const DEST_WRITER_LOCK="s2-dest-d1-historical-and-diagnostic-writer";
 export const WORKFLOWS=Object.freeze({
  RAW_COPY:"system2-owner-override-raw-d1-copy-20261012.yml",
- DAILY_DIAGNOSTIC:"system2-daily-shadow-diagnostic.yml"
+ DAILY_DIAGNOSTIC:"system2-daily-shadow-diagnostic.yml",
+ RECENT_A1_WARMUP:"system2-recent-a1-hot-history-warmup.yml"
 });
 const validDate=s=>/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+"T00:00:00.000Z"));
 const isoUtcDay=d=>d.toISOString().slice(0,10);
@@ -24,8 +25,12 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
  // The DIAGNOSTIC job on GitHub main explicitly disallows all PUSH events.
  // We still block pending/queued PUSH (result not yet final) and every
  // schedule/manual other run, even skipped, because it may have performed writes.
- const competingId=writerId==="RAW_COPY"?"DAILY_DIAGNOSTIC":"RAW_COPY";
- const potential=r=>isMainRun(r)&&!(competingId==="DAILY_DIAGNOSTIC"&&
+ const otherIds=Object.keys(WORKFLOWS).filter(id=>id!==writerId);
+ // GH run data from provider is tagged by originating workflow at the read-only boundary.
+ // Legacy test rows lacking originWriterId are accepted only when ONE competitor is named,
+ // otherwise conservatively counted as potential, never silently ignored.
+ const potential=r=>isMainRun(r)&&!((r.originWriterId==="DAILY_DIAGNOSTIC"||
+      (!r.originWriterId&&otherIds.length===1&&otherIds[0]==="DAILY_DIAGNOSTIC"))&&
       r.event==="push"&&r.status==="completed"&&r.conclusion==="skipped");
  const ignoredInert=currentRuns.filter(r=>isMainRun(r)&&r.created_at.startsWith(utcDay+"T")&&!potential(r));
  const today=currentRuns.filter(r=>potential(r)&&r.created_at.startsWith(utcDay+"T"));
@@ -38,13 +43,14 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
  if(boundary.length)reasons.push("PREVIOUS_DAY_LATE_RUN_POSSIBLE_SPILLOVER");
  return Object.freeze({
    contract:"S2_DEST_D1_CROSS_WORKFLOW_UTC_DAY_FAIL_CLOSED_V0_1",writerId,utcDay,
-   competingWorkflow:WORKFLOWS[writerId==="RAW_COPY"?"DAILY_DIAGNOSTIC":"RAW_COPY"],
+   competingWorkflows:otherIds.map(id=>WORKFLOWS[id]),
    sameDayOtherRunCount:today.length,priorBoundaryOtherRunCount:boundary.length,
    ignoredProvenInertDiagnosticPushRunCount:ignoredInert.length,
    sampledOtherRunIds:[...today,...boundary].map(x=>x.id).filter(x=>Number.isSafeInteger(x)).slice(0,15),
    allowed:reasons.length===0,reasons,
    nonCloudflareBudgetAssertion:true,atomicCloudflareLedgerProven:false,
-   excludesOnlyTwoRegisteredDestinationWriters:true
+   coversExactlyRegisteredDestinationWriters:3,
+   excludesOnlyTwoRegisteredDestinationWriters:false
  });
 }
 export function validateProviderRunList(v){
@@ -64,12 +70,13 @@ async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){
 export async function inspectRealGuard({writerId,now=new Date(),repo,token,fetchImpl=fetch}){
  if(repo!==REPO||!token||!WORKFLOWS[writerId]||!(now instanceof Date)||Number.isNaN(now.getTime()))throw Error("DEST_DAY_INTERLOCK_ENV_INVALID");
  const day=isoUtcDay(now),prior=otherDay(day);
- const otherWorkflow=WORKFLOWS[writerId==="RAW_COPY"?"DAILY_DIAGNOSTIC":"RAW_COPY"];
- const [today,yesterday]=await Promise.all([
-   queryOtherRuns({repo,token,workflow:otherWorkflow,day,fetchImpl}),
-   queryOtherRuns({repo,token,workflow:otherWorkflow,day:prior,fetchImpl})
- ]);
- return decideDestinationD1DayGuard({writerId,utcDay:day,currentRuns:today,previousRuns:yesterday});
+ const otherIds=Object.keys(WORKFLOWS).filter(id=>id!==writerId);
+ const evidence=await Promise.all(otherIds.flatMap(id=>[
+   queryOtherRuns({repo,token,workflow:WORKFLOWS[id],day,fetchImpl}).then(rows=>({id,day,rows})),
+   queryOtherRuns({repo,token,workflow:WORKFLOWS[id],day:prior,fetchImpl}).then(rows=>({id,day:prior,rows}))
+ ]));
+ const tagged=(date)=>evidence.filter(x=>x.day===date).flatMap(x=>x.rows.map(r=>({...r,originWriterId:x.id})));
+ return decideDestinationD1DayGuard({writerId,utcDay:day,currentRuns:tagged(day),previousRuns:tagged(prior)});
 }
 export async function main(){
  const writerId=process.env.S2_DEST_WRITER_CLASS,repo=process.env.GITHUB_REPOSITORY;
