@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "D06_PF058_EVIDENCE_ADMISSION_AUDIT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "researchOnly": true,
+  "baseMainSha": "15884e6b9b6aa199e9de1212ebb6a6d24cbe3265",
+  "observedAtTaipei": "2026-10-15 03:07-03:11",
+  "scope": [
+    "D06-05",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-11",
+    "D06-16",
+    "D06-18"
+  ],
+  "sources": [
+    "research/d06_pf056_continuation_checkpoint_20261014_v0_1.json@research/d06-pf056-etf-vintage-reconciliation-20261014-1713",
+    "research/d06_pf056_etf_retrieval_vintage_falsification_20261014_v0_1.json@research/d06-pf056-etf-vintage-reconciliation-20261014-1713",
+    "research/d06_pf057_continuation_checkpoint_20261014_v0_1.json@research/d06-pf057-field-clock-admission-20261014-2214",
+    "research/d06_pf057_field_clock_nav_rounding_audit_20261014_v0_1.json@research/d06-pf057-field-clock-admission-20261014-2214",
+    "research/d06_pf057_test_receipt_20261014_v0_1.json@research/d06-pf057-field-clock-admission-20261014-2214"
+  ],
+  "coreFinding": {
+    "distinctETFUseDateObserved": "2026-10-15",
+    "claimedNewIndependentDecisionDateInPF056": 1,
+    "confirmedImmutableRawPCF": false,
+    "confirmedSourceFirstKnownAt": false,
+    "confirmedFullBasket": false,
+    "PITAdmissibleDecisionDateCount": 0,
+    "reason": "A distinct use-date is not by itself a provenance-complete, decision-time-admissible prospective market observation. Retain the PF056 source-generation observation but do not count it as an OOS/PIT-ready decision sample.",
+    "PF057TestReceiptStatus": "RECEIPT_HAS_30_LABELED_VALUES_NO_REPLAYABLE_ASSERTION_RUNNER",
+    "interpretation": "The prior 30/30 statement may reflect earlier execution; this receipt alone does not independently demonstrate it. This audit does not claim earlier tests failed.",
+    "reproducibleIndependentAssertions": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "kind": "READBACK_ASSERTIONS_ON_REPOSITORY_METADATA_NOT_MARKET_OUTCOMES"
+    }
+  },
+  "hypotheses": [
+    {
+      "module": "D06-16",
+      "claim": "Published ETF use-date creates an admissible prediction sample",
+      "support": "Issuer use-date and posted time identify a plausible operational generation",
+      "counter": "Raw bytes, full basket, verified first-known clock and conflict-free vintage are absent",
+      "alternative": "A date-specific descriptive receipt can exist without being PIT-admissible",
+      "failure": "Any unresolved source revision, incomplete basket or decision-time clock",
+      "decision": "KEEP_SOURCE_GENERATION; REJECT_OOS_ADMISSION"
+    },
+    {
+      "module": "D06-11",
+      "claim": "Unit delta measures executed constituent flow",
+      "support": "Primary-market issuance may create a delivery requirement",
+      "counter": "AP inventory, cash substitution, cash creation, futures and timing obscure actual trades",
+      "alternative": "Modeled basket notional is only a scenario",
+      "failure": "Missing actual trade/settlement evidence",
+      "decision": "ACTUAL_EXECUTION_UNKNOWN"
+    },
+    {
+      "module": "D06-06",
+      "claim": "ETF creation and borrow/foreign flow are independent bullish confirmations",
+      "support": "Each can co-occur with demand",
+      "counter": "One creation event can cause multiple observed legs",
+      "alternative": "Dealer hedge/inventory adjustment",
+      "failure": "No common-root provenance and residual incremental test",
+      "decision": "ONE_PARENT_ONE_PRIMITIVE; NO_DOUBLE_VOTE"
+    },
+    {
+      "module": "D06-07/08/09",
+      "claim": "One prior paired margin/SBL vintage establishes stable revision behavior",
+      "support": "The 2026-10-06 EARLY/LATE pair passed arithmetic and revealed an eligibility revision",
+      "counter": "Single-date stability cannot establish cross-date stability or future availability",
+      "alternative": "Later corrections depend on broker workflow and security state",
+      "failure": "No new independent date-paired receipts",
+      "decision": "L3_SOURCE_ONLY; NO_L4"
+    },
+    {
+      "module": "D06-18",
+      "claim": "Displayed borrow quote and rate identify true borrow utilization",
+      "support": "A genuine 2026-10-07 in-slot fee observation exists",
+      "counter": "Total lendable inventory denominator unverified and displayed books are asymmetric",
+      "alternative": "Quote state/recall term differences",
+      "failure": "Missing verified marketwide inventory",
+      "decision": "TRUE_UTILIZATION_UNKNOWN"
+    },
+    {
+      "module": "D06-05",
+      "claim": "Certified 1852-symbol TDCC cohort can be reused for future pairs",
+      "support": "2026-09-24 to 2026-10-02 transition-continuity cohort was certified",
+      "counter": "Membership and corporate actions change over time",
+      "alternative": "Date-effective new cohort reconstruction",
+      "failure": "No newer TDCC pair after 2026-10-08 certified",
+      "decision": "REBUILD_EACH_PAIR; NO_BACKFILL"
+    }
+  ],
+  "validationControls": {
+    "PIT": "Separate use-date, unit observation date, posting, capturedAt, firstKnownAt and field-level clocks; missing proof means UNKNOWN",
+    "OOS": "No outcome join before D16/00 prereg approval and full provenance",
+    "walkForward": "Chronological split; purge five-session overlapping labels",
+    "bias": "Track fund-date attrition and cache/version conflicts before inspecting outcomes",
+    "multipleTesting": "One preregistered feature/horizon; retain experiment ledger",
+    "overfit": "No post-hoc sign/threshold or fund-label permutation without exchangeability",
+    "redundancy": "Same root across ETF, institution, borrow, crowding and price-volume",
+    "cost": "30/60/100bp scenario only, not actual fills",
+    "liquidity": "Prior 20 completed sessions; no assumed open fill under halt/limit",
+    "regime": "At least two independently observed market states for promotion"
+  },
+  "blocked": {
+    "remotePF054CheckpointCopy": "BLOCKED_BY_CONNECTOR_SAFETY_CHECK",
+    "draftPullRequest": "BLOCKED_BY_CONNECTOR_SAFETY_CHECK",
+    "Firecrawl": "INSUFFICIENT_CREDITS_REQUEST_NOT_RUN",
+    "immutableIssuerPCF": "UNKNOWN",
+    "firstKnownAt": "UNKNOWN",
+    "D16And00PreregReview": "PENDING"
+  },
+  "evidenceStatus": "RESEARCH_ONLY_NOT_OOS",
+  "newMarketDates": 0,
+  "newOOS": 0,
+  "maturityChanged": false,
+  "D06MaturityPct": 55.6,
+  "overallMaturityPct": 47.9,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Preserve PF058 evidence; independently verify 22 assertion names and source refs; reconcile remaining PF054–PF056 through an approved unblocked pathway, then request D16/00 prereg review; capture immutable full PCF with decision-time clock before any OOS admission. Continue genuinely new TDCC, margin/SBL and in-slot borrow observations without backfill."
+}
