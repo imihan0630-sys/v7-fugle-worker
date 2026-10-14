@@ -1,0 +1,42 @@
+name: S2 M07 Source R2 One Object Byte SHA Readonly
+# One LIST, one HEAD, one GET (up to 64 KiB); no source D1 joins/target R2/PUT.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-source-r2-single-byte-proof.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-m07-source-r2-single-object-proof
+  cancel-in-progress: false
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Negative gate and strict one-object cap
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_source_r2_single_object_byte_sha_v0_1.mjs
+          node system2/tests/issue1236_m07_source_r2_single_object_byte_sha_v0_1.test.mjs
+      - name: Original R2 one LIST plus optional HEAD GET byte-SHA check
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_source_r2_single_object_byte_sha_v0_1.mjs
+      - name: Preserve sanitized no-raw-object sample evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-r2-source-object-sample-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-r2-object-sample/sample-sanitized.json
+          if-no-files-found: warn
+          retention-days: 30
