@@ -397,6 +397,28 @@ function summarizeTextPayload(text, startDate, endDate) {
   }
 }
 
+// Separate original-byte source probe must reuse the existing native schema
+// analyzer, instead of trusting arbitrary HTTP 200/JSON or inventing range.
+export function summarizeOfficialContinuityNativeOriginalV0_1({
+ originalText,startDate,endDate
+}={}) {
+ const from=isoDate(startDate,'startDate'),to=isoDate(endDate,'endDate');
+ if(to<from||typeof originalText!=='string')throw Error('OFFICIAL_CA_ORIGINAL_RANGE_OR_TEXT_INVALID');
+ const r=summarizeTextPayload(originalText,from,to);
+ return deepFreeze({
+  state:r.state,parser:r.parser??null,
+  upstreamStatus:r.upstreamStatus??null,
+  responseRangeVerified:r.responseRangeVerified===true,
+  responseRangeStart:r.responseRangeStart??null,
+  responseRangeEnd:r.responseRangeEnd??null,
+  recognizedStructure:r.recognizedStructure===true,
+  rowCount:r.rowCount??0,
+  ordinarySymbolCount:r.ordinarySymbolCount??0,
+  fieldCount:r.fieldCount??0,
+  fieldSample:Object.freeze((r.fieldSample??[]).slice(0,10)),
+ });
+}
+
 function baseFailureEntry(sourceId, source, extra) {
   return deepFreeze({
     sourceId,
