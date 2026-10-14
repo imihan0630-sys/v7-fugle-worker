@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {classifyLegacyScanPostDate} from "./system1_legacy_scan_post_date_contract_v0_1.mjs";
 import {readFile} from "node:fs/promises";
 import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES} from "./resolve_scheduled_market_date.mjs";
 
@@ -48,6 +49,36 @@ assert.match(workflow,/github\.event\.schedule == '45 15 \* \* 1-5'/);n++;
 assert.match(workflow,/RECOVERY_MARKET_DATE: \$\{\{ github\.event_name == 'schedule' && steps\.calendar\.outputs\.market_date \|\| '' \}\}/);n++;
 assert.match(workflow,/RECOVERY_SCHEDULED_FALLBACK: \$\{\{ github\.event_name == 'schedule' && 'true' \|\| 'false' \}\}/);n++;
 assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[]).length,2);n++;
+
+// Authenticated Worker.js /api/scan ignores body.marketDate and actually uses
+// Date.now(): a delayed prior-session fallback must NOT issue business POST.
+const blocked=classifyLegacyScanPostDate({
+ now:"2026-10-13T20:49:34Z",targetDate:"2026-10-13"
+});
+eq(blocked.mayPost,false);
+eq(blocked.workerEffectiveDate,"2026-10-14");
+eq(blocked.workerHonorsBodyMarketDate,false);
+eq(blocked.reason,"LEGACY_WORKER_IGNORES_PINNED_PRIOR_DAY");
+eq(classifyLegacyScanPostDate({
+ now:"2026-10-13T15:25:00Z",targetDate:"2026-10-13"
+}).mayPost,false); // 23:25 is too early
+eq(classifyLegacyScanPostDate({
+ now:"2026-10-13T15:35:00Z",targetDate:"2026-10-13"
+}).mayPost,true); // same-date 23:35
+eq(classifyLegacyScanPostDate({
+ now:"2026-10-13T15:58:00Z",targetDate:"2026-10-13"
+}).mayPost,true);
+eq(classifyLegacyScanPostDate({
+ now:"2026-10-14T04:20:00Z",targetDate:"2026-10-13"
+}).mayPost,false); // next day afternoon
+eq(classifyLegacyScanPostDate({
+ now:"2026-10-14T15:45:00Z",targetDate:"2026-10-13"
+}).mayPost,false); // full day later
+assert.throws(()=>classifyLegacyScanPostDate({now:"x",targetDate:"2026-10-13"}),/INVALID_RECOVERY_CLOCK/);n++;
+assert.throws(()=>classifyLegacyScanPostDate({now:"2026-10-13T16:00:00Z",targetDate:"2026-02-30"}),/INVALID_RECOVERY_TARGET_DATE/);n++;
+assert.match(recovery,/import \{classifyLegacyScanPostDate\}/);n++;
+assert.match(recovery,/if\(!postGate\.mayPost\)/);n++;
+assert.match(recovery,/LEGACY_SCAN_ROUTE_WRONG_SESSION_POST_FORBIDDEN/);n++;
 
 console.log(JSON.stringify({ok:true,assertions:n,crossMidnightPinned:true,scheduledFallbackOnly:true,
   crossMidnightMarketRewriteDisabled:true,readOnlyPrereqReuseRequired:true,
