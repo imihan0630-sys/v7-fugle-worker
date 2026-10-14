@@ -1,0 +1,11 @@
+{
+  "phase": "PF056",
+  "checks": 15,
+  "passed": 15,
+  "failed": 0,
+  "kind": "DETERMINISTIC_NOT_OOS",
+  "independentDates": 1,
+  "newOOS": 0,
+  "formalCore": "LOCKED",
+  "maturityChanged": false
+}
