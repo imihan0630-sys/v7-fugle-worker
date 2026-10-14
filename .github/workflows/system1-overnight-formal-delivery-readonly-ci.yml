@@ -27,6 +27,10 @@ jobs:
           node tests/test_system1_overnight_formal_delivery_readonly_v0_1.mjs
           grep -F -q "cron: '55 15 * * 1-5'" .github/workflows/v7-health.yml
           grep -F -q "node tests/system1_overnight_formal_delivery_getonly.mjs" .github/workflows/v7-health.yml
+          grep -F -q "V7 Official Market Data Sync" .github/workflows/v7-health.yml
+          grep -F -q "github.event.workflow_run.conclusion == 'success'" .github/workflows/v7-health.yml
+          grep -F -q "node tests/system1_overnight_formal_delivery_getonly.mjs --source-ready-handoff" .github/workflows/v7-health.yml
+          grep -F -q "github.event_name != 'workflow_run'" .github/workflows/v7-health.yml
           if grep -E 'method[=:] ?["\x27]POST' tests/system1_overnight_formal_delivery_getonly.mjs; then
             echo "::error::A diagnostic GET-only script must never issue POST"
             exit 2
