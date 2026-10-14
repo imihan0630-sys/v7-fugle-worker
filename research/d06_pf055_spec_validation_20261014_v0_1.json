@@ -1,0 +1,20 @@
+{
+  "phase": "PF055",
+  "domain": "D06",
+  "kind": "DETERMINISTIC_SPEC_ASSERTIONS_NOT_MARKET_OUTCOMES",
+  "checks": 32,
+  "passed": 32,
+  "failed": 0,
+  "coverage": [
+    "PF053 ten falsification gates",
+    "PF054 eight admission gates",
+    "PF055 checkpoint",
+    "source and outcome unknown boundaries"
+  ],
+  "newIndependentDates": 0,
+  "newOOS": 0,
+  "maturityChanged": false,
+  "formalCore": "LOCKED",
+  "status": "PREREG_REVIEW_PENDING",
+  "next": "Independent D16/00 review before OOS."
+}
