@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "S2_M09_REAL_TWSE_TPEX_EVENING_SOURCE_20261014_V0_1",
+  "classification": "PHYSICAL_DUAL_MARKET_T_SOURCE_PRELIMINARY_READY_WITH_INDEPENDENT_ARTIFACT_REHASH",
+  "calendarDateTaipei": "2026-10-14",
+  "marketDate": "2026-10-14",
+  "recordedAtUtc": "2026-10-14T12:08:05.131Z",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "ownerP0Issue": 1132,
+  "m09BuildIssue": 1234,
+  "implementationPR": 1321,
+  "implementationMainCommit": "b9731f6489a96a8f7ac86ea719b6d990083bd0ec",
+  "physicalGitHubRun": {
+    "runId": 38561055723,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38561055723",
+    "jobId": 115841932399,
+    "conclusion": "success",
+    "testsPassed": 8,
+    "testsFailed": 0,
+    "sourceReceiptHash": "db3ff67839e5018965d35776bc0a5e2e6ca2a66476f02fab351f460dfa0307aa",
+    "sourceReceiptObservedAtUtc": "2026-10-14T12:04:18.912Z"
+  },
+  "githubSourceArtifact": {
+    "artifactId": 11892280453,
+    "artifactName": "s2-m09-evening-a1-sourceonly-38561055723-1",
+    "zipBytes": 470381,
+    "zipSha256": "4cdf5b3bf57919e82fe8338e94cf85e29a636db5179872865e1a29187bec4e57",
+    "originalFileCount": 2,
+    "containsSignedAggregateReceipt": true,
+    "shortTermGitHubCacheOnlyDays": 7
+  },
+  "actualSources": [
+    {
+      "market": "TWSE",
+      "sourceUrl": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=20261014&type=ALLBUT0999",
+      "providerReportedDate": "2026-10-14",
+      "actualResponseCompletedAtUtc": "2026-10-14T12:04:11.511Z",
+      "originalBytes": 246531,
+      "originalRawSha256": "f17dacca4bb23101c2b67091f2e528917350df8c6c5fa0154e1f61ba698276e1",
+      "sourceTableCount": 10,
+      "parsedFourDigitQuoteRows": 1087,
+      "independentlyParsedFourDigitUniqueCodes": 1087,
+      "duplicateCodes": 0,
+      "independentSourceRawShaMatch": true
+    },
+    {
+      "market": "TPEX",
+      "sourceUrl": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2026%2F10%2F14",
+      "providerReportedDate": "2026-10-14",
+      "actualResponseCompletedAtUtc": "2026-10-14T12:04:18.760Z",
+      "originalBytes": 1873463,
+      "originalRawSha256": "05087f9604678fc4a42f35a31cf73091093f60ff650a37c54de443daacb5d55f",
+      "sourceTableCount": 2,
+      "parsedFourDigitQuoteRows": 887,
+      "independentlyParsedFourDigitUniqueCodes": 887,
+      "duplicateCodes": 0,
+      "independentSourceRawShaMatch": true
+    }
+  ],
+  "independentLocalReadback": {
+    "method": "Downloaded official GitHub Actions Artifact ZIP into isolated container; verified ZIP SHA256 vs GitHub, decompressed original TWSE and TPEx JSON GZIP entries, recomputed SHA256 of both raw files, checked each native provider date and independently counted unique four-digit quote symbols.",
+    "verifiedZipMatches": true,
+    "verifiedTwoNativeOriginalBytesMatch": true,
+    "verifiedTwoNativeDatesMatch": true,
+    "verifiedTwoQuoteCountMatches": true,
+    "rawOriginalProviderRowsNotCommittedIntoGitHubMain": true
+  },
+  "counts": {
+    "exactTNativeMarketLanesVerified": 2,
+    "expectedMarketLanes": 2,
+    "rawFourDigitQuoteRowsCombined": 1974,
+    "independentlyCertifiedOrdinaryShares": 0,
+    "caPitQualifiedSymbols": 0,
+    "formalSelectedCount": null
+  },
+  "authority": {
+    "currentNativeA1SourceDayOnly": true,
+    "historicalFirstPublishedAtCertified": false,
+    "entire61SessionWindowIndependentlyAuditedFor20261014": false,
+    "officialTradingCalendarCertifiedByThisProbe": false,
+    "nativeIsinCfiCommonSharePITCertified": false,
+    "corporateActionCorrectionsCancellationsPitCertified": false,
+    "marketRegimeAndStrategyAssessorExecuted": false,
+    "formalShortMomentumFrozen": false,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1FormalCoreModified": false,
+    "newPaidService": false
+  },
+  "nextAcceptance": "Observe actual 23:45/00:15 scheduled 122/122 61-session exact original SHA and independent source audit before the original PIT decision window. Separately obtain genuine per-symbol ordinary equity ISIN/CFI type and official corporate-action corrected/cancelled PIT. Only then can signed assessor results and authorized create-only Frozen D1 independent readback be physically accepted.",
+  "physicalShadowS0ToS5Accepted": 0
+}
