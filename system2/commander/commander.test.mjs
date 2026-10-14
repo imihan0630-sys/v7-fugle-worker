@@ -52,3 +52,14 @@ test("independent audited graph plus explicit separate owner approval is require
  assert.ok(body.includes("Frozen"));
  assert.ok(body.includes("S2-COMMANDER-TASK:M09"));
 });
+
+test("commander Actions must execute native audit suite as a separate shell command",async()=>{
+ const workflow=await readFile(new URL("../../.github/workflows/system2-commander-dispatch.yml",import.meta.url),"utf8");
+ const expected=[
+  "      - name: Task DAG and authorization negative tests",
+  "        run: |",
+  "          node --test system2/commander/commander.test.mjs",
+  "          node --test system2/commander/commander_native_audit_v0_1.test.mjs"
+ ].join("\n");
+ assert.ok(workflow.includes(expected),"native audit suite must not be YAML-folded into first node --test command");
+});
