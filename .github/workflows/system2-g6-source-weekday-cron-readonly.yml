@@ -31,12 +31,29 @@ jobs:
           node --test system2/tests/source_system2_cron_pause_owner_approved_v0_1.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
       - name: Authenticated existing source token GET-only weekday schedule snapshot
+        id: source_get
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
           node system2/migration/source_system2_weekday_cron_getonly_v0_1.mjs
+      - name: Classify original source worker identity after native GET failure (no mutation)
+        if: failure() && steps.source_get.outcome == 'failure'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/source_g6_worker_identity_readonly_diag_v0_1.mjs
+      - name: Retain sanitized worker identity differential evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-source-g6-worker-identity-${{ github.run_id }}
+          path: /tmp/system2-source-g6-worker-identity-diagnosis/receipt.json
+          retention-days: 30
+          if-no-files-found: warn
       - name: Retain sanitized native original receipt for independent audit
         if: always()
         uses: actions/upload-artifact@v4
