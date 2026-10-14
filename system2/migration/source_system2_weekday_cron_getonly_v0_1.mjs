@@ -86,7 +86,27 @@ if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta
    cloudMutations:0,d1SQL:0}));
  }catch(e){
   const msg=String(e?.message||"");
-  console.error(new RegExp("^"+FAIL+"[A-Z0-9_]+$").test(msg)?msg:FAIL+"UNCLASSIFIED_FAIL_CLOSED");
+  // Underlying INSPECT errors are from a fixed, locally defined error-code
+  // domain. They contain no provider JSON, token, account ID or D1 UUID.
+  // Never print arbitrary exception text or native response bodies.
+  const reason=/^SOURCE_(?:G6_WEEKDAY_READONLY_|S2_CRON_PAUSE_FAIL_CLOSED_)[A-Z0-9_]+$/.test(msg)?
+    msg:FAIL+"UNCLASSIFIED_FAIL_CLOSED";
+  try {
+   await mkdir(outputDir,{recursive:true});
+   await writeFile(resolve(outputDir,"receipt.json"),JSON.stringify({
+    schemaVersion:"S2_SOURCE_G6_WEEKDAY_CRON_READONLY_FAILURE_V0_1",
+    state:"BLOCKED_READONLY_NO_CONFIG_PROOF",reason,
+    observedAtUtc:new Date().toISOString(),
+    originalProviderEvidenceAvailable:false,
+    independentAuditCompleted:false,
+    sourceCronZeroVerifiedByThisRun:false,
+    system1CronCountVerifiedByThisRun:false,
+    noScheduledEventsVerified:false,
+    destinationDeploymentVerified:false,
+    cloudMutations:0,d1SQL:0
+   },null,2)+"\n",{flag:"wx",mode:0o600});
+  }catch{ /* deny rather than emit sensitive provider detail */ }
+  console.error(reason);
   process.exitCode=2;
  }
 }
