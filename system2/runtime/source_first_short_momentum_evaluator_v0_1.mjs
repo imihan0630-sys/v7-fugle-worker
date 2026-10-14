@@ -16,7 +16,7 @@ const validMarketDate=x=>{
  return Number.isFinite(millis)&&new Date(millis).toISOString().slice(0,10)===x;
 };
 const validUtc=x=>{
- if(typeof x!=='string'||!/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(x))return false;
+ if(typeof x!=='string'||!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(x))return false;
  const millis=Date.parse(x);
  return Number.isFinite(millis)&&new Date(millis).toISOString().slice(0,19)===x.slice(0,19);
 };
