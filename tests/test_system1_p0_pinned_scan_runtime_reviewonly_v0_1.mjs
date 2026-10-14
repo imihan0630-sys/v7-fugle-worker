@@ -67,7 +67,7 @@ const afterMarketSource=generated.slice(
 assert.ok(afterMarketSource.startsWith("async function runAfterMarketScan("));
 let coreCalls=0,markWrites=[],leaseReleases=0,staged={status:"FORMAL_COMMIT_STARTED",commitAt:"2026-10-14T10:10:00Z"};
 const leaseCtx={
- Date,JSON,Number,String,Error,
+ Date,JSON,Number,String,Error,LAST_SCAN_KEY:"V7_LAST_SCAN",
  taiwanDate(){return "2026-10-14";},
  async acquireSignalStateLease(){return {token:"fixture-lease",snapshot:staged};},
  async loadTradingCalendar(){},
