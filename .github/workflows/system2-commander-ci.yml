@@ -22,6 +22,7 @@ jobs:
           node-version: '22'
       - name: Run commander security and DAG tests
         run: node --test system2/commander/commander.test.mjs
+          node --test system2/commander/commander_native_audit_v0_1.test.mjs
       - name: Block Cloudflare or cross-project escalation
         run: |
           node - <<'JS'
