@@ -125,7 +125,7 @@ export async function run340Inventory({extraMap,writerMap,loadPage,expected=EXPE
  const fingerprint=digest.digest("hex");
  const technicalCount=Object.values(technical76).reduce((n,v)=>n+v.count,0);
  const technicalBytes=Object.values(technical76).reduce((n,v)=>n+v.listedBytes,0);
- if(technicalCount!==76||technicalBytes!==166323049)
+ if(technicalCount!==(expected.otherCount??76)||technicalBytes!==(expected.otherBytes??166323049))
    fail("76_UNRECEIPTED_D08_OTHER_TOTALS_MISMATCH");
  if(!finished||pages!==expected.pages||total!==expected.keys||
     totalBytes!==expected.bytes||fingerprint!==expected.sha||
