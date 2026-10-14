@@ -1,0 +1,26 @@
+name: System1 P0 Pinned Scan Worker Candidate Review (OFFLINE ONLY)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/apply_system1_p0_pinned_scan_runtime_reviewonly.py"
+      - "tests/test_system1_p0_pinned_scan_runtime_reviewonly_v0_1.mjs"
+      - ".github/workflows/system1-p0-pinned-scan-runtime-reviewonly.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Original Worker unchanged, generated review candidate parses and fails closed
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/apply_system1_p0_pinned_scan_runtime_reviewonly.py
+          node tests/test_system1_p0_pinned_scan_runtime_reviewonly_v0_1.mjs
+          node --check artifacts/system1-pinned-scan-worker-reviewonly.mjs
+          git diff --exit-code -- Worker.js
