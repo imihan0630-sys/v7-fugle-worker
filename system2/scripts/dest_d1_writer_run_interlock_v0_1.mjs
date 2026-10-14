@@ -13,9 +13,29 @@ export const WORKFLOWS=Object.freeze({
  RECENT_A1_WARMUP:"system2-recent-a1-hot-history-warmup.yml",
  MANUAL_SCHEMA_APPLY:"system2-destination-schema-only-manual.yml"
 });
-const validDate=s=>/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+"T00:00:00.000Z"));
+const validDate=s=>{
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;
+ const n=Date.parse(s+"T00:00:00.000Z");
+ return Number.isFinite(n)&&new Date(n).toISOString().slice(0,10)===s;
+};
 const isoUtcDay=d=>d.toISOString().slice(0,10);
 function otherDay(day){const x=new Date(day+"T00:00:00.000Z");x.setUTCDate(x.getUTCDate()-1);return isoUtcDay(x)}
+// Never let a preflight quota-day decision fund a write that could overlap the
+// next UTC free-tier quota day. Job timeouts are pinned to current GH workflows;
+// the extra 15m also absorbs provider/API/checkout/preflight latency.
+export const UTC_RESET_GUARD_MINUTES=Object.freeze({
+ RAW_COPY:75, DAILY_DIAGNOSTIC:40, RECENT_A1_WARMUP:40, MANUAL_SCHEMA_APPLY:30
+});
+export function assessUtcDayTiming(writerId,now){
+ if(!Object.hasOwn(UTC_RESET_GUARD_MINUTES,writerId)||!(now instanceof Date)||!Number.isFinite(now.getTime()))throw Error("INVALID_QUOTA_DAY_TIMING_CONTEXT");
+ const utcDay=isoUtcDay(now);
+ const next=new Date(utcDay+"T00:00:00.000Z").getTime()+86400000;
+ const remainingMs=next-now.getTime();
+ return Object.freeze({utcDay,minutesUntilUtcReset:Math.floor(remainingMs/60000),
+  minRequiredSafetyMinutes:UTC_RESET_GUARD_MINUTES[writerId],
+  allowed:remainingMs>UTC_RESET_GUARD_MINUTES[writerId]*60000});
+}
+
 function isMainRun(r){
  return r&&r.head_branch==="main"&&typeof r.created_at==="string"&&/^\d{4}-\d{2}-\d{2}T/.test(r.created_at);
 }
@@ -61,10 +81,16 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
    excludesOnlyTwoRegisteredDestinationWriters:false
  });
 }
-export function validateProviderRunList(v){
+export function validateProviderRunList(v,expectedUtcDay=null){
  if(!v||!Array.isArray(v.workflow_runs)||!Number.isInteger(v.total_count)||v.total_count<0)throw Error("GITHUB_RUN_LIST_MALFORMED");
  if(v.total_count>100||v.workflow_runs.length!==v.total_count)throw Error("GITHUB_RUN_LIST_PAGINATION_INCOMPLETE");
- if(v.workflow_runs.some(r=>!Number.isSafeInteger(r.id)||!r.created_at||typeof r.created_at!=="string"||typeof r.head_branch!=="string"||typeof r.event!=="string"||typeof r.status!=="string"))throw Error("GITHUB_RUN_DATA_INCOMPLETE");
+ if(v.workflow_runs.some(r=>!Number.isSafeInteger(r.id)||typeof r.created_at!=="string"||typeof r.head_branch!=="string"||typeof r.event!=="string"||typeof r.status!=="string"||
+   !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$/.test(r.created_at)||
+   !Number.isFinite(Date.parse(r.created_at))))throw Error("GITHUB_RUN_DATA_INCOMPLETE");
+ // The GitHub REST endpoint was explicitly filtered to one UTC date. If the
+ // original result violates that selector, DO NOT silently discard the run.
+ if(expectedUtcDay&&(!validDate(expectedUtcDay)||v.workflow_runs.some(r=>r.created_at.slice(0,10)!==expectedUtcDay)))
+   throw Error("GITHUB_RUN_DATE_FILTER_INTEGRITY_FAILED");
  return v.workflow_runs;
 }
 async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){
@@ -73,18 +99,30 @@ async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){
    method:"GET",headers:{authorization:"Bearer "+token,accept:"application/vnd.github+json",
      "X-GitHub-Api-Version":"2022-11-28"},signal:AbortSignal.timeout(22000)});
  if(!result.ok)throw Error("GITHUB_CROSS_WORKFLOW_READ_"+result.status);
- return validateProviderRunList(await result.json());
+ return validateProviderRunList(await result.json(),day);
 }
-export async function inspectRealGuard({writerId,now=new Date(),repo,token,fetchImpl=fetch}){
+export async function inspectRealGuard({writerId,now=new Date(),repo,token,fetchImpl=fetch,afterProviderRead=null}){
  if(repo!==REPO||!token||!WORKFLOWS[writerId]||!(now instanceof Date)||Number.isNaN(now.getTime()))throw Error("DEST_DAY_INTERLOCK_ENV_INVALID");
- const day=isoUtcDay(now),prior=otherDay(day);
+ const timing=assessUtcDayTiming(writerId,now);
+ if(!timing.allowed)return Object.freeze({
+   ...decideDestinationD1DayGuard({writerId,utcDay:timing.utcDay,currentRuns:[],previousRuns:[]}),
+   allowed:false,reasons:["UTC_RESET_WITHIN_WRITER_MAX_DURATION"],
+   providerQueried:false,utcResetTiming:timing
+ });
+ const day=timing.utcDay,prior=otherDay(day);
  const otherIds=Object.keys(WORKFLOWS).filter(id=>id!==writerId);
  const evidence=await Promise.all(otherIds.flatMap(id=>[
    queryOtherRuns({repo,token,workflow:WORKFLOWS[id],day,fetchImpl}).then(rows=>({id,day,rows})),
    queryOtherRuns({repo,token,workflow:WORKFLOWS[id],day:prior,fetchImpl}).then(rows=>({id,day:prior,rows}))
  ]));
  const tagged=(date)=>evidence.filter(x=>x.day===date).flatMap(x=>x.rows.map(r=>({...r,originWriterId:x.id})));
- return decideDestinationD1DayGuard({writerId,utcDay:day,currentRuns:tagged(day),previousRuns:tagged(prior)});
+ const result=decideDestinationD1DayGuard({writerId,utcDay:day,currentRuns:tagged(day),previousRuns:tagged(prior)});
+ const endTime=afterProviderRead?afterProviderRead():now;
+ const post=assessUtcDayTiming(writerId,endTime);
+ if(post.utcDay!==day||!post.allowed)return Object.freeze({...result,allowed:false,
+   reasons:[...result.reasons,"UTC_RESET_DURING_OR_TOO_SOON_AFTER_PROVIDER_READ"],
+   providerQueried:true,utcResetTiming:post});
+ return Object.freeze({...result,providerQueried:true,utcResetTiming:post});
 }
 export async function main(){
  const writerId=process.env.S2_DEST_WRITER_CLASS,repo=process.env.GITHUB_REPOSITORY;
@@ -94,9 +132,9 @@ export async function main(){
  const out=process.env.GITHUB_OUTPUT;
  if(!out)throw Error("GITHUB_OUTPUT_REQUIRED_FAIL_CLOSED");
  await appendFile(out,"allowed=false\n");
- const result=await inspectRealGuard({writerId,repo,token});
+ const result=await inspectRealGuard({writerId,repo,token,afterProviderRead:()=>new Date()});
  const receipt={...result,runId:Number(runId),checkedAtUtc:new Date().toISOString(),
-   inspectedGithubOriginal:true,cloudflareD1MutationCount:0,cloudflareCalls:0};
+   inspectedGithubOriginal:result.providerQueried===true,cloudflareD1MutationCount:0,cloudflareCalls:0};
  const folder="/tmp/s2-dest-d1-writer-day-interlock";await mkdir(folder,{recursive:true});
  await writeFile(folder+"/receipt.json",JSON.stringify(receipt,null,2)+"\n",{flag:"w",mode:0o600});
  if(result.allowed)await appendFile(out,"allowed=true\n");
