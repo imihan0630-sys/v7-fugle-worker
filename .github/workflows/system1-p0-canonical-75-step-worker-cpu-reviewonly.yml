@@ -37,6 +37,18 @@ jobs:
           print("SYSTEM1_P0_V8_CANONICAL_75_STEP_BUILD_VERIFIED",len(scripts))
           PY
           node --check Worker.js
+          node - <<'NODE'
+          const fs=require("fs"),s=fs.readFileSync("Worker.js","utf8");
+          const keys=["SIGNAL_STATE_PREFIX","async function processSignalState(",
+            "async function acquireSignalStateLease(","async function persistSignalStateLease(",
+            "async function releaseSignalLease(","v7_signal_delivery_state",
+            "const LIVE_STALE_SECONDS = 90;","async function runBackgroundMonitor("];
+          const counts=Object.fromEntries(keys.map(k=>[k,s.split(k).length-1]));
+          const idx=s.indexOf("async function processSignalState(");
+          console.log("SYSTEM1_P0_CANONICAL_GUARD_PRESENCE=",JSON.stringify(counts));
+          console.log("SYSTEM1_P0_CANONICAL_SIGNAL_HANDLER_PREFIX=",
+            idx<0?"ABSENT":s.slice(idx,idx+1150));
+          NODE
       - name: Generate CPU cache candidate from reconstructed V8, preserve unmodified original
         run: |
           set -euo pipefail
