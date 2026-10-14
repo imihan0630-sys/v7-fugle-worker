@@ -21,6 +21,20 @@ export function resolveScheduledPostcloseTarget(now=new Date()){
   }
   return {status:"POSTCLOSE_DATE_UNRESOLVED_FAIL_CLOSED",targetDate:null,localDate:date,localTime:time};
 }
+// GitHub scheduled official source sync may finish *after* the original
+// Worker 18:10 selection Cron. This date resolver is for the subsequent
+// source-complete workflow_run, NEVER authorization for a business POST.
+export function resolveSourceReadyHandoffTarget(now=new Date()){
+  const {date,time}=taipeiParts(now);
+  if(time>="18:10")
+    return {status:"SAME_EVENING_SOURCE_COMPLETE_GET_ONLY",targetDate:date,localDate:date,localTime:time};
+  if(time<"07:00"){
+    const prior=new Date(Date.parse(date+"T12:00:00Z")-86400000).toISOString().slice(0,10);
+    return {status:"DELAYED_PRIOR_SOURCE_COMPLETE_GET_ONLY",targetDate:prior,localDate:date,localTime:time};
+  }
+  return {status:"SOURCE_COMPLETE_CLOCK_UNPROVABLE_NO_POST",targetDate:null,localDate:date,localTime:time};
+}
+
 export function classifyPostcloseBusinessChain({targetDate,scanStatus=null,institution=null,quality=null,outbox=null,readErrors={}}={}){
   if(!dayPattern.test(String(targetDate||""))||new Date(targetDate+"T00:00:00Z").toISOString().slice(0,10)!==targetDate)
     throw Error("ORIGINAL_SESSION_DATE_REQUIRED");
