@@ -28,6 +28,7 @@ const decide=box.resolvePinnedScanRequestAuthority;
 const same=Date.parse("2026-10-13T15:45:00Z");
 const next=Date.parse("2026-10-13T20:49:34Z");
 assert.equal(await decide({}, {marketDate:"2026-10-13",onlyIfMissing:true},same),same);
+await assert.rejects(decide({}, {marketDate:"2026-10-13",onlyIfMissing:false},same),/PINNED_SCAN_DATE_NOT_AUTHORIZED_FOR_CLOCK/);
 assert.equal(await decide({}, {marketDate:"2026-10-13",onlyIfMissing:true,scheduledFallback:true},next),same);
 assert.equal(yearSeen,2026);
 assert.equal(calendarCalls,2);
