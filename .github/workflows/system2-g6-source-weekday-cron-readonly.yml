@@ -48,6 +48,6 @@ jobs:
       - name: Never promote absent event or HTTP proof
         if: always()
         run: |
-          echo 'Existing SOURCE Cloudflare INSPECT: GET-only; 0 D1 SQL, 0 Cron PUT, 0 Worker deploy, 0 destination calls.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Existing SOURCE Cloudflare INSPECT: GET-only; 0 D1 SQL, 0 schedule mutations, 0 Worker deploy, 0 destination calls.' >> "$GITHUB_STEP_SUMMARY"
           echo 'Configuration snapshot must NOT be called no-scheduled-event telemetry or V8 business parity.' >> "$GITHUB_STEP_SUMMARY"
           echo 'Any Cloudflare, audit or G6/G7 formal acceptance needs separately scoped original evidence.' >> "$GITHUB_STEP_SUMMARY"
