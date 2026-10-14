@@ -38,9 +38,21 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   const prior=rows.find(row=>row?.job_type==="AFTER_MARKET_SCAN"&&
     row?.scheduled_at?.slice(0,10)===targetDate);
   if(!prior)return out("ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
-  if(prior.status!=="FAILED")return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
+  if(prior.status!=="FAILED"||!/^10 10 \* \* mon-fri$/i.test(String(prior.cron_expression||"")))
+    return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
   if(!/^Error:\s*DATA_INCOMPLETE[:：]/.test(String(prior.error||"")))
     return out("PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
+  // Last-attempt KV can be overwritten by a later ambiguous manual POST.
+  // Link its exact Taiwan clock to the original 18:10 D1 Cron or stop.
+  const m=/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2}):(\d{2})$/.exec(String(attempt.generatedAt||""));
+  if(!m)return out("LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+  const pad=x=>x.padStart(2,"0");
+  const attemptMs=Date.parse([m[1],pad(m[2]),pad(m[3])].join("-")+"T"+[pad(m[4]),m[5],m[6]].join(":")+"+08:00");
+  const finishedMs=Date.parse(String(prior.finished_at||""));
+  if(!Number.isFinite(attemptMs)||!Number.isFinite(finishedMs)||
+     finishedMs-attemptMs< -10000||finishedMs-attemptMs>300000)
+    return out("LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+
   // Canonical Worker.js issues DATA_INCOMPLETE only ahead of the first Formal
   // market-state/plan KV write. Source resynchronization makes the preflight
   // reattempt safe, but neither D1 lease nor monitoring/push is bypassed.
