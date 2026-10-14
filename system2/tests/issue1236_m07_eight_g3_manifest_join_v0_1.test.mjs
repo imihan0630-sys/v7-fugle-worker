@@ -18,6 +18,6 @@ assert.match(wf,/environment: system2-schema-only/);
 assert.doesNotMatch(wf,/environment: system2-research|SYSTEM2_R2_SECRET_ACCESS_KEY|SYSTEM2_CLOUDFLARE_API_TOKEN/);
 assert.doesNotMatch(source,/\bfetch\(|INSERT INTO|putIfAbsent\(|method:"PUT"|method:"DELETE"/);
 assert.equal(reg.expectedWriteCapableCount,4);
-assert.equal(reg.expectedOtherCredentialReferenceCount,8);
+assert.equal(reg.expectedOtherCredentialReferenceCount,9);
 assert.ok(reg.codePaths.some(x=>x.path===".github/workflows/system2-m07-original-eight-manifest-crosswalk.yml"&&x.category==="ENCRYPTION_ONLY_NO_D1_WRITE"));
 console.log("M07 eight R2 originals -> source D1 archive crosswalk source and security boundaries PASS");
