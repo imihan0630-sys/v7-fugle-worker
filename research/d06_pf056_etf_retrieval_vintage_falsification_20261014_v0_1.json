@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "D06_PF056_ETF_VINTAGE_RESEARCH_V0_1",
+  "domain": "D06",
+  "modules": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-18"
+  ],
+  "mainAtStart": "7618fe596d8d4984a82ff7e307b11b43c8849aab",
+  "observedWindowTaipei": "2026-10-14 17:14-17:16",
+  "sourceType": "official issuer web-page text via public retrieval, not immutable raw",
+  "sources": [
+    "https://www.yuantaetfs.com/tradeInfo/pcf/0050",
+    "https://www.yuantaetfs.com/tradeInfo/pcf/0056"
+  ],
+  "funds": {
+    "0050": {
+      "useDate": "2026-10-15",
+      "posted": "2026-10-14 16:05:21",
+      "unitDate": "2026-10-14",
+      "outstanding": 22448000000,
+      "unitDelta": 39000000,
+      "creationUnit": 500000,
+      "unitEquivalents": 78,
+      "nav": 2521429955603,
+      "visibleRows": {
+        "1216": 2580,
+        "1303": 2572
+      }
+    },
+    "0056": {
+      "initialReadUseDate": "2026-10-14",
+      "laterReadsUseDate": "2026-10-15",
+      "posted": "2026-10-14 16:30:25",
+      "unitDate": "2026-10-14",
+      "outstanding": 14351034000,
+      "unitDelta": 3500000,
+      "creationUnit": 500000,
+      "unitEquivalents": 7,
+      "nav": 852752825955,
+      "visibleRows": {
+        "1216": 9132,
+        "1303": 9389
+      }
+    }
+  },
+  "arithmetic": {
+    "prior0050": 22409000000,
+    "prior0056": 14347534000,
+    "unitDeltaChecks": "both reconcile",
+    "modeledVisibleOnly": {
+      "1216": 265164,
+      "1303": 266339
+    }
+  },
+  "falsifications": [
+    {
+      "hypothesis": "unitDelta is actual stock buying",
+      "support": "in-kind basket and positive outstanding unit delta",
+      "counter": "AP inventory/borrow/cash substitute and operational adjustments",
+      "alternative": "administrative changes or hedging",
+      "failure": "no execution evidence",
+      "decision": "modeled exposure only"
+    },
+    {
+      "hypothesis": "issuer pages are synchronized",
+      "support": "later 0050/0056 reads show same use-date",
+      "counter": "earlier 0056 retrieval shows previous use-date",
+      "alternative": "cache/selector/true update unknown",
+      "failure": "no raw request/header/first-known",
+      "decision": "preserve vintages without inferring amendment"
+    },
+    {
+      "hypothesis": "two funds give independent directional votes",
+      "support": "both positive unit deltas",
+      "counter": "same date and shared holdings",
+      "alternative": "common index or market event",
+      "failure": "duplicate economic root",
+      "decision": "one date cluster, no bullish vote"
+    },
+    {
+      "hypothesis": "visible basket is complete",
+      "support": "first rows have shares and cash-substitution flags",
+      "counter": "page explicitly shows more rows",
+      "alternative": "preview truncation",
+      "failure": "full PCF unavailable",
+      "decision": "no full factor"
+    },
+    {
+      "hypothesis": "borrow corroborates demand",
+      "support": "delivery can require lending",
+      "counter": "same event can generate both flows",
+      "alternative": "market making",
+      "failure": "no matched provenance",
+      "decision": "deduplicate parent roots"
+    }
+  ],
+  "controls": {
+    "PIT": "firstKnownAt UNKNOWN",
+    "OOS": "CLOSED",
+    "walkForward": "chronological purge overlapping 5-session labels",
+    "bias": "coverage and date clusters",
+    "multipleTests": "frozen primary factor only",
+    "redundancy": "market/industry/institutional/index/price-volume",
+    "costs": "30/60/100 bp hypothetical",
+    "liquidity": "prior 20 completed sessions only",
+    "regime": "two states before promotion",
+    "missing": "UNKNOWN not zero"
+  },
+  "sourceRawHash": "UNKNOWN",
+  "actualExecution": "UNKNOWN",
+  "newIndependentDecisionDates": 1,
+  "newOOS": 0,
+  "prereg": "PENDING_D16_00",
+  "formalCore": "LOCKED",
+  "maturityChange": false,
+  "next": "Seek complete immutable issuer PCF and independent first-known clocks; D16/00 review; follow TDCC, margin/SBL and 15:20 fixed-slot source gates."
+}
