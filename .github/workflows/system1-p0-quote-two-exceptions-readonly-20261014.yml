@@ -1,0 +1,47 @@
+name: System1 P0 20261014 Real Quote Source Flags and Stale Plans (GET ONLY)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-quote-two-exceptions-readonly-20261014.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-quote-two-exceptions-readonly-20261014.yml"
+      - "ops/system1_p0_quote_two_exception_readonly_20261014.mjs"
+permissions:
+  contents: read
+jobs:
+  isolated_source_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source-only statics and protected original population contract
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_quote_two_exception_readonly_20261014.mjs
+          grep -F -q 'noWorkerWrite:true,noD1Write:true,noKVWrite:true' ops/system1_p0_quote_two_exception_readonly_20261014.mjs
+  actual_quote_exception_get:
+    if: github.event_name == 'push'
+    needs: isolated_source_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read exact original nine per-stock quote clock/candle/plan verdict and no provider calls
+        run: node ops/system1_p0_quote_two_exception_readonly_20261014.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-20261014-quote-flag-exceptions-${{ github.run_id }}
+          path: artifacts/system1-20261014-quote-two-exceptions.json
+          if-no-files-found: warn
+          retention-days: 30
