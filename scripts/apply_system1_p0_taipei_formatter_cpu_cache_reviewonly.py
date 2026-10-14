@@ -37,7 +37,7 @@ def patch(source: str) -> str:
         'if (!allowOutsideWindow && !isIntradayMonitorWindow(scheduledTime))',
     ):
         if unchanged not in source:
-            raise ValueError("P0_PROTECTED_ORIGINAL_RUNTIME_GUARD_MISSING")
+            raise ValueError("P0_PROTECTED_ORIGINAL_RUNTIME_GUARD_MISSING: "+unchanged)
     modified = source.replace(CLOCK_OLD, CLOCK_NEW, 1).replace(DATE_OLD, DATE_NEW, 1)
     if (modified.count("S1_P0_TAIPEI_CLOCK_FORMATTER") != 2 or
             modified.count("S1_P0_TAIPEI_DATE_FORMATTER") != 2):
