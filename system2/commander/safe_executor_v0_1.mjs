@@ -10,6 +10,7 @@ const FILES={
  source:".github/workflows/system2-resonance-deploy.yml",
  daily:".github/workflows/system2-daily-shadow-diagnostic.yml",
  raw:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
+ warmup:".github/workflows/system2-recent-a1-hot-history-warmup.yml",
  sourceQuarantine:"system2/config/source_account_d1_writer_quarantine_v0_1.json",
  registry:"system2/config/d1_account_writer_registry_v0_1.json",
  destRegistry:"system2/config/dest_d1_cross_workflow_writer_interlock_v0_1.json",
@@ -45,7 +46,7 @@ export function assessSourceRoute({source,daily,raw,quarantine,sourceQuarantine}
  return {assertions,findings:Object.entries(assertions).filter(([,ok])=>!ok).map(([name])=>name),
   sourceOnlyOfflineScope:true,observedCloudflareWorkerConfig:false,accountCredentialMatchPhysicallyObserved:false};
 }
-export function assessQuotaInterlock({daily,raw,registry,destRegistry,importer,rawImporter}){
+export function assessQuotaInterlock({daily,raw,warmup,registry,destRegistry,importer,rawImporter}){
  const importSource=importer??rawImporter;
  if(typeof importSource!=="string")throw Error("RAW_IMPORTER_NOT_LOADED");
  const old=(daily.match(/^\s*group:\s*(\S+)/m)||[])[1]||null;
@@ -57,9 +58,10 @@ export function assessQuotaInterlock({daily,raw,registry,destRegistry,importer,r
  const liveWriters=dest?.writers??[];
  const liveRaw=liveWriters.some(w=>w.id==="RAW_COPY"&&w.workflow===".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml");
  const liveDiag=liveWriters.some(w=>w.id==="DAILY_DIAGNOSTIC"&&w.workflow===".github/workflows/system2-daily-shadow-diagnostic.yml");
- const rawRegistry=liveRaw&&liveDiag&&dest?.sharedJobConcurrencyGroup===expected;
+ const liveWarm=liveWriters.some(w=>w.id==="RECENT_A1_WARMUP"&&w.workflow===".github/workflows/system2-recent-a1-hot-history-warmup.yml");
+ const rawRegistry=liveRaw&&liveDiag&&liveWarm&&dest?.sharedJobConcurrencyGroup===expected&&dest?.accountWideWriterCensusComplete===false;
  const getJobLock=(source,job)=>(source.match(new RegExp("^  "+job+":\\n    concurrency:\\n      group: (\\S+)","m"))||[])[1]||null;
- const diagJobLock=getJobLock(daily,"diagnostic"),rawJobLock=getJobLock(raw,"destination_copy");
+ const diagJobLock=getJobLock(daily,"diagnostic"),rawJobLock=getJobLock(raw,"destination_copy"),warmJobLock=getJobLock(warmup||"","warmup");
  const fixed=diag?.reservationModel?.rowsWritten??null;
  const dailyHistoricalCharge=71322; // 2026-10-13 actual historic witness; NOT current usage.
  const userOperationalMax=80000;
@@ -69,10 +71,11 @@ export function assessQuotaInterlock({daily,raw,registry,destRegistry,importer,r
   rawCopyBilledWriteBudgetBounded:/const limit=80000, stopAt=75000, maxStatementRows=80/.test(importSource),
   rawCopyUsesOwnConcurrencyGroup:history!==null,
   diagnosticUsesOwnConcurrencyGroup:old!==null,
-  sameGroupSerializesWriters:!!diagJobLock&&diagJobLock===expected&&diagJobLock===rawJobLock,
+  sameGroupSerializesWriters:!!diagJobLock&&diagJobLock===expected&&diagJobLock===rawJobLock&&diagJobLock===warmJobLock,
   rawWriterRegisteredInDestRegistry:rawRegistry,
-  failClosedGitHubDayGuardOnBoth:/S2_DEST_WRITER_CLASS: RAW_COPY/.test(raw)&&/S2_DEST_WRITER_CLASS: DAILY_DIAGNOSTIC/.test(daily)&&
-   /if: steps\.day_interlock\.outputs\.allowed == 'true'/.test(raw)&&/if: steps\.day_interlock\.outputs\.allowed == 'true'/.test(daily),
+  failClosedGitHubDayGuardOnAllThree:/S2_DEST_WRITER_CLASS: RAW_COPY/.test(raw)&&/S2_DEST_WRITER_CLASS: DAILY_DIAGNOSTIC/.test(daily)&&
+   /S2_DEST_WRITER_CLASS: RECENT_A1_WARMUP/.test(warmup||"")&&
+   [raw,daily,warmup].every(x=>/if: steps\.day_interlock\.outputs\.allowed == 'true'/.test(x||"")),
   atomicCrossWorkflowLedgerPhysicallyVerified:false // Explicitly unknown until native D1 lock proven.
  };
  const collisionScenario={historicalRunDateUtc:"2026-10-13",billedHistoryWrites71322:dailyHistoricalCharge,priorMeasuredDiagnosticReserve13130:fixed,
@@ -80,7 +83,7 @@ export function assessQuotaInterlock({daily,raw,registry,destRegistry,importer,r
    wouldExceedUserCap:fixed===null?null:dailyHistoricalCharge+fixed>userOperationalMax,
    notCurrentUtcDayBalance:true};
  return {assertions,findings:Object.entries(assertions).filter(([,ok])=>!ok).map(([name])=>name),
-  groupDiagnostic:old,groupRawCopy:history,sharedDestinationJobLock:diagJobLock,collisionScenario,
+  groupDiagnostic:old,groupRawCopy:history,sharedDestinationJobLock:diagJobLock,warmupJobLock:warmJobLock,collisionScenario,
   authorizedConcurrentWrite:false,verifiedDestinationAccountSpendableQuota:false};
 }
 export async function runOneTest(path,opts={}){
