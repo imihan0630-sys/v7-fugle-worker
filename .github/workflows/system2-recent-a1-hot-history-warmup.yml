@@ -28,7 +28,7 @@ jobs:
     concurrency:
       group: s2-dest-d1-historical-and-diagnostic-writer
       cancel-in-progress: false
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'push' # no unscheduled destination D1 warmup writer during migration
     runs-on: ubuntu-latest
     timeout-minutes: 25
     environment: system2-schema-only # Destination account only; old source quarantine remains
