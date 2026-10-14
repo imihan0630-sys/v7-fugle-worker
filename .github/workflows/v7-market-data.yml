@@ -95,6 +95,23 @@ jobs:
           QUALITY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
           QUALITY_RECOVERY_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5' && '1' || '0' }}
         run: node tests/sync_official_quality.mjs
+      # P0: the actual official source jobs can finish after the original
+      # Cloudflare 18:10 scan. Use the now-ready source snapshots to re-enter
+      # the EXISTING original Worker scan exactly once on the SAME Taipei day,
+      # but only if its previous D1 Cron failure was proven pre-write
+      # DATA_INCOMPLETE. Unknown CPU/503 and prior-day jobs remain blocked.
+      - name: P0 source-ready same-day Formal selection handoff (guarded original one POST)
+        if: >-
+          github.event_name == 'schedule' &&
+          steps.calendar.outputs.proceed == 'true' &&
+          steps.calendar.outputs.cross_midnight_fallback != 'true' &&
+          github.event.schedule != '45 15 * * 1-5'
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          RECOVERY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          RECOVERY_SOURCE_READY_HANDOFF: 'true'
+          RECOVERY_SCHEDULED_FALLBACK: 'false'
+        run: node tests/recover_after_market.mjs
       - name: Recover missing same-day analysis after complete data (skip prior success)
         if: >-
           steps.calendar.outputs.proceed == 'true' &&
