@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: read
 concurrency:
   group: system2-commander-issues
   cancel-in-progress: false
@@ -39,6 +40,7 @@ jobs:
           node-version: '22'
       - name: Task DAG and authorization negative tests
         run: node --test system2/commander/commander.test.mjs
+          node --test system2/commander/commander_native_audit_v0_1.test.mjs
       - name: GitHub Issues-only dispatch; no cloud resource permissions
         env:
           GITHUB_TOKEN: ${{ github.token }}
