@@ -110,3 +110,51 @@ test('a matching raw source hash cannot mask materially different OHLCV',async()
  const p=make();p.historyBySymbol['2330'].bars.at(-1).tradeValue+=999;
  const a=await evaluate(p);assert.equal(a.incompleteCount,1);
 });
+
+
+test('mismatched constituent daily source T-1 cannot be treated as T even when OHLCV hashes match',async()=>{
+ const p=make();
+ p.sourceLedger.observations[0].marketDate='2026-10-09';
+ const a=await evaluate(p);
+ assert.equal(a.state,'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE');
+ assert.equal(a.incompleteCount,1);
+ assert.equal(a.qualifiedCandidateCount,null);
+ assert.deepEqual(a.observations[0].reasonCodes,['DAILY_SOURCE_OBSERVATION_DATE_MARKET_MISMATCH']);
+ assert.equal(a.selectedCount,null);
+});
+test('impossible Gregorian trading day inside sorted 61-session list is not official PIT evidence',async()=>{
+ const p=make();
+ const i=p.calendarReceipt.tradingDates.indexOf('2026-09-30');
+ assert.ok(i>0);
+ p.calendarReceipt.tradingDates[i]='2026-09-31';
+ const a=await evaluate(p);
+ assert.equal(a.state,'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE');
+ assert.ok(a.blockers.includes('OFFICIAL_61_SESSION_CALENDAR_UNVERIFIED'));
+ assert.equal(a.selectedCount,null);
+});
+test('source marketDate with nonexistent Gregorian calendar date is rejected explicitly',async()=>{
+ const p=make();
+ p.sourceLedger.marketDate='2026-02-30';
+ const a=await evaluate(p);
+ assert.ok(a.blockers.includes('ACTUAL_SAME_DATE_A1_SOURCE_LEDGER_NOT_ACCEPTED'));
+ assert.equal(a.allSourceAndHistoryEvidenceComplete,false);
+});
+test('impossible UTC evaluation date cannot normalize silently to an authorized PIT clock',async()=>{
+ const p=make();
+ p.evaluationAtUtc='2026-02-30T15:55:00Z';
+ await assert.rejects(()=>evaluate(p),/EVALUATION_CLOCK_UTC_INVALID/);
+});
+test('impossible or post-frozen original availableAt is not historically eligible',async()=>{
+ const p=make();
+ p.historyBySymbol['2330'].bars[10].availableAt='2026-02-30T06:00:00Z';
+ const a=await evaluate(p);
+ assert.equal(a.incompleteCount,1);
+ assert.equal(a.qualifiedNotSelectedCount,0);
+});
+test('synthetic valid baseline still deterministically evaluates with strict calendars',async()=>{
+ const a=await evaluate(make());
+ assert.equal(a.state,'EVALUATED_OFFLINE_RESEARCH_ONLY');
+ assert.equal(a.finalSelectionEnabled,false);
+ assert.equal(a.selectedCount,null);
+ assert.equal(a.durableFrozenDecisionReadbackVerified,false);
+});
