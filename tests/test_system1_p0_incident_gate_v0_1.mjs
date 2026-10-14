@@ -69,7 +69,7 @@ assert.equal(classifyCpuReadiness({providerExceededResources:false,candidateOnly
 assert.equal(classifyCpuReadiness({providerExceededResources:false,candidateOnly:false,workerDeployed:true,observedQuoteAgeSeconds:35,sourceIsTrial:false,underlyingBusinessState:"PASS_INTRADAY_MONITOR_FRESHNESS"}).actualPass,true);
 assert.throws(()=>classifyCpuReadiness({originalLimitMs:50}),/P0_ORIGINAL_FREE_CPU_LIMIT_CHANGED/);
 assert.throws(()=>classifyAmbiguousRecovery({marketDate:"future"}),/TARGET_MARKET_DATE_REQUIRED/);
-console.log(JSON.stringify({ok:true,cases:38,actual20261013HistoryTotal:1908,
+console.log(JSON.stringify({ok:true,fixtureOnly:true,actual20261013HistoryTotal:1908,
  sourceEpsScopeProtected:true,ambiguous503NoRetry:true,c1ZeroPickProhibited:true,
  original90SecondsPreserved:true,original10msPreserved:true,
  closedStockNotReintroducedAsHolding:true,trialQuotesBlocked:true,
