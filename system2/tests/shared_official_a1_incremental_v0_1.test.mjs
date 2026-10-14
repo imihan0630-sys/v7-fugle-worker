@@ -176,16 +176,29 @@ test('manifest cache duration always matches scheduled workflow and forbids 90-d
 });
 
 
-test('23:45 Taipei source-only first attempt plus 00:15 same-T recovery are isolated from all frozen authority',async()=>{
+test('20:15/23:45 T source-only attempts plus 00:15 same-T recovery never grant Frozen authority',async()=>{
  const {readFileSync}=await import('node:fs');
  const w=readFileSync('.github/workflows/system2-shared-official-a1-incremental-readonly.yml','utf8');
  const crons=[...w.matchAll(/-\s+cron:\s*"([^"]+)"/g)].map(m=>m[1]);
- assert.deepEqual(crons,['45 15 * * 1-5','15 16 * * 1-5']);
+ assert.deepEqual(crons,['15 12 * * 1-5','45 15 * * 1-5','15 16 * * 1-5']);
+ assert.equal(new Set(crons).size,3);
+ // GitHub Actions uses UTC cron; exactly 20:15, 23:45 and T+1 00:15 Taipei.
+ // The extra early run is still the existing RESEARCH-ONLY A1 workflow.
+ assert.match(w,/20:15 is an additional source-observation opportunity only/);
+ assert.match(w,/no rank, PIT qualification, capacity or Frozen may be inferred/);
  assert.match(w,/contents:\s*read/);
  assert.match(w,/actions:\s*read/);
  assert.doesNotMatch(w,/contents:\s*write|schedule:[\s\S]*secret:|secrets\./);
  assert.match(w,/NO.*final|FINAL_FROZEN|FINAL_FROZEN capacity/i);
  const tradingDates=['2026-10-13','2026-10-14'];
+ const early=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T12:15:00Z',officialTradingDates:tradingDates
+ });
+ assert.equal(early.marketDate,'2026-10-14');
+ assert.equal(early.retrospectiveOnly,false);
+ assert.equal(early.conditionalNextDayRecovery,false);
+ assert.equal(early.sourceReviewClass,'PRELIMINARY_SOURCE_REVIEW_ONLY');
+ assert.equal(early.todayProviderFinalityNotAsserted,true);
  const earlier=resolveLatestClosedTaiwanSessionV0_1({
   nowUtc:'2026-10-14T15:45:00Z',officialTradingDates:tradingDates
  });
