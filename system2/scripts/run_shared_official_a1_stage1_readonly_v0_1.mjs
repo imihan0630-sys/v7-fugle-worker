@@ -7,6 +7,7 @@ import {createHash} from 'node:crypto';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
 import {buildDailySelectionReadinessReceiptV0_1} from '../runtime/daily_selection_readiness_v0_1.mjs';
 import {buildSystem2PreliminaryDailyWatchV0_1} from '../runtime/preliminary_daily_pv_watch_v0_1.mjs';
+import {buildPreliminaryUserReportV0_1} from '../runtime/preliminary_daily_user_report_v0_1.mjs';
 import {diagnoseSourceFirstHistoryBlockersV0_1} from '../runtime/a1_history_barrier_diagnostic_v0_1.mjs';
 import {official61SessionSourceReceiptHashBaseV0_1}
  from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
@@ -309,6 +310,15 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    JSON.stringify(readiness,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile('/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json',
    JSON.stringify(preliminary,null,2)+'\n',{flag:'wx',mode:0o600});
+  const userReport=await buildPreliminaryUserReportV0_1({receipt:preliminary});
+  await writeFile('/tmp/s2-a1-stage1-readonly/preliminary-watch-report.md',
+   userReport.markdown,{flag:'wx',mode:0o600});
+  await writeFile('/tmp/s2-a1-stage1-readonly/preliminary-watch-report-meta.json',
+   JSON.stringify(userReport.metadata,null,2)+'\n',{flag:'wx',mode:0o600});
+  console.log(JSON.stringify({preliminaryHumanReportHash:userReport.metadata.reportHash,
+   displayedObservations:userReport.metadata.displayedCount,
+   sourceMarketDate:userReport.metadata.marketDate,selectionAuthorized:false}));
+
   console.log(JSON.stringify({
    preliminaryMarketDate:preliminary.marketDate,
    preliminaryState:preliminary.state,
