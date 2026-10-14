@@ -20,7 +20,7 @@ async function resolvePinnedScanRequestAuthority(env, body, observedAt=Date.now(
   const today=taiwanDate(observedAt);
   const {hour,minute}=taiwanClock(observedAt);
   const hm=String(hour).padStart(2,"0")+":"+String(minute).padStart(2,"0");
-  const sameSession=target===today && hm>="23:35" && hm<="23:59";
+  const sameSession=body?.onlyIfMissing===true && target===today && hm>="23:35" && hm<="23:59";
   const priorSession=body?.scheduledFallback===true &&
     body?.onlyIfMissing===true && target===shiftDateString(today,-1) &&
     hm<"07:00";
