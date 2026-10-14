@@ -21,11 +21,26 @@ async function resolvePinnedScanRequestAuthority(env, body, observedAt=Date.now(
   const {hour,minute}=taiwanClock(observedAt);
   const hm=String(hour).padStart(2,"0")+":"+String(minute).padStart(2,"0");
   const sameSession=body?.onlyIfMissing===true && target===today && hm>="23:35" && hm<="23:59";
-  const priorSession=body?.scheduledFallback===true &&
+  const priorDayWindow=body?.scheduledFallback===true &&
     body?.onlyIfMissing===true && target===shiftDateString(today,-1) &&
     hm<"07:00";
+  // Source rule: the prior 503 has an ambiguous outcome; even with a pinned
+  // date, a fresh POST must NOT blindly replay an old attempt. This flag is
+  // deliberately unset in the existing production environment.
+  const priorSession=priorDayWindow &&
+    env?.S1_PINNED_PRIOR_DAY_RECOVERY_ENABLED==="true";
   if(!sameSession && !priorSession)
-    throw new Error("PINNED_SCAN_DATE_NOT_AUTHORIZED_FOR_CLOCK");
+    throw new Error(priorDayWindow?
+      "PRIOR_DAY_REPLAY_OWNER_GATE_NOT_ENABLED":
+      "PINNED_SCAN_DATE_NOT_AUTHORIZED_FOR_CLOCK");
+  if(priorSession){
+    const lastAttempt=await env.STOCKS_KV?.get("V7_LAST_SCAN_ATTEMPT","json");
+    // Even an adjacent-date failure is an ambiguous prior POST, because
+    // the legacy API previously ignored body.marketDate.
+    if(lastAttempt?.status==="FAILED" &&
+       [today,target].includes(String(lastAttempt.requestedDate||"")))
+      throw new Error("AMBIGUOUS_PRIOR_BUSINESS_POST_NO_REPLAY");
+  }
   await loadTradingCalendar(env,Number(target.slice(0,4)));
   if(!isTradingDate(target)) throw new Error("PINNED_SCAN_DATE_NOT_OFFICIAL_TRADING_SESSION");
   // Original runner keys leases, source cache and immutable C1 by the local
@@ -48,6 +63,8 @@ CAPABILITY = '''    // Exact authenticated runtime capability handshake, no busi
       return json({ok:true,legacyDateBodyIgnored:false,
         pinnedMarketDateSupported:true,priorDayFallbackRequiresOnlyIfMissing:true,
         priorDayTaipeiCutoff:"07:00",maxHistoricalRewindDays:1,
+        priorDayFallbackEnabled:env?.S1_PINNED_PRIOR_DAY_RECOVERY_ENABLED==="true",
+        priorDayReplayIsNotAuthorizedByCapabilityAlone:true,
         version:VERSION,productionSourceReadOnly:true},200,true);
     }
 
