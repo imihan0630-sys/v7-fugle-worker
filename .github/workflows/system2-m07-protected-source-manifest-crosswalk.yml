@@ -1,0 +1,61 @@
+name: S2 M07 Protected Original D1 to R2 Sample Crosswalk OFFLINE
+# ONE-SHOT existing encrypted source SQL + original sanitized R2 sample only.
+# 0 Cloudflare calls (source/destination), 0 R2 calls, 0 account changes.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-protected-source-manifest-crosswalk.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-g3-original-sample-manifest-offline-replay
+  cancel-in-progress: false
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Deterministic negative and schema scope checks
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_g3_protected_sample_manifest_crosswalk_20261014.mjs
+          python3 -m py_compile system2/migration/issue1236_m07_original_d1_manifest_sample_match_20261014.py
+          node system2/tests/issue1236_m07_g3_source_manifest_crosswalk_v0_1.test.mjs
+      - name: Fetch SAME original immutable 90-day encrypted SQL archive
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-existing-rsa-source-transfer-encrypted-extended-38214521809
+          run-id: 38214521809
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-existing-source-archive
+      - name: Fetch SAME original independently re-hashed R2 sample receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-r2-source-object-sample-38511567530-1
+          run-id: 38511567530
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-actual-original-sample
+      - name: Offline RSA-AES original SQL restore and 25,823 manifest SHA join
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1236_m07_g3_protected_sample_manifest_crosswalk_20261014.mjs
+      - name: Preserve sanitized, no-key no-SQL no-object-body receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-original-source-manifest-crosswalk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-source-manifest-crosswalk/sanitized-crosswalk.json
+          if-no-files-found: warn
+          retention-days: 90
