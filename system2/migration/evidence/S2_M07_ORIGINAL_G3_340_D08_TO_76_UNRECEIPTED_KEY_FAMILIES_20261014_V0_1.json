@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "S2_M07_G3_SOURCE_340_D08_KEY_FAMILIES_REAL_PHYSICAL_20261014_V0_1",
+  "evidenceState": "DATA_LANE_ORIGINAL_SOURCE_R2_SINGLE_NONATOMIC_LIST_PROVENANCE__INDEPENDENT_AUDIT_PENDING",
+  "physicalSourceRun": 38544891243,
+  "physicalJob": 115788386865,
+  "physicalRunURL": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38544891243",
+  "sourceReaderPR": 1315,
+  "sourceReaderMergeSha": "7cdf783dcbb3076ca088c410445296b249637558",
+  "originalProviderJobConclusion": "SUCCESS",
+  "sourceR2ListCalls": 27,
+  "hardCapListCalls": 32,
+  "sourceR2ListTotalUniqueKeys": 26321,
+  "sourceR2ListTotalReportedBytes": 504007793,
+  "originalFullListKeySizeETagMetadataSha256": "3f0972357db3060004e65d6f3f5d829c3e4c19eeef7f59a46d2a264e9b5cca6d",
+  "originalG3PrivateExtraKeyShaCount": 498,
+  "originalG3PrivateExtraListedBytes": 255515971,
+  "originalWriterReceiptKeyIdentities": 154,
+  "originalWriterReceiptV01InvalidatedCount": 44,
+  "originalWriterReceiptV02Count": 44,
+  "originalWriterReceiptV03Count": 44,
+  "originalWriterReceiptAnnualCount": 22,
+  "originalSmokeCount": 4,
+  "originalSmokeListedBytes": 1417,
+  "remainingUnreceiptedD08Count": 340,
+  "remainingUnreceiptedD08ListedBytes": 196225539,
+  "remainingUnreceiptedD08Families": {
+    "rawV01NoArchivedWriterReceipt": {
+      "count": 264,
+      "listedBytes": 29902490,
+      "canonicalResearchAdmission": false
+    },
+    "rawV02NoArchivedWriterReceipt": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "rawV03NoArchivedWriterReceipt": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "rawVersionOtherOrMalformed": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "annualYearPackV01NoArchivedWriterReceipt": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "annualYearPackOtherVersion": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "otherD08NamingFamilies": {
+      "count": 76,
+      "listedBytes": 166323049,
+      "sourceWriterOwnerUnknown": true
+    }
+  },
+  "originalArtifact": {
+    "artifactId": 11883449078,
+    "downloadedOriginalZIPSizeBytes": 1201,
+    "originalGithubProviderZIPSha256": "aa691cfc3540627b2a53cd6bd796b5f3a411d56ad09141fa8d1f7f1e30e211b2",
+    "independentlyRecomputedZIPSha256": "aa691cfc3540627b2a53cd6bd796b5f3a411d56ad09141fa8d1f7f1e30e211b2",
+    "recomputedZIPMatchesOriginalProvider": true,
+    "insideFile": "sanitized-340-d08-original-source-families.json",
+    "insideFileBytes": 2623,
+    "recomputedInsideFileSha256": "0bdeba6c7c051bdeb8f58aed691ac96ac27e14339c7735efc7e20cbdd9978172",
+    "insideOriginalSanitizedJSONIndependentlyParsed": true
+  },
+  "strictBoundaries": {
+    "rawV01NamingProvesPhysicalVersionShapeNotAuthenticIndividualWriter": false,
+    "rawV01VersionHasOriginalRecordedIdempotencyInvalidation": true,
+    "rawV01Exact264IndividualContentSHAValidated": false,
+    "remaining76OtherD08SourceOwnershipOrContentCertified": false,
+    "sourceR2LISTSnapshotAtomic": false,
+    "sourceR2OriginalContentBodySHAWithArchivedD1ManifestPreviouslyVerifiedCount": 8,
+    "otherSourcesOriginalBodySHA256QualifiedByThisRun": 0,
+    "sourceR2ObjectBodyGETCalls": 0,
+    "sourceR2ObjectHEADCalls": 0,
+    "sourceR2Writes": 0,
+    "remoteSourceD1Calls": 0,
+    "remoteDestinationD1Writes": 0,
+    "destinationR2Calls": 0,
+    "billingOrPermissionsChanged": false,
+    "System1V8FormalOrWorkerCronModified": false,
+    "independentAuditLaneAccepted": false,
+    "destinationR2LastPhysicalEntitlement": "NOT_ENTITLED",
+    "completeHistoricalPITOrFrozenCertified": false,
+    "authorizedToDelete264LegacyOr76Unknown": false,
+    "authorizedToSkipR2Migration": false
+  },
+  "next": [
+    "Classify 76 other D08 source keys using only safe bounded original R2 LIST with exact original digest, G3 498 and 154 receipts; only whitelisted structural aggregate patterns, no key persistence.",
+    "Freeze invalid v0.1 objects as provenance-only, never promote to immutable D08 history unless new independently valid research vintage is established.",
+    "Independently audit original GitHub ZIP and source protected job receipt and source manifest lineage.",
+    "Keep M07 open, destination R2 NOT_ENTITLED and System1 Formal unaffected."
+  ]
+}
