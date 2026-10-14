@@ -144,7 +144,7 @@ export async function main(){
  const folder=join(base,"s2commander-safe-executor");await mkdir(folder,{recursive:true});
  const artifactPath=join(folder,"receipt.json");
  await writeFile(artifactPath,JSON.stringify(receipt,null,2)+"\n",{flag:"w",mode:0o600});
- const states=Object.fromEntries(Object.entries(receipt.results).map(([id,v])=>[id,{state:v.state,tests:v.tests.length,failedTests:v.tests.filter(z=>!z.passed).length,findings:v.assessment.findings}]));
+ const states=Object.fromEntries(Object.entries(receipt.results).map(([id,v])=>[id,{state:v.state,tests:v.tests.length,failedTests:v.tests.filter(z=>!z.passed).length,failedTestPaths:v.tests.filter(z=>!z.passed).map(z=>z.path),findings:v.assessment.findings}]));
  console.log(JSON.stringify({status:"REAL_OFFLINE_ALLOWLIST_EXECUTED",artifactPath,states,cloudflareResourceOperations:0}));
  if(Object.values(receipt.results).some(x=>!x.allUnitTestsPassed))process.exitCode=2;
 }
