@@ -15,9 +15,12 @@ const baseBridge={schemaVersion:'S2_SHARED_A1_SOURCE_LEDGER_BRIDGE_V0_1',
  cloudflareD1Writes:0,cloudflareR2Writes:0};
 async function ready({missing=true,qualified=false}={}){
  const symbols=['2330','2454'];
- const rows=symbols.map(symbol=>({symbol}));
+ const rows=symbols.map((symbol,i)=>({symbol,market:'TWSE',
+  marketDate:'2026-10-13',companyName:i===0?'台積電':'聯發科',
+  sourceRowHash:hash,close:100+i,observedAt:stamp,availableAt:stamp}));
  const rawLedger={schemaVersion:'S2_SOURCE_FIRST_PROSPECTIVE_LEDGER_V0_1',
-  sourceState:'READY',marketDate:'2026-10-13',sourceOrdinarySymbolCount:2,
+  sourceState:'READY',marketDate:'2026-10-13',observedAt:stamp,
+  sourceOrdinarySymbolCount:2,
   observations:rows,
   selectionState:'NOT_EXECUTED_REQUIRED_PIT_HISTORY_AND_CONTINUITY_MISSING'};
  const ledger={...rawLedger,ledgerSha256:await sha256Hex(rawLedger)};
@@ -28,21 +31,25 @@ async function ready({missing=true,qualified=false}={}){
   entryReadiness:qualified&&i===0?'BUY_ELIGIBLE':'BLOCKED',
   factorsHash:qualified&&i===0?hash:null,
   assessmentHash:qualified&&i===0?hash:null,
-  sourceRowHash:hash,
+  sourceRowHash:hash,evaluatedClose:100+i,
   reasonCodes:qualified&&i===0?['TECHNICAL_SUPPORTIVE']:
     missing?['PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED']:[],
  }));
  const incomplete=observations.filter(x=>x.state==='INCOMPLETE').length,
   qualifiedCount=observations.filter(x=>x.state==='QUALIFIED_NOT_SELECTED').length;
  const rawE={schemaVersion:'S2_SOURCE_FIRST_SM_EVALUATION_V0_1',
-  marketDate:'2026-10-13',strategyId:'SHORT_MOMENTUM',
+  marketDate:'2026-10-13',evaluationAtUtc:stamp,
+  sourceLedgerHash:ledger.ledgerSha256,
+  assessorPolicyId:'S2-ASSESSOR-SM-LAUNCH-001',
+  assessorPolicyVersion:'0.1-LAUNCH',strategyId:'SHORT_MOMENTUM',
   strategyVersion:'V0.1-CONTRACT',universeCount:2,
   observations,assessedCount:2-incomplete,incompleteCount:incomplete,
   qualifiedNotSelectedCount:qualifiedCount,selectedCount:null,zeroPickDay:null,
   finalSelectionEnabled:false,ordersEnabled:false};
  const evaluation={...rawE,evaluationHash:await sha256Hex(rawE)};
  const rawA={schemaVersion:'S2_SHARED_OFFICIAL_A1_STAGE1_ADMISSION_V0_1',
-  marketDate:'2026-10-13',currentSourceLedgerHash:ledger.ledgerSha256,
+  marketDate:'2026-10-13',evaluationAtUtc:stamp,
+  currentSourceLedgerHash:ledger.ledgerSha256,
   sourceReceiptHash:hash,independentAuditHash:hash,
   evaluationHash:evaluation.evaluationHash,selectedCount:null,
   zeroPickDay:null,selectionAuthorized:false,durableFrozenDecisionWritten:false};
@@ -94,6 +101,65 @@ test('false frozen or selection flag on bridge fails',async()=>{
  const b=await ready();b.frozenDecisionWritten=true;
  await assert.rejects(()=>gate({bridge:b}),/BOUNDARY_OR_CLOCK_INVALID/);
 });
+
+async function resignStage1(bridge){
+ const e=bridge.evaluation.evaluation;
+ const {evaluationHash,...eBase}=e;
+ e.evaluationHash=await sha256Hex(eBase);
+ bridge.evaluation.evaluationHash=e.evaluationHash;
+ const {admissionHash,evaluation,...aBase}=bridge.evaluation;
+ bridge.evaluation.admissionHash=await sha256Hex(aBase);
+}
+async function resignAll(bridge){
+ const {ledgerSha256,...sourceBase}=bridge.sourceLedger;
+ bridge.sourceLedger.ledgerSha256=await sha256Hex(sourceBase);
+ bridge.evaluation.currentSourceLedgerHash=bridge.sourceLedger.ledgerSha256;
+ bridge.evaluation.evaluation.sourceLedgerHash=bridge.sourceLedger.ledgerSha256;
+ await resignStage1(bridge);
+}
+test('re-signed Stage1 cannot borrow a different official source row hash',async()=>{
+ const b=await ready({missing:false,qualified:true});
+ b.evaluation.evaluation.observations[0].sourceRowHash='b'.repeat(64);
+ await resignStage1(b);
+ await assert.rejects(()=>gate({bridge:b}),/STAGE1_SOURCE_ROW_LINEAGE_INVALID/);
+});
+test('re-signed Stage1 cannot change the issuer, market or closing price',async()=>{
+ for(const [field,value] of [
+  ['companyName','冒用公司名稱'],['market','TPEX'],['evaluatedClose',999]
+ ]){
+  const b=await ready({missing:false,qualified:true});
+  b.evaluation.evaluation.observations[0][field]=value;
+  await resignStage1(b);
+  await assert.rejects(()=>gate({bridge:b}),/STAGE1_SOURCE_ROW_LINEAGE_INVALID/);
+ }
+});
+test('even a re-signed source ledger rejects first-known source clock after assessment',async()=>{
+ const b=await ready();
+ b.sourceLedger.observations[0].availableAt='2026-10-14T01:00:00Z';
+ b.sourceLedger.observations[0].observedAt='2026-10-14T01:00:00Z';
+ await resignAll(b);
+ await assert.rejects(()=>gate({bridge:b}),/SOURCE_ROW_IDENTITY_OR_PIT_INVALID/);
+});
+test('re-signed evaluation cannot use a different assessor policy or future clock',async()=>{
+ for(const [field,value] of [
+  ['assessorPolicyVersion','0.2-UNAPPROVED'],
+  ['evaluationAtUtc','2026-10-14T01:00:00Z'],
+  ['sourceLedgerHash','b'.repeat(64)]
+ ]){
+  const b=await ready();
+  b.evaluation.evaluation[field]=value;
+  if(field==='evaluationAtUtc')b.evaluation.evaluationAtUtc=value;
+  await resignStage1(b);
+  await assert.rejects(()=>gate({bridge:b}),/HASH_LINEAGE_OR_STAGE1_AUTHORITY_INVALID/);
+ }
+});
+test('a re-signed source ledger cannot relabel security while keeping stale assessor',async()=>{
+ const b=await ready({missing:false,qualified:true});
+ b.sourceLedger.observations[0].sourceRowHash='b'.repeat(64);
+ await resignAll(b);
+ await assert.rejects(()=>gate({bridge:b}),/STAGE1_SOURCE_ROW_LINEAGE_INVALID/);
+});
+
 test('scope does not create orders, D1 writes, public raw data or V8 formal changes',async()=>{
  const {readFile}=await import('node:fs/promises');
  const c=await readFile('system2/runtime/daily_selection_readiness_v0_1.mjs','utf8');
