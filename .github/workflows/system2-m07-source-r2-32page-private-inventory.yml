@@ -1,0 +1,45 @@
+name: S2 M07 SOURCE R2 32-page Private Hashed Inventory (BOUNDED READONLY)
+# 32 ListObjectsV2 requests max x 1000 per page, no object content GET, no R2 writes.
+# Protected source-account identity hash and existing bucket exact, no extra billing or grants.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-source-r2-32page-private-inventory.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-m07-source-r2-32page-private-inventory-once
+  cancel-in-progress: false
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Validate 32-page positive and fail-closed metadata scan
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_source_r2_32page_private_hashed_inventory_v0_1.mjs
+          node system2/tests/issue1236_m07_r2_32page_private_hashed_inventory_v0_1.test.mjs
+      - name: Source R2 32-page max list GET no object-body requests
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: node system2/migration/issue1236_m07_source_r2_32page_private_hashed_inventory_v0_1.mjs
+      - name: Archive only hashed private source inventory plus sanitized summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-source-r2-32page-private-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/s2-m07-source-full-inventory-bounded/private-hashed-object-list.jsonl
+            /tmp/s2-m07-source-full-inventory-bounded/sanitized-list-summary.json
+          if-no-files-found: warn
+          retention-days: 30
