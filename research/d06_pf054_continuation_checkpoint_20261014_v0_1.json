@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "D06_PF054_CHECKPOINT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "capturedAtTaipei": "2026-10-14T07:05:00+08:00",
+  "baseMainSha": "269eb6033d6e7fc0cbe0e19ca2ac43210823d09b",
+  "canonicalTrackerBlob": "8c340bacc2f409631c961e23c82fa4c22108f9cc",
+  "canonicalD06MaturityPct": 55.6,
+  "canonicalOverallMaturityPct": 47.9,
+  "canonicalD06Modules": 18,
+  "canonicalCompletedL2Plus": 18,
+  "canonicalRemainingL0L1": 0,
+  "priorResearch": {
+    "branch": "research/d06-pf053-prereg-integrity-20261014",
+    "commit": "81d4c475e5dd0e161255a0f575d86e096e32748f",
+    "blob": "9c200dab9349e08e49cf17d2f728585a52596364",
+    "mergeState": "NOT_IN_MAIN",
+    "priorPF052LocalSha256": "4378656d33c9c09394e6c55ea19889045a7292e08b40d5fb450b48e3dc5a6dca"
+  },
+  "scope": [
+    "D06-05",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-11",
+    "D06-16",
+    "D06-18"
+  ],
+  "roundFocus": "PF054 outcome-blind source admission and conditional negative-control matrix; reconcile PF053 research from stale branch onto current main without rewriting history",
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED",
+  "newIndependentDecisionDates": 0,
+  "newGenuineOOSOutcomes": 0,
+  "actualAPExecution": "UNKNOWN",
+  "trueLendableInventory": "UNKNOWN",
+  "retailStockDateDirectionalFlow": "UNKNOWN",
+  "maturityChanged": false,
+  "preregApproval": "PENDING_D16_00",
+  "status": "RESEARCH_ONLY_PREREG_INTEGRATION_PENDING_REVIEW",
+  "exactNext": "Verify PF053 source file transplanted into fresh main-based research branch, write PF054 audit, verify readback and latest main, seek independent D16/00 prereg review, only then prospective first-known PCF and OOS. For TDCC require next sourceDate > 2026-10-08 and fresh pair-specific cohort; for SBL preserve 15:20±5m fixed five-symbol slot. No retroactive Shadow."
+}
