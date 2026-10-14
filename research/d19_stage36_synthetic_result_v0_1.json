@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "D19_STAGE36_SYNTHETIC_RESULT_V0_1",
+  "newAssertionsPassed": 33,
+  "newAssertionsTotal": 33,
+  "regressions": {
+    "stage29": 75,
+    "stage31": 37,
+    "stage33": 50,
+    "stage34": 20,
+    "stage35": 34
+  },
+  "totalExecuted": 249,
+  "nativeAdapterIntegration": false,
+  "independentOfficialSource": false,
+  "physicalTaiwanReplay": false,
+  "formalCore": "LOCKED",
+  "maturityChanged": false,
+  "officialD19Pct": 41.3,
+  "officialOverallPct": 47.9
+}
