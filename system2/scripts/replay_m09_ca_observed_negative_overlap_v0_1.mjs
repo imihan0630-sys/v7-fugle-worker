@@ -153,7 +153,7 @@ export async function replayM09CaObservedNegativeOverlapV0_1({
    if(preview.has(key)){
     if(!affectedPreview.has(key))affectedPreview.set(key,[]);
     affectedPreview.get(key).push({sourceId:rec.sourceId,eventDate:date,
-     knowledgeTimeClass:'LATE_OBSERVED_SOURCE_NOT_REPROVEN_AT_2026_10_14_FREEZE'});
+     knowledgeTimeClass:'ONLY_PROVEN_PRESENT_AS_OF_CA_SOURCE_CAPTURE_NOT_HISTORICAL_PIT'});
    }
   }
   if(invalidNativeDate>0)denial('FOUR_DIGIT_ACTION_EVENT_DATE_UNPARSEABLE');
