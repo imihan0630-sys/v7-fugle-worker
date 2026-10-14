@@ -56,6 +56,38 @@ OLD = '''        const body=await request.json().catch(()=>({}));
 NEW = '''        const body=await request.json().catch(()=>({}));
         const businessTime=await resolvePinnedScanRequestAuthority(env,body,Date.now());
         return json(await runAfterMarketScan(env,businessTime,{onlyIfMissing:body.onlyIfMissing===true}),200,true);'''
+# Source-anchored two-phase mutation barrier for the existing formal D1 lease.
+# Heavy preflight/selection (and its timeouts) are retryable only BEFORE this
+# durable marker. Once any formal config mutation could have begun, a later
+# invocation is fail-closed even after an edge CPU-kill bypassed JS catch.
+LEDGER_GUARD_OLD = '''        if((lease.snapshot?.status==="SUCCESS" && Boolean(lease.snapshot.testMode)===isTestMode(env)) || (latest?.scanDate===marketDate && Boolean(latest.dailyReport?.simulated)===isTestMode(env))) return {skipped:true,reason:"ALREADY_SCANNED",scanDate:marketDate,noSelectionOrExternalWrite:true};'''
+LEDGER_GUARD_NEW = LEDGER_GUARD_OLD + '''
+        if(lease.snapshot?.status==="FORMAL_COMMIT_STARTED")
+          return {skipped:true,reason:"AMBIGUOUS_FORMAL_COMMIT_REPLAY_FORBIDDEN",
+            requestedDate,previousCommitAt:lease.snapshot.commitAt||null,
+            noSelectionOrExternalWrite:true,noPlanChanges:true,noPush:true};
+'''
+CORE_CALL_OLD = '''    const summary = await runAfterMarketScanCore(env, scheduledTime, options);'''
+CORE_CALL_NEW = '''    const coreOptions=options.dryRun===true?options:{...options,
+      onBeforeFormalMutation:async (marketDate)=>{
+        if(!lease) throw new Error("FORMAL_D1_LEASE_MISSING_BEFORE_MUTATION");
+        await persistSignalStateLease(env,lockKey,lease.token,{
+          status:"FORMAL_COMMIT_STARTED",requestedDate,scanDate:marketDate,
+          commitAt:new Date().toISOString(),testMode:isTestMode(env)
+        });
+      }
+    };
+    const summary = await runAfterMarketScanCore(env, scheduledTime, coreOptions);'''
+MUTATION_OLD = '''  if (!dryRun) {
+    // 7.4.5：完整 1,800+ 檔 × 65日 history 已由 D1 保存，不能再整包塞進單一 KV value。'''
+MUTATION_NEW = '''  if (!dryRun) {
+    // Any prior CPU kill after this durable D1 marker makes a subsequent
+    // retry ambiguous. Never overwrite existing plans or replay push blindly.
+    if(typeof options.onBeforeFormalMutation!=="function")
+      throw new Error("FORMAL_COMMIT_MARKER_REQUIRED");
+    await options.onBeforeFormalMutation(marketDate);
+    // 7.4.5：完整 1,800+ 檔 × 65日 history 已由 D1 保存，不能再整包塞進單一 KV value。'''
+
 CAPABILITY = '''    // Exact authenticated runtime capability handshake, no business write.
     if (url.pathname === "/api/scan/session-date-capability") {
       if (!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN_REQUIRED"},401,true);
@@ -78,6 +110,13 @@ def patch(text):
         raise RuntimeError("ORIGINAL_SCAN_ENDPOINT_ANCHOR_DRIFT")
     if text.count('const LIVE_STALE_SECONDS = 90;')!=1:
         raise RuntimeError("ORIGINAL_90_SECOND_QUOTE_CONTRACT_DRIFT")
+    for original,replacement in [
+        (LEDGER_GUARD_OLD,LEDGER_GUARD_NEW),
+        (CORE_CALL_OLD,CORE_CALL_NEW),
+        (MUTATION_OLD,MUTATION_NEW)
+    ]:
+        if text.count(original)!=1: raise RuntimeError("ORIGINAL_FORMAL_MUTATION_BARRIER_ANCHOR_DRIFT")
+        text=text.replace(original,replacement,1)
     text=text.replace("function isHistoryWarmupSchedule(",HELPER+"function isHistoryWarmupSchedule(",1)
     text=text.replace(OLD,NEW,1)
     text=text.replace('    if (url.pathname === "/api/scan") {',
