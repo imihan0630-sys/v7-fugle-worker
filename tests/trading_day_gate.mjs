@@ -17,11 +17,15 @@ if(override){
     throw new Error('manual data-only date exceeds seven-day weekend/holiday recovery window');
 }
 const date=override||context.marketDate;
-await api.loadTradingCalendar({},Number(date.slice(0,4)));
-const tradingDay=api.isTradingDate(date);
-// Never let a 17:55/18:05/18:20/23:25 job, delayed past local midnight,
-// sync the next unfinished market session or retry the prior date blindly.
-const proceed=tradingDay&&!context.overnightSourceSyncSkip;
+// Fail before even fetching the official calendar when an evening source-sync
+// schedule fires before its nominal local start. Leave tradingDay UNKNOWN,
+// rather than falsely classifying a real trading day as a holiday.
+let tradingDay=null;
+if(!context.overnightSourceSyncSkip){
+  await api.loadTradingCalendar({},Number(date.slice(0,4)));
+  tradingDay=api.isTradingDate(date);
+}
+const proceed=tradingDay===true;
 if(process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT,
   `proceed=${proceed}\nmarket_date=${date}\ncross_midnight_fallback=${context.crossMidnightFallback}\n`);
 console.log(JSON.stringify({date,tradingDay,proceed,triggerSchedule:triggerSchedule||null,
