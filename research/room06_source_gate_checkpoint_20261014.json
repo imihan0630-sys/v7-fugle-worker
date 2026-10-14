@@ -1,0 +1,8 @@
+{
+  "room": "06",
+  "receipt": "research/room06_d07_34_d08_03_source_gate_receipt_20261014_v0_1.json",
+  "D07_34": "L2",
+  "D08_03": "L3",
+  "next": "Verify original MOPS dividend vintages and a genuine correction; locate 2026 A6 failing date/stat/hash using a read-only bounded probe; preserve existing packs; keep outcomes closed.",
+  "formalCore": "LOCKED"
+}
