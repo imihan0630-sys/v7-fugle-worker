@@ -85,7 +85,7 @@ export function validateProviderRunList(v,expectedUtcDay=null){
  if(!v||!Array.isArray(v.workflow_runs)||!Number.isInteger(v.total_count)||v.total_count<0)throw Error("GITHUB_RUN_LIST_MALFORMED");
  if(v.total_count>100||v.workflow_runs.length!==v.total_count)throw Error("GITHUB_RUN_LIST_PAGINATION_INCOMPLETE");
  if(v.workflow_runs.some(r=>!Number.isSafeInteger(r.id)||typeof r.created_at!=="string"||typeof r.head_branch!=="string"||typeof r.event!=="string"||typeof r.status!=="string"||
-   !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$/.test(r.created_at)||
+   !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/.test(r.created_at)||
    !Number.isFinite(Date.parse(r.created_at))))throw Error("GITHUB_RUN_DATA_INCOMPLETE");
  // The GitHub REST endpoint was explicitly filtered to one UTC date. If the
  // original result violates that selector, DO NOT silently discard the run.
