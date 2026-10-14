@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {readFile} from "node:fs/promises";
-import {decideDestinationD1DayGuard,validateProviderRunList,inspectRealGuard,WORKFLOWS,DEST_WRITER_LOCK} from "../scripts/dest_d1_writer_run_interlock_v0_1.mjs";
+import {decideDestinationD1DayGuard,validateProviderRunList,inspectRealGuard,WORKFLOWS,DEST_WRITER_LOCK,assessUtcDayTiming,UTC_RESET_GUARD_MINUTES} from "../scripts/dest_d1_writer_run_interlock_v0_1.mjs";
 const utcDay="2026-10-14",prevDay="2026-10-13",repo="imihan0630-sys/v7-fugle-worker";
 const makeRun=(id,time,extra={})=>({id,created_at:time,head_branch:"main",event:"schedule",status:"completed",conclusion:"success",...extra});
 function okResult(day,otherRuns=[],total=otherRuns.length){
@@ -84,6 +84,71 @@ test("previous UTC day 22Z potential cross-midnight is blocked, older benign run
  const a=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[],previousRuns:[makeRun(12,prevDay+"T11:00:00.000Z")]});
  assert.equal(a.allowed,true);
 });
+
+test("fail closed within writer maximum job duration plus 15m of UTC reset",async()=>{
+ const plans=[
+  ["RAW_COPY",75,60],
+  ["DAILY_DIAGNOSTIC",40,25],
+  ["RECENT_A1_WARMUP",40,25],
+  ["MANUAL_SCHEMA_APPLY",30,15]
+ ];
+ for(const [id,required,timeout] of plans){
+  assert.equal(UTC_RESET_GUARD_MINUTES[id],required);
+  assert.equal(required,timeout+15);
+  const nearly=new Date(Date.parse(utcDay+"T00:00:00.000Z")+86400000-(required-1)*60000);
+  const safe=new Date(Date.parse(utcDay+"T00:00:00.000Z")+86400000-(required+2)*60000);
+  assert.equal(assessUtcDayTiming(id,nearly).allowed,false,id);
+  assert.equal(assessUtcDayTiming(id,safe).allowed,true,id);
+  let calls=0;
+  const d=await inspectRealGuard({writerId:id,now:nearly,repo,token:"GH_VALID",
+    fetchImpl:async()=>{calls++;throw Error("MUST_NOT_QUERY");}});
+  assert.equal(d.allowed,false);
+  assert.equal(d.providerQueried,false);
+  assert.equal(d.utcResetTiming.minRequiredSafetyMinutes,required);
+  assert.deepEqual(d.reasons,["UTC_RESET_WITHIN_WRITER_MAX_DURATION"]);
+  assert.equal(calls,0);
+ }
+});
+test("reject malformed UTC day and non-UTC/mismatched provider timestamps",async()=>{
+ const run=makeRun(501,"2026-10-14T02:45:00.000Z");
+ assert.throws(()=>decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay:"2026-02-30",currentRuns:[],previousRuns:[]}),/BAD_DEST_DAY_INTERLOCK_INPUT/);
+ assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{...run,created_at:"2026-10-14T99:99:99Z"}]},utcDay),/INCOMPLETE/);
+ assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{...run,created_at:"2026-10-13T23:45:00.000Z"}]},utcDay),/DATE_FILTER_INTEGRITY_FAILED/);
+ assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{...run,created_at:"2026-10-14T02:45:00+08:00"}]},utcDay),/INCOMPLETE/);
+ let calls=0;
+ await assert.rejects(()=>inspectRealGuard({writerId:"RAW_COPY",now:new Date(utcDay+"T10:00:00.000Z"),repo,token:"GH_TOKEN",
+  fetchImpl:async()=>{calls++;return okResult(utcDay,[{...run,created_at:"2026-10-13T23:50:00.000Z"}]);}}),/DATE_FILTER_INTEGRITY_FAILED/);
+ assert.ok(calls>0);
+});
+test("preflight provider request straddling UTC boundary never grants stale quota day",async()=>{
+ const now=new Date(utcDay+"T22:00:00.000Z");
+ let calls=0;
+ const r=await inspectRealGuard({writerId:"RAW_COPY",now,repo,token:"GH_TOKEN",
+  fetchImpl:async()=>{calls++;return okResult(utcDay,[]);},
+  afterProviderRead:()=>new Date("2026-10-15T00:00:01.000Z")});
+ assert.equal(calls,6);
+ assert.equal(r.allowed,false);
+ assert.equal(r.providerQueried,true);
+ assert.ok(r.reasons.includes("UTC_RESET_DURING_OR_TOO_SOON_AFTER_PROVIDER_READ"));
+ assert.equal(r.utcResetTiming.utcDay,"2026-10-15");
+});
+test("boundary intervals stay pinned to actual four GitHub job timeouts",async()=>{
+ const paths={
+  RAW_COPY:["system2-owner-override-raw-d1-copy-20261012.yml","destination_copy"],
+  DAILY_DIAGNOSTIC:["system2-daily-shadow-diagnostic.yml","diagnostic"],
+  RECENT_A1_WARMUP:["system2-recent-a1-hot-history-warmup.yml","warmup"],
+  MANUAL_SCHEMA_APPLY:["system2-destination-schema-only-manual.yml","owner-schema-only"]
+ };
+ for(const [id,[file,job]] of Object.entries(paths)){
+  const source=await readFile(new URL("../../.github/workflows/"+file,import.meta.url),"utf8");
+  const start=source.indexOf("  "+job+":\n");
+  assert.ok(start>=0,"no job "+id);
+  const match=source.slice(start).match(/^    timeout-minutes:\s*(\d+)/m);
+  assert.ok(match,"missing timeout "+id);
+  assert.equal(UTC_RESET_GUARD_MINUTES[id],Number(match[1])+15);
+ }
+});
+
 test("REST integrity and full pagination are required",()=>{
  assert.throws(()=>validateProviderRunList({total_count:101,workflow_runs:[]}),/PAGINATION_INCOMPLETE/);
  assert.throws(()=>validateProviderRunList({total_count:4,workflow_runs:[makeRun(1,utcDay+"T01:00:00.000Z")]}),/PAGINATION_INCOMPLETE/);
