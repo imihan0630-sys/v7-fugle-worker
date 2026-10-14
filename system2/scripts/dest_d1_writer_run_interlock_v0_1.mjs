@@ -10,7 +10,8 @@ export const DEST_WRITER_LOCK="s2-dest-d1-historical-and-diagnostic-writer";
 export const WORKFLOWS=Object.freeze({
  RAW_COPY:"system2-owner-override-raw-d1-copy-20261012.yml",
  DAILY_DIAGNOSTIC:"system2-daily-shadow-diagnostic.yml",
- RECENT_A1_WARMUP:"system2-recent-a1-hot-history-warmup.yml"
+ RECENT_A1_WARMUP:"system2-recent-a1-hot-history-warmup.yml",
+ MANUAL_SCHEMA_APPLY:"system2-destination-schema-only-manual.yml"
 });
 const validDate=s=>/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+"T00:00:00.000Z"));
 const isoUtcDay=d=>d.toISOString().slice(0,10);
@@ -55,7 +56,8 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
    allowed:reasons.length===0,reasons,
    nonCloudflareBudgetAssertion:true,atomicCloudflareLedgerProven:false,
    registeredAutomatedDestWriterCount:3,
-   otherManualDestinationWriterFlowsNotCovered:true,
+   registeredOwnerManualSchemaWriterCount:1,
+   otherUnregisteredDestinationWritersNotCovered:true,
    excludesOnlyTwoRegisteredDestinationWriters:false
  });
 }

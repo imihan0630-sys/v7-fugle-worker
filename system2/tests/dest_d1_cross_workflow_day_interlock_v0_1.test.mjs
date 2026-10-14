@@ -11,6 +11,7 @@ test("all three auto destination workflows are explicit, not source V8",()=>{
  assert.equal(WORKFLOWS.RAW_COPY,"system2-owner-override-raw-d1-copy-20261012.yml");
  assert.equal(WORKFLOWS.DAILY_DIAGNOSTIC,"system2-daily-shadow-diagnostic.yml");
  assert.equal(WORKFLOWS.RECENT_A1_WARMUP,"system2-recent-a1-hot-history-warmup.yml");
+ assert.equal(WORKFLOWS.MANUAL_SCHEMA_APPLY,"system2-destination-schema-only-manual.yml");
  assert.equal(DEST_WRITER_LOCK,"s2-dest-d1-historical-and-diagnostic-writer");
 });
 test("no-other-writer preflight can permit check, but cannot authorize Cloudflare D1 charge",()=>{
@@ -19,11 +20,12 @@ test("no-other-writer preflight can permit check, but cannot authorize Cloudflar
  assert.equal(d.atomicCloudflareLedgerProven,false);
  assert.equal(d.nonCloudflareBudgetAssertion,true);
  assert.equal(d.registeredAutomatedDestWriterCount,3);
- assert.equal(d.otherManualDestinationWriterFlowsNotCovered,true);
+ assert.equal(d.registeredOwnerManualSchemaWriterCount,1);
+ assert.equal(d.otherUnregisteredDestinationWritersNotCovered,true);
  assert.equal(d.excludesOnlyTwoRegisteredDestinationWriters,false);
 });
 test("competitor same-UTC-day ANY original run blocks even skipped/queued, fail closed",()=>{
- for(const writerId of ["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"]){
+ for(const writerId of ["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP","MANUAL_SCHEMA_APPLY"]){
  for(const status of ["completed","in_progress","queued"]){
   const d=decideDestinationD1DayGuard({writerId,utcDay,currentRuns:[
    makeRun(200,"2026-10-14T02:30:00.000Z",{status,conclusion:status==="completed"?"skipped":null})
@@ -62,6 +64,16 @@ test("completed+skipped push from push-disabled warmup is inert, never queued or
   assert.equal(result.allowed,false,JSON.stringify(changes));
  }
 });
+test("manual schema APPLY_ONCE blocks all auto writers on same UTC-day",()=>{
+ const sample=makeRun(401,"2026-10-14T04:10:00.000Z",{originWriterId:"MANUAL_SCHEMA_APPLY",event:"workflow_dispatch",status:"completed"});
+ for(const writerId of ["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"]){
+  const result=decideDestinationD1DayGuard({writerId,utcDay,currentRuns:[sample],previousRuns:[]});
+  assert.equal(result.allowed,false);
+  assert.equal(result.sameDayOtherRunCount,1);
+ }
+ const raw=makeRun(402,"2026-10-14T03:05:00.000Z",{originWriterId:"RAW_COPY"});
+ assert.equal(decideDestinationD1DayGuard({writerId:"MANUAL_SCHEMA_APPLY",utcDay,currentRuns:[raw],previousRuns:[]}).allowed,false);
+});
 test("malformed run with no event/status is not valid upstream attestation",()=>{
  assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{id:1,created_at:utcDay+"T00:00:00Z",head_branch:"main"}]}),/INCOMPLETE/);
 });
@@ -87,10 +99,10 @@ test("authenticated provider GET_ONLY origin and next-day query, no Cloudflare t
    return okResult(day,day===utcDay&&url.includes("daily-shadow-diagnostic")?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
   }});
  assert.equal(r.allowed,false);assert.equal(r.sameDayOtherRunCount,1);
- assert.equal(requested.length,4);
- for(const x of requested){assert.match(x.url,/system2-(daily-shadow-diagnostic|recent-a1-hot-history-warmup).yml\/runs/);
+ assert.equal(requested.length,6);
+ for(const x of requested){assert.match(x.url,/system2-(daily-shadow-diagnostic|recent-a1-hot-history-warmup|destination-schema-only-manual).yml\/runs/);
   assert.equal(x.method,"GET");assert.equal(x.authorization,"Bearer TEST_GITHUB_TOKEN");}
- assert.deepEqual(requested.map(x=>x.url.split("created=")[1]),[utcDay,prevDay,utcDay,prevDay]);
+ assert.deepEqual(requested.map(x=>x.url.split("created=")[1]),[utcDay,prevDay,utcDay,prevDay,utcDay,prevDay]);
 });
 test("any GitHub read 403/network/error is a fatal guard error not presumed permission",async()=>{
  const args={writerId:"DAILY_DIAGNOSTIC",now:new Date(utcDay+"T02:31:00.000Z"),repo,token:"TEST_GITHUB_TOKEN"};
@@ -102,8 +114,9 @@ test("both real workflow jobs serialize identically BEFORE any D1/query/write st
  const raw=await readFile(new URL("../../.github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",import.meta.url),"utf8");
  const diag=await readFile(new URL("../../.github/workflows/system2-daily-shadow-diagnostic.yml",import.meta.url),"utf8");
  const warmup=await readFile(new URL("../../.github/workflows/system2-recent-a1-hot-history-warmup.yml",import.meta.url),"utf8");
+ const manual=await readFile(new URL("../../.github/workflows/system2-destination-schema-only-manual.yml",import.meta.url),"utf8");
  const registry=JSON.parse(await readFile(new URL("../config/dest_d1_cross_workflow_writer_interlock_v0_1.json",import.meta.url),"utf8"));
- assert.deepEqual(registry.writers.map(x=>x.id),["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"]);
+ assert.deepEqual(registry.writers.map(x=>x.id),["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP","MANUAL_SCHEMA_APPLY"]);
  assert.equal(registry.sharedJobConcurrencyGroup,DEST_WRITER_LOCK);
  assert.equal(registry.atomicD1LeaseOrReservationAccepted,false);
  for(const [id,w] of [["RAW_COPY",raw],["DAILY_DIAGNOSTIC",diag],["RECENT_A1_WARMUP",warmup]]){
@@ -119,4 +132,13 @@ test("both real workflow jobs serialize identically BEFORE any D1/query/write st
  assert.match(warmup,/if: github\.ref == 'refs\/heads\/main' && github\.event_name != 'push'/);
  assert.match(warmup,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
  assert.match(raw,/name: Do owner-authorized target-only RAW_A1 transport under 80k billed row limit\n        if: steps\.day_interlock\.outputs\.allowed == 'true'/);
+ assert.match(manual,/  owner-schema-only:\n    concurrency:\n      group: s2-dest-d1-historical-and-diagnostic-writer\n      cancel-in-progress: false/);
+ assert.match(manual,/if: inputs\.action == 'APPLY_ONCE'\n        id: day_interlock/);
+ assert.match(manual,/S2_DEST_WRITER_CLASS: MANUAL_SCHEMA_APPLY/);
+ assert.match(manual,/name: Verify target or apply schema exactly once\n        if: inputs\.action == 'VERIFY_ONLY' \|\| steps\.day_interlock\.outputs\.allowed == 'true'/);
+ assert.ok(manual.indexOf("node system2/scripts/dest_d1_writer_run_interlock_v0_1.mjs")<manual.indexOf("secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN"));
+ assert.match(manual,/s2-dest-d1-writer-day-interlock\/receipt\.json/);
+ assert.equal(registry.writers.at(-1).requiresExplicitOwnerWorkflowDispatch,true);
+ assert.equal(registry.writers.at(-1).writeOnlyWhenInputAction,"APPLY_ONCE");
+ assert.equal(registry.accountWideWriterCensusComplete,false);
 });

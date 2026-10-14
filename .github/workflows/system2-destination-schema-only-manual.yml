@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: system2-new-account-schema-only-single-run
@@ -33,6 +34,9 @@ concurrency:
 
 jobs:
   owner-schema-only:
+    concurrency:
+      group: s2-dest-d1-historical-and-diagnostic-writer
+      cancel-in-progress: false
     if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: system2-schema-only
@@ -61,9 +65,17 @@ jobs:
             APPLY_ONCE) [[ "$PLAN_HASH" =~ ^[a-f0-9]{64}$ ]] ;;
             *) exit 1 ;;
           esac
+      - name: Fail-closed destination D1 same UTC-day exclusion for APPLY_ONCE only
+        if: inputs.action == 'APPLY_ONCE'
+        id: day_interlock
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          S2_DEST_WRITER_CLASS: MANUAL_SCHEMA_APPLY
+        run: node system2/scripts/dest_d1_writer_run_interlock_v0_1.mjs
       - name: Mock-only dry-run protections (zero Cloudflare calls)
         run: node system2/tests/destination_schema_only_manual_executor_v0_1.test.mjs
       - name: Verify target or apply schema exactly once
+        if: inputs.action == 'VERIFY_ONLY' || steps.day_interlock.outputs.allowed == 'true'
         env:
           S2_SCHEMA_ACTION: ${{ inputs.action }}
           S2_SCHEMA_CONFIRM: ${{ inputs.confirm }}
@@ -77,7 +89,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: s2-dest-schema-only-${{ github.run_id }}
-          path: /tmp/s2-target-schema-only/sanitized-receipt.json
+          path: |
+            /tmp/s2-target-schema-only/sanitized-receipt.json
+            /tmp/s2-dest-d1-writer-day-interlock/receipt.json
           if-no-files-found: warn
           retention-days: 30
       - name: Protect System 1 production manifests

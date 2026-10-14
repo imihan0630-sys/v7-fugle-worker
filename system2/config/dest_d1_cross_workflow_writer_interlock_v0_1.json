@@ -28,6 +28,16 @@
       "historicalMigrationOnly": false,
       "providerReadPermission": "actions:read",
       "scheduledTimeTaipei": "16:30"
+    },
+    {
+      "id": "MANUAL_SCHEMA_APPLY",
+      "workflow": ".github/workflows/system2-destination-schema-only-manual.yml",
+      "job": "owner-schema-only",
+      "historicalMigrationOnly": false,
+      "requiresExplicitOwnerWorkflowDispatch": true,
+      "writeOnlyWhenInputAction": "APPLY_ONCE",
+      "verifyOnlyRemainsReadOnly": true,
+      "providerReadPermission": "actions:read"
     }
   ],
   "guards": [
@@ -42,15 +52,11 @@
   "d1AnalyticsFreshnessAbsoluteProof": false,
   "readOnlyGitHubPreflight": true,
   "authorizesConcurrentWrites": false,
-  "note": "D1 hourly GH mutex+UTC-day query covers RAW_COPY, DAILY_DIAGNOSTIC and RECENT_A1_WARMUP. Other manual schema writers and not-yet-inventoried destination Cloudflare invocations remain unaccepted; no atomic D1 lease proven.",
-  "coveredDestinationWriterCount": 3,
+  "note": "Three scheduled destination writers and owner-only manual schema APPLY_ONCE share a job concurrency lock and GH provider run-day exclusion. Any manual schema workflow_dispatch run may conservatively defer an auto-writer even when VERIFY_ONLY; no actual Cloudflare-native atomic account quota lease; unknown writers remain.",
+  "coveredDestinationWriterCount": 4,
   "accountWideWriterCensusComplete": false,
-  "nonAutomatedDestWriteCapableWorkflowsExcluded": [
-    {
-      "path": ".github/workflows/system2-destination-schema-only-manual.yml",
-      "intent": "EXPLICIT_OWNER_DISPATCH_SCHEMA_ONLY",
-      "reason": "May APPLY_ONCE with exact owner confirmation; no scheduled auto writes; not an account-wide D1 atomic lease"
-    }
-  ],
-  "providerActualAccountWriterCensusIndependentlyAccepted": false
+  "nonAutomatedDestWriteCapableWorkflowsExcluded": [],
+  "providerActualAccountWriterCensusIndependentlyAccepted": false,
+  "ownerManualSchemaApplyProtectedBySameDayRunCensus": true,
+  "manualVerifyOnlyMayConservativelyBlockOtherWritersInSameUTCDate": true
 }
