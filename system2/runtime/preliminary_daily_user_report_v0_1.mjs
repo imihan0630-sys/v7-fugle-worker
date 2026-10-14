@@ -19,7 +19,9 @@ export async function buildPreliminaryUserReportV0_1({receipt}={}){
     receipt.historicalBacktestCertified!==false||
     receipt.frozenWritten!==false||receipt.orderAuthorized!==false||
     receipt.pushAuthorized!==false||
-    receipt.ordinaryEquityOnlyUniverseCertified!==false||
+    receipt.ordinaryEquityOnlyUniverseCertified===true||
+    (receipt.state==='PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'&&
+     receipt.ordinaryEquityOnlyUniverseCertified!==false)||
     !Array.isArray(receipt.watchlist))
   fail('FORMAL_OR_SECURITY_CLASS_PROMOTION');
  const full=receipt.state==='PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION';
