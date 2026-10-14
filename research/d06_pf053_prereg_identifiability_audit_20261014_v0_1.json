@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "D06_PF053_PREREG_IDENTIFIABILITY_AUDIT_V0_1",
+  "researchOnly": true,
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "primaryModule": "D06-16",
+  "basedOnMainSha": "8007400c096009101da3b9a33f80d44091c6bd24",
+  "sourceInputs": [
+    {
+      "type": "canonical_tracker",
+      "path": "research/stock_market_learning_tracker_v0_1.json",
+      "D06MaturityPct": 55.6,
+      "globalMaturityPct": 47.9
+    },
+    {
+      "type": "prior_local_unmerged",
+      "path": "D06_PF052_20261013_local_research.json",
+      "sha256": "4378656d33c9c09394e6c55ea19889045a7292e08b40d5fb450b48e3dc5a6dca",
+      "trust": "secondary_local_not_issuer_raw"
+    }
+  ],
+  "status": "PREREG_CANDIDATE_AUDITED_OUTCOMES_CLOSED",
+  "hypothesis": "A strictly predecision, complete-basket modeled primary-market exposure may add residual five-session price information beyond a fixed PIT baseline; effect sign unspecified.",
+  "evidence": "PF052 pre-outcome candidate specification exists locally; this audit refines identifiability and falsification, not market outcome evidence.",
+  "audit": [
+    {
+      "id": "G01",
+      "risk": "reported unit change may include operational adjustments, not pure net creations",
+      "support": "issuer outstanding-unit observations and date-effective PCF can be observed",
+      "counter": "T-2 review reversals, dual-currency conversions, unit actions, gross creations and redemptions not separately identified",
+      "alternative": "administrative unit changes",
+      "failure": "component of unit change not source-verified",
+      "action": "label modeled basket as conditional proxy; prohibit actual-creation and actual-stock-trade claims"
+    },
+    {
+      "id": "G02",
+      "risk": "incomplete basket changes exposure and study population",
+      "support": "issuer PCF describes possible in-kind delivery",
+      "counter": "web preview rows do not prove full component coverage; cash substitutes differ by security",
+      "alternative": "partial display, cash-only mechanics, data extraction truncation",
+      "failure": "row count, completeness and cash-substitution flags unverified",
+      "action": "mark whole fund-date unusable for full-basket factor; preserve UNKNOWN rather than zero"
+    },
+    {
+      "id": "G03",
+      "risk": "20-session liquidity denominator introduces post-cutoff leakage",
+      "support": "lagged volume can scale basket exposure",
+      "counter": "current-session volume, split changes, zero-volume halts and incomplete sessions contaminate denominator",
+      "alternative": "turnover proxy and fund size",
+      "failure": "20 prior completed session receipts missing or zero",
+      "action": "compute only on completed pre-cutoff sessions, date-effective security identities and corporate-action basis; otherwise UNKNOWN"
+    },
+    {
+      "id": "G04",
+      "risk": "forward-return execution window may be non-tradable",
+      "support": "first executable open is a reproducible hypothetical entry clock",
+      "counter": "halts, price limits, suspensions, delistings, zero volume or missing open cannot be filled as a normal trade",
+      "alternative": "close-to-close descriptive return is not executable return",
+      "failure": "tradability or five-session exit unverified",
+      "action": "separate descriptive outcome from executable outcome, preserve censored/UNKNOWN and test selection effects"
+    },
+    {
+      "id": "G05",
+      "risk": "same date multiple funds and overlapping five-session outcomes inflate independent N",
+      "support": "fund-date and stock-date cross-section informative",
+      "counter": "common index and same calendar return windows produce correlated errors",
+      "alternative": "market or index event drives both",
+      "failure": "date cluster, chronological holdout and overlap purge not implemented",
+      "action": "independent unit is decision-date cluster; purge every overlapping label interval, apply embargo only after exact calendar alignment"
+    },
+    {
+      "id": "G06",
+      "risk": "fund-label shuffle is not an exchangeable negative control",
+      "support": "permutation can diagnose accidental memorization",
+      "counter": "fund identity predicts sector, holdings, size and basket composition",
+      "alternative": "index membership or fund style",
+      "failure": "unconditional shuffling changes data-generating process",
+      "action": "use conditional placebo within date, sector, size/liquidity and eligible basket support only after independent review"
+    },
+    {
+      "id": "G07",
+      "risk": "complete-case PCF selection can bias cross-fund inference",
+      "support": "fully sourced fund dates allow reproducible analysis",
+      "counter": "missing PCF is related to issuer, fund type, trading activity or reporting process",
+      "alternative": "fund family coverage artifact",
+      "failure": "coverage table and attrition strata missing",
+      "action": "pre-register missingness and support by fund/date/type; do not claim whole-market generalization"
+    },
+    {
+      "id": "G08",
+      "risk": "duplicate event roots masquerade as independent factors",
+      "support": "ETF flows, index events, institutional flow, borrowing and crowding may be linked",
+      "counter": "single event can create multiple receipts and borrow/hedge legs",
+      "alternative": "inventory finance or passive rebalance",
+      "failure": "primitive parent identity absent",
+      "action": "one event root, many consumers; residual comparison after D11-14 and D06-11 shared-parent controls"
+    },
+    {
+      "id": "G09",
+      "risk": "source first-known time and dynamic issuer page conflict",
+      "support": "capturedAt records actual retrieval",
+      "counter": "web page date alone cannot prove predecision availability; historical PF048-PF050 issuer-version conflicts unresolved",
+      "alternative": "cache, selector, dynamic response, true revision",
+      "failure": "immutable raw, request parameters, source version and independent firstKnownAt absent",
+      "action": "block historical predecision eligibility; append vintages, never backfill"
+    },
+    {
+      "id": "G10",
+      "risk": "transaction costs and true borrow utilization misidentified",
+      "support": "30/60/100 bp stress is a bounded hypothetical sensitivity",
+      "counter": "actual AP stock executions and full lendable inventory not observed",
+      "alternative": "existing inventory, borrow, cash substitution and hedging",
+      "failure": "actual fills/depth and lendable denominator unavailable",
+      "action": "report hypothetical-cost sensitivity only; actual execution and true utilization UNKNOWN"
+    }
+  ],
+  "validation": {
+    "primaryFeature": "signed conditional modeled PCF basket exposure over lagged 20-session ADV",
+    "primaryOutcome": "first verified executable open to fifth completed session close",
+    "baseline": "fixed predecision market/industry/size/liquidity/volatility/momentum/turnover",
+    "comparison": "identical-support baseline versus baseline plus single feature",
+    "direction": "two-sided unspecified",
+    "independentUnit": "decision date",
+    "controls": "chronological holdout, label-overlap purge, conditional negative control, attrition table, date clustering, multiple-testing ledger",
+    "requiredApproval": "D16/00 review before outcome opening",
+    "observedOOS": 0,
+    "formalPromotion": "NONE"
+  },
+  "relatedModules": [
+    "D06-05",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-11",
+    "D06-16",
+    "D06-18"
+  ],
+  "statusOfUnavailableEvidence": {
+    "completeIssuerPcf": "UNKNOWN",
+    "verifiedFirstKnownAt": "UNKNOWN",
+    "actualApStockExecution": "UNKNOWN",
+    "trueBorrowUtilization": "UNKNOWN",
+    "genuineOOS": "UNKNOWN"
+  },
+  "maturity": {
+    "D06": 55.6,
+    "global": 47.9,
+    "level": "L3",
+    "moduleMaturityPct": 60,
+    "changed": false
+  },
+  "next": "Read latest main and this checkpoint, obtain immutable complete PCF and source clock; submit PF052/PF053 prereg to D16/00; gather genuinely new independent dates; do not open outcomes until prereg accepted and PIT support frozen.",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
