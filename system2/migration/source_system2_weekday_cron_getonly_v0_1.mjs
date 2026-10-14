@@ -55,7 +55,7 @@ export function assessG6WeekdayCronReceiptV0_1(receipt,{observedAtUtc,deployQuar
  });
 }
 export async function executeG6WeekdayCronReadonlyV0_1({
- accountId,token,now=()=>new Date().toISOString(),
+ accountId,token,workerToken,now=()=>new Date().toISOString(),
  sourceInspect=sourceCronPauseV0_1,readGuard=async()=>{
   const base=resolve(fileURLToPath(new URL("../../",import.meta.url)));
   const q=JSON.parse(await readFile(resolve(base,"system2/config/source_account_d1_writer_quarantine_v0_1.json"),"utf8"));
@@ -64,7 +64,7 @@ export async function executeG6WeekdayCronReadonlyV0_1({
     /deploy:\s*\n(?:[^\n]*\n){0,8}\s*if:\s*\$\{\{\s*false\s*\}\}/.test(y);
  }
 }={}){
- if(!/^[a-f0-9]{32}$/i.test(accountId||"")||typeof token!=="string"||!token)
+ if(!/^[a-f0-9]{32}$/i.test(accountId||"")||typeof token!=="string"||!token||typeof workerToken!=="string"||!workerToken)
    fail("EXISTING_SOURCE_ENV_CREDENTIALS_MISSING");
  const guard=await readGuard();
  // Fail before all Cloudflare GET if old deploy quarantine is unknown or inactive.
@@ -72,7 +72,7 @@ export async function executeG6WeekdayCronReadonlyV0_1({
  const before=now();
  if(!strictUtc(before)||Date.parse(before)<Date.parse(firstCompletedWeekdayWindowUtc))
    fail("NO_COMPLETED_WEEKDAY_CRON_WINDOW_YET");
- const receipt=await sourceInspect({accountId,token,workersToken:token,mode:"INSPECT"});
+ const receipt=await sourceInspect({accountId,token,workersToken:workerToken,mode:"INSPECT"});
  const after=now();
  if(Date.parse(after)<Date.parse(before)||Date.parse(after)-Date.parse(before)>8*60000)
    fail("OBSERVATION_WINDOW_EXCEEDED");
@@ -81,7 +81,8 @@ export async function executeG6WeekdayCronReadonlyV0_1({
 if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta.url))){
  try{
   const result=await executeG6WeekdayCronReadonlyV0_1({
-   accountId:process.env.CLOUDFLARE_ACCOUNT_ID,token:process.env.SYSTEM2_CLOUDFLARE_API_TOKEN
+   accountId:process.env.CLOUDFLARE_ACCOUNT_ID,token:process.env.SYSTEM2_CLOUDFLARE_API_TOKEN,
+   workerToken:process.env.CLOUDFLARE_API_TOKEN
   });
   await mkdir(outputDir,{recursive:true});
   await writeFile(resolve(outputDir,"receipt.json"),JSON.stringify(result,null,2)+"\n",{flag:"wx",mode:0o600});

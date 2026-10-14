@@ -54,10 +54,10 @@ test("noncanonical observation timestamp fails closed",()=>{
 });
 test("execution uses ONLY INSPECT, passes source credential in process, and excludes cloud mutation",async()=>{
  let called=0;
- const r=await execute({accountId:"a".repeat(32),token:"TEST_TOKEN",now:()=>at,
+ const r=await execute({accountId:"a".repeat(32),token:"TEST_TOKEN",workerToken:"WORKERS_READ_TOKEN",now:()=>at,
    readGuard:async()=>true,sourceInspect:async ({accountId,token,workersToken,mode})=>{
     called++;
-    assert.equal(mode,"INSPECT");assert.equal(token,"TEST_TOKEN");assert.equal(workersToken,token);
+    assert.equal(mode,"INSPECT");assert.equal(token,"TEST_TOKEN");assert.equal(workersToken,"WORKERS_READ_TOKEN");
     assert.equal(accountId,"a".repeat(32));
     return original();
    }});
@@ -71,9 +71,12 @@ test("source credentials and redeploy quarantine deny before transport",async()=
   ["bad","t",async()=>true],["a".repeat(32),"",async()=>true],
   ["a".repeat(32),"t",async()=>false]
  ]){
-  await assert.rejects(()=>execute({accountId,token,readGuard,now:()=>at,
+  await assert.rejects(()=>execute({accountId,token,workerToken:"WORKERS_READ_TOKEN",readGuard,now:()=>at,
     sourceInspect:async()=>{calls++;return original();}}),/SOURCE_G6_WEEKDAY_READONLY_/);
  }
+ assert.equal(calls,0);
+ await assert.rejects(()=>execute({accountId:"a".repeat(32),token:"D1_TOKEN",workerToken:"",readGuard:async()=>true,now:()=>at,
+   sourceInspect:async()=>{calls++;return original();}}),/EXISTING_SOURCE_ENV_CREDENTIALS_MISSING/);
  assert.equal(calls,0);
 });
 test("new workflow locks owner exact comment, protected SOURCE environment, no destination secrets or mutation",async()=>{
@@ -83,6 +86,7 @@ test("new workflow locks owner exact comment, protected SOURCE environment, no d
  assert.match(yaml,/github\.event\.comment\.body == '\/s2 g6 source-readonly'/);
  assert.match(yaml,/environment: system2-research/);
  assert.match(yaml,/SYSTEM2_CLOUDFLARE_API_TOKEN/);
+ assert.match(yaml,/CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/);
  assert.doesNotMatch(yaml,/S2_SCHEMA_DEST_/);
  assert.doesNotMatch(yaml,/wrangler (deploy|publish)|\b(PUT|PATCH|DELETE)\b/);
  assert.match(yaml,/node system2\/migration\/source_system2_weekday_cron_getonly_v0_1\.mjs/);
