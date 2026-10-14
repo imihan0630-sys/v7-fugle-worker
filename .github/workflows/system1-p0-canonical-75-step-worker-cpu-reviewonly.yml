@@ -1,0 +1,59 @@
+name: System1 P0 CPU Cache 75-Step V8 Canonical Candidate Dry Run (NO DEPLOY)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-canonical-75-step-worker-cpu-reviewonly.yml"
+      - "scripts/apply_system1_p0_taipei_formatter_cpu_cache_reviewonly.py"
+      - "tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs"
+      - ".github/workflows/v7-regression.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-canonical-75-step-worker-cpu-reviewonly.yml"
+permissions:
+  contents: read
+jobs:
+  isolated_canonical_build_reviewonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruct exact 75 guarded original V8 patch scripts OFFLINE
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,re
+          y=Path(".github/workflows/v7-regression.yml").read_text()
+          assert y.count("- name: Build production Worker from guarded patches")==1
+          block=y.split("- name: Build production Worker from guarded patches",1)[1].split("- name: Syntax and offline behavior regression",1)[0]
+          scripts=re.findall(r"(?m)^\s+python3 (scripts/[A-Za-z0-9_./-]+\.py)\s*$",block)
+          if len(scripts)!=75 or len(set(scripts))!=75:
+            raise SystemExit("V8_CANONICAL_GUARDED_BUILD_SEQUENCE_DRIFT")
+          for s in scripts: subprocess.run(["python3",s],check=True,stdout=subprocess.DEVNULL)
+          print("SYSTEM1_P0_V8_CANONICAL_75_STEP_BUILD_VERIFIED",len(scripts))
+          PY
+          node --check Worker.js
+      - name: Generate CPU cache candidate from reconstructed V8, preserve unmodified original
+        run: |
+          set -euo pipefail
+          sha256sum Worker.js > /tmp/system1-v8-canonical-original.sha256
+          python3 scripts/apply_system1_p0_taipei_formatter_cpu_cache_reviewonly.py --source Worker.js --output artifacts/reviewonly/Worker.cpu-cache.js
+          sha256sum --check /tmp/system1-v8-canonical-original.sha256
+          node --check artifacts/reviewonly/Worker.cpu-cache.js
+          node tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs
+      - name: Re-run protected exact 10 and 15 minute bar/90sec quote safety gates
+        run: |
+          set -euo pipefail
+          node tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
+          node tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-v8-75-step-cpu-cache-reviewonly-${{ github.run_id }}
+          path: artifacts/reviewonly/Worker.cpu-cache.js
+          if-no-files-found: warn
+          retention-days: 14
