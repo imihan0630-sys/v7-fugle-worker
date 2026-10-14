@@ -46,7 +46,12 @@ assert.ok(calendar.includes("V7_RECOVERY_DATA_ONLY_DATE:"));
 assert.ok(gate.includes("override||context.marketDate"));
 assert.ok(gate.includes("delta>7*86400000"));
 assert.ok(gate.includes("parsed.toISOString().slice(0,10)!==override"));
-assert.ok(gate.includes("api.isTradingDate(date)"));
+// Real calendar verdict is now dependency-injected into the same function
+// exercised by executable positive/negative and zero-I/O skip regression.
+assert.ok(gate.includes("resolveScheduledTradingGate({"));
+assert.ok(gate.includes("loadTradingCalendar:api.loadTradingCalendar"));
+assert.ok(gate.includes("isTradingDate:api.isTradingDate"));
+assert.ok(gate.includes("const {tradingDay,proceed}=await resolveScheduledTradingGate"));
 assert.ok(priorValidator.includes("assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/"),
   "Cross-midnight date regex must match actual YYYY-MM-DD");
 assert.ok(!priorValidator.includes("/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/"),
