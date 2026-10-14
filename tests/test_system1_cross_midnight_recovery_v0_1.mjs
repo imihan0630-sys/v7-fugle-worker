@@ -22,6 +22,17 @@ eq(resolveScheduledMarketContext({now:new Date("2026-10-13T17:39:49Z"),triggerSc
 eq(resolveScheduledMarketContext({now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:"25 15 * * 1-5"}).overnightSourceSyncSkip,true);
 // Same-date data prep is unaffected, and the separate approved 23:45 next-day
 // fallback must still use a pinned previous-session check (not source sync).
+// Edge cases: overnight protection also covers the following afternoon until
+// the exact nominal Taipei scheduled minute; noon-only checks are insufficient.
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T04:01:00Z"),triggerSchedule:"20 10 * * 1-5"}),true); // 12:01
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T09:54:00Z"),triggerSchedule:"55 9 * * 1-5"}),true); // 17:54
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T09:55:00Z"),triggerSchedule:"55 9 * * 1-5"}),false); // 17:55
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T10:04:00Z"),triggerSchedule:"5 10 * * 1-5"}),true); // 18:04
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T10:05:00Z"),triggerSchedule:"5 10 * * 1-5"}),false); // 18:05
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T10:19:00Z"),triggerSchedule:"20 10 * * 1-5"}),true); // 18:19
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T10:20:00Z"),triggerSchedule:"20 10 * * 1-5"}),false); // 18:20
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T15:24:00Z"),triggerSchedule:"25 15 * * 1-5"}),true); // 23:24
+ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-14T15:25:00Z"),triggerSchedule:"25 15 * * 1-5"}),false); // 23:25
 eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T10:22:00Z"),triggerSchedule:"20 10 * * 1-5"}),false);
 eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T15:27:00Z"),triggerSchedule:"25 15 * * 1-5"}),false);
 eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:49:34Z"),triggerSchedule:"45 15 * * 1-5"}),false);
