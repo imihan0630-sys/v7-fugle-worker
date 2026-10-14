@@ -1,0 +1,30 @@
+name: System1 P0 CPU Shard 90s Quote, 10m15m Candle and Lease Offline Gates
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-cpu-shard-90sec-candle-lease-ci.yml"
+      - "ops/system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs"
+      - "tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs"
+      - "ops/system1_p0_free_cpu_shard_oracle_v0_1.mjs"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-cpu-shard-90sec-candle-lease-ci.yml"
+permissions:
+  contents: read
+jobs:
+  isolated_offline_90second_candle_lease_proofs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Strict originals 90s vs three minute unsafe, exact 10/15m close and D1 push lease negative tests
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
+          node --check tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
+          node tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs
+          node tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
