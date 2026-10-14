@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "S2_M07_EXTRA498_R2_D08_SOURCE_CODE_KEY_SHAPES_PHYSICAL_20261014_V0_1",
+  "status": "DATA_LANE_SOURCE_CODE_NAMING_CLASSIFICATION__AUDIT_PENDING",
+  "sourceRun": 38530915525,
+  "sourceJob": 115742332308,
+  "sourceRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38530915525",
+  "pr": 1297,
+  "mergeSha": "5ca65a7e8c572ce678b3f10fac8be69066165307",
+  "providerResult": "SUCCESS",
+  "originalArtifactId": 11877732102,
+  "originalArtifactZipSha256": "9ca633e497ea59c560bdab7255c38fd0b8ef5bbc7bc6a01dacedc62a5ddcec8d",
+  "independentlyDownloadedAndRehashedOriginalZip": true,
+  "independentRehashMatchesGithub": true,
+  "originalZipBytes": 1121,
+  "innerFilename": "sanitized-source-code-namespace-classification.json",
+  "innerBytes": 2146,
+  "innerSha256": "a0f14e08a6268f04704e89af46db0fed07764f929d611d65bde6d9205c60c67f",
+  "originalProtectedExtraCount": 498,
+  "originalExtraBytes": 255515971,
+  "sourceR2TotalListObjects": 26321,
+  "sourceR2ListCalls": 27,
+  "sourceR2Writes": 0,
+  "sourceR2HeadCalls": 0,
+  "sourceR2ObjectBodyGets": 0,
+  "sourceD1NetworkCalls": 0,
+  "matchAgainstPriorPrivateOriginalG3HashIdentities": 498,
+  "originalSourceListingMetadataDigestReproven": true,
+  "categories": {
+    "SMOKE": {
+      "count": 4,
+      "listedBytes": 1417
+    },
+    "D08_RAW_VALUATION_CODE_SHAPE": {
+      "count": 88,
+      "listedBytes": 8234818
+    },
+    "D08_ANNUAL_YEAR_PACK_CODE_SHAPE": {
+      "count": 22,
+      "listedBytes": 46068988
+    },
+    "D08_OTHER_NAMESPACE": {
+      "count": 384,
+      "listedBytes": 201210748
+    },
+    "A1": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "RESEARCH_OTHER": {
+      "count": 0,
+      "listedBytes": 0
+    },
+    "OTHER": {
+      "count": 0,
+      "listedBytes": 0
+    }
+  },
+  "classificationIsRawKeyShapeNotWriterAttribution": true,
+  "extraR2FilesStillHaveNoCorrespondingArchivedD1PackOrSegmentManifest": true,
+  "unknownD08SubcategoryCount": 384,
+  "sourceR2FullContentBytesShaMatchedToArchivedD1CountLastPhysicallyConfirmed": 8,
+  "rawOriginalPrivateKeysLogged": false,
+  "contentPITFrozenCertificationsNotPromoted": true,
+  "destinationR2EntitlementLastAuthenticated": "NOT_ENTITLED",
+  "paidPlanEnabled": false,
+  "system1FormalCoreChanged": false,
+  "independentAuditLaneAccepted": false,
+  "safeToDeleteOrOmitTransfer": false,
+  "next": [
+    "Classify 384 remaining D08 original raw key patterns via source-code-and-protected-object provenance; never publish private raw keys or keys as artifacts.",
+    "Independently validate owner/store receipts or original content digests for D08 extra objects, under actual source R2 free quota and explicit budget.",
+    "Keep 498 source original objects for migration scope until explicit provenance, retention and destination entitlement approval.",
+    "Do not change System1 V8 Formal, Worker or Cron; M07 remains open."
+  ]
+}
