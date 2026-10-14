@@ -1,0 +1,61 @@
+name: S2 M07 G3 Original SOURCE D1 vs Complete R2 LIST Presence Offline
+# Exact ORIGINAL 27-page source R2 full listing Artifact, G3 encrypted source SQL.
+# No Cloudflare API call, no remote D1, no additional R2 provider requests.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-g3-original-full-r2-listing-crosswalk.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-original-full-r2-listing-g3-join-once
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify bounded source list plus archived D1 manifest fixtures
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_g3_full_r2_listing_manifest_crosswalk_v0_1.mjs
+          python3 -m py_compile system2/migration/issue1236_m07_full_original_r2_list_d1_manifest_join_v0_1.py
+          node system2/tests/issue1236_m07_g3_original_source_full_list_join_v0_1.test.mjs
+      - name: Retrieve same original 90 day G3 encrypted source SQL
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-existing-rsa-source-transfer-encrypted-extended-38214521809
+          run-id: 38214521809
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-existing-source-archive
+      - name: Retrieve exact original SOURCE R2 27 page private hashed inventory
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-source-r2-32page-private-inventory-38519598039-1
+          run-id: 38519598039
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-full-original-inventory
+      - name: Authenticate G3 original source and audit 25823 manifest matches offline
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1236_m07_g3_full_r2_listing_manifest_crosswalk_v0_1.mjs
+      - name: Preserve only sanitized aggregate original source list vs manifest counts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-g3-full-r2-source-list-join-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-complete-inventory-crosswalk/sanitized-manifest-list-join.json
+          if-no-files-found: warn
+          retention-days: 90
