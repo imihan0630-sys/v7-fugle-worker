@@ -65,7 +65,7 @@
     "M07FullMigrationAccepted": false,
     "targetR2LastAuthenticated": "NOT_ENTITLED",
     "independentAuditorAccepted": false,
-    "legacyV01HistoricalResearchAdmissionUnchanged": false,
+    "legacyV01HistoricalResearchAdmissionUnchanged": true,
     "sourceR2BodyShaCannotIndependentlyProveDataProvenance": true
   },
   "next": [
