@@ -1,0 +1,44 @@
+name: System2 Commander Safe Executor CI
+on:
+  pull_request:
+    paths:
+      - 'system2/commander/**'
+      - '.github/workflows/system2-commander-safe-*.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/commander/**'
+      - '.github/workflows/system2-commander-safe-*.yml'
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: No secrets, paid backend or write authority in safe executor
+        run: |
+          node --check system2/commander/safe_executor_v0_1.mjs
+          node --check system2/commander/safe_executor_report_v0_1.mjs
+          node --test system2/commander/safe_executor_v0_1.test.mjs
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const w=fs.readFileSync('.github/workflows/system2-commander-safe-executor.yml','utf8');
+          const unsafe=['secrets.','environment: system2-research','environment: system2-schema-only','wrangler deploy','pull-requests: write','id-token: write','actions: write','system2-isolated-d1-writer'];
+          for(const x of unsafe)if(w.includes(x))throw Error('UNSAFE_EXECUTOR_WORKFLOW_KEYWORD_'+x);
+          if(!w.includes('contents: read')||!w.includes('issues: write')||!w.includes('actions: read'))throw Error('MISSING_MINIMUM_GH_ONLY_SCOPE');
+          NODE
+      - name: Run real M08/M12 preapproved offline diagnostics with no GitHub mutation
+        run: node system2/commander/safe_executor_v0_1.mjs
+      - name: Preserve original read-only PR diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-commander-safe-ci-${{ github.run_id }}
+          path: ${{ runner.temp }}/s2commander-safe-executor/receipt.json
+          if-no-files-found: warn
+          retention-days: 14

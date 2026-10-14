@@ -1,0 +1,55 @@
+name: System2 Commander Safe Offline Executor
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+  schedule:
+    - cron: '35 2,10 * * 1-5'
+permissions:
+  contents: read
+  issues: write
+  actions: read
+concurrency:
+  group: s2-commander-safe-offline-executor
+  cancel-in-progress: false
+jobs:
+  execute_allowlisted_checks:
+    if: >-
+      github.repository == 'imihan0630-sys/v7-fugle-worker' &&
+      (github.event_name != 'issue_comment' ||
+       (github.event.issue.number == 1229 &&
+        github.event.comment.user.login == 'imihan0630-sys' &&
+        (github.event.comment.body == '開始執行' ||
+         github.event.comment.body == '/s2 start')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fail-closed DAG, allowlist, collision and negative tests
+        run: |
+          node --check system2/commander/safe_executor_v0_1.mjs
+          node --check system2/commander/safe_executor_report_v0_1.mjs
+          node --test system2/commander/safe_executor_v0_1.test.mjs
+      - name: Execute M08 and M12 allowlisted offline tests and preserve truthfully-scoped evidence
+        run: node system2/commander/safe_executor_v0_1.mjs
+      - name: Upload real original GitHub Actions artifact (no secrets or source market data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-commander-safe-executor-${{ github.run_id }}
+          path: ${{ runner.temp }}/s2commander-safe-executor/receipt.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Report native artifact ID and SHA only into the owner tasks, never self-close them
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node system2/commander/safe_executor_report_v0_1.mjs
+      - name: Boundaries and deferred AI tasks
+        if: always()
+        run: echo 'M08/M12 offline allowlist only; any findings are remediation tickets, not Cloudflare physical PASS. No Codex/Work agent, D1 write, Cron, secrets, paid tier, or V8 change.' >> "$GITHUB_STEP_SUMMARY"
