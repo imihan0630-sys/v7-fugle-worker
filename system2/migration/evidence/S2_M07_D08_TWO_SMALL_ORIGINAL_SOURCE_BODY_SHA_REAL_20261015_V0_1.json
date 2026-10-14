@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_M07_SOURCE_D08_TWO_ORIGINAL_R2_OBJECT_BYTES_SELF_SHA_REAL_20261015_V0_1",
+  "state": "DATA_LANE_SOURCE_R2_BODY_SHA_AGAINST_SOURCE_METADATA_PASS__INDEPENDENT_AUDIT_PENDING",
+  "observedAtUtc": "2026-10-14T21:42:50.294Z",
+  "observedDateTaipei": "2026-10-15",
+  "pr": 1324,
+  "mergeSha": "df6e6ffa4040d77c695f837546a6f012576e7ebb",
+  "realOriginalSourceRun": 38642255670,
+  "realOriginalSourceJob": 116120415900,
+  "realGitHubRunURL": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38642255670",
+  "realJobConcluded": "SUCCESS",
+  "realGithubArtifactId": 11931461361,
+  "originalArtifactZIPBytes": 1148,
+  "githubOriginalArtifactZIPSha256": "6a7f6e6fbb689f50e71be3d0270e6360c9bc0342c1bfd54d5cc0a3d7cd83be63",
+  "independentlyDownloadedArtifactZIPSha256": "6a7f6e6fbb689f50e71be3d0270e6360c9bc0342c1bfd54d5cc0a3d7cd83be63",
+  "independentGitHubZIPRehashMatches": true,
+  "originalPrivateSanitizedInnerFilename": "sanitized-source-d08-small-body-sha.json",
+  "originalInnerBytes": 2168,
+  "originalInnerSHA256": "e269c8f8f33d5ee2c5ec5ee4b4ee309a3c84a809ae336fb5d5c2810791d064b4",
+  "innerJSONReparsedIndependently": true,
+  "originalSourceG3": {
+    "sourceR2CompleteSingleNonAtomicListKeys": 26321,
+    "sourceR2CompleteSingleNonAtomicListListedBytes": 504007793,
+    "originalG3PrivateExtraKeyHashesMatched": 498,
+    "originalD08GitHubWriterReceiptKeyHashesMatched": 154,
+    "sourceR2FullLISTOriginalMetadataSHA256Revalidated": true,
+    "originalD08OtherUnreceiptedTotalObjects": 76,
+    "historicalIdempotencyInvalidatedRawV01ShapePreserved": true
+  },
+  "realProviderProof": {
+    "sourceR2ListGETCalls": 27,
+    "sourceR2HEADCalls": 2,
+    "sourceR2OriginalContentGETCalls": 2,
+    "sourceR2OriginalByteContentDownloaded": 161996,
+    "sourceR2PerObjectBodyBytesHardCap": 262144,
+    "sourceR2AllBodyBytesHardCap": 524288,
+    "sourceOriginalBodySha256MatchesOriginalHEADAndGETMetadataCount": 2,
+    "sourceOriginalSemanticUniverseV02": {
+      "count": 1,
+      "objectBodyBytes": 10556,
+      "sourceBodySha256": "b1758c1deb3097a6b16356ee61708f2b002a8ed23a9797cb43a54e5828bf537e"
+    },
+    "sourceOriginalHistoricalValuationPercentileSnapshotV01": {
+      "count": 1,
+      "objectBodyBytes": 151440,
+      "sourceBodySha256": "2fbe33059075fbf4b5110c7013d429f424a50d441130e4057f2953ad09e7b53d"
+    },
+    "originalRawPrivateR2KeysOrTheirPrivateIdentityHashesPublished": false,
+    "sourceD1NetworkCalls": 0,
+    "destinationD1NetworkCalls": 0,
+    "sourceR2Writes": 0,
+    "destinationR2NetworkCalls": 0,
+    "newSecretsPermissionsOrPaidChanges": 0,
+    "system1V8FormalRuntimeWorkerCronModifications": 0
+  },
+  "scope": {
+    "sourceBodyShaAgainstOwnMetadataVerified": 2,
+    "originalSourceG3D1ManifestCrosswalkForTheseTwo": false,
+    "sourceWriterReceiptForTheseTwo": false,
+    "independentSourcePITTimestampKnown": false,
+    "sameEvidenceStrengthAsExistingEightG3OriginalSourceD1Matches": false,
+    "numberOfEntireR2ObjectsContentSHAValidated": "UNKNOWN_EXCEPT_EXPLICIT_SAMPLES",
+    "originalSourceR2ListingAtomic": false,
+    "fullSystem2HistoricalPITOrFrozenAccepted": false,
+    "M07FullMigrationAccepted": false,
+    "targetR2LastAuthenticated": "NOT_ENTITLED",
+    "independentAuditorAccepted": false,
+    "legacyV01HistoricalResearchAdmissionUnchanged": false,
+    "sourceR2BodyShaCannotIndependentlyProveDataProvenance": true
+  },
+  "next": [
+    "AUDIT_LANE independently redownload original GitHub Artifact and recompute ZIP/inner JSON SHA, verify 2 source R2 body SHA vs own metadata from original Job.",
+    "Locate actual source writer/contract for one semantic universe object and one historical percentile snapshot. Path family match alone is not enough.",
+    "Bounded byte SHA expansion for nontrivial 18 historical valuation / 13 daily year objects requires size budgets and separately original writer/PIT evidence.",
+    "Never enable paid destination R2, delete source objects or modify System1 V8 Formal, Cron, Worker without owner authorization."
+  ]
+}
