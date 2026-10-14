@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "0.1",
+  "createdAtTaipei": "2026-10-14T02:34:28.607891+08:00",
+  "room": "06｜基本面與估值研究室",
+  "latestMainObserved": "8007400c096009101da3b9a33f80d44091c6bd24",
+  "githubBranch": "research/room06-d07-33-intangible-d08-03-diagnostics-20261014",
+  "branchCommitsVerified": [
+    "58846c72ab7e52499d54f37db7d0cd2d377c4968",
+    "5468ce095f695ceb807d72dbd2ba0ba473255371",
+    "9adc34fefdc154ffcde45657d2b8fcb8186cbdda"
+  ],
+  "canonicalCheckpointUpdated": false,
+  "trackerUpdated": false,
+  "prCreated": false,
+  "formalCore": "LOCKED",
+  "D07-33": {
+    "topic": "Intangible Capital/R&D/Innovation Accounting",
+    "source": "IAS 38 paragraphs 54-57; IAS 7 paragraph 16(a)",
+    "inputs": {
+      "operating_result_before_R_and_D": 150,
+      "research_cash_expense": 60,
+      "development_cash": 40,
+      "tax": 0,
+      "other_capex": 0,
+      "amortization_years": 5,
+      "available_for_use_year1": false
+    },
+    "qualifyingCapitalization": {
+      "year1_ebit": 90,
+      "year1_cfo": 90,
+      "year1_investing_dev": -40,
+      "year1_total_cash_after_dev": 50,
+      "year1_capitalized_dev": 40,
+      "year2_ebit_no_new_r_and_d": 142.0
+    },
+    "nonqualifyingExpensing": {
+      "year1_ebit": 50,
+      "year1_cfo": 50,
+      "year1_investing_dev": 0,
+      "year1_total_cash_after_dev": 50,
+      "year1_capitalized_dev": 0,
+      "year2_ebit_no_new_r_and_d": 150
+    },
+    "tests": {
+      "capitalized_case_ebit": true,
+      "expensed_case_ebit": true,
+      "ebit_gap": true,
+      "capitalized_cash_reconciliation": true,
+      "expensed_cash_reconciliation": true,
+      "equal_cash_after_dev": true,
+      "naive_cfo_gap": true,
+      "capitalized_dev_is_asset": true,
+      "expensed_dev_not_asset": true,
+      "five_year_amortization": true,
+      "year2_ebit_capitalized": true,
+      "year2_ebit_expensed": true,
+      "year2_gap_reversal": true,
+      "five_year_cumulative_accounting_gap_reversal": true,
+      "naive_roic_presentation_gap": true
+    },
+    "passed": 15,
+    "total": 15,
+    "positiveMechanism": "Expense/capitalization differences affect current earnings, CFO and balance-sheet carrying amounts, even when current total cash expenditure is identical.",
+    "counterevidence": "Eligibility for capitalization is economically informative; real project future cash flows, taxes and risk are NOT assumed equal. Capitalization is not automatically manipulation.",
+    "alternativeExplanations": [
+      "project technical feasibility",
+      "development stage",
+      "asset useful life",
+      "future impairment",
+      "acquired intangible assets",
+      "tax treatment",
+      "foreign exchange",
+      "SaaS asset control",
+      "business-combination allocation"
+    ],
+    "failureConditions": [
+      "unverifiable IAS38 six conditions at decision date",
+      "no separation of research vs development cash",
+      "capitalized development omitted from total FCF",
+      "revised financial statements without vintage",
+      "industry classification mismatch",
+      "unobserved project outcome"
+    ],
+    "pitRequirements": [
+      "issuerId",
+      "filingDate",
+      "firstObservedAt",
+      "period",
+      "filingVersion",
+      "originalDisclosureHash",
+      "restatementDate",
+      "developmentCapitalization",
+      "researchExpense",
+      "cashFlowInvestingDevelopment",
+      "usefulLife",
+      "impairment",
+      "consolidationScope"
+    ],
+    "validationGates": [
+      "PIT",
+      "OOS",
+      "walk-forward",
+      "selection bias",
+      "look-ahead",
+      "data snooping",
+      "multiple testing",
+      "overfitting",
+      "factor redundancy",
+      "sample size",
+      "date clustering",
+      "accounting revisions",
+      "corporate actions",
+      "transaction costs",
+      "liquidity",
+      "market regime"
+    ],
+    "dependencies": [
+      "D07-04",
+      "D07-05",
+      "D07-07",
+      "D07-31",
+      "D08-06",
+      "D08-15"
+    ],
+    "maturityOfficial": "L0/0 (unchanged)",
+    "outcomeEvidence": "UNKNOWN",
+    "status": "MECHANISM_FALSIFICATION_LOCAL_ONLY / FIRST_KNOWN_TAIWAN_ISSUER_DATA_UNKNOWN / NO_ALPHA"
+  },
+  "D08-03": {
+    "pr": 588,
+    "prState": "OPEN_UNMERGED",
+    "jobId": 112767539862,
+    "logTimeUtc": "2026-10-07T11:27:11Z",
+    "logError": "A6 source stat not OK",
+    "sourceLine": "system2/runtime/official_historical_a6_valuation_v0_1.mjs:124",
+    "failedTradingDate": "UNKNOWN",
+    "httpStatus": "UNKNOWN",
+    "officialPayloadStatValue": "UNKNOWN",
+    "completedYearPackCount": "NOT_RECOUNTED_THIS_RUN",
+    "noHistoricalReturnJoin": true,
+    "maturityOfficial": "L3/60 (unchanged)",
+    "status": "SOURCE_BLOCKED / OUTCOMES_CLOSED",
+    "next": "Isolate 2026 failing trade date and original response stat without rerunning successful year packs; preserve latest main dual transport logic."
+  },
+  "priorUnsynced": {
+    "filename": "room06_20261013_2238_d07_d08_research_receipt.json",
+    "sha256": "38f076f8a524793257d6a9520672f7be74f464250bcf37bf641a24ef81470e5a",
+    "modules": [
+      "D07-31",
+      "D07-32",
+      "D08-19"
+    ],
+    "githubIntegrated": false
+  },
+  "officialSources": [
+    "https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/",
+    "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2022/issued/part-a/ias-38-intangible-assets.pdf?bypass=on",
+    "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf",
+    "https://www.ifrs.org/projects/work-plan/intangible-assets/"
+  ],
+  "SDA008": "ROUTED / NOT_CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNextContinuationPoint": "Re-read latest main, rebase isolated research branch without overwriting concurrent work, recover prior 2026-10-13 D07-31/D07-32/D08-19 local evidence, write D07/D08 dedicated checkpoint, then tracker only if justified; diagnose D08-03 2026 exact failure date with bounded source-only logs, and obtain first-known Taiwan issuer R&D capitalization receipts for D07-33. No Formal Core change."
+}
