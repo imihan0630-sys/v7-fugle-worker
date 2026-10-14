@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_COMMANDER_SAFE_EXECUTION_REGISTRY_V0_1",
+  "scope": "READ_ONLY_GITHUB_ACTIONS_NO_CLOUDFLARE_CREDENTIAL_OR_REMOTE_CODE_AGENT",
+  "source": "system2/commander/dispatch_plan_v0_1.json",
+  "taskTypes": {
+    "M01": "APPROVAL_REQUIRED",
+    "M02": "APPROVAL_REQUIRED",
+    "M03": "APPROVAL_REQUIRED",
+    "M04": "AI_REQUIRED",
+    "M05": "APPROVAL_REQUIRED",
+    "M06": "AI_REQUIRED",
+    "M07": "APPROVAL_REQUIRED",
+    "M08": "AUTO_EXECUTABLE",
+    "M09": "APPROVAL_REQUIRED",
+    "M10": "AI_REQUIRED",
+    "M11": "AI_REQUIRED",
+    "M12": "AUTO_EXECUTABLE",
+    "M13": "AI_REQUIRED",
+    "M14": "APPROVAL_REQUIRED"
+  },
+  "autoTaskIds": [
+    "M08",
+    "M12"
+  ],
+  "maxDurationMinutes": 12,
+  "manualLiveApprovalNotGranted": true,
+  "neverAutoCloseIssues": true,
+  "neverClaimPhysicalCloudPass": true,
+  "allowlistedTests": {
+    "M08": [
+      "system2/tests/source_account_d1_writer_quarantine_v0_1.test.mjs",
+      "system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs",
+      "system2/tests/recent_a1_warmup_destination_route_p0_20261013.test.mjs"
+    ],
+    "M12": [
+      "system2/tests/owner_override_raw_copy_scope_v0_1.test.mjs",
+      "system2/tests/d1_account_quota_workflow_guard_v0_1.test.mjs",
+      "system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs"
+    ]
+  },
+  "relatedIssues": {
+    "M08": 1233,
+    "M12": 1238
+  },
+  "forbiddenActions": [
+    "CLOUDFLARE_WRITE",
+    "SECRET_OR_PERMISSION_CREATE",
+    "WORKFLOW_DISPATCH_OTHER_WRITER",
+    "GIT_PUSH",
+    "PRODUCTION_DEPLOY",
+    "AUTO_MERGE",
+    "AUTO_AUDIT_PASS",
+    "PAID_API_CALL"
+  ],
+  "description": "Run only source-level checks for M08/M12. Results are evidence for remediation; not proof of physical Cloudflare account isolation or atomic quota enforcement."
+}
