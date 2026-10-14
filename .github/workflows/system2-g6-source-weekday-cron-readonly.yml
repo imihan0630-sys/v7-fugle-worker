@@ -46,6 +46,22 @@ jobs:
         run: |
           set -euo pipefail
           node system2/migration/source_g6_worker_identity_readonly_diag_v0_1.mjs
+      - name: Infer source account role from D1 metadata GET-only (never SQL)
+        if: failure() && steps.source_get.outcome == 'failure'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/source_g6_account_role_d1_metadata_getonly_v0_1.mjs
+      - name: Retain sanitized source role D1 metadata differential evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-source-g6-account-role-d1-metadata-${{ github.run_id }}
+          path: /tmp/system2-source-g6-account-role-d1-readonly/receipt.json
+          retention-days: 30
+          if-no-files-found: warn
       - name: Retain sanitized worker identity differential evidence
         if: always()
         uses: actions/upload-artifact@v4
