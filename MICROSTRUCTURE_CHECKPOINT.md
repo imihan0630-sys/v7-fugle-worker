@@ -1018,3 +1018,12 @@ D05:
 2. D05-L4-W1-02: do not count 2026-10-05 as a C3-derived D05 Wave-1 date. First verify the next scheduled C1/C2 evidence run produces a genuine C1 generation and successful C3 registration for the following official trading session; only then begin quote/depth/liquidity parent counting.
 3. Route FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND remediation to the existing System1 evidence-capture engineering owner if repair is required; Room04 does not patch production/runtime from this research checkpoint.
 4. No L4 maturity promotion yet; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## 2026-10-15 03:36 Asia/Taipei — Room04 D05 provenance-parent evidence gate (research-only)
+
+Source-executed synthetic test of `research/system1_c3_live_depth_prereg_v0_1.mjs` and `research/system1_c3_live_depth_readiness_v0_1.mjs`: 13/13 expected outcomes, no live market rows. The downstream `ALL_CURRENT_SLOTS_READY` label can be returned for a synthetic packet lacking C1/C2 generation/registration, raw-source hashes, an expected symbol×slot denominator, or a native source-date receipt. It also accepts synthetic current/prior packets whose optional capture timestamps are AFTER the putative decision, and accepts a 23:59 quote for a 09:00 slot. Existing controls reject duplicate/future trade-date baseline packets, invalid schema, missing baseline, and next-calendar-date quotes.
+
+This is an isolated downstream validation-boundary finding, not proof of live data corruption or of an upstream bypass. `D05-03/04/09` prospective L4 parent eligibility requires independently verified preregistration, immutable source/capture timestamps, exact native source date, raw hash/readback, scheduled symbol×slot denominator, quote-slot and first-known-at coherence, and explicit UNKNOWN/exclusion counts. Baseline history must be available by the current decision clock, not merely tagged with an earlier tradeDate. Missing receipts = UNKNOWN, not 0/BAD. The 2026-10-14 official dual-market A1 source receipt is daily OHLCV only and cannot substitute for C3 quotes/books.
+
+No D05 maturity/level change; no synthetic Shadow or true OFI/queue/fill claim. Formal Core LOCKED. Exact next continuation: independently read genuine C1/C2→C3 registered capture receipts and perform scheduled-vs-observed, provenance-first-known-at and slot/cohort audits before outcome opening. If unavailable, switch to D04 source-date and corporate-action PIT parent coverage only. See `research/ROOM04_D04_D05_PROVENANCE_PARENT_GATES_20261015.md`.
