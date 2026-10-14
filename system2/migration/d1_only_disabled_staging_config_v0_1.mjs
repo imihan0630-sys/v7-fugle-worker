@@ -52,5 +52,29 @@ export function assertD1OnlyDisabledStagingConfigV0_1(text) {
      /^\s*SYSTEM2_(?:CAPTURE|RESONANCE)_ENABLED\s*=\s*"true"/m.test(text) ||
      /\bV7_DB\b|\bSTOCKS_KV\b|\bPUSH_WEBHOOK_URL\b/.test(text)
    ) throw new Error("D1_ONLY_STAGING_CONFIG_PRODUCTION_ISOLATION_FAILURE");
+  // Fail closed on ANY additional TOML section, binding, secret, variable or
+  // alias. A blacklist alone could silently accept newly invented runtime keys.
+  const dbId=text.match(/^database_id = "([a-f0-9]{32})"$/im)?.[1];
+  const canonical=[
+    'name = "system2-shadow-research-staging"',
+    'main = "system2/deploy/worker.mjs"',
+    'compatibility_date = "2026-09-01"',
+    "workers_dev = false",
+    "preview_urls = false",
+    "[[d1_databases]]",
+    'binding = "SYSTEM2_DB"',
+    'database_name = "system2-research"',
+    'database_id = "'+dbId+'"',
+    'migrations_dir = "system2/sql"',
+    "[vars]",
+    'SYSTEM2_CAPTURE_ENABLED = "false"',
+    'SYSTEM2_CAPTURE_MODE = "LIMITED_PROSPECTIVE_SHADOW"',
+    'SYSTEM2_CAPTURE_CONTRACT_VERSION = "0.1"',
+    'SYSTEM2_RESONANCE_ENABLED = "false"',
+    'SYSTEM2_RESONANCE_CONTRACT_VERSION = "0.1"'
+  ];
+  const actual=text.split(/\r?\n/).map(line=>line.trim()).filter(line=>line&&!line.startsWith("#"));
+  if(!dbId||actual.join("\n")!==canonical.join("\n"))
+    throw new Error("D1_ONLY_STAGING_CONFIG_UNAPPROVED_TOML_FIELDS");
   return true;
 }
