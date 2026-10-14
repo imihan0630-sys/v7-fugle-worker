@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_M09_TWSE_NATIVE_TYPE_CAPABILITY_PHYSICAL_20261014_V0_1",
+  "classification": "PHYSICAL_SOURCE_READ_SUCCESS_BUT_ONLY_AGGREGATE_TYPE_VERIFIED",
+  "source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261013&type=ALLBUT0999&response=json",
+  "marketDate": "2026-10-13",
+  "observedAtUtc": "2026-10-14T08:30:50Z",
+  "codePr": 1305,
+  "physicalRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38535620632",
+  "runId": 38535620632,
+  "jobId": 115757659355,
+  "runConclusion": "success",
+  "physicalCodeHeadSha": "ca06355b6665a250a591187a54e8f06f5b502a35",
+  "artifactId": 11879093923,
+  "artifactSha256": "9a3dcc3ab5b76eb953165972d4e94555391185c45a4b4880d39a7e1bba08e21d",
+  "receiptSha256": "0aaf39e98052acd33969715fa3cc2f52582fec97202f38feed05f5a49f021b5d",
+  "originalTwseResponse": {
+    "nativeProviderStatus": "OK",
+    "sourceDateExact": true,
+    "requestedDate": "2026-10-13",
+    "responseRawBytes": 249421,
+    "originalResponseSha256": "696e5348a895d006021b9a4a3966ab0874bcce9e69f6256c91cce90a397a8c4a",
+    "parsedTableCount": 10,
+    "allTableRowCount": 1671,
+    "individualQuoteTableRowCount": 1382,
+    "quotedFourDigitSymbolsInspected": 1087
+  },
+  "typeSemantics": {
+    "aggregateTableHasExplicitGeneralStockAndDepositaryReceiptBuckets": true,
+    "individualQuoteTableHasPerSecurityTypeField": false,
+    "positivelyPerSymbolClassifiedOrdinaryCount": 0,
+    "positivelyPerSymbolClassifiedDepositaryCount": 0,
+    "approvedNativeInstrumentClassCount": 0,
+    "pitCertifiedCommonShareCount": 0,
+    "sourceResult": "AGGREGATE_OR_TYPE_UNVERIFIED"
+  },
+  "priorUnusableRegistry": {
+    "officialChineseAndEnglishIsinCfiRunnerReadFailed": true,
+    "firecrawlAvailableCredits": false,
+    "alternativeWasFreeNativeTwse": true
+  },
+  "safety": {
+    "caPitCertified": false,
+    "formalShortMomentumSelectedCount": null,
+    "frozenD1Written": false,
+    "system1FormalCoreTouched": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "workerOrCronChanged": false,
+    "newPaidPlan": false,
+    "rawOriginalProviderBytesCommittedToGithub": false
+  },
+  "next": "Find a verified per-symbol official native security-category record / security classification, and capture its firstKnownAt + availableAt prospectively; never infer from market aggregate MI_INDEX classifications."
+}

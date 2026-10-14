@@ -1,0 +1,50 @@
+name: System2 M09 TWSE Native Security Type Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_twse_native_type_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_twse_native_type_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-twse-native-type-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_twse_native_type_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_twse_native_type_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-twse-native-type-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-m09-twse-native-type-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native_source_probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test source schema and unknown handling
+        run: |
+          set -euo pipefail
+          node --test system2/tests/probe_m09_twse_native_type_readonly_v0_1.test.mjs
+          node --check system2/scripts/probe_m09_twse_native_type_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Physical exact-day official TWSE read, no write
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_twse_native_type_readonly_v0_1.mjs
+      - name: Preserve aggregate receipt only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-twse-native-type-sourceonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-native-type/receipt.json
+          if-no-files-found: warn
+          retention-days: 14
