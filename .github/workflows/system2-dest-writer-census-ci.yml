@@ -39,5 +39,6 @@ jobs:
         run: |
           node - <<'NODE'
           const f=require('node:fs').readFileSync('.github/workflows/system2-dest-writer-census-ci.yml','utf8');
-          if(!f.includes('contents: read')||f.includes('actions: write')||f.includes('secrets.')||f.includes('wrangler deploy')||f.includes('id-token: write')||f.includes('issues: write'))throw Error('UNAUTHORIZED_READONLY_CENSUS_PERMISSIONS');
+          const forbidden=[['actions',': write'].join(''),['secrets','.'].join(''),['wrangler',' deploy'].join(''),['id-token',': write'].join(''),['issues',': write'].join('')];
+          if(!f.includes('contents: read')||forbidden.some(token=>f.includes(token)))throw Error('UNAUTHORIZED_READONLY_CENSUS_PERMISSIONS');
           NODE
