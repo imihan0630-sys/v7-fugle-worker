@@ -104,7 +104,7 @@ export async function runBoundedDailyResonanceWorkerCycleV0_1({
   const uniqueSymbols = new Set();
   for (const item of pool.symbols) {
     const symbol = item?.symbol;
-    if (typeof symbol !== "string" || !/^[1-9]\\d{3}$/.test(symbol)
+    if (typeof symbol !== "string" || !/^[1-9][0-9]{3}$/.test(symbol)
       || uniqueSymbols.has(symbol)) {
       throw new Error("bounded watch pool has invalid or duplicate symbol");
     }
