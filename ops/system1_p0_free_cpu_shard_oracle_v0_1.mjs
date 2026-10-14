@@ -21,6 +21,8 @@ export function buildIndependentMonitorShards({formal,aideen,shardSize=3}={}){
  return Object.freeze({schema:"S1_P0_FREE_CPU_SHARD_ORACLE_V0_1",
   expectedKeys:keys,groups,shardSize,cycles:groups.length,
   maxConsecutiveMinutesWithoutQuote:groups.length,
+  originalWorkerQuoteFreshSeconds:90,
+  sequentialOneCronRotationMeets90SecondFreshness:groups.length*60<=90,
   noOriginalCronMutation:true,noBusinessStrategyMutation:true,
   noOfficialPlanWrite:true,noD1Write:true,noKVWrite:true,noTrade:true,noPush:true,
   notAuthorizedForProduction:true});
@@ -32,11 +34,11 @@ export function chooseBoundedShard({plan,minuteOfDay}={}){
  return {index,entries:plan.groups[index],expectedKeys:plan.expectedKeys,
    id:"same-trading-day-single-shard-"+index,noSourceMutation:true};
 }
-export function auditShardAggregate({plan,tradeDate,now,prior,updates,maxAgeSeconds=300}={}){
+export function auditShardAggregate({plan,tradeDate,now,prior,updates,maxAgeSeconds=90}={}){
  if(!plan?.notAuthorizedForProduction||!Array.isArray(plan.expectedKeys)||
    !/^\d{4}-\d{2}-\d{2}$/.test(String(tradeDate||""))||
    !Number.isFinite(Date.parse(now))||
-   !Number.isInteger(maxAgeSeconds)||maxAgeSeconds<1||maxAgeSeconds>300)
+   !Number.isInteger(maxAgeSeconds)||maxAgeSeconds<1||maxAgeSeconds>90)
   throw Error("AGGREGATE_EPOCH_OR_CLOCK_UNVERIFIED");
  const expected=new Set(plan.expectedKeys),merged=new Map();
  const all=[...(Array.isArray(prior)?prior:[]),...(Array.isArray(updates)?updates:[])];
@@ -67,5 +69,6 @@ export function auditShardAggregate({plan,tradeDate,now,prior,updates,maxAgeSeco
    expectedCount:plan.expectedKeys.length,confirmedCount:merged.size,
    missingKeys:missing,rejected,
    oldestVendorAgeSeconds:merged.size?Math.max(...[...merged.values()].map(x=>x.ageSeconds)):null,
+   originalWorkerQuoteFreshSeconds:90,neverLoosenQuoteClock:true,
    noD1Write:true,noKVWrite:true,noTrade:true,notProductionAuthorized:true};
 }
