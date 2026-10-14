@@ -114,5 +114,5 @@ export function classifyCpuReadiness({originalLimitMs=10,providerExceededResourc
     providerExceededResources:providerExceededResources===true,
     offlineCandidateIsNotDeployment:candidateOnly===true,
     githubActionSuccessAloneIsNotBusinessSuccess:true,
-    freePlanUpgradeNotRequired:false,mayRelaxStaleness:false,mayPush:false,mayTrade:false};
+    requiresPaidUpgrade:false,mayRelaxStaleness:false,mayPush:false,mayTrade:false};
 }
