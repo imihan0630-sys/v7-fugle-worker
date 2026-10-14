@@ -1,0 +1,44 @@
+name: System2 Destination D1 Credential Writer Census
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-*.yml'
+      - '.github/workflows/s2-*.yml'
+      - 'system2/config/dest_d1_*.json'
+      - 'system2/tests/dest_d1_credential_workflow_census_v0_1.test.mjs'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-*.yml'
+      - '.github/workflows/s2-*.yml'
+      - 'system2/config/dest_d1_*.json'
+      - 'system2/tests/dest_d1_credential_workflow_census_v0_1.test.mjs'
+permissions:
+  contents: read
+concurrency:
+  group: system2-dest-d1-credential-census-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  offline:
+    if: github.repository == 'imihan0630-sys/v7-fugle-worker'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate all destination D1 credential workflows and owner-only manual paths
+        run: |
+          node --test system2/tests/dest_d1_credential_workflow_census_v0_1.test.mjs
+          node --test system2/tests/dest_d1_cross_workflow_day_interlock_v0_1.test.mjs
+      - name: Guard project permissions
+        run: |
+          node - <<'NODE'
+          const f=require('node:fs').readFileSync('.github/workflows/system2-dest-writer-census-ci.yml','utf8');
+          const forbidden=[['actions',': write'].join(''),['secrets','.'].join(''),['wrangler',' deploy'].join(''),['id-token',': write'].join(''),['issues',': write'].join('')];
+          if(!f.includes('contents: read')||forbidden.some(token=>f.includes(token)))throw Error('UNAUTHORIZED_READONLY_CENSUS_PERMISSIONS');
+          NODE
