@@ -50,6 +50,7 @@ test("safe executor runs six allowlisted test paths only, can't create formal ac
    raw:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
    sourceQuarantine:"system2/config/source_account_d1_writer_quarantine_v0_1.json",
    registry:"system2/config/d1_account_writer_registry_v0_1.json",
+   destRegistry:"system2/config/dest_d1_cross_workflow_writer_interlock_v0_1.json",
    rawImporter:"system2/migration/owner_override_raw_d1_import_20261012.mjs"}).find(([key,val])=>val===p);
   if(!entry)throw Error("DYNAMIC_FILE");return data[entry[0]];
  },testRunner:async p=>{paths.push(p);return{path:p,passed:true,testCount:1,failCount:0}}});
