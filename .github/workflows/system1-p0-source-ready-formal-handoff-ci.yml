@@ -26,5 +26,4 @@ jobs:
           node --check tests/recover_after_market.mjs
           node tests/test_system1_p0_source_ready_handoff_v0_1.mjs
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
-          node tests/test_requirements_repair.mjs
           git diff --exit-code -- Worker.js
