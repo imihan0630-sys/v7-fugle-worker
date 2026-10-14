@@ -54,7 +54,8 @@ export function decideDestinationD1DayGuard({writerId,utcDay,currentRuns,previou
    sampledOtherRunIds:[...today,...boundary].map(x=>x.id).filter(x=>Number.isSafeInteger(x)).slice(0,15),
    allowed:reasons.length===0,reasons,
    nonCloudflareBudgetAssertion:true,atomicCloudflareLedgerProven:false,
-   coversExactlyRegisteredDestinationWriters:3,
+   registeredAutomatedDestWriterCount:3,
+   otherManualDestinationWriterFlowsNotCovered:true,
    excludesOnlyTwoRegisteredDestinationWriters:false
  });
 }
