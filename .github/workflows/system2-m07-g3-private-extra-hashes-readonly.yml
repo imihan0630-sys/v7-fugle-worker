@@ -25,6 +25,8 @@ jobs:
       - name: Verify original source-extra 498 adversarial and provenance contracts
         run: |
           set -euo pipefail
+          test -f system2/tests/issue1236_m07_g3_private_498_hashes_v0_1.test.mjs
+          grep -F 'print(json.dumps(r,sort_keys=True,separators=(",",":")))' system2/migration/issue1236_m07_g3_private_498_unmatched_hashes_v0_1.py
           node --check system2/migration/issue1236_m07_g3_498_private_unmatched_restore_v0_1.mjs
           python3 -m py_compile system2/migration/issue1236_m07_g3_private_498_unmatched_hashes_v0_1.py
           node system2/tests/issue1236_m07_g3_private_498_hashes_v0_1.test.mjs
