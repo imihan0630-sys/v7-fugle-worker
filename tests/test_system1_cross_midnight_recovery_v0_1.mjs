@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES,shouldSkipOvernightDelayedSourceSync} from "./resolve_scheduled_market_date.mjs";
+import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES,shouldSkipOvernightDelayedSourceSync,resolveScheduledTradingGate} from "./resolve_scheduled_market_date.mjs";
 
 let n=0;
 function eq(got,want){assert.equal(got,want);n++;}
@@ -38,6 +38,45 @@ eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T15:27:00Z"),tr
 eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:49:34Z"),triggerSchedule:"45 15 * * 1-5"}),false);
 eq(resolveScheduledMarketContext({now:new Date("2026-10-13T20:49:34Z"),triggerSchedule:"45 15 * * 1-5"}).crossMidnightFallback,true);
 eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:""}),false);
+
+let calendarCalls=0,marketChecks=0;
+const blockedContext=resolveScheduledMarketContext({
+  now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:"25 15 * * 1-5"
+});
+const blockedGate=await resolveScheduledTradingGate({
+  context:blockedContext,marketDate:blockedContext.marketDate,
+  loadTradingCalendar:()=>{calendarCalls++;throw Error("MUST_NOT_READ_CALENDAR");},
+  isTradingDate:()=>{marketChecks++;throw Error("MUST_NOT_ASSERT_TRADING_DAY");}
+});
+assert.deepEqual(blockedGate,{tradingDay:null,proceed:false,calendarChecked:false});n++;
+eq(calendarCalls,0);eq(marketChecks,0);
+const activeContext=resolveScheduledMarketContext({
+  now:new Date("2026-10-13T15:25:00Z"),triggerSchedule:"25 15 * * 1-5"
+});
+for(const [marketIsTrading,expectedProceed] of [[true,true],[false,false]]){
+  const activeGate=await resolveScheduledTradingGate({
+    context:activeContext,marketDate:activeContext.marketDate,
+    loadTradingCalendar:async (_,year)=>{calendarCalls++;eq(year,2026);},
+    isTradingDate:(date)=>{marketChecks++;eq(date,"2026-10-13");return marketIsTrading;}
+  });
+  assert.deepEqual(activeGate,{tradingDay:marketIsTrading,proceed:expectedProceed,calendarChecked:true});n++;
+}
+eq(calendarCalls,2);eq(marketChecks,2);
+await assert.rejects(()=>resolveScheduledTradingGate({
+  context:activeContext,marketDate:activeContext.marketDate,
+  loadTradingCalendar:async ()=>{throw Error("OFFICIAL_CALENDAR_UNAVAILABLE");},
+  isTradingDate:()=>true
+}),/OFFICIAL_CALENDAR_UNAVAILABLE/);n++;
+await assert.rejects(()=>resolveScheduledTradingGate({
+  context:activeContext,marketDate:activeContext.marketDate,
+  loadTradingCalendar:async ()=>{},
+  isTradingDate:()=>null
+}),/S1_TRADING_DAY_VERDICT_NOT_BOOLEAN/);n++;
+await assert.rejects(()=>resolveScheduledTradingGate({
+  context:activeContext,marketDate:"bad-date",
+  loadTradingCalendar:async ()=>{},
+  isTradingDate:()=>true
+}),/S1_TRADING_GATE_CONTEXT_INVALID/);n++;
 assert.throws(()=>shouldSkipOvernightDelayedSourceSync({now:"invalid",triggerSchedule:"25 15 * * 1-5"}),/INVALID_SCHEDULE_CLOCK/);n++;
 
 assert.throws(()=>resolveScheduledMarketDate({now:"invalid",triggerSchedule:"45 15 * * 1-5"}),/INVALID_SCHEDULE_CLOCK/);n++;
@@ -49,7 +88,7 @@ const recovery=await readFile(new URL("./recover_after_market.mjs",import.meta.u
 const quality=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
 
-for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/if\(!context\.overnightSourceSyncSkip\)\{\s*await api\.loadTradingCalendar/,/const proceed=tradingDay===true/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
+for(const pattern of [/resolveScheduledMarketContext/,/resolveScheduledTradingGate/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/loadTradingCalendar:api\.loadTradingCalendar/,/isTradingDate:api\.isTradingDate/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
 for(const body of [cache,inst]){
   assert.match(body,/OFFICIAL_MARKET_DATE/);n++;
   assert.match(body,/exceeds one-day scheduled recovery window/);n++;
