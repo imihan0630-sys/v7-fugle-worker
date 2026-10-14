@@ -7,9 +7,10 @@ const quality={marketDate:date,index:{ready:true},tdcc:{ready:true},datasets:{
  ANNOUNCEMENTS:{ready:true,count:108},QUARTER_EPS:{ready:true,count:11}}};
 const source={marketDate:date,ready:true};
 const cron={recent:[{id:1,job_type:"AFTER_MARKET_SCAN",
- scheduled_at:"2026-10-14T10:10:00.000Z",status:"FAILED",
+ scheduled_at:"2026-10-14T10:10:00.000Z",finished_at:"2026-10-14T10:10:18.000Z",
+ cron_expression:"10 10 * * MON-FRI",status:"FAILED",
  error:"Error: DATA_INCOMPLETE：缺當日真實指數比較基期"}]};
-const rec={attempt:{status:"FAILED",requestedDate:date}};
+const rec={attempt:{status:"FAILED",requestedDate:date,generatedAt:"2026/10/14 18:10:15"}};
 const fixture={now:"2026-10-14T14:43:00.000Z",targetDate:date,
  scan:{scanDate:"2026-09-29"},quality,institution:source,recommendations:rec,cron};
 const ok=decide(fixture);
@@ -37,6 +38,10 @@ for(const error of ["Error: exceededResources","Error: Worker CPU 10ms exceeded"
  blocked({cron:{recent:[{...cron.recent[0],error}]}},"PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
 }
 assert.equal(decide({...fixture,cron:{recent:[{...cron.recent[0],error:"Error: DATA_INCOMPLETE: missing verified quarter EPS"}]}}).mayPost,true);
+blocked({recommendations:{attempt:{...rec.attempt,generatedAt:"2026/10/14 22:40:00"}}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+blocked({recommendations:{attempt:{...rec.attempt,generatedAt:null}}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+blocked({cron:{recent:[{...cron.recent[0],finished_at:null}]}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+blocked({cron:{recent:[{...cron.recent[0],cron_expression:"* 9 * * MON-FRI"}]}},"PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
 const worker=await readFile(new URL("../Worker.js",import.meta.url),"utf8");
 const core=worker.slice(worker.indexOf("async function runAfterMarketScanCore("),
  worker.indexOf("async function ",worker.indexOf("async function runAfterMarketScanCore(")+6));
