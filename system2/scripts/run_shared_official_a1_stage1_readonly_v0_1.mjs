@@ -243,6 +243,11 @@ export async function stage1ResearchFromAuditedSourceV0_1(input={}){
   // ONLY independent genuinely accepted corporate-action coverage may be supplied.
   // Missing proof means INCOMPLETE and must NEVER default to CLEAR_NO_ACTION.
   continuityBySymbol:input.continuityBySymbol||{},
+  // Optional *separately* source-verified CA completeness/audit inputs. The
+  // normal official A1-only lane supplies neither, so no stock may inherit a
+  // fabricated corporate-action no-event certificate.
+  companyActionCompletenessReceipt:input.companyActionCompletenessReceipt||null,
+  companyActionIndependentAuditReceipt:input.companyActionIndependentAuditReceipt||null,
   evaluationAtUtc:input.freezeAtUtc
  });
  if(admission.selectedCount!==null||admission.zeroPickDay!==null||

@@ -7,6 +7,8 @@ import {buildSharedOfficialA1MarketManifestV0_1}
  from '../../shared-knowledge/market-data/shared_official_a1_manifest_v0_1.mjs';
 import {admitSharedOfficialA1ToShortMomentumStage1V0_1 as admit}
  from '../runtime/shared_official_a1_stage1_admission_v0_1.mjs';
+import {buildCorporateActionCompletenessReceiptV0_2}
+ from '../runtime/corporate_action_continuity_archive_v0_1.mjs';
 
 const H='a'.repeat(64),marketDate='2026-10-13',evaluationAtUtc='2026-10-13T14:30:00Z';
 const dates=Array.from({length:61},(_,i)=>{
@@ -84,10 +86,51 @@ async function fixture(){
    auditorSeparation:'INDEPENDENT_READBACK_PROCESS',strategyPitCertified:false,
    selectionAuthorized:false};
  const auditReceipt={...auditBase,auditHash:await sha256Hex(auditBase)};
- const continuityBySymbol={'2330':{symbol:'2330',marketDate,state:'CLEAR_NO_ACTION',
-   originalCorporateActionEvidenceVerified:true,evidenceSha256:H,startSession:dates[0],
-   endSession:marketDate,availableAt:'2026-10-13T13:15:00Z'}};
- return {manifest,sourceReceipt,auditReceipt,sourceLedger,continuityBySymbol,evaluationAtUtc};
+ // This is synthetic proof for regression ONLY; no real corporate-action
+ // source was consulted and this cannot prove physical historical PIT.
+ const requiredSourceContracts=['TWSE','TPEX'].flatMap(exchange=>
+  ['EX_RIGHT_DIVIDEND','CAPITAL_REDUCTION','PAR_VALUE_CHANGE'].map(actionFamilyId=>({
+   exchange,actionFamilyId,sourceClass:'HISTORICAL_ACTUAL_RESULT_RANGE'
+  })));
+ const sourceCoverage=requiredSourceContracts.map((r,i)=>({
+  ...r,sourceId:'SYNTH_CA_'+i,coverageState:'COMPLETE',
+  requestedStartDate:dates[0],requestedEndDate:marketDate,
+  responseRangeVerified:true,parserComplete:true,revisionCoverageComplete:true,
+  observedRowCount:1,emptyRangeSemanticsCertified:false,missingSourceDates:[]
+ }));
+ const suspensionEvidenceByExchange=Object.fromEntries(
+  ['TWSE','TPEX'].map(exchange=>[exchange,{
+   coverageState:'COMPLETE',requestedStartDate:dates[0],requestedEndDate:marketDate,
+   sourceId:'SYNTH_SUSP_'+exchange,sourceFamily:'SUSPENSION',
+   sourceContractVersion:'SYNTH_ONLY',receiptDigest:H,
+   observedAt:'2026-10-13T13:17:00Z',availableAt:'2026-10-13T13:17:00Z',
+   availabilitySemantics:'PROSPECTIVE_OBSERVED'
+  }]));
+ const companyActionCompletenessReceipt=await buildCorporateActionCompletenessReceiptV0_2({
+  startDate:dates[0],endDate:marketDate,universeVersion:'SYNTH_PIT_ONLY',
+  universeCoverageComplete:true,requiredSourceContracts,sourceCoverage,
+  eventVersions:[],suspensionCoverageByExchange:{TWSE:'COMPLETE',TPEX:'COMPLETE'},
+  suspensionEvidenceByExchange,generatedAt:'2026-10-13T13:18:00Z'
+ });
+ assert.equal(companyActionCompletenessReceipt.noEventMayBeClaimed,true);
+ const caAuditBase={
+  schemaVersion:'S2_CA_PIT_INDEPENDENT_AUDIT_V0_1',
+  verdict:'ACCEPTED_SOURCE_COMPLETENESS_ONLY',
+  auditorSeparation:'INDEPENDENT_READBACK_PROCESS',
+  originalSourceEvidenceRehashed:true,marketDate,
+  caReceiptHash:companyActionCompletenessReceipt.receiptHash,
+  sourceLedgerHash:sourceLedger.ledgerSha256,auditedAtUtc:'2026-10-13T13:20:00Z'
+ };
+ const companyActionIndependentAuditReceipt={
+  ...caAuditBase,auditHash:await sha256Hex(caAuditBase)
+ };
+ const continuityBySymbol={'2330':{symbol:'2330',market:'TWSE',marketDate,
+   state:'CLEAR_NO_ACTION',originalCorporateActionEvidenceVerified:true,
+   evidenceSha256:companyActionCompletenessReceipt.receiptHash,
+   independentAuditHash:companyActionIndependentAuditReceipt.auditHash,
+   startSession:dates[0],endSession:marketDate,availableAt:'2026-10-13T13:21:00Z'}};
+ return {manifest,sourceReceipt,auditReceipt,sourceLedger,continuityBySymbol,
+  companyActionCompletenessReceipt,companyActionIndependentAuditReceipt,evaluationAtUtc};
 }
 
 test('independent 122/122 audit admits source into existing Stage1 research evaluator only',async()=>{
@@ -130,6 +173,60 @@ test('unknown corporate-action continuity remains incomplete, never selected',as
  assert.equal(out.evaluation.observations[0].reasonCodes[0],'PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED');
  assert.equal(out.selectedCount,null);assert.equal(out.zeroPickDay,null);
 });
+
+test('fabricated bare continuity true + arbitrary SHA never clears PIT without both attestations',async()=>{
+ const p=await fixture();
+ p.companyActionCompletenessReceipt=null;
+ p.companyActionIndependentAuditReceipt=null;
+ const out=await admit(p);
+ assert.equal(out.evaluationState,'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE');
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+   'PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED');
+ assert.equal(out.selectionAuthorized,false);
+});
+test('tampered independently bound CA proof cannot be used even with old true flag',async()=>{
+ const p=await fixture();
+ p.companyActionIndependentAuditReceipt.caReceiptHash='f'.repeat(64);
+ await assert.rejects(()=>admit(p),/STAGE1_CA_PIT_INDEPENDENT_CA_AUDIT_UNVERIFIED/);
+});
+test('CA audit created AFTER strategy evaluation cannot backdate no-event proof',async()=>{
+ const p=await fixture();
+ const a={...p.companyActionIndependentAuditReceipt,
+   auditedAtUtc:'2026-10-14T00:00:00Z'};
+ delete a.auditHash;
+ p.companyActionIndependentAuditReceipt={...a,auditHash:await sha256Hex(a)};
+ await assert.rejects(()=>admit(p),/STAGE1_CA_PIT_INDEPENDENT_CA_AUDIT_UNVERIFIED/);
+});
+test('a re-signed CA receipt missing one mandatory action-family lane fails closed',async()=>{
+ const p=await fixture(),c={...p.companyActionCompletenessReceipt};
+ c.requiredSourceContracts=c.requiredSourceContracts.slice(1);
+ delete c.receiptHash;c.receiptHash=await sha256Hex(c);
+ p.companyActionCompletenessReceipt=c;
+ const a={...p.companyActionIndependentAuditReceipt,caReceiptHash:c.receiptHash};
+ delete a.auditHash;a.auditHash=await sha256Hex(a);
+ p.companyActionIndependentAuditReceipt=a;
+ await assert.rejects(()=>admit(p),/STAGE1_CA_PIT_SIX_FAMILY_REVISION_SOURCE_COVERAGE_UNVERIFIED/);
+});
+test('a known active event cannot be silently labelled CLEAR_NO_ACTION',async()=>{
+ const p=await fixture(),c={...p.companyActionCompletenessReceipt};
+ c.eventReconciliation={...c.eventReconciliation,
+  groups:[{exchange:'TWSE',symbol:'2330',actionFamilyId:'EX_RIGHT_DIVIDEND',
+   state:'READY_ACTIVE',currentEvent:{effectiveDate:'2026-09-15',
+    eventVersionId:'SYNTH-ACTIVE-CA'}}]};
+ delete c.receiptHash;c.receiptHash=await sha256Hex(c);
+ p.companyActionCompletenessReceipt=c;
+ const a={...p.companyActionIndependentAuditReceipt,caReceiptHash:c.receiptHash};
+ delete a.auditHash;a.auditHash=await sha256Hex(a);
+ p.companyActionIndependentAuditReceipt=a;
+ p.continuityBySymbol['2330'].evidenceSha256=c.receiptHash;
+ p.continuityBySymbol['2330'].independentAuditHash=a.auditHash;
+ const out=await admit(p);
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+   'PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED');
+});
+
 test('duplicate cross-market symbol history fails closed',async()=>{
  const p=await fixture();const h=p.sourceReceipt.bySymbol['TWSE|2330'];
  p.sourceReceipt.bySymbol['TPEX|2330']={...h,market:'TPEX',bars:h.bars.map(x=>({...x,market:'TPEX'}))};

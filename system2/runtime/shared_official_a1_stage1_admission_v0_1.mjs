@@ -8,6 +8,8 @@ import {official61SessionSourceReceiptHashBaseV0_1}
  from './source_first_official_61_session_collector_v0_1.mjs';
 import {evaluateSourceFirstShortMomentumV0_1}
  from './source_first_short_momentum_evaluator_v0_1.mjs';
+import {verifiedStage1ContinuityBySymbolV0_1}
+ from './stage1_ca_pit_evidence_gate_v0_1.mjs';
 
 const SHA=/^[a-f0-9]{64}$/i;
 const DAY=/^\d{4}-\d{2}-\d{2}$/;
@@ -127,7 +129,9 @@ function assertManifestPairs(manifest,sourceReceipt){
 }
 
 export async function admitSharedOfficialA1ToShortMomentumStage1V0_1({
- manifest,sourceReceipt,auditReceipt,sourceLedger,continuityBySymbol={},evaluationAtUtc,
+ manifest,sourceReceipt,auditReceipt,sourceLedger,continuityBySymbol={},
+ companyActionCompletenessReceipt=null,companyActionIndependentAuditReceipt=null,
+ evaluationAtUtc,
 }={}){
  if(!iso(evaluationAtUtc))throw Error('SHARED_A1_ADMISSION_EVALUATION_CLOCK_INVALID');
  const boundary=assertSharedOfficialA1ConsumerBoundaryV0_1(manifest,{
@@ -149,8 +153,14 @@ export async function admitSharedOfficialA1ToShortMomentumStage1V0_1({
    originalCalendarHash:sourceReceipt.calendar.originalCalendarHash,
    tradingDates:[...verified.dates],
  };
+ const verifiedContinuity=await verifiedStage1ContinuityBySymbolV0_1({
+   sourceLedger,calendarTradingDates:verified.dates,evaluationAtUtc,
+   continuityBySymbol,completenessReceipt:companyActionCompletenessReceipt,
+   independentAuditReceipt:companyActionIndependentAuditReceipt,
+ });
  const evaluation=await evaluateSourceFirstShortMomentumV0_1({
-   sourceLedger,historyBySymbol:verified.historyBySymbol,continuityBySymbol,
+   sourceLedger,historyBySymbol:verified.historyBySymbol,
+   continuityBySymbol:verifiedContinuity,
    calendarReceipt,evaluationAtUtc,independentOriginalVerification:true,
  });
  const base={
