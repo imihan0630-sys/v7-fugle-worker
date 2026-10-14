@@ -7,6 +7,9 @@ const p=buildIndependentMonitorShards({formal,aideen,shardSize:3});
 let cases=0;const ok=(truth,label)=>{assert.ok(truth,label);cases++};
 ok(p.expectedKeys.length===9&&p.cycles===3&&p.shardSize===3,"9 exact monitors in 3 <=3 stock shards");
 ok(p.groups.every(g=>g.length===3),"no event loads 9 Fugle quotes in one invocation");
+ok(p.originalWorkerQuoteFreshSeconds===90&&p.sequentialOneCronRotationMeets90SecondFreshness===false,
+ "three-minute 3x3 rotation is explicitly NOT production freshness-compatible");
+
 ok(new Set(p.expectedKeys).size===9,"all original independent identities unique");
 const cycle=[540,541,542].map(minuteOfDay=>chooseBoundedShard({plan:p,minuteOfDay}));
 ok(cycle.flatMap(x=>x.entries).length===9&&new Set(cycle.flatMap(x=>x.entries.map(z=>z.pool+":"+z.symbol))).size===9,
@@ -27,6 +30,12 @@ ok(result().readyForCandidateValidationOnly===true,"genuinely current nine-sourc
 ok(result().mayPublishToFormalLive===false&&result().maySendPush===false,
  "offline proof cannot publish, push, trade or mutate D1");
 ok(result().oldestVendorAgeSeconds===60,"actual 60 second producer timestamp recorded");
+ok(result().originalWorkerQuoteFreshSeconds===90&&result().neverLoosenQuoteClock===true,
+ "aggregate never silently relaxes original quote producer age from 90 to 300 seconds");
+ok(result([row(p.groups[0][0],"2026-10-14T02:53:29Z"),...rows.slice(1)]).readyForCandidateValidationOnly===false,
+ "91-second-old quote is INVALID even if a 5-minute dashboard freshness gate would have passed");
+assert.throws(()=>auditShardAggregate({plan:p,tradeDate,now,updates:rows,maxAgeSeconds:91}),
+ /AGGREGATE_EPOCH_OR_CLOCK_UNVERIFIED/);cases++;
 const single=rows.slice(0,3);
 ok(result(single).readyForCandidateValidationOnly===false&&result(single).missingKeys.length===6,
  "one updated shard MUST NOT masquerade as full 9 stock monitor");
