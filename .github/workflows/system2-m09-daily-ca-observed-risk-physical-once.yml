@@ -1,0 +1,77 @@
+name: System2 M09 Daily CA Observed Risk Physical Integration Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs"
+      - "system2/tests/run_m09_daily_ca_negative_advisory_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-daily-ca-observed-risk-physical-once.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs"
+      - "system2/tests/run_m09_daily_ca_negative_advisory_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-daily-ca-observed-risk-physical-once.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-m09-daily-ca-once-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  physical_integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify real A1 audit to six-source CA risk-advisory bridge
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs
+          node --test system2/tests/run_m09_daily_ca_negative_advisory_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Retrieve exact genuine Oct14 audited A1 source bytes (one-time physical integration)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38629859058
+          name: s2-shared-official-a1-38629859058
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Retrieve exact genuine Oct14 independent source auditor and preliminary
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38630106632
+          name: system2-shared-official-a1-independent-audit-38630106632
+          path: /tmp
+          github-token: ${{ github.token }}
+      - name: Physically capture all six official native CA sources and bind only observed risk
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs
+          R=/tmp/s2-m09-daily-ca-negative-readonly/daily-ca-advisory.json
+          test -s "$R"
+          test "$(jq -r .marketDate "$R")" = '2026-10-14'
+          test "$(jq -r .formalSelectionAuthorized "$R")" = 'false'
+          test "$(jq -r .noEventMayBeClaimed "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "Actual native CA known-event overlay state=$(jq -r .state "$R") / CA ranges=$(jq -r .caNativeRangeCount "$R")/6 / event-risk previews=$(jq -r .caKnownEventPreviewCount "$R")/$(jq -r .preliminaryCount "$R"). NO_EVENT NOT CERTIFIED." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain original CA bytes and sanitized observed-risk receipts
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-ca-advisory-once-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-daily-ca-negative-readonly/
+          if-no-files-found: warn
+          retention-days: 7
