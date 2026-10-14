@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "D06_PF054_ADMISSION_MATRIX_V0_1",
+  "owner": "05｜法人與籌碼研究室",
+  "researchOnly": true,
+  "mainBaseline": "269eb6033d6e7fc0cbe0e19ca2ac43210823d09b",
+  "sourceReferences": [
+    "research/stock_market_learning_tracker_v0_1.json",
+    "INSTITUTIONAL_CROWDING_RESEARCH.md",
+    "LEVERAGE_SHORTING_CHECKPOINT.md",
+    "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md",
+    "research/d06_pf053_prereg_identifiability_audit_20261014_v0_1.json@research/d06-pf053-prereg-integrity-20261014",
+    "D06_PF052_20261013_local_research.json@local_sha256:4378656d33c9c09394e6c55ea19889045a7292e08b40d5fb450b48e3dc5a6dca"
+  ],
+  "purpose": "Outcome-blind cross-module admission/falsification matrix; PF052 local and PF053 unmerged are cited as secondary not canonical main.",
+  "gates": [
+    {
+      "id": "A01",
+      "module": "D06-16",
+      "hypothesis": "Reported ETF unit changes plus complete date-effective PCF identify conditional delivery exposure.",
+      "support": "Official units and PCF have source clocks.",
+      "counter": "Unit delta may include reversals/actions; AP inventory, collective creation and cash substitution break same-day execution inference.",
+      "alternative": "Administrative unit actions or inventory finance.",
+      "failure": "Missing immutable full PCF, unit-action lineage, per-constituent substitution or independently verified firstKnownAt.",
+      "decision": "MODELED_PRIMARY_BASKET_EXPOSURE_ONLY; actual constituent execution UNKNOWN."
+    },
+    {
+      "id": "A02",
+      "module": "D06-11",
+      "hypothesis": "Index rebalance exposure adds information beyond primary ETF unit changes.",
+      "support": "A zero-unit-change fund may still change constituents.",
+      "counter": "Fund holdings and index events share one parent; end-state holdings are not executions.",
+      "alternative": "Tracking, sampling, cash reallocation and multi-day transition.",
+      "failure": "Event announcement/effective/source clocks or pre-event weight vintages missing.",
+      "decision": "One event root; D11-14 event and D06-11 flow and D06-16 mechanism not independent votes."
+    },
+    {
+      "id": "A03",
+      "module": "D06-06",
+      "hypothesis": "Crowding augments modeled passive exposure.",
+      "support": "Multiple PIT actor, leverage, liquidity and ownership axes may co-occur.",
+      "counter": "Price/volume and ETF/index parent receipts are duplicated across consumers; simultaneous movement can be market-wide.",
+      "alternative": "Regime, sector, momentum and shared inventory funding.",
+      "failure": "Same-generation compatible PRICE_OHLC/VOLUME_TURNOVER parent identity or common support absent.",
+      "decision": "No scalar score, no independent crowding vote until exact shared lineage and residual OOS."
+    },
+    {
+      "id": "A04",
+      "module": "D06-07/D06-08/D06-09",
+      "hypothesis": "Financing and borrowed-short observations confirm ETF-driven price pressure.",
+      "support": "Borrowing may finance basket delivery and hedging.",
+      "counter": "Margin financing, margin short and SBL short have distinct populations; later version may revise next-day eligibility without revising today's short flow.",
+      "alternative": "Hedge, dealer inventory, settlement or liquidity provision.",
+      "failure": "Same-date EARLY/LATE source versions or native-unit/denominator reconciliation missing.",
+      "decision": "Preserve separate universes, next-day eligibility clock and non-directional semantics."
+    },
+    {
+      "id": "A05",
+      "module": "D06-18",
+      "hypothesis": "Observed borrow fee and displayed supply quantify crowded short exposure.",
+      "support": "In-slot TWSE competitive fee is observable for fixed securities.",
+      "counter": "Displayed lend/borrow zero does not prove zero lendable inventory; negotiated and competitive families differ.",
+      "alternative": "Quote sparsity, negotiated lending or term/recall differences.",
+      "failure": "Missing 15:20±5m receipt, source date, rate family or true total-lendable denominator.",
+      "decision": "TRUE_UTILIZATION_UNKNOWN; no after-the-fact slot backfill."
+    },
+    {
+      "id": "A06",
+      "module": "D06-05",
+      "hypothesis": "Weekly concentration changes predict stock returns.",
+      "support": "Certified clean 1852-symbol pair and frozen signed 400+ change protocol exist.",
+      "counter": "Single TDCC pair is one time observation; cohort changes with actions and listing.",
+      "alternative": "Price response, passive ownership, float change or denominator shift.",
+      "failure": "New sourceDate not >2026-10-08, pair-specific clean cohort absent, or fewer than 12 genuine postfreeze pairs and two regimes.",
+      "decision": "No L4; no timeless reuse of prior 1852-symbol cohort."
+    },
+    {
+      "id": "A07",
+      "module": "D06-16",
+      "hypothesis": "Conditional ETF basket proxy predicts five-session forward residual return.",
+      "support": "A fixed predecision feature could be tested versus market/industry/size/liquidity/volatility/momentum/turnover baseline.",
+      "counter": "Incomplete PCF, future volume, non-tradable opens, overlapping labels and missing fund-date coverage can generate spurious significance.",
+      "alternative": "Index news, contemporaneous institutional flows, stale versions or selection bias.",
+      "failure": "No D16/00 prereg acceptance, chronological purge, source firstKnownAt or true executable outcome.",
+      "decision": "OUTCOMES_CLOSED; two-sided sign-unspecified single-primary-feature test only after approval."
+    },
+    {
+      "id": "A08",
+      "module": "D06-16/D06-06",
+      "hypothesis": "Fund-label permutation is a valid falsification.",
+      "support": "Conditionally exchangeable labels may reveal accidental fund-identity memorization.",
+      "counter": "Unconditional shuffling changes constituent membership, fund style and sector exposures.",
+      "alternative": "Negative control within matched date, sector, size, liquidity and basket support.",
+      "failure": "Exchangeability and support balance unproven.",
+      "decision": "Unconditional placebo REJECTED; conditional placebo only after D16 review."
+    }
+  ],
+  "checks": {
+    "count": 8,
+    "passed": 8,
+    "kind": "DETERMINISTIC_SPEC_ASSERTIONS_NOT_MARKET_TESTS"
+  },
+  "newIndependentDates": 0,
+  "newOOSOutcomes": 0,
+  "formalCore": "LOCKED",
+  "maturityChange": "NONE",
+  "formalOptimizationCandidate": "NONE",
+  "preregStatus": "PENDING_D16_00",
+  "next": "Reconcile PF053 via approved small-file pathway without stale SHA overwrite; D16/00 review PF052/53/54; only then source-vintage-complete PCF prospective capture and predecision OOS; follow fixed D06-05 TDCC, D06-07/08/09 TPEx and D06-18 SBL slots."
+}
