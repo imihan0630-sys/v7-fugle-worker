@@ -16,6 +16,16 @@ let sample=JSON.parse(readFileSync(ORIGINAL_REPO_RECEIPTS[0].path,"utf8"));
 sample.receipts[0].objectKey="attacker/change.json.gz";
 assert.throws(()=>parseSourceReceiptText(JSON.stringify(sample),ORIGINAL_REPO_RECEIPTS[0],{checkBlob:false}),
  /M07_D08_RECEIPT_SOURCE_RECEIPT_PROVENANCE_INVALID/);
+const invalidated=JSON.parse(readFileSync(ORIGINAL_REPO_RECEIPTS[0].path,"utf8"));
+assert.equal(invalidated.validationStatus,"INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE");
+assert.ok(invalidated.invalidReason.length>0);
+invalidated.validationStatus="IDEMPOTENCY_VERIFIED";
+assert.throws(()=>parseSourceReceiptText(JSON.stringify(invalidated),ORIGINAL_REPO_RECEIPTS[0],{checkBlob:false}),
+ /M07_D08_RECEIPT_LEGACY_V01_IDEMPOTENCY_INVALIDATION_MISSING/);
+const invalidV02=JSON.parse(readFileSync(ORIGINAL_REPO_RECEIPTS[1].path,"utf8"));
+invalidV02.validationStatus="PASS_UNVERIFIED";
+assert.throws(()=>parseSourceReceiptText(JSON.stringify(invalidV02),ORIGINAL_REPO_RECEIPTS[1],{checkBlob:false}),
+ /M07_D08_RECEIPT_SOURCE_V02_IDEMPOTENCY_WITNESS_DRIFT/);
 const fake=new Map();
 for(const g of groups)for(const row of g.rows)fake.set(row.id,row.bytes??10);
 const additional=498-fake.size;
@@ -29,6 +39,11 @@ fake.set(firstUnknown,fake.get(firstUnknown)+(target-current));
 const result=joinOriginalReceipts(fake,groups);
 assert.equal(result.status,"SOURCE_D08_WRITER_RECEIPTS_154_KEY_IDENTITIES_MATCH_G3_498_EXTRA__AUDIT_PENDING");
 assert.equal(result.sourceD08WriterReceiptKeyHashMatched,154);
+assert.equal(result.legacyV01ObjectsPhysicalSourceOnly,44);
+assert.equal(result.nonLegacyWriterReceiptKeyMatches,110);
+assert.equal(result.legacyV01EligibleForCanonicalHistoricalValuationResearch,false);
+assert.equal(result.byWriterReceipt.RAW_V01.originalSourceReceiptCanonicalEvidenceState,
+  "INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE__OBJECT_PROVENANCE_ONLY");
 assert.equal(result.sourceD08WriterReceiptsRows,154);
 assert.equal(result.writerReceiptGzipSizeParity,132);
 assert.equal(result.originalExtraKeyCountStillWithoutTheseFourGitHubReceiptMatches,344);
