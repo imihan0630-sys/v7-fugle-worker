@@ -1,0 +1,61 @@
+name: S2 M07 OFFLINE Eight R2 Source Bodies to Original D1 Manifests
+# Existing G3 ciphertext, existing sealed key and authentic R2 source receipt only.
+# Zero Cloudflare API / R2 calls. No original SQL, raw object keys or bytes exposed.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-original-eight-manifest-crosswalk.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-g3-original-eight-r2-manifest-crosswalk
+  cancel-in-progress: false
+jobs:
+  offline_join:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify 8-object source manifest positive and adversarial gates
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_g3_eight_body_manifest_crosswalk_v0_1.mjs
+          python3 -m py_compile system2/migration/issue1236_m07_original_eight_body_manifest_join_v0_1.py
+          node system2/tests/issue1236_m07_eight_g3_manifest_join_v0_1.test.mjs
+      - name: Fetch SAME ORIGINAL G3 encrypted source SQL archive
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-existing-rsa-source-transfer-encrypted-extended-38214521809
+          run-id: 38214521809
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-existing-source-archive
+      - name: Fetch ORIGINAL source R2 eight-body receipts from successful source run
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-source-r2-eight-objects-38514968751-1
+          run-id: 38514968751
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-eight-original-source
+      - name: Offline archived SQL authenticated restore and exact eight-body SHA join
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1236_m07_g3_eight_body_manifest_crosswalk_v0_1.mjs
+      - name: Archive only sanitized eight-object join counts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-eight-object-d1-source-crosswalk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m07-eight-manifest-crosswalk/sanitized-eight-crosswalk.json
+          if-no-files-found: warn
+          retention-days: 90
