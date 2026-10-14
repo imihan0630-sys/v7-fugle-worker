@@ -1,0 +1,40 @@
+name: S2 M06 Legacy Operations DEST Readonly Census
+# Bounded, target-only SELECT. This is NOT source D1, R2, Frozen or Shadow acceptance.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m06-operational-census-readonly.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-m06-dest-legacy-operational-census-readonly
+  cancel-in-progress: false
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify classification and pinned SELECT-only contract
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1232_m06_operational_provenance_readonly_v0_1.mjs
+          node system2/tests/issue1232_m06_operational_provenance_readonly_v0_1.test.mjs
+      - name: Physical destination-only SELECT count readback
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: node system2/migration/issue1232_m06_operational_provenance_readonly_v0_1.mjs
+      - name: Archive sanitized read-only count receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m06-dest-operational-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m06-operational-provenance/sanitized-readback.json
+          if-no-files-found: warn
+          retention-days: 30
