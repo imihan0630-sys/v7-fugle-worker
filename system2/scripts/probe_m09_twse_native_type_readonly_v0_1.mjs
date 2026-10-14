@@ -31,6 +31,7 @@ export async function probeM09TwseNativeTypeV0_1({
  try{payload=JSON.parse(rawBytes.toString('utf8').replace(/^\uFEFF/,''));}
  catch{throw Error('M09_NATIVE_TYPE_NOT_JSON');}
  const providerDay=extractedProviderDay(payload);
+ const providerStatusOk=payload?.stat==='OK';
  const tables=Array.isArray(payload?.tables)?payload.tables:
   (Array.isArray(payload?.data)&&Array.isArray(payload?.fields)?
    [{title:payload.title||null,fields:payload.fields,data:payload.data}]:[]);
@@ -78,11 +79,11 @@ export async function probeM09TwseNativeTypeV0_1({
   if(isDepositary(category))depositary++;
  }
  const sourceDateExact=providerDay===requestedDate;
- const potentialPerSymbol=sourceDateExact&&positive>0&&ambiguousCodes===0;
+ const potentialPerSymbol=providerStatusOk&&sourceDateExact&&positive>0&&ambiguousCodes===0;
  const base={
   schemaVersion:'S2_M09_NATIVE_TWSE_TYPE_CAPABILITY_V0_1',
   classification:'SOURCE_CAPABILITY_ONLY_NO_INSTRUMENT_ADMISSION',
-  requestedDate,providerDate:providerDay,sourceDateExact,
+  requestedDate,providerDate:providerDay,sourceDateExact,providerStatusOk,
   observedAtUtc,originalSource:'TWSE_MI_INDEX',
   originalSourceUrl:TWSE_M09_TYPE_SOURCE+
    '?date='+requestedDate.replaceAll('-','')+'&type=ALLBUT0999&response=json',
@@ -95,6 +96,7 @@ export async function probeM09TwseNativeTypeV0_1({
   ambiguousDuplicateCodes:ambiguousCodes,
   aggregateStockAndDepositaryCategoryObserved:categorizedAggregateOnly,
   state:potentialPerSymbol?'PER_SYMBOL_EXPLICIT_TYPE_CANDIDATE_UNAUDITED':
+   !providerStatusOk?'PROVIDER_STATUS_UNVERIFIED':
    sourceDateExact?'AGGREGATE_OR_TYPE_UNVERIFIED':'EXACT_DATE_NOT_PROVEN',
   // A separate independent original-byte readback would still be mandatory.
   separatelyIndependentlyAudited:false,perSymbolPITSourceRowsCertified:false,
