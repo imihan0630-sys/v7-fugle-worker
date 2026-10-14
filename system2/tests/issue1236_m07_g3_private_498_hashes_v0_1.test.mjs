@@ -15,7 +15,7 @@ assert.match(source,/sourceR2NetworkCalls":0/);
 assert.match(wrapper,/ORIGINAL_SQL_AUTHENTICATION/);
 assert.match(wrapper,/SAMPLE_SHA="9b810c8a9fcdbd5fc596185e5de63850dbb0868ce7bdf76687a6a812c2ff1055"/);
 assert.match(workflow,/environment: system2-schema-only/);
-assert.match(workflow,/issue1236_m07_g3_private_498_hashes_v0_1\\.test\\.mjs/);
+assert.ok(workflow.includes("system2/tests/issue1236_m07_g3_private_498_hashes_v0_1.test.mjs"));
 assert.match(workflow,/s2-m07-source-r2-32page-private-inventory-38519598039-1/);
 assert.match(workflow,/s2-existing-rsa-source-transfer-encrypted-extended-38214521809/);
 assert.doesNotMatch(workflow,/SYSTEM2_R2_SECRET_ACCESS_KEY|SYSTEM2_CLOUDFLARE_API_TOKEN|wrangler/);
