@@ -31,7 +31,7 @@ export function parsePrivateExtraReceipt(bytes,metadataBytes,{
    deny("ORIGINAL_498_ARTIFACT_BYTES_SHA_DRIFT");
  let meta;
  try{meta=JSON.parse(Buffer.from(metadataBytes).toString("utf8"))}catch{deny("ORIGINAL_498_META_INVALID")}
- if(meta.schemaVersion!=="S2_M07_G3_498_PRIVATE_UNMATCHED_HASH_CLASSIFICATION_V0_1"||
+ if(meta.schemaVersion!=="S2_M07_PROTECTED_G3_SOURCE_498_R2_UNMATCHED_HASH_KEYS_V0_1"||
     meta.status!=="SOURCE_R2_498_UNMATCHED_PRIVATE_KEYHASHES_ANCHORED_TO_G3__OWNERSHIP_UNKNOWN"||
     meta.originalManifestIdentityAndSizeMatched!==25823||
     meta.extraKeyHashCount!==498||meta.extraListedBytes!==255515971||
