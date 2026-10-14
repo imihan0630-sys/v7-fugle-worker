@@ -18,6 +18,14 @@ if(sourceReadyHandoff && (date!==today||time<'18:10'||time>'23:59')) {console.lo
 if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
 if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('RECOVERY_MARKET_DATE must be YYYY-MM-DD');
 if(date>today) throw new Error('RECOVERY_MARKET_DATE cannot be in the future');
+ // Canonical deployed Worker ignores JSON body.marketDate and calls
+ // runAfterMarketScan(env,Date.now()). Do not let any delayed/explicit recovery
+ // select another session. Future Worker pinning needs separate deployment.
+if(date!==today) throw new Error('LEGACY_WORKER_PINNED_PRIOR_DAY_UNSUPPORTED_NO_BUSINESS_POST');
+if(historicalRecovery && !sourceReadyHandoff && (time<'23:35'||time>'23:59')){
+  console.log(JSON.stringify({skipped:true,reason:'MANUAL_RECOVERY_OUTSIDE_EVENING_WINDOW',date,time,noBusinessPost:true}));
+  process.exit(0);
+}
 const ageMs=Date.parse(today+'T00:00:00Z')-Date.parse(date+'T00:00:00Z');
 if(ageMs>14*86400000) throw new Error('RECOVERY_MARKET_DATE exceeds 14-day recovery window');
 if(scheduledFallback && ageMs>86400000) throw new Error('Scheduled fallback target exceeds one-day cross-midnight window');
