@@ -16,6 +16,13 @@ assert.throws(()=>classifyC1Readiness({...full,scanDate:"2026/10/01"}),/SCAN_DAT
 const ready=classifyC1Readiness(full);
 eq(ready.category,"C1_CAPTURE_OR_PERSISTENCE_GAP");
 eq(ready.facts.qualityReady,true);
+eq(ready.facts.quarterEpsReceipt.state,"EPS_SNAPSHOT_UNVERIFIED");
+const qualityWithEmptyEps={...qualityStatus,datasets:{...qualityStatus.datasets,QUARTER_EPS:{ready:true,count:0}}};
+const scope=classifyC1Readiness({...full,qualityStatus:qualityWithEmptyEps});
+eq(scope.facts.quarterEpsReceipt.state,"EPS_CANDIDATE_RECEIPT_EMPTY");
+eq(scope.facts.quarterEpsReceipt.mayClaimNoCandidate,false);
+eq(scope.facts.quarterEpsReceipt.mayDeclareFullMarketEpsCoverage,false);
+eq(scope.category,"C1_CAPTURE_OR_PERSISTENCE_GAP");
 for(const flag of ["mayCountAsZeroPick","eligibleForResearch","decisionImpact","formalCoreImpact","noPlanChanges"]){
   eq(ready[flag],["noPlanChanges"].includes(flag));
 }
