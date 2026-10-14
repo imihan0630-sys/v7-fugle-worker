@@ -129,8 +129,31 @@ async function fixture(){
    evidenceSha256:companyActionCompletenessReceipt.receiptHash,
    independentAuditHash:companyActionIndependentAuditReceipt.auditHash,
    startSession:dates[0],endSession:marketDate,availableAt:'2026-10-13T13:21:00Z'}};
+ // Synthetic official CFI/ISIN + separate source readback — never physical proof.
+ const classBase={schemaVersion:'S2_OFFICIAL_INSTRUMENT_CLASS_PIT_SOURCE_V0_1',
+  sourceClass:'ORIGINAL_NATIVE_ISIN_CFI_SECURITY_CLASS',
+  evidenceScope:'ONLY_POSITIVELY_ATTESTED_SYMBOLS',marketDate,
+  sourceLedgerHash:sourceLedger.ledgerSha256,originalProviderReceiptHash:H,
+  firstCapturedAtUtc:'2026-10-13T13:10:00Z',
+  securities:[{symbol:'2330',market:'TWSE',classification:'ORDINARY_COMMON_SHARE',
+   positiveCommonShareAttested:true,cfi:'ESVUFR',nativeSourceRowSha256:H,
+   effectiveFromDate:dates[0],effectiveThroughDate:null,
+   availableAtUtc:'2026-10-13T13:11:00Z'}]};
+ const instrumentSourceReceipt={...classBase,receiptHash:await sha256Hex(classBase)};
+ const classAuditBase={
+  schemaVersion:'S2_OFFICIAL_INSTRUMENT_CLASS_INDEPENDENT_AUDIT_V0_1',
+  verdict:'ACCEPTED_POSITIVE_ORDINARY_EQUITY_ROWS_ONLY',
+  auditorSeparation:'INDEPENDENT_ORIGINAL_SOURCE_READBACK',
+  originalProviderBytesRehashed:true,cfiNativeClassificationVerified:true,
+  sourceReceiptHash:instrumentSourceReceipt.receiptHash,
+  sourceLedgerHash:sourceLedger.ledgerSha256,marketDate,
+  auditedAtUtc:'2026-10-13T13:18:00Z'
+ };
+ const instrumentIndependentAuditReceipt={
+  ...classAuditBase,auditHash:await sha256Hex(classAuditBase)};
  return {manifest,sourceReceipt,auditReceipt,sourceLedger,continuityBySymbol,
-  companyActionCompletenessReceipt,companyActionIndependentAuditReceipt,evaluationAtUtc};
+  companyActionCompletenessReceipt,companyActionIndependentAuditReceipt,
+  instrumentSourceReceipt,instrumentIndependentAuditReceipt,evaluationAtUtc};
 }
 
 test('independent 122/122 audit admits source into existing Stage1 research evaluator only',async()=>{
@@ -166,6 +189,75 @@ test('manifest/source lineage mismatch is rejected before evaluation',async()=>{
  const p=await fixture();p.manifest={...p.manifest,originalOfficialProvenanceHash:'f'.repeat(64)};
  await assert.rejects(()=>admit(p),/MANIFEST_HASH_MISMATCH/);
 });
+
+test('full synthetic CA receipts but absent independently verified instrument class remain UNKNOWN',async()=>{
+ const p=await fixture();p.instrumentSourceReceipt=null;p.instrumentIndependentAuditReceipt=null;
+ const r=await admit(p);
+ assert.equal(r.evaluationState,'INCOMPLETE_SOURCE_OR_STRATEGY_EVIDENCE');
+ assert.equal(r.evaluation.qualifiedNotSelectedCount,0);
+ assert.deepEqual(r.evaluation.observations[0].reasonCodes,
+  ['PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED']);
+ assert.equal(r.selectedCount,null);
+});
+test('an attempted self-signed current DR identity does not enter ordinary class',async()=>{
+ const p=await fixture();
+ const b={...p.instrumentSourceReceipt,
+  securities:[{...p.instrumentSourceReceipt.securities[0],
+   classification:'DEPOSITARY_RECEIPT',cfi:'EDVUFR'}]};
+ delete b.receiptHash;b.receiptHash=await sha256Hex(b);
+ p.instrumentSourceReceipt=b;
+ const a={...p.instrumentIndependentAuditReceipt,sourceReceiptHash:b.receiptHash};
+ delete a.auditHash;a.auditHash=await sha256Hex(a);
+ p.instrumentIndependentAuditReceipt=a;
+ const o=await admit(p);
+ assert.equal(o.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(o.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('official names explicitly -DR quarantine even re-signed matching positive native class',async()=>{
+ const p=await fixture();
+ const o=p.sourceLedger.observations[0];o.companyName='美德醫療-DR';
+ const {ledgerSha256,...base}=p.sourceLedger;
+ p.sourceLedger.ledgerSha256=await sha256Hex(base);
+ p.instrumentSourceReceipt.sourceLedgerHash=p.sourceLedger.ledgerSha256;
+ const {receiptHash,...b}=p.instrumentSourceReceipt;
+ p.instrumentSourceReceipt.receiptHash=await sha256Hex(b);
+ p.instrumentIndependentAuditReceipt.sourceLedgerHash=p.sourceLedger.ledgerSha256;
+ p.instrumentIndependentAuditReceipt.sourceReceiptHash=p.instrumentSourceReceipt.receiptHash;
+ const {auditHash,...a}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(a);
+ // Existing manifest lineage is unchanged; only current source ledger changed.
+ const out=await admit(p);
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('class receipt sibling without audit cannot override missing PIT',async()=>{
+ const p=await fixture();p.instrumentIndependentAuditReceipt=null;
+ await assert.rejects(()=>admit(p),/STAGE1_INSTRUMENT_PIT_PARTIAL_EVIDENCE_NOT_ACCEPTED/);
+});
+test('re-signed instrument class with future availableAt cannot backdate an ordinary share',async()=>{
+ const p=await fixture();
+ p.instrumentSourceReceipt.securities[0].availableAtUtc='2026-10-14T02:00:00Z';
+ const {receiptHash,...b}=p.instrumentSourceReceipt;
+ p.instrumentSourceReceipt.receiptHash=await sha256Hex(b);
+ const a={...p.instrumentIndependentAuditReceipt,
+  sourceReceiptHash:p.instrumentSourceReceipt.receiptHash};
+ delete a.auditHash;a.auditHash=await sha256Hex(a);
+ p.instrumentIndependentAuditReceipt=a;
+ const r=await admit(p);
+ assert.equal(r.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(r.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('instrument class audit after freeze clock is not a PIT-eligible proof',async()=>{
+ const p=await fixture();
+ const a={...p.instrumentIndependentAuditReceipt,auditedAtUtc:'2026-10-14T13:00:00Z'};
+ delete a.auditHash;a.auditHash=await sha256Hex(a);
+ p.instrumentIndependentAuditReceipt=a;
+ await assert.rejects(()=>admit(p),/STAGE1_INSTRUMENT_PIT_INDEPENDENT_AUDIT_UNVERIFIED/);
+});
+
 test('unknown corporate-action continuity remains incomplete, never selected',async()=>{
  const p=await fixture();p.continuityBySymbol['2330'].state='UNVERIFIED';
  const out=await admit(p);
