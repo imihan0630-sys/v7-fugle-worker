@@ -30,7 +30,15 @@ export function parseSourceReceiptText(text,def,{checkBlob=true}={}){
   if(def.version!=="V01_ANNUAL"||input.result!=="PASS"||input.outcomeJoin!==false)
     fail("SOURCE_WRITER_RECEIPT_SCOPE_INVALID");
  }
- const rows=input[def.field];
+ if(def.version==="V01_RAW_LEGACY"&&(
+   input.validationStatus!=="INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE"||
+   input.supersededBy!=="D08_TWSE_RAW_VALUATION_R2_CAPTURE_RECEIPT_V0_2"||
+   !Array.isArray(input.invalidReason)||input.invalidReason.length===0||
+   typeof input.invalidatedAtAsiaTaipei!=="string"))
+     fail("LEGACY_V01_IDEMPOTENCY_INVALIDATION_MISSING");
+ if(def.version==="V02_RAW"&&input.validationStatus!=="IDEMPOTENCY_VERIFIED")
+     fail("SOURCE_V02_IDEMPOTENCY_WITNESS_DRIFT");
+  const rows=input[def.field];
  if(!Array.isArray(rows)||rows.length!==def.expected)fail("SOURCE_WRITER_RECEIPT_ROWCOUNT_DRIFT");
  const seen=new Set();
  return rows.map(row=>{
@@ -73,7 +81,11 @@ export function joinOriginalReceipts(privateExtraMap,groups){
    else if(actual===row.bytes){parity++;presentSizeParities++}
    else sizeConflicts++;
   }
-  results[label]={archivedWriterReceiptEntries:rows.length,sourceR2ExtraKeyHashMatches:matched,
+  results[label]={originalSourceReceiptCanonicalEvidenceState:
+    label==="RAW_V01"?"INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE__OBJECT_PROVENANCE_ONLY":
+    label==="RAW_V02"?"IDEMPOTENCY_VERIFIED_RECEIPT__BODY_SHA_NOT_INDEPENDENTLY_CHECKED":
+    "SOURCE_RECEIPT_MATCHED__BODY_SHA_NOT_INDEPENDENTLY_CHECKED",
+   archivedWriterReceiptEntries:rows.length,sourceR2ExtraKeyHashMatches:matched,
    sourceR2ExtraKeyHashMissing:missingInR2,matchedR2ListedBytes:bytes,
    archivedReceiptListedSizeParity:parity,writerReceiptMissingSizeField:noSize};
  }
@@ -89,6 +101,11 @@ export function joinOriginalReceipts(privateExtraMap,groups){
   writerReceiptKeyNotInOriginalR2Extra:missing,
   writerReceiptGzipSizeParity:presentSizeParities,writerReceiptGzipSizeConflict:sizeConflicts,
   uniqueWriterReceiptKeyHashes:allIds.size,
+  legacyV01ObjectsPhysicalSourceOnly:results.RAW_V01?.sourceR2ExtraKeyHashMatches??0,
+  legacyV01InvalidatedByIdempotencyEvidence:true,
+  legacyV01SupersededBy:"D08_TWSE_RAW_VALUATION_R2_CAPTURE_RECEIPT_V0_2",
+  legacyV01EligibleForCanonicalHistoricalValuationResearch:false,
+  nonLegacyWriterReceiptKeyMatches:matches-(results.RAW_V01?.sourceR2ExtraKeyHashMatches??0),
   writerSelfReportedReadbackIsNotIndependentR2BodySha256:true,
   independentSourceObjectByteSha256VerifiedByThisJob:0,
   originalCrosswalkBodyShaPreviouslyVerifiedCount:8,
