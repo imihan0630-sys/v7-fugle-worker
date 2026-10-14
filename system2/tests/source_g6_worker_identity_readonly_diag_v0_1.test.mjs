@@ -54,7 +54,7 @@ test("full pagination 100 + 2, bounded GET list all pages",async()=>{
 });
 const badCases=[
  ["duplicate script names",()=>[{success:true,result:[item("foo"),item("foo")]}]],
- ["invalid worker result",()=>[{success:true,result:{}}],
+ ["invalid worker result",()=>[{success:true,result:{}}]],
  ["native API unsuccessful",()=>[{success:false,result:[]}]],
  ["inconsistent total across pages",()=>[{success:true,result:Array.from({length:100},(_,i)=>item("a"+i)),result_info:{total_count:102}},{success:true,result:[item("fugle-test"),item("system2-shadow-research")],result_info:{total_count:103}}]],
  ["total count lower than listed",()=>[{success:true,result:[item("a"),item("b")],result_info:{total_count:1}}]],
