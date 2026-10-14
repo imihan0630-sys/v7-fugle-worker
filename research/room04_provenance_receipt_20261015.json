@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "ROOM04_C3_PROVENANCE_SOURCE_TEST_20261015",
+  "synthetic": true,
+  "testsTotal": 13,
+  "testsPassed": 13,
+  "testsFailed": 0,
+  "realAnomalyCount": "UNKNOWN",
+  "formalCoreImpact": "NONE",
+  "maturityChange": false
+}
