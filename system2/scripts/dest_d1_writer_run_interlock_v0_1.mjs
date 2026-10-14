@@ -93,13 +93,41 @@ export function validateProviderRunList(v,expectedUtcDay=null){
    throw Error("GITHUB_RUN_DATE_FILTER_INTEGRITY_FAILED");
  return v.workflow_runs;
 }
-async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){
- const path="/repos/"+repo+"/actions/workflows/"+workflow+"/runs?per_page=100&created="+encodeURIComponent(day);
- const result=await fetchImpl("https://api.github.com"+path,{
+// GitHub's run list returns at most 100 rows per page. A burst of code-only
+// PUSH (skipped D1 jobs) can exceed 100/day: read ALL pages up to a bounded
+// 400-run limit rather than withholding data solely because page 1 truncated.
+// Any gap, duplicate ID, inconsistent total_count or >400 rows FAILS CLOSED.
+export const MAX_ORIGINAL_RUNS_PER_UTC_DAY=400;
+export function validateProviderRunPage(v,expectedUtcDay,page,expectedTotal=null){
+ if(!Number.isInteger(page)||page<1||page>4||!v||!Number.isInteger(v.total_count)||v.total_count<0)
+   throw Error("GITHUB_RUN_PAGE_MALFORMED");
+ const total=v.total_count;
+ if(total>MAX_ORIGINAL_RUNS_PER_UTC_DAY)throw Error("GITHUB_RUN_DAY_SAFETY_BOUND_EXCEEDED");
+ if(expectedTotal!==null&&expectedTotal!==total)throw Error("GITHUB_RUN_TOTAL_CHANGED_DURING_PAGINATION");
+ if(!Array.isArray(v.workflow_runs))throw Error("GITHUB_RUN_PAGE_MALFORMED");
+ const required=Math.min(100,Math.max(0,total-(page-1)*100));
+ if(v.workflow_runs.length!==required)throw Error("GITHUB_RUN_PAGE_INCOMPLETE");
+ const rows=validateProviderRunList({total_count:required,workflow_runs:v.workflow_runs},expectedUtcDay);
+ return {rows,total};
+}
+export async function queryOtherRuns({repo,token,workflow,day,fetchImpl}){
+ if(!validDate(day)||!Object.values(WORKFLOWS).includes(workflow))throw Error("GITHUB_RUN_QUERY_NOT_ALLOWLISTED");
+ const base="/repos/"+repo+"/actions/workflows/"+workflow+"/runs?per_page=100&created="+encodeURIComponent(day);
+ const rows=[],identities=new Set();let expectedTotal=null;
+ for(let page=1;page<=4;page++){
+  const result=await fetchImpl("https://api.github.com"+base+"&page="+page,{
    method:"GET",headers:{authorization:"Bearer "+token,accept:"application/vnd.github+json",
      "X-GitHub-Api-Version":"2022-11-28"},signal:AbortSignal.timeout(22000)});
- if(!result.ok)throw Error("GITHUB_CROSS_WORKFLOW_READ_"+result.status);
- return validateProviderRunList(await result.json(),day);
+  if(!result.ok)throw Error("GITHUB_CROSS_WORKFLOW_READ_"+result.status);
+  const checked=validateProviderRunPage(await result.json(),day,page,expectedTotal);
+  expectedTotal=checked.total;
+  for(const run of checked.rows){
+   if(identities.has(run.id))throw Error("GITHUB_RUN_DUPLICATE_ACROSS_PAGES");
+   identities.add(run.id);rows.push(run);
+  }
+  if(rows.length===expectedTotal)return rows;
+ }
+ throw Error("GITHUB_RUN_PAGINATION_INCOMPLETE");
 }
 export async function inspectRealGuard({writerId,now=new Date(),repo,token,fetchImpl=fetch,afterProviderRead=null}){
  if(repo!==REPO||!token||!WORKFLOWS[writerId]||!(now instanceof Date)||Number.isNaN(now.getTime()))throw Error("DEST_DAY_INTERLOCK_ENV_INVALID");

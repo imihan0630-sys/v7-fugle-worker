@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {readFile} from "node:fs/promises";
-import {decideDestinationD1DayGuard,validateProviderRunList,inspectRealGuard,WORKFLOWS,DEST_WRITER_LOCK,assessUtcDayTiming,UTC_RESET_GUARD_MINUTES} from "../scripts/dest_d1_writer_run_interlock_v0_1.mjs";
+import {decideDestinationD1DayGuard,validateProviderRunList,inspectRealGuard,WORKFLOWS,DEST_WRITER_LOCK,assessUtcDayTiming,UTC_RESET_GUARD_MINUTES,queryOtherRuns,validateProviderRunPage,MAX_ORIGINAL_RUNS_PER_UTC_DAY} from "../scripts/dest_d1_writer_run_interlock_v0_1.mjs";
 const utcDay="2026-10-14",prevDay="2026-10-13",repo="imihan0630-sys/v7-fugle-worker";
 const makeRun=(id,time,extra={})=>({id,created_at:time,head_branch:"main",event:"schedule",status:"completed",conclusion:"success",...extra});
 function okResult(day,otherRuns=[],total=otherRuns.length){
@@ -149,6 +149,49 @@ test("boundary intervals stay pinned to actual four GitHub job timeouts",async()
  }
 });
 
+
+test("GitHub original run census completely retrieves 205 skipped PUSH rows across 3 pages",async()=>{
+ const all=Array.from({length:205},(_,i)=>makeRun(5000+i,"2026-10-14T03:02:15.000Z",
+  {originWriterId:"DAILY_DIAGNOSTIC",event:"push",status:"completed",conclusion:"skipped"}));
+ let calls=0;
+ const gathered=await queryOtherRuns({repo,token:"VALID_GITHUB_TEST_TOKEN",workflow:WORKFLOWS.DAILY_DIAGNOSTIC,day:utcDay,
+  fetchImpl:async url=>{
+   calls++;
+   const page=Number(new URL(url).searchParams.get("page"));
+   const from=(page-1)*100;
+   return okResult(utcDay,all.slice(from,from+100),205);
+  }});
+ assert.equal(calls,3);
+ assert.deepEqual(gathered.map(r=>r.id),all.map(r=>r.id));
+ const d=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:gathered,previousRuns:[]});
+ assert.equal(d.allowed,true);
+ assert.equal(d.ignoredProvenInertDiagnosticPushRunCount,205);
+});
+test("a real writer among >100 GH runs must still block even if buried on last page",async()=>{
+ const all=Array.from({length:201},(_,i)=>makeRun(10000+i,"2026-10-14T04:12:00.000Z",
+   {originWriterId:"DAILY_DIAGNOSTIC",event:"push",status:"completed",conclusion:"skipped"}));
+ all[200]=makeRun(10200,"2026-10-14T04:12:01.000Z",{originWriterId:"DAILY_DIAGNOSTIC",event:"schedule"});
+ const rows=await queryOtherRuns({repo,token:"VALID",workflow:WORKFLOWS.DAILY_DIAGNOSTIC,day:utcDay,
+  fetchImpl:async url=>{const p=Number(new URL(url).searchParams.get("page"));return okResult(utcDay,all.slice((p-1)*100,p*100),201)}});
+ const d=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:rows,previousRuns:[]});
+ assert.equal(d.allowed,false);assert.equal(d.sameDayOtherRunCount,1);assert.equal(d.ignoredProvenInertDiagnosticPushRunCount,200);
+});
+test("missing, repeated, changing or over-400 Github pages fail closed",async()=>{
+ const all=Array.from({length:102},(_,i)=>makeRun(20000+i,"2026-10-14T01:20:00.000Z"));
+ const run=async responder=>queryOtherRuns({repo,token:"VALID",workflow:WORKFLOWS.DAILY_DIAGNOSTIC,day:utcDay,fetchImpl:async url=>{
+  const page=Number(new URL(url).searchParams.get("page"));
+  return okResult(utcDay,responder(page),102);
+ }});
+ await assert.rejects(()=>run(page=>page===1?all.slice(0,100):[all[0],all[101]]),/DUPLICATE_ACROSS_PAGES/);
+ await assert.rejects(()=>run(page=>page===1?all.slice(0,100):[all[101]]),/PAGE_INCOMPLETE/);
+ await assert.rejects(()=>queryOtherRuns({repo,token:"VALID",workflow:WORKFLOWS.DAILY_DIAGNOSTIC,day:utcDay,
+  fetchImpl:async url=>{const page=Number(new URL(url).searchParams.get("page"));
+   return okResult(utcDay,page===1?all.slice(0,100):all.slice(100),page===1?102:103);}}),/TOTAL_CHANGED_DURING_PAGINATION/);
+ assert.equal(MAX_ORIGINAL_RUNS_PER_UTC_DAY,400);
+ assert.throws(()=>validateProviderRunPage({total_count:401,workflow_runs:[]},utcDay,1),/SAFETY_BOUND_EXCEEDED/);
+ await assert.rejects(()=>queryOtherRuns({repo,token:"VALID",workflow:"another-owner/source.yml",day:utcDay,fetchImpl:async()=>{throw Error("NO_GET")}}),/NOT_ALLOWLISTED/);
+});
+
 test("REST integrity and full pagination are required",()=>{
  assert.throws(()=>validateProviderRunList({total_count:101,workflow_runs:[]}),/PAGINATION_INCOMPLETE/);
  assert.throws(()=>validateProviderRunList({total_count:4,workflow_runs:[makeRun(1,utcDay+"T01:00:00.000Z")]}),/PAGINATION_INCOMPLETE/);
@@ -160,14 +203,14 @@ test("authenticated provider GET_ONLY origin and next-day query, no Cloudflare t
  const r=await inspectRealGuard({writerId:"RAW_COPY",now:new Date(utcDay+"T02:31:00.000Z"),repo,token:"TEST_GITHUB_TOKEN",
   fetchImpl:async(url,opts)=>{
    requested.push({url,method:opts.method,authorization:opts.headers.authorization});
-   const day=decodeURIComponent(url.split("created=")[1]);
+   const day=decodeURIComponent(url.split("created=")[1].split("&page=")[0]);
    return okResult(day,day===utcDay&&url.includes("daily-shadow-diagnostic")?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
   }});
  assert.equal(r.allowed,false);assert.equal(r.sameDayOtherRunCount,1);
  assert.equal(requested.length,6);
  for(const x of requested){assert.match(x.url,/system2-(daily-shadow-diagnostic|recent-a1-hot-history-warmup|destination-schema-only-manual).yml\/runs/);
   assert.equal(x.method,"GET");assert.equal(x.authorization,"Bearer TEST_GITHUB_TOKEN");}
- assert.deepEqual(requested.map(x=>x.url.split("created=")[1]),[utcDay,prevDay,utcDay,prevDay,utcDay,prevDay]);
+ assert.deepEqual(requested.map(x=>x.url.split("created=")[1].split("&page=")[0]),[utcDay,prevDay,utcDay,prevDay,utcDay,prevDay]);
 });
 test("any GitHub read 403/network/error is a fatal guard error not presumed permission",async()=>{
  const args={writerId:"DAILY_DIAGNOSTIC",now:new Date(utcDay+"T02:31:00.000Z"),repo,token:"TEST_GITHUB_TOKEN"};
