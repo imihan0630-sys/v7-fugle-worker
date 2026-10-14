@@ -11,6 +11,8 @@ import {buildSharedOfficialA1MarketManifestV0_1,assertSharedOfficialA1ConsumerBo
  from '../../shared-knowledge/market-data/shared_official_a1_manifest_v0_1.mjs';
 import {buildOfficialHistoricalA1UrlV0_1}
  from '../runtime/official_historical_a1_source_v0_1.mjs';
+import {collectOfficial61SessionWindowToLocalEvidenceV0_1 as collectOriginal}
+ from '../scripts/run_source_first_official_61_session_collector_v0_1.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const dates=Array.from({length:61},(_,i)=>{
  const d=new Date('2026-07-01T00:00:00Z');d.setUTCDate(d.getUTCDate()+i);
@@ -196,7 +198,8 @@ test('23:45 Taipei source-only first attempt plus 00:15 same-T recovery are isol
  });
  assert.equal(fallback.marketDate,'2026-10-14');
  assert.equal(fallback.taipeiDate,'2026-10-15');
- assert.equal(fallback.retrospectiveOnly,true);
+ assert.equal(fallback.retrospectiveOnly,false);
+ assert.equal(fallback.conditionalNextDayRecovery,true);
  assert.equal(fallback.todayProviderFinalityNotAsserted,true);
  const unchangedAtNineteen=resolveLatestClosedTaiwanSessionV0_1({
   nowUtc:'2026-10-14T11:00:00Z',officialTradingDates:tradingDates
@@ -206,4 +209,50 @@ test('23:45 Taipei source-only first attempt plus 00:15 same-T recovery are isol
   nowUtc:'2026-10-16T15:45:00Z',officialTradingDates:tradingDates
  });
  assert.equal(holiday.state,'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY');
+});
+
+
+test('00:15 T+1 actual observation is source recovery, not retrospective historical backfill',()=>{
+ const sessions=['2026-10-12','2026-10-13','2026-10-14'];
+ for(const utc of ['2026-10-14T16:00:00Z','2026-10-14T16:15:00Z',
+    '2026-10-14T17:59:00Z']){
+  const r=resolveLatestClosedTaiwanSessionV0_1({
+   nowUtc:utc,officialTradingDates:sessions
+  });
+  assert.equal(r.marketDate,'2026-10-14');
+  assert.equal(r.conditionalNextDayRecovery,true);
+  assert.equal(r.retrospectiveOnly,false);
+  assert.equal(r.todayProviderFinalityNotAsserted,true);
+ }
+ const delayed=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T18:00:00Z',officialTradingDates:sessions
+ });
+ assert.equal(delayed.conditionalNextDayRecovery,false);
+ assert.equal(delayed.retrospectiveOnly,true);
+ assert.equal(delayed.marketDate,'2026-10-14');
+ const tooLate=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-14T21:12:00Z',officialTradingDates:sessions
+ });
+ assert.equal(tooLate.conditionalNextDayRecovery,false);
+ assert.equal(tooLate.retrospectiveOnly,true);
+});
+test('source original collector independently rejects a forged or delayed T+1 recovery flag',async()=>{
+ const safeFetch=async()=>{throw Error('NETWORK_WOULD_NOT_BE_USED')};
+ const stubCalendar=async()=>{throw Error('TEST_CALENDAR_PROVIDER_NOT_PRESENT')};
+ const mk=(stamp,extra={})=>collectOriginal({
+  marketDate:'2026-10-14',conditionalNextDayRecovery:true,
+  outputDir:'/tmp/s2-m09-clock-only-test-fixture',
+  now:()=>new Date(stamp),calendarResolver:stubCalendar,fetchImpl:safeFetch,
+  ...extra,
+ });
+ await assert.rejects(()=>mk('2026-10-14T16:15:00Z'),
+  /TEST_CALENDAR_PROVIDER_NOT_PRESENT/);
+ await assert.rejects(()=>mk('2026-10-14T17:59:59Z'),
+  /TEST_CALENDAR_PROVIDER_NOT_PRESENT/);
+ for(const invalid of ['2026-10-14T18:00:00Z',
+    '2026-10-15T16:15:00Z','2026-10-14T15:45:00Z']){
+  await assert.rejects(()=>mk(invalid),/CONDITIONAL_T_PLUS_ONE_RECOVERY_CLOCK_INVALID/);
+ }
+ await assert.rejects(()=>mk('2026-10-14T16:15:00Z',
+  {retrospectiveDiagnosticOnly:true}),/CONDITIONAL_T_PLUS_ONE_RECOVERY_CLOCK_INVALID/);
 });
