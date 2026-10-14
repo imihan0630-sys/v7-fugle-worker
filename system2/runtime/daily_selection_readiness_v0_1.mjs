@@ -134,7 +134,7 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
  }
  if(observed.size!==sourceRows.size||
     counts.INCOMPLETE!==e.incompleteCount||
-    e.assessedCount!==src.size-counts.INCOMPLETE||
+    e.assessedCount!==sourceRows.size-counts.INCOMPLETE||
     counts.QUALIFIED_NOT_SELECTED!==e.qualifiedNotSelectedCount)
   bad('ASSESSMENT_DENOMINATOR_MISMATCH');
  // No numerically tuned rank or artificial Top-N. Stable IDs are NOT rank order.
@@ -146,7 +146,7 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
       'STRATEGY_ASSESSED_NO_QUALIFIED_RESEARCH_PENDING_FINAL_GATE',
   blockers:!ready?['UNRESOLVED_SYMBOL_LOCAL_STRATEGY_PIT_OR_CONTINUITY'] :
    ['FINAL_RANK_CAPACITY_AND_DURABLE_FROZEN_NOT_AUTHORIZED'],
-  ordinaryUniverseCount:src.size,
+  ordinaryUniverseCount:sourceRows.size,
   assessedCount:e.assessedCount,incompleteCount:counts.INCOMPLETE,
   watchCount:counts.WATCH,rejectedCount:counts.REJECTED,
   qualifiedNotSelectedCount:counts.QUALIFIED_NOT_SELECTED,
