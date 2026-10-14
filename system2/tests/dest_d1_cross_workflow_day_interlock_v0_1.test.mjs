@@ -84,7 +84,7 @@ test("authenticated provider GET_ONLY origin and next-day query, no Cloudflare t
   fetchImpl:async(url,opts)=>{
    requested.push({url,method:opts.method,authorization:opts.headers.authorization});
    const day=decodeURIComponent(url.split("created=")[1]);
-   return okResult(day,day===utcDay?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
+   return okResult(day,day===utcDay&&url.includes("daily-shadow-diagnostic")?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
   }});
  assert.equal(r.allowed,false);assert.equal(r.sameDayOtherRunCount,1);
  assert.equal(requested.length,4);
