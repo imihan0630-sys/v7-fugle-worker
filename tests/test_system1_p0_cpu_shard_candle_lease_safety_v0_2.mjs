@@ -118,5 +118,5 @@ blocked({signalType:"EARLY_ALERT_10M",signalId:early.signalId,auxiliary10Fresh:f
 console.log("SYSTEM1_CPU_SHARD_90S_CANDLE_LEASE_SAFETY_PASS="+JSON.stringify({
  cases,offlineOnly:true,strictOriginalQuoteFreshSeconds:90,
  threeMinuteRotationBlocked:true,parallelFanoutNotDeployed:true,
- 10mBarCloseGraceMinute:1,15mBarCloseGraceMinute:1,
+ tenMinuteBarCloseGraceMinute:1,fifteenMinuteBarCloseGraceMinute:1,
  noPush:true,noD1Writes:true,noWorkerDeploy:true}));
