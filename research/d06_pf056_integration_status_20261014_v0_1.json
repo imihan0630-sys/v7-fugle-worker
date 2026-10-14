@@ -1,0 +1,12 @@
+{
+  "phase": "PF056",
+  "branch": "research/d06-pf056-etf-vintage-reconciliation-20261014-1713",
+  "mainAtCheck": "7618fe596d8d4984a82ff7e307b11b43c8849aab",
+  "ahead": 8,
+  "behind": 0,
+  "prCreation": "BLOCKED_BY_CONNECTOR_SAFETY_CHECK",
+  "mainMerged": false,
+  "trackerUpdated": false,
+  "reasonTrackerUnchanged": "NO_MATURITY_PROMOTION",
+  "next": "D16/00 prereg review; secure PR through approved connector when available; do not force merge or change Formal Core."
+}
