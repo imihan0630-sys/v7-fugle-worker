@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D07-20",
+  "sourceMain": "6b0329576bfc08c621ae8d34ef1d520e6cbbc3ed",
+  "scope": "Integrated three-statement forecast / research-only",
+  "status": "CONCEPT_FALSIFICATION_RECORDED / PHYSICAL_PIT_NOT_VERIFIED / OUTCOMES_CLOSED",
+  "formalLevelChange": false,
+  "formalCoreImpact": "NONE",
+  "syntheticOnly": true,
+  "inputs": {
+    "base": {
+      "revenue": 1000,
+      "grossMargin": 0.35,
+      "opex": 200,
+      "depreciation": 50,
+      "interest": 20,
+      "tax": 0.2,
+      "capex": 70,
+      "deltaNwc": 30,
+      "netBorrowing": 0
+    },
+    "growthStress": {
+      "revenue": 1200,
+      "grossMargin": 0.35,
+      "opex": 240,
+      "depreciation": 60,
+      "interest": 20,
+      "tax": 0.2,
+      "capex": 100,
+      "deltaNwc": 100
+    }
+  },
+  "expected": {
+    "base": {
+      "EBIT": 100,
+      "netIncome": 64,
+      "CFO": 84,
+      "FCFE": 14,
+      "FCFF": 30
+    },
+    "growthStress": {
+      "EBIT": 120,
+      "FCFE": -60,
+      "FCFF": -44
+    },
+    "workingCapitalReleaseFCFF": 70,
+    "debtBorrowingDeltaFCFE": 30,
+    "debtBorrowingDeltaFCFF": 0
+  },
+  "identities": [
+    "EBIT = revenue*grossMargin - opex - depreciation",
+    "NI = (EBIT-interest)*(1-tax) (synthetic assumption only)",
+    "CFO = NI + depreciation - deltaNwc (synthetic simplified case)",
+    "FCFF = EBIT*(1-tax)+depreciation-capex-deltaNwc",
+    "FCFE = CFO-capex+netBorrowing",
+    "FCFF = FCFE+interest*(1-tax)-netBorrowing"
+  ],
+  "hypotheses": [
+    {
+      "support": "Growth with stable margins may raise operating profit.",
+      "counter": "20% revenue growth can coincide with FCFF 30 -> -44 due to capex and working-capital investment.",
+      "alternative": "Inventory build, customer collection delays, strategic capacity expansion.",
+      "invalidIf": "Financial institution or unverifiable PIT statement classification."
+    },
+    {
+      "support": "Independent cash flow identities reconcile under fixed conventions.",
+      "counter": "Debt issuance raises FCFE without raising FCFF.",
+      "alternative": "Lease/interest cash-flow classifications, capitalized development, tax loss carryforward.",
+      "invalidIf": "Cumulative-quarter mixed with single-quarter, restatement not versioned."
+    }
+  ],
+  "pitRequired": [
+    "issuer",
+    "reportingPeriod",
+    "statementBasis",
+    "publishedAt",
+    "firstObservedAt",
+    "sourceHash",
+    "revisionId",
+    "units",
+    "currency",
+    "quarterCumulativeFlag",
+    "leaseAndInterestClassification"
+  ],
+  "guards": [
+    "No outcome data",
+    "No forward-filling revised financials",
+    "Missing evidence UNKNOWN",
+    "Nonfinancial-company-only model",
+    "No independent alpha vote"
+  ],
+  "exactNext": "Obtain two distinct Taiwan nonfinancial industry statement-vintage receipts and reconcile cash flow/working capital/financing as of original knownAt. Continue D07-34 source lane in parallel."
+}
