@@ -1,0 +1,33 @@
+name: System1 P0 Overnight Formal Delivery GET-only CI
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v7-health.yml"
+      - ".github/workflows/system1-overnight-formal-delivery-readonly-ci.yml"
+      - "research/system1_overnight_formal_delivery_readonly_v0_1.mjs"
+      - "tests/system1_overnight_formal_delivery_getonly.mjs"
+      - "tests/test_system1_overnight_formal_delivery_readonly_v0_1.mjs"
+permissions:
+  contents: read
+jobs:
+  pure_verdict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify after-midnight target, fail-closed cases and original schedule
+        run: |
+          set -euo pipefail
+          node --check research/system1_overnight_formal_delivery_readonly_v0_1.mjs
+          node --check tests/system1_overnight_formal_delivery_getonly.mjs
+          node --check tests/test_system1_overnight_formal_delivery_readonly_v0_1.mjs
+          node tests/test_system1_overnight_formal_delivery_readonly_v0_1.mjs
+          grep -F -q "cron: '55 15 * * 1-5'" .github/workflows/v7-health.yml
+          grep -F -q "node tests/system1_overnight_formal_delivery_getonly.mjs" .github/workflows/v7-health.yml
+          if grep -E 'method[=:] ?["\x27]POST' tests/system1_overnight_formal_delivery_getonly.mjs; then
+            echo "::error::A diagnostic GET-only script must never issue POST"
+            exit 2
+          fi
