@@ -25,6 +25,7 @@ jobs:
           node --check system2/commander/safe_executor_v0_1.mjs
           node --check system2/commander/safe_executor_report_v0_1.mjs
           node --test system2/commander/safe_executor_v0_1.test.mjs
+          node --test system2/tests/dest_d1_cross_workflow_day_interlock_v0_1.test.mjs
           node --test system2/commander/safe_executor_triggers_v0_1.test.mjs
           node - <<'NODE'
           const fs=require('node:fs');
