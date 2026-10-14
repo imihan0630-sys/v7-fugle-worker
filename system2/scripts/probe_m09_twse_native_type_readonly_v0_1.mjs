@@ -52,7 +52,8 @@ export async function probeM09TwseNativeTypeV0_1({
    fields:fields.slice(0,15),rows:rows.length,symbolColumnFound:symbolCol>=0,
    explicitTypeColumnFound:typeCol>=0});
   if(symbolCol<0){
-   if(rows.some(row=>Array.isArray(row)&&row.some(cell=>classes.has(norm(cell)))))
+   if(rows.some(row=>Array.isArray(row)&&row.some(cell=>
+     classes.has(norm(cell).replace(/^\d+\s*[.．、]\s*/,'')))))
     categorizedAggregateOnly=true;
    continue;
   }
