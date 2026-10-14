@@ -11,6 +11,7 @@ const FILES={
  daily:".github/workflows/system2-daily-shadow-diagnostic.yml",
  raw:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
  warmup:".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+ manualSchema:".github/workflows/system2-destination-schema-only-manual.yml",
  sourceQuarantine:"system2/config/source_account_d1_writer_quarantine_v0_1.json",
  registry:"system2/config/d1_account_writer_registry_v0_1.json",
  destRegistry:"system2/config/dest_d1_cross_workflow_writer_interlock_v0_1.json",
@@ -46,7 +47,7 @@ export function assessSourceRoute({source,daily,raw,quarantine,sourceQuarantine}
  return {assertions,findings:Object.entries(assertions).filter(([,ok])=>!ok).map(([name])=>name),
   sourceOnlyOfflineScope:true,observedCloudflareWorkerConfig:false,accountCredentialMatchPhysicallyObserved:false};
 }
-export function assessQuotaInterlock({daily,raw,warmup,registry,destRegistry,importer,rawImporter}){
+export function assessQuotaInterlock({daily,raw,warmup,manualSchema,registry,destRegistry,importer,rawImporter}){
  const importSource=importer??rawImporter;
  if(typeof importSource!=="string")throw Error("RAW_IMPORTER_NOT_LOADED");
  const old=(daily.match(/^\s*group:\s*(\S+)/m)||[])[1]||null;
@@ -59,9 +60,10 @@ export function assessQuotaInterlock({daily,raw,warmup,registry,destRegistry,imp
  const liveRaw=liveWriters.some(w=>w.id==="RAW_COPY"&&w.workflow===".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml");
  const liveDiag=liveWriters.some(w=>w.id==="DAILY_DIAGNOSTIC"&&w.workflow===".github/workflows/system2-daily-shadow-diagnostic.yml");
  const liveWarm=liveWriters.some(w=>w.id==="RECENT_A1_WARMUP"&&w.workflow===".github/workflows/system2-recent-a1-hot-history-warmup.yml");
- const rawRegistry=liveRaw&&liveDiag&&liveWarm&&dest?.sharedJobConcurrencyGroup===expected&&dest?.accountWideWriterCensusComplete===false;
+ const liveManual=liveWriters.some(w=>w.id==="MANUAL_SCHEMA_APPLY"&&w.workflow===".github/workflows/system2-destination-schema-only-manual.yml"&&w.writeOnlyWhenInputAction==="APPLY_ONCE");
+ const rawRegistry=liveRaw&&liveDiag&&liveWarm&&liveManual&&dest?.sharedJobConcurrencyGroup===expected&&dest?.accountWideWriterCensusComplete===false;
  const getJobLock=(source,job)=>(source.match(new RegExp("^  "+job+":\\n    concurrency:\\n      group: (\\S+)","m"))||[])[1]||null;
- const diagJobLock=getJobLock(daily,"diagnostic"),rawJobLock=getJobLock(raw,"destination_copy"),warmJobLock=getJobLock(warmup||"","warmup");
+ const diagJobLock=getJobLock(daily,"diagnostic"),rawJobLock=getJobLock(raw,"destination_copy"),warmJobLock=getJobLock(warmup||"","warmup"),manualJobLock=getJobLock(manualSchema||"","owner-schema-only");
  const fixed=diag?.reservationModel?.rowsWritten??null;
  const dailyHistoricalCharge=71322; // 2026-10-13 actual historic witness; NOT current usage.
  const userOperationalMax=80000;
@@ -71,11 +73,14 @@ export function assessQuotaInterlock({daily,raw,warmup,registry,destRegistry,imp
   rawCopyBilledWriteBudgetBounded:/const limit=80000, stopAt=75000, maxStatementRows=80/.test(importSource),
   rawCopyUsesOwnConcurrencyGroup:history!==null,
   diagnosticUsesOwnConcurrencyGroup:old!==null,
-  sameGroupSerializesWriters:!!diagJobLock&&diagJobLock===expected&&diagJobLock===rawJobLock&&diagJobLock===warmJobLock,
+  sameGroupSerializesWriters:!!diagJobLock&&diagJobLock===expected&&diagJobLock===rawJobLock&&diagJobLock===warmJobLock&&diagJobLock===manualJobLock,
   rawWriterRegisteredInDestRegistry:rawRegistry,
   failClosedGitHubDayGuardOnAllThree:/S2_DEST_WRITER_CLASS: RAW_COPY/.test(raw)&&/S2_DEST_WRITER_CLASS: DAILY_DIAGNOSTIC/.test(daily)&&
    /S2_DEST_WRITER_CLASS: RECENT_A1_WARMUP/.test(warmup||"")&&
    [raw,daily,warmup].every(x=>/if: steps\.day_interlock\.outputs\.allowed == 'true'/.test(x||"")),
+  ownerManualSchemaApplyOnly:/S2_DEST_WRITER_CLASS: MANUAL_SCHEMA_APPLY/.test(manualSchema||"")&&
+   /if: inputs.action == 'APPLY_ONCE'/.test(manualSchema||"")&&
+   /if: inputs.action == 'VERIFY_ONLY' \|\| steps.day_interlock.outputs.allowed == 'true'/.test(manualSchema||""),
   atomicCrossWorkflowLedgerPhysicallyVerified:false // Explicitly unknown until native D1 lock proven.
  };
  const collisionScenario={historicalRunDateUtc:"2026-10-13",billedHistoryWrites71322:dailyHistoricalCharge,priorMeasuredDiagnosticReserve13130:fixed,
@@ -83,7 +88,7 @@ export function assessQuotaInterlock({daily,raw,warmup,registry,destRegistry,imp
    wouldExceedUserCap:fixed===null?null:dailyHistoricalCharge+fixed>userOperationalMax,
    notCurrentUtcDayBalance:true};
  return {assertions,findings:Object.entries(assertions).filter(([,ok])=>!ok).map(([name])=>name),
-  groupDiagnostic:old,groupRawCopy:history,sharedDestinationJobLock:diagJobLock,warmupJobLock:warmJobLock,collisionScenario,
+  groupDiagnostic:old,groupRawCopy:history,sharedDestinationJobLock:diagJobLock,warmupJobLock:warmJobLock,manualJobLock:manualJobLock,collisionScenario,
   authorizedConcurrentWrite:false,verifiedDestinationAccountSpendableQuota:false};
 }
 export async function runOneTest(path,opts={}){
