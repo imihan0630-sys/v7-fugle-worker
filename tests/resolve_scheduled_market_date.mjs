@@ -2,20 +2,27 @@ export const LATE_TAIPEI_SCHEDULES=Object.freeze(["25 15 * * 1-5","45 15 * * 1-5
 
 function taipeiParts(now){
   const date=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"}).format(now);
-  const hour=Number(new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Taipei",hour:"2-digit",hourCycle:"h23"}).format(now));
-  return {date,hour};
+  const clock=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Taipei",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(now);
+  const [hour,minute]=clock.split(":").map(Number);
+  return {date,hour,minute};
 }
-// Source-sync-only schedules are never allowed to begin with a new local
-// morning's incomplete or foreign-date exchange report. 23:45 recovery is
-// intentionally excluded: it uses independently checked prior-day receipts.
-export const SOURCE_SYNC_SCHEDULES_REJECT_NEXT_MORNING=Object.freeze([
-  "55 9 * * 1-5","5 10 * * 1-5","20 10 * * 1-5","25 15 * * 1-5"
-]);
+// A delayed evening official-data workflow must never run before its nominal
+// Taipei start time on the next calendar day (including the afternoon).
+// 23:45 historical recovery remains independent with frozen prior-day GETs.
+export const SOURCE_SYNC_EARLIEST_TAIPEI_MINUTE=Object.freeze({
+  "55 9 * * 1-5":17*60+55,
+  "5 10 * * 1-5":18*60+5,
+  "20 10 * * 1-5":18*60+20,
+  "25 15 * * 1-5":23*60+25
+});
 export function shouldSkipOvernightDelayedSourceSync({now=new Date(),triggerSchedule=""}={}){
   const instant=now instanceof Date?now:new Date(now);
   if(!Number.isFinite(instant.getTime())) throw new Error("INVALID_SCHEDULE_CLOCK");
   const schedule=String(triggerSchedule||"").trim();
-  return SOURCE_SYNC_SCHEDULES_REJECT_NEXT_MORNING.includes(schedule)&&taipeiParts(instant).hour<12;
+  const earliest=SOURCE_SYNC_EARLIEST_TAIPEI_MINUTE[schedule];
+  if(earliest===undefined) return false;
+  const {hour,minute}=taipeiParts(instant);
+  return hour*60+minute<earliest;
 }
 
 export function resolveScheduledMarketDate({now=new Date(),triggerSchedule=""}={}){
