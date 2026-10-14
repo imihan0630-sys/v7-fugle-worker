@@ -202,6 +202,34 @@ jobs:
             echo "PRELIMINARY_PV_MATCHED=$(jq -r .preliminaryMatchedCount "$PRELIMINARY") / NO_FORMAL_SELECTED_ZERO_PICK_OR_FROZEN" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "DAILY_SELECTION_READINESS=$(jq -r .state "$READINESS") / WATCH=$(jq -r .state "$PRELIMINARY")" >> "$GITHUB_STEP_SUMMARY"
+      # Optional supplemental native CA original evidence for the SAME T
+      # already proven by A1 source+auditor, not another Final/Frozen job.
+      # Never run on this workflow's self-path 121/122 push diagnostic.
+      - name: Observe six native CA sources and report present-action risks only
+        if: success() && github.event_name != 'push'
+        continue-on-error: true
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs
+          node --test system2/tests/run_m09_daily_ca_negative_advisory_readonly_v0_1.test.mjs
+          node system2/scripts/run_m09_daily_ca_negative_advisory_readonly_v0_1.mjs
+          REPORT=/tmp/s2-m09-daily-ca-negative-readonly/daily-ca-advisory.json
+          test -s "$REPORT"
+          test "$(jq -r .noEventMayBeClaimed "$REPORT")" = 'false'
+          test "$(jq -r .formalSelectionAuthorized "$REPORT")" = 'false'
+          test "$(jq -r .frozenD1Written "$REPORT")" = 'false'
+          test "$(jq -r .selectedCount "$REPORT")" = 'null'
+          echo "CA negative overlay=$(jq -r .state "$REPORT"), marketDate=$(jq -r .marketDate "$REPORT"), known-event previews=$(jq -r .caKnownEventPreviewCount "$REPORT")/$(jq -r .preliminaryCount "$REPORT"). Absence always UNKNOWN; do not backdate into decision." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve separate CA original bytes and advisory, never Frozen
+        if: always() && github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-ca-observed-risk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-daily-ca-negative-readonly/
+          retention-days: 7
+          if-no-files-found: warn
       - name: Preserve sanitized hash receipt only
         if: always()
         uses: actions/upload-artifact@v4
