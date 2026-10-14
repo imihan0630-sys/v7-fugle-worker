@@ -30,6 +30,33 @@ export function auditPass(issue,id,comments=[]){
   /https:\/\/github\.com\/imihan0630-sys\/v7-fugle-worker\/actions\/runs\/\d+/.test(c.body)&&
   /Artifact\s*#?\d+/i.test(c.body)&&/SHA-256:\s*[a-f0-9]{64}/i.test(c.body));
 }
+// Validate original native GitHub Run + artifact identity/digest, not just a human comment.
+// This checks GitHub-native provenance only; content/Cloudflare semantics still need AUDIT_LANE.
+export async function verifyNativeAuditEvidenceV0_1({repo,token,issue,id,comments=[],fetchJson=null}){
+ if(!auditPass(issue,id,comments))return false;
+ if(repo!=="imihan0630-sys/v7-fugle-worker"||!token)throw Error("AUDIT_PROVIDER_CONTEXT_UNTRUSTED");
+ const get=fetchJson??(path=>github(repo,token,path));
+ for(const comment of comments){
+  if(comment.user?.login!=="imihan0630-sys"||!auditPass(issue,id,[comment]))continue;
+  const body=comment.body||"";
+  const run=body.match(/https:\/\/github\.com\/imihan0630-sys\/v7-fugle-worker\/actions\/runs\/(\d+)/);
+  const artifact=body.match(/Artifact\s*#?(\d+)/i);
+  const sha=body.match(/SHA-256:\s*([a-f0-9]{64})/i);
+  if(!run||!artifact||!sha)continue;
+  const runId=Number(run[1]),artifactId=Number(artifact[1]);
+  if(!Number.isSafeInteger(runId)||!Number.isSafeInteger(artifactId))continue;
+  const nativeRun=await get("/actions/runs/"+runId);
+  if(nativeRun.id!==runId||nativeRun.status!=="completed"||nativeRun.conclusion!=="success"||
+     nativeRun.repository?.full_name!==repo)continue;
+  const original=await get("/actions/runs/"+runId+"/artifacts?per_page=100");
+  if(!Array.isArray(original.artifacts)||original.total_count>100)throw Error("AUDIT_NATIVE_ARTIFACT_INCOMPLETE");
+  const matched=original.artifacts.find(a=>a.id===artifactId&&!a.expired);
+  if(!matched||String(matched.digest||"").toLowerCase()!=="sha256:"+sha[1].toLowerCase())continue;
+  return true;
+ }
+ return false;
+}
+
 export function decide(plan,existing=[],verified={},liveApproval={},limits={}){
  verifyPlan(plan);
  const max=limits.max??plan.maxNewIssuesPerRun,laneMax=limits.laneMax??plan.maxUnverifiedPerLane;
@@ -120,7 +147,7 @@ async function run(){
   const id=(issue.body||"").match(/<!-- S2-COMMANDER-TASK:(M\d{2}) -->/)?.[1];
   if(!id)continue;
   const comments=await allPages(repo,token,"/issues/"+issue.number+"/comments");
-  verified[id]=auditPass(issue,id,comments);
+  verified[id]=await verifyNativeAuditEvidenceV0_1({repo,token,issue,id,comments});
  }
  const ownerComments=await allPages(repo,token,"/issues/"+plan.commandIssue+"/comments");
  const liveApproval={};
