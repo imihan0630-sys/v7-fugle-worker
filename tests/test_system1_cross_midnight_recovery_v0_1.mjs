@@ -47,7 +47,7 @@ assert.match(workflow,/QUALITY_MARKET_DATE: \$\{\{ steps\.calendar\.outputs\.mar
 assert.match(workflow,/github\.event\.schedule == '45 15 \* \* 1-5'/);n++;
 assert.match(workflow,/RECOVERY_MARKET_DATE: \$\{\{ github\.event_name == 'schedule' && steps\.calendar\.outputs\.market_date \|\| '' \}\}/);n++;
 assert.match(workflow,/RECOVERY_SCHEDULED_FALLBACK: \$\{\{ github\.event_name == 'schedule' && 'true' \|\| 'false' \}\}/);n++;
-assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[]).length,2);n++;
+assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[]).length,3);n++;
 
 console.log(JSON.stringify({ok:true,assertions:n,crossMidnightPinned:true,scheduledFallbackOnly:true,
   crossMidnightMarketRewriteDisabled:true,readOnlyPrereqReuseRequired:true,
