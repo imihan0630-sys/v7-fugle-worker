@@ -1,0 +1,19 @@
+{
+  "domain": "D06",
+  "owner": "05｜法人與籌碼研究室",
+  "phase": "PF055",
+  "baseMain": "baf452779990cfbb42b5abd51cb327c2e10a5292",
+  "preserved": [
+    "PF053",
+    "PF054"
+  ],
+  "finding": "006201 official 2026-10-14 cash PCF shows zero unit delta and futures exposure; no stock execution inference",
+  "sourceFirstKnownAt": "UNKNOWN",
+  "rawHash": "UNKNOWN",
+  "newIndependentDates": 0,
+  "newOOS": 0,
+  "prereg": "PENDING_D16_00",
+  "maturityChanged": false,
+  "formalCore": "LOCKED",
+  "next": "Independent D16/00 review and prospective complete source capture."
+}
