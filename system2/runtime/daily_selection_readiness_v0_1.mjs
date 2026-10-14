@@ -57,6 +57,7 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
     ledger.sourceState!=='READY'||!HASH.test(ledger.ledgerSha256||'')||
     await sha256Hex(strip(ledger,'ledgerSha256'))!==ledger.ledgerSha256||
     ledger.marketDate!==bridge.marketDate||
+    !UTC.test(ledger.observedAt||'')||
     ledger.sourceOrdinarySymbolCount!==ledger.observations?.length||
     ledger.selectionState!=='NOT_EXECUTED_REQUIRED_PIT_HISTORY_AND_CONTINUITY_MISSING'||
     admission?.schemaVersion!=='S2_SHARED_OFFICIAL_A1_STAGE1_ADMISSION_V0_1'||
@@ -64,12 +65,19 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
     admission.selectionAuthorized!==false||admission.durableFrozenDecisionWritten!==false||
     admission.marketDate!==bridge.marketDate||
     admission.currentSourceLedgerHash!==ledger.ledgerSha256||
+    admission.evaluationAtUtc!==e?.evaluationAtUtc||
     admission.sourceReceiptHash!==bridge.sourceReceiptHash||
     admission.independentAuditHash!==bridge.auditReceiptHash||
     !HASH.test(admission.admissionHash||'')||
     await sha256Hex(strip(strip(admission,'admissionHash'),'evaluation'))!==admission.admissionHash||
     e?.schemaVersion!=='S2_SOURCE_FIRST_SM_EVALUATION_V0_1'||
     e.marketDate!==bridge.marketDate||
+    e.sourceLedgerHash!==ledger.ledgerSha256||
+    e.assessorPolicyId!=='S2-ASSESSOR-SM-LAUNCH-001'||
+    e.assessorPolicyVersion!=='0.1-LAUNCH'||
+    !UTC.test(e.evaluationAtUtc||'')||
+    Date.parse(e.evaluationAtUtc)>Date.parse(bridge.freezeAtUtc)||
+    Date.parse(ledger.observedAt)>Date.parse(e.evaluationAtUtc)||
     e.strategyId!=='SHORT_MOMENTUM'||e.strategyVersion!=='V0.1-CONTRACT'||
     e.selectedCount!==null||e.zeroPickDay!==null||
     e.finalSelectionEnabled!==false||e.ordersEnabled!==false||
@@ -79,13 +87,36 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
     e.universeCount!==ledger.sourceOrdinarySymbolCount||
     !Array.isArray(e.observations)||e.observations.length!==e.universeCount)
   bad('HASH_LINEAGE_OR_STAGE1_AUTHORITY_INVALID');
- const src=new Set(ledger.observations.map(x=>x.symbol));
- if(src.size!==ledger.sourceOrdinarySymbolCount)bad('SOURCE_DENOMINATOR_DUPLICATED');
+ // A valid ledger hash and a valid assessor hash do not themselves prove that
+ // they describe the SAME official row. Bind the pair for every universe item
+ // before publishing user-facing qualified-research rows.
+ const sourceRows=new Map();
+ for(const row of ledger.observations){
+  if(!/^[1-9][0-9]{3}$/.test(row?.symbol||'')||
+     !['TWSE','TPEX'].includes(row.market)||
+     row.marketDate!==bridge.marketDate||
+     !HASH.test(row.sourceRowHash||'')||
+     !UTC.test(row.observedAt||'')||!UTC.test(row.availableAt||'')||
+     Date.parse(row.availableAt)>Date.parse(row.observedAt)||
+     Date.parse(row.observedAt)>Date.parse(e.evaluationAtUtc))
+    bad('SOURCE_ROW_IDENTITY_OR_PIT_INVALID');
+  if(sourceRows.has(row.symbol))bad('SOURCE_DENOMINATOR_DUPLICATED');
+  sourceRows.set(row.symbol,row);
+ }
+ if(sourceRows.size!==ledger.sourceOrdinarySymbolCount)
+  bad('SOURCE_DENOMINATOR_MISMATCH');
  const observed=new Set(),counts={INCOMPLETE:0,REJECTED:0,WATCH:0,QUALIFIED_NOT_SELECTED:0};
  const reasons=new Map(),qualified=[];
  for(const row of e.observations){
-  if(!src.has(row.symbol)||observed.has(row.symbol)||!states.has(row.state))
+  const original=sourceRows.get(row?.symbol);
+  if(!original||observed.has(row.symbol)||!states.has(row.state))
    bad('STAGE1_SYMBOL_OR_STATE_INVALID');
+  if(row.market!==original.market||
+     (row.companyName??null)!==(original.companyName??null)||
+     row.sourceRowHash!==original.sourceRowHash||
+     row.evaluatedClose!==(Number.isFinite(original.close)&&original.close>0
+       ?original.close:null))
+    bad('STAGE1_SOURCE_ROW_LINEAGE_INVALID');
   observed.add(row.symbol);counts[row.state]++;
   if(row.state==='QUALIFIED_NOT_SELECTED'){
    if(row.strategyValidity!=='VALID'||row.entryReadiness!=='BUY_ELIGIBLE'||
@@ -101,9 +132,9 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
      reasons.set(code,(reasons.get(code)||0)+1);
   }
  }
- if(observed.size!==src.size||
+ if(observed.size!==sourceRows.size||
     counts.INCOMPLETE!==e.incompleteCount||
-    e.assessedCount!==src.size-counts.INCOMPLETE||
+    e.assessedCount!==sourceRows.size-counts.INCOMPLETE||
     counts.QUALIFIED_NOT_SELECTED!==e.qualifiedNotSelectedCount)
   bad('ASSESSMENT_DENOMINATOR_MISMATCH');
  // No numerically tuned rank or artificial Top-N. Stable IDs are NOT rank order.
@@ -115,7 +146,7 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
       'STRATEGY_ASSESSED_NO_QUALIFIED_RESEARCH_PENDING_FINAL_GATE',
   blockers:!ready?['UNRESOLVED_SYMBOL_LOCAL_STRATEGY_PIT_OR_CONTINUITY'] :
    ['FINAL_RANK_CAPACITY_AND_DURABLE_FROZEN_NOT_AUTHORIZED'],
-  ordinaryUniverseCount:src.size,
+  ordinaryUniverseCount:sourceRows.size,
   assessedCount:e.assessedCount,incompleteCount:counts.INCOMPLETE,
   watchCount:counts.WATCH,rejectedCount:counts.REJECTED,
   qualifiedNotSelectedCount:counts.QUALIFIED_NOT_SELECTED,
