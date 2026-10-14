@@ -1,0 +1,28 @@
+name: System1 P0 FREE Intraday CPU Shard OFFLINE Safety Oracle (No Production Writes)
+on:
+  pull_request:
+    paths:
+      - "ops/system1_p0_free_cpu_shard_oracle_v0_1.mjs"
+      - "tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs"
+      - ".github/workflows/system1-p0-free-cpu-shard-oracle.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-free-cpu-shard-oracle.yml"
+permissions:
+  contents: read
+jobs:
+  nine_symbols_three_shards_research_only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prove pure 5 Formal and 4 Aideen bounded CPU shard roles no source mutation
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_free_cpu_shard_oracle_v0_1.mjs
+          node --check tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs
+          node tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs
