@@ -27,8 +27,10 @@ export function validateRegistry(manifest,registry){
  for(const p of allTests)if(!/^system2\/tests\/[a-z0-9_]+\.test\.mjs$/.test(p))throw Error("BAD_TEST_PATH");
  return true;
 }
-export function assessSourceRoute({source,daily,raw,quarantine}){
- const q=typeof quarantine==="string"?JSON.parse(quarantine):quarantine;
+export function assessSourceRoute({source,daily,raw,quarantine,sourceQuarantine}){
+ const input=quarantine??sourceQuarantine;
+ const q=typeof input==="string"?JSON.parse(input):input;
+ if(!q||typeof q!=="object")throw Error("SOURCE_QUARANTINE_NOT_LOADED");
  const assertions={
   oldDeployCronQuarantined:/if:\s*\$\{\{\s*false\s*\}\}/.test(source),
   sourceQuarantineActive:q.active===true&&q.automaticRelease===false,
