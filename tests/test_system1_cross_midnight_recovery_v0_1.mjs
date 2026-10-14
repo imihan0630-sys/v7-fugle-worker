@@ -92,10 +92,13 @@ eq(mayProbePinnedPriorDayCapability({targetDate:"2026-10-13",
  now:"2026-10-13T23:01:00Z",scheduledFallback:true}),false);
 const officialCapability={ok:true,pinnedMarketDateSupported:true,
  legacyDateBodyIgnored:false,priorDayFallbackRequiresOnlyIfMissing:true,
- priorDayTaipeiCutoff:"07:00",maxHistoricalRewindDays:1};
+ priorDayTaipeiCutoff:"07:00",maxHistoricalRewindDays:1,
+ priorDayFallbackEnabled:true,priorDayReplayIsNotAuthorizedByCapabilityAlone:true};
 eq(verifiedPinnedPriorDayCapability(officialCapability),true);
 eq(verifiedPinnedPriorDayCapability({...officialCapability,pinnedMarketDateSupported:false}),false);
 eq(verifiedPinnedPriorDayCapability({...officialCapability,maxHistoricalRewindDays:14}),false);
+eq(verifiedPinnedPriorDayCapability({...officialCapability,priorDayFallbackEnabled:false}),false);
+eq(verifiedPinnedPriorDayCapability({...officialCapability,priorDayReplayIsNotAuthorizedByCapabilityAlone:false}),false);
 eq(verifiedPinnedPriorDayCapability(null),false);
 assert.match(recovery,/admin\('\/api\/scan\/session-date-capability'\)/);n++;
 assert.match(recovery,/verifiedPinnedPriorDayCapability\(capability\)/);n++;
