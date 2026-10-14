@@ -1,0 +1,62 @@
+name: S2 M07 G3 Private 498 R2 Extra Hashes Readonly (OFFLINE)
+# Original encrypted G3 SQL and original protected 27-page R2 source inventory.
+# No original object key/body printed. No Cloudflare provider request.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-m07-g3-private-extra-hashes-readonly.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-m07-g3-private-498-extra-key-hashes
+  cancel-in-progress: false
+jobs:
+  archived_extra_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-schema-only
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Verify original source-extra 498 adversarial and provenance contracts
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1236_m07_g3_498_private_unmatched_restore_v0_1.mjs
+          python3 -m py_compile system2/migration/issue1236_m07_g3_private_498_unmatched_hashes_v0_1.py
+          node system2/tests/issue1236_m07_g3_extra_498_hashes_v0_1.test.mjs
+      - name: Fetch existing authenticated 90-day G3 source SQL encrypted transfer
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-existing-rsa-source-transfer-encrypted-extended-38214521809
+          run-id: 38214521809
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-existing-source-archive
+      - name: Fetch authenticated 26321-key original source R2 private hashed artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m07-source-r2-32page-private-inventory-38519598039-1
+          run-id: 38519598039
+          github-token: ${{ github.token }}
+          repository: imihan0630-sys/v7-fugle-worker
+          path: /tmp/s2-m07-full-original-inventory
+      - name: Restore original G3 SOURCE SQL and privately isolate exact extra identities
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1236_m07_g3_498_private_unmatched_restore_v0_1.mjs
+      - name: Archive PRIVATE hashed 498 only plus sanitized summary
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m07-private-498-extra-keyhashes-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/s2-m07-g3-unmatched-498/private-unmatched-r2-hashes.jsonl
+            /tmp/s2-m07-g3-unmatched-498/sanitized-unmatched-summary.json
+          retention-days: 30
