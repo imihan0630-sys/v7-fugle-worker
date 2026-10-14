@@ -35,7 +35,8 @@
     "M12": [
       "system2/tests/owner_override_raw_copy_scope_v0_1.test.mjs",
       "system2/tests/d1_account_quota_workflow_guard_v0_1.test.mjs",
-      "system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs"
+      "system2/tests/daily_shadow_destination_routing_p0_20261012.test.mjs",
+      "system2/tests/dest_d1_cross_workflow_day_interlock_v0_1.test.mjs"
     ]
   },
   "relatedIssues": {

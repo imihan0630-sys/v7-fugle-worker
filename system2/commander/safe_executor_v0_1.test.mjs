@@ -29,7 +29,7 @@ test("different concurrency groups remain blocked; 71322+13130 exceeds owner 800
  {id:"DAILY_SHADOW_DIAGNOSTIC",reservationModel:{rowsWritten:13130}}
  ]},importer:"const limit=80000, stopAt=75000, maxStatementRows=80"});
  assert.equal(v.assertions.sameGroupSerializesWriters,false);
- assert.equal(v.assertions.rawWriterRegisteredInSharedRegistry,false);
+ assert.equal(v.assertions.rawWriterRegisteredInDestRegistry,false);
  assert.equal(v.collisionScenario.sum,84452);
  assert.equal(v.collisionScenario.wouldExceedUserCap,true);
  assert.equal(v.collisionScenario.notCurrentUtcDayBalance,true);
@@ -41,6 +41,7 @@ test("safe executor runs six allowlisted test paths only, can't create formal ac
  raw:"environment: system2-schema-only\nS2_OWNER_OVERRIDE_RAW_COPY_20261012\ngroup: s2-dest-owner-override-original-raw-copy-only",
  sourceQuarantine:JSON.stringify({active:true,automaticRelease:false}),
  registry:JSON.stringify({writers:[{id:"DAILY_SHADOW_DIAGNOSTIC",reservationModel:{rowsWritten:13130}}]}),
+ destRegistry:JSON.stringify({writers:[{id:"RAW_COPY",workflow:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml"},{id:"DAILY_DIAGNOSTIC",workflow:".github/workflows/system2-daily-shadow-diagnostic.yml"}],sharedJobConcurrencyGroup:"s2-dest-d1-historical-and-diagnostic-writer"}),
  rawImporter:"const limit=80000, stopAt=75000, maxStatementRows=80"
  };
  const paths=[];const out=await evaluateSafeJobs({manifest,registry,readText:async p=>{
@@ -49,10 +50,11 @@ test("safe executor runs six allowlisted test paths only, can't create formal ac
    raw:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
    sourceQuarantine:"system2/config/source_account_d1_writer_quarantine_v0_1.json",
    registry:"system2/config/d1_account_writer_registry_v0_1.json",
+   destRegistry:"system2/config/dest_d1_cross_workflow_writer_interlock_v0_1.json",
    rawImporter:"system2/migration/owner_override_raw_d1_import_20261012.mjs"}).find(([key,val])=>val===p);
   if(!entry)throw Error("DYNAMIC_FILE");return data[entry[0]];
  },testRunner:async p=>{paths.push(p);return{path:p,passed:true,testCount:1,failCount:0}}});
- assert.equal(paths.length,6);
+ assert.equal(paths.length,7);
  assert.deepEqual(new Set(paths),new Set(registry.allowlistedTests.M08.concat(registry.allowlistedTests.M12)));
  assert.equal(out.results.M12.state,"FINDINGS_REMEDIATION_REQUIRED");
  assert.equal(out.results.M08.state,"OFFLINE_CHECKS_PASS_NOT_PHYSICAL");
