@@ -74,6 +74,7 @@ export function classifyHistory60Census({marketDate,classes,total,perSymbolProve
 // A monitor is a source-observation identity, NOT a broker holding.
 // A stale or trial quote cannot be converted into a valid trade via relabeling.
 export function classifyMonitoringSafety({monitorKeys=[],brokerPositions=null,
+ brokerSourceVerified=false,brokerReconciledAsOfDate=null,
  closedSymbols=[],quotesByKey={},freshPlanDate=null,marketDate}={}){
   ensureDay(marketDate);
   const ids=new Set();
@@ -83,8 +84,16 @@ export function classifyMonitoringSafety({monitorKeys=[],brokerPositions=null,
     ids.add(key);
   }
   const closed=new Set(closedSymbols.map(String));
-  const positionsVerified=Array.isArray(brokerPositions);
-  const actualHoldings=positionsVerified?new Set(brokerPositions.filter(x=>whole(x?.shares)&&x.shares>0).map(x=>String(x.symbol))):null;
+  // Caller-supplied arrays are NOT broker proof. Real broker corroboration
+  // must be explicit, same-date and structurally exact, or remain UNKNOWN.
+  const validPositions=Array.isArray(brokerPositions)&&
+    brokerPositions.every(x=>x&&/^[1-9][0-9]{3}$/.test(String(x.symbol||""))&&
+      whole(x.shares))&&
+    new Set(brokerPositions.map(x=>String(x.symbol))).size===brokerPositions.length;
+  const positionsVerified=validPositions&&brokerSourceVerified===true&&
+    brokerReconciledAsOfDate===marketDate;
+  const actualHoldings=positionsVerified?
+    new Set(brokerPositions.filter(x=>x.shares>0).map(x=>String(x.symbol))):null;
   const monitoringNotPosition=[...ids].filter(k=>closed.has(k.split(":")[1])&&
     (actualHoldings===null||!actualHoldings.has(k.split(":")[1])));
   const trialQuotes=[...ids].filter(k=>quotesByKey[k]?.isTrial===true);
@@ -102,17 +111,28 @@ export function classifyMonitoringSafety({monitorKeys=[],brokerPositions=null,
 // constraints. A source-only CI PASS or GitHub job success cannot override them.
 export function classifyCpuReadiness({originalLimitMs=10,providerExceededResources,
   candidateOnly,workerDeployed,observedQuoteAgeSeconds=null,sourceIsTrial=false,
-  underlyingBusinessState=null}={}){
+  underlyingBusinessState=null,receiptSource=null,originalFourCronVerified=false,
+  d1PrimaryFresh=false,kvMirrorFresh=false,allMonitorKeysVerified=false,
+  observedDuringIntraday=false,formalPlanCurrent=false}={}){
   if(originalLimitMs!==10)throw Error("P0_ORIGINAL_FREE_CPU_LIMIT_CHANGED");
   const quoteVerified=Number.isFinite(observedQuoteAgeSeconds)&&
     observedQuoteAgeSeconds>=0&&observedQuoteAgeSeconds<=90&&sourceIsTrial===false;
+  const physicalChainVerified=receiptSource==="AUTHENTICATED_PRODUCTION_GET_ONLY"&&
+    originalFourCronVerified===true&&d1PrimaryFresh===true&&
+    kvMirrorFresh===true&&allMonitorKeysVerified===true&&
+    observedDuringIntraday===true&&formalPlanCurrent===true;
   const actualPass=providerExceededResources===false&&candidateOnly===false&&
-    workerDeployed===true&&quoteVerified&&underlyingBusinessState==="PASS_INTRADAY_MONITOR_FRESHNESS";
-  return {state:actualPass?"ACTUAL_PRODUCTION_MONITOR_VERIFIED":"CPU_OR_RUNTIME_NOT_PHYSICALLY_ACCEPTED",
+    workerDeployed===true&&quoteVerified&&physicalChainVerified&&
+    underlyingBusinessState==="PASS_INTRADAY_MONITOR_FRESHNESS";
+  return {state:actualPass?
+    "MONITOR_FRESHNESS_AUTHENTICATED_NOT_FORMAL_TRADING_APPROVAL":
+    "CPU_OR_RUNTIME_NOT_PHYSICALLY_ACCEPTED",
     actualPass,originalLimitMs,originalQuoteFreshSeconds:90,
     trialQuoteBlocked:sourceIsTrial===true,
     providerExceededResources:providerExceededResources===true,
     offlineCandidateIsNotDeployment:candidateOnly===true,
+    physicalChainVerified,
     githubActionSuccessAloneIsNotBusinessSuccess:true,
-    paidUpgradeAuthorized:false,freeRuntimeSolutionPhysicallyVerified:false,mayRelaxStaleness:false,mayPush:false,mayTrade:false};
+    paidUpgradeAuthorized:false,freeRuntimeSolutionPhysicallyVerified:actualPass,
+    mayRelaxStaleness:false,mayPush:false,mayTrade:false};
 }
