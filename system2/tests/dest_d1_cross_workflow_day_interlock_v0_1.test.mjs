@@ -79,6 +79,6 @@ test("both real workflow jobs serialize identically BEFORE any D1/query/write st
   assert.ok(w.indexOf("node system2/scripts/dest_d1_writer_run_interlock_v0_1.mjs")<w.indexOf("secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN"));
   assert.match(w,/s2-dest-d1-writer-day-interlock\/receipt\.json/);
  }
- assert.match(diag,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
+ assert.match(diag,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
  assert.match(raw,/name: Do owner-authorized target-only RAW_A1 transport under 80k billed row limit\n        if: steps\.day_interlock\.outputs\.allowed == 'true'/);
 });
