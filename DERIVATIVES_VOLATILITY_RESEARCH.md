@@ -2140,3 +2140,16 @@ Formal Core remains LOCKED.
 3. Preserve TAIFEX official Delta as a separate exchange-model baseline with publication/effective-date versioning.
 4. Compare own-computed Delta versus TAIFEX Delta outcome-blind; explain differences via model/input/clock before any alpha claim.
 5. Keep live MIS automation blocked and outcomes closed until source-attested independent dates exist.
+
+
+## DR-119..DR-122 — 2026-10-13 06:45 TXO Delta version QA (2026-10-13 ~08:14 Taipei observation)
+
+- Official interactive and Excel-style TAIFEX pages currently both display 2026-10-13 06:45:17; downloadable-file list reports generation at 06:45:23. These are display/generation timestamps, not independently proven immutable first-known raw hashes.
+- Earlier in this same retrieval sequence the Excel URL surfaced the 2026-10-12 06:45:20 body, then refreshed to 2026-10-13 06:45:17. Cannot distinguish official endpoint lag from retrieval cache race; no permanent source-divergence assertion.
+- Matched contract identity: TXO 202610W2 expiry 20261014 strike 49100. 2026-10-12 morning call/put Delta = 0.5231/-0.4767; 2026-10-13 morning = 0.5116/-0.4883. Call change -0.0115; both within-date call-minus-put approximately one (0.9998/0.9999). This is a model-state/vintage observation, not an executable trade, option market sentiment, or own-vs-official model residual.
+- On the 2026-10-13 version same expiry strikes 49050/49100/49150, call Delta = 0.5266/0.5116/0.4969 and put Delta = -0.4733/-0.4883/-0.5031. Both strike monotonicity and call-put identity are consistent in these three transcribed rows, but N_independent_date=1, source-native archive=UNKNOWN, quote clock=UNKNOWN, price/forward/rate/dividend input=UNKNOWN.
+- The valid next comparison is 2026-10-12 afternoon prepublication for effective 2026-10-13 versus 2026-10-13 morning for the same effective date and identical full contract keys. That 10/12 afternoon raw contract-level body is not available in this run; no comparison residual is computed or backfilled.
+- Guardrails: no source-date-only joins, no missing=0, no historical Shadow, no PIT/OOS/walk-forward promotion, no outcome access, no costs-free parity/alpha claim. D12-13 remains L2/40%; D12 40.0%; Formal Core LOCKED.
+
+Primary official references: https://www.taifex.com.tw/cht/3/optDailyDelta and https://www.taifex.com.tw/cht/3/optDailyDeltaExcel.
+Exact next: capture immutable licensed morning/afternoon native files and complete same-effective-date contract universe; preserve independent firstKnownAt before any model attribution.
