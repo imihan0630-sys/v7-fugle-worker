@@ -3,9 +3,13 @@
 import {writeFile,mkdir} from "node:fs/promises";
 import {createHash} from "node:crypto";
 import {fetchOfficialHistoricalA1DateV0_1} from "../system2/runtime/official_historical_a1_source_v0_1.mjs";
+import {buildOfficialTradingDatesV0_1} from "../system2/runtime/official_historical_backfill_source_v0_1.mjs";
+import {dateOffset,taipeiNowParts,planOfficialSourceWindow} from "./system1_p0_official_daily_history_calendar_v0_1.mjs";
 
-const TARGET="2026-10-13";
-const SOURCE_START="2026-09-11";
+const DAILY_INCREMENTAL=process.env.S1_P0_DAILY_INCREMENTAL==="1";
+let TARGET="2026-10-13";
+let SOURCE_START="2026-09-11";
+let dailyPlan=null;
 const SYMBOL_CAP=400;
 const account=process.env.CLOUDFLARE_ACCOUNT_ID||"";
 const sourceToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLARE_API_TOKEN||"";
@@ -13,9 +17,25 @@ const writeToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN||process.env.CLOUDFLAR
 const admin=process.env.V7_ADMIN_TOKEN||"";
 if(!/^[0-9a-f]{32}$/i.test(account)||!sourceToken||!writeToken||!admin)
  throw Error("EXISTING_CLOUDFLARE_SOURCE_AND_ADMIN_AUTH_REQUIRED_NO_WRITE");
+if(DAILY_INCREMENTAL) {
+ const local=taipeiNowParts(new Date());
+ const floor=dateOffset(local.day,-14);
+ const official=await buildOfficialTradingDatesV0_1({
+  fromDate:floor,toDate:local.day,fetchImpl:fetch
+ });
+ dailyPlan=planOfficialSourceWindow({
+  now:new Date(),officialTradingDates:official.tradingDates
+ });
+ if(official.source!=="TWSE_OFFICIAL_TRADING_CALENDAR"&&
+    !String(official.source).startsWith("TWSE_OFFICIAL"))
+   throw Error("DAILY_TRADING_CALENDAR_PROVENANCE_UNVERIFIED");
+ TARGET=dailyPlan.target;
+ SOURCE_START=dailyPlan.sourceStart;
+}
 const base="https://api.cloudflare.com/client/v4/accounts/"+account;
 const journal={schema:"SYSTEM1_P0_OFFICIAL_TWO_MARKET_HISTORY_REPAIR_V0_1",targetDate:TARGET,
  fetchedFrom:SOURCE_START,runStarted:new Date().toISOString(),dataOnly:true,
+ dailyIncremental:DAILY_INCREMENTAL,officialCalendarPlan:dailyPlan,
  officialSourceHashes:[],dateCount:0,rawRowCount:0,
  D1ReadRows:0,D1Writes:0,sourceHttpCalls:0,
  noSeedStateWrite:true,noPlanWrite:true,noFormalSelection:true,noTrade:true,noPush:true,
@@ -64,13 +84,15 @@ async function query(sql,params=[]){
 }
 function dateString(ms){return new Date(ms).toISOString().slice(0,10)}
 const holidays=new Set(["2026-09-25","2026-09-28","2026-10-09"]);
-const dates=[];
-for(let d=Date.parse(SOURCE_START+"T00:00:00Z");d<=Date.parse(TARGET+"T00:00:00Z");d+=86400000){
- const day=dateString(d);
- if(![0,6].includes(new Date(d).getUTCDay())&&!holidays.has(day))dates.push(day);
+const dates=DAILY_INCREMENTAL?[...dailyPlan.tradingDates]:[];
+if(!DAILY_INCREMENTAL) {
+ for(let d=Date.parse(SOURCE_START+"T00:00:00Z");d<=Date.parse(TARGET+"T00:00:00Z");d+=86400000){
+  const day=dateString(d);
+  if(![0,6].includes(new Date(d).getUTCDay())&&!holidays.has(day))dates.push(day);
+ }
 }
-if(dates.length<15||dates.length>24||dates.at(-1)!==TARGET)
- throw Error("PINNED_OFFICIAL_CALENDAR_SESSION_RANGE_INVALID");
+if(dates.length<(DAILY_INCREMENTAL?1:15)||dates.length>24||dates.at(-1)!==TARGET)
+ throw Error("OFFICIAL_CALENDAR_SESSION_RANGE_INVALID");
 const live=await fetch("https://fugle-test.imihan0630.workers.dev/api/live/sources",{
  headers:{"x-admin-token":admin,accept:"application/json"},signal:AbortSignal.timeout(25000)});
 if(!live.ok)throw Error("APPROVED_LIVE_MONITOR_READ_FAILED_"+live.status);

@@ -1,0 +1,109 @@
+name: System1 DAILY No-cost Official K-line Incremental D1 History (DATA ONLY)
+on:
+  schedule:
+    - cron: '10 8 * * 1-5' # UTC 08:10 = 16:10 Asia/Taipei (post close)
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-official-history-daily-incremental.yml"
+      - "ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs"
+      - "ops/system1_p0_history60_census_readonly_once_v0_1.mjs"
+      - "ops/system1_p0_official_daily_history_calendar_v0_1.mjs"
+      - "tests/test_system1_p0_official_daily_history_calendar_v0_1.mjs"
+permissions:
+  contents: read
+jobs:
+  offline_guard_tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pure calendar timing guard + unchanged official historical source parser
+        run: |
+          set -euo pipefail
+          node --check ops/system1_p0_official_daily_history_calendar_v0_1.mjs
+          node --check ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          node --check ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+          node tests/test_system1_p0_official_daily_history_calendar_v0_1.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+          grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          grep -F -q 'WHERE symbol=?3 AND updated_at=?4' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+  physical_official_calendar_probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prove actual TWSE 2026 trading calendar using only public GET
+        run: node ops/system1_p0_official_calendar_transport_probe_readonly_v0_1.mjs
+  official_history_incremental:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: offline_guard_tests
+    concurrency:
+      group: system1-history-cache-dataonly-safe-write
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      S1_P0_DAILY_INCREMENTAL: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exactly bounded official session-complete source and <=5 serialized CAS batches
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/daily-history-batches
+          for n in 1 2 3 4 5; do
+            echo "::group::S1_DAILY_OFFICIAL_HISTORY_BATCH_${n}"
+            if ! node ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs; then
+              cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/daily-history-batches/batch-${n}.json" || true
+              echo "::error::Source date, quota, CAS or absence of fully verified rows; stop. No fake completeness."
+              exit 2
+            fi
+            cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/daily-history-batches/batch-${n}.json"
+            if node -e 'const d=require("./artifacts/system1-p0-official-wholemarket-firstbatch.json"); process.exit(d.status==="NO_STALE_EXISTING_HISTORY_SYMBOLS_ON_PINNED_DATE"?0:1)'; then
+              echo "S1_DAILY_EXISTING_HISTORY_CACHE_CURRENT_TO_LAST_OFFICIAL_SESSION"
+              echo "::endgroup::"
+              break
+            fi
+            echo "::endgroup::"
+            if [ "$n" != 5 ]; then sleep 20; fi
+          done
+      - name: Evidence - independent physical D1 source completion census for ACTUAL daily target
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ -f artifacts/system1-p0-official-wholemarket-firstbatch.json ]; then
+            S1_P0_EXPECTED_MARKET_DATE="$(node -p 'require("./artifacts/system1-p0-official-wholemarket-firstbatch.json").targetDate')"
+            if [[ "$S1_P0_EXPECTED_MARKET_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+              export S1_P0_EXPECTED_MARKET_DATE
+            else
+              echo "::error::No real validated official target session in latest batch evidence"
+              exit 3
+            fi
+          else
+            echo "::error::No official source receipt; cannot certify daily history coverage"
+            exit 4
+          fi
+          node ops/system1_p0_history60_census_readonly_once_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-official-history-daily-${{ github.run_id }}
+          path: |
+            artifacts/daily-history-batches/*.json
+            artifacts/system1-history60-source-census.json
+          if-no-files-found: warn
+          retention-days: 30
