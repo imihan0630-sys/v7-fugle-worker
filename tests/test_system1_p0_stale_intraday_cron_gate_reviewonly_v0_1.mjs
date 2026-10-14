@@ -35,7 +35,8 @@ assert.equal(within("2026-10-14T05:24:00Z","2026-10-14T05:25:00Z").skip,true); /
 assert.equal(within("2026-10-13T05:15:00Z","2026-10-14T01:00:01Z").skip,true); // previous-day delayed Cron
 assert.equal(within("2026-10-14T00:59:00Z","2026-10-14T01:00:00Z").skip,false);
 assert.equal(within("2026-10-14T01:00:00Z","2026-10-14T00:59:54Z").skip,true);
-assert.equal(within("2026-10-14T01:00:00Z","2026-10-14T00:59:55Z").skip,false);
+assert.equal(within("2026-10-14T01:00:00Z","2026-10-14T00:59:55Z").skip,true); // out-of-window clock wins
+assert.equal(within("2026-10-14T01:01:00Z","2026-10-14T01:00:55Z").skip,false); // -5s clock skew still inside
 assert.equal(gate(NaN,at("2026-10-14T01:00:00Z")).skip,true);
 assert.equal(gate(at("2026-10-14T01:00:00Z"),NaN).skip,true);
 assert.ok(original.includes("await acquireSignalStateLease(env,key)"));
