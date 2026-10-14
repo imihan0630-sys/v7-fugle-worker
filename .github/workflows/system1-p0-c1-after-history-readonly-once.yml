@@ -1,0 +1,66 @@
+name: System1 P0 C1 After-Backfill Physical Readback (GET ONLY ONCE)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-c1-after-history-readonly-once.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-c1-after-history-readonly-once.yml"
+permissions:
+  contents: read
+jobs:
+  no_credentials_tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Protected Formal C1 readback contract, no production writes
+        run: |
+          set -euo pipefail
+          node --check tests/system1_c1_official_session_gate.mjs
+          node --check tests/collect_system1_c1_c2_evidence.mjs
+          node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
+          node tests/test_system1_c1_generation_inventory_validation_v0_1.mjs
+  physical_latest_formal_c1:
+    if: github.event_name == 'push'
+    needs: no_credentials_tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      C1_SCAN_DATE: '2026-10-13'
+      C3_REGISTER: 'false'
+      C1_READINESS_OUTPUT: artifacts/system1-c1-posthistory-readiness.json
+      C1_EVIDENCE_OUTPUT: artifacts/system1-c1-posthistory-evidence.json
+      C2_EVIDENCE_OUTPUT: artifacts/system1-c2-posthistory-paired.json
+      C1_INVENTORY_OUTPUT: artifacts/system1-c1-posthistory-generation-inventory.json
+      FORMAL_C1_BINDING_OUTPUT: artifacts/system1-c1-posthistory-formal-binding.json
+      C3_REGISTRATION_OUTPUT: artifacts/system1-c3-posthistory-registration.json
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm 10/13 was completed TWSE/TPEx session before readback
+        id: calendar
+        run: node tests/system1_c1_official_session_gate.mjs
+      - name: Physically recheck post-history Formal C1 generation inventory and binding (GET only)
+        if: steps.calendar.outputs.proceed == 'true'
+        run: node tests/collect_system1_c1_c2_evidence.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-c1-posthistory-source-readonly-${{ github.run_id }}
+          path: |
+            artifacts/system1-c1-posthistory-readiness.json
+            artifacts/system1-c1-posthistory-evidence.json
+            artifacts/system1-c2-posthistory-paired.json
+            artifacts/system1-c1-posthistory-generation-inventory.json
+            artifacts/system1-c1-posthistory-formal-binding.json
+            artifacts/system1-c3-posthistory-registration.json
+          if-no-files-found: warn
+          retention-days: 30
