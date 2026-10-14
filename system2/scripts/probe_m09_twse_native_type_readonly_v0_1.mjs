@@ -24,7 +24,7 @@ export async function probeM09TwseNativeTypeV0_1({
  requestedDate,rawBytes,observedAtUtc,
 }={}){
  if(!validDay(requestedDate)||!validUtc(observedAtUtc))throw Error('M09_NATIVE_TYPE_REQUEST_CLOCK_INVALID');
- if(!Buffer.isBuffer(rawBytes)||rawBytes.length<120||rawBytes.length>RAWMAX)
+ if(!Buffer.isBuffer(rawBytes)||rawBytes.length<60||rawBytes.length>RAWMAX)
   throw Error('M09_NATIVE_TYPE_ORIGINAL_BYTES_INVALID');
  const originalSha256=createHash('sha256').update(rawBytes).digest('hex');
  let payload;
@@ -34,7 +34,7 @@ export async function probeM09TwseNativeTypeV0_1({
  const tables=Array.isArray(payload?.tables)?payload.tables:
   (Array.isArray(payload?.data)&&Array.isArray(payload?.fields)?
    [{title:payload.title||null,fields:payload.fields,data:payload.data}]:[]);
- const schemaSamples=[],evidence={},typedRows=new Map();
+ const schemaSamples=[],typedRows=new Map(),duplicateCodes=new Set();
  let rawRows=0,categorizedAggregateOnly=false,ambiguousCodes=0,stockRows=0;
  const classes=new Set(['一般股票','普通股','上市股票','股票','台灣存託憑證','臺灣存託憑證','存託憑證']);
  const ordinary=new Set(['一般股票','普通股','上市股票']);
@@ -65,7 +65,10 @@ export async function probeM09TwseNativeTypeV0_1({
    // a marketwide summary. Only same-row explicit type/typed stock table.
    if(!category||(!ordinary.has(category)&&!isDepositary(category)))continue;
    if(/[-‐‑‒–—]\s*DR$/i.test(issuer.normalize('NFKC'))&&ordinary.has(category))continue;
-   if(typedRows.has(symbol)){ambiguousCodes++;typedRows.delete(symbol);continue;}
+   if(typedRows.has(symbol)||duplicateCodes.has(symbol)){
+    if(!duplicateCodes.has(symbol))ambiguousCodes++;
+    duplicateCodes.add(symbol);typedRows.delete(symbol);continue;
+   }
    typedRows.set(symbol,category);
   }
  }
