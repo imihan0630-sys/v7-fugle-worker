@@ -128,3 +128,18 @@ Next: validate prospective ETF units-delta + PCF timestamp/corporate-action sema
 
 ### Exact next after PF-042
 Do not promote from more source replication alone. Preserve future generations append-only and move the next maturity gate to preregistered common-support OOS/Shadow residual incrementality with passive/active anti-double-count controls.
+
+
+## PF-057 — 2026-10-14 22:14 Taipei field-clock and rounded-NAV falsification (research-only)
+- Dedicated durable audit: `research/d06_pf057_field_clock_nav_rounding_audit_20261014_v0_1.json`; separate continuation: `research/d06_pf057_continuation_checkpoint_20261014_v0_1.json`.
+- 0050/0056 issuer PCF use date 2026-10-15, while unit and displayed basket-trade dates are 2026-10-14. Beneficiary field date differs again. A rendered page is not a single all-field PIT clock; do not infer actual cash-component dating from nearby labels without raw structured provenance.
+- Displayed two-decimal NAV/share is rounded: 0050 NAV minus units times displayed per-unit NAV = TWD 70,595,603; 0056 = TWD 14,385,675. Both are inside the half-cent-per-unit rounding bound, not evidence of missing fund assets.
+- Both fund observations share the PF-056 2026-10-15 decision generation: independent new dates = 0; real OOS = 0. Conditional PCF basket exposure is not actual AP execution; full raw basket, source bytes, headers, first-known, and AP fills remain UNKNOWN.
+- 30/30 deterministic arithmetic/synthetic contract checks passed, not market outcome evidence. No maturity promotion: D06-16 L3/60, D06 55.6%, global 47.9%. Formal Core LOCKED; no historical Shadow fabrication.
+- PF-053 through PF-056 evidence remains on an unmerged earlier branch. This branch is a new main-based PF-057 research-only delta; do not treat either branch as merged main. PR creation is safety-blocked.
+
+### Exact next after PF-057
+1. Obtain immutable complete issuer PCF, field-level source dates, raw hash and independently defensible first-observed decision clock for future use dates. Historical issuer pages alone cannot establish historical PIT eligibility.
+2. Seek independent D16/00 review of the frozen PF-052–PF-057 preregistration before opening any OOS/Shadow outcome.
+3. Continue only genuinely new TDCC pairs after 2026-10-08, multi-date TPEx early/late margin and SBL, and the frozen five-symbol 15:20 +/-5min live lending slot; missed slots remain UNKNOWN.
+4. Preserve single economic-root dedup across index event, ETF modeled flow, institution, borrowing and crowding. No tracker/Formal changes without gate evidence.
