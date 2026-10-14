@@ -78,11 +78,7 @@ if __name__=="__main__":
         r=run(*sys.argv[1:])
         Path(OUT+"/sanitized-unmatched-summary.json").write_text(
             json.dumps(r,sort_keys=True,indent=2)+"\n",encoding="utf8")
-        print(json.dumps({"status":r["status"],"extras":r["extraKeyHashCount"],
-            "extraListedBytes":r["extraListedBytes"],
-            "hashListSha256":r["extraPrivateKeyHashListSHA256"],
-            "originalMatched":r["originalManifestIdentityAndSizeMatched"],
-            "cloudflareCalls":0,"writes":0},separators=(",",":")))
+        print(json.dumps(r,sort_keys=True,separators=(",",":")))
     except Exception as e:
         msg=str(e)
         print(msg if msg.startswith("M07_FULL_LIST_JOIN_") else

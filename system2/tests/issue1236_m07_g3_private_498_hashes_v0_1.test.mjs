@@ -9,6 +9,9 @@ const wrapper=readFileSync("system2/migration/issue1236_m07_g3_498_private_unmat
 const workflow=readFileSync(".github/workflows/system2-m07-g3-private-extra-hashes-readonly.yml","utf8");
 const roster=JSON.parse(readFileSync("system2/config/dest_d1_credential_workflow_census_v0_1.json","utf8"));
 assert.match(source,/EXTRAS=498/);
+assert.ok(source.includes('print(json.dumps(r,sort_keys=True,separators=(",",":")))'));
+assert.ok(!source.includes('"hashListSha256":r['));
+
 assert.match(source,/originalManifestIdentityAndSizeMatched/);
 assert.match(source,/extraObjectsCanBeDeleted":False/);
 assert.match(source,/sourceR2NetworkCalls":0/);
