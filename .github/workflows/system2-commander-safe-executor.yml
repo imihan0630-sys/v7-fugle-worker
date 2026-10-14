@@ -1,6 +1,15 @@
 name: System2 Commander Safe Offline Executor
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system2-commander-safe-executor.yml'
+      - 'system2/commander/safe_executor_v0_1.mjs'
+      - 'system2/commander/safe_executor_report_v0_1.mjs'
+      - 'system2/commander/safe_executor_v0_1.test.mjs'
+      - 'system2/commander/safe_job_registry_v0_1.json'
+      - 'system2/tests/dest_d1_cross_workflow_day_interlock_v0_1.test.mjs'
   issue_comment:
     types: [created]
   schedule:
