@@ -397,3 +397,20 @@ Boundary remains:
 D14-17 advances to L2 / 40% for mechanism + falsification semantics only.
 Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order-lifecycle evidence, preserve unexecuted opportunities, use mechanism-matched benchmarks, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
 Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+
+## D14-EX-003 — D14-18 signal decay / execution urgency evidence reconciliation (2026-10-15)
+
+Source contract: `research/D14_18_ALPHA_DECAY_EXECUTION_URGENCY_CONTRACT_20261008_V0_1.md`.
+Prior durable supplement: `research/D14_18_DURABLE_CHECKPOINT_SUPPLEMENT_20261008_V0_1.md`.
+
+D14-18 owns the trade-off between time-varying execution friction and the decay of decision-time signal value. Faster execution is not assumed superior; waiting for a better price is not assumed superior. The parent order, decision clock, first-known signal clock, earliest orderable clock, mechanism/lot cohort, fill/remaining quantity, and evidence provenance must be immutable and replayable. Future full-session volume, close, and subsequent outcomes cannot enter earlier decisions.
+
+Falsification: exclude filled-only survivorship; preserve cancelled/rejected/unfilled and partial quantities; distinguish common market/sector/event price discovery from causal impact; cluster by independent parent/session; preregister competing horizons, urgency thresholds, and cost assumptions. Missing actual commission/tax/slippage/latency/mechanism/fill provenance remains UNKNOWN. Plans, signals, pushes and simulated fills are not broker-confirmed fills or realized P/L.
+
+Ownership: D14-15 order type; D14-16 scheduling; D14-17 implementation shortfall; D14-18 signal-decay/urgency. Shared receipt is not four independent alpha votes.
+
+Evidence assessment: mechanism + falsification contract supports an L2 / 40% candidate, subject to central tracker governance synchronization. L3 is NOT established: require at least three independent prospective Taiwan sessions with immutable PIT order lifecycle, mechanism-matched comparators, deterministic replay, retained unexecuted opportunities and confirmed fills for realized claims. Three dates trigger readiness review, not automatic promotion.
+
+Status: `D14_18_MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED`.
+Exact next: synchronize D14-16/17/18 evidence against latest central tracker with explicit old-vs-new module deltas, then collect independent prospective Taiwan execution receipts. Do not repeat frozen mechanism contracts. No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core remains LOCKED.
