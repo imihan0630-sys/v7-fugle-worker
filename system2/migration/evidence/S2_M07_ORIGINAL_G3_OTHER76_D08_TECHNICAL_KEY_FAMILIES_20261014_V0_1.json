@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "S2_M07_G3_SOURCE_76_OTHER_D08_R2_TECHNICAL_FAMILY_PHYSICAL_20261014_V0_1",
+  "evidenceStatus": "DATA_LANE_ORIGINAL_R2_LIST_TECHNICAL_KEY_FAMILY_ONLY__INDEPENDENT_AUDIT_PENDING",
+  "observedDateTaipei": "2026-10-14",
+  "originalPhysicalSourceRun": 38546098333,
+  "originalPhysicalJob": 115792415067,
+  "originalPhysicalRunConclusion": "SUCCESS",
+  "originalPhysicalRunURL": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38546098333",
+  "implementationPR": 1318,
+  "implementationMergedMainSha": "4327483469ca092d85a91b3d79a8744b28baf888",
+  "originalGithubArtifactId": 11884193980,
+  "originalGithubArtifactZipBytes": 1381,
+  "originalGithubArtifactZipSHA256": "ea7a223ef601c1eb0d3431b0ee5a00be4f9fe9e0b29963beebc83f50ac3959a7",
+  "independentlyDownloadedAndRecomputedZipSHA256": "ea7a223ef601c1eb0d3431b0ee5a00be4f9fe9e0b29963beebc83f50ac3959a7",
+  "originalZipShaVerifiedAgainstProvider": true,
+  "originalSanitizedInnerFile": "sanitized-76-d08-original-technical-families.json",
+  "originalInnerBytes": 3308,
+  "originalInnerSHA256": "5269ee8f660d84e6445027682ac7db56732c95dc7623e869507d4d091861834a",
+  "originalInnerJsonIndependentlyParsed": true,
+  "priorG3SourceR2Proof": {
+    "originalPrivateExtraG3KeyHashCount": 498,
+    "originalPrivateExtraG3ListedBytes": 255515971,
+    "originalGithubD08WriterReceiptsKeyCount": 154,
+    "originalG3SourceR2ListOriginalKeys": 26321,
+    "originalG3SourceR2ListOriginalBytes": 504007793,
+    "sourceR2ListPagesRead": 27,
+    "sourceR2MetadataDigestReauthenticated": true,
+    "originalR2ListNonAtomic": true
+  },
+  "objectFamilyCounts": {
+    "originalSourceReceiptedD08": 154,
+    "originalSourceReceiptedLegacyRawV01Invalidated": 44,
+    "unreceiptedRawV01KeyShapeCount": 264,
+    "unreceiptedRawV01ListedBytes": 29902490,
+    "smokeRetained": 4,
+    "smokeListedBytes": 1417,
+    "otherD08OriginalKeyFamilyCount": 76,
+    "otherD08OriginalKeyFamilyListedBytes": 166323049,
+    "otherD08TechnicalFamilies": {
+      "TWSE_DAILY_VALUATION_YEAR_V0_1": {
+        "count": 13,
+        "listedBytes": 35599291,
+        "authenticOriginalWriterNotYetIdentified": true
+      },
+      "TWSE_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_V0_1": {
+        "count": 44,
+        "listedBytes": 6993107,
+        "authenticOriginalWriterNotYetIdentified": true
+      },
+      "TWSE_SEMANTIC_UNIVERSE_V0_2": {
+        "count": 1,
+        "listedBytes": 10556,
+        "authenticOriginalWriterNotYetIdentified": true
+      },
+      "TWSE_VALUATION_HISTORY_V0_1": {
+        "count": 18,
+        "listedBytes": 123720095,
+        "authenticOriginalWriterNotYetIdentified": true
+      }
+    }
+  },
+  "limitations": {
+    "technicalKeyFamilyIsNotObjectWriterOrOwnershipEvidence": true,
+    "fourFamilyExactLiteralsNotFoundInCurrentIndexedGithubCodeSearch": true,
+    "absenceOfIndexedLiteralNotProofOfMissingOriginalHistoricalWriter": true,
+    "originalR2ObjectBodiesDownloadedByThisRun": 0,
+    "originalR2ObjectBodiesSHA256IndependentlyVerifiedByThisRun": 0,
+    "realSourceD1ManifestBytesSHA2OriginalR2BytesPreviouslyCertifiedCount": 8,
+    "originalWriterG3PrivateD1ManifestsFor76Present": false,
+    "historicalPITOrFirstKnownAtCertified": false,
+    "historicalFrozenExternalReceiptCertified": false,
+    "idempotencyInvalidatedV01AdmittedAsCanonicalHistory": false,
+    "sourceR2OriginalCompleteListingAtomic": false,
+    "independentAuditAccepted": false,
+    "targetR2PhysicalEntitlementLastKnown": "NOT_ENTITLED",
+    "r2ActualCrossAccountMigrationComplete": false,
+    "originalKeysOrIdentitySHAHashesPublished": false,
+    "safeToDeleteOrExclude76Or264Or4": false
+  },
+  "security": {
+    "sourceR2LISTRequests": 27,
+    "sourceR2HEAD": 0,
+    "sourceR2ObjectGET": 0,
+    "sourceR2PUT": 0,
+    "sourceR2DELETE": 0,
+    "destinationR2Calls": 0,
+    "sourceD1LiveQueries": 0,
+    "destinationD1Writes": 0,
+    "newPermissionsOrSecrets": false,
+    "paidCloudflareEntitlementEnabled": false,
+    "System1V8FormalOrWorkerCronModified": false
+  },
+  "priorityNext": [
+    "Identify original writer receipt, time-vintage and byte SHA source for 18 TWSE_VALUATION_HISTORY_V0_1 objects totaling 123,720,095 source-listed bytes.",
+    "Independently identify content source and byte integrity for 13 TWSE_DAILY_VALUATION_YEAR_V0_1 objects totaling 35,599,291 listed bytes.",
+    "Identify original writer/receipt for 44 TWSE_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_V0_1 objects and one TWSE_SEMANTIC_UNIVERSE_V0_2 object.",
+    "Preserve 264 unreceipted legacy raw v0.1-shaped objects as unqualified historical source, no PIT/backtest adoption.",
+    "Independent AUDIT_LANE must recheck original provider ZIP, G3 original full-list receipts and legitimate source writer and PIT lineage; M07 stays open.",
+    "No destination paid R2 tier, no new token, and no System1 V8 Formal change."
+  ]
+}
