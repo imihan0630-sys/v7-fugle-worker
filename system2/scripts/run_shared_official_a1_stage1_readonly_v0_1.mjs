@@ -248,6 +248,10 @@ export async function stage1ResearchFromAuditedSourceV0_1(input={}){
   // fabricated corporate-action no-event certificate.
   companyActionCompletenessReceipt:input.companyActionCompletenessReceipt||null,
   companyActionIndependentAuditReceipt:input.companyActionIndependentAuditReceipt||null,
+  // No official PIT class attestation is available in the normal A1-only
+  // daily run. Do not infer common shares from the four-digit quote universe.
+  instrumentSourceReceipt:input.instrumentSourceReceipt||null,
+  instrumentIndependentAuditReceipt:input.instrumentIndependentAuditReceipt||null,
   evaluationAtUtc:input.freezeAtUtc
  });
  if(admission.selectedCount!==null||admission.zeroPickDay!==null||

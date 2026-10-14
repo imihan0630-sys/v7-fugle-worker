@@ -28,7 +28,7 @@ function invalid(symbol,code){return {symbol,state:'INCOMPLETE',readiness:'BLOCK
     companyName:null,market:null,sourceRowHash:null,sourceHistoryHash:null,
     evaluatedClose:null};}
 export async function evaluateSourceFirstShortMomentumV0_1({
- sourceLedger,historyBySymbol={},continuityBySymbol={},calendarReceipt=null,
+ sourceLedger,historyBySymbol={},continuityBySymbol={},instrumentClassBySymbol={},calendarReceipt=null,
  evaluationAtUtc,independentOriginalVerification=false
 }={}) {
  const blockers=[];
@@ -74,6 +74,20 @@ export async function evaluateSourceFirstShortMomentumV0_1({
    }
    detail.evaluatedClose=price(row.close)?row.close:null;
    if(!aggregateOk){detail.reasonCodes=[...blockers];observations.push(detail);continue;}
+   // A four-digit security is not intrinsically an ordinary share. Requiring
+   // per-symbol positive official-class PIT evidence prevents DRs or untyped
+   // exchange instruments from becoming Stage1 BUY_ELIGIBLE.
+   const instrument=instrumentClassBySymbol?.[symbol];
+   if(!(instrument?.symbol===symbol&&instrument.market===row.market&&
+        instrument.marketDate===date&&
+        instrument.instrumentClass==='ORDINARY_COMMON_SHARE'&&
+        SHA.test(instrument.sourceReceiptHash||'')&&
+        SHA.test(instrument.independentAuditHash||'')&&
+        validUtc(instrument.availableAtUtc)&&
+        Date.parse(instrument.availableAtUtc)<=Date.parse(evaluationAtUtc))){
+     detail.reasonCodes=['PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED'];
+     observations.push(detail);continue;
+   }
    const h=historyBySymbol?.[symbol], c=continuityBySymbol?.[symbol];
    const hist=h?.bars;
    const histOkay=!!(h?.marketDate===date&&h.symbol===symbol&&h.market===row.market&&
