@@ -1,5 +1,6 @@
 // Future scheduled recovery only. Never part of deployment acceptance.
 import assert from 'node:assert/strict';
+import {classifyLegacyScanPostDate} from './system1_legacy_scan_post_date_contract_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('After-market recovery stopped: '+String(error.message).slice(0,700));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
@@ -36,6 +37,16 @@ async function admin(path,options={}) {
 }
 const prior=await admin('/api/scan/status');
 if(prior.scanDate===date) {console.log(JSON.stringify({skipped:true,reason:'Today already selected; never resend plans',date}));process.exit(0);}
+// Original production Worker route ignores body.marketDate and derives its
+// session from Date.now(). A nominal prior-day fallback running after midnight
+// must NOT issue a wrong-day /api/scan POST. Genuine pinned-date runtime
+// semantics require a separately audited/deployed Worker repair.
+const postGate=classifyLegacyScanPostDate({now,targetDate:date});
+if(!postGate.mayPost) {
+  console.error(JSON.stringify({recoveryBusinessPostBlocked:true,priorScanDate:prior.scanDate??null,
+    ...postGate,noRepeatedPost:true,noFormalPlanClaim:true}));
+  throw new Error("LEGACY_SCAN_ROUTE_WRONG_SESSION_POST_FORBIDDEN: "+postGate.reason);
+}
 const institution=await admin('/api/institution-status?marketDate='+encodeURIComponent(date)),quality=await admin('/api/quality-status?marketDate='+encodeURIComponent(date));
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
 assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);assert.equal(quality.tdcc.ready,true);
