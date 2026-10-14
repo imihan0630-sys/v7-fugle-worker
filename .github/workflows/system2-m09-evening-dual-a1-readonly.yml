@@ -1,0 +1,56 @@
+name: System2 M09 Evening Dual TWSE TPEx A1 Source Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_evening_dual_market_a1_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_evening_dual_market_a1_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-evening-dual-a1-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_evening_dual_market_a1_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_evening_dual_market_a1_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-evening-dual-a1-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-m09-evening-dual-a1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evening_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify exact-date/negative/clock guards offline
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_evening_dual_market_a1_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_evening_dual_market_a1_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real free official TWSE TPEx T-raw preliminary read (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_evening_dual_market_a1_readonly_v0_1.mjs
+      - name: Retain original raw bytes and signed receipt 7 days (cache only)
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-evening-a1-sourceonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-evening-a1-sourceonly/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Declare zero selection authority
+        if: always()
+        run: |
+          echo 'Exact-day TWSE TPEx native GET only; preliminary source T, not 23:45 freeze.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No strategy PIT, ISIN, CA, frozen picks, D1/R2 writes, System1 Formal, push or orders.' >> "$GITHUB_STEP_SUMMARY"
