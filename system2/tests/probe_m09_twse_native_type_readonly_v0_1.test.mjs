@@ -19,7 +19,7 @@ test('native aggregate 1.一般股票 / 2.台灣存託憑證 cannot certify even
  assert.equal(receipt.selectedCount,null);
 });
 test('explicit native per-symbol group distinguishes ordinary rows from DR and publishes counts ONLY',async()=>{
- const receipt=await inspect({date:'20261013',tables:[
+ const receipt=await inspect({stat:'OK',date:'20261013',tables:[
   table('一般股票',['證券代號','證券名稱','收盤價'],[
    ['2330','台積電','100'],['2317','鴻海','200']]),
   table('台灣存託憑證',['證券代號','證券名稱','收盤價'],[
@@ -32,7 +32,7 @@ test('explicit native per-symbol group distinguishes ordinary rows from DR and p
  assert(!JSON.stringify(receipt).includes('9103'));
 });
 test('native same-row type label can be counted without trusting code shape',async()=>{
- const receipt=await inspect({date:'20261013',tables:[
+ const receipt=await inspect({stat:'OK',date:'20261013',tables:[
   table('每日行情',['證券代號','證券名稱','證券種類'],[
    ['2330','台積電','一般股票'],['9103','美德醫療-DR','台灣存託憑證'],
    ['8000','UNKNOWN','ETF']]) ]});
@@ -41,14 +41,14 @@ test('native same-row type label can be counted without trusting code shape',asy
  assert.equal(receipt.fourDigitQuotedRowsInspected,3);
 });
 test('typed row under mismatched provider date cannot be PIT or per-symbol positive',async()=>{
- const r=await inspect({date:'20261012',tables:[
+ const r=await inspect({stat:'OK',date:'20261012',tables:[
   table('一般股票',['證券代號','證券名稱'],[['2330','台積電']])]});
  assert.equal(r.sourceDateExact,false);
  assert.equal(r.state,'EXACT_DATE_NOT_PROVEN');
  assert.equal(r.perSymbolPITSourceRowsCertified,false);
 });
 test('a duplicate typed symbol cannot be silently admitted',async()=>{
- const r=await inspect({date:'20261013',tables:[
+ const r=await inspect({stat:'OK',date:'20261013',tables:[
   table('一般股票',['證券代號','證券名稱'],[
    ['2330','台積電'],['2330','台積電2']])]});
  assert.equal(r.ambiguousDuplicateCodes,1);
