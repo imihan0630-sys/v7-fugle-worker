@@ -49,7 +49,7 @@ const recovery=await readFile(new URL("./recover_after_market.mjs",import.meta.u
 const quality=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
 
-for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/overnightSourceSyncSkip/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
+for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/if\(!context\.overnightSourceSyncSkip\)\{\s*await api\.loadTradingCalendar/,/const proceed=tradingDay===true/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
 for(const body of [cache,inst]){
   assert.match(body,/OFFICIAL_MARKET_DATE/);n++;
   assert.match(body,/exceeds one-day scheduled recovery window/);n++;
