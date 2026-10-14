@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "S2_M07_ORIGINAL_SOURCE_R2_TO_D1_MANIFEST_REAL_BYTE_SHA_CROSSWALK_20261014_V0_1",
+  "evidenceClass": "DATA_LANE_AUTHENTIC_ORIGINAL_RESTORE_PLUS_INDEPENDENT_RECEIPT_BYTES_REHASH__AUDIT_PENDING",
+  "observedAtTaipei": "2026-10-14 12:56",
+  "source": {
+    "repository": "imihan0630-sys/v7-fugle-worker",
+    "archiveOriginalFullD1ExportRun": 38150147134,
+    "archiveOriginalFullD1SQLSha256": "56cd6ebc449949d67a7123da2a2300d685f3d5a2412383a3afc217001c4e5f12",
+    "archiveOriginalSQLBytes": 316938975,
+    "protected90DayEncryptedTransferRun": 38214521809,
+    "sourceArchiveExistsInEncryptedForm": true,
+    "protectedRestoreWithoutSourceD1Network": true,
+    "sourceArchiveIndependentPermanentEscrow": false
+  },
+  "r2Sample": {
+    "physicalOriginalByteGetRun": 38511567530,
+    "physicalOriginalByteGetJob": 115681031637,
+    "physicalOriginalByteGetArtifactId": 11869878655,
+    "originalReceiptIndependentZipRehashAlreadyFrozenByPR": 1267,
+    "originalSampleBodyBytes": 14274,
+    "originalSampleBodySha256": "356b6504a1b916c5b4975b29add4fe08f12d3eb94b93a13f33f6af12e9448c7a",
+    "originalPrivateObjectKeySha256": "33a6b9d8196dcfb8261aaeb13eef95baed4603b6bc01af7516ab1ad30db0ee76",
+    "privateObjectKeyOrBytesPublished": false,
+    "sampleBodyIndependentlyRefetchedInThisCrosswalk": false
+  },
+  "physicalOriginalOfflineCrosswalk": {
+    "implementationPR": 1273,
+    "mergedCommit": "0d909e2218adbfbb7d6b02dd27da3de3a9d4cfb6",
+    "originalRunId": 38513727654,
+    "originalJobId": 115687749281,
+    "runURL": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38513727654",
+    "jobConclusion": "SUCCESS",
+    "sourceManifestPackRowsPhysicallyScanned": 16100,
+    "sourceManifestSegmentRowsPhysicallyScanned": 9723,
+    "sourceManifestTotalRowsPhysicallyScanned": 25823,
+    "originalSampleMatchingSourceObjectKeys": 1,
+    "originalSampleMatchingSourceTable": "s2_historical_a1_pack_manifests",
+    "originalD1ManifestOriginalByteSha256": "356b6504a1b916c5b4975b29add4fe08f12d3eb94b93a13f33f6af12e9448c7a",
+    "originalD1ManifestOriginalObjectBytes": 14274,
+    "manifestObjectBucketIdentityMatch": true,
+    "originalR2BytesMatchD1ManifestSHA": true,
+    "originalR2BytesMatchD1ManifestSize": true,
+    "originalSampleObjectKeyHashMatchesOriginalD1Manifest": true,
+    "actualCloudflareAPIRequests": 0,
+    "actualSourceD1RemoteQueries": 0,
+    "actualDestinationD1RemoteQueries": 0,
+    "actualDestinationD1Writes": 0,
+    "actualSourceR2NetworkRequestsFromCrosswalk": 0,
+    "newCredentialsOrPermissions": 0,
+    "paidResourcesEnabled": 0,
+    "system1FormalCoreModified": false
+  },
+  "originalReceiptRehash": {
+    "sourceGitHubArtifactId": 11871130823,
+    "downloadableURL": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38513727654/artifacts/11871130823",
+    "githubOriginalZipSHA256": "d54fa0c2979fdcd07abdeb93d7c4c6fabeb074bb7520ca42726405b2fa8a20ac",
+    "originalZipBytes": 1062,
+    "independentlyDownloadedZipBytesSHA256": "d54fa0c2979fdcd07abdeb93d7c4c6fabeb074bb7520ca42726405b2fa8a20ac",
+    "originallyUploadedZipIndependentlyRehashed": true,
+    "zipContents": [
+      "sanitized-crosswalk.json"
+    ],
+    "sanitizedJsonBytes": 1978,
+    "independentlyComputedSanitizedJsonSha256": "f699c233b84dedb894f6c113668a7753357e5a9aa9464337fbd0bb8565a58971",
+    "parsedStatus": "ONE_ORIGINAL_SOURCE_R2_OBJECT_D1_MANIFEST_SHA_AND_SIZE_MATCHED__AUDIT_PENDING",
+    "parsedOriginalSampleCrosswalkAccepted": true,
+    "independentAuditLaneFormallyAccepted": false
+  },
+  "limits": {
+    "physicallyListableSourceR2ObjectsAtLeast": 4001,
+    "sourceR2FullObjectInventoryKnown": false,
+    "originalR2BytesMatchingSourceD1ManifestCount": 1,
+    "sourceManifestsScannedNotEqualVerifiedR2ObjectBodyCount": true,
+    "sourceManifestRowsNotUniquePhysicalObjectCount": true,
+    "remainingR2ObjectCountOrBytesUnknown": true,
+    "destinationR2EntitlementLastAuthenticated": "NOT_ENTITLED",
+    "destinationR2MigrationCompleted": false,
+    "historicalPITFirstKnownAtQualified": false,
+    "frozenHistoryExternalAnchorAccepted": false,
+    "system2HistoricalCertifiedBacktestUnlocked": false,
+    "system2OfficialDailyStockSelectionUnlockedFromThisTask": false,
+    "frozenOrShadowEnabled": false,
+    "independentAuditorSignedOff": false
+  },
+  "followUps": [
+    "AUDIT_LANE independently verify original full-archive and sample provenance, matching pinned SHA identities, source protected Run and downloaded artifact SHA.",
+    "Source R2 full list scan and batch BODY SHA are still needed, with source D1 original manifest foreign-key/byte SHA joins and actual free quota safety.",
+    "Do not open or charge target R2 without separate owner permission; keep raw historical data separate from current-day strategy enablement."
+  ]
+}
