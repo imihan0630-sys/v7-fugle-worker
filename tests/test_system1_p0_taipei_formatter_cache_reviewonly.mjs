@@ -19,8 +19,17 @@ for(const invariant of [
  "await acquireSignalStateLease(env,key)",
  "await writeLiveSnapshot(env, snapshot)",
  "await env.STOCKS_KV.put(",
- "const key=SIGNAL_STATE_PREFIX+result.symbol;"
 ])assert.ok(patched.includes(invariant),invariant);
+const formalLegacyState=patched.includes("const key=SIGNAL_STATE_PREFIX+result.symbol;");
+const canonicalAideenRoleState=patched.includes("const key=aideenSignalStateKey(result);")&&
+ patched.includes("function aideenSignalStateKey(result)")&&
+ patched.includes("result?.plan?.strategyPool===AIDEEN_POOL_ID")&&
+ patched.includes("return SIGNAL_STATE_PREFIX +");
+assert.ok(formalLegacyState||canonicalAideenRoleState,
+ "must preserve original formal lease key or stronger independently namespaced Aideen signal key");
+assert.equal(canonicalAideenRoleState,
+ source.includes("const key=aideenSignalStateKey(result);"),
+ "CPU patch must not alter original canonical role-separated signal state");
 
 function createProbe(script,name) {
  const capture=script.match(new RegExp("function "+name+"\\(value = Date\\.now\\(\\)\\) \\{[\\s\\S]*?\\n\\}"));
