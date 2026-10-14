@@ -14,7 +14,7 @@ yes(source.includes("const SIGNAL_STATE_PREFIX = \"V7_SIGNAL_STATE:\";"),"origin
 yes(source.includes("const need10 = minutesSinceOpen >= 11"),"original 10m grace gate preserved");
 yes(source.includes("const need15 = minutesSinceOpen >= 16"),"original 15m grace gate preserved");
 yes(source.includes("await acquireSignalStateLease(env,key)"),"real D1 primary lease function unchanged");
-yes(source.includes("releaseSignalLease(env,key,lease.token)"),"original D1 lease finally exists");
+yes(source.includes('finally {\n    await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET lease_token=NULL,lease_until=0 WHERE state_key=?1 AND lease_token=?2")'),"original signal finally explicitly releases D1 lease with matching token");
 const p=buildIndependentMonitorShards({
  formal:["6226","8046","3037","6191","2609"].map(symbol=>({symbol})),
  aideen:["6213","3189","6672","2404"].map(symbol=>({symbol})),
