@@ -7,9 +7,10 @@ const makeRun=(id,time,extra={})=>({id,created_at:time,head_branch:"main",event:
 function okResult(day,otherRuns=[],total=otherRuns.length){
  return{ok:true,status:200,async json(){return{total_count:total,workflow_runs:otherRuns}}};
 }
-test("real listed two workflows are explicit, not source V8 or other projects",()=>{
+test("all three auto destination workflows are explicit, not source V8",()=>{
  assert.equal(WORKFLOWS.RAW_COPY,"system2-owner-override-raw-d1-copy-20261012.yml");
  assert.equal(WORKFLOWS.DAILY_DIAGNOSTIC,"system2-daily-shadow-diagnostic.yml");
+ assert.equal(WORKFLOWS.RECENT_A1_WARMUP,"system2-recent-a1-hot-history-warmup.yml");
  assert.equal(DEST_WRITER_LOCK,"s2-dest-d1-historical-and-diagnostic-writer");
 });
 test("no-other-writer preflight can permit check, but cannot authorize Cloudflare D1 charge",()=>{
@@ -17,10 +18,12 @@ test("no-other-writer preflight can permit check, but cannot authorize Cloudflar
  assert.equal(d.allowed,true);
  assert.equal(d.atomicCloudflareLedgerProven,false);
  assert.equal(d.nonCloudflareBudgetAssertion,true);
- assert.equal(d.excludesOnlyTwoRegisteredDestinationWriters,true);
+ assert.equal(d.registeredAutomatedDestWriterCount,3);
+ assert.equal(d.otherManualDestinationWriterFlowsNotCovered,true);
+ assert.equal(d.excludesOnlyTwoRegisteredDestinationWriters,false);
 });
 test("competitor same-UTC-day ANY original run blocks even skipped/queued, fail closed",()=>{
- for(const writerId of ["RAW_COPY","DAILY_DIAGNOSTIC"]){
+ for(const writerId of ["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"]){
  for(const status of ["completed","in_progress","queued"]){
   const d=decideDestinationD1DayGuard({writerId,utcDay,currentRuns:[
    makeRun(200,"2026-10-14T02:30:00.000Z",{status,conclusion:status==="completed"?"skipped":null})
@@ -31,15 +34,33 @@ test("competitor same-UTC-day ANY original run blocks even skipped/queued, fail 
  }
 });
 test("proven inert diagnostic PUSH does not starve authorized historical importer",()=>{
- const r=makeRun(38503703641,"2026-10-14T02:59:00.000Z",{event:"push",status:"completed",conclusion:"skipped"});
+ const r=makeRun(38503703641,"2026-10-14T02:59:00.000Z",{event:"push",status:"completed",conclusion:"skipped",originWriterId:"DAILY_DIAGNOSTIC"});
  const safe=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[r],previousRuns:[]});
  assert.equal(safe.allowed,true);assert.equal(safe.ignoredProvenInertDiagnosticPushRunCount,1);
  const pending=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[{...r,status:"in_progress",conclusion:null}],previousRuns:[]});
  assert.equal(pending.allowed,false);
  const scheduled=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[{...r,event:"schedule"}],previousRuns:[]});
  assert.equal(scheduled.allowed,false);
- const fromRaw=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[r],previousRuns:[]});
+ const fromRaw=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[{...r,originWriterId:"RAW_COPY"}],previousRuns:[]});
  assert.equal(fromRaw.allowed,false,"never infer unknown RAW copy is inert from diagnostic guard");
+});
+test("warmup can neither consume A1 writes after raw copy nor after daily diagnostics",()=>{
+ for(const competing of ["RAW_COPY","DAILY_DIAGNOSTIC"]){
+  const run=makeRun(250,"2026-10-14T09:30:00.000Z",{originWriterId:competing});
+  const result=decideDestinationD1DayGuard({writerId:"RECENT_A1_WARMUP",utcDay,currentRuns:[run],previousRuns:[]});
+  assert.equal(result.allowed,false);
+  assert.equal(result.sameDayOtherRunCount,1);
+ }
+});
+test("completed+skipped push from push-disabled warmup is inert, never queued or scheduled",()=>{
+ const r=makeRun(310,"2026-10-14T03:58:00.000Z",{originWriterId:"RECENT_A1_WARMUP",event:"push",status:"completed",conclusion:"skipped"});
+ const safe=decideDestinationD1DayGuard({writerId:"RAW_COPY",utcDay,currentRuns:[r],previousRuns:[]});
+ assert.equal(safe.allowed,true);
+ assert.equal(safe.ignoredProvenInertDiagnosticPushRunCount,1);
+ for(const changes of [{status:"in_progress",conclusion:null},{event:"schedule"},{conclusion:"failure"},{originWriterId:"RAW_COPY"}]){
+  const result=decideDestinationD1DayGuard({writerId:"DAILY_DIAGNOSTIC",utcDay,currentRuns:[{...r,...changes}],previousRuns:[]});
+  assert.equal(result.allowed,false,JSON.stringify(changes));
+ }
 });
 test("malformed run with no event/status is not valid upstream attestation",()=>{
  assert.throws(()=>validateProviderRunList({total_count:1,workflow_runs:[{id:1,created_at:utcDay+"T00:00:00Z",head_branch:"main"}]}),/INCOMPLETE/);
@@ -63,13 +84,13 @@ test("authenticated provider GET_ONLY origin and next-day query, no Cloudflare t
   fetchImpl:async(url,opts)=>{
    requested.push({url,method:opts.method,authorization:opts.headers.authorization});
    const day=decodeURIComponent(url.split("created=")[1]);
-   return okResult(day,day===utcDay?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
+   return okResult(day,day===utcDay&&url.includes("daily-shadow-diagnostic")?[makeRun(123,utcDay+"T01:00:00.000Z")]:[]);
   }});
  assert.equal(r.allowed,false);assert.equal(r.sameDayOtherRunCount,1);
- assert.equal(requested.length,2);
- for(const x of requested){assert.match(x.url,/system2-daily-shadow-diagnostic.yml\/runs/);
+ assert.equal(requested.length,4);
+ for(const x of requested){assert.match(x.url,/system2-(daily-shadow-diagnostic|recent-a1-hot-history-warmup).yml\/runs/);
   assert.equal(x.method,"GET");assert.equal(x.authorization,"Bearer TEST_GITHUB_TOKEN");}
- assert.deepEqual(requested.map(x=>x.url.split("created=")[1]),[utcDay,prevDay]);
+ assert.deepEqual(requested.map(x=>x.url.split("created=")[1]),[utcDay,prevDay,utcDay,prevDay]);
 });
 test("any GitHub read 403/network/error is a fatal guard error not presumed permission",async()=>{
  const args={writerId:"DAILY_DIAGNOSTIC",now:new Date(utcDay+"T02:31:00.000Z"),repo,token:"TEST_GITHUB_TOKEN"};
@@ -80,12 +101,13 @@ test("any GitHub read 403/network/error is a fatal guard error not presumed perm
 test("both real workflow jobs serialize identically BEFORE any D1/query/write step",async()=>{
  const raw=await readFile(new URL("../../.github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",import.meta.url),"utf8");
  const diag=await readFile(new URL("../../.github/workflows/system2-daily-shadow-diagnostic.yml",import.meta.url),"utf8");
+ const warmup=await readFile(new URL("../../.github/workflows/system2-recent-a1-hot-history-warmup.yml",import.meta.url),"utf8");
  const registry=JSON.parse(await readFile(new URL("../config/dest_d1_cross_workflow_writer_interlock_v0_1.json",import.meta.url),"utf8"));
- assert.deepEqual(registry.writers.map(x=>x.id),["RAW_COPY","DAILY_DIAGNOSTIC"]);
+ assert.deepEqual(registry.writers.map(x=>x.id),["RAW_COPY","DAILY_DIAGNOSTIC","RECENT_A1_WARMUP"]);
  assert.equal(registry.sharedJobConcurrencyGroup,DEST_WRITER_LOCK);
  assert.equal(registry.atomicD1LeaseOrReservationAccepted,false);
- for(const [id,w] of [["RAW_COPY",raw],["DAILY_DIAGNOSTIC",diag]]){
-  const job=id==="RAW_COPY"?"destination_copy":"diagnostic";
+ for(const [id,w] of [["RAW_COPY",raw],["DAILY_DIAGNOSTIC",diag],["RECENT_A1_WARMUP",warmup]]){
+  const job=id==="RAW_COPY"?"destination_copy":id==="DAILY_DIAGNOSTIC"?"diagnostic":"warmup";
   assert.match(w,new RegExp("  "+job+":\\n    concurrency:\\n      group: "+DEST_WRITER_LOCK+"\\n      cancel-in-progress: false"));
   assert.match(w,new RegExp("S2_DEST_WRITER_CLASS: "+id));
   assert.match(w,/node system2\/scripts\/dest_d1_writer_run_interlock_v0_1\.mjs/);
@@ -94,5 +116,7 @@ test("both real workflow jobs serialize identically BEFORE any D1/query/write st
   assert.match(w,/s2-dest-d1-writer-day-interlock\/receipt\.json/);
  }
  assert.match(diag,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
+ assert.match(warmup,/if: github\.ref == 'refs\/heads\/main' && github\.event_name != 'push'/);
+ assert.match(warmup,/if: steps\.day_interlock\.outputs\.allowed == 'true'\n        id: quota\n        uses: \.\/\.github\/actions\/system2-d1-budget-gate/);
  assert.match(raw,/name: Do owner-authorized target-only RAW_A1 transport under 80k billed row limit\n        if: steps\.day_interlock\.outputs\.allowed == 'true'/);
 });

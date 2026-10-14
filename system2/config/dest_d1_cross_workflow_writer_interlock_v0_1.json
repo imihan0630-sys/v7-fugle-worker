@@ -20,6 +20,14 @@
       "job": "diagnostic",
       "historicalMigrationOnly": false,
       "providerReadPermission": "actions:read"
+    },
+    {
+      "id": "RECENT_A1_WARMUP",
+      "workflow": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+      "job": "warmup",
+      "historicalMigrationOnly": false,
+      "providerReadPermission": "actions:read",
+      "scheduledTimeTaipei": "16:30"
     }
   ],
   "guards": [
@@ -34,5 +42,15 @@
   "d1AnalyticsFreshnessAbsoluteProof": false,
   "readOnlyGitHubPreflight": true,
   "authorizesConcurrentWrites": false,
-  "note": "Interlock prevents known RAW_COPY vs DAILY_DIAGNOSTIC same day within GH schedules. Does not prove account-wide atomic Cloudflare free quota reservation or cover unknown destination writers. Release requires M12 independent audit."
+  "note": "D1 hourly GH mutex+UTC-day query covers RAW_COPY, DAILY_DIAGNOSTIC and RECENT_A1_WARMUP. Other manual schema writers and not-yet-inventoried destination Cloudflare invocations remain unaccepted; no atomic D1 lease proven.",
+  "coveredDestinationWriterCount": 3,
+  "accountWideWriterCensusComplete": false,
+  "nonAutomatedDestWriteCapableWorkflowsExcluded": [
+    {
+      "path": ".github/workflows/system2-destination-schema-only-manual.yml",
+      "intent": "EXPLICIT_OWNER_DISPATCH_SCHEMA_ONLY",
+      "reason": "May APPLY_ONCE with exact owner confirmation; no scheduled auto writes; not an account-wide D1 atomic lease"
+    }
+  ],
+  "providerActualAccountWriterCensusIndependentlyAccepted": false
 }

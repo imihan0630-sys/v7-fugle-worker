@@ -25,6 +25,7 @@ test("source old Cron quarantine and both new target environments are fail-close
 });
 test("different concurrency groups remain blocked; 71322+13130 exceeds owner 80000",()=>{
  const v=assessQuotaInterlock({daily:"group: system2-isolated-d1-writer",
+ warmup:"group: system2-isolated-d1-writer",
  raw:"group: s2-dest-owner-override-original-raw-copy-only",registry:{writers:[
  {id:"DAILY_SHADOW_DIAGNOSTIC",reservationModel:{rowsWritten:13130}}
  ]},importer:"const limit=80000, stopAt=75000, maxStatementRows=80"});
@@ -39,15 +40,17 @@ test("safe executor runs six allowlisted test paths only, can't create formal ac
  const data={
  source:disabled,daily:"environment: system2-schema-only\ngithub.event_name != 'push'\ngroup: system2-isolated-d1-writer",
  raw:"environment: system2-schema-only\nS2_OWNER_OVERRIDE_RAW_COPY_20261012\ngroup: s2-dest-owner-override-original-raw-copy-only",
+ warmup:"environment: system2-schema-only\ngroup: system2-isolated-d1-writer",
  sourceQuarantine:JSON.stringify({active:true,automaticRelease:false}),
  registry:JSON.stringify({writers:[{id:"DAILY_SHADOW_DIAGNOSTIC",reservationModel:{rowsWritten:13130}}]}),
- destRegistry:JSON.stringify({writers:[{id:"RAW_COPY",workflow:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml"},{id:"DAILY_DIAGNOSTIC",workflow:".github/workflows/system2-daily-shadow-diagnostic.yml"}],sharedJobConcurrencyGroup:"s2-dest-d1-historical-and-diagnostic-writer"}),
+ destRegistry:JSON.stringify({writers:[{id:"RAW_COPY",workflow:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml"},{id:"DAILY_DIAGNOSTIC",workflow:".github/workflows/system2-daily-shadow-diagnostic.yml"},{id:"RECENT_A1_WARMUP",workflow:".github/workflows/system2-recent-a1-hot-history-warmup.yml"}],sharedJobConcurrencyGroup:"s2-dest-d1-historical-and-diagnostic-writer",accountWideWriterCensusComplete:false}),
  rawImporter:"const limit=80000, stopAt=75000, maxStatementRows=80"
  };
  const paths=[];const out=await evaluateSafeJobs({manifest,registry,readText:async p=>{
   const entry=Object.entries({
    source:".github/workflows/system2-resonance-deploy.yml",daily:".github/workflows/system2-daily-shadow-diagnostic.yml",
    raw:".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
+   warmup:".github/workflows/system2-recent-a1-hot-history-warmup.yml",
    sourceQuarantine:"system2/config/source_account_d1_writer_quarantine_v0_1.json",
    registry:"system2/config/d1_account_writer_registry_v0_1.json",
    destRegistry:"system2/config/dest_d1_cross_workflow_writer_interlock_v0_1.json",
