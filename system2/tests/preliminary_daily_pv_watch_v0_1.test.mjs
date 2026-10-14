@@ -6,6 +6,12 @@ import {official61SessionSourceReceiptHashBaseV0_1}
 import {buildSystem2PreliminaryDailyWatchV0_1 as watch}
  from '../runtime/preliminary_daily_pv_watch_v0_1.mjs';
 const at='2026-10-13T15:45:00Z',sha='a'.repeat(64),date='2026-10-13';
+// Sign the actual full ledger contents, matching the production builder.
+async function signSourceLedger(bridge){
+ const unsigned={...bridge.sourceLedger};
+ delete unsigned.ledgerSha256;
+ bridge.sourceLedger.ledgerSha256=await sha256Hex(unsigned);
+}
 const dates=Array.from({length:60},(_,i)=>{
  const d=new Date('2026-07-01T00:00:00Z');d.setUTCDate(d.getUTCDate()+i);
  return d.toISOString().slice(0,10);
@@ -62,8 +68,9 @@ async function sample({missing=false,caJump=false,negative=false}={}){
    selectedCount:null,zeroPickDay:null,selectionAuthorized:false,
    frozenDecisionWritten:false,
    auditedSourceOnly:true,actualSourcePairs:122,requiredSourcePairs:122,
-   sourceLedger:{sourceState:'READY',marketDate:date,ledgerSha256:sha,
+   sourceLedger:{schemaVersion:'S2_SOURCE_FIRST_PROSPECTIVE_LEDGER_V0_1',sourceState:'READY',marketDate:date,ledgerSha256:sha,
      sourceOrdinarySymbolCount:1,observations:[row]}};
+ await signSourceLedger(bridge);
  return {bridge,sourceReceipt};
 }
 test('present-only rising price above SMA produces CA-UNKNOWN preliminary watch',async()=>{
@@ -79,6 +86,7 @@ test('present-only rising price above SMA produces CA-UNKNOWN preliminary watch'
 test('TWSE official four-digit TDR -DR company name cannot enter ordinary-equity preview',async()=>{
  const fixture=await sample();
  fixture.bridge.sourceLedger.observations[0].companyName='美德醫療-DR';
+ await signSourceLedger(fixture.bridge);
  const r=await watch(fixture);
  assert.equal(r.watchVersion,'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2');
  assert.equal(r.schemaVersion,'S2_PRELIMINARY_PV_WATCH_V0_2');
@@ -93,10 +101,12 @@ test('TWSE official four-digit TDR -DR company name cannot enter ordinary-equity
 test('full-width hyphen -DR quote name is also quarantined, and absence of suffix is not proof of ordinary share',async()=>{
  const fixture=await sample();
  fixture.bridge.sourceLedger.observations[0].companyName='美德醫療－DR';
+ await signSourceLedger(fixture.bridge);
  const r=await watch(fixture);
  assert.equal(r.depositaryReceiptQuarantinedCount,1);
  const ordinary=await sample();
  ordinary.bridge.sourceLedger.observations[0].companyName='台積電';
+ await signSourceLedger(ordinary.bridge);
  const ordinaryR=await watch(ordinary);
  assert.equal(ordinaryR.depositaryReceiptQuarantinedCount,0);
  assert.equal(ordinaryR.preliminaryMatchedCount,1);
@@ -159,4 +169,17 @@ test('never creates authority for backtest, Frozen, orders, System1',async()=>{
  assert.equal(r.orderAuthorized,false);
  assert.equal(r.system1FormalTouched,false);
  assert.equal(r.cloudflareD1Writes,0);
+});
+
+test('mutating original signed source-ledger observations cannot silently alter displayed stock',async()=>{
+ const f=await sample();
+ const originalHash=f.bridge.sourceLedger.ledgerSha256;
+ f.bridge.sourceLedger.observations[0].companyName='假冒發行人';
+ assert.equal(f.bridge.sourceLedger.ledgerSha256,originalHash);
+ await assert.rejects(()=>watch(f),/PROSPECTIVE_SOURCE_LEDGER_INVALID/);
+});
+test('arbitrary valid-looking SHA cannot substitute for recomputed ledger digest',async()=>{
+ const f=await sample();
+ f.bridge.sourceLedger.ledgerSha256='b'.repeat(64);
+ await assert.rejects(()=>watch(f),/PROSPECTIVE_SOURCE_LEDGER_INVALID/);
 });
