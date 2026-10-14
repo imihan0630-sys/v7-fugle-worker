@@ -1,0 +1,51 @@
+// P0 actual source-ready -> same-day Formal scan admission.
+// This pure gate authorizes at most the EXISTING one guarded business POST
+// after a genuine original 18:10 Worker pre-commit DATA_INCOMPLETE failure.
+// Unknown CPU/transport/partial-write failures are NOT a safe retry.
+const format=(instant)=>{
+  const d=instant instanceof Date?instant:new Date(instant);
+  if(!Number.isFinite(d.getTime()))throw Error("INVALID_SOURCE_HANDOFF_CLOCK");
+  const parts=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",
+    month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d);
+  const v=k=>parts.find(x=>x.type===k)?.value;
+  return {date:`${v("year")}-${v("month")}-${v("day")}`,time:`${v("hour")}:${v("minute")}`};
+};
+const DAY=/^20\d{2}-\d{2}-\d{2}$/;
+export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
+ scan=null,institution=null,quality=null,recommendations=null,cron=null}={}){
+  const clock=format(now);
+  const base={targetDate,localDate:clock.date,localTime:clock.time,
+    eligible:false,mayPost:false,noRepeatedPost:true,
+    noTrade:true,requiresExactSourceDate:true,retainsOriginalCore:true};
+  const out=(reason,extra={})=>({...base,reason,...extra});
+  if(!DAY.test(String(targetDate||""))||new Date(targetDate+"T00:00:00Z").toISOString().slice(0,10)!==targetDate)
+    return out("INVALID_TARGET_SESSION");
+  if(clock.date!==targetDate) return out("CROSS_MIDNIGHT_TARGET_FORBIDDEN");
+  if(clock.time<"18:10"||clock.time>"23:59")return out("OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
+  if(scan?.scanDate===targetDate)return out("FORMAL_ALREADY_SAVED_NO_REPLAY");
+  if(scan?.scanDate && scan.scanDate>targetDate)return out("FORMAL_FUTURE_STATE_REJECTED");
+  const institutional= institution?.marketDate===targetDate&&institution?.ready===true;
+  const kinds=["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"];
+  const ready=quality?.marketDate===targetDate&&quality?.index?.ready===true&&
+    quality?.tdcc?.ready===true&&kinds.every(k=>quality?.datasets?.[k]?.ready===true);
+  if(!institutional||!ready)return out("OFFICIAL_SOURCE_NOT_READY",{institutionReady:institutional,qualityReady:ready});
+  // The public GET exposes the last persisted original attempt. It must be
+  // paired with the original D1 cron error; generic FAILED alone is ambiguous.
+  const attempt=recommendations?.attempt;
+  if(!attempt || attempt?.status!=="FAILED" || attempt?.requestedDate!==targetDate)
+    return out("PREVIOUS_FORMAL_ATTEMPT_NOT_SAFELY_ADJUDICATED");
+  const rows=Array.isArray(cron?.recent)?cron.recent:[];
+  const prior=rows.find(row=>row?.job_type==="AFTER_MARKET_SCAN"&&
+    row?.scheduled_at?.slice(0,10)===targetDate);
+  if(!prior)return out("ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
+  if(prior.status!=="FAILED")return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
+  if(!/^Error:\s*DATA_INCOMPLETE[:：]/.test(String(prior.error||"")))
+    return out("PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
+  // Canonical Worker.js issues DATA_INCOMPLETE only ahead of the first Formal
+  // market-state/plan KV write. Source resynchronization makes the preflight
+  // reattempt safe, but neither D1 lease nor monitoring/push is bypassed.
+  return {...base,eligible:true,mayPost:true,reason:"PRECOMMIT_SOURCE_FAILURE_AFTER_NEW_SOURCE_READY",
+    precommitReceiptId:prior.id??null,
+    officialReady:true,originalCoreUnchanged:true,originalD1LeaseStillRequired:true,
+    noAdditionalBusinessRetry:true};
+}
