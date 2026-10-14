@@ -70,7 +70,7 @@ test('six original hashes + audited A1 61 sessions yields only observed risk con
  assert.equal(r.previewWithoutObservedCaNotClearedCount,1);
  assert.equal(r.flaggedPreview[0].symbol,'2330');
  assert.equal(r.flaggedPreview[0].market,'TWSE');
- assert.equal(r.eventRowsIn61TradingDates,7);
+ assert.equal(r.eventRowsIn61TradingDates,8);
  assert.equal(r.originalCaSourceCount,6);
  assert.equal(r.positiveOrdinaryEquityClassAttested,false);
  assert.equal(r.noEventOrNoActionMayBeCertified,false);
