@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/system1-p0-official-history-daily-incremental.yml"
       - "ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs"
+      - "ops/system1_p0_history60_census_readonly_once_v0_1.mjs"
       - "ops/system1_p0_official_daily_history_calendar_v0_1.mjs"
       - "tests/test_system1_p0_official_daily_history_calendar_v0_1.mjs"
 permissions:
@@ -25,6 +26,7 @@ jobs:
           set -euo pipefail
           node --check ops/system1_p0_official_daily_history_calendar_v0_1.mjs
           node --check ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
+          node --check ops/system1_p0_history60_census_readonly_once_v0_1.mjs
           node tests/test_system1_p0_official_daily_history_calendar_v0_1.mjs
           node system2/tests/official_historical_a1_source_v0_1.test.mjs
           grep -F -q 'const SYMBOL_CAP=400;' ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs
@@ -59,11 +61,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Exactly bounded official session-complete source and <=6 serialized CAS batches
+      - name: Exactly bounded official session-complete source and <=5 serialized CAS batches
         run: |
           set -euo pipefail
           mkdir -p artifacts/daily-history-batches
-          for n in 1 2 3 4 5 6; do
+          for n in 1 2 3 4 5; do
             echo "::group::S1_DAILY_OFFICIAL_HISTORY_BATCH_${n}"
             if ! node ops/system1_p0_official_fullmarket_history_append_once_v0_1.mjs; then
               cp -f artifacts/system1-p0-official-wholemarket-firstbatch.json "artifacts/daily-history-batches/batch-${n}.json" || true
@@ -77,7 +79,7 @@ jobs:
               break
             fi
             echo "::endgroup::"
-            if [ "$n" != 6 ]; then sleep 20; fi
+            if [ "$n" != 5 ]; then sleep 20; fi
           done
       - name: Evidence - independent physical D1 source completion census for ACTUAL daily target
         if: always()
