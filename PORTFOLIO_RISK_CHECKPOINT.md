@@ -356,3 +356,18 @@ Room10 remaining D15-24 work:
 7. return MERGE_ELIGIBLE / KEEP_SEPARATE / EVIDENCE_INSUFFICIENT plus merged maturity map.
 
 D15-24 remains L0/0 until its own mechanism/falsification contract exists.
+
+
+## D15-RC-20261015 — D15-23 / D15-24 evidence reconciliation
+
+Research-only evidence reviewed against latest main and existing specialist contracts, without rerunning completed studies.
+
+- D15-23 evidence: `research/D15_23_HEDGE_OVERLAY_FALSIFICATION_CONTRACT_20261013_V0_1.md`. Scope: portfolio-level hedge exposure, basis/tail loss, signed contract quantity, margin liquidity, financing and roll, and comparison against a same-cutoff spot reduction/cash alternative. Distinct from D12 instrument/payoff mechanics, D15-13 expected shortfall, D15-24 VaR and D16 statistical validation.
+- D15-24 evidence: `research/D15_24_VAR_METHODS_FALSIFICATION_20261011_V0_1.md`. Scope: frozen portfolio/horizon/confidence/loss identity; parametric vs historical quantile forecasts; exceedance timing/independence; sample and tail support; VaR non-subadditivity counterexamples. D15-13 owns expected shortfall severity; D16-23 owns stress/reverse stress. KEEP_SEPARATE as research roles, not an approved curriculum retirement/merge.
+- Evidence ladder: both have mechanism and falsification contracts sufficient for L2/40% **candidate review**, but no independent Taiwan PIT source feasibility, genuine forward OOS/Shadow, verified broker fills, or validated realized P/L. No L3/4/5 evidence and no automatic promotion.
+- Cross-ledger falsification: a broker-confirmed hedge fill does not prove settled collateral, freely available cash, or fully realized portfolio P/L. Margin calls can precede spot gains becoming liquid; a flat final mark-to-market hedge can still fail intraperiod liquidity. A terminal order receipt does not replace independently reconciled fill, settlement and fee lineage. Missing fields stay UNKNOWN.
+- Mandatory controls: decisionAt vs firstKnownAt; immutable account/contract/quantity and market mechanism; cancelled/rejected/partial/no-fill opportunities; same-decision cash/spot-reduction comparator; independent session clustering; untouched OOS, forward-only walk-forward, all attempted hedge ratios/horizons/estimators counted as multiple tests; basis/fee/tax/slippage/roll/borrow/margin/limit-lock stress; factor and VaR/ES information-root redundancy. Do not double-charge slippage already embodied in actual fill price.
+- Exact next: after D14 and D15 specialist checkpoints are both consistent on a fresh branch, synchronize central tracker in one optimistic-concurrency update; retain all L2-only evidence limits. Collect genuine forward Taiwan broker/order/margin/position receipts and frozen VaR forecast/outcome sequences before considering L3. No historical Shadow fabrication.
+
+Status: `D15_23_D15_24_L2_CANDIDATE_CHECKPOINT_SYNCED / TRACKER_SYNC_PENDING / FORMAL_CORE_LOCKED`.
+`FORMAL_OPTIMIZATION_CANDIDATE`: NONE.
