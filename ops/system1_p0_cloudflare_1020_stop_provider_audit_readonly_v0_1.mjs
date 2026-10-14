@@ -60,7 +60,7 @@ await observed("currentActiveDeployment",async()=>{
   deployedAtUtc:current.created_on||null};
 });
 await observed("workerHourlyInvocationsAggregate",async()=>{
- const q='query($accountTag:String!,$script:String!,$start:Time!,$end:Time!){viewer{accounts(filter:{accountTag:$accountTag}){workersInvocationsAdaptive(limit:1000,filter:{scriptName:$script,datetime_geq:$start,datetime_leq:$end}){sum{requests errors} dimensions{datetime scriptName status}}}}}';
+ const q='query($accountTag:String!,$script:String!,$start:Time!,$end:Time!){viewer{accounts(filter:{accountTag:$accountTag}){workersInvocationsAdaptive(limit:1000,filter:{scriptName:$script,datetime_geq:$start,datetime_leq:$end}){sum{requests errors subrequests} quantiles{cpuTimeP50 cpuTimeP99 wallTimeP50 wallTimeP99} dimensions{datetime scriptName status}}}}}';
  const data=await gql(q,{accountTag:account,script:"fugle-test",start,end});
  const rows=data?.workersInvocationsAdaptive;
  if(!Array.isArray(rows))throw Error("WORKER_INVOCATIONS_AGGREGATE_MISSING");
@@ -69,7 +69,11 @@ await observed("workerHourlyInvocationsAggregate",async()=>{
   errors:rows.reduce((a,x)=>a+Number(x.sum?.errors||0),0),
   observedGroups:rows.slice(-70).map(x=>({
    utc:x.dimensions?.datetime||null,status:x.dimensions?.status||null,
-   requests:x.sum?.requests||0,errors:x.sum?.errors||0})),
+   requests:x.sum?.requests||0,errors:x.sum?.errors||0,
+   cpuTimeP50:x.quantiles?.cpuTimeP50??null,cpuTimeP99:x.quantiles?.cpuTimeP99??null,
+   wallTimeP50:x.quantiles?.wallTimeP50??null,wallTimeP99:x.quantiles?.wallTimeP99??null,
+   subrequests:x.sum?.subrequests??null})),
+  cpuQuantileUnits:"GRAPHQL_VENDOR_NATIVE_SEE_DOCS",cpuQuantilesDoNotIdentifyFailureCauseAlone:true,
   cannotAttributeToCronSpecific:true,includesHttpRequests:true,
   vendorAnalyticsCanBeDelayed:true};
 });
