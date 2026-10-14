@@ -18,8 +18,12 @@ if(override){
 }
 const date=override||context.marketDate;
 await api.loadTradingCalendar({},Number(date.slice(0,4)));
-const proceed=api.isTradingDate(date);
+const tradingDay=api.isTradingDate(date);
+// Never let a 17:55/18:05/18:20/23:25 job, delayed past local midnight,
+// sync the next unfinished market session or retry the prior date blindly.
+const proceed=tradingDay&&!context.overnightSourceSyncSkip;
 if(process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT,
   `proceed=${proceed}\nmarket_date=${date}\ncross_midnight_fallback=${context.crossMidnightFallback}\n`);
-console.log(JSON.stringify({date,tradingDay:proceed,triggerSchedule:triggerSchedule||null,
+console.log(JSON.stringify({date,tradingDay,proceed,triggerSchedule:triggerSchedule||null,
+  overnightSourceSyncSkip:context.overnightSourceSyncSkip,
   crossMidnightFallback:context.crossMidnightFallback,noSelection:true,noPush:true}));
