@@ -6,6 +6,13 @@ on:
     paths:
       - ".github/workflows/system2-shared-official-a1-incremental-readonly.yml"
   schedule:
+    # 20:15 Taipei Mon-Fri: additional PRELIMINARY SOURCE-ONLY time hedge.
+    # On 2026-10-14 both official T raw markets were genuinely captured
+    # by 20:04 Taipei, but GH 23:45 and 00:15 jobs actually started
+    # 03:42 and 04:10 Taipei T+1, past the 01:59 PIT window.
+    # This is NOT a new final-freeze clock or a guarantee of provider
+    # availability on any other trading date.
+    - cron: "15 12 * * 1-5"
     # 23:45 Taipei Mon-Fri: owner-approved EARLY SOURCE-ONLY observation.
     # This does NOT run the final frozen capacity clock. Exact official
     # provider marketDate and raw SHA must independently prove readiness.
@@ -57,6 +64,8 @@ jobs:
           path: /tmp/s2-shared-a1-seed
           github-token: ${{ github.token }}
       # 19:00 Taipei is PRELIMINARY_SOURCE_REVIEW_ONLY under owner policy.
+      # 20:15 is an additional source-observation opportunity only;
+      # no rank, PIT qualification, capacity or Frozen may be inferred.
       # 23:45 here is ONLY earlier original-source capture, never an
       # independently eligible FINAL_FROZEN capacity/selection.
       # 00:15 can reuse exact original hashes for the same date T; provider
