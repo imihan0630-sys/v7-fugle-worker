@@ -5,7 +5,7 @@ Owns no public key paths. Protected original G3 SQL + original private R2 invent
 import hashlib,json,os,sqlite3,sys,tempfile
 from pathlib import Path
 from issue1236_m07_full_original_r2_list_d1_manifest_join_v0_1 import (
-  SOURCE_SQL_SHA,TABLES,load_original_list,match_original_source_manifest,sha,fail)
+  SOURCE_SQL_SHA,SOURCE_BUCKET,TABLES,load_original_list,match_original_source_manifest,sha,fail)
 EXTRAS=498
 OUT="/tmp/s2-m07-g3-unmatched-498"
 def extract_unmatched(db,inventory,receipt):
