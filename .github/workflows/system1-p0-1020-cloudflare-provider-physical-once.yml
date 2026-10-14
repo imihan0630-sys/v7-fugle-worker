@@ -4,9 +4,11 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/system1-p0-1020-cloudflare-provider-physical-once.yml"
+      - "ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs"
   pull_request:
     paths:
       - ".github/workflows/system1-p0-1020-cloudflare-provider-physical-once.yml"
+      - "ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs"
       - "ops/system1_p0_cloudflare_1020_stop_provider_audit_readonly_v0_1.mjs"
 permissions:
   contents: read
