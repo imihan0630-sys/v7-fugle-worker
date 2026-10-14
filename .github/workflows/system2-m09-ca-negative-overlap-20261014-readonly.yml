@@ -1,0 +1,95 @@
+name: System2 M09 Oct14 CA Negative Event Cross Audit Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/replay_m09_ca_observed_negative_overlap_v0_1.mjs"
+      - "system2/tests/replay_m09_ca_observed_negative_overlap_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-ca-negative-overlap-20261014-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/replay_m09_ca_observed_negative_overlap_v0_1.mjs"
+      - "system2/tests/replay_m09_ca_observed_negative_overlap_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-ca-negative-overlap-20261014-readonly.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-m09-ca-oct14-cross-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  independent_negative_replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test read-only six-source negative exposure proof contracts
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/replay_m09_ca_observed_negative_overlap_v0_1.mjs
+          node --test system2/tests/replay_m09_ca_observed_negative_overlap_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      # Exactly identified 2026-10-14 real-source artifacts. Retrospective
+      # diagnostic only; no cron, no ever-changing latest run/seed heuristics,
+      # and no claim that CA originals were known at the 10/14 freeze.
+      - name: Independently retrieve exact Oct14 61-session original source
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38629859058
+          name: s2-shared-official-a1-38629859058
+          path: /tmp/s2-m09-ca-negative-replay/a1
+          github-token: ${{ github.token }}
+      - name: Independently retrieve exact Oct14 audited 30-stock preliminary
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38630106632
+          name: system2-shared-official-a1-independent-audit-38630106632
+          path: /tmp/s2-m09-ca-negative-replay/audit
+          github-token: ${{ github.token }}
+      - name: Independently retrieve six CA original bytes and matching SHA receipt
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38654564377
+          name: s2-m09-six-ca-native-originals-38654564377-1
+          path: /tmp/s2-m09-ca-negative-replay/ca
+          github-token: ${{ github.token }}
+      - name: Rehash all six original CA source bytes and compute proven-present 61-session event conflicts
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/replay_m09_ca_observed_negative_overlap_v0_1.mjs
+          RECEIPT=/tmp/s2-m09-ca-negative-replay/output/negative-overlap-receipt.json
+          test -s "$RECEIPT"
+          test "$(jq -r .originalCaShaRehashed "$RECEIPT")" -eq 6
+          test "$(jq -r .tradingSessions "$RECEIPT")" -eq 61
+          test "$(jq -r .marketDate "$RECEIPT")" = 2026-10-14
+          test "$(jq -r .noEventOrNoActionMayBeCertified "$RECEIPT")" = false
+          test "$(jq -r .asKnownAtPreviousDecisionClock "$RECEIPT")" = false
+          test "$(jq -r .formalStrategySelectionAuthorized "$RECEIPT")" = false
+          test "$(jq -r .selectedCount "$RECEIPT")" = null
+          test "$(jq -r .frozenD1Written "$RECEIPT")" = false
+          echo "Oct14 honest CA retrospective exposure: $(jq -r .previewWithProvenPresentCaIn61Sessions "$RECEIPT") / $(jq -r .preliminaryPreviewCount "$RECEIPT") real preliminary symbols have proven action hits; ALL OTHER SYMBOLS REMAIN UNKNOWN." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve sanitized negative overlap receipt only
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-ca-negative-exposure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-ca-negative-replay/output/negative-overlap-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Strict no-event non-promotion
+        if: always()
+        run: |
+          echo 'Six sources prove only KNOWN observed events; absence never becomes a certified no-event.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'CA observed after the Oct14 20:12 preliminary: no historical PIT backdating, no Frozen D1, orders, signals or V8 Formal.' >> "$GITHUB_STEP_SUMMARY"
