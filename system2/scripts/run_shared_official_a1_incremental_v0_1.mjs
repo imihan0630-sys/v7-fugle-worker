@@ -50,6 +50,7 @@ export async function collectSharedOfficialA1IncrementalV0_1({
  const evidence=await collector({
   marketDate:c.marketDate,
   retrospectiveDiagnosticOnly:c.retrospectiveOnly,
+  conditionalNextDayRecovery:c.conditionalNextDayRecovery===true,
   outputDir,fetchImpl,
   seedEvidenceFile,seedOriginalDir,
   now,pauseMs:500,
@@ -64,6 +65,7 @@ export async function collectSharedOfficialA1IncrementalV0_1({
  const result={
   schemaVersion:'SHARED_A1_INCREMENTAL_RUN_V0_1',
   state:evidence.state,marketDate:c.marketDate,
+  conditionalTPlusOneSourceRecoveryOnly:c.conditionalNextDayRecovery===true,
   validatedPairs:manifest.sourceMarketDatePairsValidated,
   plannedPairs:122,
   reuseCount:evidence.sharedOriginalSourceReuse?.trustedReusedMarketDatePairs??0,

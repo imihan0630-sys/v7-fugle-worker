@@ -32,6 +32,12 @@ export function resolveLatestClosedTaiwanSessionV0_1({
  const prior=officialTradingDates.filter(x=>x<=upper).at(-1);
  if(!prior)return Object.freeze({state:'BLOCKED_CALENDAR_NO_ELIGIBLE_SESSION',marketDate:null});
  const isNewClose=(prior===upper);
+ // An exact T+1 00:00-01:59 Taipei source recovery is not a historical
+ // backfill. It is a NEW actual observation of the explicitly named T,
+ // still requiring provider-date/original-byte independent audit.
+ // Never infer that sources were known at 23:45, and never grant Frozen.
+ const conditionalNextDayRecovery=prior!==z.today&&
+    isNewClose&&z.hour<2;
  // On a holiday or weekend do not repeat Friday just because cron ran:
  // manual operator can explicitly request a previous closed session,
  // but such output stays RETROSPECTIVE_SOURCE_OBSERVATION_ONLY.
@@ -41,7 +47,8 @@ export function resolveLatestClosedTaiwanSessionV0_1({
  return Object.freeze({
   state:'CANDIDATE_CLOSED_DATE_OFFICIAL_RESPONSE_MUST_CONFIRM',
   marketDate:prior,taipeiDate:z.today,
-  retrospectiveOnly:prior!==z.today,
+  retrospectiveOnly:prior!==z.today&&!conditionalNextDayRecovery,
+  conditionalNextDayRecovery,
   eligibleToRunSourceReadOnly:true,
   todayProviderFinalityNotAsserted:true,
   sourceReviewClass:prior===z.today&&z.hour<23?
