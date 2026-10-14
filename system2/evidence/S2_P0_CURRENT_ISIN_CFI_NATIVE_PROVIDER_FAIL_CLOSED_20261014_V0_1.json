@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_P0_CURRENT_ISIN_CFI_NATIVE_PROVIDER_FAIL_CLOSED_20261014_V0_1",
+  "observedDateTaipei": "2026-10-14",
+  "classification": "REAL_PHYSICAL_OFFICIAL_ISIN_TWO_MARKET_UNAVAILABLE_FAIL_CLOSED",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "issueNumber": 1132,
+  "implementationPR": 1254,
+  "implementationMainCommit": "9f218091c227b8c42895dc048f52a90803710587",
+  "realRunId": 38503937901,
+  "realJobId": 115656992124,
+  "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38503937901",
+  "runConclusion": "failure",
+  "originalV02PreliminaryRunId": 38477169340,
+  "originalV02PreliminaryArtifactId": 11854376827,
+  "originalV02Validated30PreviewReceiptDownloaded": true,
+  "actualVerification": {
+    "sourceReadinessTWSE": "CURRENT_CFI_SOURCE_UNAVAILABLE_FAIL_CLOSED",
+    "sourceReadinessTPEX": "CURRENT_CFI_SOURCE_UNAVAILABLE_FAIL_CLOSED",
+    "sourceBlockerTWSE": "SOURCE_UNVERIFIED",
+    "sourceBlockerTPEX": "SOURCE_UNVERIFIED",
+    "sourceRowsIndependentlyReadback": 0,
+    "previewSymbols": 30,
+    "previewCurrentCfiMatched": 0,
+    "previewExactRegistryNameMatched": 0,
+    "nativeProviderReadSucceeded": false,
+    "reasonClass": "TWO_BOUNDED_NATIVE_REGISTRAR_ATTEMPTS_UNVERIFIED_NO_POSITIVE_CFI",
+    "signedNegativeReceipt": "d5d1f1ca89195134262b52d3d7746098da2855dea273bcb44f3b5ca007ca9b69",
+    "failureArtifactId": 11866916976,
+    "failureArtifactDigest": "sha256:ecc224182f80751a2a576c45ec2c14f11e9fec65ae0f6fd928e15e94ac801a77"
+  },
+  "publicContext": {
+    "alternateCurrentRegistrySourceURL": "https://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2",
+    "availabilityFromGitHubRunnerUnverified": true,
+    "typeCertificationNotGranted": true
+  },
+  "remains": {
+    "preliminaryOct13V02WatchMatches": 580,
+    "previewCurrentCompanyIdentityExact": 30,
+    "positivelyCertifiedOrdinaryEquityShares": 0,
+    "caCorrectionCancellationPITCertified": false,
+    "officialShortMomentumSelectionAuthorized": false,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "frozenDecisionWritten": false,
+    "shadowS0ThroughS5Accepted": 0
+  },
+  "safety": {
+    "noPublicOriginalRegistrarHtml": true,
+    "credentialFree": true,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1FormalRuntimeTouched": false,
+    "paidProviderAdded": false
+  },
+  "nextAction": "Try bounded free official alternative / English ISIN registry, or separately published TWSE/TPEx actual security-type authorities; do NOT promote code/issuer-name match to ordinary-equity status without source-positive proof."
+}
