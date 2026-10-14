@@ -39,7 +39,8 @@ jobs:
         with:
           node-version: '22'
       - name: Task DAG and authorization negative tests
-        run: node --test system2/commander/commander.test.mjs
+        run: |
+          node --test system2/commander/commander.test.mjs
           node --test system2/commander/commander_native_audit_v0_1.test.mjs
       - name: GitHub Issues-only dispatch; no cloud resource permissions
         env:
