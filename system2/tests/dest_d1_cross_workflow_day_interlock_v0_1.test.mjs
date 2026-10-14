@@ -18,7 +18,8 @@ test("no-other-writer preflight can permit check, but cannot authorize Cloudflar
  assert.equal(d.allowed,true);
  assert.equal(d.atomicCloudflareLedgerProven,false);
  assert.equal(d.nonCloudflareBudgetAssertion,true);
- assert.equal(d.coversExactlyRegisteredDestinationWriters,3);
+ assert.equal(d.registeredAutomatedDestWriterCount,3);
+ assert.equal(d.otherManualDestinationWriterFlowsNotCovered,true);
  assert.equal(d.excludesOnlyTwoRegisteredDestinationWriters,false);
 });
 test("competitor same-UTC-day ANY original run blocks even skipped/queued, fail closed",()=>{
