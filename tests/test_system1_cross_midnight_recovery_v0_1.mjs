@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES} from "./resolve_scheduled_market_date.mjs";
+import {resolveScheduledMarketDate,resolveScheduledMarketContext,LATE_TAIPEI_SCHEDULES,shouldSkipOvernightDelayedSourceSync} from "./resolve_scheduled_market_date.mjs";
 
 let n=0;
 function eq(got,want){assert.equal(got,want);n++;}
@@ -14,6 +14,21 @@ eq(LATE_TAIPEI_SCHEDULES.includes("45 15 * * 1-5"),true);
 eq(resolveScheduledMarketContext({now:new Date("2026-10-02T15:58:00Z"),triggerSchedule:"45 15 * * 1-5"}).crossMidnightFallback,false);
 eq(resolveScheduledMarketContext({now:new Date("2026-10-02T16:01:00Z"),triggerSchedule:"45 15 * * 1-5"}).crossMidnightFallback,true);
 eq(resolveScheduledMarketContext({now:new Date("2026-10-02T16:20:00Z"),triggerSchedule:"25 15 * * 1-5"}).crossMidnightFallback,false);
+// Original 2026-10-14 observed delayed Actions runs must not perform next-day source writes.
+// 18:20 job started 01:39 next day; 23:25 job started 04:44 next day.
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T17:39:49Z"),triggerSchedule:"20 10 * * 1-5"}),true);
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:"25 15 * * 1-5"}),true);
+eq(resolveScheduledMarketContext({now:new Date("2026-10-13T17:39:49Z"),triggerSchedule:"20 10 * * 1-5"}).overnightSourceSyncSkip,true);
+eq(resolveScheduledMarketContext({now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:"25 15 * * 1-5"}).overnightSourceSyncSkip,true);
+// Same-date data prep is unaffected, and the separate approved 23:45 next-day
+// fallback must still use a pinned previous-session check (not source sync).
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T10:22:00Z"),triggerSchedule:"20 10 * * 1-5"}),false);
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T15:27:00Z"),triggerSchedule:"25 15 * * 1-5"}),false);
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:49:34Z"),triggerSchedule:"45 15 * * 1-5"}),false);
+eq(resolveScheduledMarketContext({now:new Date("2026-10-13T20:49:34Z"),triggerSchedule:"45 15 * * 1-5"}).crossMidnightFallback,true);
+eq(shouldSkipOvernightDelayedSourceSync({now:new Date("2026-10-13T20:44:58Z"),triggerSchedule:""}),false);
+assert.throws(()=>shouldSkipOvernightDelayedSourceSync({now:"invalid",triggerSchedule:"25 15 * * 1-5"}),/INVALID_SCHEDULE_CLOCK/);n++;
+
 assert.throws(()=>resolveScheduledMarketDate({now:"invalid",triggerSchedule:"45 15 * * 1-5"}),/INVALID_SCHEDULE_CLOCK/);n++;
 
 const gate=await readFile(new URL("./trading_day_gate.mjs",import.meta.url),"utf8");
@@ -23,7 +38,7 @@ const recovery=await readFile(new URL("./recover_after_market.mjs",import.meta.u
 const quality=await readFile(new URL("./sync_official_quality.mjs",import.meta.url),"utf8");
 const workflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
 
-for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
+for(const pattern of [/resolveScheduledMarketContext/,/market_date=\$\{date\}/,/cross_midnight_fallback=/,/overnightSourceSyncSkip/,/V7_TRIGGER_SCHEDULE/]){assert.match(gate,pattern);n++;}
 for(const body of [cache,inst]){
   assert.match(body,/OFFICIAL_MARKET_DATE/);n++;
   assert.match(body,/exceeds one-day scheduled recovery window/);n++;
