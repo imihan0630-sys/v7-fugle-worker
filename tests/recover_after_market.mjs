@@ -1,6 +1,6 @@
 // Future scheduled recovery only. Never part of deployment acceptance.
 import assert from 'node:assert/strict';
-import {classifyLegacyScanPostDate} from './system1_legacy_scan_post_date_contract_v0_1.mjs';
+import {classifyLegacyScanPostDate,mayProbePinnedPriorDayCapability,verifiedPinnedPriorDayCapability} from './system1_legacy_scan_post_date_contract_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('After-market recovery stopped: '+String(error.message).slice(0,700));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
@@ -43,9 +43,18 @@ if(prior.scanDate===date) {console.log(JSON.stringify({skipped:true,reason:'Toda
 // semantics require a separately audited/deployed Worker repair.
 const postGate=classifyLegacyScanPostDate({now,targetDate:date});
 if(!postGate.mayPost) {
-  console.error(JSON.stringify({recoveryBusinessPostBlocked:true,priorScanDate:prior.scanDate??null,
-    ...postGate,noRepeatedPost:true,noFormalPlanClaim:true}));
-  throw new Error("LEGACY_SCAN_ROUTE_WRONG_SESSION_POST_FORBIDDEN: "+postGate.reason);
+  if(!mayProbePinnedPriorDayCapability({now,targetDate:date,scheduledFallback})) {
+    console.error(JSON.stringify({recoveryBusinessPostBlocked:true,priorScanDate:prior.scanDate??null,
+      ...postGate,noRepeatedPost:true,noFormalPlanClaim:true}));
+    throw new Error("LEGACY_SCAN_ROUTE_WRONG_SESSION_POST_FORBIDDEN: "+postGate.reason);
+  }
+  // A newly deployed Worker MUST prove the exact pinned-date semantics via
+  // authenticated READ-ONLY GET. Legacy route returns 404 => no business POST.
+  const capability=await admin('/api/scan/session-date-capability');
+  if(!verifiedPinnedPriorDayCapability(capability))
+    throw new Error("PINNED_SCAN_RUNTIME_CAPABILITY_NOT_VERIFIED_NO_POST");
+  console.log(JSON.stringify({pinnedScanRuntimeVerified:true,targetDate:date,
+    earlierBusinessResultAmbiguous:true,noBlindRetry:true}));
 }
 const institution=await admin('/api/institution-status?marketDate='+encodeURIComponent(date)),quality=await admin('/api/quality-status?marketDate='+encodeURIComponent(date));
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
@@ -53,7 +62,7 @@ assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);ass
 for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) assert.equal(quality.datasets[kind]?.ready,true,kind+' missing');
 // Only one POST. A timeout is ambiguous: never retry a business write blindly.
 try {
-  const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date})});
+  const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date,scheduledFallback})});
   console.log(JSON.stringify({recovery:true,historicalRecovery,scheduledFallback,requestedDate:date,skipped:!!result.skipped,reason:result.reason,scanDate:result.scanDate,selectedCount:result.selectedCount,pipelineComplete:result.pipeline?.complete,dailyDeliveryState:result.dailyReport?.deliveryState || null}));
 } catch(error) {
   if(/authorization rejected/.test(String(error))) throw error;

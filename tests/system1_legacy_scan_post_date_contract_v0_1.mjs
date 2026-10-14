@@ -23,3 +23,22 @@ export function classifyLegacyScanPostDate({now=new Date(),targetDate}={}){
       !inApprovedLateWindow?"OUTSIDE_ORIGINAL_SAME_DAY_RECOVERY_WINDOW":"SAME_DAY_WINDOW_ONLY",
     noBusinessPostOnMismatch:true,noTrade:true,noPush:true};
 }
+
+// Never probe capabilities for arbitrary historical dates or late (>07:00)
+// dispatches; the only exception is the previous Taipei civil calendar day.
+export function mayProbePinnedPriorDayCapability({targetDate,now=new Date(),scheduledFallback=false}={}){
+  const base=classifyLegacyScanPostDate({targetDate,now});
+  const day=base.workerEffectiveDate;
+  const prior=new Date(Date.parse(day+"T12:00:00Z")-86400000).toISOString().slice(0,10);
+  return scheduledFallback===true&&targetDate===prior&&base.localTime<"07:00";
+}
+export function verifiedPinnedPriorDayCapability(capability){
+  return capability?.ok===true&&
+    capability?.pinnedMarketDateSupported===true&&
+    capability?.legacyDateBodyIgnored===false&&
+    capability?.priorDayFallbackRequiresOnlyIfMissing===true&&
+    capability?.priorDayTaipeiCutoff==="07:00"&&
+    capability?.maxHistoricalRewindDays===1&&
+    capability?.priorDayFallbackEnabled===true&&
+    capability?.priorDayReplayIsNotAuthorizedByCapabilityAlone===true;
+}
