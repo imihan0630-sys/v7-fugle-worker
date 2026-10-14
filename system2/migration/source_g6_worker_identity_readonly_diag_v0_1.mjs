@@ -64,7 +64,7 @@ export async function inspectSourceWorkerIdentitiesV0_1({accountId,token,fetchIm
 if(process.argv[1]&&resolve(process.argv[1])===resolve(fileURLToPath(import.meta.url))){
  try{
   const r=await inspectSourceWorkerIdentitiesV0_1({
-   accountId:process.env.CLOUDFLARE_ACCOUNT_ID,token:process.env.SYSTEM2_CLOUDFLARE_API_TOKEN
+   accountId:process.env.CLOUDFLARE_ACCOUNT_ID,token:process.env.CLOUDFLARE_API_TOKEN
   });
   await mkdir(resolve("/tmp/system2-source-g6-worker-identity-diagnosis"),{recursive:true});
   await writeFile(path,JSON.stringify(r,null,2)+"\n",{flag:"wx",mode:0o600});
