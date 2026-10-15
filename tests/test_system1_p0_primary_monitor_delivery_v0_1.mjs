@@ -34,6 +34,8 @@ check({monitor:{...monitor,stocks:[{...stock,stop:0}]}},"MONITOR_KV_RISK_OR_CAPI
 check({monitor:{...monitor,stocks:[{...stock,firstShares:751}]}},"MONITOR_KV_RISK_OR_CAPITAL_MISMATCH");
 check({formal:{...formal,dailyReport:{sent:false}}},"DAILY_SELECTION_PUSH_NOT_ACCEPTED");
 check({formal:{...formal,dailyReport:{sent:true,simulated:true}}},"DAILY_SELECTION_PUSH_NOT_ACCEPTED");
+check({formal:{...formal,dailyReport:{sent:true}}},"DAILY_SELECTION_PUSH_NOT_ACCEPTED");
+check({formal:{...formal,dailyReport:{sent:true,simulated:null}}},"DAILY_SELECTION_PUSH_NOT_ACCEPTED");
 const zero=assess({targetDate:date,formal:{...formal,stocks:[],selectedCount:0},
  monitor:{...monitor,stocks:[]}});
 assert.equal(zero.ok,true);
