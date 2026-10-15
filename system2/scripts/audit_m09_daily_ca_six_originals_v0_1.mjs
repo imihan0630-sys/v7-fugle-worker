@@ -1,0 +1,209 @@
+// Separate-process, exact-original readback of SIX current official CA ranges.
+// An observed range is NOT historical firstKnownAt, full correction/retraction,
+// a certified NO_EVENT, Stage1 PIT, formal picks, or a Frozen decision.
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {gunzipSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
+import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {
+ buildOfficialContinuitySourceUrlsV0_1,
+ summarizeOfficialContinuityNativeOriginalV0_1
+} from '../runtime/official_continuity_source_capability_v0_1.mjs';
+
+const PREFIX='M09_DAILY_CA_INDEPENDENT_',MAX=8_000_000;
+const IDS=Object.freeze([
+ 'TWSE_EX_RIGHT_DIVIDEND_ACTUAL','TWSE_CAPITAL_REDUCTION_REFERENCE',
+ 'TWSE_PAR_VALUE_CHANGE_REFERENCE','TPEX_EX_RIGHT_DIVIDEND_ACTUAL',
+ 'TPEX_CAPITAL_REDUCTION_REFERENCE','TPEX_PAR_VALUE_CHANGE_REFERENCE'
+]);
+const SHA=/^[a-f0-9]{64}$/i, UTC=/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/;
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const strip=(x,key)=>Object.fromEntries(Object.entries(x||{}).filter(([k])=>k!==key));
+const isUtc=s=>typeof s==='string'&&UTC.test(s)&&Number.isFinite(Date.parse(s))&&
+ new Date(s).toISOString()===new Date(Date.parse(s)).toISOString();
+const isDay=s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&
+ Number.isFinite(Date.parse(s+'T00:00:00Z'))&&
+ new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
+const deny=s=>{throw Error(PREFIX+s)};
+async function signed(obj,field){
+ return obj&&typeof obj==='object'&&!Array.isArray(obj)&&
+   SHA.test(obj[field]||'')&&
+   await sha256Hex(strip(obj,field))===obj[field];
+}
+const mustNoAuthority=o=>o?.selectedCount===null&&
+ o?.zeroPickDay===null&&o?.frozenD1Written===false&&
+ o?.cloudflareD1Writes===0&&o?.cloudflareR2Writes===0&&
+ o?.system1FormalCoreTouched===false;
+
+export async function auditM09DailyCaSixOriginalsV0_1({
+ advisory,caReceipt,eventRisk,readOriginal,auditedAtUtc=new Date().toISOString(),
+ sourceRunId,parseNative=summarizeOfficialContinuityNativeOriginalV0_1,
+}={}){
+ if(!Number.isSafeInteger(sourceRunId)||sourceRunId<1||!isUtc(auditedAtUtc)||
+    typeof readOriginal!=='function'||typeof parseNative!=='function')
+  deny('AUDITOR_ID_CLOCK_OR_IO_INVALID');
+ if(!await signed(advisory,'receiptHash')||
+    advisory.schemaVersion!=='S2_M09_DAILY_CA_NEGATIVE_ADVISORY_V0_1'||
+    advisory.state!=='OBSERVED_EVENT_RISK_OVERLAY_ONLY_NOT_PIT_SELECTION'||
+    !isDay(advisory.marketDate)||advisory.caNativeRangeCount!==6||
+    !Number.isSafeInteger(advisory.preliminaryCount)||
+    advisory.preliminaryCount<1||advisory.preliminaryCount>30||
+    !Number.isSafeInteger(advisory.caKnownEventPreviewCount)||
+    advisory.caKnownEventPreviewCount<0||
+    advisory.caKnownEventPreviewCount>advisory.preliminaryCount||
+    advisory.historicalEventFirstKnownAtCertified!==false||
+    advisory.noEventMayBeClaimed!==false||
+    advisory.ordinaryEquityPITCertified!==false||
+    advisory.formalSelectionAuthorized!==false||
+    !mustNoAuthority(advisory))
+  deny('SIGNED_ADVISORY_OR_NO_AUTHORITY_INVALID');
+ if(!await signed(caReceipt,'receiptHash')||
+    caReceipt.schemaVersion!=='S2_M09_SIX_CA_NATIVE_ORIGINAL_SOURCE_RECEIPT_V0_1'||
+    caReceipt.state!=='SIX_RAW_SOURCES_CAPTURED_AUTHORITY_UNVERIFIED'||
+    !isDay(caReceipt.requestedStartDate)||
+    caReceipt.requestedStartDate>advisory.marketDate||
+    caReceipt.requestedEndDate!==advisory.marketDate||
+    caReceipt.sourceFamilyDenominator!==6||
+    caReceipt.sourcesRetainedOriginalBytes!==6||
+    caReceipt.nativeRangeSchemaCandidates!==6||
+    !Array.isArray(caReceipt.sourceReceipts)||
+    caReceipt.sourceReceipts.length!==6||
+    caReceipt.historicalFirstKnownAtCertified!==false||
+    caReceipt.entireRangeCorrectionAndCancellationCoverageCertified!==false||
+    caReceipt.instrumentClassPITCertified!==false||
+    caReceipt.sourceContractCoverageComplete!==false||
+    caReceipt.noEventMayBeClaimed!==false||
+    caReceipt.continuityCertified!==false||
+    caReceipt.selectionAuthorized!==false||
+    !mustNoAuthority(caReceipt)||
+    advisory.caSourceReceiptHash!==caReceipt.receiptHash||
+    advisory.sourceFirstObservedAtUtc!==caReceipt.firstPhysicalObservedAtUtc)
+  deny('SIGNED_SIX_SOURCE_RECEIPT_OR_SCOPE_INVALID');
+ if(!await signed(eventRisk,'receiptHash')||
+    eventRisk.schemaVersion!=='S2_M09_CA_NEGATIVE_REPLAY_61_SESSION_V0_1'||
+    eventRisk.marketDate!==advisory.marketDate||
+    eventRisk.caRawSixSourceReceiptHash!==caReceipt.receiptHash||
+    eventRisk.initialA1ReceiptHash!==advisory.originalSourceReceiptHash||
+    eventRisk.independentA1AuditHash!==advisory.independentA1AuditHash||
+    eventRisk.previewReceiptHash!==advisory.preliminaryWatchHash||
+    eventRisk.originalCaSourceCount!==6||
+    eventRisk.originalCaShaRehashed!==6||
+    eventRisk.previewWithProvenPresentCaIn61Sessions!==advisory.caKnownEventPreviewCount||
+    eventRisk.preliminaryPreviewCount!==advisory.preliminaryCount||
+    eventRisk.previewWithoutObservedCaNotClearedCount+
+      eventRisk.previewWithProvenPresentCaIn61Sessions!==advisory.preliminaryCount||
+    eventRisk.retroactivePitAdmission!==false||
+    eventRisk.asKnownAtPreviousDecisionClock!==false||
+    eventRisk.completeHistoricalRevisionAndCancellationEvidence!==false||
+    eventRisk.noEventOrNoActionMayBeCertified!==false||
+    eventRisk.formalStrategySelectionAuthorized!==false||
+    !mustNoAuthority(eventRisk)||
+    advisory.caEventRiskReceiptHash!==eventRisk.receiptHash)
+  deny('SIGNED_EVENT_RISK_LINK_OR_NO_EVENT_SEMANTICS_INVALID');
+ const startMs=Date.parse(caReceipt.firstPhysicalObservedAtUtc);
+ const endMs=Date.parse(caReceipt.completedAtUtc);
+ const auditMs=Date.parse(auditedAtUtc);
+ if(!isUtc(caReceipt.firstPhysicalObservedAtUtc)||
+    !isUtc(caReceipt.completedAtUtc)||startMs>endMs||endMs>auditMs||
+    !isUtc(eventRisk.caRawFirstObservedAtUtc)||
+    eventRisk.caRawFirstObservedAtUtc!==caReceipt.firstPhysicalObservedAtUtc||
+    eventRisk.caRawCompletedAtUtc!==caReceipt.completedAtUtc)
+  deny('HISTORICAL_CLOCK_BACKDATING_OR_SOURCE_WINDOW_INVALID');
+ const expected=buildOfficialContinuitySourceUrlsV0_1({
+  startDate:caReceipt.requestedStartDate,endDate:caReceipt.requestedEndDate
+ });
+ const seen=new Set(),physical=[];
+ for(const id of IDS){
+  const r=caReceipt.sourceReceipts.find(x=>x.sourceId===id);
+  const originalContract=expected[id];
+  if(!r||seen.has(id)||r.sourceId!==id||
+     r.exchange!==originalContract.exchange||
+     JSON.stringify(r.actionFamilies)!==JSON.stringify(originalContract.actionFamilies)||
+     r.sourceClass!==originalContract.sourceClass||
+     r.sourceUrl!==originalContract.url||
+     r.state!=='RANGE_SCHEMA_CANDIDATE_NOT_VINTAGE_CERTIFIED'||
+     r.originalBytesReadBackLocally!==true||
+     r.firstKnownAtEvidenceClass!=='FIRST_PHYSICAL_OBSERVATION_NOW_NOT_HISTORICAL_PUBLICATION'||
+     r.effectiveVintageRevisionRetractionCoverageVerified!==false||
+     !SHA.test(r.originalSha256||'')||
+     !Number.isSafeInteger(r.originalBytes)||r.originalBytes<30||r.originalBytes>MAX||
+     !isUtc(r.capturedAtUtc)||Date.parse(r.capturedAtUtc)<startMs||
+     Date.parse(r.capturedAtUtc)>endMs)
+    deny('OFFICIAL_FAMILY_URL_OR_OBSERVATION_PROVENANCE_INVALID');
+  seen.add(id);
+  const gz=await readOriginal(id,caReceipt.requestedEndDate);
+  if(!Buffer.isBuffer(gz))deny('GZIP_NOT_ORIGINAL_BYTES');
+  let bytes;
+  try{bytes=gunzipSync(gz,{maxOutputLength:MAX});}
+  catch{deny('ORIGINAL_GZIP_OR_SIZE_INVALID')}
+  if(bytes.length!==r.originalBytes||hash(bytes)!==r.originalSha256)
+   deny('ORIGINAL_BODY_SHA_OR_LENGTH_MISMATCH');
+  const native=parseNative({
+   originalText:bytes.toString('utf8'),
+   startDate:caReceipt.requestedStartDate,endDate:caReceipt.requestedEndDate
+  });
+  if(native?.state!=='STRUCTURE_READY'||
+     native.responseRangeVerified!==true||
+     native.recognizedStructure!==true||
+     await sha256Hex(native)!==await sha256Hex(r.nativeSchema))
+   deny('INDEPENDENT_NATIVE_RANGE_OR_SCHEMA_MISMATCH');
+  const sourceEvent=eventRisk.perSource?.find(x=>x.sourceId===id);
+  if(sourceEvent?.originalRawSha256!==r.originalSha256||
+     sourceEvent?.originalBytes!==r.originalBytes||
+     sourceEvent?.capturedAtUtc!==r.capturedAtUtc||
+     sourceEvent?.rangeReverifiedFromActualBytes!==true)
+   deny('EVENT_RISK_PER_SOURCE_ORIGINAL_MISMATCH');
+  physical.push({sourceId:id,originalSha256:r.originalSha256,
+   originalBytes:r.originalBytes,rangeIndependentlyReparsed:true});
+ }
+ if(new Set(caReceipt.sourceReceipts.map(x=>x.sourceId)).size!==6||
+    seen.size!==6||eventRisk.perSource?.length!==6||
+    !Array.isArray(eventRisk.flaggedPreview)||
+    eventRisk.flaggedPreview.length!==advisory.caKnownEventPreviewCount)
+  deny('SIX_FAMILY_OR_FLAGGED_PREVIEW_DENOMINATOR_INVALID');
+ const base={schemaVersion:'S2_M09_DAILY_SIX_CA_INDEPENDENT_ORIGINAL_AUDIT_V0_1',
+  verdict:'ACCEPTED_CURRENT_SIX_CA_RAW_RANGE_ONLY_NOT_HISTORICAL_PIT',
+  sourceRunId,auditedAtUtc,marketDate:advisory.marketDate,
+  requestedStartDate:caReceipt.requestedStartDate,
+  originalA1SourceReceiptHash:advisory.originalSourceReceiptHash,
+  independentA1AuditHash:advisory.independentA1AuditHash,
+  preliminaryWatchHash:advisory.preliminaryWatchHash,
+  caSourceReceiptHash:caReceipt.receiptHash,
+  caEventRiskReceiptHash:eventRisk.receiptHash,
+  sourceReportedKnownEventPreviewCount:advisory.caKnownEventPreviewCount,
+  originalCaFamiliesIndependentlyRehashed:physical.length,
+  independentNativeRangeSchemaReparsed:physical.length,
+  originalSourceFamilyHashes:physical,
+  historicalFirstKnownAtPITCertified:false,
+  completeCorrectionsAndRetractionsCertified:false,
+  historicalNoEventCoverageCertified:false,
+  ordinaryEquityClassPITCertified:false,
+  stage1SelectionAuthorized:false,selectedCount:null,zeroPickDay:null,
+  frozenD1Written:false,cloudflareD1Writes:0,cloudflareR2Writes:0,
+  system1FormalCoreTouched:false};
+ return Object.freeze({...base,auditHash:await sha256Hex(base)});
+}
+
+if(process.argv[1]?.endsWith('/audit_m09_daily_ca_six_originals_v0_1.mjs')){
+ const root=process.env.S2_M09_DAILY_CA_SOURCE_DIR||
+  '/tmp/s2-m09-daily-ca-independent-readback';
+ const sourceRunId=Number(process.env.S2_M09_CA_SOURCE_RUN_ID);
+ const [advisory,caReceipt,eventRisk]=await Promise.all([
+  'daily-ca-advisory.json','ca-source-receipt.json','ca-negative-risk.json'
+ ].map(x=>readFile(resolve(root,x),'utf8').then(JSON.parse)));
+ const receipt=await auditM09DailyCaSixOriginalsV0_1({
+  advisory,caReceipt,eventRisk,sourceRunId,
+  readOriginal:async(id,day)=>readFile(resolve(root,id+'-'+day+'.json.gz'))
+ });
+ const out='/tmp/s2-m09-six-ca-independent-audit';
+ await mkdir(out,{recursive:true,mode:0o700});
+ await writeFile(resolve(out,'audit-receipt.json'),
+  JSON.stringify(receipt,null,2)+'\n',{flag:'wx',mode:0o600});
+ console.log(JSON.stringify({verdict:receipt.verdict,
+  sourceRunId:receipt.sourceRunId,marketDate:receipt.marketDate,
+  sixRawOriginalShaRehashed:receipt.originalCaFamiliesIndependentlyRehashed,
+  sourceReportedKnownEventPreviewCount:receipt.sourceReportedKnownEventPreviewCount,
+  historicalPIT:false,noEventCertified:false,
+  selectedCount:null,frozenD1Written:false,auditHash:receipt.auditHash}));
+}
