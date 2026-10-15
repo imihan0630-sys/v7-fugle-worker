@@ -6,6 +6,13 @@ on:
     - cron: '20 10 * * 1-5'
     - cron: '25 15 * * 1-5' # 23:25 Taipei final data refresh
     - cron: '45 15 * * 1-5' # 23:45 Taipei recovery only if 23:35 formal scan is missing
+  # Independent P0 source trigger: the original 16:10 System1 history job
+  # completed successfully, but GitHub delayed/missed all 17:55-23:45 source Crons.
+  # The guarded job below ONLY runs original official source sync (no new Cron).
+  workflow_run:
+    workflows:
+      - "System1 DAILY No-cost Official K-line Incremental D1 History (DATA ONLY)"
+    types: [completed]
   workflow_dispatch:
     inputs:
       market_date:
@@ -38,7 +45,23 @@ concurrency:
   group: v7-official-market-sync
   cancel-in-progress: false
 jobs:
+  history_success_gate:
+    if: github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      proceed: ${{ steps.guard.outputs.proceed }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify original history-success webhook identity, session and current Taipei clock (NO WRITE)
+        id: guard
+        run: node tests/system1_p0_history_success_fallback_gate_v0_1.mjs
   sync:
+    needs: history_success_gate
+    if: always() && (github.event_name != 'workflow_run' || needs.history_success_gate.outputs.proceed == 'true')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -95,6 +118,23 @@ jobs:
           QUALITY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
           QUALITY_RECOVERY_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5' && '1' || '0' }}
         run: node tests/sync_official_quality.mjs
+      # P0: the actual official source jobs can finish after the original
+      # actual deployed Cloudflare Formal cron (V8.7.12: 23:35). Re-enter only after its proven precommit failure
+      # the EXISTING original Worker scan exactly once on the SAME Taipei day,
+      # but only if its previous D1 Cron failure was proven pre-write
+      # DATA_INCOMPLETE. Unknown CPU/503 and prior-day jobs remain blocked.
+      - name: P0 source-ready same-day Formal selection handoff (guarded original one POST)
+        if: >-
+          github.event_name == 'schedule' &&
+          steps.calendar.outputs.proceed == 'true' &&
+          steps.calendar.outputs.cross_midnight_fallback != 'true' &&
+          github.event.schedule != '45 15 * * 1-5'
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          RECOVERY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          RECOVERY_SOURCE_READY_HANDOFF: 'true'
+          RECOVERY_SCHEDULED_FALLBACK: 'false'
+        run: node tests/recover_after_market.mjs
       - name: Recover missing same-day analysis after complete data (skip prior success)
         if: >-
           steps.calendar.outputs.proceed == 'true' &&
