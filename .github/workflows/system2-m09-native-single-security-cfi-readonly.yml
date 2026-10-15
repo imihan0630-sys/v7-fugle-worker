@@ -1,0 +1,56 @@
+name: System2 M09 Native Single ISIN CFI Source Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_official_single_security_cfi_original_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-native-single-security-cfi-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_official_single_security_cfi_original_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-native-single-security-cfi-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-m09-single-native-cfi-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  official_native_single_cfi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify positive and negative transport/CFI field source evidence
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_official_single_security_cfi_original_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Physical native four-code CFI source GET with original SHA (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs
+      - name: Preserve original native HTML bytes for independent readback
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-native-single-cfi-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-single-cfi-original/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: No prospective PIT / selection authority
+        if: always()
+        run: |
+          echo 'Four source controls are a native ISIN/CFI transport probe only. Not a historical PIT class universe.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No final rank, no zero-pick, no Frozen D1, no Cloudflare writes, no System1 Formal.' >> "$GITHUB_STEP_SUMMARY"
