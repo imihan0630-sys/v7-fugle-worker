@@ -69,6 +69,14 @@ if(sourceReadyHandoff){
     scan:prior,institution,quality,recommendations,cron});
   console.log(JSON.stringify({sourceReadyFormalHandoff:handoff,noBusinessPost:!handoff.mayPost}));
   if(!handoff.mayPost){
+    // The deployed after-market Cron is 23:35, NOT old main's 18:10.
+    // Official source success before 23:35 correctly waits for that scheduled
+    // original Formal business attempt; it is not an operational failure yet.
+    if(handoff.reason==="ORIGINAL_FORMAL_CRON_NOT_DUE"){
+      console.log(JSON.stringify({skipped:true,reason:handoff.reason,date,
+        scheduledClock:handoff.scheduledClock,formalNotYetDue:true,noBusinessPost:true,noPush:true}));
+      process.exit(0);
+    }
     console.log(JSON.stringify({blocked:true,reason:handoff.reason,date,sourceReadyHandoff:true,noBusinessPost:true,noPush:true}));
     // A successful official data-sync run while Formal/monitor/push is absent
     // must never silently green-skip; surface the real P0 business blockage.
