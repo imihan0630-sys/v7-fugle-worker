@@ -1,0 +1,96 @@
+name: System2 M09 Daily Blocker Journal Independent Readback (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-shared-official-a1-independent-audit.yml"
+      - ".github/workflows/system2-m09-daily-blocker-independent-audit.yml"
+      - "system2/scripts/write_m09_daily_blocker_journal_readonly_v0_1.mjs"
+      - "system2/scripts/audit_m09_daily_blocker_journal_readonly_v0_1.mjs"
+      - "system2/tests/write_m09_daily_blocker_journal_readonly_v0_1.test.mjs"
+      - "system2/tests/audit_m09_daily_blocker_journal_readonly_v0_1.test.mjs"
+  workflow_run:
+    workflows:
+      - "System2 Shared Official A1 Independent Source Audit (READ ONLY)"
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-m09-journal-independent-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify_nonselection_journal:
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       (github.event.workflow_run.event == 'push' ||
+        github.event.workflow_run.event == 'workflow_run' ||
+        github.event.workflow_run.event == 'workflow_dispatch'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify independent hashes, no zero-pick promotion, no Frozen writes
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/write_m09_daily_blocker_journal_readonly_v0_1.mjs
+          node --check system2/scripts/audit_m09_daily_blocker_journal_readonly_v0_1.mjs
+          node --test system2/tests/write_m09_daily_blocker_journal_readonly_v0_1.test.mjs
+          node --test system2/tests/audit_m09_daily_blocker_journal_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download exact genuine independent A1 audit source receipts
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: system2-shared-official-a1-independent-audit-${{ github.event.workflow_run.id }}
+          path: /tmp/s2-m09-daily-blocker-original-audit
+          github-token: ${{ github.token }}
+      - name: Download immutable 90-day source nonselection journal
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: s2-m09-daily-blocker-journal-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: /tmp/s2-m09-daily-blocker-source-readback
+          github-token: ${{ github.token }}
+      - name: Independently rebuild exact journal from original three signed receipts
+        if: github.event_name == 'workflow_run'
+        env:
+          S2_BLOCKER_SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_m09_daily_blocker_journal_readonly_v0_1.mjs
+          R=/tmp/s2-m09-daily-blocker-independent-readback/independent-readback.json
+          test -s "$R"
+          test "$(jq -r .rehashedUpstreamReceiptCount "$R")" = '3'
+          test "$(jq -r .fullJournalReproduced "$R")" = 'true'
+          test "$(jq -r .classifiedAsFormalZeroPick "$R")" = 'false'
+          test "$(jq -r .classifiedAsFrozen "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "INDEPENDENT_90D_BLOCKER_JOURNAL_ORIGINAL_3_OF_3_SHA_AND_REPLAY_SUCCESS. No Frozen and no fake zero-pick." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain signed independent blocker receipt 90 days
+        if: always() && github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-blocker-independent-${{ github.run_id }}
+          path: /tmp/s2-m09-daily-blocker-independent-readback/independent-readback.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Safety declaration
+        if: always()
+        run: |
+          echo 'Journal records absence of PIT/selection authority, not a formal decision or zero-pick day.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No Cloudflare D1/R2 write, no System1 V8 Formal/Worker/Cron, no trading or push.' >> "$GITHUB_STEP_SUMMARY"
