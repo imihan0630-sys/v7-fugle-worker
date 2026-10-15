@@ -2,7 +2,7 @@
 // the PRIMARY Cloudflare monitor KV and the existing daily push accepted.
 // Legacy 3Min full exact readback is P1 here; it must not hide an otherwise
 // complete primary monitor/push, or falsely certify handset delivery.
-export function assessP0PrimaryMonitorDelivery({targetDate,formal,monitor}={}){
+export function assessP0PrimaryMonitorDelivery({targetDate,formal,monitor,outbox}={}){
   const base={schema:"S1_P0_FORMAL_PRIMARY_MONITOR_PUSH_V0_1",targetDate,
     ok:false,formalSaved:false,monitorExact:false,dailyPushAccepted:false,
     phoneReceiptVerified:false,threeMinSeparate:true,noBusinessRetry:true};
@@ -45,6 +45,17 @@ export function assessP0PrimaryMonitorDelivery({targetDate,formal,monitor}={}){
     threeMinVerified:formal?.threeMin?.verified===true};
   if(formal?.dailyReport?.sent!==true || formal?.dailyReport?.simulated!==false)
     return done("DAILY_SELECTION_PUSH_NOT_ACCEPTED",ready);
-  return {...base,...ready,ok:true,dailyPushAccepted:true,
-    reason:"FORMAL_PRIMARY_MONITOR_AND_PUSH_ACCEPTED_NOT_HANDSET_PROOF"};
+
+  // A webhook-returned sent flag is not the authoritative persisted outbox receipt.
+  // Require this exact session signal; never retry any ambiguous business POST.
+  const signalId=`DAILY_SELECTION:${targetDate}`;
+  if(formal?.dailyReport?.signalId!==signalId)
+    return done("DAILY_SELECTION_SIGNAL_ID_NOT_VERIFIED",ready);
+  if(outbox?.configured!==true||!Array.isArray(outbox?.recent))
+    return done("DAILY_SELECTION_OUTBOX_NOT_VERIFIED",ready);
+  const rows=outbox.recent.filter(row=>String(row?.signal_id||"")===signalId);
+  if(rows.length!==1||rows[0]?.delivery_state!=="ACCEPTED")
+    return done("DAILY_SELECTION_OUTBOX_NOT_ACCEPTED",{...ready,outboxMatched:rows.length});
+  return {...base,...ready,ok:true,dailyPushAccepted:true,dailyOutboxAccepted:true,
+    reason:"FORMAL_PRIMARY_MONITOR_AND_DAILY_OUTBOX_ACCEPTED_NOT_HANDSET_PROOF"};
 }
