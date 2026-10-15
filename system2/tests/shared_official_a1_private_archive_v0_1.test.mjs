@@ -11,7 +11,8 @@ import {buildSharedOfficialA1MarketManifestV0_1}
  from '../../shared-knowledge/market-data/shared_official_a1_manifest_v0_1.mjs';
 import {buildOfficialHistoricalA1UrlV0_1}
  from '../runtime/official_historical_a1_source_v0_1.mjs';
-import {publishSharedOfficialA1PrivateArchiveV0_1 as publish}
+import {publishSharedOfficialA1PrivateArchiveV0_1 as publish,
+ classifySharedA1PrivateArchiveReceiptGitBlobBudgetV0_1 as budget}
  from '../scripts/publish_shared_official_a1_private_archive_v0_1.mjs';
 import {official61SessionSourceReceiptHashBaseV0_1}
  from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
@@ -126,4 +127,30 @@ test('workflow has read-only source token and target-only deploy key; no Cloudfl
  assert.match(workflow,/secrets\.S2_A1_ARCHIVE_DEPLOY_KEY/);
  assert.match(workflow,/v7-system2-official-a1-archive\.git/);
  assert.doesNotMatch(workflow,/V7_DB|R2_BUCKET|api\.cloudflare\.com/);
+});
+
+// GitHub hard-cap defense: correct sizes and alerts cannot silently rewrite
+// the approved source receipt/manifest identity or its immutable path.
+test('private A1 archive measures actual receipt bytes without changing source identity or storage format',async()=>{
+ const f=await fixture();try{
+  const out=await publish({...f,originalDirectory:f.source,archiveDirectory:f.archive});
+  const stored=await readFile(join(f.archive,'source-receipts',marketDate,
+    f.sourceReceipt.receiptHash+'.json'));
+  assert.equal(out.sourceReceiptGitBlobBudget.plainSourceReceiptBytes,stored.length);
+  assert.equal(out.sourceReceiptGitBlobBudget.sourceReceiptFormatChanged,false);
+  assert.equal(out.sourceReceiptGitBlobBudget.sourceReceiptPITCertified,false);
+  assert.equal(out.sourceReceiptGitBlobBudget.risk,'WITHIN_GIT_BLOB_RECOMMENDED_SIZE');
+  assert.equal(out.sourceReceiptHash,f.sourceReceipt.receiptHash);
+  assert.equal(out.sourceMarketDatePairs,1);
+ }finally{await f.cleanup();}
+});
+test('Git soft limit, early warning and hard cap classify exact bytes; invalid values fail',()=>{
+ assert.equal(budget(50_000_000).risk,'WITHIN_GIT_BLOB_RECOMMENDED_SIZE');
+ assert.equal(budget(50_000_001).risk,'OVER_GIT_BLOB_RECOMMENDED_SIZE');
+ assert.equal(budget(88_600_000).risk,'NEAR_GIT_BLOB_HARD_LIMIT');
+ assert.equal(budget(99_999_999).gitHardHeadroomBytes,1);
+ assert.equal(budget(100_000_000).risk,'HARD_GIT_BLOB_LIMIT_EXCEEDED');
+ assert.equal(budget(100_000_001).gitHardHeadroomBytes,-1);
+ for(const bad of [-1,1.5,NaN,Infinity,'100',null,Number.MAX_SAFE_INTEGER+1])
+  assert.throws(()=>budget(bad),/BYTE_LENGTH_INVALID/);
 });
