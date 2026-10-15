@@ -13,7 +13,7 @@ assert.match(workflow,/if: always\(\)/);
 assert.match(script,/\(SELECT COUNT\(\*\) FROM s2_historical_a1_bars\)/);
 assert.match(script,/\(SELECT COUNT\(\*\) FROM s2_historical_ingest_batches\)/);
 assert.match(script,/\(SELECT COUNT\(\*\) FROM s2_decisions\)/);
-assert.match(script,/meta\.rows_written/);
+assert.match(script,/meta\?\.rows_written/);\nassert.match(script,/record\.providerQueryRowsWritten!==0/);
 assert.match(script,/QUERY_METERING_INVALID/);
 assert.match(script,/destinationWritesRequested:0/);
 assert.doesNotMatch(script,/\bINSERT INTO\b|\bUPDATE s2_|\bDELETE FROM\b|\bDROP TABLE\b|\bALTER TABLE\b|\bREPLACE INTO\b/i);
