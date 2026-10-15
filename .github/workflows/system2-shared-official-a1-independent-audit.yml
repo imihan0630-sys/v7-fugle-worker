@@ -230,6 +230,36 @@ jobs:
           path: /tmp/s2-m09-daily-ca-negative-readonly/
           retention-days: 7
           if-no-files-found: warn
+      # Native CFI is ONLY a current-observation supplement to the exact
+      # separately audited 122/122 A1 source; never a historical ordinary
+      # equity PIT admission, even if all preview securities are Stocks.
+      # Isolated from the on-main push self-test (121/122 fake-denial).
+      - name: Observe native ISIN CFI for this exact audited preview only
+        if: success() && github.event_name != 'push'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs
+          node system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs
+          R=/tmp/s2-m09-preview-native-cfi/preview-native-cfi.json
+          test -s "$R"
+          test "$(jq -r .historicalOrdinarySharePitCertified "$R")" = '0'
+          test "$(jq -r .historicalOrdinarySharePitDenominatorCertified "$R")" = 'false'
+          test "$(jq -r .formalShortMomentumQualified "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .preliminaryDenominator "$R")" -le 30
+          test "$(jq -r .perSymbolNativeRequestsMade "$R")" = "$(jq -r .preliminaryDenominator "$R")"
+          echo "A1 SAME-T native current security-class ONLY: $(jq -r .currentNativeStockCfiObserved "$R")/$(jq -r .preliminaryDenominator "$R") preview Stocks, TIB=$(jq -r .currentNativeInnovationBoardStocks "$R"), NO HISTORICAL PIT or Frozen." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve native ISIN CFI originals for independent audit
+        if: always() && github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-native-cfi-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-preview-native-cfi/
+          retention-days: 7
+          if-no-files-found: warn
       - name: Preserve sanitized hash receipt only
         if: always()
         uses: actions/upload-artifact@v4
