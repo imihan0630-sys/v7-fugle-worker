@@ -33,7 +33,7 @@ test("404, 403, 429 and 502 are archive index status, not evidence of never-publ
   const x=check(w,status,"no indexed material");
   assert.equal(x.verifiedShapeCandidateCount,0);
   assert.equal(x.archiveIndexNegativeIsProofOfNoHistoricalPublication,false);
-  assert.equal(x.interpretation,status===404?"INDEX_NO_RECORDS_REPORTED":"INDEX_UNAVAILABLE_OR_ACCESS_DENIED");
+  assert.equal(x.interpretation,status===404?"INDEX_ENDPOINT_NOT_FOUND__COVERAGE_UNKNOWN":"INDEX_UNAVAILABLE_OR_ACCESS_DENIED");
  }
 });
 for(const [label,variant] of [
