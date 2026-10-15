@@ -178,6 +178,23 @@ test('manifest cache duration always matches scheduled workflow and forbids 90-d
 });
 
 
+test('existing source workflow physically verifies main seed-loader code changes without new cron or writes',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const y=readFileSync('.github/workflows/system2-shared-official-a1-incremental-readonly.yml','utf8');
+ const push=y.split('  push:')[1]?.split('  schedule:')[0];
+ assert.ok(push,'main push trigger must remain present');
+ for(const p of [
+  '.github/workflows/system2-shared-official-a1-incremental-readonly.yml',
+  'system2/scripts/discover_shared_official_a1_seed_v0_1.mjs',
+  'system2/scripts/run_shared_official_a1_incremental_v0_1.mjs',
+ ])assert.ok(push.includes(p),'source-critical code needs same read-only physical validation: '+p);
+ assert.match(y,/contents:\\s*read/);
+ assert.match(y,/actions:\\s*read/);
+ assert.doesNotMatch(y,/contents:\\s*write|secrets\\./);
+ assert.match(y,/cancel-in-progress: false/);
+ assert.match(y,/retention-days:\\s*7/);
+});
+
 test('20:15/23:45 T source-only attempts plus 00:15 same-T recovery never grant Frozen authority',async()=>{
  const {readFileSync}=await import('node:fs');
  const w=readFileSync('.github/workflows/system2-shared-official-a1-incremental-readonly.yml','utf8');
