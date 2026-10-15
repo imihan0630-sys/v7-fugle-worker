@@ -4,7 +4,11 @@ on:
   push:
     branches: [main]
     paths:
+      # A source-loader/seed integrity change must get a real bounded SOURCE-only
+      # readback on main, not just offline CI. Existing cron clocks unchanged.
       - ".github/workflows/system2-shared-official-a1-incremental-readonly.yml"
+      - "system2/scripts/discover_shared_official_a1_seed_v0_1.mjs"
+      - "system2/scripts/run_shared_official_a1_incremental_v0_1.mjs"
   schedule:
     # 20:15 Taipei Mon-Fri: additional PRELIMINARY SOURCE-ONLY time hedge.
     # On 2026-10-14 both official T raw markets were genuinely captured
