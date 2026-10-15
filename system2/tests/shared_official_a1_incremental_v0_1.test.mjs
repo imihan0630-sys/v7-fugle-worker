@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {missingA1MarketDatePairsAfterFetchV0_1}
+ from '../scripts/run_shared_official_a1_incremental_v0_1.mjs';
 import {discoverSharedA1PreviousSourceArtifactV0_1}
  from '../scripts/discover_shared_official_a1_seed_v0_1.mjs';
 import {gzipSync} from 'node:zlib';
@@ -358,4 +360,41 @@ test('the current run can never reuse itself even if its old-looking artifact ex
  });
  assert.equal(got.kind,'INITIAL_REAL_PROVIDER_UNAUDITED_SEED');
  assert.equal(calls.length,1);
+});
+
+
+test('121/122 after physical capture reports EXACT missing official exchange/date',()=>{
+ const all=dates.flatMap(date=>['TWSE','TPEX'].map(market=>({market,marketDate:date})));
+ const absent=all.pop();
+ const evidence=missingA1MarketDatePairsAfterFetchV0_1({
+  tradingDates:dates,receipts:all,
+  errors:[{market:absent.market,date:absent.marketDate,code:'OFFICIAL_DATE_CAPTURE_FAILED'}]
+ });
+ assert.deepEqual(evidence,[{market:'TPEX',date:marketDate,
+  reasonCode:'OFFICIAL_DATE_CAPTURE_FAILED'}]);
+ assert.equal(all.length,121);
+});
+test('complete 122/122 official original pair set has NO after-fetch gaps',()=>{
+ const all=dates.flatMap(date=>['TWSE','TPEX'].map(market=>({market,marketDate:date})));
+ assert.deepEqual(missingA1MarketDatePairsAfterFetchV0_1({
+  tradingDates:dates,receipts:all,errors:[]
+ }),[]);
+});
+test('provider exception is NOT echoed to logs as raw URL or text',()=>{
+ const evidence=missingA1MarketDatePairsAfterFetchV0_1({
+  tradingDates:dates,receipts:[],
+  errors:[{market:'TWSE',date:marketDate,
+   code:'HTTP500 https://sensitive.example.invalid/?token=SECRET'}]
+ });
+ const t=evidence.find(x=>x.market==='TWSE'&&x.date===marketDate);
+ assert.equal(t.reasonCode,'SOURCE_MISSING_REASON_UNKNOWN');
+ assert.doesNotMatch(JSON.stringify(evidence),/sensitive|SECRET/);
+});
+test('unordered/incomplete calendar cannot manufacture an accepted missing pair scope',()=>{
+ assert.throws(()=>missingA1MarketDatePairsAfterFetchV0_1({
+  tradingDates:[dates[0]],receipts:[]
+ }),/DIAGNOSTIC_INPUT_INVALID/);
+ assert.throws(()=>missingA1MarketDatePairsAfterFetchV0_1({
+  tradingDates:[...dates.slice(0,-1),dates[0]],receipts:[]
+ }),/DIAGNOSTIC_INPUT_INVALID/);
 });
