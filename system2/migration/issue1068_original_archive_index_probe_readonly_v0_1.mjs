@@ -58,7 +58,8 @@ export function verifyArchiveIndexPayloadV0_1({probe,httpStatus,body,observedAtU
  if(typeof body!=="string"||Buffer.byteLength(body)>1024*1024)throw Error("OVERSIZED_ARCHIVE_INDEX_RESPONSE");
  let rows=[];
  let interpretation;
- if(httpStatus===404||httpStatus===204)interpretation="INDEX_NO_RECORDS_REPORTED";
+ if(httpStatus===404)interpretation="INDEX_ENDPOINT_NOT_FOUND__COVERAGE_UNKNOWN";
+ else if(httpStatus===204)interpretation="INDEX_NO_RECORDS_REPORTED";
  else if(httpStatus===200){
    try{rows=normalizeIndexRows(body,probe.provider);interpretation=rows.length?"INDEX_RECORDS_REPORTED":"INDEX_NO_RECORDS_REPORTED"}
    catch{interpretation="INDEX_RESPONSE_MALFORMED_OR_UNSUPPORTED";}
