@@ -1,6 +1,6 @@
 // P0 actual source-ready -> same-day Formal scan admission.
 // This pure gate authorizes at most the EXISTING one guarded business POST
-// after a genuine original 18:10 Worker pre-commit DATA_INCOMPLETE failure.
+// after a genuine same-day deployed Formal Cron pre-commit DATA_INCOMPLETE failure.
 // Unknown CPU/transport/partial-write failures are NOT a safe retry.
 const format=(instant)=>{
   const d=instant instanceof Date?instant:new Date(instant);
