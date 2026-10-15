@@ -73,7 +73,8 @@ if(sourceReadyHandoff){
     process.exit(0);
   }
 }
-// Only one POST. A timeout is ambiguous: NEVER repeat a business write.
+// Only one POST; no repeated POST after HTTP 503, timeout or unverifiable monitor/push.
+// A timeout is ambiguous: NEVER repeat a business write.
 // A nominal HTTP200 with same-day scanDate is NOT enough for the owner P0:
 // independently read current primary monitoring KV and check original daily push.
 let postResult=null,postError=null;
