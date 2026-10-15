@@ -34,7 +34,7 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   // and 23:55 under ONE expression ("35,55 15 * * MON-FRI").
   // GET /api/cron/status must identify exactly ONE supported schedule.
   // Never infer runtime schedules from checked-in Worker.js or a PR alone.
-  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().replace(/\\s+/g," ").toLowerCase()):[];
+  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().replace(/\s+/g," ").toLowerCase()):[];
   const allowed=[{expression:"10 10 * * mon-fri",at:"18:10"},
     {expression:"35 15 * * mon-fri",at:"23:35"},
     {expression:"35,55 15 * * mon-fri",at:"23:35"}].filter(x=>expected.includes(x.expression));
