@@ -29,12 +29,15 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   const ready=quality?.marketDate===targetDate&&quality?.index?.ready===true&&
     quality?.tdcc?.ready===true&&kinds.every(k=>quality?.datasets?.[k]?.ready===true);
   if(!institutional||!ready)return out("OFFICIAL_SOURCE_NOT_READY",{institutionReady:institutional,qualityReady:ready});
-  // Formal cron was migrated in deployment from 18:10 to 23:35 by V8.7.12.
-  // Never assume Worker.js on main is identical to deployed runtime: its
-  // actual admin GET /api/cron/status expected list is authoritative here.
-  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().toLowerCase()):[];
+  // Physical production scheduling evolved: V8.7.12 moved 18:10 to
+  // 23:35 and the later Free-plan four-trigger consolidation joined 23:35
+  // and 23:55 under ONE expression ("35,55 15 * * MON-FRI").
+  // GET /api/cron/status must identify exactly ONE supported schedule.
+  // Never infer runtime schedules from checked-in Worker.js or a PR alone.
+  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().replace(/\\s+/g," ").toLowerCase()):[];
   const allowed=[{expression:"10 10 * * mon-fri",at:"18:10"},
-    {expression:"35 15 * * mon-fri",at:"23:35"}].filter(x=>expected.includes(x.expression));
+    {expression:"35 15 * * mon-fri",at:"23:35"},
+    {expression:"35,55 15 * * mon-fri",at:"23:35"}].filter(x=>expected.includes(x.expression));
   if(allowed.length!==1)return out("DEPLOYED_FORMAL_CRON_NOT_UNAMBIGUOUS");
   const runtimeCron=allowed[0];
   if(clock.time<runtimeCron.at)return out("ORIGINAL_FORMAL_CRON_NOT_DUE",{scheduledClock:runtimeCron.at});
@@ -52,7 +55,7 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   if(!/^Error:\s*DATA_INCOMPLETE[:：]/.test(String(prior.error||"")))
     return out("PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
   // Last-attempt KV can be overwritten by a later ambiguous manual POST.
-  // Link its exact Taiwan clock to the original 18:10 D1 Cron or stop.
+  // Link its exact Taiwan clock to the actual D1 Formal Cron or stop.
   const m=/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2}):(\d{2})$/.exec(String(attempt.generatedAt||""));
   if(!m)return out("LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
   const pad=x=>x.padStart(2,"0");
