@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {classifySourceReadyFormalHandoff as decide} from "./system1_p0_source_ready_handoff_gate_v0_1.mjs";
+import {classifySourceReadyFormalHandoff as decide,classifyImmediateBusinessPostClock as immediate} from "./system1_p0_source_ready_handoff_gate_v0_1.mjs";
 const date="2026-10-14";
 const quality={marketDate:date,index:{ready:true},tdcc:{ready:true},datasets:{
  FINANCIAL:{ready:true,count:1881},VALUATION:{ready:true,count:1969},
@@ -18,7 +18,14 @@ assert.equal(ok.mayPost,true);
 assert.equal(ok.reason,"PRECOMMIT_SOURCE_FAILURE_AFTER_NEW_SOURCE_READY");
 assert.equal(ok.originalD1LeaseStillRequired,true);
 const blocked=(override,expected)=>assert.equal(decide({...fixture,...override}).reason,expected);
-blocked({now:"2026-10-14T15:59:59Z",targetDate:date},"PRECOMMIT_SOURCE_FAILURE_AFTER_NEW_SOURCE_READY");
+blocked({now:"2026-10-14T15:54:59Z",targetDate:date},"PRECOMMIT_SOURCE_FAILURE_AFTER_NEW_SOURCE_READY");
+blocked({now:"2026-10-14T15:55:00Z",targetDate:date},"OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
+assert.equal(immediate({now:"2026-10-14T15:54:59Z",targetDate:date}).mayPost,true);
+assert.equal(immediate({now:"2026-10-14T15:55:00Z",targetDate:date}).mayPost,false);
+assert.equal(immediate({now:"2026-10-14T16:00:00Z",targetDate:date}).mayPost,false);
+assert.equal(immediate({now:"2026-10-14T10:09:59Z",targetDate:date}).mayPost,false);
+assert.equal(immediate({now:"2026-10-14T10:10:00Z",targetDate:date}).mayPost,true);
+assert.equal(immediate({now:"2026-10-14T14:43:30Z",targetDate:"2026-10-13"}).mayPost,false);
 blocked({now:"2026-10-14T10:09:00Z"},"OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
 blocked({now:"2026-10-14T16:01:00Z"},"CROSS_MIDNIGHT_TARGET_FORBIDDEN");
 blocked({targetDate:"2026-10-15"},"CROSS_MIDNIGHT_TARGET_FORBIDDEN");
@@ -58,6 +65,8 @@ assert.match(recovery,/classifySourceReadyFormalHandoff/);
 assert.match(recovery,/if\(!handoff\.mayPost\)/);
 assert.match(recovery,/LEGACY_WORKER_PINNED_PRIOR_DAY_UNSUPPORTED_NO_BUSINESS_POST/);
 assert.match(recovery,/SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY/);
+assert.match(recovery,/NO_BUSINESS_POST_AFTER_SESSION_ROLLOVER/);
+assert.match(recovery,/classifyImmediateBusinessPostClock\\(\\{now:new Date\\(\\),targetDate:date\\}\\)/);
 assert.doesNotMatch(recovery,/if\(!handoff\.mayPost\)\s*\{[\s\S]*?process\.exit\(0\)/);
 assert.equal((recovery.match(/admin\('\/api\/scan',\{method:'POST'/g)||[]).length,1);
 assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[]).length,3);
