@@ -59,6 +59,29 @@ test('independent original bytes rehash all 30 and reproduce TWSE innovation sub
  assert.equal(r.selectedCount,null);assert.equal(r.frozenD1Written,false);
  const {auditHash,...base}=r;assert.equal(auditHash,await sha256Hex(base));
 });
+test('real shorter 2/2 preview rehashes its actual signed denominator, never fabricates 30',async()=>{
+ const f=await fixture(),r=f.sourceReceipt;
+ r.observations=r.observations.slice(0,2);
+ r.preliminaryDenominator=2;r.perSymbolNativeRequestsMade=2;
+ r.currentNativeStockCfiObserved=1;r.currentNativeNonShareExplicit=1;
+ r.currentNativeInnovationBoardStocks=1;
+ r.receiptHash=await sha256Hex(
+  Object.fromEntries(Object.entries(r).filter(([k])=>k!=='receiptHash')));
+ const audited=await audit(f);
+ assert.equal(audited.auditedSymbolDenominator,2);
+ assert.equal(audited.originalProviderResponsesRehashed,2);
+ assert.equal(audited.nativeCurrentStockRowsReproduced,1);
+ assert.equal(audited.historicalOrdinarySharePITCertified,false);
+});
+test('signed 31-security preview cannot be accepted by independent audit',async()=>{
+ const f=await fixture();
+ f.sourceReceipt.preliminaryDenominator=31;
+ f.sourceReceipt.perSymbolNativeRequestsMade=31;
+ f.sourceReceipt.receiptHash=await sha256Hex(
+  Object.fromEntries(Object.entries(f.sourceReceipt).filter(([k])=>k!=='receiptHash')));
+ await assert.rejects(()=>audit(f),
+  /M09_INDEPENDENT_NATIVE_CFI_SOURCE_RECEIPT_SCOPE_HASH_OR_CLOCK_INVALID/);
+});
 test('one altered source body is never a certified 30/30 witness',async()=>{
  const f=await fixture(),read=f.readOriginal;
  f.readOriginal=async(code)=>code==='1004'?Buffer.from('tampered'):read(code);
@@ -89,4 +112,24 @@ test('workflows only run independent readback after signed main source success',
  assert.match(w,/github.event.workflow_run.event == 'push'/);
  assert.match(w,/contents: read/);assert.match(w,/actions: read/);
  assert.doesNotMatch(w,/schedule:|workflow_dispatch:|secrets\.|contents: write/);
+});
+
+test('daily native rehash is chained only to real A1 independent workflow and cannot modify Frozen',async()=>{
+ const [upstream,auditWorkflow]=await Promise.all([
+  readFile('.github/workflows/system2-shared-official-a1-independent-audit.yml','utf8'),
+  readFile('.github/workflows/system2-m09-daily-native-cfi-independent-audit.yml','utf8')
+ ]);
+ assert.match(upstream,/Observe native ISIN CFI for this exact audited preview only/);
+ assert.match(upstream,/if: success\(\) && github.event_name != 'push'/);
+ assert.match(upstream,/s2-m09-daily-native-cfi-/);
+ assert.match(upstream,/historicalOrdinarySharePitCertified/);
+ assert.match(auditWorkflow,/workflow_run:/);
+ assert.match(auditWorkflow,/System2 Shared Official A1 Independent Source Audit/);
+ assert.match(auditWorkflow,/github.event.workflow_run.event == 'workflow_run'/);
+ assert.match(auditWorkflow,/github.event.workflow_run.head_branch == 'main'/);
+ assert.match(auditWorkflow,/head_repository.full_name == github.repository/);
+ assert.match(auditWorkflow,/github.event.workflow_run.run_attempt/);
+ assert.match(auditWorkflow,/contents: read/);
+ assert.match(auditWorkflow,/actions: read/);
+ assert.doesNotMatch(auditWorkflow,/schedule:|contents: write|secrets\.|wrangler (?:deploy|d1|r2)/);
 });

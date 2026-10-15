@@ -39,9 +39,11 @@ export async function auditM09ThirtyNativeOriginalsV0_1({
 }={}){
  if(sourceReceipt?.schemaVersion!=='S2_M09_AUDITED_PRELIMINARY_NATIVE_CFI_V0_1'||
   sourceReceipt.evidenceClass!=='ONLY_CURRENT_AS_OBSERVED_NATIVE_INSTRUMENT_TYPE_NOT_HISTORICAL_PIT'||
-  sourceReceipt.preliminaryDenominator!==30||
-  sourceReceipt.perSymbolNativeRequestsMade!==30||
-  !Array.isArray(sourceReceipt.observations)||sourceReceipt.observations.length!==30||
+  !Number.isInteger(sourceReceipt.preliminaryDenominator)||
+  sourceReceipt.preliminaryDenominator<1||sourceReceipt.preliminaryDenominator>30||
+  sourceReceipt.perSymbolNativeRequestsMade!==sourceReceipt.preliminaryDenominator||
+  !Array.isArray(sourceReceipt.observations)||
+  sourceReceipt.observations.length!==sourceReceipt.preliminaryDenominator||
   !HASH.test(sourceReceipt.receiptHash||'')||
   await sha256Hex(strip(sourceReceipt,'receiptHash'))!==sourceReceipt.receiptHash||
   sourceReceipt.historicalOrdinarySharePitCertified!==0||

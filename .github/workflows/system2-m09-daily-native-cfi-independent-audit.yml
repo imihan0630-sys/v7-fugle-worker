@@ -1,0 +1,88 @@
+name: System2 M09 Daily Native CFI Independent Readback (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-shared-official-a1-independent-audit.yml"
+      - ".github/workflows/system2-m09-daily-native-cfi-independent-audit.yml"
+      - "system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs"
+      - "system2/tests/audit_m09_audited_preview_native_cfi_original_v0_1.test.mjs"
+  workflow_run:
+    workflows:
+      - "System2 Shared Official A1 Independent Source Audit (READ ONLY)"
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-m09-daily-native-cfi-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit_native_originals:
+    # Upstream A1 audit starts as workflow_run from real source, or as explicit
+    # workflow_dispatch on a specified source. Its on-main push self-test is
+    # 121/122 and must NEVER trigger this real per-security observer.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       (github.event.workflow_run.event == 'workflow_run' ||
+        github.event.workflow_run.event == 'workflow_dispatch'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test real byte-separate native CFI audit with finite actual denominator
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs
+          node --test system2/tests/audit_m09_audited_preview_native_cfi_original_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fetch exact upstream audit-source-run native original bytes
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: s2-m09-daily-native-cfi-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: /tmp/s2-m09-native-30-independent-readback
+          github-token: ${{ github.token }}
+      - name: Independently rehash all actually requested current ISIN CFI originals
+        if: github.event_name == 'workflow_run'
+        env:
+          S2_M09_NATIVE_SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs
+          R=/tmp/s2-m09-native-30-independent-audit/audit-receipt.json
+          test -s "$R"
+          COUNT="$(jq -r .auditedSymbolDenominator "$R")"
+          test "$COUNT" -ge 1
+          test "$COUNT" -le 30
+          test "$(jq -r .originalProviderResponsesRehashed "$R")" = "$COUNT"
+          test "$(jq -r .historicalOrdinarySharePITCertified "$R")" = 'false'
+          test "$(jq -r .entireStockUniverseClassPITCertified "$R")" = 'false'
+          test "$(jq -r .formalStage1SelectionAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "DAILY_30_OR_FEWER_NATIVE_CFI_SOURCE_INDEPENDENTLY_REHASHED=${COUNT}; historical PIT=NOT QUALIFIED, Frozen=NO." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain independent native source audit receipt
+        if: always() && github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-native-cfi-independent-${{ github.run_id }}
+          path: /tmp/s2-m09-native-30-independent-audit/audit-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No retrospective rank, no Cloudflare D1 writes
+        if: always()
+        run: |
+          echo 'Current native source readback is NOT historical security-type PIT or ordinary-equity universe certification.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Zero strategy selection/zero-pick promotion, zero Frozen D1/R2 write, zero System1 V8 Formal impact.' >> "$GITHUB_STEP_SUMMARY"
