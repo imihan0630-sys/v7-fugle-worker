@@ -21,6 +21,26 @@ function minusDays(day,days){
  const d=new Date(day+'T00:00:00Z');d.setUTCDate(d.getUTCDate()-days);
  return d.toISOString().slice(0,10);
 }
+// Report ONLY known market/date identities + whitelist-safe failure codes.
+// Original response bodies, provider URLs and exception strings stay PRIVATE.
+// Diagnostics never certify a source, PIT, selection or Frozen.
+export function missingA1MarketDatePairsAfterFetchV0_1({tradingDates,receipts,errors=[]}={}){
+ if(!Array.isArray(tradingDates)||tradingDates.length!==61||
+   tradingDates.some((d,i)=>!DAY.test(d)||(i>0&&d<=tradingDates[i-1]))||
+   !Array.isArray(receipts)||!Array.isArray(errors))
+  throw Error('SHARED_A1_MISSING_PAIR_DIAGNOSTIC_INPUT_INVALID');
+ const captured=new Set(receipts.map(x=>x?.market+'|'+x?.marketDate));
+ const missing=[];
+ for(const date of tradingDates)for(const market of ['TWSE','TPEX']){
+  if(captured.has(market+'|'+date))continue;
+  const rawCode=errors.find(e=>e?.market===market&&e?.date===date)?.code;
+  const reasonCode=typeof rawCode==='string'&&/^[A-Z0-9_]{1,80}$/.test(rawCode)?
+   rawCode:'SOURCE_MISSING_REASON_UNKNOWN';
+  missing.push({market,date,reasonCode});
+ }
+ return missing;
+}
+
 export async function collectSharedOfficialA1IncrementalV0_1({
  outputDir=OUT,now=()=>new Date(),fetchImpl=globalThis.fetch,
  seedEvidenceFile=null,seedOriginalDir=null,allowOlderManual=false,
@@ -70,6 +90,10 @@ export async function collectSharedOfficialA1IncrementalV0_1({
   plannedPairs:122,
   reuseCount:evidence.sharedOriginalSourceReuse?.trustedReusedMarketDatePairs??0,
   missingBeforeFetch:evidence.sharedOriginalSourceReuse?.initialMissingMarketDatePairs||[],
+  missingAfterFetch:missingA1MarketDatePairsAfterFetchV0_1({
+   tradingDates:evidence.calendar?.tradingDates,
+   receipts:evidence.receipts,errors:evidence.errors
+  }),
   manifestHash:manifest.manifestSha256,
   sourceCoverage:manifest.sourceCoverage,
   storageClass:manifest.storageClass,
