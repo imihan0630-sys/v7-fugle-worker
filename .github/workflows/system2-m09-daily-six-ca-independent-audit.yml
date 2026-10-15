@@ -64,6 +64,9 @@ jobs:
           test -s "$R"
           test "$(jq -r .originalCaFamiliesIndependentlyRehashed "$R")" = "6"
           test "$(jq -r .independentNativeRangeSchemaReparsed "$R")" = "6"
+          test "$(jq -r .positiveFlaggedPreviewIndependentlyVerified "$R")" = "$(jq -r .sourceReportedKnownEventPreviewCount "$R")"
+          test "$(jq -r .positiveEventRowsIndependentlyMatched "$R")" -ge "$(jq -r .positiveFlaggedPreviewIndependentlyVerified "$R")"
+          test "$(jq -r .unflaggedPreviewNoEventCertified "$R")" = "false"
           test "$(jq -r .historicalFirstKnownAtPITCertified "$R")" = "false"
           test "$(jq -r .completeCorrectionsAndRetractionsCertified "$R")" = "false"
           test "$(jq -r .historicalNoEventCoverageCertified "$R")" = "false"
@@ -73,7 +76,7 @@ jobs:
           test "$(jq -r .zeroPickDay "$R")" = "null"
           test "$(jq -r .frozenD1Written "$R")" = "false"
           test "$(jq -r .cloudflareD1Writes "$R")" = "0"
-          echo "SIX_REAL_CA_NATIVE_BODY_SHA_AND_RANGE_READBACK=6/6; no historical PIT, no NO_EVENT, no Frozen." >> "$GITHUB_STEP_SUMMARY"
+          echo "SIX_REAL_CA_NATIVE_BODY_SHA_AND_RANGE_READBACK=6/6, POSITIVE_CA_FLAGS_ORIGINAL_MATCH=$(jq -r .positiveFlaggedPreviewIndependentlyVerified "$R"); no historical PIT, no NO_EVENT, no Frozen." >> "$GITHUB_STEP_SUMMARY"
       - name: Preserve signed independent six-CA READ ONLY receipt 90 days
         if: always()
         uses: actions/upload-artifact@v4

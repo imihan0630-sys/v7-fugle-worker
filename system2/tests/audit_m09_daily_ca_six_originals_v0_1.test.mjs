@@ -25,7 +25,7 @@ async function fixture(){
   const id=ids[i],meta=links[id];
   const range=meta.exchange==='TWSE'?'20260701~20261015':'2026/07/01~2026/10/15';
   const raw=Buffer.from(JSON.stringify({stat:'OK',date:range,tables:[{
-   title:'公司行動實際公告',fields:['證券代號','現行交易日','除權息'],
+   title:'公司行動實際公告',fields:['證券代號','資料日期','除權息'],
    data:[['2330','2026-09-15','資料樣本']]}]}));
   bytes.set(id,gzipSync(raw));
   const parsed=summarize({originalText:raw.toString('utf8'),
@@ -58,7 +58,8 @@ async function fixture(){
  });
  const eventRisk=await signed({
   schemaVersion:'S2_M09_CA_NEGATIVE_REPLAY_61_SESSION_V0_1',
-  marketDate:DATE,caRawSixSourceReceiptHash:caReceipt.receiptHash,
+  marketDate:DATE,firstTradingDate:START,lastTradingDate:DATE,
+  caRawSixSourceReceiptHash:caReceipt.receiptHash,
   initialA1ReceiptHash:A,independentA1AuditHash:B,previewReceiptHash:C,
   caRawFirstObservedAtUtc:caReceipt.firstPhysicalObservedAtUtc,
   caRawCompletedAtUtc:caReceipt.completedAtUtc,
@@ -68,7 +69,11 @@ async function fixture(){
   perSource:receipts.map(r=>({sourceId:r.sourceId,
    originalRawSha256:r.originalSha256,originalBytes:r.originalBytes,
    capturedAtUtc:r.capturedAtUtc,rangeReverifiedFromActualBytes:true})),
-  flaggedPreview:[{market:'TWSE',symbol:'2330'}],
+  flaggedPreview:[{market:'TWSE',symbol:'2330',sourceEventCount:3,
+   events:ids.filter(id=>id.startsWith('TWSE_')).map(sourceId=>({
+    sourceId,eventDate:'2026-09-15',
+    knowledgeTimeClass:'ONLY_PROVEN_PRESENT_AS_OF_CA_SOURCE_CAPTURE_NOT_HISTORICAL_PIT'
+   }))}],
   retroactivePitAdmission:false,asKnownAtPreviousDecisionClock:false,
   completeHistoricalRevisionAndCancellationEvidence:false,
   noEventOrNoActionMayBeCertified:false,
@@ -98,6 +103,9 @@ test('actual six raw bodies independently rehash and reparse, preserving NO-PIT 
  assert.equal(receipt.originalCaFamiliesIndependentlyRehashed,6);
  assert.equal(receipt.independentNativeRangeSchemaReparsed,6);
  assert.equal(receipt.sourceReportedKnownEventPreviewCount,1);
+ assert.equal(receipt.positiveFlaggedPreviewIndependentlyVerified,1);
+ assert.equal(receipt.positiveEventRowsIndependentlyMatched,3);
+ assert.equal(receipt.unflaggedPreviewNoEventCertified,false);
  assert.equal(receipt.historicalFirstKnownAtPITCertified,false);
  assert.equal(receipt.historicalNoEventCoverageCertified,false);
  assert.equal(receipt.completeCorrectionsAndRetractionsCertified,false);
@@ -168,6 +176,43 @@ test('original body native response range is rejected when producer cached metad
   Object.entries(f.advisory).filter(([k])=>k!=='receiptHash')));
  await assert.rejects(()=>audit(f),/INDEPENDENT_NATIVE_RANGE_OR_SCHEMA_MISMATCH/);
 });
+async function resignEventRisk(f){
+ const {receiptHash,...base}=f.eventRisk;
+ f.eventRisk=await signed(base);
+ f.advisory.caEventRiskReceiptHash=f.eventRisk.receiptHash;
+ const {receiptHash:_,...advisoryBase}=f.advisory;
+ f.advisory=await signed(advisoryBase);
+}
+test('even re-signed forged positive event date MUST appear in actual original',async()=>{
+ const f=await fixture();
+ f.eventRisk.flaggedPreview[0].events[0].eventDate='2026-09-16';
+ await resignEventRisk(f);
+ await assert.rejects(()=>audit(f),
+  /SIGNED_FLAGGED_EVENT_NOT_FOUND_IN_ORIGINAL_NATIVE_BODY/);
+});
+test('even re-signed forged positive event source family MUST match actual native market',async()=>{
+ const f=await fixture();
+ f.eventRisk.flaggedPreview[0].events[0].sourceId='TPEX_EX_RIGHT_DIVIDEND_ACTUAL';
+ await resignEventRisk(f);
+ await assert.rejects(()=>audit(f),
+  /SIGNED_FLAGGED_EVENT_NOT_FOUND_IN_ORIGINAL_NATIVE_BODY/);
+});
+test('duplicate positive event record cannot inflate source-reported event hit count',async()=>{
+ const f=await fixture();
+ f.eventRisk.flaggedPreview[0].events.push({...f.eventRisk.flaggedPreview[0].events[0]});
+ f.eventRisk.flaggedPreview[0].sourceEventCount=4;
+ await resignEventRisk(f);
+ await assert.rejects(()=>audit(f),
+  /SIGNED_FLAGGED_EVENT_NOT_FOUND_IN_ORIGINAL_NATIVE_BODY/);
+});
+test('false positive known event for another symbol cannot survive original-byte proof',async()=>{
+ const f=await fixture();
+ f.eventRisk.flaggedPreview[0].symbol='1234';
+ await resignEventRisk(f);
+ await assert.rejects(()=>audit(f),
+  /SIGNED_FLAGGED_EVENT_NOT_FOUND_IN_ORIGINAL_NATIVE_BODY/);
+});
+
 test('CI daily independent job only follows same-repository valid source and cannot write cloud',async()=>{
  const y=await readFile('.github/workflows/system2-m09-daily-six-ca-independent-audit.yml','utf8');
  assert.match(y,/workflow_run:/);
