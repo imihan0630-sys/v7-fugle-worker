@@ -64,9 +64,40 @@ export async function buildM09DailyBlockerJournalV0_1({
   w.cloudflareD1Writes!==0||w.cloudflareR2Writes!==0||
   !Array.isArray(w.watchlist)||w.watchlist.length>30)
   deny('SIGNED_READINESS_WATCH_LINEAGE_OR_AUTHORITY_INVALID');
- if(!complete&&(r.state!=='BLOCKED_SOURCE_NOT_SELECTION'||
-  w.state!=='BLOCKED_SOURCE_INCOMPLETE'||w.watchlist.length!==0))
+ // A valid hash proves no mutation after signing, not that a producer
+ // signed a semantically valid PRELIMINARY (non-Frozen) record.
+ const blockedReadiness=r.state==='BLOCKED_SOURCE_NOT_SELECTION';
+ const allowedReadiness=new Set([
+  'DAILY_STRATEGY_INPUT_INCOMPLETE',
+  'QUALIFIED_RESEARCH_PENDING_RANK_CAPACITY_FROZEN',
+  'STRATEGY_ASSESSED_NO_QUALIFIED_RESEARCH_PENDING_FINAL_GATE',
+ ]);
+ if(!blockedReadiness&&!allowedReadiness.has(r.state))
+  deny('READINESS_STATE_NOT_NON_SELECTION');
+ if(!complete&&(!blockedReadiness||w.state!=='BLOCKED_SOURCE_INCOMPLETE'||
+    w.watchlist.length!==0))
   deny('PARTIAL_SOURCE_MUST_BLOCK_ENTIRE_WATCH');
+ if(w.state==='BLOCKED_SOURCE_INCOMPLETE'){
+  if(!blockedReadiness||w.watchlist.length!==0||
+     (w.displayedCount!==undefined&&w.displayedCount!==null&&w.displayedCount!==0))
+   deny('BLOCKED_PREVIEW_CANNOT_HAVE_OBSERVATIONS');
+ }else if(w.state==='PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION'){
+  if(!complete||!Number.isInteger(w.displayedCount)||
+     w.displayedCount!==w.watchlist.length||
+     w.ordinaryEquityOnlyUniverseCertified!==false)
+   deny('PRELIMINARY_WATCH_DENOMINATOR_OR_SCOPE_INVALID');
+  const symbols=new Set();
+  for(const row of w.watchlist){
+   const identity=row?.market+'|'+row?.symbol;
+   if(!['TWSE','TPEX'].includes(row?.market)||
+      !/^[1-9][0-9]{3}$/.test(row?.symbol||'')||
+      symbols.has(row.symbol)||row.strategyRank!==null||
+      row.formalStrategyValidity!==null||
+      row.riskLevel!=='PRELIMINARY_OBSERVATION_ONLY')
+    deny('PRELIMINARY_WATCH_SYMBOL_OR_FORMAL_AUTHORITY_INVALID');
+   symbols.add(row.symbol);
+  }
+ }else deny('UNRECOGNIZED_PRELIMINARY_WATCH_STATE');
  if(complete&&r.state==='BLOCKED_SOURCE_NOT_SELECTION'&&
   !Array.isArray(r.blockers))
   deny('LATE_SOURCE_BLOCKER_CODES_REQUIRED');
