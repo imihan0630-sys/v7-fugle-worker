@@ -66,7 +66,7 @@ for(const [name,fn] of [
  ["forge false PIT ledger",b=>{const v=JSON.parse(b);v.historicalPITCertifiedCount=9;return Buffer.from(JSON.stringify(v))}],
  ["change capture before original",b=>{const v=JSON.parse(b);v.versions[0].retrospectiveCapturedAtUtc="2026-03-01T00:00:00Z";return Buffer.from(JSON.stringify(v))}],
  ["tamper provider response SHA",b=>{const v=JSON.parse(b);v.versions[0].originalResponseSha256="f".repeat(64);return Buffer.from(JSON.stringify(v))}],
- ["append bytes to original native",b=>Buffer.concat([b,Buffer.from(" \n")])],
+ ["append bytes to original native",b=>Buffer.concat([Buffer.from(b),Buffer.from(" \n")])],
  ["empty provider",()=>Buffer.from("")],
  ["non-JSON provider",()=>Buffer.from("{garbage")]
 ]){
