@@ -21,7 +21,7 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   if(!DAY.test(String(targetDate||""))||new Date(targetDate+"T00:00:00Z").toISOString().slice(0,10)!==targetDate)
     return out("INVALID_TARGET_SESSION");
   if(clock.date!==targetDate) return out("CROSS_MIDNIGHT_TARGET_FORBIDDEN");
-  if(clock.time<"18:10"||clock.time>"23:59")return out("OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
+  if(clock.time<"18:10"||clock.time>"23:54")return out("OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
   if(scan?.scanDate===targetDate)return out("FORMAL_ALREADY_SAVED_NO_REPLAY");
   if(scan?.scanDate && scan.scanDate>targetDate)return out("FORMAL_FUTURE_STATE_REJECTED");
   const institutional= institution?.marketDate===targetDate&&institution?.ready===true;
@@ -60,4 +60,17 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
     precommitReceiptId:prior.id??null,
     officialReady:true,originalCoreUnchanged:true,originalD1LeaseStillRequired:true,
     noAdditionalBusinessRetry:true};
+}
+
+// Final authority immediately before the original legacy business POST:
+// Worker ignores body.marketDate and uses its own Date.now(). An earlier
+// GET/preflight can legitimately straddle midnight. NEVER rely on its clock.
+export function classifyImmediateBusinessPostClock({now=new Date(),targetDate}={}){
+  const clock=format(now);
+  const valid=/^20\\d{2}-\\d{2}-\\d{2}$/.test(String(targetDate||""));
+  const sameDay=valid&&clock.date===targetDate;
+  const safeEvening=sameDay&&clock.time>="18:10"&&clock.time<="23:54";
+  return {mayPost:safeEvening,reason:safeEvening?"SAME_DAY_BUSINESS_POST_CLOCK_VERIFIED":
+    "BUSINESS_POST_CLOCK_ROLLOVER_OR_OUTSIDE_SAFE_EVENING",
+    targetDate,observedDate:clock.date,observedTime:clock.time,noRetry:true};
 }
