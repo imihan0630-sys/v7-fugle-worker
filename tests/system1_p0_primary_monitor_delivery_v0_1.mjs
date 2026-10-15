@@ -43,7 +43,7 @@ export function assessP0PrimaryMonitorDelivery({targetDate,formal,monitor}={}){
   }
   const ready={formalSaved:true,monitorExact:true,selectedCount:count,
     threeMinVerified:formal?.threeMin?.verified===true};
-  if(formal?.dailyReport?.sent!==true || formal?.dailyReport?.simulated===true)
+  if(formal?.dailyReport?.sent!==true || formal?.dailyReport?.simulated!==false)
     return done("DAILY_SELECTION_PUSH_NOT_ACCEPTED",ready);
   return {...base,...ready,ok:true,dailyPushAccepted:true,
     reason:"FORMAL_PRIMARY_MONITOR_AND_PUSH_ACCEPTED_NOT_HANDSET_PROOF"};
