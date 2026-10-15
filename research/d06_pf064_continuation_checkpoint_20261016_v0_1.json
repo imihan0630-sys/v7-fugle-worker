@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "D06_PF064_CONTINUATION_CHECKPOINT_V0_1",
+  "createdAt": "2026-10-16T07:15:41+08:00",
+  "room": "05｜法人與籌碼研究室",
+  "baseMainSha": "b13216182eed18cd52ceee6e2fc1cd5d95086979",
+  "researchPath": "research/d06_pf064_pcf_decision_time_vintage_guard_20261016_v0_1.json",
+  "researchCommit": "e18a77415671a49c8db9f08d51d9daaedb055444",
+  "testSummary": "26 synthetic deterministic tests passed locally; no new independent market dates; no OOS outcomes",
+  "maturity": {
+    "D06": 55.6,
+    "D06_16": 60,
+    "D06_11": 40,
+    "overall": 47.9
+  },
+  "formalCore": "LOCKED",
+  "status": "RESEARCH_ONLY / MAIN_CHECKPOINT_UPDATE_BLOCKED / OUTCOMES_CLOSED",
+  "blocker": "Existing PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md update_file was rejected by connector safety checks; do not treat this supplement as canonical until merged/referenced.",
+  "next": "Safely integrate PF064 supplement with the existing dedicated checkpoint using a reviewed, permitted update; collect new independently observed PCF vintages and preregister D16 OOS without opening outcomes; wait for TDCC sourceDate >2026-10-08."
+}
