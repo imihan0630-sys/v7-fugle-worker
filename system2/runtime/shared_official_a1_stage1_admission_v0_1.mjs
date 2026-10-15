@@ -162,8 +162,8 @@ export async function admitSharedOfficialA1ToShortMomentumStage1V0_1({
    independentAuditReceipt:companyActionIndependentAuditReceipt,
  });
  const instrumentClassBySymbol=await verifiedStage1OrdinaryEquityBySymbolV0_1({
-   sourceLedger,evaluationAtUtc,instrumentSourceReceipt,
-   instrumentIndependentAuditReceipt,
+   sourceLedger,evaluationAtUtc,windowStartDate:verified.dates[0],
+   instrumentSourceReceipt,instrumentIndependentAuditReceipt,
  });
  const evaluation=await evaluateSourceFirstShortMomentumV0_1({
    sourceLedger,historyBySymbol:verified.historyBySymbol,

@@ -18,10 +18,11 @@ function deny(code){throw Error('STAGE1_INSTRUMENT_PIT_'+code);}
 const depositaryName=x=>typeof x==='string'&&
  /[-\u2010-\u2014]\s*DR$/i.test(x.normalize('NFKC').trim());
 export async function verifiedStage1OrdinaryEquityBySymbolV0_1({
- sourceLedger,evaluationAtUtc,instrumentSourceReceipt=null,
+ sourceLedger,evaluationAtUtc,windowStartDate,instrumentSourceReceipt=null,
  instrumentIndependentAuditReceipt=null,
 }={}){
  if(!utc(evaluationAtUtc)||!day(sourceLedger?.marketDate)||
+    !day(windowStartDate)||windowStartDate>sourceLedger.marketDate||
     !SHA.test(sourceLedger?.ledgerSha256||'')||
     !Array.isArray(sourceLedger?.observations))
   deny('SOURCE_OR_CLOCK_INVALID');
@@ -48,6 +49,12 @@ export async function verifiedStage1OrdinaryEquityBySymbolV0_1({
     a.auditorSeparation!=='INDEPENDENT_ORIGINAL_SOURCE_READBACK'||
     a.originalProviderBytesRehashed!==true||
     a.cfiNativeClassificationVerified!==true||
+    // A present-day Stocks/CFI readback has no historical effective-date
+    // provenance. Explicit period *in original provider rows* must be
+    // independently reproduced before using 61-session historical prices.
+    a.historicalNativeEffectivePeriodsIndependentlyVerified!==true||
+    !Array.isArray(a.nativeEffectivePeriodRows)||
+    a.nativeEffectivePeriodRows.length===0||
     a.sourceReceiptHash!==r.receiptHash||
     a.sourceLedgerHash!==sourceLedger.ledgerSha256||
     a.marketDate!==sourceLedger.marketDate||
@@ -57,6 +64,24 @@ export async function verifiedStage1OrdinaryEquityBySymbolV0_1({
     !SHA.test(a.auditHash||'')||
     await sha256Hex(unsigned(a,'auditHash'))!==a.auditHash)
   deny('INDEPENDENT_AUDIT_UNVERIFIED');
+ const attested=new Map();
+ for(const proof of a.nativeEffectivePeriodRows){
+  if(!/^[1-9][0-9]{3}$/.test(proof?.symbol||'')||
+     !['TWSE','TPEX'].includes(proof.market)||
+     attested.has(proof.symbol)||
+     !SHA.test(proof.originalNativeRowSha256||'')||
+     !day(proof.originalEffectiveFromDate)||
+     (proof.originalEffectiveThroughDate!==null&&
+      proof.originalEffectiveThroughDate!==undefined&&
+      !day(proof.originalEffectiveThroughDate))||
+     proof.explicitOriginalNativeDateRangeVerified!==true||
+     proof.originalProviderHistoricalVersionReadbackVerified!==true||
+     !utc(proof.originalObservedAtUtc)||
+     Date.parse(proof.originalObservedAtUtc)>Date.parse(a.auditedAtUtc)||
+     Date.parse(proof.originalObservedAtUtc)<Date.parse(r.firstCapturedAtUtc))
+    deny('INDEPENDENT_ORIGINAL_EFFECTIVE_PERIOD_ROW_INVALID');
+  attested.set(proof.symbol,proof);
+ }
  const sourceMap=new Map(sourceLedger.observations.map(s=>[s.symbol,s]));
  const accepted={},seen=new Set();
  for(const row of r.securities){
@@ -64,17 +89,24 @@ export async function verifiedStage1OrdinaryEquityBySymbolV0_1({
   if(typeof code!=='string'||!/^[1-9][0-9]{3}$/.test(code)||
      seen.has(code))deny('DUPLICATED_OR_INVALID_SOURCE_SYMBOL');
   seen.add(code);
-  const source=sourceMap.get(code);
+  const source=sourceMap.get(code),proof=attested.get(code);
   // Source+audit hashes cannot automatically attest a non-share native class:
   // only explicit positive native CFI ordinary-share identity can enter.
-  if(!source||source.market!==row.market||
+  if(!source||!proof||source.market!==row.market||
+     proof.market!==row.market||proof.cfi!==row.cfi||
+     proof.originalNativeRowSha256!==row.nativeSourceRowSha256||
+     proof.originalEffectiveFromDate!==row.effectiveFromDate||
+     (proof.originalEffectiveThroughDate??null)!==(row.effectiveThroughDate??null)||
      !['TWSE','TPEX'].includes(row.market)||source.marketDate!==r.marketDate||
      depositaryName(source.companyName)||
      row.classification!=='ORDINARY_COMMON_SHARE'||
      row.positiveCommonShareAttested!==true||
      typeof row.cfi!=='string'||!/^ES[A-Z]{4}$/.test(row.cfi)||
      !SHA.test(row.nativeSourceRowSha256||'')||
-     !day(row.effectiveFromDate)||row.effectiveFromDate>r.marketDate||
+     !day(row.effectiveFromDate)||
+     // Historical 61-session factors cannot use a present-only CFI identity
+     // whose *original effective interval* starts after the first session.
+     row.effectiveFromDate>windowStartDate||
      (row.effectiveThroughDate!==null&&row.effectiveThroughDate!==undefined&&
       (!day(row.effectiveThroughDate)||row.effectiveThroughDate<r.marketDate))||
      !utc(row.availableAtUtc)||Date.parse(row.availableAtUtc)>Date.parse(evaluationAtUtc)||

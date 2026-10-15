@@ -145,6 +145,14 @@ async function fixture(){
   verdict:'ACCEPTED_POSITIVE_ORDINARY_EQUITY_ROWS_ONLY',
   auditorSeparation:'INDEPENDENT_ORIGINAL_SOURCE_READBACK',
   originalProviderBytesRehashed:true,cfiNativeClassificationVerified:true,
+  historicalNativeEffectivePeriodsIndependentlyVerified:true,
+  nativeEffectivePeriodRows:[{
+   symbol:'2330',market:'TWSE',cfi:'ESVUFR',originalNativeRowSha256:H,
+   originalEffectiveFromDate:dates[0],originalEffectiveThroughDate:null,
+   explicitOriginalNativeDateRangeVerified:true,
+   originalProviderHistoricalVersionReadbackVerified:true,
+   originalObservedAtUtc:'2026-10-13T13:12:00Z',
+  }],
   sourceReceiptHash:instrumentSourceReceipt.receiptHash,
   sourceLedgerHash:sourceLedger.ledgerSha256,marketDate,
   auditedAtUtc:'2026-10-13T13:18:00Z'
@@ -188,6 +196,64 @@ test('audit cannot self-promote strategy PIT or selection authority',async()=>{
 test('manifest/source lineage mismatch is rejected before evaluation',async()=>{
  const p=await fixture();p.manifest={...p.manifest,originalOfficialProvenanceHash:'f'.repeat(64)};
  await assert.rejects(()=>admit(p),/MANIFEST_HASH_MISMATCH/);
+});
+
+test('re-signed present-day CFI without provider-native historical effective period is refused',async()=>{
+ const p=await fixture();
+ p.instrumentIndependentAuditReceipt.historicalNativeEffectivePeriodsIndependentlyVerified=false;
+ const {auditHash,...base}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(base);
+ await assert.rejects(()=>admit(p),/STAGE1_INSTRUMENT_PIT_INDEPENDENT_AUDIT_UNVERIFIED/);
+});
+test('historical native period beginning AFTER 61-session window cannot certify lookback',async()=>{
+ const p=await fixture();
+ // Both upstream and independently re-signed audit agree on a class
+ // period that did NOT exist for the first part of the 61 daily bars.
+ p.instrumentSourceReceipt.securities[0].effectiveFromDate=dates[30];
+ let {receiptHash,...base}=p.instrumentSourceReceipt;
+ p.instrumentSourceReceipt.receiptHash=await sha256Hex(base);
+ p.instrumentIndependentAuditReceipt.nativeEffectivePeriodRows[0].originalEffectiveFromDate=dates[30];
+ p.instrumentIndependentAuditReceipt.sourceReceiptHash=p.instrumentSourceReceipt.receiptHash;
+ let {auditHash,...auditBase}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(auditBase);
+ const out=await admit(p);
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('forged signed CFI symbol with mismatched independent original-row CFI cannot be admitted',async()=>{
+ const p=await fixture();
+ p.instrumentSourceReceipt.securities[0].cfi='ESZZZZ';
+ let {receiptHash,...base}=p.instrumentSourceReceipt;
+ p.instrumentSourceReceipt.receiptHash=await sha256Hex(base);
+ p.instrumentIndependentAuditReceipt.sourceReceiptHash=p.instrumentSourceReceipt.receiptHash;
+ let {auditHash,...auditBase}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(auditBase);
+ const out=await admit(p);
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('self-signed fake historical date with only matching CFI still denied by separate native period proof',async()=>{
+ const p=await fixture();
+ p.instrumentSourceReceipt.securities[0].effectiveFromDate='2026-09-20';
+ let {receiptHash,...base}=p.instrumentSourceReceipt;
+ p.instrumentSourceReceipt.receiptHash=await sha256Hex(base);
+ p.instrumentIndependentAuditReceipt.sourceReceiptHash=p.instrumentSourceReceipt.receiptHash;
+ let {auditHash,...auditBase}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(auditBase);
+ const out=await admit(p);
+ assert.equal(out.evaluation.qualifiedNotSelectedCount,0);
+ assert.equal(out.evaluation.observations[0].reasonCodes[0],
+  'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED');
+});
+test('positive native historical period audit must be observed no later than auditor time',async()=>{
+ const p=await fixture();
+ p.instrumentIndependentAuditReceipt.nativeEffectivePeriodRows[0].originalObservedAtUtc='2026-10-13T13:19:00Z';
+ let {auditHash,...base}=p.instrumentIndependentAuditReceipt;
+ p.instrumentIndependentAuditReceipt.auditHash=await sha256Hex(base);
+ await assert.rejects(()=>admit(p),
+  /STAGE1_INSTRUMENT_PIT_INDEPENDENT_ORIGINAL_EFFECTIVE_PERIOD_ROW_INVALID/);
 });
 
 test('full synthetic CA receipts but absent independently verified instrument class remain UNKNOWN',async()=>{
