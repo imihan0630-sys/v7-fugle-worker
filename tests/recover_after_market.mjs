@@ -1,6 +1,7 @@
 // Future scheduled recovery only. Never part of deployment acceptance.
 import assert from 'node:assert/strict';
 import {classifySourceReadyFormalHandoff} from './system1_p0_source_ready_handoff_gate_v0_1.mjs';
+import {assessP0PrimaryMonitorDelivery} from './system1_p0_primary_monitor_delivery_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('After-market recovery stopped: '+String(error.message).slice(0,700));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
@@ -47,7 +48,14 @@ async function admin(path,options={}) {
   return result;
 }
 const prior=await admin('/api/scan/status');
-if(prior.scanDate===date) {console.log(JSON.stringify({skipped:true,reason:'Today already selected; never resend plans',date}));process.exit(0);}
+if(prior.scanDate===date) {
+  const existingMonitor=await admin('/api/config');
+  const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:prior,monitor:existingMonitor});
+  console.log(JSON.stringify({alreadySelected:true,date,primaryBusinessReceipt:receipt,noBusinessPost:true}));
+  if(!receipt.ok)throw new Error('SAME_DAY_FORMAL_SAVED_BUT_MONITOR_OR_DAILY_PUSH_INCOMPLETE:'+receipt.reason+'; never reselect');
+  console.log(JSON.stringify({skipped:true,reason:'FORMAL_PRIMARY_MONITOR_AND_PUSH_ALREADY_ACCEPTED',date,noBusinessPost:true}));
+  process.exit(0);
+}
 const institution=await admin('/api/institution-status?marketDate='+encodeURIComponent(date)),quality=await admin('/api/quality-status?marketDate='+encodeURIComponent(date));
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
 assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);assert.equal(quality.tdcc.ready,true);
@@ -65,13 +73,29 @@ if(sourceReadyHandoff){
     process.exit(0);
   }
 }
-// Only one POST. A timeout is ambiguous: never retry a business write blindly.
-try {
-  const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date})});
-  console.log(JSON.stringify({recovery:true,historicalRecovery,scheduledFallback,requestedDate:date,skipped:!!result.skipped,reason:result.reason,scanDate:result.scanDate,selectedCount:result.selectedCount,pipelineComplete:result.pipeline?.complete,dailyDeliveryState:result.dailyReport?.deliveryState || null}));
-} catch(error) {
-  if(/authorization rejected/.test(String(error))) throw error;
-  const latest=await admin('/api/scan/status');
-  if(latest.scanDate===date) console.log(JSON.stringify({recoveredByReadonlyConfirmation:true,date,noRepeatedPost:true}));
-  else throw new Error('Single recovery attempt not confirmed; no repeated POST. '+String(error.message).slice(0,400));
+// Only one POST. A timeout is ambiguous: NEVER repeat a business write.
+// A nominal HTTP200 with same-day scanDate is NOT enough for the owner P0:
+// independently read current primary monitoring KV and check original daily push.
+let postResult=null,postError=null;
+try{
+  postResult=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date})});
+}catch(error){
+  if(/authorization rejected/.test(String(error)))throw error;
+  postError=String(error?.message||error).slice(0,320);
 }
+let latest,monitor;
+try{
+  [latest,monitor]=await Promise.all([admin('/api/scan/status'),admin('/api/config')]);
+}catch(error){
+  throw new Error('FORMAL_POST_OUTCOME_UNCONFIRMED_AND_READBACK_UNAVAILABLE_NO_RETRY:'+String(error.message).slice(0,300));
+}
+const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:latest,monitor});
+console.log(JSON.stringify({sourceReadyHandoff,requestedDate:date,postWasAttempted:true,
+  postStatus:postError?'OUTCOME_UNKNOWN_NEEDS_READBACK':'HTTP_SUCCESS',
+  postReturnedSkipped:postResult?.skipped===true,
+  primaryBusinessReceipt:receipt,noRepeatedPost:true}));
+if(!receipt.ok)throw new Error('P0_FORMAL_MONITOR_OR_PUSH_UNVERIFIED_NO_RETRY:'+receipt.reason+
+  (postError?'; original POST status unknown: '+postError:''));
+console.log(JSON.stringify({recoveredByExactPrimaryReadback:true,date,
+  selectedCount:receipt.selectedCount,monitorExact:true,dailyPushAccepted:true,
+  external3MinSeparate:true,phoneReceiptVerified:false,noRepeatedPost:true}));
