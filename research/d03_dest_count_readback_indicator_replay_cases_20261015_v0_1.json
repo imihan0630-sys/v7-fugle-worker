@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "D03_DEST_COUNT_READBACK_INDICATOR_REPLAY_CASES_20261015_V0_1",
+  "cases": [
+    {"id":"C01","name":"獨立筆數一致只通過儲存筆數層","input":{"producerBars":47420,"readbackBars":47420,"producerBatches":129,"readbackBatches":129,"rowsWritten":0},"expected":{"status":"COUNT_READBACK_PASS_REPLAY_BLOCKED","reason":"COUNT_SCOPE_ONLY"}},
+    {"id":"C02","name":"長條筆數不一致失敗","input":{"producerBars":47420,"readbackBars":47419,"producerBatches":129,"readbackBatches":129,"rowsWritten":0},"expected":{"status":"REJECT","reason":"BAR_COUNT_MISMATCH"}},
+    {"id":"C03","name":"批次筆數不一致失敗","input":{"producerBars":47420,"readbackBars":47420,"producerBatches":129,"readbackBatches":128,"rowsWritten":0},"expected":{"status":"REJECT","reason":"BATCH_COUNT_MISMATCH"}},
+    {"id":"C04","name":"唯讀回讀若寫入即失敗","input":{"producerBars":47420,"readbackBars":47420,"producerBatches":129,"readbackBatches":129,"rowsWritten":1},"expected":{"status":"REJECT","reason":"READBACK_NOT_READ_ONLY"}},
+    {"id":"C05","name":"壓縮檔雜湊一致不等於資料列內容一致","input":{"countPass":true,"zipHashMatch":true,"independentPayloadParity":false},"expected":{"status":"REPLAY_BLOCKED","reason":"PAYLOAD_PARITY_MISSING"}},
+    {"id":"C06","name":"生產者自報雜湊一致不等於獨立重算","input":{"countPass":true,"producerHashParityReported":true,"independentPayloadParity":false},"expected":{"status":"REPLAY_BLOCKED","reason":"INDEPENDENT_PAYLOAD_PARITY_MISSING"}},
+    {"id":"C07","name":"完整內容一致仍不建立原始可用時點","input":{"countPass":true,"independentPayloadParity":true,"sourcePitClocksAccepted":false},"expected":{"status":"REPLAY_BLOCKED","reason":"SOURCE_PIT_CLOCKS_MISSING"}},
+    {"id":"C08","name":"目的端寫入時間不得洗成原始時點","input":{"countPass":true,"destinationPersistedAtOnly":true},"expected":{"status":"REPLAY_BLOCKED","reason":"DESTINATION_CLOCK_CANNOT_REPLACE_SOURCE_CLOCK"}},
+    {"id":"C09","name":"全域長條筆數不證明逐股交易日覆蓋","input":{"countPass":true,"perSymbolSessionCoverage":false},"expected":{"status":"REPLAY_BLOCKED","reason":"PER_SYMBOL_SESSION_COVERAGE_MISSING"}},
+    {"id":"C10","name":"部分搬移不得建立布林二十期窗口","input":{"countPass":true,"exactCleanSessions":19,"bollingerRequested":true},"expected":{"status":"REPLAY_BLOCKED","reason":"BOLLINGER_EXACT_20_MISSING"}},
+    {"id":"C11","name":"二十期但缺連續性譜系仍不得建立布林窗口","input":{"countPass":true,"exactCleanSessions":20,"continuityAccepted":false,"bollingerRequested":true},"expected":{"status":"REPLAY_BLOCKED","reason":"CONTINUITY_LINEAGE_MISSING"}},
+    {"id":"C12","name":"平均趨向指標不可借用布林有限窗口捷徑","input":{"countPass":true,"exactCleanSessions":20,"adxRequested":true,"adxReplayCertified":false},"expected":{"status":"REPLAY_BLOCKED","reason":"ADX_REPLAY_STATE_MISSING"}},
+    {"id":"C13","name":"批次中繼資料全數存在不代表負載完整","input":{"countPass":true,"batchMetadataComplete":true,"allBatchPayloadClosed":false},"expected":{"status":"REPLAY_BLOCKED","reason":"BATCH_PAYLOAD_CLOSURE_MISSING"}},
+    {"id":"C14","name":"凍結決策零筆是已觀測零但不代表歷史凍結完整","input":{"countPass":true,"frozenRowsObserved":0,"frozenHistoryAccepted":false},"expected":{"status":"REPLAY_BLOCKED","reason":"FROZEN_HISTORY_NOT_ACCEPTED"}},
+    {"id":"C15","name":"搬移順序未知保留日期群聚與選擇偏誤","input":{"countPass":true,"migrationOrderPreregistered":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"MIGRATION_SELECTION_ORDER_UNKNOWN"}},
+    {"id":"C16","name":"工程收據不是樣本外證據","input":{"countPass":true,"oosEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"OOS_EVIDENCE_MISSING"}},
+    {"id":"C17","name":"工程收據不是滾動前推證據","input":{"countPass":true,"walkForwardEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"WALK_FORWARD_EVIDENCE_MISSING"}},
+    {"id":"C18","name":"搬移成本不是交易成本與可成交性","input":{"countPass":true,"tradingCostEvidence":false,"fillabilityEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"TRADING_COST_FILLABILITY_MISSING"}},
+    {"id":"C19","name":"市場狀態與公司行動污染仍未知","input":{"countPass":true,"marketStateValidated":false,"corporateActionResolved":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"MARKET_STATE_ACTION_CONTAMINATION_UNKNOWN"}},
+    {"id":"C20","name":"完整嚴格輸入僅可達技術輸入資格","input":{"producerBars":84688,"readbackBars":84688,"producerBatches":129,"readbackBatches":129,"rowsWritten":0,"independentPayloadParity":true,"sourcePitClocksAccepted":true,"perSymbolSessionCoverage":true,"continuityAccepted":true,"parentBindingAccepted":true},"expected":{"status":"INDICATOR_INPUT_READY_OUTCOMES_CLOSED","reason":"INPUT_GATE_ONLY"}}
+  ]
+}
