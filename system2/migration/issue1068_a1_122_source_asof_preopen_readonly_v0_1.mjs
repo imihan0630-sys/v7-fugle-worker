@@ -30,10 +30,22 @@ function native(buf,size,sha,name){
  try{return JSON.parse(buf.toString("utf8"))}catch{fail(name+"_ORIGINAL_JSON_INVALID")}
 }
 function exactSourceFiles(archive){
- if(!Array.isArray(archive?.archivedPaths)||archive.archivedPaths.length!==122||
-    !Array.isArray(archive?.fileStates))fail("ARCHIVED_PATHS_MISSING");
+ if(!Array.isArray(archive?.archivedPaths)||archive.archivedPaths.length!==125||
+    !Array.isArray(archive?.fileStates)||archive.fileStates.length!==125)
+    fail("ARCHIVED_PATHS_MISSING");
+ const meta=[
+  "manifests/2026-10-15/"+ORIGINALS.sourceManifestSha256+".json",
+  "source-receipts/2026-10-15/"+ORIGINALS.originalSourceReceiptHash+".json",
+  "SOURCE_NOTICE.md"
+ ];
+ if(meta.some(path=>!archive.archivedPaths.includes(path)||
+   !archive.fileStates.some(s=>s.path===path&&
+   ["CREATED","VERIFIED_EXISTING"].includes(s.state))))
+   fail("ARCHIVE_METAFILES_MISSING");
+ const rawPaths=archive.archivedPaths.filter(path=>path.startsWith("raw/"));
+ if(rawPaths.length!==122)fail("ARCHIVE_RAW_PAIR_DENOMINATOR_INVALID");
  const known=new Set();
- for(const f of archive.archivedPaths){
+ for(const f of rawPaths){
   if(typeof f!=="string"||!/^raw\/(TWSE|TPEX)\/2026\/2026-\d\d-\d\d--[a-f0-9]{64}\.json\.gz$/.test(f)||known.has(f))
    fail("DUPLICATE_OR_BAD_RAW_PATH");
   known.add(f);
