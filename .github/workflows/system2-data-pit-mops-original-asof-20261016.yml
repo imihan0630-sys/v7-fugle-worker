@@ -1,0 +1,65 @@
+name: S2 DATA PIT MOPS Original Source As-Of Observation (Read Only)
+# No full historical PIT, strategy certification or direct external/Cloudflare writes.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-data-pit-mops-original-asof-20261016.yml
+      - system2/migration/issue1068_mops_observed_by_asof_scope_v0_1.mjs
+      - system2/tests/issue1068_mops_observed_by_asof_scope_v0_1.test.mjs
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-data-pit-mops-original-asof-20261016.yml
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-original-mops-asof-pit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  asof_original_source_observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Download exactly original October 15 provider-capture sanitized receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-data-historical-mops-source-clock-ledger-38735146839-1
+          run-id: 38735146839
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-mops-original-native
+      - name: Validate actual original JSON byte digest and adversarial PIT boundaries
+        env:
+          S2_ORIGINAL_MOPS_LEDGER_PATH: /tmp/s2-issue1068-mops-original-native/sanitized-historical-source-clock-ledger.json
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_mops_observed_by_asof_scope_v0_1.mjs
+          node --test system2/tests/issue1068_mops_observed_by_asof_scope_v0_1.test.mjs
+      - name: One-shot physical after-capture as-of eligibility check, no historical backdate
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_mops_observed_by_asof_scope_v0_1.mjs \
+            /tmp/s2-issue1068-mops-original-native/sanitized-historical-source-clock-ledger.json
+      - name: Preserve only sanitized source-clock as-of result (NOT historical PIT cert)
+        if: always() && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-issue1068-pit-asof-original-scope-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1068-mops-observation-asof/sanitized-asof-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Explicit scope: original May-July history PIT remains UNKNOWN
+        if: always()
+        run: |
+          echo 'Only original source versions really observed Oct15 before an actual past Oct15 as-of cutoff may qualify for research source-observation timing.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No certification of firstKnownAt on May-July dates, public version completeness, strategy PIT, Frozen, historical backtest, trading or System1 Formal.' >> "$GITHUB_STEP_SUMMARY"
