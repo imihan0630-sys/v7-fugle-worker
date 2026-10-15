@@ -69,8 +69,11 @@ if(sourceReadyHandoff){
     scan:prior,institution,quality,recommendations,cron});
   console.log(JSON.stringify({sourceReadyFormalHandoff:handoff,noBusinessPost:!handoff.mayPost}));
   if(!handoff.mayPost){
-    console.log(JSON.stringify({skipped:true,reason:handoff.reason,date,sourceReadyHandoff:true,noBusinessPost:true,noPush:true}));
-    process.exit(0);
+    console.log(JSON.stringify({blocked:true,reason:handoff.reason,date,sourceReadyHandoff:true,noBusinessPost:true,noPush:true}));
+    // A successful official data-sync run while Formal/monitor/push is absent
+    // must never silently green-skip; surface the real P0 business blockage.
+    // This fail-closed check is NOT a request to repeat an ambiguous POST.
+    throw new Error('SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY:'+handoff.reason);
   }
 }
 // Only one POST; no repeated POST after HTTP 503, timeout or unverifiable monitor/push.
