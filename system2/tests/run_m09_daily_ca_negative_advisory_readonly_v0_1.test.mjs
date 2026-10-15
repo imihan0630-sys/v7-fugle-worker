@@ -14,7 +14,7 @@ async function fixture(){
  const s={schemaVersion:'S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1',
   state:'SOURCE_OBSERVED_UNAUDITED',marketDate:dates.at(-1),
   calendar:{state:'SOURCE_OBSERVED_UNAUDITED',marketDate:dates.at(-1),
-   tradingDates:dates,observedAt:'2026-09-15T11:00:00Z',
+   tradingDates:[...dates],observedAt:'2026-09-15T11:00:00Z',
    originalCalendarHash:'a'.repeat(64),providerSource:'TWSE_OFFICIAL',
    verifiedOfficialReadback:false},
   requestCount:122,plannedMarketDateRequests:122,receivedMarketDateCount:122,
