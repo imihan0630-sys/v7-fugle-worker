@@ -29,13 +29,15 @@ async function fixture(codes=['2330','9103','3287','9105','1301']){
  w.receiptHash=await sha256Hex(w);
  return {sourceReceipt:s,independentA1Audit:a,preliminaryWatch:w};
 }
-function stubProbe({requests,unknownCode=null}={}){
+function stubProbe({requests,unknownCode=null,mismatchCode=null}={}){
  return async({controls})=>{
   requests?.push(controls.map(x=>x.code));
   return {controlsChecked:controls.length,ordinaryCommonSharePITCertified:false,
    selectedCount:null,sourceReceipts:controls.map(x=>({
     code:x.code,controlIntent:x.hint,
     state:x.code===unknownCode?'NATIVE_ACCESS_CHALLENGE_FAIL_CLOSED':'NATIVE_SINGLE_CFI_ROW_OBSERVED',
+    nativeMarketLabel:x.code===mismatchCode?'OTHER MARKET':
+      x.hint.endsWith('TPEX')?'TPEx LISTED':'TWSE LISTED',
     nativeTypeLabel:(x.code==='9103'||x.code==='9105')?'TDR':'Stocks',
     cfi:(x.code==='9103'||x.code==='9105')?'EDSDDR':'ESVUFR',
     isin:'TW0002330008',observedAtUtc:'2026-10-15T02:21:00Z',
@@ -66,6 +68,15 @@ test('unreachable native source remains UNKNOWN, never stock class',async()=>{
  assert.equal(r.currentNativeUnverified,1);
  assert.equal(r.currentNativeRowsAllObserved,false);
  assert.equal(r.historicalOrdinarySharePitDenominatorCertified,false);
+});
+test('native exchange mismatch cannot be used to qualify even current security type',async()=>{
+ const f=await fixture(),r=await run({...f,
+  probeOne:stubProbe({mismatchCode:'2330'}),
+  fetchImpl:async()=>null,persistRaw:async()=>null});
+ assert.equal(r.currentNativeStockCfiObserved,2);
+ assert.equal(r.currentNativeUnverified,1);
+ assert.equal(r.observations[0].nativeMarketMatchesPreliminaryMarket,false);
+ assert.equal(r.historicalOrdinarySharePitCertified,0);
 });
 test('forged/tampered preview signed SHA cannot trigger a single native GET',async()=>{
  const f=await fixture();f.preliminaryWatch.watchlist[0].symbol='2317';
