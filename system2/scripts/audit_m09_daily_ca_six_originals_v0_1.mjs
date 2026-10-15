@@ -36,6 +36,57 @@ const mustNoAuthority=o=>o?.selectedCount===null&&
  o?.cloudflareD1Writes===0&&o?.cloudflareR2Writes===0&&
  o?.system1FormalCoreTouched===false;
 
+// This is a second native-event parser, separate from the producer's
+// replay_m09_ca_observed_negative_overlap_v0_1.mjs. It can validate each
+// POSITIVE flagged event from the original body, NEVER absence of events.
+const SYMBOL=/^[1-9]\d{3}$/;
+const CODE_FIELDS=new Set(['股票代號','證券代號','代號']);
+const DATE_FIELDS=new Set(['資料日期','恢復買賣日期','除權息日期']);
+function dateFromNative(input){
+ const raw=String(input??'').trim();
+ const parts=raw.replace(/[年月日]/g,'/').replace(/[.\-]/g,'/').split('/').filter(Boolean);
+ if(parts.length===3){
+  const year=Number(parts[0]);
+  if(!parts.every(x=>/^\d+$/.test(x)))return null;
+  const y=year<1912?year+1911:year;
+  const d=String(y).padStart(4,'0')+'-'+String(+parts[1]).padStart(2,'0')+
+   '-'+String(+parts[2]).padStart(2,'0');
+  return isDay(d)?d:null;
+ }
+ const digits=raw.replace(/\D/g,'');
+ if(digits.length!==7&&digits.length!==8)return null;
+ const offset=digits.length===7?3:4;
+ const y=digits.length===7?Number(digits.slice(0,3))+1911:
+  Number(digits.slice(0,4));
+ const d=String(y).padStart(4,'0')+'-'+digits.slice(offset,offset+2)+
+  '-'+digits.slice(offset+2,offset+4);
+ return isDay(d)?d:null;
+}
+function nativePositiveKeys(bytes){
+ let payload;
+ try{payload=JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/,''))}
+ catch{deny('POSITIVE_EVENT_ORIGINAL_NOT_NATIVE_JSON')}
+ const tables=Array.isArray(payload?.tables)?payload.tables:
+  Array.isArray(payload?.fields)&&Array.isArray(payload?.data)?[payload]:[];
+ const table=tables.find(t=>Array.isArray(t?.fields)&&Array.isArray(t?.data)&&
+  t.fields.some(x=>CODE_FIELDS.has(String(x??'').trim()))&&
+  t.fields.some(x=>DATE_FIELDS.has(String(x??'').trim())));
+ if(!table)deny('POSITIVE_EVENT_NATIVE_SYMBOL_DATE_TABLE_UNVERIFIED');
+ const fields=table.fields.map(x=>String(x??'').trim());
+ const symbolIdx=fields.findIndex(x=>CODE_FIELDS.has(x));
+ const dateIdx=fields.findIndex(x=>DATE_FIELDS.has(x));
+ const keys=new Set();
+ for(const row of table.data){
+  if(!Array.isArray(row))continue;
+  const symbol=String(row[symbolIdx]??'').trim();
+  if(!SYMBOL.test(symbol))continue;
+  const date=dateFromNative(row[dateIdx]);
+  if(date)keys.add(symbol+'|'+date);
+ }
+ return keys;
+}
+
+
 export async function auditM09DailyCaSixOriginalsV0_1({
  advisory,caReceipt,eventRisk,readOriginal,auditedAtUtc=new Date().toISOString(),
  sourceRunId,parseNative=summarizeOfficialContinuityNativeOriginalV0_1,
@@ -113,7 +164,7 @@ export async function auditM09DailyCaSixOriginalsV0_1({
  const expected=buildOfficialContinuitySourceUrlsV0_1({
   startDate:caReceipt.requestedStartDate,endDate:caReceipt.requestedEndDate
  });
- const seen=new Set(),physical=[];
+ const seen=new Set(),physical=[],positiveEventLookup=new Map();
  for(const id of IDS){
   const r=caReceipt.sourceReceipts.find(x=>x.sourceId===id);
   const originalContract=expected[id];
@@ -154,6 +205,7 @@ export async function auditM09DailyCaSixOriginalsV0_1({
      sourceEvent?.capturedAtUtc!==r.capturedAtUtc||
      sourceEvent?.rangeReverifiedFromActualBytes!==true)
    deny('EVENT_RISK_PER_SOURCE_ORIGINAL_MISMATCH');
+  positiveEventLookup.set(id,nativePositiveKeys(bytes));
   physical.push({sourceId:id,originalSha256:r.originalSha256,
    originalBytes:r.originalBytes,rangeIndependentlyReparsed:true});
  }
@@ -162,6 +214,38 @@ export async function auditM09DailyCaSixOriginalsV0_1({
     !Array.isArray(eventRisk.flaggedPreview)||
     eventRisk.flaggedPreview.length!==advisory.caKnownEventPreviewCount)
   deny('SIX_FAMILY_OR_FLAGGED_PREVIEW_DENOMINATOR_INVALID');
+ // Producer's signed count is not proof an event was actually in the
+ // provider's original body. Reconstruct every POSITIVE event association.
+ // A missing association is an error; an unflagged symbol stays UNKNOWN.
+ const seenFlagged=new Set();
+ let verifiedPositiveEvents=0;
+ for(const flagged of eventRisk.flaggedPreview){
+  if(!['TWSE','TPEX'].includes(flagged?.market)||
+     !SYMBOL.test(flagged?.symbol)||!Array.isArray(flagged?.events)||
+     flagged.events.length===0||
+     flagged.sourceEventCount!==flagged.events.length||
+     seenFlagged.has(flagged.market+'|'+flagged.symbol))
+   deny('FLAGGED_POSITIVE_SYMBOL_OR_COUNT_INVALID');
+  seenFlagged.add(flagged.market+'|'+flagged.symbol);
+  const seenEvents=new Set();
+  for(const event of flagged.events){
+   const id=event?.sourceId,day=event?.eventDate;
+   const key=id+'|'+day;
+   if(!IDS.includes(id)||!id.startsWith(flagged.market+'_')||
+      !isDay(day)||day<eventRisk.firstTradingDate||
+      day>eventRisk.lastTradingDate||
+      event.knowledgeTimeClass!==
+       'ONLY_PROVEN_PRESENT_AS_OF_CA_SOURCE_CAPTURE_NOT_HISTORICAL_PIT'||
+      seenEvents.has(key)||
+      !positiveEventLookup.get(id)?.has(flagged.symbol+'|'+day))
+    deny('SIGNED_FLAGGED_EVENT_NOT_FOUND_IN_ORIGINAL_NATIVE_BODY');
+   seenEvents.add(key);
+   verifiedPositiveEvents++;
+  }
+ }
+ if(verifiedPositiveEvents<eventRisk.flaggedPreview.length)
+  deny('POSITIVE_EVENT_COUNT_UNDERRUN');
+
  const base={schemaVersion:'S2_M09_DAILY_SIX_CA_INDEPENDENT_ORIGINAL_AUDIT_V0_1',
   verdict:'ACCEPTED_CURRENT_SIX_CA_RAW_RANGE_ONLY_NOT_HISTORICAL_PIT',
   sourceRunId,auditedAtUtc,marketDate:advisory.marketDate,
@@ -172,6 +256,9 @@ export async function auditM09DailyCaSixOriginalsV0_1({
   caSourceReceiptHash:caReceipt.receiptHash,
   caEventRiskReceiptHash:eventRisk.receiptHash,
   sourceReportedKnownEventPreviewCount:advisory.caKnownEventPreviewCount,
+  positiveFlaggedPreviewIndependentlyVerified:seenFlagged.size,
+  positiveEventRowsIndependentlyMatched:verifiedPositiveEvents,
+  unflaggedPreviewNoEventCertified:false,
   originalCaFamiliesIndependentlyRehashed:physical.length,
   independentNativeRangeSchemaReparsed:physical.length,
   originalSourceFamilyHashes:physical,
@@ -204,6 +291,8 @@ if(process.argv[1]?.endsWith('/audit_m09_daily_ca_six_originals_v0_1.mjs')){
   sourceRunId:receipt.sourceRunId,marketDate:receipt.marketDate,
   sixRawOriginalShaRehashed:receipt.originalCaFamiliesIndependentlyRehashed,
   sourceReportedKnownEventPreviewCount:receipt.sourceReportedKnownEventPreviewCount,
+  positiveFlaggedPreviewIndependentlyVerified:receipt.positiveFlaggedPreviewIndependentlyVerified,
+  positiveEventRowsIndependentlyMatched:receipt.positiveEventRowsIndependentlyMatched,
   historicalPIT:false,noEventCertified:false,
   selectedCount:null,frozenD1Written:false,auditHash:receipt.auditHash}));
 }
