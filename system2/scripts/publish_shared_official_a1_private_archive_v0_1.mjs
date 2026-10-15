@@ -12,6 +12,30 @@ import {official61SessionSourceReceiptHashBaseV0_1}
  from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 
 const SHA=/^[a-f0-9]{64}$/i;
+// GitHub's ordinary Git blob hard ceiling is 100 MB; the 50 MB guidance is
+// advisory. This guards ONLY the approved private A1 evidence checkout and
+// never changes compressed raw provider bytes, ledger hashes or selection PIT.
+const GIT_BLOB_RECOMMENDED_MAX_BYTES=50_000_000;
+const GIT_BLOB_HARD_MAX_BYTES=100_000_000;
+const GIT_BLOB_EARLY_WARNING_BYTES=85_000_000;
+export function classifySharedA1PrivateArchiveReceiptGitBlobBudgetV0_1(bytes){
+ if(!Number.isSafeInteger(bytes)||bytes<0)
+  throw Error('PRIVATE_ARCHIVE_SOURCE_RECEIPT_BYTE_LENGTH_INVALID');
+ const risk=bytes>=GIT_BLOB_HARD_MAX_BYTES?
+  'HARD_GIT_BLOB_LIMIT_EXCEEDED':bytes>=GIT_BLOB_EARLY_WARNING_BYTES?
+  'NEAR_GIT_BLOB_HARD_LIMIT':bytes>GIT_BLOB_RECOMMENDED_MAX_BYTES?
+  'OVER_GIT_BLOB_RECOMMENDED_SIZE':'WITHIN_GIT_BLOB_RECOMMENDED_SIZE';
+ return Object.freeze({
+  plainSourceReceiptBytes:bytes,
+  gitRecommendedMaxBytes:GIT_BLOB_RECOMMENDED_MAX_BYTES,
+  gitHardMaxBytes:GIT_BLOB_HARD_MAX_BYTES,
+  gitHardHeadroomBytes:GIT_BLOB_HARD_MAX_BYTES-bytes,
+  risk,
+  sourceReceiptFormatChanged:false,
+  sourceReceiptPITCertified:false,
+ });
+}
+
 const TARGET='imihan0630-sys/v7-system2-official-a1-archive';
 function inside(root,path){
  const rel=relative(root,path);
@@ -86,6 +110,15 @@ export async function publishSharedOfficialA1PrivateArchiveV0_1({
  const plan=await planSharedOfficialA1ArchiveDryRunV0_1({
   sourceManifest,originalDirectory,nowUtc
  });
+ // Measure the exact byte sequence BEFORE touching private-archive files.
+ // A >100 MB ordinary Git blob would be refused by GitHub after an expensive
+ // 61-session checkout; fail closed here with no partial create-only writes.
+ const sourceReceiptPayload=JSON.stringify(sourceReceipt,null,2)+'\n';
+ const sourceReceiptGitBlobBudget=
+  classifySharedA1PrivateArchiveReceiptGitBlobBudgetV0_1(
+   Buffer.byteLength(sourceReceiptPayload,'utf8'));
+ if(sourceReceiptGitBlobBudget.risk==='HARD_GIT_BLOB_LIMIT_EXCEEDED')
+  throw Error('PRIVATE_ARCHIVE_SOURCE_RECEIPT_GIT_HARD_LIMIT_EXCEEDED');
  const states=[];
  for(const asset of plan.plannedSourceAssets){
   const src=resolve(originalDirectory,asset.market+'-'+asset.marketDate+'.json.gz');
@@ -111,7 +144,7 @@ export async function publishSharedOfficialA1PrivateArchiveV0_1({
  states.push({path:relative(root,manifestPath).replaceAll('\\','/'),state:await createOrVerify(root,
   manifestPath,JSON.stringify(sourceManifest,null,2)+'\n')});
  states.push({path:relative(root,receiptPath).replaceAll('\\','/'),state:await createOrVerify(root,
-  receiptPath,JSON.stringify(sourceReceipt,null,2)+'\n')});
+  receiptPath,sourceReceiptPayload)});
  const notice=`# Source attribution and archive boundary\n\n`+
   `This private repository stores content-addressed research source evidence only.\n\n`+
   `- TWSE dataset: 盤後資訊 > 個股日成交資訊 — https://data.gov.tw/dataset/11549\n`+
@@ -139,6 +172,7 @@ export async function publishSharedOfficialA1PrivateArchiveV0_1({
  return Object.freeze({...archiveReceipt,operationObservedAtUtc:nowUtc,
   newFiles:states.filter(x=>x.state==='CREATED').length,
   verifiedExistingFiles:states.filter(x=>x.state==='VERIFIED_EXISTING').length,
+  sourceReceiptGitBlobBudget,
   fileStates:states,archiveReceiptPath:
   relative(root,archiveReceiptPath).replaceAll('\\','/'),archiveReceiptPathState:receiptState});
 }
