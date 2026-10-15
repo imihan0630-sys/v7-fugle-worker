@@ -67,7 +67,7 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
 // GET/preflight can legitimately straddle midnight. NEVER rely on its clock.
 export function classifyImmediateBusinessPostClock({now=new Date(),targetDate}={}){
   const clock=format(now);
-  const valid=/^20\\d{2}-\\d{2}-\\d{2}$/.test(String(targetDate||""));
+  const valid=DAY.test(String(targetDate||""));
   const sameDay=valid&&clock.date===targetDate;
   const safeEvening=sameDay&&clock.time>="18:10"&&clock.time<="23:54";
   return {mayPost:safeEvening,reason:safeEvening?"SAME_DAY_BUSINESS_POST_CLOCK_VERIFIED":
