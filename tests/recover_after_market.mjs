@@ -49,8 +49,8 @@ async function admin(path,options={}) {
 }
 const prior=await admin('/api/scan/status');
 if(prior.scanDate===date) {
-  const existingMonitor=await admin('/api/config');
-  const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:prior,monitor:existingMonitor});
+  const [existingMonitor,existingOutbox]=await Promise.all([admin('/api/config'),admin('/api/push-outbox?limit=50')]);
+  const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:prior,monitor:existingMonitor,outbox:existingOutbox});
   console.log(JSON.stringify({alreadySelected:true,date,primaryBusinessReceipt:receipt,noBusinessPost:true}));
   if(!receipt.ok)throw new Error('SAME_DAY_FORMAL_SAVED_BUT_MONITOR_OR_DAILY_PUSH_INCOMPLETE:'+receipt.reason+'; never reselect');
   console.log(JSON.stringify({skipped:true,reason:'FORMAL_PRIMARY_MONITOR_AND_PUSH_ALREADY_ACCEPTED',date,noBusinessPost:true}));
@@ -106,13 +106,13 @@ try{
   if(/authorization rejected/.test(String(error)))throw error;
   postError=String(error?.message||error).slice(0,320);
 }
-let latest,monitor;
+let latest,monitor,outbox;
 try{
-  [latest,monitor]=await Promise.all([admin('/api/scan/status'),admin('/api/config')]);
+  [latest,monitor,outbox]=await Promise.all([admin('/api/scan/status'),admin('/api/config'),admin('/api/push-outbox?limit=50')]);
 }catch(error){
   throw new Error('FORMAL_POST_OUTCOME_UNCONFIRMED_AND_READBACK_UNAVAILABLE_NO_RETRY:'+String(error.message).slice(0,300));
 }
-const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:latest,monitor});
+const receipt=assessP0PrimaryMonitorDelivery({targetDate:date,formal:latest,monitor,outbox});
 console.log(JSON.stringify({sourceReadyHandoff,requestedDate:date,postWasAttempted:true,
   postStatus:postError?'OUTCOME_UNKNOWN_NEEDS_READBACK':'HTTP_SUCCESS',
   postReturnedSkipped:postResult?.skipped===true,
