@@ -28,9 +28,14 @@ if(!path||!ap||!dir){
   assert.equal(new Set(p.perPair.map(x=>x.market+"|"+x.marketDate)).size,122);
   assert.equal(p.checks[0].cutUtc,REAL.originalMarketDayDecisionCutUtc);
   assert.equal(p.checks[0].qualifiedComplete122ForDecision,false);
-  assert.ok(p.checks[0].pairsActuallyObservedByCut<122);
+  assert.equal(p.originalMarketCutMustNotTreatSourceReceiptClockAsIndependentWitness,true);
+  assert.equal(p.checks[0].pairsSignedSourceReceiptClaimsCapturedByCut,122);
+  assert.equal(p.checks[0].originalNativeIndependentArchiveBeforeCutVerified,false);
+  assert.equal(p.checks[0].independentAuditCompletedByCut,false);
+  assert.equal(p.earlierOriginalArtifactArchiveWitnessBefore2345Verified,false);
   assert.equal(p.checks[1].cutUtc,REAL.alreadyExecutedPreopenResearchCutUtc);
-  assert.equal(p.checks[1].pairsActuallyObservedByCut,122);
+  assert.equal(p.checks[1].pairsSignedSourceReceiptClaimsCapturedByCut,122);
+  assert.equal(p.checks[1].independentAuditCompletedByCut,true);
   assert.equal(p.checks[1].qualifiedComplete122ForDecision,true);
   assert.equal(p.checks[1].strategyPitQualified,false);
   assert.equal(p.historicalFirstKnownAtAndAvailableAtCertified,0);
