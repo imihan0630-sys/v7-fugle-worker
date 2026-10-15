@@ -15,7 +15,7 @@ const H=/^[a-f0-9]{64}$/i;
 const CODE=/^[1-9][0-9]{3}$/;
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const strip=(o,key)=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k!==key));
-const validDay=d=>typeof d==='string'&&/^\\d{4}-\\d\\d-\\d\\d$/.test(d)&&
+const validDay=d=>typeof d==='string'&&/^\d{4}-\d\d-\d\d$/.test(d)&&
  Number.isFinite(Date.parse(d+'T00:00:00Z'))&&
  new Date(d+'T00:00:00Z').toISOString().slice(0,10)===d;
 const validCalendar=dates=>Array.isArray(dates)&&dates.length===61&&
