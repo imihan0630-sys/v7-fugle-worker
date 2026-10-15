@@ -96,7 +96,7 @@ jobs:
           QUALITY_RECOVERY_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5' && '1' || '0' }}
         run: node tests/sync_official_quality.mjs
       # P0: the actual official source jobs can finish after the original
-      # Cloudflare 18:10 scan. Use the now-ready source snapshots to re-enter
+      # actual deployed Cloudflare Formal cron (V8.7.12: 23:35). Re-enter only after its proven precommit failure
       # the EXISTING original Worker scan exactly once on the SAME Taipei day,
       # but only if its previous D1 Cron failure was proven pre-write
       # DATA_INCOMPLETE. Unknown CPU/503 and prior-day jobs remain blocked.
