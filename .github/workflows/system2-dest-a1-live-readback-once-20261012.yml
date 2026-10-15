@@ -39,3 +39,8 @@ jobs:
           retention-days: 30
 
 # AUDIT_LANE second read-only provider GET/SELECT requested after completed original writer Run38220900855, no DML.
+
+# 2026-10-15 DATA_LANE original producer Run 38683991222 reached 47,420/84,688 A1 bars.
+# Re-arm this ALREADY REGISTERED, previously accepted, path-scoped READ-ONLY workflow
+# to obtain an actual distinct post-writer Cloudflare DEST D1 count SELECT, zero D1 writes.
+# Scope: metadata+count only; NOT independent payload hash PIT/Frozen/R2 acceptance.
