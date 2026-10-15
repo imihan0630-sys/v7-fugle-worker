@@ -1,0 +1,63 @@
+name: System2 M09 Native Full TWSE TPEx CFI Registry Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-native-cpublic-two-markets-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-native-cpublic-two-markets-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s2-m09-current-full-registry-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  current_native_registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test TWSE TPEx Big5 native CFI and original-byte firewall
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Get actual TWO official ISIN CFI native classification originals
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_native_cpublic_full_two_market_cfi_readonly_v0_1.mjs
+          R=/tmp/s2-m09-native-cpublic-two-markets/receipt.json
+          test -s "$R"
+          test "$(jq -r .officialOrdinaryShareEntireMarketPITCertified "$R")" = 'false'
+          test "$(jq -r .nativeSecurityTypeAsOfHistoricalMarketDateCertified "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "Official C_public current TWO-source full-registry candidate=$(jq -r .nativeFullCurrentRegistryCandidate "$R"), verified source count=$(jq -r .nativeLargeTablesVerified "$R")/2. NOT historical PIT." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve original full-market HTML response bytes and receipt
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-current-full-native-cpublic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-native-cpublic-two-markets/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Strict real-provider current-only native evidence
+        if: always()
+        run: |
+          echo 'Full-registry source attempt only; no historical PIT firstKnownAt, A1 1974 member-class join, CA correction history or qualified picks.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No Cloudflare D1/R2 write, no Frozen, no live signal, no paid provider, no System1 V8 Formal mutation.' >> "$GITHUB_STEP_SUMMARY"
