@@ -60,10 +60,12 @@ const institution=await admin('/api/institution-status?marketDate='+encodeURICom
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
 assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);assert.equal(quality.tdcc.ready,true);
 for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) assert.equal(quality.datasets[kind]?.ready,true,kind+' missing');
-// Source-ready late-sync path must be pre-commit failure PROVEN, not merely
-// infer safety from missing plan or expired clock. Use GET-only proof before
-// the original single /api/scan POST. Unknown CPU/503 implies NO POST.
-if(sourceReadyHandoff){
+// ALL same-date recovery modes (late official source, scheduled 23:45,
+// and authorized manual) must PROVE the original Formal Cron failed
+// strictly before the first plan mutation. An ambiguous original CPU/503
+// may never be replayed merely because /api/scan/status is absent.
+// Use GET-only D1/KV receipts before the one existing /api/scan POST.
+{
   const [recommendations,cron]=await Promise.all([admin('/api/recommendations'),admin('/api/cron/status')]);
   const handoff=classifySourceReadyFormalHandoff({now:new Date(),targetDate:date,
     scan:prior,institution,quality,recommendations,cron});
