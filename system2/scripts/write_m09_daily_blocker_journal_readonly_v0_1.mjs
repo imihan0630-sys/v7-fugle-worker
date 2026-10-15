@@ -61,7 +61,6 @@ export async function buildM09DailyBlockerJournalV0_1({
   r.cloudflareD1Writes!==0||r.cloudflareR2Writes!==0||
   w.selectedCount!==null||w.zeroPickDay!==null||
   w.finalSelectionAuthorized!==false||w.frozenWritten!==false||
-  w.cloudfareD1Writes!==undefined&&w.cloudfareD1Writes!==0||
   w.cloudflareD1Writes!==0||w.cloudflareR2Writes!==0||
   !Array.isArray(w.watchlist)||w.watchlist.length>30)
   deny('SIGNED_READINESS_WATCH_LINEAGE_OR_AUTHORITY_INVALID');
