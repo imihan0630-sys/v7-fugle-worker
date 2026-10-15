@@ -1,0 +1,83 @@
+name: System2 M09 Real 30 Preview Native CFI Source Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-preview-native-cfi-real-once-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-preview-native-cfi-real-once-readonly.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-m09-preview-native-cfi-real-once-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source_only_preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test audited A1 preview native ISIN/CFI scope and PIT firewall
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Pull real original Oct14 61-session A1 exactly by fixed GitHub run
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38629859058
+          name: s2-shared-official-a1-38629859058
+          path: /tmp/s2-source-for-independent-readback
+          github-token: ${{ github.token }}
+      - name: Pull independent original-source auditor and exact preview
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38630106632
+          name: system2-shared-official-a1-independent-audit-38630106632
+          path: /tmp
+          github-token: ${{ github.token }}
+      - name: Read native current ISIN CFI for max 30 actual A1 preliminary symbols
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs
+          R=/tmp/s2-m09-preview-native-cfi/preview-native-cfi.json
+          test -s "$R"
+          test "$(jq -r .originalMarketDate "$R")" = '2026-10-14'
+          test "$(jq -r .preliminaryDenominator "$R")" = '30'
+          test "$(jq -r .perSymbolNativeRequestsMade "$R")" = '30'
+          test "$(jq -r .historicalOrdinarySharePitCertified "$R")" = '0'
+          test "$(jq -r .historicalOrdinarySharePitDenominatorCertified "$R")" = 'false'
+          test "$(jq -r .formalShortMomentumQualified "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "Real Oct14 30 preview current Oct15 native official CFI evidence: Stocks=$(jq -r .currentNativeStockCfiObserved "$R") / Explicit nonshare=$(jq -r .currentNativeNonShareExplicit "$R") / Unknown=$(jq -r .currentNativeUnverified "$R"). Historical PIT 0." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve original official HTML and source-only receipt 7 days
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-preview-native-cfi-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-preview-native-cfi/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Deny any strategy promotion
+        if: always()
+        run: |
+          echo 'Current single-security CFICodes only: NO historical ordinary-equity PIT, NO_EVENT, Stage1 rank, Frozen, D1, live actions or V8 Formal.' >> "$GITHUB_STEP_SUMMARY"
