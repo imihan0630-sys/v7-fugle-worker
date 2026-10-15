@@ -1,6 +1,6 @@
 // Future scheduled recovery only. Never part of deployment acceptance.
 import assert from 'node:assert/strict';
-import {classifySourceReadyFormalHandoff} from './system1_p0_source_ready_handoff_gate_v0_1.mjs';
+import {classifySourceReadyFormalHandoff,classifyImmediateBusinessPostClock} from './system1_p0_source_ready_handoff_gate_v0_1.mjs';
 import {assessP0PrimaryMonitorDelivery} from './system1_p0_primary_monitor_delivery_v0_1.mjs';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('After-market recovery stopped: '+String(error.message).slice(0,700));process.exit(1);});
@@ -15,15 +15,15 @@ if(sourceReadyHandoff && (scheduledFallback||!requestedDate)) throw new Error('S
 if(scheduledFallback && !requestedDate) throw new Error('Scheduled fallback requires frozen RECOVERY_MARKET_DATE');
 const historicalRecovery=requestedDate.length>0 && !scheduledFallback;
 const date=requestedDate || today;
-if(sourceReadyHandoff && (date!==today||time<'18:10'||time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'SOURCE_READY_TARGET_NOT_SAME_DAY_EVENING',date,today,time,noBusinessPost:true}));process.exit(0);}
-if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
+if(sourceReadyHandoff && (date!==today||time<'18:10'||time>'23:54')) {console.log(JSON.stringify({skipped:true,reason:'SOURCE_READY_TARGET_NOT_SAME_DAY_EVENING',date,today,time,noBusinessPost:true}));process.exit(0);}
+if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:54')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
 if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('RECOVERY_MARKET_DATE must be YYYY-MM-DD');
 if(date>today) throw new Error('RECOVERY_MARKET_DATE cannot be in the future');
  // Canonical deployed Worker ignores JSON body.marketDate and calls
  // runAfterMarketScan(env,Date.now()). Do not let any delayed/explicit recovery
  // select another session. Future Worker pinning needs separate deployment.
 if(date!==today) throw new Error('LEGACY_WORKER_PINNED_PRIOR_DAY_UNSUPPORTED_NO_BUSINESS_POST');
-if(historicalRecovery && !sourceReadyHandoff && (time<'23:35'||time>'23:59')){
+if(historicalRecovery && !sourceReadyHandoff && (time<'23:35'||time>'23:54')){
   console.log(JSON.stringify({skipped:true,reason:'MANUAL_RECOVERY_OUTSIDE_EVENING_WINDOW',date,time,noBusinessPost:true}));
   process.exit(0);
 }
@@ -75,6 +75,15 @@ if(sourceReadyHandoff){
     // This fail-closed check is NOT a request to repeat an ambiguous POST.
     throw new Error('SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY:'+handoff.reason);
   }
+}
+// MUST repeat Taipei-date authority immediately BEFORE the one legacy POST,
+// even after all 5 authenticated GETs; these may span midnight. Legacy Worker
+// takes Date.now() instead of request.body.marketDate, so never send on rollover.
+const freshPostClock=classifyImmediateBusinessPostClock({now:new Date(),targetDate:date});
+if(!freshPostClock.mayPost){
+  console.log(JSON.stringify({blocked:true,reason:freshPostClock.reason,
+    observedDate:freshPostClock.observedDate,targetDate:date,noBusinessPost:true,noPush:true}));
+  throw new Error('NO_BUSINESS_POST_AFTER_SESSION_ROLLOVER:'+freshPostClock.reason);
 }
 // Only one POST; no repeated POST after HTTP 503, timeout or unverifiable monitor/push.
 // A timeout is ambiguous: NEVER repeat a business write.
