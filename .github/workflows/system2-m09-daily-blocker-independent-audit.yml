@@ -73,7 +73,6 @@ jobs:
           node system2/scripts/audit_m09_daily_blocker_journal_readonly_v0_1.mjs
           R=/tmp/s2-m09-daily-blocker-independent-readback/independent-readback.json
           test -s "$R"
-          test "$(jq -r .rehashgedUpstreamReceiptCount "$R")" = 'null'
           test "$(jq -r .rehashedUpstreamReceiptCount "$R")" = '3'
           test "$(jq -r .fullJournalReproduced "$R")" = 'true'
           test "$(jq -r .classifiedAsFormalZeroPick "$R")" = 'false'
