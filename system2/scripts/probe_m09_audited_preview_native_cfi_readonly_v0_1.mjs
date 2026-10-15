@@ -82,9 +82,12 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
    const item=group[j],n=result.sourceReceipts[j];
    if(n.code!==item.symbol||n.controlIntent!=='ACTUAL_A1_PRELIMINARY_'+item.market)
     deny('NATIVE_SOURCE_CODE_ORDER_MISMATCH');
-   const currentObservedShare=n.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
+   const sameNativeMarket=n.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
+    typeof n.nativeMarketLabel==='string'&&
+    (item.market==='TWSE'?/^TWSE\b/i:/^TPEX\b/i).test(n.nativeMarketLabel);
+   const currentObservedShare=sameNativeMarket&&
     n.nativeTypeLabel==='Stocks'&&/^ES[A-Z]{4}$/.test(n.cfi||'');
-   const explicitNonShare=n.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
+   const explicitNonShare=sameNativeMarket&&
     ((n.nativeTypeLabel==='TDR'&&/^ED[A-Z]{4}$/.test(n.cfi||''))||
      (n.nativeTypeLabel==='ETF'&&/^CE[A-Z]{4}$/.test(n.cfi||'')));
    observations.push({
@@ -92,7 +95,9 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
     currentNativeIdentityStatus:currentObservedShare?'CURRENT_NATIVE_STOCK_CFI_OBSERVED':
       explicitNonShare?'CURRENT_NATIVE_NON_SHARE_EXPLICIT':
       'NATIVE_CLASS_UNKNOWN',
-    nativeTypeLabel:n.nativeTypeLabel,cfi:n.cfi,isin:n.isin,
+    nativeTypeLabel:n.nativeTypeLabel,nativeMarketLabel:n.nativeMarketLabel,
+    nativeMarketMatchesPreliminaryMarket:sameNativeMarket,
+    cfi:n.cfi,isin:n.isin,
     requestedAtUtc:startAtUtc,observedAtUtc:n.observedAtUtc,
     originalProviderSha256:n.originalSha256,
     originalProviderBytes:n.originalBytes,
