@@ -1,0 +1,61 @@
+name: S2 DATA #1068 May 2026 WARC CDX Index Witness Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-data-issue1068-archive-index-witness-readonly.yml"
+      - "system2/migration/issue1068_original_archive_index_probe_readonly_v0_1.mjs"
+      - "system2/tests/issue1068_original_archive_index_pit_witness_v0_1.test.mjs"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-data-issue1068-archive-index-witness-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s2-archive-index-issue1068-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Bounded archive index controls and anti-PIT tests
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_original_archive_index_probe_readonly_v0_1.mjs
+          node --test system2/tests/issue1068_original_archive_index_pit_witness_v0_1.test.mjs
+
+  original_provider_probe:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Four bounded public Wayback/CommonCrawl index GETs, no D1 or R2
+        run: node system2/migration/issue1068_original_archive_index_probe_readonly_v0_1.mjs
+      - name: Archive original sanitized index provider status and content digests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-issue1068-cdx-witness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1068-archive-index/sanitized-cdx-index-probe.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Preserve strict historical PIT firewall
+        if: always()
+        run: |
+          echo 'Archived index rows are ONLY provenance candidates until actual original WARC payload and exact revision content are independently verified.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Archive index missing/blocked does not prove no event. Historical firstKnownAt and availableAt stay null. No D1/R2/V8 Formal actions.' >> "$GITHUB_STEP_SUMMARY"
