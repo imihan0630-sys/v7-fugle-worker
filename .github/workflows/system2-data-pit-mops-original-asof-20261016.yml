@@ -58,7 +58,7 @@ jobs:
           path: /tmp/s2-issue1068-mops-observation-asof/sanitized-asof-receipt.json
           retention-days: 90
           if-no-files-found: warn
-      - name: Explicit scope: original May-July history PIT remains UNKNOWN
+      - name: "Explicit scope: original May-July history PIT remains UNKNOWN"
         if: always()
         run: |
           echo 'Only original source versions really observed Oct15 before an actual past Oct15 as-of cutoff may qualify for research source-observation timing.' >> "$GITHUB_STEP_SUMMARY"
