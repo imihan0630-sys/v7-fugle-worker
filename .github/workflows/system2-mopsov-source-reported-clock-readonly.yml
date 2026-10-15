@@ -39,11 +39,23 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Run source-reported clock fail-closed tests
-        run: node system2/tests/mopsov_source_reported_clock_v0_1.test.mjs
+      - name: Run source-reported clock and historical PIT fail-closed tests
+        run: |
+          set -euo pipefail
+          node system2/tests/mopsov_source_reported_clock_v0_1.test.mjs
+          node --test system2/tests/mops_historical_source_clock_pit_ledger_v0_1.test.mjs
 
       - name: Physically verify MOPSOV source-reported version clocks
         run: node system2/scripts/probe_mopsov_source_reported_clock_readonly_v0_1.mjs
+
+      - name: Archive original sanitized retrospective PIT-clock ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-historical-mops-source-clock-ledger-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-mops-pit-ledger/sanitized-historical-source-clock-ledger.json
+          if-no-files-found: warn
+          retention-days: 90
 
       - name: Confirm read-only boundary
         shell: bash
