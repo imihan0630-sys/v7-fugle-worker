@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D03_PREOPEN_SOURCE_OBSERVATION_VS_HISTORICAL_INDICATOR_PIT_CASES_V0_1",
+  "outcomesClosed": true,
+  "formalCore": "LOCKED",
+  "cases": [
+    {"id":"TI-1953","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"CURRENT_SOURCE_OBSERVABLE"},
+    {"id":"TI-1954","cut":"2026-10-16T03:54:35+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"SOURCE_CUT_BLOCKED"},
+    {"id":"TI-1955","cut":"2026-10-16T09:00:00+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"postOpen":true,"expected":"POSTOPEN_NOT_PREOPEN_AUTHORITY"},
+    {"id":"TI-1956","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":121,"rehash":121,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"SOURCE_COMPLETENESS_BLOCKED"},
+    {"id":"TI-1957","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":121,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"SOURCE_INTEGRITY_BLOCKED"},
+    {"id":"TI-1958","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":60,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"SESSION_COVERAGE_BLOCKED"},
+    {"id":"TI-1959","cut":"2026-10-15T23:45:00+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":false,"caComplete":false,"historicalAvailability":false,"frozen":false,"expected":"SOURCE_CUT_BLOCKED"},
+    {"id":"TI-1960","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":false,"frozen":false,"lookback":20,"expected":"CURRENT_FORMULA_ONLY"},
+    {"id":"TI-1961","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":false,"historicalAvailability":false,"frozen":false,"lookback":20,"expected":"CONTINUITY_BLOCKED"},
+    {"id":"TI-1962","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":false,"caComplete":true,"historicalAvailability":false,"frozen":false,"lookback":20,"expected":"IDENTITY_BLOCKED"},
+    {"id":"TI-1963","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":false,"frozen":false,"lookback":60,"expected":"CURRENT_FORMULA_ONLY"},
+    {"id":"TI-1964","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":59,"identity":true,"caComplete":true,"historicalAvailability":false,"frozen":false,"lookback":60,"expected":"WINDOW_LENGTH_BLOCKED"},
+    {"id":"TI-1965","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":false,"frozen":false,"indicator":"ADX14","adxReplayFrozen":false,"expected":"ADX_STATE_BLOCKED"},
+    {"id":"TI-1966","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":false,"frozen":false,"indicator":"ADX14","adxReplayFrozen":true,"expected":"CURRENT_FORMULA_ONLY"},
+    {"id":"TI-1967","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":false,"expected":"HISTORICAL_INPUT_ONLY"},
+    {"id":"TI-1968","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":false,"expected":"FROZEN_NO_OUTCOMES"},
+    {"id":"TI-1969","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":false,"expected":"OUTCOMES_COST_BLOCKED"},
+    {"id":"TI-1970","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":true,"oos":false,"expected":"OOS_BLOCKED"},
+    {"id":"TI-1971","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":true,"oos":true,"redundancy":false,"expected":"REDUNDANCY_BLOCKED"},
+    {"id":"TI-1972","cut":"2026-10-16T05:45:43+08:00","latestReceipt":"2026-10-16T03:54:35.094+08:00","pairs":122,"rehash":122,"sessions":61,"identity":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":true,"oos":true,"redundancy":true,"expected":"RESEARCH_CANDIDATE_ONLY"}
+  ]
+}
+
