@@ -1,0 +1,77 @@
+name: System2 M09 Native Preview CFI Independent Original Audit Readonly
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs"
+      - "system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs"
+      - "system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs"
+      - "system2/tests/audit_m09_audited_preview_native_cfi_original_v0_1.test.mjs"
+      - ".github/workflows/system2-m09-native-preview-cfi-independent-audit.yml"
+  workflow_run:
+    workflows:
+      - System2 M09 Real 30 Preview Native CFI Source Readonly
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-m09-native-cfi-independent-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  independent_original_rehash:
+    if: github.event_name == 'pull_request' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Independently test ISIN/CFI source SHA, native type and TIB rule
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs
+          node --test system2/tests/probe_m09_audited_preview_native_cfi_readonly_v0_1.test.mjs
+          node --test system2/tests/audit_m09_audited_preview_native_cfi_original_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download exact successful source run original 30 responses
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: s2-m09-preview-native-cfi-${{ github.event.workflow_run.id }}-1
+          path: /tmp/s2-m09-native-30-independent-readback/
+          github-token: ${{ github.token }}
+      - name: Independently decompress 30 originals and compare full native row metadata
+        if: github.event_name == 'workflow_run'
+        env:
+          S2_M09_NATIVE_SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs
+          R=/tmp/s2-m09-native-30-independent-audit/audit-receipt.json
+          test "$(jq -r .auditedSymbolDenominator "$R")" -eq 30
+          test "$(jq -r .originalProviderResponsesRehashed "$R")" -eq 30
+          test "$(jq -r .historicalOrdinarySharePITCertified "$R")" = 'false'
+          test "$(jq -r .formalStage1SelectionAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "Native current-share source independent originals: $(jq -r .nativeCurrentStockRowsReproduced "$R")/30; Innovation Board=$(jq -r .taiwanInnovationBoardRowsReproduced "$R"), all historical PIT unverified." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain signed independent audit receipt 90 days
+        if: always() && github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-native-30-independent-audit-${{ github.run_id }}
+          path: /tmp/s2-m09-native-30-independent-audit/audit-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Declare no source admission for strategy or D1 Frozen
+        if: always()
+        run: |
+          echo 'Observed current native type only. The real historical market-date PIT has NOT been independently proven.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No issuance of selectedCount, zeroPick, D1/R2 mutation, Strategy rank, buy/push or System1 Formal.' >> "$GITHUB_STEP_SUMMARY"

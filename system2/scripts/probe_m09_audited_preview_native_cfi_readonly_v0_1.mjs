@@ -14,6 +14,17 @@ const CODE=/^[1-9][0-9]{3}$/;
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const strip=(o,key)=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k!==key));
 function deny(code){throw Error('M09_PREVIEW_NATIVE_CFI_'+code)}
+function nativeMarketMatch(nativeLabel,expected){
+ const label=String(nativeLabel||'').trim().toUpperCase();
+ if(expected==='TWSE'&&label==='TAIWAN INNOVATION BOARD')
+  return {matched:true,board:'TWSE_INNOVATION_BOARD_TIB'};
+ if(expected==='TWSE'&&label==='TWSE LISTED')
+  return {matched:true,board:'TWSE_MAIN'};
+ if(expected==='TPEX'&&label==='TPEX LISTED')
+  return {matched:true,board:'TPEX_MAIN'};
+ return {matched:false,board:'UNKNOWN_OR_MISMATCH'};
+}
+
 function validateWatch(sourceReceipt,independentA1Audit,watch){
  if(sourceReceipt?.schemaVersion!=='S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1'||
   sourceReceipt.state!=='SOURCE_OBSERVED_UNAUDITED'||
@@ -82,9 +93,9 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
    const item=group[j],n=result.sourceReceipts[j];
    if(n.code!==item.symbol||n.controlIntent!=='ACTUAL_A1_PRELIMINARY_'+item.market)
     deny('NATIVE_SOURCE_CODE_ORDER_MISMATCH');
+   const nativeMatch=nativeMarketMatch(n.nativeMarketLabel,item.market);
    const sameNativeMarket=n.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
-    typeof n.nativeMarketLabel==='string'&&
-    (item.market==='TWSE'?/^TWSE\b/i:/^TPEX\b/i).test(n.nativeMarketLabel);
+    nativeMatch.matched;
    const currentObservedShare=sameNativeMarket&&
     n.nativeTypeLabel==='Stocks'&&/^ES[A-Z]{4}$/.test(n.cfi||'');
    const explicitNonShare=sameNativeMarket&&
@@ -97,6 +108,8 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
       'NATIVE_CLASS_UNKNOWN',
     nativeTypeLabel:n.nativeTypeLabel,nativeMarketLabel:n.nativeMarketLabel,
     nativeMarketMatchesPreliminaryMarket:sameNativeMarket,
+    nativeExchangeBoard:nativeMatch.board,
+    innovationBoardSpecialEligibilityStillUnverified:nativeMatch.board==='TWSE_INNOVATION_BOARD_TIB',
     cfi:n.cfi,isin:n.isin,
     requestedAtUtc:startAtUtc,observedAtUtc:n.observedAtUtc,
     originalProviderSha256:n.originalSha256,
@@ -111,6 +124,7 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
  const nativeCurrentShareRows=observations.filter(x=>x.currentNativeIdentityStatus==='CURRENT_NATIVE_STOCK_CFI_OBSERVED').length;
  const explicitNonShares=observations.filter(x=>x.currentNativeIdentityStatus==='CURRENT_NATIVE_NON_SHARE_EXPLICIT').length;
  const unknown=observations.length-nativeCurrentShareRows-explicitNonShares;
+ const innovationBoardRows=observations.filter(x=>x.nativeExchangeBoard==='TWSE_INNOVATION_BOARD_TIB').length;
  const base={
   schemaVersion:'S2_M09_AUDITED_PRELIMINARY_NATIVE_CFI_V0_1',
   evidenceClass:'ONLY_CURRENT_AS_OBSERVED_NATIVE_INSTRUMENT_TYPE_NOT_HISTORICAL_PIT',
@@ -125,6 +139,8 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
   currentNativeStockCfiObserved:nativeCurrentShareRows,
   currentNativeNonShareExplicit:explicitNonShares,
   currentNativeUnverified:unknown,
+  currentNativeInnovationBoardStocks:innovationBoardRows,
+  innovationBoardSpecialStrategyEligibilityCertified:false,
   currentNativeRowsAllObserved:unknown===0,
   historicalOrdinarySharePitCertified:0,
   historicalOrdinarySharePitDenominatorCertified:false,
@@ -168,6 +184,7 @@ if(process.argv[1]?.endsWith('/probe_m09_audited_preview_native_cfi_readonly_v0_
   currentNativeStockCfiObserved:receipt.currentNativeStockCfiObserved,
   currentNativeNonShareExplicit:receipt.currentNativeNonShareExplicit,
   currentNativeUnverified:receipt.currentNativeUnverified,
+  currentNativeInnovationBoardStocks:receipt.currentNativeInnovationBoardStocks,
   historicalOrdinarySharePitCertified:0,
   noSelection:true,selectedCount:null,
   receiptHash:receipt.receiptHash

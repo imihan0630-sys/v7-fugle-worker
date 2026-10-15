@@ -29,14 +29,15 @@ async function fixture(codes=['2330','9103','3287','9105','1301']){
  w.receiptHash=await sha256Hex(w);
  return {sourceReceipt:s,independentA1Audit:a,preliminaryWatch:w};
 }
-function stubProbe({requests,unknownCode=null,mismatchCode=null}={}){
+function stubProbe({requests,unknownCode=null,mismatchCode=null,tibCode=null}={}){
  return async({controls})=>{
   requests?.push(controls.map(x=>x.code));
   return {controlsChecked:controls.length,ordinaryCommonSharePITCertified:false,
    selectedCount:null,sourceReceipts:controls.map(x=>({
     code:x.code,controlIntent:x.hint,
     state:x.code===unknownCode?'NATIVE_ACCESS_CHALLENGE_FAIL_CLOSED':'NATIVE_SINGLE_CFI_ROW_OBSERVED',
-    nativeMarketLabel:x.code===mismatchCode?'OTHER MARKET':
+    nativeMarketLabel:x.code===tibCode?'TAIWAN INNOVATION BOARD':
+      x.code===mismatchCode?'OTHER MARKET':
       x.hint.endsWith('TPEX')?'TPEx LISTED':'TWSE LISTED',
     nativeTypeLabel:(x.code==='9103'||x.code==='9105')?'TDR':'Stocks',
     cfi:(x.code==='9103'||x.code==='9105')?'EDSDDR':'ESVUFR',
@@ -68,6 +69,19 @@ test('unreachable native source remains UNKNOWN, never stock class',async()=>{
  assert.equal(r.currentNativeUnverified,1);
  assert.equal(r.currentNativeRowsAllObserved,false);
  assert.equal(r.historicalOrdinarySharePitDenominatorCertified,false);
+});
+test('official TWSE Taiwan Innovation Board is explicitly mapped but never auto-admitted',async()=>{
+ const f=await fixture(['6645','2330']);
+ const r=await run({...f,probeOne:stubProbe({tibCode:'6645'}),
+  fetchImpl:async()=>null,persistRaw:async()=>null});
+ assert.equal(r.currentNativeStockCfiObserved,2);
+ assert.equal(r.currentNativeInnovationBoardStocks,1);
+ assert.equal(r.innovationBoardSpecialStrategyEligibilityCertified,false);
+ assert.equal(r.observations[0].nativeExchangeBoard,'TWSE_INNOVATION_BOARD_TIB');
+ assert.equal(r.observations[0].nativeMarketMatchesPreliminaryMarket,true);
+ assert.equal(r.observations[0].innovationBoardSpecialEligibilityStillUnverified,true);
+ assert.equal(r.historicalOrdinarySharePitCertified,0);
+ assert.equal(r.selectedCount,null);
 });
 test('native exchange mismatch cannot be used to qualify even current security type',async()=>{
  const f=await fixture(),r=await run({...f,
