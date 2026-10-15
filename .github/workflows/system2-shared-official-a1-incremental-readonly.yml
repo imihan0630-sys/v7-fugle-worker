@@ -48,6 +48,7 @@ jobs:
           node --check system2/scripts/run_shared_official_a1_incremental_v0_1.mjs
           node --check system2/scripts/discover_shared_official_a1_seed_v0_1.mjs
           node --test system2/tests/shared_official_a1_incremental_v0_1.test.mjs
+          node --test system2/tests/discover_shared_official_a1_seed_v0_1.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
       - name: Find previous read-only exact original data artifact
         id: seed
