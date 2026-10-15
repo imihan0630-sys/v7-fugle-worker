@@ -1,0 +1,88 @@
+name: S2 A1 122 Original Independent PIT Preopen Witness (GET ONLY)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-issue1068-a1-122-source-asof-20261016.yml
+      - system2/migration/issue1068_a1_122_source_asof_preopen_readonly_v0_1.mjs
+      - system2/tests/issue1068_a1_122_source_asof_preopen_readonly_v0_1.test.mjs
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-issue1068-a1-122-source-asof-20261016.yml
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-a1-122-provenance-preopen-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  independent_original_source_asof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Download original already independent audited A1 source receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: system2-shared-official-a1-independent-audit-38797548446
+          run-id: 38797548446
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-original-audit
+      - name: Download original private content-addressed source archive receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-a1-private-archive-receipt-38797548542
+          run-id: 38797548542
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-original-archive
+      - name: Download independently replayed original non-selection block journal
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-m09-daily-blocker-independent-38797655628
+          run-id: 38797655628
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-original-blocker
+      - name: Test 122/122 native original bytes, real time and failclosed backdating
+        env:
+          S2_A1_AUDIT_NATIVE_PATH: /tmp/s2-issue1068-original-audit/s2-shared-a1-independent-audit/audit-receipt.json
+          S2_A1_ARCHIVE_NATIVE_PATH: /tmp/s2-issue1068-original-archive/archive-publish-receipt.json
+          S2_A1_BLOCKER_NATIVE_PATH: /tmp/s2-issue1068-original-blocker/independent-readback.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_a1_122_source_asof_preopen_readonly_v0_1.mjs
+          node --test system2/tests/issue1068_a1_122_source_asof_preopen_readonly_v0_1.test.mjs
+      - name: Create real as-of source-only witness for new run if genuinely before T plus one open
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_a1_122_source_asof_preopen_readonly_v0_1.mjs \
+            /tmp/s2-issue1068-original-audit/s2-shared-a1-independent-audit/audit-receipt.json \
+            /tmp/s2-issue1068-original-archive/archive-publish-receipt.json \
+            /tmp/s2-issue1068-original-blocker/independent-readback.json
+      - name: Archive sanitized original-asof acceptance with strategy PIT and Frozen disabled
+        if: always() && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-a1-122-source-asof-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-a1-122-preopen-pit/sanitized-source-asof-only.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Source observation is not historical original public availability or strategy permission
+        if: always()
+        shell: bash
+        run: |
+          echo 'A genuine source-only preopen as-of gate can pass on 2026-10-16 morning AFTER original Oct15 source/audit/archive/blocker timestamps.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Source data integrity 122/122 is not historical PIT at T date, full CA revision, ordinary class, Frozen, official selection or historical performance.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No Cloudflare D1/R2 calls, no System1 V8 Formal or Worker/Cron modifications, no picks or real-money signals.' >> "$GITHUB_STEP_SUMMARY"
