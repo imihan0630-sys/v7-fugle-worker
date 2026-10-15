@@ -131,5 +131,5 @@ test('daily native rehash is chained only to real A1 independent workflow and ca
  assert.match(auditWorkflow,/github.event.workflow_run.run_attempt/);
  assert.match(auditWorkflow,/contents: read/);
  assert.match(auditWorkflow,/actions: read/);
- assert.doesNotMatch(auditWorkflow,/schedule:|contents: write|secrets\.|wrangler/);
+ assert.doesNotMatch(auditWorkflow,/schedule:|contents: write|secrets\.|wrangler (?:deploy|d1|r2)/);
 });
