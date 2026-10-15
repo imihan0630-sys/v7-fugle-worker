@@ -81,7 +81,9 @@ assert.match(recovery,/LEGACY_WORKER_PINNED_PRIOR_DAY_UNSUPPORTED_NO_BUSINESS_PO
 assert.match(recovery,/SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY/);
 assert.match(recovery,/NO_BUSINESS_POST_AFTER_SESSION_ROLLOVER/);
 assert.ok(recovery.includes("classifyImmediateBusinessPostClock({now:new Date(),targetDate:date})"));
-assert.doesNotMatch(recovery,/if\(!handoff\.mayPost\)\s*\{[\s\S]*?process\.exit\(0\)/);
+assert.match(recovery,/ORIGINAL_FORMAL_CRON_NOT_DUE/);
+assert.match(recovery,/SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY/);
+assert.match(recovery,/formalNotYetDue:true/);
 assert.equal((recovery.match(/admin\('\/api\/scan',\{method:'POST'/g)||[]).length,1);
 assert.equal((workflow.match(/run: node tests\/recover_after_market\.mjs/g)||[]).length,3);
 console.log(JSON.stringify({ok:true,sourceReadyHandoff:true,
