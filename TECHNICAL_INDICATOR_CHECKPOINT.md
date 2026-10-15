@@ -9292,3 +9292,33 @@ Artifacts: `research/D03_DEST_COUNT_READBACK_TO_INDICATOR_REPLAY_FIREWALL_202610
 主線續作盤中逐股監控集合、報價／完成線／訊號時間、用途別最大年齡、欄位、暖機、版本及連續性對帳。資料搬移支線不再重做固定 47,420 筆四欄摘要；下一次新增搬移後需由新生產者產生新集合摘要並由目的端重播。同時凍結完整價格負載正規序列化，從完整欄位獨立重算內容雜湊，逐批閉合集合；原始時點未知維持隔離。完成逐股精確合格交易日與譜系後，才評估 `D03-10` 20 期窗口或 `D03-09` 完整遞迴重播。
 
 Artifacts: `research/D03_SOURCE_LINKED_IDENTITY_DIGEST_VS_FULL_PAYLOAD_PARITY_20261015_V0_1.md`, `research/d03_source_linked_identity_digest_full_payload_cases_20261015_v0_1.json`, `research/test_d03_source_linked_identity_digest_full_payload_v0_1.mjs`.
+
+
+## Continuation update — TI-1953 through TI-1972
+
+- Canonical physical evidence `system2/migration/evidence/S2_DATA_ISSUE1068_ORIGINAL_A1_122_PREOPEN_SOURCE_PIT_PHYSICAL_20261016_V0_1.json` is accepted only as current source-observation PIT for the 2026-10-16 05:45:43 Asia/Taipei research cut.
+- The evidence independently rehashes and parses 122/122 original source payloads for TWSE/TPEx across 61 trading sessions. The latest required receipt was fully observed at 03:54:35.094 Asia/Taipei, before the 05:45 cut.
+- This does not retro-authorize the 2026-10-15 23:45 decision cut and does not establish historical firstKnownAt/availableAt for any of the 61 market dates.
+- Collector-reported 1,935 four-digit-symbol full windows are not treated as a historically certified ordinary-common-stock universe; effective-dated CFI identity remains incomplete.
+- Historical OHLCV revisions, six-family corporate-action corrections/retractions/no-event completeness, suspension/no-trade semantics and strategy parent identity remain blocking.
+- A 61-session source set can be numerically long enough for ret5/20/60, MA, KD9, RSI14, MACD12/26/9 and Bollinger20 only after exact symbol-session, identity and continuity gates pass. It does not create historical indicator PIT.
+- ADX14 additionally remains blocked on frozen Wilder replay/warm-up state semantics; arbitrary initialization is not accepted.
+- New outcome-blind boundary contract: `research/D03_PREOPEN_SOURCE_OBSERVATION_PIT_VS_HISTORICAL_INDICATOR_PIT_20261016_V0_1.md`.
+- New executable preregistration: `research/d03_preopen_source_observation_historical_indicator_pit_cases_20261016_v0_1.json` and `research/test_d03_preopen_source_observation_historical_indicator_pit_v0_1.mjs`.
+- Independent local execution passed 20/20 cases. No outcomes, threshold search, parameter sweep, runtime wiring or Formal modification occurred.
+- No `FORMAL_OPTIMIZATION_CANDIDATE`. Formal Core remains LOCKED.
+
+### Updated current status
+
+CURRENT_PREOPEN_SOURCE_OBSERVATION_PIT_PASS / HISTORICAL_INDICATOR_PIT_BLOCKED / CURRENT_FORMULA_WINDOW_CONDITIONAL / STRATEGY_PIT_BLOCKED / OUTCOMES_CLOSED / FORMAL_LOCKED
+
+### Updated exact next continuation point
+
+1. Preserve the 122/122 evidence as a source-observation witness only; do not rewrite it as historical decision-time availability.
+2. Obtain effective-dated ordinary-common-stock identity and original firstKnownAt/availableAt per market date.
+3. Obtain six-family corporate-action correction/retraction/no-event completeness plus suspension/no-trade semantics for the exact 61-session window.
+4. After those gates pass, construct an outcome-blind per-symbol current-cut formula-window eligibility table.
+5. Require prefix invariance and replay exactness for every eligible formula state, including frozen ADX warm-up/replay semantics.
+6. Do not join outcomes until complete prospective parents exist; first inference remains KD-vs-RSI residual incremental value, then MACD-vs-direct-trend.
+7. Preserve equal-date inference, OOS/walk-forward, cost/fillability, limit/suspension and redundancy gates.
+8. Formal Core unchanged; maturity remains 56.7%.
