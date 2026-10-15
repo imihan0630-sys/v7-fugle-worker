@@ -1,0 +1,77 @@
+name: S2 DATA 122 Original A1 Native Per-Bar PIT Cut (Read Only)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-issue1068-a1-native-perbar-pit-20261016.yml
+      - system2/migration/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.mjs
+      - system2/tests/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.test.mjs
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-issue1068-a1-native-perbar-pit-20261016.yml
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-issue1068-a1-native-perbar-pit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  original_native_perbar_asof_replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Original 40MB official TWSE TPEX source artifact; no fresh market fetch
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-shared-official-a1-38797319008
+          run-id: 38797319008
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-real-source
+      - name: Original independent source/audit native artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: system2-shared-official-a1-independent-audit-38797548446
+          run-id: 38797548446
+          repository: imihan0630-sys/v7-fugle-worker
+          github-token: ${{ github.token }}
+          path: /tmp/s2-issue1068-real-audit
+      - name: Reparse every official original raw provider and every persisted 61-window OHLCV bar
+        env:
+          S2_PIT_ORIGINAL_SOURCE_RECEIPT: /tmp/s2-issue1068-real-source/official-61-2026-10-15.json
+          S2_PIT_ORIGINAL_AUDIT_RECEIPT: /tmp/s2-issue1068-real-audit/s2-shared-a1-independent-audit/audit-receipt.json
+          S2_PIT_ORIGINAL_PROVIDER_DIR: /tmp/s2-issue1068-real-source/original-json
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.mjs
+          node --test system2/tests/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.test.mjs
+      - name: Write native perpair as-of original physical receipt only on merged main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.mjs \
+            /tmp/s2-issue1068-real-source/official-61-2026-10-15.json \
+            /tmp/s2-issue1068-real-audit/s2-shared-a1-independent-audit/audit-receipt.json \
+            /tmp/s2-issue1068-real-source/original-json
+      - name: Preserve only perpair SHA + capture clocks, never raw source payload or stock prices
+        if: always() && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-a1-122-real-native-perbar-pit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-a1-original-perpair-pit/sanitized-original-perpair-pit.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Scope denial — no March to October historical PIT or strategy admission
+        if: always()
+        run: |
+          echo 'Original market T 23:45 UTC cutoff is 2026-10-15T15:45Z; provider/audit postcut data cannot backdate.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Even true native original 122/122 and all complete bars cannot prove original historical availableAt, CA revisions/no-event, historic CFI, Frozen, formal strategy, or cross-account G3/G4.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No new source HTTP, Cloudflare D1/R2, production Cron or System1 V8 changes.' >> "$GITHUB_STEP_SUMMARY"
