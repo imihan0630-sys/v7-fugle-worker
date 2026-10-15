@@ -2,15 +2,31 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 import {probeM09AuditedPreviewNativeCfiV0_1 as run}
  from '../scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs';
 const h='a'.repeat(64);
 async function fixture(codes=['2330','9103','3287','9105','1301']){
+ const dates=Array.from({length:61},(_,i)=>{
+  const d=new Date('2026-10-14T00:00:00Z');
+  d.setUTCDate(d.getUTCDate()-(60-i));
+  return d.toISOString().slice(0,10);
+ });
  const s={schemaVersion:'S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1',
   state:'SOURCE_OBSERVED_UNAUDITED',marketDate:'2026-10-14',
-  receivedMarketDateCount:122,receiptHash:h,
-  calendar:{tradingDates:Array.from({length:61},(_,i)=>String(i+1))}};
- s.calendar.tradingDates[60]='2026-10-14';
+  calendar:{state:'SOURCE_OBSERVED_UNAUDITED',marketDate:'2026-10-14',
+   tradingDates:dates,observedAt:'2026-10-15T01:00:00Z',
+   originalCalendarHash:h,providerSource:'TWSE_OFFICIAL',
+   verifiedOfficialReadback:false},
+  requestCount:122,plannedMarketDateRequests:122,receivedMarketDateCount:122,
+  sourceWindowFirstDate:dates[0],sourceWindowLastDate:dates.at(-1),
+  sourceRowSymbolWindowsCompleteCount:0,markets:['TWSE','TPEX'],
+  receipts:[],errors:[],bySymbol:{},sourceQuotaD1Reads:0,sourceQuotaD1Writes:0,
+  assessorExecuted:false,qualifiedCandidates:null,selectedCount:null,
+  frozenDecisionsDurablyReadBack:false,independentProviderAudited:false,
+  noSystem1RuntimeMutations:true};
+ s.receiptHash=await sha256Hex(official61SessionSourceReceiptHashBaseV0_1(s));
  const a={schemaVersion:'SHARED_OFFICIAL_A1_SOURCE_AUDIT_V0_1',
   verdict:'ACCEPTED_SOURCE_INTEGRITY_ONLY',
   sourceReceiptHash:s.receiptHash,marketDate:s.marketDate,
@@ -32,7 +48,8 @@ async function fixture(codes=['2330','9103','3287','9105','1301']){
 function stubProbe({requests,unknownCode=null,mismatchCode=null,tibCode=null}={}){
  return async({controls})=>{
   requests?.push(controls.map(x=>x.code));
-  return {controlsChecked:controls.length,ordinaryCommonSharePITCertified:false,
+  const batch={schemaVersion:'S2_M09_NATIVE_SINGLE_ISIN_CFI_TRANSPORT_V0_1',
+   controlsChecked:controls.length,ordinaryCommonSharePITCertified:false,
    selectedCount:null,sourceReceipts:controls.map(x=>({
     code:x.code,controlIntent:x.hint,
     state:x.code===unknownCode?'NATIVE_ACCESS_CHALLENGE_FAIL_CLOSED':'NATIVE_SINGLE_CFI_ROW_OBSERVED',
@@ -44,6 +61,7 @@ function stubProbe({requests,unknownCode=null,mismatchCode=null,tibCode=null}={}
     isin:'TW0002330008',observedAtUtc:'2026-10-15T02:21:00Z',
     originalSha256:h,originalBytes:1000,rawByteReadback:true
    }))};
+  return {...batch,receiptHash:await sha256Hex(batch)};
  };
 }
 test('five real-watch identities scanned in strictly bounded batches 4+1',async()=>{
@@ -111,6 +129,47 @@ test('31 symbol requests, duplicate code identity and missing preliminary are de
  b.preliminaryWatch.receiptHash=await sha256Hex(
   Object.fromEntries(Object.entries(b.preliminaryWatch).filter(([k])=>k!=='receiptHash')));
  await assert.rejects(()=>run(b),/M09_PREVIEW_NATIVE_CFI_PREVIEW_SYMBOL_OR_AUTHORITY_INVALID/);
+});
+test('a changed A1 source receipt blocks every CFI provider GET before network',async()=>{
+ const f=await fixture();f.sourceReceipt.calendar.observedAt='2026-10-15T02:00:00Z';
+ let calls=0;
+ await assert.rejects(()=>run({...f,probeOne:async()=>{calls++;}}),
+  /M09_PREVIEW_NATIVE_CFI_A1_ORIGINAL_SOURCE_HASH_MISMATCH/);
+ assert.equal(calls,0);
+});
+test('re-signed but malformed 61-session trading dates cannot launch CFI GET',async()=>{
+ const f=await fixture();f.sourceReceipt.calendar.tradingDates[4]=
+  f.sourceReceipt.calendar.tradingDates[3];
+ f.sourceReceipt.receiptHash=await sha256Hex(
+  official61SessionSourceReceiptHashBaseV0_1(f.sourceReceipt));
+ let calls=0;
+ await assert.rejects(()=>run({...f,probeOne:async()=>{calls++;}}),
+  /M09_PREVIEW_NATIVE_CFI_A1_ORIGINAL_SOURCE_NOT_COMPLETE/);
+ assert.equal(calls,0);
+});
+test('tampered native-probe batch cannot be accepted as current Stocks',async()=>{
+ const f=await fixture(),original=stubProbe({});
+ await assert.rejects(()=>run({...f,
+  probeOne:async(args)=>{
+   const result=await original(args);
+   result.sourceReceipts[0].cfi='ESAAAA';
+   return result;
+  },
+  fetchImpl:async()=>null,persistRaw:async()=>null
+ }),/M09_PREVIEW_NATIVE_CFI_SIGNED_NATIVE_SOURCE_BATCH_NOT_VERIFIED/);
+});
+test('even a signed native batch missing actual SHA proof is rejected',async()=>{
+ const f=await fixture(),original=stubProbe({});
+ await assert.rejects(()=>run({...f,
+  probeOne:async(args)=>{
+   const r=await original(args);
+   r.sourceReceipts[0].rawByteReadback=false;
+   r.receiptHash=await sha256Hex(
+    Object.fromEntries(Object.entries(r).filter(([k])=>k!=='receiptHash')));
+   return r;
+  },
+  fetchImpl:async()=>null,persistRaw:async()=>null
+ }),/M09_PREVIEW_NATIVE_CFI_NATIVE_PROVENANCE_NOT_VERIFIED/);
 });
 test('workflow must retrieve exact authentic Oct14 A1/audit and leave Formal boundary intact',async()=>{
  const [src,w]=await Promise.all([
