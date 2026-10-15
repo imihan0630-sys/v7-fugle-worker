@@ -113,3 +113,23 @@ test('workflows only run independent readback after signed main source success',
  assert.match(w,/contents: read/);assert.match(w,/actions: read/);
  assert.doesNotMatch(w,/schedule:|workflow_dispatch:|secrets\.|contents: write/);
 });
+
+test('daily native rehash is chained only to real A1 independent workflow and cannot modify Frozen',async()=>{
+ const [upstream,auditWorkflow]=await Promise.all([
+  readFile('.github/workflows/system2-shared-official-a1-independent-audit.yml','utf8'),
+  readFile('.github/workflows/system2-m09-daily-native-cfi-independent-audit.yml','utf8')
+ ]);
+ assert.match(upstream,/Observe native ISIN CFI for this exact audited preview only/);
+ assert.match(upstream,/if: success\(\) && github.event_name != 'push'/);
+ assert.match(upstream,/s2-m09-daily-native-cfi-/);
+ assert.match(upstream,/historicalOrdinarySharePitCertified/);
+ assert.match(auditWorkflow,/workflow_run:/);
+ assert.match(auditWorkflow,/System2 Shared Official A1 Independent Source Audit/);
+ assert.match(auditWorkflow,/github.event.workflow_run.event == 'workflow_run'/);
+ assert.match(auditWorkflow,/github.event.workflow_run.head_branch == 'main'/);
+ assert.match(auditWorkflow,/head_repository.full_name == github.repository/);
+ assert.match(auditWorkflow,/github.event.workflow_run.run_attempt/);
+ assert.match(auditWorkflow,/contents: read/);
+ assert.match(auditWorkflow,/actions: read/);
+ assert.doesNotMatch(auditWorkflow,/schedule:|contents: write|secrets\.|wrangler/);
+});
