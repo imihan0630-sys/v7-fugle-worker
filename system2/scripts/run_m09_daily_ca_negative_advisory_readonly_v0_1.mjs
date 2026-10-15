@@ -25,7 +25,7 @@ async function validSignedReceipt(o,key,hashBase=unsigned){
  }catch{return false;}
 }
 const calendarValid=dates=>Array.isArray(dates)&&dates.length===61&&
- dates.every((d,i)=>/^\\d{4}-\\d\\d-\\d\\d$/.test(d)&&
+ dates.every((d,i)=>/^\d{4}-\d\d-\d\d$/.test(d)&&
   Number.isFinite(Date.parse(d+'T00:00:00Z'))&&
   new Date(d+'T00:00:00Z').toISOString().slice(0,10)===d&&
   (i===0||d>dates[i-1]));
