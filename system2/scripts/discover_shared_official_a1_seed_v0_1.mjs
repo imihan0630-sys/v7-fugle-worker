@@ -1,5 +1,5 @@
-// Discover already available original public data (existing GitHub Actions
-// artifacts) using the runner's *built-in* read-only repo GITHUB_TOKEN.
+// Discover only SUCCESSFULLY completed main-branch original public data
+// artifacts using the runner's *built-in* read-only repo GITHUB_TOKEN.
 // Does not create secrets, permissions, repositories, releases or D1 writes.
 import {appendFileSync} from 'node:fs';
 const repo='imihan0630-sys/v7-fugle-worker';
@@ -25,11 +25,13 @@ export async function discoverSharedA1PreviousSourceArtifactV0_1({
   throw Error('GITHUB_SHARED_A1_RUNS_LIST_UNVERIFIED');
  for(const run of runs.workflow_runs.slice(0,20)){
   if(!Number.isSafeInteger(run.id)||run.id===Number(currentRunId)||
-     run.status!=='completed')continue;
+     run.status!=='completed'||run.conclusion!=='success'||
+     run.head_branch!=='main')continue;
   const result=await apiFetch('/actions/runs/'+run.id+'/artifacts?per_page=30',
    {fetchImpl,token});
-  const artifact=(result.artifacts||[]).find(x=>
-   x.expired===false&&x.name?.startsWith('s2-shared-official-a1-')&&
+  const artifact=(Array.isArray(result.artifacts)?result.artifacts:[]).find(x=>
+   x.expired===false&&x.name==='s2-shared-official-a1-'+run.id&&
+   x.workflow_run?.id===run.id&&
    Number.isSafeInteger(x.size_in_bytes)&&x.size_in_bytes>0);
   if(artifact)
    return Object.freeze({runId:run.id,artifactName:artifact.name,kind:'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE'});
