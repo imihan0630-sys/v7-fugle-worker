@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "ROOM04_TOPOLOGY_RESEARCH_V0_1",
+  "dateTaipei": "2026-10-15",
+  "evidenceScope": "SYNTHETIC_FALSIFICATION_ONLY",
+  "officialTracker": {
+    "updatedAt": "2026-10-15T21:15:54+08:00",
+    "D04": 58,
+    "D05": 54.3,
+    "all": 47.9
+  },
+  "realSourceEvidence": {
+    "originalA1Bars": 84688,
+    "importedA1Bars": 47420,
+    "independentlyMatchedIdentityVectorRows": 47420,
+    "rawOhlcvPayloadRehashed": false,
+    "historicalFirstKnownAtCertified": false
+  },
+  "fixtures": {
+    "dailySessions": 61,
+    "dailyObserved": 58,
+    "missingClustered": [
+      1,
+      2,
+      3
+    ],
+    "missingDispersed": [
+      20,
+      40,
+      60
+    ],
+    "rv20WindowsClustered": 38,
+    "rv20WindowsDispersed": 0,
+    "rv5WindowsClustered": 53,
+    "rv5WindowsDispersed": 42,
+    "intradaySlots": 17,
+    "slotsObserved": 14,
+    "slotMissingClustered": [
+      15,
+      16,
+      17
+    ],
+    "slotMissingDispersed": [
+      5,
+      10,
+      15
+    ],
+    "adjacentPairsClustered": 13,
+    "adjacentPairsDispersed": 10,
+    "threeSlotSequencesClustered": 12,
+    "threeSlotSequencesDispersed": 6
+  },
+  "localOracle": "room04_window_topology_oracle_20261015.mjs",
+  "localTestsPassed": 18,
+  "localTestsFailed": 0,
+  "realMarketObservationCount": 0,
+  "prospectiveShadowEvidence": false,
+  "formalCore": "LOCKED",
+  "promotion": false
+}
