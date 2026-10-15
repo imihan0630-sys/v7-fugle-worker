@@ -59,6 +59,29 @@ test('independent original bytes rehash all 30 and reproduce TWSE innovation sub
  assert.equal(r.selectedCount,null);assert.equal(r.frozenD1Written,false);
  const {auditHash,...base}=r;assert.equal(auditHash,await sha256Hex(base));
 });
+test('real shorter 2/2 preview rehashes its actual signed denominator, never fabricates 30',async()=>{
+ const f=await fixture(),r=f.sourceReceipt;
+ r.observations=r.observations.slice(0,2);
+ r.preliminaryDenominator=2;r.perSymbolNativeRequestsMade=2;
+ r.currentNativeStockCfiObserved=1;r.currentNativeNonShareExplicit=1;
+ r.currentNativeInnovationBoardStocks=1;
+ r.receiptHash=await sha256Hex(
+  Object.fromEntries(Object.entries(r).filter(([k])=>k!=='receiptHash')));
+ const audited=await audit(f);
+ assert.equal(audited.auditedSymbolDenominator,2);
+ assert.equal(audited.originalProviderResponsesRehashed,2);
+ assert.equal(audited.nativeCurrentStockRowsReproduced,1);
+ assert.equal(audited.historicalOrdinarySharePITCertified,false);
+});
+test('signed 31-security preview cannot be accepted by independent audit',async()=>{
+ const f=await fixture();
+ f.sourceReceipt.preliminaryDenominator=31;
+ f.sourceReceipt.perSymbolNativeRequestsMade=31;
+ f.sourceReceipt.receiptHash=await sha256Hex(
+  Object.fromEntries(Object.entries(f.sourceReceipt).filter(([k])=>k!=='receiptHash')));
+ await assert.rejects(()=>audit(f),
+  /M09_INDEPENDENT_NATIVE_CFI_SOURCE_RECEIPT_SCOPE_HASH_OR_CLOCK_INVALID/);
+});
 test('one altered source body is never a certified 30/30 witness',async()=>{
  const f=await fixture(),read=f.readOriginal;
  f.readOriginal=async(code)=>code==='1004'?Buffer.from('tampered'):read(code);
