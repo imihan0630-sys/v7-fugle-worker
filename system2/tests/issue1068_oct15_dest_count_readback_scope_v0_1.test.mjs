@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-const workflow = readFileSync(".github/workflows/system2-data-issue1068-oct15-dest-readback-once.yml", "utf8");
+const workflow = readFileSync(".github/workflows/system2-dest-a1-live-readback-once-20261012.yml", "utf8");
 const script = readFileSync("system2/migration/destination_raw_a1_live_readback_once_20261012.mjs", "utf8");
-assert.match(workflow,/name: S2 DATA #1068 Oct15 Postwriter Destination D1 SELECT Only/);
+assert.match(workflow,/name: S2 DEST A1 Current Physical Readback ONE SHOT/);
 assert.match(workflow,/push:\s*\n\s*branches: \[main\]/);
-assert.match(workflow,/paths:\s*\n\s*- \.github\/workflows\/system2-data-issue1068-oct15-dest-readback-once\.yml/);
+assert.match(workflow,/paths:\s*\n\s*- \.github\/workflows\/system2-dest-a1-live-readback-once-20261012\.yml/);
 assert.doesNotMatch(workflow, /workflow_dispatch:|schedule:|issue_comment:/);
 assert.match(workflow,/environment: system2-schema-only/);
 assert.match(workflow,/permissions:\s*\n\s*contents: read/);
