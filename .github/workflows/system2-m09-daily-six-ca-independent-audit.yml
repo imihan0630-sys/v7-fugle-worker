@@ -1,0 +1,89 @@
+name: System2 M09 Daily Six CA Independent Original Audit (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-m09-daily-six-ca-independent-audit.yml"
+      - "system2/scripts/audit_m09_daily_ca_six_originals_v0_1.mjs"
+      - "system2/tests/audit_m09_daily_ca_six_originals_v0_1.test.mjs"
+  workflow_run:
+    workflows:
+      - "System2 Shared Official A1 Independent Source Audit (READ ONLY)"
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-m09-six-ca-independent-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit_six_ca_originals:
+    # A1 main-push self-test is an expected 121/122 denial; never accept it.
+    # PR is a fixed pinned true Oct15 source readback, not a current-day claim.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       (github.event.workflow_run.event == 'workflow_run' ||
+        github.event.workflow_run.event == 'workflow_dispatch'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test original six-CA signed-lineage and negative PIT boundaries
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_m09_daily_ca_six_originals_v0_1.mjs
+          node --test system2/tests/audit_m09_daily_ca_six_originals_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Retrieve exact original independently A1-audited six-CA source ZIP
+        uses: actions/download-artifact@v4
+        with:
+          # Oct15 pinned REAL 122/122 audit run solely for this PR validation.
+          # Future workflow_run uses that exact successful producer run ID.
+          run-id: ${{ github.event.workflow_run.id || '38740410797' }}
+          name: s2-m09-daily-ca-observed-risk-${{ github.event.workflow_run.id || '38740410797' }}-${{ github.event.workflow_run.run_attempt || '1' }}
+          path: /tmp/s2-m09-daily-ca-independent-readback
+          github-token: ${{ github.token }}
+      - name: Separate-run SHA-256 rehash of six genuine official native original bodies
+        env:
+          S2_M09_DAILY_CA_SOURCE_DIR: /tmp/s2-m09-daily-ca-independent-readback
+          S2_M09_CA_SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '38740410797' }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_m09_daily_ca_six_originals_v0_1.mjs
+          R=/tmp/s2-m09-six-ca-independent-audit/audit-receipt.json
+          test -s "$R"
+          test "$(jq -r .originalCaFamiliesIndependentlyRehashed "$R")" = "6"
+          test "$(jq -r .independentNativeRangeSchemaReparsed "$R")" = "6"
+          test "$(jq -r .historicalFirstKnownAtPITCertified "$R")" = "false"
+          test "$(jq -r .completeCorrectionsAndRetractionsCertified "$R")" = "false"
+          test "$(jq -r .historicalNoEventCoverageCertified "$R")" = "false"
+          test "$(jq -r .ordinaryEquityClassPITCertified "$R")" = "false"
+          test "$(jq -r .stage1SelectionAuthorized "$R")" = "false"
+          test "$(jq -r .selectedCount "$R")" = "null"
+          test "$(jq -r .zeroPickDay "$R")" = "null"
+          test "$(jq -r .frozenD1Written "$R")" = "false"
+          test "$(jq -r .cloudflareD1Writes "$R")" = "0"
+          echo "SIX_REAL_CA_NATIVE_BODY_SHA_AND_RANGE_READBACK=6/6; no historical PIT, no NO_EVENT, no Frozen." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve signed independent six-CA READ ONLY receipt 90 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-six-ca-independent-${{ github.run_id }}
+          path: /tmp/s2-m09-six-ca-independent-audit/audit-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Explicit zero-promotion and no cloud writes
+        if: always()
+        run: |
+          echo "This audits original bytes already captured, not historical published-at firstKnownAt or CA revision completeness." >> "$GITHUB_STEP_SUMMARY"
+          echo "No provider GET, secret, Cloudflare D1/R2, Worker/Cron, System1 V8 Formal, real selection, Frozen, push or orders." >> "$GITHUB_STEP_SUMMARY"
