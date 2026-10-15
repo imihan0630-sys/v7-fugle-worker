@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "D06_PF064_PCF_DECISION_TIME_VINTAGE_GUARD_V0_1",
+  "createdAtTaipei": "2026-10-16T07:15:41+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-18",
+    "D06-05"
+  ],
+  "baseMainSha": "b13216182eed18cd52ceee6e2fc1cd5d95086979",
+  "researchOnly": true,
+  "outcomesOpened": false,
+  "formalCore": "LOCKED",
+  "formalCoreImpact": "NONE",
+  "sourceContracts": [
+    "research/passive_flow_etf_units_pcf_contract_v0_3.json",
+    "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
+    "research/d06_pf042_third_decision_generation_stability_20261007_v0_1.json"
+  ],
+  "finding": "Decision-time ETF PCF vintage admission is not guaranteed by a later issuer page read. T-day retransmissions, cache versions and different decision generations must remain append-only. Latest displayed PCF is not evidence of the PCF visible at an earlier decision.",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "support": "Issuer PCF generation can be identified by fund/use date.",
+      "counter": "Later same-date revision can overwrite the displayed PCF.",
+      "alternative": "Late update/cache/parser drift.",
+      "failure": "Missing capturedAt, firstSeenAt or hash => UNKNOWN."
+    },
+    {
+      "id": "H2",
+      "support": "Two funds are separate products.",
+      "counter": "Same market date/benchmark event is not two independent time observations.",
+      "alternative": "Shared index/liquidity shock.",
+      "failure": "Date clustering and receipt-root dedup required."
+    },
+    {
+      "id": "H3",
+      "support": "In-kind creation may require basket delivery.",
+      "counter": "Existing inventory, borrow and cash substitution prevent identification of actual stock buying.",
+      "alternative": "AP inventory, hedge, settlement.",
+      "failure": "Actual execution UNKNOWN without trade/settlement receipts."
+    },
+    {
+      "id": "H4",
+      "support": "Margin/borrow/institutional flows may co-move with fund demand.",
+      "counter": "Shared source parents and stock-flow confusion invalidate multiple independent votes.",
+      "alternative": "Hedge/arbitrage/settlement.",
+      "failure": "No independent lineage or D16 OOS residual gain."
+    },
+    {
+      "id": "H5",
+      "support": "Ownership concentration may co-move with fund activity.",
+      "counter": "TDCC grade crossing, denominator and custody do not identify AP executions.",
+      "alternative": "Custody transfer/corporate action.",
+      "failure": "IC110 vintage-pair guards required."
+    }
+  ],
+  "guard": {
+    "requiredFields": [
+      "fundCode",
+      "decisionDate",
+      "unitObservationDate",
+      "pcfVersion",
+      "sourceHash",
+      "capturedAt",
+      "firstSeenAt",
+      "sourceUrl",
+      "creationRedemptionMode",
+      "primitiveReceiptId"
+    ],
+    "rule": "Select only immutable snapshots observed no later than decisionAt; reject same-time conflicting hashes; no later revision backfill; distinguish T PCF use date from T-1 reported unit change.",
+    "missing": "UNKNOWN, not 0/BAD",
+    "independentTimeUnit": "one market decision date; fund rows/readbacks do not multiply N",
+    "execution": "MODELED_PRIMARY_BASKET_EXPOSURE only; actual AP stock trades UNKNOWN"
+  },
+  "biasAudit": {
+    "PIT": "capturedAt and firstSeenAt <= decisionAt",
+    "OOS": "no outcomes opened",
+    "walkForward": "purge overlapping forward horizons and embargo later revisions",
+    "selection": "no post-outcome issuer picking",
+    "lookAhead": "reject later PCF",
+    "multipleTesting": "D16 preregistration required",
+    "overfit": "synthetic tests are not market samples",
+    "redundancy": "one primitive many consumers",
+    "cost": "30/60/100 bps hypothetical only",
+    "liquidity": "basket exposure is not executable volume",
+    "regime": "unverified",
+    "shadow": "no fabricated history"
+  },
+  "testReceipt": {
+    "suite": "D06_PF064_20261016_vintage_gate.mjs",
+    "checks": 26,
+    "passed": 26,
+    "failed": 0,
+    "fixtures": "SYNTHETIC_ONLY",
+    "newMarketDates": 0,
+    "newOOSReturns": 0
+  },
+  "maturityDecision": {
+    "D06": 55.6,
+    "D06_16": 60,
+    "D06_11": 40,
+    "overall": 47.9,
+    "change": "NONE"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "status": "RESEARCH_ONLY / SYNTHETIC_GUARD_PASS / OOS_UNKNOWN / FORMAL_LOCKED",
+  "exactNext": "Capture genuine independent issuer PCF vintages and raw immutable first-observed receipts, pre-register D16 common-support residual OOS, keep AP actual execution UNKNOWN. For D06-05 wait for a TDCC sourceDate strictly after 2026-10-08 and rebuild pair-specific cohort before outcomes."
+}
