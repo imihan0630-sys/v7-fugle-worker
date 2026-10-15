@@ -79,6 +79,8 @@ assert.match(recovery,/classifySourceReadyFormalHandoff/);
 assert.match(recovery,/if\(!handoff\.mayPost\)/);
 assert.match(recovery,/LEGACY_WORKER_PINNED_PRIOR_DAY_UNSUPPORTED_NO_BUSINESS_POST/);
 assert.match(recovery,/SOURCE_READY_BUT_FORMAL_HANDOFF_BLOCKED_NO_RETRY/);
+assert.match(recovery,/ALL same-date recovery modes/);
+assert.doesNotMatch(recovery,/if\(sourceReadyHandoff\)\s*\{/);
 assert.match(recovery,/NO_BUSINESS_POST_AFTER_SESSION_ROLLOVER/);
 assert.ok(recovery.includes("classifyImmediateBusinessPostClock({now:new Date(),targetDate:date})"));
 assert.match(recovery,/ORIGINAL_FORMAL_CRON_NOT_DUE/);
