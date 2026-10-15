@@ -38,7 +38,11 @@ async function fixture(pairs=122,{preview=2,late=false}={}){
   independentSourceAuditHash:a.auditHash,originalSourceReceiptHash:a.sourceReceiptHash,
   state:pairs!==122?'BLOCKED_SOURCE_INCOMPLETE':'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION',
   blockers:['CORPORATE_ACTION_NOT_PIT_CERTIFIED'],
-  watchlist:pairs===122?Array.from({length:preview},(_,i)=>({market:'TWSE',symbol:String(2330+i)})):[],
+  ...(pairs===122?{displayedCount:preview,ordinaryEquityOnlyUniverseCertified:false}:{}),
+  watchlist:pairs===122?Array.from({length:preview},(_,i)=>({
+   market:'TWSE',symbol:String(2330+i),strategyRank:null,
+   formalStrategyValidity:null,riskLevel:'PRELIMINARY_OBSERVATION_ONLY'
+  })):[],
   selectedCount:null,zeroPickDay:null,
   finalSelectionAuthorized:false,frozenWritten:false,
   cloudflareD1Writes:0,cloudflareR2Writes:0
@@ -109,6 +113,47 @@ test('no blocker code is incompatible with preserving truth',async()=>{
   o[k]=await sha256Hex(Object.fromEntries(Object.entries(o).filter(([x])=>x!==k)));
  }
  await assert.rejects(()=>journal(f),/S2_M09_BLOCKER_JOURNAL_MISSING_SOURCE_OR_PIT_BLOCKER/);
+});
+test('validly re-signed preliminary watch cannot report false displayedCount',async()=>{
+ const f=await fixture();
+ f.preliminaryWatch.displayedCount=3;
+ const {receiptHash,...base}=f.preliminaryWatch;
+ f.preliminaryWatch.receiptHash=await sha256Hex(base);
+ await assert.rejects(()=>journal(f),
+  /S2_M09_BLOCKER_JOURNAL_PRELIMINARY_WATCH_DENOMINATOR_OR_SCOPE_INVALID/);
+});
+test('validly signed duplicate symbol is not a legitimate daily observation',async()=>{
+ const f=await fixture();
+ f.preliminaryWatch.watchlist[1].symbol=f.preliminaryWatch.watchlist[0].symbol;
+ const {receiptHash,...base}=f.preliminaryWatch;
+ f.preliminaryWatch.receiptHash=await sha256Hex(base);
+ await assert.rejects(()=>journal(f),
+  /S2_M09_BLOCKER_JOURNAL_PRELIMINARY_WATCH_SYMBOL_OR_FORMAL_AUTHORITY_INVALID/);
+});
+test('preview with re-signed formal strategy rank is rejected as non-Frozen journal',async()=>{
+ const f=await fixture();
+ f.preliminaryWatch.watchlist[0].strategyRank=1;
+ const {receiptHash,...base}=f.preliminaryWatch;
+ f.preliminaryWatch.receiptHash=await sha256Hex(base);
+ await assert.rejects(()=>journal(f),
+  /S2_M09_BLOCKER_JOURNAL_PRELIMINARY_WATCH_SYMBOL_OR_FORMAL_AUTHORITY_INVALID/);
+});
+test('invented final readiness status fails even with self-consistent SHA',async()=>{
+ const f=await fixture();
+ f.selectionReadiness.state='FORMAL_SELECTION_COMPLETE';
+ const {receiptHash,...base}=f.selectionReadiness;
+ f.selectionReadiness.receiptHash=await sha256Hex(base);
+ await assert.rejects(()=>journal(f),
+  /S2_M09_BLOCKER_JOURNAL_READINESS_STATE_NOT_NON_SELECTION/);
+});
+test('fully signed but falsely blocked preliminary is denied when readiness is not blocked',async()=>{
+ const f=await fixture();
+ f.preliminaryWatch.state='BLOCKED_SOURCE_INCOMPLETE';
+ f.preliminaryWatch.watchlist=[];f.preliminaryWatch.displayedCount=0;
+ const {receiptHash,...base}=f.preliminaryWatch;
+ f.preliminaryWatch.receiptHash=await sha256Hex(base);
+ await assert.rejects(()=>journal(f),
+  /S2_M09_BLOCKER_JOURNAL_BLOCKED_PREVIEW_CANNOT_HAVE_OBSERVATIONS/);
 });
 test('new workflow preserves 90-day distinct blocker artifact and main-only independent audit',async()=>{
  const s=await readFile('.github/workflows/system2-shared-official-a1-independent-audit.yml','utf8');
