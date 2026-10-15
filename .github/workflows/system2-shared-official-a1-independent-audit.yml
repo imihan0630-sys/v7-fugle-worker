@@ -260,6 +260,33 @@ jobs:
           path: /tmp/s2-m09-preview-native-cfi/
           retention-days: 7
           if-no-files-found: warn
+      # Hash-bounded NON-SELECTION evidence: never misrepresent blocked,
+      # missed-PIT-clock or 121/122 days as a genuine 0-pick or D1 Frozen.
+      - name: M09 daily blocked-source and unknown-strategy nonselection journal
+        if: success()
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/write_m09_daily_blocker_journal_readonly_v0_1.mjs
+          node --test system2/tests/write_m09_daily_blocker_journal_readonly_v0_1.test.mjs
+          node system2/scripts/write_m09_daily_blocker_journal_readonly_v0_1.mjs
+          R=/tmp/s2-m09-daily-blocker-journal/blocker-journal.json
+          test -s "$R"
+          test "$(jq -r .isFrozenDecisionSnapshot "$R")" = 'false'
+          test "$(jq -r .userFacingZeroPickClaimAllowed "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "M09 DAILY_BLOCKER_JOURNAL source=$(jq -r .originalMarketDatePairsVerified "$R")/122; unresolved=$(jq -r '.requiredBlockerCodes | length' "$R"); formalZeroPick=UNKNOWN; Frozen=NO." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain independent-checkable non-Frozen blocker journal 90 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-daily-blocker-journal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-daily-blocker-journal/blocker-journal.json
+          retention-days: 90
+          if-no-files-found: warn
       - name: Preserve sanitized hash receipt only
         if: always()
         uses: actions/upload-artifact@v4
