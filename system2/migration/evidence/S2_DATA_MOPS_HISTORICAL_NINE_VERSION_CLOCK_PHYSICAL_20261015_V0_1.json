@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "S2_DATA_MOPS_HISTORICAL_SOURCE_CLOCK_NINE_VERSIONS_PHYSICAL_20261015_V0_1",
+  "status": "ORIGINAL_MOPSOV_5_OF_5_HISTORICAL_CONTROLS_NINE_SOURCE_REPORTED_VERSIONS_OBSERVED__EXACT_HISTORICAL_PIT_ZERO",
+  "authoringLane": "DATA_LANE",
+  "classification": "CLASS_A_ORIGINAL_PUBLIC_SOURCE_EVIDENCE_NOT_AUDIT_LANE_ACCEPTANCE",
+  "originalSource": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01",
+  "realGitHubProviderRun": {
+    "id": 38735146839,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38735146839",
+    "jobId": 116422438931,
+    "conclusion": "success",
+    "headSha": "230279c8627c163d548013a960a3a6d832ca2b40",
+    "originalStatus": "MOPSOV_SOURCE_REPORTED_VERSION_CLOCK_CERTIFIED",
+    "sourceClockControlsPass": 5,
+    "sourceClockControlsTotal": 5,
+    "sourceClockVersionsCount": 9,
+    "historicalPITCertifiedCount": 0,
+    "originalProducerLedgerSha256": "776baeb5f5b151baeb08503db3caeac3151bd6e1ba9b2ce5485b0540ba998064"
+  },
+  "originalArtifact": {
+    "id": 11972825813,
+    "name": "s2-data-historical-mops-source-clock-ledger-38735146839-1",
+    "providerZipBytes": 2402,
+    "providerZipSha256": "42550f6b423d19bf09bddbbff7abe587544d762c1ed7276953b04eb6f494a716",
+    "independentlyDownloadedZipBytes": 2402,
+    "independentlyRecomputedZipSha256": "42550f6b423d19bf09bddbbff7abe587544d762c1ed7276953b04eb6f494a716",
+    "originalInnerPath": "sanitized-historical-source-clock-ledger.json",
+    "innerBytes": 13576,
+    "independentlyRecomputedInnerSha256": "9f766158637a3e61e5a8a9399546fe533f24b033079561bf495a03daebea57a9",
+    "originalJsonIndependentlyDecodedAndParsed": true
+  },
+  "exactHistoricalControls": [
+    {
+      "id": "CAPITAL_REDUCTION_DECISION_CORRECTION_2321_2026_03",
+      "stock": "2321",
+      "n": 2,
+      "observed": "2026-10-15T12:30:41.114Z",
+      "sha": "54481efd86a295394f618918fb48ca48bf5589e555964ab4b5fc2f4570d44dbe"
+    },
+    {
+      "id": "CAPITAL_REDUCTION_SCHEDULE_CORRECTION_1459_2026_06",
+      "stock": "1459",
+      "n": 2,
+      "observed": "2026-10-15T12:30:38.532Z",
+      "sha": "5d485869b89670594cfacf0ae21b9fd0b1c210473d44635c89a31af0cd601f7d"
+    },
+    {
+      "id": "CASH_CAPITAL_INCREASE_CANCELLATION_1342_2026_07",
+      "stock": "1342",
+      "n": 1,
+      "observed": "2026-10-15T12:30:48.746Z",
+      "sha": "2af2093e6fff1cedf9a8fa593f357d21544a806d63c2577ff75d0195aba86641"
+    },
+    {
+      "id": "CASH_CAPITAL_INCREASE_CORRECTION_1342_2026_06",
+      "stock": "1342",
+      "n": 2,
+      "observed": "2026-10-15T12:30:44.365Z",
+      "sha": "65c60303450cbd647fbbf7415bd3a9f69ca0b1148ba0a50be08f024447d1b04d"
+    },
+    {
+      "id": "DIVIDEND_CORRECTION_2467_2026_05",
+      "stock": "2467",
+      "n": 2,
+      "observed": "2026-10-15T12:30:35.791Z",
+      "sha": "b85ff0804df987830578ba7cc9bf5dc986271edcad4134c166494451e9172c4d"
+    }
+  ],
+  "sourceReportedVersions": [
+    {
+      "stockCode": "2321",
+      "sourceReportedAt": "2026-03-09T17:39:30+08:00",
+      "correctionOrCancellationHint": false,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "2321",
+      "sourceReportedAt": "2026-03-10T15:29:03+08:00",
+      "correctionOrCancellationHint": true,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "1459",
+      "sourceReportedAt": "2026-06-23T16:35:27+08:00",
+      "correctionOrCancellationHint": false,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "1459",
+      "sourceReportedAt": "2026-06-24T16:36:57+08:00",
+      "correctionOrCancellationHint": true,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "1342",
+      "sourceReportedAt": "2026-07-01T16:09:42+08:00",
+      "correctionOrCancellationHint": true,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "1342",
+      "sourceReportedAt": "2026-06-16T17:47:35+08:00",
+      "correctionOrCancellationHint": false,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "1342",
+      "sourceReportedAt": "2026-06-16T18:00:29+08:00",
+      "correctionOrCancellationHint": true,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "2467",
+      "sourceReportedAt": "2026-05-22T16:34:06+08:00",
+      "correctionOrCancellationHint": false,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    },
+    {
+      "stockCode": "2467",
+      "sourceReportedAt": "2026-05-22T17:42:13+08:00",
+      "correctionOrCancellationHint": true,
+      "historicalPublicAvailabilityProven": false,
+      "firstKnownAt": null,
+      "availableAt": null
+    }
+  ],
+  "scope": {
+    "historicalSourceReportedClockVersions": 9,
+    "validOriginalOrCorrectionsOrCancellationGroups": 5,
+    "originalHistoricFirstObservedAtValidatedBeforeEventCount": 0,
+    "exactOriginalHistoricalPublicAvailabilityVerifiedCount": 0,
+    "originalHistoricalFirstKnownAtCertifiedCount": 0,
+    "pitHistoricalDecisionEligibleCount": 0,
+    "retrospectiveCaptureTimestampIsHistoricalPublishingTimestamp": false,
+    "retrospectiveCaptureCanBeBackdatedToSourceReportedAt": false,
+    "unknownFirstKnownRetainedNull": true,
+    "unknownAvailableAtRetainedNull": true,
+    "eligibleAsOfDecisionClockBeforeOctober2026": false,
+    "requiresAuthenticatedProspectiveReceiptOrHistoricalPublishedArchiveWithAvailabilityVersion": true,
+    "fullRevisionCoverageCertified": false,
+    "fullMarketCoverageCertified": false,
+    "priceVolumeOriginalOHLCVRehashCertified": false,
+    "system2FrozenCertified": false,
+    "researchOutcomeJoinAuthorized": false,
+    "system1FormalCoreUntouched": true,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0
+  },
+  "engineering": {
+    "mergedPullRequest": 1354,
+    "mergedMain": "38e9fe99f18302b7d0da021bf977f63989fbb1e2",
+    "independentArchiveProtectedCapture": true,
+    "outputArtifactContainsOnlySanitizedVersionsAndClockReceipts": true,
+    "noNewCloudflareCredentialsOrCron": true,
+    "originalFiveControlHistoryReadOnly": true
+  },
+  "nextAction": "AUDIT_LANE independently judge original native ZIP/inner SHA and source date/hidden visible clock; DATA_LANE expand bounded historical month/issuer inventory while preserving public-retrieval timestamp uncertainty, compare against previously archived observedAt records if any. Never backdate historical availableAt."
+}
