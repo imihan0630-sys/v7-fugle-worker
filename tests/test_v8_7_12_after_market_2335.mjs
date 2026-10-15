@@ -24,7 +24,7 @@ assert.ok(marketWorkflow.includes("25 15 * * 1-5"),"23:25 final data refresh mis
 assert.ok(marketWorkflow.includes("45 15 * * 1-5"),"23:45 recovery schedule missing");
 assert.ok(mirrorWorkflow.includes("50 15 * * 1-5"),"23:50 encrypted mirror missing");
 assert.ok(healthWorkflow.includes("55 15 * * 1-5"),"23:55 health verification missing");
-assert.ok(recoverySource.includes("time<'23:35' || time>'23:59'"),"Recovery window must begin at 23:35");
+assert.ok(recoverySource.includes("time<'23:35' || time>'23:54'"),"Recovery window must begin at 23:35 and stop before cross-midnight risk");
 assert.ok(healthSource.includes("time<'23:45' || time>'23:59'"),"After-market health must run after formal scan");
 
 const migrated=replaceAfterMarketSchedule([
