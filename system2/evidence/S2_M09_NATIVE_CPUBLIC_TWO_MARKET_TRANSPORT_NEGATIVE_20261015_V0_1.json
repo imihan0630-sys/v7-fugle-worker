@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "S2_M09_NATIVE_CPUBLIC_TWO_MARKET_TRANSPORT_NEGATIVE_20261015_V0_1",
+  "category": "REAL_PROVIDER_TRANSPORT_NEGATIVE_NO_CURRENT_FULL_MARKET_DENOMINATOR",
+  "marketDateOfObservation": "2026-10-15",
+  "timezone": "Asia/Taipei",
+  "readOnlyImplementationPR": 1342,
+  "codeMainSha": "be407430071db4589b0c087ffe68ef64c3efae0b",
+  "provider": "TWSE native securities classification ISIN CFI",
+  "endpointLanes": [
+    {
+      "market": "TWSE",
+      "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2",
+      "physicalState": "NATIVE_SOURCE_UNAVAILABLE_FAIL_CLOSED",
+      "blocker": "TRANSPORT_OR_NATIVE_UNVERIFIED",
+      "rawOriginalSha256": null,
+      "verifiedNativeRows": null,
+      "currentOrdinaryShares": null
+    },
+    {
+      "market": "TPEX",
+      "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4",
+      "physicalState": "NATIVE_SOURCE_UNAVAILABLE_FAIL_CLOSED",
+      "blocker": "TRANSPORT_OR_NATIVE_UNVERIFIED",
+      "rawOriginalSha256": null,
+      "verifiedNativeRows": null,
+      "currentOrdinaryShares": null
+    }
+  ],
+  "sourceEvidence": {
+    "runId": 38687417898,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38687417898",
+    "jobId": 116265347229,
+    "actionRunConclusion": "success",
+    "testPass": 9,
+    "testFail": 0,
+    "sourceAttemptStartUtc": "2026-10-15T05:33:35Z",
+    "sourceAttemptFinishUtc": "2026-10-15T05:34:11.875Z",
+    "physicalProviderNativeObservedCount": 0,
+    "physicallyVerifiedMarketDenominatorCount": 0,
+    "nativeFullCurrentRegistryCandidate": false,
+    "nativeTotalFourDigitCFIRows": null,
+    "nativeTotalCurrentESVUFR": null,
+    "signedNegativeReceiptHash": "b2587443ab1b01824a5183751ef49a2d78a03bda29497d9aaf572b4388cf5a24",
+    "artifactId": 11951027506,
+    "artifactZipSha256": "cfca0814ae24e2dc4f688870fd69adf431ae118744a51d0b9918d2b0c5958086",
+    "artifactZipBytes": 982
+  },
+  "interpretation": {
+    "githubRunSuccessMeansExpectedFailClosedTestWorkflowCompletionOnly": true,
+    "nativeFullRegistryReachabilityEstablished": false,
+    "sourceRowAvailabilityOrFreshnessEstablished": false,
+    "perCodeOfficialNativeSourceStillVerified": true,
+    "fallbackPerCodeReferenceMain": "927bccdf4a3e35874b13a0aeeffc453ea60ea51b",
+    "fallbackCurrentNativeCfiPreviewOriginal30Rehashed": 30,
+    "PITOrdinaryShareUniverseCertified": false,
+    "historicalFirstKnownAtCertified": false,
+    "strategyAssessorQualified": false,
+    "selectedCount": null,
+    "certifiedZeroPick": null,
+    "frozenD1Written": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1V8FormalCoreTouched": false,
+    "m09PhysicallyAcceptedS0ToS5": 0,
+    "caveat": "Do not infer a provider status code or a transport timeout cause from a generic provider-transport exception: exact reason unavailable in captured receipt."
+  },
+  "next": "Stop retrying unavailable full-page registry as if it were success. Retain 1–30 verified per-code ISIN/CFI daily A1 follow-up and separate native SHA audit. Independently source CA corrections/retractions/vintage and verify T capture before formal strategy Frozen."
+}
