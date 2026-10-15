@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "S2_DATA_ISSUE1068_20261015_A1_RAW_COPY_PRODUCER_RECEIPT_V0_1",
+  "classification": "CLASS_A_EVIDENCE_ONLY_NO_CLOUDFLARE_CALL",
+  "state": "ORIGINAL_DESTINATION_PROVIDER_WRITER_SUCCESS_PARTIAL__INDEPENDENT_POST_WRITE_READBACK_PENDING",
+  "sampledAtTaipeiDate": "2026-10-15",
+  "sourceGitHubMainAtReview": "ef4747b725ab644550bf8f6c83e77758cab0a1fa",
+  "evidenceScope": "ORIGINAL_GITHUB_ACTIONS_JOB_LOG_AND_PROVIDER_ARTIFACT_METADATA",
+  "originalPhysicalRun": {
+    "runId": 38683991222,
+    "jobId": 116254575761,
+    "workflow": ".github/workflows/system2-owner-override-raw-d1-copy-20261012.yml",
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38683991222",
+    "headSha": "927bccdf4a3e35874b13a0aeeffc453ea60ea51b",
+    "event": "schedule",
+    "runAttempt": 1,
+    "conclusion": "success",
+    "createdAtUtc": "2026-10-15T04:55:08Z",
+    "completedAtUtc": "2026-10-15T04:59:36Z",
+    "observedAtTaipeiStart": "2026-10-15T12:55:08+08:00",
+    "observedAtTaipeiEnd": "2026-10-15T12:59:36+08:00",
+    "allOriginalStepsSuccessful": true
+  },
+  "originalLoggedGuard": {
+    "status": "S2_GUARD_UNIQUE_RAW_COPY_WRITER_FOR_UTC_DAY",
+    "quotaDayUtc": "2026-10-15",
+    "checkedWorkflowRuns": 9,
+    "ownerDailyBilledRowCap": 80000,
+    "permissionForAdditionalWriter": false
+  },
+  "originalProtectedSourceArtifact": {
+    "artifactId": 11732395154,
+    "expectedSha256": "b77efb60924eef76f78af5a6e29b3488646744e3bf81d142827e8fb298d60d64",
+    "providerLogSaysFetched": true,
+    "thisEvidenceDidNotDownloadOrIndependentlyRehash": true
+  },
+  "destinationOriginalImporterStdout": {
+    "status": "A1_RAW_HISTORY_PARTIAL__RESUME_NEXT_UTC_DAY",
+    "chargedBilledRowsWritten": 71334,
+    "insertedA1BarRows": 11889,
+    "after": {
+      "barRows": 47420,
+      "batchRows": 129
+    },
+    "error": null
+  },
+  "originalSanitizedProviderArtifact": {
+    "artifactId": 11949362399,
+    "name": "s2-owner-waiver-original-d1-raw-copy-38683991222-1",
+    "providerReportedSizeBytes": 1889,
+    "providerReportedSha256": "7658d6e4b4be903ae4d889f6c3a0c745f3aad3c3a1135a71058dc799f08d9e61",
+    "providerMetadataExpired": false,
+    "originalZipIndependentlyDownloadedAndRehashedInThisReview": false,
+    "originalInnerReceiptIndependentlyParsedInThisReview": false
+  },
+  "reconciliation": {
+    "prior20261014OriginalImporterObservedA1BarRows": 35531,
+    "this20261015OriginalImporterAfterA1BarRows": 47420,
+    "dailyA1Delta": 11889,
+    "sourceOriginalA1TotalBars": 84688,
+    "currentImporterProgressRatio": 0.5599376535046288,
+    "sourceA1BarsNotYetImported": 37268,
+    "archiveOriginalLogicalSourceRowTotal": 113222,
+    "destinationKnownLogicalBarsAndBatches": 47549,
+    "destinationKnownLogicalRatio": 0.41996255144759853,
+    "originalOtherRowsNotYetCopiedByThisImporter": 65673,
+    "progressDenominatorsMustNotBeUsedAsIndependentPhysicalAuditPass": true
+  },
+  "scopeLimits": {
+    "separatePostWriterDestinationProviderSelectObservedInThisReview": false,
+    "destinationPerRowContentShaReconciliationAccepted": false,
+    "originalHistoricalFirstKnownAtAccepted": false,
+    "originalAvailableAtAccepted": false,
+    "destinationFrozenHistoricalDecisionsAccepted": false,
+    "allSourceR2ByteShaBackedUp": false,
+    "destinationR2LastAuthenticated": "NOT_ENTITLED",
+    "system2FullMigrationAccepted": false,
+    "sourceV8FormalAffected": false,
+    "sourceSystem2CronActivationAllowed": false,
+    "newPaidPlanOrSecretsOrPermissionsAllowed": false,
+    "authorizationToWriteAgainSameUtcDay": false
+  },
+  "auditHandoff": {
+    "auditeeIssue": 1068,
+    "responsibleLane": "DATA_LANE",
+    "acceptingLane": "AUDIT_LANE",
+    "required": [
+      "Independently fetch and SHA256 original 11949362399 ZIP and inner sanitized receipt, compare provider metadata digest and original Job output.",
+      "Independently perform separately budget-qualified strictly READ_ONLY destination provider SELECT for 2026-10-15 post-writer 47420 A1 rows and 129 batches; never reuse outdated 2026-10-14 count.",
+      "Reconcile source manifest ids/hashes and original ciphertext archive against destination imported rows before accepting physical copy scope.",
+      "Keep G3/G4/PIT/Frozen/R2 full migration distinct; no automatic historical backtest or Shadow promotion."
+    ],
+    "nextProtectedWriterBoundary": "NEXT_UTC_QUOTA_DAY_ONLY_WITH_ORIGINAL_WRITER_GUARDS_AND_ACCOUNT_HEADROOM",
+    "issueComment": "https://github.com/imihan0630-sys/v7-fugle-worker/issues/1068#issuecomment-6185372115"
+  }
+}
