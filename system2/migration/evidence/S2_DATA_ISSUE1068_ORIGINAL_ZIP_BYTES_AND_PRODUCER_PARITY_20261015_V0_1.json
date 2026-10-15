@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "S2_DATA_ORIGINAL_ARTIFACT_ZIP_REHASH_V0_1",
+  "status": "ORIGINAL_GITHUB_ARTIFACT_BYTE_REHASH_PASS_AUDIT_PENDING",
+  "originalRunId": 38683991222,
+  "originalJobId": 116254575761,
+  "originalArtifactId": 11949362399,
+  "archiveSizeBytes": 1889,
+  "originalArchiveSha256": "7658d6e4b4be903ae4d889f6c3a0c745f3aad3c3a1135a71058dc799f08d9e61",
+  "locallyRecomputedArchiveSha256": "7658d6e4b4be903ae4d889f6c3a0c745f3aad3c3a1135a71058dc799f08d9e61",
+  "originalCopyReceiptSha256": "c246145c826626a07c446f84b496f31b2c77eb3d3067173c18d3ae85b031489b",
+  "originalGuardReceiptSha256": "1630dbc6a68cd9f58cfb2e1c7e97b4755c8ce86ccc0a98c4d5e342fe3b72fe3c",
+  "importerAfterBarRows": 47420,
+  "originalSourceBars": 84688,
+  "afterSourceParityDigest": "d56b47494a8bc36b58e610ec12b58adde9ddfb5de5e95b616f716f41da1fb21d",
+  "sourcePITAccepted": false,
+  "destinationIndependentPhysicalAuditAccepted": false,
+  "newCloudflareCalls": 0,
+  "ownerApprovalToRepeatSameDayImport": false,
+  "reason": "Original producer source parity is not independent destination readback; no PIT or Frozen promotion."
+}
