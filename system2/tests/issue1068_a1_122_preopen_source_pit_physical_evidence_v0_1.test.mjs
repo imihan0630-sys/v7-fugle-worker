@@ -14,7 +14,7 @@ function verify(o){
  assert.equal(o.originalSourceOnlyEvidence.originalTradingSessions,61);
  assert.equal(o.originalSourceOnlyEvidence.independentSourcePairsVerified,122);
  assert.equal(o.originalSourceOnlyEvidence.independentOriginalPayloadByteRehashAndParsing,122);
- assert.equal(o.originalSourceOnlyEvidence.independentSourceReadbackRunId,38797548446);
+ assert.equal(o.originalSourceOnlyEvidence.distinctIndependentSourceReadbackRunId,38797548446);
  assert.equal(o.originalSourceOnlyEvidence.independentAuditHash,"cebec987e32f863e42f9d95ffb881979164ed63be6716dc1e40bf2f8cf3f5808");
  assert.equal(o.originalSourceOnlyEvidence.sourceReceiptSha256,"ff5aa17607fa9cc191599111b27b762a02f599456992f1baf7ee7b854387cfd9");
  assert.equal(o.originalPrivateArchive.contentAddressedRawMarketDayGzipFileCount,122);
