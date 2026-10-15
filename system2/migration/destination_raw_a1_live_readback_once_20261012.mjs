@@ -42,6 +42,11 @@ try{
  record.destinationFrozenRows=row.frozen_decisions;
  record.providerQueryRowsRead=result[0].meta?.rows_read??null;
  record.providerQueryRowsWritten=result[0].meta?.rows_written??null;
+ // Hard physical safety check: a SELECT-only workflow cannot claim PASS if provider
+ // reports a write or missing/implausibly costly read metering.
+ if (!Number.isSafeInteger(record.providerQueryRowsRead) ||
+     record.providerQueryRowsRead<0 || record.providerQueryRowsRead>150000 ||
+     record.providerQueryRowsWritten!==0) fail("QUERY_METERING_INVALID");
  record.status="REAL_PROVIDER_DEST_D1_READBACK_OBSERVED__COPY_COMPLETENESS_NOT_ASSERTED";
 }catch(err){
  record.status="READ_ONLY_READBACK_FAIL_CLOSED";
