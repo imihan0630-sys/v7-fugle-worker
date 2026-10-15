@@ -29,27 +29,36 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   const ready=quality?.marketDate===targetDate&&quality?.index?.ready===true&&
     quality?.tdcc?.ready===true&&kinds.every(k=>quality?.datasets?.[k]?.ready===true);
   if(!institutional||!ready)return out("OFFICIAL_SOURCE_NOT_READY",{institutionReady:institutional,qualityReady:ready});
-  // Physical production scheduling evolved: V8.7.12 moved 18:10 to
-  // 23:35 and the later Free-plan four-trigger consolidation joined 23:35
-  // and 23:55 under ONE expression ("35,55 15 * * MON-FRI").
-  // GET /api/cron/status must identify exactly ONE supported schedule.
-  // Never infer runtime schedules from checked-in Worker.js or a PR alone.
-  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().replace(/\s+/g," ").toLowerCase()):[];
+  // Physical Free-plan Cron consolidation changed the provider schedule to
+  // one 35,55 trigger, WITHOUT changing Worker.js's static expected list.
+  // /api/cron/status.expected is a CODE hint, not authoritative provider GET.
+  // Today's actual, persisted D1 Cron audit expression is stronger evidence.
+  const canon=x=>String(x||"").trim().replace(/\s+/g," ").toLowerCase();
   const allowed=[{expression:"10 10 * * mon-fri",at:"18:10"},
     {expression:"35 15 * * mon-fri",at:"23:35"},
-    {expression:"35,55 15 * * mon-fri",at:"23:35"}].filter(x=>expected.includes(x.expression));
-  if(allowed.length!==1)return out("DEPLOYED_FORMAL_CRON_NOT_UNAMBIGUOUS");
-  const runtimeCron=allowed[0];
-  if(clock.time<runtimeCron.at)return out("ORIGINAL_FORMAL_CRON_NOT_DUE",{scheduledClock:runtimeCron.at});
-  // The public GET exposes the last persisted original attempt. It must be
-  // paired with the original D1 cron error; generic FAILED alone is ambiguous.
-  const attempt=recommendations?.attempt;
-  if(!attempt || attempt?.status!=="FAILED" || attempt?.requestedDate!==targetDate)
-    return out("PREVIOUS_FORMAL_ATTEMPT_NOT_SAFELY_ADJUDICATED");
+    {expression:"35,55 15 * * mon-fri",at:"23:35"}];
+  const expected=Array.isArray(cron?.expected)?cron.expected.map(canon):[];
+  const hints=allowed.filter(x=>expected.includes(x.expression));
+  // Reject inconsistent static hints. A single outdated 23:35 hint is
+  // tolerated when same-date D1 physically attests combined 23:35+23:55.
+  if(hints.length!==1)return out("DEPLOYED_FORMAL_CRON_NOT_UNAMBIGUOUS");
   const rows=Array.isArray(cron?.recent)?cron.recent:[];
-  const prior=rows.find(row=>row?.job_type==="AFTER_MARKET_SCAN"&&
-    row?.scheduled_at?.slice(0,10)===targetDate&&
-    String(row?.cron_expression||"").trim().toLowerCase()===runtimeCron.expression);
+  const sessionRows=rows.filter(row=>row?.job_type==="AFTER_MARKET_SCAN"&&
+    String(row?.scheduled_at||"").slice(0,10)===targetDate);
+  const observedNames=[...new Set(sessionRows.map(row=>canon(row?.cron_expression)))];
+  if(observedNames.length>1)return out("CONFLICTING_SAME_SESSION_FORMAL_CRON_RECEIPTS");
+  if(observedNames.length===1 && !allowed.some(x=>x.expression===observedNames[0]))
+    return out("UNRECOGNIZED_ACTUAL_FORMAL_CRON_RECEIPT");
+  const runtimeCron=observedNames.length===1?
+    allowed.find(x=>x.expression===observedNames[0]):hints[0];
+  if(clock.time<runtimeCron.at)return out("ORIGINAL_FORMAL_CRON_NOT_DUE",{scheduledClock:runtimeCron.at,
+    cronProof:observedNames.length?"ACTUAL_D1_CRON":"STATIC_EXPECTED_ONLY"});
+  // The last persisted KV attempt must be time-correlated with the actual
+  // original D1 Cron, NOT a later ambiguous manual business POST.
+  const attempt=recommendations?.attempt;
+  if(!attempt || attempt.status!=="FAILED" || attempt.requestedDate!==targetDate)
+    return out("PREVIOUS_FORMAL_ATTEMPT_NOT_SAFELY_ADJUDICATED");
+  const prior=sessionRows.find(row=>canon(row?.cron_expression)===runtimeCron.expression);
   if(!prior)return out("ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
   if(prior.status!=="FAILED")return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
   if(!/^Error:\s*DATA_INCOMPLETE[:：]/.test(String(prior.error||"")))
