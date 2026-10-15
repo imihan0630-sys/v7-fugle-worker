@@ -16,7 +16,7 @@ if(scheduledFallback && !requestedDate) throw new Error('Scheduled fallback requ
 const historicalRecovery=requestedDate.length>0 && !scheduledFallback;
 const date=requestedDate || today;
 if(sourceReadyHandoff && (date!==today||time<'18:10'||time>'23:54')) {console.log(JSON.stringify({skipped:true,reason:'SOURCE_READY_TARGET_NOT_SAME_DAY_EVENING',date,today,time,noBusinessPost:true}));process.exit(0);}
-if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:54')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
+if(!sourceReadyHandoff && !historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:54')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:54 safe same-day recovery window',date,time}));process.exit(0);}
 if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('RECOVERY_MARKET_DATE must be YYYY-MM-DD');
 if(date>today) throw new Error('RECOVERY_MARKET_DATE cannot be in the future');
  // Canonical deployed Worker ignores JSON body.marketDate and calls
