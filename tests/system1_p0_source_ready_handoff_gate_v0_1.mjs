@@ -29,6 +29,15 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
   const ready=quality?.marketDate===targetDate&&quality?.index?.ready===true&&
     quality?.tdcc?.ready===true&&kinds.every(k=>quality?.datasets?.[k]?.ready===true);
   if(!institutional||!ready)return out("OFFICIAL_SOURCE_NOT_READY",{institutionReady:institutional,qualityReady:ready});
+  // Formal cron was migrated in deployment from 18:10 to 23:35 by V8.7.12.
+  // Never assume Worker.js on main is identical to deployed runtime: its
+  // actual admin GET /api/cron/status expected list is authoritative here.
+  const expected=Array.isArray(cron?.expected)?cron.expected.map(x=>String(x||"").trim().toLowerCase()):[];
+  const allowed=[{expression:"10 10 * * mon-fri",at:"18:10"},
+    {expression:"35 15 * * mon-fri",at:"23:35"}].filter(x=>expected.includes(x.expression));
+  if(allowed.length!==1)return out("DEPLOYED_FORMAL_CRON_NOT_UNAMBIGUOUS");
+  const runtimeCron=allowed[0];
+  if(clock.time<runtimeCron.at)return out("ORIGINAL_FORMAL_CRON_NOT_DUE",{scheduledClock:runtimeCron.at});
   // The public GET exposes the last persisted original attempt. It must be
   // paired with the original D1 cron error; generic FAILED alone is ambiguous.
   const attempt=recommendations?.attempt;
@@ -36,10 +45,10 @@ export function classifySourceReadyFormalHandoff({now=new Date(),targetDate,
     return out("PREVIOUS_FORMAL_ATTEMPT_NOT_SAFELY_ADJUDICATED");
   const rows=Array.isArray(cron?.recent)?cron.recent:[];
   const prior=rows.find(row=>row?.job_type==="AFTER_MARKET_SCAN"&&
-    row?.scheduled_at?.slice(0,10)===targetDate);
+    row?.scheduled_at?.slice(0,10)===targetDate&&
+    String(row?.cron_expression||"").trim().toLowerCase()===runtimeCron.expression);
   if(!prior)return out("ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
-  if(prior.status!=="FAILED"||!/^10 10 \* \* mon-fri$/i.test(String(prior.cron_expression||"")))
-    return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
+  if(prior.status!=="FAILED")return out("PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
   if(!/^Error:\s*DATA_INCOMPLETE[:：]/.test(String(prior.error||"")))
     return out("PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
   // Last-attempt KV can be overwritten by a later ambiguous manual POST.
