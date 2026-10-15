@@ -5,7 +5,7 @@ import {sha256Hex} from '../runtime/decision_archive.mjs';
 import {probeM09AuditedPreviewNativeCfiV0_1 as run}
  from '../scripts/probe_m09_audited_preview_native_cfi_readonly_v0_1.mjs';
 const h='a'.repeat(64);
-async function fixture(codes=['2330','9103','3287','0050','1301']){
+async function fixture(codes=['2330','9103','3287','9105','1301']){
  const s={schemaVersion:'S2_61_SESSION_OFFICIAL_SOURCE_RECEIPT_V0_1',
   state:'SOURCE_OBSERVED_UNAUDITED',marketDate:'2026-10-14',
   receivedMarketDateCount:122,receiptHash:h,
@@ -36,8 +36,8 @@ function stubProbe({requests,unknownCode=null}={}){
    selectedCount:null,sourceReceipts:controls.map(x=>({
     code:x.code,controlIntent:x.hint,
     state:x.code===unknownCode?'NATIVE_ACCESS_CHALLENGE_FAIL_CLOSED':'NATIVE_SINGLE_CFI_ROW_OBSERVED',
-    nativeTypeLabel:x.code==='9103'?'TDR':x.code==='0050'?'ETF':'Stocks',
-    cfi:x.code==='9103'?'EDSDDR':x.code==='0050'?'CEOGEU':'ESVUFR',
+    nativeTypeLabel:(x.code==='9103'||x.code==='9105')?'TDR':'Stocks',
+    cfi:(x.code==='9103'||x.code==='9105')?'EDSDDR':'ESVUFR',
     isin:'TW0002330008',observedAtUtc:'2026-10-15T02:21:00Z',
     originalSha256:h,originalBytes:1000,rawByteReadback:true
    }))};
