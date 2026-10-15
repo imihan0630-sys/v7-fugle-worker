@@ -103,6 +103,8 @@ jobs:
             echo "Original TWSE/TPEx market-date evidence $MARKET_DATE: 122/122 source observed, independent PIT and Stage1 still required." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Original TWSE/TPEx market-date evidence $MARKET_DATE: $PAIRS/122, source incomplete; not an accepted Shadow/zero-pick/Frozen day." >> "$GITHUB_STEP_SUMMARY"
+            SAFE_MISSING_PAIRS="$(jq -c '.missingAfterFetch // []' "$FILE")"
+            echo "Still missing exact market/date pairs AFTER fetch (sanitized codes only): $SAFE_MISSING_PAIRS" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo 'Source collection is read-only and cannot authorize ranking, frozen selections or V8 Formal.' >> "$GITHUB_STEP_SUMMARY"
       - name: Retain SHA manifest and original data as short-term cache
