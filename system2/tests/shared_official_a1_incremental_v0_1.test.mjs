@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {discoverSharedA1PreviousSourceArtifactV0_1}
+ from '../scripts/discover_shared_official_a1_seed_v0_1.mjs';
 import {gzipSync} from 'node:zlib';
 import {normalize,resolve} from 'node:path';
 import {loadTrustedOfficialA1OriginalsV0_1,createSourceCacheFetchV0_1}
@@ -268,4 +270,74 @@ test('source original collector independently rejects a forged or delayed T+1 re
  }
  await assert.rejects(()=>mk('2026-10-14T16:15:00Z',
   {retrospectiveDiagnosticOnly:true}),/CONDITIONAL_T_PLUS_ONE_RECOVERY_CLOCK_INVALID/);
+});
+
+
+function upstreamRun(id,overrides={}){
+ return {id,status:'completed',conclusion:'success',head_branch:'main',
+  event:'schedule',...overrides};
+}
+function upstreamArtifact(id,overrides={}){
+ return {id:id+10000,name:'s2-shared-official-a1-'+id,expired:false,
+  size_in_bytes:4096,workflow_run:{id},...overrides};
+}
+function mockSeedLookup(runs,artifactsByRun,calls){
+ return async endpoint=>{
+  calls.push(endpoint);
+  if(endpoint.includes('/workflows/'))return {workflow_runs:runs};
+  const id=Number(endpoint.match(/\/actions\/runs\/(\d+)\/artifacts/)[1]);
+  return {artifacts:artifactsByRun[id]||[]};
+ };
+}
+test('seed chooser skips failed or not-main source runs, selects exact successful main',async()=>{
+ const calls=[];
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:301,
+  apiFetch:mockSeedLookup([
+    upstreamRun(300,{conclusion:'failure'}),
+    upstreamRun(299,{head_branch:'test-branch'}),
+    upstreamRun(298,{event:'pull_request'}),
+    upstreamRun(297)
+  ],{300:[upstreamArtifact(300)],299:[upstreamArtifact(299)],
+     298:[upstreamArtifact(298)],297:[upstreamArtifact(297)]},calls)
+ });
+ assert.equal(got.runId,297);
+ assert.equal(got.artifactName,'s2-shared-official-a1-297');
+ assert.equal(got.kind,'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE');
+ assert.equal(calls.length,2);
+ assert.match(calls[1],/\/actions\/runs\/297\/artifacts/);
+});
+test('matching prefix or forged cross-run attachment cannot seed source originals',async()=>{
+ const calls=[];
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:301,
+  apiFetch:mockSeedLookup([upstreamRun(300),upstreamRun(299)],
+   {300:[
+    upstreamArtifact(300,{name:'s2-shared-official-a1-300-FAKE'}),
+    upstreamArtifact(300,{workflow_run:{id:299}}),
+    upstreamArtifact(300,{expired:true})
+   ],299:[upstreamArtifact(299,{size_in_bytes:0})]},calls)
+ });
+ assert.equal(got.kind,'INITIAL_REAL_PROVIDER_UNAUDITED_SEED');
+ assert.equal(got.runId,38317682441);
+ assert.equal(calls.length,3);
+});
+test('valid main source run with provenance matching attached artifact is reusable',async()=>{
+ for(const event of ['push','schedule','workflow_dispatch']){
+  const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+   token:'test-token-not-real',currentRunId:20,
+   apiFetch:mockSeedLookup([upstreamRun(19,{event})],
+    {19:[upstreamArtifact(19)]},[])
+  });
+  assert.equal(got.runId,19);
+ }
+});
+test('the current run can never reuse itself even if its old-looking artifact exists',async()=>{
+ const calls=[];
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:55,
+  apiFetch:mockSeedLookup([upstreamRun(55)],{55:[upstreamArtifact(55)]},calls)
+ });
+ assert.equal(got.kind,'INITIAL_REAL_PROVIDER_UNAUDITED_SEED');
+ assert.equal(calls.length,1);
 });
