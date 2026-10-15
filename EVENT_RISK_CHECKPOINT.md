@@ -241,3 +241,15 @@ Evidence:
 `research/d17_preopen_rolling_window_receipt_20261005_v0_1.json`
 
 Formal Core unchanged. Outcome joins remain closed.
+
+
+## 2026-10-15 23:36 Room08 D11/D17 — 6921 shared-registration snapshot and conditional vesting audit
+
+- This continuation used the latest main and 2026-10-15T21:15:54+08:00 canonical tracker; no maturity/Level/status promotion.
+- Two separate 6921 economic issuance classes share a 2026-09-18 government-registration approval date and reported final total of 32,261,941 shares: 225,000 exercised employee-option shares and 200,000 restricted employee shares. Historical 31,836,941 + 225,000 + 200,000 = 32,261,941, and 32,261,941 × NT$10 = NT$322,619,410. The 225,000 notice already quotes final 32,261,941; the 200,000 notice quotes 32,061,941 before / 32,261,941 after. This is compatible with one cumulative registration snapshot, but original government filing and exact sequential listing remain UNKNOWN. Do not double-count the final share denominator; do not merge distinct economic issuance types.
+- Original 2026-03-06 restricted-share resolution provides 25% vesting after each of years 1–4 following actual allocation: conditional 50,000 shares per stage if all 200,000 shares were allocated and remain eligible. Grant date, actual vested/tradable shares, forfeiture and custody release are UNKNOWN. A scheduled 2026-10-08 listing is not evidence of 200,000 unrestricted saleable shares.
+- Independent current corporate-registry and basic-share-count mirrors show NT$322,619,410 and 32,261,941 with last change 2026-09-18, but mirrors are not native immutable historical firstKnownAt receipts.
+- D17: same-date/same-registration news are dependent clusters, though 225k and 200k remain distinct economic event types. Media mirrors and search-index snippets do not certify native publication clocks. Historical half-life/OOS/Walk-forward remain closed. D11-16 original shareholder custody withdrawal, TWSE release approval and realized-sale chain remain UNKNOWN.
+- 6488 caution: a third-party 2026-10-23 generic 'new share listing' calendar entry cannot be matched to a 2015-10-23 20m-share original notice nor to the separate 2026 50m-share planned payment certificate without original 2026 listing confirmation.
+- Local deterministic contract/math checks: 30/30 passed; these are not 30 independent market events or outcome evidence. No fabricated historical Shadow, no Formal Core changes, no optimization candidate.
+- Exact next: obtain 6921 original 2026-09-18 government registration and TWSE individual share-listing receipts; independently verify grant/vesting/forfeiture and original shareholder custody release/withdrawal/holdings chain. Prospectively freeze D17 first-seen timestamps with correction/version lineage; verify 6488 2026 payment-certificate and ordinary-share replacement clocks.
