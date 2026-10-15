@@ -24,13 +24,20 @@ export async function discoverSharedA1PreviousSourceArtifactV0_1({
  if(!Array.isArray(runs.workflow_runs))
   throw Error('GITHUB_SHARED_A1_RUNS_LIST_UNVERIFIED');
  for(const run of runs.workflow_runs.slice(0,20)){
-  if(!Number.isSafeInteger(run.id)||run.id===Number(currentRunId)||
-     run.status!=='completed')continue;
+  if(!Number.isSafeInteger(run.id)||run.id<=0||
+     run.id===Number(currentRunId)||run.status!=='completed'||
+     run.conclusion!=='success'||run.head_branch!=='main'||
+     !['schedule','workflow_dispatch','push'].includes(run.event))continue;
   const result=await apiFetch('/actions/runs/'+run.id+'/artifacts?per_page=30',
    {fetchImpl,token});
-  const artifact=(result.artifacts||[]).find(x=>
-   x.expired===false&&x.name?.startsWith('s2-shared-official-a1-')&&
-   Number.isSafeInteger(x.size_in_bytes)&&x.size_in_bytes>0);
+  // A failed or PR-branch run can contain a partially uploaded cache.
+  // Match the EXACT producer run and its attached artifact identity; never
+  // promote a prefix-matching artifact or an orphan from another run.
+  const artifact=Array.isArray(result.artifacts)?result.artifacts.find(x=>
+   x.expired===false&&x.name==='s2-shared-official-a1-'+run.id&&
+   Number.isSafeInteger(x.id)&&x.id>0&&
+   x.workflow_run?.id===run.id&&
+   Number.isSafeInteger(x.size_in_bytes)&&x.size_in_bytes>0):null;
   if(artifact)
    return Object.freeze({runId:run.id,artifactName:artifact.name,kind:'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE'});
  }
