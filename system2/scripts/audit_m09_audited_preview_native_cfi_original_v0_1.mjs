@@ -26,9 +26,12 @@ function independentlyParseNative(html,code){
  return matches.length===1?matches[0]:null;
 }
 function board(market,native){
- if(market==='TWSE'&&native==='TWSE LISTED')return 'TWSE_MAIN';
- if(market==='TPEX'&&native==='TPEX LISTED')return 'TPEX_MAIN';
- if(market==='TWSE'&&native==='TAIWAN INNOVATION BOARD')return 'TWSE_INNOVATION_BOARD_TIB';
+ // Native TPEx casing is "TPEx LISTED", while TWSE spells its name
+ // differently. Normalize only the label, not the trusted market identity.
+ const label=String(native||'').trim().toUpperCase();
+ if(market==='TWSE'&&label==='TWSE LISTED')return 'TWSE_MAIN';
+ if(market==='TPEX'&&label==='TPEX LISTED')return 'TPEX_MAIN';
+ if(market==='TWSE'&&label==='TAIWAN INNOVATION BOARD')return 'TWSE_INNOVATION_BOARD_TIB';
  return 'UNKNOWN_OR_MISMATCH';
 }
 export async function auditM09ThirtyNativeOriginalsV0_1({
