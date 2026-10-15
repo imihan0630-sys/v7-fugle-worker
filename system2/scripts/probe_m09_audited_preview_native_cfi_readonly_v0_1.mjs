@@ -6,6 +6,8 @@ import {readFile,readdir,mkdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1}
+ from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 import {probeM09OfficialSingleSecurityOriginalV0_1}
  from './probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs';
 const OUT='/tmp/s2-m09-preview-native-cfi';
@@ -13,6 +15,11 @@ const H=/^[a-f0-9]{64}$/i;
 const CODE=/^[1-9][0-9]{3}$/;
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const strip=(o,key)=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k!==key));
+const validDay=d=>typeof d==='string'&&/^\\d{4}-\\d\\d-\\d\\d$/.test(d)&&
+ Number.isFinite(Date.parse(d+'T00:00:00Z'))&&
+ new Date(d+'T00:00:00Z').toISOString().slice(0,10)===d;
+const validCalendar=dates=>Array.isArray(dates)&&dates.length===61&&
+ dates.every((d,i)=>validDay(d)&&(i===0||d>dates[i-1]));
 function deny(code){throw Error('M09_PREVIEW_NATIVE_CFI_'+code)}
 function nativeMarketMatch(nativeLabel,expected){
  const label=String(nativeLabel||'').trim().toUpperCase();
@@ -30,8 +37,7 @@ function validateWatch(sourceReceipt,independentA1Audit,watch){
   sourceReceipt.state!=='SOURCE_OBSERVED_UNAUDITED'||
   sourceReceipt.receivedMarketDateCount!==122||
   !H.test(sourceReceipt.receiptHash||'')||
-  !Array.isArray(sourceReceipt.calendar?.tradingDates)||
-  sourceReceipt.calendar.tradingDates.length!==61||
+  !validCalendar(sourceReceipt.calendar?.tradingDates)||
   sourceReceipt.calendar.tradingDates.at(-1)!==sourceReceipt.marketDate)
   deny('A1_ORIGINAL_SOURCE_NOT_COMPLETE');
  if(independentA1Audit?.schemaVersion!=='SHARED_OFFICIAL_A1_SOURCE_AUDIT_V0_1'||
@@ -73,6 +79,14 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
  probeOne=probeM09OfficialSingleSecurityOriginalV0_1
 }={}){
  validateWatch(sourceReceipt,independentA1Audit,preliminaryWatch);
+ // SOURCE provenance was previously a plausible-looking hex label only.
+ // Recompute all signed original 61-session fields before even one CFI GET.
+ let sourceHashCorrect=false;
+ try{
+  sourceHashCorrect=(await sha256Hex(
+   official61SessionSourceReceiptHashBaseV0_1(sourceReceipt)))===sourceReceipt.receiptHash;
+ }catch{}
+ if(!sourceHashCorrect)deny('A1_ORIGINAL_SOURCE_HASH_MISMATCH');
  if(await sha256Hex(strip(preliminaryWatch,'receiptHash'))!==preliminaryWatch.receiptHash)
   deny('PRELIMINARY_WATCH_HASH_MISMATCH');
  if(await sha256Hex(strip(independentA1Audit,'auditHash'))!==independentA1Audit.auditHash)
@@ -84,6 +98,12 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
   const group=preliminaryWatch.watchlist.slice(i,i+4);
   const controls=group.map(r=>({code:r.symbol,hint:'ACTUAL_A1_PRELIMINARY_'+r.market}));
   const result=await probeOne({controls,now,fetchImpl,persistRaw});
+  // Each 1–4-source batch is itself receipt-signed. A producer-returned
+  // native class is never accepted just because it has a valid CFI label.
+  if(result?.schemaVersion!=='S2_M09_NATIVE_SINGLE_ISIN_CFI_TRANSPORT_V0_1'||
+    !H.test(result.receiptHash||'')||
+    await sha256Hex(strip(result,'receiptHash'))!==result.receiptHash)
+   deny('SIGNED_NATIVE_SOURCE_BATCH_NOT_VERIFIED');
   if(result.controlsChecked!==controls.length||
     !Array.isArray(result.sourceReceipts)||
     result.sourceReceipts.length!==controls.length||
@@ -91,6 +111,12 @@ export async function probeM09AuditedPreviewNativeCfiV0_1({
    deny('NATIVE_SOURCE_RESPONSE_SCOPE_CHANGED');
   for(let j=0;j<group.length;j++){
    const item=group[j],n=result.sourceReceipts[j];
+   if(n?.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
+     (!H.test(n.originalSha256||'')||!Number.isSafeInteger(n.originalBytes)||
+      n.originalBytes<150||n.rawByteReadback!==true||
+      typeof n.observedAtUtc!=='string'||
+      !Number.isFinite(Date.parse(n.observedAtUtc))))
+    deny('NATIVE_PROVENANCE_NOT_VERIFIED');
    if(n.code!==item.symbol||n.controlIntent!=='ACTUAL_A1_PRELIMINARY_'+item.market)
     deny('NATIVE_SOURCE_CODE_ORDER_MISMATCH');
    const nativeMatch=nativeMarketMatch(n.nativeMarketLabel,item.market);
