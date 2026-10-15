@@ -4257,3 +4257,47 @@ Artifacts: `research/D03_DEST_COUNT_READBACK_TO_INDICATOR_REPLAY_FIREWALL_202610
 主線續作盤中逐股監控集合、報價／完成線／訊號時間、用途別最大年齡、欄位、暖機、版本及連續性對帳。資料搬移支線不再重做固定 47,420 筆四欄摘要；下一次新增搬移後需由新生產者產生新集合摘要並由目的端重播。同時凍結完整價格負載正規序列化，從完整欄位獨立重算內容雜湊，逐批閉合集合；原始時點未知維持隔離。完成逐股精確合格交易日與譜系後，才評估 `D03-10` 20 期窗口或 `D03-09` 完整遞迴重播。
 
 Artifacts: `research/D03_SOURCE_LINKED_IDENTITY_DIGEST_VS_FULL_PAYLOAD_PARITY_20261015_V0_1.md`, `research/d03_source_linked_identity_digest_full_payload_cases_20261015_v0_1.json`, `research/test_d03_source_linked_identity_digest_full_payload_v0_1.mjs`.
+
+
+## TI-1953～TI-1972：盤前來源觀測 PIT 與歷史指標 PIT 分界（2026-10-16）
+
+### 新增證據
+
+`system2/migration/evidence/S2_DATA_ISSUE1068_ORIGINAL_A1_122_PREOPEN_SOURCE_PIT_PHYSICAL_20261016_V0_1.json` 提供 122／122 份 TWSE／TPEx × 61 交易日來源配對的實體證據。2026-10-16 05:45:43（台北時間）研究截止前，所有必要上游收據均已存在；最晚完整觀測時間為 03:54:35.094。原始來源負載已獨立做 122／122 位元組重算與解析，61 個交易日亦由官方日曆核對。
+
+### 支持、反證與替代解釋
+
+- 支持：可接受「截至 05:45 的當前來源觀測 PIT」。這改善了當前截止的來源因果鏈，不再只是目的端轉錄或欄位摘要。
+- 反證：2026-10-15 23:45 的原始決策截止未通過；61 個舊交易日各自的 `firstKnownAt`／`availableAt` 尚未驗證，因此不能倒推歷史指標當時可得。
+- 替代解釋：122／122 是收集與封存完整度，不是策略父快照、績效或增量 alpha。1,935 個四位數代號完整窗口也不等同歷史普通股母體，因 CFI 身分版本仍不完整。
+- 失效條件：任一收據晚於研究截止、來源負載無法重算、交易日日曆不完整、公司行動修訂鏈或停牌語意缺漏，都會使對應層級退回 BLOCKED。
+
+### 指標層級影響
+
+- ret5／ret20／ret60、MA、KD9、RSI14、MACD12/26/9、Bollinger20：61 日在數值長度上可能足夠，但必須另通過精確 symbol-session、ordinary-share identity、corporate-action continuity 與 suspension/no-trade semantics。當前只能形成「條件式可計算」判定。
+- ADX14：除上述條件外，還必須凍結 Wilder smoothing 的初始化、暖機與完整重播；不能以 61 筆長度替代狀態語意。
+- Divergence 與 multi-timeframe conflict：仍需 confirmedAt 規則與可重播父狀態，本次來源證據未解除重畫或跨尺度對齊風險。
+- ROC level：仍與等期報酬代數冗餘；資料可用性不改變其拒絕作為獨立新因子的結論。
+- KD/RSI、MACD/direct trend、ADX/direct trend quality、BBW/ATR：高冗餘先驗不變。
+
+### 偏誤與推論防火牆
+
+- PIT：只准 05:45 current-cut source observation；historical decision-time PIT = BLOCKED。
+- Look-ahead：禁止以 2026-10-16 才完整取得的窗口回填任何較早選股日。
+- Selection bias：四位數代號集合不得代替有效日期普通股母體。
+- Multiple testing / overfitting：本輪不接 outcome、不掃參數、不選 threshold。
+- OOS / walk-forward：缺完整 prospective parent，維持 UNKNOWN。
+- 日期群聚：同批後驗取得的 61 日，不算 61 個獨立前瞻樣本。
+- 成本、可成交性、漲跌停、停牌、除權息：缺逐日凍結狀態，均維持 UNKNOWN。
+- Formal Core：LOCKED；無 `FORMAL_OPTIMIZATION_CANDIDATE`。
+
+### 可執行證據
+
+- `research/D03_PREOPEN_SOURCE_OBSERVATION_PIT_VS_HISTORICAL_INDICATOR_PIT_20261016_V0_1.md`
+- `research/d03_preopen_source_observation_historical_indicator_pit_cases_20261016_v0_1.json`
+- `research/test_d03_preopen_source_observation_historical_indicator_pit_v0_1.mjs`
+- 20／20 deterministic cases PASS；outcomes remain CLOSED。
+
+### 精確續接點
+
+取得逐交易日原始首知時間、有效日期普通股 CFI、六族公司行動修正／撤回／無事件，以及停牌／無交易語意後，先建立 outcome-blind 的逐檔 current-cut formula-window eligibility table；通過 prefix invariance 與 replay exactness（含 ADX 暖機）後，才等待完整 prospective parents 執行 KD-vs-RSI，再執行 MACD-vs-direct-trend。成熟度維持 56.7%，不升級。
