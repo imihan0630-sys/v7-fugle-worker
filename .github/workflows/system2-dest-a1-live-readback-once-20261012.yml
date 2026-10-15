@@ -29,6 +29,23 @@ jobs:
           S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
           S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
         run: node system2/migration/destination_raw_a1_live_readback_once_20261012.mjs
+      - name: Independently replay all imported bar identities against original producer SOURCE-linked SHA
+        env:
+          S2_SCHEMA_DEST_ACCOUNT_ID: ${{ secrets.S2_SCHEMA_DEST_ACCOUNT_ID }}
+          S2_SCHEMA_DEST_D1_WRITE_TOKEN: ${{ secrets.S2_SCHEMA_DEST_D1_WRITE_TOKEN }}
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_dest_a1_identity_digest_readonly_20261015_v0_1.mjs
+          node --test system2/tests/issue1068_oct15_dest_identity_digest_readonly_v0_1.test.mjs
+          node system2/migration/issue1068_dest_a1_identity_digest_readonly_20261015_v0_1.mjs
+      - name: Archive sanitized independent physical identity digest and metering
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-issue1068-oct15-dest-identity-digest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1068-20261015-dest-identity-proof/sanitized-digest-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
       - name: Preserve sanitized original-provider receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -44,3 +61,7 @@ jobs:
 # Re-arm this ALREADY REGISTERED, previously accepted, path-scoped READ-ONLY workflow
 # to obtain an actual distinct post-writer Cloudflare DEST D1 count SELECT, zero D1 writes.
 # Scope: metadata+count only; NOT independent payload hash PIT/Frozen/R2 acceptance.
+
+# 2026-10-15 DATA_LANE: same previously registered target-only SELECT workflow,
+# bounded <225k rowsRead and zero rowsWritten, SHA anchored to original producer.
+# No SOURCE D1/R2, no historical PIT/Frozen/strategy admission.
