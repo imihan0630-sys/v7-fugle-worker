@@ -29,6 +29,29 @@ assert.equal(decide({...prodFixture,now:"2026-10-14T15:13:52Z"}).reason,"ORIGINA
 assert.equal(decide({...prodFixture,now:"2026-10-14T15:43:00Z"}).mayPost,true);
 assert.equal(decide({...prodFixture,now:"2026-10-14T15:55:00Z"}).mayPost,false);
 
+const combined={...after2335,expected:["35,55 15 * * MON-FRI"],recent:[{
+ ...after2335.recent[0],cron_expression:"35,55 15 * * MON-FRI"}]};
+const combinedFixture={...prodFixture,cron:combined};
+assert.equal(decide({...combinedFixture,now:"2026-10-14T14:43:00Z"}).reason,"ORIGINAL_FORMAL_CRON_NOT_DUE");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z"}).mayPost,true);
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:54:59Z"}).mayPost,true);
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:55:00Z"}).mayPost,false);
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,expected:["35 15 * * MON-FRI","35,55 15 * * MON-FRI"]}}).reason,
+ "DEPLOYED_FORMAL_CRON_NOT_UNAMBIGUOUS");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,recent:[{...combined.recent[0],error:"Error: exceededResources"}]}}).reason,
+ "PREVIOUS_FORMAL_FAILURE_MUTATION_UNCERTAIN");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,recent:[{...combined.recent[0],status:"SUCCESS"}]}}).reason,
+ "PREVIOUS_FORMAL_ATTEMPT_NOT_FAILED");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",recommendations:{
+ attempt:{...after2335Rec.attempt,generatedAt:"2026/10/14 23:55:20"}}}).reason,
+ "LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
+// True original combined Cron is one physical trigger entry, despite 2 clock
+// slots; primary 23:35 + backup 23:55 does NOT authorize extra blind POST.
+
+
 const blocked=(override,expected)=>assert.equal(decide({...fixture,...override}).reason,expected);
 blocked({now:"2026-10-14T15:54:59Z",targetDate:date},"PRECOMMIT_SOURCE_FAILURE_AFTER_NEW_SOURCE_READY");
 blocked({now:"2026-10-14T15:55:00Z",targetDate:date},"OUTSIDE_SOURCE_READY_BUSINESS_WINDOW");
@@ -63,6 +86,9 @@ blocked({recommendations:{attempt:{...rec.attempt,generatedAt:"2026/10/14 22:40:
 blocked({recommendations:{attempt:{...rec.attempt,generatedAt:null}}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
 blocked({cron:{...cron,recent:[{...cron.recent[0],finished_at:null}]}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
 blocked({cron:{...cron,recent:[{...cron.recent[0],cron_expression:"* 9 * * MON-FRI"}]}},"ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
+const canonicalCron=await readFile(new URL("./update_cloudflare_after_market_cron.mjs",import.meta.url),"utf8");
+assert.match(canonicalCron,/COMBINED_AFTER_MARKET_CRON=/);
+assert.match(canonicalCron,/35,55 15/);
 const worker=await readFile(new URL("../Worker.js",import.meta.url),"utf8");
 const core=worker.slice(worker.indexOf("async function runAfterMarketScanCore("),
  worker.indexOf("async function ",worker.indexOf("async function runAfterMarketScanCore(")+6));
