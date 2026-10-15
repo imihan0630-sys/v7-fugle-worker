@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "D03_SOURCE_LINKED_IDENTITY_DIGEST_FULL_PAYLOAD_CASES_20261015_V0_1",
+  "cases": [
+    {"id":"C01","input":{"rows":47420,"expectedRows":47420,"digestMatch":true,"rowsWritten":0},"expected":{"status":"IDENTITY_VECTOR_PASS_FULL_PAYLOAD_BLOCKED","reason":"FOUR_FIELD_SCOPE_ONLY"}},
+    {"id":"C02","input":{"rows":47419,"expectedRows":47420,"digestMatch":true,"rowsWritten":0},"expected":{"status":"REJECT","reason":"ROW_COUNT_MISMATCH"}},
+    {"id":"C03","input":{"rows":47420,"expectedRows":47420,"digestMatch":false,"rowsWritten":0},"expected":{"status":"REJECT","reason":"SOURCE_LINKED_DIGEST_MISMATCH"}},
+    {"id":"C04","input":{"rows":47420,"expectedRows":47420,"digestMatch":true,"rowsWritten":1},"expected":{"status":"REJECT","reason":"READBACK_NOT_READ_ONLY"}},
+    {"id":"C05","input":{"identityVectorPass":true,"rawPayloadRehashed":false},"expected":{"status":"REPLAY_BLOCKED","reason":"RAW_PAYLOAD_REHASH_MISSING"}},
+    {"id":"C06","input":{"identityVectorPass":true,"rawPayloadRehashed":true,"hashSchemaComplete":false},"expected":{"status":"REPLAY_BLOCKED","reason":"HASH_SCHEMA_COMPLETENESS_MISSING"}},
+    {"id":"C07","input":{"identityVectorPass":true,"rawPayloadRehashed":true,"hashSchemaComplete":true,"sourcePitClocksAccepted":false},"expected":{"status":"REPLAY_BLOCKED","reason":"SOURCE_PIT_CLOCKS_MISSING"}},
+    {"id":"C08","input":{"identityVectorPass":true,"destinationPersistedAtOnly":true},"expected":{"status":"REPLAY_BLOCKED","reason":"DESTINATION_CLOCK_LAUNDERING"}},
+    {"id":"C09","input":{"identityVectorPass":true,"batchMetadataRows":129,"batchPayloadClosed":false},"expected":{"status":"REPLAY_BLOCKED","reason":"BATCH_PAYLOAD_CLOSURE_MISSING"}},
+    {"id":"C10","input":{"identityVectorPass":true,"frozenRowsObserved":0,"frozenHistoryAccepted":false},"expected":{"status":"REPLAY_BLOCKED","reason":"FROZEN_HISTORY_NOT_ACCEPTED"}},
+    {"id":"C11","input":{"identityVectorPass":true,"perSymbolSessionCoverage":false},"expected":{"status":"REPLAY_BLOCKED","reason":"PER_SYMBOL_SESSION_COVERAGE_MISSING"}},
+    {"id":"C12","input":{"identityVectorPass":true,"exactCleanSessions":19,"bollingerRequested":true},"expected":{"status":"REPLAY_BLOCKED","reason":"BOLLINGER_EXACT_20_MISSING"}},
+    {"id":"C13","input":{"identityVectorPass":true,"exactCleanSessions":20,"bollingerRequested":true,"continuityAccepted":false},"expected":{"status":"REPLAY_BLOCKED","reason":"CONTINUITY_LINEAGE_MISSING"}},
+    {"id":"C14","input":{"identityVectorPass":true,"adxRequested":true,"adxReplayCertified":false},"expected":{"status":"REPLAY_BLOCKED","reason":"ADX_REPLAY_STATE_MISSING"}},
+    {"id":"C15","input":{"identityVectorPass":true,"migrationOrderPreregistered":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"SELECTION_DATE_CLUSTER_UNKNOWN"}},
+    {"id":"C16","input":{"identityVectorPass":true,"oosEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"OOS_EVIDENCE_MISSING"}},
+    {"id":"C17","input":{"identityVectorPass":true,"walkForwardEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"WALK_FORWARD_EVIDENCE_MISSING"}},
+    {"id":"C18","input":{"identityVectorPass":true,"tradingCostEvidence":false,"fillabilityEvidence":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"TRADING_COST_FILLABILITY_MISSING"}},
+    {"id":"C19","input":{"identityVectorPass":true,"corporateActionResolved":false,"marketStateValidated":false},"expected":{"status":"INFERENCE_BLOCKED","reason":"ACTION_MARKET_STATE_UNKNOWN"}},
+    {"id":"C20","input":{"rows":84688,"expectedRows":84688,"digestMatch":true,"rowsWritten":0,"identityVectorPass":true,"rawPayloadRehashed":true,"hashSchemaComplete":true,"sourcePitClocksAccepted":true,"batchPayloadClosed":true,"frozenHistoryAccepted":true,"perSymbolSessionCoverage":true,"continuityAccepted":true,"parentBindingAccepted":true},"expected":{"status":"INDICATOR_INPUT_READY_OUTCOMES_CLOSED","reason":"INPUT_GATE_ONLY"}}
+  ]
+}
