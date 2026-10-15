@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "S2_DATA_ISSUE1068_REAL_20261015_INDEPENDENT_IMPORTED_A1_SOURCE_LINKED_IDENTITY_DIGEST_V0_1",
+  "classification": "DATA_LANE_ORIGINAL_REAL_DEST_PROVIDER_READONLY_IDENTITY_VECTOR_MATCH_NOT_FORMAL_AUDIT",
+  "status": "REAL_DEST_PHYSICAL_47420_OF_47420_FOUR_FIELD_SOURCE_LINKED_SHA256_MATCH__PIT_FROZEN_FULLPAYLOAD_PENDING",
+  "sourceOriginalProducer": {
+    "runId": 38683991222,
+    "jobId": 116254575761,
+    "artifactId": 11949362399,
+    "originalArtifactZipSha256": "7658d6e4b4be903ae4d889f6c3a0c745f3aad3c3a1135a71058dc799f08d9e61",
+    "actualProducerAfterBarRows": 47420,
+    "originalSourceA1BarsTotal": 84688,
+    "originalSourceBatchRows": 129,
+    "billedWrites20261015": 71334,
+    "originalProducerSourceLinkedIdentitySha256": "d56b47494a8bc36b58e610ec12b58adde9ddfb5de5e95b616f716f41da1fb21d",
+    "digestProofOrigin": "Original real producer postcopy auditOriginalA1ImportedParity based on original independently restored source encrypted SQL"
+  },
+  "githubImplementation": {
+    "pr": 1352,
+    "mergedMain": "0a0057c87bae82b9953beef1a20bdc564ef0bf4a",
+    "independentReadOnlyScript": "system2/migration/issue1068_dest_a1_identity_digest_readonly_20261015_v0_1.mjs",
+    "existingRegisteredWorkflow": ".github/workflows/system2-dest-a1-live-readback-once-20261012.yml",
+    "exactPrHeadCI": {
+      "system2Research": {
+        "runId": 38724105209,
+        "conclusion": "success"
+      },
+      "v8Regression": {
+        "runId": 38724105208,
+        "conclusion": "success"
+      },
+      "destD1CredentialCensus": {
+        "runId": 38724105231,
+        "conclusion": "success"
+      }
+    }
+  },
+  "actualPhysicalReadback": {
+    "runId": 38724324504,
+    "jobId": 116386310167,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38724324504",
+    "conclusion": "success",
+    "originalMainHead": "0a0057c87bae82b9953beef1a20bdc564ef0bf4a",
+    "recordedAtUtc": "2026-10-15T11:02:00.061Z",
+    "destinationAccountAndDbFingerprintsMatched": true,
+    "sourceD1Queries": 0,
+    "sourceD1Writes": 0,
+    "destinationD1Writes": 0,
+    "frozenDecisions": 0,
+    "originalIngestBatchCount": 129,
+    "actualDestinationBarRows": 47420,
+    "databaseFileSizeBytes": 43745280,
+    "originalCountRecheckRowsRead": 47549,
+    "identityDigestPageCount": 119,
+    "identityDigestObservedRows": 47420,
+    "identityDigestPaginationProviderRowsRead": 47420,
+    "originalCloudflareSelectQueries": 121,
+    "originalProviderTotalRowsRead": 142518,
+    "originalProviderTotalRowsWritten": 0,
+    "countBeforeAndAfterUnchanged": true,
+    "hashFields": [
+      "bar_id",
+      "bar_hash",
+      "source_row_hash",
+      "batch_id"
+    ],
+    "hashInputEncoding": "UTF8_BYTE_LENGTH_COLON_PREFIX_EACH_FIELD_IN_BAR_ID_ASC_ORDER",
+    "independentlyComputedDestinationSha256": "d56b47494a8bc36b58e610ec12b58adde9ddfb5de5e95b616f716f41da1fb21d",
+    "matchesOriginalSourceLinkedProducerDigest": true,
+    "noOriginalRowDataExported": true,
+    "additionalWriterSameUtcDayStarted": false
+  },
+  "nativeGithubArtifacts": [
+    {
+      "id": 11966729798,
+      "role": "TARGET_ONLY_ORIGINAL_SHA256_REPLAY_RESULT",
+      "name": "s2-data-issue1068-oct15-dest-identity-digest-38724324504-1",
+      "originalZipBytes": 1051,
+      "githubOriginalZipSha256": "ad8b5b6ef9e9e39341d879fc7c48ea349a3b4f4e5791a8e7395264bbf016a1b4",
+      "independentDownloadedZipSha256": "ad8b5b6ef9e9e39341d879fc7c48ea349a3b4f4e5791a8e7395264bbf016a1b4",
+      "originalInnerName": "sanitized-digest-receipt.json",
+      "originalInnerBytes": 1962,
+      "independentlyComputedInnerSha256": "515c05dede2d58ccc0f8000709da7bc4ca36aeef2d8cfc0d20850823bd81f096",
+      "originalInnerIndependentlyParsed": true
+    },
+    {
+      "id": 11966589988,
+      "role": "SECONDARY_ORIGINAL_PROVIDER_COUNT_READBACK",
+      "name": "s2-dest-a1-live-readback-once-38724324504",
+      "originalZipBytes": 577,
+      "githubOriginalZipSha256": "117786ea788b75e7169c6654e832479d376b0e5b7624433b09e8c4ed29702b2c",
+      "independentDownloadedZipSha256": "117786ea788b75e7169c6654e832479d376b0e5b7624433b09e8c4ed29702b2c",
+      "originalInnerName": "sanitized-original-provider-readback.json",
+      "originalInnerBytes": 665,
+      "independentlyComputedInnerSha256": "d682327ecd855f66228d8666ccf5a30eaa0d8fd7300e1bd6b65ef0452d55d5e5",
+      "originalInnerIndependentlyParsed": true
+    }
+  ],
+  "sourceToTargetProgress": {
+    "realImportedA1Bars": 47420,
+    "sourceOriginalA1Bars": 84688,
+    "remainingA1Bars": 37268,
+    "importedFraction": 0.5599376535046288,
+    "sourceOriginalAllLogicalRows": 113222,
+    "knownTargetBarsAndBatches": 47549,
+    "allSourceLogicalDenominatorRatio": 0.41996255144759853
+  },
+  "limitsAndOpenAcceptance": {
+    "sourceOriginalA1BarPayloadRawBytesIndependentlyRehashed": false,
+    "sourceRowHashRecomputedFromActualOHLCVColumnsOnNewRun": false,
+    "perBarHistoricalFirstKnownAtAndAvailableAtCertified": false,
+    "frozenHistoricalDecisionsCertified": false,
+    "fullSourceR2BodiesRestoredAndVerified": false,
+    "destinationR2EntitlementAccepted": false,
+    "all84688SourceA1BarsTransferred": false,
+    "formalIndependentAuditLaneSignedOff": false,
+    "historicalPITOrShadowOrBacktestAuthorized": false,
+    "completeG3G4AndCutoverAccepted": false,
+    "sameDayAdditionalImporterAuthorized": false
+  },
+  "safety": {
+    "classAOfflineEvidenceOnlyForThisJson": true,
+    "thisEvidenceCommitD1Queries": 0,
+    "thisEvidenceCommitD1Writes": 0,
+    "sourceSystem1FormalCoreModified": false,
+    "sourceCronModified": false,
+    "destinationWorkerOrCronActivated": false,
+    "secretsOrPaidPlanChanged": false
+  },
+  "nextActions": [
+    "AUDIT_LANE independently recompute exact original ZIP+inner SHA and evaluate original source-linked identity digest 47420/47420 PASS scope, without self-upgrading to full raw OHLCV payload equality.",
+    "DATA_LANE after new UTC quota day resume original owner-guarded A1 raw copy toward remaining 37268, then separately repeat real DEST source-linked identity SHA/COUNT readback with new original producer digest and current quotas.",
+    "Data/content hash from original OHLCV raw fields, PIT firstKnownAt/availableAt, frozen snapshot, M06 2521 source legacy operational row provenance and M07 R2 object-body+entitlement remain separately BLOCKED."
+  ]
+}
