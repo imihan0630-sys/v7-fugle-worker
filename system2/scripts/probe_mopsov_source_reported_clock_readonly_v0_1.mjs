@@ -30,18 +30,18 @@ function fetchControl(control){
     "--data-urlencode","e_date=",
     URL,
   ];
-  const p=spawnSync("curl",args,{encoding:"utf8",maxBuffer:16*1024*1024});
+  const p=spawnSync("curl",args,{maxBuffer:16*1024*1024});
   if(p.error) throw p.error;
   if(p.status!==0) throw new Error("curl exit "+p.status+" for "+control.id+": "+String(p.stderr||"").slice(0,500));
   const parsed=parseMopsHistoricalMaterialInformationHtmlV0_1({
-    html:p.stdout,
+    html:p.stdout.toString("utf8"),
     stockCode:control.stockCode,
     expectedDate:control.expectedDate,
     baseSubject:control.baseSubject,
   });
   return {
     control,
-    originalResponseSha256:createHash("sha256").update(p.stdout,"utf8").digest("hex"),
+    originalResponseSha256:createHash("sha256").update(p.stdout).digest("hex"),
     capturedAtUtc:new Date().toISOString(),
     parsedRows:parsed.rows,
     historyRowCount:parsed.rowCount,
