@@ -64,7 +64,7 @@ for(const [name,mutate] of [
  ["source clock of future year",c=>{
     c[0].rows[0].date="2027-05-22";c[0].rows[0].spokeDateRaw="20270522";
   }],
- ["cancellation cannot be inferred",c=>{c[4].rows[0].rowText="公告無取消字樣"}],
+ ["cancellation cannot be inferred",c=>{c[4].rows[0].rowText="公告例行訊息"}],
  ["unbounded unexpected rows",c=>{c[0].rows=Array.from({length:101},()=>exampleRow(MOPS_REVISION_CONTROLS_V0_2[0]))}]
 ]){
  test("fail closed: "+name,()=>{
