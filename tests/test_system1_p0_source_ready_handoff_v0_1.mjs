@@ -34,6 +34,20 @@ const combined={...after2335,expected:["35,55 15 * * MON-FRI"],recent:[{
 const combinedFixture={...prodFixture,cron:combined};
 assert.equal(decide({...combinedFixture,now:"2026-10-14T14:43:00Z"}).reason,"ORIGINAL_FORMAL_CRON_NOT_DUE");
 assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z"}).mayPost,true);
+
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,expected:["35 15 * * MON-FRI"]}}).mayPost,true,
+ "D1 original observed 35,55 must override old code static 35 hint");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,expected:["10 10 * * MON-FRI"]}}).mayPost,true,
+ "Same-day authenticated D1 Cron outranks stale Worker expected hint");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,recent:[...combined.recent,{...combined.recent[0],id:22,cron_expression:"35 15 * * MON-FRI"}]}}).reason,
+ "CONFLICTING_SAME_SESSION_FORMAL_CRON_RECEIPTS");
+assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
+ ...combined,recent:[{...combined.recent[0],cron_expression:"* 9 * * MON-FRI"}]}}).reason,
+ "UNRECOGNIZED_ACTUAL_FORMAL_CRON_RECEIPT");
+
 assert.equal(decide({...combinedFixture,now:"2026-10-14T15:54:59Z"}).mayPost,true);
 assert.equal(decide({...combinedFixture,now:"2026-10-14T15:55:00Z"}).mayPost,false);
 assert.equal(decide({...combinedFixture,now:"2026-10-14T15:43:00Z",cron:{
@@ -85,7 +99,7 @@ assert.equal(decide({...fixture,cron:{...cron,recent:[{...cron.recent[0],error:"
 blocked({recommendations:{attempt:{...rec.attempt,generatedAt:"2026/10/14 22:40:00"}}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
 blocked({recommendations:{attempt:{...rec.attempt,generatedAt:null}}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
 blocked({cron:{...cron,recent:[{...cron.recent[0],finished_at:null}]}},"LATEST_ATTEMPT_NOT_CORRELATED_WITH_PRECOMMIT_CRON");
-blocked({cron:{...cron,recent:[{...cron.recent[0],cron_expression:"* 9 * * MON-FRI"}]}},"ORIGINAL_FORMAL_D1_CRON_RECEIPT_MISSING");
+blocked({cron:{...cron,recent:[{...cron.recent[0],cron_expression:"* 9 * * MON-FRI"}]}},"UNRECOGNIZED_ACTUAL_FORMAL_CRON_RECEIPT");
 const canonicalCron=await readFile(new URL("./update_cloudflare_after_market_cron.mjs",import.meta.url),"utf8");
 assert.match(canonicalCron,/COMBINED_AFTER_MARKET_CRON=/);
 assert.match(canonicalCron,/35,55 15/);
