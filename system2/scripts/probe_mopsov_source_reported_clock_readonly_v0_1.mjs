@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
+import {mkdir,writeFile} from "node:fs/promises";
+import {buildHistoricalMopsSourceClockLedgerV0_1} from "../migration/mops_historical_source_clock_pit_ledger_v0_1.mjs";
 import { spawnSync } from "node:child_process";
 import { parseMopsHistoricalMaterialInformationHtmlV0_1 } from "../runtime/mops_revision_source_capability_v0_1.mjs";
 import { MOPS_REVISION_CONTROLS_V0_2 } from "../runtime/mops_revision_control_matrix_v0_2.mjs";
@@ -38,6 +41,9 @@ function fetchControl(control){
   });
   return {
     control,
+    originalResponseSha256:createHash("sha256").update(p.stdout,"utf8").digest("hex"),
+    capturedAtUtc:new Date().toISOString(),
+    parsedRows:parsed.rows,
     historyRowCount:parsed.rowCount,
     matchingSubjectRowCount:parsed.matchingSubjectRowCount,
     result:certifyMopsovSourceReportedControlV0_1({control,rows:parsed.rows}),
@@ -50,6 +56,17 @@ for(let i=0;i<MOPS_REVISION_CONTROLS_V0_2.length;i+=1){
   if(i<MOPS_REVISION_CONTROLS_V0_2.length-1) await sleep(800);
 }
 const summary=summarizeMopsovSourceReportedClockV0_1(physical.map((x)=>x.result));
+const pitLedger=buildHistoricalMopsSourceClockLedgerV0_1({captures:physical.map(x=>({
+  controlId:x.control.id,capturedAtUtc:x.capturedAtUtc,
+  originalResponseSha256:x.originalResponseSha256,
+  sourceUrl:URL,rows:x.parsedRows
+}))});
+assert.equal(pitLedger.coveredHistoricalSourceClockControls,5);
+assert.equal(pitLedger.historicalPITCertifiedCount,0);
+assert.equal(pitLedger.historicalExactFirstKnownAtProvenCount,0);
+assert.equal(pitLedger.useSourceClockAsHistoricalAvailableAtAuthorized,false);
+await mkdir("/tmp/system2-mops-pit-ledger",{recursive:true,mode:0o700});
+await writeFile("/tmp/system2-mops-pit-ledger/sanitized-historical-source-clock-ledger.json",JSON.stringify(pitLedger,null,2)+"\n",{mode:0o600});
 
 assert.equal(summary.sourceReportedVersionClockSemanticsCertified,true);
 assert.equal(summary.passCount,5);
@@ -63,6 +80,9 @@ assert.equal(summary.system1RuntimeUsed,false);
 
 console.log(JSON.stringify({
   result:summary.state,
+  retrospectiveSourceClockVersionCount:pitLedger.coveredHistoricalSourceClockVersions,
+  historicalPITCertifiedCount:pitLedger.historicalPITCertifiedCount,
+  originalPITLedgerSHA256:pitLedger.ledgerSha256,
   summary,
   physical:physical.map((x)=>({
     controlId:x.control.id,
