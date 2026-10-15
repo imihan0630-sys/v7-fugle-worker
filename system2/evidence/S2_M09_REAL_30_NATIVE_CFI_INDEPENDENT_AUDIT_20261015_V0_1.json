@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "S2_M09_REAL_30_NATIVE_CFI_INDEPENDENT_AUDIT_20261015_V0_1",
+  "evidenceClass": "PHYSICALLY_VERIFIED_CURRENT_NATIVE_STOCK_TYPE_ONLY_NO_HISTORICAL_PIT",
+  "sourceMarketDate": "2026-10-14",
+  "recordedAtUtc": "2026-10-15T02:35:04.616Z",
+  "formalIssues": [
+    1132,
+    1234
+  ],
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "code": {
+    "fourNativeControlPR": 1336,
+    "fourNativeControlMain": "95311193b2f15fd1786b3b7cf908fe424ca3e4a1",
+    "thirtyRealPreviewPR": 1337,
+    "thirtyRealPreviewMain": "a06bd16b988963a8892f86f415504152bc5d98e6",
+    "innovationBoardIndependentAuditPR": 1338,
+    "innovationBoardIndependentAuditMain": "94feb2bbb675b70da5075ab44233d64b6d8a7b5c"
+  },
+  "fourNativeControl": {
+    "realRunId": 38670026243,
+    "realArtifactId": 11944160132,
+    "artifactZipSha256": "3bb54e618e745f2cb6432312fd04727601c5b964d01abdecf20432711aeb17a7",
+    "observedControlIdentities": [
+      {
+        "code": "2330",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "nativeMarket": "TWSE LISTED"
+      },
+      {
+        "code": "3287",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "nativeMarket": "TPEx LISTED"
+      },
+      {
+        "code": "9103",
+        "nativeType": "TDR",
+        "cfi": "EDSDDR",
+        "nativeMarket": "TWSE LISTED"
+      },
+      {
+        "code": "0050",
+        "nativeType": "ETF",
+        "cfi": "CEOGEU",
+        "nativeMarket": "TWSE LISTED"
+      }
+    ],
+    "independentOriginalBytesRehashed": 4
+  },
+  "thirtyPreview": {
+    "originalA1SourceRunId": 38629859058,
+    "originalA1SourceReceiptHash": "d55fadd02407d6f0939621abb9b0e415c99cdd077abc5a983d26c544c6319f23",
+    "originalA1IndependentlyAuditedRunId": 38630106632,
+    "originalA1IndependentAuditHash": "d93e00a2a2f0d83e0eccd40679d257a445132c8f5892dc8d689924a9abb8ee48",
+    "preliminaryWatchReceiptHash": "5a63fdf9a698086f2aacb7cd2260cb9f1f620f00de1e5c2449dac3e5ac673927",
+    "sourceReadRunId": 38671504419,
+    "sourceReadRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38671504419",
+    "sourceArtifactId": 11944012358,
+    "sourceArtifactZipSha256": "dafc62c536bb3016c1da87110b304d19531051ebb985a66abe3f3bbbe17404ce",
+    "currentNativeSourceReceiptHash": "1f7bc0a005a787c41146b350d1cd8a27f6d5dd250508e755c51b08915a66ac58",
+    "actualStartedUtc": "2026-10-15T02:32:24.593Z",
+    "actualCompletedUtc": "2026-10-15T02:32:32.647Z",
+    "actualCurrentNativeRequests": 30,
+    "currentNativeCfiObserved": 30,
+    "nativeTypeStocksCFI_ESVUFR": 30,
+    "nativeTypeTDR": 0,
+    "nativeTypeETF": 0,
+    "exactTWSEMainRows": 13,
+    "exactTPExMainRows": 16,
+    "TWSEInnovationBoardRows": 1,
+    "nativeUnknownRows": 0,
+    "duplicateMarketSymbolRows": 0,
+    "independentExternalArtifactZipShaMatched": true,
+    "independentExternalOriginalGzipHashesMatched": 30,
+    "specialCase": {
+      "symbol": "6645",
+      "nativeMarketLabel": "TAIWAN INNOVATION BOARD",
+      "normalizedExchange": "TWSE",
+      "normalizedBoard": "TWSE_INNOVATION_BOARD_TIB",
+      "cfi": "ESVUFR",
+      "isin": "TW0006645005",
+      "originalProviderSha256": "b4979d61cb8af27893ee3cf95341c21db4000c77357c5d61849cfd516e3584eb",
+      "specialBoardStrategyEligibilityCertified": false
+    }
+  },
+  "independent": {
+    "triggeredBy": "workflow_run_COMPLETED_SUCCESS_REAL_MAIN_SOURCE_PUSH",
+    "independentAuditRunId": 38671545058,
+    "independentAuditRunUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38671545058",
+    "independentAuditArtifactId": 11943793618,
+    "independentArtifactZipSha256": "58c32fd77a3b88b4b34c60c038e6b0cf50782ab510c775497e494d6800415f41",
+    "independentlySignedAuditHash": "ff60fd173246425b76c1bc23c221a26deb36dfe5093ffeefa858efa149a4478e",
+    "independentNativeOriginalsRehashed": 30,
+    "independentNativeTypeAndMarketMatchedRows": 30,
+    "independentNativeInnovationBoardRows": 1,
+    "independentVerdict": "ACCEPTED_CURRENT_NATIVE_ORIGINAL_CLASS_ONLY"
+  },
+  "nonPromotion": {
+    "firstKnownAtHistoricalPublicationProof": false,
+    "currentSourceObservationOccurredAfter20261014MarketDate": true,
+    "retrospectiveReplayAdmittedAsKnownAt20261014": false,
+    "ordinaryCommonShareAsOf20261014PITCertified": false,
+    "full1974SourceSecurityClassDenominatorCertified": false,
+    "sixCorporateActionVintageRevisionsAndRetractionsPITCertified": false,
+    "shortMomentumPITAssessorQualifiedAndRanked": false,
+    "formalSelectedCount": null,
+    "zeroPickDay": null,
+    "immutableFrozenD1Written": false,
+    "independentFrozenD1Readback": false,
+    "cloudflareD1Writes": 0,
+    "cloudflareR2Writes": 0,
+    "system1V8FormalCoreChanged": false,
+    "m09PhysicalShadowS0ToS5Accepted": 0
+  },
+  "next": "Integrate native individual-type current observation as a separate read-only daily after-A1 audit lane with exact T observation timestamps. Then independently certify full tradable ordinary-common-share universe denominator and corporate-action correction/retraction vintage PIT before executing preregistered SHORT_MOMENTUM rank and separately authorized D1 create-only Frozen/readback."
+}
