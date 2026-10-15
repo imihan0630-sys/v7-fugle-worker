@@ -186,16 +186,17 @@ export async function auditOriginalA1DailyBarPitCutV0_1({
     nativeRowCount:s.rowCount,
     completeWindowBarsMatched:wanted.size,
     originalHistoricalPublicationTimeProven:false,
-    observedByOriginal2345DecisionCut:Date.parse(s.capturedAt)<=Date.parse(cutoffs[0]),
-    observedByPreopenCut:Date.parse(s.capturedAt)<=Date.parse(cutoffs[1])
+    sourceReceiptClaimedCaptureByOriginal2345Cut:Date.parse(s.capturedAt)<=Date.parse(cutoffs[0]),
+    sourceReceiptClaimedCaptureByPreopenCut:Date.parse(s.capturedAt)<=Date.parse(cutoffs[1]),
+    captureTimeBasis:"SOURCE_SIGNED_RECEIPT; ORIGINAL_PRIOR_WITNESS_NOT_INDEPENDENTLY_REPLAYED_FOR_THAT_HISTORICAL_CUT"
    });
   }
  }
  if(physicallyRead!==122||reconciled!==completeWindowBars||
     sanitized.some(x=>x.completeWindowBarsMatched===0))
   fault("NATIVE_122_OR_ALL_WINDOW_BARS_NOT_RECONCILED");
- const observedOriginal=sanitized.filter(s=>s.observedByOriginal2345DecisionCut).length;
- const observedPreopen=sanitized.filter(s=>s.observedByPreopenCut).length;
+ const observedOriginal=sanitized.filter(s=>s.sourceReceiptClaimedCaptureByOriginal2345Cut).length;
+ const observedPreopen=sanitized.filter(s=>s.sourceReceiptClaimedCaptureByPreopenCut).length;
  const independentAuditAtOriginalCut=Date.parse(independentAudit.auditedAtUtc)<=Date.parse(cutoffs[0]);
  const independentAuditAtPreopenCut=Date.parse(independentAudit.auditedAtUtc)<=Date.parse(cutoffs[1]);
  return Object.freeze({
@@ -209,19 +210,23 @@ export async function auditOriginalA1DailyBarPitCutV0_1({
   originalMarketDate:REAL.marketDate,
   trueEvaluationAtUtc:evaluationAtUtc,
   sourcePairsIndependentlyByteRehashed:physicallyRead,
+  earlierOriginalArtifactArchiveWitnessBefore2345Verified:false,
+  originalMarketCutMustNotTreatSourceReceiptClockAsIndependentWitness:true,
   originalNativePayloadsDecompressedAndReparsed:physicallyRead,
   completeSymbolWindowsReconciled:REAL.expectedCompleteSymbolWindows,
   individualOriginalOHLCVBarsIndependentlyReconciled:reconciled,
   providerDatesWithExplicitOriginalSourceClock:61,
   checks:[
    {name:"2026-10-15_original_market_2345",cutUtc:cutoffs[0],
-    pairsActuallyObservedByCut:observedOriginal,
+    pairsSignedSourceReceiptClaimsCapturedByCut:observedOriginal,
+    originalNativeIndependentArchiveBeforeCutVerified:false,
     all122SourcePairsObserved:observedOriginal===122,
     independentAuditCompletedByCut:independentAuditAtOriginalCut,
-    qualifiedComplete122ForDecision:observedOriginal===122&&independentAuditAtOriginalCut,
+    qualifiedComplete122ForDecision:false, // no original independent archive witness before 23:45 in this lane
     strategyPitQualified:false},
    {name:"2026-10-16_0545_preopen_research",cutUtc:cutoffs[1],
-    pairsActuallyObservedByCut:observedPreopen,
+    pairsSignedSourceReceiptClaimsCapturedByCut:observedPreopen,
+    originalNativeIndependentAuditBeforeCutVerified:independentAuditAtPreopenCut,
     all122SourcePairsObserved:observedPreopen===122,
     independentAuditCompletedByCut:independentAuditAtPreopenCut,
     qualifiedComplete122ForDecision:observedPreopen===122&&independentAuditAtPreopenCut,
