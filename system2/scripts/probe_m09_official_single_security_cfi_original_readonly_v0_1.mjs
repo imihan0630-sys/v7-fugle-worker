@@ -93,7 +93,13 @@ export async function probeM09OfficialSingleSecurityOriginalV0_1({
     nativeListedAt:row?.nativeListedAt??null,
     sourceSecurityName:row?.securityName??null,
     nativeEquityPrefixObserved:row?.cfiEquitySharePrefix??false,
-    nativeTypeHistoricallyPITCertified:false});
+    nativeTypeHistoricallyPITCertified:false,
+    // Native current classification is a prospective source observation only.
+    // Historical 61-session effective periods and first publication remain UNKNOWN.
+    currentObservedStockCfi:parsed.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
+      row?.nativeTypeLabel==='Stocks'&&/^ES[A-Z]{4}$/.test(row?.cfi||'')&&
+      ['TWSE LISTED','TPEX LISTED','TAIWAN INNOVATION BOARD'].includes(row?.nativeMarketLabel),
+    historicalEffectiveFromDate:null,originalPublicationAtUtc:null});
   }catch(e){
    const msg=String(e?.message||'');
    results.push({code:ctrl.code,controlIntent:ctrl.hint,
@@ -105,14 +111,19 @@ export async function probeM09OfficialSingleSecurityOriginalV0_1({
       'NATIVE_TRANSPORT_OR_PARSE_UNVERIFIED',
     rawByteReadback:false,cfi:null,isin:null,nativeMarketLabel:null,
     nativeTypeLabel:null,nativeListedAt:null,sourceSecurityName:null,
-    nativeEquityPrefixObserved:false,nativeTypeHistoricallyPITCertified:false});
+    nativeEquityPrefixObserved:false,nativeTypeHistoricallyPITCertified:false,
+    currentObservedStockCfi:false,historicalEffectiveFromDate:null,
+    originalPublicationAtUtc:null});
   }
  }
  const positive=results.filter(r=>r.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED').length;
+ const currentlyObservedStocks=results.filter(r=>r.currentObservedStockCfi===true).length;
  const base={schemaVersion:'S2_M09_NATIVE_SINGLE_ISIN_CFI_TRANSPORT_V0_1',
   actualObservationStartUtc:baseStart,finishedAtUtc:now().toISOString(),
   source:'OFFICIAL_TWSE_NATIVE_INDIVIDUAL_ISIN_CFI',
   controlsChecked:controls.length,nativeCfiRowsObserved:positive,
+  currentNativeStockCfiObserved:currentlyObservedStocks,
+  currentNativeEvidenceScope:'AS_OBSERVED_NOW_NOT_HISTORICAL_EFFECTIVE_VINTAGE',
   state:positive===controls.length?'NATIVE_SINGLE_CFI_SOURCE_OBSERVED':
    'NATIVE_SINGLE_CFI_SOURCE_INCOMPLETE',
   sourceReceipts:results,
@@ -140,6 +151,7 @@ if(process.argv[1]?.endsWith('/probe_m09_official_single_security_cfi_original_r
   {flag:'wx',mode:0o600});
  console.log(JSON.stringify({
   source:r.source,state:r.state,
+  currentNativeStockCfiObserved:r.currentNativeStockCfiObserved,
   controlsChecked:r.controlsChecked,nativeCfiRowsObserved:r.nativeCfiRowsObserved,
   rows:r.sourceReceipts.map(x=>({code:x.code,state:x.state,
    cfi:x.cfi,isin:x.isin,officialType:x.nativeTypeLabel,
