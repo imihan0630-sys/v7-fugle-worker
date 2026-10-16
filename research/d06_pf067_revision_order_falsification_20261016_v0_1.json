@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "D06_PF067_REVISION_ORDER_FALSIFICATION_V0_1",
+  "researchDate": "2026-10-16",
+  "room": "05｜法人與籌碼研究室",
+  "scope": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-05",
+    "D06-18"
+  ],
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCore": "LOCKED",
+  "sourceMainSha": "2aede2481b1b6e352c7b92ddceb03f80b2faa068",
+  "parent": "research/d06_pf066_vintage_integrity_falsification_20261016_v0_1.json",
+  "coreFinding": "PF066 orders ETF PCF revisions by last capture timestamp. Later recapture of older issuer version can roll back an earlier observed newer raw version. CapturedAt measures observer time, not authoritative issuer revision precedence.",
+  "counterexamples": [
+    {
+      "id": "PF067-R1",
+      "scenario": "08:00 raw v1; 08:10 raw v2; 08:20 stale cached raw v1; decision 08:30",
+      "legacyPF066": "ADMITTED v1",
+      "required": "UNKNOWN unless issuer-version order independently authenticated; never silently roll back to v1"
+    },
+    {
+      "id": "PF067-R2",
+      "scenario": "08:00 raw v1; 08:10 raw v2; 08:20 stale index v1; decision 08:30",
+      "legacyPF066": "ADMITTED v1",
+      "required": "UNKNOWN unless issuer-version order independently authenticated"
+    },
+    {
+      "id": "PF067-R3",
+      "scenario": "Only one revision identity observed as-of; raw bytes checksum matches",
+      "legacyPF066": "ADMITTED",
+      "required": "STRUCTURAL_PASS_NOT_PIT_CERTIFIED until immutable issuer original and independent capture clock are externally attested"
+    },
+    {
+      "id": "PF067-R4",
+      "scenario": "A conflicting revision first observed after decision cutoff",
+      "legacyPF066": "Ignored",
+      "required": "Ignore future observations for historical decision, but do not fabricate first-known or source-published clock"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Later capture means newer issuer revision",
+      "support": "Freshly fetched pages may reflect corrections",
+      "falsification": "Cached older v1 can be observed after valid v2",
+      "alternative": "CDN cache, source mirror lag, delayed index",
+      "failure": "No issuer-verified monotonic revision lineage; observation time alone cannot order versions",
+      "decision": "REJECT"
+    },
+    {
+      "id": "H2",
+      "claim": "Matching raw-byte hash proves genuine issuer original and PIT",
+      "support": "Hash catches changes to supplied bytes",
+      "falsification": "Self-supplied synthetic bytes and fake immutable URI can pass hash",
+      "alternative": "Trusted independent archive may exist outside selector",
+      "failure": "No external source receipt and authenticated clock",
+      "decision": "STRUCTURAL_ONLY"
+    },
+    {
+      "id": "H3",
+      "claim": "ETF units increase implies same-day constituent net buying",
+      "support": "In-kind creation needs basket delivery",
+      "falsification": "Inventory, borrow, cash substitution, gross offset and AP timing yield positive/zero/negative market execution",
+      "alternative": "Inventory transfer, settlement and index rebalance",
+      "failure": "No participant trade/settlement proof",
+      "decision": "ACTUAL_EXECUTION_UNKNOWN"
+    },
+    {
+      "id": "H4",
+      "claim": "Institutional flow, ETF creation, margin, SBL and crowding each independently confirm one direction",
+      "support": "They may react to common market demand",
+      "falsification": "Same primitive/information root or index event can generate multiple observations; short borrow can be delivery/hedge",
+      "alternative": "Arbitrage, financing, rebalancing, custody reclassification",
+      "failure": "No primitive-level independent lineage and date-clustered residual OOS test",
+      "decision": "DO_NOT_DOUBLE_COUNT"
+    },
+    {
+      "id": "H5",
+      "claim": "Ownership concentration rise identifies direct purchases",
+      "support": "May accompany accumulation",
+      "falsification": "Threshold crossing, denominator changes and custody accounts can change distribution without equivalent buying",
+      "alternative": "Corporate action, custody reclassification",
+      "failure": "No pair-effective identity and sourceDate-specific common equity universe",
+      "decision": "NOT_IDENTIFIABLE"
+    }
+  ],
+  "implementation": "Synthetic research-only guard refuses to choose among multiple as-of revision identities without independent issuer ordering; a single verified-bytes identity receives STRUCTURAL_PASS_NOT_PIT_CERTIFIED, not actual PIT admission.",
+  "localTest": {
+    "file": "D06_PF067_20261016_revision_order_guard.mjs",
+    "newChecks": 20,
+    "passed": 20,
+    "failed": 0,
+    "legacyPF066Checks": 44,
+    "legacyPF066Passed": 44,
+    "marketDates": 0,
+    "newOOS": 0,
+    "newShadow": 0,
+    "allSynthetic": true
+  },
+  "validation": {
+    "PIT": "SOURCE_CLOCK_AND_ISSUER_REVISION_ORDER_UNATTESTED",
+    "OOS": "CLOSED",
+    "walkForward": "NO_NEW_OUTCOMES",
+    "lookAhead": "NO_POSTCUTOFF_VINTAGE_USE",
+    "bias": "CACHE_ORDER_FIXTURE_NOT_FREQUENCY_ESTIMATE",
+    "dataMining": "NO_OUTCOME_DRIVEN_THRESHOLD",
+    "multipleTesting": "NO_SIGNIFICANCE_CLAIM",
+    "overfit": "REQUIRES_INDEPENDENT_SOURCE_REPLAY",
+    "redundancy": "SDA-007_ONE_PRIMITIVE_MANY_CONSUMERS",
+    "cost": "30_60_100_BPS_HYPOTHETICAL_ONLY",
+    "liquidity": "UNKNOWN",
+    "regime": "UNKNOWN",
+    "shadowHistory": "NO_BACKFILL"
+  },
+  "dependencies": {
+    "D06_11": "ETF issuer review and passive rebalance independent from AP execution",
+    "D06_06": "shared price-volume parent still pending",
+    "D06_07_08_09": "paired financing/margin-short/SBL vintages; no motive inference",
+    "D06_05": "IC-110 preregistered 12 future pair and two-regime gate unchanged",
+    "D06_18": "15:20 ±5 minute live slot; total lendable inventory UNKNOWN"
+  },
+  "maturity": {
+    "D06": 55.6,
+    "overall": 47.9,
+    "change": "NONE",
+    "source": "2026-10-16T21:15:32+08:00 tracker main"
+  },
+  "status": "RESEARCH_ONLY_SYNTHETIC_FALSIFICATION;SOURCE_PROVENANCE_PENDING;OOS_CLOSED;FORMAL_LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Obtain real immutable issuer PCF versions and authenticated revision-event ordering plus independent first-known clock; verify source originals by content hash and archive readback; implement regression tests on research-only branch, seek D16 preregistered common-support date-clustered OOS; preserve D06-05 IC110 and D06-07/08/09 and D06-18 prospective clocks; do not promote from synthetic tests."
+}
