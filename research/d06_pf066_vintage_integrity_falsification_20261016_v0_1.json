@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "D06_PF066_V0_1",
+  "date": "2026-10-16",
+  "room": "05｜法人與籌碼研究室",
+  "scope": [
+    "D06-16",
+    "D06-11",
+    "D06-06",
+    "D06-07",
+    "D06-08",
+    "D06-09",
+    "D06-05",
+    "D06-18"
+  ],
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "parent": "research/d06_pf065_asof_temporal_noninterference_20261016_v0_1.json",
+  "findings": [
+    {
+      "id": "PF066-F1",
+      "support": "PF065 partitions postdecision captures correctly.",
+      "falsification": "08:30 decision: raw PCF v1 observed prior evening, index snippet v2 observed 08:20; PF065 ADMITTED stale raw v1 although v2 raw unverified.",
+      "alternative": "Index v2 may be cache, metadata mismatch or real issuer correction.",
+      "failure": "Latest as-of version differs from latest verified raw; missing trusted capture proof.",
+      "guard": "Select newest observed as-of version across evidence classes; require matching raw bytes or UNKNOWN."
+    },
+    {
+      "id": "PF066-F2",
+      "support": "PF065 checks 64-hex checksum and immutable:// prefix.",
+      "falsification": "Synthetic all-'a' SHA256 plus nonexistent immutable URI is ADMITTED by PF065 without byte comparison.",
+      "alternative": "Upstream archival validation may exist outside selector, but selector does not prove it.",
+      "failure": "Missing bytes, mismatch, missing trusted capture log.",
+      "guard": "Hash actual raw bytes; independent original source archival proof still pending."
+    }
+  ],
+  "crossDomain": {
+    "D06_11": "Index rebalance, ETF primary unit change, secondary ETF trade and actual stock execution distinct.",
+    "D06_06": "Shared information roots are not independent crowding votes.",
+    "D06_07_08_09": "Margin financing/shorting/SBL stock-vs-flow, units and universes separate.",
+    "D06_05": "TDCC threshold effects and IC-110 prospective universe unchanged.",
+    "D06_18": "Borrow fee and displayed depth cannot infer total utilization or bearish motive; frozen 15:20 slot not backfilled."
+  },
+  "checks": {
+    "legacyPF065": 44,
+    "newSynthetic": 44,
+    "passed": 44,
+    "failed": 0,
+    "realMarketDates": 0,
+    "newOOS": 0,
+    "newShadow": 0,
+    "meaning": "synthetic deterministic tests only"
+  },
+  "risk": {
+    "PIT": "UNKNOWN pending genuine issuer original + first-known clock",
+    "OOS": "CLOSED",
+    "walkForward": "no outcomes opened",
+    "lookAhead": "postdecision updates ignored; predecision unverified newer version blocks stale admission",
+    "bias": "synthetic revisions not representative",
+    "dataMining": "no outcome-based tuning",
+    "multipleTesting": "no significance claim",
+    "overfitting": "external replay pending",
+    "redundancy": "information root de-dup",
+    "cost": "30/60/100 bps hypothetical",
+    "liquidity": "UNKNOWN",
+    "regime": "UNKNOWN"
+  },
+  "status": "RESEARCH_CANDIDATE_NOT_PROMOTED",
+  "formalOptimizationCandidate": "NONE",
+  "next": "Review candidate and integrate PF064-066 into dedicated checkpoint; preserve latest main and concurrent changes; collect authentic immutable PCF source + independent capture clock; D16 preregistered OOS before outcomes; new TDCC pairs and separate margin/SBL vintages."
+}
