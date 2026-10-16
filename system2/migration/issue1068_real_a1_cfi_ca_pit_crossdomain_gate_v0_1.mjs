@@ -153,3 +153,36 @@ export function reconcileRealPhysicalPITCrossDomainV0_1({a1,cfi,ca}={}){
   ])
  });
 }
+
+async function physicalCli(){
+ const {readFile,writeFile,mkdir}=await import("node:fs/promises");
+ const {resolve}=await import("node:path");
+ const {fileURLToPath}=await import("node:url");
+ const [moduleFile]=process.argv.slice(1);
+ if(!moduleFile||resolve(moduleFile)!==fileURLToPath(import.meta.url))return;
+ const base=resolve("system2");
+ const files=[
+  base+"/migration/evidence/S2_DATA_ISSUE1068_NATIVE_122_A1_PERBAR_PIT_PHYSICAL_20261016_V0_1.json",
+  base+"/evidence/S2_M09_REAL_30_NATIVE_CFI_INDEPENDENT_AUDIT_20261015_V0_1.json",
+  base+"/evidence/S2_M09_20261014_REAL_SIX_CA_NEGATIVE_EXPOSURE_20261015_V0_1.json"
+ ];
+ const [a1,cfi,ca]=await Promise.all(files.map(f=>readFile(f,"utf8").then(JSON.parse)));
+ const result=reconcileRealPhysicalPITCrossDomainV0_1({a1,cfi,ca});
+ if(result.fullStrategyPITQualified!==false||result.formalSelectedCount!==null||
+   result.cloudflareD1Writes!==0||result.frozenWritten!==false)
+  fail("OUTPUT_FALSE_FORMAL_AUTHORITY");
+ const out="/tmp/s2-issue1068-crossdomain-pit";
+ await mkdir(out,{recursive:true,mode:0o700});
+ await writeFile(out+"/sanitized-crossdomain-pit-verdict.json",JSON.stringify(result,null,2)+"\n",
+  {flag:"wx",mode:0o600});
+ console.log(JSON.stringify({status:result.state,originalA1Bars:result.independentlyReconciledOHLCVRows,
+   cfiCurrentNative:result.priorPreviewNativeCFIOriginalsRehashed,
+   CAKnownEventRows:result.caOriginalObservedEventRowsIn61Window,
+   historicalCFIEffectivePIT:false,fullCARevisionPIT:false,formalPIT:false,frozen:false}));
+}
+if(process.argv[1]&&process.argv[1].endsWith("issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.mjs")){
+ try{await physicalCli()}catch(e){
+  console.error(String(e.message).startsWith("S2_DATA_CROSS_DOMAIN_PIT_")?
+    e.message:"S2_DATA_CROSS_DOMAIN_PIT_FAIL_CLOSED");process.exitCode=2;
+ }
+}
