@@ -39,7 +39,7 @@ const formal={scanDate:date,selectedCount:0,stocks:[],dryRun:false,
   config:{verified:true,updatedAt:"2026-10-15T15:56:04Z"},
   dailyReport:{signalId:"DAILY_SELECTION:"+date,sent:true,simulated:false}};
 const config={source:"KV",updatedAt:formal.config.updatedAt,stocks:[]};
-const outbox={configured:true,recent:[{signal_id:"DAILY_SELECTION:"+date,delivery_state:"ACCEPTED"}]};
+const outbox={configured:true,recent:[{signal_id:"DAILY_SELECTION:"+date,signal_type:"DAILY_SELECTION",delivery_state:"ACCEPTED"}]};
 x=verdict({...base,scan:formal,config,outbox});
 assert.equal(x.complete,true);
 assert.equal(x.dailyPush.accepted,true);
@@ -66,6 +66,39 @@ const staleKV=verdict({...base,scan:{...formal,selectedCount:1,stocks:[{symbol:"
   config:{...config,stocks:[]}});
 assert.equal(staleKV.verdict,"FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH");
 assert.throws(()=>verdict({...base,date:"2026-02-30"}),/INVALID_ORIGINAL_DATE/);
+// Fail-closed regression: a matching symbol alone is not a matching monitoring plan.
+const oneFormal={...formal,selectedCount:1,stocks:[{symbol:"2340",formalClose:40,
+  planDate:"2026-10-16",positionStage:"NONE",buyLow:38,stop:35,totalShares:1000}]};
+const oneMonitor={...config,stocks:[{...oneFormal.stocks[0]}]};
+assert.equal(verdict({...base,scan:oneFormal,config:oneMonitor,outbox}).complete,true);
+for(const [field,value] of [["buyLow",37],["stop",34],["positionStage","FIRST"],["totalShares",900],["planDate","2026-10-15"]]){
+  const changed={...oneMonitor,stocks:[{...oneMonitor.stocks[0],[field]:value}]};
+  const result=verdict({...base,scan:oneFormal,config:changed,outbox});
+  assert.equal(result.complete,false,"MATERIAL_PARITY_FALSE_GREEN_"+field);
+  assert.equal(result.verdict,"FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH");
+  assert.equal(result.monitor.materialPlanParity,false);
+}
+for(const symbol of ["", "0", "ETF","12345"]){
+  const invalidFormal={...oneFormal,stocks:[{...oneFormal.stocks[0],symbol}]};
+  const result=verdict({...base,scan:invalidFormal,config:oneMonitor,outbox});
+  assert.equal(result.complete,false,"MALFORMED_FORMAL_SYMBOL_FALSE_GREEN_"+symbol);
+  assert.equal(result.formal.scanCompleted,false);
+}
+const duplicated={...formal,selectedCount:2,stocks:[{symbol:"2340"},{symbol:"2340"}]};
+const duplicatedKV={...config,stocks:[{symbol:"2340"},{symbol:"2340"}]};
+assert.equal(verdict({...base,scan:duplicated,config:duplicatedKV,outbox}).complete,false);
+assert.equal(verdict({...base,scan:{...oneFormal,testMode:true},config:oneMonitor,outbox}).complete,false);
+assert.equal(verdict({...base,version:{testMode:true},scan:oneFormal,config:oneMonitor,outbox}).complete,false);
+const wrongType={configured:true,recent:[{signal_id:"DAILY_SELECTION:"+date,
+  signal_type:"SYSTEM_ALERT",delivery_state:"ACCEPTED"}]};
+assert.equal(verdict({...base,scan:oneFormal,config:oneMonitor,outbox:wrongType}).complete,false);
+assert.equal(verdict({...base,scan:oneFormal,config:oneMonitor,outbox:wrongType}).verdict,
+  "FORMAL_SAVED_BUT_DAILY_PUSH_UNVERIFIED");
+const missingType={configured:true,recent:[{signal_id:"DAILY_SELECTION:"+date,
+  delivery_state:"ACCEPTED"}]};
+assert.equal(verdict({...base,scan:oneFormal,config:oneMonitor,outbox:missingType}).complete,false);
+assert.equal(verdict({...base,scan:oneFormal,config:oneMonitor,outbox}).monitor.materialPlanParity,true);
+
 const script=await readFile(new URL("./system1_p0_original_postclose_forensic_readonly.mjs",import.meta.url),"utf8");
 assert.match(script,/method:"GET"/);
 assert.doesNotMatch(script,/method:\s*["']POST["']/);
