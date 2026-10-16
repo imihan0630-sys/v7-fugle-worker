@@ -78,6 +78,10 @@ for(const [field,value] of [["buyLow",37],["stop",34],["positionStage","FIRST"],
   assert.equal(result.verdict,"FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH");
   assert.equal(result.monitor.materialPlanParity,false);
 }
+const missingField={...oneMonitor,stocks:[{...oneMonitor.stocks[0]}]};
+delete missingField.stocks[0].stop;
+assert.equal(verdict({...base,scan:oneFormal,config:missingField,outbox}).complete,false,
+  "MISSING_MATERIAL_FIELD_FALSE_GREEN");
 for(const symbol of ["", "0", "ETF","12345"]){
   const invalidFormal={...oneFormal,stocks:[{...oneFormal.stocks[0],symbol}]};
   const result=verdict({...base,scan:invalidFormal,config:oneMonitor,outbox});
@@ -112,6 +116,6 @@ assert.match(workflow,/S1_P0_TARGET_DATE: '2026-10-15'/);
 assert.match(workflow,/github\.event_name == 'push' \|\| github\.event_name == 'workflow_dispatch'/);
 assert.match(workflow,/run: node tests\/system1_p0_original_postclose_forensic_readonly\.mjs/);
 assert.doesNotMatch(workflow,/cloudflare\/workers\/scripts|wrangler deploy|\bapi\/scan\b/);
-console.log(JSON.stringify({ok:true,cases:14,originalCronLookbackConservative:true,
+console.log(JSON.stringify({ok:true,suite:"baseline_and_failclosed_adversarial",originalCronLookbackConservative:true,
  noFalseZeroPicks:true,exactD1Outbox:true,originalPlanMonitorParity:true,
  noBusinessPOST:true,noWorkerWrite:true,noD1OrKVWrite:true,noPush:true,noTrade:true}));
