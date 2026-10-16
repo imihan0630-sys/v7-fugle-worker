@@ -5,6 +5,10 @@ Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
+## PIT 工作室永久分工入口（2026-10-16 owner directive）
+
+本聊天室的 PIT 預設責任是 **DATA_LANE**。使用者未指定詳細工作而只說「PIT／繼續／恢復選股」時，必須先依 [DATA 原始取證 × BUILD 接入選股正式契約](SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md) 和 [本室專用 PIT 續接提示詞](prompts/PIT_DATA_LANE_CONTINUATION_V0_1.md)，再按最新 `main`、本 checkpoint 和相關 Issues 判定下一個未阻塞任務。不得越權重做另一 lane 已驗證的原始來源／評分工作；共用檔案修改須單一 owner，PIT 不合格不得回填決策或宣稱 0 入選。此指令不修改以下既有歷史進度與安全閘門。
+
 ## Mission
 
 Own System 2 historical market-data engineering without taking over strategy/system construction.
