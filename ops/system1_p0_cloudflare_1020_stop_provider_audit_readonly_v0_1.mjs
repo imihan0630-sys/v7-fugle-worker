@@ -79,19 +79,24 @@ await observed("workerHourlyInvocationsAggregate",async()=>{
 });
 await observed("todayD1AccountUsageLowerBound",async()=>{
  const day=end.slice(0,10);
+ const prior=new Date(Date.parse(day+"T00:00:00Z")-86400000).toISOString().slice(0,10);
  const q='query($accountTag:String!,$start:Date!,$end:Date!){viewer{accounts(filter:{accountTag:$accountTag}){d1AnalyticsAdaptiveGroups(limit:1000,filter:{date_geq:$start,date_leq:$end}){sum{rowsRead rowsWritten readQueries writeQueries}dimensions{date databaseId}}}}}';
- const data=await gql(q,{accountTag:account,start:day,end:day});
+ const data=await gql(q,{accountTag:account,start:prior,end:day});
  const rows=data?.d1AnalyticsAdaptiveGroups;
  if(!Array.isArray(rows))throw Error("D1_METRICS_GROUPS_UNKNOWN");
- return {utcDate:day,reportAgeUpperBound:null,
-  availableGroups:rows.length,
-  totals:rows.reduce((acc,row)=>({
+ const total=rs=>rs.reduce((acc,row)=>({
    rowsRead:acc.rowsRead+Number(row.sum?.rowsRead||0),
    rowsWritten:acc.rowsWritten+Number(row.sum?.rowsWritten||0),
    readQueries:acc.readQueries+Number(row.sum?.readQueries||0),
    writeQueries:acc.writeQueries+Number(row.sum?.writeQueries||0)
-  }),{rowsRead:0,rowsWritten:0,readQueries:0,writeQueries:0}),
-  valuesAreLaggingLowerBoundsNotRemainingQuota:true,
+  }),{rowsRead:0,rowsWritten:0,readQueries:0,writeQueries:0});
+ const todayRows=rows.filter(row=>String(row.dimensions?.date||"")===day);
+ const priorRows=rows.filter(row=>String(row.dimensions?.date||"")===prior);
+ return {utcDate:day,reportAgeUpperBound:null,
+  availableGroups:todayRows.length,totals:total(todayRows),
+  priorUtcDate:prior,priorAvailableGroups:priorRows.length,priorTotals:total(priorRows),
+  priorMetricsProveOriginalCronCause:false,priorDateHasCompleteFinalDataNotGuaranteed:true,
+  providerDataMayLag:true,valuesAreLaggingLowerBoundsNotRemainingQuota:true,
   remainingFreeTierQuotaConfirmed:false};
 });
 findings.state=findings.evidence.originalCronSchedules?.originalFourPreserved===true?
