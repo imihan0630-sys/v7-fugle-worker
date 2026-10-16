@@ -53,3 +53,4 @@ jobs:
           echo 'Only destination Cloudflare API metadata, GraphQL and D1 SELECT.' >> "$GITHUB_STEP_SUMMARY"
           echo 'No D1 writes, no historical import, no source account, no V8 changes, no Worker/Cron. No qualified strategy selection/Frozen outcome.' >> "$GITHUB_STEP_SUMMARY"
           echo '18:35 Daily Shadow high-write diagnostic and DATA_LANE migration must share owner DAY80 limit.' >> "$GITHUB_STEP_SUMMARY"
+# 2026-10-16 DATA_LANE #1068 owner-authorized RAW_COPY Run 38848657672 post-copy actual DEST-only D1 SELECT and account analytics readback; scope is physical A1 row count / zero Frozen only, never PIT, independent entire source SHA, or permission to write again today.
