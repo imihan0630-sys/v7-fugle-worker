@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
 import {resolveScheduledPostcloseTarget,resolveSourceReadyHandoffTarget,classifyPostcloseBusinessChain} from "../research/system1_overnight_formal_delivery_readonly_v0_1.mjs";
 const day="2026-10-14";
 const localBefore=resolveScheduledPostcloseTarget("2026-10-14T15:56:00Z");
@@ -69,6 +70,15 @@ assert.equal(classifyPostcloseBusinessChain(zeroRead).mayCountAsZeroPicks,true);
 const old={...read,scanStatus:{...scan,threeMin:{verified:true},pipeline:{complete:true}}};
 assert.equal(classifyPostcloseBusinessChain(old).ok,true);
 assert.throws(()=>classifyPostcloseBusinessChain({...read,targetDate:"2026-02-30"}),/ORIGINAL_SESSION_DATE_REQUIRED/);
+// The production Worker is built through ordered deploy overlays, not the
+// checked-in pre-overlay Worker.js. Guard the genuine shape of its push receipts.
+const pushOverlay=await readFile(new URL("../scripts/apply_v8_1_0.py",import.meta.url),"utf8");
+const reportOverlay=await readFile(new URL("../scripts/apply_v8_1_3.py",import.meta.url),"utf8");
+assert.match(pushOverlay,/async function readPushOutboxSummary\(/);
+assert.match(pushOverlay,/delivery_state/);
+assert.match(pushOverlay,/sendTrackedPush\(dailyPayload, env/);
+assert.match(reportOverlay,/signalId:dailyPayload\.signalId/);
+assert.match(reportOverlay,/report=\{\.\.\.report,signalId:dailyPayload\.signalId/);
 console.log(JSON.stringify({ok:true,originalDateFrozen:true,
  doesNotRedAlertBefore2335:true,primaryMonitorKvParityRequired:true,
  rejectsWrongDateOutboxAndDuplicate:true,optional3MinNotP0Blocking:true,
