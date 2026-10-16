@@ -65,3 +65,4 @@ jobs:
 # 2026-10-15 DATA_LANE: same previously registered target-only SELECT workflow,
 # bounded <225k rowsRead and zero rowsWritten, SHA anchored to original producer.
 # No SOURCE D1/R2, no historical PIT/Frozen/strategy admission.
+# 2026-10-16 post-run #38861058678 native independent DEST count 59,311 and frozen 0 accepted. Re-arm this unchanged registered source-linked identity SELECT-only auditor on same UTC day, strictly pinned to independently SHA-verified original Oct16 writer #38848657672 Artifact #12023953469 and 59,311/bar-identity digest. No account write, no workflow semantics or secret changes, no PIT/Frozen/Shadow promotion.
