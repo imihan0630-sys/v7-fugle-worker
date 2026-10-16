@@ -48,7 +48,17 @@ async function fakeNative(source,at="2026-10-16T07:23:02.000Z"){
   requestedEndDate:source.marketDate,
   sourceFamilyDenominator:6,sourcesRetainedOriginalBytes:6,
   nativeRangeSchemaCandidates:6,
-  sourceReceipts:Array.from({length:6},(_,i)=>({sourceId:"ORIGINAL_"+i})),
+  state:"SIX_RAW_SOURCES_CAPTURED_AUTHORITY_UNVERIFIED",
+  sourceReceipts:["TWSE_EX_RIGHT_DIVIDEND_ACTUAL","TWSE_CAPITAL_REDUCTION_REFERENCE","TWSE_PAR_VALUE_CHANGE_REFERENCE","TPEX_EX_RIGHT_DIVIDEND_ACTUAL","TPEX_CAPITAL_REDUCTION_REFERENCE","TPEX_PAR_VALUE_CHANGE_REFERENCE"].map(sourceId=>({
+   sourceId,exchange:sourceId.startsWith("TWSE_")?"TWSE":"TPEX",
+   sourceClass:"HISTORICAL_ACTUAL_RESULT_RANGE",
+   sourceUrl:"https://example.invalid/ca/"+sourceId,
+   state:"RANGE_SCHEMA_CANDIDATE_NOT_VINTAGE_CERTIFIED",
+   capturedAtUtc:at,originalSha256:"a".repeat(64),originalBytes:100,
+   originalBytesReadBackLocally:true,
+   firstKnownAtEvidenceClass:"FIRST_PHYSICAL_OBSERVATION_NOW_NOT_HISTORICAL_PUBLICATION",
+   effectiveVintageRevisionRetractionCoverageVerified:false
+  })),
   firstPhysicalObservedAtUtc:at,completedAtUtc:"2026-10-16T07:23:03.000Z",
   sourceContractCoverageComplete:false,
   historicalFirstKnownAtCertified:false,
@@ -134,4 +144,54 @@ test("forged current CA as historic PIT or no-event, invalid observation clock f
     capture:async()=>baseline
   }),/S2_M09_PROSPECTIVE_CA_/,label);
  }
+});
+
+test("six-family raw originals require exact unique IDs, per-body SHA/clock and counts",async()=>{
+ const {source,audit}=await originals();
+ const cases=[
+  ["duplicate family ID",c=>c.sourceReceipts[5].sourceId=c.sourceReceipts[0].sourceId],
+  ["unknown source family",c=>c.sourceReceipts[0].sourceId="TWSE_NOT_A_FAMILY"],
+  ["readback not verified",c=>c.sourceReceipts[0].originalBytesReadBackLocally=false],
+  ["forged original sha",c=>c.sourceReceipts[0].originalSha256="not-sha256"],
+  ["short original body",c=>c.sourceReceipts[0].originalBytes=0],
+  ["captured before actual observation",c=>c.sourceReceipts[0].capturedAtUtc="2026-10-15T07:23:02.000Z"],
+  ["captured after actual completion",c=>c.sourceReceipts[0].capturedAtUtc="2026-10-17T07:23:02.000Z"],
+  ["inflated number of rehashed originals",c=>{c.sourceReceipts[0].state="SOURCE_UNAVAILABLE_FAIL_CLOSED";c.sourceReceipts[0].originalBytesReadBackLocally=false;c.sourceReceipts[0].blocker="HTTP_UNAVAILABLE";c.sourceReceipts[0].firstKnownAtEvidenceClass="NOT_VERIFIED";}],
+  ["inflated range candidates",c=>c.sourceReceipts[0].state="RAW_OBSERVED_SCHEMA_OR_RANGE_UNVERIFIED"],
+  ["false full six-source state",c=>c.state="SIX_RAW_SOURCES_PARTIAL_OR_UNAVAILABLE"],
+  ["wrong source market",c=>c.sourceReceipts[0].exchange="TPEX"],
+  ["missing exact source URL",c=>c.sourceReceipts[0].sourceUrl="http://example.invalid"],
+  ["false historical revision coverage",c=>c.sourceReceipts[0].effectiveVintageRevisionRetractionCoverageVerified=true]
+ ];
+ for(const [label,mutate] of cases){
+  const forged=await fakeNative(source);
+  mutate(forged);
+  forged.receiptHash=await sha256Hex(Object.fromEntries(
+   Object.entries(forged).filter(([key])=>key!=="receiptHash")));
+  await assert.rejects(run({
+   sourceReceipt:source,independentAudit:audit,now:time(),
+   fetchImpl:async()=>{},persistRaw:async()=>{},
+   capture:async()=>forged
+  }),/S2_M09_PROSPECTIVE_CA_/,label);
+ }
+});
+test("partial native CA source remains a signed UNKNOWN and cannot be six-family complete",async()=>{
+ const {source,audit}=await originals();
+ const partial=await fakeNative(source);
+ partial.sourceReceipts[0].state="SOURCE_UNAVAILABLE_FAIL_CLOSED";
+ partial.sourceReceipts[0].originalBytesReadBackLocally=false;
+ partial.sourceReceipts[0].blocker="HTTP_UNAVAILABLE";
+ partial.sourceReceipts[0].firstKnownAtEvidenceClass="NOT_VERIFIED";
+ partial.sourcesRetainedOriginalBytes=5;
+ partial.nativeRangeSchemaCandidates=5;
+ partial.state="SIX_RAW_SOURCES_PARTIAL_OR_UNAVAILABLE";
+ partial.receiptHash=await sha256Hex(Object.fromEntries(
+  Object.entries(partial).filter(([key])=>key!=="receiptHash")));
+ const result=await run({sourceReceipt:source,independentAudit:audit,
+  now:time(),fetchImpl:async()=>{},persistRaw:async()=>{},
+  capture:async()=>partial});
+ assert.equal(result.receipt.status,"PROSPECTIVE_CA_PARTIAL_OR_SOURCE_UNAVAILABLE__HISTORIC_PIT_UNKNOWN");
+ assert.equal(result.receipt.completeCARevisionsAndNoEventCertified,false);
+ assert.equal(result.receipt.originalBodyBytesRetained,5);
+ assert.equal(result.receipt.qualifiedSelection,false);
 });

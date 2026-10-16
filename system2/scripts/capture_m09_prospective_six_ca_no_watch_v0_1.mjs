@@ -14,6 +14,49 @@ import {probeM09SixCaOriginalsV0_1}
  from "./probe_m09_six_ca_native_originals_readonly_v0_1.mjs";
 
 const H=/^[a-f0-9]{64}$/i;
+const EXPECTED_CA_IDS=Object.freeze([
+ "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
+ "TWSE_CAPITAL_REDUCTION_REFERENCE",
+ "TWSE_PAR_VALUE_CHANGE_REFERENCE",
+ "TPEX_EX_RIGHT_DIVIDEND_ACTUAL",
+ "TPEX_CAPITAL_REDUCTION_REFERENCE",
+ "TPEX_PAR_VALUE_CHANGE_REFERENCE"
+]);
+function nativeFamilyReceiptsMatch(ca,started,completed){
+ const rows=ca?.sourceReceipts;
+ if(!Array.isArray(rows)||rows.length!==6||
+    new Set(rows.map(x=>x?.sourceId)).size!==6||
+    !EXPECTED_CA_IDS.every(id=>rows.some(x=>x?.sourceId===id)))return false;
+ let rehashed=0,candidates=0;
+ for(const row of rows){
+  if(row?.sourceClass!=="HISTORICAL_ACTUAL_RESULT_RANGE"||
+     row.exchange!==(row.sourceId.startsWith("TWSE_")?"TWSE":"TPEX")||
+     typeof row.sourceUrl!=="string"||!row.sourceUrl.startsWith("https://")||
+     row.effectiveVintageRevisionRetractionCoverageVerified!==false)return false;
+  if(row.originalBytesReadBackLocally===true){
+   rehashed++;
+   if(!["RANGE_SCHEMA_CANDIDATE_NOT_VINTAGE_CERTIFIED",
+       "RAW_OBSERVED_SCHEMA_OR_RANGE_UNVERIFIED"].includes(row.state)||
+      !isUtc(row.capturedAtUtc)||
+      Date.parse(row.capturedAtUtc)<Date.parse(started)||
+      Date.parse(row.capturedAtUtc)>Date.parse(completed)||
+      !H.test(row.originalSha256||"")||
+      !Number.isSafeInteger(row.originalBytes)||row.originalBytes<30||
+      row.originalBytes>8_000_000||
+      row.firstKnownAtEvidenceClass!=="FIRST_PHYSICAL_OBSERVATION_NOW_NOT_HISTORICAL_PUBLICATION")
+    return false;
+   if(row.state==="RANGE_SCHEMA_CANDIDATE_NOT_VINTAGE_CERTIFIED")candidates++;
+  }else if(row.originalBytesReadBackLocally!==false||
+    row.state!=="SOURCE_UNAVAILABLE_FAIL_CLOSED"||
+    typeof row.blocker!=="string"||!row.blocker||
+    row.firstKnownAtEvidenceClass!=="NOT_VERIFIED")return false;
+ }
+ return rehashed===ca.sourcesRetainedOriginalBytes&&
+   candidates===ca.nativeRangeSchemaCandidates&&
+   ca.state===(rehashed===6?"SIX_RAW_SOURCES_CAPTURED_AUTHORITY_UNVERIFIED":
+                          "SIX_RAW_SOURCES_PARTIAL_OR_UNAVAILABLE");
+}
+
 const sha=b=>createHash("sha256").update(b).digest("hex");
 const clean=x=>Object.fromEntries(Object.entries(x||{}).filter(([k])=>k!=="auditHash"));
 const fail=x=>{throw Error("S2_M09_PROSPECTIVE_CA_"+x)};
@@ -73,7 +116,7 @@ export async function captureM09ProspectiveSixCaNoWatchV0_1({
     ca.sourcesRetainedOriginalBytes<0||ca.sourcesRetainedOriginalBytes>6||
     !Number.isSafeInteger(ca.nativeRangeSchemaCandidates)||
     ca.nativeRangeSchemaCandidates<0||ca.nativeRangeSchemaCandidates>ca.sourcesRetainedOriginalBytes||
-    !Array.isArray(ca.sourceReceipts)||ca.sourceReceipts.length!==6||
+    !nativeFamilyReceiptsMatch(ca,captureStartedUtc,captureCompletedUtc)||
     !isUtc(ca.firstPhysicalObservedAtUtc)||!isUtc(ca.completedAtUtc)||
     Date.parse(ca.firstPhysicalObservedAtUtc)<Date.parse(captureStartedUtc)||
     Date.parse(ca.completedAtUtc)>Date.parse(captureCompletedUtc)||
