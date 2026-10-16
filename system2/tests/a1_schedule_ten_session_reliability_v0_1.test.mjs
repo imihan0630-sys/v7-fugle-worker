@@ -4,6 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
 import {buildA1ScheduleTenSessionRollupV0_1 as rollup}
  from '../runtime/a1_schedule_ten_session_reliability_v0_1.mjs';
+import {collectA1TenSessionRollupV0_1 as collect}
+ from '../scripts/audit_a1_ten_session_reliability_v0_1.mjs';
 const PATH='.github/workflows/system2-shared-official-a1-incremental-readonly.yml';
 const SLOTS=[['15 12 * * 1-5','12:15'],['45 15 * * 1-5','15:45'],
  ['15 16 * * 1-5','16:15']];
@@ -132,6 +134,61 @@ test('signed but mismatched GitHub run.created_at cannot be used to invent start
 test('reject unsorted or duplicated official trading dates',async()=>{
  await assert.rejects(()=>rollup({...META,tradingDates:[DAY[0],DAY[0]]}),
   /A1_SCHEDULE_TEN_SESSION_INPUT_OR_CLOCK_INVALID/);
+});
+
+test('real GitHub metadata complete but failed dual-audit ZIP must make ALL empty mature slots unresolved',async()=>{
+ const paths=[],now=()=>new Date('2026-10-25T18:20:00Z');
+ const fetchImpl=async(url)=>{
+  paths.push(url);
+  if(url.includes('/actions/runs?')){
+   if(url.includes('event=schedule'))return {ok:true,async json(){
+    return {total_count:0,workflow_runs:[]};
+   }};
+   return {ok:true,async json(){return {total_count:1,workflow_runs:[{
+    id:900,event:'workflow_run',path:'.github/workflows/system2-shared-official-a1-independent-audit.yml',
+    head_branch:'main',status:'completed',conclusion:'success',
+    created_at:'2026-10-19T18:20:00Z'
+   }]};}};
+  }
+  if(url.includes('/actions/runs/900/artifacts'))return {ok:true,async json(){
+   return {artifacts:[{id:901,name:'s2-a1-dual-source-clock-900',
+    expired:false,size_in_bytes:1024}]};
+  }};
+  if(url.includes('/actions/artifacts/901/zip'))return {ok:false,status:503};
+  throw Error('MOCK_UNEXPECTED_URL');
+ };
+ const z=await collect({repository:'example/system2',token:'FAKE_TEST_ONLY',
+  sourceManifest:{tradingDates:DAY},
+  currentDual:{schemaVersion:'S2_A1_DUAL_SOURCE_SCHEDULE_ACCEPTANCE_V0_1',
+   sourceRunEvent:'push'},
+  now,fetchImpl});
+ assert.equal(z.downloadOrZipFailureCount,1);
+ assert.equal(z.censusComplete,false);
+ assert.equal(z.maturedExpectedSlots,6);
+ assert.equal(z.noObservedRunForMaturedSlotCount,0);
+ assert.equal(z.unresolvedMaturedSlotCount,6);
+ assert.ok(z.slots.every(x=>x.status==='CENSUS_INCOMPLETE_NO_MISSED_ASSERTION'));
+ assert.equal(z.punctualityAmongAttributedRunsPct,null);
+ assert.equal(z.missingDeliveryConfirmed,false);
+ assert.ok(paths.some(x=>x.includes('/actions/artifacts/901/zip')));
+});
+test('with genuinely fully enumerated empty REST/dual census maturity remains caveated not confirmed drop',async()=>{
+ const z=await collect({repository:'example/system2',token:'FAKE_TEST_ONLY',
+  sourceManifest:{tradingDates:DAY},
+  currentDual:{schemaVersion:'S2_A1_DUAL_SOURCE_SCHEDULE_ACCEPTANCE_V0_1',
+   sourceRunEvent:'push'},
+  now:()=>new Date('2026-10-25T18:20:00Z'),
+  fetchImpl:async url=>{
+   if(!url.includes('/actions/runs?'))throw Error('NO_ARCHIVES_EXPECTED');
+   return {ok:true,async json(){return {total_count:0,workflow_runs:[]}}};
+  }});
+ assert.equal(z.downloadOrZipFailureCount,0);
+ assert.equal(z.censusComplete,true);
+ assert.equal(z.noObservedRunForMaturedSlotCount,6);
+ assert.ok(z.slots.every(x=>x.status===
+  'NOT_OBSERVED_AFTER_48H_FULL_CENSUS_NOT_CONFIRMED_DROPPED'));
+ assert.equal(z.missingDeliveryConfirmed,false);
+ assert.equal(z.punctualityAmongAttributedRunsPct,null);
 });
 test('real workflow invokes both independent dual and rolling scheduled history under existing Cron',async()=>{
  const a=await readFile('.github/workflows/system2-shared-official-a1-independent-audit.yml','utf8');
