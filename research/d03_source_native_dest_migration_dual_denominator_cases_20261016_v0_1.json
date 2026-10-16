@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "D03",
+  "date": "2026-10-16",
+  "purpose": "source-native vs destination-migration dual-denominator firewall",
+  "fixedFacts": {
+    "sourceNative": {
+      "pairs": 122,
+      "windows": 1935,
+      "sessions": 61,
+      "rows": 118035,
+      "rawPayload": true,
+      "researchCut": "2026-10-16T05:45:00+08:00"
+    },
+    "destinationMigration": {
+      "present": 59311,
+      "remaining": 25377,
+      "legacyTotal": 84688,
+      "identityFields": [
+        "bar_id",
+        "bar_hash",
+        "source_row_hash",
+        "batch_id"
+      ],
+      "rawPayloadParity": false,
+      "frozenRows": 0
+    }
+  },
+  "expectedCases": [
+    [
+      "TI-1993",
+      "SOURCE_NATIVE_BASE",
+      "SOURCE_RAW_MECHANICS_ONLY"
+    ],
+    [
+      "TI-1994",
+      "SOURCE_PAIR_MISMATCH",
+      "SOURCE_PAIR_BLOCKED"
+    ],
+    [
+      "TI-1995",
+      "SOURCE_ROW_MISMATCH",
+      "SOURCE_DENOMINATOR_BLOCKED"
+    ],
+    [
+      "TI-1996",
+      "DEST_PARTIAL_IDENTITY",
+      "DEST_IDENTITY_PARTIAL_ONLY"
+    ],
+    [
+      "TI-1997",
+      "DEST_TOTAL_MISMATCH",
+      "DEST_COUNT_BLOCKED"
+    ],
+    [
+      "TI-1998",
+      "DEST_IDENTITY_FAIL",
+      "DEST_IDENTITY_BLOCKED"
+    ],
+    [
+      "TI-1999",
+      "DEST_NO_RAW_PAYLOAD_PARITY",
+      "DEST_PAYLOAD_BLOCKED"
+    ],
+    [
+      "TI-2000",
+      "DEST_NO_EXACT_SYMBOL_SESSIONS",
+      "DEST_SESSION_COVERAGE_BLOCKED"
+    ],
+    [
+      "TI-2001",
+      "DEST_CONTINUITY_FAIL",
+      "DEST_CONTINUITY_BLOCKED"
+    ],
+    [
+      "TI-2002",
+      "DEST_CURRENT_FORMULA_INPUT",
+      "DEST_CURRENT_FORMULA_INPUT_ONLY"
+    ],
+    [
+      "TI-2003",
+      "FROZEN_ZERO_WITHOUT_SELECTION",
+      "FALSE_ZERO_PICK_BLOCKED"
+    ],
+    [
+      "TI-2004",
+      "SECOND_SAME_DAY_WRITER",
+      "SAME_DAY_WRITER_BLOCKED"
+    ],
+    [
+      "TI-2005",
+      "CROSS_SCOPE_RATIO",
+      "CROSS_SCOPE_ARITHMETIC_BLOCKED"
+    ],
+    [
+      "TI-2006",
+      "CROSS_SCOPE_UNION",
+      "CROSS_SCOPE_JOIN_BLOCKED"
+    ],
+    [
+      "TI-2007",
+      "SAME_POP_NO_KEYSET",
+      "CROSS_SCOPE_KEYSET_BLOCKED"
+    ],
+    [
+      "TI-2008",
+      "SAME_KEYSET_NO_PAYLOAD",
+      "CROSS_SCOPE_PAYLOAD_BLOCKED"
+    ],
+    [
+      "TI-2009",
+      "CURRENT_STORAGE_ONLY",
+      "CURRENT_STORAGE_PARITY_ONLY"
+    ],
+    [
+      "TI-2010",
+      "HISTORICAL_INPUT_NO_FROZEN",
+      "HISTORICAL_INPUT_NO_FROZEN"
+    ],
+    [
+      "TI-2011",
+      "REDUNDANCY_FAIL",
+      "REDUNDANCY_BLOCKED"
+    ],
+    [
+      "TI-2012",
+      "ALL_RESEARCH_GATES",
+      "RESEARCH_CANDIDATE_ONLY"
+    ]
+  ],
+  "result": {
+    "passed": 20,
+    "total": 20
+  },
+  "formalCore": "LOCKED",
+  "outcomes": "UNOPENED",
+  "maturityPct": 56.7
+}
