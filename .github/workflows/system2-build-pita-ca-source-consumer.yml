@@ -1,0 +1,41 @@
+name: System2 BUILD PIT-A actual CA receipt consumer (READ ONLY)
+on:
+  pull_request:
+    paths: ['system2/runtime/pit_a_2330_ca_source_only_consumer_v0_1.mjs', 'system2/tests/pit_a_2330_ca_source_only_consumer_v0_1.test.mjs', '.github/workflows/system2-build-pita-ca-source-consumer.yml']
+  push:
+    branches: [main]
+    paths: ['system2/runtime/pit_a_2330_ca_source_only_consumer_v0_1.mjs', 'system2/tests/pit_a_2330_ca_source_only_consumer_v0_1.test.mjs', '.github/workflows/system2-build-pita-ca-source-consumer.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  consume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 38911839798
+          name: s2-pita-2330-ca6-raw-symbol-readback-38911839798-1
+          path: /tmp/build-ca-source
+          github-token: ${{ github.token }}
+      - name: Verify actual DATA artifact and adversarial no-promotion cases
+        env:
+          S2_BUILD_REAL_CA_RECEIPT: /tmp/build-ca-source/native-2330-ca-sourceonly-receipt.json
+        run: |
+          set -euo pipefail
+          test -s "$S2_BUILD_REAL_CA_RECEIPT"
+          node --test system2/tests/pit_a_2330_ca_source_only_consumer_v0_1.test.mjs
+          mkdir -p /tmp/build-ca-output
+          node --input-type=module -e 'import {readFileSync,writeFileSync} from "node:fs"; import {consumePita2330CaSourceOnly} from "./system2/runtime/pit_a_2330_ca_source_only_consumer_v0_1.mjs"; const r=await consumePita2330CaSourceOnly({dataReadback:JSON.parse(readFileSync(process.env.S2_BUILD_REAL_CA_RECEIPT,"utf8"))}); writeFileSync("/tmp/build-ca-output/readiness.json",JSON.stringify(r,null,2));'
+          echo 'Actual six CA source bodies / one observed positive lineage only; full PIT 0/1, universe null, no Stage1/selection/Shadow/Frozen.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s2-build-pita-ca-sourceonly-${{ github.run_id }}
+          path: /tmp/build-ca-output/
+          retention-days: 90
+          if-no-files-found: error
