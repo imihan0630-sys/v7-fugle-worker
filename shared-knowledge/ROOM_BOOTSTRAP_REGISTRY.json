@@ -7,6 +7,7 @@
   "rules": {
     "bootstrap": "shared-knowledge/ROOM_BOOTSTRAP.md",
     "global": "AGENTS.md",
+    "system2PitDataBuildOwnership": "system2/SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md",
     "researchOutput": "shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md",
     "tracker": "research/stock_market_learning_tracker_v0_1.json",
     "router": "shared-knowledge/LEARNING_ROOM_ROUTER.md",
@@ -533,6 +534,8 @@
         "system2/SYSTEM2_CORRECTION_QUEUE.md",
         "system2/SYSTEM2_CORRECTION_QUEUE.json",
         "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md",
+        "system2/prompts/PIT_BUILD_LANE_CONTINUATION_V0_1.md",
         "shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md"
       ],
       "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與正式 checkpoint 自動恢復；讀 Correction Queue 與 Execution Lane Governance，執行分派給 BUILD_LANE／LOCAL_FIX 的工作，尊重其他 lane 的 blocking，禁止搶做 DATA_LANE／REMEDIATION_LANE，禁止重頭做。"
@@ -552,6 +555,8 @@
       "engineeringMode": "Codex",
       "checkpoints": [
         "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md",
+        "system2/prompts/PIT_DATA_LANE_CONTINUATION_V0_1.md",
         "system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md",
         "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
         "system2/SYSTEM2_CORRECTION_QUEUE.md",

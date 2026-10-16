@@ -12,6 +12,15 @@ System 2 may execute multiple work lanes in parallel without turning every defec
 
 The objective is throughput with clear ownership, not maximum room count.
 
+## Permanent PIT original-producer vs selection-consumer rule (owner-approved 2026-10-16)
+
+When the user asks either **System 2｜歷史資料工程室** or **System 2｜建置總控室** to work on PIT, the mandatory lane-specific authority is [`system2/SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md`](SYSTEM2_PIT_DATA_BUILD_OWNERSHIP_AND_HANDOFF_V0_1.md). Re-read its current `main` version **before PIT investigation or modification**, and use the corresponding prompt under `system2/prompts/`.
+
+- **DATA_LANE** owns native historical PIT source/CFI/CA originals, observation/effective clocks, source-preserving archival and source evidence handoff. It does **not** do Stage1 scoring, ranking or Frozen activation.
+- **BUILD_LANE** owns consuming DATA-proven source receipt versions in the Stage1 PIT gate, STRATEGY/Shadow/decision denominator/ranking/Frozen prewrite acceptance. It does **not** duplicate native official original fetching, CFI/CA historical evidence generation or D1 history migration.
+- AUDIT_LANE independently verifies; REMEDIATION_LANE owns quota/interlock, existing owner permission gates remain in force. Missing official PIT originals must remain UNKNOWN, not fabricated `NO_EVENT`, `0 picks` or historical promotion.
+- Both rooms may implement their own independent work in parallel. Single owner for any shared conflict unit. GitHub Issue notes **do not** auto-run another chat; next room start or `繼續` must fetch newest `main`, registry, policy, own checkpoint and exact source receipts.
+
 ## Canonical lanes
 
 ### BUILD_LANE — System 2｜建置總控室
