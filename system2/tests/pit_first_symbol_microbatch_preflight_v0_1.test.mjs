@@ -46,12 +46,16 @@ async function signedFixture(){
     originalCapturedAtUtc:artifact,availableAtUtc:artifact}))},
  };
  const h={schemaVersion:'S2_DATA_SYMBOL_PIT_SCOPE_HANDOFF_V0_1',
+  pitTrack:'PIT_A',evidenceUse:'PROSPECTIVE_DAILY_SELECTION',
+  decisionCutMode:'ACTUAL_FUTURE_OBSERVATION',pitBApprovalUsedAsSubstitute:false,
   marketDate:day,decisionCutAtUtc:cut,sourceSecurityWindowCount:1935,
   sourceOriginalReceiptHash:hashChar('d'),sourceIndependentAuditHash:hashChar('e'),
   officialTradingDates:tradingDates,officialTradingDatesOriginalSha256:hashChar('f'),
   symbols:[s],selectionAuthorized:false,shadowAuthorized:false,
   frozenD1Written:false,selectedCount:null,zeroPickDay:null};
  const a={schemaVersion:'S2_AUDIT_SYMBOL_PIT_SCOPE_RECEIPT_V0_1',
+  pitTrack:'PIT_A',evidenceUse:'PROSPECTIVE_DAILY_SELECTION',
+  decisionCutMode:'ACTUAL_FUTURE_OBSERVATION',pitBHistoricalApprovalSubstituted:false,
   dataHandoffReceiptHash:null,marketDate:day,decisionCutAtUtc:cut,
   verdict:'PIT_SCOPE_INDEPENDENTLY_ACCEPTED',auditRunId:9876,auditArtifactId:6543,
   originalArchiveSha256:hashChar('9'),originalArchiveCapturedAtUtc:before,
@@ -78,6 +82,8 @@ test('REAL repository DATA currently has zero historical PIT accepted; this new 
  assert.equal(real.handoffScope.unresolvedSymbolCount,1935);
  const r=await admit({});
  assert.equal(r.pitScopeIndependentlyAcceptedCount,0);
+ assert.equal(r.pitTrack,'PIT_A');
+ assert.equal(r.pitBHistoricalReplayCertified,false);
  assert.equal(r.pitEvidenceUnknownCount,null);
  assert.equal(r.strategyActuallyAssessedCount,null);
  assert.equal(r.selectedCount,null);assert.equal(r.zeroPickDay,null);
@@ -86,6 +92,8 @@ test('SYNTHETIC one-symbol independently hash-bound positive microbatch still ca
  const r=await admit(await signedFixture());
  assert.equal(r.state,'PIT_SYMBOL_MICROBATCH_ADMITTED_FOR_STAGE1_RESEARCH_ONLY');
  assert.equal(r.sourceSecurityWindowCount,1935);
+ assert.equal(r.pitTrack,'PIT_A');
+ assert.equal(r.pitBHistoricalReplayCertified,false);
  assert.equal(r.pitScopeIndependentlyAcceptedCount,1);
  assert.equal(r.pitEvidenceUnknownCount,1934);
  assert.equal(r.eligibleForStage1ResearchSymbols[0].symbol,'2330');
@@ -95,6 +103,43 @@ test('SYNTHETIC one-symbol independently hash-bound positive microbatch still ca
  assert.equal(r.qualifiedShadowAuthorized,false);assert.equal(r.frozenD1Written,false);
  assert.equal(r.cloudflareD1Writes,0);assert.equal(r.system1FormalCoreChanged,false);
 });
+test('PIT-A owner priority: reject re-signed PIT-B replay as daily selection evidence',async()=>{
+ for(const mutation of [
+  x=>x.h.pitTrack='PIT_B',
+  x=>x.h.evidenceUse='HISTORICAL_BACKTEST',
+  x=>x.h.decisionCutMode='RECONSTRUCTED_HISTORICAL_AS_OF',
+  x=>x.h.pitBApprovalUsedAsSubstitute=true,
+  x=>delete x.h.pitTrack,
+  x=>delete x.h.decisionCutMode,
+ ]){
+  const {dataHandoff:h,independentAudit:a}=await signedFixture();
+  mutation({h,a});const args=await reseal({h,a});
+  await assert.rejects(admit(args),/PIT_A_PROSPECTIVE_ROUTE_REQUIRED/);
+ }
+});
+test('PIT-A owner priority: independently signed auditor cannot attest using PIT-B substitute',async()=>{
+ for(const mutation of [
+  x=>x.a.pitTrack='PIT_B',
+  x=>x.a.evidenceUse='HISTORICAL_BACKTEST',
+  x=>x.a.decisionCutMode='RECONSTRUCTED_HISTORICAL_AS_OF',
+  x=>x.a.pitBHistoricalApprovalSubstituted=true,
+  x=>delete x.a.pitTrack,
+ ]){
+  const {dataHandoff:h,independentAudit:a}=await signedFixture();
+  mutation({h,a});const args=await reseal({h,a});
+  await assert.rejects(admit(args),/EXTERNAL_INDEPENDENT_AUDIT_OR_CUT_INVALID/);
+ }
+});
+test('real current-only CFI positives never qualify PIT-A despite 2330/3287 source status',async()=>{
+ const current=JSON.parse(readFileSync('system2/migration/evidence/S2_DATA_ISSUE1068_NATIVE_CFI_ORIGINAL_FOUR_CONTROL_POSITIVES_20261016_V0_1.json','utf8'));
+ assert.equal(current.asOfCurrentStockSourcePositive,2);
+ assert.equal(current.historicEffectivePeriodPITCertified,0);
+ assert.equal(current.fullStage1MarketDayHistoricalPitEligibleSymbols,0);
+ assert.equal(current.fullStage1MarketDayHistoricalPitUnknownSymbols,1935);
+ assert.equal(current.independentAuditLaneSigned,false);
+ await assert.rejects(admit({dataHandoff:current}),/INDEPENDENT_AUDIT_NOT_EXTERNALLY_PINNED/);
+});
+
 test('no independent out-of-band audit pin rejects self-hashed producer',async()=>{
  const x=await signedFixture();
  for(const change of [
@@ -158,4 +203,6 @@ test('BUILD code does not fetch official source, mutate Cloudflare, select or is
  assert.doesNotMatch(s,/\bfetch\s*\(|INSERT INTO|UPDATE\s+|DELETE FROM|api\.cloudflare\.com/);
  assert.match(s,/originalDecisionCutArchiveIndependentlyWitnessed/);
  assert.match(s,/authoritativeNegativeNoEventScopeIndependentlyAudited/);
+ assert.match(s,/PIT_A_PROSPECTIVE_ROUTE_REQUIRED/);
+ assert.match(s,/pitBHistoricalApprovalSubstituted/);
 });

@@ -36,6 +36,7 @@ export async function preflightFirstPitSymbolV0_1({
  const empty={
   schemaVersion:'S2_BUILD_FIRST_PIT_SYMBOL_PREFLIGHT_V0_1',
   state:'AWAITING_INDEPENDENT_SYMBOL_PIT_HANDOFF',
+  pitTrack:'PIT_A',pitBHistoricalReplayCertified:false,
   marketDate:null,sourceSecurityWindowCount:null,
   pitScopeIndependentlyAcceptedCount:0,pitEvidenceUnknownCount:null,
   eligibleForStage1ResearchSymbols:[],
@@ -50,6 +51,16 @@ export async function preflightFirstPitSymbolV0_1({
  if(!dataHandoff||!independentAudit||!SHA.test(expectedIndependentAuditHash||''))
   wrong('INDEPENDENT_AUDIT_NOT_EXTERNALLY_PINNED');
  const h=dataHandoff,a=independentAudit,cut=h.decisionCutAtUtc;
+ // Owner-approved PIT-A = prospective DAILY as-of; PIT-B is a separate
+ // historical replay/backtest lane. A correctly hashed PIT-B receipt must
+ // NEVER certify a PIT-A symbol just because its 61 rows are present.
+ // These labels are routing requirements, NOT replacements for original
+ // archived-by-cut bytes, CFI/CA vintages, or an independent AUDIT verdict.
+ if(h.pitTrack!=='PIT_A'||
+    h.evidenceUse!=='PROSPECTIVE_DAILY_SELECTION'||
+    h.decisionCutMode!=='ACTUAL_FUTURE_OBSERVATION'||
+    h.pitBApprovalUsedAsSubstitute!==false)
+   wrong('PIT_A_PROSPECTIVE_ROUTE_REQUIRED');
  if(h.schemaVersion!=='S2_DATA_SYMBOL_PIT_SCOPE_HANDOFF_V0_1'||
     !day(h.marketDate)||!utc(cut)||!positive(h.sourceSecurityWindowCount)||
     !SHA.test(h.sourceOriginalReceiptHash||'')||
@@ -66,6 +77,10 @@ export async function preflightFirstPitSymbolV0_1({
   wrong('DATA_ORIGINAL_SCOPE_OR_HASH_INVALID');
  if(a.schemaVersion!=='S2_AUDIT_SYMBOL_PIT_SCOPE_RECEIPT_V0_1'||
     a.dataHandoffReceiptHash!==h.receiptHash||
+    a.pitTrack!=='PIT_A'||a.pitTrack!==h.pitTrack||
+    a.evidenceUse!==h.evidenceUse||
+    a.decisionCutMode!==h.decisionCutMode||
+    a.pitBHistoricalApprovalSubstituted!==false||
     a.marketDate!==h.marketDate||a.decisionCutAtUtc!==cut||
     a.verdict!=='PIT_SCOPE_INDEPENDENTLY_ACCEPTED'||
     !positive(a.auditRunId)||!positive(a.auditArtifactId)||
