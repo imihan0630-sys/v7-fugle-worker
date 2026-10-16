@@ -1,5 +1,5 @@
 import {readFile,appendFile} from 'node:fs/promises';
-import {resolveScheduledMarketContext} from './resolve_scheduled_market_date.mjs';
+import {resolveScheduledMarketContext,resolveScheduledTradingGate} from './resolve_scheduled_market_date.mjs';
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const api=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {loadTradingCalendar,isTradingDate};').toString('base64'));
 const triggerSchedule=String(process.env.V7_TRIGGER_SCHEDULE || '').trim();
@@ -17,9 +17,15 @@ if(override){
     throw new Error('manual data-only date exceeds seven-day weekend/holiday recovery window');
 }
 const date=override||context.marketDate;
-await api.loadTradingCalendar({},Number(date.slice(0,4)));
-const proceed=api.isTradingDate(date);
+// Live code and CI use the same executable gate. Delayed source sync never
+// calls the official calendar; UNKNOWN is distinct from a proven holiday.
+const {tradingDay,proceed}=await resolveScheduledTradingGate({
+  context,marketDate:date,
+  loadTradingCalendar:api.loadTradingCalendar,
+  isTradingDate:api.isTradingDate
+});
 if(process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT,
   `proceed=${proceed}\nmarket_date=${date}\ncross_midnight_fallback=${context.crossMidnightFallback}\n`);
-console.log(JSON.stringify({date,tradingDay:proceed,triggerSchedule:triggerSchedule||null,
+console.log(JSON.stringify({date,tradingDay,proceed,triggerSchedule:triggerSchedule||null,
+  overnightSourceSyncSkip:context.overnightSourceSyncSkip,
   crossMidnightFallback:context.crossMidnightFallback,noSelection:true,noPush:true}));
