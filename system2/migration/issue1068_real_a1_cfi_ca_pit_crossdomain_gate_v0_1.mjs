@@ -52,6 +52,48 @@ export function reconcileRealPhysicalPITCrossDomainV0_1({a1,cfi,ca}={}){
    a1?.unresolvedFormal?.physicalFrozenDecisionWrittenAndReadBack===false,
    "A1_SOURCE_EVIDENCE_MISSING_OR_PROMOTED");
 
+
+ // Freeze both ORIGINAL independently witnessed clock boundaries, not just their
+ // PASS/FAIL booleans. Otherwise a forged earlier cut could retain "PASS".
+ const [originalCut,researchCut]=a1.twoClockCutVerdicts;
+ truth(originalCut.clockName==="2026-10-15_original_formal_market_day_2345"&&
+   originalCut.cutUtc==="2026-10-15T15:45:00.000Z"&&
+   originalCut.signedProducerClaimedPairCapturedByCut===122&&
+   originalCut.originalNativeIndependentArchiveWitnessBeforeCutVerified===false&&
+   originalCut.independentSourceAuditDoneByCut===false&&
+   researchCut.clockName==="2026-10-16_actual_preopen_0545_research"&&
+   researchCut.cutUtc==="2026-10-15T21:45:43.188Z"&&
+   researchCut.signedProducerClaimedPairCapturedByCut===122&&
+   researchCut.originalNativeIndependentAuditDoneByCut===true&&
+   Date.parse(originalCut.cutUtc)<Date.parse(researchCut.cutUtc),
+   "A1_ORIGINAL_CLOCK_WITNESS_OR_CUTOFF_TAMPERED");
+
+ // Bind the ORIGINAL native ZIP and the independently parsed inner body.
+ // Hash-looking text without exact original values cannot gain source authority.
+ const provider=a1.originalActualMainProvider;
+ truth(provider.jobId===116736199554&&
+   provider.originalNativeZipBytes===8154&&
+   provider.originalGitHubZipName==="s2-a1-122-real-native-perbar-pit-38826851466-1"&&
+   provider.originalInnerName==="sanitized-original-perpair-pit.json"&&
+   provider.originalInnerJsonIndependentlyParsed===true&&
+   provider.githubNativeZipDigestSha256===
+    "3f50f2e2c6bbf9ebb6287e8f41e9f085cb905379a7848cd1a2cd2b808882bb68"&&
+   provider.independentlyDownloadedNativeZipDigestSha256===
+    provider.githubNativeZipDigestSha256,
+   "A1_ORIGINAL_PROVIDER_ZIP_WITNESS_TAMPERED");
+
+ // Historical first-known, MOPS and formal decision gaps must remain negative.
+ // This fixed original receipt does NOT contain native historical vintage proof.
+ const unresolved=a1.unresolvedFormal;
+ truth(unresolved.originalHistoricalMarketDateFirstKnownAtAndAvailableAtVerified===false&&
+   unresolved.historicalProviderRevisionsAndDeletionsComplete===false&&
+   unresolved.postSourceFormalStrategyAssessorIndependentAudited===false&&
+   unresolved.originalMarketDay2345FormalDecisionMayBeRebuiltFromLaterEvidence===false&&
+   unresolved.fullBacktestOrProspectiveShadowAuthorized===false&&
+   unresolved.fullG3G4MigrationAndOwnerReserveCertified===false&&
+   unresolved.strictHistoricalMopsNineVersionsFirstKnownAtCertified===0,
+   "A1_UNRESOLVED_FORMAL_SCOPE_FALSE_PROMOTION");
+
  truth(cfi?.schemaVersion==="S2_M09_REAL_30_NATIVE_CFI_INDEPENDENT_AUDIT_20261015_V0_1"&&
    cfi?.sourceMarketDate===w.previousCAObservedMarketDate&&
    cfi?.thirtyPreview?.sourceReadRunId===w.originalCFIProviderRun&&
