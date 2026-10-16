@@ -1,0 +1,78 @@
+name: System2 PIT-A 2330 T-Session Native Trading Status (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/capture_pita_2330_t_trade_status_native_readonly_v0_1.mjs"
+      - "system2/tests/capture_pita_2330_t_trade_status_native_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-t-trade-status-native-20261016.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/capture_pita_2330_t_trade_status_native_readonly_v0_1.mjs"
+      - "system2/tests/capture_pita_2330_t_trade_status_native_readonly_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-t-trade-status-native-20261016.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-pita-2330-t-status-original-20261016-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe_bounded_status_native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify required positive status control and fail-closed uncertain absence
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/capture_pita_2330_t_trade_status_native_readonly_v0_1.mjs
+          node --test system2/tests/capture_pita_2330_t_trade_status_native_readonly_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Read existing official T-session 2330 A1 native original without new GET
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38908458028
+          name: s2-pita-2330-original-a1-20261016-38908458028-1
+          path: /tmp/s2-pita-2330-20261016-original/
+          github-token: ${{ github.token }}
+      - name: Two official status-native GETs and exact SHA original retention before cut
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          test "$(TZ=Asia/Taipei date +%F)" = '2026-10-16'
+          node system2/scripts/capture_pita_2330_t_trade_status_native_readonly_v0_1.mjs
+          R=/tmp/s2-pita-2330-20261016-native-status/2330-asof-trading-status-sourceonly.json
+          test -s "$R"
+          test "$(jq -r .currentSessionStockActuallyTraded "$R")" = 'true'
+          test "$(jq -r .controlKnown1218SuspensionConfirmed "$R")" = 'true'
+          test "$(jq -r '.tradingStatusSources | length' "$R")" = '2'
+          test "$(jq -r .authoritativeNegativeNoSuspensionCertified "$R")" = 'false'
+          test "$(jq -r .tradeableAtDecisionCutIndependentlyCertified "$R")" = 'false'
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "T_SESSION_2330_A1_ACTUALLY_TRADED=TRUE, TWTAWU_CONTROL_1218=TRUE, T_STATUS_NATIVE_QUERY_RECORDED=TRUE, NO_SUSPENSION_NEGATIVE_AUTHORITY=UNKNOWN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep two native original status gzip bodies and signed source-only clock
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-pita-2330-t-trade-status-native-20261016-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-20261016-native-status/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Explicit status source never qualifies daily selection or NO_SUSPENSION
+        if: always()
+        run: |
+          echo 'A1 T-day trade positive does not prove current/future tradeability. No TWTAWU row does not mean authoritative NO_SUSPENSION. Independent AUDIT + issuer/market status + all used features remain required. No Cloudflare/System1 production changes.' >> "$GITHUB_STEP_SUMMARY"
