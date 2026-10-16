@@ -25,7 +25,7 @@ test('adversarial 61-session old+new clock / availability / date denominator can
   x=>x.originalBarDates.pop(),
   x=>x.originalCaptureClocks.pop(),
   x=>x.originalDates[1]=x.originalDates[0],
-  x=>x.originalDates.at(-1)='2026-10-15',
+  x=>{x.originalDates[x.originalDates.length-1]='2026-10-15';},
   x=>x.originalBarDates[33]='2026-10-11',
   x=>x.originalCaptureClocks[0]='2026-10-16T15:46:00.000Z',
   x=>x.originalCaptureClocks[3]='not-a-clock',
