@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "ROOM11_D16_D18_V03_RESEARCH_STATUS_OVERLAY_NOT_CANONICAL",
+  "updatedAt": "2026-10-16T14:27:00+08:00",
+  "baseTracker": "research/stock_market_learning_tracker_v0_1.json",
+  "baseTrackerBlobSha": "9babf24fac767565ac27488589bd393ec2bb0f49",
+  "baseMain": "49c34c09cacb795445fca6cbdb75ce63b6dcbc3f",
+  "formalCore": "LOCKED",
+  "modules": [
+    {
+      "id": "D16-20",
+      "level": "L2",
+      "maturityPct": 40,
+      "status": "PREPHYSICAL_V03_SYNTHETIC_FALSIFICATION_COMPLETE_REAL_SAME_CUT_TREATMENT_CONTROL_BLOCKED",
+      "next": "Obtain independently witnessed official designation effective/announcement clocks, full same-cut untreated universe and pre-assignment covariates; run frozen CAUS-T01..T12."
+    },
+    {
+      "id": "D18-04",
+      "level": "L2",
+      "maturityPct": 40,
+      "status": "PREPHYSICAL_V03_SYNTHETIC_FALSIFICATION_COMPLETE_REAL_IDENTITY_ACTION_NEGATIVE_COVERAGE_BLOCKED",
+      "next": "Obtain effective-dated CFI ordinary-equity identity, all-family CA and suspension negative completeness, and independently verified same-cut parent hashes; run frozen RB-T01..T16."
+    }
+  ],
+  "domainMaturityPct": {
+    "D16": 65.6,
+    "D18": 54.7
+  },
+  "aggregateMaturityPct": 47.9,
+  "domainCount": 22,
+  "moduleCount": 356,
+  "physicalEvidenceCertified": false,
+  "tests": {
+    "previous": 59,
+    "new": 16,
+    "total": 75,
+    "syntheticOnly": true
+  },
+  "status": "BRANCH_OVERLAY_ONLY_CANONICAL_TRACKER_UNCHANGED"
+}
