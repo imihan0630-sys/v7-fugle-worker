@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_DATA_ISSUE1068_20261016_ORIGINAL_DEST_RAW_COPY_PARTIAL_V0_1",
+  "status": "ORIGINAL_DEST_D1_PROVIDER_WRITER_POSTCOPY_PARITY_SCOPED_PASS__INDEPENDENT_SEPARATE_READBACK_PENDING",
+  "classification": "DATA_LANE_RAW_ARCHIVE_ONLY_NO_PIT_NO_FROZEN_NO_SHADOW",
+  "originalAuthority": {
+    "prNumber": 1381,
+    "mergedMainCommit": "7d89110c9cde7954a70b360992e9fc59b68c1388",
+    "ownerInstructionDateTaipei": "2026-10-16",
+    "runId": 38848657672,
+    "jobId": 116804771061,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38848657672",
+    "runConclusion": "success",
+    "runEvent": "push",
+    "runCreatedUtc": "2026-10-16T04:03:53Z",
+    "runCompletedUtc": "2026-10-16T04:08:57Z",
+    "originalArtifactId": 12023953469,
+    "originalArtifactZipBytes": 1887,
+    "originalGitHubProviderDigestSha256": "0ada1172a32c4de038b216102040abb26dc7246c554d9de9cbb6662ac1c6a0ee",
+    "independentlyDownloadedZipSha256": null,
+    "independentlyParsedReceipt": false
+  },
+  "originalGuardEvidence": {
+    "quotaDayUtc": "2026-10-16",
+    "checkedSameWorkflowRunCount": 10,
+    "onlyOwnerWriterRunStartedToday": true,
+    "crossWriterInterlockAllowed": true,
+    "otherSameDayWriterCount": 0,
+    "otherPriorDayBoundaryCount": 0,
+    "ownerBilledWriteMaxPerUtcDay": 80000,
+    "additionalWriterSameDayAuthorized": false
+  },
+  "originalImporterStdout": {
+    "status": "A1_RAW_HISTORY_PARTIAL__RESUME_NEXT_UTC_DAY",
+    "chargedRowsWrittenThisRun": 71346,
+    "rowsInsertedThisRun": 11891,
+    "sourceA1Rows": 84688,
+    "previousDestinationA1Rows": 47420,
+    "afterDestinationA1Rows": 59311,
+    "remainingSourceA1Rows": 25377,
+    "afterDestinationBatchRows": 129,
+    "error": null
+  },
+  "scopeAssessment": {
+    "importerSourceLinkedFullRowPrecopyParityCompletedBeforeWrite": true,
+    "importerSourceLinkedFullRowPostcopyParityCompletedBeforeSuccess": true,
+    "importerManifestPreAndPostParityCompletedBeforeSuccess": true,
+    "separateIndependentProviderD1SelectAfterWriter": false,
+    "separateIndependentFullDestinationIdentityDigestAfterWriter": false,
+    "noD1WritesFromThisEvidenceFile": true,
+    "sourceAccountD1TouchedByOriginalWorkflow": false,
+    "system1FormalOrProductionRuntimeModified": false,
+    "historicalFirstKnownAtAvailableAtCertified": false,
+    "ordinaryShareEffectiveDated61SessionPITCertified": false,
+    "corporateActionHistoricalNoEventNegativeCertified": false,
+    "frozenDecisionPhysicallyVerifiedInSeparatePostcopyReadback": false,
+    "strategyPITCertified": false,
+    "shadowAuthorized": false,
+    "backtestAuthorized": false,
+    "authorizedToRepeatSameUtcDayImport": false
+  },
+  "pendingIndependentReadback": {
+    "prNumber": 1383,
+    "prUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/1383",
+    "prHeadV8RegressionRun": 38849296372,
+    "prHeadCredentialCensusRun": 38849296322,
+    "readbackExecuted": false,
+    "reason": "The original PR merge operation was blocked by platform safety checks; passing CI is not physical independent Cloudflare D1 SELECT."
+  },
+  "nextSafeAction": "After independent authorized DEST-only SELECT and audit, on a NEW UTC quota day check original same-day owner-copy run and account-wide writer/quota evidence before exactly one guarded import; do not rerun 2026-10-16."
+}
