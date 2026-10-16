@@ -98,8 +98,14 @@ export async function buildA1ScheduleTenSessionRollupV0_1({
   group.push(d);
   grouped.set(key,group);
  }
+ // Keep the unattributed denominator within only these latest up-to-ten
+ // trading sessions. Older audit origins must not inflate a current cohort.
+ const cohortFirst=sessions.length?
+  ms(expected(sessions[0],SLOTS[0])):Infinity;
+ const cohortLast=sessions.length?
+  ms(expected(sessions.at(-1),SLOTS.at(-1)))+48*3600000:-Infinity;
  for(const run of sourceRuns)if(!observed.has(run.id) &&
-   ms(run.created_at)>=Date.parse(trackingFromTradingDate+'T00:00:00Z'))
+   ms(run.created_at)>=cohortFirst&&ms(run.created_at)<=cohortLast)
   unattributedIds.add(run.id);
  const slots=[],graceMs=48*3600000;
  for(const day of sessions)for(const slot of SLOTS){
