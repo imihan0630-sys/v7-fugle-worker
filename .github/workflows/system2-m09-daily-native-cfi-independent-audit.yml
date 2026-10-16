@@ -46,8 +46,35 @@ jobs:
           node --check system2/scripts/audit_m09_audited_preview_native_cfi_original_v0_1.mjs
           node --test system2/tests/audit_m09_audited_preview_native_cfi_original_v0_1.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
-      - name: Fetch exact upstream audit-source-run native original bytes
+      # A successful A1 source audit can have NO qualified preliminary
+      # watch when the GitHub scheduler was late. Then the native CFI producer
+      # intentionally emits no original ZIP; this is SOURCE_NOT_READY, never
+      # a valid 0/30 security-type witness or a historical PIT success.
+      - name: Check original CFI Artifact exists before any download
         if: github.event_name == 'workflow_run'
+        id: native_source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPSTREAM_RUN: ${{ github.event.workflow_run.id }}
+          UPSTREAM_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          set -euo pipefail
+          NAME="s2-m09-daily-native-cfi-${UPSTREAM_RUN}-${UPSTREAM_ATTEMPT}"
+          # A provider API failure must FAIL, never be classified as "missing".
+          ARTIFACTS="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${UPSTREAM_RUN}/artifacts?per_page=100")"
+          COUNT="$(jq -r --arg n "$NAME" '[.artifacts[] | select(.name == $n and .expired == false)] | length' <<<"$ARTIFACTS")"
+          if [ "$COUNT" = '1' ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+            echo 'CFI_NATIVE_ARTIFACT_PRESENT__INDEPENDENT_SHA_REQUIRED' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$COUNT" = '0' ]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo 'CFI_SOURCE_NOT_READY__ORIGINAL_ARTIFACT_ABSENT__HISTORICAL_PIT_BLOCKED' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'CFI_AMBIGUOUS_DUPLICATE_ORIGINAL_ARTIFACT' >&2
+            exit 2
+          fi
+      - name: Fetch exact upstream audit-source-run native original bytes
+        if: github.event_name == 'workflow_run' && steps.native_source.outputs.ready == 'true'
         uses: actions/download-artifact@v4
         with:
           run-id: ${{ github.event.workflow_run.id }}
@@ -55,7 +82,7 @@ jobs:
           path: /tmp/s2-m09-native-30-independent-readback
           github-token: ${{ github.token }}
       - name: Independently rehash all actually requested current ISIN CFI originals
-        if: github.event_name == 'workflow_run'
+        if: github.event_name == 'workflow_run' && steps.native_source.outputs.ready == 'true'
         env:
           S2_M09_NATIVE_SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
@@ -74,7 +101,7 @@ jobs:
           test "$(jq -r .frozenD1Written "$R")" = 'false'
           echo "DAILY_30_OR_FEWER_NATIVE_CFI_SOURCE_INDEPENDENTLY_REHASHED=${COUNT}; historical PIT=NOT QUALIFIED, Frozen=NO." >> "$GITHUB_STEP_SUMMARY"
       - name: Retain independent native source audit receipt
-        if: always() && github.event_name == 'workflow_run'
+        if: always() && github.event_name == 'workflow_run' && steps.native_source.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: s2-m09-daily-native-cfi-independent-${{ github.run_id }}

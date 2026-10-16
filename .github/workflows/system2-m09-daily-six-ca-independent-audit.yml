@@ -53,7 +53,47 @@ jobs:
           name: s2-m09-daily-ca-observed-risk-${{ github.event.workflow_run.id || '38740410797' }}-${{ github.event.workflow_run.run_attempt || '1' }}
           path: /tmp/s2-m09-daily-ca-independent-readback
           github-token: ${{ github.token }}
+      # A successful source audit may provide only signed SOURCE_NOT_READY
+      # advisory (e.g. an expired prospectively valid shortlist). This is
+      # NOT an official six-family source and must not call the raw-body
+      # auditor, which requires all 3 receipts and six original gzip bodies.
+      - name: Classify CA source readiness from actual downloaded native files
+        id: original_ca_ready
+        env:
+          CA_ROOT: /tmp/s2-m09-daily-ca-independent-readback
+        run: |
+          set -euo pipefail
+          R="$CA_ROOT/daily-ca-advisory.json"
+          test -s "$R"
+          test "$(jq -r .noEventMayBeClaimed "$R")" = 'false'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          STATE="$(jq -r .state "$R")"
+          if [ "$STATE" = 'SUPPLEMENTAL_CA_SOURCE_NOT_READY' ]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo 'CA_SOURCE_NOT_READY__SIX_FAMILIES_UNOBSERVED__NO_EVENT_UNKNOWN__NO_PIT_OR_FROZEN' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$STATE" = 'OBSERVED_EVENT_RISK_OVERLAY_ONLY_NOT_PIT_SELECTION' ]; then
+            test -s "$CA_ROOT/ca-source-receipt.json"
+            test -s "$CA_ROOT/ca-negative-risk.json"
+            test "$(jq -r .sourceFamilyDenominator "$CA_ROOT/ca-source-receipt.json")" = '6'
+            test "$(jq -r .sourcesRetainedOriginalBytes "$CA_ROOT/ca-source-receipt.json")" = '6'
+            test "$(jq -r '.sourceReceipts | length' "$CA_ROOT/ca-source-receipt.json")" = '6'
+            DAY="$(jq -r .marketDate "$R")"
+            while IFS= read -r ID; do
+              case "$ID" in
+                TWSE_EX_RIGHT_DIVIDEND_ACTUAL|TWSE_CAPITAL_REDUCTION_REFERENCE|TWSE_PAR_VALUE_CHANGE_REFERENCE|TPEX_EX_RIGHT_DIVIDEND_ACTUAL|TPEX_CAPITAL_REDUCTION_REFERENCE|TPEX_PAR_VALUE_CHANGE_REFERENCE)
+                  test -s "$CA_ROOT/${ID}-${DAY}.json.gz" ;;
+                *) echo "CA_UNRECOGNIZED_SOURCE_FAMILY" >&2; exit 2 ;;
+              esac
+            done < <(jq -r '.sourceReceipts[].sourceId' "$CA_ROOT/ca-source-receipt.json")
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+            echo 'CA_SIX_SOURCE_RAW_ORIGINALS_PRESENT__SEPARATE_HASH_REPLAY_REQUIRED' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "CA_ADVISORY_UNKNOWN_OR_INVALID_STATE" >&2
+            exit 2
+          fi
       - name: Separate-run SHA-256 rehash of six genuine official native original bodies
+        if: steps.original_ca_ready.outputs.ready == 'true'
         env:
           S2_M09_DAILY_CA_SOURCE_DIR: /tmp/s2-m09-daily-ca-independent-readback
           S2_M09_CA_SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '38740410797' }}
@@ -78,7 +118,7 @@ jobs:
           test "$(jq -r .cloudflareD1Writes "$R")" = "0"
           echo "SIX_REAL_CA_NATIVE_BODY_SHA_AND_RANGE_READBACK=6/6, POSITIVE_CA_FLAGS_ORIGINAL_MATCH=$(jq -r .positiveFlaggedPreviewIndependentlyVerified "$R"); no historical PIT, no NO_EVENT, no Frozen." >> "$GITHUB_STEP_SUMMARY"
       - name: Preserve signed independent six-CA READ ONLY receipt 90 days
-        if: always()
+        if: always() && steps.original_ca_ready.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: s2-m09-six-ca-independent-${{ github.run_id }}
