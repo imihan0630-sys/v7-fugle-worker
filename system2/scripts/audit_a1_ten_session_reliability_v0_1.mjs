@@ -114,15 +114,17 @@ export async function collectA1TenSessionRollupV0_1({
  for(const x of [...history,currentDual])
   if(x.sourceRunEvent==='schedule')
    uniq.set(x.sourceRunId+'|'+x.receiptHash,x);
+ // Resolve census completeness BEFORE computing per-slot classifications.
+ // Otherwise a missing/expired ZIP could leave a slot labeled "not observed"
+ // while the top-level record simultaneously says censusComplete=false.
+ const effectiveCensusComplete=censusComplete&&historyFailureCount===0;
  const rollup=await buildA1ScheduleTenSessionRollupV0_1({
   tradingDates:sourceManifest.tradingDates,dualReceipts:[...uniq.values()],
-  sourceRuns,censusComplete,asOfUtc
+  sourceRuns,censusComplete:effectiveCensusComplete,asOfUtc
  });
  // Supplemental telemetry quality is not source/PIT acceptance.
  const {rollupHash,...base}=rollup;
  return {...base,downloadOrZipFailureCount:historyFailureCount,
-  // Any metadata / ZIP failure must not silently claim an exhaustive census.
-  censusComplete:censusComplete&&historyFailureCount===0,
   rollupHash:null};
 }
 if(process.argv[1]?.endsWith('/audit_a1_ten_session_reliability_v0_1.mjs')){
