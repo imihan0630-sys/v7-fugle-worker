@@ -349,6 +349,38 @@ jobs:
           path: /tmp/s2-m09-preview-native-cfi/
           retention-days: 7
           if-no-files-found: warn
+      # Preserve prospective CFI originals when yesterday's optional 30-stock
+      # preview expires. Use the existing four-control native source probe, not
+      # a second historical registry GET or a new scheduler.
+      - name: Prospective current native CFI only if preliminary source unavailable
+        if: success() && github.event_name != 'push'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if [ -s /tmp/s2-m09-preview-native-cfi/preview-native-cfi.json ]; then
+            echo 'CFI_PRELIMINARY_SOURCE_ALREADY_CAPTURED__NO_DUPLICATE_GET' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node --check system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs
+          node --test system2/tests/probe_m09_official_single_security_cfi_original_readonly_v0_1.test.mjs
+          node system2/scripts/probe_m09_official_single_security_cfi_original_readonly_v0_1.mjs
+          R=/tmp/s2-m09-single-cfi-original/receipt.json
+          test -s "$R"
+          test "$(jq -r .historicalSecurityClassPitCertified "$R")" = 'false'
+          test "$(jq -r .ordinaryCommonSharePITCertified "$R")" = 'false'
+          test "$(jq -r .formalStage1SelectionAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "CFI_NO_WATCH_REAL_NATIVE_OBSERVED=$(jq -r .nativeCfiRowsObserved "$R")/4 CURRENT_STOCK=$(jq -r .currentNativeStockCfiObserved "$R"); 61_SESSION_HISTORIC_PIT=UNKNOWN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve source-only current CFI HTML and original observation time
+        if: always() && github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-prospective-native-cfi-sourceonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-single-cfi-original/
+          retention-days: 90
+          if-no-files-found: warn
       # Hash-bounded NON-SELECTION evidence: never misrepresent blocked,
       # missed-PIT-clock or 121/122 days as a genuine 0-pick or D1 Frozen.
       - name: M09 daily blocked-source and unknown-strategy nonselection journal
