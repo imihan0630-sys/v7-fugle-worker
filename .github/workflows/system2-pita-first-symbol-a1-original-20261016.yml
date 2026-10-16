@@ -1,0 +1,71 @@
+name: System2 PIT-A One Stock 2330 Official A1 Source 20261016
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/capture_pita_2330_prospective_a1_original_20261016_v0_1.mjs"
+      - "system2/tests/capture_pita_2330_prospective_a1_original_20261016_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-first-symbol-a1-original-20261016.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/capture_pita_2330_prospective_a1_original_20261016_v0_1.mjs"
+      - "system2/tests/capture_pita_2330_prospective_a1_original_20261016_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-first-symbol-a1-original-20261016.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-pita-2330-a1-original-20261016-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify_one_symbol_original:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Assert native single-date clock and fail-closed negative paths
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/capture_pita_2330_prospective_a1_original_20261016_v0_1.mjs
+          node --test system2/tests/capture_pita_2330_prospective_a1_original_20261016_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Real one-GET TWSE 2330 original strictly on 2026-10-16 before 23:45 Taipei
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          test "$(TZ=Asia/Taipei date +%F)" = "2026-10-16"
+          node system2/scripts/capture_pita_2330_prospective_a1_original_20261016_v0_1.mjs
+          R=/tmp/s2-pita-2330-prospective-a1-20261016/pita-2330-a1-source-receipt.json
+          test -s "$R"
+          test "$(jq -r .marketDate "$R")" = "2026-10-16"
+          test "$(jq -r .symbol "$R")" = "2330"
+          test "$(jq -r .sourceNativeBodySha256 "$R" | wc -c)" -eq 65
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .historicalCfiEffectivePeriodsCertified "$R")" = 'false'
+          test "$(jq -r .caRevisionsAndNoEventCertified "$R")" = 'false'
+          test "$(jq -r .independentAuditAccepted "$R")" = 'null' || \
+            test "$(jq -r .sameDayIndependentAuditAccepted "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "ONE_OFFICIAL_2330_NATIVE_A1_CURRENT_DAY_OBSERVED=$(jq -r .actualFirstPhysicalObservedAtUtc "$R"); historical61=/NOT_YET_ASSEMBLED/; CFI_CA=UNKNOWN; STAGE1_PIT=BLOCKED" >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain create-only native source original and signed as-of receipt
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-pita-2330-original-a1-20261016-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-prospective-a1-20261016/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Explicit nonpromotion and production isolation
+        if: always()
+        run: |
+          echo 'This A1 source-only run requires separately audited historical 60 original days and all issuer-class/CA continuity evidence. NO PIT admission, no ranking, no Frozen/Shadow, no System1 or Cloudflare writes.' >> "$GITHUB_STEP_SUMMARY"
