@@ -1,0 +1,52 @@
+name: System1 P0 Cron Gap Differential (manual-only source D1)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-cron-gap-differential-readonly.yml"
+      - "research/system1_p0_cron_gap_differential_v0_1.mjs"
+      - "ops/system1_p0_cron_gap_d1_readonly_once_20261015.mjs"
+      - "tests/test_system1_p0_cron_gap_differential_v0_1.mjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-cron-gap-differential-d1-readonly
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline falsification, SQL selection scope, original-source lock
+        run: |
+          node --check research/system1_p0_cron_gap_differential_v0_1.mjs
+          node --check ops/system1_p0_cron_gap_d1_readonly_once_20261015.mjs
+          node tests/test_system1_p0_cron_gap_differential_v0_1.mjs
+  physical_select:
+    # PRs and merges must never initiate real Cloudflare SQL.
+    # Original System1 source account only; dedicated D1 Read secret.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SYSTEM1_P0_D1_READ_TOKEN: ${{ secrets.SYSTEM1_P0_D1_READ_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Two bounded SELECTs from exact pinned original v7-live D1
+        run: node ops/system1_p0_cron_gap_d1_readonly_once_20261015.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-cron-gap-d1-${{ github.run_id }}
+          path: artifacts/system1-p0-cron-gap-differential-20261015.json
+          if-no-files-found: warn
+          retention-days: 45
