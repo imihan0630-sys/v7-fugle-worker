@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "S2_DATA_ISSUE1068_CROSSDOMAIN_PIT_REAL_ORIGINAL_ARTIFACT_20261016_V0_1",
+  "status": "PHYSICAL_122_A1_AND_30_PRIOR_CFI_AND_SIX_CA_CROSSLANE_SCOPE_PASS__FORMAL_HISTORICAL_PIT_BLOCKED",
+  "mergedImplementation": {
+    "mergedPR": 1376,
+    "mergedMain": "db6dec218db126fd3eae22853b19c92db91d8f59",
+    "crossdomainModule": "system2/migration/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.mjs",
+    "falsificationTests": "system2/tests/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.test.mjs",
+    "oneShotNotScheduledWorkflow": ".github/workflows/system2-data-a1-cfi-ca-crossdomain-pit-20261016.yml",
+    "exactFinalHead": "4fd8db3f13debd5497239e42cfce245264e886ed",
+    "verifiedPRHeadRuns": {
+      "dedicatedCrossdomain": 38834226746,
+      "researchCI": 38834226694,
+      "v8Regression": 38834226713,
+      "destinationCredentialCensus": 38834226681
+    },
+    "finalHeadAllFourSuccess": true,
+    "testsPassed": 20,
+    "testsFailed": 0,
+    "additionalCloudflareD1OrR2CallsByThisWorkflow": 0,
+    "scheduleAutomationAdded": false
+  },
+  "originalMergedMainPhysicalRun": {
+    "runId": 38834381884,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38834381884",
+    "jobId": 116760088422,
+    "conclusion": "success",
+    "outputState": "SOURCE_ONLY_A1_PIT_PASS__CFI_CA_HISTORICAL_VINTAGE_STRICTLY_BLOCKED",
+    "testsPass": 20,
+    "testsFail": 0,
+    "originalRealA1Bars": 118035,
+    "originallyReadbackProviderPairs": 122,
+    "originalPriorPreviewNativeCFI": 30,
+    "originalKnownCAEventRows": 641,
+    "historicalCFI61EffectivePeriodsCertified": false,
+    "fullCARevisionCancellationSuspensionNoEventCertified": false,
+    "formalPITCertified": false,
+    "physicalFrozenPersisted": false
+  },
+  "originalGitHubArtifact": {
+    "id": 12017773951,
+    "name": "s2-data-issue1068-crossdomain-pit-38834381884-1",
+    "originalNativeZipBytes": 1376,
+    "originalProviderZipSha256": "9011ca1e847d8e640b0c13aa9304875023986310dc1500e25ddc2c48ff446024",
+    "independentlyDownloadedOriginalZipSha256": "9011ca1e847d8e640b0c13aa9304875023986310dc1500e25ddc2c48ff446024",
+    "originalContainedFile": "sanitized-crossdomain-pit-verdict.json",
+    "originalContainedBytes": 4083,
+    "independentlyRecomputedOriginalJsonSha256": "4b2aaf2ce9cbda8ffac1ca1acd6a88e6c2e0e905d77c273bb53af3af13f9214d",
+    "originalZipBytesIndependentlyReadAndInnerJsonParsed": true,
+    "outputIsNewCrossEvidenceJoinNotOriginalOfficialProviderBytes": true,
+    "priorOriginal122AndCFIAndCAProviderBytesPhysicallyRehashedInTheirDistinctRuns": true
+  },
+  "sourceCrossClockScope": {
+    "currentA1MarketDate": "2026-10-15",
+    "realSourceOnlyResearchPITPassCutTaipei": "2026-10-16 05:45",
+    "originalMarketDayFormalCutPIT": false,
+    "originalA1SourceMarketPairs": 122,
+    "originalRawOhlcv": 118035,
+    "priorPreviewCFIAndCAMarketDate": "2026-10-14",
+    "realCurrentNativeCFIRows": 30,
+    "priorPreviewKnownActionCount": 11,
+    "priorPreviewNotProvenNoActionCount": 19,
+    "priorPreviewInnovationBoardCount": 1,
+    "CAKnownEventsIn61Dates": 641,
+    "CAMarketSymbolWithKnownEvent": 630,
+    "independentCFIOriginalHistoricalEffectiveDatesFor61Dates": false,
+    "independentHistoricalCARevisionRetractSuspensionAndNegativeWitness": false,
+    "strictHistoryMOPS9OriginalPublicAvailabilityFirstKnownCertified": 0,
+    "historicalOriginalA1FirstKnownAtCertified": false,
+    "formalStrategyUniverseCertified": false,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "frozenD1Written": false,
+    "formalShadowBacktestAuthorized": false,
+    "independentAuditLaneFormalPITSignoff": false
+  },
+  "oldAccountMigrationUnchangedLastAuthenticated": {
+    "sourceLegacyArchivedA1Bars": 84688,
+    "targetLegacyImportedA1Bars": 47420,
+    "remainingLegacyA1Bars": 37268,
+    "noNewCloudflareD1Reads": true,
+    "noNewCloudflareD1Writes": true,
+    "noR2Writes": true
+  },
+  "safety": {
+    "system1V8FormalCoreModified": false,
+    "system1RuntimeOrCronModified": false,
+    "cloudflareD1R2Writes": 0,
+    "secretChanges": 0,
+    "newPaidResource": false,
+    "tradingSignalsEnabled": false,
+    "createOnlyFrozenWritten": false
+  },
+  "nextActions": [
+    "M09 DATA obtain independent original historical time-vintaged native CFI positive security-class effectiveness for all 61 sessions and same real decision market-date universe, not present-only 30 controls.",
+    "M09 DATA independently archive six CA actual-result families per symbol including amendments/cancellations, suspensions, source completeness and authenticated no-event cases; negative 19 prior-day cases stay UNKNOWN.",
+    "AUDIT_LANE sign strictly same-cut complete PIT including source original native bytes; BUILD only freeze new genuine prospective decision at original cut, read back physical D1; no historical reconstruction.",
+    "Continue old legacy A1 remainder 37268 under daily quota guard, not a historical PIT shortcut."
+  ]
+}
