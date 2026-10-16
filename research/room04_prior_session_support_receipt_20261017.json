@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "ROOM04_PRIOR_SESSION_SUPPORT_TEST_V0_1",
+  "sourceMainSha": "5c6408490d8b06348add96c378f48897f5c97661",
+  "sourceBlobSha": "955fbf64acdc5c2f96e64681d436f54e933b1990",
+  "testMode": "local transcribed-source logic + isolated synthetic",
+  "tests": 44,
+  "passed": 44,
+  "failed": 0,
+  "realMarketSamples": 0,
+  "prospectivePerformanceClaim": false,
+  "formalCoreImpact": false,
+  "maturityChange": false,
+  "files": [
+    "research/ROOM04_D04_OFFICIAL_SESSION_SUPPORT_20261017.md",
+    "research/ROOM04_D05_C3_BASELINE_SUPPORT_20261017.md",
+    "research/ROOM04_D04_D05_PRIOR_SESSION_SUPPORT_CHECKPOINT_20261017.md"
+  ]
+}
