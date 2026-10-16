@@ -37,7 +37,7 @@ const HISTORIC_ONLY=Object.freeze([
  'HISTORIC_BACKTEST_REVISED_ISSUER_VINTAGES'
 ]);
 const compare=(a,b)=>Date.parse(a)<=Date.parse(b);
-function rowReason(x,cut,marketDate){
+function rowReason(x,cut,marketDate,market,symbol){
  if(x===undefined)return 'MISSING_REQUIRED_INPUT';
  if(!x||typeof x!=='object'||Array.isArray(x)||
    x.status==='NA'||x.status==='NOT_USED')return 'REQUIRED_INPUT_INVALID_OR_SKIPPED';
@@ -51,7 +51,8 @@ function rowReason(x,cut,marketDate){
    !compare(x.firstPhysicalObservedAtUtc,cut)||
    !compare(x.availableAtUtc,cut)||
    !compare(x.firstKnownAtUtc,cut)||
-   !date(x.marketDate)||x.marketDate!==marketDate)
+   !date(x.marketDate)||x.marketDate!==marketDate||
+   x.market!==market||x.symbol!==symbol)
    return 'SOURCE_PIT_CLOCK_OR_DATE_INVALID';
  if(x.status==='SOURCE_ONLY')return 'INDEPENDENT_INPUT_SCOPE_AUDIT_REQUIRED';
  if(x.originalIndependentlyRehashed!==true||
@@ -105,7 +106,7 @@ export async function inspectPitADailyUsedInputsV0_1({
  const checked=[];
  for(const id of SOURCE_CORE_PROFILE_V0_1.required){
    const fact=evidence.inputs[id];
-   const why=rowReason(fact,evidence.decisionCutAtUtc,evidence.marketDate)||
+   const why=rowReason(fact,evidence.decisionCutAtUtc,evidence.marketDate,evidence.market,evidence.symbol)||
      extraReason(id,fact);
    checked.push({id,status:why?'UNKNOWN':'ASOF_REQUIRED_INPUT_ATTESTED',
      reason:why,sourceOriginalSha256:fact?.originalNativeSha256||null,
@@ -115,7 +116,8 @@ export async function inspectPitADailyUsedInputsV0_1({
  // This additionally checks independently published audit hash, never from
  // DATA self signature or its own hash field, and never grants Stage1 by itself.
  const externallyPinnedAudit=SHA.test(expectedIndependentAuditHash||'')&&
-   expectedIndependentAuditHash===evidence.externalAuditReceiptSha256;
+   expectedIndependentAuditHash===evidence.externalAuditReceiptSha256&&
+   checked.every(x=>x.independentAuditSha256===expectedIndependentAuditHash);
  const profileMayAuthorizeSelection=SOURCE_CORE_PROFILE_V0_1.selectionUseApproved;
  const base={
    schemaVersion:'S2_DATA_PITA_USED_INPUT_DIAGNOSTIC_V0_1',
