@@ -356,3 +356,17 @@ Room10 remaining D15-24 work:
 7. return MERGE_ELIGIBLE / KEEP_SEPARATE / EVIDENCE_INSUFFICIENT plus merged maturity map.
 
 D15-24 remains L0/0 until its own mechanism/falsification contract exists.
+
+
+## Room10 2026-10-16 14:35 — D15 evidence and cross-ledger readiness
+
+Research-only. No Formal Core, sizing, hedge, portfolio, order or push rule change.
+
+- D15-23 hedge-overlay contract (2026-10-13) is durable on an earlier isolated branch, but was not restored into this new branch because GitHub content mutation was blocked. The central tracker remains L0; L2 is a review candidate only. Preserve the same-decision cash/spot-reduction comparator, signed exposure, basis, margin and intraperiod liquidity constraints.
+- D15-24 portfolio VaR contract (2026-10-11) is durable on an earlier isolated branch, but was not restored into this new branch because GitHub content mutation was blocked. The central tracker remains L0; L2 is a review candidate only. Preserve quantile vs expected shortfall ownership, predecision position and estimator freeze, overlapping-window dependence, exceedance clustering and effective tail sample requirements.
+- D14-16/17/18 execution contracts cannot establish actual portfolio cash, broker-reserved collateral or realized P/L. An unknown order fill must not be treated as a zero position, and a possible loss envelope is not an actual VaR forecast.
+- D15-13 tail severity, D15-23 hedge economics and D15-24 VaR quantile calibration remain distinct responsibilities, not independent alpha votes. No new OOS, Taiwan PIT broker evidence or verified execution economics was obtained this round.
+
+Status: RESEARCH_CANDIDATE_ONLY / ISOLATED_ARTIFACT_RESTORATION_BLOCKED / TRACKER_UNCHANGED / FORMAL_CORE_LOCKED.
+
+Exact next continuation: re-read main and both specialist checkpoints; preserve the D15-23/24 contracts on their known isolated branches, request no secret or broker credential, and restore through an authorized safe write route when available. Do not promote L2 until specialist artifacts and evidence gate are reviewed together; collect genuine forward broker/position/margin/fee and VaR forecast receipts before L3. Never fabricate historical Shadow.
