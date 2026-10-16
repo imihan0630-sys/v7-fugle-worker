@@ -9,6 +9,7 @@ const urls={
   version:"/api/version",cron:"/api/cron/status",scan:"/api/scan/status",
   recommendations:"/api/recommendations",config:"/api/config",
   quality:"/api/quality-status?marketDate="+encodeURIComponent(date),
+  marketData:"/api/market-data/status?marketDate="+encodeURIComponent(date),
   outbox:"/api/push-outbox?limit=50",overview:"/api/system-overview"
 };
 const values={},errors={};

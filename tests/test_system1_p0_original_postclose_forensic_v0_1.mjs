@@ -12,6 +12,7 @@ const base={date,observedAt:"2026-10-16T04:10:00.000Z",
   quality:{marketDate:date,index:{ready:true},tdcc:{ready:true},datasets:{
     FINANCIAL:{ready:true},VALUATION:{ready:true},
     ANNOUNCEMENTS:{ready:true},QUARTER_EPS:{ready:true,count:0}}},
+  marketData:{marketDate:date,ready:true,markets:{TWSE:{count:1032},TPEx:{count:850}}},
   outbox:{configured:true,recent:[]},
   overview:{latestPlan:{scanDate:null}}};
 let x=verdict(base);
@@ -20,6 +21,9 @@ assert.equal(x.actualCron.previousSessionEvictedFromLast20,true);
 assert.equal(x.actualCron.previousSessionCronExecutionProven,false);
 assert.equal(x.actualCron.causeEstablished,false);
 assert.equal(x.sourceQuality.ready,true);
+assert.equal(x.sourceMarket.ready,true);
+assert.equal(x.sourceMarket.TWSE,1032);
+assert.equal(x.sourceMarket.TPEx,850);
 assert.equal(x.zeroSelectionNotInferred,true);
 assert.equal(x.noBusinessPOST,true);
 assert.equal(verdict({...base,recommendations:{attempt:null}}).verdict,"EMPTY_PRIMARY_KV_WITHOUT_CONFIRMED_FORMAL");
@@ -44,6 +48,20 @@ const wrongDate=verdict({...base,scan:formal,config,
   outbox:{configured:true,recent:[{signal_id:"DAILY_SELECTION:2026-10-14",delivery_state:"ACCEPTED"}]}});
 assert.equal(wrongDate.complete,false);
 assert.equal(wrongDate.verdict,"FORMAL_SAVED_BUT_DAILY_PUSH_UNVERIFIED");
+const orphan=verdict({...base,outbox:{configured:true,recent:[{
+  signal_id:"DAILY_SELECTION:"+date,signal_type:"DAILY_SELECTION",
+  delivery_state:"ACCEPTED",http_status:200,
+  created_at:"2026-10-15T15:57:01.000Z",
+  updated_at:"2026-10-15T15:57:02.000Z",
+  accepted_at:"2026-10-15T15:57:02.000Z"}]}});
+assert.equal(orphan.verdict,"DAILY_OUTBOX_ACCEPTED_WITHOUT_FORMAL_RECORD");
+assert.equal(orphan.complete,false);
+assert.equal(orphan.dailyPush.acceptedWithoutFormalRecord,true);
+assert.equal(orphan.dailyPush.outboxCreatedAt,"2026-10-15T15:57:01.000Z");
+assert.equal(orphan.dailyPush.outboxHttpStatus,200);
+assert.equal(orphan.formal.attemptedDate,date);
+assert.equal(orphan.noBusinessPOST,true);
+
 const staleKV=verdict({...base,scan:{...formal,selectedCount:1,stocks:[{symbol:"2340"}]},
   config:{...config,stocks:[]}});
 assert.equal(staleKV.verdict,"FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH");
@@ -54,6 +72,7 @@ assert.doesNotMatch(script,/method:\s*["']POST["']/);
 assert.match(script,/\/api\/cron\/status/);
 assert.match(script,/\/api\/recommendations/);
 assert.match(script,/\/api\/push-outbox\?limit=50/);
+assert.match(script,/\/api\/market-data\/status/);
 assert.match(script,/\/api\/config/);
 const workflow=await readFile(new URL("../.github/workflows/system1-p0-original-postclose-forensic.yml",import.meta.url),"utf8");
 assert.match(workflow,/S1_P0_TARGET_DATE: '2026-10-15'/);
