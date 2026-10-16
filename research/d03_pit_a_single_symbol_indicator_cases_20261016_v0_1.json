@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "D03",
+  "date": "2026-10-16",
+  "title": "PIT-A single-symbol indicator admission firewall",
+  "facts": {
+    "currentNativeControls": [
+      {
+        "market": "TWSE",
+        "symbol": "2330",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "state": "CURRENT_CFI_SOURCE_POSITIVE_ONLY"
+      },
+      {
+        "market": "TPEX",
+        "symbol": "3287",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "state": "CURRENT_CFI_SOURCE_POSITIVE_ONLY"
+      },
+      {
+        "market": "TWSE",
+        "symbol": "9103",
+        "nativeType": "TDR",
+        "cfi": "EDSDDR",
+        "state": "INSTRUMENT_CLASS_BLOCKED"
+      },
+      {
+        "market": "TWSE",
+        "symbol": "0050",
+        "nativeType": "ETF",
+        "cfi": "CEOGEU",
+        "state": "INSTRUMENT_CLASS_BLOCKED"
+      }
+    ],
+    "historicEffectivePeriodPitCertified": 0,
+    "stage1Eligible": 0,
+    "unresolved": 1935,
+    "caSixFamilyHistoricComplete": false,
+    "independentAuditSigned": false,
+    "selectedCount": null,
+    "zeroPickDay": null,
+    "frozenD1Written": false
+  },
+  "expectedCases": [
+    {
+      "id": "TI-2013",
+      "input": {
+        "kind": "CFI_CONTROL",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "historicalEffective": false
+      },
+      "expected": "CURRENT_CFI_SOURCE_POSITIVE_ONLY"
+    },
+    {
+      "id": "TI-2014",
+      "input": {
+        "kind": "CFI_CONTROL",
+        "nativeType": "Stocks",
+        "cfi": "ESVUFR",
+        "historicalEffective": false
+      },
+      "expected": "CURRENT_CFI_SOURCE_POSITIVE_ONLY"
+    },
+    {
+      "id": "TI-2015",
+      "input": {
+        "kind": "CFI_CONTROL",
+        "nativeType": "TDR",
+        "cfi": "EDSDDR"
+      },
+      "expected": "INSTRUMENT_CLASS_BLOCKED"
+    },
+    {
+      "id": "TI-2016",
+      "input": {
+        "kind": "CFI_CONTROL",
+        "nativeType": "ETF",
+        "cfi": "CEOGEU"
+      },
+      "expected": "INSTRUMENT_CLASS_BLOCKED"
+    },
+    {
+      "id": "TI-2017",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": false,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true
+      },
+      "expected": "DECISION_CUT_BLOCKED"
+    },
+    {
+      "id": "TI-2018",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": false,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true
+      },
+      "expected": "CLASS_VINTAGE_BLOCKED"
+    },
+    {
+      "id": "TI-2019",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": false,
+        "caScopeComplete": true,
+        "auditSigned": true
+      },
+      "expected": "CLASS_PERIOD_BLOCKED"
+    },
+    {
+      "id": "TI-2020",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": false,
+        "auditSigned": true
+      },
+      "expected": "CA_SCOPE_BLOCKED"
+    },
+    {
+      "id": "TI-2021",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": false
+      },
+      "expected": "AUDIT_BLOCKED"
+    },
+    {
+      "id": "TI-2022",
+      "input": {
+        "kind": "MARKET",
+        "eligible": 0,
+        "unresolved": 1935,
+        "claimZero": false
+      },
+      "expected": "FULL_MARKET_UNKNOWN"
+    },
+    {
+      "id": "TI-2023",
+      "input": {
+        "kind": "MARKET",
+        "eligible": 0,
+        "unresolved": 1935,
+        "claimZero": true
+      },
+      "expected": "FALSE_ZERO_PICK_BLOCKED"
+    },
+    {
+      "id": "TI-2024",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true,
+        "claimSelected": true
+      },
+      "expected": "SELECTION_AUTHORITY_BLOCKED"
+    },
+    {
+      "id": "TI-2025",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true
+      },
+      "expected": "PIT_A_SYMBOL_INPUT_ADMISSIBLE"
+    },
+    {
+      "id": "TI-2026",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true,
+        "pitBComplete": false
+      },
+      "expected": "PIT_A_NOT_BLOCKED_BY_PIT_B"
+    },
+    {
+      "id": "TI-2027",
+      "input": {
+        "kind": "PIT_A",
+        "archiveByCut": true,
+        "historicalCfi": true,
+        "classPeriodsExact": true,
+        "caScopeComplete": true,
+        "auditSigned": true,
+        "pitBSubstitute": true
+      },
+      "expected": "PIT_B_SUBSTITUTION_BLOCKED"
+    },
+    {
+      "id": "TI-2028",
+      "input": {
+        "kind": "INDICATOR",
+        "indicator": "RET60",
+        "exact61": true,
+        "raw": true,
+        "continuity": true
+      },
+      "expected": "FINITE_WINDOW_MECHANICS_READY"
+    },
+    {
+      "id": "TI-2029",
+      "input": {
+        "kind": "INDICATOR",
+        "indicator": "MACD",
+        "exact61": true,
+        "raw": true,
+        "continuity": true,
+        "priorState": false
+      },
+      "expected": "RECURSIVE_STATE_UNCERTAIN"
+    },
+    {
+      "id": "TI-2030",
+      "input": {
+        "kind": "INDICATOR",
+        "indicator": "ADX",
+        "exact61": true,
+        "raw": true,
+        "continuity": true,
+        "priorState": false
+      },
+      "expected": "RECURSIVE_STATE_UNCERTAIN"
+    },
+    {
+      "id": "TI-2031",
+      "input": {
+        "kind": "INDICATOR",
+        "indicator": "RET20",
+        "exact61": true,
+        "raw": true,
+        "continuity": true,
+        "outcomeAttempt": true
+      },
+      "expected": "OUTCOME_INCREMENTALITY_BLOCKED"
+    },
+    {
+      "id": "TI-2032",
+      "input": {
+        "kind": "INDICATOR",
+        "indicator": "FINITE_SET",
+        "exact61": true,
+        "raw": true,
+        "continuity": true,
+        "allResearchGates": true
+      },
+      "expected": "SINGLE_SYMBOL_SHADOWLESS_RESEARCH_ONLY"
+    }
+  ],
+  "result": {
+    "passed": 20,
+    "total": 20
+  },
+  "maturityPct": 56.7,
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED"
+}
