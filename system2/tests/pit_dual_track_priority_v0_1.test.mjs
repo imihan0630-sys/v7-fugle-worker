@@ -31,7 +31,7 @@ test('fail closed fabricated CFI positive, duplicated original, missing SHA and 
  const [h,c]=await load();
  const changes=[
    x=>x.asOfCurrentStockSourcePositive=3,
-   x=>x.sourceOriginals[1].code='2330',
+   x=>{x.sourceOriginals[1].market='TWSE';x.sourceOriginals[1].code='2330';},
    x=>x.sourceOriginals[0].originalSha256='unknown',
    x=>x.sourceOriginals[1].observedAtUtc='2026-10-15T12:00:00Z',
    x=>x.sourceOriginals[2].sourceObservationPositive=true,
