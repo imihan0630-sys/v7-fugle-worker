@@ -70,3 +70,35 @@ for(const [name,fn] of tamper){
    /S2_DATA_CROSS_DOMAIN_PIT_/);
  });
 }
+
+/* These are original-byte/clock anti-promotion cases, not synthetic PIT passes.
+ * Each starts from the already merged ORIGINAL provider/auditor receipts.
+ * A mutated copy must never inherit its predecessor's verified cutoff. */
+const physicalWitnessTamper=[
+ ["original market cutoff moved earlier",v=>v.a1.twoClockCutVerdicts[0].cutUtc="2026-10-15T10:45:00.000Z"],
+ ["research cutoff backdated",v=>v.a1.twoClockCutVerdicts[1].cutUtc="2026-10-15T15:00:00.000Z"],
+ ["research cutoff moved forward",v=>v.a1.twoClockCutVerdicts[1].cutUtc="2026-10-16T15:45:43.188Z"],
+ ["cutoff labels swapped",v=>v.a1.twoClockCutVerdicts[0].clockName=v.a1.twoClockCutVerdicts[1].clockName],
+ ["producer claimed 123 original pairs",v=>v.a1.twoClockCutVerdicts[0].signedProducerClaimedPairCapturedByCut=123],
+ ["original pre-cut archive falsely witnessed",v=>v.a1.twoClockCutVerdicts[0].originalNativeIndependentArchiveWitnessBeforeCutVerified=true],
+ ["original pre-cut audit falsely completed",v=>v.a1.twoClockCutVerdicts[0].independentSourceAuditDoneByCut=true],
+ ["research audit no longer done by cutoff",v=>v.a1.twoClockCutVerdicts[1].originalNativeIndependentAuditDoneByCut=false],
+ ["original provider job replaced",v=>v.a1.originalActualMainProvider.jobId=1],
+ ["original provider zip size modified",v=>v.a1.originalActualMainProvider.originalNativeZipBytes=8155],
+ ["original zip native digest substituted",v=>v.a1.originalActualMainProvider.githubNativeZipDigestSha256="f".repeat(64)],
+ ["original independent zip digest substituted",v=>v.a1.originalActualMainProvider.independentlyDownloadedNativeZipDigestSha256="f".repeat(64)],
+ ["independent parsed inner body removed",v=>v.a1.originalActualMainProvider.originalInnerJsonIndependentlyParsed=false],
+ ["historical original known-at backfilled",v=>v.a1.unresolvedFormal.originalHistoricalMarketDateFirstKnownAtAndAvailableAtVerified=true],
+ ["historic revision completeness fabricated",v=>v.a1.unresolvedFormal.historicalProviderRevisionsAndDeletionsComplete=true],
+ ["formal assessor falsely accepted",v=>v.a1.unresolvedFormal.postSourceFormalStrategyAssessorIndependentAudited=true],
+ ["prior frozen reconstruction allowed",v=>v.a1.unresolvedFormal.originalMarketDay2345FormalDecisionMayBeRebuiltFromLaterEvidence=true],
+ ["backtest shadow without PIT",v=>v.a1.unresolvedFormal.fullBacktestOrProspectiveShadowAuthorized=true],
+ ["nine MOPS clocks falsely accepted",v=>v.a1.unresolvedFormal.strictHistoricalMopsNineVersionsFirstKnownAtCertified=9]
+];
+for(const [name,fn] of physicalWitnessTamper){
+ test("physical source-clock witness cannot be forged: "+name,()=>{
+  const copied=structuredClone(real);fn(copied);
+  assert.throws(()=>reconcileRealPhysicalPITCrossDomainV0_1(copied),
+   /S2_DATA_CROSS_DOMAIN_PIT_/);
+ });
+}
