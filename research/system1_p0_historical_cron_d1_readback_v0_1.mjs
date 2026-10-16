@@ -46,7 +46,7 @@ export function classifyHistoricalCronD1({date=TARGET_DATE,cronRows=null,leaseRo
   for(const row of cronRows){
     const utc=Date.parse(String(row?.scheduled_at||""));
     const time=Number.isFinite(utc)?new Date(utc).toISOString().slice(0,16):"";
-    const expression=String(row?.cron_expression||"").toLowerCase().replace(/\\s+/g," ").trim();
+    const expression=String(row?.cron_expression||"").toLowerCase().replace(/\s+/g," ").trim();
     if(row?.job_type!=="AFTER_MARKET_SCAN"||!buckets.has(time)||
        !["35,55 15 * * mon-fri","35 15 * * mon-fri","55 15 * * mon-fri"].includes(expression)){
       invalid++;continue;
