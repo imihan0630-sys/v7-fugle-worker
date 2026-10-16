@@ -44,6 +44,20 @@ const wrongDate=verdict({...base,scan:formal,config,
   outbox:{configured:true,recent:[{signal_id:"DAILY_SELECTION:2026-10-14",delivery_state:"ACCEPTED"}]}});
 assert.equal(wrongDate.complete,false);
 assert.equal(wrongDate.verdict,"FORMAL_SAVED_BUT_DAILY_PUSH_UNVERIFIED");
+const orphan=verdict({...base,outbox:{configured:true,recent:[{
+  signal_id:"DAILY_SELECTION:"+date,signal_type:"DAILY_SELECTION",
+  delivery_state:"ACCEPTED",http_status:200,
+  created_at:"2026-10-15T15:57:01.000Z",
+  updated_at:"2026-10-15T15:57:02.000Z",
+  accepted_at:"2026-10-15T15:57:02.000Z"}]}});
+assert.equal(orphan.verdict,"DAILY_OUTBOX_ACCEPTED_WITHOUT_FORMAL_RECORD");
+assert.equal(orphan.complete,false);
+assert.equal(orphan.dailyPush.acceptedWithoutFormalRecord,true);
+assert.equal(orphan.dailyPush.outboxCreatedAt,"2026-10-15T15:57:01.000Z");
+assert.equal(orphan.dailyPush.outboxHttpStatus,200);
+assert.equal(orphan.formal.attemptedDate,date);
+assert.equal(orphan.noBusinessPOST,true);
+
 const staleKV=verdict({...base,scan:{...formal,selectedCount:1,stocks:[{symbol:"2340"}]},
   config:{...config,stocks:[]}});
 assert.equal(staleKV.verdict,"FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH");
