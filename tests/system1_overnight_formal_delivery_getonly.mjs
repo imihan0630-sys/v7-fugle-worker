@@ -16,7 +16,11 @@ const safeWrite=async()=>{
   console.log("SYSTEM1_OVERNIGHT_FORMAL_DELIVERY_GET_ONLY="+JSON.stringify(verdict));
   if(!verdict.ok)process.exitCode=2;
 };
-if(!when.targetDate){
+if(!when.targetDate && sourceReadyHandoff && when.status==="SOURCE_COMPLETED_BEFORE_FORMAL_DUE"){
+  verdict={...verdict,ok:true,skipped:true,formalNotYetDue:true,
+    category:"FORMAL_NOT_DUE_SOURCE_AVAILABLE",noBusinessPOST:true};
+  await safeWrite();
+}else if(!when.targetDate){
   verdict.category="POSTCLOSE_DATE_UNRESOLVED_FAIL_CLOSED";
   await safeWrite();
 }else if(!token){
@@ -25,6 +29,7 @@ if(!when.targetDate){
 }else{
   const resources={
     scanStatus:"/api/scan/status",
+    monitor:"/api/config",
     institution:"/api/institution-status?marketDate="+encodeURIComponent(when.targetDate),
     quality:"/api/quality-status?marketDate="+encodeURIComponent(when.targetDate),
     outbox:"/api/push-outbox?limit=50"
@@ -44,7 +49,7 @@ if(!when.targetDate){
     }catch{readErrors[key]="TRANSPORT_OR_PARSE_FAILURE";}
   }));
   verdict={...verdict,...classifyPostcloseBusinessChain({targetDate:when.targetDate,
-    scanStatus:values.scanStatus,institution:values.institution,
+    scanStatus:values.scanStatus,monitor:values.monitor,institution:values.institution,
     quality:values.quality,outbox:values.outbox,readErrors}),
     clockState:when.status,localClock:when.localTime,sourceReadyHandoff};
   await safeWrite();
