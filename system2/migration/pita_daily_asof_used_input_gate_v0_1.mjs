@@ -97,7 +97,7 @@ export async function inspectPitADailyUsedInputsV0_1({
     !date(evidence.marketDate)||!utc(evidence.decisionCutAtUtc)||
     evidence.decisionCutAtUtc.slice(0,10)!==evidence.marketDate||
     !['TWSE','TPEX'].includes(evidence.market)||!/^[1-9]\d{3}$/.test(evidence.symbol||'')||
-    !signed(evidence)||!evidence.inputs||typeof evidence.inputs!=='object'||
+    !(await signed(evidence))||!evidence.inputs||typeof evidence.inputs!=='object'||
     Array.isArray(evidence.inputs)||Object.keys(evidence.inputs).some(k=>!required.has(k))||
     evidence.selectionAuthorized!==false||evidence.frozenD1Written!==false||
     evidence.selectedCount!==null||evidence.zeroPickDay!==null||
