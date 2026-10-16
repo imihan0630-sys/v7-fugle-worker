@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "S2_DATA_ISSUE1068_REAL_NATIVE_A1_122_PERBAR_PIT_PHYSICAL_20261016_V0_1",
+  "status": "INDEPENDENT_ORIGINAL_122_PROVIDER_FILES_AND_118035_OHLCV_BARS_MATCHED__SOURCE_PREOPEN_CUT_PASS__ORIGINAL_MARKET_DAY_AND_FORMAL_PIT_BLOCKED",
+  "sourceScope": {
+    "originalMarketDate": "2026-10-15",
+    "sourceRunId": 38797319008,
+    "originalSourceArtifactId": 12002806667,
+    "originalSourceReceiptHash": "ff5aa17607fa9cc191599111b27b762a02f599456992f1baf7ee7b854387cfd9",
+    "originalIndependentReadbackRunId": 38797548446,
+    "originalIndependentArtifactId": 12002641996,
+    "originalIndependentAuditHash": "cebec987e32f863e42f9d95ffb881979164ed63be6716dc1e40bf2f8cf3f5808"
+  },
+  "implementation": {
+    "mergedPr": 1374,
+    "mergedMain": "40c20f19d57f0d3b8af907ecb1a3fd7f0e25eecc",
+    "sourceReader": "system2/migration/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.mjs",
+    "test": "system2/tests/issue1068_original_a1_perpair_perbar_pit_asof_v0_1.test.mjs",
+    "workflow": ".github/workflows/system2-issue1068-a1-native-perbar-pit-20261016.yml",
+    "originalHeadNativeTestRun": 38826613617,
+    "originalNativeTestsPass": 6,
+    "originalNativeTestsFail": 0,
+    "prResearchRun": 38826613563,
+    "prV8RegressionRun": 38826613610,
+    "prCredentialCensusRun": 38826613566,
+    "preMergeFourOfFourGreen": true
+  },
+  "originalActualMainProvider": {
+    "physicalRunId": 38826851466,
+    "jobId": 116736199554,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38826851466",
+    "jobConclusion": "success",
+    "originalGitHubArtifactId": 12015950224,
+    "originalGitHubZipName": "s2-a1-122-real-native-perbar-pit-38826851466-1",
+    "originalNativeZipBytes": 8154,
+    "githubNativeZipDigestSha256": "3f50f2e2c6bbf9ebb6287e8f41e9f085cb905379a7848cd1a2cd2b808882bb68",
+    "independentlyDownloadedNativeZipDigestSha256": "3f50f2e2c6bbf9ebb6287e8f41e9f085cb905379a7848cd1a2cd2b808882bb68",
+    "originalInnerName": "sanitized-original-perpair-pit.json",
+    "originalInnerJsonBytes": 75139,
+    "independentlyRecomputedInnerJsonSha256": "b53b2c756791ab8bb5a0f6eddb2d84241b9fb56ca80697b57c37be532ace708f",
+    "originalInnerJsonIndependentlyParsed": true
+  },
+  "actualPhysicalSource": {
+    "allOriginalSourceMarketDatePairsIndependentlyByteRehashed": 122,
+    "allOriginalNativeProviderFilesDecompressedAndReparsed": 122,
+    "originalSixtyOneSessions": 61,
+    "allCompleteSymbolWindowsReconciled": 1935,
+    "allIndividualOriginalBarOpenHighLowCloseVolumeValueTransactionAndRowFieldSHAReconciled": 118035,
+    "all122PairOriginalBodySHA256Verified": true,
+    "allBarOriginalSourceRowHashVerified": true
+  },
+  "twoClockCutVerdicts": [
+    {
+      "clockName": "2026-10-15_original_formal_market_day_2345",
+      "cutUtc": "2026-10-15T15:45:00.000Z",
+      "signedProducerClaimedPairCapturedByCut": 122,
+      "originalNativeIndependentArchiveWitnessBeforeCutVerified": false,
+      "independentSourceAuditDoneByCut": false,
+      "fullIndependentSourcePITAtThisCut": false,
+      "formalStage1StrategyPit": false
+    },
+    {
+      "clockName": "2026-10-16_actual_preopen_0545_research",
+      "cutUtc": "2026-10-15T21:45:43.188Z",
+      "signedProducerClaimedPairCapturedByCut": 122,
+      "originalNativeIndependentAuditDoneByCut": true,
+      "fullIndependentSourceOnlyResearchPITAtThisCut": true,
+      "formalStage1StrategyPit": false
+    }
+  ],
+  "unresolvedFormal": {
+    "originalHistoricalMarketDateFirstKnownAtAndAvailableAtVerified": false,
+    "historicalProviderRevisionsAndDeletionsComplete": false,
+    "historicalOrdinaryShareCFIEffectiveDatesVerifiedFor61Sessions": false,
+    "allSixCorporateActionFamilyRevisionsRetractionsSuspensionsAndNoEventComplete": false,
+    "postSourceFormalStrategyAssessorIndependentAudited": false,
+    "physicalFrozenDecisionWrittenAndReadBack": false,
+    "originalMarketDay2345FormalDecisionMayBeRebuiltFromLaterEvidence": false,
+    "fullBacktestOrProspectiveShadowAuthorized": false,
+    "fullG3G4MigrationAndOwnerReserveCertified": false,
+    "strictHistoricalMopsNineVersionsFirstKnownAtCertified": 0
+  },
+  "oldAccountHistoryLastConfirmed": {
+    "originalArchivedA1Bars": 84688,
+    "importedDestinationA1Bars": 47420,
+    "unmigratedA1Bars": 37268,
+    "sourceOldA1PerMarketDatePITCertified": false
+  },
+  "safety": {
+    "newProviderHttpGet": 0,
+    "newCloudflareD1Read": 0,
+    "newCloudflareD1Writes": 0,
+    "newCloudflareR2Calls": 0,
+    "newSecretsOrPaidResources": false,
+    "system1V8FormalCoreModified": false,
+    "system1RuntimeOrCronModified": false,
+    "tradeSignalsActivated": false
+  },
+  "nextConcreteSteps": [
+    "DATA and AUDIT independently certify actual first-known effective-dated original native 61-day common-share type (CFI), not present-only labels.",
+    "DATA and AUDIT close six CA families per-symbol per-market day and all revisions/retractions/suspensions, including negative/none observations, using original archived versions; retain UNKNOWN without proof.",
+    "BUILD only on a future real decision clock assembles originals plus independent source cut, CFI and CA receipts, then persists and physically reads back immutable new Frozen; AUDIT signs formal end-to-end PIT. Do not reconstruct original Oct15 23:45.",
+    "DATA protect old-account source/destination quota, then continue 37268 residual A1 history without treating copy completeness as original historical first-known PIT."
+  ]
+}
