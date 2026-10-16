@@ -1,0 +1,77 @@
+name: System1 P0 Historical Version and Cron Breakpoint (manual-only)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-historic-version-cron-breakpoint-readonly.yml"
+      - "research/system1_p0_cron_preincident_baseline_v0_1.mjs"
+      - "ops/system1_p0_preincident_cron_d1_select_readonly_20261016.mjs"
+      - "ops/system1_p0_oct13_15_provider_version_trace_readonly.mjs"
+      - "tests/test_system1_p0_historic_version_cron_breakpoint_v0_1.mjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-historic-version-cron-breakpoint-readonly
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Restricted historical boundaries, credential isolation, NO mutations
+        run: |
+          node --check research/system1_p0_cron_preincident_baseline_v0_1.mjs
+          node --check ops/system1_p0_preincident_cron_d1_select_readonly_20261016.mjs
+          node --check ops/system1_p0_oct13_15_provider_version_trace_readonly.mjs
+          node tests/test_system1_p0_historic_version_cron_breakpoint_v0_1.mjs
+  original_d1_preincident:
+    # Explicit owner dispatch on main only; not on PR/push/merge.
+    # Dedicated original System1 D1 Read token, NOT Workers token.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SYSTEM1_P0_D1_READ_TOKEN: ${{ secrets.SYSTEM1_P0_D1_READ_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: "Fixed Oct06-12 baseline - two original v7-live D1 SELECTs"
+        run: node ops/system1_p0_preincident_cron_d1_select_readonly_20261016.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-historical-preincident-d1-${{ github.run_id }}
+          path: artifacts/system1-p0-preincident-cron-d1-oct06-12.json
+          retention-days: 45
+          if-no-files-found: warn
+  original_worker_provider:
+    # Separate job and credential scope: Worker GET + GraphQL, never D1 SQL.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Historical original Worker deployments/versions plus scoped GraphQL read
+        run: node ops/system1_p0_oct13_15_provider_version_trace_readonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-historical-provider-${{ github.run_id }}
+          path: artifacts/system1-p0-historical-deploy-invocations-oct13-15.json
+          retention-days: 45
+          if-no-files-found: warn
