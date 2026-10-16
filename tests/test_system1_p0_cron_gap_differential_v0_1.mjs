@@ -44,7 +44,8 @@ assert.equal(v.state,"TARGET_SLOT_WITH_OTHER_JOB_TYPE_REQUIRES_REVIEW");
 assert.equal(v.unexpectedJobTypeAtSlots,1);
 v=classifyCronGap({windowRows:[{...first,
  scheduled_at:"2026-10-15T15:40:00.000Z",
- started_at:"2026-10-15T15:40:01.000Z"}],baselineRows:[]});
+ started_at:"2026-10-15T15:40:01.000Z",
+ finished_at:"2026-10-15T15:40:09.000Z"}],baselineRows:[]});
 assert.equal(v.state,"NEARBY_AUDIT_ROWS_ONLY__TARGET_UNKNOWN");
 assert.equal(v.matchedSlotRecords,0);
 v=classifyCronGap({windowRows:[{...first,scheduled_time:0}],baselineRows:[]});
