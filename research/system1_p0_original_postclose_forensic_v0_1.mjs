@@ -20,17 +20,41 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
   const attemptStatus=attempted?.requestedDate===date?attempted.status||"UNKNOWN":"NO_SAME_DATE_ATTEMPT_VISIBLE";
   const stocks=Array.isArray(config?.stocks)?config.stocks:[];
   const selected=Number.isInteger(scan?.selectedCount)?scan.selectedCount:null;
+  // A 0-pick is valid only with a genuine Formal parent. Duplicates, malformed
+  // symbols, or test-mode evidence must never yield a green physical chain.
+  const formalStocks=Array.isArray(scan?.stocks)?scan.stocks:null;
+  const formalSymbols=formalStocks?.map(x=>String(x?.symbol??""))||[];
+  const formalSymbolsValid=Boolean(formalStocks)&&
+    formalSymbols.every(x=>/^[1-9][0-9]{3}$/.test(x))&&
+    new Set(formalSymbols).size===formalSymbols.length;
   const scanCompleted=scan?.scanDate===date&&scan?.dryRun===false&&
+    scan?.testMode!==true&&version?.testMode!==true&&
     scan?.config?.verified===true&&selected!==null&&selected>=0&&selected<=6&&
-    Array.isArray(scan?.stocks)&&scan.stocks.length===selected;
-  const kvMatches=scanCompleted && config?.source==="KV"&&
-    config?.updatedAt===scan.config.updatedAt&&stocks.length===selected &&
-    scan.stocks.every(expected=>stocks.some(x=>String(x.symbol)===String(expected.symbol)));
+    formalStocks?.length===selected&&formalSymbolsValid;
+  // Comparing just symbol counts can certify a changed stop, position, capital
+  // or target plan as the same monitoring plan. Match material plan keys too.
+  const materialKeys=["planDate","positionStage","formalClose","buyLow","buyHigh",
+    "breakout","stop","profitCheck","allocationRatio","totalAllocation",
+    "firstAmount","secondAmount","firstShares","secondShares","totalShares"];
+  const monitorSymbols=stocks.map(x=>String(x?.symbol??""));
+  const monitorSymbolsValid=monitorSymbols.every(x=>/^[1-9][0-9]{3}$/.test(x))&&
+    new Set(monitorSymbols).size===monitorSymbols.length;
+  const byMonitorSymbol=new Map(stocks.map(x=>[String(x?.symbol??""),x]));
+  const monitorMaterialParity=scanCompleted&&monitorSymbolsValid&&
+    stocks.length===selected&&formalStocks.every(expected=>{
+      const actual=byMonitorSymbol.get(String(expected.symbol));
+      return Boolean(actual)&&materialKeys.every(key=>
+        !Object.prototype.hasOwnProperty.call(expected,key)||
+        JSON.stringify(expected[key])===JSON.stringify(actual[key]));
+    });
+  const kvMatches=monitorMaterialParity&&config?.source==="KV"&&
+    config?.updatedAt===scan.config.updatedAt;
   const signalId="DAILY_SELECTION:"+date;
   const pushRows=Array.isArray(outbox?.recent)?outbox.recent.filter(x=>x.signal_id===signalId):[];
-  const orphanPush=outbox?.configured===true&&pushRows.length===1&&
+  const typedPushRow=pushRows.length===1&&pushRows[0]?.signal_type==="DAILY_SELECTION";
+  const orphanPush=outbox?.configured===true&&typedPushRow&&
     pushRows[0]?.delivery_state==="ACCEPTED"&&!scanCompleted;
-  const pushAccepted=outbox?.configured===true&&outbox?.readError!==true&&pushRows.length===1&&
+  const pushAccepted=outbox?.configured===true&&outbox?.readError!==true&&typedPushRow&&
     pushRows[0]?.delivery_state==="ACCEPTED"&&scan?.dailyReport?.signalId===signalId&&
     scan?.dailyReport?.sent===true&&scan?.dailyReport?.simulated===false;
   const kinds=["FINANCIAL","VALUATION","ANNOUNCEMENTS","QUARTER_EPS"];
@@ -66,10 +90,12 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
       attemptGeneratedAt:attempted?.generatedAt||null},
     monitor:{source:config?.source||null,stockCount:stocks.length,
       updatedAt:config?.updatedAt||null,exactSymbolParity:kvMatches===true,
+      formalSymbolsValid,monitorSymbolsValid,materialPlanParity:monitorMaterialParity===true,
       latestPlanDate:overview?.latestPlan?.scanDate||null},
     dailyPush:{exactSignalId:signalId,matchedOutboxRows:pushRows.length,
       outboxDeliveryState:pushRows[0]?.delivery_state||null,
       outboxSignalType:pushRows[0]?.signal_type||null,
+      outboxSignalTypeVerified:typedPushRow,
       outboxCreatedAt:pushRows[0]?.created_at||null,
       outboxUpdatedAt:pushRows[0]?.updated_at||null,
       outboxAcceptedAt:pushRows[0]?.accepted_at||null,
