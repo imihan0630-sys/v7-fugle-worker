@@ -22,7 +22,7 @@ async function cloud(path,method="GET",body=null){
 }
 async function select(databaseId,sql,params){
   if(sql!==CRON_SELECT&&sql!==LEASE_SELECT)throw Error("NOT_PREDECLARED_SELECT");
-  if(!/^SELECT\\b/.test(sql)||/\\b(INSERT|UPDATE|DELETE|DROP|CREATE|REPLACE|ALTER|VACUUM|ATTACH|PRAGMA)\\b/i.test(sql))
+  if(!/^SELECT\b/.test(sql)||/\b(INSERT|UPDATE|DELETE|DROP|CREATE|REPLACE|ALTER|VACUUM|ATTACH|PRAGMA)\b/i.test(sql))
     throw Error("NOT_SELECT_ONLY");
   if(++requests.select>2)throw Error("READ_QUERY_BUDGET");
   // Cloudflare REST transport is POST, strictly passing constant SELECT statements only.
