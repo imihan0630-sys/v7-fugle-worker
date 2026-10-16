@@ -89,7 +89,7 @@ export async function reconcileExdiv2330InputsV0_1({pre,ex,ca,provenance}={}){
   actualOriginalObservedBeforeCut:true,
   originalIssuerPublicationOnExDateProven:false,
   pricingReferenceOnlyNotA61DayAdjustment:true,
-  61DayAdjustedFeatureContinuityAudited:false,
+  '61DayAdjustedFeatureContinuityAudited':false,
   authoritativeNegativeNoEventProven:false,
   currentAsOfTradeabilityAudited:false,
   independentAuditLaneFullPITAccepted:false,
