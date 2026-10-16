@@ -88,3 +88,4 @@ jobs:
 # 2026-10-12 Cloudflare official D1 100 bound parameter limit: JSON1 single-parameter bulk fix owner re-entry.
 
 # 2026-10-14 owner explicit NOW trigger: push marker in merge title after same-day no-duplicate check.
+# 2026-10-16 owner explicit NOW authorizes one existing DEST-only A1 historical RAW_COPY entry; native same-UTC-day guard, four-writer mutex, 80k charged-row limit, and independent READBACK remain required. No alternate writer, no live Shadow/Frozen or System1 changes.
