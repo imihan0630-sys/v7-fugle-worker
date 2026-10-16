@@ -58,7 +58,7 @@ export function reconcileRealPhysicalPITCrossDomainV0_1({a1,cfi,ca}={}){
    cfi?.independent?.independentVerdict==="ACCEPTED_CURRENT_NATIVE_ORIGINAL_CLASS_ONLY"&&
    cfi?.nonPromotion?.ordinaryCommonShareAsOf20261014PITCertified===false&&
    cfi?.nonPromotion?.firstKnownAtHistoricalPublicationProof===false&&
-   cfi?.nonPromotion?.frozenD1Written===false,
+   cfi?.nonPromotion?.immutableFrozenD1Written===false,
    "CFI_PRIOR_DATE_CURRENT_ONLY_EVIDENCE_MISSING_OR_PROMOTED");
 
  truth(ca?.schemaVersion==="S2_M09_REAL_SIX_CA_NEGATIVE_EXPOSURE_20261015_V0_1"&&
