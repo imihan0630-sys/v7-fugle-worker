@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-17T06:08:29+08:00",
+  "updatedAt": "2026-10-17T07:46:16+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 47.9
+    "maturityWeightedPct": 48
   },
   "domains": [
     {
@@ -865,7 +865,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 17.6,
+      "maturityPct": 18.8,
       "modules": [
         {
           "id": "D07-01",
@@ -1094,13 +1094,13 @@
         {
           "id": "D07-25",
           "name": "Forensic Accounting Red Flags鑑識會計與財報紅旗",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Forensic Accounting Red Flags鑑識會計與財報紅旗」。研究企業財務、三表預測與鑑識會計。所有假設必須區分管理層指引、分析師估計與模型自建假設，保留 PIT（時點一致性）first-known（首次已知）時間、情境敏感度與財報品質反證，禁止用事後實績回填歷史預測。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "H05_BOUNDARY_CLOSED / STATEMENT_ANOMALY_OWNER / SHARED_RESTATEMENT_EVENT_RECEIPT / NO_MATURITY_PROMOTION",
-          "next": "依 H05 已關閉 ownership boundary 獨立深化 D07-25 statement-level forensic anomaly research：建立 anomaly combinations、PIT statement-vintage replay、金融業/產業別差異與 falsification；D21-10 audit/restatement/internal-control event 僅以 shared parent receipt 消費，不重複計票。H05 closure 本身不升成熟度。",
-          "evidence": " + shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md"
+          "levelMeaning": "機制與反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / STATEMENT_ANOMALY_CONJUNCTIONS_FROZEN / TAIWAN_PIT_REPLAY_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+          "next": "Collect original Taiwan general-industry statement-vintage receipts across >=2 sectors, including firstKnownAt/firstObservedAt, revision lineage, contract assets/receivables, inventory, CFO/payables and notes; falsify alternatives and prove increment over D07-07/D07-24 before L3.",
+          "evidence": " + shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md + research/d07_25_statement_anomaly_falsification_20261017.json"
         },
         {
           "id": "D07-26",
@@ -1193,10 +1193,10 @@
           "next": "建立MOPS/TWSE proposal→final→ex-date→payment append-only PIT replay，分離盈餘／保留盈餘／公積來源，驗證earnings/CFO coverage與削減／停發狀態；L3前必須有乾淨台灣PIT實體收據，金融機構另接D07-32。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D07_01_08_L3 / D07_02_07_09_11_34_L2 / ADVANCED_SUBMODULES_MIXED / D07_34_PAYOUT_SUSTAINABILITY_MECHANISM_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D07-34: build Taiwan MOPS/TWSE dividend-decision/source PIT replay before L3; D07 general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE; D07-11 analyst forecast source remains blocked. D08-03 historical valuation percentile history remains the active parallel Room-06 execution lane.",
-      "lastResearchUpdate": "2026-10-04T14:05:00+08:00",
-      "researchNote": "D07-34 advanced L0→L2 after mechanism, countermechanism, falsification, Taiwan-specific evidence context, decision role and anti-double-count ownership were frozen. No Taiwan historical proposal/final/source PIT replay yet, so L3 is not claimed."
+      "status": "ACTIVE_RESEARCH / D07_01_08_L3 / D07_02_07_09_11_34_L2 / ADVANCED_SUBMODULES_MIXED / D07_34_PAYOUT_SUSTAINABILITY_MECHANISM_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED / D07_25_L2_FALSIFICATION_FROZEN",
+      "exactNextContinuationPoint": "D07-34: build Taiwan MOPS/TWSE dividend-decision/source PIT replay before L3; D07 general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE; D07-11 analyst forecast source remains blocked. D08-03 historical valuation percentile history remains the active parallel Room-06 execution lane. D07-25: capture multi-sector statement-vintage PIT receipts and falsifying countercases; no outcome join.",
+      "lastResearchUpdate": "2026-10-17T07:46:16+08:00",
+      "researchNote": "D07-34 advanced L0→L2 after mechanism, countermechanism, falsification, Taiwan-specific evidence context, decision role and anti-double-count ownership were frozen. No Taiwan historical proposal/final/source PIT replay yet, so L3 is not claimed. D07-25 L0->L2 from four mechanism/countermechanism families, 12 synthetic fail-closed checks and IAS7/IFRS15/IAS8/IAS24 sources; not L3/PIT/OOS."
     },
     {
       "id": "D08",

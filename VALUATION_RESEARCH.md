@@ -711,3 +711,8 @@ Exact remaining pre-outcome gate:
 5. only then unlock the Historical-Valuation Shadow outcome join.
 
 D08-03 remains L3/60. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+
+
+## VAL-040 — Independent reconciliation of D08-03 completed 22-year manifest (2026-10-17)
+
+Canonical manifest `research/d08_twse_daily_valuation_archive_manifest_20261007_v0_1.json` already reports PASS for 2005-09-02 to 2026-08-31. Independently recomputed 22 annual totals: 5,163 trading dates, 4,431,868 rows, PE-known 3,539,591 (79.8668%), PB-known 4,430,143 (99.9611%); 892,277 PE missing and 1,725 PB missing. All 22 readbackVerified flags true. SHA-256 over the exact frozen annual canonical lines matches `540617710149de3713d2c8e574f90dc39c6800d87b19c0d95763eac78f0bae31`. This verifies manifest internal integrity but is not an independent R2 physical byte-readback in this run. Do not rerun completed archive years. Missing PE cause remains UNKNOWN and must not suppress PB or imply cheapness. Exact next: materialize 44 frozen outcome-blind percentile and control snapshots with raw-v0.2 crosscheck, per-date membership/UNKNOWN accounting and immutable hashes. TPEx machine history remains unverified. D08-03 L3 unchanged; outcomes CLOSED; Formal Core LOCKED.

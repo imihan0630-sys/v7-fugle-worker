@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "D07_25_STATEMENT_ANOMALY_FALSIFICATION_20261017",
+  "room": "06",
+  "domain": "D07",
+  "module": "D07-25",
+  "proposedLevel": "L2",
+  "researchOnly": true,
+  "outcomes": "CLOSED",
+  "formalCore": "LOCKED",
+  "sources": [
+    [
+      "IAS7",
+      "https://www.ifrs.org/issued-standards/list-of-standards/ias-7-statement-of-cash-flows/"
+    ],
+    [
+      "IFRS15",
+      "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ifrs-15-revenue-from-contracts-with-customers.pdf"
+    ],
+    [
+      "IAS8",
+      "https://www.ifrs.org/issued-standards/list-of-standards/ias-8-basis-of-preparation-of-financial-statements/"
+    ],
+    [
+      "IAS24",
+      "https://www.ifrs.org/issued-standards/list-of-standards/ias-24-related-party-disclosures/"
+    ]
+  ],
+  "hypotheses": [
+    {
+      "key": "H1",
+      "mechanism": "Revenue growth, receivables/contract assets growth and CFO lag may flag fragile earnings conversion.",
+      "counter": "Long-cycle projects, acquisitions, seasonality, billing terms.",
+      "alternative": "Project and contract mix.",
+      "kill": "No PIT comparable statements or no increment over D07-07 cash/accrual primitive."
+    },
+    {
+      "key": "H2",
+      "mechanism": "Inventory/receivables growing faster than sales with profit expansion may signal conversion stress.",
+      "counter": "Launch inventory, supply buffering, inflation.",
+      "alternative": "Capacity ramp.",
+      "kill": "Industry/policy mismatch or signal disappears after operating-cycle controls."
+    },
+    {
+      "key": "H3",
+      "mechanism": "High CFO from extending payables can reverse.",
+      "counter": "Sustainable payment-term optimization.",
+      "alternative": "Supplier finance, seasonal procurement.",
+      "kill": "Supplier finance/payables classification unknown."
+    },
+    {
+      "key": "H4",
+      "mechanism": "One-off gains and related-party balances may weaken recurring-profit comparability.",
+      "counter": "Genuine gains, legitimate disclosed related-party business.",
+      "alternative": "Asset recycling.",
+      "kill": "Missing notes or nonrecurring reconciliation."
+    }
+  ],
+  "PIT": {
+    "firstKnown": "firstKnownAt<=decisionTime; otherwise conservative firstObservedAt upper bound",
+    "revisions": "append-only; never backfill",
+    "missing": "UNKNOWN not BAD/0",
+    "scope": "GENERAL_INDUSTRY only pending financial-specialist semantics"
+  },
+  "antiDoubleCount": {
+    "primitives": "D07-07 accrual, D07-24 policy, D07-05 CFO; one root one vote",
+    "governance": "D21-10 owns audit/restatement/internal-control event; shared parent receipt"
+  },
+  "syntheticScenarios": [
+    [
+      "S01",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "REV_CONTRACT_ASSET",
+        "CFO_ACCRUAL"
+      ],
+      false,
+      "REVIEW_WITH_ALTERNATIVES"
+    ],
+    [
+      "S02",
+      "GENERAL_INDUSTRY",
+      false,
+      [
+        "CFO_ACCRUAL"
+      ],
+      false,
+      "UNKNOWN"
+    ],
+    [
+      "S03",
+      "BANK",
+      true,
+      [
+        "CFO_ACCRUAL"
+      ],
+      false,
+      "SECTOR_SPECIFIC_REQUIRED"
+    ],
+    [
+      "S04",
+      "GENERAL_INDUSTRY",
+      true,
+      [],
+      true,
+      "GOVERNANCE_ONLY"
+    ],
+    [
+      "S05",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "REV_CONTRACT_ASSET"
+      ],
+      false,
+      "REVIEW_WITH_ALTERNATIVES"
+    ],
+    [
+      "S06",
+      "GENERAL_INDUSTRY",
+      true,
+      [],
+      false,
+      "NO_OBSERVED_ANOMALY"
+    ],
+    [
+      "S07",
+      "INSURANCE",
+      true,
+      [
+        "INVENTORY_SALES"
+      ],
+      false,
+      "SECTOR_SPECIFIC_REQUIRED"
+    ],
+    [
+      "S08",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "PAYABLES_CFO"
+      ],
+      false,
+      "REVIEW_WITH_ALTERNATIVES"
+    ],
+    [
+      "S09",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "ONE_OFF_GAIN"
+      ],
+      true,
+      "REVIEW_WITH_ALTERNATIVES"
+    ],
+    [
+      "S10",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "RELATED_PARTY"
+      ],
+      false,
+      "REVIEW_WITH_ALTERNATIVES"
+    ],
+    [
+      "S11",
+      "GENERAL_INDUSTRY",
+      null,
+      [
+        "INVENTORY_SALES"
+      ],
+      false,
+      "UNKNOWN"
+    ],
+    [
+      "S12",
+      "GENERAL_INDUSTRY",
+      true,
+      [
+        "INVENTORY_SALES",
+        "MARGIN"
+      ],
+      false,
+      "REVIEW_WITH_ALTERNATIVES"
+    ]
+  ],
+  "deterministicChecks": {
+    "count": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "validity": {
+    "actualTaiwanPit": "UNKNOWN",
+    "OOS": "NOT_RUN",
+    "walkForward": "NOT_RUN",
+    "selectionBias": "synthetic only",
+    "lookAhead": "prohibited",
+    "dataSnooping": "no return-tuned thresholds",
+    "multipleTesting": "4 hypotheses registered",
+    "overfitting": "no fitted parameters",
+    "factorRedundancy": "controls required",
+    "sampleSize": "0 issuer observations",
+    "eventClustering": "filing date/issuer",
+    "accountingRevisions": "vintages separate",
+    "corporateActions": "acquisitions and consolidation scope tagged",
+    "costs": "UNKNOWN",
+    "liquidity": "UNKNOWN",
+    "marketRegime": "UNKNOWN"
+  },
+  "D08ArchiveAudit": {
+    "manifest": "research/d08_twse_daily_valuation_archive_manifest_20261007_v0_1.json",
+    "years": 22,
+    "tradingDates": 5163,
+    "rows": 4431868,
+    "peKnown": 3539591,
+    "pbKnown": 4430143,
+    "hash": "540617710149de3713d2c8e574f90dc39c6800d87b19c0d95763eac78f0bae31",
+    "verified": "year totals, readback flags and canonical bundle hash recomputed; actual R2 byte readback not performed in this run",
+    "next": "44 outcome-blind percentile and control snapshots; no return join"
+  },
+  "next": "Capture actual Taiwan industrial statement vintages in at least two sectors with official timestamps, financial note semantics and append-only correction lineage; falsify each hypothesis and residualize against existing primitives before L3."
+}
