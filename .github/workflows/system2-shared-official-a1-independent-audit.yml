@@ -239,7 +239,7 @@ jobs:
         if: success() && github.event_name == 'workflow_run'
         continue-on-error: true
         env:
-          GITHUB_TOKEN: \${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           node --check system2/scripts/audit_a1_ten_session_reliability_v0_1.mjs
@@ -256,7 +256,7 @@ jobs:
         if: always() && github.event_name == 'workflow_run'
         uses: actions/upload-artifact@v4
         with:
-          name: s2-a1-ten-session-cron-reliability-\${{ github.run_id }}
+          name: s2-a1-ten-session-cron-reliability-${{ github.run_id }}
           path: /tmp/s2-a1-ten-session-schedule-reliability/ten-session-rollup.json
           retention-days: 90
           if-no-files-found: warn
