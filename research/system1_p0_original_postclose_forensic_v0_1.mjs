@@ -28,6 +28,8 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
     scan.stocks.every(expected=>stocks.some(x=>String(x.symbol)===String(expected.symbol)));
   const signalId="DAILY_SELECTION:"+date;
   const pushRows=Array.isArray(outbox?.recent)?outbox.recent.filter(x=>x.signal_id===signalId):[];
+  const orphanPush=outbox?.configured===true&&pushRows.length===1&&
+    pushRows[0]?.delivery_state==="ACCEPTED"&&!scanCompleted;
   const pushAccepted=outbox?.configured===true&&outbox?.readError!==true&&pushRows.length===1&&
     pushRows[0]?.delivery_state==="ACCEPTED"&&scan?.dailyReport?.signalId===signalId&&
     scan?.dailyReport?.sent===true&&scan?.dailyReport?.simulated===false;
@@ -40,11 +42,12 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
   else if(scanCompleted&&kvMatches&&pushAccepted)verdict="FORMAL_PRIMARY_KV_AND_PUSH_ACCEPTED_NOT_HANDSET";
   else if(scanCompleted&&!kvMatches)verdict="FORMAL_SAVED_BUT_PRIMARY_KV_MISMATCH";
   else if(scanCompleted&&!pushAccepted)verdict="FORMAL_SAVED_BUT_DAILY_PUSH_UNVERIFIED";
+  else if(orphanPush)verdict="DAILY_OUTBOX_ACCEPTED_WITHOUT_FORMAL_RECORD";
   else if(attemptStatus==="FAILED")verdict="ORIGINAL_FORMAL_LAST_ATTEMPT_FAILED";
   else if(config?.updatedAt&&!scanCompleted&&stocks.length===0)verdict="EMPTY_PRIMARY_KV_WITHOUT_CONFIRMED_FORMAL";
   else if(!scanCompleted)verdict="FORMAL_SCAN_MISSING_OR_UNVERIFIED";
   return {
-    schema:"S1_P0_ORIGINAL_POSTCLOSE_GET_FORENSIC_V0_1",
+    schema:"S1_P0_ORIGINAL_POSTCLOSE_GET_FORENSIC_V0_2",
     date,observedAt:observedAt||null,verdict,complete:verdict==="FORMAL_PRIMARY_KV_AND_PUSH_ACCEPTED_NOT_HANDSET",
     version:version?.version||overview?.version||null,workerCronExpected:cron?.expected||null,
     actualCron:{observedFormalCron,visibleRows:recent.length,
@@ -63,7 +66,13 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
       latestPlanDate:overview?.latestPlan?.scanDate||null},
     dailyPush:{exactSignalId:signalId,matchedOutboxRows:pushRows.length,
       outboxDeliveryState:pushRows[0]?.delivery_state||null,
-      accepted:pushAccepted,phoneReceiptProven:false},
+      outboxSignalType:pushRows[0]?.signal_type||null,
+      outboxCreatedAt:pushRows[0]?.created_at||null,
+      outboxUpdatedAt:pushRows[0]?.updated_at||null,
+      outboxAcceptedAt:pushRows[0]?.accepted_at||null,
+      outboxHttpStatus:pushRows[0]?.http_status??null,
+      accepted:pushAccepted,acceptedWithoutFormalRecord:orphanPush===true,
+      phoneReceiptProven:false},
     readErrors:getErrors,diagnosticOnly:true,zeroSelectionNotInferred:!scanCompleted,
     noBusinessPOST:true,noWorkerWrite:true,noD1Write:true,noKVWrite:true,noPush:true,noTrade:true
   };
