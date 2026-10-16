@@ -244,7 +244,7 @@ if(process.argv[1]?.endsWith('/issue1068_pita_2330_61_native_source_readback_v0_
    JSON.stringify(r,null,2)+'\n',{flag:'wx',mode:0o600});
  console.log(JSON.stringify({
    status:r.status,marketDate:r.marketDate,
-   2330_originalSourceDays:r.originalNativeDaysRehashed,
+   '2330_originalSourceDays':r.originalNativeDaysRehashed,
    originalCurrentAsOfUtc:r.actualNewSourceCapturedAtUtc,
    originalReceiptHash:r.receiptHash,
    historicalCfiPIT:false,completeCA:false,fullPIT:false,
