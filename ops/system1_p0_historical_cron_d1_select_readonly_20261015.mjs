@@ -30,7 +30,8 @@ async function select(databaseId,sql,params){
   if(!Array.isArray(result)||result.length!==1||result[0]?.success!==true||
      !Array.isArray(result[0].results))throw Error("D1_SELECT_RECEIPT_UNVERIFIED");
   const meta=result[0].meta||{};
-  const written=Number(meta.rows_written??0),read=Number(meta.rows_read??result[0].results.length);
+  if(!Object.prototype.hasOwnProperty.call(meta,"rows_written"))throw Error("D1_ROWS_WRITTEN_WITNESS_MISSING");
+  const written=Number(meta.rows_written),read=Number(meta.rows_read??result[0].results.length);
   if(!Number.isFinite(written)||written!==0||!Number.isFinite(read)||read<0)
     throw Error("D1_SELECT_WRITE_OR_METRICS_UNVERIFIED");
   requests.rowsWritten+=written;
