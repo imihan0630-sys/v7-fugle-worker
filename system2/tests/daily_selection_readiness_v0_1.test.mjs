@@ -199,7 +199,7 @@ test('a source-blocked 121/122 cannot manufacture either PIT count or zero-picke
  assert.equal(r.selectedCount,null);
 });
 test('re-signed INCOMPLETE without auditable reasons must fail closed',async()=>{
- for(const reasons of [[],[''],[' PIT_UNKNOWN'],['PIT_UNKNOWN '],['PIT_UNKNOWN\\nMISLEADING']]){
+ for(const reasons of [[],[''],[' PIT_UNKNOWN'],['PIT_UNKNOWN '],['PIT_UNKNOWN'+String.fromCharCode(10)+'MISLEADING']]){
   const b=await ready();
   b.evaluation.evaluation.observations[0].reasonCodes=reasons;
   await resignStage1(b);
