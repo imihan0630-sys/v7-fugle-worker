@@ -1,0 +1,64 @@
+name: System1 P0 Original Postclose Forensic (GET ONLY)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-original-postclose-forensic.yml"
+      - "research/system1_p0_original_postclose_forensic_v0_1.mjs"
+      - "tests/system1_p0_original_postclose_forensic_readonly.mjs"
+      - "tests/test_system1_p0_original_postclose_forensic_v0_1.mjs"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system1-p0-original-postclose-forensic.yml"
+      - "research/system1_p0_original_postclose_forensic_v0_1.mjs"
+      - "tests/system1_p0_original_postclose_forensic_readonly.mjs"
+      - "tests/test_system1_p0_original_postclose_forensic_v0_1.mjs"
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: "Read-only incident date YYYY-MM-DD (empty uses Oct15 2026)"
+        type: string
+        required: false
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-forensic-readonly
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Pure offline safety and forensic schema tests (no credentials)
+        run: |
+          node --check research/system1_p0_original_postclose_forensic_v0_1.mjs
+          node --check tests/system1_p0_original_postclose_forensic_readonly.mjs
+          node tests/test_system1_p0_original_postclose_forensic_v0_1.mjs
+  production_get:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      S1_P0_TARGET_DATE: '2026-10-15'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read original Formal Cron, attempt, primary KV and push (GET ONLY, never replay)
+        env:
+          S1_P0_TARGET_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.target_date || '2026-10-15' }}
+        run: node tests/system1_p0_original_postclose_forensic_readonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-original-forensic-${{ github.run_id }}
+          path: artifacts/system1-p0-original-postclose-forensic-*.json
+          if-no-files-found: warn
+          retention-days: 45
