@@ -28,6 +28,12 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
   stage1AdmissionHash:bridge.evaluation?.admissionHash??null,
   stage1EvaluationHash:bridge.evaluation?.evaluationHash??null,
   ordinaryUniverseCount:null,
+  // Source four-digit membership is NOT a positively certified common-share class.
+  // Stage1 local PIT input passes are research-only, never a formal audit signoff.
+  sourceInstrumentUniverseKind:'FOUR_DIGIT_SOURCE_MEMBERSHIP_NOT_CLASS_CERTIFIED',
+  formallyPITCertifiedUniverseCount:null,
+  stage1PitInputPassedCount:null,stage1PitInputUnknownCount:null,
+  perMarketPITInputCounts:null,
   assessedCount:null,incompleteCount:null,watchCount:null,rejectedCount:null,
   qualifiedNotSelectedCount:null,
   qualifiedUnrankedResearchRows:[],
@@ -107,6 +113,12 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
   bad('SOURCE_DENOMINATOR_MISMATCH');
  const observed=new Set(),counts={INCOMPLETE:0,REJECTED:0,WATCH:0,QUALIFIED_NOT_SELECTED:0};
  const reasons=new Map(),qualified=[];
+ const perMarket={
+  TWSE:{sourceCount:0,stage1PitInputPassed:0,stage1PitInputUnknown:0,
+        rejected:0,watch:0,qualifiedNotSelected:0},
+  TPEX:{sourceCount:0,stage1PitInputPassed:0,stage1PitInputUnknown:0,
+        rejected:0,watch:0,qualifiedNotSelected:0},
+ };
  for(const row of e.observations){
   const original=sourceRows.get(row?.symbol);
   if(!original||observed.has(row.symbol)||!states.has(row.state))
@@ -118,6 +130,13 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
        ?original.close:null))
     bad('STAGE1_SOURCE_ROW_LINEAGE_INVALID');
   observed.add(row.symbol);counts[row.state]++;
+  const venue=perMarket[original.market];
+  venue.sourceCount++;
+  if(row.state==='INCOMPLETE')venue.stage1PitInputUnknown++;
+  else venue.stage1PitInputPassed++;
+  if(row.state==='REJECTED')venue.rejected++;
+  if(row.state==='WATCH')venue.watch++;
+  if(row.state==='QUALIFIED_NOT_SELECTED')venue.qualifiedNotSelected++;
   if(row.state==='QUALIFIED_NOT_SELECTED'){
    if(row.strategyValidity!=='VALID'||row.entryReadiness!=='BUY_ELIGIBLE'||
       !HASH.test(row.factorsHash||'')||!HASH.test(row.assessmentHash||''))
@@ -128,7 +147,13 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
     classification:'QUALIFIED_RESEARCH_NOT_SELECTED',
     rank:null,triggerPrice:null,stop:null,targets:null});
   } else if(row.state==='INCOMPLETE'){
-   for(const code of new Set(row.reasonCodes||[]))
+   // Incomplete MUST have a traceable reason; a silently empty UNKNOWN bucket
+   // hides the exact PIT family DATA must deliver and misleads M09 reporting.
+   if(!Array.isArray(row.reasonCodes)||row.reasonCodes.length===0||
+      row.reasonCodes.some(code=>typeof code!=='string'||code.length===0||
+        code.length>256||code.trim()!==code||/[\r\n]/.test(code)))
+     bad('INCOMPLETE_REASON_MISSING_OR_INVALID');
+   for(const code of new Set(row.reasonCodes))
      reasons.set(code,(reasons.get(code)||0)+1);
   }
  }
@@ -150,6 +175,10 @@ export async function buildDailySelectionReadinessReceiptV0_1({bridge,runId=null
   assessedCount:e.assessedCount,incompleteCount:counts.INCOMPLETE,
   watchCount:counts.WATCH,rejectedCount:counts.REJECTED,
   qualifiedNotSelectedCount:counts.QUALIFIED_NOT_SELECTED,
+  // Only locally verified Stage1 assessor inputs, NOT formal full-universe PIT.
+  stage1PitInputPassedCount:e.assessedCount,
+  stage1PitInputUnknownCount:counts.INCOMPLETE,
+  perMarketPITInputCounts:perMarket,
   qualifiedUnrankedResearchRows:qualified,
   unresolvedReasonCounts:[...reasons].map(([code,count])=>({code,count}))
     .sort((a,b)=>b.count-a.count||a.code.localeCompare(b.code)),
