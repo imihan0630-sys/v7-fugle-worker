@@ -5,6 +5,12 @@ on:
     - cron: '10 5 * * 1-5'
     - cron: '55 15 * * 1-5'
   workflow_dispatch:
+  # Physical official-market sync may finish hours after the 18:10 Worker Cron;
+  # emit a GET-only failure receipt immediately after a genuine source run.
+  workflow_run:
+    workflows:
+      - "V7 Official Market Data Sync"
+    types: [completed]
 permissions:
   contents: read
 concurrency:
@@ -12,6 +18,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   verify:
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -28,3 +35,47 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/scheduled_health.mjs --after-market
+
+      # GitHub scheduled 23:55 Taipei may execute after midnight. The existing
+      # health step skips in that case and marks its job green without checking
+      # yesterday's Formal scan. This independent GET-only check freezes the
+      # actual intended session and raises a failing job on missing Formal/outbox.
+      - name: Verify previous session Formal scan and monitor delivery (GET ONLY)
+        if: always() && github.event.schedule == '55 15 * * 1-5'
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/system1_overnight_formal_delivery_getonly.mjs
+      - name: Publish independent overnight failure receipt
+        if: always() && github.event.schedule == '55 15 * * 1-5'
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-overnight-formal-delivery-${{ github.run_id }}
+          path: artifacts/system1-overnight-formal-delivery-getonly.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  source_ready_formal_handoff:
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'schedule' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify newly ready official source -> Formal plan -> monitor outbox (GET ONLY)
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/system1_overnight_formal_delivery_getonly.mjs --source-ready-handoff
+      - name: Preserve missing Formal or delivery evidence even on check failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-source-ready-formal-handoff-${{ github.run_id }}
+          path: artifacts/system1-source-ready-formal-handoff-getonly.json
+          if-no-files-found: warn
+          retention-days: 30
