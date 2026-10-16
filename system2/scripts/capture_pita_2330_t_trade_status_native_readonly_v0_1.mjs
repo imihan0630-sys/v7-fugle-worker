@@ -98,7 +98,7 @@ function parseTwTaWuJsonRowsSafe(bytes){
 
 export async function capturePita2330TradeStatusOriginalV0_1({
  now=()=>new Date(),fetchImpl=globalThis.fetch,
- readA1NativeOriginal,persistNative
+ readA1NativeOriginal,persistNative,expectedA1NativeIdentity=null
 }={}){
  if(typeof now!=='function'||typeof fetchImpl!=='function'||
     typeof readA1NativeOriginal!=='function'||typeof persistNative!=='function')
@@ -110,7 +110,11 @@ export async function capturePita2330TradeStatusOriginalV0_1({
  let raw;
  try{raw=Buffer.from(await readA1NativeOriginal())}
  catch{fail('EXISTING_REAL_A1_ORIGINAL_UNREADABLE')}
- if(sha(raw)!==SRC||raw.length!==246183)
+ const expected=expectedA1NativeIdentity||{sha256:SRC,bytes:246183,rows:1086};
+ if(!/^[a-f0-9]{64}$/.test(expected.sha256||'')||
+    !Number.isInteger(expected.bytes)||expected.bytes<200||
+    !Number.isInteger(expected.rows)||expected.rows<500||
+    sha(raw)!==expected.sha256||raw.length!==expected.bytes)
    fail('EXISTING_REAL_A1_ORIGINAL_SHA_INVALID');
  let a1;
  try{
@@ -122,7 +126,7 @@ export async function capturePita2330TradeStatusOriginalV0_1({
  }catch{fail('A1_NATIVE_DATE_PARSER_INVALID')}
  const matched=a1.rows.filter(x=>x.symbol==='2330');
  if(a1.state!=='READY'||a1.sourceDateEvidence!==DAY||
-   matched.length!==1||a1.rows.length!==1086||
+   matched.length!==1||a1.rows.length!==expected.rows||
    !(matched[0].volumeShares>0&&matched[0].transactions>0&&
      matched[0].tradeValue>0))
    fail('A1_2330_ACTUAL_T_SESSION_TRADES_UNVERIFIED');
@@ -157,7 +161,7 @@ export async function capturePita2330TradeStatusOriginalV0_1({
   issuerSuspensionAndReinstatementComplete:false,
   authoritativeNegativeNoSuspensionCertified:false,
   sourceOnlyEvidencePositive:true,
-  dataOnlySourceWitness:false,
+  dataOnlySourceWitness:true,
   selectionAuthorized:false,pitEligible:false,selectedCount:null,zeroPickDay:null,
   frozenD1Written:false,cloudflareD1Writes:0,cloudflareR2Writes:0,
   system1FormalCoreChanged:false,
