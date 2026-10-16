@@ -1,0 +1,76 @@
+name: System2 BUILD PIT-A 2330 Actual 61 A1 Source Consumer (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/pit_a_2330_real_a1_source_consumer_v0_1.mjs"
+      - "system2/tests/pit_a_2330_real_a1_source_consumer_v0_1.test.mjs"
+      - ".github/workflows/system2-build-pita-2330-real-source-consumer.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/pit_a_2330_real_a1_source_consumer_v0_1.mjs"
+      - "system2/tests/pit_a_2330_real_a1_source_consumer_v0_1.test.mjs"
+      - ".github/workflows/system2-build-pita-2330-real-source-consumer.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-build-pita-2330-a1-original-readonly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify_readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Resolve immutable DATA 61 native source-only artifact by exact run ID
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38909454291
+          name: s2-pita-2330-61-native-source-readback-38909454291-1
+          path: /tmp/build-pita-data-native
+          github-token: ${{ github.token }}
+      - name: Read REAL original DATA receipt; enforce source-only and every adversarial no-promotion test
+        env:
+          S2_BUILD_PITA_REAL_DATA_RECEIPT: /tmp/build-pita-data-native/sourceonly-2330-61-native-verdict.json
+        run: |
+          set -euo pipefail
+          test -s "$S2_BUILD_PITA_REAL_DATA_RECEIPT"
+          node --check system2/runtime/pit_a_2330_real_a1_source_consumer_v0_1.mjs
+          node --test system2/tests/pit_a_2330_real_a1_source_consumer_v0_1.test.mjs
+          mkdir -p /tmp/build-pita-readiness
+          node system2/runtime/pit_a_2330_real_a1_source_consumer_v0_1.mjs "$S2_BUILD_PITA_REAL_DATA_RECEIPT" > /tmp/build-pita-readiness/pita-2330-a1-source-only-readiness.json
+          R=/tmp/build-pita-readiness/pita-2330-a1-source-only-readiness.json
+          test "$(jq -r .a1OriginalTradingDaysAccepted "$R")" = '61'
+          test "$(jq -r .currentSymbolFullPITAcceptedCount "$R")" = '0'
+          test "$(jq -r .currentSymbolUnresolvedCount "$R")" = '1'
+          test "$(jq -r .fullUniverseOrdinaryShareCount "$R")" = 'null'
+          test "$(jq -r .fullUniversePITUnknownCount "$R")" = 'null'
+          test "$(jq -r .stage1EvaluationAuthorized "$R")" = 'false'
+          test "$(jq -r .stage1ActuallyAssessedCount "$R")" = 'null'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "BUILD_PITA_2330_REAL_DATA_SOURCE_61_OF_61_PASS__CFI_CA_AUDIT_UNKNOWN; NO_SELECTED_ZERO_PICK_FROZEN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain hash-bound BUILD readiness receipt, never Frozen / selection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-build-pita-2330-a1-sourceonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/build-pita-readiness/
+          if-no-files-found: ignore
+          retention-days: 90
+      - name: Verify protected runtime isolation
+        if: always()
+        run: |
+          echo "READ ONLY ONLY: historical PIT-B not used as PIT-A; no DATA native GET; no Cloudflare D1/R2, Worker/Cron, System1 Formal, stage1 rank, Shadow, Frozen or live trading." >> "$GITHUB_STEP_SUMMARY"
