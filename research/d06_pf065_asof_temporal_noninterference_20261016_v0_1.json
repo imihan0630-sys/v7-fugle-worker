@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "D06_PF065_V0_1",
+  "date": "2026-10-16",
+  "room": "05｜法人與籌碼研究室",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "finding": "PF064 candidate as-of selector can change an earlier valid ADMITTED result to UNKNOWN if a malformed future-captured record is appended. A deterministic synthetic counterexample reproduces this. Future rows must not retroactively alter an earlier as-of decision.",
+  "fix": "Partition records by trustworthy capturedAt relative to decisionAt before validating historical in-scope rows; unplaceable capture clocks remain UNKNOWN. Require immutable raw artifacts for promotion-grade receipts.",
+  "syntheticChecks": {
+    "count": 44,
+    "passed": 44,
+    "failed": 0
+  },
+  "marketOutcomes": 0,
+  "formalMaturityChange": "NONE",
+  "next": "Obtain immutable original PCF receipts; integrate into D06 dedicated checkpoint; keep outcomes closed."
+}
