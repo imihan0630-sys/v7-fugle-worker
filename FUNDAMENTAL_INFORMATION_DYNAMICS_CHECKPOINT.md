@@ -570,3 +570,9 @@ Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PEN
 - PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, overruns, impairments and realized returns append as later vintages/outcomes only.
 - Maturity: **L0/0 -> L2/40**. L3 remains blocked pending at least two Taiwan-listed issuers from materially different industries with project-level PIT replay and an explicit D07-19 vs D21-07 divergent case.
 - Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-17 Room06 checkpoint delta
+D07-25 four falsification hypotheses, 12 synthetic cases; see research/d07_25_statement_anomaly_falsification_20261017.json. Taiwan PIT not yet proven.
+D08-03 archive manifest PASS (22 years; 5,163 dates); next 44 frozen percentile/control snapshots, no return join. Older PR588 pending pointer superseded.
+Formal Core locked.
