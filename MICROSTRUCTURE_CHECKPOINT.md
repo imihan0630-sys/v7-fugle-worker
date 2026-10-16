@@ -1018,3 +1018,11 @@ D05:
 2. D05-L4-W1-02: do not count 2026-10-05 as a C3-derived D05 Wave-1 date. First verify the next scheduled C1/C2 evidence run produces a genuine C1 generation and successful C3 registration for the following official trading session; only then begin quote/depth/liquidity parent counting.
 3. Route FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND remediation to the existing System1 evidence-capture engineering owner if repair is required; Room04 does not patch production/runtime from this research checkpoint.
 4. No L4 maturity promotion yet; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## 2026-10-16 17:31 — Room04 C3 session-edge causal-clock audit
+- Research branch receipt: `research/ROOM04_SESSION_EDGE_CHECKPOINT_20261016.md`.
+- C3 schedules 17 points, 09:00–13:00; TWSE closing auction 13:25–13:30 has no scheduled C3 point. This does not prove other sources lack closing data.
+- A D05 13:00 parent cannot consume a same-date completed D04 daily bar as a causal input. The 13:00 quote is 30 minutes old at ordinary 13:30 close, not automatically executable then.
+- Forty local contract/synthetic checks passed; genuine source receipts, C1/C2/C3 parent counts and L4 evidence remain UNKNOWN. No maturity change, no Formal mutation.
+- Exact next: audit genuine post-freeze C1/C2/C3 source receipts, scheduled versus observed slots, source first-known clocks and common support before outcomes; preserve D16 dependence gate.
