@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "D06_PF065_CONTINUATION_V0_1",
+  "createdAt": "2026-10-16T11:15:00+08:00",
+  "baseMain": "2feacdb63c741e7ba10546f2422eeffd25170998",
+  "room": "05｜法人與籌碼研究室",
+  "current": "PF065",
+  "completed": "PF064 temporal non-interference counterexample reproduced; 44 synthetic tests passed; source 0050 new date snippet classified context-only",
+  "research": "research/d06_pf065_asof_temporal_noninterference_20261016_v0_1.json",
+  "prior": "research/d06_pf064_continuation_checkpoint_20261016_v0_1.json",
+  "blocker": "Existing PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md update and complete PF064 research copy blocked by safety checks",
+  "next": "Safe reviewed integration of PF064 and PF065 into dedicated checkpoint; immutable original PCF capture and first-known proof; D16 OOS preregistration before outcomes; new TDCC sourceDate >2026-10-08.",
+  "maturity": {
+    "D06": 55.6,
+    "overall": 47.9
+  },
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED"
+}
