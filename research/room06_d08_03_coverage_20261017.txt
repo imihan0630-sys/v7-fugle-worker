@@ -1,0 +1,1 @@
+D08-03 archive 4,431,868 rows. PE known 3,539,591 (79.8668%), unknown 892,277. PB known 4,430,143 (99.9611%), unknown 1,725. Missingness cause UNKNOWN. No return join.
