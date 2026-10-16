@@ -16,6 +16,14 @@ export const CROSS_DOMAIN_PHYSICAL_WITNESSES_V0_1=immutable({
  originalCFIIndependentAuditRun:38671545058,
  originalCAPhysicalRun:38654564377,
  originalCAIndependentReplayRun:38655538159,
+ caNativeSixOriginalBodyHashes:immutable([
+  "6f4a042e85be5611b97f82e1a8252e00a9863f3feca8d27443f875e2b0e943a1",
+  "29de86613105bb399949eb99477fc5ba2e5f3299aa88830effb992d2185cd2a4",
+  "1e70f477788f19b159215badd28972a298df9bed43d0828d3cc8cb6c37466479",
+  "648126a229c20f3b173116985d55460f31b6be0a44f58f06d81cb8bb4bbf1356",
+  "11d941131ba516cc5deba9581f9cb4cdd53658da548c669fe88664bcf5637aec",
+  "4f6527e9516e3faf504a49d71a21693a2645ced17a3fc9500e9caac18ab1a2a5"
+ ]),
  cfiSourceForPriorPreviewHash:"d55fadd02407d6f0939621abb9b0e415c99cdd077abc5a983d26c544c6319f23",
  cfiOriginalIndependentAuditHash:"d93e00a2a2f0d83e0eccd40679d257a445132c8f5892dc8d689924a9abb8ee48",
  previousCAObservedMarketDate:"2026-10-14",
@@ -87,8 +95,9 @@ export function reconcileRealPhysicalPITCrossDomainV0_1({a1,cfi,ca}={}){
      x.sourceFamily==="EX_RIGHT_DIVIDEND_ACTUAL"&&x.historicalReplayPITCertified===false),
    "CA_KNOWN_EVENT_ROW_LINEAGE_INVALID");
  truth(ca.sixCaNativeOriginals.lanes.length===6&&
-   ca.sixCaNativeOriginals.lanes.every(x=>hex(x.originalSha256)&&x.originalShaRehashMatched===true&&
-      x.nativeDateRangeVerified===true),
+   ca.sixCaNativeOriginals.lanes.every((x,i)=>hex(x.originalSha256)&&
+      x.originalSha256===w.caNativeSixOriginalBodyHashes[i]&&
+      x.originalShaRehashMatched===true&&x.nativeDateRangeVerified===true),
    "CA_SIX_NATIVE_ORIGINALS_INVALID");
  const priorSourceSame=cfi.thirtyPreview.originalA1SourceReceiptHash===ca.originalA1Window.sourceReceiptSha256;
  const nativeCFIAtCorrectDate=cfi.sourceMarketDate===a1.sourceScope.originalMarketDate;
