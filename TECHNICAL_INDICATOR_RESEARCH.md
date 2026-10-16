@@ -4348,3 +4348,34 @@ Artifacts: `research/D03_SOURCE_LINKED_IDENTITY_DIGEST_VS_FULL_PAYLOAD_PARITY_20
 ### 精確續接點
 
 取得同一真正新決策日、同一 1,935 檔集合的 effective-dated ordinary-common-share identity，以及逐檔六類公司行動修正／撤回／停牌／無事件原始版本鏈；之後建立 RAW_MECHANICS_ONLY、IDENTITY_BLOCKED、CONTINUITY_BLOCKED、CURRENT_RESEARCH_ELIGIBLE 四態資格表，先執行 outcome-blind 重播、prefix invariance 與 ADX full-state 驗證，再等待完整 prospective parents。成熟度維持 56.7%，不升級。
+
+
+## 2026-10-16 — TI-1993～TI-2012：來源原生／目的端搬遷雙分母防火牆
+
+### 本輪權威事實
+- 來源原生資料：122 個檔案／配對、1,935 個視窗、每視窗 61 個交易日，共 118,035 筆；具原始載荷，僅准用於研究切點下的結果盲化公式機械檢查。
+- 目的端搬遷資料：舊封存總數 84,688 筆，已實體搬遷 59,311 筆，尚餘 25,377 筆；獨立唯讀重播只證明 `bar_id/bar_hash/source_row_hash/batch_id` 四欄身分一致，未證明原始 OHLCV 載荷逐位元一致。
+- 兩組資料屬不同母體：禁止以 59,311 ÷ 118,035 當覆蓋率，禁止直接聯集／串接，禁止互相替代。
+- 目的端要升為指標公式輸入，仍須：全量搬遷、同母體精確鍵集合、原始載荷一致、逐股票精確 61 日覆蓋與連續性全部通過。
+- 目的端 Frozen 為 0 不代表零選股；在歷史輸入、PIT、資格與選股執行完成前，必須視為「尚未建立」。
+- 同日第二個高寫入者會超過所有者額度，故本輪不重複搬遷；D03 遵守永久分工，只消費 DATA 與 BUILD 證據。
+
+### 判例與反證
+- 新增 TI-1993～TI-2012 共 20 個可執行判例，通過 20/20。
+- 覆蓋：來源配對／分母錯誤、目的端總數／身分／載荷／逐股票交易日／連續性、同日寫入阻擋、假零選股、跨母體比例／聯集／鍵集合／載荷阻擋、歷史輸入但無 Frozen、因子冗餘，以及研究候選上限。
+- 支持：來源原生載荷足以進行結果盲化公式機械檢查；目的端 59,311 筆四欄身分已獨立核對。
+- 反證：目的端仍缺 25,377 筆，且未證明原始載荷一致，不能宣稱完整指標窗口。
+- 替代解釋：總筆數一致仍可能掩蓋股票／日期缺口；四欄身分一致仍可能與 OHLCV 載荷差異並存；Frozen 空集合可能只是流程尚未建立。
+- 失效條件：停牌、漲跌停、除權息／公司行動污染、非精確交易日、跨母體混算、現行 CFI/CA 被誤當歷史 PIT、與原始價格或既有 System 1／System 2 因子冗餘。
+
+### 治理結論
+- `Formal Core`：永久鎖定，未變更。
+- 結果、樣本外、滾動前推、交易成本、可成交性與報酬增量：仍未開啟，記為 UNKNOWN。
+- 成熟度：維持 56.7%，本輪未升級。
+- `FORMAL_OPTIMIZATION_CANDIDATE`：不成立。
+- 研究檔：`research/D03_SOURCE_NATIVE_VS_DEST_MIGRATION_DUAL_DENOMINATOR_FIREWALL_20261016_V0_1.md`
+- 判例：`research/d03_source_native_dest_migration_dual_denominator_cases_20261016_v0_1.json`
+- 執行器：`research/test_d03_source_native_dest_migration_dual_denominator_v0_1.mjs`
+
+### 精確下一續接點
+消費 DATA 下一份同日期 CFI/CA 交接，不重複擷取來源；持續嚴格分離來源原生 118,035 筆與目的端 59,311／84,688 筆。只有在目的端全量搬遷、同母體精確鍵集合與原始載荷一致後，才建立逐股票精確交易日與連續性資格；否則只使用來源原生資料推進結果盲化公式機械檢查，不開啟結果。
