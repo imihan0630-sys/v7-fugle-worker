@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_DATA_NATIVE_CFI_ORIGINAL_PHYSICAL_20261016_V0_1",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "sourceRunId": 38877240888,
+  "sourceJobId": 116895126444,
+  "sourceHeadSha": "3e2163a53246413d602348195759e4571fbcf71f",
+  "originalArtifactId": 12035548392,
+  "originalArtifactZipBytes": 4028,
+  "originalArtifactZipSha256": "ba8cdf18fe6d3b8f7c0ad8c260b3b901c596a5393b4979486f303bc1a35ac8ad",
+  "originalReceiptJsonBytes": 4442,
+  "originalReceiptJsonSha256": "cee884afcb12647493d16a1bd2448da4b8114af4a036afc3b7942affc5ffe336",
+  "originalReceiptHash": "edd887dfd415962221aabfd88ef88e548a55e19fb041094c4d3cc8f3ec683e7e",
+  "sourceOriginals": [
+    {
+      "market": "TWSE",
+      "code": "2330",
+      "nativeMarketLabel": "TWSE LISTED",
+      "nativeType": "Stocks",
+      "cfi": "ESVUFR",
+      "observedAtUtc": "2026-10-16T08:58:26.349Z",
+      "originalSha256": "39a0999b91295510c8b3f0184ce082af9b9252adea4576e92c2ccfe1ae3b4f3a",
+      "sourceObservationPositive": true
+    },
+    {
+      "market": "TPEX",
+      "code": "3287",
+      "nativeMarketLabel": "TPEx LISTED",
+      "nativeType": "Stocks",
+      "cfi": "ESVUFR",
+      "observedAtUtc": "2026-10-16T08:58:26.502Z",
+      "originalSha256": "e3e945bcbf1bf578e51874ef44ed3b6c27d032e94ed7a4fa829d6527de1b62c7",
+      "sourceObservationPositive": true
+    },
+    {
+      "market": "TWSE",
+      "code": "9103",
+      "nativeMarketLabel": "TWSE LISTED",
+      "nativeType": "TDR",
+      "cfi": "EDSDDR",
+      "observedAtUtc": "2026-10-16T08:58:26.675Z",
+      "originalSha256": "bbc88cb9db9cb232043fb0678de4015341fd46ec4fcfcc5779e028a17478d3eb",
+      "sourceObservationPositive": false
+    },
+    {
+      "market": "TWSE",
+      "code": "0050",
+      "nativeMarketLabel": "TWSE LISTED",
+      "nativeType": "ETF",
+      "cfi": "CEOGEU",
+      "observedAtUtc": "2026-10-16T08:58:26.849Z",
+      "originalSha256": "04fe494a0db1d28ec05a2e30b96896ec08ad070bacfe77478e9ff454f9c0178c",
+      "sourceObservationPositive": false
+    }
+  ],
+  "realNativeBodyRehashed": 4,
+  "dataIndependentlyRehashed": true,
+  "independentAuditLaneSigned": false,
+  "asOfCurrentStockSourcePositive": 2,
+  "historicEffectivePeriodPITCertified": 0,
+  "fullStage1MarketDayHistoricalPitEligibleSymbols": 0,
+  "fullStage1MarketDayHistoricalPitUnknownSymbols": 1935,
+  "caSixFamilyHistoricVersionNoEventComplete": false,
+  "selectedCount": null,
+  "zeroPickDay": null,
+  "frozenD1Written": false,
+  "thisEvidenceCloudflareD1Reads": 0,
+  "thisEvidenceCloudflareD1Writes": 0,
+  "system1FormalModified": false,
+  "caution": "Current original CFI source timestamp is NOT historical CFI effective period or issuer initial publication time. This artifact cannot grant Stage1 PIT selection."
+}

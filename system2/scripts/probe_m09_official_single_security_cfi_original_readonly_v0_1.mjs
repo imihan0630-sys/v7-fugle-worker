@@ -98,7 +98,8 @@ export async function probeM09OfficialSingleSecurityOriginalV0_1({
     // Historical 61-session effective periods and first publication remain UNKNOWN.
     currentObservedStockCfi:parsed.state==='NATIVE_SINGLE_CFI_ROW_OBSERVED'&&
       row?.nativeTypeLabel==='Stocks'&&/^ES[A-Z]{4}$/.test(row?.cfi||'')&&
-      ['TWSE LISTED','TPEX LISTED','TAIWAN INNOVATION BOARD'].includes(row?.nativeMarketLabel),
+      ['TWSE LISTED','TPEX LISTED','TAIWAN INNOVATION BOARD'].includes(
+        String(row?.nativeMarketLabel||'').trim().toUpperCase()),
     historicalEffectiveFromDate:null,originalPublicationAtUtc:null});
   }catch(e){
    const msg=String(e?.message||'');
