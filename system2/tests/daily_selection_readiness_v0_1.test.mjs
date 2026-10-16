@@ -166,3 +166,67 @@ test('scope does not create orders, D1 writes, public raw data or V8 formal chan
  assert.doesNotMatch(c,/INSERT INTO|api\.cloudflare\.com|git push/);
  assert.match(c,/frozenDecisionWritten:false/);
 });
+
+test('BUILD PIT receipt counts all sourced symbols by venue and keeps class uncertified',async()=>{
+ const b=await ready({missing:true,qualified:true});
+ b.sourceLedger.observations[1].market='TPEX';
+ b.evaluation.evaluation.observations[1].market='TPEX';
+ await resignAll(b);
+ const r=await gate({bridge:b});
+ assert.equal(r.ordinaryUniverseCount,2);
+ assert.equal(r.stage1PitInputPassedCount,1);
+ assert.equal(r.stage1PitInputUnknownCount,1);
+ assert.equal(r.assessedCount+r.incompleteCount,r.ordinaryUniverseCount);
+ assert.deepEqual(r.perMarketPITInputCounts,{
+  TWSE:{sourceCount:1,stage1PitInputPassed:1,stage1PitInputUnknown:0,
+        rejected:0,watch:0,qualifiedNotSelected:1},
+  TPEX:{sourceCount:1,stage1PitInputPassed:0,stage1PitInputUnknown:1,
+        rejected:0,watch:0,qualifiedNotSelected:0},
+ });
+ assert.equal(r.sourceInstrumentUniverseKind,
+  'FOUR_DIGIT_SOURCE_MEMBERSHIP_NOT_CLASS_CERTIFIED');
+ assert.equal(r.formallyPITCertifiedUniverseCount,null);
+ assert.equal(r.selectedCount,null);
+ assert.equal(r.zeroPickDay,null);
+ assert.equal(r.frozenDecisionWritten,false);
+});
+test('a source-blocked 121/122 cannot manufacture either PIT count or zero-picked count',async()=>{
+ const r=await gate({bridge:baseBridge});
+ assert.equal(r.stage1PitInputPassedCount,null);
+ assert.equal(r.stage1PitInputUnknownCount,null);
+ assert.equal(r.perMarketPITInputCounts,null);
+ assert.equal(r.formallyPITCertifiedUniverseCount,null);
+ assert.equal(r.selectedCount,null);
+});
+test('re-signed INCOMPLETE without auditable reasons must fail closed',async()=>{
+ for(const reasons of [[],[''],[' PIT_UNKNOWN'],['PIT_UNKNOWN '],['PIT_UNKNOWN\\nMISLEADING']]){
+  const b=await ready();
+  b.evaluation.evaluation.observations[0].reasonCodes=reasons;
+  await resignStage1(b);
+  await assert.rejects(()=>gate({bridge:b}),
+   /INCOMPLETE_REASON_MISSING_OR_INVALID/);
+ }
+});
+test('two missing PIT reasons are counted once per symbol, never as two blocked stocks',async()=>{
+ const b=await ready();
+ b.evaluation.evaluation.observations[0].reasonCodes=[
+  'PIT_CFI_VERSION_UNVERIFIED','PIT_CA_NO_EVENT_UNKNOWN','PIT_CFI_VERSION_UNVERIFIED'];
+ await resignStage1(b);
+ const r=await gate({bridge:b});
+ assert.equal(r.stage1PitInputUnknownCount,2);
+ assert.deepEqual(r.unresolvedReasonCounts,[
+  {code:'PIT_CA_NO_EVENT_UNKNOWN',count:1},
+  {code:'PIT_CFI_VERSION_UNVERIFIED',count:1},
+  {code:'PIT_CORPORATE_ACTION_CONTINUITY_UNVERIFIED',count:1}
+ ]);
+ assert.equal(r.selectedCount,null);
+});
+test('WATCH is assessed but does not gain rank, selection or formal PIT certification',async()=>{
+ const r=await gate({bridge:await ready({missing:false})});
+ assert.equal(r.stage1PitInputPassedCount,2);
+ assert.equal(r.stage1PitInputUnknownCount,0);
+ assert.equal(r.perMarketPITInputCounts.TWSE.watch,2);
+ assert.equal(r.formallyPITCertifiedUniverseCount,null);
+ assert.deepEqual(r.qualifiedUnrankedResearchRows,[]);
+ assert.equal(r.rankCapacityAuthorized,false);
+});
