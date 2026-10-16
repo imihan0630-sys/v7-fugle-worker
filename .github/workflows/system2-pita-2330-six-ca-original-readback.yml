@@ -1,0 +1,76 @@
+name: System2 PIT-A 2330 CA Six Native Original Source Readback
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_ca_symbol_native_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_ca_symbol_native_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-six-ca-original-readback.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_ca_symbol_native_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_ca_symbol_native_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-six-ca-original-readback.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-pita-2330-ca6-original-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  independent_source_native_readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate CA evidence reader refuses false historical NO_EVENT
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_ca_symbol_native_readback_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_ca_symbol_native_readback_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download exact original official 6 CA body artifact from genuine source producer
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38910741802
+          name: s2-pita-2330-six-ca-original-20261016-38910741802-1
+          path: /tmp/s2-pita-2330-original-six-ca
+          github-token: ${{ github.token }}
+      - name: Independently gunzip and rehash each native official CA family, then extract only actual 2330 positives
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_ca_symbol_native_readback_v0_1.mjs
+          R=/tmp/s2-pita-2330-ca-symbol-readback/native-2330-ca-sourceonly-receipt.json
+          test -s "$R"
+          test "$(jq -r .sourceFamilyCount "$R")" = '6'
+          test "$(jq -r .allNativeOriginalFamilyBodyHashesVerified "$R")" = 'true'
+          test "$(jq -r .issuerPublicationFirstKnownAtHistoricallyCertified "$R")" = 'false'
+          test "$(jq -r .authoritativeNoEventNegativeScopeCertified "$R")" = 'false'
+          test "$(jq -r .historicalRevisionCancellationAndSuspensionCoverageCertified "$R")" = 'false'
+          test "$(jq -r .auditLaneIndependentFullPITAccepted "$R")" = 'false'
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "ACTUAL_SIX_CA_NATIVE_SOURCE_BYTES=PASS, NATIVE_2330_EVENTS=$(jq -r .observed2330PositiveEventRows "$R"), NEGATIVE_NO_EVENT_HISTORIC=UNKNOWN, PIT_ELIGIBLE=0" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve per-symbol original-positive immutable source digest ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-pita-2330-ca6-raw-symbol-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-ca-symbol-readback/native-2330-ca-sourceonly-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No historic NO_EVENT inference, ranking, Frozen, cloud credentials or System1 impact
+        if: always()
+        run: |
+          echo 'Native 2330 positive rows are physical observed range results; 0 native rows in family means UNKNOWN, NOT authoritative NO_EVENT or original past public availability. No selection, shadow, frozen, trade, cloudflare writer, System1.' >> "$GITHUB_STEP_SUMMARY"
