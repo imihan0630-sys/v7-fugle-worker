@@ -120,3 +120,36 @@ test('native single source fallback only runs without real preliminary CFI and n
  assert.match(sourceWorkflow,/s2-m09-prospective-native-cfi-sourceonly-/);
  assert.match(sourceWorkflow,/test "\$\(jq -r \.historicalSecurityClassPitCertified "\$R"\)" = 'false'/);
 });
+
+test('actual TPEx mixed-case native label counts as prospective stock only, not 61-session PIT',async()=>{
+ const selections=[
+  {code:'2330',hint:'TWSE_STOCK'},
+  {code:'3287',hint:'TPEX_STOCK'},
+  {code:'9103',hint:'TWSE_TDR'},
+  {code:'0050',hint:'TWSE_ETF'}
+ ];
+ const fetchImpl=async(url,options)=>{
+  assert.equal(options.method,'GET');
+  const code=new URL(url).searchParams.get('owncode');
+  const cfi=code==='0050'?'CEOGEU':code==='9103'?'EDSDDR':'ESVUFR';
+  const type=code==='0050'?'ETF':code==='9103'?'TDR':'Stocks';
+  const market=code==='3287'?'TPEx LISTED':'TWSE LISTED';
+  return new Response(html(code,cfi,type).replace('TWSE LISTED',market),{status:200});
+ };
+ const persistRaw=async({raw,originalSha256})=>({
+   verified:true,sha256:H(raw),byteLength:raw.length
+ });
+ const r=await probe({controls:selections,fetchImpl,persistRaw,
+   now:()=>new Date('2026-10-16T09:10:00.000Z')});
+ assert.equal(r.controlsChecked,4);
+ assert.equal(r.nativeCfiRowsObserved,4);
+ assert.equal(r.currentNativeStockCfiObserved,2);
+ assert.deepEqual(r.sourceReceipts.map(x=>x.currentObservedStockCfi),[true,true,false,false]);
+ assert.equal(r.sourceReceipts[1].nativeMarketLabel,'TPEx LISTED');
+ assert.equal(r.sourceReceipts[1].historicalEffectiveFromDate,null);
+ assert.equal(r.sourceReceipts[1].originalPublicationAtUtc,null);
+ assert.equal(r.ordinaryCommonSharePITCertified,false);
+ assert.equal(r.historicalSecurityClassPitCertified,false);
+ assert.equal(r.formalStage1SelectionAuthorized,false);
+ assert.equal(r.frozenD1Written,false);
+});
