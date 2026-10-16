@@ -46,6 +46,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Record exact GitHub schedule event attribution (source-only, NOT actual-slot proof)
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/record_shared_a1_github_schedule_origin_v0_1.mjs
+          node system2/scripts/record_shared_a1_github_schedule_origin_v0_1.mjs
       - name: Test original SHA, strict source cache and S1/S2 read-only boundary
         run: |
           set -euo pipefail
