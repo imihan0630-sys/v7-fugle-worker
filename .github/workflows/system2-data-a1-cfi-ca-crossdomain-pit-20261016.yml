@@ -1,0 +1,52 @@
+name: "S2 DATA #1068 A1 CFI CA Crossdomain PIT Truth (No Cloudflare)"
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-data-a1-cfi-ca-crossdomain-pit-20261016.yml
+      - system2/migration/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.mjs
+      - system2/tests/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.test.mjs
+      - system2/migration/evidence/S2_DATA_ISSUE1068_NATIVE_122_A1_PERBAR_PIT_PHYSICAL_20261016_V0_1.json
+      - system2/evidence/S2_M09_REAL_30_NATIVE_CFI_INDEPENDENT_AUDIT_20261015_V0_1.json
+      - system2/evidence/S2_M09_20261014_REAL_SIX_CA_NEGATIVE_EXPOSURE_20261015_V0_1.json
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/system2-data-a1-cfi-ca-crossdomain-pit-20261016.yml
+permissions:
+  contents: read
+concurrency:
+  group: s2-data-pit-cross-domain-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify_existing_originals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: "Run exact actual physical evidence cross-domain join and anti-fabrication cases"
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.mjs
+          node --test system2/tests/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.test.mjs
+      - name: "Produce actual immutable source-only PIT scope receipt"
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_real_a1_cfi_ca_pit_crossdomain_gate_v0_1.mjs
+      - name: "Archive original computed cross-domain PIT scope result"
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-issue1068-crossdomain-pit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-issue1068-crossdomain-pit/sanitized-crossdomain-pit-verdict.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: "Exact authority disclaimer"
+        if: always()
+        run: |
+          echo '122 real A1 original source pairs rehashed in prior source audits, 118035 OHLCV bars verified only for later true research cutoff.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Prior-day 30 native CFI categories and six CA historical actual-result lanes lack full historical effective/revision/no-event PIT; no Formal selection/Frozen.' >> "$GITHUB_STEP_SUMMARY"
