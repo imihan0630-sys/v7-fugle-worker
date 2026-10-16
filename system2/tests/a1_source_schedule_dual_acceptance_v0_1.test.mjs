@@ -14,7 +14,7 @@ async function fixture({cron='15 16 * * 1-5',event='schedule',
  stageAt='2026-10-15T17:06:50Z',pairs=122}={}){
  const sourceRun={id:38774319744,event,created_at:created,
   path:'.github/workflows/system2-shared-official-a1-incremental-readonly.yml',
-  head_branch:'main',run_attempt:1};
+  head_branch:'main',head_sha:SHA,run_attempt:1};
  const origin=await makeOrigin({eventName:event,
   event:event==='schedule'?{schedule:cron}:{},runId:sourceRun.id,
   runAttempt:1,codeSha:SHA});
@@ -102,6 +102,18 @@ test('121/122 source is distinct integrity failure, regardless of a fast schedul
  assert.equal(r.scheduler.state,'WITHIN_15_MIN_RESEARCH_SLO');
  assert.equal(r.sourceIntegrity.independentlyAccepted,false);
  assert.equal(r.decisionClock.state,'OUTSIDE_OR_UNQUALIFIED_SOURCE_ASSESSMENT_CLOCK');
+});
+test('source audit/Stage1 chronology reversed never masquerades as in-window',async()=>{
+ const f=await fixture({stageAt:'2026-10-15T17:06:40Z'});
+ const r=await build(f);
+ assert.equal(r.sourceIntegrity.independentlyAccepted,true);
+ assert.equal(r.decisionClock.verifiedSourceAuditStage1ClockOrdering,false);
+ assert.equal(r.decisionClock.state,'OUTSIDE_OR_UNQUALIFIED_SOURCE_ASSESSMENT_CLOCK');
+});
+test('cross-commit origin cannot inherit actual GitHub run provenance',async()=>{
+ const f=await fixture();
+ f.sourceRun.head_sha='b'.repeat(40);
+ await assert.rejects(()=>build(f),/EVENT_PAYLOAD_SOURCE_ORIGIN_UNVERIFIED/);
 });
 test('source completed before cutoff but independent audit AFTER cannot be backdated',async()=>{
  const f=await fixture({audited:'2026-10-15T18:01:00Z',
