@@ -4,7 +4,7 @@
 const ymd=s=>/^20\d{2}-\d{2}-\d{2}$/.test(String(s||"")) && new Date(String(s)+"T00:00:00Z").toISOString().slice(0,10)===s;
 const isoDate=row=>String(row?.scheduled_at||row?.scheduledAt||"").slice(0,10);
 export function classifySystem1OriginalPostclose({date,observedAt,version=null,cron=null,scan=null,
-  recommendations=null,config=null,quality=null,outbox=null,overview=null,errors={}}={}){
+  recommendations=null,config=null,quality=null,marketData=null,outbox=null,overview=null,errors={}}={}){
   if(!ymd(date))throw Error("INVALID_ORIGINAL_DATE");
   const officialCron=(cron?.recent||[]).filter(x=>x?.job_type==="AFTER_MARKET_SCAN" && isoDate(x)===date);
   const observedFormalCron=officialCron.map(x=>({
@@ -55,6 +55,9 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
       previousSessionEvictedFromLast20:priorWindowExhausted,
       previousSessionCronExecutionProven:observedFormalCron.length>0,
       causeEstablished:observedFormalCron.some(x=>x.errorClass==="PRECOMMIT_DATA_INCOMPLETE"||x.errorClass==="CPU_LIMIT")},
+    sourceMarket:{marketDate:marketData?.marketDate||null,
+      ready:marketData?.marketDate===date&&marketData?.ready===true,
+      TWSE:marketData?.markets?.TWSE?.count??null,TPEx:marketData?.markets?.TPEx?.count??null},
     sourceQuality:{marketDate:quality?.marketDate||null,ready:qualityReady,
       missing:kinds.filter(k=>quality?.datasets?.[k]?.ready!==true),
       quarterEpsCount:quality?.datasets?.QUARTER_EPS?.count??null},
