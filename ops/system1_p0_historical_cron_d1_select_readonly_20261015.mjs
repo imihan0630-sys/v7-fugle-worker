@@ -31,9 +31,14 @@ async function select(databaseId,sql,params){
      !Array.isArray(result[0].results))throw Error("D1_SELECT_RECEIPT_UNVERIFIED");
   const meta=result[0].meta||{};
   if(!Object.prototype.hasOwnProperty.call(meta,"rows_written"))throw Error("D1_ROWS_WRITTEN_WITNESS_MISSING");
-  const written=Number(meta.rows_written),read=Number(meta.rows_read??result[0].results.length);
-  if(!Number.isFinite(written)||written!==0||!Number.isFinite(read)||read<0)
+  // Number(null), Number("") and Number("0") are all 0; these are NOT
+  // authenticated zero-write receipts. Require an actual JSON integer zero.
+  if(!Number.isSafeInteger(meta.rows_written)||meta.rows_written!==0)
     throw Error("D1_SELECT_WRITE_OR_METRICS_UNVERIFIED");
+  const written=meta.rows_written;
+  const read=meta.rows_read===undefined?result[0].results.length:meta.rows_read;
+  if(!Number.isSafeInteger(read)||read<0)
+    throw Error("D1_SELECT_READ_METRICS_UNVERIFIED");
   requests.rowsWritten+=written;
   requests.rowsRead+=read;
   if(requests.rowsRead>50000)throw Error("D1_READ_BUDGET_EXCEEDED");
