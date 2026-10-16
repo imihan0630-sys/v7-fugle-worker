@@ -397,3 +397,29 @@ Boundary remains:
 D14-17 advances to L2 / 40% for mechanism + falsification semantics only.
 Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order-lifecycle evidence, preserve unexecuted opportunities, use mechanism-matched benchmarks, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
 Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+
+## Room10 2026-10-16 14:35 — specialist evidence consistency audit
+
+Research-only, no change to Formal Core. This checkpoint reconciles the authoritative main tracker against the already-frozen D14 specialist research artifacts without repeating mechanism studies.
+
+- D14-16: the existing 2026-10-06 scheduling contract and this checkpoint explicitly establish mechanism/falsification L2 evidence. The central tracker still reports L0; synchronize only after a fresh SHA check.
+- D14-17: the existing 2026-10-06 implementation-shortfall contract and this checkpoint explicitly establish mechanism/falsification L2 evidence. The central tracker still reports L0; synchronize only after a fresh SHA check.
+- D14-18: the existing 2026-10-08 decay/urgency contract plus durable supplement describe an L2 candidate. Independently review the identity, causal alternatives, opportunity-cost denominator, multiple-testing and PIT gates before any L2 promotion.
+- D14-19: its 2026-10-11 specialist contract remains on an older isolated branch; restoration into this branch was blocked by connector safety checks. No canonical artifact promotion and no L2 assertion.
+- D15-23 and D15-24 remain owned by D15; their isolated research artifacts cannot be promoted by this D14 checkpoint.
+
+Independent evidence gate: a research contract proves mechanism and falsification semantics only. It does not prove real broker fills, execution economics, Taiwan PIT feasibility, independent OOS, prospective Shadow, or realized P/L. Missing evidence remains UNKNOWN; signal, notification and preview are not fills. D14-03/04 are child measurements of D14-17 and must not become duplicated alpha votes.
+
+Exact next continuation: read latest main and D14/D15 checkpoints, perform a narrow tracker consistency update only for modules with accepted L2 evidence, verify weighted aggregate arithmetic and unchanged Formal Core, then seek real independent prospective Taiwan broker/order/fee receipts. No historical Shadow backfill.
+
+## Room10 2026-10-17 00:35 — effective-terminal clock falsification and D14 execution cost
+
+Research evidence: `research/ROOM10_D14_D15_TEMPORAL_TERMINAL_SHORTFALL_FALSIFICATION_20261017.md` (isolated research branch).
+- Replayed prior synthetic event_scope_guard prototype: a broker terminal with effective finalization t=10 and a fill with effective execution t=11 was incorrectly accepted as a fully matched 20-share fill. This is a logical contradiction **only if** the terminal clock truly means effective finalization; otherwise source semantics remain UNKNOWN.
+- Research-only temporal guard returns UNKNOWN on this contradiction, preserving as-of first-known corrections.
+- Frozen BUY/SELL sign-normalized implementation shortfall arithmetic includes all parent-order unfilled quantity and positively evidenced fees; it is not causal market impact or realized P/L.
+- 30 synthetic unit checks passed after correcting one initially incorrect test expectation. No real broker sessions, no L3/OOS/Shadow claim.
+- D14-16 and D14-17 remain official tracker L0 pending governance reconciliation despite existing frozen L2 specialist contracts; D14-18 remains an L2 research candidate, not an approved tracker upgrade.
+Status: SYNTHETIC_CLOCK_CONTRADICTION_FALSIFIED / BROKER_CLOCK_CONTRACT_UNKNOWN / TRACKER_UNCHANGED / FORMAL_CORE_LOCKED.
+Exact next: verify actual broker terminal effective-at vs notification clocks; then seek at least three independent prospective Taiwan sessions with all parent-order states and costs. Do not treat signal/preview/push as fill.
