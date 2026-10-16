@@ -6,7 +6,7 @@ import {SOURCE_CORE_PROFILE_V0_1,inspectPitADailyUsedInputsV0_1 as check}
 const auditSha='b'.repeat(64),sourceSha='a'.repeat(64);
 const cut='2026-10-16T15:45:00.000Z';
 const observed='2026-10-16T13:31:18.152Z';
-const audited={status:'ASOF_EVIDENCE_AUDITED',marketDate:'2026-10-16',
+const audited={status:'ASOF_EVIDENCE_AUDITED',marketDate:'2026-10-16',market:'TWSE',symbol:'2330',
  firstPhysicalObservedAtUtc:observed,firstKnownAtUtc:observed,availableAtUtc:observed,
  originalNativeSha256:sourceSha,sourceReceiptHash:'c'.repeat(64),
  originalIndependentlyRehashed:true,
@@ -89,6 +89,8 @@ test('captured after decision, issuer published later, wrong dates and stale sou
   x=>x.inputs.A1_RAW_PRICE_VOLUME_61.originalNativeSha256='0',
   x=>x.inputs.TRADING_STATUS_AT_CUT.tradingStatus='HALTED',
   x=>x.inputs.A1_RAW_PRICE_VOLUME_61.nativeRowsVerifiedCount=60,
+  x=>x.inputs.TRADING_STATUS_AT_CUT.symbol='2317',
+  x=>x.inputs.CURRENT_COMMON_SHARE_AT_CUT.market='TPEX',
   x=>x.inputs.CURRENT_COMMON_SHARE_AT_CUT.auditorIndependence='DATA_SELF_CERTIFIED',
  ];
  for(const mutate of scenarios){
@@ -122,4 +124,11 @@ test('external audit hash MUST be separately supplied, and mismatched hash never
   assert.equal(r.externalAuditDigestPinned,false);
   assert.equal(r.stage1EvaluationAuthorized,false);
  }
+});
+
+test('auditor hash laundering across different input receipts cannot obtain externally pinned readiness',async()=>{
+ const e=await input(x=>{x.inputs.A1_RAW_PRICE_VOLUME_61.independentAuditSha256='d'.repeat(64)});
+ const r=await check({evidence:e,expectedIndependentAuditHash:auditSha});
+ assert.equal(r.externalAuditDigestPinned,false);
+ assert.equal(r.stage1EvaluationAuthorized,false);
 });
