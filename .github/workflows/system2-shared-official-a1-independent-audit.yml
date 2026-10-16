@@ -231,6 +231,35 @@ jobs:
           path: /tmp/s2-a1-source-vs-schedule-acceptance/dual-acceptance-receipt.json
           if-no-files-found: warn
           retention-days: 90
+      # Rolling ten official trading-session research-only punctuality.
+      # Existing independently accepted 122/122 must complete first;
+      # no dedicated/new Cron, no source GET, and 48h maturity is NOT proof
+      # GitHub dropped a missing schedule. This reads ONLY tiny dual artifacts.
+      - name: Roll up ten official sessions with bounded actual GitHub schedule-run census
+        if: success() && github.event_name == 'workflow_run'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_a1_ten_session_reliability_v0_1.mjs
+          node --test system2/tests/a1_schedule_ten_session_reliability_v0_1.test.mjs
+          node system2/scripts/audit_a1_ten_session_reliability_v0_1.mjs
+          R=/tmp/s2-a1-ten-session-schedule-reliability/ten-session-rollup.json
+          test -s "$R"
+          test "$(jq -r .selectionAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .missingDeliveryConfirmed "$R")" = 'false'
+          echo "A1 TEN-SESSION CRON attribution=$(jq -r .independentlyAttributedScheduleRuns "$R"); 15m SLO pct among only attributed=$(jq -r .punctualityAmongAttributedRunsPct "$R"); matured slots=$(jq -r .maturedExpectedSlots "$R"); census complete=$(jq -r .censusComplete "$R"); neither PIT nor Frozen." >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain signed ten-session read-only punctuality trend for 90 days
+        if: always() && github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-a1-ten-session-cron-reliability-\${{ github.run_id }}
+          path: /tmp/s2-a1-ten-session-schedule-reliability/ten-session-rollup.json
+          retention-days: 90
+          if-no-files-found: warn
       # Optional supplemental native CA original evidence for the SAME T
       # already proven by A1 source+auditor, not another Final/Frozen job.
       # Never run on this workflow's self-path 121/122 push diagnostic.
