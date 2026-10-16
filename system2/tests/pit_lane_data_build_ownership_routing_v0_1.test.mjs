@@ -59,7 +59,7 @@ test('PIT original evidence is DATA and selection-scoring/Shadow/Frozen consumer
  assert.match(build,/不得再做歷史 CFI 原始有效日抓取/);
  assert.match(build,/選股分母/);
  assert.match(build,/選股/);
- assert.match(policy,/不會|auto-run|auto-start|auto-run|auto-run|auto-run|auto-run/);
+ assert.match(policy,/No GitHub Issue comments or repository file changes automatically wake/);
  // No literal grant or evidence of already certified PIT across all names.
  assert.doesNotMatch(policy,/M09.*6\/6.*PASS/);
  assert.doesNotMatch(data,/PIT 已全部過關/);
