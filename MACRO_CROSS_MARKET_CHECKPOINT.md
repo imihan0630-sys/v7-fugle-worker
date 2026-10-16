@@ -887,3 +887,9 @@ Maturity firewall:
 
 ### Exact next continuation after MC-211
 Capture actual H.15 Oct-6 and H.4.1 Oct-8 publication endpoints only after verified release; append observedAt and firstEligibleTaiwanDecision; keep schedule receipts immutable and never backdate from source date.
+
+
+## Room09 2026-10-16 08:10 Taipei — October-15 H.4.1 two-statistic release
+- New official 2026-10-15 H.4.1 release observed after publication; week-average reserve delta -7,519 USD million versus Wednesday stock delta +8,788, RRP +2,665 versus -6,940. Both statistics are valid but not interchangeable.
+- Native first-known source receipt UNKNOWN; no 2026-10-15 18:10 backfill, no market direction, no OOS. 33 arithmetic/clock tests are not independent market dates. D13 stays 41.1%, Formal Core LOCKED.
+- Exact next: native H.4.1 Oct-15 immutable receipt and matched-horizon macro controls; preserve MC-211 and existing work.
