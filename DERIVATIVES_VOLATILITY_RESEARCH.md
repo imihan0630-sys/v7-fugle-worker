@@ -2140,3 +2140,11 @@ Formal Core remains LOCKED.
 3. Preserve TAIFEX official Delta as a separate exchange-model baseline with publication/effective-date versioning.
 4. Compare own-computed Delta versus TAIFEX Delta outcome-blind; explain differences via model/input/clock before any alpha claim.
 5. Keep live MIS automation blocked and outcomes closed until source-attested independent dates exist.
+
+
+## Room09 2026-10-16 08:10 Taipei — official 2026-10-15 Delta pair identity / event-clock firewall (research-only)
+- Official TAIFEX Excel-style Delta endpoint https://www.taifex.com.tw/cht/3/optDailyDeltaExcel displayed publication 2026-10-15 16:35 Taipei. At strike 47000, paired call/put deltas by expiry: 202610F3 (0.365/-0.635; difference 1.0000), 202610 (0.4895/-0.5102; 0.9997), 202610F4 (0.5034/-0.4962; 0.9996), 202610W4 (0.5060/-0.4935; 0.9995), 202611 (0.5252/-0.4733; 0.9985), 202612 (0.5435/-0.4534; 0.9969), 202703 (0.5737/-0.4187; 0.9924), 202706 (0.5891/-0.3983; 0.9874).
+- Positive: near-unity call-minus-put Delta is an exchange-model internal sanity check across common strike/expiry; not a trade or realized hedge. Counterevidence: near-expiry 202610F3 displayed Delta has long constant-strike plateaus, and model/input clock, executable quotes, carry convention and signed dealer position remain unverified. Alternative explanations include strike-bucket approximation, rounding and model version.
+- The 16:35 Delta publication PRECEDES U.S. PPI 2026-10-15 20:30 Taipei and Fed H.4.1 2026-10-16 04:30 Taipei; it must not be described as post-event Delta even when effective contract date is 2026-10-16. Interactive current-day Delta after these events was not source-attested: UNKNOWN.
+- This later web observation is not an immutable native first-known source receipt. Native response hash, strict 18:10 eligibility, synced executable quote/cost and OOS all UNKNOWN/PENDING. Deterministic 33/33 checks are not market dates. Strict new prospective dates 0; D12 40.0%, L2, outcomes CLOSED, Formal Core LOCKED; no optimization candidate.
+- Next: source-entitled after-event same-contract/strike Delta and input-clock receipt; do not attribute endpoint/model version differences to price or dealer hedging without independent quote support.
