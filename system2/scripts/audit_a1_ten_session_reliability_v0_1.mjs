@@ -24,8 +24,12 @@ async function listWorkflowRuns({repository,event,path,token,fetchImpl,nowUtc}){
  const found=[],min=Date.parse(FIRST),max=Date.parse(nowUtc);
  let fullyEnumerated=false;
  for(let page=1;page<=6;page++){
-  const url='/repos/'+repository+'/actions/runs?event='+event+
-   '&per_page=100&page='+page;
+  // Fetch the SOURCE/AUDITOR workflow-specific run list. Repository-wide
+  // schedule/workflow_run pages are full of unrelated System1/System2 jobs,
+  // and would silently exhaust this bounded six-page census.
+  const workflowId=encodeURIComponent(path.split('/').at(-1));
+  const url='/repos/'+repository+'/actions/workflows/'+workflowId+
+   '/runs?event='+event+'&per_page=100&page='+page;
   const response=await apiGet(url,token,fetchImpl);
   if(!Array.isArray(response?.workflow_runs)||
      !Number.isSafeInteger(response.total_count))
@@ -92,8 +96,10 @@ export async function collectA1TenSessionRollupV0_1({
   for(let i=0;i<Math.min(eligible.length,50);i+=4){
    const chunk=eligible.slice(i,i+4);
    const pieces=await Promise.all(chunk.map(async item=>{
-    try{return await readTinyDualReceipt({repository,token,auditRun:item,fetchImpl})}
-    catch{return {error:'RECEIPT_DOWNLOAD_OR_ZIP_UNAVAILABLE'}}
+    try{
+     const receipt=await readTinyDualReceipt({repository,token,auditRun:item,fetchImpl});
+     return receipt??{error:'AUDIT_SUCCESS_BUT_DUAL_RECEIPT_NOT_PRESENT'};
+    }catch{return {error:'RECEIPT_DOWNLOAD_OR_ZIP_UNAVAILABLE'}}
    }));
    for(const item of pieces)if(item?.schemaVersion===
      'S2_A1_DUAL_SOURCE_SCHEDULE_ACCEPTANCE_V0_1')history.push(item);
