@@ -1,0 +1,85 @@
+name: System2 PIT-A 2330 Ex-Dividend Native Price Crosswalk (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-real-exdiv-native-price-crosswalk.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-real-exdiv-native-price-crosswalk.yml"
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: s2-pita-2330-exdiv-price-crosswalk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native_exdiv_readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check source-only dividend reconciliation and anti-lookahead tests
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Read exact original 61-day A1 full native source archive
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38797319008
+          name: s2-shared-official-a1-38797319008
+          github-token: ${{ github.token }}
+          path: /tmp/s2-pita-exdiv-a1-original
+      - name: Read exact six CA native original source archive
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38910741802
+          name: s2-pita-2330-six-ca-original-20261016-38910741802-1
+          github-token: ${{ github.token }}
+          path: /tmp/s2-pita-exdiv-ca-original
+      - name: Independently rehash ex-dividend original bodies and published reference
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_exdiv_raw_price_crosswalk_v0_1.mjs
+          R=/tmp/s2-pita-2330-exdiv-native-readback/original-2330-exdiv-price-reference.json
+          test -s "$R"
+          test "$(jq -r .status "$R")" = 'ACTUAL_OFFICIAL_EXDIV_REFERENCE_RECONCILED_SOURCE_ONLY'
+          test "$(jq -r .previousCloseRaw "$R")" = '2385'
+          test "$(jq -r .exDateCloseRaw "$R")" = '2380'
+          test "$(jq -r .officialExDividendReference "$R")" = '2377.99'
+          test "$(jq -r .rawTwoDayChangePercent "$R")" = '-0.209644'
+          test "$(jq -r .exDividendReferenceChangePercent "$R")" = '0.084525'
+          test "$(jq -r '.["61DayAdjustedFeatureContinuityAudited"]' "$R")" = 'false'
+          test "$(jq -r .currentSymbolPitEligible "$R")" = 'false'
+          test "$(jq -r .independentAuditLaneFullPITAccepted "$R")" = 'false'
+          test "$(jq -r .correctedStage1MomentumComputed "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "2330_SEP16_DIVIDEND_REFERENCE_RECONCILED_REAL_NATIVE_ORIGINALS=PASS; raw_2day_return=-0.209644%; official_reference_comparison=+0.084525%; 61_day_adjusted_strategy_feature=NOT_AUTHORIZED; PIT=0" >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain source-native ex-dividend difference receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-2330-exdiv-native-price-crosswalk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-exdiv-native-readback/original-2330-exdiv-price-reference.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No historical PIT/strategy/Cloudflare/production authority
+        if: always()
+        run: |
+          echo 'Native original source comparison only; 9/16 official reference is not a complete 61-day adjusted return series. No guessed issuer firstKnownAt, no negative NO_EVENT, no strategy/rank/Frozen/D1/System1 change.' >> "$GITHUB_STEP_SUMMARY"
