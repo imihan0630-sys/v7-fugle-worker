@@ -56,7 +56,7 @@ export async function buildA1DualAcceptanceV0_1({
   deny('REAL_GITHUB_RUN_JOB_PROVENANCE_INVALID');
  const originalValid=origin?.schemaVersion==='S2_A1_GITHUB_ORIGIN_V0_1'&&
   origin?.runId===sourceRun.id&&origin?.runAttempt===sourceRun.run_attempt&&
-  origin?.eventName===sourceRun.event&&
+  origin?.eventName===sourceRun.event&&origin?.codeSha===sourceRun.head_sha&&
   SHA.test(origin?.originHash||'')&&
   await sha256Hex(unsigned(origin,'originHash'))===origin.originHash;
  if(!originalValid)deny('EVENT_PAYLOAD_SOURCE_ORIGIN_UNVERIFIED');
@@ -94,8 +94,11 @@ export async function buildA1DualAcceptanceV0_1({
  const sourceBefore=cut>=ms(sourceJob.completed_at);
  const auditBefore=cut>=ms(independentAudit.auditedAtUtc);
  const assessmentBefore=cut>=ms(stage1Summary.freezeAtUtc);
+ const temporalOrderVerified=
+  ms(sourceJob.completed_at)<=ms(independentAudit.auditedAtUtc)&&
+  ms(independentAudit.auditedAtUtc)<=ms(stage1Summary.freezeAtUtc);
  const admissionState=sourceIntegrityState==='INDEPENDENT_SOURCE_122_OF_122_ACCEPTED'&&
-  sourceBefore&&auditBefore&&assessmentBefore&&
+  sourceBefore&&auditBefore&&assessmentBefore&&temporalOrderVerified&&
   stage1Summary.state==='STAGE1_RESEARCH_EXECUTED_PIT_CONTINUITY_GATED'
    ?'SOURCE_ASSESSMENT_WITHIN_T_PLUS_ONE_0159_NOT_PIT':
     'OUTSIDE_OR_UNQUALIFIED_SOURCE_ASSESSMENT_CLOCK';
@@ -129,6 +132,7 @@ export async function buildA1DualAcceptanceV0_1({
    stage1ObservationAtUtc:stage1Summary.freezeAtUtc,
    sourceJobFinishedBeforeCutoff:sourceBefore,
    independentAuditBeforeCutoff:auditBefore,stage1AsOfBeforeCutoff:assessmentBefore,
+   verifiedSourceAuditStage1ClockOrdering:temporalOrderVerified,
    ordinaryEquityHistoricalPitCertified:false,
    finalSelectionAuthorized:false,selectedCount:null,zeroPickDay:null,
    frozenD1Written:false,cloudflareD1Writes:0},
