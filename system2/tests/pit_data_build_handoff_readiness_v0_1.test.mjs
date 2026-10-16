@@ -18,7 +18,17 @@ async function fakeStage1(override={}){
   state:'DAILY_STRATEGY_INPUT_INCOMPLETE',ordinaryUniverseCount:1935,
   assessedCount:0,incompleteCount:1935,
   stage1PitInputPassedCount:0,stage1PitInputUnknownCount:1935,
-  qualifiedNotSelectedCount:0,
+  qualifiedNotSelectedCount:0,watchCount:0,rejectedCount:0,
+  sourceInstrumentUniverseKind:'FOUR_DIGIT_SOURCE_MEMBERSHIP_NOT_CLASS_CERTIFIED',
+  formallyPITCertifiedUniverseCount:null,
+  perMarketPITInputCounts:{
+   TWSE:{sourceCount:1000,stage1PitInputPassed:0,stage1PitInputUnknown:1000,
+    rejected:0,watch:0,qualifiedNotSelected:0},
+   TPEX:{sourceCount:935,stage1PitInputPassed:0,stage1PitInputUnknown:935,
+    rejected:0,watch:0,qualifiedNotSelected:0},
+  },
+  unresolvedReasonCounts:[{code:'PIT_ORDINARY_EQUITY_INSTRUMENT_CLASS_UNVERIFIED',count:1935}],
+  qualifiedUnrankedResearchRows:[],
   selectedCount:null,zeroPickDay:null,
   finalSelectionEligible:false,rankCapacityAuthorized:false,
   frozenDecisionWritten:false,cloudflareD1Writes:0,cloudflareR2Writes:0,
@@ -50,7 +60,9 @@ test('clock-expired and blocked Stage1 remains source-blocked, not a zero pick',
   state:'BLOCKED_SOURCE_NOT_SELECTION',
   ordinaryUniverseCount:null,assessedCount:null,incompleteCount:null,
   stage1PitInputPassedCount:null,stage1PitInputUnknownCount:null,
-  qualifiedNotSelectedCount:null
+  perMarketPITInputCounts:null,qualifiedNotSelectedCount:null,
+  watchCount:null,rejectedCount:null,
+  unresolvedReasonCounts:[],qualifiedUnrankedResearchRows:[]
  })});
  assert.equal(r.stage1ActuallyAssessedCount,null);
  assert.equal(r.selectedCount,null);
@@ -66,6 +78,54 @@ test('re-signed false fully assessed or partial recovered Stage1 is rejected',as
   await assert.rejects(build({...real,dailyStage1Readiness:await fakeStage1(patch)}),
     /STAGE1_FALSE_PIT_OR_DENOMINATOR_PROMOTION/);
  }
+});
+
+test('re-signed TWSE/TPEX denominator cannot silently omit or add source securities',async()=>{
+ for(const counts of [
+  {TWSE:{sourceCount:999,stage1PitInputPassed:0,stage1PitInputUnknown:999,
+    rejected:0,watch:0,qualifiedNotSelected:0},
+   TPEX:{sourceCount:935,stage1PitInputPassed:0,stage1PitInputUnknown:935,
+    rejected:0,watch:0,qualifiedNotSelected:0}},
+  {TWSE:{sourceCount:1000,stage1PitInputPassed:1,stage1PitInputUnknown:999,
+    rejected:0,watch:0,qualifiedNotSelected:0},
+   TPEX:{sourceCount:935,stage1PitInputPassed:0,stage1PitInputUnknown:935,
+    rejected:0,watch:0,qualifiedNotSelected:0}},
+  {TWSE:{sourceCount:1000,stage1PitInputPassed:0,stage1PitInputUnknown:1000,
+    rejected:0,watch:0,qualifiedNotSelected:0}},
+ ]){
+  await assert.rejects(build({...real,dailyStage1Readiness:await fakeStage1({
+    perMarketPITInputCounts:counts,
+  })}),/STAGE1_PER_MARKET_OR_UNKNOWN_REASON_INCONSISTENT/);
+ }
+});
+test('a re-signed unknown Stage1 cannot hide false positive candidate, score or reason',async()=>{
+ for(const patch of [
+  {watchCount:1},
+  {rejectedCount:1},
+  {qualifiedUnrankedResearchRows:[{symbol:'2330',rank:1}]},
+  {unresolvedReasonCounts:[]},
+  {formallyPITCertifiedUniverseCount:1935},
+  {sourceInstrumentUniverseKind:'ALL_ORDINARY_EQUITY_CERTIFIED'},
+ ])await assert.rejects(build({...real,dailyStage1Readiness:await fakeStage1(patch)}),
+  /STAGE1_PER_MARKET_OR_UNKNOWN_REASON_INCONSISTENT/);
+});
+test('a signed blocked-source row cannot hide per-market qualification behind null top counts',async()=>{
+ const blocked={state:'BLOCKED_SOURCE_NOT_SELECTION',
+  ordinaryUniverseCount:null,assessedCount:null,incompleteCount:null,
+  stage1PitInputPassedCount:null,stage1PitInputUnknownCount:null,
+  perMarketPITInputCounts:null,qualifiedNotSelectedCount:null,
+  watchCount:null,rejectedCount:null,
+  qualifiedUnrankedResearchRows:[],unresolvedReasonCounts:[]};
+ const passed=await build({...real,dailyStage1Readiness:await fakeStage1(blocked)});
+ assert.equal(passed.stage1ActuallyAssessedCount,null);
+ for(const patch of [
+  {stage1PitInputUnknownCount:1935},
+  {perMarketPITInputCounts:{TWSE:{sourceCount:1935}}},
+  {qualifiedUnrankedResearchRows:[{symbol:'2330',rank:1}]},
+  {qualifiedNotSelectedCount:1},
+  {watchCount:0},
+ ])await assert.rejects(build({...real,dailyStage1Readiness:
+  await fakeStage1({...blocked,...patch})}),/BLOCKED_SOURCE_FAKE_COUNTS/);
 });
 test('even a re-signed Stage1 changed-market date or frozen claim fails closed',async()=>{
  for(const patch of [

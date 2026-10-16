@@ -33,8 +33,18 @@ export async function buildPitDataHandoffStage1ReadinessV0_1({
       r.cloudflareD1Writes!==0||r.cloudflareR2Writes!==0)
       fail('STAGE1_READINESS_HASH_DATE_OR_AUTHORITY_INVALID');
    if(r.state==='BLOCKED_SOURCE_NOT_SELECTION'){
+     // A fully signed BLOCKED readiness cannot hide non-null per-market
+     // counters or a synthetic qualified row under a null top-level count.
      if(r.ordinaryUniverseCount!==null||r.assessedCount!==null||
-        r.incompleteCount!==null)fail('BLOCKED_SOURCE_FAKE_COUNTS');
+        r.incompleteCount!==null||r.stage1PitInputPassedCount!==null||
+        r.stage1PitInputUnknownCount!==null||r.perMarketPITInputCounts!==null||
+        r.watchCount!==null||r.rejectedCount!==null||
+        r.qualifiedNotSelectedCount!==null||
+        !Array.isArray(r.qualifiedUnrankedResearchRows)||
+        r.qualifiedUnrankedResearchRows.length!==0||
+        !Array.isArray(r.unresolvedReasonCounts)||
+        r.unresolvedReasonCounts.length!==0)
+       fail('BLOCKED_SOURCE_FAKE_COUNTS');
    }else{
      // Historical 2026-10-15 decision PIT is wholly unresolved, so a later
      // synthetic Stage1 scorer cannot be mistaken for a certified selection.
@@ -45,6 +55,36 @@ export async function buildPitDataHandoffStage1ReadinessV0_1({
         r.qualifiedNotSelectedCount!==0||
         !['DAILY_STRATEGY_INPUT_INCOMPLETE'].includes(r.state))
        fail('STAGE1_FALSE_PIT_OR_DENOMINATOR_PROMOTION');
+     // Reconcile the actual Stage1 per-exchange denominator. A signed
+     // total of 1935 with fake per-market 0 / partial READY must not become
+     // an accepted BUILD receipt. This checks accounting, NOT CFI/CA PIT.
+     const counts=r.perMarketPITInputCounts;
+     const fields=['sourceCount','stage1PitInputPassed','stage1PitInputUnknown',
+       'rejected','watch','qualifiedNotSelected'];
+     if(!counts||typeof counts!=='object'||Array.isArray(counts)||
+        Object.keys(counts).sort().join('|')!=='TPEX|TWSE'||
+        ['TWSE','TPEX'].some(m=>!counts[m]||
+          fields.some(k=>!Number.isSafeInteger(counts[m][k])||counts[m][k]<0)||
+          counts[m].sourceCount!==
+            counts[m].stage1PitInputPassed+counts[m].stage1PitInputUnknown||
+          counts[m].stage1PitInputPassed!==0||
+          counts[m].rejected!==0||counts[m].watch!==0||
+          counts[m].qualifiedNotSelected!==0)||
+        counts.TWSE.sourceCount+counts.TPEX.sourceCount!==accepted.sourceSecurityWindowCount||
+        counts.TWSE.stage1PitInputUnknown+counts.TPEX.stage1PitInputUnknown!==
+          accepted.unresolvedSymbolCount||
+        r.watchCount!==0||r.rejectedCount!==0||
+        r.sourceInstrumentUniverseKind!==
+          'FOUR_DIGIT_SOURCE_MEMBERSHIP_NOT_CLASS_CERTIFIED'||
+        r.formallyPITCertifiedUniverseCount!==null||
+        !Array.isArray(r.qualifiedUnrankedResearchRows)||
+        r.qualifiedUnrankedResearchRows.length!==0||
+        !Array.isArray(r.unresolvedReasonCounts)||
+        r.unresolvedReasonCounts.length===0||
+        r.unresolvedReasonCounts.some(x=>typeof x?.code!=='string'||
+          !x.code.trim()||!Number.isSafeInteger(x.count)||x.count<1||
+          x.count>accepted.unresolvedSymbolCount))
+       fail('STAGE1_PER_MARKET_OR_UNKNOWN_REASON_INCONSISTENT');
      stage1ActuallyAssessedCount=0;
    }
    stage1ReadinessState=r.state;
