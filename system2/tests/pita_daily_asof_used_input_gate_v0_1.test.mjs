@@ -12,7 +12,7 @@ const audited={status:'ASOF_EVIDENCE_AUDITED',marketDate:'2026-10-16',market:'TW
  originalIndependentlyRehashed:true,
  independentAuditSha256:auditSha,
  auditorIndependence:'SEPARATE_FROM_DATA_LANE'};
-async function input(changes={}){
+async function input(changes=()=>{}){
  const base={schemaVersion:'S2_DATA_PITA_DAILY_USED_INPUT_EVIDENCE_V0_1',
   profileId:SOURCE_CORE_PROFILE_V0_1.id,
   marketDate:'2026-10-16',symbol:'2330',market:'TWSE',decisionCutAtUtc:cut,
