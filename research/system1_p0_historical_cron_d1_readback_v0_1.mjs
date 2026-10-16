@@ -40,6 +40,9 @@ export function classifyHistoricalCronD1({date=TARGET_DATE,cronRows=null,leaseRo
     scheduledInvocationsProven:false,formalParentProven:false,
     noD1Write:true,noKVWrite:true,noWorkerDeploy:true,noBusinessPOST:true,noPush:true,noTrade:true};
   if(!Array.isArray(cronRows)||cronRows.length>10)throw Error("CRON_ROWS_MISSING_OR_UNBOUNDED");
+  // LIMIT 10 is not a completeness certificate: exactly ten returned rows
+  // may mean additional rows were truncated. Never accept a full page.
+  const pageLimitReached=cronRows.length===10;
   const lease=safeLease(leaseRows);
   const buckets=new Map(SLOTS.map(s=>[s,[]]));
   let invalid=0;
@@ -47,7 +50,16 @@ export function classifyHistoricalCronD1({date=TARGET_DATE,cronRows=null,leaseRo
     const utc=Date.parse(String(row?.scheduled_at||""));
     const time=Number.isFinite(utc)?new Date(utc).toISOString().slice(0,16):"";
     const expression=String(row?.cron_expression||"").toLowerCase().replace(/\s+/g," ").trim();
-    if(row?.job_type!=="AFTER_MARKET_SCAN"||!buckets.has(time)||
+    const scheduledMs=Number(row?.scheduled_time);
+    const id=Number(row?.id);
+    const startMs=Date.parse(String(row?.started_at||""));
+    const endMs=Date.parse(String(row?.finished_at||""));
+    const validReceipt=Number.isSafeInteger(id)&&id>0&&
+      Number.isSafeInteger(scheduledMs)&&scheduledMs===utc&&
+      Number.isFinite(startMs)&&Number.isFinite(endMs)&&endMs>=startMs&&
+      ["SUCCESS","FAILED","SKIPPED"].includes(row?.status)&&
+      (row.status==="SKIPPED")===(Number(row.skipped)===1);
+    if(row?.job_type!=="AFTER_MARKET_SCAN"||!buckets.has(time)||!validReceipt||
        !["35,55 15 * * mon-fri","35 15 * * mon-fri","55 15 * * mon-fri"].includes(expression)){
       invalid++;continue;
     }
@@ -66,12 +78,14 @@ export function classifyHistoricalCronD1({date=TARGET_DATE,cronRows=null,leaseRo
   const anomalous=invalid>0||slotEvidence.some(x=>x.persistedRows>1);
   const present=slotEvidence.filter(x=>x.persistedCronAudit).length;
   let state="NO_PERSISTED_CRON_OR_LEASE__INVOCATION_UNKNOWN";
-  if(anomalous)state="CRON_READBACK_INCONSISTENT_FAIL_CLOSED";
+  if(pageLimitReached)state="CRON_READBACK_PAGE_LIMIT_REACHED_FAIL_CLOSED";
+  else if(anomalous)state="CRON_READBACK_INCONSISTENT_FAIL_CLOSED";
   else if(present)state="PERSISTED_CRON_AUDIT__FORMAL_PARENT_UNVERIFIED";
   else if(lease.present)state="LEASE_PRESENT__CRON_AUDIT_MISSING_OR_UNVERIFIED";
   return {schema:"S1_P0_HISTORIC_CRON_D1_SELECT_V0_1",date,observedAt,
     state,windowUtc:{start:WINDOW_START,end:WINDOW_END},
-    expectedSlots:2,queriedCronRows:cronRows.length,invalidOrUnexpectedRows:invalid,
+    expectedSlots:2,queriedCronRows:cronRows.length,readbackPageLimitReached:pageLimitReached,
+    invalidOrUnexpectedRows:invalid,
     slotEvidence,lease,
     scheduledInvocationsProven:false,
     // Persisted audit rows prove DB rows exist, not all original Cloudflare trigger deliveries.
