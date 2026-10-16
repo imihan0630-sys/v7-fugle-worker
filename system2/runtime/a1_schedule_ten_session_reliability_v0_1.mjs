@@ -45,7 +45,19 @@ async function validDual(x){
     x.onlyResearchAcceptance!==true||
     x.system1FormalCoreTouched!==false)
   return false;
- return true;
+ const created=ms(x.scheduler.actualRunCreatedAtUtc);
+ const started=ms(x.scheduler.actualJobStartedAtUtc);
+ const completed=ms(x.scheduler.actualJobCompletedAtUtc);
+ if(created>started||started>completed)return false;
+ // A SHA does not prove what the GitHub REST clock says: independently
+ // re-derive <=15-minute classification from those matched actual clocks.
+ const nominated=ms(x.scheduler.nominalInferredUtc);
+ if(x.scheduler.state==='NOMINAL_OCCURRENCE_UNATTRIBUTABLE')
+  return nominated===null;
+ if(nominated===null||nominated>created)return false;
+ const observedClassification=started-nominated<=15*60000?
+  'WITHIN_15_MIN_RESEARCH_SLO':'DELAYED_OVER_15_MIN_RESEARCH_SLO';
+ return observedClassification===x.scheduler.state;
 }
 export async function buildA1ScheduleTenSessionRollupV0_1({
  tradingDates, dualReceipts=[],sourceRuns=[],asOfUtc,
@@ -85,7 +97,8 @@ export async function buildA1ScheduleTenSessionRollupV0_1({
   }
   observed.add(run.id);
   const nominal=d.scheduler.nominalInferredUtc;
-  if(ms(nominal)===null||nominal.slice(0,10)<trackingFromTradingDate||
+  if(ms(nominal)===null||d.marketDate!==nominal.slice(0,10)||
+     nominal.slice(0,10)<trackingFromTradingDate||
      !eligible.has(nominal.slice(0,10))||
      expected(nominal.slice(0,10),
       SLOTS.find(s=>s.cron===d.scheduler.cronExpression))!==nominal||

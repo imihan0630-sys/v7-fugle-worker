@@ -129,6 +129,39 @@ test('signed but mismatched GitHub run.created_at cannot be used to invent start
  const z=await rollup({...META,dualReceipts:[a.receipt],sourceRuns:[a.run],censusComplete:true});
  assert.equal(z.invalidOrUnlinkedDualReceiptCount,1);
 });
+test('validly re-signed "on time" still rejected when real runner start is 45m after nominal',async()=>{
+ const a=await proof({id:58,index:0,onTime:true});
+ const nom=Date.parse('2026-10-16T12:15:00.000Z');
+ a.receipt.scheduler.actualJobStartedAtUtc=new Date(nom+45*60000).toISOString();
+ a.receipt.scheduler.actualJobCompletedAtUtc=new Date(nom+47*60000).toISOString();
+ const {receiptHash,...base}=a.receipt;
+ a.receipt.receiptHash=await sha256Hex(base);
+ const z=await rollup({...META,dualReceipts:[a.receipt],sourceRuns:[a.run],
+  censusComplete:true});
+ assert.equal(z.invalidOrUnlinkedDualReceiptCount,1);
+ assert.equal(z.independentlyAttributedScheduleRuns,0);
+ assert.equal(z.punctualityAmongAttributedRunsPct,null);
+});
+test('validly re-signed "late" cannot override a 6m genuine runner start',async()=>{
+ const a=await proof({id:59,index:0,onTime:true});
+ a.receipt.scheduler.state='DELAYED_OVER_15_MIN_RESEARCH_SLO';
+ const {receiptHash,...base}=a.receipt;
+ a.receipt.receiptHash=await sha256Hex(base);
+ const z=await rollup({...META,dualReceipts:[a.receipt],sourceRuns:[a.run],
+  censusComplete:true});
+ assert.equal(z.invalidOrUnlinkedDualReceiptCount,1);
+ assert.equal(z.lateScheduleRuns,0);
+});
+test('validly re-signed marketDate from another session cannot count toward this nominal source slot',async()=>{
+ const a=await proof({id:60,index:0,onTime:true});
+ a.receipt.marketDate=DAY[1];
+ const {receiptHash,...base}=a.receipt;
+ a.receipt.receiptHash=await sha256Hex(base);
+ const z=await rollup({...META,dualReceipts:[a.receipt],sourceRuns:[a.run],
+  censusComplete:true});
+ assert.equal(z.independentlyAttributedScheduleRuns,0);
+ assert.deepEqual(z.outOfTrackingSessionReceiptRunIds,[60]);
+});
 test('reject unsorted or duplicated official trading dates',async()=>{
  await assert.rejects(()=>rollup({...META,tradingDates:[DAY[0],DAY[0]]}),
   /A1_SCHEDULE_TEN_SESSION_INPUT_OR_CLOCK_INVALID/);
@@ -140,6 +173,13 @@ test('real workflow invokes both independent dual and rolling scheduled history 
  assert.match(a,/audit_a1_ten_session_reliability_v0_1.mjs/);
  assert.match(a,/ten-session-rollup.json/);
  assert.doesNotMatch(a,/secrets\./);
+ // Detect literal "\\${{...}}" which makes GitHub token and artifact
+ // names incorrect even though ordinary JavaScript research tests pass.
+ assert.doesNotMatch(a,/\\\$\{\{\s*(github\.token|github\.run_id)/);
+ const script=await readFile('system2/scripts/audit_a1_ten_session_reliability_v0_1.mjs','utf8');
+ assert.match(script,/\/actions\/workflows\//);
+ assert.match(script,/effectiveCensusComplete/);
+
  assert.match(s,/15 12 \* \* 1-5/);
  assert.match(s,/45 15 \* \* 1-5/);
  assert.match(s,/15 16 \* \* 1-5/);
