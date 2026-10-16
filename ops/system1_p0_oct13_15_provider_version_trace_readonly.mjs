@@ -124,6 +124,35 @@ try{
    report.issues.push("INVOCATIONS_"+w.day+":"+safeError(e));
   }
  }
+ // Provider D1 analytics is delayed, UTC-day, and billing/account aggregate.
+ // It is NEVER a remaining-quota gauge or direct proof of the Oct15 failure.
+ try{
+  const q='query($accountTag:String!,$start:Date!,$end:Date!){viewer{accounts(filter:{accountTag:$accountTag}){d1AnalyticsAdaptiveGroups(limit:100,filter:{date_geq:$start,date_leq:$end}){sum{rowsRead rowsWritten readQueries writeQueries}dimensions{date databaseId}}}}}';
+  const d=await gql(q,{accountTag:account,start:"2026-10-12",end:"2026-10-16"});
+  const groups=d?.d1AnalyticsAdaptiveGroups;
+  if(!Array.isArray(groups)||groups.length>=100)throw Error("D1_METRICS_TRUNCATED_OR_UNAVAILABLE");
+  const metric=(rows)=>rows.reduce((sum,x)=>({
+   rowsRead:sum.rowsRead+Number(x?.sum?.rowsRead||0),
+   rowsWritten:sum.rowsWritten+Number(x?.sum?.rowsWritten||0),
+   readQueries:sum.readQueries+Number(x?.sum?.readQueries||0),
+   writeQueries:sum.writeQueries+Number(x?.sum?.writeQueries||0)
+  }),{rowsRead:0,rowsWritten:0,readQueries:0,writeQueries:0});
+  const days=["2026-10-13","2026-10-14","2026-10-15"];
+  report.evidence.d1AccountUsage={
+   timezone:"UTC_DAY_NOT_TAIPEI",
+   days:days.map(day=>{
+    const rows=groups.filter(x=>x?.dimensions?.date===day);
+    const pinned=rows.filter(x=>sha16(x?.dimensions?.databaseId||"")==="34d9667438c00c05");
+    return {utcDate:day,dbGroups:rows.length,accountAllDatabases:metric(rows),
+     exactSourceDbGroupCount:pinned.length,originalSourceDb:metric(pinned)};
+   }),
+   graphqlReadOnly:true,providerDataCanLag:true,notQuotaRemainingProof:true,
+   cannotProveCronSuccessOrFailure:true};
+ }catch(e){
+  report.evidence.d1AccountUsage={state:"UNVERIFIED",errorClass:safeError(e),
+   notQuotaRemainingProof:true};
+  report.issues.push("D1_ACCOUNT_METRICS:"+safeError(e));
+ }
  report.state=!report.evidence.cron.target23_35_55?"ORIGINAL_CRON_SCHEDULE_UNVERIFIED":
   !asOf["2026-10-13"]?.proofWindowComplete?"HISTORIC_DEPLOYMENT_WINDOW_UNVERIFIED":
   "PROVIDER_HISTORIC_VERSION_TIMELINE_READ_OK__CRON_EXECUTION_UNVERIFIED";
