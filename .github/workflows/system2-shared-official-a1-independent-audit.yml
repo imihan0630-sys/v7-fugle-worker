@@ -202,6 +202,35 @@ jobs:
             echo "PRELIMINARY_PV_MATCHED=$(jq -r .preliminaryMatchedCount "$PRELIMINARY") / NO_FORMAL_SELECTED_ZERO_PICK_OR_FROZEN" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "DAILY_SELECTION_READINESS=$(jq -r .state "$READINESS") / WATCH=$(jq -r .state "$PRELIMINARY")" >> "$GITHUB_STEP_SUMMARY"
+      # SEPARATE acceptance axes: completed independent 122/122 source,
+      # actual GitHub scheduled-run punctuality, and true T+1 01:59 deadline.
+      # No timing result is selection/frozen authority. Original producer
+      # event.schedule records intended CRON, NOT an exact dispatch timestamp.
+      - name: Separately audit real source integrity and GitHub scheduler timeliness
+        if: success() && github.event_name == 'workflow_run'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          S2_A1_SOURCE_RUN_ID: ${{ steps.source.outputs.run_id }}
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/audit_shared_a1_dual_acceptance_v0_1.mjs
+          node --test system2/tests/a1_source_schedule_dual_acceptance_v0_1.test.mjs
+          node system2/scripts/audit_shared_a1_dual_acceptance_v0_1.mjs
+          R=/tmp/s2-a1-source-vs-schedule-acceptance/dual-acceptance-receipt.json
+          test -s "$R"
+          test "$(jq -r .sourceIntegrity.independentlyAccepted "$R")" = 'true'
+          test "$(jq -r .decisionClock.finalSelectionAuthorized "$R")" = 'false'
+          test "$(jq -r .decisionClock.frozenD1Written "$R")" = 'false'
+          echo "SOURCE_INTEGRITY=$(jq -r .sourceIntegrity.state "$R"); SCHEDULE_SLO=$(jq -r .scheduler.state "$R"); DECISION_SOURCE_CLOCK=$(jq -r .decisionClock.state "$R"); NOT_PIT_OR_FROZEN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve separated A1 integrity-schedule-clock receipt for 90 days
+        if: always() && github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-a1-dual-source-clock-${{ github.run_id }}
+          path: /tmp/s2-a1-source-vs-schedule-acceptance/dual-acceptance-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
       # Optional supplemental native CA original evidence for the SAME T
       # already proven by A1 source+auditor, not another Final/Frozen job.
       # Never run on this workflow's self-path 121/122 push diagnostic.
