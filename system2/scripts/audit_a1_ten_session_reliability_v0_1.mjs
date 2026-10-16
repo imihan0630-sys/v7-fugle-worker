@@ -106,7 +106,8 @@ export async function collectA1TenSessionRollupV0_1({
  // in-memory same-audit evidence, de-duplicated by runId+signed hash.
  const uniq=new Map();
  for(const x of [...history,currentDual])
-  uniq.set(x.sourceRunId+'|'+x.receiptHash,x);
+  if(x.sourceRunEvent==='schedule')
+   uniq.set(x.sourceRunId+'|'+x.receiptHash,x);
  const rollup=await buildA1ScheduleTenSessionRollupV0_1({
   tradingDates:sourceManifest.tradingDates,dualReceipts:[...uniq.values()],
   sourceRuns,censusComplete,asOfUtc
