@@ -9322,3 +9322,34 @@ CURRENT_PREOPEN_SOURCE_OBSERVATION_PIT_PASS / HISTORICAL_INDICATOR_PIT_BLOCKED /
 6. Do not join outcomes until complete prospective parents exist; first inference remains KD-vs-RSI residual incremental value, then MACD-vs-direct-trend.
 7. Preserve equal-date inference, OOS/walk-forward, cost/fillability, limit/suspension and redundancy gates.
 8. Formal Core unchanged; maturity remains 56.7%.
+
+
+## Continuation update — TI-1973 through TI-1992
+
+- Canonical evidence `system2/migration/evidence/S2_DATA_ISSUE1068_NATIVE_122_A1_PERBAR_PIT_PHYSICAL_20261016_V0_1.json` independently rehashes, decompresses and reparses all 122/122 original provider files.
+- It reconciles 1,935 complete four-digit symbol windows × 61 sessions = 118,035 individual original rows. Open, high, low, close, volumeShares, tradeValue, transactions, companyName and native source-row hashes all match.
+- This materially advances D03 from source-file presence to raw per-bar formula-mechanics availability at the 2026-10-16 05:45 research cut.
+- The 2026-10-15 23:45 decision cut still fails: no independent original archive/audit witness existed by that cut, and later evidence cannot backdate it.
+- Cross-domain evidence `system2/migration/evidence/S2_DATA_ISSUE1068_CROSSDOMAIN_PIT_REAL_ORIGINAL_ARTIFACT_20261016_V0_1.json` proves a hard separation between price payload completeness and research-universe admissibility.
+- CFI evidence is only 30 current-native rows from the prior 2026-10-14 preview, including one Innovation Board row. It cannot certify the 2026-10-15 1,935-symbol universe or 61-session effective history.
+- Six corporate-action source families contain 641 known event rows across 630 market-symbols. In the prior 30-symbol preview, 11 have known events and the other 19 are UNKNOWN, not certified NO_EVENT.
+- D03 accepts isolated raw formula-mechanics replay for finite and recursive indicators only under frozen initialization semantics. It does not accept ranks, signals, cohort membership, historical PIT, Shadow or outcome inference.
+- Bollinger20 requires exactly 20 clean parent sessions. ADX14 additionally requires frozen full Wilder replay/warm-up state.
+- New boundary contract: `research/D03_NATIVE_PERBAR_FORMULA_MECHANICS_VS_PIT_ADMISSIBILITY_20261016_V0_1.md`.
+- New executable preregistration: `research/d03_native_perbar_formula_mechanics_pit_admissibility_cases_20261016_v0_1.json` and `research/test_d03_native_perbar_formula_mechanics_pit_admissibility_v0_1.mjs`.
+- Independent local execution passed 20/20 cases. No outcomes, parameter search, production wiring or Formal change.
+- No `FORMAL_OPTIMIZATION_CANDIDATE`. Formal Core remains LOCKED.
+
+### Updated current status
+
+NATIVE_118035_PERBAR_PAYLOAD_RECONCILED / RAW_FORMULA_MECHANICS_CONDITIONAL_PASS / SAME_DATE_CFI_UNIVERSE_BLOCKED / CA_REVISION_RETRACTION_NO_EVENT_BLOCKED / HISTORICAL_AND_STRATEGY_PIT_BLOCKED / OUTCOMES_CLOSED / FORMAL_LOCKED
+
+### Updated exact next continuation point
+
+1. Preserve 1,935×61 / 118,035 only as the raw formula-mechanics denominator at the 2026-10-16 05:45 research cut.
+2. Obtain same-real-decision-date effective ordinary-common-share identity for the exact 1,935-symbol set and its 61-session history; do not reuse the prior-day 30-row CFI preview.
+3. Obtain six-family corporate-action amendments/cancellations/suspensions and authenticated no-event evidence per symbol/session; keep absence UNKNOWN.
+4. Then build a per-symbol four-state eligibility table: RAW_MECHANICS_ONLY, IDENTITY_BLOCKED, CONTINUITY_BLOCKED, CURRENT_RESEARCH_ELIGIBLE.
+5. Run outcome-blind formula replay and prefix invariance on eligible rows, with exact Bollinger20 parents and frozen ADX full-replay/warm-up semantics.
+6. Do not join outcomes until prospective parents are complete; preserve KD-vs-RSI, MACD-vs-direct-trend, ADX and Bollinger redundancy order.
+7. Formal Core unchanged; maturity remains 56.7%.
