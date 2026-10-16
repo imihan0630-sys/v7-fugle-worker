@@ -132,3 +132,9 @@ test('auditor hash laundering across different input receipts cannot obtain exte
  assert.equal(r.externalAuditDigestPinned,false);
  assert.equal(r.stage1EvaluationAuthorized,false);
 });
+
+test('tampered but not re-signed DATA original claim cannot be accepted',async()=>{
+ const e=await input();e.inputs.A1_RAW_PRICE_VOLUME_61.nativeRowsVerifiedCount=60;
+ await assert.rejects(check({evidence:e,expectedIndependentAuditHash:auditSha}),
+   /S2_PITA_USED_INPUT_HANDOFF_IDENTITY_SIGNATURE_OR_PROTECTED_OUTPUT_INVALID/);
+});
