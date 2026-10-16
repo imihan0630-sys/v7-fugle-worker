@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D03_NATIVE_PERBAR_FORMULA_MECHANICS_PIT_ADMISSIBILITY_CASES_V0_1",
+  "outcomesClosed": true,
+  "formalCore": "LOCKED",
+  "cases": [
+    {"id":"TI-1973","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"expected":"RAW_MECHANICS_ONLY"},
+    {"id":"TI-1974","pairs":121,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"expected":"SOURCE_PAIR_BLOCKED"},
+    {"id":"TI-1975","pairs":122,"windows":1935,"sessions":61,"bars":118034,"rowHash":true,"researchCut":true,"formalCut":false,"expected":"BAR_DENOMINATOR_BLOCKED"},
+    {"id":"TI-1976","pairs":122,"windows":1935,"sessions":60,"bars":116100,"rowHash":true,"researchCut":true,"formalCut":false,"expected":"SESSION_WINDOW_BLOCKED"},
+    {"id":"TI-1977","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":false,"researchCut":true,"formalCut":false,"expected":"ROW_INTEGRITY_BLOCKED"},
+    {"id":"TI-1978","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":false,"formalCut":false,"expected":"SOURCE_CUT_BLOCKED"},
+    {"id":"TI-1979","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":true,"expected":"FALSE_FORMAL_PROMOTION_BLOCKED"},
+    {"id":"TI-1980","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":30,"cfiSameDate":false,"expected":"IDENTITY_VINTAGE_BLOCKED"},
+    {"id":"TI-1981","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":30,"cfiSameDate":true,"expected":"IDENTITY_COVERAGE_BLOCKED"},
+    {"id":"TI-1982","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":false,"expected":"IDENTITY_EFFECTIVE_PERIOD_BLOCKED"},
+    {"id":"TI-1983","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":false,"expected":"CONTINUITY_REVISION_BLOCKED"},
+    {"id":"TI-1984","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"unknownAsNoEvent":true,"expected":"NEGATIVE_EVENT_LAUNDERING_BLOCKED"},
+    {"id":"TI-1985","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"expected":"CURRENT_RESEARCH_INPUT_ONLY"},
+    {"id":"TI-1986","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"lookback":20,"exactParentSessions":20,"expected":"FINITE_WINDOW_MECHANICS_ONLY"},
+    {"id":"TI-1987","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"lookback":20,"exactParentSessions":19,"expected":"EXACT_PARENT_WINDOW_BLOCKED"},
+    {"id":"TI-1988","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"indicator":"ADX14","adxReplay":false,"expected":"ADX_STATE_BLOCKED"},
+    {"id":"TI-1989","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"indicator":"ADX14","adxReplay":true,"historicalAvailability":false,"expected":"CURRENT_RESEARCH_INPUT_ONLY"},
+    {"id":"TI-1990","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"historicalAvailability":true,"frozen":false,"expected":"HISTORICAL_INPUT_NO_FROZEN"},
+    {"id":"TI-1991","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":true,"oos":true,"redundancy":false,"expected":"REDUNDANCY_BLOCKED"},
+    {"id":"TI-1992","pairs":122,"windows":1935,"sessions":61,"bars":118035,"rowHash":true,"researchCut":true,"formalCut":false,"cfiRows":1935,"cfiSameDate":true,"cfiEffective":true,"caComplete":true,"historicalAvailability":true,"frozen":true,"outcomes":true,"costs":true,"oos":true,"redundancy":true,"expected":"RESEARCH_CANDIDATE_ONLY"}
+  ]
+}
+
