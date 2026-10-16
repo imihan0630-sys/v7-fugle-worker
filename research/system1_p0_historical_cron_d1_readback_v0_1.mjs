@@ -6,6 +6,21 @@ export const WINDOW_END="2026-10-15T16:06:00.000Z";
 export const LEASE_KEY="V7_AFTER_MARKET_LEASE:2026-10-15";
 export const CRON_SELECT="SELECT id,cron_expression,scheduled_time,scheduled_at,started_at,finished_at,job_type,status,skipped,detail,error FROM v7_cron_runs WHERE scheduled_at>=?1 AND scheduled_at<?2 AND job_type='AFTER_MARKET_SCAN' ORDER BY scheduled_at ASC LIMIT 10";
 export const LEASE_SELECT="SELECT state_key,updated_at,snapshot_json FROM v7_signal_delivery_state WHERE state_key=?1 LIMIT 1";
+
+// Pure REST D1 SELECT meta validator, unit-testable without Cloudflare.
+// Cloudflare's rows_written MUST explicitly be the numeric integer 0.
+export function requireVerifiedSelectMetrics(meta,returnedRowCount) {
+  if(!meta||typeof meta!=="object"||
+    !Object.prototype.hasOwnProperty.call(meta,"rows_written"))
+    throw Error("D1_ROWS_WRITTEN_WITNESS_MISSING");
+  if(!Number.isSafeInteger(meta.rows_written)||meta.rows_written!==0)
+    throw Error("D1_SELECT_WRITE_OR_METRICS_UNVERIFIED");
+  const read=meta.rows_read===undefined?returnedRowCount:meta.rows_read;
+  if(!Number.isSafeInteger(read)||read<0)
+    throw Error("D1_SELECT_READ_METRICS_UNVERIFIED");
+  return {written:0,read};
+}
+
 const SLOTS=["2026-10-15T15:35","2026-10-15T15:55"];
 function errorClass(raw) {
   const message=String(raw||"");
