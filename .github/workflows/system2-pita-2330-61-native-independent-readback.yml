@@ -1,0 +1,94 @@
+name: System2 PIT-A 2330 61 Native A1 Source Readback (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_61_native_source_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_61_native_source_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-61-native-independent-readback.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_61_native_source_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_61_native_source_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-pita-2330-61-native-independent-readback.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-pita-2330-61-raw-a1-readback-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source_native_readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Assert original clock and negative PIT scenarios
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_61_native_source_readback_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_61_native_source_readback_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Exact immutable original old 61-session A1 source artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38797319008
+          name: s2-shared-official-a1-38797319008
+          path: /tmp/s2-pita-old-source
+          github-token: ${{ github.token }}
+      - name: Independent original 122/122 A1 source audit by old run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38797548446
+          name: system2-shared-official-a1-independent-audit-38797548446
+          path: /tmp/s2-pita-old-audit
+          github-token: ${{ github.token }}
+      - name: Exact new 2026-10-16 TWSE raw original archived by producer
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38908458028
+          name: s2-pita-2330-original-a1-20261016-38908458028-1
+          path: /tmp/s2-pita-current-source
+          github-token: ${{ github.token }}
+      - name: Independently read, gunzip, reparse and rehash actual 60 plus 1 native sources
+        env:
+          S2_PITA_OLD_SOURCE_DIR: /tmp/s2-pita-old-source
+          S2_PITA_OLD_AUDIT_DIR: /tmp/s2-pita-old-audit
+          S2_PITA_CURRENT_ORIGINAL_DIR: /tmp/s2-pita-current-source
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_61_native_source_readback_v0_1.mjs
+          R=/tmp/s2-pita-2330-61-readback/sourceonly-2330-61-native-verdict.json
+          test -s "$R"
+          test "$(jq -r .originalNativeDaysRehashed "$R")" = '61'
+          test "$(jq -r .previousNativeDaysRehashed "$R")" = '60'
+          test "$(jq -r .newCurrentNativeDaysRehashed "$R")" = '1'
+          test "$(jq -r .historicalCfiEffectivePeriodPITCertified "$R")" = 'false'
+          test "$(jq -r .completeCARevisionsAndAuthoritativeNoEventCertified "$R")" = 'false'
+          test "$(jq -r .independentFullPitAuditLaneAccepted "$R")" = 'false'
+          test "$(jq -r .pitSymbolEligibleCount "$R")" = '0'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "DATA_2330_A1_NATIVE_SOURCE_READBACK_61_OF_61_PASS; CURRENT_DAY_BEFORE_CUT; CFI_CA_AND_FORMAL_PIT_UNKNOWN; FROZEN_0" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve independently reproducible sanitized 61-original source hashes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-pita-2330-61-native-source-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-61-readback/sourceonly-2330-61-native-verdict.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No strategy or complete historical PIT admission
+        if: always()
+        run: |
+          echo 'Source-native A1 one-stock 61-day readback only. CFI historical effective source versions, CA revisions/NO_EVENT, independent AUDIT_LANE full PIT and strategy/Frozen are all NOT ACCEPTED. No Cloudflare or System1 mutation.' >> "$GITHUB_STEP_SUMMARY"
