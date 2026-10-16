@@ -41,7 +41,6 @@ test('the real 2330 source-native ex dividend flips 9/16 raw close vs official r
  assert.equal(r.exDividendReferenceChangePercent,0.084525);
  assert.ok(r.rawTwoDayChangePercent<0);
  assert.ok(r.exDividendReferenceChangePercent>0);
- assert.equal(r.61DayAdjustedFeatureContinuityAudited,undefined);
  assert.equal(r['61DayAdjustedFeatureContinuityAudited'],false);
  assert.equal(r.correctedStage1MomentumComputed,false);
  assert.equal(r.authoritativeNegativeNoEventProven,false);
