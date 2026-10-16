@@ -67,6 +67,8 @@ export async function capturePita2330SixCAOriginalV0_1({
    !h.test(c.receiptHash||'')||
    await sha256Hex(Object.fromEntries(Object.entries(c).filter(([k])=>k!=='receiptHash')))!==c.receiptHash||
    !Number.isFinite(Date.parse(finish))||
+   !Number.isFinite(Date.parse(c.firstPhysicalObservedAtUtc))||
+   !Number.isFinite(Date.parse(c.completedAtUtc))||
    Date.parse(finish)>Date.parse(CUT)||
    Date.parse(c.firstPhysicalObservedAtUtc)<+begin||
    Date.parse(c.completedAtUtc)>Date.parse(finish)||
