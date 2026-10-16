@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "D03",
+  "date": "2026-10-17",
+  "symbol": "2330",
+  "market": "TWSE",
+  "event": {
+    "preDate": "2026-09-15",
+    "exDate": "2026-09-16",
+    "previousCloseRaw": 2385,
+    "exDateCloseRaw": 2380,
+    "officialExDividendReference": 2377.99,
+    "nativeDividendField": 7.000001,
+    "rawReturnPct": -0.20964360587002462,
+    "referenceReturnPct": 0.08452516621180184,
+    "signFlip": true
+  },
+  "facts": {
+    "native61Of61": true,
+    "adjusted61Audited": false,
+    "currentSessionTraded": true,
+    "tradeableAtCutCertified": false,
+    "authoritativeNegativeSuspension": false,
+    "outcomesClosed": true
+  },
+  "expectedCases": [
+    {
+      "id": "TI-2033",
+      "input": {
+        "kind": "RETURN",
+        "close": 2380,
+        "base": 2385,
+        "expectedSign": "negative"
+      },
+      "expected": "RAW_RETURN_NEGATIVE"
+    },
+    {
+      "id": "TI-2034",
+      "input": {
+        "kind": "RETURN",
+        "close": 2380,
+        "base": 2377.99,
+        "expectedSign": "positive"
+      },
+      "expected": "REFERENCE_RETURN_POSITIVE"
+    },
+    {
+      "id": "TI-2035",
+      "input": {
+        "kind": "PAIR",
+        "raw": -0.20964360587002462,
+        "reference": 0.08452516621180184
+      },
+      "expected": "PRICE_SPACE_SIGN_FLIP"
+    },
+    {
+      "id": "TI-2036",
+      "input": {
+        "kind": "SPACE",
+        "mixed": true
+      },
+      "expected": "MIXED_SPACE_BLOCKED"
+    },
+    {
+      "id": "TI-2037",
+      "input": {
+        "kind": "SPACE",
+        "adjusted": true,
+        "fullOHLC": false
+      },
+      "expected": "OHLC_ADJUSTMENT_INCOMPLETE"
+    },
+    {
+      "id": "TI-2038",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "RET",
+        "rawEventCrossing": true
+      },
+      "expected": "RET_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2039",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "MA",
+        "rawEventCrossing": true
+      },
+      "expected": "MA_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2040",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "RSI",
+        "rawEventCrossing": true
+      },
+      "expected": "RSI_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2041",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "MACD",
+        "rawEventCrossing": true
+      },
+      "expected": "MACD_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2042",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "ADX_TR",
+        "rawEventCrossing": true
+      },
+      "expected": "ADX_TR_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2043",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "BOLLINGER",
+        "rawEventCrossing": true
+      },
+      "expected": "BOLLINGER_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2044",
+      "input": {
+        "kind": "SPACE",
+        "indicator": "KD_RANGE",
+        "rawEventCrossing": true
+      },
+      "expected": "KD_RANGE_EVENT_CONTAMINATED"
+    },
+    {
+      "id": "TI-2045",
+      "input": {
+        "kind": "SPACE",
+        "divergenceMismatch": true
+      },
+      "expected": "DIVERGENCE_PRICE_SPACE_BLOCKED"
+    },
+    {
+      "id": "TI-2046",
+      "input": {
+        "kind": "SPACE",
+        "multiFrameMismatch": true
+      },
+      "expected": "MTF_PRICE_SPACE_CONFLICT"
+    },
+    {
+      "id": "TI-2047",
+      "input": {
+        "kind": "LINEAGE",
+        "raw61": true,
+        "adjusted61": false
+      },
+      "expected": "ADJUSTED_61_NOT_CERTIFIED"
+    },
+    {
+      "id": "TI-2048",
+      "input": {
+        "kind": "LINEAGE",
+        "raw61": true,
+        "mechanicsOnly": true
+      },
+      "expected": "RAW_MECHANICS_ONLY"
+    },
+    {
+      "id": "TI-2049",
+      "input": {
+        "kind": "LINEAGE",
+        "factorsKnown": true,
+        "priceGate": false
+      },
+      "expected": "FACTORS_PRICE_SPACE_BLOCKED"
+    },
+    {
+      "id": "TI-2050",
+      "input": {
+        "kind": "LINEAGE",
+        "traded": true,
+        "cutTradeableCertified": false
+      },
+      "expected": "TRADED_NOT_CUT_TRADEABLE"
+    },
+    {
+      "id": "TI-2051",
+      "input": {
+        "kind": "LINEAGE",
+        "downstreamAdjusted": true,
+        "upstreamRejectsEvent": true
+      },
+      "expected": "PIPELINE_CONTRACT_CONFLICT"
+    },
+    {
+      "id": "TI-2052",
+      "input": {
+        "kind": "LINEAGE",
+        "adjusted61": true,
+        "cutSafe": true,
+        "outcomesClosed": true
+      },
+      "expected": "ADJUSTED_RESEARCH_INPUT_ONLY"
+    }
+  ],
+  "result": {
+    "passed": 20,
+    "total": 20
+  },
+  "maturityPct": 56.7,
+  "formalCore": "LOCKED"
+}
