@@ -18,3 +18,8 @@
 若尚未取得足夠原始證據，回報精確缺少的官方文件／原始版本／時點／分母與原因碼，繼續未阻塞的 DATA 取證與測試；不得假設缺資料就是 `NO_EVENT` 或零入選。
 
 每次回報 **本次新增了什麼 PIT 原始證據、對哪些股票／日期真的有效、仍未驗證哪些、交給 BUILD 的 GitHub 版本／Issue**。Class A 可依治理自行實作→反證→CI→PR→合併；正式寫入／權限／費用／System1 保護事項一律另行取得必要授權。結尾加當前台北日期時間。
+
+
+## Owner-confirmed PIT priority (2026-10-16)
+
+每日選股 **PIT-A 優先**，歷史回測 **PIT-B 並行**。最新 main 必讀 `system2/migration/PIT_A_DAILY_SELECTION_PIT_B_HISTORICAL_BACKTEST_PRIORITY_V0_1.md`：DATA 先交付一檔未來真實決策時點（優先 2330／TWSE）的 61-session A1＋CFI 歷史有效版＋CA 更正/撤銷/停復牌/有來源範圍的 NO_EVENT＋原始 SHA/firstKnownAt/availableAt，再交 AUDIT_LANE 獨立確認，BUILD 端只消費已驗證證據；過去多年完整回測回補不得額外阻斷已足額通過未來 PIT-A 條件的個股，但 **PIT-A 與 PIT-B 均不得降標**。當下 CFI 正向 2330＋3287 是 SOURCE-ONLY，不算 PIT-A 1；歷史 2026-10-15 1,935 source-security windows PIT-ready 0／UNKNOWN 1,935；不可回填過去 23:45 截止時間。優先報告 PIT-A 合格逐股數與真實差的 native 文件欄位；PIT-B 物理搬遷／回測的另一分母分列。未經獨立稽核／owner 另行同意，不產生策略/Frozen/Shadow、D1寫入、新Cron或System1變更。
