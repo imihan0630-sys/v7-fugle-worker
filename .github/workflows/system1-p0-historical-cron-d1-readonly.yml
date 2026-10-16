@@ -1,0 +1,52 @@
+name: System1 P0 Historical Cron D1 SELECT (manual-only physical)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-historical-cron-d1-readonly.yml"
+      - "research/system1_p0_historical_cron_d1_readback_v0_1.mjs"
+      - "ops/system1_p0_historical_cron_d1_select_readonly_20261015.mjs"
+      - "tests/test_system1_p0_historical_cron_d1_readback_v0_1.mjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-historical-cron-20261015-d1-readonly
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Offline SQL allowance, exact slots, unsafe inference and no deployment checks
+        run: |
+          node --check research/system1_p0_historical_cron_d1_readback_v0_1.mjs
+          node --check ops/system1_p0_historical_cron_d1_select_readonly_20261015.mjs
+          node tests/test_system1_p0_historical_cron_d1_readback_v0_1.mjs
+  physical_select:
+    # Never query production D1 automatically from a PR or merge.
+    # Requires a separate, intentional main-branch manual dispatch.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Exactly two bounded historic v7-live D1 SELECT statements (REST POST transport)
+        run: node ops/system1_p0_historical_cron_d1_select_readonly_20261015.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-20261015-historic-cron-d1-${{ github.run_id }}
+          path: artifacts/system1-p0-historical-cron-d1-select-20261015.json
+          if-no-files-found: warn
+          retention-days: 45
