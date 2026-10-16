@@ -66,6 +66,7 @@ assert.match(script,/requests\.select>2/);
 assert.match(script,/database\?per_page=100/);
 assert.match(script,/name==="v7-live"/);
 assert.match(script,/rowsWritten/);
+assert.match(script,/hasOwnProperty.call\(meta,"rows_written"\)/);
 assert.doesNotMatch(script,/wrangler deploy|workers\/scripts\/fugle-test\/deployments/);
 assert.doesNotMatch(script,/INSERT INTO|UPDATE v7_|DELETE FROM|DROP TABLE|CREATE TABLE/i);
 const workflow=await readFile(new URL("../.github/workflows/system1-p0-historical-cron-d1-readonly.yml",import.meta.url),"utf8");
