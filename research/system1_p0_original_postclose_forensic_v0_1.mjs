@@ -45,7 +45,8 @@ export function classifySystem1OriginalPostclose({date,observedAt,version=null,c
       const actual=byMonitorSymbol.get(String(expected.symbol));
       return Boolean(actual)&&materialKeys.every(key=>
         !Object.prototype.hasOwnProperty.call(expected,key)||
-        JSON.stringify(expected[key])===JSON.stringify(actual[key]));
+        (Object.prototype.hasOwnProperty.call(actual,key)&&
+         JSON.stringify(expected[key])===JSON.stringify(actual[key])));
     });
   const kvMatches=monitorMaterialParity&&config?.source==="KV"&&
     config?.updatedAt===scan.config.updatedAt;
