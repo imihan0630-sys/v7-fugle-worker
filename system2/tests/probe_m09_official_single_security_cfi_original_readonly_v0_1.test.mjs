@@ -15,7 +15,7 @@ const html=(code,cfi,type='Stock')=>[
  '<td>1994/09/05</td><td>',cfi,'</td><td></td></tr></table></body></html>'
 ].join('');
 const controls=[{code:'2330',hint:'TWSE_EQUITY'},{code:'9103',hint:'TDR_NON_EQUITY'}];
-function setup({stale=false,security=false,not200=false,corrupt=false}={}){
+function setup({stale=false,security=false,not200=false,corrupt=false,nativeType='Stock'}={}){
  let calls=0,writeCalls=0;
  const fetchImpl=async(url,options)=>{
   calls++;
@@ -24,7 +24,7 @@ function setup({stale=false,security=false,not200=false,corrupt=false}={}){
   const code=new URL(url).searchParams.get('owncode');
   if(not200&&code==='9103')return new Response('Unavailable',{status:403});
   const body=security?'FOR SECURITY REASONS, THIS PAGE CAN NOT BE ACCESSED':
-    html(stale?'9999':code,code==='2330'?'ESVUFR':'EDXXXX','Stock');
+    html(stale?'9999':code,code==='2330'?'ESVUFR':'EDXXXX',nativeType);
   return new Response(body,{status:200});
  };
  const persistRaw=async({raw,originalSha256})=>{
@@ -94,4 +94,29 @@ test('strictly bounded 4 targeted native GET and permission separation',async()=
  assert.doesNotMatch(w,/schedule:|workflow_dispatch:|secrets\.|contents: write/);
  assert.doesNotMatch(s,/wrangler|api\.cloudflare\.com|INSERT INTO|git push|CREATE TABLE/);
  assert.match(s,/historicalSecurityClassPitCertified:false/);
+});
+
+test('current real-row CFI observation can exceed zero without falsely certifying historic class PIT',async()=>{
+ const f=setup({nativeType:'Stocks'});
+ const r=await probe({...f,controls,now:()=>new Date('2026-10-16T09:00:00Z')});
+ assert.equal(r.currentNativeStockCfiObserved,1);
+ assert.equal(r.sourceReceipts[0].currentObservedStockCfi,true);
+ assert.equal(r.sourceReceipts[1].currentObservedStockCfi,false);
+ assert.equal(r.currentNativeEvidenceScope,'AS_OBSERVED_NOW_NOT_HISTORICAL_EFFECTIVE_VINTAGE');
+ assert.equal(r.sourceReceipts[0].historicalEffectiveFromDate,null);
+ assert.equal(r.sourceReceipts[0].originalPublicationAtUtc,null);
+ assert.equal(r.historicalSecurityClassPitCertified,false);
+ assert.equal(r.ordinaryCommonSharePITCertified,false);
+ assert.equal(r.formalStage1SelectionAuthorized,false);
+ assert.equal(r.selectedCount,null);
+ const {receiptHash,...base}=r;
+ assert.equal(await sha256Hex(base),receiptHash);
+});
+test('native single source fallback only runs without real preliminary CFI and never accepts historic PIT',async()=>{
+ const sourceWorkflow=await readFile('.github/workflows/system2-shared-official-a1-independent-audit.yml','utf8');
+ assert.match(sourceWorkflow,/Prospective current native CFI only if preliminary source unavailable/);
+ assert.match(sourceWorkflow,/if \[ -s \/tmp\/s2-m09-preview-native-cfi\/preview-native-cfi\.json \]/);
+ assert.match(sourceWorkflow,/node system2\/scripts\/probe_m09_official_single_security_cfi_original_readonly_v0_1\.mjs/);
+ assert.match(sourceWorkflow,/s2-m09-prospective-native-cfi-sourceonly-/);
+ assert.match(sourceWorkflow,/test "\$\(jq -r \.historicalSecurityClassPitCertified "\$R"\)" = 'false'/);
 });
