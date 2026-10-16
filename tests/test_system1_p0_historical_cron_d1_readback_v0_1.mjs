@@ -105,6 +105,11 @@ assert.match(workflow,/pull_request:/);
 assert.doesNotMatch(workflow,/^  push:/m);
 assert.doesNotMatch(workflow,/^  schedule:/m);
 assert.match(workflow,/if: github\.event_name == 'workflow_dispatch'/);
+assert.match(workflow,/secrets\\.SYSTEM1_P0_D1_READ_TOKEN/);
+assert.doesNotMatch(workflow,/secrets\\.CLOUDFLARE_API_TOKEN/);
+assert.doesNotMatch(workflow,/secrets\\.SYSTEM2_CLOUDFLARE_API_TOKEN/);
+assert.doesNotMatch(workflow,/secrets\\.S2_DEST_ACCOUNT/);
+assert.match(workflow,/github\\.ref == 'refs\\/heads\\/main'/);
 assert.match(workflow,/node tests\/test_system1_p0_historical_cron_d1_readback_v0_1\.mjs/);
 console.log(JSON.stringify({ok:true,suite:"historical_20261015_select_only_and_falsification",
  noCronAbsenceInference:true,exactTwoSlotWindow:true,leaseIsNotParent:true,
