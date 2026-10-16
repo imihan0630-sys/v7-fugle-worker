@@ -277,6 +277,33 @@ function normalizeRow(row, table, spec) {
   return Object.fromEntries(entries.sort(([a], [b]) => a.localeCompare(b)));
 }
 
+// Frozen/Shadow production-facing run group must never claim a different
+// trading date or decision as-of from its constituent immutable rows.
+// Historical A1/backtest/migrations and later corrections deliberately are
+// NOT in this allowlist: those records may legitimately span many dates.
+const PROSPECTIVE_RUN_CLOCK_TABLES = new Set([
+  "s2_source_session_receipts",
+  "s2_market_regime_snapshots",
+  "s2_industry_snapshots",
+  "s2_symbol_factor_snapshots",
+  "s2_decisions",
+  "s2_shadow_runs",
+  "s2_strategy_ordering_receipts",
+  "s2_capacity_runs",
+  "s2_shadow_run_fingerprints",
+]);
+
+function assertProspectiveRunClock(table, row, marketDate, decisionTimestamp) {
+  if (!PROSPECTIVE_RUN_CLOCK_TABLES.has(table)) return;
+  // Both are mandatory in a present-tense decision batch. A missing clock
+  // cannot be interpreted as belonging to the enclosing batch.
+  if (row.market_date !== marketDate || row.decision_timestamp !== decisionTimestamp) {
+    throw new Error(
+      `PROSPECTIVE_RUN_CLOCK_CONFLICT:${table}:batch_market_date_or_decision_timestamp`
+    );
+  }
+}
+
 function identityObject(row, identityColumns, table) {
   const out = {};
   for (const col of identityColumns) {
@@ -330,6 +357,7 @@ export async function buildSystem2PersistenceBatch({
     if (!record || typeof record !== "object") throw new Error(`records[${i}] is required`);
     const [table, spec] = tableSpec(record.table);
     const row = normalizeRow(record.row, table, spec);
+    assertProspectiveRunClock(table, row, marketDate, decisionTimestamp);
     const identity = identityObject(row, spec.identity, table);
     const key = identityKey(table, identity);
     const identityDigest = await sha256Hex({ table, identity });
