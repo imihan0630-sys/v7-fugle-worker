@@ -288,6 +288,37 @@ jobs:
           path: /tmp/s2-m09-daily-ca-negative-readonly/
           retention-days: 7
           if-no-files-found: warn
+      # PIT-forward source harvesting is intentionally independent from the
+      # old session's 30-symbol preview: a source 122/122 audited TOO LATE for
+      # that decision still deserves immutable actual NOW CA source copies.
+      # It is NEVER retrospectively admissible for the original market cut.
+      - name: Prospectively capture six official CA originals regardless of expired watch
+        if: success() && github.event_name != 'push'
+        continue-on-error: true
+        env:
+          S2_A1_AUDIT_SOURCE_DIR: /tmp/s2-source-for-independent-readback
+        run: |
+          set -euo pipefail
+          node --check system2/scripts/capture_m09_prospective_six_ca_no_watch_v0_1.mjs
+          node --test system2/tests/capture_m09_prospective_six_ca_no_watch_v0_1.test.mjs
+          node system2/scripts/capture_m09_prospective_six_ca_no_watch_v0_1.mjs
+          R=/tmp/s2-m09-prospective-six-ca-no-watch/prospective-only-receipt.json
+          test -s "$R"
+          test "$(jq -r .requiresNoPreliminaryWatch "$R")" = 'true'
+          test "$(jq -r .originalMarketDayCutQualified "$R")" = 'false'
+          test "$(jq -r .completeCARevisionsAndNoEventCertified "$R")" = 'false'
+          test "$(jq -r .qualifiedSelection "$R")" = 'false'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "PROSPECTIVE_CA_ORIGINALS_NOW=$(jq -r .originalBodyBytesRetained "$R")/6; observedAt=$(jq -r .observationOnlyAvailableAtUtc "$R"); old-market PIT=BLOCKED, no-event=UNKNOWN." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve prospective original six-CA bytes and actual observation clock
+        if: always() && github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-prospective-ca-sourceonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-prospective-six-ca-no-watch/
+          retention-days: 90
+          if-no-files-found: warn
       # Native CFI is ONLY a current-observation supplement to the exact
       # separately audited 122/122 A1 source; never a historical ordinary
       # equity PIT admission, even if all preview securities are Stocks.
