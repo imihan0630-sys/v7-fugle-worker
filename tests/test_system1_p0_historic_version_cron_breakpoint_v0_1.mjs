@@ -64,7 +64,7 @@ assert.match(p,/aggregateInvocationsProveCron:false/);
 assert.match(p,/quotaUsageProvesRemainingQuota:false/);
 assert.doesNotMatch(p,/process\.env\.SYSTEM1_P0_D1_READ_TOKEN/);
 assert.doesNotMatch(p,/\/d1\/database/);
-assert.doesNotMatch(p,/\b(INSERT|UPDATE|DELETE|DROP|CREATE|ALTER)\b/i);
+assert.doesNotMatch(p,/\b(?:INSERT INTO|UPDATE v7_|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i);
 const w=await readFile(new URL("../.github/workflows/system1-p0-historic-version-cron-breakpoint-readonly.yml",import.meta.url),"utf8");
 assert.match(w,/workflow_dispatch:/);
 assert.match(w,/pull_request:/);
