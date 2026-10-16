@@ -4301,3 +4301,50 @@ Artifacts: `research/D03_SOURCE_LINKED_IDENTITY_DIGEST_VS_FULL_PAYLOAD_PARITY_20
 ### 精確續接點
 
 取得逐交易日原始首知時間、有效日期普通股 CFI、六族公司行動修正／撤回／無事件，以及停牌／無交易語意後，先建立 outcome-blind 的逐檔 current-cut formula-window eligibility table；通過 prefix invariance 與 replay exactness（含 ADX 暖機）後，才等待完整 prospective parents 執行 KD-vs-RSI，再執行 MACD-vs-direct-trend。成熟度維持 56.7%，不升級。
+
+
+## TI-1973～TI-1992：原始逐列公式機械可算性與 PIT 納入資格（2026-10-16）
+
+### 物理證據增量
+
+`system2/migration/evidence/S2_DATA_ISSUE1068_NATIVE_122_A1_PERBAR_PIT_PHYSICAL_20261016_V0_1.json` 將先前的 122／122 來源觀測推進到逐列原始負載核對：122 個原始檔均完成雜湊、解壓縮與重新解析；1,935 個四位數代號各具 61 個交易日，合計 118,035 列。每列 open/high/low/close、成交量、成交值、交易筆數、公司名稱與原始欄位雜湊均已對回來源。
+
+因此 D03 接受「截至 2026-10-16 05:45 的原始公式機械輸入存在」。這足以支持隔離、無結果的公式重播與前綴不變性測試，但不等於該代號可進入普通股研究母體。
+
+### 正反證與替代解釋
+
+- 正向：ret5/20/60、均線、KD9、RSI14、MACD12/26/9、Bollinger20 的必要價量輸入不再只是摘要或欄位標籤，而是逐列原始數值已核對。
+- 反證：同批交叉領域證據只有前一日 30 筆當前 CFI 身分，且含 1 筆創新版；不能覆蓋 2026-10-15 的 1,935 檔集合，也不能形成 61 日有效身分歷史。
+- 公司行動反證：六類來源找到 641 筆已知事件、涉及 630 個市場－代號。前一日 30 檔中 11 檔有已知事件；其餘 19 檔只是未證明有事件，不是經認證無事件。
+- 替代解釋：數值完整可能同時包含非普通股、身分轉換或公司行動污染。完整形狀不能替代經濟身分與連續價格空間。
+- 失效條件：任一原始檔、逐列雜湊、交易日集合、同日身分、公司行動修訂鏈或停牌語意不一致，對應個股只能 fail closed。
+
+### 對 D03 模組的影響
+
+- D03-01～08、12、13：可以前進到 RAW_MECHANICS_ONLY 的隔離重播，不得形成橫斷面排名、訊號或歷史推論。
+- D03-10 Bollinger：只有精確 20 個乾淨父交易日才可形成當前研究值；19 個正確日加 1 個較舊替代日仍拒絕。
+- D03-09 ADX：61 筆數值存在仍不能取代 Wilder 狀態初始化與完整重播證明，維持 L2。
+- ROC level：仍與等期直接報酬代數冗餘，不因負載完整而復活成新因子。
+- Divergence 與 multi-timeframe conflict：仍需 confirmedAt、尺度對齊及可重播父狀態；本輪沒有解除重畫風險。
+
+### 偏誤與推論防火牆
+
+- PIT：05:45 source-only research cut PASS；23:45 formal decision cut FAIL。
+- Look-ahead：禁止把 05:45 才完成的獨立重驗回填 23:45 或任何舊日期。
+- Selection bias：1,935 四位數代號不是普通股母體證明。
+- Multiple testing / overfitting：未看 outcome、未掃 threshold、未選最佳參數。
+- OOS / walk-forward：缺 prospective parent，維持 UNKNOWN。
+- 日期群聚：118,035 列是同一封存集合，不是獨立決策樣本數。
+- 成本、成交性、漲跌停、停牌、除權息：未形成凍結逐日策略狀態，維持 UNKNOWN。
+- Redundancy：KD/RSI、MACD/direct trend、ADX/direct trend quality、BBW/ATR 的高冗餘先驗不變。
+
+### 可執行證據
+
+- `research/D03_NATIVE_PERBAR_FORMULA_MECHANICS_VS_PIT_ADMISSIBILITY_20261016_V0_1.md`
+- `research/d03_native_perbar_formula_mechanics_pit_admissibility_cases_20261016_v0_1.json`
+- `research/test_d03_native_perbar_formula_mechanics_pit_admissibility_v0_1.mjs`
+- 20／20 deterministic cases PASS；outcomes remain CLOSED。
+
+### 精確續接點
+
+取得同一真正新決策日、同一 1,935 檔集合的 effective-dated ordinary-common-share identity，以及逐檔六類公司行動修正／撤回／停牌／無事件原始版本鏈；之後建立 RAW_MECHANICS_ONLY、IDENTITY_BLOCKED、CONTINUITY_BLOCKED、CURRENT_RESEARCH_ELIGIBLE 四態資格表，先執行 outcome-blind 重播、prefix invariance 與 ADX full-state 驗證，再等待完整 prospective parents。成熟度維持 56.7%，不升級。
