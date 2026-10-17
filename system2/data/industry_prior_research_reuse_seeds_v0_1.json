@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "S2_INDUSTRY_PRIOR_RESEARCH_REUSE_SEEDS_V0_1",
+  "researchOnly": true,
+  "b5CurrentFullMarketCertified": false,
+  "pitCertified": false,
+  "formalCoreChanged": false,
+  "sourceNote": "Existing BR-046/047/083 research snapshots only; dates are conservative capture clocks. NOT original native historical B5, not full-market coverage, not independently verified PIT; old reclass vintages NOT reconstructed.",
+  "records": [
+    {
+      "market": "TWSE",
+      "symbol": "8046",
+      "name": "南亞電路板",
+      "knownAtUtc": "2026-10-02T08:23:00Z",
+      "sourcePath": "research/br046_abf_industry_exposure_bridge_v0_1.json",
+      "formalIndustryLabel": "電子零組件業",
+      "formalIndustryCode": null,
+      "sourceUrl": "https://wwwc.twse.com.tw/pdf/ch/8046_ch.pdf",
+      "edges": [
+        {
+          "subindustry": "IC_SUBSTRATE_ABF",
+          "product": "ABF／IC 載板",
+          "supplyRole": "COMPONENT_MANUFACTURING",
+          "theme": "ABF_IC_SUBSTRATE",
+          "sourceUrl": "https://www.nanyapcb.com.tw/nypcb/chinese/AboutNanYaPCB/CompanyProfile/Company",
+          "exposureMagnitude": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "3189",
+      "name": "景碩科技",
+      "knownAtUtc": "2026-10-02T08:23:00Z",
+      "sourcePath": "research/br046_abf_industry_exposure_bridge_v0_1.json",
+      "formalIndustryLabel": "半導體業",
+      "formalIndustryCode": null,
+      "sourceUrl": "https://www.twse.com.tw/pdf/ch/3189_ch.pdf",
+      "edges": [
+        {
+          "subindustry": "IC_SUBSTRATE_ABF",
+          "product": "FCBGA／ABF IC 載板",
+          "supplyRole": "COMPONENT_MANUFACTURING",
+          "theme": "ABF_IC_SUBSTRATE",
+          "sourceUrl": "https://www.kinsus.com.tw/en/product/products/products_overview",
+          "exposureMagnitude": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "2382",
+      "name": "廣達",
+      "knownAtUtc": "2026-10-08T03:32:05Z",
+      "sourcePath": "research/BR047_AI_DATA_CENTER_CROSS_INDUSTRY_THEME_BRIDGE_20261008_V0_1.md",
+      "formalIndustryLabel": "電腦及週邊設備業",
+      "formalIndustryCode": null,
+      "sourceUrl": null,
+      "edges": [
+        {
+          "subindustry": "AI_SERVER_ODM",
+          "product": "AI／雲端伺服器",
+          "supplyRole": "SERVER_MANUFACTURING",
+          "theme": "AI_DATA_CENTER",
+          "sourceUrl": null,
+          "exposureMagnitude": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "2308",
+      "name": "台達電",
+      "knownAtUtc": "2026-10-08T03:32:05Z",
+      "sourcePath": "research/BR047_AI_DATA_CENTER_CROSS_INDUSTRY_THEME_BRIDGE_20261008_V0_1.md",
+      "formalIndustryLabel": "電子零組件業",
+      "formalIndustryCode": null,
+      "sourceUrl": null,
+      "edges": [
+        {
+          "subindustry": "DATA_CENTER_POWER",
+          "product": "資料中心供電／800VDC",
+          "supplyRole": "POWER_INFRASTRUCTURE",
+          "theme": "AI_DATA_CENTER",
+          "sourceUrl": null,
+          "exposureMagnitude": "UNKNOWN"
+        },
+        {
+          "subindustry": "DATA_CENTER_COOLING",
+          "product": "液冷／熱管理",
+          "supplyRole": "THERMAL_MANAGEMENT",
+          "theme": "AI_DATA_CENTER",
+          "sourceUrl": null,
+          "exposureMagnitude": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "1595",
+      "name": "川寶",
+      "knownAtUtc": "2026-10-09T00:00:00Z",
+      "sourcePath": "research/BR083_D09_01_TPEX_EFFECTIVE_DATED_RECLASSIFICATION_2026_V0_1.md",
+      "formalIndustryLabel": "半導體業",
+      "formalIndustryCode": null,
+      "sourceUrl": "https://www.tpex.org.tw/storage/eb_data/11505/11502011171.html",
+      "industryChange": {
+        "oldLabel": "電子零組件業",
+        "newLabel": "半導體業",
+        "effectiveFrom": "2026-06-01",
+        "announcedOn": "2026-05-19"
+      },
+      "edges": []
+    },
+    {
+      "market": "TPEX",
+      "symbol": "3131",
+      "name": "弘塑",
+      "knownAtUtc": "2026-10-09T00:00:00Z",
+      "sourcePath": "research/BR083_D09_01_TPEX_EFFECTIVE_DATED_RECLASSIFICATION_2026_V0_1.md",
+      "formalIndustryLabel": "半導體業",
+      "formalIndustryCode": null,
+      "sourceUrl": "https://www.tpex.org.tw/storage/eb_data/11505/11502011171.html",
+      "industryChange": {
+        "oldLabel": "其他電子業",
+        "newLabel": "半導體業",
+        "effectiveFrom": "2026-06-01",
+        "announcedOn": "2026-05-19"
+      },
+      "edges": []
+    }
+  ]
+}
