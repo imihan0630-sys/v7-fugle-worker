@@ -125,3 +125,13 @@ test('all four-digit symbols remain not independently common-stock classified',a
  assert.equal(r.cloudflareD1Writes,0);
  assert.equal(r.system1FormalCoreChanged,false);
 });
+
+test('B5 source observed in future or contradictory pre-evaluation flag is rejected',async()=>{
+ const d=dataScope();d.summaries[0].observedAtUtc='2026-10-18T13:00:00Z';
+ d.receiptHash=hash(JSON.stringify(Object.fromEntries(Object.entries(d).filter(([k])=>k!=='receiptHash'))));
+ await assert.rejects(build(input({dataB5ScopeReceipt:d})),/B5_SOURCE_CLOCK_CONTRADICTION/);
+ const d2=dataScope();d2.summaries[0].beforeEvaluation=false;
+ d2.sourceLateAtEvaluation=true;
+ d2.receiptHash=hash(JSON.stringify(Object.fromEntries(Object.entries(d2).filter(([k])=>k!=='receiptHash'))));
+ await assert.rejects(build(input({dataB5ScopeReceipt:d2})),/B5_SOURCE_CLOCK_CONTRADICTION/);
+});
