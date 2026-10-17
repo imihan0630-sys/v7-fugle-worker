@@ -1,0 +1,25 @@
+name: S1 S2 Official Financial Exception Evidence (OFFLINE ONLY)
+on:
+  pull_request:
+    paths:
+      - "research/shared_official_financial_exception_evidence_v0_1.mjs"
+      - "tests/test_shared_official_financial_exception_evidence_v0_1.mjs"
+      - ".github/workflows/s1-s2-official-financial-exception-review-only.yml"
+permissions:
+  contents: read
+jobs:
+  source_contract_offline:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static syntax checks
+        run: |
+          node --check research/shared_official_financial_exception_evidence_v0_1.mjs
+          node --check tests/test_shared_official_financial_exception_evidence_v0_1.mjs
+      - name: Research-only original report ID and PIT fail-closed regression
+        run: node tests/test_shared_official_financial_exception_evidence_v0_1.mjs
