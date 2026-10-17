@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "D03_REFERENCE_RATIO_PROPAGATION_CASES_V0_1",
+  "candidateOnly": true,
+  "outcomesOpened": false,
+  "formalCoreChanged": false,
+  "inputs": {
+    "sessions": 61,
+    "eventIndex": 41,
+    "preEventSessions": 41,
+    "postEventSessions": 20,
+    "priorClose": 2385,
+    "exchangeReference": 2377.99,
+    "eventClose": 2380
+  },
+  "cases": [
+    {"id":"TI-2053","kind":"RATIO","expected":"PASS"},
+    {"id":"TI-2054","kind":"PARTITION","expected":"PASS"},
+    {"id":"TI-2055","kind":"ACTUAL_SIGN_FLIP","expected":"PASS"},
+    {"id":"TI-2056","kind":"SAME_PRE_RETURN_INVARIANT","expected":"PASS"},
+    {"id":"TI-2057","kind":"SAME_POST_RETURN_INVARIANT","expected":"PASS"},
+    {"id":"TI-2058","kind":"CROSS_RETURN_TRANSFORM","expected":"PASS"},
+    {"id":"TI-2059","kind":"RET5_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2060","kind":"RET20_AFFECTED","expected":"PASS"},
+    {"id":"TI-2061","kind":"RET60_AFFECTED","expected":"PASS"},
+    {"id":"TI-2062","kind":"SMA5_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2063","kind":"SMA10_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2064","kind":"SMA20_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2065","kind":"SMA60_AFFECTED","expected":"PASS"},
+    {"id":"TI-2066","kind":"KD9_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2067","kind":"RSI14_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2068","kind":"BOLLINGER20_UNAFFECTED","expected":"PASS"},
+    {"id":"TI-2069","kind":"MACD_RECURSIVE_BLOCKED","expected":"PASS"},
+    {"id":"TI-2070","kind":"ADX_RECURSIVE_BLOCKED","expected":"PASS"},
+    {"id":"TI-2071","kind":"DIVERGENCE_MTF_BLOCKED","expected":"PASS"},
+    {"id":"TI-2072","kind":"NO_FORMAL_PROMOTION","expected":"PASS"}
+  ]
+}
