@@ -67,13 +67,14 @@ export function classifyOriginalFormalReadback(values,errors){
     /ALREADY_SCANNED|已完成掃描|已經掃描|已掃描|重複掃描/.test(String(x.detail||""))?"POSSIBLE_ALREADY_SCANNED":
     /MISSING|未完成|失敗|INCOMPLETE|FAIL/.test(String(x.detail||""))?"POSSIBLE_FAILURE_OR_UNVERIFIED":
     x.detail===null?"DETAIL_NULL":"DETAIL_UNCLASSIFIED",
-   // Attests that repeat rows contain the same string, without revealing its bytes.
-   detailMatchProof:typeof x.detail==="string"?x.detail.length===76? "LENGTH_76_ONLY_NOT_EQUALITY_PROOF":"LENGTH_OTHER":null,
+
    errorClass:/exceededResources|CPU/i.test(String(x.error||""))?"CPU_OR_RESOURCE":
     /DATA_INCOMPLETE/i.test(String(x.error||""))?"DATA_INCOMPLETE":
     x.error?"OTHER_OR_UNKNOWN":"NONE"
   })),
   cronRecentTruncated:cronRows.length>=20,
+  originalTwoSkipsShareExactDetail:oct16.length===2&&oct16.every(x=>x.status==="SKIPPED")&&
+   typeof oct16[0].detail==="string"&&oct16[0].detail===oct16[1].detail,
   cronMissingDoesNotProveNoInvocation:true,
   httpErrors:Object.fromEntries(Object.entries(errors).map(([k,v])=>[k,safeType(v)])),
   readOnly:true,noWorkerBusinessPost:true,noWrites:true,noTrade:true,noPush:true,
