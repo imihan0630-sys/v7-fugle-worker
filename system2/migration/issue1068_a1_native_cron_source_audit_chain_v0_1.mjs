@@ -16,8 +16,9 @@ const SRC='.github/workflows/system2-shared-official-a1-incremental-readonly.yml
 const AUD='.github/workflows/system2-shared-official-a1-independent-audit.yml';
 const SHA=/^[a-f0-9]{64}$/i;
 const SHA40=/^[a-f0-9]{40}$/i;
-const stamp=s=>typeof s==='string'&&Number.isFinite(Date.parse(s))&&
- new Date(s).toISOString()===s;
+const stamp=s=>typeof s==='string'&&
+ /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(s)&&
+ Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,19)===s.slice(0,19);
 const deny=s=>{throw Error('S2_DATA_A1_CRON_CHAIN_'+s)};
 const unsigned=(x,key)=>Object.fromEntries(Object.entries(x).filter(([k])=>k!==key));
 const signed=async(x,key)=>x&&SHA.test(x[key]||'')&&
