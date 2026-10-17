@@ -1,0 +1,84 @@
+name: System2 DATA 2330 Native CA 61 Session Exposure (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_native_ca_window_exposure_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_native_ca_window_exposure_v0_1.test.mjs"
+      - ".github/workflows/system2-data-2330-ca-window-exposure-original.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_native_ca_window_exposure_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_native_ca_window_exposure_v0_1.test.mjs"
+      - ".github/workflows/system2-data-2330-ca-window-exposure-original.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-2330-native-exdiv-61-window-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  read_native_source_61_event_exposure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Regress source-window known CA crossing against actual 61-date calendar
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_native_ca_window_exposure_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_native_ca_window_exposure_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Download earlier true 2330 original 61-session independent source readback
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38909699033
+          name: s2-pita-2330-61-native-source-readback-38909699033-1
+          path: /tmp/s2-data-2330-61/native
+          github-token: ${{ github.token }}
+      - name: Download actual native 9-15/9-16 TWSE A1 plus 9-16 CA reference crosswalk
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38916820486
+          name: s2-data-2330-exdiv-native-price-crosswalk-38916820486-1
+          path: /tmp/s2-data-2330-event/native
+          github-token: ${{ github.token }}
+      - name: Attest both immutable original source-lineage SHA and map only known-event windows
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_native_ca_window_exposure_v0_1.mjs
+          R=/tmp/s2-data-2330-window-ca-exposure/source-only-2330-ca-exposed-windows.json
+          test -s "$R"
+          test "$(jq -r .originalNative61DatesVerified "$R")" = '61'
+          test "$(jq -r .knownEventIndex "$R")" = '41'
+          test "$(jq -r .subsequentTradingSessionsCount "$R")" = '19'
+          test "$(jq -r .windowsCrossingKnownPriceBoundary "$R")" = '5'
+          test "$(jq -r .full61BarCAContinuityCertified "$R")" = 'false'
+          test "$(jq -r .exdivPriceFeatureAdjustmentProven "$R")" = 'false'
+          test "$(jq -r .authoritativeNoOtherEventsCertified "$R")" = 'false'
+          test "$(jq -r .independentAUDITLaneStrategyScopeAccepted "$R")" = 'false'
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "REAL_2330_EVENT_BOUNDARY=2026-09-15_TO_09-16; KNOWN_CROSSING_PRICE_WINDOWS=5/9; ADJUSTMENT_UNKNOWN; NO_EVENT_UNKNOWN; FULL_PIT=0" >> "$GITHUB_STEP_SUMMARY"
+      - name: Store only proof-level bounded known-event source exposure receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-2330-native-ca-window-exposure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-data-2330-window-ca-exposure/source-only-2330-ca-exposed-windows.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No implicit price factor promotion
+        if: always()
+        run: |
+          echo 'Only two previously verified source artifacts replayed. No adjusted feature, strategy score, PIT acceptance, NO_EVENT, Shadow, Frozen, live schedule, Cloudflare or System1 mutation.' >> "$GITHUB_STEP_SUMMARY"
