@@ -62,7 +62,8 @@ function checkSource(market,s,marketDate,asOfUtc){
    originalRawBodySha256:hash(Buffer.from(s.rawBody,'utf8')),
    originalRawBodyBytes:Buffer.byteLength(s.rawBody,'utf8'),
    nativeRowCount:rows.length,
-   reportedMarketDate:marketDate,
+   requestedEvaluationMarketDate:marketDate,
+   nativeReportedMarketDate:null,
    sourceObservedBeforeEvaluation:Date.parse(seen)<=Date.parse(asOfUtc),
    originalsProviderPublishedAtUtc:null,
    originalFirstKnownAtUtc:null,
@@ -140,7 +141,8 @@ export function buildB5OriginalIndustrySourceHandoffV0_1({
      a1SourceInstrumentDenominator:denominator,
      mapped,unknown,conflict,
      totalAccountsFor: mapped+unknown+conflict===denominator,
-     nativeRowsNotJoinedToA1:Math.max(0,source.counts.size-denominator),
+     nativeRowsNotJoinedToA1:[...source.counts.keys()].filter(x=>
+       !perMarket[market].includes(x)).length,
      independentB5Audited:false,
      officialPublicationAtUtc:null,firstKnownAtUtc:null,availableAtUtc:null
    });
