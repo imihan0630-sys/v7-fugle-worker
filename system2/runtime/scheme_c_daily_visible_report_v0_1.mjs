@@ -101,6 +101,8 @@ export async function buildSchemeCDailyVisibleReportV0_1({handoff}={}){
   '**獨立稽核完成相對截止：** '+labelOffset(auditOffsetMin),
   '**截止可用狀態：** '+windowStatus+'（不等於 PIT 認證）',
   '**報告性質：** 研究觀察，非正式選股或買賣／放空建議。',
+  '**研究模型：** PRELIMINARY_DAILY_PRICE_VOLUME / PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2（NON_PIT_PREVIEW，與 SHORT_MOMENTUM 七因子不同）',
+  '**固定研究條件：** 原始收盤價高於原始 SMA20、近五交易日原始價漲幅為正、當日成交量及成交值大於零；未宣稱產業／市場 Regime 或基本面已認證。',
   '**來源 SHA：** '+h.originalSourceReceiptHash,
   '**獨立稽核 SHA：** '+h.independentSourceAuditHash,
   '**稽核 Run：** '+h.auditRunId,
