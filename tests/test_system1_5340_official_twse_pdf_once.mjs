@@ -29,7 +29,7 @@ assert.match(s,/if\(u\.origin!==SOURCE\)throw Error\("OFFICIAL_HOST_SCOPE_REJECT
 assert.match(s,/noAutomatedPITPromotion:true/);
 const wf=await readFile(new URL("../.github/workflows/system1-5340-twse-official-pdf-original-once.yml",import.meta.url),"utf8");
 assert.match(wf,/pull_request:/);
-assert.match(wf,/types: \[opened\]/);
+assert.match(wf,/types: \[opened, synchronize\]/);
 assert.doesNotMatch(wf,/schedule:|workflow_dispatch:|push:|secrets\./);
 assert.match(wf,/contents: read/);
 console.log(JSON.stringify({suite:"TWSE official e-book 5340 Q2 original PDF source-only",
