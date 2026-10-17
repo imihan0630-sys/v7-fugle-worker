@@ -1,0 +1,92 @@
+name: System2 DATA 2330 Exdiv Official Reference Price Space Candidate (READ ONLY)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.mjs'
+      - 'system2/tests/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.test.mjs'
+      - '.github/workflows/system2-data-2330-reference-ratio-source-candidate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.mjs'
+      - 'system2/tests/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.test.mjs'
+      - '.github/workflows/system2-data-2330-reference-ratio-source-candidate.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-data-2330-exdiv-reference-ratio-sourceonly-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  bound_native_source_price_space_proposal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reject false completeness and unapproved formula use
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Existing ORIGINAL prior 61 official A1 source bytes (no provider GET)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38797319008
+          name: s2-shared-official-a1-38797319008
+          path: /tmp/s2-pita-2330-ratio-old/
+          github-token: ${{ github.token }}
+      - name: Existing 2026-10-16 official 2330 T original source bytes
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38908458028
+          name: s2-pita-2330-original-a1-20261016-38908458028-1
+          path: /tmp/s2-pita-2330-ratio-new/
+          github-token: ${{ github.token }}
+      - name: Independently native-byte-rehashed 61-source receipt
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38909699033
+          name: s2-pita-2330-61-native-source-readback-38909699033-1
+          path: /tmp/s2-pita-2330-ratio-readback/
+          github-token: ${{ github.token }}
+      - name: Native 2330 September 16 official ex-dividend source crosswalk
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38917089196
+          name: s2-data-2330-exdiv-native-price-crosswalk-38917089196-1
+          path: /tmp/s2-pita-2330-ratio-exdiv/
+          github-token: ${{ github.token }}
+      - name: Reconcile the one known event; publish only a 61-raw-source price-space proposal
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_reference_ratio_price_space_candidate_v0_1.mjs
+          R=/tmp/s2-pita-2330-reference-ratio-candidate/2330-known-event-price-space-hypothesis.json
+          test -s "$R"
+          test "$(jq -r .priceSpaceProposal.preEventReferenceScaledSessions "$R")" = '41'
+          test "$(jq -r .priceSpaceProposal.unchangedPostEventSessions "$R")" = '20'
+          test "$(jq -r .authoritativeOtherActionsExcluded "$R")" = 'false'
+          test "$(jq -r .full61DayAdjustedFeatureContinuityAudited "$R")" = 'false'
+          test "$(jq -r .independentAuditLaneFullPitAccepted "$R")" = 'false'
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo 'PITA_2330_NATIVE_61_REAL_SOURCE_REFERENCE_RATIO_CANDIDATE_41_20; ADJUSTMENT_NOT_APPROVED; OTHER_ACTIONS=UNKNOWN; FACTORS_AND_PIT_BLOCKED' >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve source-preserving machine ledger for independent audit review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-2330-known-exdiv-reference-ratio-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-pita-2330-reference-ratio-candidate/2330-known-event-price-space-hypothesis.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Nonpromotion notice
+        if: always()
+        run: |
+          echo 'One known TWSE official reference ratio is a provisional price-space feasibility candidate, NOT approved source-adjusted 61-day bar history, official total-return, certified company-action completeness, Stage1, Frozen or Shadow. No provider GET, Cloudflare D1/R2, System1.' >> "$GITHUB_STEP_SUMMARY"
