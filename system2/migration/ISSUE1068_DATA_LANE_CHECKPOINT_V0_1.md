@@ -233,3 +233,56 @@ Owner explicitly accepted splitting **PIT-A future genuine daily selection prior
 - 真實 GitHub 原始資料 CI Run #38995269062 **SUCCESS**，原始 Artifact #12086278092 ZIP SHA256 `ecd6a45b6f359e69f7d4deb59bfe2699ca5a3937018e45f5a05d585fa5748819` 已由 DATA 下載重算與 GitHub SHA 相同，內部 receiptHash `fe447706e2a3c01b27a944b8d7b658f73c122f67f2483050d021d8bf08383c00`。
 - 硬邊界：`authoritativeOtherActionsExcluded=false`、`full61DayAdjustedFeatureContinuityAudited=false`、`independentlyAuditedAdjustmentFormula=false`、`completePriceSpaceAdjustmentForStrategy=false`、`pitEligible=false`。不得把當下 CA 表沒有事件當成全歷史無事件。DATA 不修 BUILD Stage1 CA gate、不創建正式策略因子，AUDIT 另行負責足額事件與價位空間核實；SHORT_MOMENTUM V0.1 的正式資格調整仍是 Class B/C 需 owner 明示核准。
 - Scheme C `NON_PIT_PREVIEW` 可獨立持續，不可當 PIT-A 或 Frozen；正式 2330 PIT-A **0/1**，全市場當日已認證普通股分母 UNKNOWN；舊 2026-10-15 0/1935 cohort 不覆寫。無新 Cron/Worker/D1/R2/Secret、System1 Formal 或買賣行為。
+
+
+## 2026-10-17 18:43–19:xx Asia/Taipei｜Owner V1.0：10/19 真實市場 P0 來源供應與週末誤回抓修復
+
+### Canonical authority and non-authority
+
+- Owner 授權：`system2/SYSTEM2_DAILY_NONPIT_THREE_STAGE_LAUNCH_OWNER_DIRECTIVE_V1_0.md`；**P0 可獨立產生非 PIT 研究候選**，PIT-A 7/7 真正 used-input 和 PIT-B 歷史完整性平行；沒有變更正式 Stage1、BUILD 排名、Frozen、System1 V8 Formal/Worker/Cron/Cloudflare。
+- 修復時先依最新 GitHub main 建分支：#1475 base `d640a7580002eb108bf7012d9923790b2c9e639d`、#1477 base `a2d82fb30ca1c6c143186f669d480f4ce3359744`；**本文件中的舊 SHA 不得作為未來下輪 main**。
+- 臺灣證交所官方 115 年市場開休市日期（`https://wwwc.twse.com.tw/zh/trading/holiday.html`）與 TWSE 正式公告（`https://www.twse.com.tw/en/announcement/announcement/list.html`）顯示 **2026-10-19（週一）為下一預定正常交易日**；10/24～10/26 為後續休市區間。遇交易所臨時天然災害停市，必須重新驗證，不能僅依星期推進 T。**10/19 尚未發生，因此新日 source Run/Artifact/原始 provider SHA=UNKNOWN，尚未 122/122，不得填零缺漏、成功名單或已通過自然自動交付**。
+
+### 2026-10-16 last VERIFIED actual official source (SOURCE_ONLY, NOT new 10/19)
+
+| Field | Original physical value |
+|---|---|
+| last truly captured market T | `2026-10-16` |
+| TWSE official market/date originals | **61/61**, actual T provider source |
+| TPEx official market/date originals | **61/61**, actual T provider source |
+| total 61-session markets | **122/122**, missing 0; this is physical SOURCE integrity **not** security universe PIT / selection |
+| original SOURCE Run / Job | [#38934081985](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38934081985) / `117085046435` |
+| original SOURCE artifact / exact ZIP SHA256 | [#12060640574](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38934081985/artifacts/12060640574) / `9a4cc56839b975385f052b7e804211994136c5e9db59bdf645e6198b29e2fe97` |
+| original source Artifact size | `40,641,415` bytes |
+| independent original SOURCE audit Run | [#38934321405](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38934321405) |
+| independent 122/122 audit artifact | [#12060227504](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/38934321405/artifacts/12060227504) |
+| original GH `event` / original intended 20:15 `schedule` | `schedule` / `15 12 * * 1-5` |
+| original GH `created_at` and nominal difference | `2026-10-16T16:42:40Z` = 2026/10/17 **00:42:40 台北**; scheduled slot lateness **267.667 min** |
+| actual last T two-source body first-capture latest | ~2026/10/17 **00:44:22 台北**; an *observed/captured lower bound*, **not proven exchange publication time** |
+| exact historical provider publication `firstKnownAt` | **UNKNOWN**; latest captured time cannot be retroactively moved to T23:45 |
+| T23:45 actual decision cut | **missed**; historical PIT-A not authorized |
+| original signed source schedule provenance | merged DATA #1466 and reusable tiny witness #1470; original GH source `schedule` proven, not a guarantee of 15-minute punctuality |
+
+### Actual new Saturday runtime counterexample and physical repair
+
+- DATA-only [PR #1475](https://github.com/imihan0630-sys/v7-fugle-worker/pull/1475) MERGED `a2d82fb30ca1c6c143186f669d480f4ce3359744` (Research [Run #39026275762](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026275762) SUCCESS; V8 Regression [#39026275747](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026275747) SUCCESS); fixes source-artifact chooser accidentally accepting tiny success-but-SKIPPED holiday JSON as previous official 61-session data seed. New 64KiB sanity floor is only a **seed selection negative safeguard**; existing original body rehash/complete calendar/independent AUDIT still required for acceptance. Three new targeted positive/negative tests.
+- **Actual subsequent GH main-push** [SOURCE Run #39026389657](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026389657), source Job `117378102074` started on **Saturday 2026/10/17 18:49:56 Asia/Taipei**, reproduced a *bug in separate date resolver*: it re-captured **Friday 2026-10-16** with **122/122 raw previously verified source pairs reused, new official market-date fetch 0**, uploaded redundant original source [Artifact #12098816464](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026389657/artifacts/12098816464) **40,641,345 bytes / ZIP SHA256 `011e9f4849da87d83bbfb215ce00f4c80565c9de56cbf91b69b2e2d9c7f1fd06`**. This is **not** Saturday market trading or new T data.
+- The redundant SOURCE main-push naturally triggered [independent Audit #39026505541](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026505541) SUCCESS, natural [Scheme C consumer #39026554093](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026554093) SUCCESS with **`marketDate=2026-10-16`, `SOURCE_NOT_READY`, `displayed=null`, `selectedCount=null`, no trading or Frozen**; DATA root witness [#39026554127](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026554127) signed **`sourceRootWasScheduled=false`** (main `push`), `beforePreferredCut=false`. This proves child wiring can fire; **does not** prove an on-time real T10/19 scheduled source or 10/19 research candidate. Avoid counting duplicate push as new market-day operational success.
+- DATA-only [PR #1477](https://github.com/imihan0630-sys/v7-fugle-worker/pull/1477) MERGED `813b1d808c9db72fc92a7bc753f73f084cb5ba66`; Research [#39026691573](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026691573) SUCCESS and V8 Regression [#39026691587](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39026691587) SUCCESS. Root cause: `upper=yesterday` during all Taipei times before 19:00 caused Saturday 18:49 to satisfy `prior===upper`, falsely identifying Friday as a new eligible close. Isolated source-only `shared_official_a1_session_clock_v0_1.mjs` now SKIPs official-calendar **non-trading date** except actual **T+1 00:00–01:59** recovery or explicit `allowOlderManual` retrospective (research-only). Added actual Sat18:49, Sat02:00, Sun18:00, holiday Mon10/26 NEGATIVE; Sat00:15 recovery and genuine Mon10/19 20:15 POSITIVE. No new Cron / Worker / D1 / BUILD strategy / V8 Formal.
+- Both #1475/#1477 actual build/test success is **code-contract validation**, not proof Monday source will be on time or that PIT is accepted. The new resolver modification isn't a new 10/19 source capture.
+
+### True 2026-10-19 P0 handoff acceptance checklist (DATA owns SOURCE only)
+
+For 2026-10-19 new source **do not pre-fill UNKNOWN values**. Once actually observed:
+1. Confirm actual official T in TWSE and TPEx calendar (and no extraordinary closure); source `marketDate` exact T, 61 official trading days; two original markets daily 61/61 + 61/61 = 122/122. For actual incomplete source show **exact market/date missing pairs and failure reason**, no invented zeros or old-T reuse labelled as T.
+2. Preserve source GH `runId`, Job ID, `event` schedule/push/manual, `run_attempt`, actual GH created/job started/completed, original body source SHA + ZIP digest, `capturedAt/observedAt`, archive Artifacts. Distinguish actual observed availability from verified official `firstKnownAt/availableAt`; if no original publication timestamp, mark `PUBLICATION_TIME_UNKNOWN` and **do not certify T23:45 historical as-of**.
+3. Independent A1 SOURCE audit exact 122/122 must rehash source originals and same T, publish own `auditRunId`/`auditHash`/Artifact; additional DATA tiny `source-origin-witness.json` must physically bind original GH source event and independent receipt. `SOURCE_NOT_READY` / UNKNOWN if missing or failure; do not claim daily true zero stocks.
+4. Handoff [BUILD #1132](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1132) exact original source+audit GH Run/Artifacts and SHA, measured latency relative to T23:45, completeness and any late flag. BUILD owns genuine new-T natural `workflow_run` or honest manual fallback research-only readable `NON_PIT_PREVIEW`. [AUDIT](https://github.com/imihan0630-sys/v7-fugle-worker/issues/1127) owns independent strategy-grade PIT scope, not the producer.
+5. P1 continues 2330/TWSE and 3287/TPEX true known dividends/CFI/halt/tradeability/7 used factors and independent price-space/availableAt; as of this exact last actual date each full PIT-A **0/1** = **0/2 local sample** (not whole market). Original common-share whole-market denominator **UNKNOWN**, `selectedCount=null`, `zeroPickDay=null`, Frozen false.
+6. P2 last *prior-attested* D1 historical backfill `59,311/84,688` (**70.04%**, remainder `25,377`) **NOT RECENT LIVE HEADROOM OR CURRENT ROW COUNT**; target R2 `NOT_ENTITLED`. P2 never blocks P0 and needs REMEDIATION authorized physical quota before additional migration writes.
+
+**DATA handoff output contract:** before first real 10/19 source, fields `marketDate=2026-10-19 EXPECTED_ONLY`, `sourceValidatedPairs=null`, `originalSourceRunId=null`, `sourceObservedAtUtc=null`, `providerPublishedAtUtc=null`, `originalSourceSha256=null`, `independentAuditRunId=null`, `naturalSchemeCConsumerRunId=null`, `status=AWAITING_FUTURE_TRADING_SESSION`. The 2026-10-16 signed artifacts remain usable only as historical SOURCE-only evidence and PR replay, not future results.
+
+### Source-only change ledger (Class A)
+
+`PR#1475` and `PR#1477` are both MERGED and required PR-head Research/V8 CI SUCCESS. Source metadata/diagnostic safeguards changed; **unchanged**: three existing SOURCE Cron expressions, current source-only read permission, System1 V8 Formal Core, BUILD `SHORT_MOMENTUM` seven actual factors, admission gate, source/billing account credentials, Cloudflare Worker/runtime, D1/R2 writes, Frozen and orders. No new paid service, schedule, push notification or strategy promotion.
