@@ -40,6 +40,7 @@ jobs:
           python3 scripts/apply_system1_p0_cpu_formatter_guarded_release_v0_1.py
           sha256sum -c /tmp/system1-p0-original.sha256
           node --check artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs
+          cp artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs artifacts/reviewonly/Worker.cpu-cache.js
           node tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs
       - name: Explicit activation without owner gate must fail and preserve canonical Worker
         run: |
