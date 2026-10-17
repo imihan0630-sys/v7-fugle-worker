@@ -107,7 +107,10 @@ export async function main(){
   try{
    const t=execFileSync("pdftotext",["-layout","artifacts/_s1_5340_2026q2_official_original_temporary.pdf","-"],{encoding:"utf8",maxBuffer:4*1024*1024,timeout:18000});
    result.pdfText=describeExtractedPdf(t);
-  }catch(e){result.pdfText={state:"PDF_TEXT_TOOL_UNAVAILABLE_OR_ENCRYPTED",errorType:e.name||"Error"};}
+  }catch(e){result.pdfText={state:"PDF_TEXT_TOOL_UNAVAILABLE_OR_ENCRYPTED",
+    errorType:e.name||"Error",code:e.code||null,status:e.status??null,
+    errorMessage:String(e.message||"").slice(0,220),
+    stderr:String(e.stderr||"").slice(0,220)};}
   result.state="OFFICIAL_ORIGINAL_PDF_DOWNLOADED_SOURCE_ONLY";
  }catch(e){
   result.state="OFFICIAL_ORIGINAL_PDF_NOT_VERIFIED";
