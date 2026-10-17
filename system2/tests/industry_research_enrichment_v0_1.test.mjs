@@ -111,6 +111,7 @@ test('conflicting seed records, invented revenue, changing rank or wrong cutoff 
  await assert.rejects(()=>run(h,bad),/SEED_INVALID_OR_CONFLICTED/);
  const future=await handoff();future.previewReport.previewRows[0].formalStrategyRank=1;
  await assert.rejects(()=>run(future),/SOURCE_PREVIEW_HASH_OR_AUTHORITY_INVALID/);
- await assert.rejects(()=>run(await handoff(),EVIDENCE,'2026-10-13T12:00:00Z'),/SIGNED_SOURCE_OR_AUTHORITY_INVALID/);
+ const beforeAudit=await handoff();
+ await assert.rejects(()=>run(beforeAudit,EVIDENCE,'2026-10-13T12:00:00Z'),/SIGNED_SOURCE_OR_AUTHORITY_INVALID/);
 });
 console.log('S2 INDUSTRY CLASS A tests executed');
