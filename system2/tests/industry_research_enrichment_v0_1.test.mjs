@@ -102,7 +102,7 @@ test('forged preview edge, duplicate or corrupt original preview is rejected',as
  const z=await handoff({symbols:[['TWSE','8046'],['TWSE','8046']]});
  await assert.rejects(()=>run(z),/PREVIEW_ROW_INVALID_OR_DUPLICATED/);
  const x=await handoff();x.previewReport.previewRows[0].symbol='1234';
- await assert.rejects(()=>run(x),/SOURCE_PREVIEW_HASH_OR_AUTHORITY_INVALID/);
+ await assert.rejects(()=>run(x),/SIGNED_SOURCE_OR_AUTHORITY_INVALID/);
 });
 test('conflicting seed records, invented revenue, changing rank or wrong cutoff rejected',async()=>{
  const h=await handoff();
@@ -110,7 +110,7 @@ test('conflicting seed records, invented revenue, changing rank or wrong cutoff 
  const bad=structuredClone(EVIDENCE);bad.records[0].edges[0].exposureMagnitude='55%';
  await assert.rejects(()=>run(h,bad),/SEED_INVALID_OR_CONFLICTED/);
  const future=await handoff();future.previewReport.previewRows[0].formalStrategyRank=1;
- await assert.rejects(()=>run(future),/SOURCE_PREVIEW_HASH_OR_AUTHORITY_INVALID/);
+ await assert.rejects(()=>run(future),/SIGNED_SOURCE_OR_AUTHORITY_INVALID/);
  const beforeAudit=await handoff();
  await assert.rejects(()=>run(beforeAudit,EVIDENCE,'2026-10-13T12:00:00Z'),/SIGNED_SOURCE_OR_AUTHORITY_INVALID/);
 });
