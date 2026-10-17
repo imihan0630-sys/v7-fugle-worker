@@ -1,0 +1,24 @@
+name: System1 P0 2026-10-16 Candidate EPS Coverage (OFFLINE)
+on:
+  pull_request:
+    paths:
+      - "research/system1_p0_eps_candidate_coverage_readiness_v0_1.mjs"
+      - "tests/test_system1_p0_eps_candidate_coverage_readiness_v0_1.mjs"
+      - ".github/workflows/system1-p0-eps-candidate-coverage-offline.yml"
+permissions:
+  contents: read
+jobs:
+  original_candidate_evidence_only:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline exact candidate source/D1 readiness contract
+        run: |
+          node --check research/system1_p0_eps_candidate_coverage_readiness_v0_1.mjs
+          node --check tests/test_system1_p0_eps_candidate_coverage_readiness_v0_1.mjs
+          node tests/test_system1_p0_eps_candidate_coverage_readiness_v0_1.mjs
