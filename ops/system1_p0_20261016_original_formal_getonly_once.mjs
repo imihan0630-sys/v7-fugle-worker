@@ -52,6 +52,17 @@ export function classifyOriginalFormalReadback(values,errors){
   configReadbackMatched:matched,
   qualityDate:safeTime(values.quality?.marketDate),
   qualityStatus:safeType(values.quality?.status)||null,
+  // Bounded exact-date official quality snapshots; no raw stock-level payload.
+  qualitySnapshotReadback:Object.fromEntries(["INDEX","TDCC","FINANCIAL","VALUATION",
+    "ANNOUNCEMENTS","QUARTER_EPS"].map(k=>{
+    const raw=k==="INDEX"?values.quality?.index:k==="TDCC"?values.quality?.tdcc:values.quality?.datasets?.[k];
+    return [k,{present:raw?.ready===true,
+      count:Number.isSafeInteger(raw?.count)&&raw.count>=0?raw.count:null,
+      asOfDate:safeTime(raw?.asOfDate)}];
+  })),
+  quarterEpsSnapshotPresent:values.quality?.datasets?.QUARTER_EPS?.ready===true,
+  quarterEpsSnapshotCount:Number.isSafeInteger(values.quality?.datasets?.QUARTER_EPS?.count)?
+    values.quality.datasets.QUARTER_EPS.count:null,
   cronRowsForDate:oct16.slice(0,4).map(x=>({
    scheduledAt:safeTime(x.scheduled_at||x.scheduledAt),
    status:safeType(x.status),
