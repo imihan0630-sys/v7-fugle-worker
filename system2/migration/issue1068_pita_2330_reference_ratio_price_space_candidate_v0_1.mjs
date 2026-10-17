@@ -10,6 +10,7 @@
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {official61SessionSourceReceiptHashBaseV0_1} from '../runtime/source_first_official_61_session_collector_v0_1.mjs';
 const H=/^[0-9a-f]{64}$/,CUT='2026-10-16T15:45:00.000Z';
 const OLD='ff5aa17607fa9cc191599111b27b762a02f599456992f1baf7ee7b854387cfd9';
 const CURRENT='074c5e83afde3e4dd7dfb7295eb7483215848a84edb5b78493fd673592d9f18a';
@@ -78,7 +79,9 @@ export function makeSingleKnownExdivReferenceCandidateV0_1({
  };
 }
 export async function build2330NativePriceSpaceCandidateV0_1({old,current,readback,exdiv}={}){
- if(!await signed(old)||!await signed(current)||!await signed(readback)||!await signed(exdiv)||
+ if(old?.receiptHash!==OLD||
+    await sha256Hex(official61SessionSourceReceiptHashBaseV0_1(old))!==OLD||
+    !await signed(current)||!await signed(readback)||!await signed(exdiv)||
     old.receiptHash!==OLD||current.receiptHash!==CURRENT||
     readback.receiptHash!==READBACK||exdiv.receiptHash!==EXDIV||
     old.marketDate!=='2026-10-15'||old.receivedMarketDateCount!==122||
