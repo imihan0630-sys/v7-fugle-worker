@@ -24,6 +24,9 @@ on:
       - 'system2/runtime/scheme_c_native_source_delivery_join_v0_1.mjs'
       - 'system2/scripts/run_scheme_c_native_source_delivery_join_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_native_source_delivery_join_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_research_observation_snapshot_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_research_observation_snapshot_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -122,6 +125,9 @@ jobs:
           node --check system2/runtime/scheme_c_daily_delivery_acceptance_v0_1.mjs
           node --check system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_delivery_acceptance_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_research_observation_snapshot_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_research_observation_snapshot_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
@@ -220,6 +226,20 @@ jobs:
           test "$(jq -r .zeroPickDay "$ACCEPT")" = 'null'
           test "$(jq -r .frozenD1Written "$ACCEPT")" = 'false'
           test "$(jq -r .cloudflareD1Writes "$ACCEPT")" = '0'
+          # Optional evidence sidecar: immutable, real generation-time and
+          # source-bound watch rows in the SAME existing 30-day Artifact.
+          # NEVER make a new archive/forward-Frozen a P0 preview display gate.
+          OBS=/tmp/s2-scheme-c-daily-build-result/daily-research-observation.json
+          if node system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs "$R" "$O" "$M" "$HUMAN" "$ACCEPT" "$OBS"; then
+            test "$(jq -r .modelVersion "$OBS")" = 'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2'
+            test "$(jq -r .selectedCount "$OBS")" = 'null'
+            test "$(jq -r .pitACertified "$OBS")" = 'false'
+            test "$(jq -r .recordRetentionDays "$OBS")" = '30'
+            echo "S2_NONPIT_OBSERVATION marketT=$(jq -r .marketDate "$OBS") UTC_Created=$(jq -r .actualReportGeneratedAtUtc "$OBS") snapshotHash=$(jq -r .snapshotHash "$OBS")" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::OPTIONAL_RESEARCH_SNAPSHOT_NOT_READY; verified Scheme C report remains available"
+            echo '**附加研究觀察紀錄：** 暫缺；不阻擋已驗證的研究報告，也不聲稱 Frozen 或 Forward 認證。' >> "$GITHUB_STEP_SUMMARY"
+          fi
           git diff --exit-code -- Worker.js wrangler.toml
           # Only after all source, hash, PIT and no-authorization assertions
           # are satisfied, make the complete human-readable report directly
@@ -235,6 +255,11 @@ jobs:
               echo '**實際來源研究觀察。須以報告列示的交易日、來源時點及資料延遲標記為準。**'
             fi
             echo "**來源交易日：** $(jq -r .marketDate "$M")"
+            echo "**研究模型／版本：** PRELIMINARY_DAILY_PRICE_VOLUME / PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2（僅來源限定價量觀察）"
+            echo "**本次報告實際產生時間（UTC）：** $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+            echo "**本次報告實際產生時間（台北）：** $(TZ=Asia/Taipei date '+%Y/%m/%d %H:%M:%S')"
+            echo "**GitHub run / 本次 Artifact：** https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo "**既有報告及附加觀察留存：** GitHub Actions Artifact 30 天（非永久資料庫或 Frozen）"
             echo "**預覽狀態：** $(jq -r .state "$R")"
             echo "**是否延後：** $(jq -r .lateSource "$M")"
             echo "**T23:45 相對截止—獨立稽核完成：** $(jq -r .independentAuditOffsetMinutes "$M") 分鐘（正數晚到、負數提前）"
@@ -420,6 +445,10 @@ jobs:
           test "$(jq -r .previewObservationOffsetMinutes "$META" | awk '{print ($1 > 0)}')" = '1'
           test "$(jq -r .schedulerDispatchDelayMinutes "$META")" = 'null'
           test "$(jq -r .researchReceiptCutStatus "$META")" = 'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
+          # Existing historic real-original test additionally exercises the
+          # same optional dated and SHA-bound observation for 10/16 source;
+          # it is PR replay, NOT a pre-outcome prospective research pick.
+          node --test system2/tests/scheme_c_research_observation_snapshot_v0_1.test.mjs
           # Re-validate immutable Scheme C leaf chain, and JOIN genuine DATA
           # scheduled SOURCE/GH REST/audit receipt to this same physical audit
           # Run's human report. This PR replay NEVER becomes natural delivery.
@@ -443,6 +472,22 @@ jobs:
           test "$(jq -r .selectedCount "$JOIN")" = 'null'
           test "$(jq -r .zeroPickDay "$JOIN")" = 'null'
           test "$(jq -r .frozenD1Written "$JOIN")" = 'false'
+          SNAP=/tmp/s2-real-20261016-output/daily-research-observation.json
+          node system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs "$R" "$ORIGIN" "$META" "$HUMAN" "$ACCEPT" "$SNAP"
+          test "$(jq -r .actualReportGeneratedAtUtc "$SNAP" | wc -c)" -gt 1
+          test "$(jq -r .sourceReady "$SNAP")" = 'true'
+          test "$(jq -r .marketDate "$SNAP")" = '2026-10-16'
+          test "$(jq -r .recordRetentionDays "$SNAP")" = '30'
+          test "$(jq -r .durablePreOutcomeObservationIndependentlyCertified "$SNAP")" = 'false'
+          test "$(jq -r .prospectiveForwardPerformanceCertified "$SNAP")" = 'false'
+          test "$(jq -r .selectedCount "$SNAP")" = 'null'
+          test "$(jq -r .zeroPickDay "$SNAP")" = 'null'
+          {
+            echo "**研究模型／版本：** PRELIMINARY_DAILY_PRICE_VOLUME / PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2"
+            echo "**PR 真實 10/16 回放產生時間：** $(jq -r .actualReportGeneratedAtUtc "$SNAP") UTC（不可倒填）"
+            echo "**研究觀察 SHA256：** $(jq -r .snapshotHash "$SNAP")"
+            echo "**Artifact 保存：** 30 days; not certified prospective observation"
+          } >> "$GITHUB_STEP_SUMMARY"
           {
             echo "**原始 Cron 經 GH REST/獨立 DATA 稽核已證：** true（但原日資料晚到，不具原截止 PIT 權限）"
             echo "**來源→稽核→同日報告交叉收據：** $(jq -r .status "$JOIN")"
