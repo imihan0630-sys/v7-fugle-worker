@@ -21,6 +21,9 @@ on:
       - 'system2/runtime/scheme_c_daily_delivery_acceptance_v0_1.mjs'
       - 'system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_daily_delivery_acceptance_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_native_source_delivery_join_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_native_source_delivery_join_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_native_source_delivery_join_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -345,6 +348,15 @@ jobs:
           name: system2-shared-official-a1-independent-audit-38934321405
           path: /tmp/s2-real-20261016-same-audit/
           github-token: ${{ github.token }}
+      # DATA #1466 independently replayed original Oct16 scheduled SOURCE ->
+      # real 122/122 audit. This cached derived receipt is not a fresh GET.
+      - name: Reuse existing DATA GH REST Cron to audit physical proof (PR replay only)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 39016618423
+          name: s2-data-native-a1-cron-source-audit-chain-39016618423
+          path: /tmp/s2-real-20261016-data-origin/
+          github-token: ${{ github.token }}
       - name: Source-bind exact signed A1 and V02 receipts, render only late NON-PIT
         env:
           S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-real-20261016-output/daily-nonpit-preview.json
@@ -408,6 +420,35 @@ jobs:
           test "$(jq -r .previewObservationOffsetMinutes "$META" | awk '{print ($1 > 0)}')" = '1'
           test "$(jq -r .schedulerDispatchDelayMinutes "$META")" = 'null'
           test "$(jq -r .researchReceiptCutStatus "$META")" = 'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
+          # Re-validate immutable Scheme C leaf chain, and JOIN genuine DATA
+          # scheduled SOURCE/GH REST/audit receipt to this same physical audit
+          # Run's human report. This PR replay NEVER becomes natural delivery.
+          node --check system2/runtime/scheme_c_native_source_delivery_join_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_native_source_delivery_join_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_native_source_delivery_join_v0_1.test.mjs
+          ACCEPT=/tmp/s2-real-20261016-output/daily-delivery-acceptance.json
+          node system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs "$R" "$ORIGIN" "$META" "$HUMAN" "$ACCEPT"
+          DATA="$(find /tmp/s2-real-20261016-data-origin/ -type f -name 'native-github-source-cron-audit-chain.json' -print -quit)"
+          test -n "$DATA" && test -s "$DATA"
+          JOIN=/tmp/s2-real-20261016-output/daily-native-source-delivery-join.json
+          node system2/scripts/run_scheme_c_native_source_delivery_join_readonly_v0_1.mjs "$DATA" "$R" "$ORIGIN" "$META" "$HUMAN" "$ACCEPT" "$JOIN"
+          test "$(jq -r .dataOriginalSourceRunId "$JOIN")" = '38934081985'
+          test "$(jq -r .dataIndependentAuditRunId "$JOIN")" = '38934321405'
+          test "$(jq -r .sourceScheduledEventVerified "$JOIN")" = 'true'
+          test "$(jq -r .nativeSourceAuditedPairs "$JOIN")" = '122'
+          test "$(jq -r .originalSourceAndAuditReadyAtT2345 "$JOIN")" = 'false'
+          test "$(jq -r .status "$JOIN")" = 'SCHEDULED_SOURCE_AUDIT_VALID__PR_REPLAY_NOT_AUTOMATIC'
+          test "$(jq -r .naturalAuditChildObserved "$JOIN")" = 'false'
+          test "$(jq -r .fullDailyScheduledChainAccepted "$JOIN")" = 'false'
+          test "$(jq -r .selectedCount "$JOIN")" = 'null'
+          test "$(jq -r .zeroPickDay "$JOIN")" = 'null'
+          test "$(jq -r .frozenD1Written "$JOIN")" = 'false'
+          {
+            echo "**原始 Cron 經 GH REST/獨立 DATA 稽核已證：** true（但原日資料晚到，不具原截止 PIT 權限）"
+            echo "**來源→稽核→同日報告交叉收據：** $(jq -r .status "$JOIN")"
+            echo "**交叉驗證 SHA：** $(jq -r .joinHash "$JOIN")"
+            echo '**仍非自然每日自動報告：** true；PR replay 不可記入 P0 自動完工率。'
+          } >> "$GITHUB_STEP_SUMMARY"
           {
             echo '## Scheme C｜2026/10/16 真實 122/122 同一稽核 ZIP 實體驗收'
             echo '**僅是晚到真實資料的歷史研究回放，不能倒填 10/16 正式選股，也不是 10/19 自動營運驗收。**'
