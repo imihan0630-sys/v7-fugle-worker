@@ -164,7 +164,11 @@ export async function buildSystem2PreliminaryDailyWatchV0_1({
  // Display order is a transparent recent-return DESC, NOT formal strategy rank.
  found.sort((a,b)=>b.fiveSessionReturnPct-a.fiveSessionReturnPct||
                        a.symbol.localeCompare(b.symbol));
+ // Signed exact original-source audited official 61 dates permit the
+ // downstream PREVIEW-only CA risk flag to survive the next trading day.
+ // These dates do not independently certify issuer CA NO_EVENT or PIT.
  const receipt={...base,
+  source61TradingDates:[...dates],
   state:'PRELIMINARY_DAILY_OBSERVATION_NOT_FORMAL_SELECTION',
   blockers:['COMPANY_ACTION_HISTORICAL_PIT_NOT_CERTIFIED',
     'REGIME_AND_STRATEGY_FINAL_RANK_NOT_CERTIFIED',
