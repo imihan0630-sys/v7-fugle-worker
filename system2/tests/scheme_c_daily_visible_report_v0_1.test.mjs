@@ -185,3 +185,17 @@ test('signed impossible audit-after-preview and false on-time source are rejecte
  const {receiptHash:__,...c}=late;late.receiptHash=await sha256Hex(c);
  await assert.rejects(()=>render({handoff:late}),/AUDIT_PREVIEW_CLOCK_OR_REFERENCE_CUT_CONTRADICTION/);
 });
+
+test('owner V1.0 P0 report explicitly names distinct non-PIT model version and true observation conditions',async()=>{
+ const r=await render({handoff:await fixture()});
+ assert.match(r.markdown,/PRELIMINARY_DAILY_PRICE_VOLUME/);
+ assert.match(r.markdown,/PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2/);
+ assert.match(r.markdown,/NON_PIT_PREVIEW/);
+ assert.match(r.markdown,/原始 SMA20/);
+ assert.match(r.markdown,/五交易日原始價漲幅為正/);
+ assert.match(r.markdown,/當日成交量及成交值大於零/);
+ assert.match(r.markdown,/與 SHORT_MOMENTUM 七因子不同/);
+ assert.equal(r.metadata.reportHash,await sha256Hex(r.markdown));
+ assert.equal(r.metadata.strategySelectedCount,null);
+ assert.equal(r.metadata.pitACertified,false);
+});
