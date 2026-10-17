@@ -67,6 +67,10 @@ export function classifyOriginalFormalReadback(values,errors){
      [token,String(x.detail||"").includes(token)])),
    // Finite predeclared classes matching original Worker data completeness guards.
    // These are classification hints only; no untrusted detail bytes leave Actions.
+   matchedFixedMissingTerms:["單季","當季實際EPS","季度EPS","QUARTER_EPS",
+    "盤後資料","官方API","收盤資料","收盤價","候選","驗證","不足","缺少","INCOMPLETE","DATE","D1","快取",
+    "C1_GENERATION_NOT_FOUND","未完成","中斷","已過期","保持原有計畫"].filter(w=>
+     String(x.detail||"").includes(w)),
    missingSourceHints:Object.fromEntries(Object.entries({
     INDEX:/INDEX|加權指數|大盤基期|指數比較/,
     TDCC:/TDCC|集保持股|集中度/,
