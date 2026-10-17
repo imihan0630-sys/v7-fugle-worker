@@ -27,7 +27,7 @@ export function inspectActiveWriterWorkflowV0_1(raw,writerId){
  const stop=rows.findIndex((x,i)=>i>start&&/^  [\w-]+:\s*$/.test(x));
  const job=rows.slice(start,stop<0?undefined:stop);
  const active=job.filter(x=>!/^\s*#/.test(x));
- if(!active.some(x=>/^    environment: system2-schema-only(?:\\s+#.*)?$/.test(x)))fail('WRONG_ENVIRONMENT');
+ if(!active.some(x=>/^    environment: system2-schema-only(?:\s+#.*)?$/.test(x)))fail('WRONG_ENVIRONMENT');
  if(active.some(x=>x.trim()==='environment: system2-research'))fail('SOURCE_ACCOUNT_LEAK');
  if(!active.some(x=>/^    concurrency:\s*$/.test(x)) ||
     !active.some(x=>x==='      group: '+LOCK) ||
