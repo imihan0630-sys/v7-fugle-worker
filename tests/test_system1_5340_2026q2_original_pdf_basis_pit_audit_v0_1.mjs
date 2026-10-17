@@ -16,7 +16,7 @@ const source=[
  "公司沿革","通過財務報告之日期及程序",
  "國際財務報導準則第19號「不具公共課責性之子公司：揭露」",
  "測試附註資料".repeat(4000),
- "通過財務報告之日期及程序 本財務報表於民國115年8月6日經董事會通過發布",
+ "通過財務報告之日期及程序 本財務報告已於民國115年8月6日經董事會通過發布",
 ].join("\n");
 let total=0;
 const check=(label,fn)=>{fn();total++;console.log("PASS "+label)};
@@ -29,6 +29,9 @@ check("native document auditor IAS34 and issuer regulation",()=>{
  assert.equal(x.legalIndividualStatementEligibility2026Q2Certified,false);
  assert.equal(x.firstKnownAt,null);assert.equal(x.availableAt,null);
  assert.equal(x.firstKnownAtProven,false);
+ assert.equal(x.issuerBoardApprovedOn,"2026-08-06");
+ assert.equal(x.eBookIndexReportedUploadTaipeiISO,"2026-08-06T16:36:32+08:00");
+ assert.equal(x.boardApprovalIsNotPublicationProof,true);
  assert.equal(x.sourceVersionAsOf20261016Certified,false);
  assert.equal(x.formalEligible,false);assert.equal(x.system2PitAEligible,false);
  assert.equal(x.system2PitBEligible,false);assert.equal(x.tradingDecisionEligible,false);
