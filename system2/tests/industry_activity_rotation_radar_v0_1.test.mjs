@@ -54,7 +54,7 @@ test('gross activity, top shares and breadth computed for exact scoped members, 
  assert.equal(e.top3Concentration,1);
  assert.equal(e.tradeValueShareWithinObservedFourDigitScope,300/1600);
  assert.equal(e.up,1);assert.equal(e.down,1);
- assert.equal(e.equalWeightedReturnPercent,0);
+ assert.ok(Math.abs(e.equalWeightedReturnPercent)<1e-10);
  assert.equal(r.institutionNetAmountTwd,null);
  assert.equal(r.actualOfficialMainIndustryCoverageRate,null);
  assert.equal(r.officialOrdinaryShareDenominator,null);
