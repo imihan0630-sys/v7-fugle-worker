@@ -151,3 +151,79 @@ test('no-data preview remains missing evidence, not zero selected stocks',async(
  assert.equal(ans.zeroPreviewRowsWouldMeanZeroPicks,false);
  assert.equal(ans.certifiedZeroPickDay,null);
 });
+
+function weekdaySourceDatesEndingOn(end){
+ const a=[],d=new Date(end+'T00:00:00Z');
+ while(a.length<61){
+  if(d.getUTCDay()!==0&&d.getUTCDay()!==6)
+   a.push(d.toISOString().slice(0,10));
+  d.setUTCDate(d.getUTCDate()-1);
+ }
+ return a.reverse();
+}
+// Unit calendar is a synthetic 61-business-day example; the production
+// receipt's original dates are signed by an independently source-audited A1.
+async function previewWithDates(day){
+ const r=await actualWatchShape();
+ r.marketDate=day;
+ r.observedAtUtc=day+'T14:50:00Z'; // 22:50 Taipei
+ r.source61TradingDates=weekdaySourceDatesEndingOn(day);
+ for(const x of r.watchlist)x.marketDate=day;
+ const {receiptHash,...unsigned}=r;
+ r.receiptHash=await sha256Hex(unsigned);
+ return r;
+}
+test('Oct19: the actually signed 61 source-date window still contains the known 2330 Sep16 dividend',async()=>{
+ const r=await route({preliminaryReceipt:await previewWithDates('2026-10-19')});
+ assert.equal(r.source61SessionCalendarProvided,true);
+ assert.equal(r.known2330ExdivDateInSource61Window,true);
+ assert.equal(r.previewRows[0].status,'CA_OR_CLOCK_REVIEW_HOLD');
+ assert.equal(r.previewRows[0].companyActionPositiveAtCut,true);
+ assert.ok(r.previewRows[0].warnings.includes('KNOWN_POSITIVE_CA_SOURCE_EVENT_REVIEW_REQUIRED'));
+ assert.equal(r.previewRows[1].status,'RESEARCH_OBSERVATION_ONLY');
+ assert.equal(r.pitACertificationGranted,false);
+ assert.equal(r.strategySelectedCount,null);
+});
+test('when a real 61-session window no longer contains Sep16, do not invent a 2330 new event',async()=>{
+ const r=await route({preliminaryReceipt:await previewWithDates('2027-02-15')});
+ assert.equal(r.source61SessionCalendarProvided,true);
+ assert.equal(r.known2330ExdivDateInSource61Window,false);
+ assert.equal(r.previewRows[0].companyActionPositiveAtCut,false);
+ assert.equal(r.previewRows[0].status,'RESEARCH_OBSERVATION_ONLY');
+ assert.equal(r.positiveEventsProvideOnlyVetoNotNoEventCert,true);
+ assert.ok(r.previewRows[0].warnings.includes('COMPANY_ACTION_PIT_NOT_CLEARED'));
+});
+test('new T with no exact signed source calendar is blocked, but historic fixture remains replayable',async()=>{
+ const r=await previewWithDates('2026-10-19');
+ delete r.source61TradingDates;
+ const {receiptHash,...rest}=r;
+ r.receiptHash=await sha256Hex(rest);
+ await assert.rejects(()=>route({preliminaryReceipt:r}),
+  /SOURCE_61_OFFICIAL_SESSION_CALENDAR_REQUIRED_FOR_CURRENT_PREVIEW/);
+ const historical=await route({preliminaryReceipt:await actualWatchShape()});
+ assert.equal(historical.source61SessionCalendarProvided,false);
+ assert.equal(historical.previewRows[0].status,'CA_OR_CLOCK_REVIEW_HOLD');
+});
+test('tampered/fake 61 dates, duplicates, and wrong T cannot falsely clear CA',async()=>{
+ for(const mutate of [
+  a=>a.pop(),
+  a=>{a[10]=a[9];},
+  a=>{a[60]='2026-10-20';},
+  a=>{a[1]='2026-99-99';}
+ ]){
+  const x=await previewWithDates('2026-10-19');
+  mutate(x.source61TradingDates);
+  const {receiptHash,...base}=x;x.receiptHash=await sha256Hex(base);
+  await assert.rejects(()=>route({preliminaryReceipt:x}),
+   /SOURCE_61_OFFICIAL_SESSION_CALENDAR_INVALID/);
+ }
+});
+test('source-only previous capture clock cannot be retrospectively assigned to known 2330 CA event',async()=>{
+ const old=await previewWithDates('2026-10-15');
+ const r=await route({preliminaryReceipt:old});
+ assert.equal(r.known2330ExdivDateInSource61Window,true);
+ assert.equal(r.previewRows[0].companyActionPositiveAtCut,false);
+ assert.equal(r.previewRows[0].retrospectiveCompanyActionPositiveLater,true);
+ assert.ok(r.previewRows[0].warnings.includes('LATE_DISCOVERED_CA_EVENT_NOT_BACKDATED'));
+ assert.equal(r.previewRows[0].status,'CA_OR_CLOCK_REVIEW_HOLD');
+});
