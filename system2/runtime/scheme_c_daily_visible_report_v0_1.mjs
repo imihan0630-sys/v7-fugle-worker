@@ -87,6 +87,11 @@ export async function buildSchemeCDailyVisibleReportV0_1({handoff}={}){
   ?'晚於截止 '+mins.toFixed(1)+' 分鐘'
   :mins<0?'早於截止 '+Math.abs(mins).toFixed(1)+' 分鐘'
    :'恰在截止時點';
+ if(ready&&(
+    Date.parse(p.originalObservedAtUtc)<Date.parse(h.auditedAtUtc)||
+    (p.state==='SOURCE_BOUNDED_NON_PIT_PREVIEW'&&
+       (!auditBeforeCut||!previewBeforeCut))))
+  deny('AUDIT_PREVIEW_CLOCK_OR_REFERENCE_CUT_CONTRADICTION');
  const lines=[
   '# System 2｜'+h.marketDate+' 非 PIT 研究預覽',
   '',
