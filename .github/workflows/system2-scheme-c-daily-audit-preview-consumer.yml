@@ -125,9 +125,13 @@ jobs:
           test "$(jq -r .officialProviderPublicationAtUtc "$M")" = 'null'
           test "$(jq -r .preferredCutAtUtc "$M")" = "$(jq -r .marketDate "$M")T15:45:00Z"
           if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
-            test "$(jq -r .independentAuditOffsetMinutes "$M")" = '365'
-            test "$(jq -r .previewObservationOffsetMinutes "$M")" = '396.1'
+            # Historical true 2026-10-13 artifact has its OWN signed
+            # independent audit clock; synthetic fixture 365/396.1
+            # must never be projected onto those physically stored bytes.
+            test "$(jq -r '.independentAuditOffsetMinutes > 0' "$M")" = 'true'
+            test "$(jq -r '.previewObservationOffsetMinutes > 0' "$M")" = 'true'
             test "$(jq -r .researchReceiptCutStatus "$M")" = 'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
+            echo "PHYSICAL_OCT13 actual audit-after-cut=$(jq -r .independentAuditOffsetMinutes "$M")m, preview-after-cut=$(jq -r .previewObservationOffsetMinutes "$M")m; do NOT backdate."
           fi
           grep -q '非 PIT 研究預覽' "$HUMAN"
           grep -q '不是經獨立驗證的全市場普通股數' "$HUMAN" || grep -q SOURCE_NOT_READY "$HUMAN"
