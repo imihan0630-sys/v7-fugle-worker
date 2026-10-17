@@ -52,7 +52,8 @@ test('original physical-preliminary RECEIPT SHAPE can display bounded source obs
  assert.equal(r.displayedPreviewCount,2);
  assert.equal(r.ordinaryEquityUniverseCertified,false);
  assert.equal(r.previewRows[0].previewDisplayOrder,1);
- assert.equal(r.previewRows[0].status,'RESEARCH_OBSERVATION_ONLY');
+ assert.equal(r.previewRows[0].status,'CA_OR_CLOCK_REVIEW_HOLD');
+ assert.equal(r.previewRows[0].companyActionPositiveAtCut,true);
  assert.equal(r.previewRows[0].formalStrategyRank,null);
  assert.equal(r.previewRows[0].entryPrice,null);
  assert.equal(r.previewRows[0].warnings.includes('COMPANY_ACTION_PIT_NOT_CLEARED'),true);
@@ -74,10 +75,11 @@ test('2330 source-positive ex-dividend is a restrictive overlay, NEVER a CA nega
 });
 test('late event source cannot be inserted into earlier preview decision history',async()=>{
  const r=await route({preliminaryReceipt:await actualWatchShape(),
-   positiveCorporateActionOverlays:[event('2026-10-17T10:00:00Z')]});
- assert.equal(r.previewRows[0].companyActionPositiveAtCut,false);
- assert.equal(r.previewRows[0].retrospectiveCompanyActionPositiveLater,true);
- assert.ok(r.previewRows[0].warnings.includes('LATE_DISCOVERED_CA_EVENT_NOT_BACKDATED'));
+   positiveCorporateActionOverlays:[{...event('2026-10-17T10:00:00Z'),symbol:'2454'}]});
+ assert.equal(r.previewRows[1].companyActionPositiveAtCut,false);
+ assert.equal(r.previewRows[1].retrospectiveCompanyActionPositiveLater,true);
+ assert.ok(r.previewRows[1].warnings.includes('LATE_DISCOVERED_CA_EVENT_NOT_BACKDATED'));
+ assert.equal(r.previewRows[0].companyActionPositiveAtCut,true);
  assert.equal(r.historicalPreliminaryReceiptRetainedUnchanged,true);
 });
 test('T+1 readback requested at prior T-cut is LATE observation, not a historical entry',async()=>{
