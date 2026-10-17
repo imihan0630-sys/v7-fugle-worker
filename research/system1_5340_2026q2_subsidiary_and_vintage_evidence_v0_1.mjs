@@ -49,6 +49,17 @@ export function inspectOriginalSubsidiaryClues({text,originalReceipt}={}){
   "本公司無控制之子公司","本公司未設有子公司"
  ];
  const explicitNoSub=candidateNoSubsidiaryAssertions.filter(q=>t.includes(q));
+ // Corroborating negative disclosures in the issuer's *2026Q2 native report*
+ // are stronger than search snippets, yet still not a legal equivalence proof.
+ const disclosureChecks={
+  section12Present:t.includes("十二、附註揭露事項"),
+  noInvestmentBusinessInfo:t.includes("轉投資事業相關資訊無"),
+  noParentSubsidiaryTransactions:t.includes("母子公司間業務關係及重大交易往來情形：無"),
+  noMainlandInvestmentInfo:t.includes("大陸投資資訊無")
+ };
+ const disclosurePass=disclosureChecks.section12Present&&
+  disclosureChecks.noInvestmentBusinessInfo&&
+  disclosureChecks.noParentSubsidiaryTransactions;
  const requiresIndependentPeriodSpecificProof=true;
  return Object.freeze({schema:CONTRACT,symbol:"5340",reportYear:2026,reportQuarter:2,
   rawOriginalSha256:originalReceipt.pdfSha256,
@@ -57,6 +68,8 @@ export function inspectOriginalSubsidiaryClues({text,originalReceipt}={}){
   sampleOnly:false,sourceClass:"OFFICIAL_TWSE_EBOOK_PDF",searchUsed:false,
   observedIFRS19Title:ifrs19,termClues:map,
   explicitNoSubsidiaryPhrases:explicitNoSub,
+  periodSpecificNegativeDisclosureFlags:disclosureChecks,
+  periodSpecificDisclosureEvidenceObserved:disclosurePass,
   // Even an explicit phrase without original legal scope/issuer context is
   // insufficient to claim an audited company-level legal conclusion.
   subsidiaryStatus2026Q2Certified:false,
@@ -64,5 +77,6 @@ export function inspectOriginalSubsidiaryClues({text,originalReceipt}={}){
   firstKnownAt:null,availableAt:null,originalPITVintageCertified:false,
   requiresIndependentPeriodSpecificProof,
   canAdmitSystem1:false,canAdmitSystem2PIT:false,canCreateFrozen:false,canTrade:false,
-  status:"ORIGINAL_PDF_SUBSIDIARY_CLUES_OBSERVED_REQUIRES_INDEPENDENT_AUDIT"});
+  status:disclosurePass?"PERIOD_SPECIFIC_NEGATIVE_INVESTMENT_DISCLOSURES_OBSERVED_AUDIT_PENDING":
+   "ORIGINAL_PDF_SUBSIDIARY_CLUES_OBSERVED_REQUIRES_INDEPENDENT_AUDIT"});
 }
