@@ -8,6 +8,7 @@ import {mkdir,writeFile} from "node:fs/promises";
 import {pathToFileURL} from "node:url";
 import {parseOriginal2026Q2IndividualEps} from "../research/system1_5340_2026q2_individual_pdf_eps_review_v0_1.mjs";
 import {reviewBasisAndPit} from "../research/system1_5340_2026q2_official_pdf_basis_pit_audit_v0_1.mjs";
+import {inspectOriginalSubsidiaryClues} from "../research/system1_5340_2026q2_subsidiary_and_vintage_evidence_v0_1.mjs";
 
 export const SOURCE="https://doc.twse.com.tw";
 export const INDEX_PATH="/server-java/t57sb01?co_id=5340&colorchg=1&mtype=A&step=1&year=115";
@@ -119,6 +120,17 @@ export async function main(){
   try{
    const t=execFileSync("pdftotext",["-layout","artifacts/_s1_5340_2026q2_official_original_temporary.pdf","-"],{encoding:"utf8",maxBuffer:4*1024*1024,timeout:18000});
    result.pdfText=describeExtractedPdf(t);
+   try{
+    result.issuerSubsidiarySourceClues=inspectOriginalSubsidiaryClues({
+     text:t,originalReceipt:{...result,state:"OFFICIAL_ORIGINAL_PDF_DOWNLOADED_SOURCE_ONLY"}
+    });
+   }catch(err){
+    result.issuerSubsidiarySourceClues={status:"ISSUER_SUBSIDIARY_ORIGINAL_NOT_VERIFIED",
+      reason:String(err?.message||err).slice(0,160),
+      subsidiaryStatus2026Q2Certified:false,
+      legalIndividualFinancialStatements2026Q2Certified:false,
+      originalPITVintageCertified:false};
+   }
    try{
     result.legalAndPitAudit=reviewBasisAndPit({
      text:t,sourceReceipt:{...result,state:"OFFICIAL_ORIGINAL_PDF_DOWNLOADED_SOURCE_ONLY"}
