@@ -156,6 +156,14 @@ jobs:
           test "$(jq -r .finalSelectionEligible "$READINESS")" = 'false'
           test "$(jq -r .frozenDecisionWritten "$READINESS")" = 'false'
           test "$(jq -r .sourcePairsRequired "$READINESS")" = '122'
+          ACCOUNTING='/tmp/s2-a1-stage1-readonly/stage1-symbol-accounting.json'
+          test -s "$ACCOUNTING"
+          test "$(jq -r .selectedCount "$ACCOUNTING")" = 'null'
+          test "$(jq -r .zeroPickDay "$ACCOUNTING")" = 'null'
+          test "$(jq -r .frozenD1Written "$ACCOUNTING")" = 'false'
+          test "$(jq -r .dailyReadinessReceiptHash "$ACCOUNTING")" = "$(jq -r .receiptHash "$READINESS")"
+          test "$(jq -r .marketDate "$ACCOUNTING")" = "$(jq -r .marketDate "$READINESS")"
+          echo "STAGE1_PER_SYMBOL_RESEARCH_ACCOUNT=$(jq -r .state "$ACCOUNTING"), evaluatedRows=$(jq -r '.rows | length' "$ACCOUNTING") / NOT_FORMAL_SELECTED_OR_FROZEN" >> "$GITHUB_STEP_SUMMARY"
           if [ "$DIAGNOSTIC_ONLY" = 'true' ]; then
             test ! -e /tmp/s2-a1-stage1-readonly/history-barrier.json
             test "$(jq -r .state "$READINESS")" = 'BLOCKED_SOURCE_NOT_SELECTION'
@@ -417,6 +425,8 @@ jobs:
             /tmp/s2-shared-a1-independent-audit/audit-receipt.json
             /tmp/s2-a1-stage1-readonly/summary.json
             /tmp/s2-a1-stage1-readonly/daily-selection-readiness.json
+            /tmp/s2-a1-stage1-readonly/stage1-symbol-accounting.json
+            /tmp/s2-a1-stage1-readonly/stage1-symbol-accounting.md
             /tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json
             /tmp/s2-a1-stage1-readonly/preliminary-watch-report.md
             /tmp/s2-a1-stage1-readonly/preliminary-watch-report-meta.json
