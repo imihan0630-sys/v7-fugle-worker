@@ -28,6 +28,8 @@ check("native document auditor IAS34 and issuer regulation",()=>{
  assert.equal(x.explicitNoSubsidiariesStatementObserved,false);
  assert.equal(x.legalIndividualStatementEligibility2026Q2Certified,false);
  assert.equal(x.firstKnownAt,null);assert.equal(x.availableAt,null);
+ assert.equal(x.rawIndexBasisCertified,false);
+ assert.equal(x.eBookListedStatementBasis,null);
  assert.equal(x.firstKnownAtProven,false);
  assert.equal(x.issuerBoardApprovedOn,"2026-08-06");
  assert.equal(x.eBookIndexReportedUploadTaipeiISO,"2026-08-06T16:36:32+08:00");
