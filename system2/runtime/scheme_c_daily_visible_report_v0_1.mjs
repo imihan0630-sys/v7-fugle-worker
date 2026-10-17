@@ -67,11 +67,39 @@ export async function buildSchemeCDailyVisibleReportV0_1({handoff}={}){
     !Array.isArray(p.previewRows)||p.previewRows.length!==h.observedPreviewCount||
     p.previewRows.length>30))
   deny('PREVIEW_HASH_LINEAGE_OR_COUNTER_INVALID');
+ // The owner-requested 23:45 T local reference clock is intentionally
+ // unchanged. These DELTAS measure end-to-end source-AUDIT / PREVIEW
+ // observation against that fixed cut. They do NOT isolate GitHub scheduler
+ // dispatch latency, infer provider publication time, or grant PIT.
+ const preferredCutAtUtc=h.marketDate+'T15:45:00Z';
+ const cutoffMs=Date.parse(preferredCutAtUtc);
+ const offsetMinutes=utc=>Math.round((Date.parse(utc)-cutoffMs)/6000)/10;
+ const auditOffsetMin=offsetMinutes(h.auditedAtUtc);
+ const previewOffsetMin=ready?offsetMinutes(p.originalObservedAtUtc):null;
+ const auditBeforeCut=auditOffsetMin<=0;
+ const previewBeforeCut=ready&&previewOffsetMin<=0;
+ const windowStatus=ready
+  ?auditBeforeCut&&previewBeforeCut
+    ?'RESEARCH_RECEIPTS_AT_OR_BEFORE_T2345_NOT_PIT_CERTIFIED'
+    :'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
+  :'SOURCE_NOT_READY';
+ const labelOffset=mins=>mins>0
+  ?'晚於截止 '+mins.toFixed(1)+' 分鐘'
+  :mins<0?'早於截止 '+Math.abs(mins).toFixed(1)+' 分鐘'
+   :'恰在截止時點';
+ if(ready&&(
+    Date.parse(p.originalObservedAtUtc)<Date.parse(h.auditedAtUtc)||
+    (p.state==='SOURCE_BOUNDED_NON_PIT_PREVIEW'&&
+       (!auditBeforeCut||!previewBeforeCut))))
+  deny('AUDIT_PREVIEW_CLOCK_OR_REFERENCE_CUT_CONTRADICTION');
  const lines=[
   '# System 2｜'+h.marketDate+' 非 PIT 研究預覽',
   '',
   '**來源交易日：** '+h.marketDate,
   '**獨立來源稽核時間：** '+taipei(h.auditedAtUtc)+'（台北時間）',
+  '**固定研究參考截止（T 23:45）：** '+taipei(preferredCutAtUtc)+'（台北時間，不是報表實際完成時間）',
+  '**獨立稽核完成相對截止：** '+labelOffset(auditOffsetMin),
+  '**截止可用狀態：** '+windowStatus+'（不等於 PIT 認證）',
   '**報告性質：** 研究觀察，非正式選股或買賣／放空建議。',
   '**來源 SHA：** '+h.originalSourceReceiptHash,
   '**獨立稽核 SHA：** '+h.independentSourceAuditHash,
@@ -90,6 +118,7 @@ export async function buildSchemeCDailyVisibleReportV0_1({handoff}={}){
   const late=p.state==='LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY';
   lines.push(
    '**實際預覽觀察時間：** '+taipei(p.originalObservedAtUtc)+'（台北時間）',
+   '**研究預覽形成相對截止：** '+labelOffset(previewOffsetMin),
    '**資料時效：** '+(late?'**LATE_SOURCE：延後取得，只能作描述性回顧；不能倒填交易日截止決策或前瞻績效。**':
    '來源在預覽截止範圍內，但 PIT-A 與 Forward 績效都尚未認證。'),
    '**原始四碼證券：** '+p.sourceUniverseCount+'（不是經獨立驗證的全市場普通股數）',
@@ -154,6 +183,12 @@ export async function buildSchemeCDailyVisibleReportV0_1({handoff}={}){
   schemaVersion:'S2_SCHEME_C_DAILY_VISIBLE_REPORT_V0_1',
   marketDate:h.marketDate,handoffReceiptHash:h.receiptHash,
   sourceAuditRunId:h.auditRunId,sourceReady:ready,
+  preferredCutAtUtc,
+  independentAuditOffsetMinutes:auditOffsetMin,
+  previewObservationOffsetMinutes:previewOffsetMin,
+  researchReceiptCutStatus:windowStatus,
+  schedulerDispatchDelayMinutes:null,
+  officialProviderPublicationAtUtc:null,
   lateSource:ready?p.state==='LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY':null,
   displayedCount:ready?h.observedPreviewCount:null,
   strategySelectedCount:null,zeroPickDay:null,

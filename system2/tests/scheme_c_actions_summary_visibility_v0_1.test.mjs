@@ -81,3 +81,14 @@ test('independent real Oct16 Audit Run physical replay is truly SAME artifact fo
  assert.match(j,/readable|run_scheme_c_visible_report_readonly_v0_1.mjs/);
  assert.doesNotMatch(j,/\nschedule:|\bwrangler\s+deploy\b|\bCREATE\s+TABLE\b/);
 });
+
+test('Actions Summary surfaces source-audit and preview cutoff deltas, not invented Github scheduler latency',()=>{
+ assert.match(workflow,/T23:45 相對截止—獨立稽核完成/);
+ assert.match(workflow,/T23:45 相對截止—預覽觀察形成/);
+ assert.match(workflow,/GitHub 排程延遲／官方公布時點/);
+ assert.match(workflow,/本收據無法單獨歸因/);
+ assert.match(workflow,/test "\$\(jq -r \.schedulerDispatchDelayMinutes "\$M"\)" = 'null'/);
+ assert.match(workflow,/test "\$\(jq -r \.officialProviderPublicationAtUtc "\$M"\)" = 'null'/);
+ assert.match(workflow,/previewObservationOffsetMinutes "\$META" \| awk/);
+ assert.match(workflow,/SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY/);
+});
