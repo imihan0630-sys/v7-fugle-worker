@@ -10,7 +10,11 @@ const [handoff,origin,reportMeta,reportMarkdown]=await Promise.all([
  readFile(process.argv[4],'utf8').then(JSON.parse),
  readFile(process.argv[5],'utf8')
 ]);
-const receipt=await assessSchemeCDailyDeliveryV0_1({handoff,origin,reportMeta,reportMarkdown});
+if(!reportMarkdown.endsWith('\n'))throw Error('SIGNED_HUMAN_REPORT_NEWLINE_REQUIRED');
+// The existing renderer writes report.markdown + one final LF; retain the
+// signed renderer bytes, never silently trim arbitrary whitespace.
+const signedMarkdown=reportMarkdown.slice(0,-1);
+const receipt=await assessSchemeCDailyDeliveryV0_1({handoff,origin,reportMeta,reportMarkdown:signedMarkdown});
 const path=resolve(process.argv[6]);
 await mkdir(dirname(path),{recursive:true});
 await writeFile(path,JSON.stringify(receipt,null,2)+'\n',{flag:'wx',mode:0o600});
