@@ -112,7 +112,13 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
  if(!validUtc(cut))reject('REQUESTED_ASOF_CLOCK_INVALID');
  if(Date.parse(cut)<Date.parse(r.marketDate+'T00:00:00Z'))
    reject('DECISION_DATE_BEFORE_SOURCE_MARKET_DATE');
- const observedLate=Date.parse(r.observedAtUtc)>Date.parse(cut);
+ const observedAfterUserCut=Date.parse(r.observedAtUtc)>Date.parse(cut);
+ // Real owner preferred conditional daily T cut is 23:45 Taipei / 15:45Z.
+ // A later observation may still be descriptive, never backdated to T.
+ const observedAfterPreferredTCut=Date.parse(r.observedAtUtc)>
+   Date.parse(r.marketDate+'T15:45:00Z');
+ const observedLate=observedAfterUserCut||observedAfterPreferredTCut||
+   r.lateMorningObservationNotBackdated===true;
  const previewRows=[];
  const seen=new Set();
  for(const [i,x] of r.watchlist.entries()){
@@ -144,7 +150,7 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
    market:x.market,marketDate:x.marketDate,
    descriptiveRawFiveSessionReturnPct:x.fiveSessionReturnPct,
    priceAboveRawSma20:true,sourceRowHash:x.sourceRowHash,
-   status:positive.positiveAtCut||observedLate
+   status:positive.positiveAtCut||positive.latePositive||observedLate
      ?'CA_OR_CLOCK_REVIEW_HOLD':'RESEARCH_OBSERVATION_ONLY',
    companyActionPositiveAtCut:positive.positiveAtCut,
    retrospectiveCompanyActionPositiveLater:positive.latePositive,
@@ -163,7 +169,10 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
   sourceOriginalReceiptHash:r.originalSourceReceiptHash,
   sourceAuditHashNotStrategyPIT:r.independentSourceAuditHash,
   marketDate:r.marketDate,originalObservedAtUtc:r.observedAtUtc,
-  requestedDecisionAtUtc:cut,observedAfterRequestedCut:observedLate,
+  requestedDecisionAtUtc:cut,
+  observedAfterRequestedCut:observedAfterUserCut,
+  observedAfterTradingDatePreferredCut:observedAfterPreferredTCut,
+  lateMorningObservationNotBackdated:r.lateMorningObservationNotBackdated===true,
   sourceUniverseKind:'FOUR_DIGIT_INSTRUMENT_NOT_CERTIFIED_ORDINARY_EQUITY',
   sourceUniverseCount:r.officialUniverseCount,
   ordinaryEquityUniverseCertified:false,
