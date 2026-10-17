@@ -271,6 +271,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Real GitHub REST metadata validates the same original audit before source ZIP replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          node --check system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs
+          node --check system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/38934321405" > /tmp/s2-oct16-real-independent-audit-run-meta.json
+          node system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs /tmp/s2-oct16-real-independent-audit-run-meta.json 38934321405 "$GITHUB_REPOSITORY"
+          jq -e '.id == 38934321405 and .status == "completed" and .conclusion == "success" and .event == "workflow_run"' /tmp/s2-oct16-real-independent-audit-run-meta.json > /dev/null
+          echo 'PHYSICAL_NATIVE_GITHUB_AUDIT_RUN_IDENTITY_ACCEPTED_38934321405 (no extra market GET, PIT, or Frozen)' >> "$GITHUB_STEP_SUMMARY"
       - name: Download REAL 2026-10-16 exact 122-of-122 audit ZIP once
         uses: actions/download-artifact@v4
         with:
