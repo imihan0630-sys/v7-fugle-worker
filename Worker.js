@@ -3695,7 +3695,19 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   const marketState = updateMarketState(previous, rows, enrichment, marketDate);
   const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");
   const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
-  const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData }, marketDate);
+  // Safe source-identity and date preflight. TRUE only on explicit dry-run;
+  // HTTP/Cron live run has no route to activate this Shadow adapter.
+  const epsQuarantineDryRun = dryRun && options?.epsQuarantineShadow===true && !epsReviewOnly;
+  if(epsQuarantineDryRun &&
+     (!quarterEps || quarterEps.asOfDate!==marketDate ||
+      quarterEps.year!==financialData.year || quarterEps.quarter!==financialData.quarter ||
+      !quarterEps.stocks || typeof quarterEps.stocks!=="object" ||
+      Array.isArray(quarterEps.stocks) ||
+      quarterEps.count!==Object.keys(quarterEps.stocks).length))
+    throw new Error("SHADOW_EPS_GLOBAL_SOURCE_NOT_VERIFIED__NOT_ZERO_PICK");
+  const selectorEnv = { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData };
+  if(epsQuarantineDryRun) selectorEnv.__S1_EPS_QUARANTINE_DRYRUN_ONLY=quarterEps;
+  const scan = selectTomorrowCandidates(marketState, rows, selectorEnv, marketDate);
   const epsMissing=(scan.diagnostics.epsReviewUniverse || []).filter(item=>(!quarterEps?.stocks?.[item.symbol]?.quarterEpsVerified || (financialData.quarter>1 && !quarterEps?.stocks?.[item.symbol]?.previousQuarterEpsVerified)) || quarterEps.year!==financialData.year || quarterEps.quarter!==financialData.quarter).map(item=>item.symbol);
   scan.diagnostics.quarterEpsReview={provisional:epsReviewOnly,year:financialData.year,quarter:financialData.quarter,reviewedCount:quarterEps?.count || 0,missingSymbols:epsMissing,
     previousQuarterReviewedCount:Object.values(quarterEps?.stocks || {}).filter(stock=>stock.previousQuarterEpsVerified).length,
@@ -4635,6 +4647,29 @@ function compactMarketStateForKv(marketState) {
   };
 }
 
+// RESEARCH-ONLY: candidate-level original-parser EPS admission. This helper
+// NEVER enables live selection; it is called only for explicit dry-run shadow.
+// A-only individual financial statements must not be laundered into C.
+function system1ShadowEpsCandidateStatus(candidate,quarterSnapshot) {
+  const row=quarterSnapshot?.stocks?.[candidate?.symbol];
+  if(!row || typeof row!=="object" || Array.isArray(row)) return {allowed:false,reason:"MISSING_CANDIDATE_SOURCE"};
+  if(row.quarterEpsSource!=="https://mopsov.twse.com.tw/mops/web/ajax_t164sb04" ||
+     typeof row.epsBasis!=="string" || !row.epsBasis.includes("MOPS合併綜合損益表"))
+    return {allowed:false,reason:"OFFICIAL_CONSOLIDATED_C_BASIS_NOT_VERIFIED"};
+  if(row.quarterEpsYear!==quarterSnapshot.year ||
+     row.quarterEpsQuarter!==quarterSnapshot.quarter)
+    return {allowed:false,reason:"QUARTER_OR_ISSUER_PERIOD_MISMATCH"};
+  if(row.quarterEpsVerified!==true || !Number.isFinite(row.quarterEPS))
+    return {allowed:false,reason:"CURRENT_QUARTER_ACTUAL_EPS_MISSING"};
+  if(quarterSnapshot.quarter>1 &&
+     (row.previousQuarterEpsVerified!==true ||
+      row.previousQuarterEpsYear!==quarterSnapshot.year ||
+      row.previousQuarterEpsQuarter!==quarterSnapshot.quarter-1 ||
+      !Number.isFinite(row.previousQuarterEPS)))
+    return {allowed:false,reason:"PREVIOUS_QUARTER_ACTUAL_EPS_MISSING"};
+  return {allowed:true,reason:null};
+}
+
 function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
   const rowMap = new Map(todayRows.map(row => [row.symbol, row]));
   let featureRows = Object.values(marketState.stocks)
@@ -4709,6 +4744,8 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
 
   scored.sort(rankFn);
   diagnostics.epsReviewUniverse=scored.map(item=>({symbol:item.symbol,name:item.name}));
+  const shadowEpsSnapshot=env.__S1_EPS_QUARANTINE_DRYRUN_ONLY || null;
+  const epsShadowEligible=item=>system1ShadowEpsCandidateStatus(item,shadowEpsSnapshot).allowed;
 
   diagnostics.nearMisses = diagnostics.nearMisses
     .sort((a, b) => a.missingCount - b.missingCount || b.nearScore - a.nearScore)
@@ -4743,11 +4780,11 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     thousandScored.push(result);
   }
   thousandScored.sort(rankFn);
-  const thousandTop = thousandScored.slice(0, MAX_STOCKS_PER_POOL);
+  const thousandTop = (shadowEpsSnapshot ? thousandScored.filter(epsShadowEligible) : thousandScored).slice(0, MAX_STOCKS_PER_POOL);
 
   // 7.5.4：兩個選股池各自保留最多3席，名額完全獨立。
   // 千金股不足3檔時空缺保留；非千金股不得補位。反之亦同。
-  const generalTop = scored
+  const generalTop = (shadowEpsSnapshot ? scored.filter(epsShadowEligible) : scored)
     .filter(item => (toNumber(item.close) || 0) < THOUSAND_STOCK_PRICE)
     .slice(0, MAX_STOCKS_PER_POOL);
   const selected = [...generalTop, ...thousandTop].sort(rankFn);
@@ -4782,6 +4819,21 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     unusedThousandSlots: MAX_STOCKS_PER_POOL - thousandTop.length
   };
 
+  if(shadowEpsSnapshot) {
+    const scoredUnique=[...new Map([...scored,...thousandScored].map(item=>[item.symbol,item])).values()];
+    const quarantined=scoredUnique.filter(item=>!epsShadowEligible(item));
+    diagnostics.epsQuarantineShadow={
+      previewOnly:true,productionActivated:false,canTrade:false,
+      sourceMarketDate:shadowEpsSnapshot.asOfDate,
+      originalCandidateCount:scoredUnique.length,
+      quarantinedSymbols:quarantined.map(item=>item.symbol),
+      survivingCandidates:scoredUnique.length-quarantined.length,
+      selectedSymbols:selected.map(item=>item.symbol),
+      allCandidatesQuarantined:scoredUnique.length>0&&quarantined.length===scoredUnique.length,
+      zeroPicksCertified:false,
+      officialSourcePITCertified:false
+    };
+  }
   const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
   return {
     candidates: allocateAndBuildPlans(selected, totalCapital, scanDate),
