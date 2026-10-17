@@ -7,7 +7,7 @@ export const BASIS_AUDIT_VERSION="S1_5340_Q2_ORIGINAL_PDF_BASIS_PIT_V0_1";
 function no(code){throw Error("5340_BASIS_PIT_"+code);}
 function compact(t){return t.replace(/[\s\u00a0\u3000]+/g,"");}
 function excerpt(src,needle,before=70,after=160){
- const at=src.indexOf(needle);
+ const at=src.lastIndexOf(needle);
  return at<0?null:src.slice(Math.max(0,at-before),at+needle.length+after)
   .replace(/\s+/g," ").trim().slice(0,240);
 }
@@ -56,7 +56,7 @@ export function reviewBasisAndPit({text,sourceReceipt}={}){
    headings.securitiesIssuerStatements&&headings.ias34,
   headings,explicitNoSubsidiariesStatementObserved:Boolean(explicitNoSubsidiaries),
   explicitNoSubsidiariesTerm:explicitNoSubsidiaries,
-  2026Q2LegalIndividualStatementEligibilityCertified:false,
+  legalIndividualStatementEligibility2026Q2Certified:false,
   firstKnownAt:null,availableAt:null,issuerFirstPublicationTimestamp:null,
   firstKnownAtProven:false,sourceVersionAsOf20261016Certified:false,
   uploadTimeIsNotPublicationProof:true,
