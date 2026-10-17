@@ -1,7 +1,7 @@
 name: System1 2026-10-16 5 missing EPS public MOPS one-shot
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 permissions:
   contents: read
 concurrency:
@@ -22,7 +22,7 @@ jobs:
           node --check ops/system1_20261016_mops_eps5_public_readonly_once.mjs
           node tests/test_system1_20261016_mops_eps5_public_readonly_once.mjs
       - name: Public MOPS source forms only; no Cloudflare, no credentials, no write
-        run: node ops/system1_20261016_mops_eps5_public_readonly_once.mjs
+        run: node ops/system1_20261016_mops_eps5_public_readonly_once.mjs --only-5340
       - name: Preserve sanitized results and original SHA receipts
         if: always()
         uses: actions/upload-artifact@v4
