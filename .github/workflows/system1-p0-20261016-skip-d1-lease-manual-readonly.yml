@@ -1,0 +1,52 @@
+name: System1 P0 Oct16 Skipped Cron D1 Lease (MANUAL SELECT ONLY)
+on:
+  pull_request:
+    paths:
+      - "research/system1_p0_20261016_skip_lease_d1_readback_v0_1.mjs"
+      - "ops/system1_p0_20261016_skip_lease_d1_manual_readonly.mjs"
+      - "tests/test_system1_p0_20261016_skip_lease_d1_readback_v0_1.mjs"
+      - ".github/workflows/system1-p0-20261016-skip-d1-lease-manual-readonly.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-20261016-historic-cron-d1
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact Oct16 two-statement SQL, source identity and lease falsification
+        run: |
+          node --check research/system1_p0_20261016_skip_lease_d1_readback_v0_1.mjs
+          node --check ops/system1_p0_20261016_skip_lease_d1_manual_readonly.mjs
+          node tests/test_system1_p0_20261016_skip_lease_d1_readback_v0_1.mjs
+  physical_manual_read:
+    # Never read original D1 using a pull_request, push, merge or schedule.
+    # Requires owner-intentional main branch workflow_dispatch.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SYSTEM1_P0_D1_READ_TOKEN: ${{ secrets.SYSTEM1_P0_D1_READ_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Only exact Oct16 two original source v7-live D1 SELECTs
+        run: node ops/system1_p0_20261016_skip_lease_d1_manual_readonly.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-oct16-skip-lease-manual-${{ github.run_id }}
+          path: artifacts/system1-p0-historical-cron-d1-select-20261016.json
+          if-no-files-found: warn
+          retention-days: 30
