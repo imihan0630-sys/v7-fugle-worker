@@ -5,6 +5,8 @@ import {resolve} from 'node:path';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {sha256Hex} from '../runtime/decision_archive.mjs';
+import {bindM09Stage1NativeEvidenceV0_1}
+ from '../runtime/m09_stage1_native_evidence_intake_v0_1.mjs';
 import {buildDailySelectionReadinessReceiptV0_1} from '../runtime/daily_selection_readiness_v0_1.mjs';
 import {buildSystem2PreliminaryDailyWatchV0_1} from '../runtime/preliminary_daily_pv_watch_v0_1.mjs';
 import {buildPreliminaryUserReportV0_1} from '../runtime/preliminary_daily_user_report_v0_1.mjs';
@@ -237,21 +239,37 @@ export async function stage1ResearchFromAuditedSourceV0_1(input={}){
  const bridge=await sourceFirstLedgerFromAuditedOriginalsV0_1(input);
  if(bridge.state!=='SOURCE_LEDGER_READY_STRATEGY_PIT_NOT_CERTIFIED')
   return bridge;
+ // Explicit external input is never sourced from mere A1 quotation data.
+ // CLI does not enable this path unless a local, separately delivered PIT
+ // bundle is deliberately supplied. Normal daily A1 always stays fail-closed.
+ if(input.pitNativeEvidenceBundle&&
+    (input.companyActionCompletenessReceipt||input.companyActionIndependentAuditReceipt||
+     input.instrumentSourceReceipt||input.instrumentIndependentAuditReceipt||
+     Object.keys(input.continuityBySymbol||{}).length))
+  throw Error('M09_NATIVE_BUNDLE_MIXED_DIRECT_INJECTION_FORBIDDEN');
+ const native=input.pitNativeEvidenceBundle
+  ?await bindM09Stage1NativeEvidenceV0_1({
+    evidenceBundle:input.pitNativeEvidenceBundle,
+    manifest:input.manifest,sourceReceipt:input.sourceReceipt,
+    auditReceipt:input.auditReceipt,sourceLedger:bridge.sourceLedger,
+    evaluationAtUtc:input.freezeAtUtc
+   })
+  :null;
  const admission=await admitSharedOfficialA1ToShortMomentumStage1V0_1({
   manifest:input.manifest,sourceReceipt:input.sourceReceipt,
   auditReceipt:input.auditReceipt,sourceLedger:bridge.sourceLedger,
   // ONLY independent genuinely accepted corporate-action coverage may be supplied.
   // Missing proof means INCOMPLETE and must NEVER default to CLEAR_NO_ACTION.
-  continuityBySymbol:input.continuityBySymbol||{},
+  continuityBySymbol:native?.continuityBySymbol??input.continuityBySymbol??{},
   // Optional *separately* source-verified CA completeness/audit inputs. The
   // normal official A1-only lane supplies neither, so no stock may inherit a
   // fabricated corporate-action no-event certificate.
-  companyActionCompletenessReceipt:input.companyActionCompletenessReceipt||null,
-  companyActionIndependentAuditReceipt:input.companyActionIndependentAuditReceipt||null,
+  companyActionCompletenessReceipt:native?.companyActionCompletenessReceipt??input.companyActionCompletenessReceipt??null,
+  companyActionIndependentAuditReceipt:native?.companyActionIndependentAuditReceipt??input.companyActionIndependentAuditReceipt??null,
   // No official PIT class attestation is available in the normal A1-only
   // daily run. Do not infer common shares from the four-digit quote universe.
-  instrumentSourceReceipt:input.instrumentSourceReceipt||null,
-  instrumentIndependentAuditReceipt:input.instrumentIndependentAuditReceipt||null,
+  instrumentSourceReceipt:native?.instrumentSourceReceipt??input.instrumentSourceReceipt??null,
+  instrumentIndependentAuditReceipt:native?.instrumentIndependentAuditReceipt??input.instrumentIndependentAuditReceipt??null,
   evaluationAtUtc:input.freezeAtUtc
  });
  if(admission.selectedCount!==null||admission.zeroPickDay!==null||
@@ -272,9 +290,15 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
     'official-61-'+manifest.effectiveTradingDay+'.json'),'utf8'));
   const auditReceipt=JSON.parse(await readFile(auditFile,'utf8'));
   const observedAtUtc=new Date().toISOString();
+  // Manual/operator-provided *local* original evidence only. This env var is
+  // not configured in the scheduled daily A1 workflow; no implicit grants.
+  const nativeFile=process.env.S2_M09_NATIVE_PIT_EVIDENCE_FILE||null;
+  const pitNativeEvidenceBundle=nativeFile
+   ?JSON.parse(await readFile(resolve(nativeFile),'utf8')):null;
   const common={
    manifest,sourceReceipt:receipt,auditReceipt,
    originalDirectory:resolve(root,'original-json'),freezeAtUtc:observedAtUtc,
+   pitNativeEvidenceBundle,
    run:{repository:process.env.GITHUB_REPOSITORY||null,
     runId:process.env.GITHUB_RUN_ID||null,attempt:process.env.GITHUB_RUN_ATTEMPT||null,
     codeSha:process.env.GITHUB_SHA||null}

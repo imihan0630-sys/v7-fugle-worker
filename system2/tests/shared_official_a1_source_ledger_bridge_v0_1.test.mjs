@@ -195,7 +195,8 @@ test('121/122 does not bypass original hashes even in delayed preliminary mode',
 test('source evidence cannot be silently marked as a frozen ranked decision',async()=>{
  const {readFile}=await import('node:fs/promises');
  const s=await readFile('system2/scripts/run_shared_official_a1_stage1_readonly_v0_1.mjs','utf8');
- assert.match(s,/continuityBySymbol:input\.continuityBySymbol\|\|\{\}/);
+  assert.match(s,/continuityBySymbol:native\?\.continuityBySymbol\?\?input\.continuityBySymbol\?\?\{\}/);
+  assert.match(s,/M09_NATIVE_BUNDLE_MIXED_DIRECT_INJECTION_FORBIDDEN/);
  assert.doesNotMatch(s,/INSERT INTO|git push|api\.cloudflare\.com/);
  assert.match(s,/selectionAuthorized:false/);
 });
