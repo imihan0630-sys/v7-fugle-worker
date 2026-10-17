@@ -58,6 +58,14 @@ export function classifyOriginalFormalReadback(values,errors){
    skipped:x.skipped===true||Number(x.skipped)===1,
    detailCode:/^[A-Z0-9_]{2,72}$/.test(String(x.detail||""))?x.detail:null,
    detailFieldPresent:Object.prototype.hasOwnProperty.call(x,"detail"),
+   detailIsNull:x.detail===null,
+   detailType:x.detail===null?"null":Array.isArray(x.detail)?"array":typeof x.detail,
+   detailStringLength:typeof x.detail==="string"?Math.min(10000,x.detail.length):null,
+   // Never emit freeform narrative, machine tokens, response body or account data.
+   reasonClass:/AFTER_MARKET_RUNNING/.test(String(x.detail||""))?"AFTER_MARKET_RUNNING":
+    /NOT_TRADING_DAY/.test(String(x.detail||""))?"NOT_TRADING_DAY":
+    /ALREADY_SCANNED/.test(String(x.detail||""))?"ALREADY_SCANNED":
+    x.detail===null?"DETAIL_NULL":"DETAIL_UNCLASSIFIED",
    errorClass:/exceededResources|CPU/i.test(String(x.error||""))?"CPU_OR_RESOURCE":
     /DATA_INCOMPLETE/i.test(String(x.error||""))?"DATA_INCOMPLETE":
     x.error?"OTHER_OR_UNKNOWN":"NONE"
