@@ -123,6 +123,11 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
  // physical preliminary source. Historic pre-v0.2-calendar receipts stay
  // readable but cannot claim new-date risk coverage from a missing list.
  const calendar=r.source61TradingDates??null;
+ // The original Oct13 source physical fixture has no such field; it stays
+ // replayable only as historic research. Current post-approval prospective
+ // daily preview must prove its exact 61 official source dates.
+ if(calendar===null&&r.marketDate>'2026-10-16')
+  reject('SOURCE_61_OFFICIAL_SESSION_CALENDAR_REQUIRED_FOR_CURRENT_PREVIEW');
  if(calendar!==null&&(!Array.isArray(calendar)||calendar.length!==61||
     calendar.at(-1)!==r.marketDate||
     calendar.some((d,i)=>!validDay(d)||(i>0&&d<=calendar[i-1]))))
