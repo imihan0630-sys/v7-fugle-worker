@@ -85,9 +85,9 @@ jobs:
           echo 'Archived provider/auditor filenames (no raw contents):'
           # Never use find | head under pipefail: >15 original 61-session files
           # cause SIGPIPE and falsely fail before the signed original readback.
-          ls -l /tmp/s2-data-a1-source/official-61-*.json /tmp/s2-data-a1-audit/audit-receipt.json
+          ls -l /tmp/s2-data-a1-source/official-61-*.json /tmp/s2-data-a1-audit/s2-shared-a1-independent-audit/audit-receipt.json
           SRC="/tmp/s2-data-a1-source/official-61-$SOURCE_T.json"
-          AUD="/tmp/s2-data-a1-audit/audit-receipt.json"
+          AUD="/tmp/s2-data-a1-audit/s2-shared-a1-independent-audit/audit-receipt.json"
           if [ ! -s "$SRC" ]; then
             echo "::error::EXACT_MARKET_DATE_SOURCE_RECEIPT_ABSENT: $SRC"
             exit 2
