@@ -91,6 +91,19 @@ test('T+1 readback requested at prior T-cut is LATE observation, not a historica
  assert.equal(r.futureProspectiveForwardReturnsUsableForThisDecision,false);
  assert.equal(r.certifiedZeroPickDay,null);
 });
+test('preliminary physical late after preferred T 23:45 Taipei cannot be called on-time',async()=>{
+ const w=await actualWatchShape();
+ w.observedAtUtc='2026-10-16T16:20:00Z';
+ w.lateMorningObservationNotBackdated=true;
+ const {receiptHash,...body}=w;w.receiptHash=await sha256Hex(body);
+ const r=await route({preliminaryReceipt:w});
+ assert.equal(r.state,'LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY');
+ assert.equal(r.observedAfterTradingDatePreferredCut,true);
+ assert.equal(r.observedAfterRequestedCut,false);
+ assert.equal(r.lateMorningObservationNotBackdated,true);
+ assert.equal(r.futureProspectiveForwardReturnsUsableForThisDecision,false);
+ assert.equal(r.strategySelectedCount,null);
+});
 test('a signed preliminary is STILL no source/strategy PIT admission',async()=>{
  for(const layer of ['PIT_A_PROSPECTIVE','PIT_B_HISTORICAL']){
   const r=await route({layer,preliminaryReceipt:await actualWatchShape()});
