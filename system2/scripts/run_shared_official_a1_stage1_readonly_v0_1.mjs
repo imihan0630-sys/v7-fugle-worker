@@ -8,6 +8,8 @@ import {sha256Hex} from '../runtime/decision_archive.mjs';
 import {bindM09Stage1NativeEvidenceV0_1}
  from '../runtime/m09_stage1_native_evidence_intake_v0_1.mjs';
 import {buildDailySelectionReadinessReceiptV0_1} from '../runtime/daily_selection_readiness_v0_1.mjs';
+import {buildStage1DailySymbolAccountingV0_1,renderStage1DailySymbolAccountingV0_1}
+ from '../runtime/stage1_daily_symbol_accounting_v0_1.mjs';
 import {buildSystem2PreliminaryDailyWatchV0_1} from '../runtime/preliminary_daily_pv_watch_v0_1.mjs';
 import {buildPreliminaryUserReportV0_1} from '../runtime/preliminary_daily_user_report_v0_1.mjs';
 import {diagnoseSourceFirstHistoryBlockersV0_1} from '../runtime/a1_history_barrier_diagnostic_v0_1.mjs';
@@ -331,6 +333,9 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
   const readiness=await buildDailySelectionReadinessReceiptV0_1({
    bridge:result,runId:process.env.GITHUB_RUN_ID||null,
   });
+  const symbolAccounting=await buildStage1DailySymbolAccountingV0_1({
+   bridge:result,readiness,
+  });
   const preliminary=await buildSystem2PreliminaryDailyWatchV0_1({
    bridge:lateObservation?.state==='SOURCE_LEDGER_DELAYED_PRELIMINARY_ONLY'?
      lateObservation:result,
@@ -341,6 +346,11 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
    JSON.stringify(out,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile('/tmp/s2-a1-stage1-readonly/daily-selection-readiness.json',
    JSON.stringify(readiness,null,2)+'\n',{flag:'wx',mode:0o600});
+  await writeFile('/tmp/s2-a1-stage1-readonly/stage1-symbol-accounting.json',
+   JSON.stringify(symbolAccounting,null,2)+'\n',{flag:'wx',mode:0o600});
+  await writeFile('/tmp/s2-a1-stage1-readonly/stage1-symbol-accounting.md',
+   renderStage1DailySymbolAccountingV0_1(symbolAccounting),
+   {flag:'wx',mode:0o600});
   await writeFile('/tmp/s2-a1-stage1-readonly/preliminary-pv-watch.json',
    JSON.stringify(preliminary,null,2)+'\n',{flag:'wx',mode:0o600});
   const userReport=await buildPreliminaryUserReportV0_1({receipt:preliminary});
@@ -380,6 +390,12 @@ if(process.argv[1]&&process.argv[1].endsWith('/run_shared_official_a1_stage1_rea
     selectedCount:null,frozenWritten:false}));
   }
   console.log(JSON.stringify(out));
+  console.log(JSON.stringify({
+   stage1PerSymbolReceiptHash:symbolAccounting.receiptHash,
+   stage1SymbolResearchRows:symbolAccounting.rows.length,
+   stage1ResearchAccountState:symbolAccounting.state,
+   formalSelectedCount:null,actualFrozenReadback:false,
+  }));
   console.log(JSON.stringify({
    dailyReadinessState:readiness.state,marketDate:readiness.marketDate,
    universe:readiness.ordinaryUniverseCount,
