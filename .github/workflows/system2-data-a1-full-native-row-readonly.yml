@@ -7,6 +7,14 @@ on:
       - ".github/workflows/system2-data-a1-full-native-row-readonly.yml"
       - "system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs"
       - "system2/tests/issue1068_full_market_t_a1_native_row_handoff_v0_1.test.mjs"
+      - "system2/scripts/resolve_data_a1_verified_origin_pair_v0_1.mjs"
+      - "system2/tests/resolve_data_a1_verified_origin_pair_v0_1.test.mjs"
+  # NEW: source-only downstream of successful independent audit, no new Cron.
+  # Origin pair is selected by exact independently signed original SHA, never
+  # by the latest run or nominal scheduler time.
+  workflow_run:
+    workflows: ["System2 Shared Official A1 Independent Source Audit (READ ONLY)"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       source_run_id:
@@ -32,7 +40,12 @@ concurrency:
 
 jobs:
   extract_source_only:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.event == 'workflow_run'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -45,18 +58,39 @@ jobs:
           set -euo pipefail
           node --check system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs
           node --test system2/tests/issue1068_full_market_t_a1_native_row_handoff_v0_1.test.mjs
+          node --check system2/scripts/resolve_data_a1_verified_origin_pair_v0_1.mjs
+          node --test system2/tests/resolve_data_a1_verified_origin_pair_v0_1.test.mjs
           git diff --exit-code -- Worker.js wrangler.toml
+      - name: Auto-match exact signed upstream source to independently completed audit (GitHub archive GET only)
+        if: github.event_name == 'workflow_run'
+        id: verified_origin
+        env:
+          GH_TOKEN: ${{ github.token }}
+          S2_A1_AUDIT_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/resolve_data_a1_verified_origin_pair_v0_1.mjs
       - name: Resolve source and audit exact original run IDs
         id: run
         env:
           SOURCE_RUN: ${{ inputs.source_run_id }}
           AUDIT_RUN: ${{ inputs.audit_run_id }}
           TARGET_T: ${{ inputs.market_date }}
+          AUTO_SOURCE: ${{ steps.verified_origin.outputs.source_id }}
+          AUTO_AUDIT: ${{ steps.verified_origin.outputs.audit_id }}
+          AUTO_T: ${{ steps.verified_origin.outputs.market_date }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
-          S="${SOURCE_RUN:-38934081985}"
-          A="${AUDIT_RUN:-38934321405}"
-          T="${TARGET_T:-2026-10-16}"
+          if [ "$EVENT_NAME" = "workflow_run" ]; then
+            S="$AUTO_SOURCE"
+            A="$AUTO_AUDIT"
+            T="$AUTO_T"
+          else
+            S="${SOURCE_RUN:-38934081985}"
+            A="${AUDIT_RUN:-38934321405}"
+            T="${TARGET_T:-2026-10-16}"
+          fi
           [[ "$S" =~ ^[0-9]+$ ]]
           [[ "$A" =~ ^[0-9]+$ ]]
           [[ "$T" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]
@@ -98,6 +132,8 @@ jobs:
           fi
           test "$(jq -r .marketDate "$SRC")" = "$SOURCE_T"
           test "$(jq -r .marketDate "$AUD")" = "$SOURCE_T"
+          # Official source and independent audit hashes remain mandatory
+          # in the extractor; a delayed workflow cannot backdate source PIT.
           node system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs \
             "$SRC" "$AUD" /tmp/s2-data-a1-source/original-json \
             /tmp/s2-data-a1-full-universe
