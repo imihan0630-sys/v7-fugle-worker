@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "D06_05_IC111_CONTINUATION_CHECKPOINT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-05",
+  "researchFile": "research/d06_05_ic111_20261016_tdcc_archive_pair_audit_v0_1.json",
+  "sourceDates": [
+    "2026-10-08",
+    "2026-10-16"
+  ],
+  "source": "third-party TDCC GitHub archive, not official byte-certified",
+  "status": "NEW_SOURCE_DATE_OBSERVED_OFFICIAL_PROVENANCE_AND_CLEAN_COHORT_PENDING",
+  "structuralGradeIntegrity": "PASS_17_GRADES_ALL_SECURITIES_WITH_GRADE16_SUBTRACTION",
+  "preCleanCandidateCount": 2780,
+  "preCleanHash": "fnv1a64-utf8:6c132204ab272610",
+  "finalCleanCohort": "UNKNOWN",
+  "admittedOosPairs": 0,
+  "formalCore": "LOCKED",
+  "maturityUpgrade": "NONE",
+  "exactNext": "Official TDCC 2026-10-16 raw CSV byte/row crosscheck -> both-date common equity and corporate-action identity masks -> freeze final cohort before IC110 outcomes. Margin/short/borrow/ETF/crowding remain their prior frozen semantics."
+}
