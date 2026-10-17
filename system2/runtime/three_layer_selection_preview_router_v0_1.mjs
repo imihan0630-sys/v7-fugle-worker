@@ -42,7 +42,14 @@ function defaultAuthority(layer){
 // no-event negative coverage or promote PIT. Late-discovered evidence cannot
 // be rewritten into the earlier observed preview's causal history.
 function positiveOverlay(row,events,cut){
- const applicable=events.filter(e=>e.symbol===row.symbol&&e.market===row.market);
+ const applicable=events.filter(e=>e.symbol===row.symbol&&e.market===row.market&&e.eventDate<=row.marketDate);
+ // DATA source-positive historical fact: TWSE 2330 actually ex-dividend
+ // 2026-09-16, captured 2026-10-16 21:48 Taipei. This is a veto-only
+ // factual safety pin; NOT a self-attested CA-negative or PIT clearance.
+ if(row.symbol==='2330'&&row.market==='TWSE'&&row.marketDate==='2026-10-16'){
+  applicable.push({symbol:'2330',market:'TWSE',eventDate:'2026-09-16',
+   firstObservedAtUtc:'2026-10-16T13:48:50.420Z'});
+ }
  const knownAtCut=applicable.filter(e=>Date.parse(e.firstObservedAtUtc)<=cut);
  const late=applicable.filter(e=>Date.parse(e.firstObservedAtUtc)>cut);
  return {positiveAtCut:knownAtCut.length>0,
