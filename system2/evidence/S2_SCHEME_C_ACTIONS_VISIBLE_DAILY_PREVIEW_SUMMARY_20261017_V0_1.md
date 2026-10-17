@@ -21,3 +21,9 @@
 新增 `system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs` 檢查摘要追加次序、真實報告內容、防舊資料冒充今日，以及 workflow 只能 `actions: read, contents: read`、不引入新 `schedule:` 或 Cloudflare 部署。PR 專屬真人可讀 Summary 內容和原有衍生 Artifact 均需從 GitHub Run 實際確認，且 System2 Research、V8 Regression、D1 Writer Census 全通過方合併。
 
 **注意：** 這是 BUILD P0 可使用性改善，不表示 PIT-A 第一檔已通關，也不表示下一個真實交易日完成每日預覽自動營運驗收。資料來源證據仍屬 DATA #1068、獨立稽核屬 AUDIT；BUILD 只接資料和顯示結果。
+
+## 新增真實營運失敗提示（無資料不等於選股零檔）
+
+- 若既有 A1 獨立稽核上游 `workflow_run` 不是 SUCCESS，或它只是一個 121/122 的主支線自測 `push`，新獨立狀態 Job `show_unavailable_upstream_audit` 直接在 GitHub Run Summary 輸出 `SOURCE_NOT_READY`、原 Run ID/上游結論/事件、`marketDate=UNKNOWN`、`selectedCount=UNKNOWN`。此 Job 不請求任何來源、沒有使用前一個交易日快照。
+- 若正常上游聲稱 SUCCESS，但實際子流程無法下載原始唯一 Artifact、SHA 不符、marketDate 截止錯誤或報告無法通過來源認證，失敗 Job 的 `if: failure()` 仍輸出 **驗證失敗** Summary。原 Job 應維持 FAILURE，不可以假借阻塞狀態覆蓋測試失敗或變成綠燈。
+- 兩種均不可冒稱「今日研究 0 檔」、`PIT-A` 合格或正式 Frozen。未經 DATA + AUDIT 實體證據不可憑此查到任何正式評分。
