@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "ROOM04_C3_SNAPSHOT_SEMANTIC_RECEIPT_V0_1",
+  "baselineMainSha": "b7274fe82a589bb0046ee298797c2d29aa45c04a",
+  "originalSourcePath": "research/system1_c3_live_depth_prereg_v0_1.mjs",
+  "originalSourceBlobSha": "955fbf64acdc5c2f96e64681d436f54e933b1990",
+  "originalFunctionSyntheticCases": 5,
+  "independentGuardSyntheticAssertions": 64,
+  "failures": 0,
+  "realMarketParentsAdded": 0,
+  "realPITAttestation": "UNKNOWN",
+  "researchOnly": true,
+  "formalCoreLocked": true,
+  "maturityUpgrade": false,
+  "maturityPct": {
+    "D04": 58,
+    "D05": 54.3,
+    "aggregate": 47.9
+  },
+  "next": "Verify genuine C1/C2->C3 preregistration and original two-sided native quote receipts; freeze mechanism/clock/missingness/common support before outcomes."
+}
