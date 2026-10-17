@@ -38,10 +38,19 @@ export function resolveLatestClosedTaiwanSessionV0_1({
  // Never infer that sources were known at 23:45, and never grant Frozen.
  const conditionalNextDayRecovery=prior!==z.today&&
     isNewClose&&z.hour<2;
+ // A weekend/holiday before 19:00 previously set upper=yesterday,
+ // accidentally making last session == upper and setting isNewClose=true.
+ // E.g. Saturday Oct 17 at 18:49 Taipei falsely re-collected Friday Oct 16.
+ // Explicit exchange-calendar non-trading days may ONLY run in the genuine
+ // T+1 00:00-01:59 recovery window, or under allowOlderManual (research-only).
+ // No new Cron, provider GET, PIT or Frozen authorization is introduced.
+ const taipeiTodayIsOfficialTradingDate=officialTradingDates.includes(z.today);
+ const invalidNonTradingDayReplay=!taipeiTodayIsOfficialTradingDate&&
+  !conditionalNextDayRecovery;
  // On a holiday or weekend do not repeat Friday just because cron ran:
  // manual operator can explicitly request a previous closed session,
  // but such output stays RETROSPECTIVE_SOURCE_OBSERVATION_ONLY.
- if(!isNewClose&&!allowOlderManual)
+ if((!isNewClose||invalidNonTradingDayReplay)&&!allowOlderManual)
   return Object.freeze({state:'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY',marketDate:prior,
    taipeiDate:z.today,sourceWasPublishedByThisResolver:false});
  return Object.freeze({
