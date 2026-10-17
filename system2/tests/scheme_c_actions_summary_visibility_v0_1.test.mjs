@@ -128,3 +128,17 @@ test('PR real Oct16 source-only replay verifies ACTUAL GitHub audit REST metadat
  assert.equal((job.match(/uses: actions\/download-artifact@v4/g)||[]).length,1);
  assert.doesNotMatch(job,/\n\s+schedule:|cloudflare\/workers-action|wrangler\s+deploy/);
 });
+
+test('source schedule attribution is UNKNOWN unless ORIGINAL producer origin independently proven',()=>{
+ assert.match(workflow,/node --test system2\/tests\/scheme_c_delivery_origin_v0_1.test.mjs/);
+ assert.match(workflow,/node system2\/scripts\/run_scheme_c_delivery_origin_readonly_v0_1.mjs "\$R"/);
+ assert.match(workflow,/test "\$\(jq -r \.completedDailyAutomaticSourceChainCertified "\$O"\)" = 'false'/);
+ assert.match(workflow,/test "\$\(jq -r \.sourceCollectorScheduledOriginIndependentlyVerified "\$O"\)" = 'null'/);
+ assert.match(workflow,/S2_DELIVERY_EVENT_NAME: \$\{\{ github.event_name \}\}/);
+ assert.match(workflow,/S2_DELIVERY_AUDIT_RUN_ID: \$\{\{ github.event_name == 'pull_request'/);
+ assert.match(workflow,/S2_DELIVERY_UPSTREAM_EVENT: \$\{\{ github.event_name/);
+ assert.match(workflow,/sourceCollectorScheduledOriginIndependentlyVerified "\$ORIGIN"\)" = 'null'/);
+ assert.match(workflow,/status "\$ORIGIN"\)" = 'PR_HISTORICAL_PROOF_ONLY'/);
+ assert.match(workflow,/SOURCE_CRON_ORIGIN_UNVERIFIED/);
+ assert.match(workflow,/來源最初 Cron 觸發已獨立驗證/);
+});
