@@ -62,3 +62,22 @@ test('real daily source route requires actual completed workflow_run, genuine up
  assert.match(workflow,/github.event.workflow_run.event == 'workflow_run'/);
  assert.match(workflow,/node system2\/scripts\/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "\$AUDIT" "\$PREVIEW" "\$UPSTREAM_AUDIT_RUN"/);
 });
+
+test('independent real Oct16 Audit Run physical replay is truly SAME artifact for audit and preview',()=>{
+ const start=workflow.indexOf('  verify_real_20261016_single_audit_zip:');
+ assert.ok(start>0);
+ const j=workflow.slice(start);
+ assert.match(j,/if: github.event_name == 'pull_request'/);
+ assert.match(j,/run-id: 38934321405/);
+ assert.match(j,/name: system2-shared-official-a1-independent-audit-38934321405/);
+ assert.equal((j.match(/uses: actions\/download-artifact@v4/g)||[]).length,1);
+ assert.match(j,/test "\$\(find "\$ROOT" -type f -name 'audit-receipt.json' \| wc -l\)" -eq 1/);
+ assert.match(j,/test "\$\(find "\$ROOT" -type f -name 'preliminary-pv-watch.json' \| wc -l\)" -eq 1/);
+ assert.match(j,/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "\$AUDIT" "\$PREVIEW" 38934321405/);
+ assert.match(j,/LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY/);
+ assert.match(j,/2026-10-16/);
+ assert.match(j,/selectedCount "\$R"\)" = 'null'/);
+ assert.match(j,/frozenD1Written "\$R"\)" = 'false'/);
+ assert.match(j,/readable|run_scheme_c_visible_report_readonly_v0_1.mjs/);
+ assert.doesNotMatch(j,/\nschedule:|\bwrangler\s+deploy\b|\bCREATE\s+TABLE\b/);
+});
