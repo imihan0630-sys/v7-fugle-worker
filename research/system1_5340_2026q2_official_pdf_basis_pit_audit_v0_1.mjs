@@ -60,7 +60,10 @@ export function reviewBasisAndPit({text,sourceReceipt}={}){
   issuerBoardApprovedOn,boardApprovalIsNotPublicationProof:true,
   sourceHtmlBasis:"RAW_HTML_BASIS_UNVERIFIED",
   // E-book listing's statement-type tag and original PDF contents separately.
-  eBookListedStatementBasis:"IFRSs個別財報",
+  eBookListedStatementBasis:sourceReceipt.index?.indexBasisTextVerified===true&&
+   sourceReceipt.index?.basis==="INDIVIDUAL"?"IFRSs個別財報":null,
+  rawIndexBasisCertified:sourceReceipt.index?.indexBasisTextVerified===true&&
+   sourceReceipt.index?.basis==="INDIVIDUAL",
   auditorAndAccountingBasisObserved:headings.auditorReview&&
    headings.securitiesIssuerStatements&&headings.ias34,
   headings,explicitNoSubsidiariesStatementObserved:Boolean(explicitNoSubsidiaries),
