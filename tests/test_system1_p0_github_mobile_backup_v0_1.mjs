@@ -13,7 +13,7 @@ assert.equal(t.state,"SCHEDULE_TOO_LATE_OR_EARLY");
 t=marketTarget(new Date("2027-01-06T16:35:00.000Z"));
 assert.equal(t.state,"CALENDAR_YEAR_UNVERIFIED"); // no unverified 2027 calendar
 const ok=(count=0)=>({targetDate:d,formalScanDate:d,formalSelectedCount:count,
- sourcesReady:true,formalSelectionAuthenticated:true,
+ sourcesReady:true,formalPipelineComplete:true,formalSelectionAuthenticated:true,
  primaryMonitorReadbackVerified:true,dailyReportOutboxAccepted:true,
  category:"POSTCLOSE_PRIMARY_MONITOR_AND_DAILY_OUTBOX_ACCEPTED_NOT_HANDSET_RECEIPT",
  readErrors:{}});
@@ -33,6 +33,8 @@ assert.match(n.body,/不是確認 0 檔/);
 n=classified({date:d,chain:{...ok(0),readErrors:{scan:"HTTP_503"},
  category:"GET_READ_ERROR"},stocks:[]});
 assert.equal(n.kind,"UNKNOWN");assert.equal(n.confirmedZero,false);
+n=classified({date:d,chain:{...ok(0),formalPipelineComplete:false},stocks:[]});
+assert.notEqual(n.kind,"ZERO");
 n=classified({date:d,chain:{...ok(0),formalScanDate:"2026-10-15"},stocks:[]});
 assert.notEqual(n.kind,"ZERO");
 n=classified({date:d,chain:ok(0),stocks:[{symbol:"2404"}]});
