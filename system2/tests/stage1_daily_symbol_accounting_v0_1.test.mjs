@@ -79,7 +79,7 @@ test('same source 2/2 unknown instruments are two explicit symbol PIT blockers',
  assert.equal(r.certifiedOrdinaryShareDenominator,null);
  assert.equal(r.selectedCount,null);
  assert.equal(r.zeroPickDay,null);
- assert.match(render(r),/未正式入選/);
+ assert.match(render(r),/非正式選股/);
 });
 test('genuinely evaluated research qualified row still rank-null, formalSelected false',async()=>{
  const r=await make(await fixture({qualified:true}));
@@ -106,8 +106,8 @@ test('two watch rows cannot fabricate selected=0 or qualified result',async()=>{
 test('tampering with independently signed daily readiness is rejected',async()=>{
  const b=await fixture({qualified:true});
  const r=await ready({bridge:b});
- r.qualifiedNotSelectedCount=0;
- await assert.rejects(account({bridge:b,readiness:r}),/READINESS_OR_LINEAGE_MUTATED/);
+ const altered={...r,qualifiedNotSelectedCount:0};
+ await assert.rejects(account({bridge:b,readiness:altered}),/READINESS_OR_LINEAGE_MUTATED/);
 });
 test('renaming an evaluated symbol after signing cannot create a plausible new row',async()=>{
  const b=await fixture();
