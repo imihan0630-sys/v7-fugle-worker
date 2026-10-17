@@ -161,7 +161,7 @@ test('reject fabricated scheduled origin or corrupted signed DATA/SCHEME C recei
    f.dataNativeCronAuditReceipt=await resign(f.dataNativeCronAuditReceipt,'receiptHash')},
   async f=>{f.dataNativeCronAuditReceipt.originalSourceMarketPairsIndependentlyAudited=121;
    f.dataNativeCronAuditReceipt=await resign(f.dataNativeCronAuditReceipt,'receiptHash')},
-  async f=>{f.schemeCAcceptance.status='NATURAL_AUDIT_CHILD_ON_TIME_PREVIEW__SOURCE_CRON_UNVERIFIED'},
+  async f=>{f.schemeCAcceptance={...f.schemeCAcceptance,status:'NATURAL_AUDIT_CHILD_ON_TIME_PREVIEW__SOURCE_CRON_UNVERIFIED'}},
   async f=>{f.schemeCReportMarkdown+=' unauthorized'},
  ];
  for(const mutation of cases){
