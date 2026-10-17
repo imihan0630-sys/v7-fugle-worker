@@ -52,8 +52,8 @@ export async function verifyM09NextDayNativeCutV0_1({
  const load=async(p)=>JSON.parse((await readRaw(p)).toString('utf8'));
  const [cfi,ca,outer,ci,ai]=await Promise.all([
   load(resolve(cfiDir,'preview-native-cfi.json')),
-  load(resolve(caDir,'six-ca-source-receipt.json')),
-  load(resolve(caDir,'prospective-only-receipt.json')),
+  load(resolve(caDir,'ca-source-receipt.json')),
+  load(resolve(caDir,'daily-ca-advisory.json')),
   load(resolve(cfiAuditDir,'audit-receipt.json')),
   load(resolve(caAuditDir,'audit-receipt.json'))
  ]);
@@ -61,7 +61,7 @@ export async function verifyM09NextDayNativeCutV0_1({
     !(await sig(outer,'receiptHash'))||!(await sig(ci,'auditHash'))||
     !(await sig(ai,'auditHash'))||
     cfi.receiptHash!=='262326d7436cb3937a0f3b7181c734d15211c7c124406a4def7c6d7d0dcdd4f2'||
-    ca.receiptHash!=='c52faf00a05d7177aa2a519846be8656050497a43acd3ec18999ac54cc0876de'||
+    ca.receiptHash!=='5aa4612986a0c1bbdfc40c9af127570995980729448375ed45f6d4f06760c2eb'||
     ci.auditHash!=='2eaef6362ca9433b245c75ec80ef2be5cf23603b63b8d9938ffe5d536bab3991'||
     ai.auditHash!=='cf2b8ddc93431bfd9b813ddc9a1f64c231592e2dfe2314b5a2230e71d26d1fe5'||
     cfi.originalMarketDate!=='2026-10-16'||
@@ -69,6 +69,7 @@ export async function verifyM09NextDayNativeCutV0_1({
     cfi.preliminaryDenominator!==30||cfi.observations?.length!==30||
     ca.sourceFamilyDenominator!==6||ca.sourceReceipts?.length!==6||
     ca.sourcesRetainedOriginalBytes!==6||
+    outer.schemaVersion!=='S2_M09_DAILY_CA_NEGATIVE_ADVISORY_V0_1'||
     outer.caSourceReceiptHash!==ca.receiptHash||
     ci.sourceReceiptHash!==cfi.receiptHash||
     ci.sourceRunId!==38955846766||ai.sourceRunId!==38955846766||
@@ -134,7 +135,7 @@ export async function verifyM09NextDayNativeCutV0_1({
   schemaVersion:'S2_DATA_ISSUE1068_M09_OVERNIGHT_REAL_ORIGINAL_CUT_FENCE_V0_1',
   previousMarketDate:'2026-10-16',previousTargetCutUtc:CAP,
   originalSourceRunId:38955846766,
-  sourceCFIArtifactId:12069503768,sourceCAArtifactId:12069933205,
+  sourceCFIArtifactId:12069503768,sourceCAArtifactId:12070112967,
   independentCFIAuditArtifactId:12069574791,
   independentCAAuditArtifactId:12070488133,
   cfiSourceReceiptHash:cfi.receiptHash,caSourceReceiptHash:ca.receiptHash,
