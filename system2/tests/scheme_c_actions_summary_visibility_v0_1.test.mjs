@@ -113,3 +113,18 @@ test('operator recovery remains one ZIP, no self-pinned replay or second market 
  assert.match(workflow,/UPSTREAM_AUDIT_RUN: \$\{\{ github.event_name == 'pull_request' && '38469057567' \|\| github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id/);
  assert.match(workflow,/PARENT_AUDIT_RUN: \$\{\{ github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id/);
 });
+
+test('PR real Oct16 source-only replay verifies ACTUAL GitHub audit REST metadata before ZIP download',()=>{
+ const start=workflow.indexOf('  verify_real_20261016_single_audit_zip:');
+ assert.ok(start>0,'real 10/16 physical same-run job must exist');
+ const job=workflow.slice(start);
+ const meta=job.indexOf('- name: Real GitHub REST metadata validates the same original audit before source ZIP replay');
+ const zip=job.indexOf('- name: Download REAL 2026-10-16 exact 122-of-122 audit ZIP once');
+ assert.ok(meta>=0&&zip>meta,'validate genuine independent audit identity before replay');
+ assert.match(job,/gh api "repos\/\$GITHUB_REPOSITORY\/actions\/runs\/38934321405"/);
+ assert.match(job,/node system2\/scripts\/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs \/tmp\/s2-oct16-real-independent-audit-run-meta.json 38934321405 "\$GITHUB_REPOSITORY"/);
+ assert.match(job,/PHYSICAL_NATIVE_GITHUB_AUDIT_RUN_IDENTITY_ACCEPTED_38934321405/);
+ assert.match(job,/if: github.event_name == 'pull_request'/);
+ assert.equal((job.match(/uses: actions\/download-artifact@v4/g)||[]).length,1);
+ assert.doesNotMatch(job,/\n\s+schedule:|cloudflare\/workers-action|wrangler\s+deploy/);
+});
