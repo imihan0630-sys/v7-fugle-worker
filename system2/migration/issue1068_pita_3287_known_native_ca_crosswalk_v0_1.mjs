@@ -72,7 +72,7 @@ const nativeMetricSourceWindowsV0_1=Object.freeze([
  ['relativeVolume20Prior','LAST_21_INCLUDING_T','VOLUME'],
  ['avgAmount20Prior','PRIOR_20_EXCLUDING_T','MONETARY_TURNOVER']
 ]);
-const validDay=d=>typeof d==='string'&&/^\\d{4}-\\d\\d-\\d\\d$/.test(d)&&
+const validDay=d=>typeof d==='string'&&/^\d{4}-\d\d-\d\d$/.test(d)&&
  Number.isFinite(Date.parse(d+'T00:00:00Z'))&&
  new Date(Date.parse(d+'T00:00:00Z')).toISOString().slice(0,10)===d;
 const indices=(kind,n)=>{
