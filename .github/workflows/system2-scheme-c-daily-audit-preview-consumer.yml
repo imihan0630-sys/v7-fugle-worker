@@ -6,6 +6,9 @@ on:
       - 'system2/runtime/scheme_c_daily_audit_handoff_v0_1.mjs'
       - 'system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs'
       - 'system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs'
+      - 'system2/runtime/scheme_c_daily_visible_report_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -58,6 +61,9 @@ jobs:
           node --check system2/runtime/scheme_c_daily_audit_handoff_v0_1.mjs
           node --check system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_daily_visible_report_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
           test "$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' | wc -l)" -eq 1
           test "$(find /tmp/s2-scheme-c-daily-derived-preview -type f -name 'preliminary-pv-watch.json' | wc -l)" -eq 1
           AUDIT="$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' -print -quit)"
@@ -89,9 +95,24 @@ jobs:
             test "$(jq -r .previewReport.state "$R")" = 'LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY'
             test "$(jq -r .previewReport.futureProspectiveForwardReturnsUsableForThisDecision "$R")" = 'false'
           fi
+          node system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs "$R" /tmp/s2-scheme-c-daily-build-result
+          M=/tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview-meta.json
+          HUMAN=/tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview.md
+          test -s "$M"
+          test -s "$HUMAN"
+          test "$(jq -r .marketDate "$M")" = "$(jq -r .marketDate "$R")"
+          test "$(jq -r .pitACertified "$M")" = 'false'
+          test "$(jq -r .pitBCertified "$M")" = 'false'
+          test "$(jq -r .strategySelectedCount "$M")" = 'null'
+          test "$(jq -r .frozenWritten "$M")" = 'false'
+          test "$(jq -r .ordersAuthorized "$M")" = 'false'
+          test "$(jq -r .pushAuthorized "$M")" = 'false'
+          grep -q '非 PIT 研究預覽' "$HUMAN"
+          grep -q '不是經獨立驗證的全市場普通股數' "$HUMAN" || grep -q SOURCE_NOT_READY "$HUMAN"
           git diff --exit-code -- Worker.js wrangler.toml
+          echo "SCHEME_C_USER_READABLE_REPORT marketDate=$(jq -r .marketDate "$M"), late=$(jq -r .lateSource "$M"), report_SHA=$(jq -r .reportHash "$M")" >> "$GITHUB_STEP_SUMMARY"
           echo "SCHEME_C source tradingDate=$(jq -r .marketDate "$R"), source audit run=$UPSTREAM_AUDIT_RUN; readiness=$(jq -r .state "$R"); preview=$(jq -r .observedPreviewCount "$R"); PIT-A/B=NO, selected=null, Frozen=NO, no provider GET, no new Cron." >> "$GITHUB_STEP_SUMMARY"
-      - name: Preserve only derived research receipt for downstream display
+      - name: Preserve derived research receipt AND human-readable report (no native raw quotes)
         if: always()
         uses: actions/upload-artifact@v4
         with:
