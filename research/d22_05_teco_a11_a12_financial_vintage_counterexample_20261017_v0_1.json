@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "D22_05_TECO_A11_A12_FINANCIAL_VINTAGE_COUNTEREXAMPLE_20261017_V0_1",
+  "evidenceDateTaipei": "2026-10-17",
+  "status": "RESEARCH_ONLY / OUTCOME_BLIND / DATE_ORDER_CROSSCHECKED / INTRADAY_FIRST_KNOWN_UNKNOWN / B0_B1_NOT_FROZEN / FORMAL_CORE_LOCKED",
+  "sources": {
+    "rating": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458",
+    "financialReports": "https://www.teco.com.tw/zh-tw/investor/finance/",
+    "dec2023Revenue": "https://www.teco.com.tw/zh-tw/press/news/20240111",
+    "jan2024Revenue": "https://www.teco.com.tw/zh-cn/press/news/20240217"
+  },
+  "frozenPopulation": {
+    "manifest": "research/d22_05_stage_a_pairing_manifest_v0_1.json",
+    "manifestBlobSha": "5873ba376562e6d4d98422d83a1aa09aae9ce6d6",
+    "ledger": "research/d22_05_stage_a_baseline_receipt_ledger_v0_1.json",
+    "ledgerBlobSha": "4f7503b58cae7fd9800eac2758e8972215f8e69e",
+    "anchors": 22,
+    "maturePairs": 0,
+    "outcomes": "CLOSED"
+  },
+  "anchors": [
+    {
+      "anchorId": "D22-05-A11",
+      "issuer": "TECO Electric & Machinery",
+      "ratingDate": "2024-02-27",
+      "direction": "POSITIVE",
+      "outlookChange": "Stable->Positive",
+      "preAnchor": {
+        "lastFullQuarter": "2023Q3",
+        "reportDate": "2023-11-14",
+        "daysBefore": 105,
+        "annualRevenueSelfReportDate": "2024-01-11",
+        "annualRevenueDaysBefore": 47,
+        "jan2024RevenueSelfReportDate": "2024-02-16",
+        "janRevenueDaysBefore": 11
+      },
+      "postAnchor": {
+        "boardAnnualResultDate": "2024-03-15",
+        "daysAfter": 17,
+        "full2023Q4StatementDate": "2024-03-18",
+        "fullStatementDaysAfter": 20
+      },
+      "guard": "2023Q4 audited profits/cash/debt must not backfill 2024-02-27; monthly revenue is a separate unaudited public field."
+    },
+    {
+      "anchorId": "D22-05-A12",
+      "issuer": "TECO Electric & Machinery",
+      "ratingDate": "2026-02-23",
+      "direction": "NEGATIVE",
+      "outlookChange": "Positive->Stable",
+      "preAnchor": {
+        "lastFullQuarter": "2025Q3",
+        "reportDate": "2025-11-13",
+        "daysBefore": 102
+      },
+      "postAnchor": {
+        "full2025Q4StatementDate": "2026-03-12",
+        "daysAfter": 17
+      },
+      "guard": "2025Q4 audited profits/cash/debt must not backfill 2026-02-23."
+    }
+  ],
+  "hypotheses": [
+    {
+      "claim": "Year-end statement known by February rating date",
+      "support": "Fiscal year had ended",
+      "counter": "Company lists Q4 report publication 17-20 days after rating event",
+      "alternative": "Agency used earlier quarters or forecasts",
+      "failure": "Join by fiscal period end instead of publication date",
+      "decision": "REJECT_BACKFILL"
+    },
+    {
+      "claim": "Full-year revenue implies full-year audited financials known",
+      "support": "2023 revenue self-report published Jan 11",
+      "counter": "Release explicitly unaudited revenue, Q4 report dated Mar 18",
+      "alternative": "Revenue is an independent partial-information field",
+      "failure": "Infer cash/debt/profit from monthly sales",
+      "decision": "TYPE_SEPARATE"
+    },
+    {
+      "claim": "Rating rationale implies public audited inputs",
+      "support": "Agency Feb 2024 title refers to improved profitability",
+      "counter": "Audited full-year statement published after rating date",
+      "alternative": "Agency used earlier filings/private forecasts",
+      "failure": "Treat agency private inputs as market-known B0",
+      "decision": "INFORMATION_SET_SEPARATE"
+    },
+    {
+      "claim": "Opposite-year outlooks are independent samples",
+      "support": "Different years and directions",
+      "counter": "Same issuer, intraday first-known unverified, B0/B1 unfrozen",
+      "alternative": "Issuer surveillance dependence",
+      "failure": "Treat as two independent issuers or OOS",
+      "decision": "CLUSTER_HOLD"
+    }
+  ],
+  "requiredControls": [
+    "PIT/firstKnownAt/knownAt",
+    "rating intraday clock",
+    "financial release clock",
+    "bond sparse trading",
+    "quote vs trade vs model",
+    "survivorship/selection",
+    "accounting revisions",
+    "corporate actions",
+    "OOS",
+    "walk-forward",
+    "multiple tests",
+    "overfit",
+    "factor redundancy",
+    "cost",
+    "regime"
+  ],
+  "missingEvidence": "UNKNOWN_NOT_ZERO_OR_BAD",
+  "historicalShadowFabricated": false,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "next": "Obtain immutable original 2023Q3 and 2025Q3 statement bytes and publication times; version prior rating, D13, industry, size/liquidity, D11 controls on exact A11/A12 anchors; do not freeze baseline or open outcomes until complete."
+}
