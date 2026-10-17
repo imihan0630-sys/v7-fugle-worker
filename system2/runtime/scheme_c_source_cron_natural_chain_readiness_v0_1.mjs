@@ -56,6 +56,7 @@ export async function reconcileSchemeCSourceCronReadinessV0_1({
  const d=firstSchemeCCommit;
  if(!d||!SHA40.test(d.sha||'')||
     d.sha!=='f18c761ee4bc82eb32b27f0ac5a7523cfaaf9ed0'||
+    d.commit?.committer?.date!=='2026-10-17T02:25:23Z'||
     !utc(d.commit?.committer?.date)||
     !Array.isArray(d.files)||
     !d.files.some(f=>f.filename===WORKFLOW&&f.status==='added'))
@@ -113,7 +114,8 @@ export async function reconcileSchemeCSourceCronReadinessV0_1({
       deliveryAcceptance.zeroPickDay!==null||
       deliveryAcceptance.frozenD1Written!==false||
       deliveryAcceptance.handoffReceiptHash!==deliveryOrigin.handoffReceiptHash||
-      deliveryAcceptance.cutAtUtc!==sourceChain.decisionCutUtc||
+      (!utc(deliveryAcceptance.cutAtUtc)||
+       Date.parse(deliveryAcceptance.cutAtUtc)!==Date.parse(sourceChain.decisionCutUtc))||
       (deliveryAcceptance.observedByCut===true)!==
         (sourceChain.originalTargetDecisionCutSourceReady===true))
     err('SIGNED_CONSUMER_AUDIT_SOURCE_OR_CUT_BINDING_INVALID');
