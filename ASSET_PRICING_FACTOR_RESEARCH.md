@@ -1143,3 +1143,28 @@ Bounded TPEx August-2026 witnesses:
 - First complete factor-layer PIT chain is selected by upstream receipt readiness, not observed performance. Mandatory chain remains universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt; missing mandatory evidence stays UNKNOWN.
 - D19 remains 41.3%; no L3/L4 promotion; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
 - Exact next: machine-readable D19-13 preregistration receipt; machine-readable D19-16 PIT input receipt; D19-15 benchmark PIT receipt; then select the first executable factor-layer PIT chain before outcome inspection.
+
+
+## 2026-10-18 Stage 17 — factor-layer receipt eligibility cross-link falsification
+
+Status: RESEARCH_ONLY / SYNTHETIC_FALSIFICATION / NO_REAL_TAIWAN_L3_PROMOTION
+Formal Core: LOCKED. Formal optimization candidate: NONE. D19 tracker maturity unchanged.
+
+### Exact code witness and result
+- Read latest main adapter `system2/runtime/d19_factor_receipt_adapter_v0_1.mjs`, blob SHA `567ae8dc70cf878d3259267fb78db3eb64ad9db6`.
+- Executed the actual adapter function bodies in a V8 isolated synthetic harness (ES module imports replaced with deterministic synthetic stubs only; no production invocation, no real data). Six independently constructed scenarios all returned `replayReceipt.state=READY` and `l3DataFeasibilityEligible=true`: baseline, mismatched upstream run/date, absent industry vintage under INDUSTRY_NEUTRAL, missing financial firstKnownAt/source payload hash, MODELED slippage with null rate/source hash, and all defects combined.
+- Mechanism: `buildD19ReplayReceiptV0_1` tests upstream state labels and caller-supplied `eligibilityBlockers`, but does not itself reconcile upstream runId/marketDate/decisionTimestamp/factor identity, verify source bytes/hash or independently certify vintage completeness. `buildD19NeutralizationReceiptV0_1` accepts null industryVintageHash, `buildD19FactorInputReceiptV0_1` accepts missing firstKnownAt/payloadHash for a KNOWN input, and `buildD19CostReceiptV0_1` accepts MODELED component with null rate and sourceHash. This is a **semantic admission hazard if a downstream consumer equates the helper flag with a genuine L3 certificate**, not proof that the formal system has promoted or traded on these receipts.
+- Independent research-only stricter admission checker: 25 synthetic cases, 25 passed; cases distinguish observed contradictions (FAIL) from absent provenance (UNKNOWN), preserving UNKNOWN != 0/BAD. Deterministic result SHA256: `39d708f089afd91457906afe0f25fef8e425c52037db07b5fc90aa58f7875f86`.
+
+### Scientific interpretation and counterevidence
+- Positive: six deterministic receipt builders already exist and correctly carry explicit upstream hashes/states; the flag is a useful **structural readiness hint** when downstream callers supply independently validated blockers.
+- Counterexample: synthetic READY receipts can be assembled from mismatched periods and unverified industry/cost inputs. Therefore structural receipt completion is not equivalent to point-in-time factual admissibility or economic execution readiness.
+- This test does **not** prove a production bug or a real Taiwan market false-positive; it does not test complete original runtime imports or an official-source replay. It identifies a research governance invariant requiring independent verification before L3 review.
+- Required independent L3 admission checks: same run/date/decision/factor/version across all six receipts; date-vintaged TWSE+TPEx universe with listing/delisting/suspension provenance; return/CA adjustment continuity; first-known and available clocks; source-byte and result-hash readback; industry vintage when industry neutralization is declared; common-support denominator and D03/D09 redundancy; D14 component costs with modeled/actual quality separated; borrowability for short legs; no future leakage, no survivorship or post-hoc selection.
+- `l3DataFeasibilityEligible` must never be interpreted alone as an L3 promotion, formal selection vote, OOS evidence, prospective Shadow or cost-adjusted alpha.
+
+### Exact next
+1. Consume only verified DATA_LANE TPEx historical-universe and corporate-action receipts; do not duplicate source engineering.
+2. Add a research-only admission matrix that recomputes cross-receipt lineage, required evidence clocks, industry vintage, cost-quality and output hash from immutable source bytes; preserve UNKNOWN on missing provenance.
+3. Pair D19-04 and D03/D09 on exactly the same date/universe/common-support sample, with D14 cost scenarios. Compare raw versus neutralized factor before any outcome-based selection.
+4. Independently replay actual Taiwan PIT data with zero applicable blockers; only then request an L3 readiness review. No autonomous promotion or Formal change.
