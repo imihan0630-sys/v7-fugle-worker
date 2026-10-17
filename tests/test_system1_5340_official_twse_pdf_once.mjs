@@ -9,7 +9,7 @@ assert.equal(verifyOfficialIndex(official).basis,"INDIVIDUAL");
 assert.equal(verifyOfficialIndex(official).firstKnownAtCertified,false);
 assert.throws(()=>verifyOfficialIndex(official.replace("個別","合併")),/BASIS/);
 assert.throws(()=>verifyOfficialIndex(official.replace(EXPECTED_UPLOAD,"115/08/07 12:00:00")),/TIMESTAMP/);
-assert.throws(()=>verifyOfficialIndex(official.replace("5340","5341")),/FILE_MISSING|ISSUER/);
+assert.throws(()=>verifyOfficialIndex(official.replaceAll("5340","5341")),/FILE_MISSING|ISSUER/);
 assert.equal(pickDirectTwsePdfPath('<a href="/pdf/202602_5340_AI2_20260806_163632.pdf">original</a>'),
  "/pdf/202602_5340_AI2_20260806_163632.pdf");
 assert.throws(()=>pickDirectTwsePdfPath('<a href="https://attacker.example/file.pdf">bad</a>'),/NOT_UNIQUE/);
