@@ -54,7 +54,7 @@ const wrongTime={...first,scheduled_at:"2026-10-16T16:02:00.000Z"};
 assert.equal(classify({cronRows:[wrongTime],leaseRows:[]}).state,"CRON_READBACK_INCONSISTENT_FAIL_CLOSED");
 const wrongExpr={...first,cron_expression:"* 1-4 * * MON-FRI"};
 assert.equal(classify({cronRows:[wrongExpr],leaseRows:[]}).state,"CRON_READBACK_INCONSISTENT_FAIL_CLOSED");
-assert.throws(()=>classify({date:"2026-10-16",cronRows:[],leaseRows:[]}),/UNAUTHORIZED_HISTORICAL_TARGET/);
+assert.throws(()=>classify({date:"2026-10-15",cronRows:[],leaseRows:[]}),/UNAUTHORIZED_HISTORICAL_TARGET/);
 assert.throws(()=>classify({cronRows:[],leaseRows:[{state_key:"V7_AFTER_MARKET_LEASE:2026-10-14"}]}),/FOREIGN_LEASE_KEY/);
 assert.throws(()=>classify({cronRows:Array(11).fill(first),leaseRows:[]}),/CRON_ROWS_MISSING_OR_UNBOUNDED/);
 // No physical D1 certificate can be inferred from a LIMIT-10 full page.
