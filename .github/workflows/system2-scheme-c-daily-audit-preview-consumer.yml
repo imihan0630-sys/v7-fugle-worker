@@ -45,7 +45,8 @@ jobs:
           name: ${{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567' || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
           github-token: ${{ github.token }}
           path: /tmp/s2-scheme-c-daily-original-audit/
-      - name: Exact ALREADY STORED signed daily V02 preliminary (never fetch market)
+      - name: Historical-PR-only different-run V02 original (the real daily audit stores both in ONE artifact)
+        if: github.event_name == 'pull_request'
         uses: actions/download-artifact@v4
         with:
           run-id: ${{ github.event_name == 'pull_request' && '38477169340' || github.event.workflow_run.id }}
@@ -66,10 +67,21 @@ jobs:
           node --check system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
           node --test system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs
+          # In REAL daily workflow_run, both signed receipts are co-located
+          # in the SAME exact source-audit artifact. No second GH download,
+          # no cross-run source pairing, and no additional provider GET.
+          # Old Oct13 physical replay is deliberately a separately pinned
+          # two-run pair, downloaded only during PR tests.
+          if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
+            PREVIEW_DIR=/tmp/s2-scheme-c-daily-derived-preview
+          else
+            PREVIEW_DIR=/tmp/s2-scheme-c-daily-original-audit
+            test ! -d /tmp/s2-scheme-c-daily-derived-preview
+          fi
           test "$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' | wc -l)" -eq 1
-          test "$(find /tmp/s2-scheme-c-daily-derived-preview -type f -name 'preliminary-pv-watch.json' | wc -l)" -eq 1
+          test "$(find "$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' | wc -l)" -eq 1
           AUDIT="$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' -print -quit)"
-          PREVIEW="$(find /tmp/s2-scheme-c-daily-derived-preview -type f -name 'preliminary-pv-watch.json' -print -quit)"
+          PREVIEW="$(find "$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' -print -quit)"
           test -s "$AUDIT"
           test -s "$PREVIEW"
           if [ "$PHYSICAL_EXAMPLE_PR" = "true" ]; then
