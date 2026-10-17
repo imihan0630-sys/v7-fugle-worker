@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "D03_STAGE1_TECHNICAL_OBSERVABILITY_DENOMINATOR_CASES_V0_1",
+  "date": "2026-10-18",
+  "range": "TI-2073..TI-2092",
+  "expectedCaseCount": 20,
+  "outcomesOpen": false,
+  "formalCore": "LOCKED",
+  "cases": [
+    {"id":"TI-2073","kind":"count","input":"source","expected":1972},
+    {"id":"TI-2074","kind":"sum","input":[1086,886],"expected":1972},
+    {"id":"TI-2075","kind":"count","input":"currentClose","expected":1946},
+    {"id":"TI-2076","kind":"sum","input":[1081,865],"expected":1946},
+    {"id":"TI-2077","kind":"count","input":"pairedClose","expected":1935},
+    {"id":"TI-2078","kind":"sum","input":[1080,855],"expected":1935},
+    {"id":"TI-2079","kind":"missing","input":{"total":1972,"known":1946},"expected":26},
+    {"id":"TI-2080","kind":"missing","input":{"total":1972,"known":1954},"expected":18},
+    {"id":"TI-2081","kind":"eligibility","input":{"source":true,"ordinaryEquity":false},"expected":"SOURCE_ONLY"},
+    {"id":"TI-2082","kind":"eligibility","input":{"pairedClose":true,"caComparable":false},"expected":"CONTINUITY_BLOCKED"},
+    {"id":"TI-2083","kind":"eligibility","input":{"exactWindow":true,"recursiveState":false},"expected":"FINITE_ONLY"},
+    {"id":"TI-2084","kind":"eligibility","input":{"exactWindow":true,"recursiveState":true,"pit":false},"expected":"TECHNICAL_ONLY"},
+    {"id":"TI-2085","kind":"status","input":"INCOMPLETE","expected":"NOT_TECHNICAL_FAILURE"},
+    {"id":"TI-2086","kind":"status","input":"REJECTED","expected":"NOT_NEGATIVE_ALPHA"},
+    {"id":"TI-2087","kind":"status","input":"WATCH","expected":"NOT_SELECTED"},
+    {"id":"TI-2088","kind":"status","input":"QUALIFIED_NOT_SELECTED","expected":"NOT_SELECTED"},
+    {"id":"TI-2089","kind":"nullable","input":null,"expected":"UNKNOWN_NOT_ZERO"},
+    {"id":"TI-2090","kind":"dateCluster","input":{"rows":1972,"dates":1},"expected":1},
+    {"id":"TI-2091","kind":"outcomeGate","input":{"outcomeJoined":false},"expected":"CLOSED"},
+    {"id":"TI-2092","kind":"formalGate","input":{"outcomeJoined":false,"oos":false,"cost":false},"expected":"NO_CANDIDATE"}
+  ]
+}
