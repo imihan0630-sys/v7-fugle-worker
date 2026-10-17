@@ -81,7 +81,7 @@ test('missing native industry code is UNKNOWN rather than fabricated code from s
 test('native B5 captured after T23:45 is late descriptive only, cannot infer earlier source eligibility',async()=>{
  const f=await fixture();f.tw.sourceObservedAtUtc='2026-10-17T00:00:00Z';
  const {receiptHash,...without}=f.tw;f.tw=await sign(without);
- const r=await run(f);
+ const r=await build({universeReceipt:f.u,profileReceipts:[f.tw,f.tp],generatedAtUtc:'2026-10-17T01:00:00Z'});
  assert.equal(r.marketSummaries[0].sourceAfterPreferredTCut,true);
  assert.equal(r.marketSummaries[0].lateOrClockUnusableCount,2);
  assert.equal(r.marketSummaries[0].provisionalClassifiedCount,0);
