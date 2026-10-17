@@ -65,6 +65,20 @@ export function classifyOriginalFormalReadback(values,errors){
    detailFixedSignals:Object.fromEntries(["MISSING","INCOMPLETE","FAIL","FAILED",
     "未完成","失敗","跳過","已完成","資料","買入","選股","D1","C1","PIT","FORMAL"].map(token=>
      [token,String(x.detail||"").includes(token)])),
+   // Finite predeclared classes matching original Worker data completeness guards.
+   // These are classification hints only; no untrusted detail bytes leave Actions.
+   missingSourceHints:Object.fromEntries(Object.entries({
+    INDEX:/INDEX|加權指數|大盤基期|指數比較/,
+    TDCC:/TDCC|集保持股|集中度/,
+    FINANCIAL_VALUATION_ANNOUNCEMENT:/財報比較|估值或公告|正式季度財報|FINANCIAL|VALUATION|ANNOUNCEMENTS/,
+    QUARTER_EPS:/單季|當季實際EPS|季度EPS|QUARTER_EPS/,
+    INSTITUTION_3D:/法人快照|連買分數|INSTITUTION/,
+    HISTORY_60D:/60日|日K|歷史底庫|HISTORY/,
+    MARKET_CLOSING:/盤後資料|官方API|收盤資料|收盤價/,
+    MARKET_CAP_FUNDAMENTALS:/市值\/基本面|基本面整批|marketCap/,
+    C1_POPULATION:/C1_GENERATION|C1人口|人口|C1_CAPTURE/,
+    D1_PERSISTENCE:/D1|持久化|儲存|寫入|保存|lease|LEASE/
+   }).map(([k,re])=>[k,re.test(String(x.detail||""))])),
    // Never emit freeform narrative, machine tokens, response body or account data.
    reasonClass:/AFTER_MARKET_RUNNING|執行中|執行鎖/.test(String(x.detail||""))?"POSSIBLE_RUNNING_LEASE":
     /NOT_TRADING_DAY|非交易日|休市|未開市/.test(String(x.detail||""))?"POSSIBLE_CALENDAR_SKIP":
