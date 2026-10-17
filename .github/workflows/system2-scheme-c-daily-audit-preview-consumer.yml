@@ -10,15 +10,27 @@ on:
       - 'system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs'
       - 'system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs'
+      - 'system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
     types: [completed]
+  # Optional operator-only BUILD source reuse when native child event did not fire.
+  # Replays ONLY an existing genuine SUCCESS independently audited SAME-RUN ZIP.
+  # It never launches the SOURCE producer or adds schedule/provider GET.
+  workflow_dispatch:
+    inputs:
+      source_audit_run_id:
+        description: 'Existing successful MAIN independent A1 workflow_run ID (not source run, not PR)'
+        type: string
+        required: true
 permissions:
   actions: read
   contents: read
 concurrency:
-  group: s2-scheme-c-existing-a1-audit-preview-${{ github.event_name == 'pull_request' && github.head_ref || github.event.workflow_run.id }}
+  group: s2-scheme-c-existing-a1-audit-preview-${{ github.event_name == 'pull_request' && github.head_ref || github.event_name == 'workflow_dispatch' && format('manual-{0}', inputs.source_audit_run_id) || github.event.workflow_run.id }}
   cancel-in-progress: false
 jobs:
   build_preview_from_existing_audit:
@@ -26,6 +38,9 @@ jobs:
     # A push self-diagnostic 121/122 must not create false daily stock selections.
     if: >-
       github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.ref == 'refs/heads/main' &&
+       github.repository == 'imihan0630-sys/v7-fugle-worker') ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.head_branch == 'main' &&
@@ -38,11 +53,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Manual recovery requires a genuine SUCCESS main-origin independent A1 audit
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_AUDIT_RUN_ID: ${{ inputs.source_audit_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_AUDIT_RUN_ID" =~ ^[1-9][0-9]*$ ]] || { echo 'INVALID_GH_AUDIT_RUN_ID'; exit 3; }
+          # Source-run IDs and PR/self-diagnostic IDs are NOT accepted here.
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_AUDIT_RUN_ID" > /tmp/s2-exact-upstream-audit-run.json
+          node system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs /tmp/s2-exact-upstream-audit-run.json "$SOURCE_AUDIT_RUN_ID" "$GITHUB_REPOSITORY"
+          echo "MANUAL_RECOVERY_SOURCE_AUDIT_RUN_VALIDATED=$SOURCE_AUDIT_RUN_ID" >> "$GITHUB_STEP_SUMMARY"
       - name: Exact ALREADY STORED current audit artifact or pinned historical proof
         uses: actions/download-artifact@v4
         with:
-          run-id: ${{ github.event_name == 'pull_request' && '38469057567' || github.event.workflow_run.id }}
-          name: ${{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567' || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
+          run-id: ${{ github.event_name == 'pull_request' && '38469057567' || github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id || github.event.workflow_run.id }}
+          name: ${{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567' || github.event_name == 'workflow_dispatch' && format('system2-shared-official-a1-independent-audit-{0}', inputs.source_audit_run_id) || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
           github-token: ${{ github.token }}
           path: /tmp/s2-scheme-c-daily-original-audit/
       - name: Historical-PR-only different-run V02 original (the real daily audit stores both in ONE artifact)
@@ -55,7 +82,8 @@ jobs:
           path: /tmp/s2-scheme-c-daily-derived-preview/
       - name: Independently bind audit and preliminary exact trading date / SHA / clock
         env:
-          UPSTREAM_AUDIT_RUN: ${{ github.event_name == 'pull_request' && '38469057567' || github.event.workflow_run.id }}
+          UPSTREAM_AUDIT_RUN: ${{ github.event_name == 'pull_request' && '38469057567' || github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id || github.event.workflow_run.id }}
+          MANUAL_RECOVERY: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
           PHYSICAL_EXAMPLE_PR: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
           S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview.json
         run: |
@@ -67,6 +95,9 @@ jobs:
           node --check system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
           node --test system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs
+          node --check system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
@@ -144,6 +175,8 @@ jobs:
             echo '## System 2｜方案 C 非 PIT 選股研究預覽'
             if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
               echo '**歷史真實資料回放（2026-10-13），非最新交易日、非已上線的當日選股。**'
+            elif [ "$MANUAL_RECOVERY" = 'true' ]; then
+              echo '**MANUAL_RECOVERY_REPLAY：經 main 真實獨立稽核 Run ID 驗證的唯讀手動補跑；不是新交易日的自動排程成功，也不能冒充 T23:45 正式選股。**'
             else
               echo '**實際來源研究觀察。須以報告列示的交易日、來源時點及資料延遲標記為準。**'
             fi
@@ -175,7 +208,7 @@ jobs:
       - name: Surface missing source or invalid receipt without pretending zero selections
         if: failure()
         env:
-          PARENT_AUDIT_RUN: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || 'PR_TEST' }}
+          PARENT_AUDIT_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id || github.event_name == 'workflow_run' && github.event.workflow_run.id || 'PR_TEST' }}
         run: |
           {
             echo '## System 2｜方案 C｜SOURCE_NOT_READY'
