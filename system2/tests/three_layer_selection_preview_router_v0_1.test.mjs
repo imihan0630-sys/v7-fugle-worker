@@ -227,3 +227,61 @@ test('source-only previous capture clock cannot be retrospectively assigned to k
  assert.ok(r.previewRows[0].warnings.includes('LATE_DISCOVERED_CA_EVENT_NOT_BACKDATED'));
  assert.equal(r.previewRows[0].status,'CA_OR_CLOCK_REVIEW_HOLD');
 });
+
+async function with3287(day,{realLegacy=false,venue='TPEX'}={}){
+ const w=realLegacy?await actualWatchShape():await previewWithDates(day);
+ if(realLegacy)w.marketDate=day;
+ w.watchlist.push({...row('3287','廣寰科'),market:venue,marketDate:day});
+ w.displayedCount=w.watchlist.length;
+ const {receiptHash,...base}=w;
+ w.receiptHash=await sha256Hex(base);
+ return w;
+}
+test('DATA-proven 3287 Aug26 native TPEx exdiv retains explicit CA hold through Oct19 signed 61-session window',async()=>{
+ const r=await route({preliminaryReceipt:await with3287('2026-10-19')});
+ assert.equal(r.source61SessionCalendarProvided,true);
+ assert.equal(r.known3287ExdivDateInSource61Window,true);
+ const v=r.previewRows.find(x=>x.symbol==='3287');
+ assert.equal(v.market,'TPEX');
+ assert.equal(v.status,'CA_OR_CLOCK_REVIEW_HOLD');
+ assert.equal(v.companyActionPositiveAtCut,true);
+ assert.equal(v.retrospectiveCompanyActionPositiveLater,false);
+ assert.ok(v.warnings.includes('KNOWN_POSITIVE_CA_SOURCE_EVENT_REVIEW_REQUIRED'));
+ assert.equal(r.selectedCount,undefined);
+ assert.equal(r.strategySelectedCount,null);
+ assert.equal(r.pitACertificationGranted,false);
+ assert.equal(r.frozenD1Written,false);
+});
+test('real Oct16 pre-calendar single-A1-audit replay retains 3287 source-positive hold but no issuer PIT',async()=>{
+ const r=await route({preliminaryReceipt:await with3287('2026-10-16',{realLegacy:true})});
+ assert.equal(r.known3287ExdivDateInSource61Window,null);
+ assert.equal(r.previewRows[2].companyActionPositiveAtCut,true);
+ assert.equal(r.previewRows[2].status,'CA_OR_CLOCK_REVIEW_HOLD');
+ assert.equal(r.previewRows[2].formalStrategyScore,null);
+ assert.equal(r.ordinaryEquityUniverseCertified,false);
+});
+test('3287 CA proof first observed Oct16 cannot be backdated into Oct15 preview',async()=>{
+ const r=await route({preliminaryReceipt:await with3287('2026-10-15')});
+ const v=r.previewRows.find(x=>x.symbol==='3287');
+ assert.equal(v.companyActionPositiveAtCut,false);
+ assert.equal(v.retrospectiveCompanyActionPositiveLater,true);
+ assert.equal(v.status,'CA_OR_CLOCK_REVIEW_HOLD');
+ assert.ok(v.warnings.includes('LATE_DISCOVERED_CA_EVENT_NOT_BACKDATED'));
+ assert.ok(!v.warnings.includes('KNOWN_POSITIVE_CA_SOURCE_EVENT_REVIEW_REQUIRED'));
+});
+test('3287 known specific exdiv expires after physical signed 61-source-window rolls off',async()=>{
+ const r=await route({preliminaryReceipt:await with3287('2027-02-15')});
+ assert.equal(r.known3287ExdivDateInSource61Window,false);
+ const v=r.previewRows.find(x=>x.symbol==='3287');
+ assert.equal(v.companyActionPositiveAtCut,false);
+ assert.equal(v.retrospectiveCompanyActionPositiveLater,false);
+ assert.equal(v.status,'RESEARCH_OBSERVATION_ONLY');
+ assert.ok(v.warnings.includes('COMPANY_ACTION_PIT_NOT_CLEARED'));
+ assert.equal(r.positiveEventsProvideOnlyVetoNotNoEventCert,true);
+});
+test('same four digit 3287 TWSE mis-venue does not inherit TPEx 3287 positive event',async()=>{
+ const r=await route({preliminaryReceipt:await with3287('2026-10-19',{venue:'TWSE'})});
+ assert.equal(r.previewRows[2].companyActionPositiveAtCut,false);
+ assert.equal(r.previewRows[2].status,'RESEARCH_OBSERVATION_ONLY');
+ assert.ok(r.previewRows[2].warnings.includes('COMPANY_ACTION_PIT_NOT_CLEARED'));
+});
