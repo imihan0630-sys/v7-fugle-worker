@@ -67,6 +67,11 @@ export function classifyOriginalFormalReadback(values,errors){
      [token,String(x.detail||"").includes(token)])),
    // Finite predeclared classes matching original Worker data completeness guards.
    // These are classification hints only; no untrusted detail bytes leave Actions.
+   epsReviewBlockerExactOriginalPhrase:String(x.detail||"").includes("候選缺當季實際EPS複核"),
+   // Report only bounded public 4-digit codes present *inside exact original
+   // candidate EPS list*, no raw private scan, symbols are not Formal picks.
+   epsBlockedCandidateCodes:String(x.detail||"").includes("候選缺當季實際EPS複核")?
+    ((String(x.detail||"").match(/複核\(([1-9][0-9]{3}(?:,[1-9][0-9]{3}){0,5})\)/)?.[1]||"").split(",").filter(Boolean)) : [],
    matchedFixedMissingTerms:["單季","當季實際EPS","季度EPS","QUARTER_EPS",
     "盤後資料","官方API","收盤資料","收盤價","候選","驗證","不足","缺少","INCOMPLETE","DATE","D1","快取",
     "C1_GENERATION_NOT_FOUND","未完成","中斷","已過期","保持原有計畫"].filter(w=>
