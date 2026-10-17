@@ -1,0 +1,69 @@
+name: System1 P0 V8.20.2 CPU Guarded Release Candidate (NO DEPLOY)
+on:
+  pull_request:
+    paths:
+      - "scripts/apply_system1_p0_cpu_formatter_guarded_release_v0_1.py"
+      - ".github/workflows/system1-p0-v8-20-2-cpu-guarded-release-review.yml"
+permissions:
+  contents: read
+concurrency:
+  group: s1-p0-v8202-cpu-release-review-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  candidate_only:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild exact protected canonical V8 source
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,re
+          y=Path(".github/workflows/v7-regression.yml").read_text(encoding="utf8")
+          block=y.split("- name: Build production Worker from guarded patches",1)[1].split("- name: Syntax and offline behavior regression",1)[0]
+          steps=re.findall(r"(?m)^\s+python3 (scripts/[A-Za-z0-9_./-]+\.py)\s*$",block)
+          if len(steps)!=75 or len(set(steps))!=75:
+              raise SystemExit("S1_P0_CANONICAL_SEQUENCE_CHANGED")
+          for p in steps:subprocess.run(["python3",p],check=True,stdout=subprocess.DEVNULL)
+          print("SYSTEM1_P0_CANONICAL_BUILD_STEPS=75")
+          PY
+      - name: Dry-run guarded CPU change; assert byte-identical Worker.js
+        run: |
+          set -euo pipefail
+          sha256sum Worker.js >/tmp/system1-p0-original.sha256
+          python3 scripts/apply_system1_p0_cpu_formatter_guarded_release_v0_1.py
+          sha256sum -c /tmp/system1-p0-original.sha256
+          node --check artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs
+          cp artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs artifacts/reviewonly/Worker.cpu-cache.js
+          node tests/test_system1_p0_taipei_formatter_cache_reviewonly.mjs
+      - name: Explicit activation without owner gate must fail and preserve canonical Worker
+        run: |
+          set -euo pipefail
+          if python3 scripts/apply_system1_p0_cpu_formatter_guarded_release_v0_1.py --activate >/tmp/system1-p0-unapproved.txt 2>&1; then
+            echo "UNAUTHORIZED_CPU_PATCH_SUCCEEDED" >&2
+            exit 1
+          fi
+          grep -F 'P0_PRODUCTION_ACTIVATION_OWNER_GATE_CLOSED' /tmp/system1-p0-unapproved.txt
+          sha256sum -c /tmp/system1-p0-original.sha256
+      - name: Acceptance against candidate Worker and protected quote/candle/lease
+        env:
+          V7_TEST_WORKER_PATH: ${{ github.workspace }}/artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs
+        run: |
+          set -euo pipefail
+          node tests/test_requirements_repair.mjs
+          node tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
+          node tests/test_system1_p0_free_cpu_shard_oracle_v0_1.mjs
+          sha256sum -c /tmp/system1-p0-original.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s1-p0-v8202-guarded-cpu-no-deploy-${{ github.run_id }}
+          path: artifacts/reviewonly/system1-p0-v8-20-2-cpu-guarded.mjs
+          if-no-files-found: warn
+          retention-days: 14
