@@ -294,7 +294,9 @@ test('20:15/23:45 T source-only attempts plus 00:15 same-T recovery never grant 
 
 
 test('00:15 T+1 actual observation is source recovery, not retrospective historical backfill',()=>{
- const sessions=['2026-10-12','2026-10-13','2026-10-14'];
+ // Oct 15 is an actual OPEN Thursday: later T+1 observation may be explicitly
+ // retrospective; a weekend/holiday day must instead SKIP unless manual.
+ const sessions=['2026-10-12','2026-10-13','2026-10-14','2026-10-15'];
  for(const utc of ['2026-10-14T16:00:00Z','2026-10-14T16:15:00Z',
     '2026-10-14T17:59:00Z']){
   const r=resolveLatestClosedTaiwanSessionV0_1({
