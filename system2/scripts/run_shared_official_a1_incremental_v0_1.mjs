@@ -57,7 +57,7 @@ export function summarizeCurrentMarketSourceClockV0_1({marketDate,receipts,valid
   const observed=x.capturedAt;
   if(!['TWSE','TPEX'].includes(x.market)||byMarket[x.market]||
      typeof observed!=='string'||
-     !/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(observed)||
+     !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(observed)||
      !Number.isFinite(Date.parse(observed))||
      new Date(observed).toISOString().slice(0,19)!==observed.slice(0,19))
    throw Error('SHARED_A1_TARGET_SOURCE_CLOCK_OR_MARKET_INVALID');
