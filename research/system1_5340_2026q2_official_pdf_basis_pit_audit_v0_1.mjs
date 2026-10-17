@@ -39,6 +39,13 @@ export function reviewBasisAndPit({text,sourceReceipt}={}){
  const subsidiaryNegations=["本公司無子公司","本公司並無子公司","本公司未有子公司",
   "本公司無投資子公司","本公司未設有子公司"];
  const explicitNoSubsidiaries=subsidiaryNegations.find(x=>c.includes(x))||null;
+ const approvalMatches=[...c.matchAll(/本財務報告已於民國(\d{3})年(\d{1,2})月(\d{1,2})日經董事會通過發布/g)];
+ const approvedDates=[...new Set(approvalMatches.map(m=>{
+  const y=Number(m[1])+1911,mm=Number(m[2]),dd=Number(m[3]);
+  const iso=y+"-"+String(mm).padStart(2,"0")+"-"+String(dd).padStart(2,"0");
+  return new Date(iso+"T00:00:00Z").toISOString().slice(0,10)===iso?iso:null;
+ }).filter(Boolean))];
+ const issuerBoardApprovedOn=approvedDates.length===1?approvedDates[0]:null;
  const noteApproval=excerpt(c,"通過財務報告之日期及程序",20,380);
  const companyHistory=excerpt(c,"公司沿革",20,440);
  const legalPolicy=excerpt(c,"證券發行人財務報告編製準則",45,155);
@@ -49,6 +56,8 @@ export function reviewBasisAndPit({text,sourceReceipt}={}){
   originalPdfSha256:EXPECTED.originalSha256,
   originalFilename:EXPECTED.twseOriginalFilename,
   eBookIndexUploadRocTaipei:EXPECTED.twseUploadDateTaipei,
+  eBookIndexReportedUploadTaipeiISO:"2026-08-06T16:36:32+08:00",
+  issuerBoardApprovedOn,boardApprovalIsNotPublicationProof:true,
   sourceHtmlBasis:"RAW_HTML_BASIS_UNVERIFIED",
   // E-book listing's statement-type tag and original PDF contents separately.
   eBookListedStatementBasis:"IFRSs個別財報",
