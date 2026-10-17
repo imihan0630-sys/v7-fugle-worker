@@ -9,7 +9,7 @@ import {readFileSync} from 'node:fs';
 const filepath='system2/migration/evidence/S2_DATA_ISSUE1068_A1_REAL_THREE_CRON_TEMPORAL_FENCE_20261017_V0_1.json';
 const original=JSON.parse(readFileSync(filepath,'utf8'));
 const HEX=/^[a-f0-9]{64}$/;
-const ISO=/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/;
+const ISO=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 const expectedIds=[38934081985,38951859359,38955629508];
 const expectedAuditHashes=[
  'e5c4a283ad25a9a5eea30ebcb0a8ffb0f9c94151c0f94602fe16447db117e84b',
