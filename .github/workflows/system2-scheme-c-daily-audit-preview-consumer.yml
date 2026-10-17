@@ -144,6 +144,19 @@ jobs:
           fi
           echo "SCHEME_C_USER_READABLE_REPORT marketDate=$(jq -r .marketDate "$M"), late=$(jq -r .lateSource "$M"), report_SHA=$(jq -r .reportHash "$M")" >> "$GITHUB_STEP_SUMMARY"
           echo "SCHEME_C source tradingDate=$(jq -r .marketDate "$R"), source audit run=$UPSTREAM_AUDIT_RUN; readiness=$(jq -r .state "$R"); preview=$(jq -r .observedPreviewCount "$R"); PIT-A/B=NO, selected=null, Frozen=NO, no provider GET, no new Cron." >> "$GITHUB_STEP_SUMMARY"
+      - name: Surface missing source or invalid receipt without pretending zero selections
+        if: failure()
+        env:
+          PARENT_AUDIT_RUN: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || 'PR_TEST' }}
+        run: |
+          {
+            echo '## System 2｜方案 C｜SOURCE_NOT_READY'
+            echo '來源 Artifact 缺漏、SHA/交易日/截止驗證失敗，或報告無法安全產出。本輪**沒有獲得有效研究候選報告**。'
+            echo "**上游稽核 Run：** $PARENT_AUDIT_RUN"
+            echo '**來源交易日：** UNKNOWN（禁止以當前日曆日、昨日或 PR 回放替代）'
+            echo '**正式 selectedCount：** UNKNOWN（不能視為 0 檔）'
+            echo '**PIT-A／PIT-B：** 未認證；Frozen、正式推播、下單：未啟用。'
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Preserve derived research receipt AND human-readable report (no native raw quotes)
         if: always()
         uses: actions/upload-artifact@v4
@@ -152,3 +165,32 @@ jobs:
           path: /tmp/s2-scheme-c-daily-build-result/
           retention-days: 30
           if-no-files-found: warn
+
+  show_unavailable_upstream_audit:
+    # A failed native-A1 source audit, or self-triggered 121/122 historical
+    # diagnostic, is NOT proof the strategy picked zero stocks.
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      (github.event.workflow_run.conclusion != 'success' ||
+       github.event.workflow_run.event != 'workflow_run')
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Make source-unavailable diagnosis directly visible
+        env:
+          UPSTREAM_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          UPSTREAM_EVENT: ${{ github.event.workflow_run.event }}
+          UPSTREAM_RUN: ${{ github.event.workflow_run.id }}
+        run: |
+          {
+            echo '## System 2｜方案 C｜SOURCE_NOT_READY'
+            echo "**上游原始稽核 Run：** $UPSTREAM_RUN"
+            echo "**上游結論：** $UPSTREAM_CONCLUSION"
+            echo "**上游事件類型：** $UPSTREAM_EVENT"
+            echo '**來源交易日：** UNKNOWN（未取得合格來源，不能自行猜測）'
+            echo '**研究觀察：** 無可認證來源輸出（不等於零候選）'
+            echo '**正式 selectedCount：** UNKNOWN（不是 0 檔）'
+            echo '**PIT-A／PIT-B：** 未認證；Frozen／正式推播／交易：禁止。'
+          } >> "$GITHUB_STEP_SUMMARY"
