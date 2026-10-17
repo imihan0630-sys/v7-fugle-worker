@@ -37,7 +37,7 @@ async function fixture({blocked=false,late=true,hold=false}={}){
   schemaVersion:'S2_SCHEME_C_DAILY_AUDIT_HANDOFF_V0_1',
   state:blocked?'PRELIMINARY_SOURCE_NOT_READY':'NON_PIT_SOURCE_OBSERVATION_READY',
   marketDate:DATE,auditRunId:38469057567,
-  auditedAtUtc:'2026-10-13T21:50:00Z',
+  auditedAtUtc:late?'2026-10-13T21:50:00Z':'2026-10-13T15:00:00Z',
   originalSourceReceiptHash:HASH,independentSourceAuditHash:AUD,
   previewReceiptHash:WATCH,
   observedPreviewCount:blocked?null:1,
@@ -140,4 +140,48 @@ test('unsafe markdown name cannot inject a table row or fake selection claim',as
  assert.match(r.markdown,/假資料 正式BUY 第二行/);
  assert.doesNotMatch(r.markdown,/\|假資料\|正式BUY/);
  assert.equal(r.metadata.ordersAuthorized,false);
+});
+
+test('true T23:45 relative UTC clock is visible, and does not blame GitHub schedule without schedule evidence',async()=>{
+ const r=await render({handoff:await fixture()});
+ assert.equal(r.metadata.preferredCutAtUtc,'2026-10-13T15:45:00Z');
+ assert.equal(r.metadata.independentAuditOffsetMinutes,365);
+ assert.equal(r.metadata.previewObservationOffsetMinutes,396.1);
+ assert.equal(r.metadata.researchReceiptCutStatus,'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY');
+ assert.equal(r.metadata.schedulerDispatchDelayMinutes,null);
+ assert.equal(r.metadata.officialProviderPublicationAtUtc,null);
+ assert.match(r.markdown,/獨立稽核完成相對截止：.*晚於截止 365\.0 分鐘/);
+ assert.match(r.markdown,/研究預覽形成相對截止：.*晚於截止 396\.1 分鐘/);
+ assert.match(r.markdown,/固定研究參考截止（T 23:45）/);
+ assert.match(r.markdown,/不能倒填交易日截止決策/);
+});
+test('on-time source-only report gives actual negative offsets, without ever making PIT/BUY qualified',async()=>{
+ const r=await render({handoff:await fixture({late:false})});
+ assert.equal(r.metadata.independentAuditOffsetMinutes,-45);
+ assert.equal(r.metadata.previewObservationOffsetMinutes,-15);
+ assert.equal(r.metadata.researchReceiptCutStatus,'RESEARCH_RECEIPTS_AT_OR_BEFORE_T2345_NOT_PIT_CERTIFIED');
+ assert.equal(r.metadata.lateSource,false);
+ assert.equal(r.metadata.pitACertified,false);
+ assert.equal(r.metadata.strategySelectedCount,null);
+ assert.match(r.markdown,/早於截止 45\.0 分鐘/);
+ assert.match(r.markdown,/早於截止 15\.0 分鐘/);
+});
+test('blocked source still displays actual audit cut offset, NEVER pretends zero selection',async()=>{
+ const r=await render({handoff:await fixture({blocked:true})});
+ assert.equal(r.metadata.independentAuditOffsetMinutes,365);
+ assert.equal(r.metadata.previewObservationOffsetMinutes,null);
+ assert.equal(r.metadata.researchReceiptCutStatus,'SOURCE_NOT_READY');
+ assert.equal(r.metadata.strategySelectedCount,null);
+ assert.match(r.markdown,/SOURCE_NOT_READY/);
+ assert.doesNotMatch(r.markdown,/研究預覽形成相對截止/);
+});
+test('signed impossible audit-after-preview and false on-time source are rejected fail-closed',async()=>{
+ const h=await fixture({late:false});
+ h.auditedAtUtc='2026-10-13T15:46:00Z';
+ const {receiptHash:_,...b}=h;h.receiptHash=await sha256Hex(b);
+ await assert.rejects(()=>render({handoff:h}),/AUDIT_PREVIEW_CLOCK_OR_REFERENCE_CUT_CONTRADICTION/);
+ const late=await fixture();
+ late.auditedAtUtc='2026-10-13T22:45:00Z';
+ const {receiptHash:__,...c}=late;late.receiptHash=await sha256Hex(c);
+ await assert.rejects(()=>render({handoff:late}),/AUDIT_PREVIEW_CLOCK_OR_REFERENCE_CUT_CONTRADICTION/);
 });
