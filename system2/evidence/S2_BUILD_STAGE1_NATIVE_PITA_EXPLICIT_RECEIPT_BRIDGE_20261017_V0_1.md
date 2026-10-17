@@ -1,0 +1,22 @@
+# BUILD M09 Stage1｜可選原始 CA／CFI 稽核證據正式交接插槽（Class A）
+
+Updated: 2026-10-17 Asia/Taipei. Owner priority `system2/SYSTEM2_SELECTION_FIRST_OWNER_PRIORITY_20261017_V0_1.md`. BUILD #1132/#1234; original DATA #1068; independent AUDIT #1127.
+
+## Concrete stage-1 execution gap fixed
+
+The existing `system2/runtime/shared_official_a1_stage1_admission_v0_1.mjs` already accepts independently audited CA/ordinary-equity class receipts and calls the **unaltered** `SHORT_MOMENTUM V0.1-CONTRACT` seven-factor scorer. Its daily original-artifact CLI `run_shared_official_a1_stage1_readonly_v0_1.mjs`, however, had no path to accept those external original-native receipts after DATA/AUDIT delivered them. A source-only A1 natural run is **correctly always PIT-INCOMPLETE** without these receipts.
+
+New `system2/runtime/m09_stage1_native_evidence_intake_v0_1.mjs` enforces an exact market T, current A1 original 61-day sourceReceiptHash, independent A1 auditHash, manifest SHA, newly computed sourceLedger SHA, exact SHORT_MOMENTUM strategy+policy version, firstKnownAt/observedAt/availableAt before the actual run clock, no selectedCount/zeroPick/ranking/Shadow/Frozen/Cloudflare writer privileges. An optional externally provided CA and/or CFI **source+separate audit pair** may pass through existing gate only; missing pair, missing authoritative no-event, wrong-market symbol or future-available evidence fails closed. Self-consistent SHA is STRUCTURE only, not actual independent native readback.
+
+Updated `stage1ResearchFromAuditedSourceV0_1` consumes the explicit bundle before normal existing Stage1 admission; rejects a bundle mixed with other direct injected inputs, never changes seven factors, current effective historical CFI entire 61 sessions or CA six-family/negative-completeness gates.
+
+Normal GitHub natural workflow remains unchanged and env unset (without native audit -> original UNKNOWN), preserving P0 NON_PIT_PREVIEW and exact true T as-of time, no retroactive clock. Optional local/offline operator execution can supply **`S2_M09_NATIVE_PIT_EVIDENCE_FILE`**, a JSON document whose exact schema is `S2_M09_STAGE1_NATIVE_EVIDENCE_HANDOFF_V0_1` along with original actual A1 artifact and separately accepted original-native CA+CFI. It does NOT run any new GET, fetch Cloudflare, generate Secrets, or deploy D1, nor does it magically obtain DATA/AUDIT evidence. Original two source pairs + 122 native rows remain checked by existing A1 source auditor and Stage1 consumer.
+
+Provenance acceptance flow: DATA original native provider bytes/CA/CFI and independent AUDIT source receipt + actual as-of clocks -> optional bundle -> BUILD strict binding -> unchanged independent CA/CFI gates -> unchanged 7/7 assessor -> still `qualifiedNotSelected` not formally selected until ranking/Frozen/physical readback separately authorized. A forged signed synthetic independent audit JSON cannot be called physical acceptance. Do not inject the example from tests as real.
+
+Ten new negative test groups: default A1-only unknown, no external native family, CA but missing CFI, source/strategy/date SHA drift, modified SHA and future clock, no-event with no CA audit, partial native/audit pairs, attempted promotion, cross-market symbol mismatch and workflow no env. These tests certify **acceptance code only**. The first actual positive independent PIT-A full symbol still requires real DATA/AUDIT and effective strict native gates. 2026-10-16 2330/3287 source controls remain 0/2 and actual market ordinary denominator UNKNOWN. All original owner priorities and PIT-B, Frozen, 10/19 genuine source proof unchanged.
+
+Real execution requirements:
+- DATA #1068: actual market-T original source body/issuer effective-period originals and CA completeness+revision+halt/NO_EVENT evidence, SHA/run/artifact clocks, representative positive native ordinary common share with no CA if genuinely proven; no 4-digit assumption.
+- AUDIT #1127: independent physical rehash and attestation of native issuer as-of, CA negative coverage; do not mistake self-signed JSON for actual provider bytes.
+- BUILD #1132/#1234: consume signed physical sample via optional offline path and existing full Stage1 evaluator; measure per market eligible/UNKNOWN/rejected/watch/qualified; real Frozen only after owner-authorized D1 writer/readback and ranking. Do not activate optional bundle via default Actions until independent real end-to-end run is proven and properly approved.
