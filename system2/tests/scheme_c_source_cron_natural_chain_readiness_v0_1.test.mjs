@@ -145,12 +145,6 @@ test('negative cannot invent deployment by edited date or non-added workflow',as
   f=>{f.firstSchemeCCommit.files[0].filename='another.yml'},
  ]){
   const f=await fixture();change(f);
-  if(change.toString().includes("date='2026-10-16")) {
-   // Commit timestamp cannot be independently proven by hash alone; use
-   // anchored hash+API physical caller. This case is handled by GH native
-   // commit readback in the PR physical proof, not by a synthetically signed fixture.
-   continue;
-  }
   await assert.rejects(join(f),/S2_BUILD_SCHEME_C_CRON_READINESS_/);
  }
 });
