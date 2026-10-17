@@ -35,6 +35,21 @@
 - System1：`formalEligible=false`，未授權納入現行正式選股；Cloudflare `exceededResources`、Formal 資料保存失敗是獨立問題，仍未解。
 - System2：`PIT_A=false`、`PIT_B=false`、`Frozen=false`、`canTrade=false`，保留 `NON_PIT_PREVIEW` 與 `selectedCount=null` 的必要區分。
 
+## 2026 Q2 原始附註第十二項：新的當期負證線索（2026-10-17 新補查）
+
+在 TWSE 同一份官方原始 PDF（SHA256 仍為 `9728d6ad33ba7c066e88378cb724a17f772797a65d445588fec35249414fcef2`）中，程式已讀出：
+
+- 第十二項「附註揭露事項」下記載 **「母子公司間業務關係及重大交易往來情形：無」**。
+- **「轉投資事業相關資訊：無」**。
+- **「大陸投資資訊：無」**。
+- 關係人附註列有 **NITTO BOSEKI 為建榮母公司**，另列兄弟公司。這些不是建榮自己投資設立子公司的證明。
+- 財報的 IAS/IFRS 未來準則標題出現「子公司」字眼，也不代表本發行人有子公司。
+- 沒有發現單一句法明確且能自動定論的「本公司無子公司」聲明。負揭露更支持 2026Q2 **沒有轉投資事業資料**，但仍須資料稽核確認此格式/披露完整性及 IFRS10 控制事實。
+
+物理取證：[GitHub Run #39008514300](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39008514300)。研究分類器 `research/system1_5340_2026q2_subsidiary_and_vintage_evidence_v0_1.mjs` 使用上述 **原始 PDF 的表內負揭露** 作為輔助證據；對「有無子公司」或「合法個別財報」永遠輸出 `Certified=false`，禁止自動放行。
+
+仍待的獨立 AUDIT：核對當期官方投資持股附表、是否存在其他子公司／經控制實體及期內更正，並分開 2026/08/06 董事會日期、16:36:32 上傳登錄、真正原始版最早可讀時點。
+
 ## DATA → AUDIT → BUILD 下一個真實驗收點
 
 1. **DATA_LANE**：以不影響原 PIT-A/CFI/CA 主線為前提，取得建榮 2026Q2 會計/子公司狀態的**官方時點版來源**，對比最新官方名冊、公告當時內容及更正/撤銷，保存原始 SHA/官方版本/firstKnownAt/availableAt 閘門，不得只記搜尋當下時間。
