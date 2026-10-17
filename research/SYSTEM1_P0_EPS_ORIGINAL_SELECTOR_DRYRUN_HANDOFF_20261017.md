@@ -28,3 +28,15 @@ Owner 2026-10-17 已核准個股 EPS 未驗證隔離作為正式修復候選，�
 - 初始直接修改 Worker.js 的版本，雖 32 項乾跑測試通過，但 V8 正式 Repair / Regression / C1C2 因 scripts/apply_v7_5_30.py 錨點失效而 FAIL；本分支已撤回直接 Worker 修改，不得忽略該負面測試。
 - 已建 **byte-exact** candidate artifact 產生器；原始 Worker blob SHA 固定且變更源唯一，正式 Worker.js diff=0。重新驗證 32 項整合 candidate 測試：[CI 39045369508](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39045369508) SUCCESS。常態三組修復／回歸必須以更新後 exact-head CI 判斷。
 - 此 adapter 只提供研究驗證、不可交易；後續真正在正式原版 75-step build 導入功能必須建立獨立對應 patch stage，經原檔 SHA 與反證、效能、真實合法交易日讀回、再經 owner 核准部署；本 PR 不是該授權。
+
+## 2026-10-18 00:12 Taipei｜原始 V8 兩股池一致性對照
+
+- 新增 `tests/test_system1_p0_eps_original_selector_paired_offline_v0_1.mjs`：從 main 原始 Worker.js 及 bytes-verified candidate artifact **直接擷取 `selectTomorrowCandidates` 函式本體**，讓同一組固定的九檔合成 scoreCandidate 成功母群分別經過兩套完整池別排序／配額控制流程。
+- 特別界定：此測試以 isolated feature/scoring stubs 提供固定 synthetic rows；檢驗真實函式本體的排序、兩次池評分、3+3 各自擇優、source quarantine 插入位置、整包隔離非正式零檔，不是完整 price-feature formation／真實 D1／MOPS 時點／Cloudflare /api/scan 正式交易日驗收。
+- 同源九檔合格時：原始與 candidate 無 Shadow 選項結果完全等價，啟用隔離版且無缺失時選出同一 Top6。
+- 缺一般股第一順位、千金股第一順位、全部一般股、全部九檔、5340 A-only 個別報表、前季缺資料、EPS 零與負數均有獨立反證。
+- 本輪原版對照初次 CI 因**基準期望名單把第四名一般股錯誤列入**而 FAIL；修正測試期望符合正式 3+3 原始實際排序，非變更篩選邏輯。
+- 精確提交 `0368bf6afb040f6e24acdf5c59d0b42d3193b05b`：原始 selector paired harness 35 項 + 既有 dry-run 32 項，合計 **67 assertions PASS**：[CI #39048332336](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39048332336)；同一 commit 的 [V8 Repair #39048332348](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39048332348)、[V8 Regression #39048332360](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39048332360)、[C1/C2 #39048332378](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39048332378) 均 SUCCESS。
+- 本次正式 Worker.js / main、四 Cron、3Min/D1/KV、持股/停損、15m 信號未變，無 merge/deploy、無正式 business POST、無推播重送，System 2 不受影響。
+
+**尚未取得的必要證據（DATA → AUDIT → BUILD）：** 10/16 原始 D1 QUARTER_EPS 九筆股票鍵與各項 C 來源及時點真實讀回（PR #1489 完成審查後才有權獨立手動 main SELECT）；5340 A-only 法定可用性；同一合法交易日完整官方來源下真實配對 read-only replay；績效/CPU 與既有持股獨立檢查。此前正式 P0 不得宣告完成，也不得把 Shadow 全隔離當作真實 zero-pick。
