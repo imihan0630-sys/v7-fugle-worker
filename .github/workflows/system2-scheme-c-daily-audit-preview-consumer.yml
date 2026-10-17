@@ -58,8 +58,10 @@ jobs:
           node --check system2/runtime/scheme_c_daily_audit_handoff_v0_1.mjs
           node --check system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs
-          AUDIT=/tmp/s2-scheme-c-daily-original-audit/audit-receipt.json
-          PREVIEW=/tmp/s2-scheme-c-daily-derived-preview/preliminary-pv-watch.json
+          test "$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' | wc -l)" -eq 1
+          test "$(find /tmp/s2-scheme-c-daily-derived-preview -type f -name 'preliminary-pv-watch.json' | wc -l)" -eq 1
+          AUDIT="$(find /tmp/s2-scheme-c-daily-original-audit -type f -name 'audit-receipt.json' -print -quit)"
+          PREVIEW="$(find /tmp/s2-scheme-c-daily-derived-preview -type f -name 'preliminary-pv-watch.json' -print -quit)"
           test -s "$AUDIT"
           test -s "$PREVIEW"
           if [ "$PHYSICAL_EXAMPLE_PR" = "true" ]; then
