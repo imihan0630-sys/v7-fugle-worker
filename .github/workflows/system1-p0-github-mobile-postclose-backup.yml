@@ -1,0 +1,56 @@
+name: System1 Independent Postclose GH Mobile Backup (owner gated)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-github-mobile-postclose-backup.yml"
+      - "ops/system1_p0_github_mobile_postclose_backup_v0_1.mjs"
+      - "tests/test_system1_p0_github_mobile_backup_v0_1.mjs"
+  workflow_dispatch:
+  # To activate: separately approve and merge review-only PR.
+  # 00:30 Taipei Tue-Sat checks the previous Taiwan trading session.
+  schedule:
+    - cron: '30 16 * * 1-5'
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: system1-github-mobile-daily-status-backup
+  cancel-in-progress: false
+jobs:
+  offline:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Strictly offline notification guards; no issue or network
+        run: |
+          node --check ops/system1_p0_github_mobile_postclose_backup_v0_1.mjs
+          node tests/test_system1_p0_github_mobile_backup_v0_1.mjs
+          node ops/system1_p0_github_mobile_postclose_backup_v0_1.mjs --dry-run
+  scheduled_backup:
+    if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Five GET-only Formal proofs then single assigned GitHub Issue
+        run: node ops/system1_p0_github_mobile_postclose_backup_v0_1.mjs
+      - name: Retain sanitized read-only outcome even on error
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-gh-mobile-status-${{ github.run_id }}
+          path: artifacts/system1-p0-github-mobile-postclose-backup.json
+          if-no-files-found: warn
+          retention-days: 45
