@@ -43,3 +43,22 @@ test('failed or self-diagnostic upstream has visible SOURCE_NOT_READY without fa
  assert.match(workflow,/if: failure\(\)/);
  assert.match(workflow,/來源 Artifact 缺漏、SHA\/交易日\/截止驗證失敗/);
 });
+
+test('actual daily workflow_run uses ONE exact independently-audited ZIP for audit AND V02 preview',()=>{
+ const step=workflow.match(/- name: Historical-PR-only different-run V02 original[\s\S]*?path: \/tmp\/s2-scheme-c-daily-derived-preview\//);
+ assert.ok(step,'optional historical second-run artifact is correctly scoped');
+ assert.match(step[0],/if: github.event_name == 'pull_request'/);
+ assert.match(workflow,/if \[ "\$PHYSICAL_EXAMPLE_PR" = 'true' \]; then\s+PREVIEW_DIR=\/tmp\/s2-scheme-c-daily-derived-preview\s+else\s+PREVIEW_DIR=\/tmp\/s2-scheme-c-daily-original-audit/);
+ assert.match(workflow,/test ! -d \/tmp\/s2-scheme-c-daily-derived-preview/);
+ assert.match(workflow,/test "\$\(find "\$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' \| wc -l\)" -eq 1/);
+ assert.match(workflow,/PREVIEW="\$\(find "\$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' -print -quit\)"/);
+ assert.match(workflow,/run-id: \$\{\{ github.event_name == 'pull_request' && '38469057567' \|\| github.event.workflow_run.id \}\}/);
+ assert.match(workflow,/name: \$\{\{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567'/);
+});
+test('real daily source route requires actual completed workflow_run, genuine upstream success and main',()=>{
+ assert.match(workflow,/github.event.workflow_run.conclusion == 'success'/);
+ assert.match(workflow,/github.event.workflow_run.head_branch == 'main'/);
+ assert.match(workflow,/github.event.workflow_run.head_repository.full_name == github.repository/);
+ assert.match(workflow,/github.event.workflow_run.event == 'workflow_run'/);
+ assert.match(workflow,/node system2\/scripts\/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "\$AUDIT" "\$PREVIEW" "\$UPSTREAM_AUDIT_RUN"/);
+});
