@@ -1,0 +1,11 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {buildSystem2IndustryResearchEnrichmentV0_1,renderIndustryResearchContextV0_1} from '../runtime/industry_research_enrichment_v0_1.mjs';
+const [receipt,seed,output]=process.argv.slice(2);
+if(!receipt||!seed||!output||process.argv.length!==5)throw Error('USAGE: <signed-scheme-c-handoff.json> <research-seeds.json> <existing-output-dir>');
+const [handoff,evidence]=await Promise.all([readFile(receipt,'utf8').then(JSON.parse),readFile(seed,'utf8').then(JSON.parse)]);
+const result=await buildSystem2IndustryResearchEnrichmentV0_1({handoff,evidence,generatedAtUtc:new Date().toISOString()});
+await mkdir(resolve(output),{recursive:true});
+await writeFile(resolve(output,'daily-industry-research-context.json'),JSON.stringify(result,null,2)+'\n',{flag:'wx',mode:0o600});
+await writeFile(resolve(output,'daily-industry-research-context.md'),renderIndustryResearchContextV0_1(result)+'\n',{flag:'wx',mode:0o600});
+console.log(JSON.stringify({marketDate:result.marketDate,preview:result.previewRowCount,priorResearchLabelCount:result.previewPriorResearchLabelCount,industrySourceState:result.b5NativeCurrentCoverageState,receiptHash:result.receiptHash,readOnly:true}));
