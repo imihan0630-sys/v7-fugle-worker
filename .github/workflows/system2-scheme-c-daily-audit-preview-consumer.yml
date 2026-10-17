@@ -206,3 +206,94 @@ jobs:
             echo '**正式 selectedCount：** UNKNOWN（不是 0 檔）'
             echo '**PIT-A／PIT-B：** 未認證；Frozen／正式推播／交易：禁止。'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  verify_real_20261016_single_audit_zip:
+    # Exact 2026-10-16 official source and preliminary JSON from ONE
+    # native independent 122/122 audit artifact, even if observed late.
+    # This is a PR-only research replay, not daily operations or PIT.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download REAL 2026-10-16 exact 122-of-122 audit ZIP once
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38934321405
+          name: system2-shared-official-a1-independent-audit-38934321405
+          path: /tmp/s2-real-20261016-same-audit/
+          github-token: ${{ github.token }}
+      - name: Source-bind exact signed A1 and V02 receipts, render only late NON-PIT
+        env:
+          S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-real-20261016-output/daily-nonpit-preview.json
+        run: |
+          set -euo pipefail
+          ROOT=/tmp/s2-real-20261016-same-audit
+          test "$(find "$ROOT" -type f -name 'audit-receipt.json' | wc -l)" -eq 1
+          test "$(find "$ROOT" -type f -name 'preliminary-pv-watch.json' | wc -l)" -eq 1
+          AUDIT="$(find "$ROOT" -type f -name 'audit-receipt.json' -print -quit)"
+          PREVIEW="$(find "$ROOT" -type f -name 'preliminary-pv-watch.json' -print -quit)"
+          test -s "$AUDIT"
+          test -s "$PREVIEW"
+          test "$(jq -r .marketDate "$AUDIT")" = '2026-10-16'
+          test "$(jq -r .marketDate "$PREVIEW")" = '2026-10-16'
+          test "$(jq -r .verdict "$AUDIT")" = 'ACCEPTED_SOURCE_INTEGRITY_ONLY'
+          test "$(jq -r .sourceMarketDatePairsVerified "$AUDIT")" = '122'
+          test "$(jq -r .selectedCount "$PREVIEW")" = 'null'
+          test "$(jq -r .zeroPickDay "$PREVIEW")" = 'null'
+          node --test system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs
+          node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
+          node --test system2/tests/three_layer_selection_preview_router_v0_1.test.mjs
+          node system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "$AUDIT" "$PREVIEW" 38934321405
+          R="$S2_SCHEME_C_OUTPUT_PATH"
+          test -s "$R"
+          test "$(jq -r .marketDate "$R")" = '2026-10-16'
+          test "$(jq -r .auditRunId "$R")" = '38934321405'
+          test "$(jq -r .state "$R")" = 'NON_PIT_SOURCE_OBSERVATION_READY'
+          test "$(jq -r .previewReport.state "$R")" = 'LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY'
+          test "$(jq -r .observedPreviewCount "$R")" = '30'
+          test "$(jq -r '.previewReport.previewRows | length' "$R")" = '30'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .pitACertificationGranted "$R")" = 'false'
+          test "$(jq -r .pitBCertificationGranted "$R")" = 'false'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          test "$(jq -r .cloudflareR2Writes "$R")" = '0'
+          node system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs "$R" /tmp/s2-real-20261016-output
+          HUMAN=/tmp/s2-real-20261016-output/daily-nonpit-preview.md
+          META=/tmp/s2-real-20261016-output/daily-nonpit-preview-meta.json
+          test -s "$HUMAN"
+          test -s "$META"
+          grep -q '2026-10-16 非 PIT 研究預覽' "$HUMAN"
+          grep -q 'LATE_SOURCE' "$HUMAN"
+          test "$(jq -r .lateSource "$META")" = 'true'
+          test "$(jq -r .strategySelectedCount "$META")" = 'null'
+          test "$(jq -r .pitACertified "$META")" = 'false'
+          test "$(jq -r .frozenWritten "$META")" = 'false'
+          {
+            echo '## Scheme C｜2026/10/16 真實 122/122 同一稽核 ZIP 實體驗收'
+            echo '**僅是晚到真實資料的歷史研究回放，不能倒填 10/16 正式選股，也不是 10/19 自動營運驗收。**'
+            echo "**原稽核 Run：** 38934321405"
+            echo "**預覽來源狀態：** $(jq -r .state "$R")"
+            echo "**顯示候選：** $(jq -r .observedPreviewCount "$R")（研究觀察，非正式 selectedCount）"
+            echo "**報告 SHA：** $(jq -r .reportHash "$META")"
+            echo '**PIT-A/B＝未認證；Frozen、推播、交易均未啟用。**'
+            echo ''
+            cat "$HUMAN"
+          } >> "$GITHUB_STEP_SUMMARY"
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Keep physical Oct16 same-run derived result, NO original market bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-scheme-c-real-20261016-same-run-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-real-20261016-output/
+          retention-days: 30
+          if-no-files-found: warn
