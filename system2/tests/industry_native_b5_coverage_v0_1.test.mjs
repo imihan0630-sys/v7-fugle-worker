@@ -105,7 +105,8 @@ test('market or date mismatch, forged profile hash, invalid source native rows a
  await assert.rejects(()=>run(f,[bad,f.tp]),/PROFILE_ORIGINAL_RECEIPT_INVALID/);
  const z=structuredClone(f.tw);z.rows[0].market='TPEX';
  const {receiptHash,...x}=z;
- await assert.rejects(()=>run(f,[await sign(x),f.tp]),/PROFILE_ROW_NATIVE_NORMALIZATION_INVALID/);
+ const invalidRowReceipt=await sign(x);
+ await assert.rejects(()=>run(f,[invalidRowReceipt,f.tp]),/PROFILE_ROW_NATIVE_NORMALIZATION_INVALID/);
 });
 test('replayed universe with duplicated market+symbol or invalid digest denied',async()=>{
  const f=await fixture(),u=structuredClone(f.u);
