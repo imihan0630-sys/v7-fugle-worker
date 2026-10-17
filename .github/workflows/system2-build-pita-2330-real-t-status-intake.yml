@@ -1,0 +1,69 @@
+name: System2 BUILD PIT-A 2330 Actual T-Trade AsOf Source Intake READ ONLY
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/runtime/pita_2330_real_t_status_consumer_v0_1.mjs'
+      - 'system2/tests/pita_2330_real_t_status_consumer_v0_1.test.mjs'
+      - '.github/workflows/system2-build-pita-2330-real-t-status-intake.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/runtime/pita_2330_real_t_status_consumer_v0_1.mjs'
+      - 'system2/tests/pita_2330_real_t_status_consumer_v0_1.test.mjs'
+      - '.github/workflows/system2-build-pita-2330-real-t-status-intake.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-build-pita-2330-t-status-native-readonly-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  consume_actual_status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reuse EXACT DATA original physical trading-status source artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38918007652
+          name: s2-pita-2330-t-trade-status-native-20261016-38918007652-1
+          path: /tmp/s2-build-status-input
+          github-token: ${{ github.token }}
+      - name: Physical signed source readback and strict no-suspension-negative tests
+        env:
+          S2_BUILD_REAL_PITA_T_STATUS_RECEIPT: /tmp/s2-build-status-input/2330-asof-trading-status-sourceonly.json
+        run: |
+          set -euo pipefail
+          test -s "$S2_BUILD_REAL_PITA_T_STATUS_RECEIPT"
+          node --check system2/runtime/pita_2330_real_t_status_consumer_v0_1.mjs
+          node --test system2/tests/pita_2330_real_t_status_consumer_v0_1.test.mjs
+          mkdir -p /tmp/s2-build-status-result
+          node system2/runtime/pita_2330_real_t_status_consumer_v0_1.mjs "$S2_BUILD_REAL_PITA_T_STATUS_RECEIPT" > /tmp/s2-build-status-result/2330-t-session-traded-cut-status-unknown.json
+          R=/tmp/s2-build-status-result/2330-t-session-traded-cut-status-unknown.json
+          test "$(jq -r .actualTVolumeShares "$R")" = '43046982'
+          test "$(jq -r .actualTTrades "$R")" = '400499'
+          test "$(jq -r .sourceObservedNativeStatusBodies "$R")" = '2'
+          test "$(jq -r .trueAsOfTradingStatusIndependentlyAudited "$R")" = 'false'
+          test "$(jq -r .noSuspensionOrHaltInferredFromEmptyNativeResponse "$R")" = 'false'
+          test "$(jq -r .local2330FullPitaEligible "$R")" = '0'
+          test "$(jq -r .fullMarketOrdinaryShareCount "$R")" = 'null'
+          test "$(jq -r .stage1EvaluationAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "2330_T_ACTUAL_TRADES_SOURCE=PASS; CUT_TRADEABLE_INDEPENDENT_PIT=UNKNOWN; NO_AUTHORITATIVE_NO_SUSPENSION; FULL_PIT=0; NO_FROZEN" >> "$GITHUB_STEP_SUMMARY"
+      - name: Persist BUILD source-only diagnostic receipt not selection/Frozen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-build-pita-2330-t-status-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-build-status-result/
+          if-no-files-found: warn
+          retention-days: 90
