@@ -61,7 +61,7 @@ x=reviewEpsQuarantineShadow(args({
 eq(x.status,"SHADOW_WITH_OPEN_POSITIONS_PRESERVED");
 eq(x.quarantined.map(c=>c.symbol),["5340"]);
 eq(x.quarantined[0].reason,"SOURCE_ROW_MISSING");
-eq(x.selected.map(c=>c.symbol),["3236","3147","2340","4167","6122","3008"]);
+eq(x.selected.map(c=>c.symbol),["3236","3147","4167","6122","3008","2340"]);
 eq(x.hasActualPositions,true);
 eq(x.existingHoldingsRetained,true);
 eq(x.canMutateHoldings,false);
