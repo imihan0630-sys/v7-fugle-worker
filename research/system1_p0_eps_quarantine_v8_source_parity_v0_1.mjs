@@ -8,7 +8,7 @@ const needles={
  reviewUniverse:"diagnostics.epsReviewUniverse=scored.map(item=>({symbol:item.symbol,name:item.name}));",
  dailyParent:"const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData }, marketDate);",
  missingBlock:"if(!dryRun && epsMissing.length) throw new Error",
- holdings:'throw new Error("OPEN_POSITION_PROTECTED:',
+ holdings:'throw new Error("OPEN_POSITION_PROTECTED：',
  thousandRank:"thousandScored.sort(rankFn);",
  thousandTop:"const thousandTop = thousandScored.slice(0, MAX_STOCKS_PER_POOL);",
  generalTop:"const generalTop = scored\n    .filter(item => (toNumber(item.close) || 0) < THOUSAND_STOCK_PRICE)\n    .slice(0, MAX_STOCKS_PER_POOL);",
