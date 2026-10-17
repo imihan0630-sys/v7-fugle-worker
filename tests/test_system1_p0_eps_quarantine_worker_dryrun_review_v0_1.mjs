@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-const worker=await readFile("Worker.js","utf8");
+const originalWorker=await readFile("Worker.js","utf8");
+assert.equal(originalWorker.includes("function system1ShadowEpsCandidateStatus("),false);
+const worker=await readFile("artifacts/reviewonly/system1_eps_quarantine_dryrun_worker.mjs","utf8");
 // Dynamically import original Worker module only as inert JS definitions;
 // no fetch/scheduled invocation is performed.
 const module=await import("data:text/javascript;base64,"+Buffer.from(
