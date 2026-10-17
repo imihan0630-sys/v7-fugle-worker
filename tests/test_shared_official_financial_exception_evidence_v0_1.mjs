@@ -40,7 +40,7 @@ await t("direct original C + strict original parser source flags",()=>{
  const q2=observe("3236",2,"C");assert.equal(q2.basis,"CONSOLIDATED");
  assert.equal(q2.exactReportId,"C");assert.equal(q2.originalParserVerified,true);
  assert.equal(q2.state,"CONSOLIDATED_C_SOURCE_PARSER_PASS");
- assert.equal(q2.contentSha256,createHash("sha256").update(html("3236",2)).digesawait t("hex"));
+ assert.equal(q2.contentSha256,createHash("sha256").update(html("3236",2)).digest("hex"));
  assert.equal(q2.formalEligible,false);assert.equal(q2.historicalPointInTimeCertified,false);
 });
 await t("individual A must not become consolidated C",()=>{
