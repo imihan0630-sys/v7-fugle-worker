@@ -70,7 +70,8 @@ test('independent real Oct16 Audit Run physical replay is truly SAME artifact fo
  assert.match(j,/if: github.event_name == 'pull_request'/);
  assert.match(j,/run-id: 38934321405/);
  assert.match(j,/name: system2-shared-official-a1-independent-audit-38934321405/);
- assert.equal((j.match(/uses: actions\/download-artifact@v4/g)||[]).length,1);
+ assert.equal((j.match(/uses: actions\/download-artifact@v4/g)||[]).length,2);
+ assert.match(j,/name: s2-data-native-a1-cron-source-audit-chain-39016618423/);
  assert.match(j,/test "\$\(find "\$ROOT" -type f -name 'audit-receipt.json' \| wc -l\)" -eq 1/);
  assert.match(j,/test "\$\(find "\$ROOT" -type f -name 'preliminary-pv-watch.json' \| wc -l\)" -eq 1/);
  assert.match(j,/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "\$AUDIT" "\$PREVIEW" 38934321405/);
@@ -125,7 +126,8 @@ test('PR real Oct16 source-only replay verifies ACTUAL GitHub audit REST metadat
  assert.match(job,/node system2\/scripts\/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs \/tmp\/s2-oct16-real-independent-audit-run-meta.json 38934321405 "\$GITHUB_REPOSITORY"/);
  assert.match(job,/PHYSICAL_NATIVE_GITHUB_AUDIT_RUN_IDENTITY_ACCEPTED_38934321405/);
  assert.match(job,/if: github.event_name == 'pull_request'/);
- assert.equal((job.match(/uses: actions\/download-artifact@v4/g)||[]).length,1);
+ assert.equal((job.match(/uses: actions\/download-artifact@v4/g)||[]).length,2);
+ assert.match(job,/name: s2-data-native-a1-cron-source-audit-chain-39016618423/);
  assert.doesNotMatch(job,/\n\s+schedule:|cloudflare\/workers-action|wrangler\s+deploy/);
 });
 
