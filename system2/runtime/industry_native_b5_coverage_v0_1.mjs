@@ -62,6 +62,7 @@ export async function buildSystem2NativeB5CoverageV0_1({
    if(!nativeNormalizedRecord(row)||row.market!==receipt.market||
     Date.parse(row.firstKnownAtUtc)>Date.parse(row.observedAtUtc)||
     Date.parse(row.availableAtUtc)>Date.parse(row.observedAtUtc)||
+    Date.parse(row.observedAtUtc)>Date.parse(receipt.sourceObservedAtUtc)||
     (row.effectiveFrom&&row.effectiveTo&&row.effectiveFrom>=row.effectiveTo))
     deny('PROFILE_ROW_NATIVE_NORMALIZATION_INVALID');
   }
@@ -101,9 +102,10 @@ export async function buildSystem2NativeB5CoverageV0_1({
     const x=xs[0];
     const labelB2=b2?.profiles[row.symbol]?.industry??null;
     if(labelB2!==x.officialIndustryLabel)deny('B2_PROFILE_PARSER_MISMATCH');
-    if(!x.officialIndustryCode||!x.officialIndustryLabel){
+    if(!x.officialIndustryCode?.trim()||!x.officialIndustryLabel?.trim()){
       state='B5_CODE_OR_LABEL_UNKNOWN';counter.missingCodeOrLabelCount++;
-    }else if(Date.parse(x.firstKnownAtUtc)>Date.parse(observedCut)||
+    }else if(Date.parse(source.sourceObservedAtUtc)>Date.parse(observedCut)||
+        Date.parse(x.firstKnownAtUtc)>Date.parse(observedCut)||
         Date.parse(x.availableAtUtc)>Date.parse(observedCut)||
         Date.parse(x.observedAtUtc)>Date.parse(observedCut)||
         x.effectiveFrom&&marketDate<x.effectiveFrom||
