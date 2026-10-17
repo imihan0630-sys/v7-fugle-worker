@@ -11,7 +11,7 @@ async function caseBundle({falling=true,calendarLast='2026-07-31',symbol='2323'}
  const bars=[];
  for(let i=0;i<61;i++){
   const date=new Date(last-(60-i)*DAY).toISOString().slice(0,10);
-  const close=falling?300-i*2:100+i*2;
+  const close=falling?(i===60?176:300-i*2):100+i*2;
   const open=falling?close+1:close-1;
   const high=Math.max(close,open)+2,low=Math.min(close,open)-2;
   const volumeShares=i===60?3000000:1000000;
