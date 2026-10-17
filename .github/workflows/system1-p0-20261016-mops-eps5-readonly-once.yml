@@ -1,0 +1,33 @@
+name: System1 2026-10-16 5 missing EPS public MOPS one-shot
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: system1-20261016-public-mops-eps5-one-shot
+  cancel-in-progress: false
+jobs:
+  official_public_only:
+    if: github.head_ref == 'audit/system1-20261016-eps5-public-mops-one-shot-20261017' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.repo.full_name == 'imihan0630-sys/v7-fugle-worker' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline safety and parser fixtures
+        run: |
+          node --check ops/system1_20261016_mops_eps5_public_readonly_once.mjs
+          node tests/test_system1_20261016_mops_eps5_public_readonly_once.mjs
+      - name: Public MOPS source forms only; no Cloudflare, no credentials, no write
+        run: node ops/system1_20261016_mops_eps5_public_readonly_once.mjs
+      - name: Preserve sanitized results and original SHA receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-mops-20261016-eps5-public-${{ github.run_id }}
+          path: artifacts/system1-20261016-public-mops-eps5-readonly.json
+          if-no-files-found: warn
+          retention-days: 30
