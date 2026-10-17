@@ -83,7 +83,9 @@ jobs:
         run: |
           set -euo pipefail
           echo 'Archived provider/auditor filenames (no raw contents):'
-          find /tmp/s2-data-a1-source /tmp/s2-data-a1-audit -maxdepth 3 -type f -printf '%p (%s bytes)\n' | head -n 15
+          # Never use find | head under pipefail: >15 original 61-session files
+          # cause SIGPIPE and falsely fail before the signed original readback.
+          ls -l /tmp/s2-data-a1-source/official-61-*.json /tmp/s2-data-a1-audit/audit-receipt.json
           SRC="/tmp/s2-data-a1-source/official-61-$SOURCE_T.json"
           AUD="/tmp/s2-data-a1-audit/audit-receipt.json"
           if [ ! -s "$SRC" ]; then
