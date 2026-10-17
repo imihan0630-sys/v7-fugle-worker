@@ -2,7 +2,7 @@
 
 Owner 2026-10-17 已核准個股 EPS 未驗證隔離作為正式修復候選，但明確要求先 Shadow、回歸及持股保護，沒有批准正式 Worker 立即部署或解除交易限制。
 
-**本分支：Class B review-only／DRAFT PR。** 變更 Worker.js 的 dry-run 實驗路徑，未合併 main、未部署 Cloudflare、未改四項 Cron、D1/KV、3Min、推播或實際持股；沒有歷史業務掃描或買賣。
+**最新修正：Class A/安全工程 review-only／DRAFT PR。** 原始 Worker.js 已恢復與正式 main byte-exact 一致；正式 75-step 補丁建置不能接受直接手改 Worker.js。現改由 ops/system1_p0_eps_quarantine_worker_candidate_reviewonly_v0_1.mjs 基於指定原始 Git blob SHA、六處唯一錨點，僅在 artifacts/reviewonly 產出預設關閉的 dry-run 候選檔，再以候選檔執行測試。原始 Worker.js 不變、未合併 main、未部署 Cloudflare、未改四項 Cron、D1/KV、3Min、推播或實際持股。
 
 ## 原版 V8 的改造位置與安全閘門
 
@@ -22,3 +22,9 @@ Owner 2026-10-17 已核准個股 EPS 未驗證隔離作為正式修復候選，�
 - 同日真實來源尚無法完整回放時，必須明標 UNKNOWN；不能從後來找到的 EPS 當作 10/16 當時已存在，或將研究 dry-run 當成真實正式復原。
 
 **持續接點：** 審閱本 DRAFT 的 exact-head CI、資源與保持原始 Formal 等價性；直到獨立 AUDIT + owner 逐 PR 核准部署，任何正式業務系統與持倉皆保持不變。
+
+## 最新 2026-10-17 CI 接續補記
+
+- 初始直接修改 Worker.js 的版本，雖 32 項乾跑測試通過，但 V8 正式 Repair / Regression / C1C2 因 scripts/apply_v7_5_30.py 錨點失效而 FAIL；本分支已撤回直接 Worker 修改，不得忽略該負面測試。
+- 已建 **byte-exact** candidate artifact 產生器；原始 Worker blob SHA 固定且變更源唯一，正式 Worker.js diff=0。重新驗證 32 項整合 candidate 測試：[CI 39045369508](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/39045369508) SUCCESS。常態三組修復／回歸必須以更新後 exact-head CI 判斷。
+- 此 adapter 只提供研究驗證、不可交易；後續真正在正式原版 75-step build 導入功能必須建立獨立對應 patch stage，經原檔 SHA 與反證、效能、真實合法交易日讀回、再經 owner 核准部署；本 PR 不是該授權。
