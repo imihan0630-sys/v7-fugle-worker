@@ -144,3 +144,17 @@ test('source schedule attribution is UNKNOWN unless ORIGINAL producer origin ind
  assert.match(workflow,/SOURCE_CRON_ORIGIN_UNVERIFIED/);
  assert.match(workflow,/來源最初 Cron 觸發已獨立驗證/);
 });
+
+test('owner V1.0 actual generation time and optional 30-day research snapshot never gate signed preview',()=>{
+ assert.match(workflow,/PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2/);
+ assert.match(workflow,/本次報告實際產生時間（台北）/);
+ assert.match(workflow,/本次報告實際產生時間（UTC）/);
+ assert.match(workflow,/本次 Artifact/);
+ assert.match(workflow,/GitHub Actions Artifact 30 天/);
+ assert.match(workflow,/if node system2\/scripts\/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs/);
+ assert.match(workflow,/OPTIONAL_RESEARCH_SNAPSHOT_NOT_READY; verified Scheme C report remains available/);
+ assert.match(workflow,/node --test system2\/tests\/scheme_c_research_observation_snapshot_v0_1.test.mjs/);
+ assert.match(workflow,/snapshotHash/);
+ assert.match(workflow,/daily-research-observation.json/);
+ assert.doesNotMatch(workflow,/^\s*schedule:/m);
+});
