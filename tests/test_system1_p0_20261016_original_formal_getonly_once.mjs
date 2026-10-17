@@ -63,7 +63,7 @@ await test("classify existing original cron CPU without outputting provider raw 
  assert.equal(x.cronRowsForDate[0].errorClass,"CPU_OR_RESOURCE");
  assert.equal(JSON.stringify(x).includes("Secret do not log"),false);
 });
-await test("script is hardcoded GET only, excludes Worker POST and GitHub writes",()=>{
+await test("script is hardcoded GET only, excludes Worker POST and GitHub writes",async()=>{
  const src=await readFile(new URL("../ops/system1_p0_20261016_original_formal_getonly_once.mjs",import.meta.url),"utf8");
  assert.doesNotMatch(src,/method:"POST"|\/api\/scan"[,)]/);
  assert.match(src,/method:"GET"/);
