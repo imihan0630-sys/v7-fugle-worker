@@ -57,6 +57,21 @@ function positiveOverlay(row,events,cut,official61SourceDates){
   applicable.push({symbol:'2330',market:'TWSE',eventDate:'2026-09-16',
    firstObservedAtUtc:'2026-10-16T13:48:50.420Z'});
  }
+ // DATA #1068 source-positive official TPEx 3287 ex-dividend effective
+ // 2026-08-26, true prior-session close 39, official ex-div ref 37.5
+ // and dividend 1.5. Independently rehashed original A1/CA in DATA
+ // #1454/#1455; 2026-10-16T13:48:52.509Z is the conservatively pinned
+ // observed-as-of proof clock. This does NOT prove adjusted OHLC/PIT-A.
+ // Only hold while that event is actually within signed official 61 dates.
+ // Earlier Oct16 physical same-run legacy receipt lacks the new calendar
+ // field; allow its EXACT 10/16 fallback, never arbitrary future days.
+ const relevant3287=(official61SourceDates
+   ?official61SourceDates.includes('2026-08-26')
+   :row.marketDate==='2026-10-16');
+ if(row.symbol==='3287'&&row.market==='TPEX'&&relevant3287){
+  applicable.push({symbol:'3287',market:'TPEX',eventDate:'2026-08-26',
+   firstObservedAtUtc:'2026-10-16T13:48:52.509Z'});
+ }
  const knownAtCut=applicable.filter(e=>Date.parse(e.firstObservedAtUtc)<=cut);
  const late=applicable.filter(e=>Date.parse(e.firstObservedAtUtc)>cut);
  return {positiveAtCut:knownAtCut.length>0,
@@ -195,6 +210,7 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
   lateMorningObservationNotBackdated:r.lateMorningObservationNotBackdated===true,
   source61SessionCalendarProvided:calendar!==null,
   known2330ExdivDateInSource61Window:calendar?.includes('2026-09-16')??null,
+  known3287ExdivDateInSource61Window:calendar?.includes('2026-08-26')??null,
   sourceUniverseKind:'FOUR_DIGIT_INSTRUMENT_NOT_CERTIFIED_ORDINARY_EQUITY',
   sourceUniverseCount:r.officialUniverseCount,
   ordinaryEquityUniverseCertified:false,
