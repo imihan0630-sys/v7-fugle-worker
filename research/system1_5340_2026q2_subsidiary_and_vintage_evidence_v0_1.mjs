@@ -34,11 +34,12 @@ export function inspectOriginalSubsidiaryClues({text,originalReceipt}={}){
  if(!t.includes(normalized(EXPECTED.issuer))||!t.includes("民國115年及114年4月1日至6月30日"))
   throw Error("ORIGINAL_DOCUMENT_IDENTITY_MISMATCH");
  for(const [key,needle] of SECTIONS){
-  let list=occurrences(t,needle);
+  const match=normalized(needle);
+  let list=occurrences(t,match);
   map[key]={term:needle,found:list.length>0,
    // These clips are hints to independent reviewer, never documentary proof
    // of subsidiaries/no-subsidiaries by themselves.
-   hints:list.map(at=>t.slice(Math.max(0,at-85),at+needle.length+145).slice(0,280))};
+   hints:list.map(at=>t.slice(Math.max(0,at-85),at+match.length+145).slice(0,280))};
  }
  // IFRS 19's *title* contains 子公司 but describes a future standard;
  // it MUST NOT be treated as issuer ownership evidence.
