@@ -62,10 +62,13 @@ export function classifyOriginalFormalReadback(values,errors){
    detailType:x.detail===null?"null":Array.isArray(x.detail)?"array":typeof x.detail,
    detailStringLength:typeof x.detail==="string"?Math.min(10000,x.detail.length):null,
    // Never emit freeform narrative, machine tokens, response body or account data.
-   reasonClass:/AFTER_MARKET_RUNNING/.test(String(x.detail||""))?"AFTER_MARKET_RUNNING":
-    /NOT_TRADING_DAY/.test(String(x.detail||""))?"NOT_TRADING_DAY":
-    /ALREADY_SCANNED/.test(String(x.detail||""))?"ALREADY_SCANNED":
+   reasonClass:/AFTER_MARKET_RUNNING|執行中|執行鎖/.test(String(x.detail||""))?"POSSIBLE_RUNNING_LEASE":
+    /NOT_TRADING_DAY|非交易日|休市|未開市/.test(String(x.detail||""))?"POSSIBLE_CALENDAR_SKIP":
+    /ALREADY_SCANNED|已完成掃描|已經掃描|已掃描|重複掃描/.test(String(x.detail||""))?"POSSIBLE_ALREADY_SCANNED":
+    /MISSING|未完成|失敗|INCOMPLETE|FAIL/.test(String(x.detail||""))?"POSSIBLE_FAILURE_OR_UNVERIFIED":
     x.detail===null?"DETAIL_NULL":"DETAIL_UNCLASSIFIED",
+   // Attests that repeat rows contain the same string, without revealing its bytes.
+   detailMatchProof:typeof x.detail==="string"?x.detail.length===76? "LENGTH_76_ONLY_NOT_EQUALITY_PROOF":"LENGTH_OTHER":null,
    errorClass:/exceededResources|CPU/i.test(String(x.error||""))?"CPU_OR_RESOURCE":
     /DATA_INCOMPLETE/i.test(String(x.error||""))?"DATA_INCOMPLETE":
     x.error?"OTHER_OR_UNKNOWN":"NONE"
