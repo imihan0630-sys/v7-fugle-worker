@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {missingA1MarketDatePairsAfterFetchV0_1}
+import {missingA1MarketDatePairsAfterFetchV0_1,summarizeCurrentMarketSourceClockV0_1}
  from '../scripts/run_shared_official_a1_incremental_v0_1.mjs';
 import {discoverSharedA1PreviousSourceArtifactV0_1}
  from '../scripts/discover_shared_official_a1_seed_v0_1.mjs';
@@ -484,4 +484,39 @@ test('unordered/incomplete calendar cannot manufacture an accepted missing pair 
  assert.throws(()=>missingA1MarketDatePairsAfterFetchV0_1({
   tradingDates:[...dates.slice(0,-1),dates[0]],receipts:[]
  }),/DIAGNOSTIC_INPUT_INVALID/);
+});
+
+test('target T TWSE/TPEx capture clocks: both before cut, NEVER official published clock',()=>{
+ const x=summarizeCurrentMarketSourceClockV0_1({
+  marketDate:'2026-10-19',validatedPairs:122,receipts:[
+   {market:'TWSE',marketDate:'2026-10-19',capturedAt:'2026-10-19T12:10:00.000Z'},
+   {market:'TPEX',marketDate:'2026-10-19',capturedAt:'2026-10-19T13:30:00.000Z'},
+   {market:'TWSE',marketDate:'2026-10-16',capturedAt:'2026-10-16T16:44:22.393Z'}]
+ });
+ assert.equal(x.observedTargetMarkets,2);
+ assert.equal(x.allTargetMarketOriginalsObservedBeforeT2345,true);
+ assert.equal(x.latestTargetOriginalObservedAtUtc,'2026-10-19T13:30:00.000Z');
+ assert.equal(x.officialProviderPublicationAtUtc,null);
+ assert.equal(x.originalPublicationFirstKnownAtUtc,null);
+ assert.equal(x.officialPublicationTimingPITCertified,false);
+});
+test('historical real late T capture reports false and never backdates to nominal cron',()=>{
+ const x=summarizeCurrentMarketSourceClockV0_1({marketDate:'2026-10-16',validatedPairs:122,
+  receipts:[{market:'TWSE',marketDate:'2026-10-16',capturedAt:'2026-10-16T16:44:20.000Z'},
+   {market:'TPEX',marketDate:'2026-10-16',capturedAt:'2026-10-16T16:44:22.393Z'}]});
+ assert.equal(x.allTargetMarketOriginalsObservedBeforeT2345,false);
+ assert.equal(x.latestTargetOriginalObservedAtUtc,'2026-10-16T16:44:22.393Z');
+});
+test('121/122 or absent TPEX is UNKNOWN rather than green cut-time claim',()=>{
+ const x=summarizeCurrentMarketSourceClockV0_1({marketDate:'2026-10-19',validatedPairs:121,
+  receipts:[{market:'TWSE',marketDate:'2026-10-19',capturedAt:'2026-10-19T12:20:00Z'}]});
+ assert.equal(x.allTargetMarketOriginalsObservedBeforeT2345,null);
+ assert.equal(x.tpexTargetOriginalObservedAtUtc,null);
+ assert.throws(()=>summarizeCurrentMarketSourceClockV0_1({marketDate:'2026-10-19',validatedPairs:122,
+  receipts:[{market:'TWSE',marketDate:'2026-10-19',capturedAt:'invalid'}]}),
+  /SOURCE_CLOCK_OR_MARKET_INVALID/);
+ assert.throws(()=>summarizeCurrentMarketSourceClockV0_1({marketDate:'2026-10-19',validatedPairs:122,
+  receipts:[{market:'TWSE',marketDate:'2026-10-19',capturedAt:'2026-10-19T12:00:00Z'},
+  {market:'TWSE',marketDate:'2026-10-19',capturedAt:'2026-10-19T12:00:01Z'}]}),
+  /SOURCE_CLOCK_OR_MARKET_INVALID/);
 });
