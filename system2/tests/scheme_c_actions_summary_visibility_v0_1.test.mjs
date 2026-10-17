@@ -52,7 +52,7 @@ test('actual daily workflow_run uses ONE exact independently-audited ZIP for aud
  assert.match(workflow,/test ! -d \/tmp\/s2-scheme-c-daily-derived-preview/);
  assert.match(workflow,/test "\$\(find "\$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' \| wc -l\)" -eq 1/);
  assert.match(workflow,/PREVIEW="\$\(find "\$PREVIEW_DIR" -type f -name 'preliminary-pv-watch.json' -print -quit\)"/);
- assert.match(workflow,/run-id: \$\{\{ github.event_name == 'pull_request' && '38469057567' \|\| github.event.workflow_run.id \}\}/);
+ assert.match(workflow,/run-id: \$\{\{ github.event_name == 'pull_request' && '38469057567' \|\| github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id \|\| github.event.workflow_run.id \}\}/);
  assert.match(workflow,/name: \$\{\{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567'/);
 });
 test('real daily source route requires actual completed workflow_run, genuine upstream success and main',()=>{
@@ -91,4 +91,25 @@ test('Actions Summary surfaces source-audit and preview cutoff deltas, not inven
  assert.match(workflow,/test "\$\(jq -r \.officialProviderPublicationAtUtc "\$M"\)" = 'null'/);
  assert.match(workflow,/previewObservationOffsetMinutes "\$META" \| awk/);
  assert.match(workflow,/SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY/);
+});
+
+test('operator fallback is a distinct main-only explicit original audit run recovery, NOT cron',()=>{
+ assert.match(workflow,/workflow_dispatch:\s*\n\s*inputs:\s*\n\s*source_audit_run_id:/);
+ assert.match(workflow,/github.event_name == 'workflow_dispatch' &&\s*github.ref == 'refs\/heads\/main'/);
+ assert.match(workflow,/github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id/);
+ assert.match(workflow,/github.event_name == 'workflow_dispatch' && format\('system2-shared-official-a1-independent-audit-\{0\}', inputs.source_audit_run_id\)/);
+ assert.match(workflow,/^\s*- name: Manual recovery requires a genuine SUCCESS main-origin independent A1 audit/m);
+ assert.match(workflow,/gh api "repos\/\$GITHUB_REPOSITORY\/actions\/runs\/\$SOURCE_AUDIT_RUN_ID"/);
+ assert.match(workflow,/node system2\/scripts\/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs/);
+ assert.match(workflow,/MANUAL_RECOVERY_REPLAY：經 main 真實獨立稽核 Run ID 驗證的唯讀手動補跑/);
+ assert.match(workflow,/node --test system2\/tests\/scheme_c_manual_recovery_audit_run_v0_1.test.mjs/);
+ assert.doesNotMatch(workflow,/\n\s+schedule:\s*\n|wrangler\s+deploy/);
+});
+test('operator recovery remains one ZIP, no self-pinned replay or second market source GET',()=>{
+ const s=workflow.indexOf('- name: Manual recovery requires a genuine SUCCESS main-origin independent A1 audit');
+ const d=workflow.indexOf('- name: Exact ALREADY STORED current audit artifact or pinned historical proof');
+ assert.ok(s>0&&d>s);
+ assert.match(workflow,/test ! -d \/tmp\/s2-scheme-c-daily-derived-preview/);
+ assert.match(workflow,/UPSTREAM_AUDIT_RUN: \$\{\{ github.event_name == 'pull_request' && '38469057567' \|\| github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id/);
+ assert.match(workflow,/PARENT_AUDIT_RUN: \$\{\{ github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id/);
 });
