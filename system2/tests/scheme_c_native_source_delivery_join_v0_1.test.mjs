@@ -181,8 +181,10 @@ test('reject retroactively relabelled post-cut source as before-cut even after v
   f.dataNativeCronAuditReceipt=await resign(f.dataNativeCronAuditReceipt,'receiptHash');
   await assert.rejects(join(f),/ORIGINAL_NATIVE_CLOCK_INCOHERENT_OR_BACKDATED/);
  }
- await assert.rejects(join(await fixture({trigger:'workflow_run',previewLate:false})),
-  /POST_CUT_NATIVE_SOURCE_MASQUERADING_AS_ON_TIME_PREVIEW/);
+ // The pre-existing Scheme C signed handoff verifier also refuses a
+ // contradictory before-cut report before this cross-domain join can run.
+ await assert.rejects(async()=>fixture({trigger:'workflow_run',previewLate:false}),
+  /SCHEME_C_DELIVERY_ACCEPTANCE_/);
 });
 test('joint Class A receipt never grants formal ranks, zero-pick, Shadow, Frozen, Cloudflare or trade',async()=>{
  const x=await join(await fixture());
