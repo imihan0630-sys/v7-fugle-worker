@@ -61,6 +61,10 @@ export function classifyOriginalFormalReadback(values,errors){
    detailIsNull:x.detail===null,
    detailType:x.detail===null?"null":Array.isArray(x.detail)?"array":typeof x.detail,
    detailStringLength:typeof x.detail==="string"?Math.min(10000,x.detail.length):null,
+   // Output ONLY true/false for predeclared generic words; never raw detail.
+   detailFixedSignals:Object.fromEntries(["MISSING","INCOMPLETE","FAIL","FAILED",
+    "未完成","失敗","跳過","已完成","資料","買入","選股","D1","C1","PIT","FORMAL"].map(token=>
+     [token,String(x.detail||"").includes(token)])),
    // Never emit freeform narrative, machine tokens, response body or account data.
    reasonClass:/AFTER_MARKET_RUNNING|執行中|執行鎖/.test(String(x.detail||""))?"POSSIBLE_RUNNING_LEASE":
     /NOT_TRADING_DAY|非交易日|休市|未開市/.test(String(x.detail||""))?"POSSIBLE_CALENDAR_SKIP":
