@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "D06_05_IC111_TDCC_ARCHIVE_PAIR_SOURCE_AUDIT_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "outcomesOpened": false,
+  "parentMainShaAtWriteAttempt": "e20613b716d940f6cc0a3efd5eff587f583e407c",
+  "source": {
+    "repository": "wirelessr/tdcc-opendata-archive",
+    "commit": "2ca270a9a90557f2bd9165e27e8c39e635e41aca",
+    "commitTimeUtc": "2026-10-17T06:21:50Z",
+    "prior": {
+      "sourceDate": "2026-10-08",
+      "path": "snapshots/2026/2026-10-08.csv",
+      "gitBlobSha": "7a5dfa0e0e77eace12622dac97f2eec07dc3d970",
+      "rows": 69496,
+      "securities": 4088
+    },
+    "later": {
+      "sourceDate": "2026-10-16",
+      "path": "snapshots/2026/2026-10-16.csv",
+      "gitBlobSha": "4b046e5b94644e3c7343565d147c13a27fdecd5c",
+      "rows": 69751,
+      "securities": 4103
+    },
+    "sourceTier": "THIRD_PARTY_GITHUB_ARCHIVE_OF_OFFICIAL_DATA",
+    "officialByteForByteCrosscheck": "UNKNOWN",
+    "firstKnownAtForActualOfficialRelease": "UNKNOWN",
+    "archiveCommitTimeNotEquivalentToOfficialFirstKnownAt": true
+  },
+  "structuralAudit": {
+    "prior": {
+      "badColumns": 0,
+      "duplicateSecurityGrade": 0,
+      "missingGrade": 0,
+      "grade17Not100Pct": 0,
+      "grade16Nonzero": 77,
+      "naiveSum1to16Mismatch": 77,
+      "correctedSum1to15MinusGrade16Mismatch": 0
+    },
+    "later": {
+      "badColumns": 0,
+      "duplicateSecurityGrade": 0,
+      "missingGrade": 0,
+      "grade17Not100Pct": 0,
+      "grade16Nonzero": 110,
+      "naiveSum1to16Mismatch": 110,
+      "correctedSum1to15MinusGrade16Mismatch": 0
+    },
+    "identity": "grade17 shares = sum(grade1..grade15 shares) - grade16 adjustment shares; empirical on both archived snapshots; grade16 must not be added as holder shares",
+    "sourceRowCounts": {
+      "prior": 69496,
+      "later": 69751
+    },
+    "crossDate": {
+      "allCommonSecurities": 4079,
+      "priorOnly": 9,
+      "laterOnly": 24,
+      "fourDigitNonzeroPrefixCommon": 2963,
+      "grade17DenominatorStable": 2782,
+      "grade17DenominatorChanged": 181,
+      "knownTdrExcludedFromStable": [
+        "9103",
+        "9110"
+      ],
+      "preEventPreMembershipCandidate": 2780,
+      "candidateSymbolSetHash": "fnv1a64-utf8:6c132204ab272610",
+      "candidateHashMaterial": "ascending four-digit nonzero-prefixed stable-denominator symbols excluding 9103 and 9110; joined with LF only; no trailing LF",
+      "grade12to15ShareCountChanged": 1942
+    }
+  },
+  "hypotheses": [
+    {
+      "module": "D06-05",
+      "support": "A genuine 2026-10-16 weekly source-date archive now exists after IC110 preregistration; both snapshots have 17 grade rows per security and reconcile exactly under grade16 subtraction.",
+      "falsification": "Third-party archive not byte-for-byte certified to official TDCC endpoint; date-effective common-equity membership, corporate actions and identity transitions not exhaustively masked.",
+      "alternative": "Grade16 adjustment and account custody transitions can mimic concentration changes; 181 denominator-changing four-digit securities demonstrate universe instability.",
+      "failure": "Official raw mismatch, version change, unknown firstKnownAt, unresolved security-type/identity or corporate-action event => UNKNOWN."
+    },
+    {
+      "module": "D06-11/D06-16",
+      "support": "Issuer PCF for 0050 use-date 2026-10-19 publicly lists 2026-10-16 outstanding units change +85,000,000 and creation unit 500,000.",
+      "falsification": "Reported unit change not gross creations, not executed constituent purchases, and sourceDate/useDate clocks differ.",
+      "alternative": "AP inventory, cash substitution, settlement reversals, split and index rebalancing.",
+      "failure": "No immutable PCF version and trustworthy capture time => source observation only."
+    },
+    {
+      "module": "D06-07/08/09/18",
+      "support": "Independent financing, margin short, executed securities lending short and borrowing fee layers can be source-audited.",
+      "falsification": "Weekend no fresh EARLY/LATE or 15:20 in-slot evidence; no total lendable inventory denominator.",
+      "alternative": "Inventory/hedging/settlement activity rather than directional speculation.",
+      "failure": "Missing source clock, universe or denominator => UNKNOWN."
+    },
+    {
+      "module": "D06-06",
+      "support": "Institutional flow, margin, ETF and custody measures may covary under common risk-on demand.",
+      "falsification": "They may share one index event and underlying source; no independent residual predictive increment demonstrated.",
+      "alternative": "Passive basket execution, arbitrage, liquidity regime, dealer hedging.",
+      "failure": "Shared parent lineage, unavailable common support or regime sensitivity => no additive crowding votes."
+    }
+  ],
+  "statisticalGuards": {
+    "PIT": "NOT_CERTIFIED",
+    "OOS": "NO_NEW_RESULTS",
+    "walkForward": "NOT_OPEN",
+    "lookAhead": "PROHIBITED",
+    "selectionBias": "PENDING_COMMON_EQUITY_MEMBERSHIP",
+    "multipleTesting": "IC110_PRIMARY_TEST_FROZEN",
+    "overfitting": "NO_THRESHOLD_TUNING",
+    "factorRedundancy": "SHARED_PARENT_DEDUP",
+    "costs": "NOT_TESTED_ON_OUTCOMES",
+    "liquidity": "REQUIRES_PIT_BASELINE",
+    "regime": "REQUIRES_TWO_REGIMES",
+    "historicalShadow": "NOT_FABRICATED",
+    "promotion": "NONE"
+  },
+  "newIndependentTDCCSourceDateObserved": "2026-10-16",
+  "newAdmittedPairCount": 0,
+  "newOOSOutcomes": 0,
+  "maturityImpact": "NONE",
+  "exactNext": [
+    "Obtain official TDCC 2026-10-16 raw CSV and compare immutable byte/row semantics against third-party archive SHA.",
+    "Certify 2026-10-08 and 2026-10-16 date-effective TWSE/TPEx common-equity membership, corporate-action share-denominator masks and identity transitions; only then freeze final clean cohort hash.",
+    "Preserve firstKnownAt for this observation without pretending 2026-10-16 source date was knowledge date; IC110 five-session outcome clock remains closed.",
+    "At next genuine trading day, continue margin/SBL EARLY/LATE and 15:20±5min lending receipts; no weekend backfill.",
+    "Pre-register D16 common-support clustered OOS before any outcome join; no formal-core change."
+  ]
+}
