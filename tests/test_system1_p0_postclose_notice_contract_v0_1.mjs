@@ -14,6 +14,14 @@ assert.equal(x.actualZeroProven,true);
 assert.equal(x.shouldSendBackup,false);
 assert.equal(x.phoneReceiptProven,false);
 assert.equal(x.signalId,"SYSTEM1_POSTCLOSE_STATUS:"+date);
+x=classifyPostcloseNotice({targetDate:date,chain:{...good(0),sourcesReady:false,
+ category:"FORMAL_SCAN_NOT_SAVED_SOURCE_UNVERIFIED",ok:false}});
+assert.notEqual(x.kind,"VERIFIED_ZERO");
+assert.equal(x.actualZeroProven,false);
+x=classifyPostcloseNotice({targetDate:date,chain:{...good(0),
+ category:"FORMAL_SCAN_NOT_COMPLETE",ok:false}});
+assert.notEqual(x.kind,"VERIFIED_ZERO");
+assert.equal(x.actualZeroProven,false);
 x=classifyPostcloseNotice({targetDate:date,chain:good(3)});
 assert.equal(x.kind,"VERIFIED_SELECTION");
 assert.equal(x.actualZeroProven,false);
