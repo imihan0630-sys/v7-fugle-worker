@@ -1,0 +1,60 @@
+name: System1 P0 Independent Postclose Slack Status (approval-gated)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-postclose-backup-slack-status.yml"
+      - "ops/system1_p0_postclose_backup_slack_notice_v0_1.mjs"
+      - "research/system1_p0_postclose_notice_contract_v0_1.mjs"
+      - "tests/test_system1_p0_postclose_notice_contract_v0_1.mjs"
+  workflow_dispatch:
+  # Only when explicitly approved and merged by owner. This branch is a DRAFT.
+  # UTC Mon-Fri 16:15 => Taipei Tue-Sat 00:15, after both existing 23:35/23:55
+  # market-day Cron slots. No worker or Cloudflare cron settings are modified.
+  schedule:
+    - cron: '15 16 * * 1-5'
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-independent-postclose-status
+  cancel-in-progress: false
+jobs:
+  offline:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test no false zero and dedicated webhook safety (no network)
+        run: |
+          node --check research/system1_p0_postclose_notice_contract_v0_1.mjs
+          node --check ops/system1_p0_postclose_backup_slack_notice_v0_1.mjs
+          node tests/test_system1_p0_postclose_notice_contract_v0_1.mjs
+          node ops/system1_p0_postclose_backup_slack_notice_v0_1.mjs --dry-run
+  scheduled_backup:
+    # PR, merge-push and manually dispatched jobs do not send a real notification.
+    # Requires owner to configure a separate Slack webhook repo secret before merge.
+    if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+      SYSTEM1_POSTCLOSE_SLACK_WEBHOOK_URL: ${{ secrets.SYSTEM1_POSTCLOSE_SLACK_WEBHOOK_URL }}
+      GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read-only Formal status then dedicated Slack STATUS backup only
+        run: node ops/system1_p0_postclose_backup_slack_notice_v0_1.mjs
+      - name: Retain sanitised backup result (even on failure)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-postclose-backup-status-${{ github.run_id }}
+          path: artifacts/system1-p0-postclose-backup-notice.json
+          if-no-files-found: warn
+          retention-days: 30
