@@ -41,12 +41,19 @@ function defaultAuthority(layer){
 // A source-positive event overlay can RESTRICT a displayed row, NEVER grant
 // no-event negative coverage or promote PIT. Late-discovered evidence cannot
 // be rewritten into the earlier observed preview's causal history.
-function positiveOverlay(row,events,cut){
+function positiveOverlay(row,events,cut,official61SourceDates){
  const applicable=events.filter(e=>e.symbol===row.symbol&&e.market===row.market&&e.eventDate<=row.marketDate);
- // DATA source-positive historical fact: TWSE 2330 actually ex-dividend
- // 2026-09-16, captured 2026-10-16 21:48 Taipei. This is a veto-only
- // factual safety pin; NOT a self-attested CA-negative or PIT clearance.
- if(row.symbol==='2330'&&row.market==='TWSE'&&row.marketDate==='2026-10-16'){
+ // DATA source-positive historical fact: TWSE 2330 ex-dividend 2026-09-16,
+ // first physically observed 2026-10-16 21:48 Taipei. All future signed
+ // DAILY PREVIEW receipts carry the actual upstream 61 official source dates.
+ // Flag only when 09/16 is actually within that exact window (and known by
+ // the current as-of receipt), rather than forgetting it after Oct16.
+ // The old exact Oct16 fixture predates the new calendar field; preserve
+ // that narrow safe fallback solely for physical historical replay.
+ const relevant2330=(official61SourceDates
+   ?official61SourceDates.includes('2026-09-16')
+   :row.marketDate==='2026-10-16');
+ if(row.symbol==='2330'&&row.market==='TWSE'&&relevant2330){
   applicable.push({symbol:'2330',market:'TWSE',eventDate:'2026-09-16',
    firstObservedAtUtc:'2026-10-16T13:48:50.420Z'});
  }
@@ -112,6 +119,19 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
  if(!validUtc(cut))reject('REQUESTED_ASOF_CLOCK_INVALID');
  if(Date.parse(cut)<Date.parse(r.marketDate+'T00:00:00Z'))
    reject('DECISION_DATE_BEFORE_SOURCE_MARKET_DATE');
+ // Source-only official session list is signed by the already-audited
+ // physical preliminary source. Historic pre-v0.2-calendar receipts stay
+ // readable but cannot claim new-date risk coverage from a missing list.
+ const calendar=r.source61TradingDates??null;
+ // The original Oct13 source physical fixture has no such field; it stays
+ // replayable only as historic research. Current post-approval prospective
+ // daily preview must prove its exact 61 official source dates.
+ if(calendar===null&&r.marketDate>'2026-10-16')
+  reject('SOURCE_61_OFFICIAL_SESSION_CALENDAR_REQUIRED_FOR_CURRENT_PREVIEW');
+ if(calendar!==null&&(!Array.isArray(calendar)||calendar.length!==61||
+    calendar.at(-1)!==r.marketDate||
+    calendar.some((d,i)=>!validDay(d)||(i>0&&d<=calendar[i-1]))))
+  reject('SOURCE_61_OFFICIAL_SESSION_CALENDAR_INVALID');
  const observedAfterUserCut=Date.parse(r.observedAtUtc)>Date.parse(cut);
  // Real owner preferred conditional daily T cut is 23:45 Taipei / 15:45Z.
  // A later observation may still be descriptive, never backdated to T.
@@ -136,7 +156,7 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
   const id=x.market+'|'+x.symbol;
   if(seen.has(id))reject('DUPLICATE_PREVIEW_CANDIDATE');
   seen.add(id);
-  const positive=positiveOverlay(x,positiveCorporateActionOverlays,Date.parse(cut));
+  const positive=positiveOverlay(x,positiveCorporateActionOverlays,Date.parse(cut),calendar);
   const warnings=[
    'ORDINARY_SHARE_CLASS_NOT_INDEPENDENTLY_CERTIFIED',
    'COMPANY_ACTION_PIT_NOT_CLEARED',
@@ -173,6 +193,8 @@ export async function routeSystem2ThreeLayerSelectionV0_1({
   observedAfterRequestedCut:observedAfterUserCut,
   observedAfterTradingDatePreferredCut:observedAfterPreferredTCut,
   lateMorningObservationNotBackdated:r.lateMorningObservationNotBackdated===true,
+  source61SessionCalendarProvided:calendar!==null,
+  known2330ExdivDateInSource61Window:calendar?.includes('2026-09-16')??null,
   sourceUniverseKind:'FOUR_DIGIT_INSTRUMENT_NOT_CERTIFIED_ORDINARY_EQUITY',
   sourceUniverseCount:r.officialUniverseCount,
   ordinaryEquityUniverseCertified:false,
