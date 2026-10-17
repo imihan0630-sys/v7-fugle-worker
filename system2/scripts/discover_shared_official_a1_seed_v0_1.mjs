@@ -6,6 +6,15 @@ const repo='imihan0630-sys/v7-fugle-worker';
 const legacy={runId:38317682441,
  artifactName:'system2-original-official-61-2026-10-13-38317682441',
  kind:'INITIAL_REAL_PROVIDER_UNAUDITED_SEED'};
+// The successful SOURCE workflow may legitimately SKIP a non-trading day,
+// yet upload a tiny source-skip.json under the same source archive name.
+// GitHub artifact metadata cannot verify the ZIP's members. A true 122-pair
+// TWSE/TPEx 61-session original cache is orders of magnitude larger than
+// this conservative 64 KiB guard (the 2026-10-16 original ZIP was 40 MB).
+// This only chooses a REUSE SEED; real original bytes still require independent
+// source receipt + per-market/date SHA readback. A borderline archive falls
+// back to older real originals, NEVER becomes a PIT or zero-pick admission.
+export const MIN_SHARED_A1_REUSABLE_SEED_ZIP_BYTES_V0_1=65536;
 async function api(endpoint,{fetchImpl=globalThis.fetch,token}={}){
  const u='https://api.github.com/repos/'+repo+endpoint;
  const r=await fetchImpl(u,{headers:{
@@ -37,7 +46,8 @@ export async function discoverSharedA1PreviousSourceArtifactV0_1({
    x.expired===false&&x.name==='s2-shared-official-a1-'+run.id&&
    Number.isSafeInteger(x.id)&&x.id>0&&
    x.workflow_run?.id===run.id&&
-   Number.isSafeInteger(x.size_in_bytes)&&x.size_in_bytes>0):null;
+   Number.isSafeInteger(x.size_in_bytes)&&
+   x.size_in_bytes>=MIN_SHARED_A1_REUSABLE_SEED_ZIP_BYTES_V0_1):null;
   if(artifact)
    return Object.freeze({runId:run.id,artifactName:artifact.name,kind:'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE'});
  }
