@@ -63,6 +63,26 @@ await test("classify existing original cron CPU without outputting provider raw 
  assert.equal(x.cronRowsForDate[0].errorClass,"CPU_OR_RESOURCE");
  assert.equal(JSON.stringify(x).includes("Secret do not log"),false);
 });
+await test("actual official quality snapshot counts do not prove exact five EPS symbols",()=>{
+ const x=classify(make({quality:{marketDate:d,index:{ready:true,count:55,asOfDate:d},
+ tdcc:{ready:true,count:2900,asOfDate:d},datasets:{
+ FINANCIAL:{ready:true,count:1882,asOfDate:d},
+ VALUATION:{ready:true,count:1965,asOfDate:d},
+ ANNOUNCEMENTS:{ready:true,count:150,asOfDate:d},
+ QUARTER_EPS:{ready:true,count:4,asOfDate:d}}}}),{});
+ assert.equal(x.quarterEpsSnapshotPresent,true);
+ assert.equal(x.quarterEpsSnapshotCount,4);
+ assert.equal(x.qualitySnapshotReadback.INDEX.count,55);
+ assert.equal(x.qualitySnapshotReadback.QUARTER_EPS.count,4);
+ assert.equal(x.verifiedSameDayFormal,false);
+});
+await test("missing EPS source remains UNKNOWN, not zero or eligible",()=>{
+ const x=classify(make({quality:{marketDate:d,datasets:{
+ QUARTER_EPS:{ready:false,count:0}}}}),{});
+ assert.equal(x.quarterEpsSnapshotPresent,false);
+ assert.equal(x.quarterEpsSnapshotCount,0);
+ assert.equal(x.verifiableSelectedCount,null);
+});
 await test("script is hardcoded GET only, excludes Worker POST and GitHub writes",async()=>{
  const src=await readFile(new URL("../ops/system1_p0_20261016_original_formal_getonly_once.mjs",import.meta.url),"utf8");
  assert.doesNotMatch(src,/method:"POST"|\/api\/scan"[,)]/);
