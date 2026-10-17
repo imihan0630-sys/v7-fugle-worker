@@ -4,6 +4,7 @@ on:
     paths:
       - "Worker.js"
       - "tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs"
+      - "ops/system1_p0_eps_quarantine_worker_candidate_reviewonly_v0_1.mjs"
       - ".github/workflows/system1-p0-eps-original-selector-dryrun-review.yml"
 permissions:
   contents: read
@@ -19,5 +20,8 @@ jobs:
       - name: Static and inert Worker helper tests; no secrets, no deploy
         run: |
           node --check Worker.js
+          node --check ops/system1_p0_eps_quarantine_worker_candidate_reviewonly_v0_1.mjs
+          node ops/system1_p0_eps_quarantine_worker_candidate_reviewonly_v0_1.mjs
+          node --check artifacts/reviewonly/system1_eps_quarantine_dryrun_worker.mjs
           node --check tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs
           node tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs
