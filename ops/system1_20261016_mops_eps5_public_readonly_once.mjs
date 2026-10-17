@@ -17,7 +17,17 @@ export function checkContractMarkers(html,symbol,year,quarter){
   consolidatedStatement:html.includes("合併綜合損益表"),
   thousandNtdUnit:html.includes("新台幣仟元")
  };
- return {...markers,allRequiredMarkersPresent:Object.values(markers).every(Boolean),
+ const alternateOfficialBasis={
+  reportIdA:html.includes("CO_ID="+symbol+"&SYEAR="+year+"&SSEASON="+quarter+"&REPORT_ID=A"),
+  reportIdD:html.includes("CO_ID="+symbol+"&SYEAR="+year+"&SSEASON="+quarter+"&REPORT_ID=D"),
+  reportIdC:html.includes("CO_ID="+symbol+"&SYEAR="+year+"&SSEASON="+quarter+"&REPORT_ID=C"),
+  genericIncomeStatement:html.includes("綜合損益表"),
+  individualIncomeStatement:html.includes("個體綜合損益表")||html.includes("個別綜合損益表"),
+  rocYearReference:html.includes(String(year-1911)+"年第"+quarter+"季"),
+  exactCompanyReference:html.includes("CO_ID="+symbol)
+ };
+ return {...markers,alternateOfficialBasis,
+  allRequiredMarkersPresent:Object.values(markers).every(Boolean),
   byteLength:Buffer.byteLength(html,"utf8"),
   sourceSha256:createHash("sha256").update(html).digest("hex")};
 }
@@ -30,8 +40,9 @@ export function exceptionClass(error){
  if(e.includes("輸入無效"))return "SOURCE_INPUT_CONTRACT";
  return "OTHER_PARSER_OR_SOURCE_ERROR";
 }
+const ACTIVE_SYMBOLS=process.argv.includes("--only-5340")?["5340"]:SYMBOLS;
 const output={schema:"S1_P0_PUBLIC_MOPS_20261016_EPS5_ORIGINAL_SOURCE_V0_1",
- targetDate:DATE,year:YEAR,quarter:QUARTER,symbols:SYMBOLS,
+ targetDate:DATE,year:YEAR,quarter:QUARTER,symbols:ACTIVE_SYMBOLS,
  observedAt:new Date().toISOString(),sourceUrl:URL,sourceReadOnly:true,
  noCloudflareCall:true,noWorkerPOST:true,noD1Read:true,noD1Write:true,
  noKvRead:true,noKvWrite:true,noTrade:true,noPush:true,noDeploy:true,
@@ -55,7 +66,7 @@ if(process.argv.includes("--dry-run")){
  const source=await readFile("Worker.js","utf8");
  const api=await import("data:text/javascript;base64,"+
   Buffer.from(source+"\nexport {parseMopsQuarterEpsHtml,validateOfficialQualityData};").toString("base64"));
- for(const symbol of SYMBOLS){
+ for(const symbol of ACTIVE_SYMBOLS){
   const state={Q2:null,Q1:null,verified:false};
   output.resultBySymbol[symbol]=state;
   const bodies={};
@@ -98,7 +109,7 @@ if(process.argv.includes("--dry-run")){
   console.log("SYSTEM1_PUBLIC_MOPS_SYMBOL_STATUS="+JSON.stringify({
    symbol,Q2:state.Q2?.result,Q1:state.Q1?.result,verified:state.verified}));
  }
- output.allVerified=SYMBOLS.every(s=>output.resultBySymbol[s].verified===true);
+ output.allVerified=ACTIVE_SYMBOLS.every(s=>output.resultBySymbol[s].verified===true);
  output.status=output.allVerified?"ALL_FIVE_OFFICIAL_EPS_VALIDATED_SOURCE_ONLY":
   output.anyTransportFailure?"OFFICIAL_TRANSPORT_INCOMPLETE_NO_SELECTION":
   "OFFICIAL_EPS_FORMAT_OR_COVERAGE_UNVERIFIED_NO_SELECTION";
