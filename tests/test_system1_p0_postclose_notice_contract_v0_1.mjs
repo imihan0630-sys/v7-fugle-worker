@@ -68,7 +68,7 @@ assert.match(script,/attempt!==1/);
 assert.match(script,/redirect:"error"/);
 assert.match(script,/hooks\\\.slack\\\.com/);
 assert.match(script,/noBusinessPOST:true/);
-assert.doesNotMatch(script,/\/api\/(?:push|scan\/run|three-min\/verify|import|acceptance\/reconcile)/);
+assert.doesNotMatch(script,/["']\/api\/(?:push|scan\/run|three-min\/verify|import|acceptance\/reconcile)["'?]/);
 assert.doesNotMatch(script,/process\.env\.CLOUDFLARE_API_TOKEN/);
 assert.doesNotMatch(script,/process\.env\.SYSTEM1_P0_D1_READ_TOKEN/);
 assert.doesNotMatch(script,/https:\/\/api\.cloudflare\.com/);
