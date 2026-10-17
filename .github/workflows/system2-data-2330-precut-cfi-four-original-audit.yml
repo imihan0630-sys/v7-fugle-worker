@@ -41,7 +41,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           run-id: 38877910182
-          name: s2-m09-single-native-cfi-original-38877910182-1
+          name: s2-m09-native-single-cfi-38877910182-1
           path: /tmp/s2-pita-2330-cfi-precursor-4-originals/
           github-token: ${{ github.token }}
       - name: Independently decompress all four real original HTML bodies and rehash exact 2330 status
