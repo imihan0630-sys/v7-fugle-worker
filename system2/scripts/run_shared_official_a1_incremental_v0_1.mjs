@@ -131,7 +131,11 @@ export async function collectSharedOfficialA1IncrementalV0_1({
   plannedPairs:122,
   reuseCount:evidence.sharedOriginalSourceReuse?.trustedReusedMarketDatePairs??0,
   missingBeforeFetch:evidence.sharedOriginalSourceReuse?.initialMissingMarketDatePairs||[],
-  targetSourceObservation: summarizeCurrentMarketSourceClockV0_1({\n    marketDate:c.marketDate,receipts:evidence.receipts,\n    validatedPairs:manifest.sourceMarketDatePairsValidated\n  }),\n  missingAfterFetch:missingA1MarketDatePairsAfterFetchV0_1({
+  targetSourceObservation: summarizeCurrentMarketSourceClockV0_1({
+    marketDate:c.marketDate,receipts:evidence.receipts,
+    validatedPairs:manifest.sourceMarketDatePairsValidated
+  }),
+  missingAfterFetch:missingA1MarketDatePairsAfterFetchV0_1({
    tradingDates:evidence.calendar?.tradingDates,
    receipts:evidence.receipts,errors:evidence.errors
   }),
