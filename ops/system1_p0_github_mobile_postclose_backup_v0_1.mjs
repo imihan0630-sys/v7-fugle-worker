@@ -34,7 +34,8 @@ export function classified({date,chain,stocks}={}){
  if(!dateOk(date))throw Error("DATE_INVALID");
  const c=chain||{},n=c.formalSelectedCount;
  const exact=c.targetDate===date&&c.formalScanDate===date&&
- c.sourcesReady===true&&c.formalSelectionAuthenticated===true&&
+ c.sourcesReady===true&&c.formalPipelineComplete===true&&
+ c.formalSelectionAuthenticated===true&&
  c.primaryMonitorReadbackVerified===true&&
  Number.isSafeInteger(n)&&n>=0&&n<=6&&!Object.keys(c.readErrors||{}).length&&
  c.category!=="GET_READ_ERROR";
