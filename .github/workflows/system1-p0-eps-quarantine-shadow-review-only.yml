@@ -1,0 +1,39 @@
+name: System1 P0 EPS quarantine shadow - no production
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-eps-quarantine-shadow-review-only.yml"
+      - "research/system1_p0_eps_candidate_quarantine_shadow_v0_1.mjs"
+      - "tests/test_system1_p0_eps_candidate_quarantine_shadow_v0_1.mjs"
+      - "tests/test_system1_p0_eps_quarantine_v8_source_parity_v0_1.mjs"
+      - "research/system1_p0_eps_quarantine_v8_source_parity_v0_1.mjs"
+      - "research/SYSTEM1_P0_EPS_CANDIDATE_QUARANTINE_SHADOW_CHECKPOINT_20261017.md"
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Fail-closed shadow quarantine and holding protection
+        run: |
+          node --check research/system1_p0_eps_candidate_quarantine_shadow_v0_1.mjs
+          node --check tests/test_system1_p0_eps_candidate_quarantine_shadow_v0_1.mjs
+          node tests/test_system1_p0_eps_candidate_quarantine_shadow_v0_1.mjs
+          node --check research/system1_p0_eps_quarantine_v8_source_parity_v0_1.mjs
+          node --check tests/test_system1_p0_eps_quarantine_v8_source_parity_v0_1.mjs
+          node tests/test_system1_p0_eps_quarantine_v8_source_parity_v0_1.mjs
+      - name: Formal Worker untouched by PR
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --exit-code "$BASE_SHA" "$HEAD_SHA" -- Worker.js
+          test -f Worker.js
+          test -f REQUIREMENTS_30.md
