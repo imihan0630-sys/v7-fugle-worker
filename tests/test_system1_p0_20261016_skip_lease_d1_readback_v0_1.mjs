@@ -90,7 +90,7 @@ const fail=classify({date:TARGET_DATE,readError:"CLOUDFLARE_READ_HTTP_403"});
 assert.equal(fail.state,"PHYSICAL_D1_READ_UNAVAILABLE");
 assert.equal(fail.scheduledInvocationsProven,false);
 assert.equal(fail.noD1Write,true);
-const script=await readFile(new URL("../ops/system1_p0_historical_cron_d1_select_readonly_20261016.mjs",import.meta.url),"utf8");
+const script=await readFile(new URL("../ops/system1_p0_20261016_skip_lease_d1_manual_readonly.mjs",import.meta.url),"utf8");
 assert.match(script,/if\(sql!==CRON_SELECT&&sql!==LEASE_SELECT\)/);
 assert.match(script,/requests\.select>2/);
 assert.match(script,/database\?per_page=100/);
