@@ -44,17 +44,21 @@ export function makeSingleKnownExdivReferenceCandidateV0_1({
     rawBars[idx].close!==2380)deny('EVENT_NATIVE_PRE_POST_CLOSE_MISMATCH');
  const factor=exchangeReference/priorNativeClose;
  const series=rawBars.map((r,i)=>{
-   const multiplier=i<idx?factor:1;
+   const postEventOriginalUnchanged=i>=idx;
+   const multiplier=postEventOriginalUnchanged?1:factor;
+   // Preserve exact native post-event OHLC, including source decimal precision.
+   // Rounding those untouched source bars would break the identity assertion.
+   const proposedOHLC=postEventOriginalUnchanged?
+     {open:r.open,high:r.high,low:r.low,close:r.close}:
+     {open:rounded(r.open*multiplier),high:rounded(r.high*multiplier),
+      low:rounded(r.low*multiplier),close:rounded(r.close*multiplier)};
    return {
      marketDate:r.marketDate,rawSourceRowSha256:r.rawRowSha256,
      priceSpace:'SINGLE_KNOWN_EVENT_REFERENCE_RATIO_PROPOSAL',
-     proposedOHLC:{
-       open:rounded(r.open*multiplier),high:rounded(r.high*multiplier),
-       low:rounded(r.low*multiplier),close:rounded(r.close*multiplier)
-     },
+     proposedOHLC,
      priceMultiplier:multiplier,
      knownEventPreSide:i<idx,
-     trueNativeOHLCUnchanged:false,
+     trueNativeOHLCUnchanged:postEventOriginalUnchanged,
    };
  });
  if(series.length!==61||
