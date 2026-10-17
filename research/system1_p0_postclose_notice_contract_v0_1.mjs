@@ -26,7 +26,11 @@ export function classifyPostcloseNotice({targetDate,chain,attempt=null}={}){
  const validCount=Number.isSafeInteger(count)&&count>=0&&count<=6;
  // Positive or 0 formal state must be backed by exact formal/KV equality;
  // an orphan outbox, old plan, empty monitor or status=SUCCESS alone never suffices.
- const formalComplete=authenticated&&validCount;
+ const formalComplete=authenticated&&validCount&&chain?.sourcesReady===true&&
+  !["GET_READ_ERROR","FORMAL_SCAN_STALE_DATE","FORMAL_SCAN_NOT_COMPLETE",
+    "FORMAL_SCAN_NOT_SAVED_AFTER_READY_SOURCES",
+    "FORMAL_SCAN_NOT_SAVED_SOURCE_UNVERIFIED",
+    "PRIMARY_MONITOR_KV_NOT_VERIFIED"].includes(category);
  const outboxAccepted=chain?.dailyReportOutboxAccepted===true;
  const upstreamFailure=attempt?.status==="FAILED"&&attempt?.requestedDate===targetDate;
  const sourceIncomplete=chain?.sourcesReady!==true;
