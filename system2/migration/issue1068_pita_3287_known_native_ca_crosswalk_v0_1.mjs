@@ -81,8 +81,13 @@ export async function verify3287RealArchivedSources({a1Dir,caDir,read=readFile}=
    deny('A1_ORIGINAL_SHA_OR_CLOCK_MISMATCH');
   const q=JSON.parse(raw.toString('utf8'));
   if(q.date!==d.replaceAll('-','')||q.stat!=='ok'||!Array.isArray(q.tables)||
-    q.tables.length!==1)deny('A1_NATIVE_DATE_OR_TABLE_INVALID');
-  const [tab]=q.tables, f=tab.fields;
+    q.tables.length<1)deny('A1_NATIVE_DATE_OR_TABLE_INVALID');
+  // Official TPEx daily response holds 上櫃股票行情 + 管理股票. Only the
+  // former is the normal-stock source table, and its identity is explicit.
+  const candidates=q.tables.filter(t=>t.title==='上櫃股票行情'&&Array.isArray(t.fields)&&
+    t.fields.includes('代號')&&t.fields.includes('次日 參考價'));
+  if(candidates.length!==1)deny('A1_NATIVE_STANDARD_EQUITY_TABLE_NOT_UNIQUE');
+  const tab=candidates[0], f=tab.fields;
   const n=(field,r)=>r[f.indexOf(field)];
   if(!Array.isArray(f)||f.indexOf('代號')<0||f.indexOf('次日 參考價')<0)
    deny('A1_NATIVE_FIELDS_MISSING');
