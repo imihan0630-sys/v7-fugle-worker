@@ -1,0 +1,96 @@
+name: System2 DATA M09 Next-Day Native Source Cut Fence (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_m09_overnight_native_source_cut_fence_v0_1.mjs"
+      - "system2/tests/issue1068_m09_overnight_native_source_cut_fence_v0_1.test.mjs"
+      - ".github/workflows/system2-data-m09-overnight-cut-fence-20261017.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_m09_overnight_native_source_cut_fence_v0_1.mjs"
+      - "system2/tests/issue1068_m09_overnight_native_source_cut_fence_v0_1.test.mjs"
+      - ".github/workflows/system2-data-m09-overnight-cut-fence-20261017.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-m09-nextday-original-cut-fence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  rehash_true_nextday_native_source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify fail-closed original source and independent audit clocks
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_m09_overnight_native_source_cut_fence_v0_1.mjs
+          node --test system2/tests/issue1068_m09_overnight_native_source_cut_fence_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fetch exact official prior-night native CFI 30-source ORIGINAL artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38955846766
+          name: s2-m09-daily-native-cfi-38955846766-1
+          path: /tmp/s2-nextday-m09-cfi-original
+          github-token: ${{ github.token }}
+      - name: Fetch exact official prior-night native six CA ORIGINAL artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38955846766
+          name: s2-m09-prospective-ca-sourceonly-38955846766-1
+          path: /tmp/s2-nextday-m09-ca-original
+          github-token: ${{ github.token }}
+      - name: Fetch true separate CFI original rehash audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38955973594
+          name: s2-m09-daily-native-cfi-independent-38955973594
+          path: /tmp/s2-nextday-m09-cfi-audit
+          github-token: ${{ github.token }}
+      - name: Fetch true separate six CA original rehash audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38955973706
+          name: s2-m09-six-ca-independent-38955973706
+          path: /tmp/s2-nextday-m09-ca-audit
+          github-token: ${{ github.token }}
+      - name: Rehash every raw original and fence out T decision retrospective source clock
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_m09_overnight_native_source_cut_fence_v0_1.mjs
+          R=/tmp/s2-m09-overnight-previous-cut-fence/native-nextday-previous-cut-rejected.json
+          test -s "$R"
+          test "$(jq -r .cfiOriginalBodiesRehashed "$R")" = '30'
+          test "$(jq -r .caOriginalBodiesRehashed "$R")" = '6'
+          test "$(jq -r .sourceCFI2330InCurrentNativeThirty "$R")" = 'false'
+          test "$(jq -r .nativeCfiAsOfCut.sourceBeforeCut "$R")" = 'false'
+          test "$(jq -r .nativeCaAsOfCut.sourceBeforeCut "$R")" = 'false'
+          test "$(jq -r .previousTStrategyPITEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "REHASH_CFI_ORIGINALS=30; REHASH_CA_ORIGINALS=6; 2330_NOT_IN_CFI_30; SOURCE_OBSERVED_AFTER_T_CUT; NO_RETROACTIVE_PIT; FROZEN=0" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve signed accurate as-of source-cut verdict, never original provider bodies
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-m09-nextday-original-cut-fence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-m09-overnight-previous-cut-fence/native-nextday-previous-cut-rejected.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Non-authorization
+        if: always()
+        run: |
+          echo 'Source-only original-byte attestation; an audit after cut can verify a pre-cut source but cannot backdate a post-cut source. No historical issuer version PIT, full strategy, Shadow or Frozen; zero Cloudflare/System1 writes.' >> "$GITHUB_STEP_SUMMARY"
