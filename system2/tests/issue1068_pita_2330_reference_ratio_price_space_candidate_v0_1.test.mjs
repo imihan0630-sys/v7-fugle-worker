@@ -38,7 +38,7 @@ test('native original event reference is not simply the nominal cash dividend',(
  const a=propose(fixture());
  assert.equal(a.rawPreEventClose,2385);
  assert.equal(a.nativeExDividendReference,2377.99);
- assert.equal(a.rawPreEventClose-a.nativeExDividendReference,7.010000000000218);
+ assert.ok(Math.abs((a.rawPreEventClose-a.nativeExDividendReference)-7.01)<1e-8);
  assert.notEqual(a.rawPreEventClose-a.nativeExDividendReference,7.000001);
 });
 test('refuse forged session denominator, event dates, body hash or impossible native OHLC',()=>{
