@@ -20,6 +20,8 @@ jobs:
         run: |
           node --check ops/system1_p0_20261016_original_formal_getonly_once.mjs
           node tests/test_system1_p0_20261016_original_formal_getonly_once.mjs
+          node --check research/system1_p0_quarter_eps_safe_merge_v0_1.mjs
+          node tests/test_system1_p0_quarter_eps_safe_merge_v0_1.mjs
       - name: Only bounded authenticated GET of existing production status endpoints
         run: node ops/system1_p0_20261016_original_formal_getonly_once.mjs
       - name: Preserve sanitized GET-only classification without token or stock plans
