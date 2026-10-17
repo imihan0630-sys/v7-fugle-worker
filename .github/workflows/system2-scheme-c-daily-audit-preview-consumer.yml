@@ -15,6 +15,9 @@ on:
       - 'system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs'
       - 'system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_delivery_origin_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_delivery_origin_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -86,6 +89,12 @@ jobs:
         env:
           UPSTREAM_AUDIT_RUN: ${{ github.event_name == 'pull_request' && '38469057567' || github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id || github.event.workflow_run.id }}
           MANUAL_RECOVERY: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          S2_DELIVERY_EVENT_NAME: ${{ github.event_name }}
+          S2_DELIVERY_AUDIT_RUN_ID: ${{ github.event_name == 'pull_request' && '38469057567' || github.event_name == 'workflow_dispatch' && inputs.source_audit_run_id || github.event.workflow_run.id }}
+          S2_DELIVERY_UPSTREAM_EVENT: ${{ github.event_name == 'pull_request' && '' || github.event_name == 'workflow_dispatch' && 'workflow_run' || github.event.workflow_run.event }}
+          S2_DELIVERY_UPSTREAM_CONCLUSION: ${{ github.event_name == 'pull_request' && '' || github.event_name == 'workflow_dispatch' && 'success' || github.event.workflow_run.conclusion }}
+          S2_DELIVERY_UPSTREAM_BRANCH: ${{ github.event_name == 'pull_request' && '' || github.event_name == 'workflow_dispatch' && 'main' || github.event.workflow_run.head_branch }}
+          S2_DELIVERY_UPSTREAM_REPO: ${{ github.event_name == 'pull_request' && '' || github.event_name == 'workflow_dispatch' && github.repository || github.event.workflow_run.head_repository.full_name }}
           PHYSICAL_EXAMPLE_PR: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
           S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview.json
         run: |
@@ -101,6 +110,9 @@ jobs:
           node --check system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs
           node --check system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_delivery_origin_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_delivery_origin_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
@@ -144,6 +156,25 @@ jobs:
             test "$(jq -r .previewReport.futureProspectiveForwardReturnsUsableForThisDecision "$R")" = 'false'
           fi
           node system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs "$R" /tmp/s2-scheme-c-daily-build-result
+          # The consumer being natural workflow_run is not sufficient to
+          # certify the ORIGINAL collector was a GH schedule (it may be
+          # push/dispatch). Preserve this distinction in signed derived evidence.
+          node system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs "$R" /tmp/s2-scheme-c-daily-build-result/daily-delivery-origin.json
+          O=/tmp/s2-scheme-c-daily-build-result/daily-delivery-origin.json
+          test -s "$O"
+          test "$(jq -r .marketDate "$O")" = "$(jq -r .marketDate "$R")"
+          test "$(jq -r .auditRunId "$O")" = "$UPSTREAM_AUDIT_RUN"
+          test "$(jq -r .completedDailyAutomaticSourceChainCertified "$O")" = 'false'
+          test "$(jq -r .sourceCollectorScheduledOriginIndependentlyVerified "$O")" = 'null'
+          test "$(jq -r .selectedCount "$O")" = 'null'
+          test "$(jq -r .frozenD1Written "$O")" = 'false'
+          if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
+            test "$(jq -r .status "$O")" = 'PR_HISTORICAL_PROOF_ONLY'
+          elif [ "$MANUAL_RECOVERY" = 'true' ]; then
+            test "$(jq -r .status "$O")" = 'OPERATOR_MANUAL_REPLAY_NOT_AUTOMATIC'
+          else
+            test "$(jq -r .status "$O")" = 'AUTO_AUDIT_CHILD_RECEIVED__SOURCE_CRON_ORIGIN_UNVERIFIED'
+          fi
           M=/tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview-meta.json
           HUMAN=/tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview.md
           test -s "$M"
@@ -189,6 +220,9 @@ jobs:
             echo "**T23:45 相對截止—獨立稽核完成：** $(jq -r .independentAuditOffsetMinutes "$M") 分鐘（正數晚到、負數提前）"
             echo "**T23:45 相對截止—預覽觀察形成：** $(jq -r '.previewObservationOffsetMinutes // "UNKNOWN"' "$M") 分鐘（正數晚到、負數提前）"
             echo "**來源截止狀態：** $(jq -r .researchReceiptCutStatus "$M")"
+            echo "**本輪觸發分類：** $(jq -r .status "$O")"
+            echo "**來源最初 Cron 觸發已獨立驗證：** UNKNOWN（稽核 child 的自動 workflow_run 不等於原採集排程）"
+            echo "**完整定時自動交付認證：** false；不得將 PR 測試或人工回放灌入每日定時成功率。"
             echo "**GitHub 排程延遲／官方公布時點：** 本收據無法單獨歸因；不可將上述相對截止分鐘數稱作 GitHub dispatch lag 或官方發布延遲。"
             echo "**描述性符合：** $(jq -r '.descriptiveSourceMatches // "UNKNOWN"' "$R")"
             echo "**實際展示：** $(jq -r '.observedPreviewCount // "UNKNOWN"' "$R")"
@@ -296,6 +330,8 @@ jobs:
       - name: Source-bind exact signed A1 and V02 receipts, render only late NON-PIT
         env:
           S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-real-20261016-output/daily-nonpit-preview.json
+          S2_DELIVERY_EVENT_NAME: pull_request
+          S2_DELIVERY_AUDIT_RUN_ID: '38934321405'
         run: |
           set -euo pipefail
           ROOT=/tmp/s2-real-20261016-same-audit
@@ -331,6 +367,15 @@ jobs:
           test "$(jq -r .cloudflareD1Writes "$R")" = '0'
           test "$(jq -r .cloudflareR2Writes "$R")" = '0'
           node system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs "$R" /tmp/s2-real-20261016-output
+          node --test system2/tests/scheme_c_delivery_origin_v0_1.test.mjs
+          node system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs "$R" /tmp/s2-real-20261016-output/daily-delivery-origin.json
+          ORIGIN=/tmp/s2-real-20261016-output/daily-delivery-origin.json
+          test -s "$ORIGIN"
+          test "$(jq -r .marketDate "$ORIGIN")" = '2026-10-16'
+          test "$(jq -r .auditRunId "$ORIGIN")" = '38934321405'
+          test "$(jq -r .status "$ORIGIN")" = 'PR_HISTORICAL_PROOF_ONLY'
+          test "$(jq -r .completedDailyAutomaticSourceChainCertified "$ORIGIN")" = 'false'
+          test "$(jq -r .sourceCollectorScheduledOriginIndependentlyVerified "$ORIGIN")" = 'null'
           HUMAN=/tmp/s2-real-20261016-output/daily-nonpit-preview.md
           META=/tmp/s2-real-20261016-output/daily-nonpit-preview-meta.json
           test -s "$HUMAN"
