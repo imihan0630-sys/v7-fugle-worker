@@ -1,0 +1,99 @@
+name: System2 Scheme C Daily Independent-Audit Preview Consumer (NO NEW CRON)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/runtime/scheme_c_daily_audit_handoff_v0_1.mjs'
+      - 'system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs'
+      - 'system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs'
+      - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
+  workflow_run:
+    workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
+    types: [completed]
+permissions:
+  actions: read
+  contents: read
+concurrency:
+  group: s2-scheme-c-existing-a1-audit-preview-${{ github.event_name == 'pull_request' && github.head_ref || github.event.workflow_run.id }}
+  cancel-in-progress: false
+jobs:
+  build_preview_from_existing_audit:
+    # Follow only authentic main sourced by completed source incremental A1 audit.
+    # A push self-diagnostic 121/122 must not create false daily stock selections.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       github.event.workflow_run.event == 'workflow_run')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact ALREADY STORED current audit artifact or pinned historical proof
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event_name == 'pull_request' && '38469057567' || github.event.workflow_run.id }}
+          name: ${{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38469057567' || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
+          github-token: ${{ github.token }}
+          path: /tmp/s2-scheme-c-daily-original-audit/
+      - name: Exact ALREADY STORED signed daily V02 preliminary (never fetch market)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event_name == 'pull_request' && '38477169340' || github.event.workflow_run.id }}
+          name: ${{ github.event_name == 'pull_request' && 's2-v02-tdr-filtered-observation-38477169340' || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
+          github-token: ${{ github.token }}
+          path: /tmp/s2-scheme-c-daily-derived-preview/
+      - name: Independently bind audit and preliminary exact trading date / SHA / clock
+        env:
+          UPSTREAM_AUDIT_RUN: ${{ github.event_name == 'pull_request' && '38469057567' || github.event.workflow_run.id }}
+          PHYSICAL_EXAMPLE_PR: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
+          S2_SCHEME_C_OUTPUT_PATH: /tmp/s2-scheme-c-daily-build-result/daily-nonpit-preview.json
+        run: |
+          set -euo pipefail
+          node --check system2/runtime/scheme_c_daily_audit_handoff_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_daily_audit_handoff_v0_1.test.mjs
+          AUDIT=/tmp/s2-scheme-c-daily-original-audit/audit-receipt.json
+          PREVIEW=/tmp/s2-scheme-c-daily-derived-preview/preliminary-pv-watch.json
+          test -s "$AUDIT"
+          test -s "$PREVIEW"
+          if [ "$PHYSICAL_EXAMPLE_PR" = "true" ]; then
+            # Physical prior V02 watcher run #38477169340 explicitly consumed
+            # independent source audit #38469057567, both source linked.
+            node system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "$AUDIT" "$PREVIEW" "$UPSTREAM_AUDIT_RUN" historical-pinned
+          else
+            node system2/scripts/run_scheme_c_daily_audit_handoff_readonly_v0_1.mjs "$AUDIT" "$PREVIEW" "$UPSTREAM_AUDIT_RUN"
+          fi
+          R="$S2_SCHEME_C_OUTPUT_PATH"
+          test -s "$R"
+          test "$(jq -r .pitACertificationGranted "$R")" = 'false'
+          test "$(jq -r .pitBCertificationGranted "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          test "$(jq -r .cloudflareR2Writes "$R")" = '0'
+          test "$(jq -r .system1FormalCoreChanged "$R")" = 'false'
+          if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
+            test "$(jq -r .state "$R")" = 'NON_PIT_SOURCE_OBSERVATION_READY'
+            test "$(jq -r .marketDate "$R")" = '2026-10-13'
+            test "$(jq -r .descriptiveSourceMatches "$R")" = '580'
+            test "$(jq -r .observedPreviewCount "$R")" = '30'
+            test "$(jq -r .previewReport.state "$R")" = 'LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY'
+            test "$(jq -r .previewReport.futureProspectiveForwardReturnsUsableForThisDecision "$R")" = 'false'
+          fi
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "SCHEME_C source tradingDate=$(jq -r .marketDate "$R"), source audit run=$UPSTREAM_AUDIT_RUN; readiness=$(jq -r .state "$R"); preview=$(jq -r .observedPreviewCount "$R"); PIT-A/B=NO, selected=null, Frozen=NO, no provider GET, no new Cron." >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve only derived research receipt for downstream display
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-scheme-c-daily-source-bound-preview-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-scheme-c-daily-build-result/
+          retention-days: 30
+          if-no-files-found: warn
