@@ -6,6 +6,13 @@ const {checkContractMarkers,exceptionClass}=
 const html="CO_ID=4167&SYEAR=2026&SSEASON=2&REPORT_ID=C 合併綜合損益表 新台幣仟元";
 const flags=checkContractMarkers(html,"4167",2026,2);
 assert.equal(flags.allRequiredMarkersPresent,true);
+assert.equal(flags.alternateOfficialBasis.reportIdC,true);
+const alt="CO_ID=5340&SYEAR=2026&SSEASON=2&REPORT_ID=A 個體綜合損益表 新台幣仟元";
+const af=checkContractMarkers(alt,"5340",2026,2);
+assert.equal(af.allRequiredMarkersPresent,false);
+assert.equal(af.alternateOfficialBasis.reportIdA,true);
+assert.equal(af.alternateOfficialBasis.individualIncomeStatement,true);
+assert.equal(af.alternateOfficialBasis.genericIncomeStatement,true);
 assert.equal(flags.sourceSha256.length,64);
 assert.equal(checkContractMarkers(html,"3236",2026,2).allRequiredMarkersPresent,false);
 assert.equal(checkContractMarkers(html.replace("合併綜合損益表","個體綜合損益表"),"4167",2026,2).allRequiredMarkersPresent,false);
