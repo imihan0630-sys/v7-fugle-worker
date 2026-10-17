@@ -10,6 +10,8 @@ on:
       - 'system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs'
       - 'system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs'
+      - 'system2/runtime/three_layer_selection_preview_router_v0_1.mjs'
+      - 'system2/tests/three_layer_selection_preview_router_v0_1.test.mjs'
       - 'system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs'
       - 'system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs'
@@ -94,6 +96,7 @@ jobs:
           node --check system2/runtime/scheme_c_daily_visible_report_v0_1.mjs
           node --check system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
+          node --test system2/tests/three_layer_selection_preview_router_v0_1.test.mjs
           node --test system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs
           node --check system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs
           node --check system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs
