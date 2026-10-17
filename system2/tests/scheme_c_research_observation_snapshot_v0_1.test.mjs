@@ -134,7 +134,7 @@ test('manual and natural consumer have distinct historical provenance and no aut
 test('reject corrupt or re-signed mismatching report, count and origin before recording',async()=>{
  const variants=[
   async f=>{f.reportMarkdown+=' forged';},
-  async f=>{f.deliveryAcceptance.status='NOT_REAL';},
+  async f=>{f.deliveryAcceptance={...f.deliveryAcceptance,status:'NOT_REAL'};},
   async f=>{f.handoff.previewReport.previewRows[0].symbol='9999';},
   async f=>{f.deliveryOrigin.consumerRunId=99;
    f.deliveryOrigin=await rehash(unsigned(f.deliveryOrigin,'deliveryOriginHash'),'deliveryOriginHash');},
