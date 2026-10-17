@@ -1,0 +1,96 @@
+name: System2 DATA Exact Native A1 Cron Source Audit Chain (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_a1_native_cron_source_audit_chain_v0_1.mjs'
+      - 'system2/scripts/run_issue1068_a1_native_cron_source_audit_chain_readonly_v0_1.mjs'
+      - 'system2/tests/issue1068_a1_native_cron_source_audit_chain_v0_1.test.mjs'
+      - '.github/workflows/system2-data-a1-native-cron-audit-chain-replay.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify_native_source_cron_audit_chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Adversarial contract checks, no privilege escalation
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_a1_native_cron_source_audit_chain_v0_1.mjs
+          node --check system2/scripts/run_issue1068_a1_native_cron_source_audit_chain_readonly_v0_1.mjs
+          node --test system2/tests/issue1068_a1_native_cron_source_audit_chain_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Reuse exact real original 10/16 A1 SOURCE Run artifact (NO market GET)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: '38934081985'
+          name: s2-shared-official-a1-38934081985
+          path: /tmp/s2-data-existing-source
+          github-token: ${{ github.token }}
+      - name: Reuse original completed independent 122/122 SOURCE-AUDIT Run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: '38934321405'
+          name: system2-shared-official-a1-independent-audit-38934321405
+          path: /tmp/s2-data-existing-audit
+          github-token: ${{ github.token }}
+      - name: Reuse original independently produced 90d cron/clock DUAL receipt
+        uses: actions/download-artifact@v4
+        with:
+          run-id: '38934321405'
+          name: s2-a1-dual-source-clock-38934321405
+          path: /tmp/s2-data-existing-dual
+          github-token: ${{ github.token }}
+      - name: Read GitHub native REST source/audit run and exact original source job
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/"$GITHUB_REPOSITORY"/actions/runs/38934081985 > /tmp/s2-data-source-run-rest.json
+          gh api repos/"$GITHUB_REPOSITORY"/actions/runs/38934321405 > /tmp/s2-data-audit-run-rest.json
+          gh api 'repos/'"$GITHUB_REPOSITORY"'/actions/runs/38934081985/jobs?per_page=100' > /tmp/s2-data-source-jobs-rest.json
+          test "$(jq '.jobs|length' /tmp/s2-data-source-jobs-rest.json)" = 1
+      - name: Cross-bind real archived SOURCE event cron, 122/122, actual audit and decision-clock fence
+        run: |
+          set -euo pipefail
+          test -s /tmp/s2-data-existing-source/source-github-origin.json
+          test -s /tmp/s2-data-existing-source/shared-official-a1-manifest.json
+          test -s /tmp/s2-data-existing-source/official-61-2026-10-16.json
+          AUDIT="$(find /tmp/s2-data-existing-audit -name audit-receipt.json -type f -print -quit)"
+          DUAL="$(find /tmp/s2-data-existing-dual -name dual-acceptance-receipt.json -type f -print -quit)"
+          test -n "$AUDIT"
+          test -n "$DUAL"
+          node system2/scripts/run_issue1068_a1_native_cron_source_audit_chain_readonly_v0_1.mjs \
+            /tmp/s2-data-existing-source "$AUDIT" "$DUAL" \
+            /tmp/s2-data-source-run-rest.json /tmp/s2-data-audit-run-rest.json \
+            /tmp/s2-data-source-jobs-rest.json /tmp/s2-data-native-chain
+          R=/tmp/s2-data-native-chain/native-github-source-cron-audit-chain.json
+          test "$(jq -r .sourceScheduleEventIndependentlyVerified "$R")" = 'true'
+          test "$(jq -r .exactEventCron "$R")" = '15 12 * * 1-5'
+          test "$(jq -r .scheduleEnqueueDelayMinutes "$R")" = '267.667'
+          test "$(jq -r .originalSourceMarketPairsIndependentlyAudited "$R")" = '122'
+          test "$(jq -r .originalTargetDecisionCutSourceReady "$R")" = 'false'
+          test "$(jq -r .completedDailySchemeCAutomaticConsumerCertified "$R")" = 'false'
+          test "$(jq -r .sameDayStrategyPITCertified "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo 'REAL_SOURCE_CRON_EVENT_CONFIRMED=20:15_TAIPEI' >> "$GITHUB_STEP_SUMMARY"
+          echo 'ACTUAL_GH_RUN_START=2026-10-17_00:42:40_TAIPEI / ENQUEUE_DELAY_MIN=267.667' >> "$GITHUB_STEP_SUMMARY"
+          echo 'INDEPENDENT_SOURCE_PAIRS=122/122; NOT_10_16_23:45_PIT_OR_FROZEN' >> "$GITHUB_STEP_SUMMARY"
+          echo "EXACT_NATIVE_CRON_SOURCE_AUDIT_RECEIPT_SHA=$(jq -r .receiptHash "$R")" >> "$GITHUB_STEP_SUMMARY"
+      - name: Archive derived read-only DATA timing lineage for AUDIT/BUILD handoff
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-native-a1-cron-source-audit-chain-${{ github.run_id }}
+          path: /tmp/s2-data-native-chain/native-github-source-cron-audit-chain.json
+          retention-days: 90
+          if-no-files-found: error
