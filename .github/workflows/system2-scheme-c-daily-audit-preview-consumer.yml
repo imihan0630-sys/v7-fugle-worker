@@ -121,6 +121,14 @@ jobs:
           test "$(jq -r .frozenWritten "$M")" = 'false'
           test "$(jq -r .ordersAuthorized "$M")" = 'false'
           test "$(jq -r .pushAuthorized "$M")" = 'false'
+          test "$(jq -r .schedulerDispatchDelayMinutes "$M")" = 'null'
+          test "$(jq -r .officialProviderPublicationAtUtc "$M")" = 'null'
+          test "$(jq -r .preferredCutAtUtc "$M")" = "$(jq -r .marketDate "$M")T15:45:00Z"
+          if [ "$PHYSICAL_EXAMPLE_PR" = 'true' ]; then
+            test "$(jq -r .independentAuditOffsetMinutes "$M")" = '365'
+            test "$(jq -r .previewObservationOffsetMinutes "$M")" = '396.1'
+            test "$(jq -r .researchReceiptCutStatus "$M")" = 'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
+          fi
           grep -q '非 PIT 研究預覽' "$HUMAN"
           grep -q '不是經獨立驗證的全市場普通股數' "$HUMAN" || grep -q SOURCE_NOT_READY "$HUMAN"
           git diff --exit-code -- Worker.js wrangler.toml
@@ -138,6 +146,10 @@ jobs:
             echo "**來源交易日：** $(jq -r .marketDate "$M")"
             echo "**預覽狀態：** $(jq -r .state "$R")"
             echo "**是否延後：** $(jq -r .lateSource "$M")"
+            echo "**T23:45 相對截止—獨立稽核完成：** $(jq -r .independentAuditOffsetMinutes "$M") 分鐘（正數晚到、負數提前）"
+            echo "**T23:45 相對截止—預覽觀察形成：** $(jq -r '.previewObservationOffsetMinutes // "UNKNOWN"' "$M") 分鐘（正數晚到、負數提前）"
+            echo "**來源截止狀態：** $(jq -r .researchReceiptCutStatus "$M")"
+            echo "**GitHub 排程延遲／官方公布時點：** 本收據無法單獨歸因；不可將上述相對截止分鐘數稱作 GitHub dispatch lag 或官方發布延遲。"
             echo "**描述性符合：** $(jq -r '.descriptiveSourceMatches // "UNKNOWN"' "$R")"
             echo "**實際展示：** $(jq -r '.observedPreviewCount // "UNKNOWN"' "$R")"
             echo "**正式 selectedCount：** UNKNOWN（不是零檔）"
@@ -277,6 +289,10 @@ jobs:
           test "$(jq -r .strategySelectedCount "$META")" = 'null'
           test "$(jq -r .pitACertified "$META")" = 'false'
           test "$(jq -r .frozenWritten "$META")" = 'false'
+          test "$(jq -r .independentAuditOffsetMinutes "$META" | awk '{print ($1 > 0)}')" = '1'
+          test "$(jq -r .previewObservationOffsetMinutes "$META" | awk '{print ($1 > 0)}')" = '1'
+          test "$(jq -r .schedulerDispatchDelayMinutes "$META")" = 'null'
+          test "$(jq -r .researchReceiptCutStatus "$META")" = 'SOURCE_OBSERVED_AFTER_T2345_DESCRIPTIVE_ONLY'
           {
             echo '## Scheme C｜2026/10/16 真實 122/122 同一稽核 ZIP 實體驗收'
             echo '**僅是晚到真實資料的歷史研究回放，不能倒填 10/16 正式選股，也不是 10/19 自動營運驗收。**'
@@ -284,6 +300,7 @@ jobs:
             echo "**預覽來源狀態：** $(jq -r .state "$R")"
             echo "**顯示候選：** $(jq -r .observedPreviewCount "$R")（研究觀察，非正式 selectedCount）"
             echo "**報告 SHA：** $(jq -r .reportHash "$META")"
+            echo "**固定 T23:45 相對截止：** 獨立稽核 $(jq -r .independentAuditOffsetMinutes "$META") 分鐘；預覽形成 $(jq -r .previewObservationOffsetMinutes "$META") 分鐘。不能推論 GH scheduler 或 provider 出版時間。"
             echo '**PIT-A/B＝未認證；Frozen、推播、交易均未啟用。**'
             echo ''
             cat "$HUMAN"
