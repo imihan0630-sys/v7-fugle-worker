@@ -63,10 +63,20 @@ export function describeExtractedPdf(rawText){
   }
   if(excerpts.length>=18)break;
  }
+ const epsIndex=lines.findIndex(x=>/9750\\s*基本每股盈餘/.test(x));
+ const epsContext=epsIndex>=0 ? lines.slice(Math.max(0,epsIndex-32),epsIndex+3)
+   .map(x=>x.replace(/\\s+/g," ").trim()).filter(Boolean).join(" | ").slice(0,3700):null;
+ const targets=["財務報告編製準則","財務報告之編製基礎","公司沿革","無子公司","子公司","個別財務","個體財務","合併財務"];
+ const basisEvidence=targets.map(k=>{
+   const idx=t.indexOf(k);
+   return idx<0?null:{term:k,snippet:t.slice(Math.max(0,idx-260),idx+400)
+     .replace(/\\s+/g," ").slice(0,570)};
+ }).filter(Boolean);
+ const epsRaw=epsIndex>=0?lines[epsIndex].replace(/\\s+/g," ").trim():null;
  return {state:found["建榮"]&&(found["個別財務"]||found["個體財務"])?
     "ORIGINAL_PDF_TEXT_BASIS_OBSERVED_NOT_LEGALLY_ADMITTED":
     "ORIGINAL_PDF_TEXT_REQUIRES_MANUAL_BASIS_REVIEW",
-  flags:found,textLength:t.length,selectedLines:excerpts,
+  flags:found,textLength:t.length,selectedLines:excerpts,epsRaw,epsContext,basisEvidence,
   // Form index timestamp is exact recorded upload, not necessarily earliest market visibility.
   asOfFirstPublicationCertified:false,formalEligible:false,system2PitCertified:false};
 }
