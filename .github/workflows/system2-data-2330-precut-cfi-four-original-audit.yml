@@ -1,0 +1,77 @@
+name: System2 DATA 2330 Pre-Cut Native CFI Four Original Readback (READ ONLY)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-data-2330-precut-cfi-four-original-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/migration/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.mjs"
+      - "system2/tests/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.test.mjs"
+      - ".github/workflows/system2-data-2330-precut-cfi-four-original-audit.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-2330-4-control-isin-cfi-source-original-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  independent_four_native_original_source_readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test four native classes, exact source-as-of and no PIT promotion
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.mjs
+          node --test system2/tests/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Get exact real pre-cut four-control original ISIN/CFI native source Artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38877910182
+          name: s2-m09-single-native-cfi-original-38877910182-1
+          path: /tmp/s2-pita-2330-cfi-precursor-4-originals/
+          github-token: ${{ github.token }}
+      - name: Independently decompress all four real original HTML bodies and rehash exact 2330 status
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_2330_precut_cfi_four_original_source_readback_v0_1.mjs
+          R=/tmp/s2-data-2330-precut-cfi4-sourceonly/2330-precut-cfi4-independent-native-source-only.json
+          test -s "$R"
+          test "$(jq -r .realNativeOriginalBodiesIndependentlyRehashed "$R")" = '4'
+          test "$(jq -r .currentSourceStockPositives "$R")" = '2'
+          test "$(jq -r .currentSourceNonShareControls "$R")" = '2'
+          test "$(jq -r .original2330CurrentOrdinaryStockSourcePositive "$R")" = 'true'
+          test "$(jq -r .sourceAvailabilityBeforeCutVerified "$R")" = 'true'
+          test "$(jq -r .currentNativeStockClassValidAtFinalCutIndependentlyCertified "$R")" = 'false'
+          test "$(jq -r .historical61IssuerEffectiveVersionCFICertified "$R")" = 'false'
+          test "$(jq -r .pitEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          echo "REAL_2330_CURRENT_CFI_ORIGINAL_BEFORE_T_CUT=YES, FOUR_NATIVE_GZIP_SHA_REHASH=4/4, TWO_NONSTOCK_CONTROLS_VALID, ASOF_2330_SOURCE_ONLY=true, HISTORIC_OR_FULL_PIT=false" >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep signed source-only CFI original-byte readback receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-2330-precut-cfi4-native-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-data-2330-precut-cfi4-sourceonly/2330-precut-cfi4-independent-native-source-only.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: No complete as-of issuer classification / strategy PIT / Frozen
+        if: always()
+        run: |
+          echo 'Observed current native Stocks/CFI ESVUFR in preserved real pre-cut 2330 source. Cannot infer source remained unchanged through cut or was historically valid 61 sessions. No independent AUDIT_LANE full PIT acceptance, Stage1 ranking, Frozen, D1/R2 or System1 modification.' >> "$GITHUB_STEP_SUMMARY"
