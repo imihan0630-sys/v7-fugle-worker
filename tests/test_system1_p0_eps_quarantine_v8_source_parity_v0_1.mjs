@@ -84,7 +84,7 @@ const bad=[
  ["EPS",source.replace("if(!dryRun && epsMissing.length) throw new Error","if(false && epsMissing.length) throw new Error")],
  ["pool",source.replace("thousandScored.sort(rankFn);","thousandScored.sort(()=>0);")],
  ["score",source.replace("const result = scoreCandidate(f, sector);","const result = {ok:true};")],
- ["holdings",source.replace('throw new Error("OPEN_POSITION_PROTECTED:', 'throw new Error("POSITION_REPLACED:')],
+ ["holdings",source.replace('throw new Error("OPEN_POSITION_PROTECTED：', 'throw new Error("POSITION_REPLACED:')],
  ["other",source.replace('const quarterEps=await readQualitySnapshot(env,"QUARTER_EPS",marketDate);','const quarterEps={stocks:{}};')],
  ["zero",source.slice(0,1500)]
 ];
