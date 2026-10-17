@@ -1,0 +1,78 @@
+name: System1 GH Mobile bot assignment one-shot TEST
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  one_shot_assignment:
+    if: >-
+      github.event.action == 'opened' &&
+      github.event.pull_request.draft == true &&
+      github.event.pull_request.head.repo.full_name == 'imihan0630-sys/v7-fugle-worker' &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.head_ref == 'audit/system1-p0-gh-mobile-bot-assignment-once-20261017' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Bot creates exactly one clearly labeled test Issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = 'imihan0630-sys';
+            const repo = 'v7-fugle-worker';
+            const marker = 'SYSTEM1_GH_MOBILE_BOT_TEST_20261017_V1';
+            if (context.repo.owner !== owner || context.repo.repo !== repo ||
+                context.eventName !== 'pull_request' ||
+                context.payload.action !== 'opened' ||
+                context.payload.pull_request?.head?.ref !==
+                'audit/system1-p0-gh-mobile-bot-assignment-once-20261017' ||
+                context.payload.pull_request?.head?.repo?.full_name !== owner + '/' + repo ||
+                context.payload.pull_request?.draft !== true ||
+                context.payload.pull_request?.base?.ref !== 'main') {
+              core.setFailed('STRICT_ONE_SHOT_CONTEXT_MISMATCH_NO_ISSUE');
+              return;
+            }
+            const results = await github.paginate(
+              github.rest.issues.listForRepo,
+              {owner, repo, state: 'all', since: '2026-10-17T00:00:00Z', per_page: 100}
+            );
+            if (results.length > 500) {
+              core.setFailed('TOO_MANY_ISSUES_TO_DEDUP_FAIL_CLOSED');
+              return;
+            }
+            const prior = results.find(x =>
+              !x.pull_request &&
+              ((x.title || '').includes(marker) || (x.body || '').includes(marker)));
+            if (prior) {
+              core.notice('Test Issue already exists, no duplicate: ' + prior.html_url);
+              return;
+            }
+            const response = await github.rest.issues.create({
+              owner, repo,
+              title: '🧪 System 1｜GitHub Actions 機器人 iPhone 指派推播測試 [' + marker + ']',
+              body: [
+                '## 一次性通知驗證｜**不是正式選股，也不是交易訊號**',
+                '',
+                '本 Issue 由 GitHub Actions github-actions[bot] 建立，指派給倉庫擁有者，以測試 iPhone GitHub App 的「已分配」推播。',
+                '',
+                '- 不執行正式盤後選股、重新選股、下單、持倉更新或資金異動。',
+                '- 不改動 Cloudflare Worker、D1、KV、Cron、Slack 或 ChatGPT 的五個既有排程。',
+                '- PR #1430／#1433 均不合併、不啟用。',
+                '- Issue 成功建立、指派，不等於手機通知確實送達。',
+                '',
+                '單次測試標記：' + marker
+              ].join('\n'),
+              assignees: [owner]
+            });
+            const created = response.data;
+            if (created?.user?.login !== 'github-actions[bot]' ||
+                !created?.assignees?.some(a=>a.login === owner)) {
+              core.setFailed('ISSUE_CREATED_BUT_BOT_OR_ASSIGNEE_NOT_VERIFIED');
+              return;
+            }
+            core.notice('Bot-created and assigned test Issue: ' + created.html_url);
+            core.info('NONTRADING_ONE_SHOT_TEST_COMPLETE: ' + marker);
