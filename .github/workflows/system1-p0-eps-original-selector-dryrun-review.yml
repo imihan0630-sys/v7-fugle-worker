@@ -1,0 +1,23 @@
+name: System1 P0 original-selector EPS quarantine dryrun review
+on:
+  pull_request:
+    paths:
+      - "Worker.js"
+      - "tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs"
+      - ".github/workflows/system1-p0-eps-original-selector-dryrun-review.yml"
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Static and inert Worker helper tests; no secrets, no deploy
+        run: |
+          node --check Worker.js
+          node --check tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs
+          node tests/test_system1_p0_eps_quarantine_worker_dryrun_review_v0_1.mjs
