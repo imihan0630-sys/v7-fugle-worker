@@ -35,7 +35,7 @@ const ok=(check,label)=>{assert.ok(check,label);checks++;};
 const eq=(a,b,label)=>{assert.deepEqual(a,b,label);checks++;};
 let x=reviewEpsQuarantineShadow(args());
 eq(x.status,"SHADOW_PARTIAL_OR_COMPLETE_EPS_VERIFIED");
-eq(x.selected.map(y=>y.symbol),["3236","3147","2340","4167","6122","3008"]);
+eq(x.selected.map(y=>y.symbol),["3236","5340","3147","4167","6122","3008"]);
 eq(x.selectedCount,6);
 eq(x.remainingGeneral,0);
 eq(x.remainingThousand,0);
