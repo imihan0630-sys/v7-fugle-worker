@@ -1,0 +1,75 @@
+name: System2 Scheme C Physical V02 Non-PIT Preview Router READ ONLY
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/runtime/three_layer_selection_preview_router_v0_1.mjs'
+      - 'system2/tests/three_layer_selection_preview_router_v0_1.test.mjs'
+      - 'system2/scripts/run_three_layer_selection_preview_readonly_v0_1.mjs'
+      - '.github/workflows/system2-build-scheme-c-real-preliminary-preview.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/runtime/three_layer_selection_preview_router_v0_1.mjs'
+      - 'system2/tests/three_layer_selection_preview_router_v0_1.test.mjs'
+      - 'system2/scripts/run_three_layer_selection_preview_readonly_v0_1.mjs'
+      - '.github/workflows/system2-build-scheme-c-real-preliminary-preview.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: s2-build-scheme-c-real-derived-preview-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  consume_real_source_derived_preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read genuine Oct13 preexisting V02 derived preview (NOT official picks)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38477169340
+          name: s2-v02-tdr-filtered-observation-38477169340
+          path: /tmp/s2-scheme-c-real-preview/
+          github-token: ${{ github.token }}
+      - name: Source-original-derived readback, anti-backdate and mode separation
+        run: |
+          set -euo pipefail
+          SRC=/tmp/s2-scheme-c-real-preview/preliminary-pv-watch.json
+          test -s "$SRC"
+          # Actual original-derived V0.2 receipt hash, not a new source GET
+          test "$(jq -r .receiptHash "$SRC")" = '1bdc75a148160b4267ad6173ac0d6607c47ac9304df02f28bc376f026e9a4d88'
+          node --check system2/runtime/three_layer_selection_preview_router_v0_1.mjs
+          node --check system2/scripts/run_three_layer_selection_preview_readonly_v0_1.mjs
+          node --test system2/tests/three_layer_selection_preview_router_v0_1.test.mjs
+          mkdir -p /tmp/s2-scheme-c-real-output
+          node system2/scripts/run_three_layer_selection_preview_readonly_v0_1.mjs "$SRC" > /tmp/s2-scheme-c-real-output/three-layer-20261013-nonpit-preview.json
+          R=/tmp/s2-scheme-c-real-output/three-layer-20261013-nonpit-preview.json
+          test "$(jq -r .requestedLayer "$R")" = 'NON_PIT_PREVIEW'
+          test "$(jq -r .state "$R")" = 'LATE_SOURCE_DESCRIPTIVE_PREVIEW_ONLY'
+          test "$(jq -r .marketDate "$R")" = '2026-10-13'
+          test "$(jq -r .sourceUniverseCount "$R")" = '1974'
+          test "$(jq -r .preliminarySourceMatchedCount "$R")" = '580'
+          test "$(jq -r .displayedPreviewCount "$R")" = '30'
+          test "$(jq -r .ordinaryEquityUniverseCertified "$R")" = 'false'
+          test "$(jq -r .pitACertificationGranted "$R")" = 'false'
+          test "$(jq -r .pitBCertificationGranted "$R")" = 'false'
+          test "$(jq -r .strategySelectedCount "$R")" = 'null'
+          test "$(jq -r .certifiedZeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          test "$(jq -r .futureProspectiveForwardReturnsUsableForThisDecision "$R")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$R")" = '0'
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo 'REAL Oct13 1974 source instruments / 580 descriptive matches / 30 visible; T+1 LATE, NOT PIT or genuine T-cut selection; no PIT-A/PIT-B/Frozen/Shadow, no System1 mutation' >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain safe derived receipt, no native OHLCV/official raw bodies
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-scheme-c-real-derived-preview-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-scheme-c-real-output/
+          retention-days: 30
+          if-no-files-found: warn
