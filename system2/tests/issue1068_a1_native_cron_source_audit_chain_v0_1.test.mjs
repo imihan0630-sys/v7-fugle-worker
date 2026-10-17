@@ -163,7 +163,7 @@ test('dual original GH source schedule hash, timeline or audit clock mutation re
 });
 test('Data-only PR replay workflow cannot add new Cron, cloud writer, or formal selection',async()=>{
  const w=await readFile('.github/workflows/system2-data-a1-native-cron-audit-chain-replay.yml','utf8');
- assert.match(w,/event: pull_request/);
+ assert.match(w,/^  pull_request:/m);
  assert.match(w,/actions\/download-artifact@v4/);
  assert.match(w,/issue1068_a1_native_cron_source_audit_chain_v0_1.mjs/);
  assert.doesNotMatch(w,/^  schedule:|cloudflare\.com|wrangler deploy|secrets\./m);
