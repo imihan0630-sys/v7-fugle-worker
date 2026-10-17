@@ -31,7 +31,7 @@ const PATCHES=[
     "  if(shadowEpsSnapshot) {\n    const scoredUnique=[...new Map([...scored,...thousandScored].map(item=>[item.symbol,item])).values()];\n    const quarantined=scoredUnique.filter(item=>!epsShadowEligible(item));\n    diagnostics.epsQuarantineShadow={\n      previewOnly:true,productionActivated:false,canTrade:false,\n      sourceMarketDate:shadowEpsSnapshot.asOfDate,\n      originalCandidateCount:scoredUnique.length,\n      quarantinedSymbols:quarantined.map(item=>item.symbol),\n      survivingCandidates:scoredUnique.length-quarantined.length,\n      selectedSymbols:selected.map(item=>item.symbol),\n      allCandidatesQuarantined:scoredUnique.length>0&&quarantined.length===scoredUnique.length,\n      zeroPicksCertified:false,\n      officialSourcePITCertified:false\n    };\n  }\n  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;\n  return {\n    candidates: allocateAndBuildPlans(selected, totalCapital, scanDate),\n"
   ]
 ];
-const gitBlobHash=s=>createHash("sha1").update("blob "+Buffer.byteLength(s)+"\\0"+s).digest("hex");
+const gitBlobHash=s=>createHash("sha1").update("blob "+Buffer.byteLength(s)+"\0"+s).digest("hex");
 const sha256=s=>createHash("sha256").update(s).digest("hex");
 const original=await readFile(SOURCE,"utf8");
 if(gitBlobHash(original)!==ORIGINAL_GIT_BLOB)throw Error("SOURCE_MAIN_BLOB_CHANGED");
