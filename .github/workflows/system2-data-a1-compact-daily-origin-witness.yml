@@ -1,0 +1,116 @@
+name: System2 DATA A1 Compact Daily Native Source Origin Witness (READ ONLY)
+
+on:
+  # PR exercises genuine Oct16 source-audit and independently signed clock,
+  # WITHOUT fetching the original 40MB source ZIP again.
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_a1_compact_daily_origin_witness_v0_1.mjs'
+      - 'system2/scripts/run_issue1068_a1_compact_daily_origin_witness_readonly_v0_1.mjs'
+      - 'system2/tests/issue1068_a1_compact_daily_origin_witness_v0_1.test.mjs'
+      - '.github/workflows/system2-data-a1-compact-daily-origin-witness.yml'
+  # Existing SOURCE->independent-AUDIT workflow completed; audit report is
+  # already signed/rehashed. This is a parallel DATA read-only audit child,
+  # not a new SOURCE Cron and not the BUILD selection consumer.
+  workflow_run:
+    workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: s2-data-a1-compact-original-only-${{ github.event_name == 'pull_request' && github.head_ref || github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  produce_compact_native_origin_witness:
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'workflow_run' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Negative and genuine-date contract tests
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_a1_compact_daily_origin_witness_v0_1.mjs
+          node --check system2/scripts/run_issue1068_a1_compact_daily_origin_witness_readonly_v0_1.mjs
+          node --test system2/tests/issue1068_a1_compact_daily_origin_witness_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Fetch existing exact AUDIT tiny signed original (no raw 40MB source)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event_name == 'pull_request' && '38934321405' || github.event.workflow_run.id }}
+          name: ${{ github.event_name == 'pull_request' && 'system2-shared-official-a1-independent-audit-38934321405' || format('system2-shared-official-a1-independent-audit-{0}', github.event.workflow_run.id) }}
+          path: /tmp/s2-data-existing-small-audit
+          github-token: ${{ github.token }}
+      - name: Fetch the same real AUDIT Run's signed 90-day source schedule dual clock
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event_name == 'pull_request' && '38934321405' || github.event.workflow_run.id }}
+          name: ${{ github.event_name == 'pull_request' && 's2-a1-dual-source-clock-38934321405' || format('s2-a1-dual-source-clock-{0}', github.event.workflow_run.id) }}
+          path: /tmp/s2-data-existing-small-dual
+          github-token: ${{ github.token }}
+      - name: Fetch actual source and audit GH REST Run plus one Job based on archived native source identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_AUDIT_RUN: ${{ github.event_name == 'pull_request' && '38934321405' || github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          A="$(find /tmp/s2-data-existing-small-audit -type f -name audit-receipt.json)"
+          D="$(find /tmp/s2-data-existing-small-dual -type f -name dual-acceptance-receipt.json)"
+          test "$(printf '%s\n' "$A" | grep -c 'audit-receipt.json')" = 1
+          test "$(printf '%s\n' "$D" | grep -c 'dual-acceptance-receipt.json')" = 1
+          test -s "$A"
+          test -s "$D"
+          S="$(jq -r .sourceRunId "$D")"
+          [[ "$S" =~ ^[1-9][0-9]*$ ]] || exit 3
+          [[ "$EXPECTED_AUDIT_RUN" =~ ^[1-9][0-9]*$ ]] || exit 3
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$S" > /tmp/s2-data-source-rest.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$EXPECTED_AUDIT_RUN" > /tmp/s2-data-audit-rest.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$S/jobs?per_page=100" > /tmp/s2-data-source-jobs-rest.json
+          test "$(jq -r .id /tmp/s2-data-audit-rest.json)" = "$EXPECTED_AUDIT_RUN"
+          node system2/scripts/run_issue1068_a1_compact_daily_origin_witness_readonly_v0_1.mjs \
+            "$A" "$D" \
+            /tmp/s2-data-source-rest.json /tmp/s2-data-audit-rest.json \
+            /tmp/s2-data-source-jobs-rest.json /tmp/s2-data-compact-witness
+          R=/tmp/s2-data-compact-witness/source-origin-witness.json
+          test -s "$R"
+          test "$(jq -r .independentAuditRunId "$R")" = "$EXPECTED_AUDIT_RUN"
+          test "$(jq -r .sourceOriginalMarketDatePairsIndependentlyAudited "$R")" = '122'
+          test "$(jq -r .completedScheduledSourceToBUILDConsumerCertified "$R")" = 'false'
+          test "$(jq -r .stage1ActualUsedInputPITAEligible "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          if [ "${{ github.event_name }}" = 'pull_request' ]; then
+            test "$(jq -r .marketDate "$R")" = '2026-10-16'
+            test "$(jq -r .sourceRootWasScheduled "$R")" = 'true'
+            test "$(jq -r .sourceGitHubEnqueueDelayMinutes "$R")" = '267.667'
+            test "$(jq -r .sourceAndAuditBeforePreferredCut "$R")" = 'false'
+            echo 'PR_HISTORICAL_OCT16_PROOF_ONLY; NOT_NEW_T_AUTO_ACCEPTANCE' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'NEW_REAL_SOURCE_AUDIT_RECONCILIATION; NOT_BUILD_AUTO_CONSUMER_OR_PIT' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "SOURCE_T=$(jq -r .marketDate "$R") / genuine original SOURCE GH event=$(jq -r .sourceRootEventType "$R")" >> "$GITHUB_STEP_SUMMARY"
+          echo "SCHEDULE_ORIGIN=$(jq -r .sourceRootWasScheduled "$R") / observed GH delay minutes=$(jq -r .sourceGitHubEnqueueDelayMinutes "$R")" >> "$GITHUB_STEP_SUMMARY"
+          echo "BEFORE_23_45=$(jq -r .sourceAndAuditBeforePreferredCut "$R") / AUDITED_122=TRUE / 0_PIT_0_FROZEN" >> "$GITHUB_STEP_SUMMARY"
+          echo "COMPACT_SOURCE_ORIGIN_SHA=$(jq -r .receiptHash "$R")" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve tiny DATA source-origin proof separately for future independent AUDIT/BUILD intake
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-a1-compact-source-origin-${{ github.run_id }}
+          path: /tmp/s2-data-compact-witness/source-origin-witness.json
+          retention-days: 90
+          if-no-files-found: error
