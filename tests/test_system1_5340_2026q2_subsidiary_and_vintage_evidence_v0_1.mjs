@@ -33,6 +33,28 @@ t("IFRS19 textual reference not ownership proof",()=>{
  assert.equal(r.canAdmitSystem1,false);
  assert.equal(r.canAdmitSystem2PIT,false);
 });
+t("2026Q2 native investment disclosures negative but no legal promotion",()=>{
+ const native=text+[
+ "十二、附註揭露事項",
+ "母子公司間業務關係及重大交易往來情形：無。",
+ "(二)轉投資事業相關資訊 無。",
+ "(三)大陸投資資訊 無。"
+ ].join("\n");
+ const r=inspect({text:native,originalReceipt:receipt});
+ assert.equal(r.periodSpecificDisclosureEvidenceObserved,true);
+ assert.equal(r.periodSpecificNegativeDisclosureFlags.noInvestmentBusinessInfo,true);
+ assert.equal(r.periodSpecificNegativeDisclosureFlags.noParentSubsidiaryTransactions,true);
+ assert.equal(r.periodSpecificNegativeDisclosureFlags.noMainlandInvestmentInfo,true);
+ assert.equal(r.subsidiaryStatus2026Q2Certified,false);
+ assert.equal(r.legalIndividualFinancialStatements2026Q2Certified,false);
+ assert.equal(r.originalPITVintageCertified,false);
+ assert.equal(r.canAdmitSystem1,false);
+ assert.equal(r.canAdmitSystem2PIT,false);
+});
+t("missing note-12 source is not negative disclosure proof",()=>{
+ const r=inspect({text:text+"母子公司間業務關係及重大交易往來情形：無",originalReceipt:receipt});
+ assert.equal(r.periodSpecificDisclosureEvidenceObserved,false);
+});
 t("explicit no-sub string still requires independent validation",()=>{
  const r=inspect({text:text+"\n本公司無子公司",originalReceipt:receipt});
  assert.equal(r.explicitNoSubsidiaryPhrases.includes("本公司無子公司"),true);
