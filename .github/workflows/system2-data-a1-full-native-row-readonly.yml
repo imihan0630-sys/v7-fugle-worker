@@ -1,0 +1,120 @@
+name: System2 DATA A1 Full T Native Row Replay (READ ONLY)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-data-a1-full-native-row-readonly.yml"
+      - "system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs"
+      - "system2/tests/issue1068_full_market_t_a1_native_row_handoff_v0_1.test.mjs"
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        type: string
+        required: false
+        default: "38934081985"
+      audit_run_id:
+        type: string
+        required: false
+        default: "38934321405"
+      market_date:
+        type: string
+        required: false
+        default: "2026-10-16"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-data-a1-native-row-replay-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  extract_source_only:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test original row conversion and fail-closed anti-spoof controls
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs
+          node --test system2/tests/issue1068_full_market_t_a1_native_row_handoff_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Resolve source and audit exact original run IDs
+        id: run
+        env:
+          SOURCE_RUN: ${{ inputs.source_run_id }}
+          AUDIT_RUN: ${{ inputs.audit_run_id }}
+          TARGET_T: ${{ inputs.market_date }}
+        run: |
+          set -euo pipefail
+          S="${SOURCE_RUN:-38934081985}"
+          A="${AUDIT_RUN:-38934321405}"
+          T="${TARGET_T:-2026-10-16}"
+          [[ "$S" =~ ^[0-9]+$ ]]
+          [[ "$A" =~ ^[0-9]+$ ]]
+          [[ "$T" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}$ ]]
+          echo "source_id=$S" >> "$GITHUB_OUTPUT"
+          echo "audit_id=$A" >> "$GITHUB_OUTPUT"
+          echo "market_date=$T" >> "$GITHUB_OUTPUT"
+      - name: Reuse archived original TWSE/TPEx source (NO new provider GET)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.run.outputs.source_id }}
+          name: s2-shared-official-a1-${{ steps.run.outputs.source_id }}
+          path: /tmp/s2-data-a1-source
+          github-token: ${{ github.token }}
+      - name: Reuse independent original audit
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.run.outputs.audit_id }}
+          name: system2-shared-official-a1-independent-audit-${{ steps.run.outputs.audit_id }}
+          path: /tmp/s2-data-a1-audit
+          github-token: ${{ github.token }}
+      - name: Verify native T and previous session rows and sign full four-digit source handoff
+        env:
+          SOURCE_T: ${{ steps.run.outputs.market_date }}
+        run: |
+          set -euo pipefail
+          SRC="/tmp/s2-data-a1-source/official-61-$SOURCE_T.json"
+          AUD="/tmp/s2-data-a1-audit/audit-receipt.json"
+          test -s "$SRC"
+          test -s "$AUD"
+          test "$(jq -r .marketDate "$SRC")" = "$SOURCE_T"
+          test "$(jq -r .marketDate "$AUD")" = "$SOURCE_T"
+          node system2/migration/issue1068_full_market_t_a1_native_row_handoff_v0_1.mjs \
+            "$SRC" "$AUD" /tmp/s2-data-a1-source/original-json \
+            /tmp/s2-data-a1-full-universe
+      - name: Enforce source-only scope and real original denominator
+        env:
+          SOURCE_T: ${{ steps.run.outputs.market_date }}
+        run: |
+          set -euo pipefail
+          R=/tmp/s2-data-a1-full-universe/full-universe-a1-source-handoff.json
+          test -s "$R"
+          test "$(jq -r .marketDate "$R")" = "$SOURCE_T"
+          test "$(jq -r '.marketSummaries | length' "$R")" = '2'
+          test "$(jq -r .fourDigitInstrumentCount "$R")" -ge 1000
+          test "$(jq -r '.rows | length' "$R")" = "$(jq -r .fourDigitInstrumentCount "$R")"
+          test "$(jq -r .ordinaryShareClassCertified "$R")" = 'false'
+          test "$(jq -r .providerPublicationPITCertified "$R")" = 'false'
+          test "$(jq -r .selectionAuthorized "$R")" = 'false'
+          test "$(jq -r .selectedCount "$R")" = 'null'
+          test "$(jq -r .zeroPickDay "$R")" = 'null'
+          test "$(jq -r .frozenD1Written "$R")" = 'false'
+          echo "DATA SOURCE-ONLY T=$SOURCE_T, A1 four-digit original rows=$(jq -r .fourDigitInstrumentCount "$R"), SHA=$(jq -r .receiptHash "$R")" >> "$GITHUB_STEP_SUMMARY"
+          echo 'TWD turnover is daily traded value, NOT net buy/sell money flow; class/PIT/Frozen remain unverified.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Ephemeral source-only Artifact; NOT permanent Frozen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-full-a1-native-handoff-${{ github.run_id }}
+          path: /tmp/s2-data-a1-full-universe/full-universe-a1-source-handoff.json
+          if-no-files-found: warn
+          retention-days: 30
