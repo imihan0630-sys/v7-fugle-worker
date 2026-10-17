@@ -71,6 +71,11 @@ export async function buildSystem2IndustryActivityRadarV0_1({
  });
  if(a1OriginalReceiptHash!==dataB5ScopeReceipt.a1SourceReceiptHash)
    fail('A1_SOURCE_HASH_MISMATCH');
+ if(Date.parse(dataB5ScopeReceipt.evaluationAtUtc)>Date.parse(generatedAtUtc)||
+   dataB5ScopeReceipt.summaries.some(s=>
+     Date.parse(s.observedAtUtc)>Date.parse(generatedAtUtc)||
+     s.beforeEvaluation!==(Date.parse(s.observedAtUtc)<=Date.parse(dataB5ScopeReceipt.evaluationAtUtc))))
+   fail('B5_SOURCE_CLOCK_CONTRADICTION');
  if(!Array.isArray(dailyRows))fail('DAILY_ROWS_INVALID');
  const sourceIds=new Set(sourceUniverse.map(id));
  const bars=new Map();
