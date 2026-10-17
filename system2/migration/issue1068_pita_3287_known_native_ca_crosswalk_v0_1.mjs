@@ -47,6 +47,85 @@ export function verify3287NativeDividendBoundary({before,after,caRow,cut='2026-1
   onlyKnownPositiveEventCrosswalk:true
  };
 }
+
+// This is DATA source-price-window exposure only. BUILD owns the actual
+// SHORT_MOMENTUM 7-factor manifest, scoring, exclusions and admission gates.
+// Absence of this ONE known CA crossing is NOT proof of no other CA event.
+const nativeMetricSourceWindowsV0_1=Object.freeze([
+ ['ma5','LAST_5_INCLUDING_T','PRICE'],
+ ['ma10','LAST_10_INCLUDING_T','PRICE'],
+ ['ma20','LAST_20_INCLUDING_T','PRICE'],
+ ['ma60','LAST_60_INCLUDING_T','PRICE'],
+ ['ma20Slope1Pct','LAST_21_INCLUDING_T','PRICE'],
+ ['ret20','T_VS_20_PRIOR','PRICE'],
+ ['ret60','T_VS_60_PRIOR','PRICE'],
+ ['priorHigh20','PRIOR_20_EXCLUDING_T','PRICE'],
+ ['priorHigh60','PRIOR_60_EXCLUDING_T','PRICE'],
+ ['priorLow20','PRIOR_20_EXCLUDING_T','PRICE'],
+ ['atr14Pct','LAST_15_INCLUDING_T','PRICE'],
+ ['volatility20','LAST_21_INCLUDING_T','PRICE'],
+ ['distanceToMa20','LAST_20_INCLUDING_T','PRICE'],
+ ['distanceToPriorHigh20','LAST_21_INCLUDING_T','PRICE'],
+ ['currentCandleShape','T_DAY_ONLY','PRICE'],
+ ['currentVolumeShares','T_DAY_ONLY','VOLUME'],
+ ['avgVolume20PriorLots','PRIOR_20_EXCLUDING_T','VOLUME'],
+ ['relativeVolume20Prior','LAST_21_INCLUDING_T','VOLUME'],
+ ['avgAmount20Prior','PRIOR_20_EXCLUDING_T','MONETARY_TURNOVER']
+]);
+const validDay=d=>typeof d==='string'&&/^\d{4}-\d\d-\d\d$/.test(d)&&
+ Number.isFinite(Date.parse(d+'T00:00:00Z'))&&
+ new Date(Date.parse(d+'T00:00:00Z')).toISOString().slice(0,10)===d;
+const indices=(kind,n)=>{
+ if(kind==='T_DAY_ONLY')return [n-1,n-1];
+ const m=/^LAST_(5|10|15|20|21|60)_INCLUDING_T$/.exec(kind);
+ if(m)return [n-Number(m[1]),n-1];
+ const p=/^PRIOR_(20|60)_EXCLUDING_T$/.exec(kind);
+ if(p)return [n-1-Number(p[1]),n-2];
+ if(kind==='T_VS_20_PRIOR')return [n-21,n-1];
+ if(kind==='T_VS_60_PRIOR')return [n-61,n-1];
+ deny('UNKNOWN_METRIC_SOURCE_WINDOW');
+};
+// Only date boundaries/identities are classified. No adjusted OHLC, technical
+// indicator, strategy score, sector ranking or authoritative CA NO_EVENT.
+export function classify3287KnownExdivWindowExposureV0_1({dates,
+ knownEventDate='2026-08-26',priorSession='2026-08-25'}={}){
+ if(!Array.isArray(dates)||dates.length!==61||
+   dates[0]!=='2026-07-21'||dates.at(-1)!=='2026-10-16'||
+   dates.some((d,i)=>!validDay(d)||(i>0&&d<=dates[i-1]))||
+   new Set(dates).size!==61)
+    deny('SOURCE_DATE_WINDOW_NOT_AN_ORIGINAL_61_SESSION_CALENDAR');
+ const prior=dates.indexOf(priorSession),event=dates.indexOf(knownEventDate);
+ if(prior<0||event!==prior+1||priorSession!== '2026-08-25'||
+    knownEventDate!=='2026-08-26')
+   deny('NATIVE_EXDIV_EVENT_NOT_CONSECUTIVE_SESSIONS');
+ const metrics=nativeMetricSourceWindowsV0_1.map(([id,kind,sourceKind])=>{
+   const [start,end]=indices(kind,dates.length);
+   if(start<0||end>=dates.length||start>end)deny('METRIC_WINDOW_OOB');
+   const crosses=sourceKind==='PRICE'&&start<=prior&&end>=event;
+   return {
+     metricId:id,sourceKind,sourceWindowKind:kind,
+     firstDate:dates[start],lastDate:dates[end],
+     startIndex:start,endIndex:end,
+     crossesKnownNativeExdivPriceBoundary:crosses,
+     risk:crosses?'KNOWN_POSITIVE_EXDIV_CROSSES_RAW_PRICE_SPACE__REQUIRES_APPROVED_CONTINUITY':
+      sourceKind==='PRICE'?'NOT_CROSSING_THIS_KNOWN_EVENT__OTHER_CA_STILL_UNKNOWN':
+      'NON_PRICE_NATIVE_INPUT__OTHER_SOURCE_PIT_STILL_UNKNOWN',
+     allRelevantCorporateActionsIndependentlyExcluded:false,
+     fullFeaturePriceContinuityAudited:false
+   };
+ });
+ return {
+  sourceWindowDefinition:'DATA_DIAGNOSTIC_INPUT_METRIC_WINDOWS_NOT_STRATEGY_FACTOR_SCORE',
+  knownEventDate,priorEventSession:priorSession,knownEventIndex:event,
+  priorEventIndex:prior,postEventTradingSessionCount:dates.length-1-event,
+  metricSourceWindows:metrics,
+  priceMetricsCrossingKnownExdiv:metrics.filter(m=>m.crossesKnownNativeExdivPriceBoundary).map(m=>m.metricId),
+  cannotInferNoOtherCorporateAction:true,
+  fullPitaFactorAuditAccepted:false,
+  strategyScoringAuthorized:false
+ };
+}
+
 const datesFrom=x=>x?.calendar?.tradingDates;
 export async function verify3287RealArchivedSources({a1Dir,caDir,read=readFile}={}){
  if(!a1Dir||!caDir)deny('MISSING_ORIGINAL_ARTIFACT_DIR');
@@ -133,6 +212,7 @@ export async function verify3287RealArchivedSources({a1Dir,caDir,read=readFile}=
  if(positive.length!==1)deny('3287_EX_DIVIDEND_POSITIVE_NOT_UNIQUE');
  const event=verify3287NativeDividendBoundary({
   before,after,caRow:positive[0],caObserved:nativeCAFamilyHashes[3].observedAtUtc,todayObserved});
+ const eventWindowExposure=classify3287KnownExdivWindowExposureV0_1({dates});
  const base={
   schemaVersion:'S2_DATA_3287_EX_DIV_20260826_SOURCE_CROSSWALK_V0_1',
   symbol:'3287',market:'TPEX',marketDate:'2026-10-16',
@@ -144,7 +224,7 @@ export async function verify3287RealArchivedSources({a1Dir,caDir,read=readFile}=
   sixCaNativeReceiptHash:ca.receiptHash,sixCaProducerReceiptHash:outer.receiptHash,
   sixNativeCAFamiliesByteRehashed:6,nativeCAFamilyHashes,
   officialExDividendNativeRowPosition:230,
-  exDividendSourceRowSnapshot:positive[0],event,
+  exDividendSourceRowSnapshot:positive[0],event,eventWindowExposure,
   firstNativeCaObservedAtUtc:nativeCAFamilyHashes[3].observedAtUtc,
   actualTMarketBarObservedAtUtc:todayObserved,
   originalResearchDecisionCutAtUtc:'2026-10-16T15:45:00.000Z',
@@ -168,6 +248,6 @@ if(process.argv[1]?.endsWith('issue1068_pita_3287_known_native_ca_crosswalk_v0_1
   sixCaSources:x.sixNativeCAFamiliesByteRehashed,realBars:x.allTpexOriginalRowsChecked,
   previousClose:x.event.previousOfficialClose,exReference:x.event.exchangeOfficialExDividendReference,
   rawReturnPct:x.event.originalRawReturnPct,refSpaceReturnPct:x.event.officialReferenceReturnPct,
-  originalDecisionCutMissed:true,pitEligible:false,selectedCount:null,frozen:false,
+  originalDecisionCutMissed:true,knownExdivPriceCrossingMetrics:x.eventWindowExposure.priceMetricsCrossingKnownExdiv,pitEligible:false,selectedCount:null,frozen:false,
   receiptHash:x.receiptHash}));
 }
