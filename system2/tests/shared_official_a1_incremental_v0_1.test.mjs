@@ -57,6 +57,52 @@ test('61 dates must come from official sorted calendar; weekday cannot certify t
   nowUtc:'2026-10-11T09:00:00Z',officialTradingDates:official});
  assert.equal(holiday.state,'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY');
 });
+test('Saturday after 02:00 and before 19:00 does NOT re-fetch prior Friday as new market day',()=>{
+ const tradingDates=['2026-10-15','2026-10-16','2026-10-19'];
+ for(const time of [
+  '2026-10-16T18:00:00Z', // Saturday 02:00 Taipei: outside allowed 00:00-01:59
+  '2026-10-17T10:49:56Z', // Saturday 18:49:56 actual main-push failure control
+  '2026-10-18T10:00:00Z', // Sunday 18:00
+  '2026-10-26T10:49:56Z', // Monday October 26 holiday; prior date scope extended below
+ ]){
+  const days=time.startsWith('2026-10-26')?
+   ['2026-10-23','2026-10-27']:tradingDates;
+  const x=resolveLatestClosedTaiwanSessionV0_1({
+   nowUtc:time,officialTradingDates:days
+  });
+  assert.equal(x.state,'SKIPPED_NO_NEW_OFFICIAL_TRADING_DAY',time);
+  assert.equal(x.eligibleToRunSourceReadOnly,undefined,time);
+  assert.equal(x.sourceWasPublishedByThisResolver,false,time);
+ }
+});
+test('T+1 Saturday 00:15 can still recover Friday source, but never backdate PIT',()=>{
+ const x=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-16T16:15:00Z',
+  officialTradingDates:['2026-10-15','2026-10-16','2026-10-19']
+ });
+ assert.equal(x.state,'CANDIDATE_CLOSED_DATE_OFFICIAL_RESPONSE_MUST_CONFIRM');
+ assert.equal(x.marketDate,'2026-10-16');
+ assert.equal(x.conditionalNextDayRecovery,true);
+ assert.equal(x.retrospectiveOnly,false);
+ assert.equal(x.todayProviderFinalityNotAsserted,true);
+});
+test('owner-authorized manual holiday replay stays retrospective; new Monday 20:15 is current',()=>{
+ const days=['2026-10-15','2026-10-16','2026-10-19'];
+ const manual=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-17T10:49:56Z',officialTradingDates:days,
+  allowOlderManual:true
+ });
+ assert.equal(manual.marketDate,'2026-10-16');
+ assert.equal(manual.retrospectiveOnly,true);
+ assert.equal(manual.state,'CANDIDATE_CLOSED_DATE_OFFICIAL_RESPONSE_MUST_CONFIRM');
+ const monday=resolveLatestClosedTaiwanSessionV0_1({
+  nowUtc:'2026-10-19T12:15:00Z',officialTradingDates:days
+ });
+ assert.equal(monday.state,'CANDIDATE_CLOSED_DATE_OFFICIAL_RESPONSE_MUST_CONFIRM');
+ assert.equal(monday.marketDate,'2026-10-19');
+ assert.equal(monday.retrospectiveOnly,false);
+ assert.equal(monday.sourceReviewClass,'PRELIMINARY_SOURCE_REVIEW_ONLY');
+});
 test('19:00 Taipei is PRELIMINARY_SOURCE_REVIEW only, never final selection',()=>{
  const dates=['2026-10-12','2026-10-13'];
  const before=resolveLatestClosedTaiwanSessionV0_1({
