@@ -10,6 +10,9 @@ on:
       - 'system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs'
       - 'system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs'
+      - 'system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -60,16 +63,7 @@ jobs:
           [[ "$SOURCE_AUDIT_RUN_ID" =~ ^[1-9][0-9]*$ ]] || { echo 'INVALID_GH_AUDIT_RUN_ID'; exit 3; }
           # Source-run IDs and PR/self-diagnostic IDs are NOT accepted here.
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_AUDIT_RUN_ID" > /tmp/s2-exact-upstream-audit-run.json
-          jq -e --arg repo "$GITHUB_REPOSITORY" '
-            .name == "System2 Shared Official A1 Independent Source Audit (READ ONLY)" and
-            .event == "workflow_run" and
-            .head_branch == "main" and
-            .head_repository.full_name == $repo and
-            .status == "completed" and
-            .conclusion == "success" and
-            .path == ".github/workflows/system2-shared-official-a1-independent-audit.yml"
-          ' /tmp/s2-exact-upstream-audit-run.json >/dev/null ||
-            { echo 'NON_MAIN_OR_NON_INDEPENDENT_SUCCESSFUL_A1_AUDIT'; exit 4; }
+          node system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs /tmp/s2-exact-upstream-audit-run.json "$SOURCE_AUDIT_RUN_ID" "$GITHUB_REPOSITORY"
           echo "MANUAL_RECOVERY_SOURCE_AUDIT_RUN_VALIDATED=$SOURCE_AUDIT_RUN_ID" >> "$GITHUB_STEP_SUMMARY"
       - name: Exact ALREADY STORED current audit artifact or pinned historical proof
         uses: actions/download-artifact@v4
@@ -101,6 +95,9 @@ jobs:
           node --check system2/scripts/run_scheme_c_visible_report_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_daily_visible_report_v0_1.test.mjs
           node --test system2/tests/scheme_c_actions_summary_visibility_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_manual_recovery_audit_run_v0_1.mjs
+          node --check system2/scripts/validate_scheme_c_manual_recovery_audit_run_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_manual_recovery_audit_run_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
