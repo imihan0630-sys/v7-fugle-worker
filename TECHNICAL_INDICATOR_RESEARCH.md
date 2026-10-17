@@ -4519,3 +4519,35 @@ BUILD 最新清單確認短動能第一階段實際觀測七個因子，價格�
 
 ### 精確下一續接點
 等待 AUDIT 對 41 日事件前等比例縮放、其他公司行動完整排除、逐日 OHLC 與來源時鐘做獨立驗收。若通過，使用同一 61 日實值成對重算 RAW 與候選 ADJUSTED 的 ret20／ret60、SMA60、事件日 ADX TR／DM，以及凍結初始化後的 MACD／ADX 狀態差；ret5、SMA5／10／20、KD9、RSI14、布林20則先驗證數值不變。任一稽核門檻缺失即保持 UNKNOWN，不修改 System 2 策略資格閘門。
+
+
+## 2026-10-18 — TI-2073～TI-2092：Stage1 技術可觀測性／策略資格分母防火牆
+
+### 新增物理證據
+
+- 2026-10-16 真實 A1 來源四位數工具共 1,972 筆：TWSE 1,086、TPEx 886。
+- 當日正值原始收盤 1,946 筆：1,081／865；前一官方交易日原始收盤 1,954 筆：1,083／871；兩日皆有原始收盤 1,935 筆：1,080／855。
+- 缺當日收盤 26 筆、缺前日收盤 18 筆；成交值欄位 1,972 筆皆存在，但 11 筆成交值為零。缺值不得補零或變成賣出訊號。
+- 來源觀測時鐘在 2026-10-17 00:44 台北，晚於 2026-10-16 23:45 參考截止；只准作歷史來源重播，不能回填正式決策。
+
+### 五層分母與反證
+
+D03 凍結 SOURCE_INSTRUMENT_OBSERVED、PRICE_POINT_OBSERVED、TECHNICAL_WINDOW_COMPUTABLE、PIT_STRATEGY_ELIGIBLE、FORMAL_SELECTED 五層狀態，前一層不得推導後一層。1,972 是來源工具範圍，不是普通股母體；1,935 只支持單期原始報酬機械可算，不證明公司行動後連續可比；61 日 finite-window 仍需精確父日期，MACD／ADX 仍需完整遞迴祖先或凍結初始化。selectedCount 與 zeroPickDay 仍為 null／UNKNOWN，不得改寫為 0。
+
+逐檔研究會計的 INCOMPLETE、REJECTED、WATCH、QUALIFIED_NOT_SELECTED 只能表示研究流程狀態：跨域 CFI／公司行動／可交易性缺件不得算成技術指標失效，REJECTED 不得算成負 alpha，WATCH 與 QUALIFIED_NOT_SELECTED 都不是正式入選。
+
+### 偏誤與治理
+
+- 同一日期 1,972 檔仍是一個決策日期群聚，不是 1,972 個獨立 OOS 日期。
+- 未加入 outcome、未掃門檻、未形成 Shadow；OOS、Walk-forward、selection bias 校正、交易成本、漲跌停／停牌後可成交性與增量資訊維持 UNKNOWN。
+- ret／ROC、均線／趨勢、KD／RSI、MACD／直接趨勢、ADX／路徑效率、布林寬度／波動仍需殘餘冗餘檢驗。
+- TI-2073～TI-2092 共 20／20 確定性判例通過。
+- D03-09／D03-10 維持 L2／40；D03 成熟度維持 56.7%，未升級。
+- `FORMAL_OPTIMIZATION_CANDIDATE`：NONE；Formal Core 永久 LOCKED。
+- 研究檔：`research/D03_STAGE1_TECHNICAL_OBSERVABILITY_DENOMINATOR_FIREWALL_20261018_V0_1.md`
+- 判例：`research/d03_stage1_technical_observability_denominator_cases_20261018_v0_1.json`
+- 執行器：`research/test_d03_stage1_technical_observability_denominator_v0_1.mjs`
+
+### 精確下一續接點
+
+等待第一份真實新交易日 `stage1-symbol-accounting.json`，逐檔把 reason codes 分為 D03 自有技術輸入缺件、跨域身分／公司行動／可交易性缺件與正式授權缺件，並以同一來源母體重算各層分母。同步等待 AUDIT 完成 2330 的 41 日事件前比例、其他公司行動、逐日 OHLC 與來源時鐘驗收；只有通過者才成對重算 RAW／候選 ADJUSTED 指標。兩條線均不得開啟結果，且不得修改 System 2 資格閘門。
