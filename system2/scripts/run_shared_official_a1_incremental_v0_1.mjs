@@ -41,6 +41,47 @@ export function missingA1MarketDatePairsAfterFetchV0_1({tradingDates,receipts,er
  return missing;
 }
 
+// Signed 61-session source may reuse older market days; only two original
+// receipts belonging to the current T establish its SOURCE observation clock.
+// An observed exchange response is NOT evidence of its official publishedAt.
+export function summarizeCurrentMarketSourceClockV0_1({marketDate,receipts,validatedPairs}={}){
+ const validDate=typeof marketDate==='string'&&DAY.test(marketDate)&&
+  Number.isFinite(Date.parse(marketDate+'T00:00:00Z'))&&
+  new Date(marketDate+'T00:00:00Z').toISOString().slice(0,10)===marketDate;
+ if(!validDate||!Array.isArray(receipts)||!Number.isSafeInteger(validatedPairs)||
+   validatedPairs<0||validatedPairs>122)
+  throw Error('SHARED_A1_TARGET_SOURCE_CLOCK_INPUT_INVALID');
+ const own=receipts.filter(x=>x.marketDate===marketDate);
+ const byMarket={};
+ for(const x of own){
+  const observed=x.capturedAt;
+  if(!['TWSE','TPEX'].includes(x.market)||byMarket[x.market]||
+     typeof observed!=='string'||
+     !/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(observed)||
+     !Number.isFinite(Date.parse(observed))||
+     new Date(observed).toISOString().slice(0,19)!==observed.slice(0,19))
+   throw Error('SHARED_A1_TARGET_SOURCE_CLOCK_OR_MARKET_INVALID');
+  byMarket[x.market]=observed;
+ }
+ const complete=validatedPairs===122&&Boolean(byMarket.TWSE)&&Boolean(byMarket.TPEX);
+ const latest=complete?[byMarket.TWSE,byMarket.TPEX].sort((a,b)=>
+  Date.parse(b)-Date.parse(a))[0]:null;
+ const decisionCutUtc=marketDate+'T15:45:00.000Z';
+ return Object.freeze({
+  expectedTargetMarkets:2,observedTargetMarkets:Object.keys(byMarket).length,
+  twseTargetOriginalObservedAtUtc:byMarket.TWSE??null,
+  tpexTargetOriginalObservedAtUtc:byMarket.TPEX??null,
+  latestTargetOriginalObservedAtUtc:latest,
+  t2345TaipeiSourceObservationCutUtc:decisionCutUtc,
+  allTargetMarketOriginalsObservedBeforeT2345:complete?
+   Date.parse(latest)<=Date.parse(decisionCutUtc):null,
+  officialProviderPublicationAtUtc:null,
+  originalPublicationFirstKnownAtUtc:null,
+  officialPublicationTimingPITCertified:false,
+  sourceOnlyNoFormalSelection:true
+ });
+}
+
 export async function collectSharedOfficialA1IncrementalV0_1({
  outputDir=OUT,now=()=>new Date(),fetchImpl=globalThis.fetch,
  seedEvidenceFile=null,seedOriginalDir=null,allowOlderManual=false,
@@ -90,7 +131,7 @@ export async function collectSharedOfficialA1IncrementalV0_1({
   plannedPairs:122,
   reuseCount:evidence.sharedOriginalSourceReuse?.trustedReusedMarketDatePairs??0,
   missingBeforeFetch:evidence.sharedOriginalSourceReuse?.initialMissingMarketDatePairs||[],
-  missingAfterFetch:missingA1MarketDatePairsAfterFetchV0_1({
+  targetSourceObservation: summarizeCurrentMarketSourceClockV0_1({\n    marketDate:c.marketDate,receipts:evidence.receipts,\n    validatedPairs:manifest.sourceMarketDatePairsValidated\n  }),\n  missingAfterFetch:missingA1MarketDatePairsAfterFetchV0_1({
    tradingDates:evidence.calendar?.tradingDates,
    receipts:evidence.receipts,errors:evidence.errors
   }),
