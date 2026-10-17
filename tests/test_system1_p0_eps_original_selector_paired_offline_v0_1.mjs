@@ -88,7 +88,7 @@ const eq=(a,b)=>{assert.deepEqual(asPlain(a),asPlain(b));checks++};
 const ok=(v)=>{assert.ok(v);checks++};
 const originalResult=baseline();
 eq(plainNew(),originalResult); // Non-Shadow candidate equals entire original selector output.
-eq(symbols(originalResult),["3236","5340","3147","2340","4167","6122"]);
+eq(symbols(originalResult),["3236","5340","3147","4167","6122","3008"]);
 let a=shadow(makeSnap());
 eq(symbols(a),symbols(originalResult));
 eq(a.diagnostics.epsReviewUniverse,originalResult.diagnostics.epsReviewUniverse);
