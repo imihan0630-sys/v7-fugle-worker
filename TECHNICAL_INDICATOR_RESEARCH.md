@@ -4487,3 +4487,35 @@ BUILD 最新清單確認短動能第一階段實際觀測七個因子，價格�
 
 ### 精確下一續接點
 取得經獨立稽核、截止安全的 2330 六十一日調整後 OHLC 沿革；在不開啟結果的前提下，成對重算原始／調整後 ret5／20／60、均線斜率、RSI14、布林通道20及除息日 ADX 真實區間診斷。MACD／ADX 狀態比較前先凍結遞迴初始化契約。KD、背離與多時間框架只要任一 OHLC 或父時間框架價格空間不一致即保持阻擋。D03 不修改 System 2 策略資格閘門。
+
+
+## 2026-10-17 — TI-2053～TI-2072：2330 單一已知除息參考價比例傳導地圖
+
+### 新增上游證據
+- DATA 在真實 61／61 原始交易日上提出單一已知事件的價格空間候選：`r = 2377.99 / 2385 = 0.9970607966457022`。
+- 候選把事件前索引 0～40 共 41 日 OHLC 同乘 `r`，事件日 2026-09-16 起索引 41～60 共 20 日維持原始 OHLC。
+- 上游仍明示 `authoritativeOtherActionsExcluded=false`、`independentlyAuditedAdjustmentFormula=false`、`full61DayAdjustedFeatureContinuityAudited=false`、`pitEligible=false`；因此本輪只做結果盲化代數與傳導測試，不把候選稱為正式還原股價。
+
+### 指標傳導結果
+- 同在事件前或同在事件後的報酬不變；跨事件報酬依 `retAdjusted=(1+retRaw)/r-1` 改變。
+- 以索引 60 為當前點：ret5 不跨事件，ret20／ret60 跨事件；SMA5／10／20、KD9、RSI14、布林20完全位於事件後而數值不變，SMA60 混合兩種價格空間而改變。
+- MACD 的 EMA 遞迴仍承接事件前狀態；ADX 的事件日 TR／DM 與 Wilder 遞迴仍需逐日 OHLC、完整祖先狀態與凍結初始化契約。兩者不得因 20 個事件後交易日而假設遺忘。
+- 背離與多時間框架只有在所有父資料共用相同價格空間、事件邊界與 confirmedAt 時鐘時才可重播；否則保持阻擋。
+
+### 正反驗證與偏誤控制
+- TI-2053～TI-2072 共 20 個確定性判例通過 20／20。
+- 支持：官方參考價比例、41／20 分割與真實方向翻轉具實體來源。
+- 反證：其他公司行動、歷史公告版次、完整 61 日調整與獨立稽核未成立；單一 2330 案例不可外推全市場。
+- OOS、Walk-forward、成本、成交性、停牌負證與因子增量維持 UNKNOWN；未掃門檻、未看結果、未形成歷史 Shadow。
+- ROC level 仍與同期間 retN 冗餘；候選調整不創造新資訊根。
+
+### 治理結論
+- 成熟度維持 56.7%，未升級；D03-09／D03-10 維持 L2。
+- 結果、Shadow、Frozen 與正式增量資訊保持關閉。
+- `FORMAL_OPTIMIZATION_CANDIDATE`：不成立；`Formal Core` 永久鎖定。
+- 研究檔：`research/D03_2330_REFERENCE_RATIO_PROPAGATION_MAP_20261017_V0_1.md`
+- 判例：`research/d03_2330_reference_ratio_propagation_cases_20261017_v0_1.json`
+- 執行器：`research/test_d03_2330_reference_ratio_propagation_v0_1.mjs`
+
+### 精確下一續接點
+等待 AUDIT 對 41 日事件前等比例縮放、其他公司行動完整排除、逐日 OHLC 與來源時鐘做獨立驗收。若通過，使用同一 61 日實值成對重算 RAW 與候選 ADJUSTED 的 ret20／ret60、SMA60、事件日 ADX TR／DM，以及凍結初始化後的 MACD／ADX 狀態差；ret5、SMA5／10／20、KD9、RSI14、布林20則先驗證數值不變。任一稽核門檻缺失即保持 UNKNOWN，不修改 System 2 策略資格閘門。
