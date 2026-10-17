@@ -44,11 +44,11 @@ jobs:
           name: s2-m09-daily-native-cfi-38955846766-1
           path: /tmp/s2-nextday-m09-cfi-original
           github-token: ${{ github.token }}
-      - name: Fetch exact official prior-night native six CA ORIGINAL artifact
+      - name: Fetch exact original six daily-CA bodies aligned to independent CA audit
         uses: actions/download-artifact@v4
         with:
           run-id: 38955846766
-          name: s2-m09-prospective-ca-sourceonly-38955846766-1
+          name: s2-m09-daily-ca-observed-risk-38955846766-1
           path: /tmp/s2-nextday-m09-ca-original
           github-token: ${{ github.token }}
       - name: Fetch true separate CFI original rehash audit
