@@ -1,0 +1,44 @@
+name: S1 5340 Q2 TWSE original financial PDF source one-shot
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  contents: read
+concurrency:
+  group: system1-5340-q2-original-twse-pdf-once
+  cancel-in-progress: false
+jobs:
+  official_pdf_only:
+    if: github.head_ref == 'audit/system1-5340-2026q2-official-twse-pdf-original-once-20261017' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.repo.full_name == 'imihan0630-sys/v7-fugle-worker' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline contract tests
+        run: |
+          node --check ops/system1_5340_2026q2_twse_official_pdf_once.mjs
+          node tests/test_system1_5340_official_twse_pdf_once.mjs
+          node --check research/system1_5340_2026q2_individual_pdf_eps_review_v0_1.mjs
+          node tests/test_system1_5340_2026q2_individual_pdf_eps_review_v0_1.mjs
+          node --check research/system1_5340_2026q2_official_pdf_basis_pit_audit_v0_1.mjs
+          node tests/test_system1_5340_2026q2_original_pdf_basis_pit_audit_v0_1.mjs
+          node --check research/system1_5340_2026q2_subsidiary_and_vintage_evidence_v0_1.mjs
+          node tests/test_system1_5340_2026q2_subsidiary_and_vintage_evidence_v0_1.mjs
+      - name: Install free PDF text extraction binary inside ephemeral runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          command -v pdftotext
+      - name: Read only original TWSE 5340 Q2 PDF and create SHA/time/basis receipt
+        run: node ops/system1_5340_2026q2_twse_official_pdf_once.mjs
+      - name: Upload receipt only not original PDF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-5340-2026q2-original-twse-receipt-${{ github.run_id }}
+          path: artifacts/system1-5340-2026q2-official-ebook-original-receipt.json
+          if-no-files-found: error
+          retention-days: 30
