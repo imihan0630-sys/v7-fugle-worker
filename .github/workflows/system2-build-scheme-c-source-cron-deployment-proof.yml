@@ -1,0 +1,84 @@
+name: System2 BUILD Scheme C SOURCE Cron Deploy-Time Proof (PR READ ONLY)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/runtime/scheme_c_source_cron_natural_chain_readiness_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_source_cron_natural_chain_readiness_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_source_cron_natural_chain_readiness_v0_1.test.mjs'
+      - '.github/workflows/system2-build-scheme-c-source-cron-deployment-proof.yml'
+permissions:
+  actions: read
+  contents: read
+jobs:
+  verify_real_prior_to_workflow_deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Eight contract groups and no runtime/source side effects
+        run: |
+          set -euo pipefail
+          node --check system2/runtime/scheme_c_source_cron_natural_chain_readiness_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_source_cron_natural_chain_readiness_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_source_cron_natural_chain_readiness_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Reuse exactly original DATA independent Cron/source/audit receipt (NO new original GET)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: '39016618423'
+          name: s2-data-native-a1-cron-source-audit-chain-39016618423
+          path: /tmp/s2-build-native-data-chain
+          github-token: ${{ github.token }}
+      - name: Read actual GitHub REST SOURCE/AUDIT runs and first on-main Scheme C workflow commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/38934081985" > /tmp/s2-gh-native-source-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/38934321405" > /tmp/s2-gh-native-audit-run.json
+          gh api "repos/$GITHUB_REPOSITORY/commits/f18c761ee4bc82eb32b27f0ac5a7523cfaaf9ed0" > /tmp/s2-gh-first-build-scheme-c-commit.json
+          test "$(jq -r .event /tmp/s2-gh-native-source-run.json)" = 'schedule'
+          test "$(jq -r .event /tmp/s2-gh-native-audit-run.json)" = 'workflow_run'
+          test "$(jq -r .commit.committer.date /tmp/s2-gh-first-build-scheme-c-commit.json)" = '2026-10-17T02:25:23Z'
+      - name: Physically prove genuine 10/16 parent finished BEFORE downstream workflow was deployed
+        run: |
+          set -euo pipefail
+          R="$(find /tmp/s2-build-native-data-chain -type f -name 'native-github-source-cron-audit-chain.json' -print -quit)"
+          test -n "$R"
+          test -s "$R"
+          node system2/scripts/run_scheme_c_source_cron_natural_chain_readiness_readonly_v0_1.mjs \
+            "$R" /tmp/s2-gh-native-source-run.json /tmp/s2-gh-native-audit-run.json \
+            /tmp/s2-gh-first-build-scheme-c-commit.json \
+            /tmp/s2-build-readiness/real-source-cron-deployment-readiness.json
+          O=/tmp/s2-build-readiness/real-source-cron-deployment-readiness.json
+          test "$(jq -r .mode "$O")" = 'PARENT_AUDIT_FINISHED_BEFORE_SCHEME_C_WORKFLOW_DEPLOYMENT'
+          test "$(jq -r .independentlyDataReconciledSourceCron "$O")" = 'true'
+          test "$(jq -r .sourceOriginalPairCount "$O")" = '122'
+          test "$(jq -r .sourceOriginalCutReady "$O")" = 'false'
+          test "$(jq -r .firstWorkflowDeployedAtUtc "$O")" = '2026-10-17T02:25:23Z'
+          test "$(jq -r .naturalConsumerReceiptReconciled "$O")" = 'false'
+          test "$(jq -r .newTradingDayFullP0Acceptance "$O")" = 'false'
+          test "$(jq -r .pitA "$O")" = 'false'
+          test "$(jq -r .selectedCount "$O")" = 'null'
+          test "$(jq -r .zeroPickDay "$O")" = 'null'
+          test "$(jq -r .frozenD1Written "$O")" = 'false'
+          {
+            echo '## System 2 BUILD｜2026-10-16 真實 SOURCE Cron→AUDIT / Scheme C 首次部署時序'
+            echo 'Native scheduled SOURCE=38934081985; independent native AUDIT=38934321405; verified 122/122.'
+            echo 'Original cut 2026-10-16 23:45 Taipei MISSED; source late on 2026-10-17.'
+            echo 'First Scheme C on-main workflow commit=f18c761ee4bc at 2026-10-17 10:25:23 Taipei.'
+            echo '**Conclusion: upstream audit finished BEFORE Scheme C workflow existed, so no Oct16 natural child is not evidence of a deployed runtime failure.**'
+            echo '**P0 NEW T full automatic delivery NOT CERTIFIED; PIT-A NOT CERTIFIED; Frozen 0.**'
+            echo "Read-only receipt SHA256=$(jq -r .readinessHash "$O")"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload one create-only research-only chronology proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-build-scheme-c-source-cron-first-deployment-${{ github.run_id }}
+          path: /tmp/s2-build-readiness/real-source-cron-deployment-readiness.json
+          retention-days: 30
+          if-no-files-found: error
