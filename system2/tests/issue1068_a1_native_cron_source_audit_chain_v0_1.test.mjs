@@ -158,7 +158,7 @@ test('source 121/122 cannot borrow a dual 122/122 PASS',async()=>{
  await assert.rejects(()=>reconcile(a),/SAME_ORIGINAL_SOURCE_RECEIPT_AND_MANIFEST/);
 });
 test('dual original GH source schedule hash, timeline or audit clock mutation rejected',async()=>{
- const a=await fixture();a.dualReceipt.originalEventOriginHash='0'.repeat(64);
+ const a=await fixture();a.dualReceipt={...a.dualReceipt,originalEventOriginHash:'0'.repeat(64)};
  await assert.rejects(()=>reconcile(a),/SIGNED_DUAL_ORIGIN_CLOCK/);
  const b=await fixture();b.auditReceipt.auditedAtUtc='2026-10-16T16:41:00.000Z';
  await assert.rejects(()=>reconcile(b),/INDEPENDENT_AUDIT_SOURCE_RECEIPT/);
