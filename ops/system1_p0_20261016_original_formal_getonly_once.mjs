@@ -55,6 +55,9 @@ export function classifyOriginalFormalReadback(values,errors){
   cronRowsForDate:oct16.slice(0,4).map(x=>({
    scheduledAt:safeTime(x.scheduled_at||x.scheduledAt),
    status:safeType(x.status),
+   skipped:x.skipped===true||Number(x.skipped)===1,
+   detailCode:/^[A-Z0-9_]{2,72}$/.test(String(x.detail||""))?x.detail:null,
+   detailFieldPresent:Object.prototype.hasOwnProperty.call(x,"detail"),
    errorClass:/exceededResources|CPU/i.test(String(x.error||""))?"CPU_OR_RESOURCE":
     /DATA_INCOMPLETE/i.test(String(x.error||""))?"DATA_INCOMPLETE":
     x.error?"OTHER_OR_UNKNOWN":"NONE"
