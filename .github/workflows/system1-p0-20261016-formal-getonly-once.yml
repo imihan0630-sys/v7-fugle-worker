@@ -1,7 +1,7 @@
 name: System1 Original Oct16 Formal Readback (ONE SHOT, GET ONLY)
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 permissions:
   contents: read
 jobs:
