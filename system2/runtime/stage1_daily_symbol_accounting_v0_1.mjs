@@ -11,6 +11,9 @@ const statuses=['INCOMPLETE','REJECTED','WATCH','QUALIFIED_NOT_SELECTED'];
 export async function buildStage1DailySymbolAccountingV0_1({bridge,readiness}={}){
  if(!bridge||!readiness||!SHA.test(readiness.receiptHash||''))
   fail('ORIGINAL_SIGNED_INPUT_REQUIRED');
+ const {receiptHash:claimedReadinessHash,...signedReadiness}=readiness;
+ if(await sha256Hex(signedReadiness)!==claimedReadinessHash)
+  fail('READINESS_OR_LINEAGE_MUTATED');
  // Reuse and execute the ACTUAL existing hash/row/strategy-state validator,
  // rather than inventing a weaker ledger-to-evaluation acceptance shortcut.
  const original=await buildDailySelectionReadinessReceiptV0_1({
