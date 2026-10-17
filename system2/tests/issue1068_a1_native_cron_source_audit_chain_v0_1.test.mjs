@@ -94,7 +94,9 @@ async function fixture({event='schedule',cron='15 12 * * 1-5',late=true}={}){
   selectedCount:null,zeroPickDay:null,selectionAuthorized:false,
   frozenDecisionWritten:false};
  const dualReceipt=await buildA1DualAcceptanceV0_1({
-  origin,sourceRun,sourceJob,sourceReceipt,independentAudit:auditReceipt,
+  origin,sourceRun,sourceJob,sourceReceipt:{state:'SOURCE_OBSERVED_UNAUDITED',
+   marketDate:'2026-10-16',plannedPairs:122,validatedPairs:122},
+  independentAudit:auditReceipt,
   stage1Summary,observedAtUtc:'2026-10-17T00:30:00.000Z'
  });
  return {origin,sourceReceipt,manifest,sourceRun,sourceJob,
