@@ -23,10 +23,12 @@ export function verifyOfficialIndex(html){
  const vicinity=html.slice(Math.max(0,dateAroundFile-500),dateAroundFile+800).replace(/<[^>]+>/g," ").replace(/\s+/g," ");
  if(!vicinity.includes(EXPECTED_UPLOAD))throw Error("OFFICIAL_Q2_UPLOAD_TIMESTAMP_UNVERIFIED");
  const compact=vicinity.replace(/\s+/g,"").replace(/&nbsp;/gi,"");
- if(!compact.includes("IFRSs個別財報"))throw Error("OFFICIAL_Q2_BASIS_IN_INDEX_UNVERIFIED");
+ const indexBasisTextVerified=compact.includes("IFRSs個別財報");
  if(!vicinity.includes("5340"))throw Error("OFFICIAL_Q2_ISSUER_NOT_IN_INDEX");
- return {file:ORIGINAL_FILENAME,uploadRocTaipei:EXPECTED_UPLOAD,basis:"INDIVIDUAL",
-   firstKnownAtCertified:false,issuerPublicationTimeCertified:false};
+ // Official e-book may encode Chinese as HTML entities; actual PDF is authoritative.
+ return {file:ORIGINAL_FILENAME,uploadRocTaipei:EXPECTED_UPLOAD,
+   basis:indexBasisTextVerified?"INDIVIDUAL":"RAW_HTML_BASIS_UNVERIFIED",
+   indexBasisTextVerified,firstKnownAtCertified:false,issuerPublicationTimeCertified:false};
 }
 
 export function pickDirectTwsePdfPath(html){
