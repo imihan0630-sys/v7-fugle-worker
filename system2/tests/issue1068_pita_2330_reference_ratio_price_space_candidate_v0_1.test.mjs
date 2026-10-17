@@ -33,6 +33,27 @@ test('one true ex-reference boundary: 41 prior bars proposed on reference scale;
  assert.equal(a.referenceScaleSeries[60].proposedOHLC.close,2400);
  assert.equal(a.referenceScaleSeries[0].knownEventPreSide,true);
  assert.equal(a.referenceScaleSeries[41].knownEventPreSide,false);
+ assert.equal(a.referenceScaleSeries.slice(0,41).every(x=>
+  x.knownEventPreSide===true&&x.trueNativeOHLCUnchanged===false),true);
+ assert.equal(a.referenceScaleSeries.slice(41).every(x=>
+  x.knownEventPreSide===false&&x.trueNativeOHLCUnchanged===true&&
+  x.priceMultiplier===1),true);
+});
+test('source-native OHLC after actual ex-date preserves ALL original decimals, not six-digit roundoff',()=>{
+ const input=fixture();
+ input.rawBars[42]={
+  ...input.rawBars[42],
+  open:2400.1234567,high:2405.1234569,
+  low:2395.1234561,close:2400.1234568
+ };
+ const proposed=propose(input);
+ assert.deepEqual(proposed.referenceScaleSeries[42].proposedOHLC,{
+  open:input.rawBars[42].open,high:input.rawBars[42].high,
+  low:input.rawBars[42].low,close:input.rawBars[42].close
+ });
+ assert.equal(proposed.referenceScaleSeries[42].trueNativeOHLCUnchanged,true);
+ assert.equal(proposed.referenceScaleSeries[40].trueNativeOHLCUnchanged,false);
+ assert.notEqual(proposed.referenceScaleSeries[40].priceMultiplier,1);
 });
 test('native original event reference is not simply the nominal cash dividend',()=>{
  const a=propose(fixture());
