@@ -230,11 +230,11 @@ jobs:
           # source-bound watch rows in the SAME existing 30-day Artifact.
           # NEVER make a new archive/forward-Frozen a P0 preview display gate.
           OBS=/tmp/s2-scheme-c-daily-build-result/daily-research-observation.json
-          if node system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs "$R" "$O" "$M" "$HUMAN" "$ACCEPT" "$OBS"; then
-            test "$(jq -r .modelVersion "$OBS")" = 'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2'
-            test "$(jq -r .selectedCount "$OBS")" = 'null'
-            test "$(jq -r .pitACertified "$OBS")" = 'false'
-            test "$(jq -r .recordRetentionDays "$OBS")" = '30'
+          if node system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs "$R" "$O" "$M" "$HUMAN" "$ACCEPT" "$OBS" &&
+             test "$(jq -r .modelVersion "$OBS")" = 'PRELIMINARY_PRICE_VOLUME_OBSERVATION_V0_2' &&
+             test "$(jq -r .selectedCount "$OBS")" = 'null' &&
+             test "$(jq -r .pitACertified "$OBS")" = 'false' &&
+             test "$(jq -r .recordRetentionDays "$OBS")" = '30'; then
             echo "S2_NONPIT_OBSERVATION marketT=$(jq -r .marketDate "$OBS") UTC_Created=$(jq -r .actualReportGeneratedAtUtc "$OBS") snapshotHash=$(jq -r .snapshotHash "$OBS")" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "::warning::OPTIONAL_RESEARCH_SNAPSHOT_NOT_READY; verified Scheme C report remains available"
