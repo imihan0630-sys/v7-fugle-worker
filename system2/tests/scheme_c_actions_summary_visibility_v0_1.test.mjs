@@ -32,3 +32,14 @@ test('the event-driven flow remains read-only with no new schedule or secrets',(
  assert.doesNotMatch(workflow,/\n\s+schedule:|wrangler\s+deploy|worker_secret|cloudflare\/workers-action|CREATE\s+TABLE|INSERT\s+INTO/);
  assert.match(workflow,/uses: actions\/upload-artifact@v4/);
 });
+
+test('failed or self-diagnostic upstream has visible SOURCE_NOT_READY without false zero',()=>{
+ assert.match(workflow,/show_unavailable_upstream_audit:/);
+ assert.match(workflow,/github.event.workflow_run.conclusion != 'success'/);
+ assert.match(workflow,/github.event.workflow_run.event != 'workflow_run'/);
+ assert.match(workflow,/來源交易日：.*UNKNOWN（未取得合格來源/);
+ assert.match(workflow,/正式 selectedCount：.*UNKNOWN（不是 0 檔）/);
+ assert.match(workflow,/SOURCE_NOT_READY/);
+ assert.match(workflow,/if: failure\(\)/);
+ assert.match(workflow,/來源 Artifact 缺漏、SHA\/交易日\/截止驗證失敗/);
+});
