@@ -1,0 +1,52 @@
+name: System1 P0 EPS exact D1 symbols (manual physical, offline PR)
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/system1-p0-quarter-eps-d1-symbols-readonly.yml"
+      - "research/system1_p0_quarter_eps_d1_symbol_receipt_v0_1.mjs"
+      - "ops/system1_p0_quarter_eps_d1_symbols_readonly_once_v0_1.mjs"
+      - "tests/test_system1_p0_quarter_eps_d1_symbol_receipt_v0_1.mjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system1-p0-eps-d1-exact-symbol-readonly
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Strict original D1 EPS SELECT contract with negative fixtures
+        run: |
+          node --check research/system1_p0_quarter_eps_d1_symbol_receipt_v0_1.mjs
+          node --check ops/system1_p0_quarter_eps_d1_symbols_readonly_once_v0_1.mjs
+          node tests/test_system1_p0_quarter_eps_d1_symbol_receipt_v0_1.mjs
+  physical_select:
+    # PR CI NEVER consumes Cloudflare secrets; requires independent owner-approved
+    # merge AND a separate manual dispatch from main. No scheduled invocation.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM1_P0_D1_READ_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Source v7-live D1 exact 2026-10-16 QUARTER_EPS read-only SELECT
+        run: node ops/system1_p0_quarter_eps_d1_symbols_readonly_once_v0_1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-p0-eps-d1-membership-${{ github.run_id }}
+          path: artifacts/system1-p0-quarter-eps-d1-symbols-20261016.json
+          if-no-files-found: warn
+          retention-days: 30
