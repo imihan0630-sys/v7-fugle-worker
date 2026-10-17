@@ -7,7 +7,8 @@ const official='<table><tr><td>5340</td><td>115 年 第二季</td><td>IFRSs個�
  ORIGINAL_FILENAME+'</td><td>700181</td><td>'+EXPECTED_UPLOAD+'</td></tr></table>';
 assert.equal(verifyOfficialIndex(official).basis,"INDIVIDUAL");
 assert.equal(verifyOfficialIndex(official).firstKnownAtCertified,false);
-assert.throws(()=>verifyOfficialIndex(official.replace("個別","合併")),/BASIS/);
+assert.equal(verifyOfficialIndex(official.replace("個別","合併")).basis,"RAW_HTML_BASIS_UNVERIFIED");
+assert.equal(verifyOfficialIndex(official.replace("個別","合併")).firstKnownAtCertified,false);
 assert.throws(()=>verifyOfficialIndex(official.replace(EXPECTED_UPLOAD,"115/08/07 12:00:00")),/TIMESTAMP/);
 assert.throws(()=>verifyOfficialIndex(official.replaceAll("5340","5341")),/FILE_MISSING|ISSUER/);
 assert.equal(pickDirectTwsePdfPath('<a href="/pdf/202602_5340_AI2_20260806_163632.pdf">original</a>'),
