@@ -299,7 +299,7 @@ function upstreamRun(id,overrides={}){
 }
 function upstreamArtifact(id,overrides={}){
  return {id:id+10000,name:'s2-shared-official-a1-'+id,expired:false,
-  size_in_bytes:4096,workflow_run:{id},...overrides};
+  size_in_bytes:40641415,workflow_run:{id},...overrides};
 }
 function mockSeedLookup(runs,artifactsByRun,calls){
  return async endpoint=>{
@@ -326,6 +326,45 @@ test('seed chooser skips failed or not-main source runs, selects exact successfu
  assert.equal(got.kind,'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE');
  assert.equal(calls.length,2);
  assert.match(calls[1],/\/actions\/runs\/297\/artifacts/);
+});
+test('weekend/holiday successful SKIP attachment is tiny and cannot poison next T seed reuse',async()=>{
+ const calls=[];
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:306,
+  apiFetch:mockSeedLookup([upstreamRun(305),upstreamRun(304)],
+   {305:[upstreamArtifact(305,{size_in_bytes:1308})],
+    304:[upstreamArtifact(304,{size_in_bytes:40641415})]},calls)
+ });
+ assert.equal(got.runId,304);
+ assert.equal(got.artifactName,'s2-shared-official-a1-304');
+ assert.equal(got.kind,'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE');
+ assert.equal(calls.length,3);
+});
+test('only tiny skipped artifacts cannot be treated as a true 61-session ZIP even when GH success',async()=>{
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:306,
+  apiFetch:mockSeedLookup([upstreamRun(305),upstreamRun(304)],
+   {305:[upstreamArtifact(305,{size_in_bytes:1308})],
+    304:[upstreamArtifact(304,{size_in_bytes:0})]},[])
+ });
+ assert.equal(got.kind,'INITIAL_REAL_PROVIDER_UNAUDITED_SEED');
+ assert.equal(got.runId,38317682441);
+});
+test('conservative skip-size guard is seed optimization only; 64KiB does not certify any source',async()=>{
+ const {MIN_SHARED_A1_REUSABLE_SEED_ZIP_BYTES_V0_1:min}=await import(
+  '../scripts/discover_shared_official_a1_seed_v0_1.mjs');
+ assert.equal(min,65536);
+ const got=await discoverSharedA1PreviousSourceArtifactV0_1({
+  token:'test-token-not-real',currentRunId:306,
+  apiFetch:mockSeedLookup([upstreamRun(305)],
+   {305:[upstreamArtifact(305,{size_in_bytes:65536})]},[])
+ });
+ assert.equal(got.kind,'VERIFIED_PRIOR_PIPELINE_ARTIFACT_AVAILABLE');
+ assert.equal(got.runId,305);
+ // Admission is reserved for the existing byte-SHA, official date,
+ // 122-original content and independent audit. The chooser only
+ // returns an artifact identity, not selection/PIT/Frozen authority.
+ assert.deepEqual(Object.keys(got).sort(),['artifactName','kind','runId']);
 });
 test('matching prefix or forged cross-run attachment cannot seed source originals',async()=>{
  const calls=[];
