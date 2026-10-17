@@ -18,6 +18,9 @@ on:
       - 'system2/runtime/scheme_c_delivery_origin_v0_1.mjs'
       - 'system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_delivery_origin_v0_1.test.mjs'
+      - 'system2/runtime/scheme_c_daily_delivery_acceptance_v0_1.mjs'
+      - 'system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs'
+      - 'system2/tests/scheme_c_daily_delivery_acceptance_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
   workflow_run:
     workflows: ['System2 Shared Official A1 Independent Source Audit (READ ONLY)']
@@ -113,6 +116,9 @@ jobs:
           node --check system2/runtime/scheme_c_delivery_origin_v0_1.mjs
           node --check system2/scripts/run_scheme_c_delivery_origin_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_delivery_origin_v0_1.test.mjs
+          node --check system2/runtime/scheme_c_daily_delivery_acceptance_v0_1.mjs
+          node --check system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs
+          node --test system2/tests/scheme_c_daily_delivery_acceptance_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
@@ -200,6 +206,17 @@ jobs:
           fi
           grep -q '非 PIT 研究預覽' "$HUMAN"
           grep -q '不是經獨立驗證的全市場普通股數' "$HUMAN" || grep -q SOURCE_NOT_READY "$HUMAN"
+          # Derived launch acceptance distinguishes natural audit-child from SOURCE Cron.
+          node system2/scripts/run_scheme_c_daily_delivery_acceptance_readonly_v0_1.mjs "$R" "$O" "$M" "$HUMAN" /tmp/s2-scheme-c-daily-build-result/daily-delivery-acceptance.json
+          ACCEPT=/tmp/s2-scheme-c-daily-build-result/daily-delivery-acceptance.json
+          test -s "$ACCEPT"
+          test "$(jq -r .marketDate "$ACCEPT")" = "$(jq -r .marketDate "$R")"
+          test "$(jq -r .fullDailyScheduledChainAccepted "$ACCEPT")" = 'false'
+          test "$(jq -r .originalSourceCronProven "$ACCEPT")" = 'false'
+          test "$(jq -r .selectedCount "$ACCEPT")" = 'null'
+          test "$(jq -r .zeroPickDay "$ACCEPT")" = 'null'
+          test "$(jq -r .frozenD1Written "$ACCEPT")" = 'false'
+          test "$(jq -r .cloudflareD1Writes "$ACCEPT")" = '0'
           git diff --exit-code -- Worker.js wrangler.toml
           # Only after all source, hash, PIT and no-authorization assertions
           # are satisfied, make the complete human-readable report directly
@@ -221,6 +238,7 @@ jobs:
             echo "**T23:45 相對截止—預覽觀察形成：** $(jq -r '.previewObservationOffsetMinutes // "UNKNOWN"' "$M") 分鐘（正數晚到、負數提前）"
             echo "**來源截止狀態：** $(jq -r .researchReceiptCutStatus "$M")"
             echo "**本輪觸發分類：** $(jq -r .status "$O")"
+            echo "**可稽核交付驗收：** $(jq -r .status "$ACCEPT")｜收據 SHA256：$(jq -r .acceptanceHash "$ACCEPT")"
             echo "**來源最初 Cron 觸發已獨立驗證：** UNKNOWN（稽核 child 的自動 workflow_run 不等於原採集排程）"
             echo "**完整定時自動交付認證：** false；不得將 PR 測試或人工回放灌入每日定時成功率。"
             echo "**GitHub 排程延遲／官方公布時點：** 本收據無法單獨歸因；不可將上述相對截止分鐘數稱作 GitHub dispatch lag 或官方發布延遲。"
