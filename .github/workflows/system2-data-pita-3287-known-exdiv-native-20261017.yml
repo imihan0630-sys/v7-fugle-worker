@@ -1,0 +1,80 @@
+name: System2 DATA 3287 Known Exdiv Native Source Crosscheck (READ ONLY)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.mjs'
+      - 'system2/tests/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.test.mjs'
+      - '.github/workflows/system2-data-pita-3287-known-exdiv-native-20261017.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'system2/migration/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.mjs'
+      - 'system2/tests/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.test.mjs'
+      - '.github/workflows/system2-data-pita-3287-known-exdiv-native-20261017.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  reread_two_preexisting_signed_artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Guard native source crosswalk and fail-closed contract
+        run: |
+          set -euo pipefail
+          node --check system2/migration/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.mjs
+          node --test system2/tests/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Reuse existing complete 2026-10-16 61-session originals, NO GET
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38934081985
+          name: s2-shared-official-a1-38934081985
+          github-token: ${{ github.token }}
+          path: /tmp/s2-3287-a1-61-native
+      - name: Reuse already-retained original six native CA families, NO GET
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38910741802
+          name: s2-pita-2330-six-ca-original-20261016-38910741802-1
+          github-token: ${{ github.token }}
+          path: /tmp/s2-3287-six-native-ca
+      - name: Independently rehash actual native A1 and CA bytes and inspect 3287 dividend
+        run: |
+          set -euo pipefail
+          node system2/migration/issue1068_pita_3287_known_native_ca_crosswalk_v0_1.mjs \
+            /tmp/s2-3287-a1-61-native \
+            /tmp/s2-3287-six-native-ca \
+            /tmp/s2-3287-known-exdiv-sourceonly
+          R=/tmp/s2-3287-known-exdiv-sourceonly/3287-native-exdiv-sourceonly.json
+          test -s "$R"
+          test "$(jq -r .allTpexOriginalRowsChecked "$R")" = 61
+          test "$(jq -r .sixNativeCAFamiliesByteRehashed "$R")" = 6
+          test "$(jq -r .event.knownEventDate "$R")" = '2026-08-26'
+          test "$(jq -r .event.previousOfficialClose "$R")" = 39
+          test "$(jq -r .event.exchangeOfficialExDividendReference "$R")" = 37.5
+          test "$(jq -r .event.actualExDateClose "$R")" = 37
+          test "$(jq -r .event.authoritativeOtherActionsExcluded "$R")" = false
+          test "$(jq -r .event.full61AdjustedPricesCertified "$R")" = false
+          test "$(jq -r .originalDecisionCutMissed "$R")" = true
+          test "$(jq -r .fullPitaAccepted "$R")" = false
+          test "$(jq -r .selectedCount "$R")" = null
+          test "$(jq -r .zeroPickDay "$R")" = null
+          test "$(jq -r .frozenD1Written "$R")" = false
+          test "$(jq -r .cloudflareD1Writes "$R")" = 0
+          test "$(jq -r .system1FormalCoreChanged "$R")" = false
+          echo "SOURCE_BOUND_NATIVE_EXDIV_3287=PASS; TPEX_61_OF_61; SIX_CA_OF_SIX; DIV_2026_08_26; PIT_A=BLOCKED; FROZEN=false" >> "$GITHUB_STEP_SUMMARY"
+          echo "RAW_PCT=$(jq -r .event.originalRawReturnPct "$R") REF_PCT=$(jq -r .event.officialReferenceReturnPct "$R") ORIGINAL_CUT_MISSED=true" >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve derived source-only original-bound receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-data-3287-native-exdiv-crosswalk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/s2-3287-known-exdiv-sourceonly/
+          retention-days: 30
+          if-no-files-found: warn
