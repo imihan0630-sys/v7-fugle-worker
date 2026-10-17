@@ -25,6 +25,10 @@ on:
       - 'system2/scripts/run_scheme_c_native_source_delivery_join_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_native_source_delivery_join_v0_1.test.mjs'
       - 'system2/runtime/scheme_c_research_observation_snapshot_v0_1.mjs'
+      - 'system2/runtime/industry_research_enrichment_v0_1.mjs'
+      - 'system2/data/industry_prior_research_reuse_seeds_v0_1.json'
+      - 'system2/scripts/run_industry_research_enrichment_readonly_v0_1.mjs'
+      - 'system2/tests/industry_research_enrichment_v0_1.test.mjs'
       - 'system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs'
       - 'system2/tests/scheme_c_research_observation_snapshot_v0_1.test.mjs'
       - '.github/workflows/system2-scheme-c-daily-audit-preview-consumer.yml'
@@ -128,6 +132,9 @@ jobs:
           node --check system2/runtime/scheme_c_research_observation_snapshot_v0_1.mjs
           node --check system2/scripts/run_scheme_c_research_observation_snapshot_readonly_v0_1.mjs
           node --test system2/tests/scheme_c_research_observation_snapshot_v0_1.test.mjs
+          node --check system2/runtime/industry_research_enrichment_v0_1.mjs
+          node --check system2/scripts/run_industry_research_enrichment_readonly_v0_1.mjs
+          node --test system2/tests/industry_research_enrichment_v0_1.test.mjs
           # In REAL daily workflow_run, both signed receipts are co-located
           # in the SAME exact source-audit artifact. No second GH download,
           # no cross-run source pairing, and no additional provider GET.
@@ -240,6 +247,14 @@ jobs:
             echo "::warning::OPTIONAL_RESEARCH_SNAPSHOT_NOT_READY; verified Scheme C report remains available"
             echo '**附加研究觀察紀錄：** 暫缺；不阻擋已驗證的研究報告，也不聲稱 Frozen 或 Forward 認證。' >> "$GITHUB_STEP_SUMMARY"
           fi
+          # Class A optional and research-only. Do not turn missing taxonomy
+          # into a new P0 precondition; existing Scheme C report remains valid.
+          if node system2/scripts/run_industry_research_enrichment_readonly_v0_1.mjs "$R" system2/data/industry_prior_research_reuse_seeds_v0_1.json /tmp/s2-scheme-c-daily-build-result &&
+             test -s /tmp/s2-scheme-c-daily-build-result/daily-industry-research-context.md; then
+            echo "S2_INDUSTRY_RESEARCH_REUSED researchLabels=$(jq -r .previewPriorResearchLabelCount /tmp/s2-scheme-c-daily-build-result/daily-industry-research-context.json) nativeB5Coverage=UNKNOWN (not score/PIT)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::OPTIONAL_INDUSTRY_RESEARCH_CONTEXT_NOT_READY; signed P0 price-volume report preserved"
+          fi
           git diff --exit-code -- Worker.js wrangler.toml
           # Only after all source, hash, PIT and no-authorization assertions
           # are satisfied, make the complete human-readable report directly
@@ -288,6 +303,10 @@ jobs:
           fi
           echo "SCHEME_C_USER_READABLE_REPORT marketDate=$(jq -r .marketDate "$M"), late=$(jq -r .lateSource "$M"), report_SHA=$(jq -r .reportHash "$M")" >> "$GITHUB_STEP_SUMMARY"
           echo "SCHEME_C source tradingDate=$(jq -r .marketDate "$R"), source audit run=$UPSTREAM_AUDIT_RUN; readiness=$(jq -r .state "$R"); preview=$(jq -r .observedPreviewCount "$R"); PIT-A/B=NO, selected=null, Frozen=NO, no provider GET, no new Cron." >> "$GITHUB_STEP_SUMMARY"
+          if [ -s /tmp/s2-scheme-c-daily-build-result/daily-industry-research-context.md ]; then
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/s2-scheme-c-daily-build-result/daily-industry-research-context.md >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Surface missing source or invalid receipt without pretending zero selections
         if: failure()
         env:
@@ -506,6 +525,14 @@ jobs:
             echo ''
             cat "$HUMAN"
           } >> "$GITHUB_STEP_SUMMARY"
+          node --test system2/tests/industry_research_enrichment_v0_1.test.mjs
+          if node system2/scripts/run_industry_research_enrichment_readonly_v0_1.mjs "$R" system2/data/industry_prior_research_reuse_seeds_v0_1.json /tmp/s2-real-20261016-output &&
+             test -s /tmp/s2-real-20261016-output/daily-industry-research-context.md; then
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/s2-real-20261016-output/daily-industry-research-context.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '::warning::OPTIONAL_INDUSTRY_RESEARCH_CONTEXT_NOT_READY_IN_REAL_REPLAY'
+          fi
           git diff --exit-code -- Worker.js wrangler.toml
       - name: Keep physical Oct16 same-run derived result, NO original market bytes
         if: always()
