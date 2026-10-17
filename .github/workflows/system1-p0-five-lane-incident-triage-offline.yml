@@ -1,0 +1,29 @@
+name: System1 P0 Five-lane Incident Triage (OFFLINE ONLY)
+
+on:
+  pull_request:
+    paths:
+      - "research/system1_p0_incident_gate_v0_1.mjs"
+      - "tests/test_system1_p0_incident_gate_v0_1.mjs"
+      - ".github/workflows/system1-p0-five-lane-incident-triage-offline.yml"
+permissions:
+  contents: read
+jobs:
+  pure_incident_guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Strict syntax and unchanged fail-closed original safety fixtures
+        run: |
+          set -euo pipefail
+          node --check research/system1_p0_incident_gate_v0_1.mjs
+          node --check tests/test_system1_p0_incident_gate_v0_1.mjs
+          node tests/test_system1_p0_incident_gate_v0_1.mjs
+          node tests/test_system1_c1_readiness_v0_1.mjs
+          node tests/test_system1_p0_cpu_shard_candle_lease_safety_v0_2.mjs
+          node tests/test_system1_p0_history60_exact_session_audit_v0_1.mjs
+          node tests/test_v8_intraday_monitor_acceptance_readonly.mjs
