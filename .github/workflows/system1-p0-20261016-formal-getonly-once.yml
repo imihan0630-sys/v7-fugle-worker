@@ -1,0 +1,34 @@
+name: System1 Original Oct16 Formal Readback (ONE SHOT, GET ONLY)
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  contents: read
+jobs:
+  physical_original_read:
+    if: github.head_ref == 'audit/system1-p0-20261016-original-formal-getonly-once-20261017' && github.event.pull_request.head.repo.full_name == 'imihan0630-sys/v7-fugle-worker' && github.event.pull_request.base.ref == 'main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline original status and zero-pick falsification tests
+        run: |
+          node --check ops/system1_p0_20261016_original_formal_getonly_once.mjs
+          node tests/test_system1_p0_20261016_original_formal_getonly_once.mjs
+          node --check research/system1_p0_quarter_eps_safe_merge_v0_1.mjs
+          node tests/test_system1_p0_quarter_eps_safe_merge_v0_1.mjs
+      - name: Only bounded authenticated GET of existing production status endpoints
+        run: node ops/system1_p0_20261016_original_formal_getonly_once.mjs
+      - name: Preserve sanitized GET-only classification without token or stock plans
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-original-20261016-getonly-${{ github.run_id }}
+          path: artifacts/system1-p0-20261016-original-getonly.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,164 @@
+// Exact one-date original System1 production diagnostics, AUTHENTICATED GET ONLY.
+// DO NOT call /api/scan (POST), update official source, KV, D1, trade or push.
+// This never determines zero picks from empty default NOT_SCANNED recommendations.
+import {mkdir,writeFile} from "node:fs/promises";
+const BASE="https://fugle-test.imihan0630.workers.dev";
+const DAY="2026-10-16";
+const MAX=125000;
+const PATHS={
+ version:"/api/version",
+ recommendations:"/api/recommendations",
+ scan:"/api/scan/status",
+ cron:"/api/cron/status",
+ quality:"/api/quality-status?marketDate="+DAY,
+ config:"/api/config"
+};
+const safeTime=s=>typeof s==="string"&&s.length<80?s:null;
+const safeType=s=>typeof s==="string"&&s.length<80?s:null;
+const sameDay=(s)=>safeTime(s)?.slice(0,10)===DAY;
+export function classifyOriginalFormalReadback(values,errors){
+ const scan=values.scan||{},rec=values.recommendations||{},config=values.config||{};
+ const valid=scan.scanDate===DAY&&scan.dryRun===false&&scan.config?.verified===true&&
+   Number.isInteger(scan.selectedCount)&&scan.selectedCount>=0&&scan.selectedCount<=6&&
+   Array.isArray(scan.stocks)&&scan.stocks.length===scan.selectedCount&&
+   scan.incomplete!==true&&scan.pipeline?.selectionCompleted===true;
+ const matched=valid&&config.source==="KV"&&
+  config.updatedAt===scan.config?.updatedAt&&Array.isArray(config.stocks)&&
+  config.stocks.length===scan.selectedCount&&
+  scan.stocks.every((s,i)=>/^[1-9]\d{3}$/.test(String(s?.symbol||""))&&
+    config.stocks.some(t=>t.symbol===s.symbol));
+ const authorizedPrivateReads=["scan","cron","config","quality"]
+  .every(k=>!errors[k]);
+ const current=rec?.attempt?.requestedDate===DAY?rec.attempt.status:null;
+ const cronRows=Array.isArray(values.cron?.recent)?values.cron.recent:[];
+ const oct16=cronRows.filter(x=>String(x?.scheduled_at||x?.scheduledAt||"").slice(0,10)===DAY&&x.job_type==="AFTER_MARKET_SCAN");
+ let status;
+ if(!authorizedPrivateReads)status="SOURCE_OR_AUTH_READ_INCOMPLETE";
+ else if(matched)status="FORMAL_DATE_KV_READBACK_VERIFIED_BUT_PUSH_SEPARATE";
+ else if(current==="INCOMPLETE"||scan?.incomplete===true)status="FORMAL_UNSAVED_OR_INCOMPLETE";
+ else if(!sameDay(scan?.scanDate))status="NO_CURRENT_SESSION_FORMAL_PARENT_VISIBLE";
+ else status="FORMAL_READBACK_DISAGREEMENT_OR_UNVERIFIED";
+ return {schema:"S1_20261016_ORIGINAL_FORMAL_READBACK_ONLY_V0_1",
+  date:DAY,classification:status,verifiedSameDayFormal:matched,
+  verifiedZeroSelection:matched&&scan.selectedCount===0,
+  verifiableSelectedCount:matched?scan.selectedCount:null,
+  sourceVersion:safeType(values.version?.version),
+  testMode:values.version?.testMode===false?false:values.version?.testMode===true?true:null,
+  publicRecommendationAttempt:safeType(current),
+  publicRecommendationIsCurrent:rec.isCurrent===true,
+  scanDate:safeTime(scan.scanDate),scanIncomplete:scan.incomplete===true,
+  pipelineCompleted:scan.pipeline?.selectionCompleted===true,
+  pipelineComplete:scan.pipeline?.complete===true,
+  configReadbackMatched:matched,
+  qualityDate:safeTime(values.quality?.marketDate),
+  qualityStatus:safeType(values.quality?.status)||null,
+  // Bounded exact-date official quality snapshots; no raw stock-level payload.
+  qualitySnapshotReadback:Object.fromEntries(["INDEX","TDCC","FINANCIAL","VALUATION",
+    "ANNOUNCEMENTS","QUARTER_EPS"].map(k=>{
+    const raw=k==="INDEX"?values.quality?.index:k==="TDCC"?values.quality?.tdcc:values.quality?.datasets?.[k];
+    return [k,{present:raw?.ready===true,
+      count:Number.isSafeInteger(raw?.count)&&raw.count>=0?raw.count:null,
+      asOfDate:safeTime(raw?.asOfDate)}];
+  })),
+  quarterEpsSnapshotPresent:values.quality?.datasets?.QUARTER_EPS?.ready===true,
+  quarterEpsSnapshotCount:Number.isSafeInteger(values.quality?.datasets?.QUARTER_EPS?.count)?
+    values.quality.datasets.QUARTER_EPS.count:null,
+  cronRowsForDate:oct16.slice(0,4).map(x=>({
+   scheduledAt:safeTime(x.scheduled_at||x.scheduledAt),
+   status:safeType(x.status),
+   skipped:x.skipped===true||Number(x.skipped)===1,
+   detailCode:/^[A-Z0-9_]{2,72}$/.test(String(x.detail||""))?x.detail:null,
+   detailFieldPresent:Object.prototype.hasOwnProperty.call(x,"detail"),
+   detailIsNull:x.detail===null,
+   detailType:x.detail===null?"null":Array.isArray(x.detail)?"array":typeof x.detail,
+   detailStringLength:typeof x.detail==="string"?Math.min(10000,x.detail.length):null,
+   // Output ONLY true/false for predeclared generic words; never raw detail.
+   detailFixedSignals:Object.fromEntries(["MISSING","INCOMPLETE","FAIL","FAILED",
+    "未完成","失敗","跳過","已完成","資料","買入","選股","D1","C1","PIT","FORMAL"].map(token=>
+     [token,String(x.detail||"").includes(token)])),
+   // Finite predeclared classes matching original Worker data completeness guards.
+   // These are classification hints only; no untrusted detail bytes leave Actions.
+   epsReviewBlockerExactOriginalPhrase:String(x.detail||"").includes("候選缺當季實際EPS複核"),
+   // Report only bounded public 4-digit codes present *inside exact original
+   // candidate EPS list*, no raw private scan, symbols are not Formal picks.
+   epsBlockedCandidateCodes:String(x.detail||"").includes("候選缺當季實際EPS複核")?
+    ((String(x.detail||"").match(/複核\(([1-9][0-9]{3}(?:,[1-9][0-9]{3}){0,5})\)/)?.[1]||"").split(",").filter(Boolean)) : [],
+   matchedFixedMissingTerms:["單季","當季實際EPS","季度EPS","QUARTER_EPS",
+    "盤後資料","官方API","收盤資料","收盤價","候選","驗證","不足","缺少","INCOMPLETE","DATE","D1","快取",
+    "C1_GENERATION_NOT_FOUND","未完成","中斷","已過期","保持原有計畫"].filter(w=>
+     String(x.detail||"").includes(w)),
+   missingSourceHints:Object.fromEntries(Object.entries({
+    INDEX:/INDEX|加權指數|大盤基期|指數比較/,
+    TDCC:/TDCC|集保持股|集中度/,
+    FINANCIAL_VALUATION_ANNOUNCEMENT:/財報比較|估值或公告|正式季度財報|FINANCIAL|VALUATION|ANNOUNCEMENTS/,
+    QUARTER_EPS:/單季|當季實際EPS|季度EPS|QUARTER_EPS/,
+    INSTITUTION_3D:/法人快照|連買分數|INSTITUTION/,
+    HISTORY_60D:/60日|日K|歷史底庫|HISTORY/,
+    MARKET_CLOSING:/盤後資料|官方API|收盤資料|收盤價/,
+    MARKET_CAP_FUNDAMENTALS:/市值\/基本面|基本面整批|marketCap/,
+    C1_POPULATION:/C1_GENERATION|C1人口|人口|C1_CAPTURE/,
+    D1_PERSISTENCE:/D1|持久化|儲存|寫入|保存|lease|LEASE/
+   }).map(([k,re])=>[k,re.test(String(x.detail||""))])),
+   // Never emit freeform narrative, machine tokens, response body or account data.
+   reasonClass:/AFTER_MARKET_RUNNING|執行中|執行鎖/.test(String(x.detail||""))?"POSSIBLE_RUNNING_LEASE":
+    /NOT_TRADING_DAY|非交易日|休市|未開市/.test(String(x.detail||""))?"POSSIBLE_CALENDAR_SKIP":
+    /ALREADY_SCANNED|已完成掃描|已經掃描|已掃描|重複掃描/.test(String(x.detail||""))?"POSSIBLE_ALREADY_SCANNED":
+    /MISSING|未完成|失敗|INCOMPLETE|FAIL/.test(String(x.detail||""))?"POSSIBLE_FAILURE_OR_UNVERIFIED":
+    x.detail===null?"DETAIL_NULL":"DETAIL_UNCLASSIFIED",
+
+   errorClass:/exceededResources|CPU/i.test(String(x.error||""))?"CPU_OR_RESOURCE":
+    /DATA_INCOMPLETE/i.test(String(x.error||""))?"DATA_INCOMPLETE":
+    x.error?"OTHER_OR_UNKNOWN":"NONE"
+  })),
+  cronRecentTruncated:cronRows.length>=20,
+  originalTwoSkipsShareExactDetail:oct16.length===2&&oct16.every(x=>x.status==="SKIPPED")&&
+   typeof oct16[0].detail==="string"&&oct16[0].detail===oct16[1].detail,
+  cronMissingDoesNotProveNoInvocation:true,
+  httpErrors:Object.fromEntries(Object.entries(errors).map(([k,v])=>[k,safeType(v)])),
+  readOnly:true,noWorkerBusinessPost:true,noWrites:true,noTrade:true,noPush:true,
+  canAutomaticallyReplayOrSelect:false};
+}
+async function fetchOriginalOnce(path,token,request=fetch){
+ const url=new URL(path,BASE);
+ if(url.origin!==BASE||!Object.values(PATHS).includes(path))throw Error("PATH_NOT_ALLOWLISTED");
+ const headers={accept:"application/json","cache-control":"no-cache"};
+ if(token)headers["x-admin-token"]=token;
+ const r=await request(url,{method:"GET",headers,signal:AbortSignal.timeout(path===PATHS.quality?25000:12000)});
+ if(!r.ok)throw Error([401,403].includes(r.status)?"AUTHORIZATION_BLOCKED":"HTTP_"+r.status);
+ const raw=await r.text();
+ if(raw.length>MAX)throw Error("BODY_TOO_LARGE");
+ try{return JSON.parse(raw)}catch{throw Error("BAD_JSON")}
+}
+async function fetchOriginal(path,token,request=fetch){
+ const maxAttempts=path===PATHS.quality?2:1;let last;
+ for(let i=0;i<maxAttempts;i++){
+  try{return await fetchOriginalOnce(path,token,request)}
+  catch(err){
+   last=err;
+   if(/AUTHORIZATION_BLOCKED|PATH_NOT_ALLOWLISTED|BODY_TOO_LARGE/.test(
+     String(err?.message||"")))throw err;
+  }
+ }
+ throw last;
+}
+async function main(){
+ const token=process.env.V7_ADMIN_TOKEN||"";
+ const values={},errors={};
+ if(!token)errors.authorization="NO_EXISTING_ADMIN_SECRET";
+ for(const [k,p] of Object.entries(PATHS)){
+  if(!token&&["scan","cron","quality","config"].includes(k)){
+   errors[k]="AUTHORIZATION_BLOCKED";continue;
+  }
+  try{values[k]=await fetchOriginal(p,token)}
+  catch(e){errors[k]=/AUTHORIZATION_BLOCKED/.test(String(e?.message||""))?
+   "AUTHORIZATION_BLOCKED":/HTTP_[0-9]+/.test(String(e?.message||""))?
+   "SOURCE_HTTP_ERROR":"TRANSPORT_OR_FORMAT_UNKNOWN";}
+ }
+ const result=classifyOriginalFormalReadback(values,errors);
+ await mkdir("artifacts",{recursive:true});
+ await writeFile("artifacts/system1-p0-20261016-original-getonly.json",
+  JSON.stringify({...result,observedAt:new Date().toISOString()},null,2)+"\n");
+ console.log("SYSTEM1_P0_ORIGINAL_GETONLY="+JSON.stringify(result));
+}
+if(process.argv[1]&&import.meta.url===new URL("file://"+process.argv[1]).href)
+ await main();
