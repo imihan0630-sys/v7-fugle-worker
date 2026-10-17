@@ -118,16 +118,28 @@ export function classifyOriginalFormalReadback(values,errors){
   readOnly:true,noWorkerBusinessPost:true,noWrites:true,noTrade:true,noPush:true,
   canAutomaticallyReplayOrSelect:false};
 }
-async function fetchOriginal(path,token,request=fetch){
+async function fetchOriginalOnce(path,token,request=fetch){
  const url=new URL(path,BASE);
  if(url.origin!==BASE||!Object.values(PATHS).includes(path))throw Error("PATH_NOT_ALLOWLISTED");
  const headers={accept:"application/json","cache-control":"no-cache"};
  if(token)headers["x-admin-token"]=token;
- const r=await request(url,{method:"GET",headers,signal:AbortSignal.timeout(12000)});
+ const r=await request(url,{method:"GET",headers,signal:AbortSignal.timeout(path===PATHS.quality?25000:12000)});
  if(!r.ok)throw Error([401,403].includes(r.status)?"AUTHORIZATION_BLOCKED":"HTTP_"+r.status);
  const raw=await r.text();
  if(raw.length>MAX)throw Error("BODY_TOO_LARGE");
  try{return JSON.parse(raw)}catch{throw Error("BAD_JSON")}
+}
+async function fetchOriginal(path,token,request=fetch){
+ const maxAttempts=path===PATHS.quality?2:1;let last;
+ for(let i=0;i<maxAttempts;i++){
+  try{return await fetchOriginalOnce(path,token,request)}
+  catch(err){
+   last=err;
+   if(/AUTHORIZATION_BLOCKED|PATH_NOT_ALLOWLISTED|BODY_TOO_LARGE/.test(
+     String(err?.message||"")))throw err;
+  }
+ }
+ throw last;
 }
 async function main(){
  const token=process.env.V7_ADMIN_TOKEN||"";
